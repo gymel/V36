@@ -1,10 +1,11 @@
   ZC.FLX :  Z-Client, Hole einen Datensatz ueber Z39 mit ISBN, evtl. von
   20070213   mehreren Servern, und zeige die Ergebnisse
+  20150215 : RDA-Aktualisierungen
        --->> Weiter unten ist die >>Liste der Server<<, die man nach Bedarf
              bearbeiten kann. Andere Aenderungen in dieser Datei unnoetig.
 
              Aufruf mit oder ohne ISBN moeglich,
-             Aufruf mit Argument "c": vorhandene Datei zilist nochmal umwandeln
+             Aufruf mit Argument "0": vorhandene Datei zilist nochmal umwandeln
 
    >> Die Umwandlung macht ein Unterprogramm, das in z39m.inc steckt.
       Dieses ist spezifisch fuer das Zielformat und kann fuer eigene Zwecke
@@ -19,10 +20,12 @@ var K1
 if not "a" if not "A" help fremd;end
 
 var $f
-if "c" jump convert
+if "0" jump convert
 if "h" jump help
+if %-% jump v87
+if not "" jump cv1
   Falls bereits eine ISBN uebergeben wurde:
-if not "" jump v87
+  if not "" jump v87
 :frage
 ask Eine ISBN oder ISSN bitte! (Mit oder ohne -, 10 oder 13 Stellen. c:Wiederholung)
 if "c" jump convert
@@ -69,7 +72,7 @@ wri P "zc.exe"
      http://targettest.indexdata.com)
      http://opus.tu-bs.de/zack/statistic/targetmaps/
   Syntax einer Zeile:
-    NAME;Format`user=name,passwod=pwd,Adresse:Port/Datenbank
+    NAME;Format`user=name,password=pwd,Adresse:Port/Datenbank
 
     Der NAME taucht als Ueberschrift in der Ergebnisliste auf!
     Alle Angaben vor der Adresse koennen fehlen
@@ -79,7 +82,6 @@ wri P "zc.exe"
   Tip: statt dessen  X dnb  nutzen
 
 wri ' LOC;usmarc`z3950.loc.gov:7090/voyager'
-
 
 wri ' GVK12;marc21`sru.gbv.de:210/gvk'      // GBV neu 2012
 
@@ -131,8 +133,15 @@ dos zc.bat
 
   Ergebnis ist Datei zilist, zu verarbeiten durch z39m.inc
 :convert
-
+$dn zilist
 fsi zilist
+jump cv2
+
+:cv1
+ins $dn
+fsi
+
+:cv2
   Nichts drin oder nur sehr wenig:
 if <50 jump nix
   Zuerst Zeichenersetzungstabellen arrangieren
@@ -144,28 +153,30 @@ if no jump exerr
 
   Datei zum Schreiben der konvertierten Daten oeffnen
 open x edit.adt
-if no mes Datei edit.adt kann nicht geschrieben werden
+if no mes Datei edit.adt kann nicht geschrieben werden. Ergebnisse in Datei zilist.;end
 
   Name der Datei uebergeben nach :z39m
     darin Verarbeitung  zilist -> edit.adt
-var "zilist"
+var $dn
 
-  Aufruf mit jump statt perf, damit Unterprogramme moeglich!
+  Aufruf mit jump statt perf, damit darin Unterprogramme moeglich sind!
 jump z39m
   Rueckkehr erfolgt dann mit  jump z39mend  von dort nach hier:
 :z39mend
   Datei zumachen
 close x
+
   und dann anzeigen
 help edit.adt
 set c0
-  Alt+9 soll Ergebnisdatei anzeigen
+  Alt+9 soll Ergebnisdatei zilist anzeigen zwecks Auswahl eines Satzes von mehreren
 #uX9x help zilist\\var "Alt+Cursor links : umgewandelte Daten wieder zeigen"\\sho iV
   Vorbereitung fuer Alt+0 - Anzeigefeld in Datensatz einlesen
 #uX0X dispread
   Anzeige der Ergebnisdatei (im A-Format!)
-var "Alt+9: Originaldaten anzeigen" n "Alt+0 Daten in Arbeitsspeicher einlesen" n "F5 und 'Lîschen' : Daten ungÅltig machen"
-ansi
+var  "Anzeige bearbeiten: den gew¸nschten Satz nach oben bringen" n "Alt+9: Originaldaten anzeigen" n "Alt+0: Ersten Satz (s.o.) in Arbeitsspeicher einlesen" n "F5 und 'Lˆschen' : Daten ung¸ltig machen"
+
+mes
 sho iV
 
 end
@@ -193,7 +204,7 @@ end
   Flag schon gesetzt? (das braucht nur beim ersten Aufruf zu geschehen)
 if $ZZZ return
 
-  einige Eiinzelzeichen-Ersetzungen, zuerst fuer das Zeilenende
+  einige Einzelzeichen-Ersetzungen, zuerst fuer das Zeilenende
 y .13 256    // 13 bleibt weg
 y .10 96     // 10 wird durch ` ersetzt
   Einzelzeichen, die bei GBV und DNB vorkommen

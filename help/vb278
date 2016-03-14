@@ -1,0 +1,125 @@
+
+Verlautbarung 278 zur allegro-Entwicklung                    2016-02-15
+-----------------------------------------
+
+Die drei fixen FLEXe und das RDA-Phantom
+========================================
+
+Ein Gespenst geht um in Bibliotopia - das Phantom RDA.
+Deutliche Worte sind zwar schon gefallen ("gewaltig ueberbewertet"),
+doch RDA scheint dunkle Schatten zu werfen ueber das flache Land der
+verbundfernen Bibliotheken und die Gemueter der Betroffenen, dieweil
+jene in den Oberzentren in ueppigen Datensalaten schwelgen, 
+expressionistisch angerichtet und manifestativ angereichert mit fetten
+Batzen von Normsaetzen als Beilage.
+Aber es muss nicht so weit kommen, dass eine Zweiklassengesellschaft
+resultiert: Die da oben mit Pica und aleph und chromblitzenden RDA-
+Daten, die da unten mit abgewRAKten allegro-Versionen und modernden 
+Altdaten. Die Abhilfe ist schon da, sie heisst V35.F. Und drei fixe 
+FLEXe verhelfen zum kosten- und problemneutralen Genuss der neuen 
+Koestlichkeiten, zu beziehen aus DNB, GBV, SWD und LoC.
+allegro-Anwender aller Bundeslaender, konsolidiert euch! V35.F ist
+fuer alle da:
+   http://www.allegro-b.de/download/inst-all.exe
+
+Wichtige Dateien wurden aktualisiert und nicht nur im Hinblick auf
+RDA verbessert. Jede der genannten Dateien kann man sich ab sofort mit
+dem Befehl  X gf dateiname  besorgen, z.B. mit  X gf dnb.flx
+(Wer den FLEX gf.flx noch nicht hat, findet ihn hier
+   http://www.allegro-b.de/files/gf.flx[http://www.allegro-b.de/files/gf.flx]
+und kann den Text direkt aus dem Browser mit Cut+Paste in eine 
+Textdatei namens gf.flx kopieren und diese in seinem FLEX-Ordner 
+ablegen, also im Normalfall in c:\allegro\flex. Schon kann man sich
+mit  X gf ...  die Dateien besorgen, jetzt und kuenftig.)
+
+$a.cfg   (besorgen mit  X gf $a.cfg )
+------
+Einzige Aenderung sind diese 2 Zeilen:
+#37"Sprache"$Mo
+#73"ErschAngaben"$M.
+In #37 ist das o hinzugefuegt, um das neue Feld #37o fuer die Original-
+sprache (fuer Uebersetzungen) zu ermoeglichen. Das gab es in RAK nicht.
+RDA verzichtet auf die Sprachangabe im Einheitstitel (#22), die Index-
+Parameter muessen dann die Sprache aus #37 hinzufuegen. Die #37o dient
+nur als Hinweis fuer den Nutzer und koennte in die Anzeige eingebaut
+werden, also in d-wrtf.apr o.a.
+Bei #73 kam $M. hinzu, damit auch #73.x vorkommen darf, also #73.2
+fuer die Vertriebs- und #73.3 fuer die Herstellerangabe.
+
+dnb.flx, srugbv.flx, zc.flx mit z39m.inc   ( X gf dnb.flx  usw.)
+----------------------------------------
+Fuer die Z39-Daten ist ausserdem noch dispread.flx noetig,
+also diesen abholen mit   X gf dispread.flx
+Diese wandeln nun die RDA-spezifisch geaenderten Datenstrukturen aus
+MARCXML bzw. MARC21 (im Falle zc) um. Perfektion ist hier sicher noch
+nicht erreicht, falls ueberhaupt moeglich, aber die Ausgangsdaten der
+DNB und des GBV sind wohl auch noch nicht in einem Endzustand. 
+Der zc.flx ist auf Datenuebernahme aus LOC, GBV und SWB (!) einge-
+stellt. Der SWB hatte bislang Unimarc geliefert, das wurde in Absprache 
+mit dem GBV in MARCXML geaendert.
+Fuer alle drei gilt: Nachdem man einen Datensatz geholt hat, steht der
+gelieferte Text intern in der Variablen $ (sog. iV2). Dazu der
+Expertentip: Mit
+  x var $\show IV
+diesen Text anzeigen lassen, mit Copy+Paste in eine Textdatei schreiben
+und diese z.B. dat.txt nennen, wenn es sich um GBV handelt.
+Danach kann man mit diesem Aufruf
+  X srugbv dat.txt
+die umwandlung wiederholen, die vorher stattgefunden hatte. Das ist
+nuetzlich, wenn man Verbesserungen machen will: Man schaut sich den
+Fremdtext an und versucht dann, in  srugbv.flx  geeignete Aenderungen
+zu machen. Hernach dann mit dem o.a. Aufruf sofort testen. Das geht
+dann viel schneller, als jeweils mit  X srugbv  dieselbe Abfrage zu 
+wiederholen, denn der Fremdtext ist ja noch da.
+Beim zc.flx findet die eigentliche Umwandlung in z39m.inc statt.
+Damit wird der Text zuerst im Anzeigefeld sichtbar gemacht, dann mit
+Alt+0 in einen Datensatz gewandelt. Warum das?
+Der zc.flx empfaengt meistens mehrere Varianten des Satzes
+(eben aus LOC, GBV und DNB). Man editiert dann das Anzeigefeld, und
+zwar laesst man nur den gewuenschten Satz stehen, ohne Leerzeile
+oben. Dann  mit Alt+0  den dispread.flx ausloesen. Darauf wird
+nach  X zc.flx  auch klar hingewiesen.
+Beachte:  zc.flx  erlaubt nur Abfrage mit ISBN. Nur so sind die
+LC-Daten zugaenglich.
+
+Falschen Satz umgewandelt?
+--------------------------
+Ein gefundener und umgewandelter Satz steht zunaechst nur im Offline-
+Speicher als Neusatz, Hintergrund hellblau. Mit dem Menuepunkt 
+"Loeschen" wird man ihn sofort los, damit er nicht u.U. am Sitzungs-
+ende unfreiwillig doch noch gespeichert wird.
+
+Spezialfall GND-Normsaetze
+--------------------------
+Diese kriegt man nur mit dem  dnb.flx.
+Man findet z.B. den Normsatz fuer  Roger Willemsen  mit der Eingabe
+   roger willemsen gnd
+Das geht mit Personen, Koerperschaften, Geographika und auch mit
+Sachschlagwoertern.
+Oft kommen mehrere oder viele Normsaetze, die den Namen enthalten;
+dann muss man sich muehsam den richtigen raussuchen. 
+Tip: Man nimmt sich einen der Datensaetze, die herauskamen, und stellt
+die GND-Nummer fest. Das geht auch mit Hilfe des DNB-Portals:
+  http://portal.dnb.de[http://portal.dnb.de]
+Helfen kann auch  x var $\show IV: Im dann erscheinenden Quelltext
+sucht man mit  Strg+f gnd  nach der Nummer.
+Hat man eine solche Nummer gefunden, etwa 123456789, dann gibt man
+nach dem Befehl  X dnb  nur ein:  123456789 gnd
+
+Was noch geschehen muss
+-----------------------
+Die Anzeige- und Indexparameter sind noch im Hinblick auf die neuen
+Datenelemente zu ergaenzen. Dazu werden gern noch Anregungen entgegen-
+genommen.
+
+Weitere verbesserte Dateien, alle bei Bedarf mit X gf ... abzuholen:
+---------------------------
+ftr.rtf
+ctype.vw
+mtype.vw
+spra.vw
+marcxml.apr
+marctxt.apr
+ucodes.apt
+pica.aim
+cat.frm

@@ -3,6 +3,10 @@
 X xgrep vb*|Suche in allen Verlautbarungen (mit regulÑren AusdrÅcken)             
 X xgrep ac*|Suche im Online-Handbuch                                              
                                                                                   
+h vb278|278 : Die drei fixen FLEXe und das RDA-Phantom                  (15.02.16)
+     ----------------------------------------------------------------             
+h vb277|277 : Neue Suchmaschine fÅr allegro-Doku (auf allegro-B)        (14.12.15)
+h vb276|276 : Ende eines Dienstwegs                                     (10.12.15)
 h vb275|275 : V35.F : Festschreibung und Freigabe der Referenzversion   (03.12.15)
 h vb274|274 : V35.10: Letztes Test-Release vor Festschreibung           (22.10.15)
 h vb273|273 : V35.9 : SolrPower aktualisiert/allegro-Zukunft/CrashCourse(08.10.15)

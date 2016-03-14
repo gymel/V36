@@ -12,12 +12,12 @@ ad-rtu :              -> RTF mit \u-Notierung
 ad-ansel :            -> ANSEL (MARC)                                   
 win-ad :  Win1252 -> DOS-OstWest                                        
 asc-ad :  DOS IBM-PC CP437 -> allegro-OstWest DOS                       
-
+                                                                        
 aw-ad  :  Win-OstWest -> allegro-OstWest (Umkehrung von o.apt)          
           (einsetzbar zur Wandlung von N-Daten in A-Daten)              
-aw-win :  Win-OstWest -> Windows ANSI normal (1252)
-
+aw-win :  Win-OstWest -> Windows ANSI normal (1252)                     
+                                                                        
 utf-ad :  UTF-8 -> DOS-OstWest                                          
-utf-rtf:  UTF-8 -> RTF                                          
+utf-rtf:  UTF-8 -> RTF                                                  
   -------------------------------------------------------               
 Andere Tabellen  -  Dateien des Anwenders vom Typ .ADT                  

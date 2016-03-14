@@ -1,11 +1,11 @@
-// dnx.flx : Daten von der DNB holen via "portal.dnb.de"
+// dnb.flx : Daten von der DNB holen via "portal.dnb.de"
 // 20120612/20120725/20140317: Basis HTML der Web-Anzeige
 // 20150713: Umstellung auf Basis MARCXML, Noch ohne GND
 
 // Zum Testen:
-// a) Wenn gestartet mit  X dnx xyz, dann wird Datei xyz gelesen und direkt verarb.
+// a) Wenn gestartet mit  X dnb xyz, dann wird Datei xyz gelesen und direkt verarb.
 // b) Um nach Aenderung dieser FLEX-Datei nochmal denselben Satz zu testen:
-//    mit  X dnx 0 starten. (wenn a99 vorher nicht neu gestartet!)
+//    mit  X dnb $ starten. (wenn a99 vorher nicht neu gestartet!)
 
 
   Abschalten der automat. Umcodierungen UTF-8 oder ANSI ->ASCII beim "insert"
@@ -13,17 +13,18 @@ set c0
 set U0
 set e0
 
-// Mit Argument 0 oder Dateiname gestartet zum Testen?
+// Mit Argument 0 oder $ oder Dateiname gestartet zum Testen?
 
-if "0" jump TEST
+if "0" jump CONVERT
+if "$" jump CONVERT
 // denn der XML-Text steht dann noch in $, geht dann viel schneller
 // XML anzeigen lassen:  x var $\sho IV
 
-//  X dnx dateiname
+//  X dnb dateiname
 //  (wenn man sich einen XML-Text  unter dateiname (z.B. via Portal) gespeichert hat)
 if not "" jump datei
 
-// Normaler Anfang (Start mit  X dnx  ohne Argument)
+// Normaler Anfang (Start mit  X dnb  ohne Argument)
 
 // Wenn man nicht das A-Schema verwendet, geht's nicht!
 var K1
@@ -42,6 +43,7 @@ ins #uSF
 var "$ (x'd t=" 34 #uSF(0,3) 34 "' x's c=" 34 #uSF(3,1) 34 "')"
 // hiermit wird der so fabrizierte Befehl ausgefuehrt:
 var
+sho IV
 
 // Inhalt des subfield ist nun in iV
 return
@@ -104,12 +106,15 @@ if "" var "Datei " $xyz " nicht gefunden";mes;end
 
 xcode u
 
+// einige Zeichen aendern
 perf umwa
-jump TEST
+jump CONVERT
 
 // In der iV stehen die Daten vom portal bzw. aus der Datei
 :anfang
-ins $
+
+
+
 // utf-8 -> ASCII
 
 // Wenn Wortfolge %...% vorkommt, ist es eine Liste:
@@ -127,15 +132,14 @@ var n n "Rufe XML-Daten ab für " $zeile
 sho +IV
 var "Fhttp://d-nb.info/" $dnbnr "/about/marcxml"
 var
-
-ins $ 
+ins $
 
 if not %leader% jump fehlanzeige
 
- var $ (b"http://d-nb.info/" e'"' e"<")
+var $ (b"http://www.loc.gov/M" e'"' e"<")
 
  // Es kommt kein solcher Link vor, dann ist das kein Datensatz
- if "" jump fehlanzeige
+if "" jump fehlanzeige
 
 var n n "Daten empfangen, Umwandlung"
 sho +IV
@@ -144,11 +148,15 @@ sho +IV
 var "#" i
 ins $idnr
 
-:TEST
+//  *** Satz verarbeiten ***
+:CONVERT
 new 0
-  *** Satz verarbeiten ***
+var $	
+ins _^M^J__
+ins _^J__
+ins $
 
-// Inhalt des Fremdsatzes jetzt in $
+// Inhalt des Fremdsatzes ist jetzt in $
 var $
 
 // Verbositaet minimieren: <datafield tag="...">...</datafield> wird zu <d t="...">...</d>
@@ -159,12 +167,11 @@ ins _</datafield_</d_
 ins _</subfield_</s_
 ins _</controlfield_</c_
 // Statt jedesmal nach "<datafield" zu suchen, etc., dann nur noch "<d", "<s" und "<c". 
-// Das kann vorkommen!
 
   UTF-8 -> ASCII
 xcode u
 
-  Kombinationen Buchstabe+Diakritikum umsetzen
+  Kombinationen Buchstabe+Diakritikum umsetzen (SWB und DNB)
    fuer die in OstWest definierten Zeichen
   Diaerese
 ins _a½_„_
@@ -254,12 +261,26 @@ ins _&amp;_&_
 ins _Â»_"_
 ins _Â«_"_
 
-  restliche Akzente von rechts nach links
+  restliche separaten Akzente von rechts nach links
 dow Ai
   das ist nun der Ausgangstext fuer alles
 ins $
 
   HAUPTTEIL : Die eigentliche Umwandlung
+
+var "024a"
+perf SF
+if %info/gnd% jump gnd
+
+var (T"/")
+ins #00
+ins #89D
+
+// DNB-Nr. in #00 - wg. Verkn. bei mehrteiligen Sachen
+var $ (x'c t="001"')
+ins $a
+var "dnb" $a
+ins #00
 
     Unterprog. :SF (s.o.) holt einen Unterfeldinhalt, z.B. 020$a:
 var "020a"
@@ -291,33 +312,48 @@ var "100a"
 perf SF 
 ins $a
 
+var "100c"
+perf SF 
+ins $c
+
 var "100d"
 perf SF 
 ins $d
 
 var $a
+if $c var +", " $c
 if $d var +" ª<" $d ">"
 ins #40
 var ""
 ins $a
+ins $c
 ins $d
 
   Inhaltstyp
 var "336b"
 perf SF
-ins #0cc
+ins #0c.1
 
- Medientyp (337) ist redundant
+// Medientyp (337) ist redundant, wird nicht uebernommen
 
   Datentraegertyp
 var "338b"
 perf SF
-ins #77c
+ins #77.1
 
+  Sprachen
 var "041a"
 perf SF
 ins _^T^T_, _ 
+ins _^J^J_, _ 
 ins #37
+
+var "041h"
+perf SF
+ins _^T^T_, _ 
+ins _^J^J_, _ 
+ins #37o
+
 
 var "110a"
 perf SF 
@@ -370,6 +406,11 @@ if $p var +" " $p
 if $s var +" [" $s "]"
 ins #20
 
+var "240a"
+perf SF
+
+ins #22
+
   Beilagen, noch zu vervollst.
 var "770a"
 perf SF
@@ -390,27 +431,33 @@ ins $s
 var $
   this must not occur:
   (it is used as a separator if a command (x'...') finds mult. occurrences)
-ins _^T^T__
 ins $
 
   Beteiligte Personen
 var (x'd t="700"')
+ins _^J^J_^T^T_
+ins $V
 ins $v
+
 
 :v40
 
-var $v (x's c="a"' e"^T")
+var $v (e"^T" x's c="a"')
 ins $a
-var $v (x's c="d"' e"^T")
+var $v (e"^T" x's c="c"' e"^T")
+ins $c
+var $v (e"^T" x's c="d"' e"^T")
 ins $d
-var $v (x's c="4"')
-ins _^T^T_, _
+
+var $v (x's c="4"' e"^T")
+
 if "aut" jump aut
 if "edt" jump edt
 if "cmp" jump cmp
 if "ilu" jump ilu
 if "ant" jump ant
 if "trl" jump trl
+if "hnr" jump hnr
 if %cnd% jump cnd
 
 if "ctb" var ""
@@ -427,6 +474,8 @@ ins $a
 ins $d
 var $v (b"^T^T")
 ins $v
+
+
 if $v jump v40
 jump 260a
 
@@ -446,6 +495,12 @@ jump v40m
 var $a 
 if $d var +" ª<" $d ">"
 ins #57d
+jump v40m
+
+:hnr
+var $a 
+if $d var +" ª<" $d ">"
+ins #59~
 jump v40m
 
 :trl
@@ -482,12 +537,14 @@ ins $r
 var "260a"
 perf SF
 ins _^T^T_ ; _
+ins _^J^J_ ; _
 ins #74
 
   Verlag
 var "260b"
 perf SF
 ins _^T^T_ ; _
+ins _^J^J_ ; _
 ins #75
 
   Jahr
@@ -499,12 +556,14 @@ ins #76
 var "264a"
 perf SF
 ins _^T^T_ ; _
+ins _^J^J_ ; _
 ins $a
 
   Verlag
 var "264b"
 perf SF
 ins _^T^T_ ; _
+ins _^J^J_ ; _
 ins $b
 
   Jahr
@@ -512,11 +571,22 @@ var "264c"
 perf SF
 ins $c
 
+  Typ (indic 2) 1:Publ., 2:Distrib., 3:Manufac., 4:Copyright
+var $ (b't="264" ind1=" " ind2="' e'"')
+
+if "1" jump n264
+ions $i
+
 if $a var $a
 if $b var +" : " $b
 if $c var +", " $c
-if not "" ins #73
+ins $a
+var $i
+if "2" ins #73.2
+if "3" ins #73.3
+if "4" ins #73.4
 
+:n264
 if $a if not #74 var $a;ins #74
 if $b if not #75 var $b;ins #75
 if $c if not #76 var $c;ins #76
@@ -544,6 +614,7 @@ ins #89D
 
 var "500a"
 perf SF
+ins _^J^J_; _
 ins #81
 
 var "502a"
@@ -590,8 +661,10 @@ var $ (x'd t="710"')
 ins $x
 
 :710
+var $x ( e'</s>' b'c="a">')
+ins $a
 var $x (b'c="a">' e'</s>')
-ins #61~
+if not %pbl% var $a;ins #61~
 
 // noch eine 710?
 var $x (b'c="a">')
@@ -638,74 +711,112 @@ ins #32B
 
 var "650a"
 perf SF
-ins _^T^T_ ; _
-ins #330
+ins _^T^T_; _
+ins _^J^J_; _
+ins #31s
 
 var "651a"
 perf SF
 ins _^T^T_ ; _
+ins _^J^J_ ; _
 ins #331
 
 var "652a"
 perf SF
 ins _^T^T_ ; _
+ins _^J^J_ ; _
 ins #332
 
 var "610a"
 perf SF
 ins _^T^T_ ; _
+ins _^J^J_ ; _
 ins #31c
 
 var "610t"
 perf SF
 ins _^T^T_ ; _
+ins _^J^J_ ; _
 ins #31t
 
+var ""
+ins $b
 
-
-
+jump 655
  // in 653 steht Sammelsurium von Termen. ONIX?
 var "653a"
 perf SF
-ins _^T^T_ ; _
+
+
+ins _^M^J_ ; _
+ins _^J^J_ ; _
+
+
   VLB-Codes u.a. wegnehmen
 var (u() f")")
+ins _Electronic book text__
+ins _Fachpublikum__
 ins _Paperback / softback__
 ins _2947: Taschenbuch__
 ins _TN000__
 ins _)Paper over boards__
+ins _)Cloth__
 ins _Sachbcher/__
 ins _/_ ; _
-ins _1772: Hardcover, Softcover__
+ins _Hardcover, Softcover__
 ins _BC: Paperback__
 ins _Hardback__
-ins _Hardcover, Softcover__
-
+ins _1520:__
 
 ins _; ;_;_
-var (f" ;/(	" F"; ")
+
+ins $A
+
+:33l
+var $A (e"; ")
+ins $a
+if %SC% jump 33n
+if %SU% jump 33n
+if %SOC% jump 33n
+if %JH% jump 33n
+
+var $b "; " $a
+ins $b
+
+:33n
+var $A (b"; ")
+ins $A
+if not "" jump 33l
+
+var $b (f"; ")
 ins #33
 
+:655
 var "655a"
 perf SF
-ins _^T^T_ ; _
+ins _^T^T_; _ 
+ins _^J^J_; _ 
 ins #33D
 
 
 
  // GND-SW, provisorisch
+if #330 jump url
+
 var "689a"
 perf SF
-ins _^T^T_ ; _
+ins _^T^T_; _
+ins _^J^J_; _
 ins #33G
 
+:url
   // Mehrere URLs, noch nicht definitiv
 
 var $ (x'd t="856" ind1=" " ind2="0"' x's c="u"' e"&amp;" e"")
 ins $u
 var $ (x'd t="856" ind1=" "' x's c="x"' e"")
 ins $z
-if $z var $u 31 "z" $z
+if $z var $u 31 "t" $z
 if not $z var $u
 ins #8e
 
@@ -713,7 +824,7 @@ var $ (x'd t="856" ind1="4" ind2=" "' x's c="u"' e"&amp;" e"")
 ins $u
 var $ (x'd t="856" ind1="4" ind2=" "' x's c="x"' e"")
 ins $z
-if $z var $u 31 "z" $z
+if $z var $u 31 "t" $z
 if not $z var $u
 ins #8e1
 
@@ -721,7 +832,7 @@ var $ (x'd t="856" ind1="4" ind2="2"' x's c="u"' e"&amp;" e"")
 ins $u
 var $ (x'd t="856" ind1="4" ind2="2"' x's c="3"' e"")
 ins $z
-if $z var $u 31 "z" $z
+if $z var $u 31 "t" $z
 if not $z var $u
 ins #8e2
 
@@ -729,7 +840,7 @@ var $ (x'd t="856" ind1="4" ind2="0"' x's c="u"' e"&amp;" e"")
 ins $u
 var $ (x'd t="856" ind1="4" ind2="0"' x's c="x"' e"")
 ins $z
-if $z var $u 31 "z" $z
+if $z var $u 31 "t" $z
 if not $z var $u
 ins #8e4
 
@@ -755,40 +866,309 @@ end
 
 // ACHTUNG: Noch nicht bearb! Aus dem alten dnb.flx
 // Es ist ein Normsatz aus GND
-// (Umwandlung noch zu erweitern, hier nur Person und Koerp.)
+// (Umwandlung noch zu erweitern, hier nur Werk, Person und Koerp.)
 :gnd
-
-// In #00 soll vorn nicht gnd/ stehen wg. V14-Problem
-var #00(b"/")
+var (T"/")
+ins $a
+var "gnd" $a
 ins #00
+ins #89D
 
-var $ (b"Name</strong>" b">" b">" e"<")
+  Entitaetencode
+var "079v"
+perf SF
+ins #0c
 
+  Regelwerk
+var "040e"
+perf SF
+ins #10
+
+  SW-Satz
+var "150a"
+perf SF
+if not "" jump sw
+
+  Werksatz
+var "100a"
+perf SF
+if not "" var +": "
+ins $a
+
+var "100t"
+perf SF
+ins $t
+if ARtic ins $t
+
+if $t var $a $t
+ins #2n
+
+  Person
+var "100a"
+perf SF
 ins #4n
 
-var $ (b"Person</strong>" b">" b">" e"<")
-
-if not "" ins #4n
-
-var $ (b"Organisation</strong>" b">" b">" e"<")
-
-ins #6n
-
-var $ (b"Zeit</strong>" b">" b">" e"<" B"Lebensdaten: ")
+var "100d"
+perf SF
 ins #4nd
 
-var $ (b"Andere Namen</strong>" b">" b">" e"<")
-ins _ -- _ ; _
 
-if #4n ins #4na
-if #6n ins #6na
+var ""
+ins $t
+ins $a
 
-var $ (b"Weitere Angaben</strong>" b">" b">" e"<")
-ins _ -- _ ; _
+var "400a"
+perf SF
+if not "" var +": "
+ins $a
 
-if #4n ins #4nz
-if #6n ins #6nz
+var "400t"
+perf SF
+ins $t
+if not $t jump person
+if ARtic ins $t
 
+if $t var $a $t
+ins #2nr
+
+var ""
+ins $a
+ins $t
+jump 110
+
+
+:person
+var $ (x'd t="400"')  
+
+ins _^T^T^T_;;_
+ins _^T__
+
+
+:4na
+ins $A
+var ""
+ins $p
+var $A (e";;" x's c="a"')
+ins $a
+
+var $A (e";;" x's c="9"')
+if %4:pseu% $p p
+if %U:% jump 4nx
+if not $p jump 4nb
+var #4np "; " $a
+ins #4np
+jump 4nx
+
+:4nb
+var #4na "; " $a 
+ins #4na
+
+:4nx
+var $A (b";;")
+if not "" jump 4na
+
+var #4na (f"; ")
+ins #4na
+var #4np (f"; ")
+ins #4np
+
+
+
+:110
+  Koerperschaft
+var "110a"
+perf SF
+ins $a
+var "110g"
+perf SF
+ins $g
+
+if $a var $a ". " $g
+ins #6n
+if #6n jump vw
+
+var "151a"
+perf SF
+ins $a
+
+if $a var $a 
+ins #6n
+
+:vw
+  Verweisungsformen
+
+var $ (x'd t="410"')  
+ins _^T^T^T_;;_
+ins _^T__
+
+ins $A
+
+:6na
+var ""
+ins $gins $b
+
+var $A (e";;" x's c="a"')
+ins $a
+var $A (e";;" x's c="b"')
+ins $b
+var $A (e";;" x's c="g"')
+ins $g
+var #6na "; " $a ". " $b $g
+var (F". ")
+ins #6na
+var $A (b";;")
+ins $A
+if $A jump 6na
+var #6na (f"; ")
+ins #6na
+
+:451
+var $ (x'd t="451"')  
+ins _^T^T^T_;;_
+ins _^T__
+
+ins $A
+:6nr
+var $A (e";;" x's c="a"')
+ins $a
+
+var #6nr "; " $a
+ins #6nr 
+var $A (b";;")
+ins $A
+if $A jump 6nr
+var #6nr (f"; ")
+ins #6nr
+
+
+  frueherer/spaeterer Name
+
+  var "$ (x'd t=" '"510"' 39 "')"  
+  var
+  Das geht einfacher:
+var $ (x'd t="510"')  
+ins _^T^T^T_;;_
+ins _^T__
+
+ins $A
+
+:fs
+
+var $A (e";;")
+if %4:vorg% #uvg 1
+if %4:affi% jump 4affi
+if not #uvg #unf 1
+
+var $A (e";;" x's c="a"')
+ins $a
+var $A (e";;" x's c="g"')
+ins $g
+var $a ". " $g
+var (F". ")
+
+if #uvg ins #6nf
+if #unf ins #6ns
+jump 6nx
+:4affi
+var $A (e";;" x's c="a"')
+ins $a
+var $A (e";;" x's c="b"')
+ins $b
+var $a ". " $b
+ins #4nz
+
+:6nx
+var $A (b";;")
+ins $A
+#uvg
+#unf
+if $A jump fs
+
+  Konferenz
+var "111a"
+perf SF
+ins $k
+if not $k jump nname
+
+var "111n"
+perf SF
+var (F".")
+ins $n
+var "111d"
+perf SF
+ins $d
+var "111c"
+perf SF
+ins $c
+
+var $k " ; " $n " (" $c ")" " : " $d 
+ins #6n
+jump nname
+
+:sw
+ins $s
+var "ss " $s
+ins #3n
+
+  Synonyme
+var $ (x'd t="450"')  
+ins _^T^T^T_;;_
+ins _^T__
+
+ins $A
+
+var ""
+ins $t
+
+:sy
+
+var $A (e";;")
+ins $a
+var $a (b'c="a">' e"<")
+ins $s
+var $t "; " $s
+ins $t
+
+var $A (b";;" e";;")
+if "" jump so
+ins $A
+jump sy
+
+:so
+var $t (f"; ")
+ins #3na
+
+var $ (x'd t="550"')  
+ins _^T^T^T_;;_
+ins _^T__
+
+ins $A
+var ""
+ins $t
+
+:ob
+
+var $A (e";;")
+if %4:ob% #uvg 1
+if %4:th% #uvg 1
+
+var $A (e";;" x's c="a"')
+ins $a
+
+if #uvg var $t "; " $a;ins $t
+jump 3nx
+
+:3nx
+var $A (b";;")
+ins $A
+#uvg
+if $A jump ob
+
+var $t (f"; ")
+ins #3nr
+
+
+:nname
 
 jump Display
 

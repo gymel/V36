@@ -1,285 +1,285 @@
 {\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fmodern allegro Lucida Console;}{\f1\fswiss\fprq2\fcharset0 Verdana;}{\f2\fmodern\fprq1\fcharset0 Courier New;}{\f3\fmodern\fprq1\fcharset0 allegro Lucida Console;}{\f4\froman\fprq2\fcharset0 Times New Roman;}{\f5\fmodern\fcharset0 allegro Lucida Console;}}
 {\colortbl ;\red255\green0\blue0;\red0\green128\blue128;\red0\green0\blue255;\red204\green0\blue0;\red128\green0\blue128;\red0\green0\blue0;\red51\green102\blue102;}
-{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\li48\ri144\f0\fs18\par
-\cf1\b\f1 Was ist Volltextsuche?\cf0\b0\par
-Mit der Volltextsuche k\'f6nnen Sie die gesamte Datenbank durchsuchen lassen, also alle Datenfelder, nach jeder beliebigen Zeichenfolge. \par
-Nur die \i Datens\'e4tze\i0  sind gemeint, nicht die Texte selbst, die in den Dokumenten stehen! Denn die sind als Textdateien nicht verf\'fcgbar und k\'f6nnten in einer allegro-Datenbank ohnehin nicht gespeichert sein. \par
-\par
-Dieser Text erkl\'e4rt, welche Suchm\'f6glichkeiten es in der Volltextsuche gibt. \par
-\par
-\pard\li48\ri144\qc\cf1\fs28 Die Volltextsuche mit "Regul\'e4ren Ausdr\'fccken" \par
-\pard\li48\ri144\cf0\fs18\par
-Man sucht z.B. den Namen Meyer, es soll auch Meier, Maier oder Mayer gefunden werden, das zweite e k\'f6nnte sogar fehlen. Die Methode der sog. Regul\'e4ren Ausdr\'fccke erlaubt es dann, das Suchwort so einzugeben: \par
-\pard\li48\ri144\qc\b\f2\fs22 m[ae][iy]e*r \par
-\pard\ri144\b0\f1\fs18 und dann findet man alle Schreibweisen zusammen! \fs20\'dcber das \b Men\'fc "Finden / Volltextsuche"\b0  k\'f6nnen Sie sofort mit dem Suchen anfangen (dahinter steckt \f2 fulltext.flx\f1 ).\fs18\par
-\par
-Zuerst aber ein paar einfache Beispiele zum Ausprobieren an der DemoBank. In\f3  \cf2\b gr\'fcn\cf0\b0\f4\fs24  \f1\fs20 sieht man, was jeweils einzugeben ist. F\'fcr die meisten F\'e4lle findet man hier schon ein passendes Muster, ohne die `\cf3\ul\b Regeln\cf0\ulnone\b0 ` genau zu kennen! \f4\fs24\par
-\pard\li48\ri144\f1\fs18  \f4\fs24\par
-\pard\ri144\f1\fs18 0. Man sucht ein \b ganz normales Wort\b0 , sagen wir "Trag\'f6die"\f4\fs24\par
-\pard\li48\ri144\f3\fs18    \cf2\b tragoedie\cf0\b0\f4\fs24\par
-\pard\fi-426\li426\ri144\f3\fs18    (Also immer Kleinschreibung eingeben, Umlaute und \'df aufl\'f6sen, dann wird jede Schreibweise gefunden)\f4\fs24\par
-\pard\li48\ri144\f3\fs18  \f4\fs24\par
-\pard\fi-426\li426\ri144\f1\fs18 1. Man will mal schauen, ob die \b exakte Zeichenfolge\b0   "Oesterreich" vorkommt (also mit Oe statt \'d6)\f4\fs24\par
-\pard\li48\ri144\f3\fs18    \cf2\b _Oesterreich\cf0\b0    (hinter dem _ die genaue gesuchte Schreibweise!)\f4\fs24\par
-\f3\fs18  \f4\fs24\par
-\pard\ri144\f1\fs18 2. Es wird "Atomphysik" \b oder\b0  "Kernphysik" gesucht\f4\fs24\par
-\f3\fs18    \cf2\b atomphysik / kernphysik\cf0\b0\f1  (es darf auch beides vorkommen)\f4\fs24\par
-\f3\fs18    \cf2\b atomphysik %% kernphysik\cf0\b0\f1  (nicht beide, aber eins von beiden)\f4\fs24\par
-\pard\fi-426\li426\ri144\f1\fs18      (Anderes Beispiel, das in DemoBank instruktiv ist:  \cf2\b\f3 goethe / shakesp\cf0\b0\f1   bzw.  \cf2\b\f3 goethe %% shakesp\cf0\b0\f1 )\f4\fs24\par
-\pard\li48\ri144\f3\fs18  \f4\fs24\par
-\pard\ri144\f1\fs18 3. "Shakespeare" \b\i und\b0\i0  "Drama" sollen auftreten, aber \b\i nicht\b0\i0  "Hamlet"\f4\fs24\par
-\pard\li48\ri144\f3\fs18    \cf2\b shakespeare + drama - hamlet\cf0\b0\f4\fs24\par
-\pard\fi-426\li426\ri144\f3\fs18    (Man kann bis zu 100 Suchw\'f6rter verkn\'fcpfen, Klammerung ist aber (noch) nicht m\'f6glich.)\f4\fs24\par
-\pard\fi-568\li568\ri144\tx568\cf4\f3\fs18\tab SEHR wichtig:\cf5  Vor und hinter +, - und / immer genau ein Spatium setzen. \cf0\f4\fs24\par
-\pard\li48\ri144\f3\fs18\par
-\pard\fi-426\li426\ri144\f1 4. In welchen S\'e4tzen kommt "Herzogtum" als Ordnungshilfe vor, im ganzen Satz bzw. \b im Feld\b0  #60\f4\fs24\par
-\pard\li48\ri144\f3\fs18    \cf2\b <<herzogtum>>   \cf0\b0 bzw.\cf2\b   #60.*<<herzogtum>>\cf0\b0\f4\fs24\par
-\pard\li284\ri144\f3\fs18 (<< statt < und >> statt >, weil diese Zeichen sonst eine Sonderwirkung haben:)\f4\fs24\par
-\pard\li568\ri144\tx568\cf4\f3\fs18 SEHR wichtig:\cf5  Wo man  \b .*\b0   angibt, k\'f6nnen beliebig viele andere Zeichen stehen. \cf0\f4\fs24\par
-\pard\li568\ri144\cf5\f3\fs18 Der Punkt allein besagt, da\'df an seiner Stelle irgendein beliebiges Zeichen stehen kann.\cf0\f4\fs24\par
-\pard\li48\ri144\f3\fs18\par
-\cf1\i\f1 ACHTUNG:\cf0\i0  In allegro-Daten kann das Zeichen # auch als Textzeichen im Feldinhalt vorkommen, d.h. es k\'f6nnte auch mal zuf\'e4llig "#60" z.B. innerhalb eines Datenfelds #81 stehen. Wie man sich absichert, wenn man ausdr\'fccklich z.B. #60 NUR als Feldnummer finden will, steht im `\cf3\ul\b Anhang\cf0\ulnone\b0 `.\f3\par
- \f4\fs24\par
-\pard\fi-426\li426\ri144\f1\fs18 5. Im Feld #76 soll eine Jahreszahl \b gr\'f6\'dfer als\b0  2000 stehen bzw. genau 2000\f4\fs24\par
-\pard\li48\ri144\f3\fs18    \cf2\b #76 >2000\cf0\b0    bzw.   \cf2\b #76 =2000\cf0\b0\f4\fs24\par
-\pard\li426\ri144\f3\fs18 (Die Zahl braucht dabei nicht am Anfang von #76 zu stehen, z.B. kann sie auch in Klammern stehen. \par
-Es gibt kein >=, aber  >1999 bewirkt dasselbe, was >=2000 bewirken w\'fcrde!)\f4\fs24\par
-\pard\li48\ri144\f3\fs18  \f4\fs24\par
-\pard\ri144\f1\fs18 6. Her mit den alten Sachen \'fcber Shakespeare, \b vor\b0  1920 erschienen!\f4\fs24\par
-\pard\li48\ri144\f3\fs18    \cf2\b #31.shakesp + #76 <1920\cf0\b0\f4\fs24\par
-\pard\li568\ri144\f3\fs18 (Der . sagt: Shakespeare ist auch in #31p, #31s usw. zu suchen, nicht nur in #31\f4\fs24\par
-\pard\li48\ri144\f3\fs18  \f4\fs24\par
-\pard\fi-426\li426\ri144\f1\fs18 7. In einem der #81er Felder soll "Diss." vorkommen (auch "diss." m\'f6glich)\f4\fs24\par
-\pard\li48\ri144\f3\fs18    \cf2\b _#81.*Diss\\. / _#81.*diss\\.\cf0\b0\f4\fs24\par
-\pard\li426\ri144\f3\fs18 Hier bedeutet  .*  "beliebiger Zwischenraum" und \\. findet den Punkt als solchen\f4\fs24\par
-\pard\li48\ri144\f3\fs18  \f4\fs24\par
-\pard\fi-426\li426\ri144\f1\fs18 8. Im Datensatz soll irgendetwas \b\i nicht\b0\i0  vorkommen:  (s.a. 3.)\f3  \f4\fs24\par
-\pard\fi-1846\li1846\ri144\f3\fs18    \cf2\b -#90  \cf0\b0\f1      \tab Es soll kein Feld #90 vorhanden sein (auch nicht #90a etc.)\f4\fs24\par
-\pard\fi-1846\li1846\ri144\tx1846\f3\fs18    \cf2\b #30 - #31\cf0\b0\f1  \tab ein #30er-Feld soll vorkommen, #31 (oder #31x) aber nicht\f4\fs24  \f1\fs18 (auch \f2 #30. - #31.\f1  w\'fcrde gehen, aber ein Maskierungspunkt am Ende ist unn\'f6tig)\f4\fs24\par
-\pard\fi-1798\li1846\ri144\tx1846\cf2\b\f3\fs18   _-#77.*S\\.\cf0\b0\f1  \tab in keinem Feld #77 (also auch #77a etc.) soll die Zeichenfolge "S." auftreten \par
-    \cf2\b\f3 _#9DH - _#9DH.*\'b2n\tab\cf0\b0\f1 es soll ein Feld #9DH vorkommen, darin aber nicht das Unterfeld \cf6\f3\'b2n\cf0\f4\fs24\par
-\pard\li48\ri144\f3\fs18  \f4\fs24\par
-\pard\fi-426\li426\ri144\f1\fs18 9. Im \b Unterfeld\b0  $p der Bestellkategorie #9DB soll ein Preis >20 EUR stehen\f4\fs24\par
-\pard\li48\ri144\f3\fs18    \cf2\b _#9DB.*\'b2p>20\cf0\b0    \f4\fs24\par
-\pard\li710\ri144\f3\fs18 (Der _ ist n\'f6tig, damit exakt nach #9DB gesucht wird, nicht #9Db oder #9db) \par
-\i Achtung:\i0  Hier wie unter 8. statt \'b2 den Querstrich / setzen, falls in den Indexparametern der Befehl  \f2 q .31 /\f3   steht, wie es in den Standardparametern  cat.api  der Fall ist.\f4\fs24\par
-\pard\fi-426\li426\ri144\f1\fs18\par
-10. Und was bedeutet \f3  \cf7\b\f1\fs22 m[ae][iy]e*r\cf0\f2  ? \b0\f1\fs18 Sicher haben Sie es schon erraten:\f4\fs24\par
-\pard\li426\ri144\f3\fs18 Wo \b [ae]\b0  steht, kann entweder ein a oder ein e stehen, und \f4\fs24\par
-\pard\fi-378\li426\ri144\f3\fs18\tab\b e*\b0  hei\'dft: hier kann ein e stehen oder nichts (oder mehrere e)\f4\fs24\par
-\pard\li48\ri144\f3\fs18  \f4\fs24\par
-\pard\fi-426\li426\ri144\f1\fs18 11. \b Achtung bei V14!\b0  Wenn Sie bei der Normdatenersetzung die Standardkennung mit '_' benutzen, so werden vor der Suche die entsprechenden V14-Ersetzungen durchgef\'fchrt. Wenn Sie eine andere Kennung benutzen oder diese Ersetzung verhindern wollen, so m\'fcssen Sie in dem FLEX ftr.flx an der mit "if v14" beginnenden Zeile eingreifen: entweder das Zeichen entsprechend anpassen oder die Zeile ganz herauskommentieren. \par
-\i Hinweis:\i0  wenn Sie nach einer Zeichenfolge suchen wollen, die "_" als Zeichen enth\'e4lt, wird die Suche dadurch erheblich beschleunigt!\par
-\pard\li48\ri144\par
-Alle diese Beispiele ergeben sich aus den allgemeinen Regeln, die nachfolgend aufgelistet sind und noch manches mehr erm\'f6glichen:\fs24\par
-\f0\fs18\par
-\par
-\par
-\b\f1\fs24 Allgemeine Regeln f\'fcr Regul\'e4re Ausdr\'fccke\b0\f4\par
-\f1\fs18 Die Punkte 2. und 3. sind allegro-spezifisch modifiziert, 1. gibt es im g\'e4ngigen Standard nicht,  15. bis 17. auch nicht! \f4\fs24\par
-\f3\fs18 Die Regeln lassen sich alle sinnvoll miteinander kombinieren.\f4\fs24\par
-\f3\fs18 Der gesamte Ausdruck darf bis zu 1000 Zeichen lang sein.\f4\fs24\par
-\f3\fs18 Angewendet wird ein Suchbefehl stets auf den momentanen Inhalt der "internen Variablen". \f4\fs24\par
-\f3\fs18 Ausgef\'fchrt wird die Suche durch den neuen FLEX-Befehl \b srx\b0 . Der Normalanwender braucht dies nicht zu wissen, er benutzt einfach die Funktion "Volltextsuche" im Men\'fc "Finden". Dahinter steckt der FLEX ftr.flx, und darin der Befehl srx. (F\'fcr den Experten gibt es einen FLEX grep.flx, der Textdateien durchsuchen kann, z.B. die "Verlautbarungen".)\f4\fs24\par
-\f3\fs18  \f4\fs24\par
-\f1\fs18  1. \b Unterstrich an erster Position: Exaktheit\b0  \fs24\par
-\f3\fs18     _abc  \i bzw.\i0   abc \f4\fs24\par
-\f3\fs18     Exakte \i bzw.\i0  umcodierte Suche \f4\fs24\par
-\f3\fs18     Setzt man einen _ vor den Suchbegriff, wird dieser exakt gesucht, \f4\fs24\par
-\f3\fs18     d.h. mit Eingabe von  _M\'fcll  findet man nur M\'fcll, nicht Muell oder\f4\fs24\par
-\f3\fs18     muell oder m\'fcll.\f4\fs24\par
-\f3\fs18     Im Normalfall, also ohne den _, wird der Datentext umcodiert, der Suchbegriff \f4\fs24\par
-\f3\fs18     selbst aber nicht! Man mu\'df also  muell  eingeben, um M\'fcll, Muell und\f4\fs24\par
-\f3\fs18     muell und m\'fcll mit einer einzigen Suche zu finden.\f4\fs24\par
-\f3\fs18     Man wird meistens umcodiert suchen wollen, deshalb fordert diese \f4\fs24\par
-\f3\fs18     Variante kein Steuerzeichen. \i Wichtig:\i0  Dann nur Kleinbuchstaben \f4\fs24\par
-\f3\fs18     ohne Akzente eingeben, Umlaute aufgel\'f6st, ss statt \'df!\f4\fs24\par
-\f3\fs18     (Der _ hat nur in der ersten Position diese Wirkung, sonst ist er kein Steuerzeichen.) \f4\fs24\par
-\f3\fs18     Zur Umcodierung werden die p- oder q-Befehle in den Indexparametern\f4\fs24\par
-\f3\fs18     verwendet, und zwar diejenigen, die A in a wandeln.\f4\fs24\par
-\f3\fs18     \i Achtung:\i0  _ empfiehlt sich, wenn Sonderzeichen gesucht werden, die\f4\fs24\par
-\f3\fs18              bei der Umcodierung verschwinden.\f4\fs24\par
-\f3\fs18     Es gibt aber noch weitere Alternativen. Mehr dazu am Ende: Befehl  set xm\f4\fs24\par
-\f3\fs18     \i Hinweis:\i0  SRCH.EXE arbeitete mit einer weniger flexiblen Tabelle namens \par
-             s1.asp. \f4\fs24\par
-\f3\fs18  \f4\fs24\par
-\f1\fs18  2. \b Zirkumflex auf erster Position: Feldanfang\b0  \fs24\par
-\f3\fs18     ^abc  findet  abc  nur, wenn es an einem Feldanfang steht. \f4\fs24\par
-\f3\fs18     Dabei gilt der Anfang des Feldtextes, ohne die Kategorienummer. \f4\fs24\par
-\f3\fs18     \lang2057\i Also: \i0  _^Shakesp  findet  #40 Shakespeare und #31 Shakespeare. \lang1031\f4\fs24\par
-\lang2057\f3\fs18     \lang1031 Wenn aber der zu durchsuchende Text (der iV-Inhalt) nicht mit '#' \f4\fs24\par
-\f3\fs18     beginnt, gilt das erste Zeichen als Textanfang. \f4\fs24\par
-\f3\fs18     Bei der grep-Suche in Textdateien ist dies der Zeilenanfang.\f1\fs24\par
-\fs18  \fs24\par
-\fs18 3. \b Dollar an letzter Position: Feldende\b0  \fs24\par
-\f3\fs18     abc$  findet  abc  nur, wenn es am Ende eines Feldes steht. \f4\fs24\par
-\f3\fs18     Wenn der zu durchsuchende Text (der iV-Inhalt) nicht mit '#' \f4\fs24\par
-\f3\fs18     beginnt, gilt nur das Ende des gesamten iV-Textes. \f4\fs24\par
-\f3\fs18     Bei der grep-Suche in Textdateien ist dies das Zeilenende.\f1\fs24\par
-\fs18  \fs24\par
-\fs18  4. \b Punkt ist Joker\b0  (engl. "wildcard") \fs24\par
-\f3\fs18     AB.D  findet jedes ABxD, mit beliebigem Zeichen x \f4\fs24\par
-\f3\fs18     Mehrere Punkte innerhalb eines Suchbegriffs m\'f6glich, jeder Punkt\f4\fs24\par
-\f3\fs18     steht dann f\'fcr genau ein Zeichen.\f4\fs24\par
-\f3\fs18  \f4\fs24\par
-\f1\fs18  5. \b Stern: Keins, eins oder mehrere\b0  \fs24\par
-\f3\fs18     ABc*D  findet ABD, ABcD, ABccD, ABcccD ... (d.h. c darf auch ganz fehlen) \f4\fs24\par
-\f3\fs18  \f4\fs24\par
-\f1\fs18  6. \b PunktStern: Binnentrunkierung\b0  (Kombination aus 4 und 5) \fs24\par
-\f3\fs18     AB.*CD  findet  ABxyzCD  mit beliebiger Folge xyz, aber im selben \f4\fs24\par
-\f3\fs18        Datenfeld, nicht irgendwo weiter hinten im Datensatz! \f4\fs24\par
-\f3\fs18        Das entspricht  AB,CD  im Programm SRCH \f4\fs24\par
-\f3\fs18  \f4\fs24\par
-\f1\fs18  7. \b Plus: wie Stern, aber mindestens \i ein\i0  Vorkommnis notwendig\b0  \fs24\par
-\f3\fs18     ABx+D  findet ABxD, ABxxD, ...  (d.h. mind. ein x mu\'df vorkommen)\f4\fs24\par
-\f3\fs18  \f4\fs24\par
-\f1\fs18  8. \b Eckige Klammern: Variantensuche\b0  \fs24\par
-\f3\fs18     AB[pq]Z   findet  ABpZ und ABqZ \f4\fs24\par
-\f3\fs18     AB[c-f]Z  findet  ABcZ, ABdZ, ABeZ, ABfZ \f4\fs24\par
-\f3\fs18     Die Angabe [c-f] deutet also an, da\'df eines der Zeichen im\f4\fs24\par
-\f3\fs18     Bereich c-f an der Stelle vorkommen mu\'df.\f4\fs24\par
-\f3\fs18     [^c-f] bedeutet Negation, d.h. Zeichen c-f sollen an der Stelle \f4\fs24\par
-\f3\fs18     nicht auftreten \f4\fs24\par
-\f3\fs18     Eine Angabe [c-fp-y] verlangt, da\'df ein Zeichen aus dem Bereich\f4\fs24\par
-\f3\fs18     c-f oder p-y vorkommt. \f4\fs24\par
-\f3\fs18     \i Beispiel:\i0   ele[ck]tri  findet electri und elektri \f4\fs24\par
-\f3\fs18  \f4\fs24\par
-\f1\fs18  9. \b Kombinationen [...]* und  [...]+\b0\f3  \f4\fs24\par
-\f3\fs18     * und + k\'f6nnen auch hinter ] auftreten und beziehen sich dann auf\f4\fs24\par
-\pard\ri144\f3\fs18     die in [...] angegebenen Zeichen, d.h. \f4\fs24\par
-\f3\fs18     AB[c-f]*XY  findet z.B.  ABXY, ABcXY, ABdXY, ABceXY, ABcdcdfXY, etc \f4\fs24\par
-\f3\fs18     AB[c-f]+XY  findet aber ABXY nicht, nur die anderen wie bei * \f4\fs24\par
-\pard\f3\fs18     \i Beispiele:\i0   theat[er]+  findet Theater und theatre \f4\fs24\par
-\pard\ri144\f3\fs18                 i[sz]abel+a findet Isabella, Izabella, Izabela, Isabela\f4\fs24\par
-\pard\li48\ri144\f3\fs18  \f4\fs24\par
-\f1\fs18 10. \b Steuerzeichen finden\b0  : Dabei hilft \\\fs24\par
-\f3\fs18     AB\\xCD   findet ABxCD \f4\fs24\par
-\f3\fs18     Das Zeichen x soll vorkommen. Man setzt \\ vor solche Zeichen, \f4\fs24\par
-\f3\fs18     die sonst eine Steuerfunktion haben,  also [ ] \\ + . * $ ^ \f4\fs24\par
-\f3\fs18     sowie auf der allerersten Position die Zeichen _ und -\f4\fs24\par
-\f3\fs18     \i Sonderfall:\i0  Die Zeichen < bzw. > findet man mit << bzw. >>\f4\fs24\par
-\f3\fs18                 (wegen 11., 12. und 15.)\f4\fs24\par
-\f3\fs18     \i Beispiele:\i0  mit \\. findet man einen echten Punkt\f4\fs24\par
-\f3\fs18                mit <<dresden>> findet man <Dresden> (Ordnungshilfe)\f4\fs24\par
-\f3\fs18  \f4\fs24\par
-\f1\fs18 11. \b\\< : Wortanfang suchen\b0  \fs24\par
-\f3\fs18     \\<abc   findet abc, aber nur wenn es an einem Wortanfang steht. \f4\fs24\par
-\f3\fs18     Ein "Wort" beginnt mit Buchstabe oder Ziffer, d.h. es geht \f4\fs24\par
-\f3\fs18     irgendein anderes Zeichen oder kein Zeichen voran, z.B. auch - \f4\fs24\par
-\f3\fs18  \f4\fs24\par
-\f1\fs18 12. \b\\> : Wortende suchen \b0\fs24\par
-\f3\fs18     abc\\>   findet abc, aber nur wenn es an einem Wortende steht. \f4\fs24\par
-\f3\fs18     Hinter c soll also im Text ein Sonderzeichen oder nichts folgen. \f4\fs24\par
-\f3\fs18     10 und 11 sind kombinierbar, damit ist exakte Wortsuche m\'f6glich.\f4\fs24\par
-\f3\fs18  \f4\fs24\par
-\f1\fs18 13. \b\\(...\\) : Wiederholung eines Ausdrucks\b0  \fs24\par
-\f3\fs18     \\(AB\\)xyz\\1   findet ABxyzAB \f4\fs24\par
-\f3\fs18     \\(AB\\).*\\1    findet AB...AB \f4\fs24\par
-\f3\fs18                   mit beliebiger Zeichenfolge zwischen den beiden AB. \f4\fs24\par
-\f3\fs18     Es k\'f6nnen weitere Ausdr\'fccke \\(...\\) auftreten, die danach mit \\2,\f4\fs24\par
-\f3\fs18     \\3 etc. im selben Gesamtausdruck wiederholt werden k\'f6nnen.\f4\fs24\par
-\f3\fs18  \f4\fs24\par
-\f1\fs18 14. \b Sonderwerte\b0  \fs24\par
-\f3\fs18     Mit \\w innerhalb jedes reg.Ausdr. kann man Positionen markieren, an \f4\fs24\par
-\f3\fs18     denen ein Buchstabe vorkommen soll: \f4\fs24\par
-\f3\fs18     \\w  sucht nach einem beliebigen Buchstaben oder Unterstrich \f4\fs24\par
-\f3\fs18         #90.*[123]\\w     bedeutet: \f4\fs24\par
-\f3\fs18         Kommt in #90 eine Ziffer 1,2 oder 3 und dann ein Buchstabe vor? \f4\fs24\par
-\f3\fs18     \\s  sucht nach einem space (Leerzeichen, blank)  Meistens kann man einfach\f4\fs24\par
-\f3\fs18         ein normales Spatium eingeben! Am Ende des Suchbegriffs aber nicht,\f4\fs24\par
-\f3\fs18         es w\'fcrde bei der Zwischenspeicherung in #u!! verschwinden.\f4\fs24\par
-\f3\fs18         N\'fctzlich auch, wenn man z.B. die Zeichenfolge " + " sucht! Dann\f4\fs24\par
-\f3\fs18         also \\s+\\s verwenden (s. 17.).\f4\fs24\par
-\f3\fs18  \f4\fs24\par
-\f1\fs18 15. \b Gr\'f6\'dfer/Kleiner/Gleich-Suche\b0\f3    (Von-Bis-Suche s. 17)\f1\fs24\par
-\f3\fs18     Hiermit werden Zahlen oder Zeichenfolgen verglichen, je nachdem, was vorliegt \par
-    \b abc>nnn\b0\f4\fs24\par
-\f3\fs18     findet zuerst abc und vergleicht dann die erste, im selben Feld\f4\fs24\par
-\f3\fs18     hinter abc folgende Zahl mit nnn. Treffer, wenn diese\f4\fs24\par
-\f3\fs18     gr\'f6\'dfer als nnn ist.\f4\fs24\par
-\f3\fs18     Wenn abc mehrfach vorkommt, werden alle Vorkommnisse geprueft!\f4\fs24\par
-\f3\fs18     Beispiel:   \b #77 >100\b0\f4\fs24\par
-\f3\fs18                  findet Eintraege, wo in #77 eine Zahl >100 steht\f4\fs24\par
-\f3\fs18                 \b #77 <100\b0\f4\fs24\par
-\f3\fs18                  findet Eintraege, wo in #77 eine Zahl <100 steht\f4\fs24\par
-\f3\fs18                 \b #76 =2000\b0\f4\fs24\par
-\f3\fs18                  findet Eintraege, wo in #76 die Zahl 2000 steht\f4\fs24\par
-\f3\fs18     \i Hinweis:\i0  Der Zahl d\'fcrfen andere Zeichen vorangehen! Der Vergleich\f4\fs24\par
-\f3\fs18     beginnt bei der ersten Ziffer bzw. Minuszeichen.\f4\fs24\par
-\f3\fs18     \i Achtung:\i0  W\'fcrde man hier schreiben:  #77>100, dann w\'fcrde auch ein\f4\fs24\par
-\f3\fs18              Feld #77a etc. gepr\'fcft werden\f4\fs24\par
-\f3\fs18     \i Tip:\i0   _ anwenden, um Probleme mit dem Punkt zu verh\'fcten, also\f4\fs24\par
-\f3\fs18           eingeben:  _#77 >50  statt  #77 >50, bes. bei Geldbetr\'e4gen!\f4\fs24\par
-\f3\fs18     \i Beispiel:\i0  Preisangaben stehen in #9DB$p. Um alle Bestells\'e4tze mit\f4\fs24\par
-\f3\fs18               Preis >20 EUR zu finden, kann man geben:\f4\fs24\par
-\f3\fs18               _#9DB.*\'b2p>20   \f4\fs24\par
-\f3\fs18     \i Alpha-Vergleich:\i0  Wenn hinter > bzw. < keine Zahl, sondern eine \par
-        Buchstabenfolge angegeben wird, findet ein alphabetischer Vergleich statt.\f4\fs24\par
-\f3\fs18         \i Beispiel:\i0   _#74 >A + #74 <D\f4\fs24\par
-\f3\fs18               findet Eintr\'e4ge, wo #74 mit A,B oder C beginnt \par
-\f4\fs24\par
-\f1\fs18 16. \b Negative Suche\b0\fs24\par
-\f3\fs18     Wenn man ein Minuszeichen an den Anfang eines Ausdrucks setzt,\f4\fs24\par
-\f3\fs18     und zwar ohne ein Leerzeichen dahinter!,\f4\fs24\par
-\f3\fs18     wird alles gefunden, was NICHT dem Ausdruck entspricht.\f4\fs24\par
-\f3\fs18     \i Hinweis:\i0  _ mu\'df vor - stehen\f4\fs24\par
-\f3\fs18  \f4\fs24\par
-\f1\fs18 17. \b Logische Kombinationen, Von-Bis-Suche\b0\fs24\par
-\f3\fs18     Reg. Ausdr\'fccke haben "von Natur aus" keinen Mechanismus f\'fcr\f4\fs24\par
-\f3\fs18     boolesche Kombinationsbefehle. Eine L\'f6sung wurde programmiert.\f4\fs24\par
-\f3\fs18     Damit kann man mehrere nach den Regeln 1-16 gebildete Ausdr\'fccke\f4\fs24\par
-\f3\fs18     A1, A2 ... logisch miteinander kombinieren, bis zu 100 St\'fcck:\f4\fs24\par
-\f3\fs18     A1 / A2 + A3 - A4 %% A5 ...\f4\fs24\par
-\f3\fs18     Die Abarbeitung erfolgt von links nach rechts:\f4\fs24\par
-\f3\fs18     Am Anfang: Status S=0\f4\fs24\par
-\f3\fs18     A1 richtig: S=1\f4\fs24\par
-\f3\fs18      / A2 : Wenn A2 richtig: S=1  [sonst S unver\'e4ndert]\f4\fs24\par
-\f3\fs18      + A3 : Wenn A3 falsch: S=0\f4\fs24\par
-\f3\fs18      - A4 : Wenn A4 richtig: S=0\f4\fs24\par
-\f3\fs18        und sogar noch das "exklusive ODER": \par
-     %% A5 : Wenn A5 richtig und S=0, oder A5 falsch und S=1, dann S=1, sonst S=0 \par
-     ...\f4\fs24\par
-\f3\fs18      Ende: S ist das Ergebnis\f4\fs24\par
-\f3\fs18     \i Achtung:\i0  Leerzeichen vor und hinter dem Operator! (Anders als beim\f4\fs24\par
-\f3\fs18     DOS-Programm SRCH, wo das nicht klappt.) \par
-    \i Sonderfall:\i0  \b Von-Bis-Suche\b0 . Diese ist als Kombination von Gr\'f6\'dfer- und \par
-\tab Kleiner-Suche m\'f6glich:  \par
-\tab\f2 #76 >1989 + #76 <2000\f3   findet die Erscheinungsjahre 1990 bis 1999\f4\fs24\par
-\f3\fs18     \i Klammerung\i0  geht (noch) nicht! Allerdings kann man durch geschickte\f4\fs24\par
-\f3\fs18     Nutzung der [..]-Optionen sowie + * . auf manche Oder-Ausdr\'fccke\f4\fs24\par
-\f3\fs18     verzichten, die sonst nicht ohne Klammerung zu machen w\'e4ren!\f4\fs24\par
-\f3\fs18  \f4\fs24\par
-\f1\fs18 Andere als die hier beschriebenen Sonderzeichen haben keine Sonderwirkung, d.h. sie d\'fcrfen in Suchbegriffen vorkommen - vorausgesetzt, sie werden in den Indexparametern nicht ausgefiltert! Dann findet man sie nur mit einem _ am Anfang des Ausdrucks. \par
-\par
-\i Hinweis:\i0  Grundlage der Volltextsuche ist der FLEX-Befehl \f2 `\cf3\ul\b srx\cf0\ulnone\b0 `\f1 . Damit konnte das \i classico\i0 -Programm SRCH.EXE komplett abgel\'f6st werden durch eine m\'e4chtigere und schnellere, aber vor allem flexiblere L\'f6sung. Denn das Duchsuchen von Text aller Art kann nun in eigene FLEX-Abl\'e4ufe eingebaut werden. \par
-\par
-\i Tip:\i0  Wer die Volltextsuche jederzeit im Zugriff haben will, schreibt z.B. diese Zeile in seinen _start.flx: \par
-\b\f2 flip 3&3: VT-Suche=X ftr\b0\f1\par
-und kann sie dann mit Alt+3 starten. \par
-\par
-Zur Umcodierung: \par
-Mit dem Befehl  \f2 set x..\f1   kann man die Umcodierung auf eine andere Parameterdatei legen, mehr dazu in der Beschreibung zum Befehl  \f2 `\cf3\ul\b set x\cf0\ulnone\b0 `\f1 . \par
- \par
-\b\f5 Anhang:\b0  \b\f1 Gezielte Suche nach Feldnummern \b0\par
-Die Volltextsuche mit dem FLEX  \f2 ftr.flx\f1   ist ab V32.6 darauf eingerichtet, nach Feldnummern suchen zu k\'f6nnen, auch wenn z.B. Zeichenfolgen wie #60 auch innerhalb von Feldtexten auftreten k\'f6nnen. Grundregel: vor die zu suchende Feldnummer die Kombination \f2\\n\f1  setzen; sie steht f\'fcr "Feldende", d.h. mit  \f2\\n#60\f1   wird die  \f2 #60\f1   nur gefunden, wenn direkt davor ein Feldendezeichen (dasjenige des vorangehenden Feldes) steht. Was sofort die Fragen aufwirft: \par
-\par
-a) Wie finde ich #60, wenn es in irgendeinem Feld intern auftritt? \par
-\f2    \\n#.*#60\f1\par
-b) Wie finde ich #60, wenn es in einem Feld #81 intern auftritt? \par
-\f2    \\n#81.*#60\f1\par
-c) Wie stelle ich fest, ob #60 genau in einem #81 vorkommt (nicht aber in irgendeinem #81x)? \par
-\f2    \\n#81\\s.*#60        (denn \\s steht f\'fcr Spatium)\f1\par
-d) Wie finde ich S\'e4tze, in denen das Zeichen  #  in \i keinem\i0  Feldinhalt intern auftritt? \par
-\f2    -\\n#.*#\f1\par
-\par
-\par
-\par
-\f5\par
-\par
-?Regeln=h =allgemeine regeln \par
-\par
-?srx=h xsrx \par
-?set x=h xset=set x \par
-?Anhang=h =Anhang: \par
-}
+\viewkind4\uc1\pard\li48\ri144\f0\fs18 
+\par \cf1\b\f1 Was ist Volltextsuche?\cf0\b0 
+\par Mit der Volltextsuche k\'f6nnen Sie die gesamte Datenbank durchsuchen lassen, also alle Datenfelder, nach jeder beliebigen Zeichenfolge. 
+\par Nur die \i Datens\'e4tze\i0  sind gemeint, nicht die Texte selbst, die in den Dokumenten stehen! Denn die sind als Textdateien nicht verf\'fcgbar und k\'f6nnten in einer allegro-Datenbank ohnehin nicht gespeichert sein. 
+\par 
+\par Dieser Text erkl\'e4rt, welche Suchm\'f6glichkeiten es in der Volltextsuche gibt. 
+\par 
+\par \pard\li48\ri144\qc\cf1\fs28 Die Volltextsuche mit "Regul\'e4ren Ausdr\'fccken" 
+\par \pard\li48\ri144\cf0\fs18 
+\par Man sucht z.B. den Namen Meyer, es soll auch Meier, Maier oder Mayer gefunden werden, das zweite e k\'f6nnte sogar fehlen. Die Methode der sog. Regul\'e4ren Ausdr\'fccke erlaubt es dann, das Suchwort so einzugeben: 
+\par \pard\li48\ri144\qc\b\f2\fs22 m[ae][iy]e*r 
+\par \pard\ri144\b0\f1\fs18 und dann findet man alle Schreibweisen zusammen! \fs20\'dcber das \b Men\'fc "Finden / Volltextsuche"\b0  k\'f6nnen Sie sofort mit dem Suchen anfangen (dahinter steckt \f2 fulltext.flx\f1 ).\fs18 
+\par 
+\par Zuerst aber ein paar einfache Beispiele zum Ausprobieren an der DemoBank. In\f3  \cf2\b gr\'fcn\cf0\b0\f4\fs24  \f1\fs20 sieht man, was jeweils einzugeben ist. F\'fcr die meisten F\'e4lle findet man hier schon ein passendes Muster, ohne die `\cf3\ul\b Regeln\cf0\ulnone\b0 ` genau zu kennen! \f4\fs24 
+\par \pard\li48\ri144\f1\fs18  \f4\fs24 
+\par \pard\ri144\f1\fs18 0. Man sucht ein \b ganz normales Wort\b0 , sagen wir "Trag\'f6die"\f4\fs24 
+\par \pard\li48\ri144\f3\fs18    \cf2\b tragoedie\cf0\b0\f4\fs24 
+\par \pard\fi-426\li426\ri144\f3\fs18    (Also immer Kleinschreibung eingeben, Umlaute und \'df aufl\'f6sen, dann wird jede Schreibweise gefunden)\f4\fs24 
+\par \pard\li48\ri144\f3\fs18  \f4\fs24 
+\par \pard\fi-426\li426\ri144\f1\fs18 1. Man will mal schauen, ob die \b exakte Zeichenfolge\b0   "Oesterreich" vorkommt (also mit Oe statt \'d6)\f4\fs24 
+\par \pard\li48\ri144\f3\fs18    \cf2\b _Oesterreich\cf0\b0    (hinter dem _ die genaue gesuchte Schreibweise!)\f4\fs24 
+\par \f3\fs18  \f4\fs24 
+\par \pard\ri144\f1\fs18 2. Es wird "Atomphysik" \b oder\b0  "Kernphysik" gesucht\f4\fs24 
+\par \f3\fs18    \cf2\b atomphysik / kernphysik\cf0\b0\f1  (es darf auch beides vorkommen)\f4\fs24 
+\par \f3\fs18    \cf2\b atomphysik %% kernphysik\cf0\b0\f1  (nicht beide, aber eins von beiden)\f4\fs24 
+\par \pard\fi-426\li426\ri144\f1\fs18      (Anderes Beispiel, das in DemoBank instruktiv ist:  \cf2\b\f3 goethe / shakesp\cf0\b0\f1   bzw.  \cf2\b\f3 goethe %% shakesp\cf0\b0\f1 )\f4\fs24 
+\par \pard\li48\ri144\f3\fs18  \f4\fs24 
+\par \pard\ri144\f1\fs18 3. "Shakespeare" \b\i und\b0\i0  "Drama" sollen auftreten, aber \b\i nicht\b0\i0  "Hamlet"\f4\fs24 
+\par \pard\li48\ri144\f3\fs18    \cf2\b shakespeare + drama - hamlet\cf0\b0\f4\fs24 
+\par \pard\fi-426\li426\ri144\f3\fs18    (Man kann bis zu 100 Suchw\'f6rter verkn\'fcpfen, Klammerung ist aber (noch) nicht m\'f6glich.)\f4\fs24 
+\par \pard\fi-568\li568\ri144\tx568\cf4\f3\fs18\tab SEHR wichtig:\cf5  Vor und hinter +, - und / immer genau ein Spatium setzen. \cf0\f4\fs24 
+\par \pard\li48\ri144\f3\fs18 
+\par \pard\fi-426\li426\ri144\f1 4. In welchen S\'e4tzen kommt "Herzogtum" als Ordnungshilfe vor, im ganzen Satz bzw. \b im Feld\b0  #60\f4\fs24 
+\par \pard\li48\ri144\f3\fs18    \cf2\b <<herzogtum>>   \cf0\b0 bzw.\cf2\b   #60.*<<herzogtum>>\cf0\b0\f4\fs24 
+\par \pard\li284\ri144\f3\fs18 (<< statt < und >> statt >, weil diese Zeichen sonst eine Sonderwirkung haben:)\f4\fs24 
+\par \pard\li568\ri144\tx568\cf4\f3\fs18 SEHR wichtig:\cf5  Wo man  \b .*\b0   angibt, k\'f6nnen beliebig viele andere Zeichen stehen. \cf0\f4\fs24 
+\par \pard\li568\ri144\cf5\f3\fs18 Der Punkt allein besagt, da\'df an seiner Stelle irgendein beliebiges Zeichen stehen kann.\cf0\f4\fs24 
+\par \pard\li48\ri144\f3\fs18 
+\par \cf1\i\f1 ACHTUNG:\cf0\i0  In allegro-Daten kann das Zeichen # auch als Textzeichen im Feldinhalt vorkommen, d.h. es k\'f6nnte auch mal zuf\'e4llig "#60" z.B. innerhalb eines Datenfelds #81 stehen. Wie man sich absichert, wenn man ausdr\'fccklich z.B. #60 NUR als Feldnummer finden will, steht im `\cf3\ul\b Anhang\cf0\ulnone\b0 `.\f3 
+\par  \f4\fs24 
+\par \pard\fi-426\li426\ri144\f1\fs18 5. Im Feld #76 soll eine Jahreszahl \b gr\'f6\'dfer als\b0  2000 stehen bzw. genau 2000\f4\fs24 
+\par \pard\li48\ri144\f3\fs18    \cf2\b #76 >2000\cf0\b0    bzw.   \cf2\b #76 =2000\cf0\b0\f4\fs24 
+\par \pard\li426\ri144\f3\fs18 (Die Zahl braucht dabei nicht am Anfang von #76 zu stehen, z.B. kann sie auch in Klammern stehen. 
+\par Es gibt kein >=, aber  >1999 bewirkt dasselbe, was >=2000 bewirken w\'fcrde!)\f4\fs24 
+\par \pard\li48\ri144\f3\fs18  \f4\fs24 
+\par \pard\ri144\f1\fs18 6. Her mit den alten Sachen \'fcber Shakespeare, \b vor\b0  1920 erschienen!\f4\fs24 
+\par \pard\li48\ri144\f3\fs18    \cf2\b #31.shakesp + #76 <1920\cf0\b0\f4\fs24 
+\par \pard\li568\ri144\f3\fs18 (Der . sagt: Shakespeare ist auch in #31p, #31s usw. zu suchen, nicht nur in #31\f4\fs24 
+\par \pard\li48\ri144\f3\fs18  \f4\fs24 
+\par \pard\fi-426\li426\ri144\f1\fs18 7. In einem der #81er Felder soll "Diss." vorkommen (auch "diss." m\'f6glich)\f4\fs24 
+\par \pard\li48\ri144\f3\fs18    \cf2\b _#81.*Diss\\. / _#81.*diss\\.\cf0\b0\f4\fs24 
+\par \pard\li426\ri144\f3\fs18 Hier bedeutet  .*  "beliebiger Zwischenraum" und \\. findet den Punkt als solchen\f4\fs24 
+\par \pard\li48\ri144\f3\fs18  \f4\fs24 
+\par \pard\fi-426\li426\ri144\f1\fs18 8. Im Datensatz soll irgendetwas \b\i nicht\b0\i0  vorkommen:  (s.a. 3.)\f3  \f4\fs24 
+\par \pard\fi-1846\li1846\ri144\f3\fs18    \cf2\b -#90  \cf0\b0\f1      \tab Es soll kein Feld #90 vorhanden sein (auch nicht #90a etc.)\f4\fs24 
+\par \pard\fi-1846\li1846\ri144\tx1846\f3\fs18    \cf2\b #30 - #31\cf0\b0\f1  \tab ein #30er-Feld soll vorkommen, #31 (oder #31x) aber nicht\f4\fs24  \f1\fs18 (auch \f2 #30. - #31.\f1  w\'fcrde gehen, aber ein Maskierungspunkt am Ende ist unn\'f6tig)\f4\fs24 
+\par \pard\fi-1798\li1846\ri144\tx1846\cf2\b\f3\fs18   _-#77.*S\\.\cf0\b0\f1  \tab in keinem Feld #77 (also auch #77a etc.) soll die Zeichenfolge "S." auftreten 
+\par     \cf2\b\f3 _#9DH - _#9DH.*\'b2n\tab\cf0\b0\f1 es soll ein Feld #9DH vorkommen, darin aber nicht das Unterfeld \cf6\f3\'b2n\cf0\f4\fs24 
+\par \pard\li48\ri144\f3\fs18  \f4\fs24 
+\par \pard\fi-426\li426\ri144\f1\fs18 9. Im \b Unterfeld\b0  $p der Bestellkategorie #9DB soll ein Preis >20 EUR stehen\f4\fs24 
+\par \pard\li48\ri144\f3\fs18    \cf2\b _#9DB.*\'b2p>20\cf0\b0    \f4\fs24 
+\par \pard\li710\ri144\f3\fs18 (Der _ ist n\'f6tig, damit exakt nach #9DB gesucht wird, nicht #9Db oder #9db) 
+\par \i Achtung:\i0  Hier wie unter 8. statt \'b2 den Querstrich / setzen, falls in den Indexparametern der Befehl  \f2 q .31 /\f3   steht, wie es in den Standardparametern  cat.api  der Fall ist.\f4\fs24 
+\par \pard\fi-426\li426\ri144\f1\fs18 
+\par 10. Und was bedeutet \f3  \cf7\b\f1\fs22 m[ae][iy]e*r\cf0\f2  ? \b0\f1\fs18 Sicher haben Sie es schon erraten:\f4\fs24 
+\par \pard\li426\ri144\f3\fs18 Wo \b [ae]\b0  steht, kann entweder ein a oder ein e stehen, und \f4\fs24 
+\par \pard\fi-378\li426\ri144\f3\fs18\tab\b e*\b0  hei\'dft: hier kann ein e stehen oder nichts (oder mehrere e)\f4\fs24 
+\par \pard\li48\ri144\f3\fs18  \f4\fs24 
+\par \pard\fi-426\li426\ri144\f1\fs18 11. \b Achtung bei V14!\b0  Wenn Sie bei der Normdatenersetzung die Standardkennung mit '_' benutzen, so werden vor der Suche die entsprechenden V14-Ersetzungen durchgef\'fchrt. Wenn Sie eine andere Kennung benutzen oder diese Ersetzung verhindern wollen, so m\'fcssen Sie in dem FLEX ftr.flx an der mit "if v14" beginnenden Zeile eingreifen: entweder das Zeichen entsprechend anpassen oder die Zeile ganz herauskommentieren. 
+\par \i Hinweis:\i0  wenn Sie nach einer Zeichenfolge suchen wollen, die "_" als Zeichen enth\'e4lt, wird die Suche dadurch erheblich beschleunigt!
+\par \pard\li48\ri144 
+\par Alle diese Beispiele ergeben sich aus den allgemeinen Regeln, die nachfolgend aufgelistet sind und noch manches mehr erm\'f6glichen:\fs24 
+\par \f0\fs18 
+\par 
+\par 
+\par \b\f1\fs24 Allgemeine Regeln f\'fcr Regul\'e4re Ausdr\'fccke\b0\f4 
+\par \f1\fs18 Die Punkte 2. und 3. sind allegro-spezifisch modifiziert, 1. gibt es im g\'e4ngigen Standard nicht,  15. bis 17. auch nicht! \f4\fs24 
+\par \f3\fs18 Die Regeln lassen sich alle sinnvoll miteinander kombinieren.\f4\fs24 
+\par \f3\fs18 Der gesamte Ausdruck darf bis zu 1000 Zeichen lang sein.\f4\fs24 
+\par \f3\fs18 Angewendet wird ein Suchbefehl stets auf den momentanen Inhalt der "internen Variablen". \f4\fs24 
+\par \f3\fs18 Ausgef\'fchrt wird die Suche durch den neuen FLEX-Befehl \b srx\b0 . Der Normalanwender braucht dies nicht zu wissen, er benutzt einfach die Funktion "Volltextsuche" im Men\'fc "Finden". Dahinter steckt der FLEX ftr.flx, und darin der Befehl srx. (F\'fcr den Experten gibt es einen FLEX grep.flx, der Textdateien durchsuchen kann, z.B. die "Verlautbarungen".)\f4\fs24 
+\par \f3\fs18  \f4\fs24 
+\par \f1\fs18  1. \b Unterstrich an erster Position: Exaktheit\b0  \fs24 
+\par \f3\fs18     _abc  \i bzw.\i0   abc \f4\fs24 
+\par \f3\fs18     Exakte \i bzw.\i0  umcodierte Suche \f4\fs24 
+\par \f3\fs18     Setzt man einen _ vor den Suchbegriff, wird dieser exakt gesucht, \f4\fs24 
+\par \f3\fs18     d.h. mit Eingabe von  _M\'fcll  findet man nur M\'fcll, nicht Muell oder\f4\fs24 
+\par \f3\fs18     muell oder m\'fcll.\f4\fs24 
+\par \f3\fs18     Im Normalfall, also ohne den _, wird der Datentext umcodiert, der Suchbegriff \f4\fs24 
+\par \f3\fs18     selbst aber nicht! Man mu\'df also  muell  eingeben, um M\'fcll, Muell und\f4\fs24 
+\par \f3\fs18     muell und m\'fcll mit einer einzigen Suche zu finden.\f4\fs24 
+\par \f3\fs18     Man wird meistens umcodiert suchen wollen, deshalb fordert diese \f4\fs24 
+\par \f3\fs18     Variante kein Steuerzeichen. \i Wichtig:\i0  Dann nur Kleinbuchstaben \f4\fs24 
+\par \f3\fs18     ohne Akzente eingeben, Umlaute aufgel\'f6st, ss statt \'df!\f4\fs24 
+\par \f3\fs18     (Der _ hat nur in der ersten Position diese Wirkung, sonst ist er kein Steuerzeichen.) \f4\fs24 
+\par \f3\fs18     Zur Umcodierung werden die p- oder q-Befehle in den Indexparametern\f4\fs24 
+\par \f3\fs18     verwendet, und zwar diejenigen, die A in a wandeln.\f4\fs24 
+\par \f3\fs18     \i Achtung:\i0  _ empfiehlt sich, wenn Sonderzeichen gesucht werden, die\f4\fs24 
+\par \f3\fs18              bei der Umcodierung verschwinden.\f4\fs24 
+\par \f3\fs18     Es gibt aber noch weitere Alternativen. Mehr dazu am Ende: Befehl  set xm\f4\fs24 
+\par \f3\fs18     \i Hinweis:\i0  SRCH.EXE arbeitete mit einer weniger flexiblen Tabelle namens 
+\par              s1.asp. \f4\fs24 
+\par \f3\fs18  \f4\fs24 
+\par \f1\fs18  2. \b Zirkumflex auf erster Position: Feldanfang\b0  \fs24 
+\par \f3\fs18     ^abc  findet  abc  nur, wenn es an einem Feldanfang steht. \f4\fs24 
+\par \f3\fs18     Dabei gilt der Anfang des Feldtextes, ohne die Kategorienummer. \f4\fs24 
+\par \f3\fs18     \lang2057\i Also: \i0  _^Shakesp  findet  #40 Shakespeare und #31 Shakespeare. \lang1031\f4\fs24 
+\par \lang2057\f3\fs18     \lang1031 Wenn aber der zu durchsuchende Text (der iV-Inhalt) nicht mit '#' \f4\fs24 
+\par \f3\fs18     beginnt, gilt das erste Zeichen als Textanfang. \f4\fs24 
+\par \f3\fs18     Bei der grep-Suche in Textdateien ist dies der Zeilenanfang.\f1\fs24 
+\par \fs18  \fs24 
+\par \fs18 3. \b Dollar an letzter Position: Feldende\b0  \fs24 
+\par \f3\fs18     abc$  findet  abc  nur, wenn es am Ende eines Feldes steht. \f4\fs24 
+\par \f3\fs18     Wenn der zu durchsuchende Text (der iV-Inhalt) nicht mit '#' \f4\fs24 
+\par \f3\fs18     beginnt, gilt nur das Ende des gesamten iV-Textes. \f4\fs24 
+\par \f3\fs18     Bei der grep-Suche in Textdateien ist dies das Zeilenende.\f1\fs24 
+\par \fs18  \fs24 
+\par \fs18  4. \b Punkt ist Joker\b0  (engl. "wildcard") \fs24 
+\par \f3\fs18     AB.D  findet jedes ABxD, mit beliebigem Zeichen x \f4\fs24 
+\par \f3\fs18     Mehrere Punkte innerhalb eines Suchbegriffs m\'f6glich, jeder Punkt\f4\fs24 
+\par \f3\fs18     steht dann f\'fcr genau ein Zeichen.\f4\fs24 
+\par \f3\fs18  \f4\fs24 
+\par \f1\fs18  5. \b Stern: Keins, eins oder mehrere\b0  \fs24 
+\par \f3\fs18     ABc*D  findet ABD, ABcD, ABccD, ABcccD ... (d.h. c darf auch ganz fehlen) \f4\fs24 
+\par \f3\fs18  \f4\fs24 
+\par \f1\fs18  6. \b PunktStern: Binnentrunkierung\b0  (Kombination aus 4 und 5) \fs24 
+\par \f3\fs18     AB.*CD  findet  ABxyzCD  mit beliebiger Folge xyz, aber im selben \f4\fs24 
+\par \f3\fs18        Datenfeld, nicht irgendwo weiter hinten im Datensatz! \f4\fs24 
+\par \f3\fs18        Das entspricht  AB,CD  im Programm SRCH \f4\fs24 
+\par \f3\fs18  \f4\fs24 
+\par \f1\fs18  7. \b Plus: wie Stern, aber mindestens \i ein\i0  Vorkommnis notwendig\b0  \fs24 
+\par \f3\fs18     ABx+D  findet ABxD, ABxxD, ...  (d.h. mind. ein x mu\'df vorkommen)\f4\fs24 
+\par \f3\fs18  \f4\fs24 
+\par \f1\fs18  8. \b Eckige Klammern: Variantensuche\b0  \fs24 
+\par \f3\fs18     AB[pq]Z   findet  ABpZ und ABqZ \f4\fs24 
+\par \f3\fs18     AB[c-f]Z  findet  ABcZ, ABdZ, ABeZ, ABfZ \f4\fs24 
+\par \f3\fs18     Die Angabe [c-f] deutet also an, da\'df eines der Zeichen im\f4\fs24 
+\par \f3\fs18     Bereich c-f an der Stelle vorkommen mu\'df.\f4\fs24 
+\par \f3\fs18     [^c-f] bedeutet Negation, d.h. Zeichen c-f sollen an der Stelle \f4\fs24 
+\par \f3\fs18     nicht auftreten \f4\fs24 
+\par \f3\fs18     Eine Angabe [c-fp-y] verlangt, da\'df ein Zeichen aus dem Bereich\f4\fs24 
+\par \f3\fs18     c-f oder p-y vorkommt. \f4\fs24 
+\par \f3\fs18     \i Beispiel:\i0   ele[ck]tri  findet electri und elektri \f4\fs24 
+\par \f3\fs18  \f4\fs24 
+\par \f1\fs18  9. \b Kombinationen [...]* und  [...]+\b0\f3  \f4\fs24 
+\par \f3\fs18     * und + k\'f6nnen auch hinter ] auftreten und beziehen sich dann auf\f4\fs24 
+\par \pard\ri144\f3\fs18     die in [...] angegebenen Zeichen, d.h. \f4\fs24 
+\par \f3\fs18     AB[c-f]*XY  findet z.B.  ABXY, ABcXY, ABdXY, ABceXY, ABcdcdfXY, etc \f4\fs24 
+\par \f3\fs18     AB[c-f]+XY  findet aber ABXY nicht, nur die anderen wie bei * \f4\fs24 
+\par \pard\f3\fs18     \i Beispiele:\i0   theat[er]+  findet Theater und theatre \f4\fs24 
+\par \pard\ri144\f3\fs18                 i[sz]abel+a findet Isabella, Izabella, Izabela, Isabela\f4\fs24 
+\par \pard\li48\ri144\f3\fs18  \f4\fs24 
+\par \f1\fs18 10. \b Steuerzeichen finden\b0  : Dabei hilft \\\fs24 
+\par \f3\fs18     AB\\xCD   findet ABxCD \f4\fs24 
+\par \f3\fs18     Das Zeichen x soll vorkommen. Man setzt \\ vor solche Zeichen, \f4\fs24 
+\par \f3\fs18     die sonst eine Steuerfunktion haben,  also [ ] \\ + . * $ ^ = \f4\fs24 
+\par \f3\fs18     sowie auf der allerersten Position die Zeichen _ und -\f4\fs24 
+\par \f3\fs18     \i Sonderfall:\i0  Die Zeichen < bzw. > findet man mit << bzw. >>\f4\fs24 
+\par \f3\fs18                 (wegen 11., 12. und 15.)\f4\fs24 
+\par \f3\fs18     \i Beispiele:\i0  mit \\. findet man einen echten Punkt\f4\fs24 
+\par \f3\fs18                mit <<dresden>> findet man <Dresden> (Ordnungshilfe)\f4\fs24 
+\par \f3\fs18  \f4\fs24 
+\par \f1\fs18 11. \b\\< : Wortanfang suchen\b0  \fs24 
+\par \f3\fs18     \\<abc   findet abc, aber nur wenn es an einem Wortanfang steht. \f4\fs24 
+\par \f3\fs18     Ein "Wort" beginnt mit Buchstabe oder Ziffer, d.h. es geht \f4\fs24 
+\par \f3\fs18     irgendein anderes Zeichen oder kein Zeichen voran, z.B. auch - \f4\fs24 
+\par \f3\fs18  \f4\fs24 
+\par \f1\fs18 12. \b\\> : Wortende suchen \b0\fs24 
+\par \f3\fs18     abc\\>   findet abc, aber nur wenn es an einem Wortende steht. \f4\fs24 
+\par \f3\fs18     Hinter c soll also im Text ein Sonderzeichen oder nichts folgen. \f4\fs24 
+\par \f3\fs18     10 und 11 sind kombinierbar, damit ist exakte Wortsuche m\'f6glich.\f4\fs24 
+\par \f3\fs18  \f4\fs24 
+\par \f1\fs18 13. \b\\(...\\) : Wiederholung eines Ausdrucks\b0  \fs24 
+\par \f3\fs18     \\(AB\\)xyz\\1   findet ABxyzAB \f4\fs24 
+\par \f3\fs18     \\(AB\\).*\\1    findet AB...AB \f4\fs24 
+\par \f3\fs18                   mit beliebiger Zeichenfolge zwischen den beiden AB. \f4\fs24 
+\par \f3\fs18     Es k\'f6nnen weitere Ausdr\'fccke \\(...\\) auftreten, die danach mit \\2,\f4\fs24 
+\par \f3\fs18     \\3 etc. im selben Gesamtausdruck wiederholt werden k\'f6nnen.\f4\fs24 
+\par \f3\fs18  \f4\fs24 
+\par \f1\fs18 14. \b Sonderwerte\b0  \fs24 
+\par \f3\fs18     Mit \\w innerhalb jedes reg.Ausdr. kann man Positionen markieren, an \f4\fs24 
+\par \f3\fs18     denen ein Buchstabe vorkommen soll: \f4\fs24 
+\par \f3\fs18     \\w  sucht nach einem beliebigen Buchstaben oder Unterstrich \f4\fs24 
+\par \f3\fs18         #90.*[123]\\w     bedeutet: \f4\fs24 
+\par \f3\fs18         Kommt in #90 eine Ziffer 1,2 oder 3 und dann ein Buchstabe vor? \f4\fs24 
+\par \f3\fs18     \\s  sucht nach einem space (Leerzeichen, blank)  Meistens kann man einfach\f4\fs24 
+\par \f3\fs18         ein normales Spatium eingeben! Am Ende des Suchbegriffs aber nicht,\f4\fs24 
+\par \f3\fs18         es w\'fcrde bei der Zwischenspeicherung in #u!! verschwinden.\f4\fs24 
+\par \f3\fs18         N\'fctzlich auch, wenn man z.B. die Zeichenfolge " + " sucht! Dann\f4\fs24 
+\par \f3\fs18         also \\s+\\s verwenden (s. 17.).\f4\fs24 
+\par \f3\fs18  \f4\fs24 
+\par \f1\fs18 15. \b Gr\'f6\'dfer/Kleiner/Gleich-Suche\b0\f3    (Von-Bis-Suche s. 17)\f1\fs24 
+\par \f3\fs18     Hiermit werden Zahlen oder Zeichenfolgen verglichen, je nachdem, was vorliegt 
+\par     \b abc>nnn\b0\f4\fs24 
+\par \f3\fs18     findet zuerst abc und vergleicht dann die erste, im selben Feld\f4\fs24 
+\par \f3\fs18     hinter abc folgende Zahl mit nnn. Treffer, wenn diese\f4\fs24 
+\par \f3\fs18     gr\'f6\'dfer als nnn ist.\f4\fs24 
+\par \f3\fs18     Wenn abc mehrfach vorkommt, werden alle Vorkommnisse geprueft!\f4\fs24 
+\par \f3\fs18     Beispiel:   \b #77 >100\b0\f4\fs24 
+\par \f3\fs18                  findet Eintraege, wo in #77 eine Zahl >100 steht\f4\fs24 
+\par \f3\fs18                 \b #77 <100\b0\f4\fs24 
+\par \f3\fs18                  findet Eintraege, wo in #77 eine Zahl <100 steht\f4\fs24 
+\par \f3\fs18                 \b #76 =2000\b0\f4\fs24 
+\par \f3\fs18                  findet Eintraege, wo in #76 die Zahl 2000 steht\f4\fs24 
+\par \f3\fs18     \i Hinweis:\i0  Der Zahl d\'fcrfen andere Zeichen vorangehen! Der Vergleich\f4\fs24 
+\par \f3\fs18     beginnt bei der ersten Ziffer bzw. Minuszeichen.\f4\fs24 
+\par \f3\fs18     \i Achtung:\i0  W\'fcrde man hier schreiben:  #77>100, dann w\'fcrde auch ein\f4\fs24 
+\par \f3\fs18              Feld #77a etc. gepr\'fcft werden\f4\fs24 
+\par \f3\fs18     \i Tip:\i0   _ anwenden, um Probleme mit dem Punkt zu verh\'fcten, also\f4\fs24 
+\par \f3\fs18           eingeben:  _#77 >50  statt  #77 >50, bes. bei Geldbetr\'e4gen!\f4\fs24 
+\par \f3\fs18     \i Beispiel:\i0  Preisangaben stehen in #9DB$p. Um alle Bestells\'e4tze mit\f4\fs24 
+\par \f3\fs18               Preis >20 EUR zu finden, kann man geben:\f4\fs24 
+\par \f3\fs18               _#9DB.*\'b2p>20   \f4\fs24 
+\par \f3\fs18     \i Alpha-Vergleich:\i0  Wenn hinter > bzw. < keine Zahl, sondern eine 
+\par         Buchstabenfolge angegeben wird, findet ein alphabetischer Vergleich statt.\f4\fs24 
+\par \f3\fs18         \i Beispiel:\i0   _#74 >A + #74 <D\f4\fs24 
+\par \f3\fs18               findet Eintr\'e4ge, wo #74 mit A,B oder C beginnt 
+\par \f4\fs24 
+\par \f1\fs18 16. \b Negative Suche\b0\fs24 
+\par \f3\fs18     Wenn man ein Minuszeichen an den Anfang eines Ausdrucks setzt,\f4\fs24 
+\par \f3\fs18     und zwar ohne ein Leerzeichen dahinter!,\f4\fs24 
+\par \f3\fs18     wird alles gefunden, was NICHT dem Ausdruck entspricht.\f4\fs24 
+\par \f3\fs18     \i Hinweis:\i0  _ mu\'df vor - stehen\f4\fs24 
+\par \f3\fs18  \f4\fs24 
+\par \f1\fs18 17. \b Logische Kombinationen, Von-Bis-Suche\b0\fs24 
+\par \f3\fs18     Reg. Ausdr\'fccke haben "von Natur aus" keinen Mechanismus f\'fcr\f4\fs24 
+\par \f3\fs18     boolesche Kombinationsbefehle. Eine L\'f6sung wurde programmiert.\f4\fs24 
+\par \f3\fs18     Damit kann man mehrere nach den Regeln 1-16 gebildete Ausdr\'fccke\f4\fs24 
+\par \f3\fs18     A1, A2 ... logisch miteinander kombinieren, bis zu 100 St\'fcck:\f4\fs24 
+\par \f3\fs18     A1 / A2 + A3 - A4 %% A5 ...\f4\fs24 
+\par \f3\fs18     Die Abarbeitung erfolgt von links nach rechts:\f4\fs24 
+\par \f3\fs18     Am Anfang: Status S=0\f4\fs24 
+\par \f3\fs18     A1 richtig: S=1\f4\fs24 
+\par \f3\fs18      / A2 : Wenn A2 richtig: S=1  [sonst S unver\'e4ndert]\f4\fs24 
+\par \f3\fs18      + A3 : Wenn A3 falsch: S=0\f4\fs24 
+\par \f3\fs18      - A4 : Wenn A4 richtig: S=0\f4\fs24 
+\par \f3\fs18        und sogar noch das "exklusive ODER": 
+\par      %% A5 : Wenn A5 richtig und S=0, oder A5 falsch und S=1, dann S=1, sonst S=0 
+\par      ...\f4\fs24 
+\par \f3\fs18      Ende: S ist das Ergebnis\f4\fs24 
+\par \f3\fs18     \i Achtung:\i0  Leerzeichen vor und hinter dem Operator! (Anders als beim\f4\fs24 
+\par \f3\fs18     DOS-Programm SRCH, wo das nicht klappt.) 
+\par     \i Sonderfall:\i0  \b Von-Bis-Suche\b0 . Diese ist als Kombination von Gr\'f6\'dfer- und 
+\par \tab Kleiner-Suche m\'f6glich:  
+\par \tab\f2 #76 >1989 + #76 <2000\f3   findet die Erscheinungsjahre 1990 bis 1999\f4\fs24 
+\par \f3\fs18     \i Klammerung\i0  geht (noch) nicht! Allerdings kann man durch geschickte\f4\fs24 
+\par \f3\fs18     Nutzung der [..]-Optionen sowie + * . auf manche Oder-Ausdr\'fccke\f4\fs24 
+\par \f3\fs18     verzichten, die sonst nicht ohne Klammerung zu machen w\'e4ren!\f4\fs24 
+\par \f3\fs18  \f4\fs24 
+\par \f1\fs18 Andere als die hier beschriebenen Sonderzeichen haben keine Sonderwirkung, d.h. sie d\'fcrfen in Suchbegriffen vorkommen - vorausgesetzt, sie werden in den Indexparametern nicht ausgefiltert! Dann findet man sie nur mit einem _ am Anfang des Ausdrucks. 
+\par 
+\par \i Hinweis:\i0  Grundlage der Volltextsuche ist der FLEX-Befehl \f2 `\cf3\ul\b srx\cf0\ulnone\b0 `\f1 . Damit konnte das \i classico\i0 -Programm SRCH.EXE komplett abgel\'f6st werden durch eine m\'e4chtigere und schnellere, aber vor allem flexiblere L\'f6sung. Denn das Duchsuchen von Text aller Art kann nun in eigene FLEX-Abl\'e4ufe eingebaut werden. 
+\par 
+\par \i Tip:\i0  Wer die Volltextsuche jederzeit im Zugriff haben will, schreibt z.B. diese Zeile in seinen _start.flx: 
+\par \b\f2 flip 3&3: VT-Suche=X ftr\b0\f1 
+\par und kann sie dann mit Alt+3 starten. 
+\par 
+\par Zur Umcodierung: 
+\par Mit dem Befehl  \f2 set x..\f1   kann man die Umcodierung auf eine andere Parameterdatei legen, mehr dazu in der Beschreibung zum Befehl  \f2 `\cf3\ul\b set x\cf0\ulnone\b0 `\f1 . 
+\par  
+\par \b\f5 Anhang:\b0  \b\f1 Gezielte Suche nach Feldnummern \b0 
+\par Die Volltextsuche mit dem FLEX  \f2 ftr.flx\f1   ist ab V32.6 darauf eingerichtet, nach Feldnummern suchen zu k\'f6nnen, auch wenn z.B. Zeichenfolgen wie #60 auch innerhalb von Feldtexten auftreten k\'f6nnen. Grundregel: vor die zu suchende Feldnummer die Kombination \f2\\n\f1  setzen; sie steht f\'fcr "Feldende", d.h. mit  \f2\\n#60\f1   wird die  \f2 #60\f1   nur gefunden, wenn direkt davor ein Feldendezeichen (dasjenige des vorangehenden Feldes) steht. Was sofort die Fragen aufwirft: 
+\par 
+\par a) Wie finde ich #60, wenn es in irgendeinem Feld intern auftritt? 
+\par \f2    \\n#.*#60\f1 
+\par b) Wie finde ich #60, wenn es in einem Feld #81 intern auftritt? 
+\par \f2    \\n#81.*#60\f1 
+\par c) Wie stelle ich fest, ob #60 genau in einem #81 vorkommt (nicht aber in irgendeinem #81x)? 
+\par \f2    \\n#81\\s.*#60        (denn \\s steht f\'fcr Spatium)\f1 
+\par d) Wie finde ich S\'e4tze, in denen das Zeichen  #  in \i keinem\i0  Feldinhalt intern auftritt? 
+\par \f2    -\\n#.*#\f1 
+\par 
+\par 
+\par 
+\par \f5 
+\par 
+\par ?Regeln=h =allgemeine regeln 
+\par 
+\par ?srx=h xsrx 
+\par ?set x=h xset=set x 
+\par ?Anhang=h =Anhang: 
+\par }
  

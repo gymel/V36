@@ -13,8 +13,18 @@
         siehe zc.flx
   Hierher wird mit  jump z39m  gesprungen
 :z39m
+
+  In iV steht Name der Datei
 ins #uda
+  keine Umwandlung direkt beim Einlesen
+set U0
+
+  Form der IdNr f.d. neuen Satz: (auf Wunsch aendern)
+$i dz?6
+  (dz?6 kommt dann in #00 und erzeugt dz mit 6stelliger Nr.)
+
 var #uda
+
   Datei oeffnen (Name steht in iV)
 open
 if no var "Die DATEI " #uda " wurde nicht gefunden";mes;jump z39mend
@@ -24,8 +34,9 @@ set e0
 #uzx
   In der Schleife wird jeweils bis 3xnewline eingelesen und dieser
   Text dann in einen Datensatz verwandelt
-new 0
 :loop
+new 0
+
     13 10  = newline
 var 13 10 13 10 13 10
   Lesen, bis diese 6 Codes auftreten
@@ -34,26 +45,33 @@ fet e6
 if "" jump exit
   Datei war zu Ende, Flag setzen
 if can #uzx 1
-  In iV steht jetzt der Originaltext eines ganzen Datensatzes
-  Die y-Ersetzungen ausführen: (Definition in zc.flx)
-xcode y
 
-if not %GVK% if not %BNPOL% asci;ins #uzy;jump konv
+ sho IV
+
+ if not %GVK% if not %BNPOL% asci;ins #uzy;jump konv
 
   Nur bei GVK und BNPOL ist es Unicode, deshalb:
   Unicode Umwandlung machen
 xcode u
+perf uconv
+  In iV steht jetzt der Originaltext eines ganzen Datensatzes
+  Die y-Ersetzungen ausführen: (Definition in zc.flx)
+ xcode y
+ins __`_
 ins #uzy
 
   Das Konvertieren beginnt
   ***************************************************************
   Datensatz ist umcodiert, Zeilenwechsel ist nun das Zeichen `
 :konv
+
   nur noch wenige Byte? (keine Nutzdaten mehr)
 var #uzy Jl
 if <50 jump exit
-  Form der IdNr setzen - bei Bedarf modifizieren!
-#00 dw?6
+
+  IdNr setzen
+var $i
+ins #00
   Schleife zum Bereinigen des Arb.Speichers
 :ll
   wieviele Felder?
@@ -79,6 +97,9 @@ if %DNB% jump dnb
   ---------------
   MARC-Umwandlung
   ---------------
+
+var #uzy
+
 var #uzy(b"`245" 6,0 e"`" F"/ " )
 if "" var #uzy(b"`200" 6,0 e"`" F"/ " )
 
@@ -90,6 +111,7 @@ ins #20
 
   Herkunft steht am Anfang
 var #uzy(f"`" e"`")
+
 ins #99m
 
   Titel
@@ -104,7 +126,7 @@ ins _>>_ª_
 ins #20
 
 var #uzy(b"`260" e"`")
-if "" var #uzy(b"`210" e"`")
+if "" var #uzy(b"`264" e"`")
 ins #74
 var #74(b"$b" e"$" F", ")
 if "" var #74(b"$c" e"$")
@@ -147,10 +169,11 @@ ins #40
 var #uzy(b"`110" 6,0 e"`")
 ins #61
 
-var #uzy(b"`040" e"`" b"$b")
-ins _ger_de_
-ins _eng_en_
+var #uzy(b"`040" e"`" b"$b" e"$")
 ins #37
+
+var #uzy(b"`040" e"`" b"$e" e"$")
+ins #10
 
 var #uzy(b"`240" 6,0 e"`")
 ins #83
@@ -263,47 +286,79 @@ ins #22
 
    440  0 $a Biblioteka Narodowa $a Seria 1 ; $v 59
 
+
 var #uzy(b"`440" e"`" B"$a")
-ins _$v_ _
 ins _ $a_._
 ins _$p_ _
+ins _$v_ ; _
+ins _$g_,_
 ins _$x_i_
 ins #85
-if #85 var #85(e";" e"i") " ; " #85(b";");var (F"; ");ins #85
+if #85 var #85(e";" e"i") " ; " #85(b";");var (F"; ");ins _; ;_;_ ;ins #85
 if #85 jump a85
 
 var #uzy(b"`830" e"`" B"$a")
-ins _$v_ _
 ins _ $a_._
 ins _$p_ _
+ins _$v_ ; _
+
+ins _$g_,_
 ins _$x_i_
 ins #85
-if #85 var #85(e";" e"i") " ; " #85(b";");var (F"; ");ins #85
+if #85 var #85(e";" e"i") " ; " #85(b";");var (F"; ");ins _; ;_;_ ;ins #85
 if #85 jump a85
 
+
 var #uzy(b"`490" e"`" B"$a")
+
 ins _$v_ _
 ins _ $a_._
 ins _$p_ _
 ins _$x_i_
 ins #85
-if #85 var #85(e";" e"i") " ; " #85(b";");var (F"; ");ins #85
+
+
+if not #85 jump n85
+var #85(e";" e"i") " ; " #85(b";")
+var (F"; ")
+ins _; ;_;_
+ins #85
 
 :a85
 var #85
 perf art
 ins #85
 
-
+:n85
+  700er abarb.
 var #uzy(b"`700" B"$a")
 :700
 ins #uzX
+//  Text endet bei `
 var #uzX(e"`")
 ins _$q_ _
 ins _,$d_ [_
 if % [% var +"]"
 var (e"$" F"., ")
-ins #42~
+ins $a
+var #uzX(b'$4' e'$' f' ')
+if "aut" var "#40~" $a
+if "cre" var "#40~" $a
+if "ed" var "#41~" $a
+if "ill" var "#50~" $a
+if "cmp" var "#52~" $a
+if "ctb" var "#42~" $a
+if "trl" var "#47~" $a
+if "hnr" var "#59~" $a
+if "cnd" var "#57d" $a
+if "wpr" var "#55~" $a
+if "cmm" var "#51~" $a
+if "" var "#42~" $a
+if not '#' var "#42~" $a
+ins
+var +$prs
+ins 
+  naechste
 var #uzX(b"`700" B"$a")
 if not "" jump 700
   #uzX loeschen
@@ -476,10 +531,10 @@ var #85
 perf art
 ins #85
 
-var #uzy(b"`SP: " e" " e";")
-ins _ger_de_
-ins _eng_en_
-ins #37
+ var #uzy(b"`SP: " e" " e";")
+ ins _ger_de_
+ ins _eng_en_
+ ins #37
 
 var #uzy(b"`SG: " e"`")
 ins #30d
@@ -526,12 +581,14 @@ ins #31p
 
 #99m DNB
 
+
 jump tail
 
 :exit
 sho rec
 set e1
   Zurueck zum aufrufenden Programm, label :z39mend
+
 jump z39mend
 
   Unterprog. f. Artikel am Anfang
@@ -547,6 +604,101 @@ var #uzw(e" ")
 ins #uta
 if Artik var "ª" #uta "ª";ins #uta
 var #uta " " #utb
+return
+
+:uconv
+  	Kombinationen Buchstabe+Diakritikum umsetzen
+   fuer die in OstWest definierten Zeichen
+  Diaerese
+ins _a½_„_
+ins _o½_”_
+ins _u½__
+ins _A½__
+ins _O½_™_
+ins _U½_š_
+ins _e½_‰_
+ins _i½_‹_
+ins _y½_˜_
+
+  Akut
+ins _aµ_ _
+ins _eµ_‚_
+ins _iµ_¡_
+ins _oµ_¢_
+ins _uµ_£_
+ins _Eµ__
+ins _yµ_­_  
+ins _nµ_õ_  
+ins _Nµ_ô_  
+
+  Gravis
+ins _a¶_…_
+ins _e¶_Š_
+ins _i¶__
+ins _o¶_•_
+ins _u¶_—_
+
+  Circonflex
+ins _a·_ƒ_
+ins _e·_ˆ_
+ins _i·_Œ_
+ins _o·_“_
+ins _u·_–_
+
+  Tilde
+ins _nè_¤_
+ins _Nè_¥_
+
+  Cedille
+ins _cÓ_‡_
+ins _CÓ_€_
+ins _sÓ__
+ ins _tÓ_ê_
+
+  breve
+ins _a¾_ä_
+ins _g¾__
+
+  Ringel [Statt dessen kommt ø=Grad vor]
+ins _aÏ_†_
+ins _AÏ__
+ins _uÏ__
+ins _uø__
+ins _UÏ_Ÿ_
+
+  Doppelakut
+ins _oÆ__
+ins _uÆ__
+
+  Ogonek
+ins _aÒ_î_
+ins _eÒ_ï_
+ins _uÒ__
+
+  hacek
+ins _eÇ__
+ins _cÇ_§_
+ins _CÇ_¦_
+ins _rÇ_¨_
+ins _RÇ_©_
+ins _sÇ_¬_
+ins _SÇ_«_
+ins _zÇ_¯_
+ins _ZÇ_®_
+
+  Nichtsort.z.
+ins _&#152;_ª_
+ins _&#156;_ª_
+ins _&lt;_<_
+ins _&gt;_>_
+ins _&amp;_&_
+
+  >> <<   (fehlt in ucodes.apt)
+ins _Â»_"_
+ins _Â«_"_
+
+  restliche Akzente von rechts nach links
+exp Ai
 return
 
   Hierher gehts nur, wenn z39m.inc direkt aufgerufen oder im

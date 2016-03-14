@@ -1,0 +1,100 @@
+
+Verlautbarung 277 der Entw.Abt.                              2015-12-14
+-------------------------------
+
+Neue a35-Demo: Suchmaschine für allegro-Doku
+--------------------------------------------
+
+Wer bei der Arbeit mit oder an allegro auf ein Problem stößt, dem
+stehen mindestens 12 verschiedenartige Informationsquellen offen:
+
+A. Folgende Quellen sind in Google indexiert, weil sie auf dem 
+   Webserver liegen:  http://www.allegro-c.de
+
+Doku-Seiten (WebServer) [inkl. Bereiche "Regeln" und "Formate"]
+Verlautbarungen 124- (im Mailsystem enthalten)
+allegro-News 21-60.1990-2002
+FLEX-Doku
+FLEX-Tricks (17-80)
+Mailforum
+Systemhandbuch [Google als Index dazu nicht wirklich brauchbar]
+
+B. Weitere Quellen sind nur systemimmanent a99 in verfügbar und bislang
+   nicht in ein einheitliches Suchsystem integriert:
+
+Hilfetexte (.rtf und .txt) von a99
+Exportparameter (.?pr und .?pt)
+Indexparameter (.?pi)
+Importparameter (.?im)
+FLEX-Skripte (.flx)
+acon-Jobs (.job)
+Includes für Skripte und Jobs (.inc)
+
+Nicht immer, aber nicht selten ist dann die Frage: Wo steht das, was
+ich suche? Oder z.B.: Welche Parameterdatei ist die richtige für mein
+Vorhaben, oder welchen FLEX kann ich als Vorlage heranziehen. Und nicht
+*ganz* selten gibt es mehr als eine Stelle, an denen Brauchbares steht.
+Die genannten Quellen sind in Struktur, Zweckbestimmung und Standort
+sehr verschieden, das erschwert die Suche beträchtlich.
+Experten wissen: Diffizile Suche in den einzelnen Dokumentarten ist
+oft mit "grep" aussichtsreich (Suche mit "regulären Ausdrücken").
+
+Es wurde nun ein Versuch gemacht, das *gesamte* Material einmal so
+aufzubereiten, daß man eine Art Suchmaschine damit befüllen kann.
+Die Suchmaschine heißt a35. Damit kann man keine Volltexte durchsuchen,
+sondern nur Metadaten. Es ist aber klar, daß zumindest einige der 
+Dateien sich für eine Volltextsuche wenig eignen. Metadaten dagegen
+konnte man für jeden der Dokumententypen mit wenig Mühe per FLEX
+erstellen. Im Fall des Handbuchs wurde das Register aufbereitet, für
+die meisten anderen Dateien eigneten sich die Kopfzeilen der Dateien,
+weil darin Aussagen zum Inhalt stehen. Bei den Verlautbarungen und
+den news wurden zusätzlich die Zwischenüberschriften extrahiert.
+
+Einschränkung:
+Der Inhalt des Mailforums ist einerseits zu heterogen, andererseits
+zu schwierig in Metadaten faßbar. Mails sind aber in Google sehr gut 
+indexiert, zusammen mit den anderen Inhalten des Web-Servers. 
+Die Essenz vieler Mail-Diskussionen hat aber Eingang gefunden in die
+anderen Quellen.
+TROTZ ALLEDEM ist nüchtern zu konstatieren, daß eine allegro-Datenbank
+heutzutage ein altmodischer Ansatz ist für solcherlei Aufgabe.
+Sehr wahrscheinlich könnte eine geschickte Aufbereitung des gesamten
+Volltextvolumens eine Basis sein für eine echt wirkungsmächtige 
+Google-Suche, insbes. wegen der dann möglichen Phrasensuche und anderer
+Spezialitäten. Ein unbequemer Konjunktiv ist das, der nötige Aufwand
+für die Aufbereitung steht ungelöst im Raum. Womöglich wäre mit
+ebenfalls großem Aufwand auch eine eigene Suchmaschine auf der
+Basis von Solr erstellbar. (Müssen wir eigentlich alles selber machen?)
+
+Die Aktion ergab eine Datenbank mit gut 2100 Sätzen. 
+Hier ist sie:
+
+  http://www.allegro-b.de
+
+Kein Druckfehler: allegro-b und nicht -c. Das b steht, wie schon mal
+erwähnt wurde, für "browserbasiert".
+Das ist ein vorerst experimenteller Server, der auf einer Linux-
+Maschine aufgesetzt wurde. Diese Aktion dient primär der weiteren
+Verbesserung von a35 in einem umfassenden Versuch einer Linux-
+Implementierung. Ein Niederschlag davon ist der "CrashCourse" und
+das vorige Woche freigegebene Linux-Paket. Zumindest in dieser
+Hinsicht hat sich die Sache schon gelohnt: wir haben damit ein neues
+Beispiel für das Potential von a35, und im Vergleich neben der DemoBank 
+ergibt sich ein besserer Eindruck von der Variabilität.
+
+Die Datenbank ist online per Browser editierbar. Wer auf 0 Treffer
+stößt oder sonstwie vor die Wand läuft,, kann das gerne melden, wir
+analysieren das dann und schaffen Abhilfe. (Es ist immer so, wenn man
+was Neues vorstellt, daß sofort Kalamitäten und Defizite entdeckt 
+werden und Irritate.) 
+
+Wie auch immer, es bleibt klar, daß man bei einer konkreten Suche im
+Zweifel durchaus die Google-Suche bevorzugen kann oder jedenfalls mit 
+heranziehen sollte. Für Inhalte, die man vage aus dem Mailforum
+erinnert, bleibt das der einzige Weg.
+
+Es handelt sich übrigens bei dem Linux um ein aktuelles CentOS.
+Besondere Progammanpassungen für diese Variante waren nicht 
+erforderlich.
+
+

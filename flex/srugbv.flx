@@ -131,6 +131,7 @@ ins
 
 var (e"</d245" b"<d245" x"sa")
 ins $t
+
 var $gb
 var (e"</d100" b"<d100" x"sa")
 ins $a
@@ -195,13 +196,34 @@ ins $gv
 // Dieser Teil ist fuer .job und .flx gleich:
 // ***** Hauptteil: Felder extrahieren
 :hauptteil
+
+
 var $gv
 // zum Test aktivieren:
   sho IV
   end
 
 var $gv
+var (x'd040' b"<se>" e"</")
+ins #10
+
+var $gv
+var (x'd336' b"<sb>" e"</")
+ins #0c.1
+
+var $gv
+var (x'd338' b"<sb>" e"</")
+ins #77.1
+
+var $gv
 var (x'd100' b"<sa>" e"</")
+ins $a
+var $gv
+var (x'd100' b"<sc>" e"</")
+ins $c
+
+var $a ", " $c
+var (F", ")
 ins #40
 
 
@@ -253,6 +275,7 @@ ins #71
 
 var $gv
 var (x'd260' b"<sa>" e"</" F":, ")
+ins _ ;s.l.__
 ins #74
 
 var $gv
@@ -288,7 +311,7 @@ var $gv
 var (x'd246' b"<sa>" e"</" F":/ ")
 
 ins #23
-if Artic ins #23
+if ARtic ins #23
 
 
 // Nun noch die URL
@@ -345,6 +368,44 @@ if $sa var $sa;ins #83~
 :883
 
 var $gv
+var (x'd830' e"^T^T" x"sa") 
+ins $ga
+if $ga jump gv
+
+var $gv
+var (x'd490' e"^T^T" x"sa") 
+ins $ga
+
+:gv
+var $gv
+var (x'd830' e"^T^T" x"sb" f" /") 
+ins $gb
+
+if $gb var $ga " / " $gb;ins $ga
+
+var $gv
+var (x'd830' e"^T^T" x"sn")
+ins $n
+
+var $gv
+var (x'd830' e"^T^T" x"sp")
+ins $p
+
+var $gv
+var (x'd830' e"^T^T" x"sv")
+ins $v
+
+if $n var $ga " ; " $n;ins $ga
+if $p var $ga " : " $p;ins $ga
+if $v var $ga " ; " $v;ins $ga
+
+var $ga
+ins #85
+if #85 jump 502
+
+:830
+
+var $gv
 var (x'd800' e"^T^T" x"st")
 
 ins $gt
@@ -365,25 +426,39 @@ if not $v var $gt;ins #85
 if #85 jump 502
 
 // Serientitel aus 490
+
 var $gv
-var (x'd490' e"^T^T" x"sa")
+var (x'd490' e"^T^T" x"sa" e"^T^T")
 ins #85
-if Artic ins #85
+if ARtic ins #85
+
+var $gv
+var (x'd490' x'sa' b'^T^T')
+ins $u
 
 var $gv
 var (x'd490' e"^T^T" x"sv")
 ins $v
 
 if $v var #85 " ; " $v;ins #85
+if $u var #85 " : " $u;ins #85
+
 
 :502
 var $gv
-sho IV
 var (x'd502' x"sa")
 ins #818
 
 if #818 var #818(b"--");ins _, _:_;ins #819
 
+
+var $gv
+var (x'd520' x"sa")
+ins #98
+
+var $gv
+var (x'd505' x"sa")
+ins #93
 
 
   773 -> #84
@@ -485,35 +560,87 @@ if $kb var " / " $kb;ins $kb
 var $ka $kg $kb
 ins #61~
 
+var $gv (b"d710")
+ins $gv1
+var (x'd710' e"^T^T" x"sa")
+ins $ka
+var $gv1
+var (x'd710' e"^T^T" x"sg")
+ins $kg
+var $gv1
+var (x'd710' e"^T^T" x"sb")
+ins $kb
+if $kg var " <" $kg ">";ins $kg
+if $kb var " / " $kb;ins $kb
+var $ka $kg $kb
+ins #61~
+
+jump pers
+
 // bis zu 5 weitere Personen, erste als #41, weitere als #42
 
-var $gv
-var (b'd700')
+:pt
+if "" return
+ins $v
+
 var (b"<sa>" e"</")
-ins #41
+ins $a
+var $v
+var (b"<s4>" e"</")
+if "aut" var "#40~" $a
+if "cre" var "#40~" $a
+if "ed" var "#41~" $a
+if "ill" var "#50~" $a
+if "cmp" var "#52~" $a
+if "ctb" var "#42~" $a
+if "trl" var "#47~" $a
+if "hnr" var "#59~" $a
+if "cnd" var "#57d" $a
+if "wpr" var "#55~" $a
+if "cmm" var "#51~" $a
+if "" var "#42~" $a
+if not "#" var "#42~" $a
+ins
+return
+
+// Personen, aergerlich wg. "Beziehungskennz."
+:pers
+var $gv
+var (b'<d700' e"</d700")
+perf pt
 
 var $gv
-var (b'<d700' b'<d700')
-var (b"<sa>" e"</")
-ins #42
+var (b'<d700' b'<d700' e"</d700")
+perf pt
 
 var $gv
-var (b'<d700' b'<d700' b'<d700')
-var (b"<sa>" e"</")
-ins #42a
+var (b'<d700' b'<d700' b'<d700' e"</d700")
+perf pt
 
 var $gv
-var (b'<d700' b'<d700' b'<d700' b'<d700')
-var (b"<sa>" e"</")
-ins #42b
+var (b'<d700' b'<d700' b'<d700' b'<d700' e"</d700")
+perf pt
 
 var $gv
-var (b'<d700' b'<d700' b'<d700' b'<d700' b'<d700')
-var (b"<sa>" e"</")
-ins #42c
+var (b'<d700' b'<d700' b'<d700' b'<d700' b'<d700' e"</d700")
+perf pt
 
-// Schlagwoerter. Da waere noch viel mehr zu tun!
-// hier nur die 2 ersten d650 mit i2="7"  (gnd)
+var $gv
+var (b'<d700' b'<d700' b'<d700' b'<d700' b'<d700' b'<d700' e"</d700")
+perf pt
+
+var $gv
+var (b'<d700' b'<d700' b'<d700' b'<d700' b'<d700' b'<d700' b'<d700' e"</d700")
+perf pt
+
+var $gv
+var (b'<d700' b'<d700' b'<d700' b'<d700' b'<d700' b'<d700' b'<d700' b'<d700' e"</d700")
+perf pt
+
+
+:pend
+// Schlagwoerter. Da waere noch viel mehr zu tun!, Auch 651
+// hier nur die 3 ersten d650 mit i2="7"  (gnd)
 
 var $gv
 var (b'<d650 i1=" " i2="7"' e"<d")
@@ -533,6 +660,15 @@ var (b'<d650 i1=" " i2="7"' b'<d650 i1=" " i2="7"' e"<d")
 var (b"<s9>" B":" e"</")
 ins $g2
 
+var $gv
+var (b'<d650 i1=" " i2="7"' b'<d650 i1=" " i2="7"' b'<d650 i1=" " i2="7"' e"<d")
+var (b"<sa>" e"</")
+ins $s3
+var $gv
+var (b'<d650 i1=" " i2="7"' b'<d650 i1=" " i2="7"' b'<d650 i1=" " i2="7"' e"<d")
+var (b"<s9>" B":" e"</")
+ins $g3
+
 var $s1
 if $g1 var $s1 ". " $g1
 ins #31
@@ -540,6 +676,10 @@ ins #31
 var $s2
 if $g2 var $s2 ". " $g2
 ins #312
+
+var $s3
+if $g3 var $s3 ". " $g3
+ins #313
 
 
   Pers.SW, mehrere!

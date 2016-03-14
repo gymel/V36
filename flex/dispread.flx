@@ -1,41 +1,40 @@
   DISPREAD.FLX : Datensatz vom Anzeigefeld in Datei ausgeben und
-  2005-06-20      wieder einlesen (Display Read)
-                 ACHTUNG: erfordert mindestens V25.6 (wg. erase sub)
+  2005-06-20      wieder einlesen (Display Read) / Zusatz zu zc.flx
+  2016-02-11
+  ACHTUNG: Nur direkt im Anschluss an zc.flx zu starten
 
+  X = letzte mit help eingelesene Datei (von zc.flx erstellt)
 var X
 if not "edit.adt" jump error
 
-  Anzeigefeld-Inhalt in Datei eee.adt speichern
+  Anzeigefeld enthaelt evtl. mehrere Saetze aus zc.flx
+  Gesamten Anzeigefeld-Inhalt in Datei eee.adt speichern
 file eee.adt
 z=0
   Schreibdatei ee.adt oeffnen
 open x ee.adt
+if no jump eeno
   und ausgegebene Datei zum Lesen
 open eee.adt
 
   Schleife: zeilenweise Daten einlesen und in ee.adt ausgeben
-    dabei Leerzeilen weglassen!
+    Ende bei erster Leerzeile oder Dateiende (nur erster Satz wird genommen)
 :el
-var "xxX"
+var ")]"
 get +iV
 if can jump ende
-var +"Yyy"
-  Wenn es eine Leerzeile ist, kommt evtl. " Yyy" vor. Leerzeichen beseitigen
-  damit die Zeile ganz leer ist.
-:rep
-if % Yyy% ins _ Yyy_Yyy_;jump rep
-  Leerzeile? Text besteht dann jetzt aus xxXYyy! dann -> :el
-if "xxXYyy" jump el
-  Datenzeile: Zaehler erhoehen
-if "xxX#" z+1
-ins #ueZ
-wri #ueZ(b"xxX" e"Yyy") n
+var (f")]" F" ")
+if "" jump ende
+
+if "#" z+1
+ins $u
+wri $u n
 jump el
 
 :ende
 close x
 close
-#ueZ
+
 
   Zaehler <2? Dann war es keine kategorisierte Anzeige
 if z<2 end
@@ -43,8 +42,9 @@ if z<2 end
   Hierarchische Untersaetze wegnehmen, dann Datei einlesen!
   (Untersaetze koennten verschoben worden sein, dann wuerde
   das Zuordnen nicht klappen)
+if not hier jump les
 :lop
-sub
+first sub
   ersten Untersatz ansteuern
 next sub
   keiner mehr da, Schleife zu Ende
@@ -62,8 +62,7 @@ delete eee.adt
 disp
 sho rec
   Bearbeiteter Satz jetzt zu sehen, was soll damit passieren?
-var "Satz speichern?" n "Nein: noch weiter daran arbeiten" n "Abbruch: Žnderungen verwerfen"
-ansi
+var "Satz speichern?" n "Nein: noch weiter daran arbeiten" n "Abbruch: Änderungen verwerfen"
 yesno
 if cancel undo;end
 if no end
@@ -73,5 +72,11 @@ end
 
 :error
    Fehlermeldung aktivieren, wenn gewuenscht
-  mes Daten nicht geeignet zum Einlesen!
+var "Daten im Anzeigefeld nicht geeignet zum Einlesen!" n "Zuerst mit  X zc  Datensätze downloaden"
+mes
 end
+
+:eeno
+var "Datei ee.adt kann nicht geschrieben werden"
+mes
+
