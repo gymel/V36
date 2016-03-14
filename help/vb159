@@ -1,0 +1,88 @@
+
+Verlautbarung 159 der Entw.Abt.                          2002-08-06
+-------------------------------
+                                       Bereitgelegt:
+                                       a99a.lzh, a99.lzh, alcarta.lzh
+                                       Gesamtpaket inst-all.exe
+V22.2.0 : PreRelease
+--------------------
+Die zur Einbrennung auf CD vorgesehene V22.2 ist so gut wie vollendet.
+Die jetzt vorliegende inst-all.exe soll nur in unabweisbar notwendigen
+Faellen noch modifiziert werden (H-Stufe 3).
+
+Und das sind die letzten Neuerungen: (neben den Realisierungen der 
+in den letzten Tagen noch angefallenen Vorschlaege)
+
+NEUe FLEX-Befehle
+-----------------
+Timer schneidet die Zeit in Scheiben und fuehrt nach Ablauf jedes
+Abschnitts einen FLEX aus.
+     Die Dicke nnn einer Scheibe ist in Millisekunden (!) anzugeben:
+     Der Befehl lautet:
+
+slice nnn=mFLEX
+          Wenn nichts hinter slice steht, dann Inhalt der iV
+          m=1  FLEX nur 1mal ausfuehren, nach nnn Millisek.
+          m=i  FLEX immer wieder nach nnn Millisek neu ausf.
+               FLEX = X <flexdatei>
+                      x <befehlskette>  Befehle durch \\ getrennt
+          Wenn gerade ein anderer FLEX laeuft, unterbleibt die Ausf.
+
+Spaeter kann der folgende FLEX den bestehenden Timer annullieren:
+sli 1=0 
+(Die Zahl vor dem = ist egal)
+Jeder neue slice-Befehl ersetzt den vorherigen, d.h. es kann immer 
+nur einen Timer geben.
+
+
+Message n,Meldung
+     "message" hat den Nachteil, dass ohne OK das Programm nicht
+     weiterlaeuft. In FLEXen, die unbeaufsichtigt laufen sollen, kann
+     man daher keine "message" einbauen.
+     Die Meldung wird fuer n Sekunden gezeigt, dann geht's weiter.
+     Anders als bei "message" ist also kein OK noetig.
+     Fehlt n, werden 10 Sekunden angesetzt.
+     Fehlt beides, wird der Inhalt der iV genommen - was sonst?
+     Mit + und - kann man, wenn die Meldung zu sehen ist, die
+     Restzeit um 10 Sek. herauf- bzw. heruntersetzen,
+     Mit Esc und Enter kann man das Messagefenster beseitigen.
+     Geeignet ist dies, wenn ein FLEX auf jeden Fall durchlaufen
+     soll, auch wenn keiner am PC sitzt, aber wenn einer davor sitzt,
+     soll er Zwischenmeldungen bekommen und auch reagieren koennen:
+     Im Anschluss kann man naemlich mit "if yes" feststellen, ob
+     Enter gedrueckt oder die Schleife ohne Eingriff zu Ende ging,
+     bzw.  "if no", wenn Esc gedrÅckt wurde. Damit wird Mes zu einem
+     diffizilen Instrument fuer den Experten. Der wird in Kauf nehmen,
+     dass das Fensterchen etwas absonderlich wirkt. Dies liegt an
+     den grossen Schwierigkeiten, ein solches Fenster ueberhaupt
+     zu programmieren, denn standardmaessig ist derartiges nicht
+     vorgesehen. Anders als die normale MessageBox, die man stumpf-
+     sinnig mit OK bestaetigen muss.
+
+Beispielanwendungen fuer beides:
+
+  logcheck.flx
+Dieser FLEX kontrolliert regelmaessig die Groesse der LOG-Datei und
+gibt eine Meldung aus, wenn sie sich veraendert hat.
+
+  timeout.flx
+Dieser FLEX realisiert eine Timeout-Funktion, z.B. fuer alcarta sinnvoll.
+Wenn in einer einstellbaren Zeit nichts gemacht wurde, schaltet sich
+das Programm ab. Eine Mes-Box gibt Gelegenheit, das noch zu verhindern.
+
+Beide startet man nicht direkt, sondern mit "slice", z.B. so:
+x slice 10000=iX logcheck
+
+
+Damit sich's aber lohnt, wurde noch ein Sonderbefehl geschaffen:
+
+find $nnn
+   bildet die Ergebnismenge aus den letzten nnn Bytes der LOG-Datei.
+   Jedoch nur diejenigen Saetze, die als Korrekturen angefallen sind,
+   die Neusaetze muss man ueber den Datumsindex ermitteln.
+   Eingebunden ist beides in die Menues  org.rtf und super.rtf
+   Von Hand koennen Sie einfach mal geben:
+   find $5000\sho list
+
+Die FLEX-Dokumentation wurde selbstredend um diese Neuerungen
+erweitert.

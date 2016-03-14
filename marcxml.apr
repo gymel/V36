@@ -1,0 +1,569 @@
+  MARCXML.APR : Ausgabe nach dem LC-XML-Standard
+  2008-04-04
+
+  Tip: Mit MARCEDIT kann das Ergebnis in echtes MARC verwandelt werden
+       MARC Tools Main Window, MARCXML->MARC
+       Kurzdoku zu MARC21: h marc
+zl=0
+zm=0
+
+  UTF-8-Tabelle laden
+tad-utf
+  Nichtsortierzeichen muss weg
+p .170 1
+p < "&lt;"
+p > "&gt;"
+p & "&amp;"
+
+  V14-Ersetzungen einschalten
+i4=1
+
+  Nuetzliche Texel:
+
+  Mit oder ohne "marc:" ? Hier einstellen
+ 8="<marc:"
+ 9="</marc:"
+8="<"
+9="</"
+
+  Anfangs-Tags
+2=C t8 "datafield tag=" 34
+3=C "  " t8 "subfield code=" 34
+
+  Ende-Tags
+11=t9 "controlfield>" 
+12=C t9 "datafield>" 
+13=t9 "subfield>" 
+
+  Endstueck eines Tags: ">
+19=34 ">" 
+
+  Subfield Anfangs-Tags  65=a, 66=b ...
+
+65=t3 "a" t19      d.h. <marc:subfield code="a">
+                   zu verwenden als  #t65
+66=t3 "b" t19      und dasselbe fuer b,c,...,z
+67=t3 "c" t19
+68=t3 "d" t19
+69=t3 "e" t19
+70=t3 "f" t19
+71=t3 "g" t19
+72=t3 "h" t19
+73=t3 "i" t19
+74=t3 "j" t19
+75=t3 "k" t19
+76=t3 "l" t19
+77=t3 "m" t19
+78=t3 "n" t19
+79=t3 "o" t19
+80=t3 "p" t19
+81=t3 "q" t19
+82=t3 "r" t19
+83=t3 "s" t19
+84=t3 "t" t19
+85=t3 "u" t19
+86=t3 "v" t19
+87=t3 "w" t19
+88=t3 "x" t19
+89=t3 "y" t19
+90=t3 "z" t19
+
+
+  Wenn #uer schon besetzt, Dateikopf nicht ausgeben [nur beim ersten Satz]
+ #uer +#99r e0
+  vor dem ersten Satz:
+ #t{ t8 'collection xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">' }
+
+ #t{ '<?xml version="1.0" encoding="UTF-8" ?>' C } 
+ #t{ '<collection xmlns="http://www.loc.gov/MARC21/slim" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd" type="Bibliographic">' }
+
+
+#3n +- e0    keine Stammsaetze!
+#9D. +- e0    keine Erwerb. u. Expl.saetze
+
+
+  Anfang des Satzes
+#t{ C C t8 "record>" C }
+
+   Leader ist optional!
+#t{ '<leader>' }
+  #t{ "00925njm  22002777a 4500" }
+#t{ "01234cam  22002771a 45e0" }
+
+#t{ '</leader>' }
+
+  control nr
+#t{ C t8 'controlfield tag="001">' }
+#00
+#t11
+
+  Feste Felder
+  ------------
+#t{ C t8 'controlfield tag="007">' }
+  Inhalt von 007
+#t{ "ta" }
+#t11
+
+#t{ C t8 'controlfield tag="008">' }
+  Inhalt von 008 beginnt mit Datum, 6 Ziffern
+#99n +#99x e"/" e$ b2 e6 s6
+#t{ "991231" }
+
+
+#99x e0
+#t{ "s" }
+#76 +#996 x"*1" e4
+#^76 +#996 x"*1" e4
+#t{ "0000" }
+#996 e0
+#t{ "    n              0000 " }
+#37 +#99y e3 ,"_en_eng_" ,"_de_ger_" e3
+#t{ "ger" }
+#99y e0
+#t{ " d" }
+#t11
+
+  Variable Felder
+  ---------------
+  010 LCCN
+#89L +b
+#+B
+#-b
+#t2
+#t{ '010" ind1=" " ind2=" ">' }
+  Inhalt von 89L
+#t65
+#89L
+#t13
+#t12
+
+#-B
+   020 ISBN
+#87 >I
+
+   022 ISSN
+#88 >i
+
+#32L +d
+#+D
+   050 LCC
+#-d
+#t2
+#t{ '050" ind1=" " ind2="0">' }
+#t65
+#32L
+#t13
+#t12
+
+#-D
+#32B +e
+#+E
+#-e
+   082 Dewey
+#t2
+#t{ '082" ind1="0" ind2="0">' }
+#t65
+#32B
+#t13
+#t12
+
+#-E
+  Signaturen
+#90. ++ p>C m>C
+
+  100
+#40 >V
+
+  110
+#60 >u
+
+  240   EST = Uniform title
+#22 >E
+
+  Vorbereitungen f.d. Titel
+#uti dti e0
+  Es koennte sein, dass wir gerade in einem hierarch. Untersatz sind,
+  Wenn der keinen Titel hat, dann #20 aus Hauptsatz
+#^20 +#991 =ti
+#19 +#991 =ti
+
+#991 e0
+  Bandnummer anhaengen, wenn hierarch. U.S.
+#01 +#20 B"=" f" " p"$n" Ati
+#+t
+#20 +t p"$p" Ati
+#19 p"$p" Ati
+#-t
+
+  245
+#t2
+#t{ '245" ind1="0" ind2="' }
+#uti >a     Artikel-indikator
+#t19
+  subfield a
+#t65
+  Inhalt
+#uti e" : " e"$"
+
+#uti +c c" : " p" :!" e"!"
+#39 +c p" /!" e"!"
+#40. p" /!" e"!"
+#-c
+#t13
+
+#uti b" : " e"$" p{ t66 } P13    Titelzusatz $b
+#uti b"$n" e"$p" p78 P13
+#uti b"$p" p80 P13
+
+#-T
+#39 +#99v e0
+#40 +#99v e0
+#+w
+
+#99v
+
+#39 +w p{ t67 } P13     Verf.Angabe  $c
+#40 p{ t67 } e0
+#40 b", "
+#40 e", " p" "
+#40 p{ t13 } e0
+
+#-w
+#t12
+
+
+  246   Nebentitel
+#23. ++ p>N m>N
+#24. ++ p>N m>N
+
+   250
+#71 >A
+
+#dt dim dij e0
+#76 0 =im e0
+   260  Imprint
+#(J
+#uij +- e0 
+#74 +j e0
+#75 +j e0
+#00 +#77 c"+" e0
+#09 +#77 c"+" e0
+#76 +j e0
+#nr +#77 e0
+
+#-j
+#dt aij e0   flag setzen: 260 ist produziert
+#t2
+#t{ '260" ind1=" " ind2=" ">' }
+  a = Ort
+#74 +#75 p65 e$ P{ " :" t13 }
+#^74 e$ p65 P{ " :" t13 }
+
+  b = Verlag
+
+#75 +#uim p{ t66 } P{ "," t13 }
+#^75 p{ t66 } P{ "," t13 }
+
+  c = Jahr
+#uim +k e" = " p{ t67 } P13
+#76 p{ t67 } P13
+
+#-k
+#t12
+#)J
+
+   300
+#77 p{ t2 '300" ind1=" " ind2=" ">' t65 } P{ t13 t12 }
+
+   400
+#85. ++ p>S m>S
+
+   490  Aufsatz
+#70 +#704 p{ t2 '490"  ind1="0" ind2=" ">' t65 } P13
+#dts +#990 e0
+#704 e0
+#t86
+#704 
+#76 p"."
+#706 p","
+#708 p" S."
+#t{ t13 t12 }
+
+#990 e0
+
+   500
+#81. ++ p>F m>F
+
+   650
+#33. ++ p>L m>L
+#31. ++ p>L m>L
+
+#30. ++ p>L m>L
+
+  700
+#402 ++ p>P m>P
+#41. ++ p>P m>P
+#42. ++ p>P m>P
+#43. ++ p>P m>P
+#44. ++ p>P m>P
+#45. ++ p>P m>P
+#46. ++ p>P m>P
+#47. ++ p>P m>P
+#48. ++ p>P m>P
+#49. ++ p>P m>P
+#50. ++ p>P m>P
+#51. ++ p>P m>P
+#52. ++ p>P m>P
+#53. ++ p>P m>P
+#54. ++ p>P m>P
+#55. ++ p>P m>P
+#56. ++ p>P m>P
+#57. ++ p>P m>P
+#58. ++ p>P m>P
+#59. ++ p>P m>P
+
+  Gibt es einen verkn. Hauptsatz? Dann eine 700 produzieren
+
+#09 +#999 c"+" e"+" |92
+#00 +#999 c"+" e"+" |92
+#+q
+
+  Jetzt ist der HS geladen
+#999 e0
+#>J  Imprint aus dem HS uebernehmen
+#t2
+#t{ '700"  ind1="1" ind2="2">' }
+#40 p65 P13      $a
+#20 p84 P13     $t
+#</
+#09 +#20 b"+" e"=" p78 P13   $n
+#00 b"+" e"=" p78 P13  $n
+#20 p80 P13            $p
+#t12
+
+#-q
+
+
+  710
+#61. ++ p>K m>K
+
+   773  Beitrag aus Sammelband
+#84 +#77 p{ t2 '773"  ind1="0" ind2="">' t84 } P13
+
+#nr +#8e. e0
+
+
+#77 p"S. " p71 
+
+#84 p13 p12 e0
+
+
+  856
+#8e. ++ p>U m>U
+
+  Satz-Ende
+#t{ C t9 "record>" }
+
+#+#
+
+
+  Unterprogramme
+  --------------
+
+  Indikator f. zu uebergehenden Artikel
+#(a
+#cc +#ull c"\170" f"\170" e"\170" lll e0
+#t{ "0" }
+#)a
+  Laenge des Artikels +1
+#ull x"+1" e"."
+#)a
+
+  Serie
+#(S
+#t2
+#t{ '440" ind1=" " ind2="' }
+#cc +#ull c"\170" f"\170" e"\170" lll e0
+#t{ "0" }
+#cc +#997 e0
+#ull x"+1" e"."
+#997
+#t19
+#t65
+#cc e" ;"
+#t13
+#cc +#998 c" ; " e0
+#+s
+#998 e0
+#t86
+#cc b" ; "
+#t13
+#-s
+#t12
+#)S
+
+#(U   URL
+#t2
+#t{ '856" ind1="4" ind2="' }
+#t{ "0" }
+#t19
+#t85         $u
+#cc e$
+#t13
+#cc +#8ez $t e0
+#+z
+#8ez e0
+#t90         $z
+#cc $t 
+#t13
+#-z
+#t12
+#)U
+
+  Personen NE
+#(P
+#t2
+#t{ '700" ind1="1" ind2="' }
+#t{ "2" }
+#t19
+#t65
+#cc
+#t13
+#t12
+#)P
+
+  Koerp NE
+#(K
+#t2
+#t{ '710" ind1="2" ind2="' }
+#t{ "2" }
+#t19
+#t65
+#cc
+#t13
+#t12
+#)K
+
+#(V   Verfasser
+#t2
+#t{ '100" ind1="0" ind2="' }
+#t{ " " }
+#t19
+#t65
+#40
+#t13
+#t12
+#)V
+
+#(u   Urheber
+#t2
+#t{ '110" ind1="0" ind2="' }
+#t{ " " }
+#t19
+#t65
+#60
+#t13
+#t12
+#)u
+
+
+#(F    Footnote
+#t2
+#t{ '500" ind1=" " ind2=" ">' }
+#t65
+#cc 
+#t13
+#t12
+#)F
+
+#(C    Call nr
+#t2
+#t{ '090" ind1=" " ind2=" ">' }
+#t65
+#cc $L P"'"
+#cc +#99a $s
+#cc $$ 
+#99a e0
+#t13
+#t12
+#)C
+
+#(L    LCSH
+#cc dsw asw e0
+#-L
+#t2
+#t{ '650" ind1=" " ind2="0">' }
+#t65
+#usw e";" e"_" e"$"
+#t13
+#t12
+#usw +L b"; " =sw e0
+#)L
+
+#(N   NebenTitel, ParallTitel
+#t2
+#t{ '246" ind1="1" ind2="' }
+  Achtung: 246 hat keinen non-sort indicator! Machen wir aber trotzdem
+#cc +#ull c"\170" f"\170" e"\170" lll e0
+#t{ "0" }
+#nr +#99N e0
+  Laenge des Artikels +1
+#ull x"+1" e"."
+#99N e0
+#t19
+#t65
+#cc 
+#t13
+#t12
+#)N
+
+
+#(i   ISSN
+#t2
+#t{ '022" ind1=" " ind2=" ">' }
+#t65
+#cc
+#t13
+#t12
+#)i
+
+#(I   ISBN
+#cc f"=" ,"_X_x_" =is e0
+#-o
+#t2
+#t{ '020" ind1=" " ind2=" ">' }
+#t65
+#uis e"=" F" " ,"_-__" ,"_ _$c_"
+#t13
+#t12
+#uis +o b"=" f" =" =is e0
+#)I
+
+#(E   EST
+#t2
+#t{ '240" ind1="0" ind2="' }
+#240 >a
+
+#t19
+#t65
+#cc e" <"
+#t13
+#22 +#99l c" <" e0
+#+l
+#99l
+#t76    $l
+#cc b"[<]" F">"
+#t13
+#-l
+#t12
+#)E
+
+#(A    Ausgabe
+#t2
+#t{ '250" ind1=" " ind2=" ">' }
+#t65
+#cc
+#t13
+#t12
+#)A
+

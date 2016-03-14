@@ -1,0 +1,93 @@
+  KAT00.AIM : ASCII-Datei mit Kategorienummern einlesen
+  960606/970721  Das Umgekehrte leistet e-w.apr
+ 
+  Jeder Satz beginnt mit #00
+  --------------------------
+  Das Umgekehrte leistet E-W.APR  !! 
+
+  Die einzulesende Datei muss so aussehen:
+  (Die Ladeschnittstelle von VPW und avanti braucht dieses Format)
+
+  Neuer Satz beginnt mit #00. Diese kann auch leer sein, sie wird
+  dann nicht mit importiert.
+
+  Kategorien mit Nummer ("#kk" oder "kk") am Anfang
+    beginnen immer auf neuer Zeile,
+
+  Die Reihenfolge der Kategorien ist unwichtig, sie werden automatisch
+  geordnet in CFG-Reihenfolge.
+
+  Untersaetze beginnen mit #01 ... #06
+
+  lange Kategorien sind zeilenweise umbrochen mit 13 10 am Ende
+    und mindestens 1 Leerzeichen am Anfang der nÑchsten Zeile.
+    Der Umbruch darf nur am Wortende vorkommen, also bei einem Leerzeichen!
+
+  Ueberzaehlige Leerzeichen innerhalb Kategorien werden beseitigt,
+  wenn dies laut CFG so sein soll (P15), sonst nicht.
+
+  Kategorien mit ~ als Wiederholungszeichen kommen auf die naechste
+  freie Position gemaess Definition in CFG.
+
+  Wenn eine Kategorie in einem Satz doppelt vorkommt, wird nur die
+  letzte uebernommen
+
+  Leerzeilen koennen an jeder Stelle vorkommen, sie werden ignoriert.
+
+  Artikel am Kategorieanfang werden generell mit dem Nichtsortierzeichen
+  markiert. Soll das nicht geschehen: siehe unten.
+
+  Beispiel:
+
+  #00
+  #20 ™Der™ Name der Rose : ein
+           Kriminalroman aus dem Mittelalter
+  #22 ™Il™ nome della rosa <dt.>
+  #31 Kriminalroman / Mittelalter
+  #40 Eco, Umberto
+  #71 6. Aufl.
+  #75 Hanser
+  #74 MÅnchen
+  #76 1982
+  #77 655 S.
+  #80 Orig. Ausg.    1980
+  #87 3-446-13363-1        
+
+  #00
+  #20 öber Gott und die Welt
+  #31 Zeitkritische Essays
+  #40 Eco, Umberto
+  #74 MÅnchen
+  #75 Hanser
+  #76 1985
+  #77 303 S.
+  #87 3-446-13933-8
+
+
+  #00 ersetzen durch z.B. #000, wenn man kein zweistelliges Schema hat
+
+
+  --  Hier geht's los: ---------------------------------------
+
+rs="#00"           Beginn des ersten Satzes
+re=13 10 "#00"     Satzende: Zeilenende + #00
+                   (Ñndern, falls andere Begrenzung, z.B. unter UNIX)
+
+_ 13 10 13 10   Leerzeilen beseitigen
+_ 13 10
+
+_ 13 10 " "     ersetze den Zeilenumbruch durch ein Leerzeichen
+_ " "                (evtl. Ñndern)
+
+_ 13 10
+_ 0
+
+
+#00          IdNr importieren (#00 nicht mehr da nach dem Einlesen!)
+j1
+= "00 "   wenn am Anfang aber doch #00 steht, dann 3 Zeichen nach rechts
+} 2     hier 3 bzw. 4, wenn man ein 3- bzw. 4stelliges Schema hat
+
+##     Pauschalimport  aller anderen Kategorien
+ N    Artikel am Feldanfang markieren (gilt fÅr jede Kategorie)
+       Diese Zeile wegnehmen, wenn die Nichtsortierzeichen schon da sind

@@ -1,0 +1,64 @@
+  DOSFILE.FLX : Datei auswaehlen auf bestimmtem Verzeichnis
+  2001-08-13
+
+  Nicht bei alcarta!
+var m
+if ="alc" end
+
+  In #uvv steht, welches Verz. es sein soll
+var #uvv
+if "d" jump dbdir
+if "p" jump progdir
+if "a" jump workdir
+if "t" jump tempdir
+  Zuerst eine Datei auswaehlen lassen
+if #uvN jump filebox
+var D
+ins #uvN
+
+:filebox
+var "Wählen Sie eine Datei:|" #uvN(F"\\") "\\*.*"
+jump fertig
+
+:dbdir
+#uvN
+var "Dateien auf dem Datenverzeichnis " D
+jump fertig
+
+:progdir
+#uvN
+var "Dateien auf dem Programmverzeichnis " P
+jump fertig
+
+:workdir
+#uvN
+var "Dateien auf dem Arbeitsverzeichnis " W
+jump fertig
+
+:tempdir
+#uvN
+var "Dateien auf dem Tempor. Verzeichnis " M
+jump fertig
+
+   dir.flx starten
+:fertig
+ins #ufU
+set a
+var #uvN
+
+if #uvN var "X dir " #uvN
+if not #uvN var "X dir " #uvv(0,1)
+
+exec
+
+  varaltet:
+ fname
+ if no end
+  ausgew. Dateiname -> #uvF
+ ins #uvF
+ var ""
+ ins #uvv
+  eigentlicher Name -> #uvN
+ var #uvF(t"\\")
+ ins #uvN
+ exec X dos

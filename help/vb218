@@ -1,0 +1,140 @@
+
+Verlautbarung 218 der Entw.Abt.                              2009-06-29
+-------------------------------
+
+V29.6
+=====
+
+Normdatenverknuepfungen (V14-Ersetzungen)
+-----------------------------------------
+Durch interne Aenderungen waren Fehler moeglich, insbes. bei der
+Setzung
+i4=5
+Es wurde dann der Unterstrich hinter dem Kuerzel weggelassen oder
+verdoppelt und dergl. Unerquicklichkeiten mehr.
+Diesem Aerger wurde ein Ende bereitet.
+
+
+acon
+----
+Bei dem Befehl  update <dateiname>
+klappte es nicht richtig, wenn in den Datensaetzen Felder #u1 #####N
+oder #u1 ####?N  vorkamen.
+Auch wurde die #u1 dann nicht beseitigt.
+
+Ebenfalls verbessert wurde update.job. Darin waren solche Faelle
+noch gar nicht beruecksichtigt.
+
+In der UIFSGER fehlte die Zeile
+
+175 "TBL gesperrt - Speichern gelang nicht"
+
+und so klappte diese Pruefung nicht:
+
+put
+if not ok jump gesperrt
+
+Dagegen klappte aber
+
+put
+if error=writeerror ins #ufe;jump gesperrt
+
+In dieser Situation steht die eigentliche Fehlermeldung in der iV, 
+daher kann man sie mit "ins #ufe" sichern und hernach ausgeben
+oder auswerten.
+
+
+FLEX Manipulationsbefehle   [a99/alcarta und acon]
+-------------------------
+Ein Ausdruck  i,j  in einem Manipulationsbefehl bei  var  oder  write
+kann jetzt auch so aussehen (wie in der Exportsprache)
+  rN,x
+Damit wird der iV-Text in einem N Zeichen langen Feld nach rechts
+gerueckt und links, falls da noch Platz ist, mit x aufgefuellt.
+So kann man z.B., wenn in #999 ein Datum der Form T.M.JJJJ steht, so
+verfahren:
+var #999(b"." b".") "-" #999(b"." e"." r2,0) "-" #999(e"." r2,0)
+dann wird daraus  JJJJ-MM-TT
+
+Bei den Manipulationsbefehlen e, b und B kann jetzt auch, wie beim
+Export, ein Ausdruck wie z.B. e"[-,._:;]" stehen, um zu erreichen,
+dass beim ersten Auftritt eines der Zeichen -,._:; der iV-Text
+abgeschnitten (Fall e) bzw. der Teil dahinter genommen wird (b oder B).
+Bei den Befehlen t und T geht das nicht, bei f und F ist es unnoetig.
+
+Als Begrenzungszeichen kann uebrigens auch ein anderes dienen, z.B. der
+_ oder der /, wenn zufaellig beide Anfuehrungszeichen mal in einer
+Suchzeichenfolge auftreten. Das kann z.B. bei XML-Daten passieren.
+Das gilt auch fuer die Manipulationsbefehle f, F, t und T; z.B. mit
+  f /'"/ F/'"/
+kann man saemtliche Quotes hinten und vorn wegnehmen.
+
+
+FLEX  f1nd #nnn
+---------------
+Die Abfrage  if no ...  fuer den Fall einer unbesetzten Nummer
+klappte nicht, und zwar sowohl in a99 wie in acon. Behoben.
+Weil das Phaenomen nur eintreten kann, wenn man eine Entlueftung
+gemacht hat, duerfte es kaum je zu Vorkommnissen gekommen sein.
+
+next #  /  prev #
+-----------------
+In a99 sollte dann die naechste bzw. vorige gueltige Satznummer 
+geladen werden, unbesetzte also uebersprungen. Das klappte nicht.
+ Behoben.
+[avanti kennt diesen Befehl weiterhin nicht! Es empfiehlt sich wohl
+ kaum, per next # mit avanti die Gesamtbank durchzuarbeiten!]
+ 
+
+aLF / ORDER
+-----------
+Beim Erfassen eines Exemplars wie beim Inventarisieren wird per
+Formular [Exemplar] das Feld #9DG$a = Barcode erfasst. Nun schauen
+die FLEXe  a-exemp.flx und o-invent.flx  nach, ob es den Barcode
+schon gibt (Reg. 10 unter E...), denn er soll ja eindeutig sein,
+und verweigern dann die Annahme.
+
+
+Kalender
+--------
+Eine unerwuenschte Meldung "In X Tagen ist Ostern" kam X
+Tage *nach* Ostern. Es lag daran, dass in der neuen  day.inc  das
+Minuszeichen bei einer negativen Datumsdifferenz weggenommen
+wurde. Geaendert.
+
+
+Zufallszahl
+-----------
+Das Unterprogramm :random wird in der Datei  random.inc
+bereitgestellt. Mehr dazu im Kommentar der Datei und:
+  http://sun250.biblio.etc.tu-bs.de/pipermail/allegro/2009-January/028971.html
+
+
+Schrift allegro Lucida Console
+------------------------------
+In der TTF-Schrift  a-lucida.ttf war die Ziffer 0 etwas missraten,
+sie sah bei kleinen Einstellungen ulkig aus. Das ist behoben.
+
+
+acon: Sondervariable
+--------------------
+Einige, die a99 schon kannte, kennt jetzt auch acon:
+
+ci 	( i =1...499) Zeile i der UIF-Datei
+cl	Befehlszeile (command line)
+cn 	Feldnummer fuer Neuerfassungsdatum  (CFG cn ) 
+ce 	... fuer letztes Žnderungsdatum  (CFG ce ) 
+cg 	... fuer die IdNr  (CFG cg ) 
+ci 	Form der IdNr (CFG ci )
+cf 	Anzahl der Fuellzeichen in einem Neusatz (CFG f )
+
+
+UPDATE
+------
+Es fiel auf, dass bei Weglassung der Option -n die neuen Datensaetze
+u.U. in eine Datei  cat_0.ald  geschrieben wurden, was Fehlfunktion
+zur Folge hatte. Behoben; das Programm fragt bei Abwesenheit von -n 
+stets, welche Nummer es sein soll.
+
+
+

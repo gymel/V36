@@ -1,0 +1,415 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman\fcharset0 Times New Roman;}{\f1\froman Times New Roman;}{\f2\fmodern\fprq1\fcharset0 Courier New;}{\f3\froman\fprq2\fcharset0 Times New Roman;}{\f4\froman\fprq2 Times New Roman;}{\f5\fmodern\fprq1 Courier New;}{\f6\fmodern\fprq1\fcharset0 allegro Lucida Console;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red0\green176\blue0;\red255\green0\blue0;}
+\viewkind4\uc1\pard\qr\f0\fs18 
+\par \f1 `\cf1\ul\b Register\cf2\ulnone\b0 ` 
+\par \pard\cf3\b\f2\fs24 set \cf2\f3  :  Einstellung diverser Eigenschaften\fs20 
+\par \pard\li709\f4 
+\par \f3 S\b0 tatt  \f2 set\f3   kann man auch  \cf3\b\f2 switch\cf2\b0\f3   schreiben, mit gleicher Wirkung (ab V25.5). Empfohlen wird aber nur noch  \f2 set\f3 .\b\f2 
+\par \b0\f3 
+\par Mit \i [perm]\i0  sind diejenigen Setzungen gekennzeichnet, die in \b\i a99/alcarta\b0\i0  \'fcber den FLEX hinaus g\'fcltig sind, also bis zum Ende der Sitzung oder einer weiteren \'c4nderung. 
+\par Ist \cf4\b\i acon\cf2\b0\i0  angegeben, gilt der Befehl \i auch\i0  f\'fcr \i acon\i0 , d.h. f\'fcr das Konsolprogramm  acon. 
+\par \pard\qr\f0\fs18  
+\par \pard\cf3\b\f2\fs20 set ...\cf2  \cf3    \cf4\i\f3 acon\cf2\i0\f2 
+\par \pard\li709\tx142\b0\f3 Setzung diverser Werte f\'fcr den weiteren Verlauf. 
+\par Wenn hinter \b\f2 set\b0\f3  nichts steht, wird der Inhalt der `\cf1\ul\b iV\cf2\ulnone\b0 ` genommen. Steht auch dort nichts, passiert nichts. 
+\par  
+\par \pard\fs24 Folgende Werte k\'f6nnen eingestellt werden: \fs20 
+\par \b\f2 
+\par \cf3 set a\cf2\b0\i\f0\fs18 N\i0\tab N=0,1,2,3,4,5\b\f2\fs20  \cf3    \cf4\i\f3 acon\cf2\b0\i0\f0\fs18    [a99 erst ab V34.1] 
+\par \pard\li709\b Aufl\'f6sung der V14-Stammsatznummern\b0 , d.h. Ersetzung der Nummern oder K\'fcrzel durch Klartexte. 
+\par (Dies ist also keine echte \i Setzung\i0 , sondern bewirkt sofort die Aufl\'f6sung der Nummern im aktuellen Satz)\f3\fs20 
+\par \f0\fs18 Dabei gibt es die Modalit\'e4ten laut Kap. 10.2.6.8 des Systemhandbuchs: 
+\par \pard\fi-3\li710\tx572\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\cf0\f4\fs20\tab Wenn im Datensatz eine Angabe wie\b\f5  _NNN\b0\f4  steht, dann bewirkt der Wert 
+\par \tab 0 : Ersatz von\b\f5  _NNN\b0\f4  durch den Klartext, hinter\b\f5  _NNN\b0\f4  folgende Zeichen werden beseitigt 
+\par \tab 1 : dasselbe, aber wenn hinter\b\f5  _NNN\b0\f4  noch Zeichen folgen, bleiben diese stehen 
+\par \tab\f3 2 : wie 0, aber das Zeichen '_' bleibt stehen (sinnvoll f\'fcr Kontrollzwecke) \f4 
+\par \tab 3 : wie 1, aber das Zeichen '_' bleibt stehen 
+\par \tab 4 :\b\f5  _NNN_\b0\f3  bleibt stehen, der Klartext wird dahinter eingef\'fcgt, nachfolgende Zeichen verschwinden \f4 
+\par \tab 5 : wie 4, aber nachfolgende Zeichen bleiben stehen. 
+\par \f3\tab -1 : Keine Ersetzung (default)\f4 
+\par \tab\f3 Wenn in einer Kategorie mehrere Identnummern vorkommen k\'f6nnen, sind nur 1, 3 oder 5 sinnvoll. \f4 
+\par \pard\li709\cf2\f1\fs18 D.h.  \f2 set a1\f0   ist der Normalfall: alle Nummern ersetzen durch Klartexte. 
+\par \i\f3\fs20 (Hinweis:\i0  In \b\i a99\b0\i0  macht dasselbe der veraltete Befehl  \f2 `\cf1\ul\b export R\cf2\ulnone\b0 `\f3 , dabei gilt stets \i  N\i0 =\f2 1\f3 .) 
+\par \f0\fs18 Wird NUR gebraucht, wenn man mittels  \f2 write #nnn\f0   Kategorien ausgeben will und dabei der Klartext rauskommen soll. 
+\par Anschlie\'dfend kann man den Satz nicht mit \f2 put\f0  zur\'fcckspeichern (wird verhindert). 
+\par Wenn man also im selben Job \'c4nderungen am Satz vornimmt, dann VOR dem Befehl  \f2 set a1\f0   den Befehl  \f2 put\f0   geben. 
+\par \pard\cf3\b\f2\fs20 
+\par \f5 set \f2 a\cf2\b0\i\'fcberschrift\b\i0 
+\par \pard\li709\f3\'dcberschrift\b0  des n\'e4chsten \b\f2 `\cf1\ul aresqa\cf2\ulnone `\b0\f3 -Fensters setzen.  Fehlt \i\f2\'fcberschrift\i0\f3 , wird der Inhalt der iV genommen. 
+\par (Aufpassen, da\'df  \i\f2\'fcberschrift\i0\f3   nicht mit einer Ziffer beginnt, siehe oben!) 
+\par  
+\par \pard\cf3\b\f2 set b\cf2 
+\par \pard\li709\b0\f3 Bookmark : Lesezeichen auf den aktuellen Satz setzen. (Anzeigen: \b\f2 `\cf1\ul show b\cf2\ulnone `\b0\f3 ) 
+\par  
+\par \pard\cf3\b\f2 set B\cf2\b0\i iText\cf3\b\i0    \cf2\b0\i\f3 [perm]\b\i0\f2 
+\par \pard\li709\f3 Textelement \i\f2 i\i0\f3  der Benutzeroberfl\'e4che \'e4ndern\b0 , neuer Inhalt ist dann  \i\f2 Text\i0\f3  .  Fehlt  \i\f2 iText\i0\f3 , wird der Inhalt der iV genommen. 
+\par \i\f2 i\i0\f3  ist eine Nummer (0< i <500) der User-Interface-Datei UIFEGER (bzw. UIFEENG bei englischer Oberfl\'e4che). Nicht alle darin stehenden Textelemente lassen sich w\'e4hrend des Programmlaufs \'e4ndern, so z.B. nicht diejenigen der Men\'fcs und der Buttons, wohl aber die der Meldungen, auch die Buttons der Unterfenster, bevor diese erstmalig ge\'f6ffnet werden. Die \'c4nderungen gelten nur w\'e4hrend der Sitzung, d.h. werden nicht in der Datei gespeichert. 
+\par \i ABER:\i0  Der  \i\f2 Text\i0\f3   darf h\'f6chstens so lang sein wie der Originaltext, der in der UIF-Datei steht, er wird sonst gek\'fcrzt. \i Das  bedeutet auch:\i0  kommt eine Nummer nicht in der UIF-Datei vor, kann man sie nicht mit diesem Befehl setzen. 
+\par 
+\par \pard\cf3\b\f2 set B\cf2\b0\i i- / \cf3\b\i0 B\cf2\b0\i i\cf3\b\i0 +  \cf2\b0\i\f3 [perm]\b\i0\f2 
+\par \pard\li709\f3 Men\'fcelement \i\f2 i\i0\f3  der Benutzeroberfl\'e4che unwirksam (grau) machen\b0  bzw. wieder wirksam. 
+\par Die Nummer  i  ist die Nummer des Men\'fcelements in der UIF-Datei, z.B. 263 f\'fcr das Element "DOS-Programm" im Men\'fc Datei. 
+\par \i Anm.:\i0  Nur wirksam bei Unterpunkten, nicht bei den \'dcberschriften. Auch auf Buttons nicht anwendbar. 
+\par \pard\cf3\b\f2 
+\par \f5 set C\f2    \cf2\b0\i\f3 [perm]\b\i0\f2 
+\par \pard\li709\f3 Copy-Verzeichnis setzen\b0  : Inhalt der iV wird als Verzeichnisname f\'fcr Sicherheitskopien aufbewahrt, und zwar in der Variablen  \f6 DbBack\f3  der INI-Datei. Wird in _BACKUP.FLX gebraucht.\b\f2 
+\par \f5 
+\par \pard\cf3 set c0/c1\f2 /c2   \cf2\b0\i\f3 [perm]    Achtung: \i0  abweichend in \cf4\b\i acon \cf2\b0\i0  `\cf1\ul\b\f2 switch coding\cf2\ulnone\b0\f3 `\b\f2 
+\par \pard\li709\b0\f3 Eingabedaten sind ASCII (DOS) / ANSI (Windows), wirkt bei  `\cf1\ul\b\f2 e.adt\cf2\ulnone\b0\f3 ` und \b\f2 `\cf1\ul insert\cf2\ulnone `\b0\f3 -Befehlen 
+\par Default ist 1, weil allegro-Datenbanken fast alle intern mit DOS-ASCII arbeiten, Eingabedaten dagegen oft im Windows-Code sind! (Das ab 2006 existierende "Neutralmodell" mit N.CFG verwendet intern Windows-Code.) 
+\par Wert \cf3\b\f2 2\cf2\b0\f3  bedeutet: Keine Umcodierung. 
+\par \f4 In \cf4\b\i acon \cf2\b0\i0\f3  gibt es f\'fcr diese Funktion den Befehl  `\cf1\ul\b\f2 switch coding\cf2\ulnone\b0\f3 `. 
+\par Die Umcodierung wird auf den iV-Inhalt angewendet, wenn ein  \f2 insert\f3   diesen in ein Datenfeld \'fcberf\'fchrt. 
+\par Die Setzung wirkt auch auf die mit  \f2 `\cf1\ul\b update/upload\cf2\ulnone\b0 `\f3   eingelesenen Daten!  \f2 set c1\f3   setzen, wenn diese ANSI sind, intern aber ASCII verwendet wird. 
+\par \f4 Auswirkung auch auf die Funktion \b\f2 `\cf1\ul file\cf2\ulnone `\b0\f3  (= Ausgabefunktion "Datei | Anzeige speichern als ...": Der Text kommt in ANSI heraus, wenn der Wert 1 gesetzt ist, normalerweise also in ASCII. 
+\par \i Wichtig:\i0  Beim Einlesen von Unicode-Daten hilft der Befehl  `\cf1\ul\b\f2 xcode u\cf2\ulnone\b0\f3 `  zur Umwandlung in den Interncode. 
+\par \f4 Wenn mit \b\f2 `\cf1\ul help\cf2\ulnone `\b0\i\f3 dateiname\i0   eine Textdatei eingelesen wird, dann erfolgt beim Wert 0 die ASCII->ANSI-Umcodierung, d.h. das ist der Normalfall, mit Wert 1 kann man ANSI-TXT-Dateien anzeigen lassen. 
+\par \b\f2 
+\par \pard\cf3\f5 set c\f2 +/c-   \cf2\b0\i\f3 [perm]   Default: \cf3\b\i0\f2 c-\cf2 
+\par \pard\li709\b0\f3\tab Das Zeichen \b\\\b0  soll in eingebetteten Variablen in RTF-Dateien (Hilfetexten) verdoppelt und damit angezeigt werden, sonst wird es nicht angezeigt.\b\f2 
+\par \pard\b0\f3 
+\par \cf3\b\f2 set cf\cf2\b0\i\f3 anzahl\cf3\b\i0\f2    \cf2\b0\i\f3 [perm]\b\i0\f2 
+\par \pard\li709\f3 F\'fcllzeichen-Anzahl setzen\b0 : Der Wert f der CFG wird neu gesetzt. Sinnvoll, wenn man einen Neusatz erzeugt, von dem man schon wei\'df, da\'df er mehrfach verl\'e4ngert werden wird. Stattet man ihn gleich mit einer Anzahl von hundert oder mehr F\'fcllzeichen aus, verhindert dies, da\'df jedesmal der Satz verlagert werden mu\'df. 
+\par \i Hinweis:\i0  Mit  \f2 var cf\f3   kann man sich den aktuellen Wert ausgeben lassen.\b\f2 
+\par \f5 
+\par \pard\cf3 set d/dn/db/d+/d-\f2    \cf2\b0\i\f3 [perm]\cf3\b\i0\f2 
+\par \pard\li709\cf2\b0\f3 Das \b Anzeigefeld\b0  wird auf \b n\b0 ormale Gr\'f6\'dfe bzw. auf \'dcbergr\'f6\'dfe (\b b\b0 ig) eingestellt. Fehlt 'n' oder 'b', dann wird der aktuelle Zustand in den anderen umgeschaltet. 
+\par \b\i Tip:\b0\i0  Rechte Maustaste auf einem Button klicken: schaltet zwischen normal und breit. 
+\par Mit + und - wird die Schriftgr\'f6\'dfe im Anzeigefenster erh\'f6ht bzw. gesenkt. Das funktioniert nur, wenn im RTF-Text der Anzeige keine zus\'e4tzlichen Befehle \\fsnn vorkommen, denn diese haben dann Vorrang! Die Grundgr\'f6\'dfe wird in den Dateien DISPHEAD.RTF, HELPHEAD.RTF etc. gesetzt. Bei RTF-Hilfedateien funktioniert die Sache nicht, denn in diesen kommen normalerweise viele \\fs-Befehle vor. 
+\par \i Hinweis:\i0  Das Gesamtfenster wird mit  \f2 set wm\f3   maximiert (Vollbild), mit  \f2 set wn\f3   normalisiert, mit  \f2 set wi\f3   minimiert, s.u.\b\f2 
+\par \f5 
+\par \pard\cf3 set \f2 D\cf2\b0\i\f3 DataFont=CharSet\cf3\b\i0\f2    \cf2\b0\i\f3 [perm]\b\i0\f2 
+\par \pard\li709\f3 Schrift und Zeichensatz im Auswahlfeld\b0  werden umgeschaltet, zugleich gilt diese Einstellung f\'fcr das Schreibfeld und f\'fcr die Index- und Kurzlistenfenster. 
+\par F\'fcr \i DataFont\i0  kann man jeden erlaubten Fontnamen einsetzen, z.B. "allegro Lucida Console" oder "Courier New", f\'fcr \i CharSet\i0  einen der folgenden Zahlenwerte: 
+\par \f2 0   ANSI 
+\par 1   DEFAULT 
+\par 2   SYMBOL 
+\par 77  MAC 
+\par 128 SHIFTJIS 
+\par 129 HANGUL 
+\par 134 GB2312 [chines.] 
+\par 136 CHINESEBIG5 
+\par 161 GREEK 
+\par 162 TURKISH\b 
+\par \b0 163 VIETNAMESE\b 
+\par \b0 177 HEBREW\b 
+\par \b0 178 ARABIC\b 
+\par \b0 186 BALTIC 
+\par 204 RUSSIAN 
+\par 222 THAI\b 
+\par \b0 238 EASTEUROPE \i\f3 (gemeint ist Mitteleuropa)\i0\f2 
+\par 255 OEM 
+\par \f3 Weitere Namen und Werte kann man herausbekommen, wenn man per Men\'fc "Option / Datenfont" eine Einstellung vornimmt und nach Beenden des Programms nachsieht, was in der INI-Datei unter  DataFont bzw. CharSet steht. (In der INI-Datei mu\'df dazu \f2 SetSize=1\f3  stehen.) 
+\par \pard\f2 
+\par \cf3\b set e0/e1   \cf2\b0\i\f3 [perm]\b\i0\f2 
+\par \pard\li709\b0\f3 Die \b Editor-Fehlermeldungen \b0 werden aus- bzw. eingeschaltet\b\f2 
+\par \f5 
+\par \pard\cf3 set env\cf2  \b0\i name=value\f2    \f3 [perm]\b\i0\f2 
+\par \pard\li709\b0\f3 Die \b Environment-Variable\b0  \i name\i0  wird auf den Wert \i value\i0  gesetzt. Dies gilt jedoch nur, w\'e4hrend \b a99\b0  l\'e4uft, und nur f\'fcr den Prozess \b a99\b0 , auch nicht f\'fcr ein mit call aufgerufenes Programm. 
+\par \f4 Begrenzt kann man sich also Daten im Env.-Speicher ablegen. 
+\par (Umgekehrt: --> \b\f2 `\cf1\ul get env\cf2\ulnone `\b0\f3 )\b\f2 
+\par \f5 
+\par \pard\cf3 set Err\cf2 
+\par \pard\li709\f3 Fehlerwert und Fehlermeldungstext\b0  zuruecksetzen. Anschliessend gilt  \f2 if yes\b 
+\par \b0\f3 Den Meldungstext erh\'e4lt man mit \f2 var Err\f3 . 
+\par \b\f2 
+\par \pard\cf3\f5 set f1/f2/f0\f2    \cf2\b0\i\f3 [perm]\b\i0\f2 
+\par \pard\li709\b0\f3 `\cf1\ul Flips\cf2\ulnone ` im Anzeigefeld k\'f6nnen mit \b Einzel-\b0  bzw. nur mit \b Doppelklick\b0  aktiviert werden bzw. \'fcberhaupt nicht. Default ist 1. 
+\par \b\f2 
+\par \pard\cf3\f5 set F1/F0\f2    \cf2\b0\i\f3 [perm]\b\i0\f2 
+\par \pard\li709\f3 Formularmodus\b0 : 1 = alles \'fcbernehmen beim Verlassen, 0 = Nutzer mu\'df bei jedem Feld die Enter-Taste dr\'fccken.  Default ist 1 (fr\'fcher gab es nur 0) . 
+\par \b\f2 
+\par \pard\cf3\f5 set \f2 getlock on/off  \cf2\i\f3 [nicht perm]\cf3\i0\f2  \cf2\b0\i  \cf3\b\i0  \cf4\i\f3 acon   \cf0\b0\i0 ab V32.4\cf2 , \cf3\b\f2  \cf4\i\f3 a99 \cf2\b0\i0 ab V33.5\cf4\b\i  
+\par \pard\li709\cf2\b0\i0 Das Sperren geschieht bei  \f2 on\f3   dann automatisch genau VOR dem tats\'e4chlichen Laden des n\'e4chsten Satzes. 
+\par Nach dieser Setzung sind in \i acon\i0   \f2 get \b edit\b0\f3   und  \f2 set lock\f3   unn\'f6tig (wenn auch unsch\'e4dlich) 
+\par Dies ist aus Sicherheitsgr\'fcnden so eingerichtet: damit zwischen Laden des Satzes und Sperren keine zeitliche L\'fccke entstehen kann. Das kann in kritischen Situationen, wenn man ganz sicher gehen will, schon mal erw\'fcnscht sein. Datensch\'e4den sind jedoch auch sonst nicht zu bef\'fcrchten, es kann nur - sehr selten - mal sein, da\'df zwischen dem Laden und dem Speichern jemand anders einen Satz ver\'e4ndert hat. Dann gibt sowohl a99 wie acon eine Meldung aus, jemand anders sei schneller gewesen, und der Satz wird \i nicht\i0  gespeichert. Besonders in  \f2 acon\f3   wird man solche Situationen gern vermeiden wollen. 
+\par \cf4\i Wichtig:\cf2\i0  Nach einem  \f2 set getlock on\f3   unbedingt darauf achten, einen geladenen Satz mit  \f2 put unlock\f3   abzuspeichern oder aber mit  \f2 set free\f3   wieder ausdr\'fccklich freizugeben, denn von selber passiert das nicht.\b\f2 
+\par \pard\cf3\f5 
+\par set h\cf2 
+\par \pard\li709\f3 History\b0  : aktuellen Satz zur Menge der "Vorher angezeigten Daten" hinzuf\'fcgen\b\f2 
+\par \f5 
+\par \pard\cf3 set \f2 H\cf2\b0\i\f3 m :  m\i0 =0/1 : kursiv/grauer Hintergrund  [ab V35.6], Default ist 0\b\f5 
+\par \pard\li709\f3 Hintergrund\b0  : Auswahlfeld bei Anzeige des Reservespeichers: 0=Kursivschrift / 1=grauer Hintergrund 
+\par (1 wird empfohlen : kostet weniger GDI Ressourcen)\b\f2 
+\par \f5 
+\par \pard\cf3 set i\cf2\b0\f3 Z\i text     [perm]\b\i0\f2 
+\par \pard\li709\b0\f3 Damit setzt man die \b Kopfzeilen \b0 f\'fcr das \b Kurzanzeigefenster\b0 . Dieses hat drei Varianten: 
+\par A  Ergebnismenge 
+\par B  Offline-Datei 
+\par C  ViewListe 
+\par Jedes hat drei Kopfzeilen:  1. Fenstertitel, 2. Datei- oder Erg.Mengenname, 3. Hinweiszeile (bei Erg.Menge: Struktur der Kurzzeile) 
+\par Deshalb k\'f6nnen bis zu neun Zeilen gesetzt werden, d.h. \b die Ziffer Z geht von 1 bis 9\b0 : 
+\par \f4 A  1  2  3 
+\par B  4  5  6 
+\par C  7  8  9 
+\par \f3 Will man z.B. die mittlere Zeile f\'fcr eine ViewListe setzen, ist das die Ziffer 8. 
+\par Zum L\'f6schen einer Setzung:  \f2 set iZ\f3   ohne Text, mit Z=1...9. 
+\par Die Setzung ist auch \'fcber die iV m\'f6glich (dadurch wird die Sache flexibel) 
+\par \f2 var "i8..." 
+\par ansi 
+\par set 
+\par \b 
+\par \pard\cf3 set I0/I1   \cf2\b0\i\f3 [perm]  \i0  \i Standard:\i0  1\b\f2 
+\par \pard\li709\b0\f3 Beim Eintritt in ein Formular-, Eingabe- oder ask-Feld wird dessen \b gesamter Inhalt selektiert\b0  (markiert) bzw. deselektiert. Das erstere war bis V29.4 der Normalfall und es ging gar nicht anders, obwohl es gew\'f6hnungsbed\'fcrftig war. Das zweite ist ab V29.5 der Normalfall! Eine Ausnahme ist mit Vorbedacht nur das Schreibfeld: wenn man es mit Tab betritt, wird der Inhalt markiert, so da\'df man ihn mit Entf sofort l\'f6schen kann. 
+\par \i Tip:\i0  Wer diese Neuerung nicht will, schreibt  \f2 set I0\f3   in seinen  \f2 _start.flx\f3 .\b\f2 
+\par \f5 
+\par \pard\cf3 set \f2 k\f5 1/\f2 k\f5 0\f2    \cf2\b0\i\f3 [perm]   Standard:\i0  0    [ab V34.1]\b\f2 
+\par \pard\li709\f3 `\cf1\ul Offline-Speicher\cf2\ulnone ` aus-/einschalten\b0 , d.h. dem Nutzer die M\'f6glichkeit einr\'e4umen (k0) bzw. vorenthalten (k1), zu vorher ver\'e4nderten S\'e4tzen zur\'fcckzukehren und den Button [Wechseln] nutzen zu k\'f6nnen. Vom Betreuer aus wohl\'fcberlegten Gr\'fcnden einzusetzen. 
+\par \b\f2 
+\par \pard\cf3\f5 set L1/L0\f2    \cf2\b0\i\f3 [perm]   Standard:\i0  0\b\f2 
+\par \pard\li709\b0\f3\tab Der \b Copy-Befehl im Index wandelt Klein- in Gro\'dfbuchstaben\b0  um (wenn \cf3\b\f2 1\cf2\b0\f3 ) bzw. nicht.  
+\par \b\f2 
+\par \pard\cf3\f5 set lock   \cf4\i\f3 acon\cf2\b0\i0 
+\par \cf3\b\f2 set unlock   \cf4\i\f3 acon 
+\par \cf2\b0\tab auch:\i0  \cf3\b\f2 set rec lock/free   \cf4\i\f3 a99\cf3\i0\f2 
+\par \cf2\b0\f3 
+\par \pard\li710\b Datensatz f\'fcr Schreibzugriff blockieren\b0  (\f2 lock\f3 ) bzw. \b freigeben\b0   (un\f2 lock\f3 ) 
+\par \pard\li709\f4 Mit \f3  \f2 if yes ...\f3   bzw.  \f2 if no ...\f3   kann man testen, ob es geklappt hat. 
+\par Statt mit  \f2 set unlock\f3   kann man einen Satz auch mit  \f2 `\cf1\ul\b put unlock\cf2\ulnone\b0 `\f3   wieder freigeben, d.h. er wird dann geschrieben, obwohl er gesperrt ist. 
+\par Automatisch, etwa vor dem Laden des n\'e4chsten Satzes oder am Ende des Jobs, wieder freigegeben wird der Satz nur in \i acon\i0 , aber in a99 nicht, d.h. da mu\'df man das mit  \f2 set unlock\f3   selber tun. 
+\par \i\f4 Hinweis:\i0  Bei \i acon\i0  kann man einen Satz schon beim Einlesen mit \f2 `\cf1\ul\b get\cf2\ulnone\b0 `\f3  sperren lassen:  \b\f2 get edit\b0  ...\f3  
+\par \cf0\i Wichtige Zusatzfunktion:\i0  Sperren ohne Laden! Hinter beide Befehle kann man noch  \f2 #\i Num\i0\f3   setzen, mit einer internen Satznummer  \i\f2 Num\i0\f3  . Fehlt diese, wird der iV-Inhalt genommen, d.h man kann z.B. schreiben, wenn in  \f2 $nummer\f3   die Satznummer steht: 
+\par \b\f2 var $nummer\\set lock #\b0  
+\par \i\f3 Noch eine Zusatzfunktion:\i0  Im Anschlu\'df an diese Befehle (auch  \f2 get edit\f3   und  \f2 find #...\f3  sowie  \f2 if Lock\f3 ) kann man die Sondervariable  \f2 sL\f3   auswerten, aus der noch etwas mehr zu entnehmen ist:  \f2 var sL\f3 
+\par \cf2\b\f2 Werte von sL (einige treten nur bei  set lock  auf:  \cf0\b0\f3 (Werte <1 zeigen Fehler an!)\cf2\b\f2 
+\par    0 = OK, Sperren hat geklappt bzw. Satz ist gesperrt (if Lock) 
+\par   -1 = lock geht nicht (TBL gesperrt; mit  if tbl ... checken) 
+\par   -2 = .TBL-Eintrag falsch (Dann .tbl erneuern) 
+\par   -3 = .ALD-Datei \'f6ffnet nicht 
+\par   -4 = Falsches Byte am Satzbeginn (Datei- oder .tbl-Fehler) 
+\par   -6 = Keine Schreibberechtigung 
+\par   -8 = Satznummer <0 oder zu gro\'df 
+\par    1 = Satz ist nicht gesperrt (nach if Lock) 
+\par    8 = Satz ist gesperrt (nach if Lock) 
+\par    9 = Satz ist geloescht (Sperren geht dann nicht) 
+\par \b0\f3 
+\par \pard\cf3\b\f2 set Logging off/on    \cf4\i\f3 nur acon\cf3\i0\f2 
+\par \pard\li709\cf2\b0\f3 Das \b Logging beim Speichern\b0  abschalten/einschalten. 
+\par Wird z.B. genutzt in  \f2 update.job\f3   beim Einspeisen einer LOG-Datei.\b\f2 
+\par \pard\cf3\f5 
+\par set m\cf2\b0\i code\f2    \f3 [perm]\b\i0\f2 
+\par \pard\li709\b0\f3 Der Code f\'fcr das \b Flip-Markierungszeichen\b0  wird auf \i\f2 code\i0\f3  gesetzt. \i Standard:\i0  160, das "nichtbrechende" Leerzeichen.\b\f2 
+\par \f5 
+\par \pard\cf3 set \f2 M \cf2\b0\i\f3 xyz\cf3\b\i0\f2     \cf2\b0\i\f3 [perm]\i0 
+\par \pard\li709 Das \b Temp-Verzeichnis\b0  (%%temp%% oder  \f2 DbAux\f3   aus der INI-Datei) wird auf \i xyz\i0  gesetzt. 
+\par Wenn \i xyz\i0  fehlt, wird der Inhalt der iV genommen. 
+\par Auf diesem Verzeichnis kommen die Hilfsdateien zu liegen, die sich das Programm f\'fcr die Erg.Mengen anlegt. 
+\par 
+\par \pard\cf3\b\f2 set N0/N1/N2   \cf4\i\f3 acon   \cf2\b0 [perm]\b\i0\f2 
+\par \pard\li709\b0\f3 Der \b Modus f\'fcr das Speichern neuer S\'e4tze\b0  wird auf 0, 1 oder 2 gesetzt. \i Standard: \i0  2 bzw. Wert von NewMode in der INI-Datei.\b\f2 
+\par \f5 
+\par \pard\cf3 set n\cf2\b0\i nummer\cf3\b\i0    \cf4\i\f3 acon   \cf2\b0 [perm]\b\i0\f2 
+\par \pard\li709\b0\f3 Die \b Dateinummer f\'fcr neue S\'e4tze\b0  wird gesetzt (0 < nummer < 256).  \i Standard: \i0  1 bzw. der Wert von InputFile in der INI-Datei. 
+\par \pard\f4\tab Gleichwertig:  \cf3\b\f2 input\cf2  \b0\i\f3 nummer\i0 
+\par \pard\li709\b\f2 
+\par \pard\cf3\f5 set o\cf2\b0\i ModPos      \i0\f3 (keine Leerzeichen dazwischen!)    \i [perm]\b\i0\f2 
+\par \pard\li709\f3 Die Sortiereinstellungen f\'fcr Erg.Mengen\b0  \'e4ndern. 
+\par \i Mod\i0   kann a oder d sein (f\'fcr ascending bzw. descending = aufsteigend bzw. absteigend, oder n = Satznummer), 
+\par \i Pos\i0  mu\'df eine Zahl sein, beginnend mit 0, f\'fcr die Position in der STL-Zeile, wo die Ordnung stattfinden soll. Dies entspricht den Werten SortMod und SortPos in der INI-Datei ( 0=a und 1=d ).  
+\par \b\f2 
+\par \pard\cf3\f5 set P\f2    \cf2\b0\i\f3 [perm]\b\i0\f2 
+\par \pard\li709\f3 Druckseite einrichten\b0  (wie Men\'fc "Datei | Seite einrichten") 
+\par \b\f2 
+\par \pard\cf3\f5 set pX \f2    \cf4\i\f3 acon   \cf2\b0 [perm]\cf3\b\i0\f2 
+\par \pard\li709\cf2\f3 Prim\'e4rschl\'fcssel \b0 f\'fcr \b\f2 update\b0\f3  wird an der Sprungmarke  \f2 #-X\f3   bestimmt. 
+\par Wurde in der Sitzung noch kein solcher Befehl gegeben, wird derjenige Schl\'fcssel als Prim.Schl\'fcssel benutzt, der sich als erster aus der Abarbeitung der Indexparameter ergibt. Dieses Verhalten kann auch wieder eingestellt werden, indem man \cf3\b\f2 X\cf2\b0\f3  wegl\'e4\'dft. 
+\par \i Aber Vorsicht: \i0 der ak-Befehl wird nicht abgearbeitet! Man kann daher nur solche Sprungmarken verwenden, wo nicht mit der Variablen  \f2 #u1\f3  gearbeitet wird.  Siehe auch:  \f2 `\cf1\ul\b var p\cf2\ulnone\b0 `\f3  (dort wirkt sich diese Setzung ebenfalls aus, ab V27.2) 
+\par \b\f2 
+\par \pard\nowidctlpar\cf3 set q\cf2\b0\i\f3 num\b\i0\f2 
+\par \pard\nowidctlpar\li709\b0\f3 Im \b Offline-Speicher\b0  (Alt+q) auf den Satz mit der laufenden Nummer \i num\i0  \b positionieren\b0  und diesen anzeigen. 
+\par \i Hinweis:\i0  Mit \f2 first off / last off\f3  kann man auf den ersten bzw. letzten Offline-Satz positionieren. 
+\par \i Hinweis:\i0  Von Hand kann man zum n-ten Offline-Satz gehen, indem man in der Suchbefehlszeile  \f2 %%n\f3   gibt.\b\f2 
+\par 
+\par \pard\cf3\f5 set \f2 rec lock   \cf2\b0\f3   siehe ->  \f2 `\cf1\ul\b set lock\cf2\ulnone\b0 `\f3 
+\par \cf3\b\f2 
+\par \f5 set \f2 recn     \cf4\i\f3 NUR acon\cf3\i0\f2 
+\par \pard\li709\cf2\b0\f3 Die \b interne Nummer des aktuellen Satzes\b0  wird auf die Zahl gesetzt, die momentan in der iV steht. 
+\par Anwendung auf eigene Gefahr! Anschlie\'dfendes Abspeichern mit  put  \'fcberschreibt den Satz, der zu der gew\'e4hlten Nummer geh\'f6rt. 
+\par Sinnvoll nur, damit in den Exportparametern die Sonderkategorie  \f2 #nr\f3   einen gew\'fcnschten Wert hat.\b\f2 
+\par \pard\cf3\f5 
+\par set R\cf2\b0\i name\f2     \f3 [perm]\b\i0\f2 
+\par \pard\li709\b0\f3 Die \b aktuelle Ergebnismenge\b0  erh\'e4lt den Namen \i\f2 name 
+\par \f3 Hinweis: \i0 Die Satzanzahl (Erg.Mengengr\'f6\'dfe) wird automatisch davorgesetzt, man braucht nur den Namen zu setzen.\i\f2 
+\par \i0\f3 Wenn \i\f2 name\i0\f3  z.B. in einer Variablen #uxy steht, dann geht es so: 
+\par \f2 var "R" #uxy 
+\par set 
+\par \f3 Wie das angewendet wird, sieht man in  `\cf1\ul\b rset.flx\cf2\ulnone\b0 `. 
+\par Auf den Namen kann mit  \b\f2 find :\b0\i\f3 name\i0   sp\'e4ter zur\'fcckgegriffen werden, um die Erg.Menge erneut zu aktivieren; siehe `\cf1\ul\b find-Befehl\cf2\ulnone\b0 `.\b\f2 
+\par \f5 
+\par \pard\cf3 set s0/s1\f2     \cf2\b0\i\f3 [perm]\b\i0\f2 
+\par \pard\li709\b0\f3 Der \b Subfield-Hilfemodus\b0  wird aus- bzw. eingeschaltet (Einstellung "SubHelp" in a99.ini)\b\f2 
+\par \f5 
+\par \pard\nowidctlpar\cf3\f2 set S0/S1    \cf2\b0\i\f3 [perm]\b\i0\f2 
+\par \pard\nowidctlpar\li709\b0\f3 Special Logging off / on 
+\par In die Datei  \i\f2 DbName\i0 .slo\f3   werden bei \cf3\b\f2 S1\cf2\b0\f3  Testmeldungen geschrieben, die sich aus mehreren internen Vorg\'e4ngen beim Speichern eines Satzes ergeben. N\'fctzlich nur, wenn man sich mit den Quellcodes von a99 auskennt. 
+\par \b\f2 
+\par \pard\cf3 set tbl loc/fre      \cf4\i\f3 acon\cf3\i0\f2  \cf2\b0\i\f3 [perm] \cf3\b\i0\f2 
+\par \pard\li709\cf2\f3 .TBL-Datei (sog. Satztabelle) blockieren/freigeben\f2 
+\par \cf0\b0\f3 Das macht man z.B. zweckm\'e4\'dfigerweise, wenn man im FLEX eine Nummernvergabe ausf\'fchren will. Denn sonst k\'f6nnte jemand anders zuf\'e4llig gleichzeitig denselben Vorgang machen (z.B. Inventarisierung), und dann k\'f6nnte es zu Doppelnummern kommen. 
+\par Denkbar ist der Einsatz auch, um im laufenden Betrieb eine Datenbankkopie zu machen, damit w\'e4hrend der Kopierzeit keine Schreiboperationen m\'f6glich sind. 
+\par \i Hinweis:\i0  Wenn  \f2 set tbl loc\f3   nicht geht, weil die Datenbank schon gesperrt ist, wird der Versuch nach 10 Sekunden aufgegeben und die Bedingung \b no\b0  gesetzt, d.h. man kann die Situation mit  \f2 if no ...\f3   abchecken. 
+\par \cf2\b\f2 
+\par \pard\cf3\f5 set \f2 Timestamp off/on    \cf4\i\f3 nur acon\cf3\i0\f2 
+\par \pard\li709\cf2\b0\f3 Die \b Zeitstempelung beim Speichern abschalten/einschalten\b0 . 
+\par Wird genutzt in  \f2 update.job\f3   zum Einspeisen einer LOG-Datei.\b\f2 
+\par \pard\cf3\f5 
+\par set u\f2  \cf2\b0\i\f3 xyz\cf3\b\i0\f2    \cf4\i\f3 acon\cf0\b0\i0   (au\'dfer \cf2\i z\cf0\i0  )\cf2 
+\par \pard\li709\b Modus setzen  f\'fcr\b0  \f2 `\cf1\ul\b update\cf2\ulnone\b0 `\f3 . x und y wie bei DOS-UPDATE  
+\par (siehe `\cf1\ul\b Handbuch\cf2\ulnone\b0 `, Kap. 9), also z.B.  \b\f2 set u \b0 41\f3 . 
+\par 
+\par \i z\i0 =0 bedeutet: Keine Speicherung, sondern Zwischenlagerung im Offline-Speicher. Dort kann man sich die Daten erst einmal anschauen. Die Speicherung kann anschlie\'dfend \'fcber das Men\'fc "Datei" erfolgen. Fehlt z, wird 1 angenommen, d.h. Echt-Update. 
+\par \i Hinweis:\i0  Hinter dem \cf3\b\f2 u\cf2\b0\f3  mu\'df bei \cf4\i acon\cf2\i0  ein Spatium stehen, bei a99 nicht (aber es geht auch, ab V25.5). 
+\par \f4 
+\par \f3 Der Wert f\'fcr x bezieht sich auf die Art, wie S\'e4tze behandelt werden sollen, die in der Datenbank schon vorhanden sind.\f2 
+\par Daf\'fcr gibt es 5 M\'f6glichkeiten: 
+\par \f5 0\tab\f2 Satz einmischen, als w\'e4re es ein neuer Satz 
+\par \f5 1\tab Satz ersetzen 
+\par 2\tab Satz ignorieren 
+\par 3\tab nur neue Kategorien einmischen 
+\par 4\tab\f2 vorhandene Kategorien \'fcberschreiben\b 
+\par \b0\f3 
+\par Der Wert f\'fcr y bezieht sich nur auf S\'e4tze, die noch nicht in der Datenbank vorhanden sind: 
+\par \f2 0\tab Satz ignorieren 
+\par 1\tab Satz einmischen\b 
+\par \pard\b0\f0\fs18 
+\par \cf3\b\f2\fs20 set U1/U2/U0   \cf4\i\f3 acon   \cf2\b0 [perm]\i0 
+\par \pard\li709\f4 `\cf1\ul\b Unicode-Modus\cf2\ulnone\b0\f3 ` setzen bzw. l\'f6schen. 
+\par \f4 wenn 1 oder 2: eingelesene Daten werden als UTF-8-Codes interpretiert und in interne Codes verwandelt. Die Akzentvertauschung wird automatisch miterledigt. 
+\par Dazu wird die Liste der u-Befehle in den Indexparametern benutzt. Die Ersetzung geschieht dann bei jedem \f3  \f2 insert\f3  , jedoch nur bei echten Kategorien und bei \f2 #u1\f3  und \f2 #u2\f3 , nicht bei \f2 #uxy\f3 -Variablen! Das ist notwendig, weil man mit den \f2 #uxy\f3 -Variablen oft Textinhalte unverf\'e4lscht transportieren will. 
+\par \i Tip:\i0  Mit  xcode u  kann man jederzeit den aktuellen iV-Inhalt umwandeln lassen. 
+\par \f4 Komm\f3 en einzelne UTF8-Codes nicht in der Liste vor, wird so verfahren: 
+\par Bei \cf3\b\f2 U1\cf2\b0\f3 : Entit\'e4tencodes \f2 &#nnn;\f3  daraus machen, Bei \cf3\b\f2 U2\cf2\b0\f3 : UTF-8-Code so lassen. 
+\par \i\f4 Achtung:\i0\f3  nach der Einleseprozedur stets sofort zur\'fccksetzen, sonst funktionieren nachfolgende Export-Umcodierungen nicht! 
+\par \f4 
+\par \pard\cf3\b\f2 set unlock   \cf4\i\f3 acon\cf2\b0\i0     siehe ->  \f2 set rec\f3 
+\par \cf3\b\f2 
+\par \f5 set \f2 v1 \cf2\b0\f3 
+\par \pard\li709\b Entfern-Modus f\'fcr die n\'e4chste ViewListe\b0  einschalten. Wenn mit   \b\f2 View \b0\i name\i0\f3    dann eine ViewListe aufgemacht wird, k\'f6nnen Zeilen entfernt werden. Dieser Modus wird nach dem Schlie\'dfen der ViewListe wieder auf 0 gesetzt, mu\'df also ausdr\'fccklich vor jedem \'d6ffnen einer ViewListe auf 1 gesetzt werden.\b\f2 
+\par \pard\b0\f0\fs18 
+\par \cf3\b\f2\fs20 set wm / wn / wi    \cf2\b0\i\f3 [perm]\i0 
+\par \pard\li709\b Fenster auf maximale Gr\'f6\'dfe\b0  ("Vollbild") \b bzw. auf Normalgr\'f6\'dfe und -position setzen\b0  bzw. als Icon in die Taskleiste schicken. 
+\par Zweimaliges  \f2 set wn\f3   schaltet auf "Normalposition" (wie Men\'fcfunktion "Datei / Normalposition")\b\f2 
+\par \pard\b0\f0\fs18 
+\par \cf3\b\f2\fs20 set W \cf2\b0\i\f3 xyz\cf3\b\i0\f2     \cf2\b0\i\f3 [perm]\i0 
+\par \pard\li709 Das \b Arbeitsverzeichnis\b0  (Working Directory) wird auf \i xyz\i0  gesetzt. Wenn \i xyz\i0  fehlt, wird der Inhalt der iV genommen. 
+\par Mit  \f2 if no ...\f3   kann man checken, ob das nicht geklappt hat. Im Verzeichnisnamen \i xyz\i0  kann man / statt \\\\ verwenden. Ob man einen / oder \\\\ an das Ende setzt, ist unerheblich. Wenn man hinterher  \f2 var W \f3  gibt,  kommt genau das raus, was man als \i xyz\i0  gesetzt hat.\f0\fs18 
+\par \pard\f1 
+\par \cf3\b\f2\fs20 set x\cf2\b0\i\f3 ab\cf3\b\i0\f2    \cf4\i\f3 acon\cf3\i0\f2     \cf2\b0\i\f3 [perm]    ab V27\i0 
+\par \pard\li709 Die \b Umcodierung f\'fcr das Suchen mit dem Befehl\b0  \b\f2 srx\b0\f3 , also mit `\cf1\ul\b regul\'e4ren Ausdr\'fccken\cf2\ulnone\b0 ` auf die p- bzw. q-Befehle der Index-, Display- oder Exportparameter setzen: 
+\par \i a\i0  = \f2 i d x\f3  \tab Index- / Display- / Exportparameter 
+\par \i b\i0  = \f2 p q\f3   \tab p- / q-Tabelle 
+\par \i Falls nicht gesetzt\i0  : dann werden die Codes der Indexparameter benutzt, und zwar diejenigen, die das A in a wandeln. Bei der A-Konfiguration ist das die q-Tabelle, bei der N.CFG aber die p-Tabelle. 
+\par Diese Setzung wird auch wirksam f\'fcr die Befehle \f2 find _\i\f3 xyz\i0\f2 _\f3  bzw.  \f2 find ,\i\f3 xyz\i0\f2 ,\f3  und f\'fcr   \f2 if %%\i\f3 xyz%%\i0 . 
+\par \i ACHTUNG:\i0  Zu empfehlen ist, eine Setzung noch innerhalb desselben FLEXes wieder zur\'fcckzunehmen, und zwar mit schlichtem  \f2 set x\f3    in den normalen, automatischen Zustand.\f0\fs18 
+\par \i\f3\fs20 Hinweis:\i0  Testen kann man die Tabellen mit dem Befehl  `\cf1\ul\b\f2 xcode\cf2\ulnone\b0\f3 ` .\b\f2 
+\par \pard\b0\f0\fs18 
+\par \cf3\b\f2\fs20 set X\cf2\b0\i\f3 c\cf3\b\i0\f2     \cf2\b0\i\f3 [perm]    ab V29\i0 
+\par \pard\li709\b Expansionsmodus \b0 (Satz\'fcbergreifende Suche). 
+\par Der Code \i c\i0  kann 0, 1 oder 2 sein: 0: Expansionen beim Befehl `\f2 find`\f3  normalerweise ausgeschaltet (default), 1: automatische Expansion bei jedem Suchbefehl, 2: Expansions-Markierungen im Find-Men\'fc sind gesetzt (default). 
+\par \pard\f0\fs18 
+\par \cf3\b\f2\fs20 set &\cf2\b0\i zi\cf3\b\i0      \cf4\i\f3 acon\cf3\i0\f2   \cf2\b0\i\f3 [perm]    ab V34.1\i0 
+\par \pard\li709\b `\cf1\ul Persistenz-Register\cf2\ulnone ` \b0\i\f2 i\b\i0\f3  im Index \b0\i\f2 z\b\i0\f3   einstellen \b0 (default: \f2 &z1\f3 ).  
+\par \pard\f1\fs18 
+\par \b\f0 Ab V25.5 gibt es folgende auch in \cf4\i a99\cf2\b0\i0   (fr\'fcher  \cf3\b\f2\fs20 switch\cf2\b0\f0\fs18   statt  \cf3\b\f2\fs20 set\cf2\b0\f0\fs18 , geht aber auch noch) 
+\par 
+\par 
+\par \cf3\b\f2\fs20 set download 1 / 2    \cf4\i\f3 acon\cf3\i0\f2     \cf2\b0\i\f3 [perm]\i0\f0\fs18 
+\par \pard\fi-710\li710\f1\tab\b\f0 Download 1 / Download 2 einschalten\b0 . Es k\'f6nnen 2 Download-Parameter und -Dateien definiert sein. Normalerweise ist Download 1 aktiviert. 
+\par \tab Wenn erstmals  \f2 set download 2\f0   gegeben wird, mu\'df gleich darauf   \f2 export param ...\f0   und  \f2 export file ...\f0   folgen, damit dem Programm bekannt ist, was bei \f2 download\f0   geschehen soll. Anschlie\'dfende \f2 export\f0 - und \f2 write\f0 -Befehle laufen dann mit diesen Einstellungen ab, bis wieder  \f2 set download 1\f0   kommt. Mit \f2 var e\f0  bzw. \f2 var E\f0  erh\'e4lt man die Namen der Parameter bzw. der Exportdatei des gerade mit \f2 switch dow\f0   eingestellten Downloads. 
+\par \pard\i Kurzform:\i0  \f2  swi dow 1\f0 
+\par \f1 
+\par \cf3\b\f2\fs20 set object 1 / 2    \cf4\i\f3 acon\cf3\i0\f2     \cf2\b0\i\f3 [perm]\i0\f0\fs18 
+\par \pard\fi-710\li710\f1\tab\f0 Satz 1 / Satz 2  einschalten. Es gibt zwei interne Datensatz-Arbeitsspeicher. Normalerweise ist Satz 1 eingeschaltet, d.h. alle Aktionen werden in Satz 1 ausgef\'fchrt. Jederzeit kann man aber in einem Job auf Satz 2 schalten, einen Datensatz mit \f2 find\f0  , \f2 get\f0  oder \f2 read\f0  hineinholen, damit Aktionen durchf\'fchren und ihn auch mit \f2 put\f0  wieder speichern. Vorteil: Satz 1 ist die ganze Zeit noch vorhanden und mu\'df nicht erneut geladen werden, sondern nur mit  \f2 set obj 1\f0   wieder eingeschaltet. 
+\par \pard\li710\i Empfehlung:\i0  Sicherstellen, da\'df im selben FLEX wieder auf Objekt 1 zur\'fcckgschaltet wird. Ver\'e4nderung und Speicherung des Objekt 2 ist m\'f6glicherweise problematisch. Gedacht ist der Befehl haupts\'e4chlich, um im FLEX schnell mal in einen anderen Satz schauen zu k\'f6nnen und daraus etwas zu entnehmen. 
+\par \i Kurzform:\i0  \f2  swi obj 1  \f3\fs20 oder\f2\fs18   \b set obj 1\b0\f0 
+\par \i Hinweis:\i0  \f2  \f3 Mit\f2   `\cf1\ul\b copy obj 1\cf2\ulnone\b0 `  \f3 kann man den Inhalt des ersten in den zweiten Satz kopieren. (V28.5)\f2 
+\par \pard\f5 
+\par -------------------------------------------------------------------\f0 
+\par \f1 
+\par \f0 Drei\f1  weitere Optionen \cf4 NUR\cf2  in\f0  \cf4\b\i\f3\fs20 acon\cf2\b0\i0\f0\fs18 
+\par \f1 
+\par \cf3\b\f2\fs20 set maxres \cf2\b0\i\f0\fs18 i\i0\tab   
+\par \tab\b maximale Gr\'f6\'dfe der Treffermenge\b0  bei \b\f2 find\b0\f0 -Befehl 
+\par \tab Als Default ist das Maximum von 260000 eingestellt, Minimum ist 1000) 
+\par \tab\i Achtung:\i0  Zugleich wird die Erg.Menge leergemacht, was man als Trick nutzen kann. 
+\par 
+\par \cf3\b\f2\fs20 set maxlist \cf2\b0\i\f0\fs18 i 
+\par \i0\tab\b Maximalzahl Zeilen f\'fcr den \f2 list\f0 -Befehl\b0  (als Default ist 130000 eingestellt) 
+\par 
+\par \cf3\b\f2\fs20 set maxdown \cf2\b0\i\f0\fs18 i 
+\par \pard\li710\i0\tab\b Maximalzahl Datens\'e4tze f\'fcr \f2 download\f0 -Befehl\b0  (als Default ist 10000 eingestellt, Maximum ist 100000, Minimum ist 1000) 
+\par \pard 
+\par \f1 
+\par \f2 ------------------------------------------------------------------- 
+\par \f0 
+\par \b NUR\b0  \cf3\b\f2\fs20  \cf4\i\f3 acon\cf2\b0\i0\f0\fs18 
+\par \cf3\b\f2\fs20 
+\par \f5 set \f2 Z\cf2\b0\i\f0\fs18 anzahl 
+\par \i0\f1\tab\b\f0 Maximal abzuarbeitende Zeilen des Jobs\b0 . 
+\par \tab\i Sonderfall:\i0  0 = unbegrenzt 
+\par \pard\li709 Die Abarbeitung des Jobs endet nach \i anzahl\i0   Zeilen. Voreingestellt sind daf\'fcr 1000000 (1 Mio.). 
+\par Fehlt die  \i anzahl\i0 , wird der iV-Inhalt genommen. 
+\par Relevant ist dies eigentlich nur, wenn Schleifen auftreten: einerseits, um ein unendliches Rotieren der Schleife zu verhindern, wenn keine Endebedingung eingebaut ist oder diese nicht erreicht wird, andererseits, um eben ausnahmsweise mal ein sehr gro\'dfes Vorhaben durchzuf\'fchren, bei dem enorm viele Daten eingemischt oder Unmengen von Einzelaktionen ausgef\'fchrt werden m\'fcssen. Wenn man die Anzahl beim besten Willen nicht nach oben absch\'e4tzen kann, setzt man einfach 0, dann wird die Abarbeitung wirklich erst nach der letzten Aktion enden, und wenn es viele Milliarden sind... 
+\par \f3\fs20 Verwendet wird dieser Befehl in den Standard-Jobs  \f2 srch.job\f3   und  \f2 update.job\f3   f\'fcr die Volltextsuche bzw. das Einspeisen neuer Daten. 
+\par \pard\f0\fs18 
+\par \f1 
+\par \cf3\b\f2\fs20 switch coding\cf2\b0\f0\fs18   \cf3\b\f2\fs20  0 | 1\cf2\b0\f0\fs18     (veraltet, s.u.) 
+\par \tab Wirkt sich aus bei den Befehlen  \f2 list, write\f0   und  \f2 qrix\f0 
+\par \f1\tab UND bei \f2 update/upload\f0 , wenn die Daten dann im Job gleich folgen, 
+\par \tab statt aus einer Datei gelesen zu werden. 
+\par Damit wird die Umcodierung der Registerzeilen und Kurztitelzeilen ein (default) - und ausgeschaltet. Nur wichtig, wenn die Datenbank in ASCII codiert ist,  die Ergebnisse aber in ANSI gebraucht werden oder umgekehrt. Den Wert 2 gibt es, anders als bei a99, bei acon nicht. 
+\par \f1 Man setzt \cf3\b\f2\fs20 0\cf2\b0\f0\fs18  bzw. \cf3\b\f2\fs20 1\cf2\b0\f0\fs18   hinter den Befehl, um gezielt das Umcodieren aus- bzw. einzuschalten. 
+\par Default ist 1: Wenn die o-Tabelle in der .Cpi-Datei  nachgeladen wird, erfolgt automatisch die Umcodierung nach ANSI. 
+\par F\'fcr Kurzlisten kann auch die beim Befehl \f2 `\cf1\ul\b list\cf2\ulnone\b0 `\f0  vorgesehene Option \f2 coded\f0  zum einmaligen Umschalten der Ausgabe verwendet werden. 
+\par \i Hinweis:\i0  Wenn man, wie im Paket PHPAC, s\'e4mtliche HTML-Ausgabedaten in Unicode (UTF-8) codieren will, nutzt man diese Sequenz: 
+\par 
+\par \f2 switch coding 0 
+\par \f5 xport p p-unicod 
+\par \f2 exp wX\f0 
+\par \f1 Man schreibt diese \f0 drei Zeilen an den Anfang eines Jobs, aber zumindest die erste, dann wirkt sich "switch coding" nicht mehr aus! 
+\par 
+\par \cf3\b\f2\fs20 switch fam   \cf2\f0\fs18 NUR\cf3\f2\fs20  \cf4\i\f3 acon\cf2\b0\i0\f0\fs18 
+\par \pard\li710\f1\tab\f0 Bilde die Ergebnismenge aller S\'e4tze, die mit dem aktuellen Satz verkn\'fcpft sind (Pica: "family") Nachfolgende get- und list-Befehle beziehen sich dann auf diese Ergebnismenge. Wenn es nur darum geht, eine Satzfamilie auszugeben, kann man schlicht \f2 exp fam\f0  sagen. 
+\par \f1 ERROR wird gesetzt, wenn es keine Verkn. gibt. 
+\par \f0 Man kann jederzeit zu der eigentlichen Erg.Menge  zur\'fcckschalten: 
+\par \pard\f1 
+\par \cf3\b\f2\fs20 switch resultset   \cf2\f0\fs18 NUR \b0  \cf4\b\i\f3\fs20 acon\cf2\b0\i0\f0\fs18 
+\par \pard\li710\f1\tab Man ist wieder an derselben Position wie vor dem "switch fam". (Der vorher aktuelle Satz wird intern erneut geladen.)\f0  Dasselbe trifft bei nochmaligem "switch fam" zu: Das vormals aktuelle Familienmitglied wird wieder geladen. 
+\par Die Konsequenz ist, da\'df man eine Erg.menge durcharbeiten und dabei zu jedem Satz alle verkn\'fcpften S\'e4tze gleichfalls abarbeiten kann. Dabei kommt jeweils der Befehl  \f2 `\cf1\ul\b next\cf2\ulnone\b0 `\f0   zum Einsatz. 
+\par \pard 
+\par ?iV=h xiV 
+\par ?show b=h xshow 
+\par ?e.adt=h xeadt 
+\par ?insert=h xinsert 
+\par ?get env=h xget 
+\par ?Register=h xa 
+\par ?update=h xupdate 
+\par ?flips=h flip 
+\par ?file=h xfile 
+\par ?help=h xhelp 
+\par ?rset.flx=h rset.flx 
+\par ?Handbuch=h ac9 
+\par ?put unlock=h xput= unlock 
+\par ?put=h xput 
+\par ?find-Befehl=h xfind 
+\par ?get=h xget 
+\par ?export R=h xexport=export R 
+\par ?switch=h xset#304 
+\par ?switch coding=h xset#304 
+\par ?list=h xlist 
+\par ?aresqa=h xaresqa 
+\par ?Unicode-Modus=h unicode 
+\par ?update/upload=h xupdate 
+\par ?regul\'e4ren Ausdr\'fccken=h xsrx 
+\par ?xcode=h xxcode 
+\par ?var p=h xcstring=rschl 
+\par ?copy obj 1=h xcopy 
+\par ?next=h xnext 
+\par ?find=h xfind 
+\par ?set lock=h xset=set lock 
+\par ?xcode u=h xxcode=xcode u 
+\par ?Offline-Speicher=h off 
+\par ?Persistenz-Register=h vb258#288 
+\par 
+\par }
+ 

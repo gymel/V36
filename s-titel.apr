@@ -1,0 +1,90 @@
+  S-TITEL.APR : Sortieren nach Sachtitel  (#20), mit Nachladung
+  940602
+  
+
+pn="Sortierformat #20 mit Nachladung"
+
+  Bei selbst„ndig gespeicherten Unteraufnahmen wird davon ausgegangen,
+  dass in #00 die Satznummer der Hauptaufnahme steht und die Bandnummer
+  mit '+' angeh„ngt ist. Nur dann funktioniert das Verfahren
+
+  die folgenden Angaben mssen so bleiben
+  damit die fr die Weiterverarbeitung n”tige .ALG-Form entsteht
+  --------------------------------------------------------------
+zl=0        ... Zeilenl„nge unbegrenzt
+ks=1        ... Beginn beim ersten Zeichen hinter #
+ke=0        ... Kategorie-Ende = 0
+as=""       ... Aufnahme-Start: wird unten als Pr„fix gemacht
+ae=13 10    ... Aufn.Ende: CR LF
+
+ts          ... l„dt die Zeichenumwandlungstabelle S.APT fr das Sortieren
+
+am=1        ... nur 1 Ausgabesatz soll produziert werden
+
+dx=1
+ ---------------------------------------------------------------
+
+  ***************************************************
+  hier geht die Verarbeitung los, da keine ak-Befehle
+  ***************************************************
+
+#3n +- e0 #zz 0    Stamms„tze weglassen
+#4n +- e0 #zz 0    (sonst eigene Abschnitte hierfr einrichten!)
+#2n +- e0 #zz 0
+ 
+#nr dkk e0 #zz 0      #ukk l”schen
+
+#hi +b e0 #zz 0        wenn es eine Unteraufnahme ist: Sprung nach #-b
+#00 +N c"+" e0 #zz 0   wenn '+' in #00 vorkommt, muss evtl nachgeladen werden
+
+  ******************************************
+  Beginn der Verarbeitung von Hauptaufnahmen
+  ******************************************
+
+        Der Sortierbegriff wird zusammengesetzt und als #u1 ausgegeben
+        zugleich werden dieselben Elemente ohne Umcodierung in der
+        Variablen #ukk zusammengestellt, die dann unten als #u2
+        ausgegeben wird
+#20 e" : " b3 f"ª" Akk #zz 0
+!20 +s e" : " u b3 p{ 1 "u1 " } #zz 0
+!40 u e"; " b3 p{ 1 "u1 " } #zz 0   #40 oder #20 als Sortierfeld, Ende bei "; "
+#40 u e"; " b3 Akk #zz 0
+#21 b3 p"   " Akk #zz 0    wenn #20 nicht, aber #21, dann unter Verfasser:
+!21 b3 p"   " #zz 0      Sammlung vor anderen Werken!
+      b3 heisst: Beginn beim 4. Zeichen (3+ks)
+
+#-s
+#t{ 0 }     als Abschluss des Sortierfeldes
+
+
+#ukk b3 p"u2 "     Druckfeld, Inhalt von #ukk wird als #u2 ausgegeben
+#+e
+
+#-b            Sprungmarke b: bei untergeordneten S„tzen
+#t { h0 }
+#-e
+            Jetzt wird der Hauptteil des Datensatzes ausgegeben:
+tselect     Select.APT nachladen, denn
+            diese Tabelle enth„lt die auszugebenden Kategorien
+            (S-KURZ, S-MITTEL, S-LANG, S-VOLL)
+            dadurch wird diese Parameterdatei hinsichtlich des
+            Umfangs der Aufnahmen flexibel!
+
+#+#
+
+
+#-N     Nachladung bei untergeordneten S„tzen
+
+    kommt #20 vor?, dann keine Nachladung n”tig
+#t{ 1 }
+#20 e" : " b3 f"ª" akk #zz 0   Kopfkategorie (#20) als Sortierfeld, Ende bei " : "
+!20 +s u e" : " b3 p"u1 " #zz 0
+    #20 kommt nicht vor: 
+#09 +J b3 e"+" |90 #zz 0     wenn #09 mit einer nach-oben-Verkn. vorliegt
+#00 +J b3 e"+" |90 #zz 0     Hauptsatz laden, wenn Verkn. in #00 vorliegt
+#+-    kein Hauptsatz gefunden, Abbruch
+#-J
+#20 e" : " b3 f"ª" akk #zz 0   jetzt wird #20 aus dem Hauptsatz genommen!
+!20 u e" : " b3 p"u1 " #zz 0
+#</
+#+s

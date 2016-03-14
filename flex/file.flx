@@ -1,0 +1,114 @@
+  FILE.FLX : ASCII-Datei zeilenweise lesen + schreiben, dabei Manipulationen moeglich
+  2001-02-08/2007-10-12 : (Muster zum Variieren!)
+  Leerzeichen am Zeilenanfang und -ende verschwinden nicht!
+
+var m
+if "alc" end
+  Zuerst eine Datei auswaehlen lassen
+mess Dateiverarbeitung. Die ausgewählte Datei wird zeilenweise gelesen und geschrieben
+fname Wählen Sie eine Datei:|*.*
+    alternativ:  hier z.B. wuerden nur Dateien des Typs *.?pr gezeigt
+  fnam Wählen Sie eine Datei|*.?pr
+
+  den gewaehlten Namen in #uFN speichern
+ins #uFN
+  zum Lesen oeffnen (Name steht noch in iV)
+open
+
+:neuname
+  Fragen, wie die neue Datei heissen soll
+ask Neuer Name für die Datei?
+if "" end
+  den eingegebenen neuen Namen in #uNN speichern
+ins #uNN
+fsize
+if no jump start
+noyes Datei existiert! Ueberschreiben?
+  Nein? Dann nochmals fragen
+if not yes jump neuname
+  sonst loeschen
+del
+
+:start
+  und zum Schreiben oeffnen
+var #uNN
+open x
+
+  ZeilenZaehler (iz = interner Zaehler) auf 1 setzen (falls gewuenscht)
+z = 1
+
+  erste Zeile lesen 
+get iV
+
+  ^^^^^^^^^^^^^^^^^ Beginn der Schleife
+:loop
+  gelesene Zeile (steht in iV) in $uZL speichern
+
+
+ins $uZL
+  ***************************************
+  Hier kann man Manipulationen einbauen!
+     z.B. Ausgabe mit Zeilennummer, dann diese Zeile:
+  wri Z0 ". " $uZL
+  ***************************************
+
+  // z.B. wenn eine Bedingung erfuellt ist, dann Zeile nicht verarb:
+  //  if ... jump nxxt
+  Ausgabe mit Zeilenvorschub:
+  (falls nicht durch Export anders ausgegeben, s.o.)
+var $uZL
+    Naechste Zeile aktivieren,
+    wenn die Zeichen von ASCII nach ANSI vorher umcodiert werden sollen:
+  ansi
+write
+write n
+  Zaehler um 1 hochzaehlen
+z + 1
+  naechste Zeile lesen
+:nxxt
+
+keycheck
+if yes jump clo
+
+get iV
+  war noch eine Zeile da? dann Schleife
+if yes jump loop
+  ^^^^^^^^^^ Ende der Schleife
+
+:clo
+  Ende, Ausgabedatei schliessen
+close x
+  internen Zaehler nach #uZZ kopieren:
+var z
+ins #uZZ
+  Meldung aufbereiten und in #uME speichern
+var #uFN " verarbeitet, Neue Datei " #uNN 13 10 #uZZ " Zeilen"
+ins #uME
+
+  Variablen loeschen
+var ""
+ins $uZL
+ins #uZZ
+ins #uFN
+
+  EndeMeldung ausgeben
+var #uNN
+fsize
+ins #uNZ
+var #uME ", " #uNZ " Bytes"
+mess
+
+
+var #uNZ
+if >100000 jump zugro
+
+  Optional: Neue Datei anzeigen
+var #uNN
+help
+var ""
+ins #uNN
+end
+
+:zugro
+mes "Datei zu gross zum Anzeigen"
+

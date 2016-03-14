@@ -1,0 +1,245 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\fswiss Arial;}{\f2\fswiss\fprq2 Verdana;}{\f3\fmodern\fprq1 Courier New;}{\f4\fswiss\fprq2\fcharset0 Verdana;}{\f5\fmodern\fprq1\fcharset0 Courier New;}{\f6\fswiss\fcharset0 Arial;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue0;\red0\green0\blue255;}
+\viewkind4\uc1\pard\qc\f0\fs24     \f1       \f2     
+\par \cf1\i\fs36 allegro \i0 und UNICODE\cf2    
+\par \fs20    
+\par \pard\b Allgemeines\b0    
+\par Auf dem \i allegro\i0 -Webserver befindet sich eine \f3 `\cf3\ul\b\f2 allgemeine Darstellung\cf2\ulnone\b0\f3 `\f4  zum Thema Unicode. Als Einstieg in das Thema sollte man diese zuerst lesen. Darin wird auch erkl\'e4rt, was bei der Web-Anbindung zu beachten ist. Wichtig ist Unicode auch in Verbindung mit `\cf3\ul\b XML\cf2\ulnone\b0 `.\f2 
+\par \f4 Hier soll es nur um die Frage gehen, wie man seine Datenbank bef\'e4higt, mit Unicode umzugehen.  \f2 
+\par Es gibt dazu zwei Verfahren. 
+\par 
+\par \cf1 `\cf3\ul\b Verfahren 1:\cf1\ulnone\b0 `\cf2\f4  Die bisherigen Daten bleiben unver\'e4ndert, es wird nur die M\'f6glichkeit geschaffen, weitere Sonderzeichen zu verwenden. Diese m\'fcssen allerdings in Form der HTML4-Entit\'e4ten-Codes erfa\'dft werden. 
+\par \i\f2 Beispiel:\i0\f4  &#193; f\'fcr das A mit Akut (\'c1), das man sonst nur in der Form \'b4A eingeben kann. 
+\par F\'fcr viele dieser Codes gibt es Stamms\'e4tze, die man als Erfassungshilfe benutzen kann. Diese werden mitgeliefert in der Datei \b vs.alg\b0 . Man holt sie \'fcber "Datei / Weitere Offline-Datei laden" in den Offline-Speicher und speichert sie dann mit "Datei / Offline-Datei -> Datenbank" in die eigene CAT-Datenbank. (Oder: unten Punkt 4.) Wer haupts\'e4chlich mit DOS (PRESTO) oder Windows (a99) arbeitet, ist hiermit besser bedient. \f2 
+\par \cf1 
+\par `\cf3\ul\b Verfahren 2:\cf1\ulnone\b0 `\cf2\f4  Man codiert die Daten um nach UTF-8 (Parameter daf\'fcr werden mitgeliefert). Wenn man \i\f2 nur\i0\f4  \'fcber Web arbeiten will (`\cf3\ul\b PHPAC\cf2\ulnone\b0 `), ist dies das einfachere Verfahren. Wer aber PRESTO und/oder a99 noch braucht, kann hiermit weniger gut arbeiten. F\'fcr a99 besteht immerhin die M\'f6glichkeit, Datens\'e4tze mit dem Programm Notepad zu bearbeiten und dabei alle verf\'fcgbaren UTF-8-Codes zu nutzen. Daf\'fcr gibt es den FLEX \f5 utf8edit.flx\f4 , siehe `\cf3\ul\b\f2 Vb.168\cf2\ulnone\b0 `. 
+\par \f4 Ein anderes Verfahren zum Bearbeiten von S\'e4tzen ist die Benutzung von `\cf3\ul\b JanaS\cf2\ulnone\b0 `. Als Beispiel suchen Sie sich einen Satz, den Sie bearbeiten wollen, und dann geben Sie mal ein: 
+\par \b\f5 X htmform \b0\f4 
+\par Der FLEX  \f5 htmform.flx\f4   produziert ein HTML-Formular mit ausgew\'e4hlten Daten und \'fcbergibt es an JanaS. Von dort werden die Inhalte an a99 zur\'fcckgeliefert \'fcber den FLEX  \f5 jax.flx\f4  (den man nicht ver\'e4ndern mu\'df). Leicht kann man sich weitere solche Formulare gestalten, mit allen Freiheiten von HTML. 
+\par \f2 
+\par \i\f4 Tip 1:\i0  Mit dem FLEX  \f5 `\cf3\ul\b utf-ent.flx\cf2\ulnone\b0 `\f4   kann man UTF-Codes in dezimale Entit\'e4tenzahlen umrechnen und umgekehrt.\f2 
+\par 
+\par \i\f4 Tip 2:\i0  Wenn man eine RTF-Datei mit \f5\{\\urtf1\f4  beginnt statt mit \f5\{\\rtf1\f4 , dann k\'f6nnen im RTF-Text auch Unicode-Zeichen in der UTF-8-Codierung stehen und a99 wird sie "richtig" anzeigen.\f2 
+\par 
+\par \f4 In beiden F\'e4llen sind als Minimum Eingriffe n\'f6tig in Anzeige- und Indexparameter. Dar\'fcber hinaus in alle m\'f6glicherweise betroffenen Export-Parameter. Es handelt sich jedoch fast nur um den Einbau von vorbereiteten Tabellen. \f2 
+\par 
+\par \b\f4 Welche Dateien werden gebraucht, wo mu\'df man eingreifen?   
+\par \b0\f2 
+\par    
+\par \cf1\b Verfahren  1\cf2 
+\par Index-Parameter\b0    
+\par \f6 Hier k\'f6nnen Sie als Beispiel die Datei  \b\f5 cat.api\b0\f6   nehmen, die auf dem Verzeichnis DEMO2 Ihrer Installation liegt. Die Zeilen, auf die es ankommt, sind kommentiert mit V23.   \f1 
+\par    
+\par Die wichtigen Punkte sind diese:   
+\par 
+\par \b 1.\b0  Liste der Diakritika-Codes (Befehl pa): 
+\par \f5   Wenn intern ASCII:\f3 
+\par pa=181 182 183 184 189 190 198 199 207 208 209 210 211 212 219 222 223 232\f1    
+\par \f5   bzw. intern ANSI:\f3 
+\par pa=180 145 136 149 168 166 227 179 186 175 215 171 184 191 161 173 247 150 
+\par   
+\par ib=59\f1        f\f6\'fc\f1 r \f6 Sequenzen-\f1 Ersetzungen (Endecode = Semikolon = 59)  \f6 (seit V23, siehe h`\cf3\ul\b vb164\cf2\ulnone\b0 `)\f1 
+\par    
+\par \b 2.\b0\f6  Codes f\'fcr Sonderzeichen Entit\'e4ten  \f1 
+\par \f6 Punkte 2-5 nur n\'f6tig, wenn man in der eigenen Datenbank Codes der Form &#nnn; f\'fcr solche Zeichen verwenden will, die nicht im OstWest-Code vorkommen. (Siehe Demo-Datenbank unter "zz unicode...".)  \f1 
+\par \f6 Im Abschnitt f\'fcr die Kurzanzeige (meistens unter der Sprungmarke #-0)   \f1 
+\par ...   
+\par \f3 #bp & 9\f1     wegen V23 Unicode   
+\par \f3 #bq & 9   
+\par #dV\f1         V23: VS-Ersetzungen im gesamten Satz   
+\par ...   
+\par    
+\par \b 3.\b0    
+\par \f6 Abschnitt f\'fcr die Indexierung der VS-Datens\'e4tze: (neuer Abschnitt beginnt mit #9AU)   \f1 
+\par \f3 #9A +#9AU y0 i4,U e"\f5\'b6" p"|;SYS"       UNICODE VS-Saetze   V\f3    
+\par ...   
+\par \f5 #9AU\f3 
+\par #9A f"U" =vs e0   
+\par \f5 #-\'f3   \f3 
+\par \f5 #uvs e"\'b6" e":" y0 p\{ 8 "|:" \}   \f3 
+\par \f5 #uvs e"\'b6" b":" y0 p\{ 8 "|:u " \}\f1        Eintrag unter u im Reg. 10   
+\par \f5 #uvs e"\'b6" e":" y0 p" _" e";" P";"   \f3 
+\par \f5 #uvs +\'f3 b"\'b6" =vs   \f3 
+\par #+#   
+\par \f1    
+\par \f6 Wenn Sie nicht Reg.10 f\'fcr die V14-Ersetzungen verwenden, sondern z.B. 9, dann |9 einsetzen statt |: .   \f1 
+\par    
+\par \b 4.\b0    
+\par Dann die Datei \b vs.alg\b0\f6  mit den Sequenz-Definitionss\'e4tzen in die eigene Datenbank einmischen (oben schon kurz erkl\'e4rt):   \f1 
+\par \f6 W\f1 enn Sie\f6  nicht $A.CFG, sondern eine\f1  Konfiguration x.cfg verwenden\f6 : z\f1 uerst vs.alg umbenennen in vs.xlg 
+\par \f6 Wenn Ihre CFG 3-stellig ist: vs.xlg \'e4ndern, und zwar aus 9A eine dreistellige Kategorienummer machen, die in Ihrem System ansonsten nicht verwendet wird, aber diese Nummer mu\'df in Ihrer CFG deklariert sein.   \f1 
+\par z.B. #9AV   In Ihre \b x.cfg\b0  dann eintragen:   
+\par   
+\par \f3 #9AV"VS-Sequenzen"\f1    
+\par   
+\par am Ende der Deskriptorenliste (das sind die Zeilen, die mit # beginnen).  Der Indexparameter-Abschnitt (s. oben) mu\f6\'df\f1  dann 9AV statt 9A enthalten!   
+\par \f6 Das Einmischen der Sequenz-Datens\'e4tze geht dann mit:  \f1 
+\par    
+\par \f3 upd -fm01 -d<datenverz.>\f5  -bcat\f3  -uvs.alg -n248 -kx -F   
+\par \f1    
+\par (Normal also \f3 -kA\f6  statt -kx). Danach sind im Reg. 10 die Eintr\'e4ge f\'fcr die Sonderzeichen unter & zu finden.   \f1 
+\par    
+\par \b 5.\b0\f6  \b u-Liste\b0  an die Indexparameter anh\'e4ngen  \f1 
+\par \f6 Nur n\'f6tig, wenn Fremddaten mit UTF-8-Codes eingelesen oder importiert werden sollen, oder auch wenn man per Web-Schnittstelle Daten eingibt oder bearbeitet (denn der Webserver \'fcbergibt dann UTF-8-Codes). Das gilt auch, wenn man mit JanaS Daten in HTML-Formularen bearbeitet.\f1 
+\par \f6 An das Ende der Indexparameterdatei f\'fcgt man die Liste \f3 `\cf3\ul\b ucodes.apt\cf2\ulnone\b0 `\f1  an:   
+\par 
+\par \f6 Entweder einfach diesen Befehl anf\'fcgen  (dann Kopieren auf ucodes.xpt, wenn Sie x.CFG verwenden.) \f1 
+\par \f3 tucodes \f1   
+\par \f6 oder die Datei selber hinten anh\'e4ngen. Sie beginnt so:   \f1 
+\par    
+\par       V23: u-Befehle nur f\f6\'fc\f1 r a99 bei Einlesen von Fremddaten   
+\par       und f\f6\'fc\f1 r avanti bei Schreibfunktion   
+\par \f3 u 000\f1            macht schon vorhandene u-Befehle ung\f6\'fc\f1 ltig!   
+\par \f3 u 194 163 156        POUND SIGN   
+\par u 194 164 216        CURRENCY SIGN   
+\par u 194 167 021        SECTION SIGN   
+\par \f5    bedeutet: Codefolge 194 167 in den Eingabedaten ersetzen durch Code 21\f3 
+\par ...   
+\par \f6 Diese Liste mu\'df ebenfalls angeh\'e4ngt werden an die Exportparameter (!), die man bei einer Konvertierung von UTF-8 nach OstWest-Code einsetzt. In dieselben Exportparameter setzt man den Befehl  \f1 
+\par \f3 #dA\f1   
+\par zur Vertauschung der Akzentcodes der eingelesenen Daten.  
+\par \i\f6 Sonderfall:\i0  Wenn die dritte Zahl die 1 ist, wird das Zeichen weggelassen. Beispiel:\f1 
+\par \f5 u 205 143 001        COMBINING GRAPHEME JOINER\f1 
+\par    
+\par \b Anzeige-Parameter\f6  f\'fcr a99\f1    
+\par \b0\f6 Vorlage hierf\'fcr: \f5 d-wrtf.apr\f6   oder  \f5 d-krtf.apr + d-k.apt \f6 (auf Ihrem allegro-Verzeichnis)   \f1 
+\par Ebenfalls kommentiert mit "V23".   
+\par Im einzelnen ist folgendes zu tun:   
+\par    
+\par \f3 i6=10         \f1 Ersetzungsregister ist Nr. 10 (falls das noch nicht drinsteht)   
+\par    
+\par   Am Anfang der Kategorieliste, vor der ersten auszugebenden Kategorie, diese Zeilen:   
+\par \f3 #bib=59       \f1 59 = ; ist der Endecode der Zeichensequenzen ( &#nnn; )   
+\par \f3 #bp & 9       \f1 V23 Ersetzungen einschalten   
+\par \f3 #dV           \f6 Ersetzungen der Sequenzen im gesamten Satz ausf\'fchren   \f1 
+\par    
+\par \f6 Im Abschnitt f\'fcr die Internanzeige, meistens unter Sprungmarke  \f3 #-(\f1      
+\par \f3 #bp & &       V23-\f1 Ersetzungen gelten in diesem Abschnitt nicht   
+\par    
+\par   
+\par \b Exportparameter\b0    
+\par In andere Exportparameter mu\f6\'df\f1  man nur einsetzen:   
+\par \f3 t\f5 a\f3 d-utf\f1    
+\par    um die Tabelle \f6 a\f1 d-utf.apt zu laden.    
+\par   Machen Sie davon eine Kopie  \f6 a\f1 d-utf.xpt, wenn Sie nicht a.cfg verwenden.   
+\par Ansonsten nur diese Zeilen einsetzen:   
+\par    
+\par \f3 p & 9   
+\par q & 9   
+\par ib=59   
+\par \f1    
+\par \f6 wenn die Sequenz-Ersetzungen ausgef\'fchrt werden sollen.   \f1 
+\par 
+\par Und an den Anfang der Ausgabebefehle (die mit # oder ! beginnenden Zeilen) setzt man 
+\par \f3 #da\f1 
+\par Dann werden die Diakritika (Akzentzeichen) hinter die Buchstaben gesetzt, wie es Unicode will.  
+\par 
+\par 
+\par \b\f6 Imp\f1 ort\f6  von Unicode-Daten mit FLEX\b0\f1 
+\par \f6 Wenn man per FLEX\f1  \f6 fremde Daten aus Dateien oder aus dem Internet einlesen will, und diese Daten sind in UTF-8 codiert, kann man sie auf einfache Weise in den eigenen Interncode umwandeln. Sagen wir, es wird mit  \b\f5 read\b0\f6   aus einer Datei gelesen, und die gelesene Zeile soll jeweils in eine Variable  \b\f5 #uyx\b0\f6 . Dazu reicht: 
+\par ... 
+\par \f5 read 
+\par xcode u 
+\par export A 
+\par ins #uyx\f6 
+\par ... 
+\par \f1 
+\par    
+\par    
+\par \b FLEXe : Befehl "write"\b0    
+\par \i Vorbereitung:\i0    
+\par   a) Bereitstellen einer Parameterdatei \f3 p-unicode.xpr\f1    
+\par       Das kann eine Kopie von p-unicode.apr sein. Wichtig ist nur:    
+\par \f6  \f1      es mu\f6\'df\f1  einen Abschnitt #-X zum Erzeugen der Ausgabe geben.   
+\par   \f6  \f1    In diesem Abschnitt mu\f6\'df\f1  die Variable #u1 verwendet werden.   
+\par   b) Laden und Aktivieren dieser Parameter im FLEX mittels Befehl   
+\par  \f6  \f1     \f5 export\f3  p p-unicode  \f1 Lade p-unicode.apr   
+\par  \f6  \f1     \f5 export\f3  wX           \f1 Aktiviere darin Abschn. \f5 #-X\f1 
+\par  \f6  \f1     \f5 export\f3  a            \f1 Akzentzeichen mit den nachfolgenden Buchstaben vertauschen 
+\par   \i Alternativ:\i0  wenn ohnehin eine Export-Parameterdatei benutzt wird, 
+\par   kann man auch den Abschnitt #-X darin einbetten. 
+\par   Mit  \f5 exp wa\f1   kann man JEDEN Abschnitt #-a zum write-Abschnitt\f6  \f1 erkl\f6\'e4\f1 ren, nicht nur #-X.   
+\par   Mit  \f5 exp\f3  w0 \f1  schaltet man die Funktion wieder ab. Die Schaltung   
+\par   gilt nur f\f6\'fc\f1 r die Dauer des FLEXes, bei jedem Start eines FLEXes ist sie abgeschaltet.   
+\par \f6 
+\par Mit diesen Vorbereitungen l\'e4uft's dann so:   \f1 
+\par Befehl \f6  \f5 write\f6  \f1  produziert zuerst einen Arbeitstext. Erst wenn die \f6  \f5 write\f1 -Zeile zu Ende ist, wird der Arbeitstext als Variable \f6  \f5 #u1\f1  an die Parameterdatei \f6\'fc\f1 bergeben. 
+\par Das Einfachste ist, den Abschnitt\f6  \f1  \f5 #-X\f1  \f6  \f1 so zu schreiben:   
+\par    
+\par \f3 #-X   
+\par #u1   
+\par #+#   
+\par t\f5 a\f3 d-utf \f1     dieser Befehl kann auch woanders stehen   
+\par    \f3 t\f5 ad-aw\f1  \f6    \f1    wenn statt dessen Output im Windows-Code entstehen soll   
+\par    
+\par Dadurch wird der Arbeitstext mit der Tabelle \f5  ad-utf.apt\f1  umgewandelt.   
+\par Alternativ kann man\f6  \f1  \f5 ad-htm.apt\f1  \f6  \f1 nehmen\f6 , darin kommen Entit\'e4tenzahlen zum Einsatz.\f1 
+\par \f6 Im Prinzip aber kann jede beliebige Umwandlung vorgenommen werden, die mit der Exportsprache m\'f6glich ist.   \f1 
+\par \f6 Ferner ist es m\'f6glich, unterschiedliche Abschnitte vorzubereiten und dann mit dem Befehl  \f5 exp wa\f6   mal diesen, mal jenen einzuschalten, im Extremfall f\'fcr jeden write-Befehl einen anderen.   \f1 
+\par \f6 Im FLEX sollte man, wenn es wirklich um Unicode geht, au\'dferdem VOR den write-Befehlen  \f5 dow a\f6   sagen und hinterher  \f5 dow A\f6 , um die Akzentvertauschung einzubeziehen.   \f1 
+\par \f6 Wir haben eine Parameterdatei  \f5 p-unicod.apr\f6   als Muster vorbereitet, ferner die PHP-Dateien  \f5 ask.htm\f6  und \f5 show.php\f6 . Letztere ist zugleich ein Muster f\'fcr eine minimale PHP-Datei, in der man sehen kann, aus was so eine Datei bestehen mu\'df. Man kann sie als Startbeispiel nehmen, wenn man mit PHP beginnen will!   \f1 
+\par    
+\par 
+\par \cf1\b Verfahren  2\cf2\b0 
+\par \f6 Das Paket  \f5 demou.zip\f6   enth\'e4lt die n\'f6tigen Parameterdateien. Zum Teil sind das Varianten der Standarddateien. Folgende Schritte sind zu tun: \f1 
+\par 
+\par \b Vorbereitung:\b0\f6  Daten exportieren mit den Parametern  \f5 i-1u.apr\f6 . Dazu geh\'f6rt die Tabelle \f5 ad-utf.apt\f6 . Beide kann man f\'fcr andere Kategoriesysteme x.CFG \'fcbernehmen: einfach umkopieren auf \f5 i-1u.xpr\f6  bzw. \f5 ad-utf.xpt\f6 . Dann die gesamte Datenbank damit exportieren in eine "Grunddatei" (Typ .xLG). Diese mu\'df dann neu indexiert werden, aber vorher mu\'df man die Index-Parameter vorbereiten: \f1 
+\par 
+\par \b\f6 Konfiguration [$a.cfg]\b0\f1 
+\par \f6 Einziger Unterschied: Zeile  N96  (\'60) statt  N170 (\'ac) f\'fcr das Nichtsortierzeichen.\f1  
+\par 
+\par \b Index-Parameter\f6  [cat.api]\b0\f1 
+\par 1. Statt \f5 i.apt\f1  \f6 die Datei\f1  \f5 iu.apt\f1  ein\f6 binden\f1  (bzw. Kopie \f5 iu.xpt\f1 ); also Befehl\f6  \f1  \f5 tiu\f1  \f6  \f1 statt\f6  \f1  \f5 ti\f1  . 
+\par Der wichtigste Teil in\f6  \f1  \f5 iu.apt\f6  \f1  ist die Tabelle der Zuordnungen UTF-8 -> ASCII (P/Q-Befehle, s.u. bei Export) 
+\par \f6 2. \f5 o.apt\f6  aus dem DEMOU-Paket nehmen (enth\'e4lt nur wenige Zuordnungen von Sonderzeichen) \f1 
+\par \f6 3. In der  \f5 cat.api\f6   der DemoBank sind am Ende einige wenige u-Befehle, die man \'fcbernehmen mu\'df, wenn eine Web-Datenbank einzurichten ist. \f1 
+\par 4. Einen Befehl \f5 pa=...\f1  darf es nicht geben, denn die Akzente stehen bei Verfahren 2 auch innerhalb der Datenbank HINTER dem \f6 betroffen\f1 en Buchstaben. 
+\par 
+\par \b Anzeige-Parameter\b0 
+\par \f6 F\'fcr DOS [d-1.apr]: Die Tabelle \f5 utf-ad.apt\f6  mu\'df hinein.  \f1 
+\par \f6 F\'fcr a99 [d-krtf.apr, d-khtm.apr]: Normalerweise \f5 utf-rtf.apt\f6 .\f1 
+\par \i Empfehlung:\i0\f6   Verwenden Sie \f5 d-krtf.apr\f6  statt \f5 d-wrtf.apr\f6 . F\'fcr den Web-Katalog: \f5 d-khtm.apr\f6  . Diese Dateien k\'f6nnen Sie kopieren auf  \f5 d-krtf.xpr\f6   bzw.  \f5 d-khtm.xpr\f6   f\'fcr X.CFG. Dazu geh\'f6rt die Datei  \b\f5 d-k.apt\b0\f6 .  F\'fcr X.CFG mu\'df man sich nach deren Vorbild eine Datei  \f5 d-k.xpt\f6   selber erstellen! \f1 
+\par 
+\par \b\f6 Druckparameter\b0 
+\par Hierzu kann  \f5 p-w.apr\f6   verwendet werden wie bei ASCI, aber mit utf-rtf.apt als Codetabelle. 
+\par 
+\par \b\f1 Export-Parameter\b0 
+\par \f6 Sollen die Exportdaten in UTF-8 codiert sein, mu\'df man f\'fcr die Zeichencodierung nichts tun! Sollen DOS- oder Windows-Daten herauskommen, sind Tabellen notwendig, in denen die neuen P/Q-Befehle vorkommen. 
+\par Vorhanden sind  utf-ad.apt  f\'fcr ASCII und  utf-aw.npt  f\'fce Win-ANSI. 
+\par Die allgemeine Form ist \f1 
+\par 
+\par \f5 P \i zzz yyy xxx abc\i0\f1  
+\par   mit \i\f5 zzz yyy xxx\i0\f1  = Dezimalcodes des UTF-8-Zeichenwertes 
+\par \f6         \i\f5 abc\i0\f6  = Was daf\'fcr einzusetzen ist (direkte Zeichen) \f1 
+\par   Alternativ: 
+\par \f5 P \i xyz abc\i0\f1  
+\par    mit  \i\f5 xyz\i0\f1  = direkte UTF-8-Zeichen 
+\par \f6 Genauso f\'fcr Q. Die P/Q-Werte werden eingesetzt, wenn die Umcodierung in den Exportparametern erfolgt. Wenn kein P/Q-Befehl greift, treten die p/q-Befehle in Kraft. 
+\par Die besondere Eigenheit von UTF-8 ist ber\'fccksichtigt: wenn xxx zwischen 192 und 223 liegt, wird erwartet, da\'df zzz nicht angegeben ist. 
+\par Wenn xxx>223 ist, mu\'df zzz besetzt sein, d.h. man hat eine 3-Byte-Kombination. abc k\'f6nnen ihrerseits auch UTF-8-Zeichen sein! Z.B. ist das wichtig, wenn man statt kyrillischer Zeichen die Transliteration anzeigen will, in der es ja Buchstaben mit Diakritika gibt. 
+\par 
+\par WICHTIGE REGEL: Alle P-Befehle m\'fcssen vor dem ersten Q-Befehl stehen.\f1 
+\par \f6 
+\par \b Dimensionierung\b0 
+\par Wichtig, wenn man sehr viele P/Q-Befehle hat: 
+\par \b\f5 Ps=N\f6 
+\par \b0 wobei N die Anzahl Bytes ist, die man f\'fcr die Speicherung der P/Q-Befehle reservieren will. 
+\par Default ist N=10000, wenn der Befehl Ps nicht vor Beginn der P/Q-Befehle angetroffen wird. 
+\par Jede P- und jede Q-Zeile kostet intern 4 oder 5 Byte, je nachdem, ob xxx gegeben ist oder nicht. 
+\par Sind es nur wenige solche Zeilen, kann man den Wert niedriger als 10000 setzen, um Platz zu sparen, doch ist dies nur f\'fcr die DOS-Programme von Bedeutung. 
+\par Ist der Bereich aber zu klein dimensioniert, kann es leider zum Absturz kommen. 
+\par 
+\par \f1 
+\par ?ucodes.apt=h ucodes.apt  
+\par ?allgemeine Darstellung=x jan http://www.allegro-c.de/unicode 
+\par ?Verfahren 1:=h =Verfahren  1 
+\par ?Verfahren 2:=h =Verfahren  2 
+\par ?Vb.168=h vb168 
+\par ?XML=x jan http://www.allegro-c.de/axml.htm 
+\par ?utf-ent.flx=X utf-ent 
+\par ?JanaS=x janas http://www.allegro-c.de/janas 
+\par ?PHPAC=h phpac 
+\par ?vb164=h vb164 
+\par 
+\par }
+ 

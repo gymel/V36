@@ -1,0 +1,210 @@
+{\rtf1\ansi\ansicpg1253\deff0\deflang1031{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\fscript\fprq2 Comic Sans MS;}{\f2\fscript\fprq2\fcharset0 Comic Sans MS;}{\f3\froman\fprq2 Garamond;}{\f4\froman\fprq2\fcharset0 Times New Roman;}{\f5\fmodern\fprq1 Courier New;}{\f6\fnil\fprq2\fcharset2 Wingdings;}{\f7\fmodern\fprq1\fcharset0 Courier New;}{\f8\froman\fprq2\fcharset0 Garamond;}{\f9\fmodern\fprq1\fcharset161{\*\fname Courier New;}Courier New Greek;}}
+{\colortbl ;\red0\green0\blue255;\red255\green0\blue0;}
+\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs20 `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` 
+\par \pard\qc\cf2\b\i\f1\fs28 allegro S\i0 ystemhandbuch V\f2 32\cf0\f0\fs48 
+\par \pard\fi-658\li658\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0\f3\fs20 
+\par \lang1033\b\fs48 7\tab Indexieren\b0 
+\par \lang1031\fs20 
+\par \b\fs36 7.0\tab Datenbank-Generierung : Aufgabe und Konzept\b0\fs20 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0 
+\par \f4 Der direkte und schnelle Zugriff auf Datens\'e4tze \'fcber eine alphabetisch geordnete Liste von Suchbegriffen ist nur m\'f6glich, wenn es eine \b\f0 Indexdatei\b0  gibt, denn darin stecken diese Listen. \f4 Die Indexdatei wird automatisch vom System gepflegt, nur gelegentlich gibt es daran mal etwas zu tun. Davon handelt dieses Kapitel.\f0 
+\par \f4 Brauchen Sie dieses Kapitel? Im Normalbetrieb nicht, sondern nur wenn Sie sich mit dem Neuaufbau oder der Reorganisation von Datenbanken besch\'e4ftigen, also mit Systemverwaltung und Parametrierung. 
+\par Als "Normalverbraucher" k\'f6nnen Sie mit dem `\cf1\ul\b ORG-Men\'fc\cf0\ulnone\b0\f0 ` \f4 alle Verwaltungsfunktionen ausl\'f6sen, die mit dem Index zu tun haben, auch das \b\i\f0 CockPit\b0\i0  \f4 des DOS-Systems\f0  (\f5 -\f6\'d8\f4  0.11.2, Men\'fcpunkt "Routinen / organisieren") kann man noch verwenden.\f0  
+\par \f4 Ab V32 (2012) gibt es die hier beschriebenen Programme auch f\'fcr Linux und Solaris.\f0 
+\par \f4 Wenn man  eine v\'f6llig `\cf1\ul\b\f0 neue Datenbank\cf0\ulnone\b0\f4 ` anlegt, entsteht beim Abspeichern des ersten Datensatzes auch sofort die Indexdatei: das Programm fordert zur Eingabe des ersten Datensatzes auf und erzeugt selbst den Index. In diesem (recht seltenen) Fall wird das Programm  \f7 index.exe\f4   nicht gebraucht! Sondern erst sp\'e4ter, wenn der Index einmal erneuert werden soll.\f0 
+\par \f4 Wenn aber schon Daten vorhanden sind, z.B. umgewandelte Altdaten, und noch kein Index, mu\'df ein Programm aus den Daten zun\'e4chst eine Datenbank machen. Ebenso, wenn die Indexdatei abhanden gekommen oder unbrauchbar geworden ist, oder wenn ihre Struktur (die Form der Zugriffsschl\'fcssel) ver\'e4ndert werden soll. Das dazu n\'f6tige Programm ist die Nummer 7 und hei\'dft \f7 index.exe\f4 . Es gibt den Datens\'e4tzen (wenn n\'f6tig) neue Nummern, schreibt sie evtl. in eine neue .\i\f0 c\i0\f4 LD-Datei oder h\'e4ngt sie an eine vorhandene an, und vor allem extrahiert es aus den S\'e4tzen die Suchbegriffe und sortiert sie. Dabei entstehen zun\'e4chst vorsortierte Hilfsdateien mit den Namen \f7 ii1\f4  bis \f7 iiN\f4  (N>=1). Aus diesen Hilfsdateien macht das Programm  \f7 qrix.exe\f4   dann die fertige Indexdatei vom Typ .cDX (Standard: \f7 cat.adx\f4 ). Den gesamten Vorgang bezeichnet man auch als das \b\f0 Generieren\b0  der Datenbank. Das \b Indexieren\b0  ist nur ein Teil davon, \f4 aber\f0  der aufwendigste. 
+\par \i\f4 Tip:\i0  Das ORG-Men\'fc erzeugt eine Datei \f7 org.bat\f4 , in der die korrekten Programmaufrufe stehen, das \b\i CockPit\b0\i0  erzeugt eine gleichwertige \f7 ccc.bat\f4 .\f0 
+\par 
+\par \pard\fi-913\li913\ri913\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b 
+\par \tab\f4 Grunds\'e4tzlich: \b0\f0  \f7 index\f0  \f4  \f0 im \b Mehrplatz\b0 -Betrieb nur einsetzen, wenn gerade niemand anders an der Datenbank arbeitet. Das Programm `\cf1\ul\b\f7 upd.exe\cf0\ulnone\b0\f0 ` (\f5 -\f6\'d8\f0  Kap.9) kann dagegen auch Daten in eine "lebende" \f4 (d.h. eine in dem Moment benutzte) \f0 Datenbank einmischen. 
+\par \pard\tx8236\f4 
+\par Es gibt 7 m\'f6gliche \b Ausgangssituationen\b0 , denen 7 Funktionen des Programms  \f7 index\f4   entsprechen. Diese Funktionen werden beim Aufruf des Programms mit der Option\b\f5  -f\b0\f4   ausgel\'f6st:\f0\tab (\f5 -\f6\'d8\f0  \b\i CockPit  \b0\i0 0.11.2) 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f4 (Was hier \'fcber .ALG und .ALD gesagt wird, gilt nat\'fcrlich genauso f\'fcr .PLG etc.) \f0 
+\par 
+\par \pard\fi-913\li913\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs28   1\b0\fs20\tab Es liegen \b\i allegro\b0\i0 -Daten zum Indexieren vor, und zwar 
+\par \pard\fi-1319\li1319\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\bullet\tab .ALG-Dateien, die man aus eigenen Vorarbeiten oder anderen Quellen per Import erhalten hat, 
+\par \pard\fi-913\li913\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab und / oder 
+\par \pard\fi-1319\li1319\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\bullet\tab\f4 .ALD-Dateien, die bereits zu einer Datenbank geh\'f6ren oder geh\'f6rt haben. \f0 
+\par \pard\fi-913\li913\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4 Dann gen\'fcgt es, das Programm  \f7 index\f4   auf diese Daten loszulassen, und es generiert mit Hilfe einer Index-Parameterdatei eine v\'f6llig neue Datenbank bzw. f\'fcgt die Daten zu einer anderen hinzu. \f0 
+\par \i\f4\tab\f0 Wichtig:\i0\f4  alle S\'e4tze erhalten neue \b\f0 interne\b0\f4  Satznummern, es wird aber keine Kategorie ver\'e4ndert. \f0 
+\par \b\tab Option:\f5   -\lang1033 f7\lang1031\b0\f0     (\b\f4 Datenbank v\'f6llig neu aufbauen\b0 ; ausf\'fchrliche Beschreibung \f5 -\f6\'d8\f0  7.1) 
+\par \b\fs28   2\b0\fs20\tab\f4 Eine Datenbank soll einen neuen Index erhalten, weil der bisherige nicht mehr funktioniert oder man die Parameter ver\'e4ndert hat. Die .ALD-Dateien (samt Satznummern) sollen unver\'e4ndert bleiben. \f0 
+\par \b\tab Option:\f5   -fi\b0\f0     (Funktion "\b Index erneuern\b0 ") 
+\par \b\fs28   3\b0\fs20\tab\f4 Der Index ist in Ordnung und kann so bleiben, aber die .ALD-Dateien enthalten durch viele L\'f6schungen viel leeren Raum, den man wieder frei haben will. Dazu m\'fcssen nur die .ALD-Dateien "entl\'fcftet" werden, wie der Fachausdruck daf\'fcr lautet. \f0 
+\par \b\tab Option:\f5   -fr\b0\f0     (Funktion \f4 "\b Bereinigung\b0 " oder \f0 "\b\f4 Entl\'fcftung"\b0  (gel\'f6schte S\'e4tze ganz beseitigen) \f0  
+\par \b\fs28   4\b0\fs20\tab\f4 Die Umst\'e4nde 2 und 3 sind beide gegeben. In diesem Fall kann INDEX auch beide Aufgaben in einem Durchlauf erledigen. Wichtig: die internen Satznummern sollen erhalten bleiben. \f0 
+\par \b\tab Option:\f5   -fn\b0\f0     (Funktion "\b Nummerntreue Erneuerung\b0  der Datenbank") 
+\par \b\fs28   5\b0\fs20\tab\f4 Nur die Satztabelle (.TBL) soll erneuert werden (wenn sie z.B. versehentlich gel\'f6scht wurde). \f0 
+\par \b\tab Option:\f5   -ft\b0\f0     (Funktion "\b Satztabelle erneuern\b0 ") 
+\par \b\fs28   6/7\b0\fs20\tab Nur das Kurztitelregister (.STL) oder die Restriktionsdatei (.RES) soll erneuert oder erstmals angelegt werden (dann sind zuerst die Vorkehrungen in der .cPI zu treffen). 
+\par \b\tab Option:\f5   -fs\b0\f0  \f4  \f0 bzw.\b\f5  -fx\b0\f0     ("\b Kurzanzeige erneuern\b0 " bzw. "\b Restriktionsdatei erneuern\b0 ") 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par Alle diese Funktionen kann man, wie schon gesagt, mit einem Klick aus dem `\cf1\ul\b\f4 ORG-Men\'fc\cf0\ulnone\b0 ` heraus erledigen. Dieses Kapitel erkl\'e4rt, was dann abl\'e4uft. \f0 
+\par 
+\par \f4 Zwei weitere Situationen sind hiermit noch nicht erfa\'dft: \f0 
+\par 
+\par \pard\fi-913\li913\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\fs28  a)\b0\fs20\tab\f0 Man hat Daten aus anderen Quellen, die anders strukturiert sind als \b\i allegro\b0\i0 -Daten. 
+\par \tab\f4 Dann mu\'df zun\'e4chst mittels  \f7 import\f4   das Material in \b\i\f0 allegro\b0\i0 -Grunddateien umgewandelt werden (Typ .ALG); dann liegt Situation 1 vor, und\f4  \f0  \f7 index\f0  \f4  \f0 kann daraus eine Datenbank machen. 
+\par \tab\f4 "Import" ist ein Kapitel f\'fcr sich, oder sogar zwei: Kap. 5 und 11 zeigen, wie man aus anders strukturierten Fremddaten die ben\'f6tigten .ALG-Dateien erzeugen kann. \f0 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-913\li913\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\fs28  b)\b0\fs20\tab\f4 Datens\'e4tze aus anderen, aber gleich strukturierten \b\i\f0 allegro\b0\i0 -Datenbanken sollen \b eingemischt\b0\f4  werden, wobei vorhandene S\'e4tze ganz oder teilweise durch neue zu \b\f0 ersetzen\b0\f4  sind. Daf\'fcr ist das Programm  \f7 upd.exe\f4   zust\'e4ndig (\f5 -\f6\'d8\f4  Kap.9).  \f7 index \f4 kann S\'e4tze nur hinzuf\'fcgen, nicht austauschen. \f0 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f4 Da\'df nach einem "Absturz" (z.B. bei Stromausfall) der Index nicht mehr angezeigt wird, also unbenutzbar geworden ist, das kommt selten vor (meistens \'fcberlebt er das), und wenn man gewissenhaft Datensicherung betrieben hat, braucht man in diesem Fall keine Index-Erneuerung (Funktion\b\f5  -fi\b0\f4 ) zu machen: bei einer gro\'dfen Datenbank geht es schneller, dann ein "Playback" zu fahren (\f5 -\f6\'d8\f0  Kap.0.7\f4  und\f0  Kap.9). 
+\par Notwendig zur Generierung einer Datenbank ist eine \b Index-Parameterdatei\b0  (Typ .cPI, \f5 -\f6\'d8\f4  Kap.0.3 u. Kap.10, Standards: \f7 cat.api \f4 und\f7  bank.npi\f4 ). Diese Datei enth\'e4lt die genaue Vorschrift, wie die Indexeintr\'e4ge aus den Datens\'e4tzen zu erzeugen sind. Entweder man benutzt eine der mitgelieferten, \'e4ndert sie evtl. nach eigenen W\'fcnschen ab, oder man legt selbst eine neue an (\f5 -\f6\'d8\f0  Kap.10.1). 
+\par 
+\par \pard\fi-658\li658\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f3\fs36 7.1\tab Datenbank-Generierung : Ablauf\b0\fs20 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0 
+\par \f4 Diese Standardfunktion (Situation 1) des Programms  \f7 index\f4   soll hier besonders ausf\'fchrlich beschrieben werden. \f0 
+\par Angenommen, 
+\par \pard\fi-426\li426\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   \bullet\tab man hat seine Ausgangsdaten auf einem Verzeichnis \f4  \f7 d:\\books\f0  \f4  \f0 im Standardformat, d.h. es sind Dateien de\f4 s\f0  Typ\f4 s\f0  .ALG 
+\par   \bullet\tab\f4 die Datenbasis soll  \f7 buch\f4   hei\'dfen, d.h. man hat eine Parameterdatei  \f7 buch.api\f4   f\'fcr die Indexstruktur\f0  
+\par   \bullet\tab Die Datenbank soll dann 
+\par \f4\tab a) \f0 auf dem Unterverzeichnis\f4  \f0  \f7 buecher\f0  \f4  \f0 des \b\i allegro\b0\i0 -\f4 V\f0 erzeichnisses auf\f4  \f0  \f4 Laufwerk\f0  C: stehen, oder 
+\par \f4\tab b) \f0 dort steht bereits eine und soll durch die neuen Daten angereichert werden. 
+\par \tab\f4 (Vorsicht: letzteres im Mehrplatzbetrieb nur durchf\'fchren, wenn niemand dran arbeitet!) \f0 
+\par 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f4 Dann sieht das \b Schema der Befehle\b0  folgenderma\'dfen aus, jeweils f\'fcr die Situationen ohne bzw. mit V14-Schl\'fcsseln:\f0 
+\par \f4 (In rot die sinngem\'e4\'df zu \'e4ndernden Angaben). Angenommen ist, da\'df die Befehle auf dem Programmverzeichnis ausgef\'fchrt werden, standardm\'e4\'dfig ist das \f7 c:\\allegro\f4 .\b\f5 
+\par 
+\par \f4 a1) Neuaufbau ohne V14-Schl\'fcssel 
+\par \f5 index -f7\f7 0\f5  -d\cf2\b0\f7 d:\\books\\*.a\cf0\b lg\f5  -e\cf2\b0\f7 buch/buecher\cf0\b\f5  -n\cf2\b0\f7 1\cf0\b\f5  -k\cf2\b0\f7 a\cf0\f0  
+\par \f4\tab\tab\tab\tab\tab    \f0     (UNIX:\f5  ... -ebuch=buecher ...) 
+\par \b\f7 qrix -fq -d\cf2\b0 buecher\cf0\b  -e\cf2\b0 buch/buecher\cf0\b  -k\cf2\b0 a\cf0\b\f5 
+\par \f4 
+\par a2) Neuaufbau mit V14-Schl\'fcsseln (z.B. beim Standardsystem mit cat.api) 
+\par \f5 index -f7\f7 0\f5  \f7 -@1 \f5 -d\cf2\b0\f7 d:\\books\\*.a\cf0\b lg\f5  -e\cf2\b0\f7 buch/buecher\cf0\b\f5  -n\cf2\b0\f7 1\cf0\b\f5  -k\cf2\b0\f7 a\cf0\f0  
+\par \f4\tab\tab\tab\tab\tab    \f0     (UNIX:\f5  ... -ebuch=buecher ...) 
+\par \b\f7 qrix -fq0 -d\cf2\b0 buecher\cf0\b  -e\cf2\b0 buch/buecher\cf0\b  -k\cf2\b0 a\cf0\b\f5 
+\par index -f\f7 i1\f5  \f7 -@2 \f5 -d\cf2\b0\f7 buecher\\*.a\cf0\b ld\f5  -e\cf2\b0\f7 buch/buecher\cf0\b\f5  -k\cf2\b0\f7 a\cf0\f0   \f5  
+\par \b\f7 qrix -fq1 -d\cf2\b0 buecher\cf0\b  -e\cf2\b0 buch/buecher\cf0\b  -k\cf2\b0 a\cf0\b\f5 
+\par index -f\f7 a\f5  -d\cf2\b0\f7 buecher\\*.a\cf0\b ld\f5  -e\cf2\b0\f7 buch/buecher\cf0\b\f5  -k\cf2\b0\f7 a\cf0\f0   \f5  
+\par \f0 
+\par \b\f4 b1) Einspeisen in eine schon bestehende Datenbank, ohne V14 
+\par \f5 index -f7\f7 1 \f5 -d\cf2\b0\f7 d:\\books\\*.a\cf0\b lg\f5  -e\cf2\b0\f7 buch/buecher\cf0\b\f5  -n\cf2\b0\f7 1\cf0\b\f5  -k\cf2\b0\f7 a\cf0\f0      (UNIX:\f5  ... -ebuch=buecher ...) 
+\par \b\f7 qrix -fq1 -d\cf2\b0 buecher\cf0\b  -e\cf2\b0 buch/buecher\cf0\b  -k\cf2\b0 a\cf0\b\f5 
+\par \f4 
+\par b2) Einspeisen in eine schon bestehende Datenbank, mit V14 
+\par \f5 index -f7\f7 1\f5  \f7 -@1 \f5 -d\cf2\b0\f7 d:\\books\\*.a\cf0\b lg\f5  -e\cf2\b0\f7 buch/buecher\cf0\b\f5  -n\cf2\b0\f7 1\cf0\b\f5  -k\cf2\b0\f7 a\cf0\f0      (UNIX:\f5  ... -ebuch=buecher ...) 
+\par \b\f7 qrix -fq1 -d\cf2\b0 buecher\cf0\b  -e\cf2\b0 buch/buecher\cf0\b  -k\cf2\b0 a\cf0\b\f5 
+\par index -f\f7 i1\f5  \f7 -@2 \f5 -d\cf2\b0\f7 buecher\\*.a\cf0\b ld\f5  -e\cf2\b0\f7 buch/buecher\cf0\b\f5  -n\cf2\b0\f7 1\cf0\b\f5  -k\cf2\b0\f7 a\cf0\f0   \f5  
+\par \b\f7 qrix -fq1 -d\cf2\b0 buecher\cf0\b  -e\cf2\b0 buch/buecher\cf0\b  -k\cf2\b0 a\cf0\f0 
+\par \pard\fi-913\li913\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 index -f\f7 a\f5  -d\cf2\b0\f7 buecher\\*.a\cf0\b ld\f5  -e\cf2\b0\f7 buch/buecher\cf0\b\f5  -k\cf2\b0\f7 a 
+\par \cf0\f4 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b b3) Erneuerung einer Zusatz-Indexdatei  (`\cf1\ul MultiX\cf0\ulnone `) : zum Beispiel die Datei \f7 cat.agx\f4 
+\par \b0\f7 index -fi0 -@2 -Z\cf2 g\cf0  -d\cf2 buecher\\*.a\cf0\b ld\b0  \b\f5 -e\cf2\b0\f7 buch/buecher\cf0\b\f5  -k\cf2\b0\f7 a\cf0 
+\par qrix -fq0 -Z\cf2 g\cf0  \b -d\cf2\b0 buecher\cf0\b  -e\cf2\b0 buch/buecher\cf0\b  -k\cf2\b0 a\cf0 
+\par \f0 
+\par \i Hinweise:\i0\f4  das Programm nennt bei \f7 -f7\f4  und bei  \f7 -fn\f4   die Ausgangsdateien um: die Typen .ALG bzw. .ALD werden zu .A8G bzw. .A8D (fr\'fcher .A1G bzw. .A1D). Das ist eine Vorsichtsma\'dfnahme, insbesondere, damit nicht eine .ALD-Datei an sich selbst hinten ankopiert wird. Wenn alles gut gelaufen ist, hat man hinterher neue .ALD-Dateien und die alten sind entbehrlich. Folgerung: normalerweise kann und \b\f0 sollte\b0\f4  man die Ausgangsdateien, also Typ \f7 .c8d\f4 , l\'f6schen, denn alle Daten sind in neue .ALD-Dateien \'fcberf\'fchrt worden. Will man aber aus irgendeinem Grund die Aktion wiederholen, oder passierte w\'e4hrend des Durchlaufs ein Zusammenbruch: Typ .ALD l\'f6schen, .\f7 A8D\f4  in .ALD umbenennen, und das Ganze nochmal. \f0 
+\par 
+\par \b\f4 Weitere Hinweise 
+\par 
+\par Dateigr\'f6\'dfe begrenzen\b0\f0 
+\par \f4 Die neu entstehenden Dateien des Typs .ALD werden normalerweise bis zur Gr\'f6\'dfe von 16.000.000 Bytes aufgef\'fcllt. Dann beginnt das Programm mit einer neuen Datei (auf  \f7 buch_1.ald\f4   folgt  \f7 buch_2.ald\f4   usw.). Will man die Gr\'f6\'dfe der einzelnen Datei z.B. auf handliche 3 MB beschr\'e4nken, gibt man beim Start zus\'e4tzlich die Option \f0 
+\par \b\f5 index ... -z3000000\b0\f0 
+\par \f4 Sollen die Dateinummern nicht mit 1 anfangen, sondern z.B. mit 73, erg\'e4nzt man\b\f5  -n73\b0\f0 . 
+\par \f4 Sollen gr\'f6\'dfere Dateien als 16MB zul\'e4ssig sein (sog. \i Aufbohrung\i0 ): Wert \f5 ii\f0  in der Indexparameterdatei setzen, z.B. \f5 ii=2\f4  f\'fcr das Doppelte usw. Dies geht nicht im laufenden Betrieb, sondern direkt danach mu\'df man einen Neuaufbau einer Datenbank (s.o. a2) durchf\'fchren.\f0 
+\par 
+\par \b Zwischenmeldungen\b0 
+\par \f4 Das Indexprogramm gibt die Zwischenzeiten f\'fcr die Bearbeitung von jeweils 100 Datens\'e4tzen bzw. bis zu 100.000  Schl\'fcsseln an (abh\'e4ngig von deren L\'e4nge). Am Ende werden Sie informiert \'fcber den Umfang Ihrer Indexdatei. Diese Angaben werden zus\'e4tzlich in eine Datei namens PROTOK geschrieben, die man sich ansehen oder ausdrucken kann. In PROTOK findet man auch am Ende die Befehlszeile, mit der das Programm QRIX anschlie\'dfend aufgerufen wird, um die Zwischendateien zusammenzumischen. \f0 
+\par 
+\par \b Endergebnis\b0 
+\par \f4 Am Ende erh\'e4lt man die Indexdatei  \f7 buch.adx\f4 , und sie liegt im Unterverzeichnis  \f7 allegro\\buecher\f4 . Noch einmal zu den Bestandteilen des Namens: \f0 
+\par \pard\fi-2039\li2039\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f7 buch\f0  :\tab\tab\f4 der von Ihnen vergebene Name der Datenbasis, stimmt \'fcberein mit  dem Namen Ihrer Index-Parameterdatei (\f7 buch.api\f4 ) \f0 
+\par \tab\f7 .adx\f0  :\tab\tab\f4 Typkennung f\'fcr "Indexdatei zum Kategoriesystem A" (wenn Sie z.B. unter  \f7 p.cfg\f4   arbeiten, brauchen Sie  \f7 BUCH.PPI\f4   und es entsteht  \f7 buch.pdx\f4 ). \f0 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b Satznummern\b0 
+\par Das Programm \f4  \f7 INDEX\f4  \f0  gibt bei Funktion\b\f5  -f7\b0\f0  \f4  \f0 jedem Satz automatisch eine neue interne \b Satznummer\b0 . Diese steht nicht in irgendeine\f4 m\f0  \f4 Datenfeld\f0 ! Bei Neuaufbau einer Datenbank beginnt die Numerierung mit 1. Die internen Satznummern gelten, solange man nicht mit Funktion\b\f5  -f7\b0\f0  \f4  \f0 neu indexiert. Mit\b\f5   -fi, -fn und -fr\b0\f0   bleiben sie erhalten. 
+\par Wenn Sie eigene \b Identifikationsnummern\b0\f4  haben, k\'f6nnen Sie diese z.B. in Kategorie #00 eingeben und mit in den Index einsortieren lassen, um darauf zugreifen zu k\'f6nnen und um einen Prim\'e4rschl\'fcssel f\'fcr  \f7 upd.exe\f4   zu haben (\f5 -\f6\'d8\f4 `Kap.9.). Solche Nummern sind dann dauerhaft und von der Datenbank unabh\'e4ngig. Die Nummernvergabe f\'fcr neu hinzukommende S\'e4tze kann automatisiert werden: dazu mu\'df man die Befehle\f5  cn \f4 und\f5  ce \f4 in der\f5  .CFG \f4 in geeigneter Weise einrichten (\f5 -\f6\'d8\f4  Anh. A.1.3)\f5 . 
+\par \f0 
+\par \pard\tx8378\tx8662\tx9088\tx9923\f4 Wollen Sie die \b gesamte Datenbank wieder l\'f6schen\b0 , dann geben Sie die Befehle\f0 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 del BUCH.ADX 
+\par del BUCH.TBL 
+\par del BUCH.STL 
+\par del BUCH.RES 
+\par del BUCH.LOG 
+\par del BUCH*.ALD\b0\f0      \f4\fs18 Diese Dateien nicht l\'f6schen, wenn Sie die Datenbank neu generieren wollen!\f0\fs20 
+\par auf dem Unterverzeichnis\f5  \f7 allegro\\buecher\f5 .\f0  
+\par 
+\par \b\f4 Datenbank neu generieren\b0\f0 
+\par Um eine Datenbank \f4 neu zu generieren, z.B. wenn man \'c4nderungen an der Indexdefinition vorgenommen hat, braucht  \f7 index\f4  nur die \f7 .ald\f4 -Dateien, daher kann man \i\f0 dbn\i0\f7 .tbl\f0 , \i dbn\i0\f7 .stl\f0 , \i dbn\i0\f7 .res\f0  und\f4  \f0  \i dbn\i0\f4 .c\f7 ?x\f4   unbedenklich l\'f6schen, denn  \f7 index\f4   wird sie neu erstellen. Dadurch gehen keine Anwenderdaten verloren! \f0 
+\par 
+\par \b\f4 Mi\'dfgl\'fcckter Versuch\b0\f0 
+\par \f4 L\'f6schen mu\'df man eine Datenbank z.B. nach einem mi\'dfgl\'fcckten Datenbankaufbau, damit die dann vorhandenen, aber unbrauchbaren Dateien den n\'e4chsten Versuch nicht behindern oder scheitern lassen und der Platz wieder freigemacht wird. Dann sollte man auch die .\i\f0 c\i0\f7 ld\f4 -Dateien l\'f6schen, weil man die Ausgangsdaten (unter \f7 *.c8d\f4 , fr\'fcher .c\f7 1d\f4 ) in der Regel noch hat und zur Generierung wieder auf diese zur\'fcckgreifen kann, nachdem man sie wieder umbenannt hat. \f0 
+\par \b\f4 
+\par \f0 V14 : Indexierung in zwei Schritten\b0 
+\par \f4 Ab Version 14 ist es m\'f6glich, in Datens\'e4tzen Stammsatznummern zu verwenden, z.B.\f5  _123\f4  statt eines Personen- oder K\'f6rperschaftsnamens, aber im Index trotzdem den Datensatz unter dem Klartext des Namens zu finden (-\f6\'d8\f4  10.2.6.8). Das Programm  \f7 index\f4   mu\'df dann einen weiteren Durchlauf machen, weil es im ersten Durchlauf die Nummern noch nicht durch die Klartexte ersetzen kann. Das passiert nicht automatisch, sondern man ruft  \f7 index \f4  f\'fcr diesen Durchlauf nochmals auf und zwar mit der daf\'fcr vorgesehenen Option\b\f0  -\f5 fa1\b0\f4 .\f0  
+\par \i Alternative\i0\f4  f\'fcr Systemverwalter: man indexiert in zwei bzw. drei Schritten, und zwar mit diesen Befehlen: (s.o.  7.1 a2 und b2)\f0 
+\par \pard\fi-3073\li3073\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 index -@1 -fi0...\tab\b0\tab\f7 nur Prim\'e4rschl\'fcssel indexieren \f5 
+\par \b\f7 qrix -fq0...           \tab\b0 die Zwischendateien mischen 
+\par \b\f5 index -@2 -fi1...\b0\tab\tab\f7 alle anderen Schl\'fcssel indexieren. \f5 
+\par \b\f7 qrix -fq1...           \tab\b0 die Zwischendateien mischen 
+\par \b\f5 index -f\f7 a\f5 1...\b0\tab\tab\f7     \tab Ersetzungsschl\'fcssel (Klartexte) einsetzen. \f5 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0 Statt \b\f5 -fi0\b0\f0  kann auch \b\f5 -f70\b0\f0  oder \b\f5 -fn0\b0\f4  vorkommen, aber wichtig ist: im zweiten Durchlauf mu\'df es \b\f5 -fi1\b0\f4  hei\'dfen. Diese Methode ist schneller, wenn es viele Stamms\'e4tze gibt. \f0 
+\par \b\i CockPit\b0\i0  macht das automatisch so, wenn es eine V14-Datenbank ist (d.h. wenn\b\f5  i5\b0\f0   in den Indexparametern gesetzt ist). 
+\par 
+\par 
+\par \pard\fi-658\li658\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\fs36 7.2\tab Datenbank ganz oder teilweise erneuern\b0\fs20 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0 
+\par \b Dringende Empfehlung:\b0  Machen Sie dies alles \f4\'fcb\f0 er\f4  das\f0  \b\i\f4 Org-Men\'fc\b0\i0\f0  (\f7 h org\f4   eingeben\f0 ), denn das ist mit Abstand die schnellste und sicherste Methode\f4 , bei der man von den Einzelheiten gar nichts zu wissen braucht\f0 . Wenn Sie\f4  immer noch lieber das \f0  \b\i CockPit\b0\i0\f4  verwenden, geht es damit genausogut. 
+\par Hier die Hinweise f\'fcr diejenigen, die es genauer wissen wollen, um z.B. eigene Skripte (Batchdateien) zu konstruieren. \f0 
+\par \pard\fi-913\li913\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274    \bullet\tab\f4 Man trifft, falls n\'f6tig, die Vorbereitungen in der Index-Parameterdatei: Definition neuer Schl\'fcssel, \'c4nderung oder Beseitigung existierender Definitionen. \f0 
+\par    \bullet\tab Man startet den Vorgang \f4 in folgender Weise  (genauer siehe 7.1)\f0  
+\par \pard\fi-3073\li3073\tx914\tx3074\tx6390\tx9372\b\f5\tab\b0\f4 Gesamte Datenbank erneuern:\b\f7   \f5 index -f70 -n0\f7  -ka -d... -e...\b0\f0 
+\par \pard\fi-3073\li3073\tx914\tx2354\tx3074\tx9372\b\f5\tab\b0\f4 Nur den Index erneuern:\b\f7   \f5 index -fi0\f7  -ka -d... -e...\f5\tab 
+\par \f7\tab\b0\f4 TBL-Datei erneuern:   \b\f5 index -ft\f7  -ka -d... -e...\b0\f0  \tab 
+\par \b\f5\tab\b0\f4 STL-Datei erneuern:   \b\f5 index -fs\b0\f0 
+\par \pard\fi-913\li913\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5\tab\b0\f4 RES-Datei erneuern:   \b\f5 index -fx\b0\f0\tab 
+\par 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i Anmerkung:\i0  Die Dateitypen .TBL, .STL und .RES werden bei\b\f5  -fi\b0\f0  nebenbei mit erstellt, wenn sie nicht existieren. Wenn sie existiert, bleibt .TBL bei\f5   -fi\f4   unver\'e4ndert. Zur Erneuerung der Indexdatei kann man als Schema auch das in 7.l gezeigte verwenden, nur mit \b\f7 -fi0\b0\f4  statt \f7 -f70\f4  und \b\f7 -dbuecher\\*.ald\b0\f4 , ansonsten ist alles gleich.\f0 
+\par \f4 Bei einer Erneuerung des Index verschwinden die \'c4nderungen und Erg\'e4nzungen, die man manuell gemacht hatte (\f5 -\f6\'d8\f0  Kap.1.4, Inst/Del). Wenn nur \i einzelne\i0  Register zu erneuern sind, nicht der gesamte Index: \f5 -\f6\'d8\f0  7.6. 
+\par 
+\par 
+\par \pard\fi-658\li658\tx914\tx7952\b\f3\fs36 7.3\tab\f8 Bereinigen ("Entl\'fcften") von Datenbankdateien\b0\f3\fs20 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0 
+\par \i Zweck:\i0\f4  R\'fcckgewinnung von Speicherplatz, Beschleunigung beim Speichern. \f0 
+\par \f4 Bei der normalen Arbeit mit einer Datenbank kann es geschehen, da\'df sich immer mehr "Leers\'e4tze" ansammeln. Das sind Speicherpl\'e4tze innerhalb von .\i\f0 c\i0\f4 LD-Dateien, die nicht mehr belegt sind, weil die Datens\'e4tze, die dort standen, wegen Verl\'e4ngerung "umgebettet" werden mu\'dften. Diese Vorg\'e4nge spielen sich v\'f6llig automatisch ab, daher wird der Anwender das Ph\'e4nomen nicht bemerken. Die "Leers\'e4tze" werden automatisch wieder benutzt: wenn ein neuer Datensatz gespeichert werden mu\'df, der in einen dieser Pl\'e4tze pa\'dft, nimmt das Programm den am besten passenden Leersatz. Dadurch ist es kaum zu erwarten, da\'df die Gr\'f6\'dfe des ungenutzten Platzes ins Uferlose w\'e4chst. Handlungsbedarf entsteht nur dann, wenn man st\'e4ndig Datens\'e4tze verl\'e4ngert, indem man neue Angaben hinzuf\'fcgt. Dann werden sich allm\'e4hlich immer mehr kurze Leers\'e4tze ansammeln. Ein unangenehmes Symptom kann auftreten: das Abspeichern dauert manchmal ungew\'f6hnlich lange. Nach dem Entl\'fcften geht's wieder schneller. Der Grund ist: die Suche nach einem passenden gel\'f6schten Satz zum Abspeichern eines neuen oder verl\'e4ngerten Satzes dauert l\'e4nger, wenn sehr viele Leers\'e4tze vorhanden sind. \f0 
+\par 
+\par \i Achtung:\i0\f4  Grunddateien (Typ .ALG) kann man nicht entl\'fcften. Insbesondere k\'f6nnte man auf diesem Wege keine neuen Daten in eine Datenbank einbringen. Das geht nur mit\b\f5  index -f71\b0\f4 . Um den Aufbau einer Datenbank aus mehreren Ausgangsdateien zu beschleunigen, k\'f6nnte man nur so verfahren: zuerst die Index-Parameterdatei "abspecken": nur einen einzigen ak-Befehl aktivieren. Dann mit\b\f5  index -f71\b0\f0  die einzelnen Dateien indexieren. 
+\par Dann alle ak-Befehle wieder aktivieren und per \b\i CockPit\i0\f9  \'ecr o i\b0\f4  (Index erneuern) starten. N\'f6tig w\'e4re das alles nur, wenn aus den .ALG-Dateien mehrere .\i\f0 c\i0 LD-Dateien werden sollen, ansonsten kann man gleich alles auf einmal indexieren. 
+\par \f4 Wieviele Leers\'e4tze eine Datenbank hat, kann man so feststellen: \f0 
+\par Auf dem Registerbildschirm (\f5 -\f6\'d8\f0  1.4) gibt man\b\f5    F6 // Enter\b0\f4  im Register 1 . Dann erscheinen Zahlen, vor denen jeweils "//" steht. Das sind die Zugriffsschl\'fcssel der Leers\'e4tze, und zwar geben die Zahlen deren L\'e4nge an. Geben Sie jetzt noch  \b\f5 F10 2\b0\f0  <Enter>  (d.h. Trunkierung auf 2 Stellen), dann sehen Sie\f5  "// ..." und links daneben\f4  die Anzahl der Leers\'e4tze. (Mit \b\f0 F7\b0\f4  Trunkierung wieder aufheben.) Wenn Sie zugreifen auf einen dieser S\'e4tze, werden Sie eine ganz normale Aufnahme sehen, es wird nur oben die Mitteilung erscheinen "Diese Aufnahme wurde getilgt". Der Aufnahmetext bleibt bei einer L\'f6schung zun\'e4chst unver\'e4ndert stehen; nur die Zugriffsschl\'fcssel werden aus dem Index beseitigt und der Leerschl\'fcssel wird eingeordnet. Erst bei einer erneuten Benutzung des Leersatzes wird der dort stehende Text tats\'e4chlich \'fcberschrieben. \f0 
+\par 
+\par \b Einfacher und noch besser: \b0\f4 Die Anzahl Leers\'e4tze und deren Umfang in Byte erf\'e4hrt man mit \b\i\f0 CockPit\i0\f9  \'ecr o u\b0\f4   (Funktion "ungenutzten Platz pr\'fcfen", auch auf dem Org-Men\'fc von a99). \f0 
+\par \f4 Wenn Sie also sehen, da\'df es sehr viele Leers\'e4tze gibt, k\'f6nnen Sie die Datenbank bereinigen ("entl\'fcften"), um den ungenutzten Plattenraum wieder f\'fcr das gesamte System (nicht nur f\'fcr \b\i\f0 allegro\b0\i0\f4 ) verf\'fcgbar zu machen. \f0 
+\par \f4 Ausgef\'fchrt wird auch diese Arbeit vom Programm  \f7 index\f4 . Es kopiert die .\i\f0 c\i0\f4 LD-Dateien, wobei es die Leers\'e4tze wegl\'e4\'dft, beseitigt die //-Schl\'fcssel aus dem Index und aktualisiert die .TBL-Datei. Die alten, l\'f6cherigen .\i\f0 c\i0\f4 LD-Dateien haben anschlie\'dfend den Typ .c8d und k\'f6nnen gel\'f6scht werden, nachdem alles korrekt gelaufen ist. Es empfiehlt sich sehr, sie dann zu l\'f6schen! Vor einer weiteren Neu-Indexierung besteht \b\i\f0 CockPit \b0\i0 sogar darauf. 
+\par \f4\'dcberlegen Sie vorher, wie gro\'df die Anzahl F\'fcllzeichen je Aufnahme sein soll, denn diese wird beim Schreiben der neuen Datei an jede Aufnahme angeh\'e4ngt. \'c4ndern Sie evtl. diesen Wert (dort steht z.B.\b\f5  f 3\b0\f0 ) in Ihrer .CFG-Datei. 
+\par Mit dem Befehl 
+\par \b\f5 index -fr -n0\f7  -d... -e...\b0\f0 
+\par \f4 starten Sie die Entl\'fcftung.  Die Ausgangsdateien werden umbenannt auf den Typ \f7 .c8d\f4 . \f0 
+\par \b Vorsicht:\b0\f4  Entl\'fcftung im \b\f0 Mehrplatz\b0\f4 betrieb nur, wenn niemand an der Datenbank arbeitet! Sonst drohen Sch\'e4den. Pr\'fcfen Sie anschlie\'dfend, ob die Datenbank in Ordnung ist. Sie finden unter\b\f5  /[0]\b0\f4  eine neue Eintragung im Index. Darunter sind die nicht mehr besetzten Satznummern der gel\'f6schten S\'e4tze versammelt. Beim Zugriff darauf kommt die Meldung "\f5 nichts gefunden, Satznummer nicht besetzt\f4 ", was aber nichts ausmacht. Wenn alles glatt gegangen ist, m\'fcssen die \f7 .c8d\f4 -Dateien gel\'f6scht werden (mit dem MS-DOS-Befehl\b\f5  del *.?\f7 8\f5 ?\b0\f4 ). Wenn nicht, l\'f6scht man die neuen Dateien (\b\f5 del xxx.?\f7 8\f5 d, del *.?dx, del *.tbl\b0\f4 ), benennt die alten wieder zur\'fcck (\b\f5 ren`*.?\f7 8\f5 ?`*.?L?\b0\f4 ) und indexiert sie neu, was allerdings erheblich mehr Zeit kostet. Oder man holt eine Sicherungskopie hervor und f\'e4hrt ein "Playback" (\f5 -\f6\'d8\f0  0.7). 
+\par \f4 Die unbenutzten Nummern werden \'fcbrigens wieder verwendet, so da\'df die Eintr\'e4ge\f5  /[0]\f4  schlie\'dflich verschwinden. \f0 
+\par 
+\par \pard\fi-658\li658\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f3\fs36 7.4\tab Datenbank als Ganzes erneuern\b0\fs20 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0 
+\par \f4 Entl\'fcftung und Index-Erneuerung k\'f6nnen in einem Zuge erfolgen, wobei die Satznummern erhalten bleiben. Deshalb wird dieser Vorgang auch "nummerntreue Erneuerung" genannt. (Wenn es darauf nicht ankommt, k\'f6nnte man genausogut nach 7.1 verfahren, wobei der Vorteil ist, da\'df es hinterher keine unbesetzten Satznummern gibt. Allerdings werden die, wie gesagt, im weiteren Verlauf wieder benutzt.) \f0 
+\par Man startet die \b\f4 nummerntreue Erneuerung\b0\f0  mit de\f4 r\f0  \f4 Option \f0  \f7 -fn :\f0 
+\par \pard\tx8520\b\f5 index -fn\f7  -d... -e...\b0\f0 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f4 Wie in 7.1a und 7.1b mu\'df man auch hier die Optionen  \f7 -fn0 -@1\f4   und  \f7 -fn1 -@2\f4  anwenden, also zwei Durchl\'e4ufe machen lassen, wenn V14-Daten vorliegen. 
+\par 
+\par Nachdem alles gelaufen ist, gibt es evtl. eine oder mehrere Dateien des Typs .A8D, die gel\'f6scht werden k\'f6nnen. Wenn was schief gegangen ist: die .A8D-Dateien evtl. wieder in .ALD umbenennen und die Sache wiederholen. \f0 
+\par Diese Funktion ist auch sinnvoll, wenn man den Parameter \b\f5 ii\b0\f4   f\'fcr die maximale Dateigr\'f6\'dfe ver\'e4ndert hat (\f5 -\f6\'d8\f0  10.2.1.3). 
+\par \f4 Also konkret: wenn eine .ALD-Datei nun eine maximale Gr\'f6\'dfe von 48 MB haben soll, mu\'df man zuerst in den Indexparametern einsetzen \f0 
+\par \b\f5 ii=3 \f0 
+\par \b0 und danach die Erneuerung starten mit 
+\par 
+\par \b\f5 index -fn ...\f0 
+\par \pard\b0 und dabei weder  \f5 -n0\f0   noch \f5 -z...\f4   setzen, damit wirklich neue .ALD-Dateien der gew\'fcnschten Gr\'f6\'dfe entstehen. \f0 
+\par 
+\par 
+\par \f4 
+\par ?Registerausz\'fcge=h ac7-2 
+\par ?upd.exe=h ac9 
+\par ?Fortsetzung=h ac7-2 
+\par ?ORG-Men\'fc=h org 
+\par ?neue Datenbank=h newdb 
+\par ?MultiX=h multix 
+\par 
+\par }
+ 

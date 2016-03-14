@@ -1,0 +1,100 @@
+  TERM.FLX : Memo-Terminsatz anlegen, nach Auswahl eines Kalendertages
+  20050315   Aufruf aus  kalender.flx !
+
+  Tageszahl steht beim Aufruf in iV, JJJJMM des Monats steht in #uU1
+  Damit kann man sich einen eigenen, ganz anderen term.flx einrichten!
+
+  zuerst die Tageszahl speichern in #uTT
+ins #uTT
+  Nicht mit alcarta
+var m
+if "alc" end
+
+  Erst pruefen: ist #9a eine gueltige Kategorienummer?
+var "#9a" J
+  Wenn nicht, steht "keine" drin. Dann gibt es eine Fehlermeldung!
+var Err
+if %keine% jump err9a
+
+#uUU
+var #uTT(0,r2)
+ins _ _0_
+ins #uTT
+var #dts
+ins #uTU
+var #uU1 #uTT    // ergibt JJJJMMTT fuer den ausgewaehlten Tag
+if not <#uTU jump termin
+var "Der " #uTT(f"0") "." #uU1(4,2 f"0") "." #uU1(0,4) " ist aber vorbei! Trotzdem?
+noyes
+if not yes end
+
+:termin
+var "Termin " #uTT(f"0") "." #uU1(4,2 f"0") "." #uU1(0,4) ". Uhrzeit?=14:00"
+
+ask
+
+if "" jump exk
+if cancel jump exk
+
+if not "" ins #uUU
+  Neuen Satz anlegen fuer Memo (wegen 0 wird nichts sichtbar!)
+new 0
+  Datum zusammenbasteln (#uU1 = JJJJMM, momentaner Monat d. Kalenderanzeige)
+var #uU1 #uTT    // ergibt JJJJMMTT fuer den ausgewaehlten Tag
+  -> in das Terminfeld des Memosatzes
+ins #9ad
+
+var #9ad "/" #uUU
+if not #uUU var #9ad "/14:00"
+ins #9ad
+
+:umwas
+ask Um was geht es?
+if can jump exit
+  nichts eingegeben?
+if "" jump umwas
+asci
+ins #9a
+ask Kommentar dazu?
+if can jump exit
+asci
+ins #9at
+
+var #op
+ins #9ao
+#00 m?4
+
+:speich
+var "Termin " #uTT "." #9ad(4,2) "." #9ad(0,4) ", " #9ad(b"/") n
+var +#9a n #9at(0,72 F" ") " ..."
+var +n "Speichern? (Nein = noch Ñndern)"
+ansi
+yes
+if can jump exit
+if no form Memo;jump speich
+put
+jump exk
+
+:exit
+  MemoSatz wieder loeschen, Nutzer wollte nicht speichern
+erase
+:exk
+var "X kalender " #uU1
+exec
+end
+
+:err9a
+set Err
+var "Mit dieser Datenbank geht das nicht. " n
+var +"Benutzen Sie fÅr die Terminfunktion die DemoDatenbank" n
+var +"Sofort starten?"
+ansi
+yes
+if not yes end
+  DemoBank starten
+get env comspec
+ins #uwC
+var #uwC " /c " P "a99 " P "demo2\\orda"
+Call
+
+

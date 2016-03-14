@@ -1,0 +1,291 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\fswiss MS Sans Serif;}{\f2\froman\fprq2 Garamond;}{\f3\froman\fprq2\fcharset0 Garamond;}{\f4\froman\fprq2\fcharset0 Times New Roman;}{\f5\fmodern\fprq1 Courier New;}{\f6\fnil\fprq2\fcharset2 Wingdings;}{\f7\fmodern\fprq1\fcharset0 Courier New;}{\f8\froman\fprq2\fcharset2 Symbol;}{\f9\fswiss Arial;}{\f10\fswiss\fcharset0 Arial;}{\f11\fmodern\fprq1 Courier;}{\f12\fswiss\fprq2 Univers;}{\f13\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red255\green0\blue0;\red0\green176\blue0;}
+\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs24     \f1   \f0\fs20 
+\par `\cf1\ul\b Vorangehender Teil\cf2\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf2\ulnone\b0 ` 
+\par \pard 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-658\li658\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f2\fs36 10.2.5\tab\f3 Export: \f2 Kategorie-Parameter\b0\fs20 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0 Diese Parameter beziehen sich auf die einzelnen, auszugebenden Kategorien (= Datenfelder). 
+\par \f4 Im nachfolgenden Abschnitt wird erkl\'e4rt, wie die Exportbefehle eigentlich abgearbeitet werden. \f0 
+\par 
+\par \pard\fi-960\li960\tx960\tx9413\b\f5 ks=n\b0\f0\tab\b Startposition\b0  des Ausgabetextes innerhalb der Kategorie  (\cf3\b wichtig\cf2\b0 )\tab <4/5> 
+\par \pard\fi-1560\li1560\ri1560\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Als  Standard wird der Wert genommen, der in der .CFG-Datei mit dem Befehl\b\f5  k\b0\f0  gesetzt wird. Bei A.CFG ist dies 4, bei U.CFG 7, bei D.CFG 6. 
+\par \pard\fi-1560\li1560\ri960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f4 1  w\'fcrde bewirken, da\'df die Kategorienummer mit ausgegeben wird \f0 
+\par \pard\fi-1560\li1560\ri1560\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f4 0  w\'fcrde au\'dferdem noch das Zeichen '#' mit ausgeben. \f0 
+\par \tab\tab\f4 Dieser Wert gilt global f\'fcr alle Kategorien. Jede einzelne kann mit dem Befehl\b\f5  bn\b0\f0  individuell zugeschnitten werden (\f5 -\f6\'d8\f0  10.2.6.3). 
+\par \pard\fi-1560\li1560\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Der Wert\f5  ks\f0  kann mit Strukturbefehl\f5  s\i\f0 i\i0\f4  tempor\'e4r ver\'e4ndert werden (\f5 -\f6\'d8\f0 10.2.0). 
+\par \tab\i Empfehlung:  \i0 nicht benutzen, wenn NUR der eigentliche Text auszugeben ist. Das ist der Normalfall. 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx9413\b\f5 ke=CS\f0\tab Kategorie-Ende-Codes\b0  (= Standard-Postfix) \tab <\f5 ""\f0 > 
+\par \pard\fi-1560\li1560\ri600\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5\tab\tab ke\b0\f0  wird als Standardwert hinter einer Kategorie ausgegeben, wenn in der Kategorieliste (\f5 -\f6\'d8\f4  10.2.6) f\'fcr diese Kategorie kein Postfix angegeben ist. \f0 
+\par \tab\tab Notwendig ist\b\f5  ke\b0\f0  bei Pauschalexport (Befehl\b\f5  ##\b0\f0 , \f5 -\f6\'d8\f0  10.2.6.1), es wird dann hinter jeder einzelnen Kategorie, also als Feldtrennung, ausgegeben. 
+\par \tab\tab Im Gegensatz zu\b\f5  ze\b0\f0  wird\b\f5  ke\b0\f0  in den Zeilenumbruch einbezogen, wie jedes andere Postfix auch. 
+\par \b\tab\tab Aufpassen:\b0  
+\par \f4\tab\tab 1. \f0 Wenn\b\f5  ke\b0\f0  gesetzt wurde, aber bei einer Kategorie dann ausnahmsweise \b kein\b0\f4  Postfix gew\'fcnscht wird, mu\'df man\b\f5  #zz 0\b0\f4  an den Kategoriebefehl anh\'e4ngen 
+\par \tab\tab 2. In Indexparametern ist  \f7 ke\f4   sinn- und wirkungslos, d.h. wird ignoriert.\f0 
+\par \b\tab\tab\f4 Weil man das leicht vergi\'dft, wird \cf3\f0 empfohlen\cf2 :\f5  ke\b0\f0  nur verwenden, wenn mit Pauschalexport gearbeitet, also \f4 der \f0 Befehl\b\f5  ##\b0\f0  verwendet wird. 
+\par \tab\tab\i Anm.:\i0\f4  In einer Param.Datei f\'fcr Globale Manipulation (Sprungmarke \f7 #-#\f4  ) ist  \f7 ke\f4   ohne Wirkung. \f0 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx9413\b\f5 kh=x\f0\tab Hierarchie-Separator\b0\tab <,> 
+\par \pard\fi-1560\li1560\ri600\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f4 Mehrteilige Bandbezeichnungen werden auf den Hierarchiestufen #02... durch Aneinanderh\'e4ngen der zugeh\'f6rigen \'fcbergeordneten Stufen gebildet (siehe Sonderkategorie #hi, \f5 -\f6\'d8\f4  10.2.6.5). Zur Trennung der einzelnen Z\'e4hlungselemente wird dabei ein Komma verwendet. Wenn man z.B. \f0 
+\par \pard\fi-1560\li1560\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5\tab\tab kh=/\b0\f0 
+\par \tab\tab\f4 gibt, wird statt dessen ein Schr\'e4gstrich benutzt. \f0 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par \pard\fi-960\li960\tx960\tx9413\b\f5 kb=1\f0\tab Folgezeichen\b0  (Wiederholungszeichen) der Kategorienummer durch Leerzeichen ersetzen\tab <0> 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5   =0\b0\f0\tab\f4 Folgezeichen unver\'e4ndert lassen \f0 
+\par \pard\fi-1560\li1560\ri600\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab relevant ist dieser Parameter \b nur\b0 , wenn\b\f5  ks\b0\f0  (s.u.) gesetzt ist: das Wiederholungszeichen der Kategorienummer wird bei\f5  kb=1\f4  durch ein Leerzeichen ersetzt. Man braucht diese Funktion evtl. dann, wenn die Daten als ASCII-Text an andere Software \'fcbergeben werden soll, die wiederholbare Kategorien ohne unterscheidendes Folgezeichen verlangt. \f0 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f5 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031   =2\b0\f0\tab Folgezeichen ersatzlos beseitigen 
+\par \pard\fi-1560\li1560\ri600\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f4 Das Zeichen an der Wiederholungsposition f\'e4llt dann ganz weg. \f0 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 kt\b0\f0\tab\b\f4 Kategorietextl\'e4nge begrenzen\b0\f0 
+\par \pard\fi-960\li960\tx960\tx9413\b\f5   =0\b0\f0\tab\f4 gesamten Kategorietext ausgeben, keine L\'e4ngenbegrenzung\f0\tab <0> 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5   =n\b0\f0\tab\f4 alle Kategorien pauschal beim n. Zeichen abschneiden (z.B. f\'fcr Tabellen) \f0 
+\par \pard\fi-960\li960\ri960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Auch dieser Wert gilt global. Zum Beschneiden einzelner Kategorien verwendet man die Manipulationsbefehle\b\f5  e\b0\f0  und\b\f5  b\b0\f0  (\f5 -\f6\'d8\f0  10.2.6.3) (Es wurde noch kein Fall bekannt, wo man\b\f5  kt\b0\f4  brauchte. Seine Begr\'fcndung ist in Vergessenheit geraten, Abschaffung wird erwogen.) \f0 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par 
+\par \pard\tx1134\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f2\fs36 10.2.6\tab Die Kategorieliste 
+\par \tab Das Kernprogramm beim Export 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0\f0\fs20 
+\par Das notwendige Beiwerk ist beschrieben, jetzt kommt der Hauptteil. 
+\par \pard\li568\tx568\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \fs24 Alle Zeilen, die mit '\b\f5 #\b0\f0 ' oder '\b\f5 !\b0\f0 ' beginnen, sind \b Exportbefehle\b0  und bilden zusammen die \b Kategorieliste\b0 . 
+\par \pard\tx568\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs20 
+\par Es gibt zwei Sorten solcher Befehle: 
+\par \pard{\pntext\f13\'B7\tab}{\*\pn\pnlvlblt\pnf13\pnindent360{\pntxtb\'B7}}\fi-360\li360\tx568\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b `\cf1\ul Anweisungen\cf2\ulnone `\b0  (mit Kategorienummer hinter dem Zeichen, z.B. \f5 #20 ...\f0  ) und 
+\par \b{\pntext\f13\'B7\tab}`\cf1\ul Steuerbefehle\cf2\ulnone `\b0  (Sprungbefehle und andere Ablaufsteuerungen, \f5 -\f6\'d8\f0 10.2.6.4, z.B.  \f5 #t\{ ... \}, #+X, #-Y \f0  ). 
+\par \pard\tx568\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f4\'b7\f0\tab\f4\'b7\f0\tab\f4 Zwischen den Zeilen k\'f6nnen, wie \'fcberall, Kommentare (d.h. mit Leerzeichen beginnende Zeilen) oder andere Parameterangaben stehen, ohne den Ablauf zu st\'f6ren. \f0 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 Die Zeilen der Kategorieliste werden von oben nach unten abgearbeitet, wenn nicht Sprungbefehle oder Unterprogrammaufrufe Verzweigungen verursachen. 
+\par Nur in diesem Teil der Parameterdatei \b kommt es auf die Reihenfolge an\b0 , denn daraus ergibt sich unmittelbar die Reihenfolge der Ausgabedaten. \i Alle anderen Teile\i0\f4  der Parameterdatei k\'f6nnen an beliebigen Stellen stehen. Kommt ein Befehl mehrfach vor, z.B. \b\f5 ks\b0\f4 , gilt nur der letzte! \'dcbersichtlichkeit l\'e4\'dft sich folglich nur erzielen, wenn man selber darauf achtet. \f0 
+\par 
+\par \pard\fi-658\li658\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f4\fs24 So wird ein Datensatz exportiert : Schritt f\'fcr Schritt \f0 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0\fs20 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b  1.\tab\b0 Wenn es keinen \b\f5 ak\b0\f0 -Befehl gibt, geht es gleich bei Schritt \b 3.\b0  los. 
+\par \tab Das Programm nimmt sich den ersten\b\f5  ak\b0\f0 -Befehl vor (\f5 -\f6\'d8\f4 10.2.1) und bestimmt das erste sich daraus ergebende Datenelement - eine Kategorie oder ein Teilst\'fcck einer solchen. Dieses merkt es sich als Sonderkategorie\b\f5  #u1\b0\f0  (und evtl.\b\f5  #u2\b0\f0 , wenn der Kopfbefehl noch eine Zusatzkategorie angibt). 
+\par \tab Wenn der erste\b\f5  ak\b0\f4 -Befehl nichts ergibt, wird der n\'e4chste genommen. \f0 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b  2.\b0\tab Wenn zu dem\b\f5  ak\b0\f0 -Element ein Sprungbefehl\b\f5  +M\b0\f4  geh\'f6rt, wird in der Kategorieliste nach der Sprungmarke "\b\f5 #-M\b0\f0 " gesucht (\f5 -\f6\'d8\f0 10.2.6.5). 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b  3.\b0\tab Wenn bei dem\b\f5  ak\b0\f0 -Element \b kein Sprungbefehl\b0  steht oder wenn gar \b keine\f5  ak\b0\f0 -Zeile vorhanden ist, begibt sich das Programm zur ersten Zeile der Kategorieliste, d.h. zur ersten mit '#' oder  '!' beginnenden Zeile. (\f5 -\f6\'d8\f0 10.2.6.1). 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b  4.\b0\tab Die Export-Bearbeitung beginnt mit der so ermittelten Zeile der Kategorieliste und arbeitet die Zeilen der Reihe nach ab. Wenn dabei die Sonderkategorie\b\f5  #u1\b0\f0  vorkommt, hat sie den vorher ermittelten Inhalt,\b\f5  #ch\b0\f4  enth\'e4lt au\'dferdem den gesamten Kategorietext, aus dem\b\f5  #u1\b0\f0  entnommen ist. 
+\par \tab\f4 Die Abarbeitung einer einzelnen Anweisungszeile kann sehr aufwendig sein, wenn diese mehrere Manipulationsbefehle enth\'e4lt. Im n\'e4chsten Abschnitt wird der Aufbau einer solchen Zeile gezeigt und ihre Abarbeitung dann erkl\'e4rt. \f0 
+\par \tab\f4 Die Anweisungen beziehen sich immer auf eine zu bearbeitende Kategorie oder Variable. Dazwischen k\'f6nnen \b\f0 Steuerbefehle\b0\f4  stehen f\'fcr Bedingungspr\'fcfungen, Spr\'fcnge, Unterprogrammaufrufe (\f5 -\f6\'d8\f0  10.2.6.4/5). 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b  5.\b0\tab Die Bearbeitung endet, wenn die letzte Zeile erledigt ist, \b oder\b0  wenn der Endebefehl\b\f5  #+#\b0\f0  oder der Abbruchbefehl\b\f5  #+-\b0\f0  auftritt, \b oder\b0  wenn ein Sprung auf eine nicht existierende Marke verlangt wird. 
+\par \tab Die Ausgabe erfolgt nicht unmittelbar: zuerst wird der gesamte Ausgabetext intern aufbereitet, erst am Ende werden die entstandenen Zeilen hintereinander, durch\b\f5  ze\b0\f4  getrennt, ausgegeben. Kompliziert, aber sonst k\'f6nnten z.B. einige der Strukturbefehle nicht funktionieren (\f5 -\f6\'d8\f0  10.2.0). 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b  6.\b0\tab Wenn es hierarchische \b\f4 Unters\'e4tze\b0  gibt, werden diese im Anschlu\'df an den Hauptsatz einzeln durchgearbeitet, und zwar beginnt das Programm jeweils mit der ersten Zeile der Kategorieliste, also nicht wieder bei der Sprungmarke! Ist f\'fcr die Unteraufnahmen eine Sonderbehandlung n\'f6tig, sollte man an den Anfang der Kategorieliste den Befehl\f5   #hi +U e0\f4   schreiben, wobei dann der Abschnitt f\'fcr die Sonderbehandlung mit Sprungmarke\f5  #-U\f0   beginnt. (Vgl. dazu auch Param.\b\f5  ag\b0\f0 , \f5 -\f6\'d8\f0  10.2.1). 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b  7.\b0\tab\f4 Das n\'e4chste Element, das sich aus den\b\f5  ak\b0\f0 -Zeilen ergibt, wird bestimmt und unter\b\f5  #u1\b0\f4  zwischengespeichert, und der n\'e4chste Exportsatz wird entsprechend erzeugt, d.h. es geht wieder bei Nr. 2. weiter, nun mit einem neuen Inhalt in\b\f5  #u1\b0\f0 . 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b  8.\b0\tab Wenn es keine\b\f5  ak\b0\f0 -Befehle gibt oder wenn keines der in den\b\f5  ak\b0\f0 -Zeilen definierten Elemente im zu exportierenden Datensatz vorhanden ist, beginnt das Programm mit der ersten Zeile der Kategorieliste und produziert genau einen Exportsatz, es sei denn, man hat\f5   ad=0\f4  gesetzt - dann kommt f\'fcr den betreffenden Satz nichts heraus. \f0 
+\par \pard\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1202\li1202\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f2\fs28 10.2.6.1   Anweisungen : Allgemeine Form  \lang1033\fs22 ( = Zeilen, die mit # oder ! anfangen)\lang1031\b0\fs28 
+\par \pard\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs20 
+\par \pard\fi-1200\li1200\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Eine Anweisung bezieht sich auf eine bestimmte Kategorie oder Variable (\f5 -\f6\'d8\f0  10.2.6.2) und beschreibt , \b wie\b0  diese auszugeben ist, was \b vorher\b0  und was \b danach\b0\f4  passieren soll. Zwischen den Anweisungen k\'f6nnen Zeilen mit Steuerbefehlen stehen, die Verzweigungen und andere Aktionen ausl\'f6sen (\f5 -\f6\'d8\f0  10.2.6.4/5). 
+\par \tab Jede Anweisung beginnt auf Position 1 einer eigenen Zeile und sieht schematisch so aus: 
+\par 
+\par \pard\cf3\lang1033\b\f5\fs24 K\cf4 xx\cf2 [\cf4 f\cf2 ] [\cf3 BS\cf2 ] [\cf3 MB\cf2 ] [#kt1 z1 #kt2 z2 #kt3 z3 ... #ktn zn] 
+\par \pard\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\b0\f0\fs16 Kategorie    Bedingt.Spr.  Manipulation  Bedingte Postfixe\fs20 
+\par \pard\fi-1200\li1200\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \tab\i Sehr wichtig: \i0\f4 Zwischen den einzelnen Elementen mu\'df jeweils \b\f0 genau ein Leerzeichen\b0  stehen. 
+\par \tab Es darf nicht\f5  #kt1\f0  direkt auf\f5  Kxx\f4  folgen, dann mu\'df zumindest\f5   0\f0   dazwischen. 
+\par \tab\f4 Die eckig geklammerten Teile k\'f6nnen entfallen. Im einfachsten Fall besteht eine Anweisung also nur aus der Angabe\b\f5  #xx\b0\f4  f\'fcr eine auszugebende Kategorie, d.h. die einfachste Parameterdatei ist nur eine schlichte Liste der auszugebenden Kategorien.  Die einzelnen Teile bedeuten: \f0 
+\par \pard\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-2664\li2664\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\cf3\b\f5 K\cf2\b0\f0  =\b\f5\tab\cf3 #\cf2\b0\f0     bzw.\b\f5    \cf3 !\cf2\b0\f0  \tab Kategorie #xxf nehmen, umwandeln per Normal- bzw. Alternativtabelle (`\cf1\ul 10.2.4\cf2\ulnone `) 
+\par   oder\b\f5\tab\cf3 #^\cf2\b0\f0    bzw. \b\f5\tab\cf3 !^\cf2\b0\f0\tab\f4 wenn zus\'e4tzlich der '\b\f5 ^\b0\f0 ' steht, wird die Kategorie #xxf aus der Hauptaufnahme entnommen, falls gerade ein hierarchischer Untersatz in Arbeit ist. 
+\par   oder\b\f5\tab\cf3 #_\cf2\b0\f0    bzw.\b\f5   \cf3 !_\cf2\b0\f0\tab\f4 wenn zus\'e4tzlich der '_' steht, wird die Kategorie \b\f0 nur\b0  aus der Unteraufnahme genommen, wenn gerade eine solche in Arbeit ist 
+\par \pard\fi-2665\li2665\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   oder\b\f5\tab\cf3 #\f8\'af\cf2\b0\f0    bzw.\b\f5    \cf3 #\f8\'af\cf2\b0\f0\tab mit dem Zusatzzeichen \f8\'af\f4  erreicht man, da\'df die Kategorie in den evtl. vorhandenen Unteraufnahmen gesucht wird, wenn sie in der Hauptaufnahme fehlt. \f0 
+\par \pard\li1278\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f9 Eine Angabe  \cf3\f5 !xyz\cf2\f9  ist gleichwertig mit \cf3\f5 #xyz y2\cf2\f9   (siehe Manipulationebefehl y) 
+\par \f10 Umcodiert wird der Arbeitstext erst dann, wenn die Befehlszeile vollst\'e4ndig abgearbeitet ist und ausgegeben wird. \f9 
+\par \i Ausnahmen:\i0\f10  die MB-Befehle enthalten einen Befehl y0/y1/y2 , oder einer der Befehle wirkt sich auf die L\'e4nge aus, denn beim Umcodieren kann sich die L\'e4nge ver\'e4ndern! Dann wird vor diesem Befehl umcodiert, und zwar gem\'e4\'df # oder ! mit den p- bzw. q-Befehlen.\b\f5 
+\par \pard\fi-1202\li1202\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \cf4 xxf\cf2\b0\f0\tab\f4 ist eine g\'fcltige Kategorie-Nummer (das Folgezeichen \cf4\b\f5 f\cf2\b0\f0  kann fehlen), oder auch eine Sonderkategorie (\f5 -\f6\'d8\f4  10.2.6.2). Wenn f\'fcr\b\f5  \cf4 f\cf2\b0\f0  ein \cf4\b\f5 .\cf2\b0\f4  steht, wird die erste vorhandene Kategorie #xxf genommen. (N\'fctzlich, wenn man nicht wei\'df, welche von mehreren m\'f6glichen besetzt sein wird.) \f0 
+\par \pard\fi-1200\li1200\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\cf3\b\f5 BS\cf2\b0\f0   \tab der \cf3\b b\cf2 edingte \cf3 S\cf2 prung\b0\f4  wird ben\'f6tigt, wenn es \b\f0 nach\b0\f4  der Verarbeitung von #xxf nicht mit der n\'e4chsten Zeile weitergehen soll. (Wenn\b\f5  #xxf\b0\f4  unbesetzt ist, passiert nichts.) F\'fcr\b\f5  BS\b0\f0  kann stehen: 
+\par \pard\fi-4838\li4838\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx4839\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab a)\tab ein \b Sprungbefehl\b0  der Form  \b\f5\tab +M\b0\f0   \tab\f4 dann geht's anschlie\'dfend hinter der Sprungmarke\b\f5  #-M\b0\f0  weiter. Sie kann auch oberhalb der Anweisung stehen. 
+\par \tab b)\tab der \b Wiederholungsbefehl\f5\tab ++\b0\f0      \tab um Folgekategorien von #xxf gleichfalls abzuarbeiten 
+\par \tab c)\tab der \b Endebefehl\f5\tab\tab\tab +#\b0\f0      \tab der laufende Exportsatz wird abgeschlossen 
+\par \tab d)\tab der \b Abbruchbefehl\f5\tab\tab\f7\tab\f5 +-\b0\f0      \tab der laufende Exportsatz wird nicht ausgegeben 
+\par \f4\tab\tab\tab\tab\tab\tab\tab\tab\tab\tab Aber im Unterprogr.: UP beenden\f0 
+\par \pard\fi-4104\li4104\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx4839\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab e)\tab ein \b Sprungbefehl\b0  der Form\b\f5\tab +#yyf\b0\f0 
+\par \pard\fi-1560\li1560\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx4839\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab d.h. statt der Sprungmarke\b\f5  M\b0\f0  steht hier eine Kategorienummer\b\f5  #yyf\b0\f0 , die in der Kategorieliste irgendwo weiter unten vorkommt (kann auch \b\f5 !yyf\b0\f4  sein). Bis zu dieser Stelle wird gesprungen, wenn #xxf in der aktuellen Aufnahme besetzt ist und MB ausf\'fchrbar ist.  F\'fcr #yyf kann stehen: \f0 
+\par \tab\tab\f4 1. eine g\'fcltige Kategorienummer, die im Satz nicht unbedingt vorkommen mu\'df, auch in der Form +\b\f5 #yy.\b0\f0 
+\par \tab\tab 2. eine Sonderkategorie oder #u-Variable 
+\par  \tab\tab Diese Form spart Zeit und eine Sprungmarke! Wenn man z.B. schreibt: 
+\par \pard\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx4839\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f5 #nr +#yyf e0\f0      hat man damit einen de facto unbedingten Sprung. 
+\par \i Achtung:\i0 
+\par \f10 Hat eine Anweisung einen bedingten Sprung und/oder bedingte Postfixe, so mu\'df sie einen Manipulationsbefehl enthalten. Soll nichts geschehen, setzt man daf\'fcr nur die Ziffer 0 . \f0 
+\par 
+\par \pard\fi-1200\li1200\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx4839\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\cf3\b\f5 MB\cf2\b0\f0\tab ist ein sogenannter \cf3\b M\cf2 anipulations\cf3 b\cf2 efehl\b0  (auch \b Vorbearbeitungsbefehl\b0\f4 ), oder eine Kette derartiger Befehle. (Diese Befehle sind die m\'e4chtigsten Werkzeuge der Exportsprache.) \f0 
+\par \tab Mit solchen Befehlen kann man den Kategorietext in vielfacher Weise "vorbehandeln" lassen, bevor er ausgegeben wird. Diese Befehle werden in einem eigenen Abschnitt beschrieben (\f5 -\f6\'d8\f0  10.2.6.3). Unter anderem kann hier ein \b\f4 Pr\'e4fix\b0\f0  gesetzt werden: eine Zeichenkette, die vor den eigentlichen Kategorietext zu setzen ist. 
+\par \pard\tx9413\b\f5 
+\par #kt1 z1 ... #ktn zn\b0\f4                          \f0 [Diese\f4  sog.\f0  "Bedingten Postfixe" sind nur sehr selten notwendig!] 
+\par \pard\fi-1200\li1200\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx4839\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Die Kategorienummern\b\f5  #kti\b0\f4  m\'fcssen in aufsteigender Reihenfolge angeordnet sein, und zwar in der Reihenfolge, die in der CFG festgelegt ist. (Also nicht unbedingt numerisch!!) \f0 
+\par \pard\fi-2232\li2232\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx4839\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5\tab zi\b0\f0  sind Nummern (0..99) von \b Zwischenteilen\b0 , die als Postfixe benutzt werden sollen 
+\par \i\tab oder\b\i0\tab\tab Unterprogramm-Aufrufe\b0 , z.B.\b\f5   >U\b0\f0    (\f5 -\f6\'d8\f0 10.2.6.5) 
+\par \i\tab aber nicht\i0\tab Textangaben der Form\f5  P"..."\f0  wie bei direkten Postfixen! (\f5 -\f6\'d8\f0  10.2.6.3) 
+\par \pard\fi-1200\li1200\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx4839\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i\tab Bedingung:\i0  Wenn #kti vorkommt, darf auch zi nicht fehlen. 
+\par \tab\i Hinweis: 
+\par \i0\tab Wenn die #kti-Angaben fehlen, wird hinter die Kategorie die Zeichenkette\f5  ke\f0 ,  das Standard-Postfix, gesetzt (\f5 -\f6\'d8\f4  10.2.5).  Um das zu verhindern, mu\'df man die Zeile mit \b\f0 #zz 0\b0\f4  abschlie\'dfen. \f0 
+\par \tab\f4 Wie die bedingten Postfixe abgearbeitet werden, wird auf der n\'e4chsten Seite unter 7. und 8. beschrieben. \f0 
+\par \pard\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx4839\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs24 
+\par \pard\fi-658\li658\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx4839\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 Eine Anweisungszeile wird in folgenden Schritten abgearbeitet: 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs20 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b  1.\b0\tab Stelle fest, ob Kategorie\b\f5  #xxf\b0\f4  im aktuellen Satz vorhanden ist, sonst ignoriere diese Zeile v\'f6llig (auch den bedingten Sprung) und bearbeite die n\'e4chste. (Wenn hinter '#' eines der drei Zeichen\b\f5  ^\b0\f0 ,\b\f5  _\b0\f0  oder\b\f5  \f8\'af\b0\f0  steht, wird die Kategorie evtl. in angrenzenden Datensatzteilen gesucht (s.o.)). 
+\par \pard\fi-958\li958\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Mache eine \b Kopie\b0  des Inhalts von Feld\f5  #xxf\f0  ab Zeichen\f5  ks\f4 . Diese Kopie gilt f\'fcr alles weitere als \cf3\b\f0 Arbeitstext\cf2\b0\f4  (d.h. zun\'e4chst wird noch nichts ausgegeben - der Arbeitstext mu\'df evtl. noch vorbearbeitet werden:) \f0 
+\par \b  2.\b0\tab wende Befehlskette\b\f5  MB\b0\f0  auf den Arbeitstext an (\f5 -\f6\'d8\f4  10.2.6.3); ist ein Befehl dieser Kette nicht ausf\'fchrbar, so wird die Befehlszeile abgebrochen, ohne da\'df etwas passiert, und zur n\'e4chsten \'fcbergegangen, und auch der bedingte Sprung wird ignoriert. Durch jeden Manipulationsbefehl wird aus dem Arbeitstext ein neuer, ver\'e4nderter Arbeitstext. Wenn einer der Befehle\f5  bn, Bn, en, En, s\f0  oder\f5  r\f0  in\b\f5  MB\b0\f4  vorkommt, wird unmittelbar vor seiner Ausf\'fchrung die Zeichenumcodierung erledigt, denn dabei k\'f6nnte sich die L\'e4nge des Textes \'e4ndern. Sonst kommt die Umcodierung erst nach der MB-Abarbeitung: \f0 
+\par \b  3.\b0\tab\f4 F\'fchre die Zeichenumcodierung aus, und zwar \'fcber die Normaltabelle (wenn\b\f5  K\b0\f4  = '#') bzw. \'fcber die Alternativtabelle (wenn\b\f5  K\b0\f0  = '!')  (\f5 -\f6\'d8\f0  10.2.4), 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b  4.\b0\tab Erst jetzt wird wirklich etwas ausgegeben, und zwar hintereinander in dieser Reihenfolge: 
+\par \pard\fi-1560\li1560\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab 1.\tab das bedingte Postfix, das sich aus der \i voran\i0 gegangenen Anweisung ergibt (siehe unten), 
+\par \tab 2.\tab\f4 die indirekten Pr\'e4fixe der aktuellen Kategorie \f0 
+\par \tab 3.\tab\f4 das Ergebnis der aktuellen Zeile (die letzte Version des Arbeitstextes: darin sind direkte Pr\'e4- und Postfixe enthalten, also Befehle  \b\f5 p"abc"\b0\f0  und \b\f5 P"xyz"\b0\f0 ) 
+\par \tab 4.\tab das indirekte Postfix (aus dem evtl. vorhandenen Manip.Befehl  \b\f5 P\{ ... \}\b0\f0  ) 
+\par \pard\fi-958\li958\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4 Wenn jedoch infolge der Manipulationen sich ein Abbruch ergibt (weil z.B. eine Manipulation nicht ausf\'fchrbar ist), gehe zur n\'e4chsten Kategoriezeile (ignoriere also auch den bedingten Sprung) und beginne damit wieder bei Punkt 1., \b\f0 andernfalls:\b0 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b  5.\b0\tab wenn ein bedingter Sprung\b\f5  BS\b0\f4  angegeben ist, f\'fchre diesen aus. Dabei gibt es 3 M\'f6glichkeiten: \f0 
+\par \pard\fi-1560\li1560\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab a)\tab hat\b\f5  BS\b0\f0  die Form \b\f5 +#yyf\b0\f0 , suche in der Kategorieliste \b weiter unten\b0  die Zeile, die mit der Kategorienummer \b\f5 #yyf\b0\f4  anf\'e4ngt, und mache dort weiter, \f0 
+\par \tab b)\tab wenn\b\f5  BS\b0\f0  die Form\b\f5  +M\b0\f0  hat, fahre fort hinter der \b Sprungmarke\f5   #-M\b0\f0 ; diese \b kann auch oberhalb\b0  der aktuellen Zeile liegen (Achtung: Schleifengefahr!) 
+\par \tab\tab\f4 In beiden F\'e4llen gilt: wird das Sprungziel nicht gefunden, endet die Verarbeitung, d.h. der Ausgabesatz gilt als fertig. Dann wird noch Parameter\b\f5  ae\b0\f0  ausgegeben (\f5 -\f6\'d8\f0  10.2.1). 
+\par \tab\tab Sonderformen:\b\f5   +#\b0\f0  wirkt als \b bedingter Endebefehl\b0 ,\b\f5    +-\b0\f0  als \b Abbruchbefehl\b0 . 
+\par \pard\fi-1559\li1559\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab c)\tab wenn\b\f5  BS\b0\f0  = ++ ist, \b wiederhole\b0  die Anweisung, wenn die Kategorie #xx \b mehrfach\b0\f4  vorkommt; aus den Postfix-Angaben ergibt sich, welche Zeichen zwischen die einzelnen Kategorien zu setzen sind. Ein Pr\'e4fix (evtl. in\b\f5  MB\b0\f0  enthalten) kommt nur vor die erste, vor die weiteren kommt das, was mit Manipulationsbefehl\b\f5  m\b0\f4  daf\'fcr definiert ist. \f0 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b  6.\b0\tab wenn \b kein\f5  BS\b0\f0  angegeben ist, fahre mit der auf #xxf folgenden Exportzeile fort. 
+\par \pard\fi-958\li958\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Das hinter der Kategorie auszugebende \b bedingte Postfix\b0\f4  steht jetzt noch nicht fest, sondern zuerst ist festzustellen, welche Kategorie als n\'e4chste drankommt: \f0 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b  7.\b0\tab\f4 Arbeite (nach Ausf\'fchrung von\b\f5  BS\b0\f4 , wenn ein solcher vorhanden ist) die nachfolgenden Zeilen der Kategorieliste durch und finde die n\'e4chste ausf\'fchrbare Zeile, d.h. diejenige, deren\b\f5  #xxf\b0\f0  im aktuellen Satz vorkommt, und deren\b\f5  MB\b0\f0  ein Ergebnis liefert. Bevor dann deren Text ausgegeben wird, kommt das bedingte Postfix, das von der vorigen Anweisung noch ansteht: 
+\par \tab Ist die aktuelle Kategorie\b\f5  <= #kt1\b0\f0 , dann ist Zwischenteil\b\f5  z1\b0\f0  (bzw. das durch \b\f5 z1\b0\f0  bezeichnete Unterprogramm) das bedingte Postfix, ist sie\b\f5  > #kt1, aber  <= #kt2\b0\f0 , dann\b\f5  z2\b0\f0  usw. 
+\par \tab (Deshalb sind die \f7 #kti\f0  in aufsteigender Reihenfolge, der .CFG entsprechend, anzuordnen.) 
+\par \i\tab Sonderfall:\b\i0\f5  #zz\b0\f0  anstelle \f7 #ktn\f0  bedeutet: unbedingte Ausgabe von zn, wenn die nachfolgende Kategorie oberhalb aller #kti liegt. 
+\par \f4\tab Wenn die n\'e4chste gefundene Kategorie eine \b\f7 #u\b0\f4 -Variable ist ODER wenn statt einer Kategorie ein \f7 #t\f4 -Befehl (Direkt-Ausgabebefehl) kommt, dann wird in jedem Fall Zwischenteil \b\f5 z1\b0\f4  genommen.\f0 
+\par \pard\fi-958\li958\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Mit\b\f5   #zz 0\b0\f4   erreicht man, da\'df \b\f0 kein bedingtes Postfix\b0  ausgegeben wird, auch nicht\b\f5  ke\b0\f0 . Folglich \b\f4 mu\'df\b0\f0  man\b\f5   #zz 0\b0\f0   angeben, wenn\b\f5  ke\b0\f0  gesetzt ist, aber im konkreten Fall entfallen soll. 
+\par 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b  8.\b0\tab Fehlt\f5  #kt1 ...\f0 , d.h. sind die bed. Postfixe weggelassen, so wird statt dessen der Parameter\f4  \b\f5  ke\b0\f0  \f4  \f0 benutzt (\f5 -\f6\'d8\f0  10.2.5). Dies geschieht auch, wenn nach\f5  #xxf\f4  als n\'e4chste eine Kategorie bearbeitet wird, die gr\'f6\'dfer als\f5  #ktn\f0  ist.  Und nun geht das ganze mit der neuen Zeile wieder bei 1. los. 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4 In bestimmten F\'e4llen ist es sinnvoll, alle Kategorien einfach hintereinander in der internen Reihenfolge, mit immer gleicher Interpunktion auszugeben. Ein Beispiel w\'e4re der Abdruck der erfa\'dften Daten mit Kategorienummern, um eine Liste zum Korrekturlesen zu haben. Daf\'fcr gibt es einen sehr einfachen Befehl: \f0 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 ##\b0\f0  \b\tab Pauschalexport\b0  des gesamten Datensatzes, evtl. mit Ausnahme bestimmter Kategorien (siehe unten) 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Wenn diese Zeile innerhalb einer Kategorieliste auftritt, werden an dieser Stelle alle Kategorien hintereinander ausgegeben, getrennt jeweils durch den Parameter\b\f5  ke\b0\f0 . 
+\par \tab (Normalerweise setzt man\b\f5  ke=C\b0\f0   (= Zeilenvorschub).) 
+\par \tab\f4 Es kann nat\'fcrlich sein, da\'df bestimmte Kategorien weggelassen werden sollen. Diese gibt man auf jeweils eigenen Zeilen mit dem Befehlszeichen '/' an:, z.B. \f0 
+\par \b\f5 /39\b0\f0\tab bedeutet: #39 weglassen 
+\par \b\f5 /27.\b0\f0\tab alle #27er Kategorien (beliebige Folgezeichen) weglassen 
+\par \b\f5 /852\b0\f0\tab #85 mit Folgezeichen 2 weglassen 
+\par \b\f5 /4.2\b0\f0\tab alle #4er Kategorien mit Folgeziffer 2 weglassen 
+\par \b\f5 /9\b0\f0\tab oder\b\f5  /9.\b0\f0     alle #9er Kategorien weglassen 
+\par \tab\f4 In solchen Befehlszeilen d\'fcrfen \b\f0 keine Kommentare\b0  stehen! 
+\par \tab\i Achtung:\i0\f4  Zusammen d\'fcrfen diese Befehle nicht l\'e4nger als 255 byte sein. \f0 
+\par \tab\f4 Die Parameterdatei E-0.APR zeigt, wie man mit diesen Mitteln eine Ausgabe aller Kategorien in interner Reihenfolge mit Nummern erreicht. Das ergibt eine mit anderen Programmen leicht einlesbare Textdatei. (In anderen Zusammenh\'e4ngen wird so etwas oft "ASCII file" genannt). Auch in den Dateien S-LANG.APT und I-0.APR (fr\'fcher PA.APR) wird vom Pauschal-Exportbefehl Gebrauch gemacht. \f0 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 #L\b0\f0  \b\tab Pauschalexport\b0  aller Kategorien, aber mit Feldbezeichnungen, und zwar denen, die in der CFG definiert sind. Das funktioniert nur, wenn eine CFG der neueren Art (ab V13) vorhanden ist (\f5 -\f6\'d8\f0  Anh. A.1). 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par \b\fs24 10.2.6.2  Sonderkategorien\b0\fs20 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab An der Stelle von\f5  #xxf\f4  in der Anweisungszeile k\'f6nnen verschiedene Elemente vorkommen, die keine echten Kategorien sind, die aber genauso verwendet werden k\'f6nnen. \f0 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 #\f7 ax\b0\f0\tab\b aktuelle\f4  Indexdatei und Register\b0\f0   
+\par \tab\f4 Dies sind zwei Zeichen: der Buchstabe der aktuellen Indexdatei (normalerweise also \b\f7 d\b0\f4  ) und die Ziffer des aktuellen Registers (: f\'fcr 10 und ; f\'fcr 11)\f0 .\f4  Diese Sonderkategorie gibt es erst ab V27.2 wegen der MultiX-Funktion.\f0  
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 #cc\b0\f0\tab\b aktuelle Kategorie\b0  ("current category") \f4   Zu empfehlen nur in Unterprogrammen! Sonst unsicher.\f0 
+\par \tab\f4 f\'fcr\b\f5  #cc\b0\f4  wird der Wert der zuletzt aufgerufenen Kategorie angenommen und zwar der noch unver\'e4nderte Text. Insbesondere ist dies in Unterprogrammen (\f5 -\f6\'d8\f4 10.2.6.5) n\'fctzlich: in\b\f5  #cc\b0\f4  steht dann der Wert der zuletzt vor dem UP-Aufruf benutzten Kategorie. Daher lassen sich UPs auch kategorieunabh\'e4ngig formulieren. Innerhalb eines UP bleibt der Wert von #cc dann erhalten, auch wenn dort zun\'e4chst andere Kategorien benutzt oder noch weitere UPs aufgerufen werden. Interessant ist dies im Zusammenhang mit dem Steuerbefehl \b\f0 Indikatoraktion\b0  (\f5 -\f6\'d8\f0  10.2.6.4). 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 #cca\b0\f0\tab\b aktuelle Kategorie\b0  incl. # und Kategorienummer\f4  des aktuell nachgeladenen Satzes.  Zu empfehlen nur in Unterprogrammen! Sonst unsicher.\f0 
+\par \tab Ansonsten dasselbe wie #cc. Bequem, wenn man im UP die Nummer braucht. \f4 Die Setzung  \f7 ks\f4   f\'fcr die Text-Startposition hat hier keinen Einflu\'df.\f0 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 #ch\b0\f0\tab\b aktuelle Kopfkategorie\b0  ("current heading") 
+\par \tab Fast dasselbe wie\b\f5  #u1\b0\f0  , aber: unter\b\f5  #ch\b0\f4  hat man jederzeit den gesamten Text der mit dem aktuellen ak-Befehl ausgew\'e4hlten Kategorie, w\'e4hrend\b\f5  #u1\b0\f4  nur den separierten Bestandteil enth\'e4lt! Von einem Kopfbefehl\b\f5  ak=4." = "+G\b0\f0  ausgehend, hat man unter Sprungmarke\b\f5   #-G\b0\f0   mit\b\f5   #u1\b0\f4  nur den jeweiligen Ausschnitt und wei\'df nicht, woher er stammt, unter\b\f5  #ch\b0\f4  steht jedoch die gesamte Kategorie. Das ist z.B. wichtig f\'fcr Indikatorpr\'fcfungen (\f5 -\f6\'d8\f0  10.2.6.3). 
+\par \tab Bei einfachen Kopfbefehlen (ohne Trennvorschrift) sind\b\f5  #u1\b0\f0  und\b\f5  #ch\b0\f0  gleich. 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 #dt\b0\f0\tab\b Datum\b0  in deutscher Form, z.B.\f5   Mo., 24. Sep 1990\f0  . Mit dem Manipulationsbefehl\f5   b5\f0   oder mit\f5  b", "\f4   kann man z.B. erreichen, da\'df der Wochentag wegf\'e4llt. \f0 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 #dts\f0\tab Datum/Uhrzeit in Sortierform\b0\f4  : f\'fcr Sortieraufgaben wichtig. Dasselbe Datum w\'fcrde mit Uhrzeit in der Form\b\f5  YYYYMMDD/hh:mm:ss\b0\f0  erscheinen, also z.B.\f5  19920819/13:32:55\f4 . Mit Hilfe der Manipulationsbefehle hat man nun alle M\'f6glichkeiten, Datum und Uhrzeit in jeder Weise umzugestalten: z.B. w\'fcrde\f5   #dts e4 p"(" P")"\f0   das Jahr nehmen und einklammern. 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 #fna\b0\f0\tab\b Dateiname\b0  (File Name) der aktuellen .ALD- bzw. .ALG-Datei 
+\par \pard\fi-993\li993\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 #mv\f0\tab Multi-Volume Indicator\b0\f4  : diese Kategorie existiert, wenn es sich um ein mehrb\'e4ndiges Werk handelt. Sie enth\'e4lt dann die Bandnummer des ersten Bandes, genauer: den Inhalt der ersten vorkommenden Kategorie #01. Sinnvoll ist #mv, weil man damit innerhalb der Kategorieliste feststellen kann, \b\f0 ob\b0\f4  es sich um ein mehrb\'e4ndiges Werk handelt. Der Befehl \f0 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5\tab #mv +K e0\b0\f0 
+\par \pard\fi-958\li958\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4 w\'fcrde einen Sprung zur Sprungmarke\f5  #-K\f4  ausl\'f6sen, wenn es sich bei dem gerade bearbeiteten Satz um einen hierarchischen handelt. In KAT.API wird davon Gebrauch gemacht: wenn auf Stufe #00 die #75 besetzt ist, aber nicht die #76 (Verlag, aber kein Jahr), dann soll keine Verlagseintragung f\'fcr Index 6 gemacht werden, denn die Erscheinungsjahre befinden sich dann bei den B\'e4nden und erzeugen von dort aus die richtigen Eintr\'e4ge des Typs "Verlag:Jahr". \f0 
+\par \b\f5 #nr\f0\tab Satznummer\b0  : wenn eine .ALD-Datei exportiert wird (mit PRESTO oder SRCH), ist #nr die interne Satznummer der Datenbank, bei .ALG-Dateien dagegen wird eine fortlaufende Nummer, beginnend mit\b\f5  an\b0\f0  am Dateianfang (\f5 -\f6\'d8\f0  10.2.1), automatisch gebildet. 
+\par \pard\fi-992\li992\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 #nra\f0\tab Satznummer des nachgeladenen Satzes\b0  : wenn in dem Moment der aktuelle Satz einer ist, den man mit einem Nachladebefehl geladen hat (\f5 -\f6\'d8\f0  10.2.6.7). Sonst ist \f5 #nra\f0  unbesetzt. 
+\par \pard\fi-958\li958\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 #op\b0\f0\tab\b Bearbeiter\b0  ("Operator"). Wenn beim Programmstart die Option\f5  -O Meyer\f0  gegeben wird, hat die Sonderkategorie den Inhalt\f5   Meyer\f0  . 
+\par \tab\i a99:\i0  Befehl Operator=... in der INI-Datei. Default: "op". 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 #p0\b0\f0\tab Seitenzahl der aktuellen Seite, aber nur wenn sie gerade ist, sonst leer 
+\par \b\f5 #p1\b0\f0\tab\f4 Seitenzahl, wenn sie ungerade ist, sonst leer. Zu verwenden f\'fcr Seitenkopf oder -fu\'df, wenn man die geraden Nummern rechts und die ungeraden links plazieren will. (Beispiel in P-0.APR) \f0 
+\par \b\f5 #p2\b0\f0\tab\f4 Seitenzahl (ohne Ber\'fccksichtigung von gerade und ungerade) \f0 
+\par \b\f5 #pa\b0\f0\tab\f4 aktuelle Seitenzahl von Parameter-Set 1. Bekanntlich kann man im Exportprogramm (SRCH) mehrere Exporte parallel fahren. Wenn nun der erste Export (Parameter-Set 1) eine gedruckte Liste mit Seitenzahlen erstellt, kann dazu als zweiter Export (Set 2) eine sortierf\'e4hige Namensdatei entstehen, die die Seitenzahlen der Hauptliste mit enth\'e4lt. Daran kann sich das Sortieren der Namensliste und schlie\'dflich eine Druckausgabe eines Namensregisters mit Angabe der Seitenzahlen des Hauptteils anschlie\'dfen. Beispiel i\f0 n A-0.APR . 
+\par \b\f5 #pz0\b0\f0\tab Nummer der aktuellen Zeile, auf der gerade gedruckt wird (beginnend bei 1) 
+\par \b\f5 #pz1\b0\f0\tab\f4 Anzahl insgesamt produzierter Zeilen f\'fcr den aktellen Datensatz \f0 
+\par \b\f5 #pz2\b0\f0\tab Anzahl bereits erzeugter Zeilen auf der aktuellen Seite (wenn\f5  zm >0\f0  ist). 
+\par \b\f5 #pzp\b0\f0\tab\f4 Aktuelle L\'e4nge = Position des zuletzt ausgegebenen Zeichens in der momentan erzeugten Zeile. \f0 
+\par \b\f5 #u1\b0\f0\tab\f4 Sonderkategorien z.B. f\'fcr Kartenk\'f6pfe \f0 
+\par \b\f5 #u2\b0\f0\tab\f4 Die Kategorien #u1 und #u2 spielen eine Sonderrolle. Wenn man sie von Hand eingibt, stehen sie vor der Kategorie #00. (Das kann man nutzen, um von vornherein sortierf\'e4hige S\'e4tze zu haben.) Wenn in der Kategorieliste #u1 und #u2 vorkommen, werden sie jedoch tempor\'e4r mit den Inhalten gef\'fcllt, die sich aus der aktuellen ak-Zeile ergeben (\f5 -\f6\'d8\f0  10.2.1) bzw. die im Befehl\f5  #dxxf/yyf\f0  angegeben wurden (\f5 -\f6\'d8\f0  3.3, Befehl #d). 
+\par \i\tab Sonderfall:\i0  Wenn keine\b\f5  ak\b0\f0 -Befehle vorhanden sind, #u1 und/oder #u2 jedoch wie normale  Kategorien in der Aufnahme belegt sind, dann sind sie auch wie normale Kategorien exportierbar. 
+\par \tab\f4 Der Sinn ist dieser: wenn man eine Sortierdatei hat, dann sind in der Regel #u1 und #u2 mit Sortierbegriffen gef\'fcllt. Diese k\'f6nnen dann gleich f\'fcr den Druck benutzt werden. Z.B. in den Dateien P-*.APR gibt es deswegen keine\b\f5  ak\b0\f0 -Befehle. 
+\par \tab #u1 und #u2 sind spezielle \b Anwendervariablen\b0 : 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 #u\b0\i\f0 xy\b\i0\tab Anwendervariable\b0 : Diese werden erzeugt durch die Manipulationsbefehle\b\f5   a\b0\f0 xy  und\b\f5   A\b0\f0 xy  sowie\b\f5   =\b0\f0 xy (\f5 -\f6\'d8\f0  10.2.6.3, Typ 2), oder durch Vorbesetzung mit der Startoption\b\f5  -U\b0\i\f0 xyTEXT\i0 : dadurch gelangt \i TEXT\i0  beim Start in\b\f5  #u\b0\i\f0 xy\i0\f4  . Diese Variablen lassen sich wie normale Kategorien exportieren. Besonders wichtig sind sie in F\'e4llen, wo man Inhalte einer Aufnahme aufbewahren will, um sie bei der n\'e4chsten wieder zu verwenden. Solche Anforderungen treten auf, wenn man z.B. \f0 
+\par \pard\fi-1560\li1560\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\bullet\tab Listen druckt, in denen ein sich wiederholender Kopf nicht jedesmal ausgedruckt werden soll, sondern ab dem zweiten Mal ersetzt durch etwas wie "***"  (Beispiel: P-NORMAL.APR), 
+\par \tab\bullet\tab\f4 Rechnungen durchf\'fchrt, wobei Zwischenergebnisse aufbewahrt und von einer Aufnahme zur n\'e4chsten jedesmal fortgeschrieben werden m\'fcssen  (\f5 -\f6\'d8\f0  10.2.6.3, Befehle\b\f5  =, a, A, x\b0\f0 ). (Beispiel: R-0.APR) 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 #u0\b0\i\f0 k\i0\f5\tab (\i k\i0  = 0..3)  #u00\f4  enth\'e4lt die \b\f0 Anzahl der Kategorien\b0  der aktuellen Aufnahme,\f5  #u01\f0  die \b erste\b0  Kategorie,\f5  #u02\f0  die jeweils \b\f4 n\'e4chste\b0\f0  (zum Programmieren von Schleifen!), und\f5  #u03\f0  die \b letzte\b0 . \f4 Sobald man (in einer Schleife) das letzte Feld \'fcberschritten hat, ist #u02 nicht vorhanden. 
+\par \tab Die entscheidende Zeile einer Schleife kann damit so formuliert werden: 
+\par \tab\f7 #u02 +X ...\f4 
+\par \b\f5 #ui0\b0\f0\tab\f4 Letzte Nutzereingabe im Register; verwendbar f\'fcr Flips \f0 
+\par \b\f5 #uxa\b0\f0\tab\f4 Diese Sonderkategorie enth\'e4lt die \b\f0 Indexzeile\b0 , von der aus zuletzt zugegriffen wurde. 
+\par \b\f5 #uxb\b0\f0\tab\f4 Enth\'e4lt die Nummer des aktuellen Index, also 1, 2, ... 9 oder : oder ; \f0 
+\par \b\f5 #uxc\b0\f0\tab\f4 Enth\'e4lt die Kurzzeile, \'fcber die zugegriffen wurde - falls der Zugriff so stattfand \f0 
+\par \b\f5 #uxd\b0\f0\tab Die Nummer (1,2,3) der aktuellen Datenbank, wenn mehr als eine beim Start angegeben wurden (nur DOS) 
+\par \b\f5 #uxq\b0\f0\tab Hier steht die \b Antwort\b0  auf den letzten\b\f5  #q\b0\f0 -Befehl (\f5 -\f6\'d8\f0  10.2.6.4). 
+\par \b\f5 #ux\i i\b0\i0\f0\tab (\i i\i0\f4  = 1..9 : ;)  Diese Sonderkategorie enth\'e4lt die \b\f0 Indexzeile\b0 , die mit dem letzten Nachladebefehl im Index \i i\i0  gefunden wurde (\f5 -\f6\'d8\f0  10.2.6.7). Besonders wichtig bei Nachlademodus 8 und 9. 
+\par \i\tab Tip zum Testen:\i0  Die #u-Variablen kann man im Editor mit Befehl #a betrachten (\f5 -\f6\'d8\f0  Kap.3.5.3). 
+\par \tab\b\f5 #ux0\b0\f4  wird au\'dferdem mit dem eingegebenen Suchbefehl belegt, wenn dieser nicht korrekt ist. Auswertung kann dann in  \b\f5 onfnda99.flx\b0\f0  erfolgen. 
+\par \b\f5 #uzV\b0\f0\tab\f4 Zuletzt ausgew\'e4hlte Zeile einer ViewListe (a99). \f0 
+\par 
+\par 
+\par Nur \b\i a99/alcarta\b0\i0 : 
+\par \b\f5 #uzo\b0\f0\tab Hier steht 000 drin bzw. 001, falls der aktuelle Satz ein online- bzw. offline-Satz ist. 
+\par \pard 
+\par Wenn man in einem FLEX den Befehl  \b\f5 var zc\b0\f4  gegeben hat, steht anschlie\'dfend in der "internen Variablen" die aktuelle Anzeigezeile (wo sich die Schreibmarke befindet) \f0 
+\par \tab und: 
+\par \f11 #uzC\f0\tab dieselbe Zeile, aber __ (2x Unterstrich) an der Stelle, wo die Schreibmarke sich befindet 
+\par \f11 #uzD\f0  \tab Fliptext, falls Schreibmarke innerhalb eines solchen 
+\par \f11 #uzF\f0  \tab\f4 Flipbefehl (zugeh\'f6rige Kategorie #uZi, einschl. der Nummer, also \f5 #uzF#uZi...\f0 ) 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\tab\f4 Sonderkategorien f\'fcr mehrb\'e4ndige Werke und St\'fccktitel\b0\f0 
+\par \tab\f4 Die folgenden zwei Sonderkategorien haben nur in untergeordneten S\'e4tzen (B\'e4nde von mehrb\'e4ndigen Werken) einen Wert: \f0 
+\par \pard\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5 #gt\b0\f0\tab\f4 Gesamttitel: bei St\'fccktitel-Aufnahmen von B\'e4nden (auf beliebigen Hierarchiestufen!) wird f\'fcr #gt der Sachtitel #20 der Hauptaufnahme (Stufe #00) mit der Verfasserangabe #40 und der Hierarchiegliederung #01/#02... dieses Bandes eingesetzt (funktioniert nur bei A.CFG!). \f0 
+\par \b\f5 #hi\b0\f0\tab Hierarchie-Gliederung in Sortierform bzw. in Druckform 
+\par \b\f5 #hi1\b0\f0\tab Hat man z.B. folgende Gliederung einer hierarchischen Aufnahme (nur angedeutet): 
+\par \pard\fi-958\li958\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f5\tab #00 
+\par \tab #20 \i\f7\'fcbergeordneter Gesamttitel\i0\f5 
+\par \tab ... 
+\par \tab #01 1 = Bd. 1\lang1033\f12             (\i Sortierform = Druckform\i0 )\lang1031\f5 
+\par \tab #20 \i Sachtitel von Band 1\i0 
+\par \tab ... 
+\par \tab #01 5 = Bd. 5 
+\par \tab ... 
+\par \tab #02 1 = Teil 1 
+\par \tab ... 
+\par \tab #02 3 = Teil 3 
+\par \tab ... 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\tab\f4 dann gilt, w\'e4hrend der letzte Teil abgearbeitet wird,\f5   #hi 5,3\f0   und\f5   #hi1 Bd.5,Teil 3\f4  . Sollen die einzelnen Z\'e4hlungselemente durch '/' statt Komma getrennt werden, m\'fc\'dfte man den Hierarchie-Separator mit dem Befehl\f5   kh=/\f4   \'e4ndern (\f5 -\f6\'d8\f0  10.2.5). 
+\par \tab Ein Tip: wenn man das Postfix\b\f5   P\{ ". " #250 \}\b0\f0   oder ein entsprechendes Zwischenteil hinter\f5  #hi\f4  verwendet, werden Folgezeilen sinnvoll einger\'fcckt. \f0 
+\par \f5\tab #hi\f4  enth\'e4lt nur dann etwas, w\'e4hrend ein Untersatz verarbeitet wird. Folglich kann man bedingte Spr\'fcnge konstruieren:\f5   #hi +V e0\f0   bewirkt: wenn der aktuelle Satz ein Untersatz ist, erfolgt Sprung nach\f5  #-V\f4  ohne Ausgabe von #hi (e0 setzt die L\'e4nge auf 0). \f0 
+\par \f5\tab #hi\f0  existiert nicht, wenn\f5  ag=0\f4  gesetzt wurde, die Unters\'e4tze also selbst\'e4ndig abgearbeitet werden, als w\'e4ren sie Haupts\'e4tze. \f0 
+\par \tab\f4 Gibt man im Editor den Druckbefehl #d, wenn #02 3 gerade die aktuelle Aufnahme ist, so wird eine "St\'fccktitelkarte" gemacht, d.h. die fehlenden Kategorien werden aus den hierarchisch \'fcbergeordneten Einheiten zusammengesucht.\f5  #gt\f4  wird dabei benutzt, um den Titel #20 des \'fcbergeordneten Gesamtwerks auf der St\'fccktitelkarte mit auszugeben. Er erscheint dann bei diesem Beispiel in der Form \f0 
+\par \pard\fi-1800\li1800\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f5\tab\tab\tab\f7\'dcbergeordneter Gesamttitel / Verfassername ; 5,3\f0  . 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i\tab\f4 Einschr\'e4nkung:\i0\f5  #gt\f4  funktioniert in dieser Weise nur, wenn das Standard-Kategorienschema A.CFG benutzt wird! Bei anderen Konfigurationen oder anderen W\'fcnschen mu\'df man den Effekt mittels Anwendervariablen nachbilden (\f5 -\f6\'d8\f0  10.2.6.3) und/oder mit\f5  #^xx\f0  arbeiten, um Elemente aus der Hauptaufnahme "herunterzuholen". (\f5 -\f6\'d8\f0  10.2.6.1). Studieren Sie die Parameterdatei \b D-1.APR\b0\f4 , um die Zusammenh\'e4nge genau zu verstehen, und probieren Sie alles damit aus. \f0 
+\par \pard 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 `\cf1\ul\b Vorangehender Teil\cf2\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf2\ulnone\b0 ` 
+\par \pard 
+\par ?Vorangehender Teil=h ac10-4 
+\par ?Fortsetzung=h ac10-6 
+\par ?Steuerbefehle=h ac10-8 
+\par ?Anweisungen=h ac10-5=10.2.6.1   Anweisungen 
+\par ?10.2.4=h ac10-4=10.2.4.1 
+\par 
+\par }
+ 

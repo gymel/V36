@@ -1,0 +1,139 @@
+  VKR.FLX :    Holt einen Registerabschnitt aus dem Fernkatalog
+  2008-04-29   und bereitet ihn als RTF-Text mit Flips auf
+
+  (Auf der PHPAC-Installation der Datenbank ist ein Skript vkr.php dafuer
+   vorbereitet)
+  Start mit   X vkr reg ent    bzw.  X vkr reg ent ---  (fuer rueckwaerts)
+        z.B.  X vkr per shakespeare
+
+#urW
+  uebergebene Werte speichern
+ins #ure
+  und zerlegen in #urW, #ure und #uen
+  rueckwaerts gewuenscht? Dann #urW belegen
+if % ---% #urW ---
+var #ure(b" " e" ---")
+ins #uen
+  Reg.name -> $Reg
+var #ure(e" ")
+ins $Reg
+
+
+:begin
+  Aufruf von  vkr.php  damit zusammenbasteln
+var $Url "vkr.php?reg=" $Reg "&ent=" #uen "&bw=" #urW
+  und die Daten abrufen
+get I
+
+  Wenn nicht gefunden, dann kommt die Zeichenfolge "Sorry" vor
+if %Sorry% mes Hat nicht geklappt;end
+
+  vorn und hinten Zeilensteuerzeichen weg
+var (f"^M^J" F"^M^J")
+  Zeilenvorschuebe durch /q/ ersetzen
+ins _^M^J_/q/_
+ins #uiv
+var #uiv(e"/q/" f" " b" ")
+   Erste Zeile wird Hilfsvariable #urw fuer "nach oben" = rueckwaerts
+ins #urw
+   Letzte Zeile wird Hilfsvar. #uvw fuer "nach unten" = vorwaerts
+var #uiv(T"/q/" f" " b" ")
+ins #uvw
+
+
+  Jetzt sind die Registerzeilen in #uiv, getrennt durch /q/. Kopieren in #uiV
+var #uiv
+asci
+ins #uiV
+
+  Eine RTF-Datei  vkr.rtf  wird angelegt
+open x vkr.rtf
+  Dateikopf
+wri Flisthead.rtf "\\par "
+  Flip fuer rueckwaerts
+wri "`\\ul nach oben\\ul0 `\\par \\par " n
+
+:loop
+  und nun die Registerzeilen als Flips aufbereitet: `fliptext`
+wri #uiv(f" " e" " 0,r5) "  `\\cf2 \\b " #uiv(f" " b" " f" " e"/q/" e"  ->" F" ") "\\b0 \\cf1 `\\par " n
+  z.B.     	15  `berlin,1929`
+var #uiv(b"/q/")
+ins #uiv
+if #uiv jump loop
+
+  Jetzt noch die zugehoerigen Flipzeilen unten anhaengen, mit ? beginnend
+:l2
+wri n "\\par ?" #uiV(f" " b" " f" " e"/q/" e"  ->" F" ")
+
+var #uiV(e"/q/")
+
+  bes. trickreich: die Verweisungszeilen
+if % ->|% jump rverw
+if % -> |% jump rverw
+if % ->% jump dverw
+  jeweils einen Aufruf von vkf.flx erstellen
+wri "=X vkf "
+  z.B.   ?berlin,1928=X vkf berlin,1928
+var #uiV(f" " b" " f" " e"/q/" B" ->" f" ")
+ins _ _+_
+ins #uvj
+wri #uvj
+jump goon
+
+  // abc -> xyz
+:dverw
+  jeweils einen Aufruf von vkf.flx erstellen
+wri "=X vkr " $Reg " "
+  z.B.   ?berlin,1928=X vkf berlin,1928
+var #uiV(f" " b" " f" " e"/q/" B" ->" f" ")
+ins _ _+_
+ins #uvj
+wri #uvj
+jump goon
+
+  // abc -> |ixyz
+:rverw
+  Registernummer -> $Reg
+var #uiV(b" ->" f" " 0,2)
+ins $Reg
+wri "=X vkr " $Reg " "
+  z.B.   ?berlin,1928=X vkf berlin,1928
+var #uiV(f" " b" " f" " e"/q/" B" ->" 2,0 f" ")
+ins _ _+_
+ins #uvj
+wri #uvj
+
+:goon
+var #uiV(b"/q/")
+ins #uiV
+if #uiV jump l2
+  und ganz unten den Flip fuer vorwaerts
+wri n "\\par \\par `\\ul nach unten\\ul0 `\\par \\par " n
+
+
+  Flipzeilen f. rueckw. u. vorw.: Aufrufe von vkr.flx
+wri n "\\par ?nach oben=X vkr " $Reg " _" #urw " ---"
+  z.B.                  X vkr OVJ _berlin,1924 ---
+
+wri n "\\par ?nach unten=X vkr " $Reg " _" #uvw
+  z.B.                   X vkr OVJ _bonn,1983
+
+  rtf-Datei ende
+wri n " }"
+close x
+
+  Flip-Variablen im Hintergrundspeicher loeschen
+var ""
+ins #uY~
+ins #uZ~
+
+  Und nun fertig vkr.rtf mit den funktionsfaehigen Flips anzeigen
+help vkr
+  Alt+9 vorbereiten
+#uX9 x var 'vkr ' $Reg ' ' z1\\exec
+  Hinweis dazu geben (im Schreibfeld)
+var "Schreiben Sie oben in die erste Zeile, wo Sie hinwollen, dann Alt+9"
+sho iV
+  Focus ins Anzeigefeld
+activ 4
+

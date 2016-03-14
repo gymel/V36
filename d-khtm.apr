@@ -1,0 +1,291 @@
+  D-KHTM.APR : a99-Anzeige incl. verkn. Satzstrukturen, tabellarisch
+  2002-02-15  Plus Nachladungen von ueber- und untergeordneten Saetzen
+  Wenn keine hierarchischen oder verknuepften Saetze vorkommen,
+  dann genuegt einfaches Modell  D-SHTM.APR  
+  ALFA: Unterprogramm #(c, ruft Javascript  ausl(), rtrn(), vorm() in av_func.js,
+              dieses aktiviert  alfa.php, welches die Jobs enthaelt. 
+        wenn nicht gewuenscht, dann kommentierte Zeile in d-k.apt deaktivieren
+
+pn="Hierarchie-Export HTML"
+
+  Fuellen Sie die Bereiche zwischen den mit <<<<<<<<<  und >>>>>>>>>
+  markierten Zeilen mit Ihren Exportbefehlen aus!
+  Meistens reicht es, den Abschnitt unter Sprungmarke #-Z anzupassen!
+  (siehe ganz unten)
+
+  Der aktuelle (anzuzeigende oder auszugebende) Satz wird PRIMAERSATZ genannt.
+  Dabei handelt es sich um entweder
+
+  A.  einen Hauptsatz
+      wenn er unabhaengig gespeicherte Untersaetze hat, muss die
+      Kategorie #00 mit  einer eindeutigen IdNr X besetzt sein.
+      In der Anzeige sollen unter dem Hauptsatz alle untergeordneten
+      Saetze erscheinen.
+      Die untergeordneten Saetze haben dann in #00 IdNummern der Form  X+n
+      mit einer Bandnummer n :
+
+  B.  einen Untersatz
+      dann enthaelt #00 die IdNr des Hauptsatzes PLUS eine Bandnummer
+      z.B.  #00 123456+005=Vol.5
+      (hinter '='  kann eine Bandnummer in Textform folgen, sonst wird
+      die auf '+' folgende Nummer genommen, fuehrende Nullen werden beseitigt)
+      In der Anzeige sollen stufenfoermig die unmittelbar uebergeordneten, 
+      aber nicht die nebengeordneten Saetze erscheinen.
+
+  C.  beides, auch "Mittelsatz" genannt: der Primaersatz ist einerseits
+      einem anderen untergeordnet, besitzt aber auch selbst Untersaetze.
+      In der Anzeige soll fuer die untergeordneten Saetze nach A, fuer die
+      uebergeordneten nach B verfahren werden.
+
+
+  Es kann bis zu 5 untergeordnete Stufen geben (theoretisch noch mehr).
+  Jede weitere Stufe enthaelt in der #00 oder #09 ein weiteres '+' . 
+  Dieses wird fuer den Nachladevorgang ausgewertet.
+
+  *********** Grundparameter, nicht ohne Grund aendern: ***************
+td-htm      HTM-Steuerbefehle
+         xxx Aktivieren, wenn intern ASCII, extern UTF-8
+p & "&amp;"
+p < "&lt;"
+p .34 "&quot;"
+
+tad-utf     ASCII->ANSI Codetabelle
+
+zl=0     Zeilenlaenge: es wird kein Zeilenumbruch gemacht
+ze=" " 13 10
+zb=" -"   Umbruch bei Leerz. und Bindestrich
+zm=0      keine Seitenschaltung
+dx=1      Umcodierung einschalten
+ae=""    </table>
+i4=1    V14-Ersetzungen ausfuehren
+
+  <<<<<<<<<<<<    Raum fuer Ihre Zwischenteile (Textkonstanten)
+  Empfehlung: Nummern 30 bis 59
+  >>>>>>>>>>>>    Ende der anwendungsspezifischen Textkonstanten
+4="<br> "
+
+2="; "
+
+  Tabellen-Parameter                  erste Spalte:
+18='<table width="100%">'         schmal
+17='<table width="100%">'       breit
+19=""
+16="<tr><td>--- </td><td>--- </td></tr>"   Ende eines Satzes
+
+13="<tr><td>&nbsp;</td><td>&nbsp;</td></tr>"
+20=C "<tr><td valign=top><i>"     Neue Tabellenzeile
+21="</i></td><td>"                zwischen zwei Tab.Spalten
+22="</td></tr>" C                 Ende der Tab.Zeile
+23="<br>"                     Vorschub innerhalb Tab.Zelle
+
+    nur bei HTML:
+29="<pre>"
+28="</pre>"
+
+
+p ª 1     Nichtsortierzeichen ausblenden
+      Absatzende
+p  "<br> "
+
+#uII +( e0
+
+#hi +#99x e0
+#nr "1" e1 =sP e0
+#99x
+
+#t{ "<table>" }
+
+td-k          d-k.apt laden
+
+
+   <<<<<<<<< Unterprogramme hier anfuegen, wenn man welche hat <<<<<<<
+   Unterprogramm fuer URL
+#(U
+#t{ t20 "URL:     " t21 } 
+#cc e$ y0 C p'<a href="' P'" target="_blank">'
+#cc B"\31?" e$ y1 P"</a>"
+#t22
+#)U
+
+#(u
+#cc +- i4,i i5,s i6,i e0
+#t{ t20 " --     " t21 } 
+#cc e$ y0 C p'<a href="' P'" target="_blank">'
+#cc B"\31?" e$ y1 P"</a>"
+#t22
+#)u
+
+   ALFA
+#(c
+        Diese Zeile aktivieren, wenn ALFA gewuenscht
+#+&    (falls ALFA stets gesetzt sein soll, ohne #uAL zu pruefen)
+#uAL +& e0   ALFA? dann #-&
+#cc ,"_\31L__" ,"_\31s_:_" e$ e" = " p{ t20 "Signatur: " t21 } P22
+
+#cc $D y0 p" <font color=red> <i>ausgeliehen!</i></font>" e"!"
+
+
+#uAU +#cc e0   Ausleihangabe nur zeigen, wenn #uAU gesetzt
+#+-
+
+#cc $u p{ t20 "ausgeliehen an: " t21 } P22
+#)c
+
+#-&
+#t{ s1 }    um die Kat.Nummer auswerten zu koennen
+#cc +#90A $u e0    teilfeld u vorh. -> Rueckgabe
+#cc +#90B $p e0    keine Ausl., wenn $p
+
+   Zur Differenzierung falls gleiche Signaturen
+ #cc b3 e1 { C "\qr " t69 "Ausleihe " }
+ #cc e$ b4 P68
+   statt dieser Zeile:
+ #uAU +#90@ e0
+ #cc +#uci e$ e" = " b4 p{ t20 "Signatur: " t21 '<a href="grec.php?urN=' } e0
+#90@
+#t{ C t20 "Signatur:   " t21 C '<span id="s' }
+#usP b3
+#t{ '">[ausleihbar]</span> ' } 
+#cc p{ '<a href="javascript:ausl(' 39 'urN=' } e0
+
+  hierher auch von Rueckgabefktion um den Link zu komplettieren
+#-q
+ #nra +#cc b3
+ #nr b3
+#99z +#cc b3
+#nr b3
+  KatNr d. Sign. oder Zgnr
+#cc e3 F" " "','usI="
+#t{ s4 }
+  zaehler
+#usP "','usP=s"
+  #cc p'x var "|;Ausl. " P"an ?=" #uuS\ask\if "" end\yesno Ausleihen?\if n end\if c end\ins #uuS\var #uuS(e"=")\ins $u-!' e"!" =ci
+ #nr p"x var ''\ins #usn\!" e"!" =ci
+#t{ s1 }
+  BandNr
+#01 "','usN="
+#02 "','usN="
+#03 "','usN="
+#04 "','usN="
+#t{ s4 }
+
+#t{ 39 ')" id="s' }
+#usP P"a"
+#t{ '">' }   beendet <a... 
+  jetzt die Sign, / ZgNr
+#cc ,"_\31L__" ,"_\31s_:_" e$
+#t{ '</a>' }
+  Zaehler
+#usP x"+1" e"." =sP
+#)c
+
+#90A e0
+ #uAU +#90C e0   Rueckgabe nur zeigen, wenn #uAU gesetzt
+ #nr +#90B e0
+   Zur Differenzierung falls gleiche Signaturen
+ #cc b3 e1 { C "\qr " t69 "Ausleihe " }
+ #cc e$ b4 P68
+   statt dieser Zeile:
+ #cc e$ b4 { C t20 "Signatur:  " t21 t69 "[ausgeliehen] " } P{ t68 t22 }
+#90C e0
+#t{ C t20 "Signatur:   " t21 '<span id="s' }
+#usP b3
+#t{ '">RÃ¼ckgabe </span> ' } 
+#cc p{ '<a href="javascript:rtrn(' 39 'urN=' } e0
+#+q
+
+#90B e0
+#cc e$ b4 { t20 "Signatur: " t21 }
+#t{ s4 }
+#uaU +#90C e0
+#cc $u p" (ausgeliehen)!" e"!"
+
+#90C e0
+#t22
+
+#)c
+
+  Internformat-Anzeige:  (a99/alcarta F5)
+   Achtung: es darf nicht  ke=""  gesetzt sein, dann geht's nicht
+#-(
+#bp .35 35    Texel
+#bp & &    V23
+#bi5=0
+#bi4=0
+#bze="<br>" 
+#bks=0
+#bke="<br>" C
+#t{ s0 }
+
+##                oder
+#bp .35 8
+#bi5=95
+#bi4=1
+#bke=C
+#t{ s4 }       oder 5 statt 4 wenn 3stelliges Schema!
+
+#+#
+
+
+
+
+#(W
+#87 e" =" C p{ t20 "   " t21 '<a href="http://www.librarything.com/isbn/' } P{ '">LibraryThing</a>' t22} 
+#87 e" =" C p{ t20 "   " t21 '<a href="http://www.worldcat.org/isbn/' } P{ '">OCLC WorldCat</a>' t22} 
+  Google Booksearch: entweder mit Logo,
+ #87 +#J1 e" =" C p{ t20 "   " t21 '<a href="http://books.google.de/books?q=isbn%3A' } P{ '"><img src="gbs.gif"></a>' t22 } 
+ #20 u e" :" C p{ t20 "   " t21 '<a href="http://books.google.de/books?q=intitle%3A%22' } P{ '%22"><img src="gbs.gif"></a>' t22 } 
+  oder mit Text
+#87 +#J1 e" =" C p{ t20 "   " t21 '<a href="http://books.google.de/books?q=isbn%3A' } P{ '">Google Booksearch</a>' t22 } 
+#20 u e" :" C p{ t20 "   " t21 '<a href="http://books.google.de/books?q=intitle%3A%22' } P{ '%22">Google Booksearch</a>' t22 } 
+#J1
+#)W
+
+  UP f. Exemplare
+#(X
+  #+-    falls nicht gewuenscht
+#nr drA dvF =nr e0
+#nra =nr e0
+     #uvF = Verfuegbarkeits-Flag
+#00 +#J1 P":" |:2    erstes laden
+#+-    es gibt keins
+#J1
+#t{ t20 "Exemplare: " t21 }
+#nr +#9DG e0
+#00 P":E" |102
+#-:
+#9DG +#J3 i4,V e0
+#9DG $e P". "
+#9DG $s e" ="
+
+#9DG +#J4 i4,W " momentan reserviert !" e"!"
+#9DG +#J2 i4,v " Verlust !" e"!"
+#9DG +#J2 $v c"p" " Pr„senz !" e"!"
+#9DH +#9DH P{ t88 " ausgeliehen bis " t87 } e0
+  es gibt verfuegb. Ex., Flag setzen
+#dt +#J2 =vF e0
+#9DH $R b6 e2 P"-" 
+#9DH $R b4 e2 P"-" 
+#9DH $R e4 
+#J4
+#nra =rA
+
+#J2
+#t23
+#J3
+#<
+#00 +: P":E" |103
+
+#t{ "</td></tr></table>" }
+
+  Vormerk-Flip nur, wenn kein Ex verfuegbar.
+  vorm() in  av_func.js bzw. a35alf.js  startet a-ovorm.job 
+#uvF +#J5 e0
+
+#00 p{ ' <a href="javascript:vorm(' 39 } P{ 39 ')">Vormerken</a>' t23 }
+#J5
+
+#)X
+
+   >>>>>>>>> Ende der Unterprogramme >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+

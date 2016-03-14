@@ -1,0 +1,46 @@
+  ALGEDIT.FLX : Bearbeitung einer ALG-Datei
+  2005-09-07    Aufruf mit Dateiname in #ua! oder #ub!
+                wenn beide unbesetzt, dann Dateiauswahl
+
+var o
+if <1 jump bereit
+  Bestaetigung einholen
+var "Der Offline-Speicher wird vor dem Einlesen einer Datei gelöscht." n
+var +"Ist das OK?"
+yes
+if not yes mes Dann wird der Vorgang hiermit abgebrochen;end
+
+:bereit
+erase off
+
+  Wenn #ua! besetzt, dann soll diese Datei bearbeitet werden
+if #ua! var #ua!;ins #ub!;#ua!;var #ub!;jump lesen
+  Wenn #ub! besetzt, dann fragen, ob dies die gewuenschte Datei ist
+if #ub! jump frage
+
+:anfang
+  evtl. vorhandene Offline-Daten beseitigen
+
+var "Grunddatei|" W "\\*." K1 "lg"
+fnam
+
+ins #ub!
+
+:lesen
+read file
+var "Datei jetzt bearbeiten, dann Alt+9 zum Speichern" n "Tip: Mit 'exp off' kann man die Datei auch exportieren."
+mes
+sho off
+  Funktion Alt+9 vorbereiten:
+var "X algsave"
+ins #uX9
+end
+
+:frage
+var "Datei " #ub! " verarbeiten?" n "Nein: andere Datei w„hlen"
+ansi
+yes
+if can end
+if no jump anfang
+var #ub!
+jump lesen

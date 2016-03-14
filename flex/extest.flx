@@ -1,0 +1,67 @@
+  EXTEST.FLX : Exportparameter, simpler Einstieg
+  2011-04-21
+
+
+#uX0X extest
+#uX9x var z1\\if %EXTEST% var 'xxx';ins #uxx;exec X hilite
+
+var z1
+if not %EXTEST% jump erzeug
+
+var D "extest.apr"
+fsize
+if no jump erzeug
+
+:go
+var "extest.apr mit Syntax-Highlighting" n
+var +"Die Datei  extest.apr  normal anzeigen" n
+var +"Testen, was die Datei macht" n
+Aresqa
+if "" end
+
+if "Test" jump Test
+if "extest" exec X hilite extest.apr
+help extest.apr
+jump Ende
+
+
+
+:Test
+dis p extest
+
+:Ende
+var "Alt+0 : Parameterdatei anzeigen. Dann beliebig ändern" n 
+sho iV
+
+end
+
+
+  Nur beim ersten Durchlauf:
+:erzeug
+var D "extest.apr"
+fsize
+if yes exec X hilite extest.apr
+mes Neu-Erzeugung von extest.apr
+var D "extest.apr"
+open x
+wri "  EXTEST.APR : Erste Schritte mit Exportparametern" n
+wri "  2011-04-21" n
+wri "  ACHTUNG: eingerueckte Zeilen sind unwirksam!" n
+wri "           Leerzeichen vorn wegnehmen, um wirksam zu machen" n
+wri n
+wri "#20" n
+wri '  #20 e" : "       Nur den Haupttitel (vor dem : )' n
+wri " #40 C" n
+wri "  Nach Belieben weitere Zeilen anlegen, z.B. " n
+wri ' #76 p"Jahr:"' n
+wri "  Tabelle f. Umcodierung ASCII->Windows laden (sonst Umlaute usw. falsch!)" n
+wri " tad-aw" n
+wri " p .170 1    Code 170 nicht ausgeben Nichtsortierzeichen)" n
+wri n n
+
+wri "  Mit Alt+9 Datei abspeichern, wird dann sofort aktiviert!" n
+wri "  Mit Alt+0 die Parameterdatei wieder anzeigen und bearbeiten" n
+
+close x
+jump go
+

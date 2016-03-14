@@ -1,0 +1,171 @@
+
+	*******************************************************
+		SORTKOPF.OPR 
+		Sortier- und Druckkopf produzieren
+	*******************************************************
+	Rem.: 
+		--- Signatur angepasst auf ASB/SKJ			
+		--- #us1 : sinnvoll sortierbarer Kopf
+		--- #us2 : sinnvoll druckbarer Kopf des Sortierkriteriums
+	*******************************************************
+pn="Sortierkoepfe"
+
+ag=0
+zl=0
+ff=2
+zm=0
+fl=0
+	*******************************************************
+		Verfasser, Herausgeber oder Urheber [Titel]
+		#us1 : z.B. maar, paul : woche voller
+		#us2 : z.B. Maar, Paul
+ 
+#-1
+#nr ds1 ds2 e0
+#000 +#20a c"+" e0          // untergeordnet?
+#200 ds1 as1				// Monografie oder Gesamtaufnahme
+#200 +#20c ds2 as2			// Verfasser
+#240 ds1 as1				// evtl. Urheber
+#240 +#20c ds2 as2
+#320 u ds1 as1				// evtl. Titelanfang
+#320 u ds2 as2
+#320 b"_" e"_" "<" P"> " as2
+
+#20c
+#320 u p" : " As1			// Titelanfang zum näheren Sortieren
+#us1 y2 ds1 as1				// Sortierkopf : Zeichen umcodieren
+#+#
+
+#20a                        // Bandaufnahme
+#000 +#20b e"+" |92         // Gesamtaufnahme nachladen
+#+-							// nicht geklappt - nicht sortieren
+
+#20b
+#200 ds1 as1				// Monografie oder Gesamtaufnahme
+#200 +#20c ds2 as2			// Verfasser
+#240 ds1 as1				// evtl. Urheber
+#240 +#20c ds2 as2
+#320 u ds1 as1				// evtl. Titelanfang
+#320 u ds2 as2
+#320 b"_" e"_" "<" P"> " as2
+#20c
+#320 u p" : " As1			// Titelanfang zum näheren Sortieren
+#us1 y2 ds1 as1				// Sortierkopf : Zeichen umcodieren
+#</							// sorgfaeltig
+#+#
+	*******************************************************
+		Titel, Gesamttitel, kein Bandtitel
+        
+#-2
+#000 +#32a c"+" e0          // Bandaufnahme?
+#320 ds2 as2                // Druckkopf
+#320 u ds1 as1				// Sortierkopf
+#us1 y2 ds1 as1
+#+#
+
+#32a
+#000 +#32b e"+" |92         // ggf. Gesamtaufnahme nachladen
+#+-                         // nicht geklappt : nicht sortieren
+
+#32b
+#320 ds2 as2             // Druckkopf
+#320 u ds1 as1		// Sortierkopf
+#us1 y2 ds1 as1
+#</
+#+#
+	*******************************************************
+		Signatur [Titel] : spezialisiert aus ASB/SKJ
+
+#-3
+#060 +#06a dsg asg          // aufheben
+#000 +#06b e"+" |92         // nicht vorhanden : Gesamtaufnahme nachladen
+#+-                         // klappt nicht : nicht sortieren
+
+#06b
+#060 +#06c dsg asg          // Signatur aus Gesamtaufnahme
+#+-                         // auch nicht : nicht sortieren
+
+#06c
+#</                         // sauber zurueckschalten : wer weiss ...
+
+#06a
+#usg +#06d c" " e0          // ASB alt : Sach- oder KiJu-Literatur
+#usg "Z " ds2 as2           // Druckkopf SL : "Z " vorwegstellen
+#us2 ds1 as1                // Sortierkopf dito
+#+#
+
+#06d
+#usg ds2 as2                // Druckkopf
+#usg ds1 as1                // Sortierkopf
+#+#
+        
+	*******************************************************
+		Erscheinungsjahr [Titel]
+        
+#-4                         // Erscheinungsjahr
+#425 +#42a e0               // Existiert - O.K.
+#000 +#42b e"+" |92         // ggf. Gesamtaufnahme nachladen
+#+-                         // keine Gesamtaufnahme
+
+#42b
+#425 +#42a e0
+#+-                         // kein Erscheinungsjahr
+
+#42a
+#425 ds2 as2                // Druckkopf
+#425 ds1 as1                // Sortierkopf
+#</                         // zurueckschalten
+#+#
+
+	*******************************************************
+		Barcode, Zugangsnummer [Exemplar]
+        
+#-5
+#nr ds1 ds2 e0
+#9DG +#06f $z e0            // Zugangsnummer
+#9DG +#06e $a e0            // Barcode 
+#+-
+
+#06e
+#9DG +#06f $a c"***" e0
+#9DG +#9Db $a dsb asb
+#+#
+#9Db
+#usb ds2 as2
+#usb ds1 as1
+#+#
+
+#06f
+#9DG +#9Da $z dsz asz
+#+#
+#9Da
+#usz ds2 as2 
+#usz ds1 as1
+#+#
+
+#-6 
+#9DG +#06g $s e0
+#+-
+
+#06g
+#9DG +#06h $s dsg asg          // Signatur aus Exemplar
+
+#06h
+#usg +#06j c" " e0     	    // ASB alt : Sach- oder KiJu-Literatur
+#usg "Z " ds2 as2           // Druckkopf SL : "Z " vorwegstellen
+#us2 ds1 as1                // Sortierkopf dito
+#+#
+
+#06j
+#usg ds2 as2                // Druckkopf
+#usg ds1 as1                // Sortierkopf
+#+#
+
+		// reserviert
+#-7
+#-8
+#-9
+#+#
+
+        // Zeichenumwandlung wie im Register
+tS.OPT

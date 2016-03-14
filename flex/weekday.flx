@@ -1,0 +1,43 @@
+  WEEKDAY.FLX : Bestimmung des Wochentags eines beliebigen Datums
+  2005-03-29/2009-02-25    fr alle Jahre von 1601 bis 2399.
+                Z.B. ein Geburtstag oder Hochzeitstag
+
+  Z„hler z mit 1601 belegen
+z=1601
+
+ask Datum? (z.B. 1.4. fuer den 1. April)
+if "" end
+ins #uYd
+var #uYd(e".")\ins #utt\var #utt(0,r2)\ins , ,0,\ins #utt
+var #uYd(b"." e".")\ins #umm\var #umm(0,r2)\ins , ,0,\ins #umm
+var #umm #utt\ins #uYd\#umm\#utt
+
+var "Kann ein paar Sekunden dauern..."
+sho iv
+
+  Ausgabedatei weekday oeffnen
+open x weekday
+  Ueberschrift rein
+wri "Wochentage des Datums " #uYd " von 1601 bis 2399" n n
+
+:loop
+  JJJJMMTT zusammensetzen
+var z #uYd "+0"
+  Tag errechnen
+perf Day
+  Den Wert hinter = nehmen
+var (b"=")
+ins #uYt
+wri #uYt n
+  Z„hler erh”hen
+z+1
+var z
+  Wenn 2399 noch nicht ueberschritten, dann weiter
+if not >2399 jump loop
+  Datei schliessen
+close x
+  und anzeigen
+h weekday
+end
+include day.inc
+

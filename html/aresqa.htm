@@ -1,0 +1,1028 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+<title>aresqa : allegro-c fünfte Dimension / allegro und relationale
+Datenbanken mit SQL</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Bernhard Eversberg</o:Author>
+  <o:LastAuthor>Bernhard Eversberg</o:LastAuthor>
+  <o:Revision>5</o:Revision>
+  <o:Created>2005-01-24T11:48:00Z</o:Created>
+  <o:LastSaved>2005-01-26T15:28:00Z</o:LastSaved>
+  <o:Pages>5</o:Pages>
+  <o:Words>3270</o:Words>
+  <o:Characters>18643</o:Characters>
+  <o:Company>Unibibliothek</o:Company>
+  <o:Lines>155</o:Lines>
+  <o:Paragraphs>37</o:Paragraphs>
+  <o:CharactersWithSpaces>22894</o:CharactersWithSpaces>
+  <o:Version>9.4402</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:Zoom>90</w:Zoom>
+  <w:HyphenationZone>21</w:HyphenationZone>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:536871559 0 0 0 415 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+p
+	{margin-right:0cm;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:70.85pt 70.85pt 2.0cm 70.85pt;
+	mso-header-margin:36.0pt;
+	mso-footer-margin:36.0pt;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:236137290;
+	mso-list-type:hybrid;
+	mso-list-template-ids:62701016 2036620522 -577876870 1917754002 1085039720 1297271496 -87903814 -505354288 -1435485334 -1076720100;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="1029"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+<meta content="Eversberg, Bernhard" name=author>
+<meta
+content="Vorschau auf allegro-Version 25(2005): Verknüpfung allegro - MySQL"
+name=description>
+</head>
+
+<body lang=DE link=blue vlink=purple style='tab-interval:35.4pt'>
+
+<div class=Section1>
+
+<p class=MsoNormal align=center style='text-align:center'><b><i><span
+style='font-size:14.0pt;font-family:Verdana;color:red'>aresqa : allegro
+relational </span></i></b></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-family:Verdana'>Auftakt zur <i>allegro</i>-Version 25(2005)</span></p>
+
+<p class=MsoNormal align=right style='text-align:right'><span style='font-family:
+Verdana;color:black'>2004-12-08 / 2005-01-25</span></p>
+
+<p class=MsoNormal><b><span style='font-family:Verdana;color:black'>Skeptisch?
+Keine Zeit?</span></b></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><span style='font-family:Verdana;
+color:black'>Wenn jemand nur schnell wissen will, ob <i>aresqa</i> etwas
+bringt, und zwar für den Normal- oder Nur-Anwender ohne Neigung zum Relationentum,
+dann empfiehlt sich der illustrierte <a href="#bild">Kurzeinblick</a> weiter
+unten.</span></p>
+
+<p class=MsoNormal><b><span style='font-family:Verdana;color:black'>Worum geht
+es?</span></b></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Es gibt viele
+Unterschiede zwischen <i>allegro</i> und Relationalen Datenbanksystemen (RDBS)
+- sonst wäre <i>allegro</i> überflüssig. Dazu erschien eine ausführliche,
+vergleichende und begründende Gegenüberstellung: </span></p>
+
+<p class=MsoNormal align=center style='text-align:center'><span
+style='font-family:Verdana;color:black'><a
+href="http://www.allegro-c.de/a-r.htm">http://www.allegro-c.de/a-r.htm</a></span><span
+style='font-family:"Courier New";color:black'>.</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Weder kann <i>allegro</i>
+ungefähr dasselbe wie ein relationales System, noch umgekehrt. Heutige RDBS
+sind ohne Frage in ihrem Aufgabenbereich außerordentlich mächtige Instrumente,
+mit denen <i>allegro</i> in mancher Hinsicht überhaupt nicht konkurrieren
+könnte, das sollte schon deutlich ausgesprochen werden. Doch es geht nicht um
+Konkurrenz, denn die Aufgabengebiete sind unterschiedlich. </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal><b><span style='font-family:Verdana;color:black'>Stärken von
+<i>allegro</i></span></b><span style='font-family:Verdana;color:black'> sind
+die folgenden Eigenschaften, die ein RDBS selten oder nie braucht oder auf
+welche die meisten RDBS-Anwendungen gut verzichten können: </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;</span></p>
+
+<ul style='margin-top:0cm' type=disc>
+ <li class=MsoNormal style='color:black;mso-list:l0 level1 lfo3;tab-stops:list 36.0pt'><span
+     style='font-family:Verdana'>Funktionsreiche Indexdateien: Sichtbare
+     Register zum Blättern u.a. </span><o:p></o:p></li>
+ <li class=MsoNormal style='color:black;mso-list:l0 level1 lfo3;tab-stops:list 36.0pt'><span
+     style='font-family:Verdana'>Hohe Geschwindigkeit bei sehr großen
+     Datenmengen auf relativ kleinen Maschinen </span><o:p></o:p></li>
+ <li class=MsoNormal style='color:black;mso-list:l0 level1 lfo3;tab-stops:list 36.0pt'><span
+     style='font-family:Verdana'>Geringer Plattenplatzbedarf </span><o:p></o:p></li>
+ <li class=MsoNormal style='color:black;mso-list:l0 level1 lfo3;tab-stops:list 36.0pt'><span
+     style='font-family:Verdana'>Jedes Feld darf beliebig oft mehrfach
+     auftreten (bei RDBS problematisch) </span><o:p></o:p></li>
+ <li class=MsoNormal style='color:black;mso-list:l0 level1 lfo3;tab-stops:list 36.0pt'><span
+     style='font-family:Verdana'>Diffizile Feldstrukturierung mit Unterfeldern
+     (RDBS-Datenfelder sollen &quot;atomar&quot; sein, d.h. unstrukturiert) </span><o:p></o:p></li>
+ <li class=MsoNormal style='color:black;mso-list:l0 level1 lfo3;tab-stops:list 36.0pt'><span
+     style='font-family:Verdana'>Unterschiedliche Satztypen in derselben Datei </span><o:p></o:p></li>
+ <li class=MsoNormal style='color:black;mso-list:l0 level1 lfo3;tab-stops:list 36.0pt'><span
+     style='font-family:Verdana'>Hierarchische Satzstrukturen </span><o:p></o:p></li>
+ <li class=MsoNormal style='color:black;mso-list:l0 level1 lfo3;tab-stops:list 36.0pt'><span
+     style='font-family:Verdana'>Komfortable Anwendung von Normdaten</span><o:p></o:p></li>
+ <li class=MsoNormal style='color:black;mso-list:l0 level1 lfo3;tab-stops:list 36.0pt'><span
+     style='font-family:Verdana'>Export-und Importsprachen von hoher Leistung
+     und Mächtigkeit </span><o:p></o:p></li>
+ <li class=MsoNormal style='color:black;mso-list:l0 level1 lfo3;tab-stops:list 36.0pt'><span
+     style='font-family:Verdana'>FLEX-Skriptsprache für die Programmierung
+     interaktiver Vorgänge. FLEX ist im Gegensatz zu SQL eine prozedurale
+     Sprache, kann also z.B. Daten satzweise verarbeiten und hat auch viele
+     interaktive Funktionen. </span><o:p></o:p></li>
+</ul>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Deshalb wäre
+es noch immer wenig aussichtsreich, ein Bibliothekssystem mit SQL entwickeln zu
+wollen, um damit <i>allegro</i> letztlich abschaffen zu können. Das bedeutet, <i>allegro</i>
+wird schon noch eine Weile brauchbar und in einigen Projekten gar unentbehrlich
+bleiben. </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Warum aber, so
+fragt man sich immer mal wieder, könnte man nicht die <b>Vorteile</b> beider
+Welten miteinander <b>kombinieren</b>? </span></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><span style='font-family:Verdana;
+color:black'>Das fragen insbesondere solche Anwender oder Systemverwalter, die
+sich gut mit RDBS auskennen, aber mit <i>allegro</i> überhaupt nicht. Denn die
+ärgern sich immer wieder, weil sie nicht &quot;schnell mal eben&quot;, wie sie
+es mit SQL gewöhnt sind, eine SELECT-Auswertung und/oder ein UPDATE machen
+können. <b>aresqa</b> soll genau das möglich machen, und zwar ohne jede <i>allegro</i>-Kenntnis,
+insbes. ohne Parametrierung.</span></p>
+
+<p class=MsoNormal><b><span style='font-family:Verdana;color:black'>Aber wie
+soll das gehen?</span></b></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Es <i>gibt</i>
+ja schon einen Schritt in diese Richtung: das </span><a href="flex:h%20table"><b><span
+style='font-family:Verdana'>Tabellen erstellen</span></b></a><span
+style='font-family:Verdana;color:black'>! Eine erstellte Tabelle (manche
+sprechen von einer CSV-Datei,&nbsp; CSV= <b>C</b>omma <b>S</b>eparated <b>V</b>alues)
+kann man mit Word oder Excel weiterverarbeiten, aber auch in ein RDBS
+übernehmen. </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Den zweiten,
+noch größeren Schritt soll <b>aresqa</b> machen! So arbeitet es, und so erklärt
+sich auch sein Name: </span></p>
+
+<p class=MsoNormal><b><span style='font-family:Verdana;color:black'>&nbsp; a</span></b><span
+style='font-family:Verdana;color:black'>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>a</b>llegro-Daten ausgeben in
+Tabellenform, geeignet zur Übernahme durch ein </span></p>
+
+<p class=MsoNormal><b><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;
+re</span></b><span style='font-family:Verdana;color:black'>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>re</b>lationales Datenbanksystem, darin
+Anwendung von </span></p>
+
+<p class=MsoNormal><b><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+sq</span></b><span style='font-family:Verdana;color:black'> &nbsp;&nbsp;&nbsp; <b>SQ</b>L
+zur beliebigen Bearbeitung der Tabelle, dann Rückgabe an </span></p>
+
+<p class=MsoNormal><b><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+a</span></b><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp; <b>a</b>llegro
+: Wiedereinspeisung in die Datenbank </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Die von einer <b>aresqa</b>-Aktion
+betroffenen Sätze können auf Wunsch während der Aktion in der <i>allegro</i>-Datenbank
+alle gesperrt werden. </span></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><span style='font-family:Verdana;
+color:black'>Hauptinstrument, das wird hier schon klar, bleibt die <i>allegro</i>-Datenbank.
+Das RDBS wird als Bearbeitungs- und Auswertungsinstrument genutzt, nicht für
+permanente Datenhaltung. So etwas wie ein Tandem-Betrieb mit verteilten
+Aufgaben ist nicht angestrebt. Aber Tabellen können nun <b>in beiden Richtungen</b>
+ausgetauscht werden.</span></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><b><i><span style='font-family:
+Verdana;color:black'>Zugabe 1:</span></i></b><span style='font-family:Verdana;
+color:black'> Es ist auch möglich, die letzten drei Schritte ohne den ersten zu
+machen! Falls man in einer relationalen Datenbank einen eindeutigen Schlüssel
+für eine <i>allegro</i>-Datenbank hat, kann man derselben auch Daten zum
+Einmischen übergeben, die man vorher nicht als Tabelle von ihr erhalten hatte.
+Diese Daten können dann in vorhandene Sätze eingefügt oder als neue Sätze
+gespeichert werden. (Mit der IMPORT-UPDATE-Methode ging das immer schon, aber
+die Übergabe RDB -&gt; <i>allegro</i> wird nun stark erleichtert.)</span></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><b><i><span style='font-family:
+Verdana;color:black'>Zugabe 2:</span></i></b><span style='font-family:Verdana;
+color:black'> Neue Datensätze via Tabelle erzeugen! Wenn die erste
+Tabellenspalte nichts als die Ziffer 0 enthält, dann wird aus der Zeile ein
+neuer <i>allegro</i>-Datensatz gemacht, in welchem die Tabellenspalten gemäß
+der .STR-Datei in Datenfelder verwandelt werden.</span></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><b><i><span style='font-family:
+Verdana;color:black'>Zugabe 3:</span></i></b><span style='font-family:Verdana;
+color:black'> Die Tabellenerzeugung ist abgestimmt mit der bisherigen Methode
+&quot;Tabellen erstellen&quot;. Eine für aresqa erstellte Strukturdatei (s.u.)
+kann in eine Parameterdatei umgewandelt werden, mit der man in der schon
+bekannten Weise Tabellen für Office-Programme u.ä. erzeugen kann. (Die
+Unterschiede liegen nur in der Überschriftszeile und der optional möglichen
+Vorsortierung der Tabelle.)</span></p>
+
+<p class=MsoNormal><i><span style='font-family:Verdana;color:black'>Hinweis:</span></i><span
+style='font-family:Verdana;color:black'> Die dem RDBS oder einer Tabelle
+übergebenen Daten stellen nie den gesamten Umfang einer Datenbank dar, sondern
+immer eine Auswahl bestimmter Felder oder Unterfelder aus einer Ergebnismenge
+oder auch aus der Gesamtbank. (Das ist schon deshalb klar, weil man ja mit SQL
+gar nicht den gesamten Datenbestand modellieren <i>kann</i>.) Denn die
+Aufgaben, die man evtl. mit SQL lösen will, beziehen sich vermutlich nie auf
+die kompletten Sätze und alle Satztypen mit allen Bestandteilen, sondern eben
+auf bestimmte Felder. Vorzugsweise werden dies Felder sein, in denen Zahlen,
+Geldbeträge, Datumsangaben, Codes, Adressen oder sonstige simple Zeichenfolgen
+stehen, denn damit können RDBS ganz exzellent jonglieren. Die
+&quot;Zielgruppe&quot; sind also nicht Katalogdaten (bibliographische Daten) im
+engeren Sinne, sondern in erster Linie Geschäftsgangsdaten. </span></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><i><span style='font-family:
+Verdana;color:black'>Vermutung:</span></i><span style='font-family:Verdana;
+color:black'> In den meisten Fällen wird man wohl im RDBS nur &quot;schnell mal
+eben&quot; die übergebene Tabelle in irgendeiner Weise bearbeiten und nach
+Rückgabe wieder löschen - also gar keine eigentliche Datenbankarbeit
+veranstalten.</span></p>
+
+<p class=MsoNormal><i><span style='font-family:Verdana;color:black'>Die
+Voraussetzung</span></i><span style='font-family:Verdana;color:black'> für <b>aresqa</b>
+ist natürlich ein vorhandenes RDBS. Mit dem weit verbreiteten MySQL kann man
+diese Voraussetzung in weniger als einer Stunde auf einem normalen PC kostenlos
+und bequem herstellen. </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'><br>
+Man braucht: </span></p>
+
+<p class=MsoNormal style='margin-left:42.6pt;text-indent:-42.6pt'><b><span
+style='font-family:Verdana;color:black'>MySQL Server</span></b><span
+style='font-family:Verdana;color:black'> : <a href="http://www.mysql.de/">www.mysql.de/</a>&nbsp;
+&quot;Downloads&quot;, <i>oder</i> von Firma MySQL AB: </span></p>
+
+<p class=MsoNormal style='margin-left:42.6pt;text-indent:-42.6pt'><span
+style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="http://dev.mysql.com/tech-resources/articles/4.1/installer.html">dev.mysql.com/tech-resources/articles/4.1/installer.html</a>
+</span></p>
+
+<p class=MsoNormal><b><span style='font-family:Verdana;color:black'>Client</span></b><span
+style='font-family:Verdana;color:black'> : Konsolprogramm </span><span
+style='font-family:"Courier New";color:black'>mysql.exe</span><span
+style='font-family:Verdana;color:black'> (im Serverpaket enthalten!)&nbsp; </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>oder</i>&nbsp; SQLyog (<i>empfohlen</i>)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a
+href="http://www.webyog.com/">www.webyog.com/</a> &nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>oder</i>&nbsp; MySQL-Front:&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><b><u><span
+style='font-family:"Courier New";color:blue'><a
+href="http://www.mysqlfront.de/download.html">www.mysqlfront.de/download.html</a></span></u></b></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><span style='font-family:Verdana;
+color:black'><br>
+Ist nur MySQL verwendbar - was ist mit anderen Systemen? MySQL ist kostenlos
+und deshalb überall einsetzbar, das ist besonders für viele allegro-Anwender
+ein entscheidender Punkt. Es hat zudem einen Leistungsstand erreicht, mit dem
+es für die hier interessierenden Aufgabenbereiche hinter keinem anderen System
+zurücksteht. Gleichwohl, wer <b>aresqa</b> mit einer anderen <i>Engine</i>
+einsetzen will, etwa Oracle oder DB2, könnte dies tun, denn die Kommunikation
+zwischen <i>allegro </i>und RDBS erfolgt über standardmäßige SQL-Skripte bzw.
+CSV-Dateien, wie sie jedes RDBS verarbeiten kann.</span></p>
+
+<p class=MsoNormal><b><span style='font-family:Verdana;color:black'>Dateien,
+die aresqa braucht </span></b></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Strukturdatei
+&nbsp;&nbsp;&nbsp;</span><b><span style='font-family:"Courier New";color:black'>q-xyz.str</span></b><span
+style='font-family:"Courier New";color:black'>&nbsp;&nbsp; </span><span
+style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Struktur der Tabelle (welche Felder...) </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>FLEXe
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</span><span
+style='font-family:"Courier New";color:black'>aresqa1.flx</span><span
+style='font-family:Verdana;color:black'>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;erstellt ein SQL-Skript und
+eine Tabelle, s.u. </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</span><span
+style='font-family:"Courier New";color:black'>aresqa2.flx</span><span
+style='font-family:Verdana;color:black'>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; liest die Tabelle (nach
+Bearbeitung) wieder ein </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Skript&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; </span><span
+style='font-family:"Courier New";color:black'>q-xyz.sql&nbsp;&nbsp; </span><span
+style='font-family:Verdana;color:black'>&nbsp;&nbsp; &nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; Skript für MySQL zur Übernahme der Tabelle </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Tabelle
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</span><span
+style='font-family:"Courier New";color:black'>q-xyz.tab&nbsp;&nbsp; </span><span
+style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp;
+&nbsp;Die Tabelle selbst, die vom SQL-Skript geladen wird </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Die Namen der
+Dateien (nicht der FLEXe) beginnen also mit&nbsp; </span><b><span
+style='font-family:"Courier New";color:black'>q- </span></b><span
+style='font-family:Verdana;color:black'>. So kann man sie leicht erkennen. </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Der Nutzer hat
+nur die Strukturdatei anzulegen, was einfach ist und von a99 unterstützt wird. </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>So sieht die übergebene
+Tabelle q-xyz.tab aus: </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>inn1</span><span
+style='font-family:Verdana;color:black'>[tab]</span><span style='font-family:
+"Courier New";color:black'>feld1</span><span style='font-family:Verdana;
+color:black'>[tab]</span><span style='font-family:"Courier New";color:black'>feld2</span><span
+style='font-family:Verdana;color:black'>[tab]...[tab]</span><span
+style='font-family:"Courier New";color:black'>feldN</span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>inn2</span><span
+style='font-family:Verdana;color:black'>[tab]</span><span style='font-family:
+"Courier New";color:black'>feld1</span><span style='font-family:Verdana;
+color:black'>[tab]... </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>... </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>wobei </span><span
+style='font-family:"Courier New";color:black'>nn1, nn2...</span><span
+style='font-family:Verdana;color:black'> die internen Satznummern sind, ODER
+geeignete eindeutige Schlüssel: dann steht nicht ein </span><span
+style='font-family:"Courier New";color:black'>i</span><span style='font-family:
+Verdana;color:black'> am Zeilenanfang, sondern ein | und die Registernummer. </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Die wichtigste
+Komponente ist die <b>Strukturdatei</b>. Sie ist denkbar einfach konstruiert.
+So sieht eine Strukturdatei für 4 Felder aus: </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>#kk1&nbsp;&nbsp;&nbsp;&nbsp;
+Name des Feldes #kk1</span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&amp;kk2&nbsp;&nbsp;&nbsp;&nbsp;
+Name des Feldes #kk2</span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>#kk3$s&nbsp;&nbsp;
+Name des Teilfelds $s von #kk3 </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>#kk4$t&nbsp;&nbsp;
+Name des Teilfelds $t von #kk4</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Das Feld #kk2
+soll dem RDBS übergeben werden, also in der Tabelle auftauchen, bei der
+Rückgabe an allegro aber nicht mit übernommen werden. Deshalb beginnt die Zeile
+mit &amp; statt #.<br>
+$s und $t sind Teilfeldcodes. Der Inhalt von feld1 wird also aus #kk1
+entnommen, feld2 aus #kk2, feld3 aus dem Teilfeld s von #kk3, Feld 4 aus dem
+Teilfeld t von #kk4 ... </span></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><span style='font-family:Verdana;
+color:black'>Die Strukturdatei wird zuerst gebraucht, um die Tabellendatei zu
+erstellen, aber dann auch hinterher, wenn die Tabelle zurückgeholt werden soll,
+um die Spalten dann wieder den Feldnummern und Teilfeldern zuzuordnen (denn in
+der Tabelle selbst stehen ja diese Angaben nicht drin). </span></p>
+
+<p class=MsoNormal><b><span style='font-family:Verdana;color:black'>Vorgang </span></b></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>FLEX </span><b><span
+style='font-family:"Courier New";color:black'>aresqa1.flx</span></b><span
+style='font-family:Verdana;color:black'> erstellt eine Tabelle mit Hilfe der
+Strukturdatei </span><b><span style='font-family:"Courier New";color:black'>q-xyz.str</span></b><span
+style='font-family:Verdana;color:black'> : </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;
+Ergebnismenge bilden </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-family:"Courier New";color:black'>aresqa1.flx</span><span
+style='font-family:Verdana;color:black'> ausführen: </span><b><span
+style='font-family:"Courier New";color:black'>q-xyz.tab</span></b><span
+style='font-family:Verdana;color:black'> und </span><b><span style='font-family:
+"Courier New";color:black'>q-xyz.sql</span></b><span style='font-family:Verdana;
+color:black'> entstehen </span></p>
+
+<p class=MsoNormal style='margin-left:99.4pt;text-indent:-99.4pt'><span
+style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+MySQL Client aktivieren </span></p>
+
+<p class=MsoNormal style='margin-left:99.4pt;text-indent:-99.4pt'><span
+style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Skript </span><span style='font-family:"Courier New";color:black'>q-xyz.sql</span><span
+style='font-family:Verdana;color:black'> starten (</span><span
+style='font-family:"Courier New";color:black'>q-xyz.tab</span><span
+style='font-family:Verdana;color:black'> wird geladen, darin steckt die
+Ergebnismenge als Tabelle) </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Aktionen mit SQL... </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-family:"Courier New";color:black'>q-xyz.tab</span><span
+style='font-family:Verdana;color:black'> wieder ausgeben </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-family:"Courier New";color:black'>aresqa2.flx</span><span
+style='font-family:Verdana;color:black'> ausführen: </span><span
+style='font-family:"Courier New";color:black'>q-xyz.tab</span><span
+style='font-family:Verdana;color:black'> wieder einlesen (mit Hilfe von </span><span
+style='font-family:"Courier New";color:black'>q-xyz.str</span><span
+style='font-family:Verdana;color:black'>) </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;
+Ergebnismenge ist verändert </span></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><i><span style='font-family:
+Verdana;color:black'>Übrigens, wie oben schon angedeutet:</span></i><span
+style='font-family:Verdana;color:black'> </span><span style='font-family:"Courier New";
+color:black'>aresqa2.flx</span><span style='font-family:Verdana;color:black'>
+kann auch eine Tabelle einlesen, die vorher <i>nicht</i> mit </span><span
+style='font-family:"Courier New";color:black'>aresqa1</span><span
+style='font-family:Verdana;color:black'> erstellt wurde, sondern die man mit
+anderen Mitteln selber produziert hat, die aber in Form, Feldfolge und
+-inhalten der Strukturdatei zu entsprechen hat.</span></p>
+
+<p class=MsoNormal><b><span style='font-family:Verdana;color:black'>Mehr zu den
+Dateien </span></b></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Nun die genauere
+Beschreibung der Strukturdatei, der Tabelle und des sql-Skripts:</span></p>
+
+<p class=MsoNormal><b><span style='font-family:"Courier New";color:black'>q-xyz.str&nbsp;&nbsp;
+(</span></b><span style='font-family:Verdana;color:black'>Strukturdatei</span><b><span
+style='font-family:"Courier New";color:black'>)</span></b></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;
+Das ist die Liste der Felder (Nummer und Name), aus denen die Tabelle zu bilden
+ist. Die erste Tabellenspalte darf nur ein eindeutiger Schlüssel sein. Im
+einfachsten Fall ist es automatisch die interne Satznummer, mit dem
+Buchstaben&nbsp; </span><b><span style='font-family:"Courier New";color:black'>i</span></b><span
+style='font-family:Verdana;color:black'>&nbsp; davor. </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Man kann aber
+einen anderen Schlüssel verlangen, indem man die .STR-Datei mit einem p-Befehl
+beginnt (kleines p!): </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp; </span><b><span
+style='font-family:"Courier New";color:black'>pX</span></b><span
+style='font-family:"Courier New";color:black'> </span><span style='font-family:
+Verdana;color:black'>= eindeutiger Schlüssel (Erzeugung bei Sprungmarke X in
+den Indexparametern), </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Sonderfall </span><b><span style='font-family:"Courier New";color:black'>p@</span></b><span
+style='font-family:Verdana;color:black'> : Primärschlüssel </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;
+Weitere Zeilen beginnen mit # oder &amp; </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;
+#FeldNr1&nbsp;&nbsp;&nbsp;&nbsp; Feldname1 </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;
+#FeldNr2$x&nbsp;&nbsp; Feldname2 </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;
+... </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;
+&amp;FeldNr<i>n</i>(mb) Feldname<i>n</i> </span><span style='font-family:Verdana;
+color:black'>&nbsp;&nbsp;Feld<i>n</i> nur in MySQL anzeigen, bei Rückführung
+ignorieren! </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;
+#FeldNrN&nbsp;&nbsp;&nbsp;&nbsp; FeldnameN</span><span style='font-family:Verdana;
+color:black'> </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Die
+Feldname-Angaben bilden dann die Spaltennamen der MySQL-Tabelle! Vor Feldname</span><i><span
+style='font-family:"Courier New";color:red'>n</span></i><span style='font-family:
+Verdana;color:black'> (n=1...N) hat jeweils mindestens ein Leerzeichen zu
+stehen, kein TAB-Zeichen. </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Die erste
+Spalte aber ist etwas besonderes: sie enthält im Normalfall (ohne p-Befehl) die
+interne Satznummer, mit Buchstabe </span><span style='font-family:"Courier New";
+color:red'>i</span><span style='font-family:Verdana;color:black'> davor. </span></p>
+
+<p class=MsoNormal><i><span style='font-family:Verdana;color:black'>Alternativ</span></i><span
+style='font-family:Verdana;color:black'> ist die erste Spalte ein eindeutiger
+Schlüssel, der durch den p-Befehl deklariert wird. </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Folgen kann
+eine Zeile, die mit </span><b><span style='font-family:"Courier New";
+color:black'>|r xy</span></b><span style='font-family:Verdana;color:black'> beginnt.
+Sie besagt: die erste Spalte ist ein Schlüssel, der im Register r steht und
+dort das Präfix xy hat. Beim Zurücklesen der Tabelle wird dann jeweils der
+Inhalt der ersten Spalte genommen, mit xy vorn ergänzt und im Register r
+gesucht, um den zugehörigen Satz zu finden. </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Jede Zeile,
+die mit # beginnt oder mit &amp;, entspricht einer Tabellenspalte. </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Zeilen, die
+mit &amp; statt # beginnen, erzeugen (in aresqa1.flx) eine Tabellenspalte in
+genau derselben Weise wie die #-Zeilen, aber diese Tabellenspalten werden bei
+Rückführung der Tabelle (in aresqa2.flx) nicht übernommen. Sie dienen nur dazu,
+die Tabelle dem menschlichen Bearbeiter im RDBS leichter verständlich zu
+machen. Z.B. kann ein Name darin stehen, der als solcher nicht verändert werden
+soll. Manipulationsbefehle (</span><span style='font-family:"Courier New";
+color:black'>mb</span><span style='font-family:Verdana;color:black'>) sind nur
+bei solchen Feldern anwendbar. D.h. die übergebenen und zur Bearbeitung
+vorgesehenen Feld- und Teilfeldinhalte müssen vollständige, unveränderte
+Inhalte sein. </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Wenn UTF-8 zum
+Einsatz kommen soll: Als Hilfe zur Umcodierung nach UTF-8 wird die
+Parameterdatei </span><span style='font-family:"Courier New";color:black'>p-unicod.apr</span><span
+style='font-family:Verdana;color:black'> gebraucht. Diese kann unverändert für
+andere Konfigurationen benutzt werden. (Kopie machen: p-unicod.bpr, wenn eine
+B.CFG im Einsatz ist.) </span></p>
+
+<p class=MsoNormal><i><span style='font-family:Verdana;color:black'>Hinweis</span></i><span
+style='font-family:Verdana;color:black'> zum p-Befehl: </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Wenn man mit
+dem p-Befehl einen anderen eindeutigen Schlüssel wählt (der auch bei jedem Satz
+auftritt!), darf bei der Sprungmarke X&nbsp; kein #u1 vorkommen, m.a.W. dort
+darf nur mit echten Kategorienummern gearbeitet werden. </span></p>
+
+<p class=MsoNormal><b><span style='font-family:"Courier New";color:black'>q-xyz.tab</span></b><span
+style='font-family:Verdana;color:black'>&nbsp;&nbsp; [Codierung in dieser Datei
+normalerweise ANSI, wahlweise UTF-8] </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;
+Diese Datei wird von aresqa1.flx automatisch erstellt. </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;
+Die erste Spalte enthält einen eindeutigen Schlüssel der allegro-Datenbank: </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp; </span><span
+style='font-family:"Courier New";color:black'>iInterneNummer </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;&nbsp;
+</span><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;ODER&nbsp;&nbsp;
+</span><span style='font-family:"Courier New";color:black'>Schluessel</span><span
+style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp; eindeutiger
+Schlüssel, dessen Präfix im |-Befehl der Strukturdatei steht </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;&nbsp;
+</span><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;ODER&nbsp;&nbsp;
+|</span><span style='font-family:"Courier New";color:black'>rSchluessel</span><span
+style='font-family:Verdana;color:black'>&nbsp;&nbsp;&nbsp; r=1...9,:,;&nbsp;
+eindeutiger Schlüssel im Reg. r </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;
+Inhalt von #feld1 </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;
+Inhalt von Teilfeld $x aus #feld2 </span></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><span style='font-family:Verdana;
+color:black'>&nbsp; &nbsp;Inhalt von ... #feldN</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Diese Inhalte
+bilden pro Satz jeweils nur eine Zeile, die Datenfelder sind durch TAB
+(ASCII-Code 09) getrennt. Das ist die allgemein übliche Struktur einer
+CSV-Datei, aber eben nicht mit Komma, sondern TAB als Trennung. </span></p>
+
+<p class=MsoNormal><b><span style='font-family:"Courier New";color:black'>q-xyz.sql</span></b></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>&nbsp;&nbsp;
+Auch dieses Skript wird von aresqa1.flx automatisch erstellt. Es enthält die für
+MySQL nötigen Befehle, um die Datenbank und deren Tabelle anzulegen (beide
+heißen immer &quot;aresqa&quot;) und sodann das Laden der q-xyz.tab zu
+veranlassen. So sieht das Skript aus: </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>/* </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;
+Skript zum Erstellen und Einlesen einer <b>aresqa</b>-Tabelle </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;
+2004-11-13 </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>Ausführen:
+</span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;
+C:\Programme\MySQL\MySQLServer4.1\bin&gt;mysql &lt;skriptdatei </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;
+danach ist die Datenbank aresqa vorhanden, sie hat nur </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp; 1
+Tabelle, und die heisst &quot;aresqa&quot;. Wenn sie schon existierte, </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;
+wird sie gelöscht! </span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>*/ </span><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>CREATE DATABASE IF NOT EXISTS `aresqa`; </span><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>USE `aresqa`; </span><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>DROP TABLE IF EXISTS `aresqa`; </span><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>/* Die
+Tabellendefinition muss jeweils erstellt werden! */ </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>/* Die
+Feldauswahl ergibt sich aus aresqa1.flx und Strukturdatei */ </span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>CREATE TABLE `aresqa` ( </span><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>&nbsp;&nbsp; `Id` varchar(25) NOT NULL, </span><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>&nbsp;&nbsp; </span><span
+style='font-family:"Courier New";color:black'>`ISBN` varchar(255) default NULL,
+</span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;&nbsp;
+`Signatur` varchar(255) default NULL, </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;&nbsp;
+`jahr` varchar(255) default
+NULL,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;&nbsp;
+`verlag` varchar(255) default NULL, </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;&nbsp;
+</span><span lang=EN-GB style='font-family:"Courier New";color:black;
+mso-ansi-language:EN-GB'>PRIMARY KEY&nbsp; (`Id`) </span><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>&nbsp;</span><span style='font-family:
+"Courier New";color:black'>) ; </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>/* Die
+Datei aresqa.tab wird auch von aresqa1.flx erstellt, </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>&nbsp;
+darin stehen die Datenzeilen, ANSI- oder UTF-8 codiert mit TAB als Trenner! </span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>*/ </span><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>LOAD DATA CONCURRENT LOCAL </span><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>&nbsp;</span><span lang=IT
+style='font-family:"Courier New";color:black;mso-ansi-language:IT'>INFILE
+&quot;c:/allegro/q-xyz.tab&quot; </span><span lang=IT style='mso-ansi-language:
+IT'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=IT style='font-family:"Courier New";color:black;
+mso-ansi-language:IT'>&nbsp;</span><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>INTO TABLE aresqa </span><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>&nbsp;FIELDS TERMINATED BY '\t' </span><span
+lang=EN-GB style='mso-ansi-language:EN-GB'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>&nbsp;LINES TERMINATED BY &quot;\r\n&quot;
+</span><span lang=EN-GB style='mso-ansi-language:EN-GB'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>&nbsp;</span><span style='font-family:
+"Courier New";color:black'>; </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>/* Die
+Rückgabe erfolgt dann später mit: */<br>
+&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>use aresqa </span><span lang=EN-GB
+style='mso-ansi-language:EN-GB'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span lang=EN-GB style='font-family:"Courier New";
+color:black;mso-ansi-language:EN-GB'>SELECT * from aresqa INTO OUTFILE
+&quot;c:/allegro/q-xyz.tab&quot; </span><span lang=EN-GB style='mso-ansi-language:
+EN-GB'><o:p></o:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'><br>
+Statt c:\allegro hat hier das Arbeitsverzeichnis zu stehen, auf dem a99 läuft. </span></p>
+
+<p class=MsoNormal><i><span style='font-family:Verdana;color:black'>Tip:</span></i></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Diese zwei
+Befehle kann man auch in eine Datei out.sql schreiben und dann mit dem Aufruf </span></p>
+
+<p class=MsoNormal><span style='font-family:"Courier New";color:black'>mysql
+&lt;out.sql </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>von der
+Konsole aus starten. </span></p>
+
+<p class=MsoNormal><b><span style='font-family:Verdana;color:black'><br>
+Arbeitsweise in <i>a99</i></span></b><span style='font-family:Verdana;
+color:black'>&nbsp; [hier nur kurze, noch vorläufige Hinweise]</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Die Startseite
+für das Tabellen-Erstellen ( h table geben!) wurde entsprechend erweitert,
+damit man Strukturdateien erstellen, auswählen, bearbeiten und starten kann. Beim
+Starten übernimmt </span><span style='font-family:"Courier New";color:black'>aresqa1.flx</span><span
+style='font-family:Verdana;color:black'> die Strukturdatei und produziert die
+Tabellendatei. </span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Nach
+Bearbeitung im RDBS holt man die Tabelle zurück mit dem Aufruf von </span><span
+style='font-family:"Courier New";color:black'>aresqa2.flx</span><span
+style='font-family:Verdana;color:black'>. In die Nutzervariablen #uqQ schreibt man
+vorher den Namen der Struktur, die Tabellendatei hat auf dem Arbeitsverzeichnis
+des Anwenders zu liegen,&nbsp; Strukturdatei und Tabelle müssen sich
+selbstverständlich entsprechen. </span></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><a name=bild></a><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal><b><span style='font-size:13.5pt;font-family:Verdana;
+color:black'>aresqa-Viewer und Editor</span></b><span style='font-size:13.5pt;
+font-family:Verdana;color:black'>&nbsp;: Nicht nur für Tabellen!<u1:p></u1:p></span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Als Werkzeug
+für das Betrachten und (in gewissen Grenzen) Bearbeiten von Tabellendateien
+wurde ein Modul entwickelt, das mit dem neuen FLEX-Befehl <a
+href="flex:h%20xaresqa">aresqa</a> aktiviert werden kann. Aber nicht nur
+Tabellen, sondern beliebige Listen- und Textdateien (das sind ja alles
+einspaltige Tabellen) kann man hiermit anschauen und editieren. Und zwar im
+ASCII- oder ANSI-Code, aber dieser Unterschied fällt normalerweise nicht mehr
+auf! Dazu gehören besonders auch ViewListen, UIF- und INI-Dateien, Formulare,
+CFG- und Parameterdateien sowie FLEX-Dateien. Wir haben also mit aresqa nichts
+weniger vor uns als einen neuen, alternativen Editor für alle diese Dateien...</span></p>
+
+<p class=MsoNormal><span style='font-family:Verdana;color:black'>Holen Sie sich
+das <a href="http://ftp.allegro-c.de/ac25/inst-all.exe">V25-Gesamtpaket</a>, dann
+können Sie alles sofort selber nachvollziehen.<br>
+So sieht das aresqa-Fenster aus:<u1:p></u1:p></span></p>
+
+<p class=MsoNormal><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal align=center style='text-align:center'><!--[if gte vml 1]><v:shapetype
+ id="_x0000_t75" coordsize="21600,21600" o:spt="75" o:preferrelative="t"
+ path="m@4@5l@4@11@9@11@9@5xe" filled="f" stroked="f">
+ <v:stroke joinstyle="miter"/>
+ <v:formulas>
+  <v:f eqn="if lineDrawn pixelLineWidth 0"/>
+  <v:f eqn="sum @0 1 0"/>
+  <v:f eqn="sum 0 0 @1"/>
+  <v:f eqn="prod @2 1 2"/>
+  <v:f eqn="prod @3 21600 pixelWidth"/>
+  <v:f eqn="prod @3 21600 pixelHeight"/>
+  <v:f eqn="sum @0 0 1"/>
+  <v:f eqn="prod @6 1 2"/>
+  <v:f eqn="prod @7 21600 pixelWidth"/>
+  <v:f eqn="sum @8 21600 0"/>
+  <v:f eqn="prod @7 21600 pixelHeight"/>
+  <v:f eqn="sum @10 21600 0"/>
+ </v:formulas>
+ <v:path o:extrusionok="f" gradientshapeok="t" o:connecttype="rect"/>
+ <o:lock v:ext="edit" aspectratio="t"/>
+</v:shapetype><v:shape id="_x0000_i1025" type="#_x0000_t75" style='width:530.25pt;
+ height:393.75pt'>
+ <v:imagedata src="aresqa.png" o:title=""/>
+</v:shape><![endif]--><![if !vml]><img border=0 width=707 height=525
+src="aresqa.png" v:shapes="_x0000_i1025"><![endif]></p>
+
+<p class=MsoNormal align=center style='text-align:center'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><span style='font-size:12.0pt;
+font-family:Verdana'>Selber ausprobieren:<br>
+Man erhält diesen Anblick, wenn man beim neuen a99 im Schreibfeld
+eingibt:&nbsp; </span><b><span style='font-size:12.0pt;font-family:"Courier New"'>x
+ar help/flex.vw</span></b><span style='font-size:12.0pt;font-family:Verdana'><br>
+Hat man auch den neuen <b><span style='color:#CC0000'>onerror.flx</span></b>
+installiert, wird's noch einfacher: man gibt nur ein: &nbsp; </span><b><span
+style='font-size:12.0pt;font-family:"Courier New";color:#CC0000'>a help/flex.vw</span></b><span
+style='font-size:12.0pt;font-family:Verdana'><br>
+Es stimmt: beim Dateinamen ist auch / statt \ möglich. <br>
+<i><span style='color:#CC0000'>Sondertips:</span> </i><br>
+1. Wenn man nur <b><span style='color:#CC0000'>a</span></b> eingibt, wird der
+Inhalt des Anzeigefeldes, egal was es gerade ist, ins aresqa-Fenster
+projiziert.<br>
+2. Wenn man<span style='color:#CC0000'> <b>a <i>name</i></b></span><i> </i>gibt,
+und die Datei <i>name</i> existiert nicht, wird sie hinterher angelegt. Das ist
+vermutlich jetzt der schnellste Weg, eben mal eine kleine Datei anzulegen, z.B.
+eine FLEX- oder Batch-Datei.<i> <br>
+</i>Und noch eine ganz andere Anwendung mit aresqa: Geben Sie einfach nur ein:&nbsp;
+<b><span style='color:#CC0000'>d</span></b>, und schauen Sie, was passiert.<br>
+<i>Hinweis:</i> In a99 bzw. alcarta kann man nur weitermachen, wenn man zuerst
+das aresqa-Fenster schließt.<br>
+<br>
+Mit F1 oder dem Button [Help] kommt Hilfe (Datei ha_ar erscheint). <br>
+Dieses Fenster kann man stufenlos vergrößern und verkleinern, anders als das
+View-Fenster.<br>
+Es folgt die (im Vergleich zum F1-Hilfetext) etwas ausführlichere<b><br>
+</b></span><b><span style='font-family:Verdana'><br>
+Beschreibung der Funktionen:</span></b><span style='font-family:Verdana'><br>
+<br>
+Die Cursor-Tasten funktionieren, wie man es erwartet. Mit Tab-Taste springt man
+zwischen der Liste und dem Eingabefeld &quot;Find&quot; hin und her.<br>
+<br>
+Im Feld &quot;<b>Find</b>&quot; kann man eingeben:<br>
+<br>
+-- eine #Zeilennummer, um zu der betr. Zeile zu springen<br>
+&nbsp;&nbsp;&nbsp;&nbsp; (wenn es eine größere Liste ist), also z.B. #100 für
+Zeile 100.<br>
+Oder&nbsp; (das kennt man vom ViewListen und Kurzlistenfenster)<br>
+-- ein Suchwort (beliebige Zeichenkombination) wobei Groß-Kleinschreibung
+gleich-<br>
+&nbsp;&nbsp;&nbsp;&nbsp; wertig ist, auch Umlaute können als solche oder
+aufgelöst eingegeben werden.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; Mit [+] und [-] springt man zum nächsten / vorigen
+Vorkommnis des Suchworts.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; <i>Sonderfall:</i> Setzt man ^ vor das Suchwort, wird
+nur am Zeilenanfang gesucht.<br>
+&nbsp;&nbsp;&nbsp;&nbsp; <b>Suchen+Ersetzen</b>: Eingabe von ,abc,xyz,&nbsp;
+bzw. _abc_xyz_, um abc durch xyz zu ersetzen.</span></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><span style='font-family:Verdana'><br>
+Mit [<b>Code</b>] wird die Anzeige zwischen ASCII (DOS) und ANSI (Windows)
+umgeschaltet.<br>
+Wenn die Umlaute falsch erscheinen, drücken Sie auf diesen Knopf. (Nicht immer
+kann das Programm korrekt erkennen, welche Codierung die Datei hat.)<br>
+<br>
+[Enter]-Taste zeigt die ausgewählte Zeile in einem Eingabefeld, wo man sie
+ändern kann.<br>
+<br>
+[Einfg]-Taste ermöglicht das Eingeben einer neuen Zeile. Sie wird VOR die<br>
+&nbsp;&nbsp; momentan markierte Zeile eingefügt.<br>
+<br>
+[Entf]-Taste löscht die markierte Zeile.<br>
+<br>
+[<b>Add]</b> Ermöglicht die Eingabe neuer Zeilen, die ans Ende gehängt werden.
+Man gelangt in<br>
+&nbsp;&nbsp; eine Eingabeschleife, damit man bequem mehrere Zeilen
+hintereinander eingeben kann,<br>
+&nbsp;&nbsp; bis man das Eingabefeld mit [Esc]-Taste schließt.<br>
+<br>
+[<b>Copy]</b> Kopiert die markierte Zeile ins Eingabefeld. Die bearbeitete
+Zeile wird dann als neue <br>
+&nbsp;&nbsp; Zeile unter der markierten eingefügt.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><span style='font-family:Verdana'>[<b>Undo</b>]
+Macht die letzte Editier-Aktion rückgängig.<br>
+<br>
+[<b>Redo</b>] Umgekehrt. Beides geht mehrfach hintereinander! Die Markierung
+springt jeweils auf<br>
+&nbsp;&nbsp; diejenige Zeile, wo die Änderung sich ausgewirkt hat. Diese
+Funktionen arbeiten zeilen-<br>
+&nbsp;&nbsp; bezogen, nicht zeichenweise. Ist man am Anfangs- bzw. Endpunkt der
+aufgezeichneten<br>
+&nbsp;&nbsp; Aktionen angekommen, wird der Undo- bzw. Redo-Button grau, damit
+man sieht: mehr<br>
+&nbsp;&nbsp; geht nicht.<br>
+<br>
+Mit <b>Maus</b> kann man eine <i>einzelne</i> Zeile verschieben. Sie wird dann
+vor diejenige<br>
+Zeile geschoben, auf der man die linke Maustaste freigibt.<br>
+<i>Anm.:</i> Ein Markieren und Kopieren oder Löschen mehrerer Zeilen ist nicht
+vorgesehen. <br>
+Denn dies würde die Funktionen [Undo] und [Redo] sehr erschweren.<br>
+</span><span style='font-size:12.0pt'><br>
+</span><span style='font-family:Verdana'>[<b>Save</b>] schreibt, ohne das
+Fenster zu schließen, die Tabelle in die Datei&nbsp; </span><b><span
+style='font-family:"Courier New"'>aresqa.lst</span></b><span style='font-family:
+Verdana'>. <br>
+Was damit geschieht, wenn man das Fenster schließt, ist Sache des FLEXes, in
+den<br>
+der aresqa-Aufruf eingebaut ist. Nach erfolgter Speicherung wird der Button
+inaktiv <br>
+(grau), aber die nächste Änderung aktiviert ihn wieder.<br>
+<i>Beispiel:</i> onerror.flx<br>
+In welchem Code gespeichert wird, sieht man in dem Feld unter dem Save-Button.<br>
+Mit dem Button x daneben kann man den Speichercode umschalten. So ist es ganz<br>
+einfach, eine ASCII-Datei in ANSI zu wandeln und umgekehrt.<br>
+<br>
+Mit Taste <b>#</b> erhält man die vollständige Anzeige der ausgewählten Zeile.
+Nützlich, wenn diese sehr lang ist. Mit Taste [Enter] sieht man auch die ganze
+Zeile, aber zum Bearbeiten.<br>
+<br>
+Das Statusfeld (über [Code]) zeigt zwei Zahlen: die Nummer der markierten Zeile
+und die Gesamtzahl der Zeilen.<br>
+Bei Bearbeitungen ändern sich diese Zahlen entsprechend.<br>
+<br>
+<i>Hinweis zu</i> <b>alcarta</b>: Darin (und auch in a99, wenn die Berechtigung
+unter 5 liegt) fehlen die Buttons unter dem Statusfeld, also alle
+Bearbeitungsfunktionen. In a99 kann man zusätzlich das Bearbeiten ganz verhindern,
+wenn man die Funktion mit dem FLEX-Befehl Aresqa statt aresqa aufruft.<br>
+<br>
+[<b>OK</b>] und [<b>Esc</b>] schließen das Fenster. In beiden Fällen wird, wenn
+Änderungen noch nicht gespeichert sind, zur Entscheidung aufgefordert. Die
+Originaldatei wird nicht überschrieben, siehe [Save], es entsteht nur die Datei
+</span><span style='font-family:"Courier New"'>aresqa.lst</span><span
+style='font-family:Verdana'>.<br>
+Der Unterschied ist nur: bei OK steht anschließend die zuletzt markierte Zeile
+in der &quot;internen Variablen&quot; und kann so im FLEX ausgewertet werden;
+nach Esc dagegen ist die iV leer. <br>
+<br>
+<i>Sonderfunktionen </i>bei ViewListen<br>
+Hat man eine Datei mit .vw als Dateityp vor sich, dann <br>
+1. Zeilen, die mit h beginnen, bewirken sofortige Anzeige des Hilfetextes<br>
+2. Zeilen, die mit inummer oder nummer beginnen, bewirken direkte Anzeige des
+zugehörigen<br>
+&nbsp;&nbsp;&nbsp; Satzes.<br>
+3. Beim Speichern werden die Zeilen auf gleiche Länge gebracht, damit die Datei
+dann sofort<br>
+&nbsp;&nbsp;&nbsp; die korrekte Struktur hat. Dazu wird die längste Zeile
+ermittelt und die anderen auf diese<br>
+&nbsp;&nbsp;&nbsp; Länge aufgefüllt.<br>
+Die Punkte 1 und 2 entsprechen dem, was man von den ViewListen kennt. Nur sind
+hier auch die vor dem | stehenden Befehle bzw. Nummern zu sehen. So kann man
+schon beim Bearbeiten einer ViewListe sehen, ob sie funktioniert!</span><span
+style='font-size:12.0pt'><o:p></o:p></span></p>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+  _AS.FLX : APAC starten, mit denselben Randbedingungen wie a99
+  2000-01-09
+  Grundbefehl zusammensetzen:
+var P 'apac -k' K ' -a' A ' -ers/' M 'x.set -s"' g '" -d' D ' -n' N
+  und in #uzP starten
+ins #uzP
+  Wenn LogName gesetzt:
+var G
+if "" jump normal
+  dann Option -L zufuegen:
+var #uzP ' -L' G
+ins #uzP
+:normal
+  Wenn InxParam gesetzt:
+var y
+if "" jump inxname
+var #uzP ' -I' y
+ins #uzP
+:inxname
+  Wenn InxName gesetzt:
+var Y
+if "" jump start
+ins #uzQ
+
+var #uzP ' -y' #uzQ(t"\\")
+ins #uzP
+
+:start
+open x _as.bat
+wri P "ansi.com" n
+wri "set -P=" P n
+wri #uzP
+close x
+get env COMSPEC
+ins #uvW
+var #uvW " /c _as.bat"
+call
+var ""
+ins #uzQ

@@ -1,0 +1,141 @@
+  Q4.APT : Sortiertabelle fuer "Zaehlungen". Basis: OSTWEST.FON
+  1994-12-28 / 960413 / 030204   Wird umkopiert auf quant.xpt  
+  Fr Zeichensatz 850 oder andere muss man eine andere Tabelle machen!
+  Kann aber unver„ndert auch fr andere Konfig. benutzt werden, wenn
+  OSTWEST.FON benutzt wird!
+  z.B. mit COPY Q4.APT Q4.PPT  fr P.CFG kopieren.
+
+i4=1    EINZIGER Unterschied zu S.APT !!!
+
+  Normaltabelle: gibt es hier nicht, d.h. normale Kategorien #nnn
+  werden nicht umcodiert, nur die !nnn-Kategorien.
+  Wenn man aber etwas umcodieren will, kann man hier p-Befehle einsetzen:
+ p @ 1
+
+  Alternativtabelle (wird fr die Sortierfelder benutzt)
+
+  Code 16 .. 31
+q  1
+q  1
+q  1
+q  1
+q  "paragraph"
+q  1
+q  1
+q  1
+q  1
+q  1
+q  2      delete  plus character following it
+
+  Codes 33 .. 64
+q !// =1   delete punctuation (characters ! " # $ ... - . / )
+q , 44     except comma
+q - 45        and hypen
+
+q :/@ =1    : ; < = > ? @   all deleted
+
+  Codes 91 .. 96
+q [/` =1    [ \ ] ^ _   all deleted
+ 
+  Codes 123 .. 126
+q {/~ =1    { | } ~     all deleted
+
+  Codes 65 .. 90
+q A/Z a     caps -> smalls
+
+  Codes 127 .. 223
+q /ß =1    € ... code 223  all deleted
+
+  but then redefine 127-255:
+ 
+q  e
+q € c
+q  "ue"
+q ‚ e
+q ƒ a
+q „ "ae"
+q … a
+q † a
+q ‡ c
+q ˆ e
+q ‰ e
+q Š e
+q ‹ i
+q Œ i
+q  i
+q  "ae"
+q  a
+q  e
+q ‘ "ae"
+q ’ "ae"
+q “ o
+q ” "oe"
+q • o
+q – u
+q — u
+q ˜ y
+q ™ "oe"
+q š "ue"
+q › t
+q œ l
+q  s
+q  u
+q Ÿ u
+q   a
+q ¡ i
+q ¢ o
+q £ u
+q ¤ n
+q ¥ n
+q ¦ c
+q § c
+q ¨ r
+q © r
+q ª 1
+q « s
+q ¬ s
+q ­ y
+q ® z
+q ¯ z
+q ° i
+q ± "th"
+q ² "th"
+
+q Ö c
+q × r
+
+  .. 224 ... 254
+q à "alpha"
+q á "ss"
+q â "gamma"
+q ã "pi"
+q ä "sigma"
+q å "sigma"
+q æ "mue"
+q ç "gamma"
+q è "phi"
+q é "theta"
+q ê "omega"
+q ë "delta"
+q ì 1
+q í "oe"
+q î a
+q ï e
+q ğ c
+q ñ c
+q ò l
+q ó l
+q ô n
+q õ n
+q ö o
+q ÷ s
+q ø 1
+q ù s
+q ú 1
+q û z
+q ü z
+q ı z
+q ş z
+
+q < <    < < 
+q > .62    > >   wg. Ordnungshilfen

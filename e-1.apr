@@ -1,0 +1,50 @@
+  E-1.APR :  Ausgabe als ASCII-Datei mit Kategorie-Nummern und Zeilenumbruch
+  1994-06-13 Alle Kategorien in der internen Reihenfolge ausgeben     (frher PK.APR)
+             Fuer jedes Schema verwendbar
+
+pn="Ausgabe ASCII-file mit Kategorienummern"
+
+  Gibt Daten als ASCII-Datein aus, jede Kategorie mit Nummer
+  auf neuer Zeile, l„ngere Kategorien werden bei 78 Zeichen
+  umgebrochen und auf der Fortsetzungszeile eingerckt.
+
+  --------- Konstanten --------------------------------------------
+
+zl=78	    Zeilenl„nge
+zi=4	    4 Zeichen Einrckung bei Folgezeilen
+  zi=5       bei 3stelligem Schema  (einzige nderung!!!)
+zm=0        kein Seitenumbruch (fortlaufende Ausgabe)
+ae=13 10    Zeilenvorschub am Aufnahme-Ende
+fl=0        Listenstruktur (keine Karten)
+ks=0	    Startpos. 0  (= Zeichen '#') innerhalb jeder Kategorie
+    ks=1    aktivieren, wenn '#' wegfallen soll; dann zi=3
+ke=C        Kategorie-Ende: Zeilenvorschub
+dx=1        damit man beim Testen auch die Steuerzeichen auf dem
+            Bildschirm sieht. (Ansonsten nicht n”tig)
+zb=" "      Zeilen nur bei Leerzeichen umbrechen
+
+  Falls V14-Verkn. aufgeloest werden sollen, diese drei Zeilen:
+
+ i4=1
+ i5=_
+ i6=10
+
+p .35 35
+
+  -----------------------------------------------------------------
+
+  ********* Kategorieliste ****************************************
+
+##      s„mtliche Kategorien ausgeben in interner Reihenfolge
+
+        falls nicht alle gebraucht oder gewnscht werden:
+        Weglassungen: Kategorienummern mit / hier anfgen, z.B.
+  /89   dann wird #89 weggelassen
+  /9..  dann wird die ganze Gruppe #9 weggelassen
+        oder: hier eine Liste der auszugebenden Kategorien eintragen (statt ##)
+        z.B.
+
+  *******************************************************************
+
+ Code-Umwandlungen: p-Befehle bei Bedarf hier anfgen
+                    oder mit Befehl t hinzuladen

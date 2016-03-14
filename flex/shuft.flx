@@ -1,0 +1,239 @@
+  shuft.flx :    Zeige Ausschnitt beliebiger Datei als Hex-Display (show unmodified file text)
+  2014-11-26
+                 Aufruf:  X shuft       : ermoeglicht Dateiauswahl
+                          X shuft fname : zeigt die Datei fname
+
+if not "" ins $fname;jump openfile
+
+fname Dateiwahl|*.*
+if "" mes Nicht ohne Namen;end
+ins $fname
+#uSP 0
+$stpos=1
+
+
+
+:openfile
+
+var $fname
+open
+if no var "Es geht nicht mit " $fname "!";mes;end
+
+:begin
+var #uSP
+var (0,r8)
+ins $upo
+
+var #uSP
+// Lesezeiger positionieren
+fet m
+
+  Zaehler f. 10 Zeilen je 16 Byte
+  (falls nicht das Satzende schon gefunden ist)
+if not $end $lc=10
+
+  Zeilenschleife
+:zloop
+perf oneline
+  ZeilenZaehler -1
+eval $lc -1
+ins $lc
+if not =0 jump zloop
+
+:disp
+  Laenge des Displays ausrechnen: aktuelle Leseposition - Startpos
+fet p
+ins $m
+eval $m -$stpos
+ins $m
+
+  Fertige Liste anzeigen, zuerst Ueberschrift
+var "File: " $fname ", " $m " bytes from pos. " $stpos n
+sho IV
+  dann die Tabelle
+var $hexlist
+ansi
+sho +IV
+
+if $end jump ende
+yes weiter? (No: andere Position)
+if no jump posit
+if not yes jump ende
+:weiter
+eval #uSP +160
+ins #uSP
+jump begin
+
+:posit
+ask Position?=#uSP
+ins $stpos
+if "" jump ende
+if <0 jump ende
+ins #uSP
+var ""
+ins $hexlist
+
+jump openfile
+
+:end
+
+  eine Zeile erstellen - naechste 16 Byte
+:oneline
+z=16
+  Zeile hat zwei Teile: $chd = character display, $hxd = hex display
+var ""
+ins $chd
+ins $hxd
+
+// 16 Byte abarbeiten
+:xloop
+z-1
+if z=0 jump eol
+fet b
+ins $b
+if ="-1" $end=1;jump eol 
+  normales Zeichen?
+
+// Fuellzeichen?
+if =219 var 219;jump ctrl
+
+if >30 jump normal
+
+if =0 jump nul
+
+  andere Codes unterhalb 31
+  64 addieren und Zeichen draus machen: 1 -> A
+eval $b +64
+var
+jump ctrl
+
+:nul
+
+var "@"
+
+  control code farbig
+:ctrl
+ins $C
+// flag: HEXzeichen
+#uHX 1
+// Steuerzeichen: magenta
+var $chd 92 "cf5 " $C 92 "cf1 " 
+jump addc
+
+// normales Zeichen
+:normal
+  hex flag loeschen
+#uHX
+  $b ist Zahl, in Code wandeln: aus 65 wird A
+var $b
+var
+  Diese muessen RTF-codiert werden
+if "\\" var "\\\\"
+if "{" var "\\{"
+if "}" var "\\}"
+
+  das anzuzeigende Zeichen an Zeile anhaengen
+ins $d
+var $chd "" $d
+
+  save line in $chd
+:addc
+ins $chd
+
+var $b
+// Code in Hex wandeln
+jump dezhex
+// kommt dann hierher zurueck:
+
+// HexCode anhaengen an $hxd
+:dhx
+// Wenn Steuercode, dann magenta
+if #uHX var $hxd " " 92 "cf5 " $ze 92 "cf1 "
+if not #uHX var $hxd " " $ze
+  save line in $hxd
+ins $hxd
+jump xloop
+
+  end of line - Zeilendaten fertig, anhaengen an die Liste
+:eol
+
+var $hexlist n "\\par " $upo ": " $chd " -- " $hxd 
+ins $hexlist
+eval $upo +16
+var (0,r8)
+ins $upo
+
+return
+
+
+  Unterprog. dezimal -> hexa
+:dezhex
+
+ins $vz
+var ""
+ins $ze
+
+
+  Schleife
+:dezhex:loop
+var $vz " Jd"
+var
+
+  Z als Zahl zum Rechnen, (Achtung: kleines z!)
+  weil nur damit Operator % moeglich (modulo)
+Z=
+  Div.Rest bei Div. durch $b ergibt naechste HexZiffer
+
+eval Z/16
+ins #uDR
+  Nachkommastellen nehmen und wieder mit $b malnehmen
+    ergibt den Divisionsrest
+var "0." #uDR(b".")
+ins #uDR
+  Der Nachkommateil kann geringfgig zu klein sein!
+  bei der Multiplikation kommt dann evtl. zuwenig raus,
+      deshalb +0.001
+eval #uDR *16 +0.001
+var (e".")
+Z=
+
+var Z
+  Ziffern >9 in Buchstaben wandeln
+if ="20" var "K"
+if ="19" var "J"
+if ="18" var "I"
+if ="17" var "H"
+if ="16" var "G"
+if ="15" var "F"
+if ="14" var "E"
+if ="13" var "D"
+if ="12" var "C"
+if ="11" var "B"
+if ="10" var "A"
+ins $nz
+  ErgebnisZahl ergaenzen, d.h. neue Ziffer vorn anfuegen
+var $nz $ze
+ins $ze
+  erneut durch 16 teilen, am . abschneiden
+eval $vz /16
+var (e".")
+ins $vz
+  falls noch >0, dann schleife
+if >0 jump dezhex:loop
+  sonst Ergebnis in iV bereitstellen
+var $ze (0,r2)
+ins _ _0_
+ins $ze
+
+jump dhx
+
+
+
+:ende
+close
+var ""
+ins #uSP
+ins #uHX
+ins #uDR
+
+

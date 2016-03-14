@@ -1,0 +1,28 @@
+ Ausgabe im Original-"allegro"-Format
+
+pn="allegro-Format"
+   Diese Parameterdatei erzeugt Daten im allegro-Format,
+   also eine identische Reproduktion der Daten
+   wobei einige Zusatzmîglichkeiten existieren (siehe unten)
+
+  !!! diese Datei funktioniert fÅr alle Konfigurationen !!!
+      wenn Sie sie fÅr P.CFG benîtigen:
+      mit  COPY PA.APR PA.PPR  eine Kopie machen
+
+   -------- Konstanten ----------------------------------------------------
+                                          dieser Teil muss bleiben
+zl=0        ZeilenlÑnge unbegrenzt (kein Umbruch)
+
+ks=1        Beginn des Ausgabetextes beim ersten Zeichen hinter #
+
+ke=0        Kategorie-Ende = Code 0
+
+as=h0       Aufnahme-Start: Hierarchiekennung + 0
+                    Hauptaufnahme        : Code 01  als Startzeichen
+                    Unteraufnahme Stufe 1:      02  ...
+ae=13 10    Aufnahme-Ende: Carriage Return / Line Feed
+
+   -------- Anweisungsteil --------------------------------------------------
+
+##          Pauschalexport : alle Kategorien hintereinander ausgeben
+                             jeweils mit  ke  abschlie·en

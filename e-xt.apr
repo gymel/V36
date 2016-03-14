@@ -1,0 +1,37 @@
+  E-XT.APR :  Ausgabe als ASCII-Datei mit Kategorie-Nummern und Zeilenumbruch
+  950626   Abgeleitet von E-0.APR
+
+  Zugriff ber Satznummer!
+pn="EXTRACT per Satznummer" 
+
+  MUSS mit Option -b gestartet werden, und die zu exportierende Datei
+  MUSS eine Grunddatei xxx.alg sein, die S„tze mit #00 enth„lt, in der #00
+  MUSS jeweils eine gltige interne Satznummer stehen.
+       Eine solche Datei stellt man mit QRIX -fd -Exxx.alg ... her 
+
+  Funktioniert auch fr andere Kategoriesysteme
+
+  --------- Konstanten --------------------------------------------
+
+zl=66	    Zeilenl„nge
+zi=4	    4 Zeichen Einrckung bei Folgezeilen
+ zi=5       bei 3stelligem Schema  (einzige nderung!!!)
+zm=0        kein Seitenumbruch (fortlaufende Ausgabe)
+ae=13 10    Zeilenvorschub am Aufnahme-Ende
+fl=0        Listenstruktur (keine Karten)
+ks=0	    Startpos. 0  (= Zeichen '#') innerhalb jeder Kategorie
+       ks=1 setzen, wenn '#' wegfallen soll)
+ke=C        Kategorie-Ende: Zeilenvorschub
+
+  -----------------------------------------------------------------
+
+  ********* Kategorieliste ****************************************
+
+  Die einzige zu exportierende Kategorie ist #00:
+
+#00 b4 |01 #zz 0    Datensatz laden (in #00 steht seine interne Nr!)
+ #000 b5 |01 #zz 0    z.B. fr MAB oder MARC
+ #0100 b6 |01 #zz 0     bei PICA
+
+##      s„mtliche Kategorien ausgeben in interner Reihenfolge
+

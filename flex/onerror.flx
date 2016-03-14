@@ -1,0 +1,297 @@
+  ONERROR.FLX : Ausfuehrung, wenn Falsche Eingabe im Schreibfeld
+  2001-03-05    Damit kann man Programmierbare Aktionen ausloesen
+  Empfehlung: bei lokaler Modifikation kopieren auf DbDir!
+
+  Nur als Beispiel das folgende. Kann beliebig ausgebaut werden,
+  um sich neue Befehle fuer das Schreibfeld zu schaffen!
+
+  Wenn das Programm hier ankommt, gilt generell:
+  Die Eingabe aus dem Schreibfeld steht in der iV.
+  Wenn die Eingabe anschliessend nicht weiter verarbeitet werden
+  soll, dann hier vor dem "end"-Befehl noch  var ""  setzen
+
+  Speichere iV in #u~E
+ins #u~E
+ins $ue
+
+  Ist es ein kopierter Datensatz vom DNB-OPAC? (Druckformat) dann d-nb.flx
+if %zu diesem Datensatz: % exec X d-nb
+var #u~E "##"
+
+  Eingabe endet mit -  (PS-Einblick zeigen)
+if %-##% jump sect2
+
+var $ue
+
+if "." var (f".");ins #u~E;jump PS
+
+if "man" jump man
+if "www" jump www
+if "http:" jump http
+if "file:" jump http
+if "#" end
+  faengt es mit B an? Dann  bedit.flx (#u~E extern bearbeiten)
+ if "B" exec X bedit.flx
+  ab V25:
+if "a" jump aresqa
+if "cd " jump cd
+if "H " jump Help
+  Wenn nur d eingegeben wurde, dann dos.flx
+if "d#" exec dos
+  d name  wurde eingegeben
+if "d " jump dir
+
+if "dir " jump dirs
+if "ald" exec ald-chk
+if "htm" jump htm
+if "tab" jump tab
+if "hel" jump hel
+  Nach demselben Muster kann das hier beliebig weitergehen
+var ""
+end
+
+  Alternative: Befehl "jump direct" wegnehmen, dann wird geprueft:
+  kommt #u~E.flx als Datei vor? Dann ausfuehren!
+  Reihenfolge:  FLEXDir / ProgDir / Lokal
+
+  DbDir?
+var D #u~E(t".") ".flx"
+fsize
+if no jump wd
+jump xec
+
+:pd
+  ProgDir?
+var P #u~E(t".") ".flx"
+fsize
+if no jump wd
+jump xec
+
+:wd
+  WorkDir?
+var W "\\" #u~E(t".") ".flx"
+fsize
+if no jump direct
+jump xec
+
+  Datei kommt vor, ausfuehren:
+:xec
+var "X " #u~E
+exec
+end
+
+  directory
+:dir
+var "X dir " #u~E(b" ")
+
+exec
+
+:dirs
+var #u~E(b" ")
+ins #upN
+exec dirs
+
+
+:PS
+   Demo fuer die &-Variablen
+   Es wurde was eingegeben mit . am Anfang:
+
+var #u~E(f"&" f".")
+ins #u~E
+var #u~E
+  Klein oder gross? Praefix vorsetzen f. Namensraum
+if >"Z" var #op ":"
+if <"[" var "ALLG:"
+
+ins $nm
+
+var #u~E
+
+  Sonderfall, es wurde NUR  -  eingegeben? Dann ALLG: zeigen
+
+if "-" var $nm "0---" $nm "zzz"
+if %---% jump section
+
+  Endet die Eingabe mit - ? Z.B. .e-? Dann PS-Reg. bei e aufblaettern
+
+var #u~E "&&"
+if %-&&% jump sect2
+
+  Normale Eingabe  name=inhalt
+var "&" $nm #u~E
+
+if %=% ins
+var "&" $nm #u~E(e"=")
+
+var
+
+ins #u~F
+var "." #u~E(e"=") "=" #u~F
+var (F"=")
+if not %=% var +"="
+ansi
+  Gespeicherte Zeile zeigen:
+sho iv
+act 2
+  Damit nicht "Ungültige Eingabe" kommt:
+var ""
+end
+
+  Es wurde nur -eingegeben: ALLG-Bereich zeigen
+:section
+
+var #u~E(f".")
+ins ,---,@_,
+ins #u~E
+:sect1
+var "100 ~z1 _" #u~E
+
+qri
+ins _^T_^M^J&_
+var (B":" u&:)
+ins _   1  __
+ins #u~V
+ansi
+Aresqa
+if canc end
+if "" end
+ins $u
+var "." $u
+
+sho iv
+var ""
+end
+
+  Ein Abschnitt wird gewünscht, Eingabe endet mit -
+:sect2
+var (f".")
+if >"Z" var #op ":"
+if <"[" var "ALLG:"
+
+ins $nm   
+if not "ALLG:" var $nm #u~E(f"." F"-") "@_" $nm "{"
+if "ALLG:" var $nm #u~E(f"." F"-") "@_B{" $nm "}"
+ins #u~E
+jump sect1
+
+end
+
+:direkt
+   wahlweise als FLEXkette ausfuehren, was eingeben wurde
+   FLEXkette (eher riskant!)
+var "x " #u~E(f"x ")
+exec
+end
+
+:man
+var #u~E "Q"
+if "manQ" jump man2
+
+var "x" #u~E(b" ")
+help
+if no mes Dazu kein Text vorhanden
+var ""
+end
+
+:man2
+help xa
+var ""
+end
+
+:www
+var "start http://" #u~E
+Dos
+ janas
+var ""
+end
+
+:http
+var "start " #u~E
+
+Dos
+  oder:
+ var #u~E
+ janas
+
+var ""
+end
+
+  ab V25:
+:aresqa
+var #u~E "#"
+if "a #" jump disp
+if "a#" jump disp
+
+var "X aq " #u~E(b" " e" ")
+
+  FLEX aq.flx starten, in iV steht dann der Dateiname aus #u~E!
+exec
+
+  Es wurde nur a gegeben: Sonderfunktion
+  Anzeige-Inhalt speichern in a.txt und als aresqa-Liste zeigen
+:disp
+file a.txt
+var "Der Inhalt des Anzeigefeld wurde gespeichert als Datei a.txt," n
+var +"diese wird jetzt im aresqa-Fenster gezeigt" n
+var +"zur beliebigen Bearbeitung"
+mes
+  es ist auf jeden Fall DOS-Code, deshalb praefix "?0"
+var "X aq ?0a.txt"
+exec
+
+:htm
+var P "*.htm"
+ins #upN
+exec wf
+
+:tab
+h table
+end
+:hel
+h doku
+end
+
+:cd
+var (b" " F"#")
+ins $cd
+var "W" $cd
+set
+var "Arb.Verz. ist jetzt " W
+sho iv
+var ""
+end
+
+:Help
+var (b" " F"#")
+ins $url
+var $url (T".")
+ins $typ
+del ferndat
+  Lokale Datei mit demselben Namen oeffnen
+var "ferndat." $typ
+del
+open x
+
+  Die Internetdatei zum Lesen oeffnen
+var "ftp://sun250.biblio.etc.tu-bs.de/pub/help/" $url
+open
+  Schleife fuer blockweises Lesen
+:loop
+  jeweils 2000 Bytes holen, dabei Steuerzeichen escapen,
+  z.B.  ^@ statt Code 00, ^A ^B  statt  01 02 usw., ^~ statt ^
+fet 2000
+if cancel jump fende
+  den Block gleich wieder rausschreiben (Steuerzeichen zurueckwandeln)
+write ^
+jump loop
+:fende
+close x
+close
+var $typ
+if "rtf" help ferndat;end
+var "ferndat." $typ
+help
+end
+
+
+

@@ -1,0 +1,278 @@
+  CTPROD.FLX : Auswertung durchfuehren
+  2001-02-27  (Name der C-Batchdatei steht in #uwQ)
+
+if #uwS jump sonder
+
+  Ganze Datenbank? Dann ist #uwF besetzt
+if #uwF jump check
+  Gibt's eine Ergebnismenge? Wenn nein, schluss
+if g0 jump check
+var "Zur Zeit keine Ergebnismenge." n "Legen Sie eine an, oder w„hlen Sie" n
+var + '"Ganze Datenbank auswerten"'
+ansi
+mes
+end
+
+:check
+if #ucU jump begin
+var "Keine Struktur ausgew„hlt! M”chten Sie das jetzt tun?"
+ansi
+yes
+if yes exec ctpick
+end
+
+:begin
+
+var #ucU
+open
+  erste Zeile der Anzeige in die iV nehmen (ist immer Kommentar)
+get
+
+:schleife
+  naechste Zeile
+get
+  keine mehr da
+if can jump prod
+ins #uwz
+
+  Jetzt wird verglichen, womit die Zeile beginnt
+  Wenn eine Zeile mit T-xyz kommt, -> T-xyz.cPR
+
+if "#" jump kat
+if "~fld=" jump fld
+if "~min" jump min
+if "~max" jump max
+if "~sep=" jump sep
+if "~mod=" jump mod
+if "~ord=" jump ord
+jump schleife
+
+:fld
+var #uwz(b"=")
+ins #uc1
+var #uc1(e"  ")
+ins #uc1
+if #uc1 jump schleife
+jump c1error
+
+:sep
+var #uwz(b"=")
+ins #uc2
+jump schleife
+
+:mod
+var #uwz(b"=")
+ins #uc3
+jump schleife
+
+:ord
+var #uwz(b"=")
+ins #uc5
+jump schleife
+
+:min
+var #uwz(b"=")
+ins #umi
+jump schleife
+
+:max
+var #uwz(b"=")
+ins #umx
+jump schleife
+
+
+:prod
+var "c-fi"
+ins #uwP
+
+
+if v14 jump v14
+var P "s.apt " P "quant." K1 "PT"
+fcopy
+jump export
+
+
+:v14
+var P "q4.apt " P "quant." K1 "PT"
+fcopy
+jump export
+
+:sonder
+var #uwS
+if "K" jump katego
+if "T" jump teilf
+var ""
+ins #uwS
+end
+
+:teilf
+var ""
+ins #uwS
+var "c-subf"
+ins #uwP
+var "Teilfelder z„hlen: Ergebnismenge? (Nein = Gesamtbank)"
+ansi
+yesno
+if can end
+var ""
+if no var "F"
+ins #uwF
+jump export
+
+
+:katego
+var ""
+ins #uwS
+var "c-tags"
+ins #uwP
+var "Kategorien z„hlen: Ergebnismenge? (Nein = Gesamtbank)"
+ansi
+yesno
+if can end
+var ""
+if no var "F"
+ins #uwF
+
+:export
+
+  Exp.Parameter-name sichern in #uwe
+var e
+ins #uwe
+  Nur um Bedingung YES einzustellen
+var P "alcarta.exe"
+fsi
+  Parameter  #uwP  laden (universell)
+var #uwP
+xport p
+if no jump perror
+
+  Flag #uwh loeschen (wird in C-FI ausgewertet)
+var ""
+ins #uwh
+
+open x count.alg
+if #uwF jump gesamt
+
+
+dow set
+jump schluss
+
+:gesamt
+  Gesamtbank auswerten?
+noyes Gesamte Datenbank auswerten - Sind Sie sicher?
+if no end
+if can end
+
+var t
+ins #ung    // Gesamtzahl
+  Abarbeitung der Gesamtbank
+  ersten Satz holen, Zaehler auf 1
+var "1"
+z=
+find #1
+if del jump naechst
+if no jump naechst
+
+:loop
+var z "z"
+if %00z% var z " / " #ung;sho iv
+
+  Satz exportieren
+dow
+  naechsten Satz
+:naechst
+z+1
+var "#" z
+find
+  kein Satz mehr, Ende erreicht
+if cancel jump schluss
+  der Satz ist geloescht
+if del jump naechst
+  Die Satznummer ist nicht besetzt
+if no jump non
+  es gab noch einen Satz? dann -> :loop
+jump loop
+
+:non
+var "#" z
+find
+jump naechst
+
+:schluss
+close x
+
+  Exp.Parameter wieder laden
+var #uwe
+xport p
+
+fsi count.alg
+if no jump error
+activate
+h ct
+
+activate
+var "Vorbereitung der Daten ist beendet. Jetzt wird sortiert und aufbereitet ..."
+sho IV
+  Batch vorbereiten
+open x org.bat
+wri "@echo off" n
+  Setzungen
+wri "set -P=" P n
+wri "set C1=" #uc1 n
+wri "set C3=" #uc3 n
+wri "set C5=" #uc5 n
+wri "set MIN=" #umi n
+wri "set MAX=" #umx n
+
+  Hauptteil
+wri Fct99.bat
+close x
+
+  Sicherheitshalber:
+var D "countu."
+del
+var D "counts."
+del
+var D "counta."
+del
+
+
+get env comspec
+ins #uwC
+var #uwC " /c org.bat"
+
+  Batch ausfuehren
+cAll
+h countu
+if no h counta
+
+activate
+var "Sie sehen jetzt die absteigend sortierte Liste" n
+var +"Um die anderen beiden Listen zu sehen, geben Sie im Schreibfeld ein:" n
+var +"h counts   aufsteigend sortierte Liste" n
+var +"h counta   alphabetisch sortierte Liste"
+mes
+
+end
+:error
+mes Datei  COUNTS  wurde nicht erstellt
+end
+
+:perror
+mes
+var "Parameterdatei " #uwP " existiert nicht oder fehlerhaft" n "Kopieren Sie " #uwP(e".") ".APR auf " #uwP(e".") "." K1 "PR"
+mes
+end
+
+:c1error
+var #ucU
+help
+mes Befehl FLD nicht in Ordnung! Mindestens 1 Kategorienummer muss angegeben werden.
+end
+
+  Variablen:
+  #uwF  wenn besetzt, dann "Gesamte Datenbank"
+  #uwP  Parameter-Name (c-fi, c-tags, c-subf)
+  #uwS  K oder T (Sonderfunktionen), sonst unbesetzt
+  #ucU  gesamter Name der C-*.xCT Datei
+  #uwz  eingelesene Zeile aus der CT-Datei

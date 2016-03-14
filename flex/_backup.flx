@@ -1,0 +1,340 @@
+  _BACKUP.FLX : Kopieren einer Datenbank mit allen Dateien
+  2001-01-13/2011-01-25  incl. Anlegen einer Batchdatei fuer Restore-Prozedur
+  Kann als Sicherungsmethode eingesetzt werden
+        Variablenliste: am Ende
+
+var m
+if "alc" end
+  Hilfetext einblenden
+help backp
+
+:start
+  In #uTX steht Y oder N (wird in _backp.rtf gesetzt)
+
+var #uTX
+if "Y" var "Sicherungskopie - "
+if "N" var "Normalkopie - "
+
+  Frage nach dem Verzeichnis, Variable C vorgeben (DbBack aus INI-Datei)
+var +"In welchen Ordner soll kopiert werden? Dann OK klicken:=" C 
+ask
+  Esc oder Nichts eingegeben
+if cancel jump exit
+if "" jump browse
+     ist ein : drin? (nicht mehr sinnvoll)
+  if %:% jump anfang
+    Nein, d.h. kein Laufwerk angegeben
+  jump nodrive
+
+:anfang
+  Eingabe speichern in #u|Z
+ins #u|Z
+   den \ am Ende beseitigen (falls da einer ist)
+var #u|Z(F"\\")
+ins #u|Z
+  Laenge checken
+perf lang
+if no jump start
+  Flag #u|Y loeschen
+var ""
+ins #u|Y
+   der eingegebene PfadName steht jetzt in #u|Z, ohne \
+   Verzeichnis mit diesem Namen anlegen:
+var #u|Z
+mkdir
+   Nicht gelungen? dann -> :error
+if no jump error
+   Anlegen gelungen, Flag in #u|Y setzen
+var "1"
+ins #u|Y
+  Gelungen (Verz. existierte noch nicht), aber noch Laufwerk pruefen
+jump drive
+
+:los
+  Erst TBL sperren: waehrend des Kopierens keine Schreibaktion zulassen
+set tbl lock
+  Bei :exit wird wieder freigegeben, aber auch schon in _BACKUP.BAT
+var ""
+ins #u|Y
+var "N"
+ins #u|X
+if #uTX jump uw
+var "Soll es eine Sicherungskopie sein?" n "Nein = Eine normale Kopie"
+var +n "(Der Unterschied: bei Sicherungskopie wird die LOG-Datei gelîscht," n "au·erdem erhÑlt die Kopie eine Schreibsperre."
+var +n "Mehr dazu im Text, siehe Anzeigefeld.)
+ansi
+yesno
+var "Y"
+if cancel jump exit
+if yes ins #u|X
+jump prg
+:uw
+var #uTX
+ins #u|X
+
+:prg
+  Aufruf des Programms _backup.BAT zusammenbauen
+get env comspec
+ins #u|C
+var #u|C " /c " P "_backup.bat " D " " B " " #u|Z " " K " " K1 " " P " " a " " #u|X " " L
+  _backup.bat starten, warten bis fertig, dann exit
+call
+jump finish
+
+  mkdir hat nicht geklappt. Evtl. existiert der Pfad schon
+:error
+  Pruefe, ob Indexdatei dort liegt
+var #u|Z "\\" B "." K1 "dx"
+fsize
+  Nein. Dann konnte Verz. wohl nicht angelegt werden.
+if no jump mistake
+
+  Ja, gefunden:
+:exist
+  Aber zur Sicherheit:
+  Checken, ob es etwa das Datenverz. selbst ist
+var "~" #u|Z
+ins #u|F
+var D
+ins #u|D
+var #u|D(F"\\")
+  beide Namen vergleichen, wenn gleich -> :samepath
+if =#u|F jump samepath
+
+  ... ob es etwa das ProgDir ist (nicht zulassen)
+var "~" P
+ins #u|F
+var #u|Z(F"\\") "\\"
+  vergleichen, wenn gleich -> :progpath
+if =#u|F jump progpath
+
+:drive
+  Zuletzt: checken, ob es dasselbe Laufwerk ist (nicht ratsam)
+var "~" #u|Z(e"\\")
+ins #u|F
+var D
+ins #u|D
+var #u|D(e"\\")
+  Vergleich, wenn gleich -> :samedrive
+if =#u|F jump samedrive
+  Hilfsvar. loeschen
+var ""
+ins #u|D
+ins #u|F
+
+  Flag #u|Y gesetzt? d.h. Verz. ist neu, sofort los!
+if #u|Y jump los
+  Informieren, dass das Verz. existiert, BestÑtigung einholen
+var "Verzeichnis existiert schon, und dort liegt evtl." n "schon eine Kopie der Datenbank. Trotzdem kopieren?" n
+var +"(Das ist normal und zulÑssig, wenn Sie immer mehrmals dasselbe" n "Verzeichnis zum Kopieren benutzen" n
+var +"Wenn aber dort eine andere Datenbank liegt, wÅrde diese Åberschrieben!)
+ansi
+yesno
+  User sagt ja, dann los:
+if yes jump los
+if canc jump exit
+jump start
+
+:samepath
+var "Sie haben ja dasselbe Verzeichnis angegeben, wo die Datenbank liegt,"
+var +n "das geht natÅrlich nicht!"
+ansi
+mess
+jump start
+
+:progpath
+var "Sie haben das Programmverzeichnis " P " als Kopierverzeichnis angegeben." n
+var +n "Das empfiehlt sich aber nun gar nicht!"
+ansi
+mess
+jump start
+
+:samedrive
+var "Sie haben das Verzeichnis " #u|Z " gewÑhlt." n "Es liegt auf dem Laufwerk " #u|D(e"\\") ", wo die "
+var +"Datenbank auch selbst liegt." n "Das geht zwar, ist aber weniger sicher als ein
+var +n "anderes Laufwerk!" n
+var +n "Wollen Sie trotzdem kopieren?"
+ansi
+yesno
+if yes jump los
+if canc jump rmdir
+perf rmdir
+jump start
+
+  Ist das Verzeichnis zwar da, aber kein Schreibrecht?
+:mistake
+  Checken, ob man eine Datei anlegen kann
+  zuerst Exportdatei-Name sichern
+var E
+ins #u|E
+  Dann eine Datei mit obskurem Namen zum Schreiben oeffnen:
+  (d.h. pruefen, ob das geht! Sie entsteht dadurch noch nicht!)
+var #u|Z "\\__zyx__.xyz"
+xport f
+  Nein, geht nicht, also kann man da nicht schreiben
+if no jump nexist
+  Es geht; erst Exportdatei-Name restaurieren
+var #u|E
+xport f
+  dann weiter mit der Prozedur
+jump exist
+
+:nexist
+var "Verzeichnis " #u|Z " existiert nicht," n "konnte aber auch nicht angelegt werden"
+mess
+jump start
+
+:finish
+  Kopieren ist abgeschlossen. Zuerst wieder freigeben:
+set tbl free
+var #u|X
+if "N" jump equal
+  Wenn es Typ "Sicherungskopie" ist:
+  Jetzt den Verz.Namen fuer weitere Sitzungen aufbewahren
+var #u|Z
+  damit wird er in den DbBack-Befehl der INI eingesetzt:
+set C
+
+:equal
+  Zur Sicherheit noch ein Check:
+  Sind Indexdatei und Kopie gleich gross?
+  (Kopie koennte kleiner sein oder fehlen, falls Platz nicht reichte!)
+var D B "." K1 "dx"
+  Groesse des Originals feststellen und in die iZ kopieren
+fsize
+=
+var #u|Z "\\" B "." K1 "dx"
+fsize
+  Kopie des Index nicht gefunden!
+if no jump noindex
+  Groesse der Kopie subtrahieren von iZ
+-
+  iZ ist jetzt die Differenz, nach iV kopieren
+var Z
+  Differenz muesste Null sein:
+if <0 jump groesser
+if >0 jump kleiner
+
+var #u|X
+if "N" jump nf
+
+  Fertigmeldung
+var "Sicherungskopie der Datenbank " D B " liegt auf " #u|Z n
+var +"angefertigt am " #dt(b", ") n
+var +"Auf " D " liegt das Programm " B "REST.BAT fÅr den Notfall!" n
+var +"Eine Kopie davon liegt auch auf " #u|Z n
+var +"Man startet es, wenn normales Restaurieren Åber MenÅ nicht geht," n
+var +"und zwar startet man es von " P " aus!" n
+var +"Der Befehl muss dann lauten: " n n #u|Z "\\" B "rest.bat"
+var +n n "  [Dieser Text erscheint nach Druck auf OK im Anzeigefenster zum bequemen Ausdrucken]"
+jump meld
+
+:nf
+var "Normalkopie der Datenbank " D B " liegt auf " #u|Z n
+var +"angefertigt am " #dt(b", ") n
+
+:meld
+ansi
+mes
+ins _\\_\\\\_
+var (e"  [")
+sho IV
+:loesch
+  Variablen loeschen
+
+#u|C
+#u|D
+#u|E
+#u|F
+#u|X
+#u|Z
+#uTX
+
+end
+
+:exit
+  Ende, TBL wieder freigeben
+set tbl free
+activate
+jump loesch
+
+:groesser
+var "neue Indexdatei grî·er! Differenz= " Z n "Da muss ein Fehler passiert sein," n "die Kopie ist vermutlich unvollstÑndig."
+ansi
+mess
+jump exit
+
+:kleiner
+var "neue Indexdatei kleiner! Differenz= " Z n "Da muss ein Fehler passiert sein," n "die Kopie ist vermutlich unvollstÑndig."
+ansi
+mess
+jump exit
+
+:noindex
+var "Entweder haben Sie den Vorgang abgebrochen, oder" n
+var +"Indexdatei  " B "." K1 "dx  ist nicht kopiert worden." n
+var +"Neuer Versuch?"
+yesno
+if yes jump start
+jump exit
+
+:nodrive
+var "Es fehlt die Angabe des Laufwerks. Ein Pfadname muss so aussehen:" n
+var +"X:\\abc\\def...\\xyz" n
+var +"FÅr X muss der Laufwerksbuchstabe eingesetzt werden," n
+var +"abc usw. muss ein Verzeichnisname sein" n n
+var +"Neuer Versuch?"
+ansi
+yesno
+if yes jump start
+jump exit
+
+:browse
+  Verzeichnis auswaehlen
+
+var "WÑhlen Sie ein Verzeichnis|\\" *.*
+ansi
+fnam
+if "" jump exit
+
+ins #u|Z
+var #u|Z(t"\\")
+
+jump anfang
+
+:lang
+  Pruefen, ob der Name nicht mehr als 8 Zeichen hat
+
+var #u|Z(T"\\") ","
+ins #u|F
+if % % jump leerz
+var #u|F(0,9)
+if %,% return
+mes Name mit mehr als 8 Zeichen - das geht nicht!
+get env ....
+return
+:leerz
+mes Ein Leerzeichen im Namen? Besser nicht!
+  Dadurch wird die Bedingung NO erzeugt:
+get env ....
+return
+
+  Leeres Verz. mit dem Namen #u|Z wieder beseitigen
+:rmdir
+get env comspec
+ins #u|C
+var #u|C " /c rmdir " #u|Z
+cAll
+activate
+return
+
+  Variablen
+    #u|C   COMSPEC
+    #u|D   DbDir
+    #u|E   Exportdatei
+    #u|F   = ~#u|Z
+    #u|X   Y:Typ Sicherung, N=Normal
+    #uTX   Vorbesetzung dafuer (in backp.rtf)
+    #u|Y   Flag. 1=Anlegen des Verz. gelungen
+    #u|Z   gewaehltes Verz.
+

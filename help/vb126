@@ -1,0 +1,142 @@
+
+Verlautbarung 126 der Entwicklungsabteilung                        2000-01-13
+-------------------------------------------
+
+Fuer das Folgende braucht man a99/alcarta von gestern, 14:08 Uhr.
+
+
+Umschalten zwischen Datenbanken
+-------------------------------
+Aufgabe: von der eigenen Datenbank A umschalten auf die Fremddatenbank B.
+Dort soll dieselbe Registerstelle erscheinen. Ein in B gefundener Satz
+soll per Knopfdruck von B nach A wandern.
+
+Man startet beide Datenbanken getrennt mit je einem Aufruf von a99, fr
+B kann es auch alcarta sein. Wir nehmen an, beide Aufrufe erfolgen vom selben
+Verzeichnis (A und B brauchen dann verschiedene Namen!)
+In  B.INI  hat zu stehen:
+
+ExportParameter=E-W
+OutputFile=E.ADT
+
+NEU: Ist die Fremddatenbank in einem anderen Format, muss man geeignete
+Exportparameter statt E-W erstellen. Damit wird auch das direkte Importieren
+aus anderen Formaten moeglich, was mit PRESTO nicht geht.
+
+-----------
+| A --> B |
+-----------
+
+Dazu braucht man folgenden FLEX (namens SWITCH.FLX)
+
+  Datei alta.flx aufmachen
+xport file alta.flx
+  Hineinschreiben:
+write "activate" n "index |" #uxb(0,1) #uxa n 
+  flex abschicken
+flex alta
+
+   Wenn man den letzten Suchbefehl statt Registerstelle will:
+
+   xpo file alta.flx
+   wri "activate" n "Find " f
+   flex alta
+
+Wird dieser FLEX in A aktiviert, schreibt er zuerst eine Datei "alta.flx" 
+und sendet dann die Botschaft an B, diese auszufuehren.
+In ALTA.FLX steht dann:
+
+activate
+index |ixyz
+
+wobei xyz der letzte Zugriffspunkt im aktuellen Register i ist.
+(Die Schreibweise  #uxb(0,1)  bewirkt, dass nur das erste Zeichen von #uxb
+ausgegeben wird.)
+Der neue Befehl "activate" am Anfang sorgt dafuer, dass sich B
+dann selber aktiviert, also in den Vordergrund kommt.
+Dann blaettert es Register i an der Stelle xyz auf.
+Es funktioniert in beiden Richtungen! Alt+TAB dagegen schaltet um, ohne
+dass sich was tut. Das kann staendig zwischendurch geschehen!
+
+Einfachste Implementierung in A: Im Schreibfeld eingeben
+   #uX1X switch.flx
+Dann Ausloesung mit  Alt+1. (Bleibt fuer folgende Sitzungen erhalten)
+Natuerlich kann der Aufruf auch in ein Flip oder auf den eigenen Menuepunkt 
+gelegt werden.
+
+-----------
+| B --> A |
+-----------
+
+Mit dem FLEX
+
+x download\flex copy
+
+wird zuerst der aktuelle Satz in die Datei E.ADT herausgeschrieben, dann
+wird A veranlasst, die Datei COPY.FLX zu lesen und auszufuehren. 
+In COPY.FLX sollte stehen:
+
+   Wenn Aktivierung gewuenscht:
+ activate
+new
+read
+delete e.adt
+   Wenn sofortige Speicherung gewuenscht:
+ put
+
+So wird durch einen einzigen Mausklick ein gefundener Datensatz der Fremd-
+datenbank in die Datei e.adt exportiert, vom anderen a99 dann eingelesen
+und als neuer Datensatz behandelt. Durch "put" wird er sofort gespeichert,
+wenn "put" fehlt, kommt er nur in den Bearbeitungsspeicher.
+
+Der ebenfalls neue FLEX-Befehl  "delete"  loescht die Datei e.adt,
+so dass die naechste Aktion in B sofort stattfinden kann.
+
+Jetzt hat man also auch die Wahl: entweder mehrere Uebernahmen hintereinander
+ohne jedesmal umzuschalten (dann kein "activate" in COPY.FLX) oder jedesmal
+umschalten zwecks Bearbeitung, dann kein "put" in COPY.FLX.
+Fehlt "put", hat man die neuen Saetze alle in der Offline-Datei, die man
+jederzeit zum Bearbeiten oeffnen kann (Alt+q).
+Das Bearbeiten kann auch in B erfolgen, denn mit "download" wird der
+aktuelle Zustand exportiert. Hinter "download" empfiehlt sich dann, ein
+"undo" einzuschieben, damit nicht beim Verlassen von B der ge„nderte Satz 
+dort gespeichert wird.
+
+Einfachste Implementierung in B: Im Schreibfeld eingeben
+   #uX9x download\flex copy
+Dann Ausloesung mit  Alt+9. (Bleibt fuer folgende Sitzungen erhalten)
+Natuerlich kann der Aufruf auch in ein Flip oder auf den eigenen Menuepunkt 
+gelegt werden.
+
+
+Summa summarum kann jetzt mit "a99" nicht nur derselbe Komfort (genau so
+wenig Tastendruecke) wie bei PRESTO erreicht werden, sondern es gibt auch
+noch eine Reihe von neuen Moeglichkeiten.
+SWITCH.FLX und COPY.FLX sind im Paket a99upd.exe enthalten.
+
+
+EndFLEX
+-------
+Wenn man eine FLEX-Datei "endflx.flx" auf dem Startverzeichnis hat, wird
+diese ausgefuehrt, unmittelbar bevor das Programm sich beendet.
+Schreibt man z.B. so etwas hinein wie:
+
+xpo file +proto.txt
+wri D N ", res.: " f ", am " #dt ", Operator: " #op n
+
+Dann entsteht eine fortlaufende Protokolldatei der benutzten Datenbanken.
+(Das '+' vor proto.txt bewirkt Anhaengen statt Ueberschreiben)
+Ueber die Kombination  xport file ...\write ...  kann man generell aus dem
+Programm heraus Dateien erzeugen und Beliebiges hineinschreiben! Die Datei
+wird geschlossen, wenn ein neuer "xport file ..." kommt, oder wenn das
+Programm beendet wird.
+
+Das Gegenteil, einen StartFLEX, kann man ueber die AutoFLEX-Methodik 
+einrichten!
+
+
+Bernhard Eversberg
+Universitaetsbibliothek, Postf. 3329, 
+D-38023 Braunschweig, Germany
+Tel.  +49 531 391-5026 , -5011 , FAX  -5836
+e-mail  B.Eversberg@tu-bs.de  

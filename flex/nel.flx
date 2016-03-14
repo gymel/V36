@@ -1,0 +1,130 @@
+  NEL.FLX : Erg.Menge bilden fuer Neuerwerbungsliste
+  20050525  unter Verwendung der Kalenderfunktion
+
+  Aktuellen Satz wieder anzeigen, um Irritation zu vermeiden
+disp
+  In der Variablen #ufN steht 2000, wenn ein Startdatum ausgewaehlt wurde
+var #ufN    // wirkt also als Flag
+if ="2000" jump list
+
+var "Sie sehen gleich einen Kalender. WÑhlen Sie darin das Startdatum" n
+var +"fÅr die Neuerwerbungsliste! Klicken Sie den Tag an, von dem ab die" n
+var +"EintrÑge in die Liste sollen." n n
+var +"Starten?"
+ansi
+yes
+if not yes end
+
+  Neuen FLEX anlegen zur Auswahl des Startdatums
+  (term.flx wird dann bei Anklicken eines Datums ausgefuehrt!)
+var D "term.flx " D "termxxxx.flx"
+rename
+if no jump rerr
+
+var D "term.flx"
+open x
+wri "ins #ufD" n    // Nummer des angeklickten Tages; Datum ist in #uU1
+wri "var #uU1 #ufD(0,r2)" n  // Datum als JJJJMMTT  zusammensetzen
+wri "ins _ _0_" n   // Leerz. durch 0 ersetzen
+wri "ins #uU2" n    // und in #uU2 speichern
+wri "#ufN2000" n    // Flag belegen fuer Neustart von nel.flx
+wri "exec X nel" n  // nel.flx starten (also diesen FLEX!)
+close x             // term.flx  schliessen
+  Kalenderfunktion
+exec kalender       // und kalender.flx starten
+                    // Beim Anklicken eines Tages startet dann term.flx!
+
+  Wenn ein Datum angeklickt wurde, dann wird #ufN2000 gesetzt und dann
+  NEL.FLX (dieser hier) wieder aufgerufen. Dann kommt dieser Abschnitt dran:
+
+:list
+var D "termxxxx.flx"
+fsiz
+if no jump exit
+var D "term.flx"
+del
+var D "termxxxx.flx " D "term.flx"
+rename
+if no jump rerr 
+  Flag und Flipvariablen wieder loeschen
+:exit
+#ufN
+#uZ~
+#uY~
+
+var "Jahreszahl, die als Grenze gelten soll (d.h. nur neuere Titel sollen hinein)=1999"
+ansi
+ask
+if "" var "1999"   // default, wenn nichts eingegeben
+ins #unY
+
+  Von-Bis-Suche ab dem gewaehlten Datum (Reg. ppn = Reg. 9 bei cat.api)
+   (evtl. hier statt ppn anderen Namen einsetzen!)
+var "ppn D" #uU2 "---D30000000"
+  Erg.Menge der neuen Daten ab dem gewaehlten Datum
+find
+if empty jump nix
+
+ask Welches Feld muss vorkommen?= #20
+  Zuerst Saetze raussuchen, in denen das gewaehlte Feld vorkommt:
+ins #unF
+var "+" #unF
+find
+   (Dadurch wird eine Volltextsuche in der Erg.Mange nach der Zeichenfolge
+   #20 gemacht. Wer will, kann hier noch andere Kriterien einbauen, um
+   die Erg.Menge einzuschrÑnken!)
+if l1 jump nix
+
+  Jetzt die Nummernliste in nel.num schreiben
+open x nel.num
+wri in
+close x
+
+  Dann diese Liste durcharbeiten und Ersch.Jahr pruefen
+open x nel.lst
+wri "Liste" n
+open nel.num
+
+:schleife
+get #unZ
+if can jump schlend
+var "#" #unZ
+find
+   Hier andere Feldnummer, wenn man nicht A.CFG hat:
+var #76
+if >#unY wri #unZ n
+jump schleife
+
+  Schleifende: Dateien schliessen
+:schlend
+close x
+close
+del nel.num
+
+ nel.lst als externe Erg.Menge einlesen
+read set nel.lst
+
+  Name der Erg.Menge setzen
+var "RNeuerwerbungen ab " #uU2(6,2 f"0") "." #uU2(4,2 f"0") "." #uU2(0,4)
+set
+var "Erg.Menge (mit " l " Eintr.) ist fertig, kann beliebig verwendet werden" n
+var +"Die Kurzliste wird gleich gezeigt. Lîschen Sie die nicht" n
+var +"erwÅnschten Titel heraus und ordnen Sie die Liste nach dem" n
+var +"Erscheinungsjahr, Titel oder Verfasser" n n
+var +"Danach kînnen Sie die bereinigte Erg.Menge beliebig exportieren:" n
+var +"als Tabelle, View oder Liste"
+ansi
+mes
+  Erg.Menge anzeigen
+sho list
+end
+
+:nix
+var "Keine Neuerwerbungen ab diesem Datum: " #uU2(6,2 f"0") "." #uU2(4,2 f"0") "." #uU2(0,4)
+mes
+end
+
+:rerr
+ins $u
+var "Umbenennung " $u " hat nicht geklappt"
+mes

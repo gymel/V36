@@ -1,0 +1,39 @@
+  doll.flx : Dollarkurs ermitteln und Umrechnung anzeigen
+  2013-09-28
+
+  Service der EZB abrufen:
+
+get Ihttp://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml
+
+if cancel jump alternative
+
+  USD-Kurs herausziehen (entsprechend geht das mit anderen Waehrungen)
+
+var (b"currency='USD' rate='" e"'")
+
+perform rechnen
+
+end
+
+:alternative
+  Alternative:
+  Dieser Service liefert den Wechselkurs mit ganz wenig XML und sonst nichts
+
+get Ihttp://www.webservicex.net/CurrencyConvertor.asmx/ConversionRate?FromCurrency=EUR&ToCurrency=USD
+
+  Die Zahl herausklauben, steht in <double>
+
+var (x"double")
+
+
+:rechnen
+ins $d
+
+eval 1 / $d
+ins $e
+
+var "1 USD = " $e " EUR" n "1 EUR = " $d " USD" 
+mes
+return
+
+

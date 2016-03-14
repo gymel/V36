@@ -1,0 +1,96 @@
+  VIEW1.FLX : Erstellung eines View aus der aktuellen Erg.Menge
+  2000-07-17    mit fest eingestellten Parametern, OHNE Gruppierung/Summierung
+  
+  >>> MUSTER <<<
+  Diesen FLEX kann man kopieren und braucht nur den Namen zu aendern
+  (siehe unten xxxxxx) um ihn fÅr andere Parameter einzusetzen.
+  Dann Einbau in RTF-Hilfetext nach Muster VIEW.RTF
+
+get env comspec
+ins #uwC
+#uvU
+if empty jump nix
+  Name der aktuellen Erg.Menge -> #uvU
+var U
+ins #uvU
+  aktuelle Exp.param. sichern
+:nix
+var e
+ins #uve
+  Parameterdatei zur Erstellung des View (ViP)
+     xxxxxxxx     hier anderen Namen einsetzen
+var "v-stand1"
+
+ins #uvo
+
+  diese Parameter laden
+xport p 
+if no jump error
+var "Standard-View 1"
+ins #uvt
+
+var M "vvv"
+ins #uvw
+  Diesen Namen als Outputdatei verwenden
+open x
+   aktuelle Erg.Menge exportieren, Datei schliessen
+var ""
+ins #uvx
+if l1 jump full
+
+down set
+:ready
+close x
+  .vw-Datei schliessen, wenn noch offen
+close view
+  Sortierbefehl zusammenstellen (dabei Sortierkopf #u1 beseitigen)
+  asort name name.vw -u3
+var #uwC " /c " P "asort " #uvw " " #uvw ".vw -u3"
+  (Option -u3 beseitigt #u1 etc.)
+
+  Sortieren ausfuehren
+cAll
+activate
+  unsortierte Datei  name  wieder loeschen
+var #uvw 
+delete 
+
+   den Namen der ViewListe -> #uv9
+var #uvw(T"\\")
+ins #uv9
+ins #uvn
+var #uvw ".vw"
+            Sortierte Datei anzeigen
+set v1
+View
+
+:ende
+  Exportparameter wiederherstellen
+
+var #uve
+xport p
+  Variablen loeschen
+var ""
+  ins #uvo
+ins #uvu
+ins #uvz
+ins #uvx
+ins #uvw
+ins #uva
+ins #uve
+ins #uvf
+var "   Mit  Strg+o  erscheint ViewListe wieder, Menue mit Strg+w!"
+sho iv
+end
+:error
+var "Die Datei V-STAND1." K1 "PR existiert nicht!"
+mess
+end
+
+:full
+var "Keine Ergebnismenge. Ganze Datenbank als View?" 13 10 "Nein = Zuerst Ergebnismenge machen, dann View-MenÅ wieder starten"
+ansi
+noyes
+if not yes end
+if yes dow database
+jump ready

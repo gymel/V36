@@ -1,0 +1,161 @@
+  GREP.FLX : Textdatei durchsuchen und Trefferzeilen anzeigen
+  20070108
+  Aufruf:  X grep Suchbegriff Dateinamensmuster
+    z.B.   X grep avanti c:\allegro\help\vb*.
+    oder aus einem anderen FLEX heraus:
+        exec grep Suchbegriff Dateinamensmuster
+  Option: Nur Dateinamen ausgeben. Dazu setzt man -l vor den Suchbegriff:
+           X grep -l Suchbegriff Dateinamensmuster
+
+  Aufrufargumente sichern
+if %?% jump nix
+ins #u!!
+if not #u!! jump nix
+
+#u!m
+var #u!!
+  Modus -l? Dann Flag #u!m setzen
+if "-l " #u!m a;var #u!!(b"-l ");ins #u!! 
+
+var #u!!(T" ")
+  Dateinamensmuster nach #u!n
+ins #u!n
+if not #u!n jump nofiles
+  Dateiliste in #u!D erzeugen
+perf dateien
+  Ist eine Liste entstanden?
+if not #u!D jump nofiles
+
+  Suchbegriff in #u!! tun, da gehoert er hin!
+var #u!!(t" ")
+ins #u!!
+
+  Suchbegriff checken
+var "abcxyz"
+srx
+if cancel jump fehler
+  Trefferzaehler
+Z=0
+  Ergebnisdatei oeffnen
+open x treffer
+  aeussere Schleife: Dateien abarbeiten
+:floop
+  naechsten Dateinamen
+var #u!n
+  War Pfad angegeben (dann kommt \ vor) oder nicht?
+  Wenn nein, dann nur den naechsten Dateinamen nehmen
+if not %\\% var #u!D(f";" e";");jump op
+  Wenn ja, dann hinten am letzten \ abschneiden
+     und den naechsten Dateinamen anhaengen
+if %\\% var #u!n(t"\\") "\\" #u!D(f";" e";")
+  Datei oeffnen
+:op
+open
+  ging nicht
+if no jump nofile
+  Zeilenzaehler
+z=0
+  innere Schleife: einzelne Datei
+:loop
+z+1
+get
+if cancel jump ende
+srX
+if yes jump fund
+jump loop
+:fund
+ins #u!l
+  Trefferzaehler erhoehen
+Z+1
+
+  Flag nicht gesetzt: Zwischenzeile schreiben
+if not #u!f if not #u!m wri n
+if not #u!f wri n "  DATEI: " #u!D(e";") n
+  Flag setzen
+#u!f 1
+
+if not #u!m wri z ": " #u!l n
+jump loop
+
+:ende
+close
+
+  Vorderen Namen wegnehmen
+var #u!D(b";")
+ins #u!D
+  flag loeschen
+#u!f
+  Noch ein Name da?
+if #u!D jump floop
+
+  Alles abgearbeitet, Ergebnisse praesentieren
+
+var n " ***** " Z " Vorkommnisse gefunden" n
+wri
+close x
+var n " ***** " Z " Vorkommnisse gefunden" n
+sho IV
+help +treffer
+var n " ***** " Z " Vorkommnisse gefunden" n
+mes
+end
+
+:nofile
+var "Datei " #u!d " konnte nicht geoeffnet werden"
+mes
+end
+
+:fehler
+var "Fehler im Suchausdruck: " #u!!
+mes
+end
+
+
+  Unterprogramm: Dateiliste erstellen in #u!D
+  Namensmuster steht in #u!n
+:dateien
+var "dir /b " #u!n " >dlist"
+dos
+#u!D
+open dlist
+
+  Schleife
+:dirl
+  Zeile lesen
+get
+if can jump de
+if " " jump dirl
+ins #u!d
+var #u!D ";" #u!d
+
+ins #u!D
+jump dirl
+
+:de
+close
+  Dateinamensliste loeschen
+ del dlist
+  Zeichen ; vorn wegnehmen
+var #u!D(f";")
+ins #u!D
+  Jetzt ist #u!D = Liste der zu verarbeitenden Dateien
+  Hilfsvariable weg
+#u!d
+  UP beenden
+return
+
+:nofiles
+var "Dateien mit passenden Namen (" #u!n ") nicht gefunden"
+mes
+
+:nix
+var "Starten Sie diesen FLEX so: " n "grep suchbegriff dateinamensmuster" n
+var +"Der 'suchbegriff' kann ein beliebiger regul„rer Ausdruck sein" n
+var +"z.B., wenn Sie in den Verlautbarungen nach dem Wort 'Fllhorn' suchen wollen:" n
+var +"X grep fuellhorn " P "help\\vb*."
+ansi
+mes
+ins _\\_\\\\_
+sho IV
+end
+

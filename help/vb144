@@ -1,0 +1,112 @@
+
+Verlautbarung 144 der Entw.Abt.                          2001-01-16
+-------------------------------
+
+Neuer FLEX-Befehl
+-----------------
+mkdir <dir>
+      dir muss ein Name fuer ein neues Verzeichnis sein.
+      Mit  if no  kann man checken, ob es gelungen ist!
+      Wenn  dir  fehlt, wird der Inhalt der iV genommen.
+      Beispiel: in dem neuen FLEX _dbcopy.flx (s.u.)
+
+Verbessert
+----------
+
+jump label
+  NEU: Wenn das  :label  nicht existiert, wird der FLEX mit einer
+  Fehlermeldung abgebrochen, die den Sachverhalt mitteilt.
+  (sonst kann man u.U. lange suchen, warum der FLEX nicht klappt...)
+
+xport f name
+  NEU: mit  if no ...  kann man checken, ob die Datei "name" nicht
+  zum Schreiben benutzt werden kann. In diesem Fall bleibt der
+  vorher eingestellte Dateiname gueltig! In FLEXen, die zuverlaessig
+  laufen sollen, muss man diese Pruefung immer machen!
+
+
+NEU auf dem Menue ORG:
+----------------------
+
+Datenbank kopieren
+------------------
+Fuer diese immer wieder wichtige Aufgabe gibt es jetzt
+Unterstuetzung vom System: die Kombination
+   _dbcopy.flx     --> ProgDir\flex
+   _dbcopy.bat     --> ProgDir
+Gestartet wird zunaechst der FLEX, indem man eingibt:
+   X _dbcopy
+Das kann auch vom ORG-Menue geschehen (h org  eingeben, dann
+"Datenbank kopieren" anklicken).
+Zuerst wird der Name eines neuen Verzeichnisses abgefragt.
+Es kann ein relativer oder absoluter Pfadname sein.
+Das Verzeichnis wird angelegt, wenn es nicht existiert.
+Dann wird noch gefragt, ob anschliessend die LOG-Datei geloescht
+werden soll.
+Dann werden alle wichtigen Dateien kopiert, einschliesslich
+der CFG und der Anzeigeparameter, auch wenn diese nicht auf
+dem DbDir liegen sondern auf dem ProgDir! Man hat anschliessend
+also wirklich auf dem neuen Verzeichnis alles beisammen, was zur
+Datenbank gehoert. Sofort kann man z.B. alles einpacken und versenden.
+Wichtig im Netz: Fuer die Zeit des Kopierens wird die TBL gesperrt,
+dann nach gelungenem Kopieren und Loeschen der LOG-Datei wieder
+freigegeben.
+Es werden allerhand Fehler abgefangen und Eventualitaeten
+beruecksichtigt. Denn ganz trivial ist die Aufgabe ja nicht.
+Sonst wuerden wir sagen: macht das doch mit dem abc-Explorer oder
+dem xyz-Commander... Wer will und sich auskennt, kann das natuerlich
+immer noch tun.
+
+Datenbank exportieren
+---------------------
+Ein weiterer neuer Punkt auf dem Menue ORG
+   _dbxport.flx   -->  ProgDir\flex
+   dbxport.vw     -->  ProgDir\help
+   dbxport.rtf    -->  ProgDir\help
+Die Moeglichkeiten des Exports werden in der Viewdatei dbxport.vw
+angeboten. Diese kann beliebig modifiziert werden, das Strickmuster
+sieht man ja unmittelbar.
+
+Gesamte Datenbank als ViewListe
+-------------------------------
+Die View-FLEXe wurden so erweitert, dass man ueber die Funktion
+"ViewListen erstellen ... Mit anderer ViP"  auch angeboten
+bekommt: "Gesamte Datenbank".
+Sicher, bei den Jumbo-Datenbanken wird man das nicht tun,
+(mit [Esc] kann man waehrend des Durchlaufs abbrechen!!)
+aber bei vielen Klein- und Mittelbanken ist das ganz nett, wenn
+man es ohne Umstaende machen kann.
+
+---------------------------------------------------------------------
+
+Eine Abschaffung
+----------------
+Wenn im Index eine Zeile mit ':' steht und man den Copy-Button drueckt,
+wird nur der Teil hinter dem ':' in das Eingabe oder Formularfeld
+kopiert. Das hatte mal seinen Sinn (Uebernahme von Codes aus dafuer
+praeparierten Indexabteilungen), aber heute kann man wohl sowas besser 
+loesen, oder es wurde eh so gut wie kein Gebrauch davon gemacht und es
+war fast total unbekannt. Deshalb wird es abgeschafft. 
+
+---------------------------------------------------------------------
+
+FLEX-Fragen
+-----------
+Generelle Empfehlung: Viele FLEXe verwenden als interne Variablen
+die mit den Namen  #uvX und #uwX (X = beliebiger Grossbuchstabe). 
+Wir nehmen an, dass solche Namen bisher nicht eben haeufig vorkommen, 
+und empfehlen, sie in Zukunft in Exportparametern zu vermeiden, damit
+keine Kollisionen auftreten. Probleme kann es aber NUR geben, wenn
+es eine solche Variable gibt, die von einem Satz zum naechsten
+erhalten bleiben muss, nicht wenn sie nur waehrend der Bearbeitung
+eines Satzes genutzt wird! Solche Faelle sind sicher sehr selten.
+Wir suchen aber nach einer besseren Wahl. Statt eines Buchstabens
+koennte z.B. '_' benutzt werden. Aber so etwas wie #u_X sieht noch
+kryptischer aus als #uvX.
+
+Last, but not least...
+----------------------
+Die Grafik-Unterabteilung hat sich endlich bequemt, die Buttons etwas
+in Punkto Aesthetik zu ueberarbeiten. Das blau war ein wenig krass,
+und auch sonst gab's ein paar Maengel. Zunaechst ist das nur in a99
+implementiert, wenn es Beifall findet, wird es in alcarta uebernommen.

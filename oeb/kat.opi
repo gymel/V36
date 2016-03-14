@@ -1,0 +1,887 @@
+    ; -----------------------------------------------------
+    ; KAT.OPI :  Indexparameter
+    ; Bem.: - PrimÑrschlÅssel ist die 000 : ggf. ANPASSEN!
+            - Als KURZTITEL gilt jeder Titel, in dem der
+              MEDIENTYP fehlt.
+            - Der Abschnitt fÅr den StatistikschlÅssel ist
+              in JEDEM FALL an die verwendete Systematik ANZUPASSEN.
+            - Noch nicht benutzte Sprungmarken 
+              I K L P Q
+              ! $ & ( ) > < ? [ ] _ } {
+              Å î (weitere?)
+    ; Rev.:
+            - Indexierung #425 vereinfacht
+            - SystemdatensÑtze geÑndert und nach SYSTEM.OPT ausgelagert
+            - Lîschkontrolle nach LOESCH.OPT ausgelagert
+            - Kurztitelanzeige nach STL.OPT ausgelagert
+            - SignaturschlÅssel nach SIGNATUR.OPT ausgelagert
+            - ak-Zeile fÅr #351 - #358 ergÑnzt
+            - StatistikschlÅssel in STAT.OPT ausgelagert
+            - PrimÑrschlÅssel fÅr MedientypstammsÑtze
+            - STAT.OPT erweitert :
+              ZusÑtzliche Sprungmarken Û (243), Ù (244)
+            - WICHTIG : i3 muss LEERZEICHEN enthalten
+            - Verweise fÅr Nachbearbeitung geÑndert
+            - Abschnitt -j etc. : Reg. 1 mit Verweisen
+            - Indexierung von 425 bei Sprungmarke -J
+            - Zeichenumwandlung bei 425 fÅr Klammern etc.
+            -----------------------------------------------
+            - énderungen wg. Zweigstelle
+            - PrimÑrschlÅssel SystemdatensÑtze in SYSTEM.OPT
+            - Konsolidierter SchlÅssel fÅr Exemplare und
+              Vormerkungen (Sprungmarke s)
+            - Zweigstelle in StatistiksÑtzen
+            - Zweigstelle in GebÅhren
+            - STAT2.OPT fÅr systematik-unabhÑngige SchlÅssel
+
+    ; -----------------------------------------------------
+pn="allegro-OEB-WIN Indexparameter (10.12.2003)"
+    ; -----------------------------------------------------
+zl=0
+zm=0
+ad=0
+ag=0
+il=100
+i0=72
+ic=1
+    ; -----------------------------------------------------
+    ; Registernamen :
+
+|1=1 : Personenregister (einschl. Kîrperschaften)
+|2=2 : Titelregister
+|3=3 : Stichwortregister (HST, Zusatz, SW)
+|4=4 : Reihenregister
+|5=5 : Interessenkreisregister
+|6=6 : Signaturenregister (mit Verweis auf Titel)
+|7=7 : Schlagwortregister (mit Verweis auf Signatur)
+|8=8 : ISBN
+|9=9 : Zugangsnummer und #000
+|:=10 : Exemplarsatz- und Benutzerdaten
+|;=11 : Ausleih- und Systemdaten
+|<=Kurzanzeige
+    ; -----------------------------------------------------
+i2="<>;"
+i3=" ,:;"       ; am SchlÅsselende automatisch entfernen! ggf. ANPASSEN!
+    ; -----------------------------------------------------
+    ; Kopfzeilen
+    ; PrimÑrschlÅssel Titel : #000 ggf. ANPASSEN !
+
+ak=zz+Ä
+ak=540"[;]"+u  
+    ; PrimÑrschlÅssel Exemplar : Barcode
+ak=9DG+‹
+    ; PrimÑrschlÅssel Leser : Barcode
+ak=9B0+ÿ
+    ; PrimÑrschlÅssel Statistiksatz
+ak=9AF+
+    ; -----------------------------------------------------
+    ; SystemdatensÑtze
+tSYSTEM.OPT
+    ; -----------------------------------------------------
+    ; Exemplare
+ak=9DF+‹
+ak=9DF+s
+ak=9DH+F
+ak=9DH+‹
+ak=9DG+Ú
+ak=9DG+O
+ak=9DG+é
+ak=9DG+ô
+ak=9DH+€
+ak=9DH+ﬂ
+ak=9DH+‚
+ak=9DH+Â
+    ; ...nach der letzten Mahnung
+ak=9DH+Ô
+ak=9DH+Ò
+ak=9DH+Á
+ak=9DG+Î
+ak=9DG+Ï
+    ; -----------------------------------------------------
+    ; Leser
+ak=9B0+É
+ak=9B0+Ÿ
+ak=9B0+⁄
+ak=9B0+Ó
+ak=9B0+È
+    ; -----------------------------------------------------
+    ; GebÅhren
+ak=9GF"[]"+‡
+    ; ... Mahnungen
+ak=9GF+·
+ak=9GF+„
+ak=9GF+Ê
+    ; ...nach der letzten Mahnung
+ak=9GF+Ô                            
+    ; -----------------------------------------------------
+    ; ALLE DATENSéTZE
+    ; Kurztiteleintrag
+ak=zz+0
+ak=068+g
+ak=069+M
+    ; -----------------------------------------------------
+    ; Titel
+ak=540+ä
+ak=541"[;]"+u
+ak=550"[;]"+R
+ak=551"[;]"+R
+ak=556"[;]"+S
+ak=320+q 320"[ ]"+r
+ak=315+q 315"[ ]"+r
+    ; Schlagworte
+    ; Bei RSWK-Schlagwortketten wird nur auf #100 verwiesen
+ak=100+x
+ak=10."[/;*]"+T
+ak=11."[/;*]"+T
+ak=10."[/;*]"+y
+ak=11."[/;*]"+y
+ak=193"[;,*/]"+h
+ak=200+j 201+j 202+j 
+ak=24.+j 
+ak=204+l 205+l 206+l 207+l 208+l 209+l
+ak=21.+l
+ak=203+k
+ak=91.+m 931+m 932+m 933+m 934+m 935+m 904+m 
+ak=92.+X
+ak=92.+Y
+ak=81.+o 82.+o
+ak=304+q
+ak=310+q
+ak=335"[ ]"+r
+ak=341"[=]"+q 341"[ ]"+r
+ak=350+q 351+q 352+q 353+q 354+q 355+q 356+q 357+q 358+q
+ak=361"[;]"+q 361"[ ]"+r
+ak=38.+q 38."[ ]"+r
+ak=425+J
+ak=460"[*]"+t 460"[*]"+Z
+ak=700+x
+ak=71."[/;]"+B 72."[/;]"+C
+ak=71."[/;]"+D 72."[/;]"+E
+ak=574+d
+ak=574+ö
+ak=574+Ñ
+ak=501+H
+    ; -----------------------------------------------------
+    ; Zwischenteile
+	 
+1=" (Sonderstandort)"
+2=" (prov. Aufn.)"    
+3=&29"s.a.: "
+4=" [Hrsg.]"
+5=" -> "   
+6=&20": "   
+7="  SWK: "
+8=&30"s.: "
+9=" (falsch) "
+10=&40
+11=&3
+12=&55
+13=&64
+14="=ex"
+15=" [EST]"
+16=" - "
+17=" * "
+18=&15"s.a. -> "       
+19=&35 "(Kinder- u. Jugendliteratur)"
+20=&30
+
+    ;------------------------------------------------------
+    ; HAUPTTEIL
+    ; TITELSATZANGABEN
+    ; Kurztitel, wenn Medientyp fehlt!?
+#-ä
+#574 +# e0
+#540 e1 t1 p"|9!Kurztitel"
+#+#
+
+#-Ä         ; Ident.-nummer : Standard-PrimÑrschlÅssel
+#00 +Í e0
+#+#
+#-Í
+#00 +# I5,* y0 e" = " p"|9" #zz 0
+#00 y0 e"=" p"|9" 
+#569 p" ID-Nr. " P5
+#570 p" ID-Nr. " P5             ; Typ BG? FD-ID-Nr hinter #00
+#571 p" ID-Nr. " P5             ; wg. NACHBEARBEITUNG
+#572 p" ID-Nr. " P5
+#573 p" ID-Nr. " P5
+#00 b"*" e"+" y0 #zz 0
+#+#                  
+
+#-@                             ; BlÑttern in mehrbÑndigen Werken
+#000 +#L98 c"(h)" e0            ; Speziell : ekz-Aufnahme?
+#000 y0 p"|9" e"=" e""
+#+#
+
+#L98
+#000 y0 p"|9" e"=" e"" e" " P"+"       ; ja!
+#+#
+
+#-d                             ; BB? Artikelnr.ekz in |9
+#u1 +N c"BB" e0                 ; Vw. auf #000
+#+#
+
+#-N
+#000 +- I5,* e0                             ; NUR ZUR NACHBEARBEITUNG
+#568 +#L25 y0 p"|9BAC-" P"+" #zz 5          ; BAC-Nr mit Vw.
+#569 +#L25 y0 p"|9BIS-" P"+" #zz 5          ; DABISA-Nr mit Vw.
+#570 +#L25 y0 p"|9EKZ-" P"+" #zz 5          ; ekz-LA-Nr mit Vw.
+#571 +#L25 y0 p"|9DB-" P"+" #zz 5           ; DB-ID-Nr. mit Vw.
+#572 +#L25 y0 p"|9EHB." P"+" #zz 5          ; HambÅckers mit Vw.
+#573 +#L25 y0 p"|9PICA-" P"+" #zz 5         ; PICA mit Vw.
+#+#
+
+#L25
+#000 e"+" y0 #zz 0                          ; ... auf #000 der HA
+#+#     
+
+#-ö                         ; AV-Medien: #574 fÅr NACHBEARBEITUNG
+#u1 i5,* p"|9" #zz 0
+#+#
+
+#-Ñ                         ; Medientyp in Reg. 8
+#574 e" " p"|8" P"   (TIT)"
+#+#
+
+#-Ú                         ; Medientyp Ex.-satz in Reg. 8
+#9DG m p"|8" P"   (EX)"
+#+#
+
+#-M                         ; #069 - Datum letzte énderung
+#nr dda e0
+#u1 dae Aae
+#>E
+#9DG +#L60 i5,V y0 p"|:vVOR." e"."
+#9DF +#L60 y0 p"|:vEXS." e"."
+#9A0 +#L60 y0 p"|:vSYS." e"."
+#9AF +#L60 y0 p"|:vSTA." e"."
+#9B0 +#L60 y0 p"|:vBEN." e"."
+#9GF +#L60 y0 p"|:vGEB." e"."
+#nr +#L60 y0 p"|:vTIT." e"."
+#+#
+
+#-g                         ;  #068 - Datum Erfassung
+#nr dda e0
+#u1 dae Aae
+#>E
+#9DG +#L60 i5,V y0 p"|:eVOR." e"."
+#9DF +#L60 y0 p"|:eEXS." e"."
+#9A0 +#L60 y0 p"|:eSYS." e"."
+#9AF +#L60 y0 p"|:eSTA." e"."
+#9B0 +#L60 y0 p"|:eBEN." e"."
+#9GF +#L60 y0 p"|:eGEB." e"."
+#nr +#L60 y0 p"|:eTIT." e"."
+#+#
+
+#L60
+#uda y0
+#+#
+
+#-h                         ; #193 - Interessenkreis
+#060 +#L24 i5,1 e0 #zz 0
+#060 +#L24 i5,2 e0 #zz 0
+#060 +#L24 i5,3 e0 #zz 0
+#060 +#L24 c"4." e0 #zz 0
+#060 +#L24 c"5." e0 #zz 0
+#060 +#L24 c"6." e0 #zz 0
+#060 +#L24 i5,7 e0 #zz 0
+#060 +#L24 i5,8 e0 #zz 0
+#060 +#L24 i5,9 e0 #zz 0
+!u1 f" " F" " p"|5"
+  !200 +i 3                 ; Vw. auf Verf - ggf. AUSRöCKEN
+  !320 +i 3 e60
+  !315 3 e60
+  #-i e0
+#+#
+
+#L24
+!u1 f" " F" " p"|5" #zz 19
+#+#
+
+#-j                         ; #200-202 Verfasser / #240-249 Urheber
+!u1 u                   
+!320 +# 20 u e30 p"   : "       ; HST u. Bandt. nach Name in Reg.1
+!315 u 20 e30 p"   : "
+#+#
+
+#-k                             ; Hrsg. #203
+!u1 0 #zz 4
+!320 +# 20 u e30 p"   : "       ; HST u. Bandt. nach Name in Reg.1
+!315 u 20 e30 p"   : "
+#+#
+
+#-l                             ; beteil. Pers. #204-209
+!u1 e" ["
+!u1 y0 b" [" p{ " [" } 
+!320 +# 20 u e30 p"   : "       ; HST u. Bandt. nach Name in Reg.1
+!315 u 20 e30 p"   : "
+#+#
+
+#-m                         ; Pers.Verw. #910-919, Pseudonyme #931-935, wirkl. Name #904
+!u1 0 u #zz 5   
+!900
+#+#
+
+#-X                         ; Pers. s.a.-Verw  #920-929
+!900 0 #zz 3
+!u1 
+#+#
+
+#-Y
+!u1 0 #zz 3
+!900                  
+#+#
+
+#-o                         ; Kîrp.Verw. #810-829
+!u1 0 #zz 5
+!800
+#+#
+
+#-p                         ; Kîrp.Stammsatz #800
+!u1 p{ "|9" 75 47 }
+#+#
+
+#-q         ; EST #304, AST #310, Bandt. #315, HST #320, PST #341, beig. W. #361, Nebentit. #38.
+!u1 +n i3,4 u f" " c"<" p"|2"
+	    ; EST #304: wenn kein <dt.> P"[EST]"
+!u1 i3,4 f" " u p"|2" #zz 15
+!u1 I3,4 u e" : " e" / " f". " f" " p"|2"                  
+#-n 
+#+#
+
+#-r         ; AST, Bandt., HST, PST ... in Stichworten
+!u1 u e" : " e" ; " p"|3"  
+#+#
+
+#-t         ; GT Serie #460  serientitel > nnnn
+!u1 u f" " e" ; " p"|4"
+!u1 b" ; " r4 p" > "
+#+#
+
+#-Z         ; GT Serie #460 eigener Eintrag fÅr Unterreihen
+!u1 u c" : " b" : " p"|4"
+#+#
+
+#-J
+    !425 +- c"o." e0 #zz 0
+    !425 +- c"s." e0 #zz 0
+#425 f" (<[.oiesaJcumP?" F" )>]?" dej aej
+!uej p"|8ej" #zz 0
+    !425 p"|8ej" #zz 0
+#+#
+
+    *#425 _(__
+    *#425 _<__
+    *#425 _)__
+    *#425 _>__
+    *#425 _[__
+    *#425 _]__
+    *#425 _i.e. __
+    *#425 _s.a.__
+    *#425 _o.J.__
+    *#425 _ca. __
+    *#425 _c __
+    *#425 _ __
+    *#425 _?__
+    *#425 _um __
+    *#425 _P __
+
+#-u         ; ISBN #540...
+!u1 +z c"*" e0 
+!u1 f" " p"|8" #zz 0
+#+#
+
+#-z
+!u1 f" " e"*" p"|8" #zz 9
+#+#                db
+
+#-R         ; ISSN #551...
+!u1 f" " p"|8i-" #zz 0
+#+#
+
+#-S
+!u1 f" " p"|8av-" #zz 0
+#+#
+			    ; SW's |3 mit Vw. auf Kette:
+			    ; nur #100 mit Verweis
+#-x
+#nr dsm e0
+#u1 +#10a c"" e0               ; RSWK-Kette oder nicht?
+#nr +#10z                       ; NEIN
+#10a
+#u1 c"" b2 e"" Asm
+#u1 b2 b"" b1 e"" p" * " Asm
+#u1 b2 b"" b1 b"" b1 e"" p" * " Asm
+#u1 b2 b"" b1 b"" b1 b"" b1 e"" p" * " Asm
+#u1 b2 b"" b1 b"" b1 b"" b1 b"" b1 e"" p" * " Asm
+#10z
+#+#
+
+#-T                 ; Ausgabe der Kettenglieder
+!u1 +U f" " f"f" f"s" f"g" f"p" f"z" f"t" f"c" f"k" f"u" p"|3" #zz 0
+#+#
+
+#-U                         ; Ausgabe der SW-Kette
+#usm +#10z 7                ; Existiert Variable --> RSWK-Kette aus #100
+#ch +#10z c"[/;*]" 7        ; Oder eigene Kette?
+    #10. +W c"" e0 #zz 0
+    #10. ++ 7 m" ; "
+    #11. +W c"" e0 #zz 0
+    #11. ++ 7 m" ; "
+#10z
+#+#
+
+#-e                 ; Ausgabe der SW-Kette bei SW-StammsÑtzen
+#700 +W c"" e0 #zz 0
+!700 ++ m" ; "
+#+#
+
+#-W
+#usm 7
+#+#
+
+#-y                 ; SW's in |7 mit VW auf Sign. :--*PH.99.8
+!u1 +V I5,f f" " f"s" f"g" f"p" f"z" f"t" f"c" f"k" f"u" p"|7" #zz 8
+#+#
+
+#-V                ; #060 in Reg. 1
+!060
+#+#
+
+#-B                 ; SW-Synonyme mit VW auf HSW #71.
+!u1 +e f" " p"|3" #zz 5
+#+# 
+
+#-C                 ; SW-s.a.VW #72.
+!u1 +e f" " p"|3" #zz 3
+#+# 
+
+#-D                 ; SW #710-#719 in |7
+!u1 +e f" " p"|7" #zz 5
+#+#
+
+#-E                 ; SW-#720-#729 im |7
+!u1 +e f" " p"|7" #zz 3
+#+# 
+
+#-H
+#u1 c"!: 5" p"|9" e":"          ; Indexierung der beim BZ-Abgleich nicht
+#+#                             ; gefundenen Aufnahmen
+
+#-O             ; Zugnr in |9 - ggf. ANPASSEN
+#u1 z e"/" Azg
+#u1 z b"/" r4,0 p"/" Azg
+#uzg dzg p"|9"
+#+#
+
+#-é
+#u1 l p"|9s:"                  ; Standort in |9
+#+#
+
+#-ô
+#u1 X p"|9ss:"                 ; Sonderstandort in |9
+#+#
+    ; -----------------------------------------------------
+    ; SystemschlÅssel : NICHT éNDERN!
+    ; -----------------------------------------------------
+#-ÿ
+#u1 y0 e"" b1 p"|:B"       ; 10 BLeserID
+#+#
+
+#-É                         ; 10 gesperrte Leser - NICHT NOTWENDIG!
+#9B0 i5,1 e1 t1 p"|:{gesperrte Leser"
+#9B0 i5,2 e1 t1 p"|:{abgemeldete Leser"
+#+#
+
+#-Ÿ
+!u1 n y2 "|:"              ; 10    LeserName=LeserID
+!u1 y0 b1 e"" "="
+#+#
+
+#-⁄                         ; 10  AAufnahmeDatum
+!u1 A y0 p"|:A"            ; Datum der Anmeldung
+#+#
+
+#-Ó
+!u1 a y0 p"|:Z"            ; 10  ZAusweisgÅltigkeit Ende
+#+#                      
+
+#-€
+#u1 +# y0 R p"|:R"         ; 10    RRÅckgabeDatum
+#u1 +# y0 W p"|:W"         ; 10    WReservierungEndeDatum
+#u1 y0 V p"|:V"            ; 10    VVormerkungEndeDatum
+#+#
+
+    ; -----------------------------------------------------------------
+    ; Titelbestand und Vormerkungen und Reservierungen
+    ; neue SchlÅssel ab hier ...
+
+#-s
+#9DG +#9Dv i5,V e0          ; Vormerkung...
+#t{ "|:EXEMPLAR/" }
+#9DF y0 e""                ; Titelid.
+#t{ "/" }
+#080 y0                     ; Zweigstellenkennung
+#t{ "/" }                   ; Separator - trennt auch leere Felder
+#9DG y0 e1                  ; Status - vor dem Barcode!
+#t{ "/" }
+#9DG y0 a                  ; Barcode - kann fehlen
+#+#
+
+#9Dv                        ; Vormerkung
+#t{ "|:VORMERKUNG/" }
+#9DF y0 e""                ; Titelid.
+#t{ "/" }
+#080 y0                     ; Zweigstellenkennung
+#t{ "/" }
+#9DG +#9Dt y0 a p{ "E/" }      ; Exemplarvormerkung
+#t{ "T/" }                  ; Titelvormerkung
+#9DH +#9Dt y0 b                  ; Reichweite 
+#t{ "0" }                   ; wg. kompatibel
+#9Dt
+#t{ "/" }
+#9DH y0 D                  ; Datum/Uhrzeit
+#t{ "/" }
+#9DH y0 V                  ; gÅltig bis
+#+#
+
+#-F
+#9DG +- I5,W e0             ; nur fÅr reservierte Exemplare
+#t{ "|:RESERV/" }
+#080 y0                     ; Zweigstelle falls vorhanden
+#t{ "/" }
+#9DH y0 w                  ; Datum der Reservierung
+#t{ "/" }
+#9DH y0 u                  ; Benutzer
+#+#
+
+    ; --- bis hier ... ---
+
+#-‹
+!ch +#L10 i3,G e0           ; #9DG --> ...
+!ch +#L11 i3,H e0           ; #9DH --> ...
+
+    ; #9DF ab hier...
+
+#9DF e"" y0 p"|:"          ; 10  TitelID+Bd:ExplNr Status
+#9DG +#L1a c"a" e0         ; Existiert der Barcode?
+#9DG +#L12 i5,V e0          ; Titelvormerkung?
+#9DG +#L12 y0 p":Barcode fehlt!." e"."     ; NEIN! Barcode fehlt!
+
+#L1a
+#9DG y0 a ":"              ; Barcode anhÑngen
+
+#L12
+#9DG I5,0 y0 e1 p" "        ; Status anhÑngen, wenn nicht '0'
+#9DG +# I5,V e0             ; Keine Vormerkung?
+#9DH D                     ; Datum/Uhrzeit bei Vormerkungen
+#9DH V p";A"               ; Vormerkung gÅltig bis
+#+#
+
+#L10                        ; Sprungmarke
+#9DG +- i5,V e0             ; nicht fÅr VormerksÑtze
+#u1 +# a y0 p"|:E"         ; 10  EExplBarcode
+#9DF e"" y0 p"|:E"         ; ETitelId  als Ersatz ???
+#+#
+
+#L11                        ; 11  BLeserID RÅckDat,TitelID:ExplNr
+#u1 u y0 p"|;B"            ; BLeserID
+!9DH R p" " y0             ; RÅckDat
+!9DH W p" W" y0            ; WWarteDat Reservierung
+!9DH V p" V" y0            ; VEndeDat  Vormerkung
+#9DF e"" y0 p","           ;  ,TitelId
+#9DG +#L13 B y0 p","       ;  ,BandNr
+#9DG b y0 p"+"             ;  +BandNr   (sortierfÑhig)
+#L13
+#9DG +# a y0 ":"           ; Barcode
+#+#
+
+    ; SchlÅssel fÅr GebÅhrensÑtze
+    ; Bem.: Zweigstellenkennung
+
+#-‡                                 ; GebÅhrensatz
+#ch +#L01 i5,T e0                   ; getilgt
+#ch +#L05 i5,S e0                   ; storniert
+#u1 +# i5,B y0 p"|;G"               ; 11 GBLeserID
+#u1 +#L06 i5,D y0 p{ "|;G" } e0     ; 11 G/Zweigstelle/DErfDatum/Typ[:*:Summe]
+#u1 +#L02 i5,G y0 p{ "|;G" } e0     ; 11 G/Zweigstelle/TTyp/LeserId:Erf.Datum
+#+#
+
+#L06
+#080 y0 "/" P"/"                    ; "verursachende" Zweigstelle
+#9GF y0 D "D"                      ; G/Zweigstelle/DErfDatum
+#9GF y0 G "/"                      ; .../Typ
+#9GF +#L07 y0 G c"9" e0            ; Typ 'Extra'?
+#+#
+
+#L07                                ; 'Extra' weiterverarbeiten...
+#9GG y0 G c"STUNDUNG" "*." e1      ; STUNDUNG? z.B. /9*:200
+#9GG y0 S ":"                      ; ...Summe
+#+#
+
+#L02
+#080 y0 "/" P"/"                    ; Zweigstelle falls vorhanden
+#9GF G y0 "T"                      ; TTyp
+#9GF B y0 p"/"                     ; Leser
+#9GF D y0 p":"                     ; Erfassungsdatum
+#+#
+
+#L01                                ; getilgte GebÅhr sortiert nach
+#u1 +#L03 i5,G p{ "|;TG" } e0       ; TG/Zweigstelle/TTyp
+#u1 +#L04 i5,B y0 p"|;TG"           ; LeserID
+#u1 +#L08 i5,d p{ "|;TG" } e0       ; TG/Zweigstelle/DTilgDatum
+#u1 +#L09 i5,D p{ "|;TG" } e0       ; TG/Zweigstelle/EErfDatum
+#+#
+
+#L05                                ; storniert und sortiert nach...
+#u1 +#L03 i5,G p{ "|;SG" } e0       ; SG/Zweigstelle/TTyp
+#u1 +#L04 i5,B y0 p"|;SG"           ; LeserId
+#u1 +#L08 i5,d p{ "|;SG" } e0       ; SG/Zweigstelle/DStornoDatum
+#u1 +#L09 i5,D p{ "|;SG" } e0       ; SG/Zweigstelle/EErfDatum
+#+#
+
+#L03
+#080 y0 "/" P"/"                ; Zweigstelle falls vorhanden
+#9GF G y0 "T"                  ; TTyp
+#9GF B y0 p"/"                 ; 11 (T, S) G/Zweigstelle/TTyp/LeserID:Tilg.datum
+#9GF d y0 p":"
+#+#
+
+#L04
+#9GF d y0 p"/"                 ; 11 (T, S) GBLeserId:Tilg.datum
+#+#
+
+#L08
+#080 y0 "/" P"/"                ; Zweigstelle, falls vorhanden
+#9GF y0 d "D"                  ; TilgDatum oder StornoDatum
+#9GF y0 G "/"                  ; 11 (T,S)G/Zw/DDatum/Typ:Summe
+#9GG y0 S ":"
+#+#
+	    ; Erfassungsdatum STUNDUNG
+#L09                            ; 11 (T,S)G/Zw/EErfDatum/Typ[*]:Summe;T.-Datum
+#080 y0 "/" P"/"                ; Zweigstelle, falls vorhanden
+#9GF y0 D "E"                  ; ErfDatum
+#9GF y0 G "/"
+#9GG y0 G c"STUNDUNG" "*." e1      ; '*' fÅr STUNDUNG
+#9GG y0 S ":"
+#9GF y0 d ";"                      ; TilgDatum
+#+#
+
+      ; SchlÅssel fÅr automatische Mahnungen
+
+#-ﬂ
+#t{ "|;MD" }                    ; |11MD/<Zweigstelle>/<Datum>
+#080 y0 "/" P"/"                ; Zweigstelle falls vorhanden
+#9DH +# M y0                   ; FÑlligkeitsdatum
+#+-                             ; fehlt - nichts ausgeben
+
+#-‚
+#9DH +#9DH u e0
+#9DH +#9Da m e0                ; Vorsicht!
+#+#
+
+#9Da
+#t{ "|;MB" }                    ; |11MB/<Zweigstelle>/<Leser>/E<Datum>:<Stufe>
+#080 y0 "/" P"/"                ; Zweigstelle falls vorhanden
+#9DH u y0                      ; Leser
+#9DH m p"/E" y0                ; Datum
+#9DH n p":" y0                 ; Stufe
+#+#
+
+    ; besondere Mahnverfahren
+    ; Zweigstelle beachten !
+
+#-Ô
+#9DH +#9DH e0                       ; Exemplar oder ...
+#9GF +#9Gg e0                       ; GebÅhr
+#9DH +#9DH c"u" e0                 ; Leser fehlt
+#+-
+#9DH +#9Dm c"U" e0                 ; Letzte Mahnung
+#+#
+
+#9Dm
+#t{ "|;ML" }
+#080 y0 "/" P"/"                    ; "ML/<Zweigstelle>/E<Leser>:<Datum>"
+#9DH y0 u "E"                      
+#9DH y0 U ":"
+#+#
+
+#9Gg
+#9GF +#9GF c"B" e0                 ; Datenfehler?
+#+-
+#9GF +#9Gm c"U" e0                 ; Letzte Mahnung
+#+#
+
+#9Gm
+#t{ "|;ML" }                        ; "ML/<Zweigstelle>/G<Leser>:<Datum>"
+#080 y0 "/" P"/"                    ; falls vorhanden
+#9GF y0 B "G"
+#9GF y0 U ":"
+#+#
+
+
+#-Ò                                 ; ZusÑtzlicher SchlÅssel
+#9DH +#L16 c"U" e0
+#+#
+
+#L16
+#9DH U p"|:MAHN MAX " y0
+#9DH u p"; " y0
+#+#
+
+#-Â                                 ; |11MM/<Zweigstelle>/<Datum>/<Leser>
+#9DH +#L14 c"m" e0                 ; Existiert das Feld?
+#+#
+
+#L14
+#t{ "|;MM" }
+#080 y0 "/" P"/"                    ; Zweigstelle falls vorhanden
+#9DH m y0                          ; Datum
+#9DH u "/" y0                      ; Benutzer
+#+#
+
+#-·
+#9GF +- i5,T                        ; nicht bei getilgten GebÅhren
+#9GF +- i5,S                        ; nicht bei stornierten GebÅhren
+#t{ "|;MD" }
+#080 y0 "/" P"/"                    ; Zweigstelle falls vorhanden
+#9GF +# M y0                       ; |11MD<Zweigstelle>/<Datum>
+#+-                                 ; fehlt - nichts ausgeben
+
+#-„
+#9GF +- i5,T                        ; nicht bei getilgten und..
+#9GF +- i5,S                        ; nicht bei stornierten GebÅhren
+#9GF +#L20 c"m" e0                 ; existiert Teilfeld?
+#+#
+
+#L20                                ; 11 MB/<Zweigstelle>/<Leser>/G<Datum>:<Stufe>
+#t{ "|;MB" }
+#080 y0 "/" P"/"                    ; Zweigstelle falls vorhanden
+#9GF B y0                          ; Benutzer
+#9GF m p"/G" y0                    ; Mahndatum
+#9GF n p":" y0                     ; Mahnstufe
+#+#
+
+#-Ê
+#9GF +- i5,T                        ; nicht bei getilgten und...
+#9GF +- i5,S                        ; nicht bei stornierten GebÅhren
+#9GF +#L21 c"m" e0                 ; Mahnungen vgl. Exemplare
+#+#
+
+#L21
+#t{ "|;MM" }
+#080 y0 "/" P"/"                    ; Zweigstelle falls vorhanden
+#9GF m y0                          ; |11MM/<Zweigstelle>/<Datum>/<Leser>
+#9GF B p"/" y0
+#+#
+
+    ; -----------------------------------------------------
+    ; Benutzerkonto
+
+#-Á
+#9DG +#L17 I5,l e0                  ;  Entliehen?
+#9DH u y0 p"|;LKE"
+#9DG m y0 p"/"                     ; |;LKLId/MedTyp
+#+#
+
+#L17
+#9DG +#L18 I5,W e0                  ; Reserviert?
+#9DH u y0 p"|;LKR"                 ; LKRLeserID...
+#9DH w y0 p"/"                     ; .../Reservierungsdatum
+#+#
+
+#L18
+#9DG +# I5,V e0                     ; Vormerkung?
+#9DH u y0 p"|;LKV"                 ; LKVLeserID...
+#9DF y0 "/"                         ; .../TitelID...
+#9DH V y0 ":"                      ; ...;Ablaufdatum
+#+#
+
+#-È         ; Benutzerklasse "K" in |10
+#9B0 k p"|:K" #zz 0
+#+#
+
+#-Î           
+#9DG T p"|:?" #zz 0
+#+# 
+
+#-Ï           
+#9DG +- i5,V e0			; Vormerkungen nicht
+#9DG +- i5,A e0         ; Ausgesondert nicht
+#9DG +#9Dg c"F" e0     ; mindestens einmal entliehen?
+#9DG +# y0 p"|8hit 000$" e"$"
+#+#
+
+#9Dg
+#9DG F y0 r3,0 p"|8hit "
+#+#
+
+#-         ; StatistiksÑtze
+#9AF y0 p{ "|;STAT" } e0        ; |11STAT
+#080 y0 "/" P"/"                ; Zweigstelle, falls vorhanden
+#9AF y0 e"" b4                 ; Typ : D[K], M[K] Y[K], CM, ...
+#9AF y0 D                      ; ...Datum...
+#9AF y0 m p"/"                 ; .../Medientyp
+#+#
+    ; ---------------------------------------------------
+    ; Unterprogramme
+
+#(E
+#uae e4 P"." Ada
+#uae b4 e2 P"." Ada
+#uae b6 e2 Ada
+#)E
+
+#-1                     ; Automatische Umlautauflîsung |1-9
+#-2
+#-3
+#-4
+#-5
+#-7
+!u1 
+#+#
+
+#-6                     ; restliche Register als Sprungmarke
+#-8
+#-9
+#-:
+#-;
+#+#
+    ; -----------------------------------------------------
+    ; Nachzuladene Dateien
+    ; -----------------------------------------------------
+
+tSIGNATUR.OPT           ; Signaturenregister
+tSTL.OPT                ; Kurztitelanzeige
+tSTAT.OPT               ; Statistik : anpassen an Systematik
+tSTAT2.OPT              ; Statistik : unabhÑngig von Systematik
+tLOESCH.OPT             ; Lîschkontrolle
+
+tS.OPT                  ; Zeichencodierung S.OPT nachladen
+tSWL1.OPT               ; Stopwortliste SWL1.OPT wird nachgeladen
+tI.OPT                  ; symbolische Registernamen fÅr avanti
+tEXTRA.OPT              ; anwenderspezifische Anpassungen
+
+    ; -----------------------------------------------------
+    ; ZusÑtzliche Zeichenumwandlungen:
+
+p [ 1
+p ] 1
+
+q [ 1
+q ] 1
+
+q _ 1       ; Nichtsortierungszeichen weglassen
+q _ 1
+
+q * *
+q ; ;
+q < 60
+q > 62
+
+p a/z A             ; alles in Grossbuchstaben
+p Ñ é
+p î ô
+p Å ö
+
+

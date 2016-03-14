@@ -1,0 +1,21 @@
+  REGI.FLX : Liste der log. Register in die iV schreiben, mit Ueberschrift davor:
+var "Register: Waehlen Sie eine Zeile, um in das Register zu springen" I
+  Diese Liste ins Anzeigefenster schreiben
+sho IV
+  dann die Anzeige in die Datei regi schreiben
+file regi.vw
+  Anzeige restaurieren
+displ
+  Diese als ViewListe oeffnen
+View regi.vw
+  Wenn die erste Zeile ausgewaehlt wurde: Ende
+if "Reg" end
+  Zeile in #urg kopieren
+ins #urg
+  Indexbefehl zusammenbasteln
+var #urg(b" ")
+ins #urg
+var "|" #urg(e"=") "0"
+ins #urg
+  und Index zeigen
+index

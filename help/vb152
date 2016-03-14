@@ -1,0 +1,194 @@
+
+Verlautbarung 152 der Entw.Abt.             2001-10-31
+-------------------------------
+
+Initiative "Datenbanken ans Netz!"
+Die RuckZuck-Reform
+----------------------------------
+Passend zum Reformationstag erscheint die Version 1.0 
+des gruendlich reformierten RuckZuck-Pakets, nunmehr 
+gegruendet auf das PHP-System.
+
+Auf dem Thesenpapier, angeschlagen an das Portal der 
+Entw.Abt., steht
+"Keine Komplikation ist zu scheuen, um Vereinfachungen 
+zu erreichen!"
+Demgemaess sind die PHP-Dateien in sich zwar kompliziert 
+(gestern hatten wir ein paar wenige Andeutungen 
+gemacht), aber die Stellen, wo man eingreifen muss, sind 
+auf ein Minimum reduziert! 
+(a) Es gibt eine Art INI-Datei, die heisst nun  
+AV_INI.PHP, darin stehen die Grundeinstellungen fuer 
+eine Datenbankverbindung.
+(b) der bisherige Stolperstein Nr. 1, die 
+Anzeigeparameter, wurde nun flachgeklopft: Es gibt 2 
+Strickmuster, die sich fuer jede CFG eignen,
+und zwar  D-SIMPEL.APR und D-KOMPL.APR, geeignet fuer 
+Datenbanken ohne bzw. mit hierarchischen Saetzen. Die 
+Anzeige ist dabei als HTM-Tabelle aufgebaut. Man kopiert 
+nun einfach die Musterzeilen und setzt die eigenen 
+Kategorienummern ein. Kommentare sind vorhanden.
+
+Das RuckZuck-Papier auf dem Server wurde erweitert:
+   http://www.allegro-c.de/ruckzuck.htm
+Der Zugang zur OPAC-Kopie:
+   http://ruckzuck.biblio.etc.tu-bs.de/allegro/opac.php
+wurde um ein weiteres Beispiel ergaenzt, und zwar eine
+Kopie der CoOL-Datenbank:
+   http://ruckzuck.biblio.etc.tu-bs.de/cool/opac.php
+Dieser Zugang konnte, und da zeigt sich der Erfolg der 
+Bemuehungen, in wenigen Minuten aufgebaut werden - wobei 
+allerdings die Anzeigeparameter schon waehrend der 
+Testarbeiten entstanden.
+
+Es folgt der Text, der als Doku dem Paket beiliegt.
+MfG B.E.
+
+---------------------------------------------------------
+
+           PHPac : Web-OPAC mit PHP
+           Grundmodell weiter verbessert
+                                           2001-10-28
+
+Zunaechst immer noch nur fuer Windows! (Linux im Kommen)
+... und erst einmal nur fuer solche, die schon wissen, 
+wie man PHP auf seinem Webserver in Betrieb setzt. PHP 
+4.0.6 gibts unter   www.php.net   (PHP3 tut's nicht)
+Dort findet man komplette Installationspakete und Hilfen.
+PHP-Doku:  http://www.selfphp4.de
+
+Ziel war, die Funktionen von RuckZuck komplett zu 
+realisieren, mit einigen wenigen Verbesserungen. Das 
+sollte mit einem Minimum an Dateien erreicht werden. 
+Damit hat man eine ueberschaubare Basis, die in jeder 
+Richtung ausgebaut werden kann.
+
+Getestet wurde mit Xitami und Apache auf Win'98 und NT.
+Realisierung auf UNIX und Linux laeuft.
+
+Man braucht das aktuelle PROCAV.EXE (ab 30.10.01)
+und dazu einen Satz von .PHP-Dateien und Parametern, 
+eingepackt in ruck-php.lzh. (Beides liegt auf  ac21)
+
+Wohin mit den Dateien?
+----------------------
+PHP-Dateien --> ein Unterverz. am HTM-Verz. des 
+Webservers
+                        ("htdocs" bei Apache, "webpages" 
+bei Xitami)
+APR-Dateien --> DbDir  (umbenennen in .xPR fuer x.CFG)
+
+
+PHP-Dateien
+-----------
+Startseite ist OPAC.PHP oder DETAIL.PHP, einstellbar in 
+AV_INI.PHP:
+In AV_INI.PHP liegen die Variablen mit Anpassungsbedarf:
+Server-IP, Datenbankname, Username, Passwort, Titel, 
+Adresse und ein paar wenige weitere Angaben, wie 
+$Startpage, $Reg1name ....
+
+Hat man mehrere Datenbanken anzubinden, kopiert man die 
+Dateien jeweils auf ein eigenes Unterverzeichnis.
+Die Dateien mit dem Praefix AV_ sind unselbstaendig, sie 
+werden von anderen Dateien nachgeladen,
+
+
+AV_INI.PHP   Einstellungen fuer die betreffende Datenbank
+              sozusagen die INI-Datei fuer einen
+              bestimmten Zugang
+
+OPAC.PHP     Startseite schlicht (Angebot: Link zu
+                   DETAIL.PHP)
+FIND-S.PHP     Schlichtsuche, startet PAGE oder FIND
+DETAIL.PHP   Startseite fuer Detailsuche, ruft auf:
+FIND.PHP       Ausfuehren einer Detailsuche, startet:
+PAGE.PHP         Anzeige eines Registerabschnitts,
+                   startet:
+RSET.PHP         Anzeige einer Ergebnismenge, startet:
+GREC.PHP           Anzeigen eines Datensatzes 
+                    (Get Record), startet:
+EDREC.PHP            Bereitstellen eines Satzes zum
+                         Editieren, startet:
+WRITE.PHP              Speichern des bearbeiteten Satzes
+AV_PAGE.PHP   Kernfunktion fuer PAGE.PHP
+AV_RSET.PHP   ... fuer RSET.PHP
+AV_GREC.PHP   ... fuer GREC.PHP
+
+Hinsichtlich der Schreibfunktionen muss man auch
+in GREC.PHP und WRITE.PHP eingreifen. Die Stellen sind 
+markiert durch xxx. Es geht um die Kategorien, die in 
+eigenen Edit-Feldern angeboten werden sollen.
+
+Parameterdateien:
+-----------------
+Kopieren auf DbDir oder ProgDir (wo avanti gestartet 
+wird):
+
+   D-HTML.APR      Datensatzanzeige fuer HTML, angelehnt
+                   an D-1.APR
+                   muss fuer andere CFG eigens erstellt
+                   werden! 
+                   Dafuer als Hilfe, sozusagen als 
+                   Strickmuster:
+
+   D-SIMPEL.APR    Geeignet, wenn es keine
+                      Satzverknuepfungen gibt
+   D-KOMPL.APR     ... wenn es welche gibt
+                      Diese zwei machen eine Anzeige mit
+                      Tabellenstruktur, die man leicht
+                      ausbauen kann (NEU), 
+                      auch fuer andere CFG
+
+   H-PHP.APR       Hilfsfunktionen, z.B. Aufbereitung
+                   Registerabschnitt, universell fuer
+                   jede CFG verwendbar
+   H-EDIT.APR      Satz bereitstellen zum Editieren
+                       geringe Anpassungen noetig 
+                       (ist kommentiert)
+   ASCIANSI.APT    wird zum Umcodieren gebraucht.
+   O.APT           Codiertabelle ASCII -> ANSI
+ 
+... und auf ProgDir\HELP
+   PHPAC.RTF       Dokumentation der Grundstruktur von
+                   PHP-Dateien
+
+Einbindung in eigene Prozeduren:
+--------------------------------
+Dazu eignen sich vor allem drei Dateien:
+
+page.php   Anzeige eines Registerabschnitts
+             mit Blaettern
+             z.B.:  page.php?urG=PER&urS=shakesp
+
+rset.php   Bildung und Anzeige einer Ergebnismenge
+             mit Blaetterfunktionen
+             z.B.:  rset.php?ufC=PER+shakesp%3F
+
+grec.php   Holen und Zeigen eines Satzes
+             z.B.:  grec.php?urN=12345
+                    // Zeige Satz Nr. 12345
+             oder   grec.php?urG=NUM&urS=12345678
+
+Die eigentlichen Funktionen sind ausgelagert in die 
+Dateien av_page.php, av_rset.php und av_grec.php
+Dadurch bleibt die Anwendung uebersichtlich.
+Fuer die eigene Gestaltung muss man sich nur die oben 
+genannten drei Dateien vornehmen, die av-Dateien werden 
+nur eingebunden mit "include".
+
+Die wichtigen Variablennamen stehen in Beziehung zu 
+internen Variablen (#u-Variable) von "avanti" und sind 
+daher immer von der Form  uxY  mit einem Kleinbuchstaben 
+x und einem Grossbuchstaben Y. 
+Die wichtigsten sind:
+   urG   Registername, z.B. PER
+   urS   Register-Startpunkt, z.B.  shakesp
+   ufC   find command, z.B.  PER+shakesp%3F
+   urN   record number (interne Satznummer)
+   urO   Ordnungsmodus, Default a0 (in RSET.PHP)
+
+Wie allgemein ueblich, muessen Variablen codiert werden, 
+also Leerzeichen durch + ersetzt, ? durch %3F usw.
+
+

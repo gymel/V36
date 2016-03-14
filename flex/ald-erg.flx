@@ -1,0 +1,215 @@
+  ALD-ERG.FLX : ALD-Datei als Erg.Menge praesentieren
+  2003-06-25    wenn #uvL gesetzt, dann die geloeschten Saetze
+                Reihenfolge ist dann die physisch vorliegende Folge
+
+var E
+ins #uwE
+
+if #uvV jump delr
+if #uvD jump uvd
+  Liste der ALD-Dateien in ald.lst schreiben (per DOS-Befehl  dir ...*.?ld)
+var "ald.lst"
+open x
+wri "Liste der Datenbankdateien: " n
+clo x
+var "dir /b " D B "_*.?ld >>ald.lst"
+
+dos
+  Ueberschriften fuer ViewListe setzen
+set i7
+set i8 Balken auf die Datei setzen, die man sehen will
+set i9
+
+  dir-Liste als ViewListe zeigen, Nutzer soll auswaehlen
+:vi
+View ald.lst
+  keine Auswahl? -> Ende
+if "" jump exit
+   Kommt _ vor? wenn nicht, dann ist nichts ausgewaehlt
+if not %_% jump vi
+   Ja, dann ausgewaehlte Zeile -> #uvD
+ins #uvD
+
+:uvd
+  Dateinummer herausziehen, in #uvN speichern
+var #uvD(b"_" e"." e" ")
+ins #uvN
+#uvD
+  Den Pfadnamen der Datei zusammensetzen
+var D B "_" #uvN "." K1 "ld"
+fsi
+if >500000 jump big
+
+:do
+var D B "_" #uvN "." K1 "ld"
+  und Datei zum Lesen oeffnen
+open
+if no jump errexit
+  Hilfsdatei fuer Liste der Satznummern anlegen
+var "file-" #uvN ".set"
+open x
+  Ueberschrift rein
+wri "Datei " B "_" #uvN "." K1 "LD" n
+
+var "Die Satznummern werden ermittelt, Abbruch mit Esc mîglich"
+ansi
+sho iV
+  Satznummern reinschreiben
+:loop
+keychk
+if yes jump break
+  erstes Byte holen
+fet b
+  nichts mehr: ende
+if ="-1" jump dateiende
+
+ 9 heisst "geloescht", Satz nicht mitnehmen
+if ="9" if not #uvL jump nchst
+if not ="9" if #uvL jump nchst
+
+  Satznummer ausrechnen (Bytes 1 - 4)
+fet b4
+ins #unZ
+  Satznummer in die Hilfsdatei schreiben
+wri #unZ n
+
+:nchst
+   zur Sicherheit naechste 4 Bytes lesen
+fet 4
+  dann Lesen bis zum Code 10 (= Satzende!)
+fet ^J
+  -> Schleife
+jump loop
+
+  Ende erreicht
+:dateiende
+  Dateien schliessen
+close x
+var #uwE
+open x
+
+close
+if #uvL jump delset
+
+var "file-" #uvN ".set"
+  Liste der Satznummern als ext. Erg.menge einlesen
+read set
+  Viewliste schliessen und loeschen
+perf exit
+  Erg.Menge zeigen (FLEX endet dann)
+sho list
+end
+
+:errexit
+mes Die Datei ist nicht benutzbar
+
+:exit
+  Abbruch: ViewListe schliessen und loeschen
+clo v
+del ald.lst
+  Ueberschrift ruecksetzen
+set i8
+  und Hilfsdateien loeschen
+var "file-" #uvN ".set"
+del
+  Variablen loeschen
+#uvN
+#uvD
+#uvL
+#uvV
+  Ruecksprung, wenn :exit als Upro aufgerufen:
+return
+  sonst Ende
+end
+:lexit
+var "Keine gelîschten SÑtze in Datei " #uvN
+ansi
+mes
+jump exit
+
+
+  geloeschte Saetze waren verlangt, das ist schwierig:
+:delset
+var "file-" #uvN ".set"
+open
+  erste Zeile in der .set-Datei ist nur Ueberschrift
+get iV
+  Hilfsdatei machen fuer die Kurzzeilen (stehen nicht in STL!!!)
+del del.vw
+open x del.vw
+
+set i8Name dieser Datei:  del.vw
+wri "Gelîschte Saetze in der Datei " #uvN n
+  erste Nummer aus .set holen
+get iV
+  keine vorhanden
+if can jump lexit
+
+var "Liste wird erstellt, Abbruch mit Esc mîglich"
+ansi
+sho iV
+:dels
+keychk
+if yes jump break
+  Nummer in #uvn
+ins #uvN
+  Befehl  find #nummer  holt den Satz
+var "#" #uvN
+
+find
+   die ersten 5 Felder davon nehmen:
+var k1 " - " k2 " - " k2 " - " k2 " - " k2
+
+ins #uvS
+  und davon 90 Zeichen in die Hilfsdatei
+wri i "|" #uvS(0,90) n
+  naechste Nummer holen, Schleife
+var ""
+get
+if not can jump dels
+  Keine mehr, dann Dateien schliessen
+close
+
+:present
+close x
+var #uwE
+open x
+  Hilfsdatei als ViewListe zeigen
+View del.vw
+  und Abschluss
+jump exit
+
+:break
+close
+close x
+var #uwE
+open x
+mes ENDE
+end
+:big
+var "Ziemlich gro·. Trotzdem als Erg.Menge aufbereiten?"
+ansi
+yes
+if yes jump do
+end
+
+  Geloeschte Saetze insges.
+:delr
+#uvV
+find |1 "//?"
+if l1 mes Es gibt keine;end
+
+first
+open x del.vw
+wri "   Gelîschte SÑtze, die momentan noch vorhanden sind" n "   Mit 'Aktivieren' kînnen Sie einen Satz wieder wieder gÅltig machen" n
+:dloop
+var i "|" var k1 " - " k2 " - " k2 " - " k2 " - " k2
+ins #uvS
+wri #uvS(0,150) n
+next
+if yes jump dloop
+jump present
+
+
+
+

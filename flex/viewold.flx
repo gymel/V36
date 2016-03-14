@@ -1,0 +1,67 @@
+  VIEWOLD.FLX : vorhandene ViewListen auswaehlen, sichten, loeschen ...
+  2000-08-05
+var m
+if "alc" end
+
+:oldview
+var "Vorhandene ViewListen|" M "*.vw"
+  Dateiauswahl; Name ist dann in iV, falls einer ausgewaehlt
+fnam
+  Keiner gewaehlt? Ende
+if no jump exit
+ins #uvs
+  gewaehlte Datei anzeigen
+:anzeigen
+var #uvs(T"\\") 
+ins #uv9
+var #uv9(e".")
+ins #uv9
+var #uvs
+  Name der ViP ermitteln: (steht in der 1. Zeile)
+open
+get 
+ins #uvo
+var #uvo(b", ")
+ins #uvo
+var #uvo(e"/")
+ins #uvo
+close
+var #uvs(e".")
+ins #uvn
+var #uvn(T"\\")
+ins #uvn
+
+var #uvs
+
+View
+if can jump exit
+if no jump exit
+  Aktionen zur  Auswahl stellen:
+select Aktion=Umbenennen|L”schen|Andere Datei anschauen|Nochmals anzeigen
+
+if no jump exit
+if cancel jump exit
+if "U" jump umb
+if "L" jump delete
+if "A" jump oldview
+if "N" jump anzeigen
+:umb
+  Viewdatei schliessen:
+close view
+ask neuer Name?
+if canc jump oldview
+ins #uvn
+ins #uv9
+var #uvs " " #uvs(t"\\") "\\" #uvn(e".") ".vw"
+rename
+if no mess geht nicht!
+jump exit
+:delete
+  Viewdatei schliessen:
+close view
+var #uvs
+delete
+if no mess ging nicht!
+
+:exit
+help view

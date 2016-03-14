@@ -1,0 +1,72 @@
+  S-SIGNAT.APR : Sortieren nach Signatur  (#90)
+  941212
+ 
+
+pn="Sortierformat #90"
+
+  die folgenden Angaben mssen so bleiben
+  damit die fr die Weiterverarbeitung n”tige .ALG-Form entsteht
+  --------------------------------------------------------------
+zl=0        ... Zeilenl„nge unbegrenzt
+ks=1        ... Beginn beim ersten Zeichen hinter #
+ke=0        ... Kategorie-Ende = 0
+as=""       ... Aufnahme-Start:
+ae=13 10    ... Aufn.Ende: 
+
+ts          ... l„dt die Zeichenumwandlungstabelle S.APT fr das Sortieren
+ag=0        ... Unteraufnahmen getrennt verarbeiten
+am=1        ... nur 1 Ausgabesatz soll produziert werden
+
+ ---------------------------------------------------------------
+
+  #90 kann mehrfach auftreten, es k”nnen auch mehrere Signaturen, mit ";"
+      oder " = " getrennt, in einer #90 stehen
+
+ak=90."[=;]"+a
+
+#+-  wenn keine Signatur: kein output
+
+  ******************************************
+  Beginn der Verarbeitung von Hauptaufnahmen
+  ******************************************
+ 
+#-a
+#hi +- e0 #zz 0
+        hier beginnt es
+        Umwandlung der !-Felder ber Alternativtabelle:
+        der Sortierbegriff wird zusammengesetzt und als #u1 ausgegeben
+        (Verfasser  Jahr ...)
+#t { 1 }    Aufnahme-Start
+        wenn " = " vorkommt, wird nur der vordere Teil genommen
+  *****  hier muss evtl. eine andere Sortiervorbereitung erfolgen *****
+#t{ "u1 " }
+!u1 b3 e"" f" " E"[ .-/]" #zz 0
+!u1 b3 e"" b" " e"[ .-/]" x"==0" #zz 0
+!u1 b3 e"" b"[ .-/]" x"*1" e"." r5 #zz 0
+!u1 b3 e"" b"[ .-/]" b"[0123456789]" F" " b"[(,:-. ]" y0 r3 p" " #zz 0
+#t{ 0 }
+  *****  z.B. numerus currens rechtsbndig ausrichten!  *****************
+     Die Druckform des Sortierfeldes: Produktion als #u2
+     (genauso wie #u1, nur ohne Umcodierung, dann fr den Druck verwertbar!)
+
+#u1 b3 e"" f" " F" " p"u2 " #zz 0
+
+  nachfolgende Teile weglassen, wenn nur Signatur als Druckkopf gewnscht:
+  ***************
+#40 +b b3 e" = " p"" #zz 0    2.Teil des Druckfeldes: Verf.
+#41 +b b3 e" = " p"" #zz 0           oder Hrsg.
+#60 +b b3 U e" = " p"" #zz 0           oder K”rp.
+#t{ "    " }      wenn keines davon vorkommt
+#-b
+#20 +c b3 f170 e" : " p"" #zz 0   3.Teil des Druckfeldes: Titel
+#19 +c b3 e" : " p"" #zz 0
+#18 +c b3 e" : " p"" #zz 0
+#t{ "   " }
+#-c
+  *************** bis hierhin
+#t{ 0 }
+
+tselect     Select.APT nachladen
+            diese Tabelle enth„lt die auszugebenden Kategorien
+            (S-KURZ, S-MITTEL, S-LANG, S-VOLL)
+

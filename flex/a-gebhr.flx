@@ -1,0 +1,54 @@
+  A-GEBHR.FLX : Ausstehende Gebuehren summieren und anzeigen
+  2006-10-31
+
+open x gebsum.lst
+
+  Im Reg. 11 Abschnitt unter GD in Datei gebsum.lst ausgeben
+qrix d@
+Qrix |;GD@GE
+clo x
+
+z=0
+Z=0
+
+  und auswerten
+open gebsum.lst
+
+:loop
+get
+if no jump exit
+
+var (b"/")
+ins #uaB
+
+var #uaB
+if "U" jump stun
+var (b":")
+Z+
+
+jump loop
+:stun
+var #uaB(b":")
+z+
+jump loop
+
+:exit
+close
+Z/100
+
+
+var "Ausstehende Gebuehren: " Z2 n
+ins #uaB
+
+var z
+Z=
+Z/100
+var n "  " #uaB n n "              Gestundet: " Z2 n
+sho IV
+
+
+
+
+ u-VARIABLEN in a-gebhr.flx
+ #uaB (5)  GebTyp:Betrag aus einer GD-Registerzeile
+

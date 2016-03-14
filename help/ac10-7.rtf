@@ -1,0 +1,373 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman\fprq2 allegro New Roman;}{\f1\froman\fprq2 Times New Roman;}{\f2\fswiss MS Sans Serif;}{\f3\froman\fprq2 times new roman;}{\f4\froman\fprq2\fcharset0 Garamond;}{\f5\froman\fprq2\fcharset0 times new roman;}{\f6\froman\fprq2\fcharset0 Times New Roman;}{\f7\fmodern\fprq1 Courier New;}{\f8\fnil\fprq2\fcharset2 Wingdings;}{\f9\fmodern\fprq1\fcharset0 Courier New;}{\f10\fswiss\fprq2 Univers;}{\f11\froman\fprq2\fcharset0 allegro New Roman;}{\f12\fmodern\fprq1\fcharset0 allegro Lucida Console;}{\f13\froman\fprq2\fcharset2 Symbol;}{\f14\fmodern Courier New;}{\f15\fmodern\fprq1 Courier;}{\f16\fswiss\fprq2\fcharset0 Univers;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;}
+\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs24   \f1   \f2   \f1   \fs20 
+\par  `\cf1\ul\b Vorangehender Teil\cf2\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf2\ulnone\b0 ` 
+\par \pard\fi-658\li658\tx864\tx1440\tx2160\tx2376\tx2880\b\f3\fs24 
+\par \f4\fs36 10.2.6.3 Export  \f5\fs24 [Forts.]\f3 
+\par \f5 Typ 1 : Direkte \'c4nderungen am Arbeitstext\b0\f3\fs20 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\f1 Die wichtigsten zuerst: \b\f6 direkte Pr\'e4fixe\b0\f1  bzw. \b Postfixe\b0\f6  sind Zeichenketten, die mit p bzw. P direkt angegeben werden, und die das Programm dann sofort vorn bzw. hinten an den Arbeitstext anf\'fcgt. \f1 
+\par Umgekehrt gibt es \f6 auch\f1  eine Reihe von Befehlen, mit denen man vorn und hinten vom Arbeitstext Teile entfernen kann, um entweder diese Teile selbst oder den Rest als neuen Arbeitstext zu benutzen. 
+\par 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 pX\b0\f1\tab\b\f6 Direktes Pr\'e4fix\b0\f1  : Zeichenkette X wird vor die aktuelle Kategorie gesetzt, d.h.: X wird mit dem 
+\par \b\f7 mX\b0\f1\tab\f6 aktuellen Arbeitstext zu einer Zeichenkette vereinigt. Der Arbeitstext besteht aus dem Text von #xxf, der zu diesem Zeitpunkt m\'f6glicherweise bereits von anderen Manipulationsbefehlen ver\'e4ndert ist. \f1 
+\par \b\f7\tab mX\b0\f6  wird nur bei der Abarbeitung von Mehrfachkategorien benutzt: die erste bekommt das mit p, die zweite und weitere das mit m angegebene Pr\'e4fix. (\f7 -\f8\'d8\f1  10.2.6.1 Befehl \b ++\b0 ) 
+\par \tab Eine besondere Bedeutung hat das \b\f6 Index-Pr\'e4fix\b0 , das sich formal aber nicht von einem "normalen" Pr\'e4fix unterscheidet: es regelt die Zuordnung eines Schl\'fcssels zu einem Register, z.B.\b\f7  p"|7"\b0\f1  bedeutet: Einordnung in Register 7. (Siehe "Index - Sonderbefehle" \f7 -\f8\'d8\f1  10.2.1.3) 
+\par \b\f7 PX\f1\tab Direktes Postfix:\b0  wirkt analog zu\b\f7  pX\b0\f6 , nur da\'df die Zeichenkette X \b\f1 hinter\b0\f6  den Arbeitstext geh\'e4ngt wird. \f1 
+\par  \tab\f6 Wenn man beides kombiniert, kann man z.B. ganz leicht etwas in Klammern einschlie\'dfen: \f1 
+\par \b\f7\tab #85 C p"(" P")"\b0\f1  
+\par \tab\f6 Der Arbeitstext erh\'e4lt vorn und hinten eine Klammer, und der Manipulationsbefehl C (siehe unten) bewirkt einen Zeilenvorschub. Ergebnis: der Serientitel wird in Klammern auf eine neue Zeile gesetzt. \f1 
+\par \b\f7 bk\f1\tab Beginn\b0  bei einer bestimmten Position\f6 . \i Achtung:\i0  Zuerst wird, falls vorher noch nicht erfolgt, die Umcodierung durchgef\'fchrt (d.h. die p- bzw. q-Befehle, abh\'e4ngig vom Zeichen # bzw. ! am Zeilenanfang). Als wahre L\'e4nge gilt somit diejenige, die nach der Umcodierung vorliegt. (Ver\'e4nderung m\'f6glich z.B. durch Umlautaufl\'f6sung oder Weglassung von Sonderzeichen.)\f1 
+\par \b\f7 Bk\b0\i\f1\tab Beispiel: \i0\f6 vom Erscheinungsjahr sollen nur die letzten 2 Ziffer ausgegeben werden. Wenn ks=5 gesetzt wurde und die Jahreszahl am Anfang des Kategorietextes steht, mu\'df von da aus noch 2 Stellen nach rechts gegangen werden. Die Parameterzeile lautet dann: \f1 
+\par \f7\tab #76 b2 p" (" P") "\f1      oder auch, mit Zwischenteilen:\f7     #76 b2 10 #zz 11\f1 
+\par \tab\f6 und im Druckbild erscheint: (82) ,wenn #76 1982 in der Aufnahme steht. (Dabei ist angenommen, da\'df man\f7   10=" ("\f1   und\f7   11=") "\f6   als Zwischenteile definiert hat; 10 ist hier als Pr\'e4fix, 11 als Postfix benutzt. \f1 
+\par \tab\f6 Ist k gr\'f6\'dfer als die L\'e4nge der fraglichen Zeichenkette oder gleich gro\'df, so wird bei\b\f7  bk\b0\f1  weitergemacht, als sei die Kategorie nicht vorhanden, d.h. die Befehlszeile wird abgebrochen, bei\b\f7  Bk\b0\f6  bleibt der AT unver\'e4ndert. 
+\par \tab\i Sonderfall:\i0  k=0 \'e4ndert nichts am AT, sorgt aber f\'fcr Umcodierung (s.o.). Ist jedoch der AT in dem Moment leer, wird die Zeile ohne Wirkung abgebrochen. \f1 
+\par \tab Die Zahl \b k\b0\f6  mu\'df kleiner als 256 sein! Wenn man aber z.B. eine sehr lange #98 hat, und etwa den Teil ausgeben will, der hinter der Position 500 kommt, kann man schreiben:\f7   #98 b250 b250 ...\f1 
+\par \tab\f6    Anfang und Ende des zu druckenden Datenfeldes k\'f6nnen auch noch auf andere Arten vorgegeben werden: man kann verlangen, da\'df das Druckfeld \b\f1 hinter einer bestimmten Zeichenkombination beginnt\b0  (b-Befehle) bzw. \b vor dieser endet\b0  (e-Befehle) 
+\par \tab\i Sonderfall: \i0\f7  b"?"\f1  :\i  \i0\f6 Nur w\f1 enn der AT mindestens 1 Zeichen hat, geht die Zeile weiter. 
+\par 
+\par \b\f7 bX\f1\tab beginne hinter X\b0\f6  : Wenn z.B. der Zusatz zum Sachtitel ("Untertitel") gesondert ausgegeben werden soll, und wenn man, RAK-gerecht, diesen immer mit " : " (Spatium Doppelpunkt Spatium) an den Hauptsachtitel angeschlossen hat, dann mu\'df also die Ausgabe hinter der Zeichenkette " : " beginnen: \f1 
+\par \f7\tab #20 b" : " 35 #zz 8\f1       \b oder\b0\f7        #20 b" : " p"Zusatz: " P". - "\f1 
+\par \tab wobei etwa\f7  35="Zusatz: "  und  8=". - "\f6  sein k\'f6nnte. Aber nicht immer soll das Ende ein einzelnes Zeichen sein, welches genau feststeht. Es gibt noch eine Reihe von 
+\par \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\i\f6 Zusatzm\'f6glichkeiten:\i0\f1 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880  \f6  \f1\bullet\tab\f6 In\f7  b\f9 X\f6   hat das erste Zeichen manchmal eine Sonderbedeutung! Dies trifft zu f\'fcr die Zeichen \lang1033\f7 [\lang1031\f9 ~<>^/?#\f6  . Es wird im Folgenden jeweils gesagt, wie man diese Zeichen einsetzt. Dies gilt auch f\'fcr die Manipulationsbefehle e, E, c, t, T.\f1 
+\par   \bullet\f7\tab b"[.,-:;!]"\f6  Die eckigen Klammern bewirken, da\'df die darin eingeschlossenen Zeichen einzeln gesucht werden. Der Arbeitstext beginnt hinter dem ersten gefundenen Zeichen. Die Nebenwirkung ist, da\'df\f7  b"["\f1  und\f7  e"["\f1  nicht klappen - aber\f7  b"[[]"\f1  und\f7  e"[[]"\lang1033  \f1 tun es. Umgekehrt:\f7  b"[]]" und e"[]]" \f6  tun es nicht, daf\'fcr mu\'df man (evtl. zus\'e4tzlich)\f7  b"]" bzw. e"]" \f1 schreiben. 
+\par \tab\i Hinweis:\i0  auch b"^" etc. klappt nicht (siehe Befehl cX), man mu\lang1031\f6\'df\lang1033\f1  schreiben  b"[^]", e"[^]" usw.\lang1031 
+\par   \bullet\tab In\f6  der Zeichenfiolge\b\f7  X\f9  \b0\f6  kann das  \f9 ?\f6   als Maskierungszeichen vorkommen (n\'e4heres am Ende des Abschnitts zu Typ 5). \f1 
+\par   \bullet\tab Wenn\b\f7  X\lang1033\b0\f10  \f1 mit\lang1031\b\f7  ~\lang1033\b0\f10  \f6 beginnt und aus Kleinbuchstaben besteht, wird Gro\'df/Klein im Arbeitstext ignoriert. \f1 
+\par \lang1031   \bullet\tab Mit\f7   b"#uxy"\f6   kann man auch pr\'fcfen, ob der Inhalt der Variable\f7  #uxy\f6  im Arbeitstext vorkommt. Falls ja, wird die Zeile fortgesetzt und der bedingte Sprung ausgef\'fchrt, sonst nicht. \f1 
+\par   \bullet\tab Mit\f7   b">#uxy"\f6   dr\'fcckt man aus, da\'df der Arbeitstext gr\'f6\'dfer als der Inhalt von\f7  #uxy\f6  sein soll (nicht zahlenm\'e4\'dfig, daf\'fcr gibt es die Rechenbefehle, sondern als Zeichenkette). Mit '<' geht's genauso. 
+\par \pard\nowidctlpar\hyphpar0\fi-851\li851\sl-236\slmult0\tx142\tx864\tx1440\tx2160\tx2376\tx2880\cf0\f5   \bullet\tab Wenn eines der Zeichen [ < > ~ / " ?  als solches gesucht werden soll, also nicht seine Sonderfunktion aus\'fcben soll, mu\'df man es in [ ] einschlie\'dfen, z.B.  \f9 b"[[]"\f5  .\cf2\f6 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\f1   \bullet\tab Wenn der Inhalt von\f7  #uxy\f1  so aussieht:\f7  [abcd]\f1 , also mehrere Zeichen in eckigen Klammern, dann wird mit\f7  b"#uxy"\f1  festgestellt, ob eines der Zeichen \f6  \f7 abcd\f9  \f6  \f1 im Arbeitstext vorkommt. 
+\par   \bullet\tab\f6 Diese Art Bedingungspr\'fcfungen sind auch bei den Befehlen\f7  eX, cX, tX\f1  und\f7  TX\f1  anwendbar. 
+\par \tab\f6 In jedem dieser F\'e4lle gilt: trifft die Bedingung nicht zu, so wird nichts ausgegeben, d.h. die ganze Befehlszeile, in der\b\f7  bX\b0\f1  steht, wird ignoriert. Schreibt man statt dessen aber: 
+\par  
+\par \b\f7 BX\b0\f1\tab so wird die Kategorie komplett ausgegeben\f6  -\f1  d.h.\b\f7  BX\b0\f1  wird ignoriert\f6  -\f1  wenn\b\f7  X\b0\f1  nicht vorkommt. 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\tab\i Achtung:\i0\f6  wenn vorher schon umcodiert wurde, kann sich der AT ver\'e4ndert haben! \f1 
+\par 
+\par \pard\nowidctlpar\hyphpar0\sa120\sl-248\slmult0\tx0\tx864\tx1440\tx2160\tx2376\tx2880\cf0\i\f5 ACHTUNG:\i0  bei bX, eX, BX und EX immer beachten, ob vorher schon umcodiert wurde (mit y1 oder y2) und deshalb eines der Zeichen in X vielleicht ver\'e4ndert oder beseitigt wurde. 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\cf2\f6 Auch das Ende der Aufbereitung kann durch eine L\'e4ngenangabe oder durch Zeichenkette festgelegt werden, letzteres ebenfalls auf zwei Arten: \f1 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 ek\b0\f1\tab\b Ende\b0\f6  der Ausgabe bei einer bestimmten Position = L\'e4nge des Arbeitstextes auf n Zeichen setzen. \f1 
+\par \tab\f6 Um bei dem Beispiel zu bleiben: es k\'f6nnte ja sein, da\'df in #76 hinter dem Jahr noch andere Angaben stehen. Um diese auch noch auszublenden, gibt man vorsichtshalber zus\'e4tzlich hinter b2 noch e2 an: \f1 
+\par \f7\tab #76 b2 e2 10 #zz 11\f1       \b oder\b0\f7         #76 b2 e2 p"(" P")" #zz 0\f1 
+\par \tab\f6 Das e2 bewirkt, da\'df nach dem zweiten ausgegebenen Zeichen die Ausgabe dieser Kategorie beendet wird. Hinter b und e k\'f6nnen beliebige und verschiedene positive Zahlen stehen. Wenn die Zahl hinter e gr\'f6\'dfer ist als die tats\'e4chliche L\'e4nge des Arbeitstextes, bleibt dieser unver\'e4ndert. \f1 
+\par \pard\fi-2160\li2160\tx864\tx1440\tx2160\tx2376\tx2880\i\tab Sonderfall:\b\i0\f7\tab e0\b0\f6  : der Arbeitstext wird nicht ausgegeben, aber es wird so getan, als ob es so w\'e4re. Nutzeffekt: z.B. eine bestimmte Kategorie, sofern sie vorhanden ist, durch ein immer gleiches Wort (Pr\'e4fix) ersetzen. Was hinter\b\f7  e0\b0\f6  noch kommt, wird nicht mehr ausgef\'fchrt. Der Parameter\b\f7  ke\b0\f6  wird allerdings ausgef\'fchrt; wird dies nicht gew\'fcnscht:\b\f7  #zz 0\b0\f6   als bedingtes Postfix anh\'e4ngen. \f1 
+\par \tab\tab\tab Z.B. bewirkt\f7   #91 +M e0 #zz 0\f6  , da\'df ein Sprung nach #-M nur dann erfolgt, wenn #91 in der aktuellen Aufnahme vorhanden ist, #91 wird jedoch wegen e0 an dieser Stelle nicht ausgegeben. (Der Sonderbefehl\f7  Z\f1  bewirkt dasselbe wie\f7  e0\f1 .) 
+\par \f7\tab\tab\tab #91 p"xyz" e3 #zz 0\f1   bewirkt:  es wird "xyz" ausgegeben, wenn #91 vorkommt, aber nicht der Text von #91 selbst. Umgekehrt, also mit 
+\par \f7\tab\tab\tab #91 e0 p"xyz"\f1  , geht es nicht, da hinter e0 nicht weitergemacht wird. 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 Ek\b0\f1\tab Wirkung wie\b\f7  ek\b0\f1 , aber es wird \b am Ende das letzte Wort beseitigt\b0\f6 , wenn es durch die Verk\'fcrzung abgebrochen wurde. Diese Operation kann z.B. f\'fcr Kopfzeilen sehr n\'fctzlich sein, wenn etwa sehr lange Kategorien vorkommen und man abgeschnittene W\'f6rter im Kopf vermeiden m\'f6chte. \f1 
+\par \b\f7 
+\par eX\f1\tab beende den Text vor X\b0\f6  : Soll z.B. nur der Hauptsachtitel erscheinen, so setzt man f\'fcr\b\f7  X\b0\f1  wieder " : " 
+\par \f7\tab #20 e" : "\f1    dann wird \b ab X das Ende beseitigt\b0\f6   (auch hier Maskierung mit '?' m\'f6glich.) \f1 
+\par \f7\tab #20 e"[.,:;!?]"\f1    beendet den Arbeitstext vor dem ersten Interpunktionszeichen (s.a.\b\f7  bX\b0\f1 ). 
+\par \b\f7 EX\b0\f1\tab\f6 Ein 'E' statt 'e' w\'fcrde das Ende der Zeichenkette hinter " : " setzen, d.h. diese Zeichen w\'fcrden dann mit ausgegeben. \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\tab\i Achtung:\i0\f6  wenn vorher schon umcodiert wurde, kann sich der AT ver\'e4ndert haben! \f1 
+\par 
+\par \pard\fi-1440\li1440\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 fx\tab Fx\b0\f1\tab\b\f6 Unterdr\'fcckung\b0  f\'fchrender bzw. am Ende stehender Zeichen; 3 Varianten: \f1 
+\par \b\f7 fk\tab Fk\b0\f1\tab Das Zeichen x bzw. der Code k bzw. jedes der in X vorkommenden Zeichen 
+\par \b\f7 fX\tab FX\b0\f1\tab wird am Anfang (\b\f7 f\b0\f1 ) bzw. am Ende (\b\f7 F\b0\f1 ) des Arbeitstextes beseitigt. 
+\par \tab\tab\f6 Das Zeichen x darf keine Ziffer sein, denn diese w\'fcrde als Zahlenwert eines ASCII-Codes interpretiert. Also w\'fcrde\b\f7  f0\b0\f6  nicht gehen, es mu\'df\b\f7  f"0"\b0\f6  hei\'dfen oder\b\f7  f48\b0\f6 . Dagegen k\'f6nnte man mit\b\f7  f$\b0\f6  durchaus f\'fchrende Dollarzeichen beseitigen, genauso mit\b\f7  f36\b0\f1  oder\b\f7  f"$"\b0\f1 . 
+\par \tab\tab\f6 Die f-Befehle k\'fcmmern sich alle um \b\f1 Einzel\b0\f6 zeichen, f\'fcr Kombinationen gibt es die T-Befehle: \f1 
+\par \b\f7 
+\par tk\b0\f1\tab\tab hinten k Zeichen wegnehmen ("trim") ; umgekehrt: 
+\par \b\f7 Tk\b0\f1\tab\tab\f6 die letzten k Zeichen ("Tail" = Endst\'fcck) als Arbeitstext nehmen \f1 
+\par \tab\tab\f6 (wenn Arbeitstext k\'fcrzer als k Zeichen: kein Ergebnis, Abbruch) \f1 
+\par \b\f7 tX\b0\f1\tab\tab\f6 suche vom Ende des Arbeitstextes aus die Zeichenkette X und setze den Endpunkt davor (wenn X nicht vorkommt: Arbeitstext unver\'e4ndert); auch hier ist das Gegenteil m\'f6glich: \f1 
+\par \b\f7 TX\b0\f1\tab\tab nimm am Ende den mit X beginnenden Teil als Arbeitstext (evtl. noch\b\f7  bX\b0\f6  erg\'e4nzen, um X wegzunehmen). Wenn X nicht auftritt, wird die Anweisung abgebrochen. \f1 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \i Hinweis: \tab\i0 In den Befehlen mit \b\f7 X\b0\f1  ist auch die \b Suche nach einem von mehreren Zeichen\b0\f6  m\'f6glich; dies geht genauso wie bei den ak-Befehlen, z.B.\b\f7   e"[.,:;-/]"\b0\f1  um den Arbeitstext am \b ersten\b0  Interpunktionszeichen enden zu lassen, oder\b\f7  t"[.,]"\b0\f1 , um hinter dem \b letzten\b0  Punkt oder Komma abzuschneiden. 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \pard\fi-1440\li1440\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 ,\b0 "\b _X_Y_\b0 "\f1\tab\f6 Lokale Ersetzung: im Arbeitstext wird \'fcberall Zeichenkette\b\f7   X\b0\f1   durch Zeichenkette\b\f7   Y\b0\f1   ersetzt. Statt '_' kann auch das Komma verwendet werden. Notwendig ist das dann, wenn innerhalb X oder Y das Zeichen '_' vorkommt! \f6 Innerhalb X und Y kann man nicht-eingebbare Zeichen mit \f9\\nnn\f6  kodieren, z.B. \f9\\31\f6  f\'fcr \b\f11\'b2 \b0 und\b  \b0\f9\\31\\48\f6  f\'fcr \f11\'b20\f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f12\'b2x\b0\f1  \f6  \f1 oder\tab Das Teilfeld \b x\b0  wird im Arbeitstext gesucht, sein Inhalt wird zum neuen Arbeitstext. Abbruch, wenn es 
+\par \b\f7 $x\b0\f1\tab\f6 nicht vorkommt. Dieser Befehl erm\'f6glicht einen sehr einfachen Umgang mit "Subfields". (\b\f11\'b2\b0\f6  und $ k\'f6nnen hier gleichwertig verwendet werden! Der tats\'e4chliche Teilfeldcode ergibt sich aus der .CFG und k\'f6nnte sogar noch ein anderes Zeichen sein (\f7 -\f8\'d8\f1  A.1.3). Vorteil: unter UNIX kann man $ besser eingeben. 
+\par \f6\tab\i Sonderfall:\i0   \b\f11\'b2\'b2  \b0 und\b  $$ \b0 liefern den Inhalt VOR dem ersten Teilfeld.\f1  
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\f12 ~x\b0\f1\tab Das Teilfeld \b x\b0\f6  wird im Arbeitstext gesucht und entfernt, wenn es mehrfach vorkommt, nur das erste. Wenn es nicht vorkommt, bleibt der AT unver\'e4ndert. Auf den Bedingten Sprung hat dieser Befehl keine Wirkung.\f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 w\b0\f1\tab\f6 Der Arbeitstext wird als Kategorienummer interpretiert, die betreffende Kategorie wird neuer Arbeitstext. Wenn $x an die Kategorienummer geh\'e4ngt wird, dann wird nur Teilfeld \f12\'b2x\f1  genommen. 
+\par \tab\i Achtung:\i0  Die Kategorienummer darf \b keine\b0  #u-Variable sein. 
+\par \pard\fi-5040\li5040\tx864\tx1440\tx2160\tx2376\tx2880\tx3600\tx4320\i\tab Beispiel:\i0\f7\tab #nr p"40 " e3 w\f1         \tab ausgegeben wird der Inhalt von #40 
+\par \f7\tab\tab\tab #000 p"245$b" e5 w\f1\tab Teilfeld \f12\'b2b\f1  von #245 wird Arbeitstext 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \b\f6\fs24 Text links/rechts auf feste L\'e4nge auff\'fcllen\b0\f1\fs20 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 sk\b0\f1\tab\f6 Wenn der Arbeitstext k\'fcrzer als k Zeichen ist, wird das Ausgabefeld \b\f1 mit Leerzeichen\b0  bzw. 
+\par \b\f7 sk,x\b0\f1\tab dem Zeichen \b\f6 x auf die L\'e4nge k aufgef\'fcllt\b0 . Diese Operation ist sinnvoll, wenn Tabellen produziert werden sollen oder hinter einem Ausgabefeld ein Zwischenraum gew\'fcnscht wird. \i\f1 Beispiele:\i0 
+\par \pard\fi-1440\li1440\tx864\tx1440\tx2160\tx2376\tx2880\b\f7\tab s12\b0\f1\tab\f6 wenn Text k\'fcrzer als 12 Zeichen, rechts mit Leerzeichen auff\'fcllen \f1 
+\par \b\f7\tab s8,-\b0\f1\tab\f6 wenn k\'fcrzer als 8 Zeichen, rechts mit Bindestrichen auff\'fcllen \f1 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 rk\b0\f1\tab\f6 Wenn der Arbeitsttext k\'fcrzer als k Zeichen ist, wird er \b\f1 nach links mit Leerzeichen auf k 
+\par \f7 rk,x\f1\tab\f6 Zeichen verl\'e4ngert, d.h. in ein Feld der L\'e4nge k rechtsb\'fcndig\b0\f1  plaziert. Wenn \b ,x\b0\f6  angegeben ist, werden f\'fchrende Leerzeichen durch das Zeichen x ersetzt. \i\f1 Beispiel:\i0 
+\par \pard\fi-2160\li2160\tx864\tx1440\tx2160\tx2376\tx2880\f7\tab r7,0\f1\tab\tab\f6 7stellig mit f\'fchrenden Nullen ausgeben \f1 
+\par \f7\tab r10,$\f1\tab\f6 10stellig mit f\'fchrenden $-Zeichen \f1 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 Diese M\'f6glichkeiten sind in Verbindung mit den Rechenbefehlen wichtig. \f1 
+\par \tab\f6 Um es zusammenzufassen: hinter b, B, e und E kann entweder eine Zahl oder eine in zwei Anf\'fchrungszeichen eingeschlossene Zeichenkette stehen (wenn man das zweite Anf\'fchrungszeichen vergi\'dft, k\'f6nnen unerw\'fcnschte Ereignisse eintreten), hinter r und s mu\'df eine Zahl stehen. \f1 
+\par \b\f7 R\b0\f1\tab (ohne Nummer!) Der aktuelle Arbeitstext wird \b\f6 an den rechten Rand der Zeile (rechtsb\'fcndig)\b0  ausger\'fcckt. Wenn in der aktuellen Zeile nicht mehr genug Platz ist, wird die n\'e4chste genommen. Geht nur, wenn \b\f7 zl>0\b0 .\f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \b\fs24 Nichtsortierzeichen, Umcodierung\b0\fs20 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 u\b0\f1\tab\b\f6\'dcbergehw\'f6rter herausnehmen\b0 . W\'f6rter (Zeichenketten), die von den Zeichen 'x' und 'y', z.B.\b\f7  u[]\b0\f1 , 
+\par \b\f7 uxy\b0\f1\tab\f6 umschlossen sind, werden weggelassen. Wenn x und y fehlen, wird f\'fcr 'x' das Nichtsortierzeichen genommen (\f7 -\f8\'d8\f6  Anh.A.1), f\'fcr 'y' das Leerzeichen (bei Nichtsortiermodus n0) bzw. ebenfalls das Nichtsortierzeichen. Mit\b\f7   u<>\b0\f6   k\'f6nnte man also bewirken, da\'df spitz geklammerte Angaben wegfallen. Ein evtl. hinter 'y' stehendes Leerzeichen wird auch beseitigt, sonst h\'e4tte man ein \'fcberz\'e4hliges. \f1 
+\par \b\f7 U\b0\f1\tab\f6 Die Anwendung dieser Befehle empfiehlt sich f\'fcr Sortierzwecke bei der Kopfkategorie #u1. \f1 
+\par \b\f7 Uxy\b0\f1\tab\f6 Bei 'U' wird dann ferner das erste Wort automatisch gro\'df geschrieben. \f1 
+\par \b\f9 u\'ac\'ac\b0\i\f1\tab Sonderfall:\i0  \b Nichtsortierzeichen verdoppeln\b0 
+\par \tab Wenn ein Nichtsortierzeichen vor einem Wort steht, wird ein zweites dahinter gesetzt. D.h. der "Nichtsortiermodus" (\f7 -\f8\'d8\f6  Anh.A.1) wird von 0 auf 1 ge\'e4ndert. \i\f1 Achtung: \i0\f6 In der .CFG mu\'df zu diesem Zeitpunkt aber\f7   n0\f6   gesetzt sein, hernach mu\'df man es auf\f7   n1\f1   setzen. 
+\par \b\f7 y0\f1\tab Umcodierung abschalten\b0\f6  : der aktuelle Arbeitstext wird nicht umcodiert, d.h. die p- oder q-Befehle sollen f\'fcr diese Kategorie nicht gelten. Umgekehrt: \f1 
+\par \b\f7 y1\f1\tab Umcodierung erzwingen\b0  : diese Befehle bewirken ein sofortiges Umcodieren. Bei\b\f7  y1\b0\f1  werden die 
+\par \b\f7 y2\b0\f1\tab p-Befehle, bei\b\f7  y2\b0\f6  die q-Befehle dazu benutzt. Danach wird die Anweisung normal weiter abgearbeitet. Direkte Pr\'e4- und Postfixe, die dann noch folgen, werden nicht mehr umcodiert, was meistens der Sinn dieser Befehle ist. \f1 
+\par \b\f7 y3\b0\f1\tab\f6 Nur die Texel-Ersetzungen (eingebettete Zwischenteile) und die V23-Ersetzungen ausf\'fchren (vb163/164) \f1 
+\par \b\f7 y\f9 4\b0\f1\tab\f6 UTF-8-\f1 Codes sollen in die nachfolgende Umcodierung \f6 nicht \f1 einbezogen werden. ("news" 55) 
+\par \b\f7 y"n"\b0\f1\tab\f6 Vom AT nur die Zeichzen bestimmten Typs nehmen, die anderen weglassen.  n ist ein Zeichen, dessen Code sich als Summe aus folgenden Werten zusammensetzen kann: 
+\par \tab 1=Ziffern, 2=Kleinbuchstaben, 4=Gro\'dfbuchstaben, 8=Sonderzeichen (incl. Leerzeichen). 
+\par \tab Das Zeichen n ist dann die Summe aus 48 (="0") + Summe der gew\'fcnschten Werte \f1 
+\par \b\f7\tab\b0\f6 Z.B. w\'fcrde \f9 y"7"\f6  hei\'dfen: Alle Buchstaben und Ziffern nehmen, andere Zeichen weglassen. \f1 
+\par \tab\f6 Oder:  \f9 y"<"\f6  w\'fcrde Gro\'dfbuchstaben und Sonderzeichen nehmen (denn\f9  <\f6  = 60 = 48 + 8 + 4). \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \b\f3\fs24 Typ 2 : Anwendervariablen 
+\par \b0\fs20 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 =xy...\b0\f1\tab\b Anwendervariable vergleichen/gleichsetzen \b0\f6 : Pr\'fcfung auf Gleichheit, dann Reaktion. \f1 
+\par \b\f7\tab\b0\f1 Der Wert \b xy \b0\f6  besteht immer aus 2 Zeichen und steht f\'fcr eine Sonderkategorie \b\f7 #uxy \b0\f1 
+\par \tab\f6 Dieser Manipulationsbefehl erm\'f6glicht es, einen Arbeitstext unter einem Namen festzuhalten, dann mit dem in der nachfolgenden Aufnahme gefundenen, entsprechend aufbereiteten Text zu vergleichen und auf das Vergleichsergebnis zu reagieren. Der als \b\f1 Anwendervariable\b0  (oder \b Nutzervariable)\b0\f6  gespeicherte Kategorie-Inhalt bleibt also erhalten, bis er bei einer weiteren Aufnahme neu besetzt wird. Sehr wichtig ist das z.B. f\'fcr Rechenoperationen (10.2.6.6). \f1 
+\par \tab\f6 Die Anwendervariablen k\'f6nnen wie normale Kategorien auch in die Ausgabe einbezogen werden. \f1 
+\par \tab Vor dem Befehl kann eine Kette anderer Manipulationsbefehle stehen. Erst das Ergebnis dieser Befehlskette wird als Arbeitstext mit der Anwendervariablen verglichen. 
+\par \tab Der Befehl kann in drei Formen mit unterschiedlicher Wirkung auftreten: 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 =xy,z\b0\f1      oder\b\f7     =xy+M\b0\f1        oder\b\f7      =xy\b0\f1 
+\par \pard\fi-1440\li1440\tx864\tx1440\tx2160\tx2376\tx2880\tab xy\tab\f6 steht f\'fcr die Anwendervariable \f9 #uxy\f6 .  \f9 x\f6  mu\'df ein \b\f1 Buchstabe\b0\f6 , \f9 y\f6  kann ein beliebiges Zeichen sein (Namen mit mehr als 2 Zeichen nicht m\'f6glich!), \f1 
+\par \tab z\tab ist eine Zwischenteilnummer, 
+\par \tab M\tab ist eine Sprungmarke (beliebiges Zeichen). 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 Die Wirkung sei an einem Beispiel erkl\'e4rt: die Ausgabezeile \f1 
+\par \b\f7\tab #85 +S e" ; " \ul =st,17\ulnone  p'(' #90 4 #zz 1\f1 
+\par \b0\tab\f6 in einer Parameterdatei w\'fcrde bedeuten: \f1 
+\par \pard\fi-1440\li1440\tx864\tx1440\tx2160\tx2376\tx2880\tab\bullet\tab Nimm Kategorie #85 und schneide den mit " ; " beginnenden Teil ab. 
+\par \tab\bullet\tab Wenn der so entstandene Arbeitstext (der Serientitel) mit der Anwendervariablen\b\f7  st\b0\f6  \'fcbereinstimmt (d.h. mit dem in der vorangegangenen Aufnahme ermittelten Text), gib Zwischenteil 17 aus, \b\f1 aber sonst nichts\b0\f6 . Der Rest der Zeile (insbes. Pr\'e4- und Postfixangaben und der bedingte Sprung +S) bleibt dann unber\'fccksichtigt. \f1 
+\par \tab\bullet\tab Wenn der Text \b nicht\b0  mit\b\f7  \f9 #u\f7 st\b0\f6  \'fcbereinstimmt, ersetze den Inhalt von\b\f7  \f9 #u\f7 st\b0\f1  durch den neuen Text \b und\b0\f6  fahre normal fort (Pr\'e4fix '(' ausgeben, dann den Text, dann die angegebenen bedingten Postfixe f\'fcr die nachfolgende Kategorie vormerken, dann den Sprung ausf\'fchren. \f1 
+\par \tab\bullet\tab Wenn wir statt "\f7 =st,17\f1 " jedoch "\f7 st+M\f1 " schreiben, wird bei \b Gleichheit\b0  der Export an der Sprungmarke \f7 #-M\f1  \f6  \f1 fortgesetzt - ebenfalls ohne Ausgabe des Textes von #85. Die ganze Zeile bewirkt also dann bei Gleichheit nur eine Verzweigung, bei Ungleichheit das Umkopieren \b und\b0  die Ausgabe des Textes \b und\b0  den Sprung \f7 +S \f1 (falls er angegeben ist). 
+\par \tab\bullet\tab\f6 In jedem Fall hat man anschlie\'dfend den Text von\b\f7  #85\b0\f1  (ohne den Teil hinter "\b\f7  ;\b0\f1  ") in\b\f7  #ust\b0\f1 . 
+\par \tab\bullet\i\tab Sonderfall: \b\i0\f7 ,0\b0\f1  : der Rest der Zeile wird nicht verarbeitet 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 Wenn weder ",z" noch "+M" angegeben sind, wird der Arbeitstext in die Anwendervariable \f9 #uxy\f6   kopiert - zum sp\'e4teren Gebrauch - er wird \b\f1 aber nicht\b0\f6  ausgegeben. Indirekte Pr\'e4- und Postfixe werden jedoch ausgegeben, wenn welche definiert sind. \f1 
+\par \tab Wenn \b nur\b0  die Zuweisung erfolgen soll, aber garantiert keinerlei Ausgabe:  \b\f7 =xy #zz 0\b0\f1   schreiben. \i Beispiel:\i0 
+\par \pard\fi-862\li862\tx864\tx1440\tx2160\tx2376\tx2880\b\f7\tab #75 =vl #zz 0\b0\f6     \'fcberf\'fchrt den Verlagsnamen in\b\f7  vl\b0\f1  und sonst nichts, insbes. \b\fs24 ke\b0  \fs20 wirkt nicht wg. #zz 0\fs24 
+\par \fs20\tab\f6 Wenn der Text der Anwendervariablen "xy" als solcher auszugeben ist, mu\'df er als Kategorie angesprochen werden. Seine Kategorienummer w\'e4re\f7  #u\f9 xy\f6 , man erh\'e4lt ihn also durch Voranstellen von\f7  #u\f6  (f\'fcr "user variable"). Das bedeutet: es gibt neben den schon bekannten Sonderkategorien\f7  #u1\f1  und\f7  #u2\f6  noch eine gro\'dfe Zahl (genau 26*62 = 1612) von m\'f6glichen Anwendervariablen. Abgelegt werden sie im Hintergrundspeicher. 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\i\f1 Tip:\i0  Die momentanen Anwendervariablen kann man sich ansehen, indem man im Editor den Befehl\f7   #au\f1   gibt\f6 .\f1   \f6 Im Windows-Programm\f1  \b\i a99\b0\i0\f6 : Alt+r zwecks Anzeige aller #u-Variablen im Auswahlfeld, und a99 erlaubt hier auch beliebiges \'c4ndern und L\'f6schen (mit Entf-Taste). 
+\par \pard\fi-862\li862\tx864\tx1440\tx2160\tx2376\tx2880 Au\'dferdem kann man zum Testen einen Befehl\f7  #uxy\f1  in die Exportparameter einbauen, dann kommt der Inhalt von\f7  #uxy \f1 mit heraus. \f6 
+\par 
+\par \tab\'c4ndern kann man die Anwendervariablen \'fcber drei weitere Manipulationsbefehle: \f1 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 axy\b0\f1\tab\f6 Die Anwendervariable #uxy wird ver\'e4ndert: der Arbeitstext wird vor \f1 
+\par \b\f7 Axy\b0\f1\tab\f6 bzw. hinter #uxy gesetzt. Sonst passiert nichts, d.h. es wird auch nichts ausgegeben. Mit diesem Mechanismus, mehrfach angewandt, sind sehr lange Anwendervariablen produzierbar. Die Grenze: alle Anwendervariablen zusammen d\'fcrfen nicht l\'e4nger als 10.000 Zeichen werden. \f1 
+\par \pard\fi-851\li851\tx864\tx1440\tx2160\tx2376\tx2880\tab\i Sonderfall: \i0\f6 Wenn y die Tilde (~) ist, wird der AT in die n\'e4chste freie Kategorie #uxy kopiert. Wenn z.B. #uZa und #uZb schon besetzt sind, dann kommt #uZc dran, wenn  ... AZ~  oder ... =Z~  geschrieben wird. \f1 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 dxy\b0\f1\tab\f6 L\'f6scht die Anwendervariable  #uxy  (delete). Das kann an jeder beliebigen Stelle geschehen, ohne die Verarbeitung zu beeinflussen. \f1 
+\par \i\tab Ein Beispiel:\i0 
+\par \pard\fi-3600\li3600\tx864\tx1440\tx2160\tx2376\tx2880\b\f7\tab #75 dvo P" (" avo\b0\f1   \fs16\tab\f6 l\'f6scht #uvo, h\'e4ngt " (" an den Text von #75 und speichert das in #uvo\f1\fs20 
+\par \b\f7\tab #74 P")" Avo\b0\f1\fs16\tab\tab\tab\f6 h\'e4ngt ")" an den Text von #74 und f\'fcgt dies an #uvo hinten an.\f1\fs20 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab Diese zwei Zeilen setzen die Kategorien 
+\par \f7\tab   #74 Braunschweig 
+\par \tab   #75 Westermann\f1 
+\par \tab zusammen zu der Anwendervariablen 
+\par \f7\tab   #uvo Westermann (Braunschweig)\f1 
+\par \pard\fi-862\li862\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 die anschlie\'dfend an beliebiger Stelle f\'fcr die Ausgabe verwendbar ist. \f1 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\i\tab Sonderfall:\i0   Mit dem Befehl 
+\par \b\f7\tab   #74 p"abc" e3 dwq awq\b0\f1 
+\par \tab belegt man\b\f7  #uwq\b0\f1  mit dem Text "abc", falls\f7  #74\f1  existiert. Der Befehl\b\f7  dwq\b0\f6  l\'f6scht vorher die Variable\f7  #uwq\f1 , falls etwas drin steht. 
+\par \f6\tab\i Achtung:\i0  Nur direkte Pr\'e4- und Postfixe sind hier m\'f6glich, also nichts wie z.B.  \b\f9 p10\b0\f6 , um das Zwischenteil 10 vor den AT zu setzen!\f1  
+\par \tab\f6 Die Anwendervariablen gelten f\'fcr alle, bis zu vier geladenen Parametersets gemeinsam. \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 dx~\b0\f1 
+\par \b\f7 d~~\b0\f1\tab\i Sonderfall: \i0  Mit \b\f7 dx~\f1  \b0\f6 l\'f6scht man alle Variablen \f7 #uxy\f1 , mit \b\f7 d~~\b0\f6  l\'f6scht man s\'e4mtliche #u-Variablen. \f1 
+\par \pard\nowidctlpar\hyphpar0\fi-13\tx0\tx851\tx1440\tx2160\tx2376\tx2880\tab\cf0\f5 Die Variablen dienen im Windows-System zugleich der Skriptsprache FLEX. 
+\par \pard\nowidctlpar\hyphpar0\fi-852\li852\tx851\tx1440\tx2160\tx2376\tx2880\tab Als Musterparameter, in denen Gebrauch von Variablen gemacht wird, werden  A-0.APR und ALPHA2.APR mitgeliefert:\cf2\f1 
+\par \pard\fi-862\li862\tx864\tx1440\tx2160\tx2376\tx2880\tab 
+\par \pard\fi-2410\li2410\tx864\tx1440\tx2160\tx2376\tx2880\tab A-0.APR  :\tab\tab\f6 Produktion einer sortierf\'e4higen Datei (aus .ALG  oder .ALD-Dateien) mit Personennamen und Satznummern oder Seitenzahlen, parallel zu "fahren" zur Produktion einer sortierten Liste mit einer der Dateien P-*.APR. \f1 
+\par \pard\fi-2376\li2376\tx864\tx1440\tx2160\tx2376\tx2880\tab ALPHA2.APR:\tab\tab Produktion des gedruckten Registers aus den mittels A-0.APR hergestellten und 
+\par \tab ALPHA3.APR\tab\tab\f6 anschlie\'dfend sortierten Daten. ALPHA2 fa\'dft gleiche Namen zusammen, ALPHA3 stellt dann die eigentliche Liste her. Diese zwei Parameterdateien sind unabh\'e4ngig von den Sortierbegriffen, d.h. man kann sie f\'fcr beliebige Registerproduktionen verwenden. \f1 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 Die Stapeldatei ALPHA.BAT koppelt alle Vorg\'e4nge hintereinander, so da\'df die Registerproduktion mit einem einzigen Befehl ausgel\'f6st werden kann. Modellieren Sie Ihre eigene Registerproduktion nach diesem Beispiel, indem Sie die Parameter an Ihre Datenstruktur anpassen. \f1 
+\par \tab\f6 Anwendervariable k\'f6nnen schon beim Start eines Programms vorbesetzt werden (Kap. 12, Option`\b\f7 -U\b0\f1 ). Wenn man z.B. SRCH startet, und\f7  #ubc\f6  soll sofort beim Start den Wert "xyz" haben, w\'fcrde man schreiben: \f1 
+\par \f7\tab srch ... -Ubcxyz\f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par 
+\par \b\f3\fs24 Typ 3 : Zeichenausgabe vor/nach Arbeitstext\b0\fs20 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 pz\b0\f1\tab\b\f6 Indirektes Pr\'e4fix\b0\f1  : Das Programm merkt sich die Zwischenteilnummer z bzw. die Steuerzeichen- 
+\par \b\f7 p\{CS\}\b0\f1\tab\f6 kette CS und gibt sie aus, bevor der Arbeitstext selbst ausgegeben wird. F\'fcr z kann auch ein \f1 
+\par \b\f7 p>K\b0\f1\tab Unterprogrammaufruf der Form >K stehen (\f7 -\f8\'d8\f1  10.2.6.5)\f7    pz\f1  und\f7  p>K\f6  k\'f6nnen mehrfach auftreten. \f1 
+\par \tab Unterschiede zu\b\f7  pX\b0\f1 :   (zum genauen Ablauf der Ausgabe siehe 10.2.6.1) 
+\par \pard\fi-1440\li1440\tx864\tx1440\tx2160\tx2376\tx2880\tab\bullet\tab\f6 Ein Zwischenteil kann Steuerzeichen und Strukturbefehle enthalten, dagegen mu\'df X eine in ".." oder '..' eingeschlossene Kette von druckbaren Zeichen sein. \f1 
+\par \tab\bullet\tab\f6 Das Indirekte Pr\'e4fix unterliegt nicht der Zeichen-Umcodierung (p- und q-Befehle). \f1 
+\par \tab\bullet\tab Bei\b\f7  pX\b0\f6  werden X und Arbeitstext zu einem neuen Arbeitstext vereinigt, so da\'df nachfolgende Manipulationsbefehle sich auf diese Gesamtkette beziehen. Insbesondere ist das f\'fcr\b\f7  R\b0\f1  und \b =\b0\f6  wichtig (s.u.): wenn man zusammengesetzte Dinge rechtsb\'fcndig ausgeben oder einer Anwendervariablen zuweisen will. 
+\par \tab\tab Bei\b\f7  pz\b0\f1  \f6 und \b\f9 P\f7 z\b0\f6  \f1 geht das nicht, denn das Zwischenteil wird \b nicht\b0  mit dem Arbeitstext vereinigt, sondern getrennt ausgegeben\f6  - der AT selbst ver\'e4ndert sich dabei nicht\f1 . 
+\par \tab\bullet\tab\f6 Indirekte Pr\'e4fixe sind leichter austauschbar. Bei konsequenter Anwendung kann man die gesamte Zwischenteil-Liste in eine Nachlade-Tabelle legen (.APT-Datei), die in mehreren, evtl. verschiedensprachigen, Versionen gehalten werden kann (\f7 -\f8\'d8\f1  10.2, Befehl t) 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 mz\b0\f1\tab\b\f6 Mehrfach-Pr\'e4fix\b0\f1  : Zwischenteil z etc. wird vor jeder Mehrfachkategorie ausgegeben, 
+\par \b\f7 m\{CS\}\b0\f1\tab nachdem die erste abgearbeitet ist. Wirkt nur dann, wenn statt des bedingten 
+\par \tab Sprungs der Wiederholungsbefehl "++" gesetzt wurde (\f7 -\f8\'d8\f1  10.2.6.1) und die Kategorie 
+\par \b\f7 m>K\b0\f1\tab\f6 mehrfach besetzt ist. Auch ein UP-Aufruf ist statt eines Pr\'e4fixes m\'f6glich. \f1 
+\par \i\tab Beispiel:\i0 
+\par \b\f7\tab #40 ++ p"von: " m"; "\b0\f1 
+\par \tab setzt\f7  "von: "\f6  als Pr\'e4fix vor den ersten Verf. (#40) und\f7  "; "\f6  als Mehrfach-Pr\'e4fix vor jeden weiteren, also #402, #40a usw. Wenn #40 nicht besetzt ist, werden auch #40a ... nicht ausgegeben! \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 Pz\b0\f1\tab\b Indirektes Postfix\b0\f6 : Zwischenteil z wird im Anschlu\'df an #xxf ausgegeben. (Geeignet f\'fcr Steuerzeichen!) \f1 
+\par \b\f7 P\{CS\}\b0\f1\tab Die Unterschiede zwischen\b\f7  Pz\b0\f1  und\b\f7  PX\b0\f6  sind dieselben wie beim Pr\'e4fix (siehe vorige Seite). \f1 
+\par \b\f7 P>K\b0\f1\tab Reihenfolge der Abarbeitung: 1. direktes, 2. indirektes, 3. bedingtes Postfix. 
+\par \pard\fi-862\li862\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 Die P-Befehle k\'f6nnen allesamt nicht mehrfach auftreten. \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\f6 
+\par F\'fcr alle indirekten Pr\'e4- und Postfixe gilt: bei den Varianten mit \{ CS \} findet keine Umcodierung statt, d.h. innerhalb von \{ ... \} m\'fcssen die echten Ausgabewerte stehen. \f1 
+\par 
+\par 
+\par \pard\tx9413\b\f5\fs24 Typ 4 : Bedingungspr\'fcfungen \f3 
+\par \b0\fs20\tab\f1 [s.a. \i\f6 Zusatzm\'f6glichkeiten\i0\f1  unter Typ 1, bX]\f3 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\lang1033\b\f7 cX\tab Check:\b0  \f6 der Arbeitstext bleibt unver\'e4ndert, wenn X darin vorkommt; wenn X nicht vorkommt, wird die Befehlszeile ergebnislos abgebrochen.\f7  
+\par \tab\i\f9 Beispiele und Sonderf\'e4lle:\i0\f7 
+\par \pard\fi-3600\li3600\tx864\tx1440\tx2160\tx2376\tx2880\tab #20 +m c"Marx" e0\tab wenn "Marx" in #20 vorkommt, gehe zur Sprungmarke #-m, sonst 
+\par \tab #20 +m c"~marx" e0\tab\f6 zur n\'e4chsten Zeile; das '~' bewirkt, da\'df es nicht auf Gro\'df-/Kleinschreibung ankommt, also auch "Marx"  oder "MARX" gilt.\f7 
+\par \tab #20 +m c"^Marx" e0\tab wenn "Marx" in #20 \b nicht\b0  vorkommt, gehe zur Sprungmarke #-m 
+\par \tab #20 +m c"^~marx" e0\tab wenn "Marx" oder "marx" in #20 \b nicht\b0  vorkommt, ... 
+\par \tab #20 +m c">abc" e0\tab\f9 wenn der AT alphanumerisch gr\'f6\'dfer ist als "abc", ... \f7 
+\par \tab #20 +m c">#nnn" e0\tab\f9 wenn der AT alphanumerisch gr\'f6\'dfer ist als Inhalt von #nnn, ... \f7 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\f1\tab\tab Zahlenvergleiche: siehe `\cf1\ul\b Rechenbefehle\cf2\ulnone\b0 `\f7  (10.2.6.6) 
+\par \pard\fi-3600\li3600\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \tab #20 +m c"~>#nnn" e0\tab\f9 dasselbe, aber gro\'df/klein ist egal.  Beides geht auch mit < statt >. \f7 
+\par \tab #20 +m c"#uxy" e0\tab\f9 wenn #20 den Inhalt von #uxy enth\'e4lt, ... (bei t3 in CFG: c"#uxyy") \f7 
+\par \lang1031\i\f1\tab\tab\tab\tab\tab\tab\tab Hinweis: \i0 Wenn man t3 in der CFG hat: \f7 c"#uxyy"\f1 . 
+\par \lang1033\f7\tab #20 +m c"[abc]" e0\tab wenn eins der drei Zeichen a,b,c in #20 vorkommt, ... 
+\par \tab #20 +m c"^[abc]" e0\tab wenn \b keins\b0  der Zeichen a,b,c in #20 vorkommt, ... 
+\par \pard\lang1031\fs18\tab\i\f9\fs20 Sonderf\'e4lle:\i0\f7 
+\par \tab\tab c"[?]"     \f6 mu\'df man schreiben, wenn man die Existenz eines Fragezeichens feststellen will!\f7 
+\par \tab\tab c"[[]"     \f6 mu\'df man schreiben, wenn man die Existenz des Zeichens [  feststellen will!\f7 
+\par \tab\tab c"[^]"     \f6 mu\'df man schreiben, wenn man die Existenz des Zeichens ^  feststellen will!\f7 
+\par \pard\fi-710\li710\f1\fs18\tab\f6\fs20 Nun kommt nat\'fcrlich noch die Frage: Und was, wenn wirklich die Zeichenkette "<abc" oder "^abc" etc. gesucht werden soll? \f1 
+\par \pard\tab Dann schreibt man c"?<abc" oder b"?^abc" etc. 
+\par \pard\fi-710\li710\tab\f6 Wenn aber '<' auch das allererste Zeichen sein k\'f6nnte - dann w\'fcrde ? ja nicht greifen! Dann setzt man  #t\{ s0 \} vorweg und #t\{ s4 \} hernach.\f1\fs18 
+\par \pard\fi-3600\li3600\tx864\tx1440\tx2160\tx2376\tx2880\fs20 
+\par 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 ik,x\b0\f1\tab\b\f6 Indikatorpr\'fcfung\b0\f1 : die Position k (= 1...255) im Kategorietext (#cc) wird verglichen mit dem Zeichen x. 
+\par \b\f7 Ik,x\b0\f1\tab Bei Gleichheit (\b\f7 i\b0\f1 ) bzw. Ungleichheit (\b\f7 I\b0\f1 ) wird weitergemacht, andernfalls wird der Arbeitstext nicht ausgegeben, d.h. die laufende Befehlszeile abgebrochen. 
+\par \i\tab Achtung:\i0\f6  das erste Zeichen des Kategorietextes hat die Nummer 4 (bei 3stelligen Kategorien 5). Somit kann man mit k=3 bzw. 4 das Indikatorzeichen (die 3. bzw. 4. Stelle der Kategorienummer) pr\'fcfen (vgl. "Indikatoraktion" \f7 -\f8\'d8\f1  10.2.6.4). 
+\par \tab\i Beispiele:\i0 
+\par \b\f7\tab i4,A\b0\f1  : nur weitermachen, wenn Arbeitstext mit 'A' beginnt. (2stellige Kategorien) 
+\par \b\f7\tab I3,t\b0\f1  : nur weiter, wenn das dritte Kategoriezeichen kein 't' ist. 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 vk,x\f1\tab Zeichenvergleich\b0 . Das Zeichen an der Position\b\f7  k\b0\f1  (= 1...255) des Arbeitstextes wird verglichen mit 
+\par \b\f7 Vk,x\b0\f1\tab dem Zeichen\b\f7  x\b0\f1 . Wenn sein ASCII-Code kleiner ist als\b\f7  x\b0\f6  (bzw. gr\'f6\'dfer), wird in der Zeile weitergearbeitet, andernfalls wird der Arbeitstext nicht ausgegeben, d.h. die Befehlszeile abgebrochen. \f1 
+\par \tab Die Numerierung der Zeichen ist genauso wie bei den\b\f7  i/I\b0\f1 -Befehlen zu verstehen. 
+\par \pard\fi-851\li851\tx864\tx1440\tx2160\tx2376\tx2880\i Anmerk.:\tab\i0\f6 Die i- und v-Befehle pr\'fcfen den Inhalt der \i\f1 Ausgangskategorie\i0  (#cc), nicht den momentanen \i Arbeitstext\i0\f6 . Wenn man letzteres will: zuerst eine #u-Variable draus machen und dann diese pr\'fcfen. \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\i\f13 B\f1 eisp.:\i0  \tab\f6 Ist das erste Kategoriezeichen ein Gro\'dfbuchstabe:  \f1\tab ... \b\f7 v4,[ V4,@ \b0\f1 ... 
+\par \tab Ist das erste Kategoriezeichen ein Kleinbuchstabe:  \tab ... \b\f7 v4,\{ V4,`\b0\f1  ... 
+\par \pard\fi-851\li851\tx864\tx1440\tx2160\tx2376\tx2880\tab Ist das erste Kategoriezeichen eine Ziffer:  \tab ... \b\f7 v4,: V4,/ \b0\f1 ...\i 
+\par \tab ... \i0\f6 und wenn es ein 3stelliges Schema ist, mu\'df es immer 5 statt 4 hei\'dfen, um das erste Zeichen zu pr\'fcfen. \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \b\f14 l<k\b0\tab\b\f6 L\'e4ngenpr\'fcfung\b0 . Ist der AT k\'fcrzer als k Zeichen\f14 
+\par \b l>k\b0  \tab\f6 bzw. l\'e4nger als k Zeichen, \f1 
+\par \tab wird die Zeile fortgesetzt, sonst wird sie abgebrochen und nichts ausgegeben.\f14 
+\par \f1 
+\par 
+\par \pard\fi-658\li658\tx864\tx1440\tx2160\tx2376\tx2880\b\f3\fs24 Typ 5 : Sonderaktionen\b0\fs20 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 !\f1\tab Testbefehl\b0 . Anwendbar nur in Anzeigeparametern, und nur in PRESTO (nicht in \b\i a99\b0\i0 )! 
+\par \pard\fi-862\li862\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 Die Verarbeitung h\'e4lt hier an, der aktuelle Arbeitstext wird am Bildschirm gezeigt, das Programm wartet auf einen Tastendruck. So kann man die Ergebnisse komplizierter Manipulationen beobachten. \f1 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 C\b0\f1\tab\f6 Sonder-Pr\'e4fix \b\f1 Zeilenvorschub\b0  ("Carriage Return") 
+\par \tab Z.B. bewirkt der Kategoriebefehl 
+\par \f7\tab #87 C p"ISBN "\f1     dasselbe wie\f7     #87 p\{ C "ISBN " \}\f1   , 
+\par \tab\f6 und zwar, da\'df Kategorie #87 auf neuer Zeile mit "ISBN " davor beginnt. \f1 
+\par \tab\i Genauer: \i0\f6  C bewirkt, da\'df der Wert des Parameters \b\f7 ze\b0\f1  ausgegeben wird (\f7 -\f8\'d8\f1  10.2.3) 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 N\b0\f1\tab\f6 Sonder-Pr\'e4fix \b\f1 Seitenvorschub\b0  ("New Page") 
+\par \tab\f6 Wenn dieser Befehl kommt, f\'fchrt das Programm auf der Stelle einen Seitenumbruch aus, d.h. es vollf\'fchrt den Fu\'dfabschnitt (\f7 -\f8\'d8\f1  10.2.6.5.3), dann gibt es den Parameter\b\f7  sv\b0\f6  aus, und danach macht es auch noch den Kopfabschnitt, bevor es hinter dem N fortf\'e4hrt mit der Bearbeitung des aktuellen Arbeitstextes. \f1 
+\par \tab Bei Kartendruck wird die aktuelle Karte beendet und eine \b Fortsetzungskarte\b0  begonnen. Dabei bleiben die Angaben im Kopf stehen, die zum Zeitpunkt des Sonderbefehls\b\f7  #wh\b0\f1  vorhanden waren, und der Parameter\b\f7  fa\b0\f6  wird ausgef\'fchrt. Ansonsten wird automatisch eine Fortsetzungskarte gemacht, wenn der Platz nicht mehr reicht; mit diesem Befehl kann man es gezielt veranlassen. \f1 
+\par \pard\fi-862\li862\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 Dieser Befehl ist z.B. auch n\'fctzlich, wenn beim Listendruck an bestimmten Stellen eine neue Seite beginnen soll: etwa wenn ein neuer Alphabetabschnitt oder eine neue Sachgruppe beginnt oder wenn eine ganz bestimmte Kategorie besetzt ist oder nicht. \f1 
+\par \b\f7 Z\b0\f1\tab Sonderbefehl \b\f6 Textausgabe unterdr\'fccken\b0  : der  Arbeitstext selbst wird nicht ausgegeben, die anderen Teile der Kategoriezeile werden aber ausgef\'fchrt: Pr\'e4- und Postfixe sowie der bedingte Sprung. Damit kann man Reaktionen auf bestimmte Bedingungen programmieren. Siehe auch\f7  e0\f6  = Textl\'e4nge auf 0 setzen - die Wirkung ist gleich. Hinter\b\f7  Z\b0\f6  mu\'df evtl. noch\f7   #zz 0\f6   stehen, um zu verhinden, da\'df der Parameter\b\f7  ke\b0\f1  ausgegeben wird. 
+\par \b\f15\fs24 l\b0\i\f1\fs20 xy\b\i0\tab\f6 L\'e4nge\b0\f1  des aktuellen Arbeitstextes in die Variable\f7  #u\i\f1 xy\i0  schreiben. 
+\par \b\f15\fs24 L\b0\i\f1\fs20 xy\b\i0\tab Label ("name") der aktuellen Kategorie\b0  aus CFG in \f7 #uxy\f1  kopieren (\lang1024\f8\'e8\lang1031\f1  A.1.2). 
+\par \pard\fi-864\li864\tx864\tx9923\b\f15\fs24 M\f1\fs20\tab Arbeitstext als Datenfeld in aktuellen Satz einordnen\b0\tab\b\i Globale Manipulation\b0\i0 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 Der Arbeitstext mu\'df zu diesem Zeitpunkt mit einer g\'fcltigen Kategorienummer beginnen. Dann wird er in den aktuellen Satz als neue Kategorie eingeordnet bzw., wenn darin schon vorhanden, ersetzt. \f1 
+\par \tab\f6 Gebraucht wird dieser Befehl als Vorbereitung f\'fcr "Globale Manipulationen". Man legt eine Parameterdatei an, die eine Sprungmarke #-# enth\'e4lt, und darauf folgend Exportbefehle, die Ver\'e4nderungen an einem Datensatz vornehmen, indem sie den Befehl M nutzen. Wenn diese Parameterdatei f\'fcr Export geladen ist (mit\f7  -e\f6 ), kann man vom Anzeigemen\'fc (\f7 -\f8\'d8\f6  1.5.4) aus mit <Strg>+F10 die Ausf\'fchrung des Abschnitts #-# starten, also Datens\'e4tze und Ergebnismengen manipulieren lassen. \f1 
+\par \i\tab Sonderfall:\i0\f6  Kategorie aus dem aktuellen Datensatz l\'f6schen. Wenn der Arbeitstext nur die Kategorienummer, keinen Text enth\'e4lt, wird die betreffende Kategorie aus dem Satz gel\'f6scht. \f1 
+\par \i\tab Beispiel:\i0\f7   #nr p"#71 " e4 M\f1    Kategorie #71 wird beseitigt. 
+\par \i\tab\f6 Teilfeld l\'f6schen:\i0\f1  (siehe Gruppe 1, Befehl\b\f7  ~x\b0\f1 ) 
+\par \tab Wenn aus Kategorie #245 das Teilfeld\f7  \b\f11\'b2\b0\f7 x\f6  zu beseitigen ist, w\'fcrde man schreiben: \f1 
+\par \pard\fi-862\li862\tx864\tx1440\tx2160\tx2376\tx2880\f7\tab #245 ~x p"#245 " M\f1     (\i Achtung:\i0  Wert von\f7  ks\f1  beachten, d.h. evtl.\f7  b4\f6  o.\'e4. erg\'e4nzen) \f1 
+\par \pard\fi-864\li864\tx864\tx9413\b\f15\fs24 X\b0\i\f1\fs20 i\i0\tab Aus dem Arbeitstext einen \b\f6 Sondereintrag f\'fcr satz\'fcbergreifende Suche\b0\f1  machen.\f6        \f1 [neu in V15] 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 'X' steht hier wirklich f\'fcr den Buchstaben X.) Diese Operation dient der L\'f6sung des sog. "Schiller-R\'e4uber-Problems" beim Retrieval.  \f1 
+\par \i\tab Beispiel: \i0\f6 Angenommen, wir haben einen verkn\'fcpften Untersatz mit der Kategorie\f7   #09 1234+13\f6   und es handelt sich um Band 13 von Schillers "Gesammelte Werke", betitelt "Die R\'e4uber". Wenn wir folgendes in die Index-Parameter einbauen:  (mehr dazu: \f7 -\f8\'d8\f1  10.2.6.9) 
+\par \f7\tab ak=09+S 
+\par \tab ... 
+\par \tab #-S 
+\par \tab #u1 e"+" X9\f6      #u1 enth. Prim\'e4rschl. des Hauptsatzes, indexiert in Reg. 9\f7 
+\par \tab #+#\f1 
+\par \pard\fi-862\li862\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 dann entsteht ein spezieller Registereintrag f\'fcr diesen Untersatz, aber unter der internen Nummer des Hauptsatzes. Dies erm\'f6glicht beim Retrieval (ab V15) die "Plus-Suche", d.h. den Befehl\f7   find`per`&schiller`and`tit`raeuber\f6 . Das '&' vor schiller bewirkt, da\'df alle Unters\'e4tze von S\'e4tzen, die "\f7 schiller\f6 " enthalten, mit in die Verkn\'fcpfung einbezogen werden, also auch der bewu\'dfte Satz von Band 13. \f1 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 ?\b0\f1\tab In allen Suchzeichenketten X kann das Fragezeichen '?' als \b Maskierungszeichen\b0  vorkommen. 
+\par \tab Z.B. bewirkt\b\f7   b"19??"\b0\f6  , da\'df das Druckfeld genau hinter einer Jahreszahl beginnt. \f1 
+\par \tab Soll ein anderes Zeichen als Maskierungszeichen verwendet werden erreicht man dies mit dem Befehl 
+\par \b\f7 ?=%%\b0\f1\tab\f6 dadurch wird '%%' zum \b Maskierungszeichen\b0  erkl\'e4rt \cf0\f5  (g\'fcltig f\'fcr die gesamte Laufzeit des Exports)\cf2\f6 , und man m\'fc\'dfte\f7  b"19%%" \f6 schreiben\f1 . 
+\par \f6\tab Dieser Befehl geh\'f6rt zu den Basisbefehlen! Er kann deshalb \'fcberall stehen und gilt f\'fcr die gesamte Parameterdatei.\f1  
+\par \f6\tab Allerdings kann man den Code zwischendurch mit dem \b\f9 #b\b0\f6 -Befehl umschalten (10.2.6.4):  \b\f9 #b?\f7 =\f9 *\b0\f6   macht ad hoc das * zum Maskierungszeichen\f1 
+\par \tab In den Befehlen mit 'X' ist auch die \b Suche nach einem von mehreren Zeichen\b0\f6  m\'f6glich; dies geht genauso wie bei den ak-Befehlen, z.B.\b\f7   e"[.,:;-/]"\b0\f1  um den Arbeitstext am \b ersten\b0  Interpunktionszeichen enden zu lassen, oder\b\f7  t"[.,]"\b0\f1 , um hinter dem \b letzten\b0  Punkt oder Komma abzuschneiden. 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \pard\fi-658\li658\tx864\tx1440\tx2160\tx2376\tx2880\b\f3\fs24 Index-Sonderbefehle\b0\fs20 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\f1 
+\par \b\f6 Index-Pr\'e4fix\b0\f1 
+\par \f6 Wenn man mehrere Register (Teil-Indizes) anlegen will (Beispiel: CAT.API), braucht man eine M\'f6glichkeit, f\'fcr jeden Schl\'fcssel seine Zugeh\'f6rigkeit zu einem bestimmten Register zu regeln. Dazu wird das \b Index-Pr\'e4fix\b0\f1  benutzt. Es besteht aus dem Zeichen '\b |\b0\f6 ' (senkrechter Strich) und einer Ziffer von 1 bis 9.  F\'fcr Register 10 und 11:\b\f7   |:\b0\f1  und\b\f7  |;\b0\f1  . 
+\par \f6 Das Indexpr\'e4fix wird wie jedes andere Pr\'e4fix vor den Arbeitstext gesetzt, also mit dem Manipulationsbefehl p. \f1 
+\par Entweder hat man ein Zwischenteil wie z.B.\b\f7  37="|5"\b0\f1  und verwendet es mit dem Befehl\b\f7  p37\b0\f1 , oder man gibt\b\f7  p"|5"\b0\f6  als direktes Pr\'e4fix. \f1 
+\par 
+\par \i Beispiel:\i0 
+\par 
+\par \pard\fi-1440\li1440\tx864\tx1440\tx2160\tx2376\tx2880\f7 ak=4..+N\lang1033\f10\tab Personennamen alle bei Sprungmarke #-N verarbeiten\lang1031\f7 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 ... 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880 #-N\tab 
+\par \pard\fi-1440\li1440\tx864\tx1440\tx2160\tx2376\tx2880 #u1 u p"|7"\lang1033\f10\tab\f16 Nichtsortierw\'f6rter herausnehmen, Zuordnung zu Index 7\lang1031\f7 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 #+#\f1 
+\par 
+\par \f6 Innerhalb eines Abschnitts k\'f6nnen mehrere Schl\'fcssel aufbereitet werden. Dann m\'fcssen diese mit dem ASCII-Code 8 getrennt werden. Z.B. kann man die zus\'e4tzlichen Schl\'fcssel mit dem Pr\'e4fix\f7  p\{ 8 \}\f1  versehen. Oder man setzt die Zeile 
+\par \f7 #t\{ 8 \}\f1 
+\par \f6 zwischen zwei Schl\'fcsseldefinitionen. Es macht nichts, wenn der Code 8 mehrfach hintereinander vorkommt. \f1 
+\par 
+\par \b Akronyme\b0 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 Kn\b0\f1\tab\f6 F\'fcr die Index-Produktion gibt es einen weiteren Manipulationsbefehl zur Herstellung besonderer Schl\'fcsselstrukturen, der sog. \b\f1 Matchcodes\b0  oder \b Akronyme\b0 : 
+\par \i\tab Beispiel:\i0\f6  Ein "Titelakronym" soll aus 6 Zeichen bestehen, wobei von den ersten 6 W\'f6rtern der gew\'e4hlten Kategorie jeweils der erste Buchstabe zu nehmen ist. \f1 
+\par \tab Das erreicht man mit dem Bearbeitungsbefehl K : 
+\par \b\f7\tab #20 K1 K1 K1 K1 K1 K1\b0\f1 
+\par \pard\fi-6480\li6480\tx864\tx1440\tx2160\tx2376\tx2880\tx3600\tx4320\tx5040\tx5760\tab Damit werden aus den Titeln\tab\tab\tab\tab\tab\f6 die Schl\'fcssel \f1 
+\par \f7\tab #20 Common sense and humour in physics\tab\tab csahip 
+\par \tab #20 Nathan der Weise\tab\tab\tab\tab\tab ndweis\f1 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 Der zweite Titel hat weniger als 6 W\'f6rter; der Befehl k statt K w\'fcrde bewirken, da\'df der Schl\'fcssel "ndw   " entst\'fcnde, w\'e4hrend bei K, wie man sieht, die fehlenden Buchstaben vom letzten Wort erg\'e4nzt werden. \f1 
+\par \tab\f6 Will man die ersten 10 Zeichen aus dem Titel als Schl\'fcssel verwenden so gibt man \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\b\f7 #20 k10\b0\f1 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 und erh\'e4lt "commonsens" bzw "nathanderw", Leerzeichen werden also weggelassen. (Hier w\'e4re das Ergebnis bei K10 dasselbe.) \f1 
+\par \tab\f6 'K' und 'k' schlie\'dfen 'u' ein, d.h. Artikel am Anfang, sofern als solche mit dem Nichtsortierzeichen gekennzeichnet, werden weggelassen. \f1 
+\par \tab\f6 Akronyme sind sinnvoll f\'fcr Dublettenpr\'fcfungen: man lege einen Sonderindex oder eine Abteilung f\'fcr diese Akronyme an und verwende sie als Prim\'e4rschl\'fcssel (zust\'e4ndige ak-Zeile an die erste Stelle r\'fccken). Anschlie\'dfend kann man mit dem  Programm UPDATE -fc  einen Dublettencheck fahren (\f7 -\f8\'d8\f1  Kap.9). 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par  
+\par 
+\par \b\fs24 Kombinationen\b0\fs20 
+\par 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 Alle Vorbearbeitungen sind miteinander mehrfach kombinierbar: z.B. w\'fcrde die Befehlskette \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\f7 #83 \b b" ; " e", " e10 s10 73\b0  #zz 0\f1 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab mit dem Zwischenteil  73="Tagungsort: "  
+\par \tab oder gleichwertig: 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \f7 #83 \b b" ; " e", " e10 s10 p"Tagungsort: "\b0  #zz 0\f1 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 aus der Kongre\'dfkategorie #83 den Tagungsort mit maximal 10 Zeichen herausl\'f6sen und k\'fcrzere Namen mit Leerzeichen erg\'e4nzen. Hier ist der fettgedruckte Teil die Manipulations-Befehlskette, p"Tagungsort: " ist das direkte Pr\'e4fix. \f1 
+\par \tab Wenn also z.B. 
+\par \tab\f6 #83 Bundeskongre\'df f\'fcr Sportp\'e4dagogik ; Garmisch-Partenkirchen, 1983 \f1 
+\par \tab bzw. 
+\par \tab #83 Politikwissenschaftliche Arbeitstagung ; Bonn, 1984.10.22-24 
+\par \tab eingegeben wurde, ergibt sich\f7   "Garmisch-P"\f1   bzw.\f7   "Bonn      "\f1  
+\par \tab (und im zweiten Fall nicht etwa\f7  "Bonn, 1984"\f1 , da dies durch\f7  e", "\f1  verhindert wird!) 
+\par \tab Die Exportprozedur bearbeitet beliebig viele Manipulationsbefehle hintereinander; dabei ist die Reihenfolge wichtig, denn jeder wirkt auf das Ergebnis des vorangegangenen Befehls. 
+\par \i\tab Empfehlung:\i0\f6  Befehle mit zahlenm\'e4\'dfiger L\'e4ngenbegrenzung (\f7 en, bn, rn, sn\f6 ) sollten in einer Befehlskette am besten an letzter Stelle stehen. Vor ihrer Ausf\'fchrung werden automatisch die Zeichenersetzungen erledigt, denn diese k\'f6nnen die L\'e4nge ver\'e4ndern (z.B. Ersetzung von '\'e4' durch 'ae' oder Beseitigung von Sonderzeichen). Wenn also weitere Manipulationen auf einen solchen Befehl folgen, mu\'df man \'fcberlegen, ob solche Ver\'e4nderungen des Textes evtl. stattgefunden haben. Z.B. w\'fcrde\f9  e"\'e4"\f1  nicht mehr funktionieren, wenn vorher\f7  e50\f6  stand und '\'e4' durch "ae" ersetzt wurde. \f1 
+\par \i\tab Noch ein Beispiel:\i0\f6  wenn man in #30 mehrere Notationen stehen hat, jeweils durch  " / " getrennt, dann w\'fcrde die Befehlskette \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\f7 #30 \b b" / " b" / " b5 e12\b0  ....\f1   
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 die dritte Notation herausnehmen und vom 5. Zeichen ab 12 Zeichen drucken. Hier sieht man auch, wie die mehrfache Anwendung desselben Befehls n\'fctzlich sein kann. Wenn in #30 nur einmal " / " vorkommt, bricht diese Befehlszeile ab und produziert kein Ergebnis. \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab\f6 Und ein Beispiel f\'fcr die Behandlung von Kopfkategorien: \f1 
+\par \tab Wenn man bei den Namenskategorien fallweise eine Ansetzungsform mit eingibt, die dann im Kopf erscheinen soll, 
+\par \tab z.B.\f7   #40 Goethe, Johann Wolfgang von = Goethe, Johann W.\f1 
+\par \tab\f6 so k\'f6nnte man schreiben: \f1 
+\par \tab\f6 a) f\'fcr den Kopf:\f7    #40 \b B" = "\b0  #zz 4\f1 
+\par \tab\f6 b) f\'fcr den Text:\f7    #40 \b e" = "\b0  #69 1 #72 8\f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \f6 Gleichfalls in den Bereich der Manipulationsbefehle geh\'f6ren die \b\f1 Rechenbefehle\b0  und die Befehle zum \b Nachladen\b0\f6  anderer Datens\'e4tze. Wegen ihrer eigenst\'e4ndigen und umfangreichen Bedeutung werden sie jedoch ausf\'fchrlich in eigenen Abschnitten behandelt: \f7 -\f8\'d8\f1  10.2.6.6/7. 
+\par \pard 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 `\cf1\ul\b Vorangehender Teil\cf2\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf2\ulnone\b0 ` 
+\par \pard 
+\par ?Vorangehender Teil=h ac10-6 
+\par ?Fortsetzung=h ac10-8 
+\par ?Rechenbefehle=h ac10-9 
+\par 
+\par }
+ 

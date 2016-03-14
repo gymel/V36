@@ -1,0 +1,48 @@
+  S-INVNR.APR : Sortieren nach Zugangsnummer (#91)
+  940604
+ 
+
+pn="Sortierformat #91"
+
+  die folgenden Angaben mssen so bleiben
+  damit die fr die Weiterverarbeitung n”tige .ALG-Form entsteht
+  --------------------------------------------------------------
+zl=0        ... Zeilenl„nge unbegrenzt
+ks=1        ... Beginn beim ersten Zeichen hinter #
+ke=0        ... Kategorie-Ende = 0
+as=""       ... Aufnahme-Start:
+ae=13 10    ... Aufn.Ende: 
+
+ts          ... l„dt die Zeichenumwandlungstabelle S.APT fr das Sortieren
+ag=0        ... Unteraufnahmen getrennt verarbeiten
+am=1        ... nur 1 Ausgabesatz soll produziert werden
+
+ ---------------------------------------------------------------
+
+ak=91.";"+a    s„mtliche Zugangsnummern, Trennung in #91 durch ";"
+
+#91 +a e0 #zz 0   bei Unters„tzen: weiter bei #-a, wenn es eine InvNr gibt
+
+#+-  wenn keine InvNr: kein output
+
+  ******************************************
+  Beginn der Verarbeitung von Hauptaufnahmen
+  ******************************************
+ 
+#-a
+        der Sortierbegriff wird als #u1 ausgegeben
+
+#t { h0 }    Aufnahme-Start
+!u1 b3 f" " e"[ /.-']" p"u1 " #zz 0    erster Teil
+!u1 b3 f" " b"[ /.-']" e"[/ (-.]" r6,0 #zz 0      zweiter Teil, 6stellig mit fhrenden Nullen
+!u1 b3 f" " b"[ /.-']" b"[/ (-.]" r3,0 p"." #zz 0      dritter Teil, 3stellig mit fhrenden Nullen
+#t{ 0 }
+     Die Druckform des Sortierfeldes: Produktion als #u2
+     (genauso wie #u1, nur ohne Umcodierung, dann fr den Druck verwertbar!)
+
+#u1 b3 p"u2 "   Inventarnummer in vorliegender Form
+
+tselect     Select.APT nachladen
+            diese Tabelle enth„lt die auszugebenden Kategorien
+            (S-KURZ, S-MITTEL, S-LANG, S-VOLL)
+

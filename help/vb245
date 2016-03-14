@@ -1,0 +1,217 @@
+
+Verlautbarung 245 der Entw.Abt.                              2012-01-25
+-------------------------------
+
+V32.0  Hauptthema: update.job mit neuen Faehigkeiten
+=====
+
+
+upd.exe : NEU
+=============
+Kurz und gut: Der Aufruf ist genau wie frueher und es kommt dasselbe
+raus, die Sache laeuft nur intern etwas anders.
+Alt: update.exe und upd.exe  werden jetzt zu  upd16.exe
+NEU: update.exe und upd.exe (identisch) sind 32bit-Programme.
+
+
+Das neue Programm upd.exe ersetzt nicht etwa, wie man denken
+koennte, komplett das alte 16bit-Programm! Gibt man den Befehl
+
+   upd -fm41 -ddemo2 -bcat -uneudat.alg
+
+so wird dieser umgewandelt in einen Aufruf von acon:
+
+   acon -jupdate -fm41 -ddemo2 -bcat -uneudat.alg
+
+Die Arbeit, die frueher das Programm update.exe machte, wird also
+nun von acon gemacht, indem es den Job  update.job  ausfuehrt und
+ihm die Optionen  -fm41 usw. uebergibt.
+
+Der  update.job  ist recht komplex. Es gab schon eine Vorversion
+(ab V28.5, s. Vb.207), die noch unvollkommen war. Die neue wurde 
+zunaechst von Thomas Berger geschrieben, in lockerer Anlehnung an
+unsere alte. Wir haben dann die neue nochmals ueberarbeitet, weiter
+vervollstaendigt, gestrafft, Variablen u.a. z.T. kuerzer und plausibler
+benannt, die Kommentare aber ausfuehrlicher gemacht. Einige auch von
+Berger bemerkte Schwaechen der FLEX-Sprache wurden nebenher ausgemerzt,
+siehe unten.
+
+Zu  update.job  gehoert eine Datei  optsget.inc, in der die
+uebergebenen Optionen, also z.B.  -uneudat.alg, ausgewertet und 
+in $-Variablen kopiert werden, z.B. -u  in  $OP_u. Mit diesen
+Variablen arbeitet dann der eigentliche update.job.
+
+Im Ergebnis hat man einen vollwertigen Ersatz des alten 16bit-
+Programms update.exe (jetzt upd16.exe). Darueber hinaus:
+
+o Auch Dateien im Externformat (.ADT) sind jetzt moeglich, und sie
+  duerfen auch im Windows-Code oder UTF-8 sein (s.u.)
+  Diese sind leichter mit ganz normalen Texteditoren zu erstellen als
+  die traditionellen Grunddateien (.ALD), in denen die Steuerzeichen
+  00 bis 06 vorkommen.
+  Hierbei gehen auch Feldloeschungen (mit _ als einzigem Feldinhalt)
+  und Einfuegen von zusaetzlichen Mehrfachfeldern, mit ~ hinter der 
+  Feldnummer, z.B.  insert #32~
+
+o Der  update.job  ist beliebig erweiterbar sowie in allen Punkten
+  variabel. Er ist ausfuehrlich kommentiert, an den fuer Erweiterungen
+  interessanten Stellen mit dem Wort ERWEITERUNG. Dadurch kann der
+  Job auch als Muster fuer eigene Projekte zur Verarbeitung von
+  Grund- und Externdateien dienen. 
+
+o Die Fehlerpruefungen und -meldungen sind zahl- und hilfreicher
+  als beim alten Programm.
+  Mit den Optionen -T1 und -T2 bekommt man mehr bzw. noch mehr Test-
+  und Ablaufmeldungen.
+
+o Mit der neuen Testoption --asif kann man "so tun, als ob", d.h. es
+  passiert alles, was passieren soll, nur ohne Speichern. Das ist also
+  vollkommen ungefaehrlich, aber eben nur zum Testen.
+
+o Weitere praktische Optionen:
+  --ANSI   : Daten sind im ANSI-Code, Datenbank aber intern ASCII
+  --UNICODE: Daten sind in UTF-8 (Wandlung per "xcode u")
+  --check  : gleichwertig -T2 (viele Meldungen)
+  --verbose: gleichwertig -T1 (nicht so viele Meldungen)
+  --quiet  : nur sehr wenige Meldungen (geringfuegig schneller)
+  --help   : Anzeige der unverzichtbaren Optionen
+
+o Die Include-Datei  optsget.inc  laesst sich auch in andere, eigene
+  Jobs einbinden, in denen man etliche Aufrufoptionen auswerten
+  muss. Diese werden dann durch  "perform OPGET" bequem in Variablen
+  $OP_x  (aus -x...) umgewandelt.
+ 
+ABER:
+Anders als beim alten  update.exe  muss man dem  update.job  alle
+noetigen Angaben im Aufruf uebergeben! Er ist kein interaktives
+Programm, das fehlende Angaben vom Nutzer abfragt, sondern ein sog.
+Konsolprogramm, das seine Arbeit vollautomatisch tut oder mit einem
+Hinweis beendet. Auch das alte Programm wurde aber normalerweise mit
+kompletten Aufrufen in Batchdateien fest eingebaut und tat seine
+Arbeit, ohne dass der Nutzer davon viel hatte wissen muessen. Fuer
+alle solchen Anwendungen braucht nun die betr. Batchdatei gar nicht
+geaendert zu werden! Das neue upd.exe an der Stelle des alten upd.exe
+(noch aelter: update.exe) startet in Wirklichkeit acon mit dem
+Job  update.job, das ist alles.
+
+Auch das Verfahren zum Einspeisen einer Backup-Kopie (Option -fp)
+funktioniert jetzt, bei den Vorversionen ging es noch nicht. Dazu war
+eine Verbesserung der Standardprozedur _backup.bat noetig, damit das
+Verfahren ueber das ORG-Menue klappt (in der Funktion "Datenbank-Kopie"
+startet _backup.flx ein Skript _backup.bat, und dieses erstellt die
+Batchdatei _catrest.bat. Die muss gestartet werden, wenn es denn zum
+Fall der Faelle kommt und eine Restaurierung aus der Sicherungskopie
+heraus noetig ist. Kurz zu den genannten Dateien:
+
+_backup.flx  :  Vorbereitungen des Aufrufs von _backup.bat
+                (Aufruf erfolgt z.B. ueber "h org : Datenbank-Kopie")
+
+_backup.bat  :  (gestartet aus _backup.flx) Ausfuehren der Kopie und
+                Erstellen einer Batchdatei fuer das
+                Restaurieren (catrest.bat im Fall der DemoBank)  
+
+catrest.bat  :  (im allgemeinen Fall:  <dbName>rest.bat)
+                Fuehrt das Zurueckholen der Sicherungskopie aus und
+                danach das Einspeisen der LOG-Datei mittels acon.
+
+Schon die Version V32.0 liefert das neue upd.exe mit statt des alten,
+das als upd16.exe auch noch dabei ist. Die ganze Umruestung passiert
+deshalb automatisch. Man wird normalerweise nur an den veraenderten 
+Meldungen merken, das sich was getan hat, aber die Ergebnisse von 
+alten Batchprozessen mit "update" oder "upd"  sollten gleich sein.
+
+Aber koennte ein echter 32bit-Ersatz fuer das alte update.exe
+nicht schneller sein als acon + update.job?
+Anders als srch hat update sehr viele schreibende Zugriffe auf die
+Indexdatei zu leisten. Diese sind relativ zeitaufwendig, sie sind aber
+enthalten in der Klassenbibliothek, nicht direkt in FLEX (also in
+update.job) realisiert; da steht nur der Befehl "put", der erledigt
+alles intern. Daher wuerde der Gewinn, anders als im Fall srch, kaum
+der Rede und der Muehe wert sein. Nach bisherigen Feststellungen ist
+das neue Verfahren in etwa so schnell wie das alte, mit Option
+--quiet etwas schneller.
+
+
+acon : Eingabe von mehreren Feldern gleichzeitig
+------------------------------------------------
+
+Befehlstrenner ';'
+... wird zum Problem, wenn er am Ende einer FLEX-Zeile auftritt, z.B.
+
+insert #27;
+
+um ein Feld  #27;  zu schaffen. Das Zeichen ; ist ja als Wiederholungs-
+zeichen hinter der Kategorienummer nicht verboten. Aber so klappte
+das nicht. Nun aber doch.
+Die Sequenz ;# ist bei acon (nicht bei a99) ein Trenner zwischen zwei
+Datenfeldern (nicht #u-Variablen). Wenn man also schreibt
+var "#18 abc;#19 def"
+insert
+erhaelt man zwei Felder #18 und #19 im aktuellen Satz. 
+Fuer a99 muesste man dagegen schreiben
+var "#18 abc" n "#19 def"
+insert
+Dies wurde so geregelt, um die Praktik des "Code injection" bei acon
+zu verhindern, die sonst bei Web-Katalogen zum Sicherheitsproblem
+werden koennte. Die Sequenz 13 10 (gleichwertig mit newline) wird
+in acon zu einem Leerzeichen.
+
+
+Neue Sperr-/Freigabebefehle  (FLEX-Doku ist aktualisiert)
+---------------------------
+
+set lock #N
+set unlock #N
+   Damit kann man einen anderen als den aktuellen Satz
+   sperren bzw. entsperren.
+   Fehlt N, wird die Satznummer aus der iV entnommen.
+
+if Lock ...
+if not Lock ...
+   Aktuellen Satz auf "gesperrt" bzw. "frei" pruefen
+
+index p name
+index t name
+   Zum Laden einer anderen Indexparameterdatei bzw. -tabelle
+   (bei a99 ging das schon lange)
+   Fehlt der name, wird der iV-Inhalt genommen.
+
+get edit ...
+   Bei diesen Befehlen stand der Kommentar:
+   "Freigabe erfolgt beim Speichern oder Laden des naechsten Satzes"
+   Dies ist durchaus nicht immer erwuenscht! Es wurde deshalb abge-
+   schafft; d.h. man muss selber entsperren mit "set unlock", falls
+   man nicht mit "put" den Satz wieder speichert, dann wird er
+   automatisch freigegeben. Diese Freigabe in Ausnahmefaellen ver-
+   hindern kann man aber mit
+
+put lock
+   Unter "put" stand der Hinweis, man solle VOR einer Aenderung eines
+   Satzes immer "set lock" geben, nur dann wuerden die Schluessel beim
+   Speichern mit "put" richtig korrigiert. Dies entfaellt nun! 
+   Man konnte es ja allzu leicht vergessen, und bei a99 war's nie so.
+   Jetzt hat das ein Ende.
+
+
+a99 und acon: Zeitstempel geaendert
+-----------------------------------
+Bis jetzt sahen Zeitstempel in den Feldern #99n und #99e ($a.cfg)
+immer so aus:  JJJJMMDD/hh:mm:ss$Opcode
+wobei "Opcode" der Nutzercode aus der Option -O des Aufrufs ist.
+Nun wurde dies etwas erweitert, vor allem um manche Speichervorgaenge
+sicherer zu machen:
+  JJJJMMDD/hh:mm:ss-N/L$oOpcode.
+Dabei ist
+N die interne Satznummer des Satzes (zum Zeitpunkt des Speicherns),
+L eine laufende Nummer, z.B. 57 waere der 57. Speichervorgang der
+aktuellen Sitzung (bei a99) bzw. des aktuellen Jobs (bei acon). So
+koennen keine ganz identischen Zeitstempel entstehen (obwohl auch
+dies nur in extrem seltenen Faellen mal problematisch haette
+werden koennen). Und vor dem Opcode steht noch ein o, wodurch
+nun diese Angabe ein echtes Unterfeld wird.
+Der Befehl D in der CFG hat nun keine Wirkung mehr auf die Laenge
+des Zeitstempels. Vorher war ohnehin D17 Default und Maximum, und
+wie koennte ein verkuerzter Zeitstempel sinnvoll sein? 
+Die alten, in zahllosen Saetzen vorhandenen Zeitstempeln kann man
+so lassen.
+

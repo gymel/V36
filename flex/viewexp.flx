@@ -1,0 +1,44 @@
+  VIEWEXP.FLX : aktuellen View exportieren,
+  2000-08-05        dazu Parameter und Ausgabedatei waehlen
+  
+  Letzten View aktivieren, falls Datei nicht offen
+view again
+  Ging nicht: Schluss
+if no jump error
+
+var "exportieren mit Parameter " e "? (Nein = ändern)"
+yesno
+if no jump param
+if canc end
+:file
+var "Ausgabe in die Datei " E "? (Nein = ändern)"
+if no jump datei
+if canc end
+:export
+dow view
+var "Erg.menge >" U "< wurde exportiert in Datei " E
+message
+end
+
+:param
+var m
+if ="alc" end
+var "Parameterdatei zum Exportieren|*." K1 "pr"
+fnam
+if no jump datei
+if canc end
+xport p
+
+:datei
+var "Geschrieben werden soll in folgende Datei:=" E
+ask
+if canc end
+
+xport f
+jump export
+end
+:error
+
+var "Momentan kein View aktiviert" n "W„hlen Sie zuerst eine vorhandene ViewListe" n "oder erstellen Sie eine neue!"
+ansi
+mes

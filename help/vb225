@@ -1,0 +1,75 @@
+
+Verlautbarung 225 der Entw.Abt.                              2010-01-28
+-------------------------------
+
+
+V30.1
+=====
+
+acon-Verbesserungen
+-------------------
+
+Insbesondere die Update-Funktionen machten noch Aerger.
+Ein besonderes Problem waren die (seltenen) Faelle, wo man neue
+Felder zu bestehenden hinzufuegen will. Im korr. Handbuch steht, man 
+solle dann eine Tilde ~ auf die erste Textposition des Feldes setzen
+(nicht auf die Wiederholposition wie z.B. in den FLEXen bei a99).
+Das klappte aber mit acon und update.job nicht. Um die Sache zu
+loesen, musste der Befehl "fetch rec", den a99 schon kannte, jetzt
+auch in acon eingebaut werden. Er holt den naechsten Satz aus der
+geoeffneten Datei (.ALG oder .ADT). Dabei werden nebenbei falsche
+(in der CFG nicht deklarierte) Felder stillschw. uebergangen.
+Der  update.job  wurde so umgestellt, dass er jetzt mit "fetch rec"
+arbeitet statt mit "read" und dem "Objekt 2". 
+Der Befehl "fetch rec" holt den Satz in die iV, wobei zunaechst
+die Codes 10 und # als Trennung zwischen den Feldern fungieren. 
+Mit dem Befehl
+ins _^J#_;#_" 
+wandelt man diese Trennung um in ;#, und damit kann  ein simples
+insert
+den iV-Inhalt in den aktuellen Satz einfuegen, oder
+insert $satz
+in eine Variable $satz. Genau das nutzt update.job jetzt aus.
+Im update.job gibt es etliche Stellen, an denen man den alten oder
+neuen Satz noch per FLEX-Befehlen manipulieren kann, Dies ist viel
+leichter als beim alten UPDATE.EXE, wo man Exportparameter zu
+schreiben hatte.
+Und uebrigens kommt acon jetzt auch klar, wenn die Tilde auf der
+Wiederholposition sitzt!
+Die Empfehlung ist, das Externformat fuer die Bereitstellung der
+Daten zu verwenden. Es ist leichter mit eigener Software zu
+erzeugen, z.B. per Perl-Skript, als das .ALG-Format, und leichter
+extern zu editieren. Nur bei diesem klappt ueberdies das Uebergehen
+von ungueltigen Feldern, beim .ALG kommen Fehlermeldungen. Das ist
+aber ein Randproblem.
+Das Externformat produziert man per IMPORT, indem man e-1.apr als
+Exportparameter verwendet statt i-1.apr.
+
+
+
+a99
+---
+Es gab ein Problem beim abwechselnden Editieren von Anzeige- und 
+Indexparametern: Zwischenteile vermischten sich.
+Behoben.
+
+
+Import
+------
+Das Programm import.exe ist jetzt eine 32bit-Version, das alte wird
+noch als import16.exe auf dem FTP-Server bereitgehalten.
+Einige kleinere Probleme konnten im neuen Programm noch beseitigt
+werden. Es scheint, dass es nun einen vollwertigen Ersatz bietet.
+D.h. alle alten Batchdateien oder Parameter bleiben gueltig.
+
+
+a30
+===
+Neue Funktionen: 
+-- Ergebnismengenverwaltung
+-- Menue austauschbar, auch waehrend Laufzeit
+
+Fortbildung - Genaue Beschreibung aller Elemente:
+http://www.allegro-c.de/doku/a30
+Die 18 Kapitel sollen bis etwa Mitte Februar komplett sein.
+

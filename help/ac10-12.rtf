@@ -1,0 +1,273 @@
+{\rtf1\ansi\ansicpg1253\deff0\deflang1031{\fonttbl{\f0\fmodern allegro Lucida Console;}{\f1\froman\fprq2 Times New Roman;}{\f2\froman\fprq2 Garamond;}{\f3\froman\fprq2\fcharset0 Garamond;}{\f4\froman\fprq2\fcharset0 Times New Roman;}{\f5\fmodern\fprq1 Courier New;}{\f6\fmodern\fprq1\fcharset0 Courier New;}{\f7\fnil\fprq2\fcharset2 Wingdings;}{\f8\fmodern\fprq1\fcharset161{\*\fname Courier New;}Courier New Greek;}{\f9\fswiss\fprq2 Univers;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;}
+\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs24 
+\par   \f1\fs20  `\cf1\ul\b Vorangehender Teil\cf2\ulnone\b0 `    /    `\cf1\ul\b Fortsetzung\cf2\ulnone\b0 `  
+\par \pard  
+\par \pard\fi-913\li913\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f2\fs28  
+\par 10.2.9\tab\f3 Export: Restriktionen (Einschr\'e4nkungen von Ergebnismengen)\b0\f1\fs20  
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\tx570\tx864\tx1468\tx1876\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\f4 Kataloge wachsen mit den Best\'e4nden, und so wachsen zwangsl\'e4ufig auch die Ergebnismengen, die man beim Zugriff erh\'e4lt. Der h\'e4ufigste Wunsch ist es dann vermutlich, den Zugriff auf die neueste Literatur zu begrenzen. Genau das konnte man bis V14 mit \b\i\f1 allegro\b0\i0\f4  kaum machen. Zwar kann man die Erscheinungsjahre indexieren (bei CAT.API geschieht dies im Register 6), aber eine Begrenzung der Ergebnisse mit Bedingungen wie "nach 1998" oder "vor 1850" ist damit nicht erreichbar. Weitere W\'fcnsche sind Einschr\'e4nkungen nach Sprache oder Publikationstyp, falls man diese erfa\'dft hat. Auch solche Elemente kann man indexieren, aber die Ergebnismengen unter solchen Eintr\'e4gen werden zu gro\'df, sobald man eine Datenbank mit einigen -zigtausend Datens\'e4tzen hat. Andere Systeme kennen Suchbeschr\'e4nkungen schon lange. An der Endbenutzer-Oberfl\'e4che haben die Systeme in der Regel zus\'e4tzliche Schalter, Auswahllisten oder Eingabefelder f\'fcr Sprache, Typ oder Erscheinungsjahr. Es gibt keine allgemein \'fcbliche Bezeichnung f\'fcr solche Funktionen. Z.B. wird von "Sekund\'e4raspekten" gesprochen, im Englischen nennt man derlei Elemente meistens "qualifier" oder "limitation", manchmal findet man auch recht unanschauliche Namen wie z. B. bei Pica "ADI" (\b\f1 A\b0 dditional \b D\b0 iscriminative \b I\b0\f4 nformation). Um einen m\'f6glichst knappen, pr\'e4gnanten und unverwechselbaren Begriff zu haben, wurde f\'fcr \lang1033\b\i\f1 allegro\b0\i0  der Terminus \b Restriktionen\b0\f4  gew\'e4hlt. \f1 
+\par \lang1031 Um Restriktionen endlich auch unter \b\i allegro\b0\i0\f4  m\'f6glich zu machen, mu\'dfte ein neues Konzept her, denn in die bisherige Indextechnik lie\'dfen sich solche Funktionen nicht effizient einbauen. Das neue Konzept sollte nat\'fcrlich einerseits flexibel sein, also unter jeder Konfiguration f\'fcr jeden gew\'fcnschten Zweck parametrierbar, andererseits sollte der Aufwand f\'fcr den Anwender so gering wie m\'f6glich sein. \f1 
+\par \f4 Die unter diesen Vorgaben realisierte L\'f6sung ist eine Erg\'e4nzung, keine \'c4nderung der Indexierungstechnik. An bereits existierenden Indexparametern braucht nichts ver\'e4ndert zu werden, bestehende Indexdateien funktionieren unver\'e4ndert weiter. Es kommen nur ein paar neue Befehle und eine neue Datei hinzu. Diese erh\'e4lt den Typ .RES (f\'fcr \b\f1 Res\b0 triktionen), also z.B. CAT.RES. Im Prinzip wird sie genauso erzeugt wie die Kurztiteldatei vom Typ .STL.  
+\par \f4 Die Grundidee: man hinterlegt in der Datei .RES f\'fcr jeden Datensatz ein paar Bytes f\'fcr die Restriktionen, die es geben soll. Zum Beispiel: 4 Bytes f\'fcr das Erscheinungsjahr + 3 Bytes f\'fcr die Sprache + 1 Byte f\'fcr den Publikationstyp. (Die Gesamtzahl dieser Bytes multipliziert mit der Anzahl Datens\'e4tze ergibt die Gr\'f6\'dfe der Datei.) Das Programm (APAC, PRESTO, AVANTI etc.) kann hernach diese Bytes benutzen, um f\'fcr jeden Satz festzustellen, ob er zur Ergebnismenge geh\'f6ren soll oder nicht. Es gibt damit einen sehr erw\'fcnschten Zusatzeffekt: wenn die Restriktion bereits eingeschaltet wird, bevor eine Ergebnismenge gebildet wird, dann wird diese von vornherein kleiner. Somit kann eine Suche auch dann noch Erfolg haben, wenn es im Index z.B. unter einem Stichwort viele -zigtausend Eintr\'e4ge gibt. Allerdings kann die Bildung der Ergebnismenge in solchen F\'e4llen etliche Sekunden dauern, weil ja f\'fcr jeden Eintrag zus\'e4tzliche Vergleiche n\'f6tig sind. Ohne eingeschaltete Restriktion \'e4ndert sich am Zeitverhalten der Zugriffe nichts. \f1 
+\par  
+\par \b\f4 Was mu\'df man tun?\b0\f1  
+\par \f4 Ganz genau wie f\'fcr die .STL-Datei mu\'df man bestimmte Zus\'e4tze in die \b\f1 Index\b0\f4 parameter einbauen, um die Eintr\'e4ge f\'fcr die .RES-Datei zu erzeugen: \f1 
+\par  
+\par \pard\fi-864\li864\tx570\tx864\tx1468\tx1876\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\b\f5 ir=k\b0\f1\tab\tab\b\f4 L\'e4nge des Restriktionsschl\'fcssels\b0\f1   (entsprechend\lang1033\f5  i0 bei .STL) 
+\par \lang1031\f1\tab\tab Wenn\lang1033\f5   ir \f1  gesetzt ist, wird automatisch eine Datei \i dbn\i0 .RES angelegt, mit k Bytes je Satz.\f5  
+\par \pard\tx570\tx864\tx1468\tx1876\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\lang1031\f1  
+\par \pard\fi-1468\li1468\tx570\tx864\tx1468\tx1876\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\b\f5 ak=zz+/\b0\f1\tab\tab\f4 ak-Befehl f\'fcr den "Restriktionsschl\'fcssel"  (entspr.\lang1033\f5  ak=zz+0 bei .STL) 
+\par \pard\tx570\tx864\tx1468\tx1876\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\lang1031\f1  
+\par \pard\fi-864\li864\tx570\tx864\tx1468\tx1876\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\b\f5 #-/\b0\f1\tab\tab\f4 Abschnitt f\'fcr die Erstellung des Restriktionsschl\'fcssels. Dieser mu\'df das Pr\'e4fix "\lang1033\f5 |/" erhalten. 
+\par \lang1031\b ...\b0\f1\tab\tab (entspr.\lang1033\f5  #-0  \f4 und Pr\'e4fix \f5 "|0" bei .STL)\f4  In diesem Abschnitt mu\'df dann stehen, wie die Restriktionsangaben zu bilden sind. \f1 
+\par \pard\tx570\tx864\tx1468\tx1876\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\lang1031  
+\par \f4 F\'fcr die Benutzung (APAC, \lang1033\b\i\f1 avanti, alcarta\b0\i0 ) kommen noch\lang1031\f4  eine oder mehrere\lang1033\f1  Hilfszeilen in folgender Form hinzu (ebenfalls in der .API): 
+\par \pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\lang1031  
+\par \b\f5 R XXX mp "Text zu dieser Restriktion?Hilfszeile dazu"\b0\f1  
+\par \pard\fi-2936\li2936\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\b\f5   XXX\b0\f1  \tab\tab\tab\tab symbolischer Name der Restriktion, z.B.\lang1033\f6  ERJ f\'fcr Ersch.Jahr \f5 
+\par \lang1031\b       m\b0\f1\tab\tab\tab\tab Modus\lang1033\f4  r, R, s oder S (d.h. die zugeh\'f6rigen Werte sind in .RES bzw. .STL)\f5  
+\par \lang1031\b        p\b0\f1\tab\tab\tab Position 1..72 (in .RES bzw. .STL), wo die Werte stehen 
+\par \pard\fi-2937\li2937\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\b\f5          "Text?Hilfe"\b0\f1\tab\f4 wird z.B. von APAC, a99 und alcarta f\'fcr das Men\'fc benutzt \f1 
+\par \pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500  
+\par \i Beispiel:\i0  
+\par  
+\par \b\f6 R ERJ r1 "Erscheinungsjahr?Einschr\'e4nkung auf einen Zeitraum"\b0\f1  
+\par \b\f6 R TYP r5 "Publikationstyp"\b0\f1  
+\par \f4 ...\f1  
+\par \f4 Das bedeutet: man hat im .RES-Schl\'fcssel auf Position 1 das Erscheinungsjahr, symbolischer Name soll ERJ sein, auf Pos. 5 den Publikationstyp. \f1 
+\par  
+\par Die R-Befehle werden in APAC bzw. \i a99/alcarta\i0\f4  zu einem Auswahlmen\'fc verarbeitet (s.u.). Dem \i\f1 avanti\i0\f4 -Server erm\'f6glichen sie das Abarbeiten von Befehlen wie\lang1033\f5   find ... erj >1990 \f4 , denn dem Server mu\'df ja gesagt werden, was "erj" bedeutet. F\'fcr sich genommen (und f\'fcr PRESTO) bewirken die R-Zeilen aber gar nichts: die Struktur der .RES (und evtl. .STL) mu\'df damit \'fcbereinstimmen, das ist das Entscheidende, sonst kann die Sache nicht funktionieren. Haupts\'e4chlich kommt es also auf den Abschnitt unter\lang1031\b\f1\fs24  \f5\fs20 #-/\b0\f4  an. Unter PRESTO kann der Eingeweihte auch Restriktionen nutzen (Positionen in der STL) , f\'fcr die es keine R-Zeilen gibt. \f1 
+\par Die Modusbuchstaben 'R' und 'S' haben eine etwas andere Wirkung als 'r' und 's', siehe unten. 
+\par  
+\par Es gibt sogar die \b Alternative\b0 , sich keine \i dbn\i0 .RES zu leisten, sondern nur Teile innerhalb der bestehenden \i dbn\i0\f4 .STL f\'fcr diesen Zweck zu nutzen. Dann sind keine zus\'e4tzlichen Ma\'dfnahmen n\'f6tig, nur die R-Zeilen, und zwar mit einem 's' oder 'S' statt 'r' oder 'R' an der Position m. Die .STL mu\'df dann nat\'fcrlich geeignete Bestandteile haben, die immer an derselben Position stehen. Jede Position von 1 bis 72 ist daf\'fcr nutzbar. \f1 
+\par \i Nachteil:\i0  Zugriffe auf \i dbn\i0 .STL sind viel langsamer auf \i dbn\i0 .RES. (bis ca. Faktor 10) 
+\par \f4 Beides ist kombinierbar, d.h. es kann R-Zeilen mit 'r' oder 'R' und andere mit 's' oder 'S' geben. Der OPAC-Benutzer mu\'df den Zusammenhang und die Positionen nicht kennen - daf\'fcr sind ja die R-Zeilen gedacht. \f1 
+\par  
+\par \pard\fi-658\li658\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\b\f4\fs24 Zusatzfunktion f\'fcr INDEX\b0\f1\fs20  
+\par \pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500  
+\par Der Aufruf\b\f5   INDEX -fx ...\b0\f1    produziert die .RES-Datei (analog zu\b\f5  -fs\b0\f4  f\'fcr die .STL) \f1 
+\par Wenn der Index erneuert wird (mit\b\f5  -fi, -f7\b0\f1  oder\b\f5  -fn\b0\f4 ), wird die .RES automatisch mit erzeugt, genau wie auch die .STL. (Leider konnte man hierf\'fcr nicht\lang1033\f5  -fr \f4 nehmen, weil dies schon f\'fcr das Entl\'fcften belegt ist.) \f1 
+\par \lang1031 Im \lang1033\b\i CockPit \b0\i0\f4 von V15 gibt es einen eigenen Men\'fcpunkt "\f5 x = Restriktionsdatei erneuern" \f4 unter "organisieren". Hat man die oben beschriebenen Vorkehrungen getroffen, braucht man nur noch diesen Punkt anzuw\'e4hlen. \f1 
+\par \lang1031  
+\par  
+\par \pard\fi-658\li658\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\b\fs24 Nutzung in PRESTO\b0\fs20  
+\par \pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500  
+\par Im Gegensatz zu APAC oder \i alcarta \i0\f4 hat PRESTO keine Men\'fcunterst\'fctzung. Die Nutzung der Restriktionen unter PRESTO ist daher nicht benutzerfreundlich, jedoch m\'f6glich. Man mu\'df die Positionen der .RES oder .STL und ihre Bedeutung kennen. (Viel einfacher machen es die Windows-Programme \b\i\f1 a99/alcarta\b0\i0\f4 , siehe \'fcbern\'e4chste Seite.) \f1 
+\par \f4 Auf dem Registerbildschirm von PRESTO dr\'fcckt man : \f1 
+\par  
+\par \pard\fi-570\li570\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\b F9\b0\tab\f4 Dann wird die gew\'fcnschte Restriktion abgefragt. Die Frage lautet \f1 
+\par  \lang1033\f5\tab Pos >=< Value? 
+\par \lang1031\f1\tab\f4 Man mu\'df den Wunsch dann explizit eingeben, d.h. eine Position, einen Operator und einen Wert, z.B. \f1 
+\par \pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500  
+\par \pard\fi-1876\li1876\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\lang1033\b\f5\tab r1>1990\b0\tab\tab Vergleich ab Position 1 in .RES, Wert soll >1990 sein 
+\par \pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\lang1031\f1  
+\par \pard\fi-1876\li1876\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\lang1033\b\f5\tab s58<1950\b0\tab Vergleich ab Pos. 58 in .STL, Wert soll < 1950 sein 
+\par \pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\lang1031\f1  
+\par \pard\fi-1876\li1876\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\lang1033\b\f5\tab s58=1997\b0\tab Auf Position 58 in der .STL soll 1997 stehen- 
+\par \pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\lang1031\f1  
+\par \pard\fi-1876\li1876\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\lang1033\b\f5\tab s68!XYZ\b0\tab\tab Auf Position 68 in der .STL soll \i nicht\i0  XYZ stehen 
+\par \pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\lang1031\f1  
+\par \pard\fi-1468\li1468\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\b\tab 0\b0\tab\tab\tab\f4 R\'fccksetzen (Restriktion aufheben) \f1 
+\par \pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500  
+\par Der versierte PRESTO-Anwender kann hier auch s-Positionen nutzen, die nicht in einer R-Zeile definiert sind! 
+\par \f4 Der durchgef\'fchrte Vergleich ist immer ein \i\f1 Zeichen\i0 vergleich, kein \i Zahlen\i0 vergleich, auch wenn auf der fraglichen Position Zahlen stehen. Die Anzahl der zu vergleichenden Zeichen ergibt sich aus der Eingabe, z.B. 4 wenn man \lang1033\b\f5 r1>1990\b0  \f4 eingegeben hat, d.h. nachfolgende Zeichen in der .RES oder .STL haben keinen Einflu\'df.\f5  
+\par \pard\tx570\tx864\tx1468\tx1860\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\lang1031\f4 Nachdem mit F9 eine Restriktion gesetzt wurde, wirkt sie sich auf alle nachfolgenden Funktionen (+ / -) zur Ergebnismengenbildung aus. Wenn man also '/' dr\'fcckt, werden nur diejenigen S\'e4tze in die Ergebnismenge genommen, die der Restriktion gen\'fcgen. F\'fcr den Anzeigebildschirm gilt das nicht, und zwar aus gutem Grund: wenn man einen einzelnen Satz auf dem Schirm hat, entscheidet man sich wohl ganz bewu\'dft daf\'fcr, ihn in die Ergebnismenge aufzunehmen, und das sollte das Programm dann nicht verhindern. \f1 
+\par \pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500 Zu einem Zeitpunkt kann immer nur eine Restriktion gesetzt sein. 
+\par Wenn nichts gesetzt oder die Setzung mit '0' wieder aufgehoben ist, funktioniert alles normal wie gewohnt. 
+\par \f4 Wenn man eine Ergebnismenge gebildet hat, kann nachtr\'e4glich eine Restriktion durchgef\'fchrt werden. Sie mu\'df dann, nach der Setzung mit \b\f1 F9\b0 , durch \b Strg+F9\b0  auf die bestehende Ergebnismenge angewendet werden. So kann man nacheinander die Ergebnismenge durch zwei oder mehr verschiedene Restriktionen verkleinern, d.h. jeweils mit \b F9\b0  und \b Strg+F9\b0\f4  unterschiedliche Aktionen durchf\'fchren. \f1 
+\par \i Hilfestellung:\i0\f4  In PRESTO erh\'e4lt man auf dem Anzeigeschirm mit Alt+F7 die vorhandenen Restriktionen angezeigt: es erscheinen die R-Zeilen aus den Indexparametern. \f1 
+\par  
+\par \b Und wie sieht es im DOS-OPAC aus?\b0  
+\par \f4 Das Programm APAC macht es dem Nutzer leicht: es erscheint ein Men\'fcpunkt "\lang1033\f6 Einschr\'e4nkungen"\f4  im Indexmen\'fc (Achtung: die Dateien UIFA... wurden daf\'fcr um einige Zeilen erg\'e4nzt). Man bekommt eine Eingabemaske mit drei Zeilen: Auswahl der Restriktion, des Operators, und Eingabe des gew\'fcnschten Wertes. Die ersten zwei erlauben per Hilfemen\'fc nur die sinnvollen Werte (die sich aus den R-Befehlen ergeben).\f5  
+\par \lang1031\f1  
+\par \f4 Angenommen, wir haben vier Restriktionen und daf\'fcr in der CAT.API diese Hilfezeilen: \f1 
+\par  
+\par \lang1033\f6 R ERJ r1 "Erscheinungsjahr?Einschr\'e4nkung auf einen Zeitraum" \f5 
+\par R TYP r5 "Typ?z.B. ho=Dissertation af=Aufsatzsammlung" 
+\par R FGR r7 "Fachgruppe?z.B. ma=Mathematik, py=Physik" 
+\par R TAB s1 "Titel-Anfangsbuchstabe?z.B. G, wenn die Titel mit G anfangen sollen" 
+\par \lang1031\f1  
+\par \f4 APAC liefert uns dann auf dem Registerbildschirm \'fcber den Men\'fcpunkt "\lang1033\f6 Suche einschr\'e4nken"\f1  dieses Bild: 
+\par  
+\par \lang1031\f5\fs18 Register 1 : Namen von Personen 
+\par    1   schwarze, wolfgang                 +----------INDEX-Funktionen----------+ 
+\par \f6   30==>shakespeare, william               \'a6 Zugriff auf Titel                  \'a6 \f5 
+\par \f6    1   shakespeare, william #             \'a6 Register-Erweiterung ein/aus       \'a6 \f5 
+\par \f6   43   shakespeare, william *             \'a6 Kurzliste der Ergebnisse ein/aus   \'a6 \f5 
+\par \f6    4   shakespeare, william - DRAMATISCHE \'a6 Andere Stelle im selben Register   \'a6 \f5 
+\par \f6    4   shakespeare, william / bibliographi\'a6 H : Hilfe zum Register             \'a6 \f5 
+\par \f6    7   shakespeare, william / biographie  \'a6 1 : Namensregister                 \'a6 \f5 
+\par \f6   11   shakespeare, william / drama       \'a6 2 : K\'f6rp.Reg.                      \'a6 \f5 
+\par \f6    1   shakespeare, william / drittes reic\'a6 3 : Wortregister                   \'a6 \f5 
+\par \f6    8   shakespeare, william / festschrift \'a6 4 : Titelregister                  \'a6 \f5 
+\par \f6    1   shakespeare, william / henry iv    \'a6 5 : Zeitschriften- und Serientitel \'a6 \f5 
+\par \f6    1   shakespeare, william / henry v     \'a6 6 : Verlage/Orte                   \'a6 \f5 
+\par \f6    2   shakespeare, william / imagery     \'a6 7 : Sachgruppen                    \'a6 \f5 
+\par    2   sha\b\f6 +---------- Einschr\'e4nkung     [F10] = ok -----------+\b0                 \'a6 \f5 
+\par    1   sha\b\f6\'a6Suche einschr\'e4nken \b0\f5                                 \b\f6\'a6\b0                 \'a6 \f5 
+\par    4   sha\b\f6\'a6        und zwar:   +-----------------------------+\'a6\b0 lten            \'a6 \f5 
+\par    2   sha\b\f6\'a6gew\'fcnschter Wert    \'a6 1 : Erscheinungsjahr        \'a6\'a6\b0 nge hinzuf\'fcgen  \'a6 \f5 
+\par    1   sha\b\f6 +--------------------\'a6 2 : Typ                     \'a6\b0 #lden            \'a6 \f5 
+\par    1   shakespeare, william / n\b\f6\'a6 3 : Fachgruppe              \'a6\b0 Menge rausnehmen \'a6 \f5 
+\par    5   shakespeare, william / r\b\f6\'a6 4 : Titel-Anfangsbuchstaben \'a6\b0 setzen           \'a6 \f5 
+\par    1   shakespeare, william / r\b +-----------------------------+\b0\f6                  \'a6 \f5 
+\par \f6                                           \'a6 Verkn\'fcpfungen ber\'fccksichtigen      \'a6 \f5 
+\par \f6 Andere Stelle? Suchwort eintippen.    <Sh+\'a6\b  Suche einschr\'e4nken \b0                 \'a6 \f5 
+\par \i\f6 Einschr\'e4nkung auf einen Zeitraum\i0           \'a6 x : Ausstieg    F10 = Einschr. aus \'a6 \f5 
+\par \pard                                           +------------------------------------#\f1\fs20  
+\par \pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\lang1033\f5  
+\par \lang1031\f4 In der Men\'fczeile "\b\f5 und zwar:\b0\f1 " hat man die Wahl zwischen den vier Vergleichsfunktionen\b\f5  < > !\b0\f1  und \b =\b0 . 
+\par \f4 Wenn man "Erscheinungsjahr" gew\'e4hlt hat, sieht das dann so aus: \f1 
+\par \lang1033\f5  
+\par    2   sha\b\f6 +---------- Einschr\'e4nkung     [F10] = ok -----------+\b0\f5                 
+\par    1   sha\b\f6\'a6Suche einschr\'e4nken  1 : Erscheinungsjahr           \'a6\b0\f5                 
+\par    4   sha\b\f6\'a6        und zwar:                                  \'a6\b0\f5 lten            
+\par    2   sha\b\f6\'a6gew\'fcnschter Wert    +---------------+              \'a6\b0 nge hinzuf\'fcgen  \f5 
+\par    1   sha\b\f6 +--------------------\'a6 >   Gr\'f6\'dfer    \'a6--------------\b0\f5 #lden            
+\par    1   shakespeare, william / n\b\f6\'a6 <   Kleiner   \'a6\b0\f5 Titel aus Erg.Menge rausnehmen 
+\par    5   shakespeare, william / r\b\f6\'a6 =   Gleich    \'a6\b0 bnismenge r\'fccksetzen           \f5 
+\par    1   shakespeare, william / r\b\f6\'a6 !   Ungleich  \'a6\b0 n\'fcpfungen ber\'fccksichtigen      \f5 
+\par \pard    4   shakespeare, william / s\b +---------------+\b0\f6 e einschr\'e4nken                \lang1031\f1  
+\par \pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500  
+\par  
+\par Unter "\b\f6 gew\'fcnschter Wert\b0\f4 " gibt man schlie\'dflich den Begriff ein, der f\'fcr die Restriktion verwendet werden soll, also z.B. eine Jahreszahl. Mit [F10] wird die Restriktion dann dem Programm \'fcbergeben. \f1 
+\par Wenn der Leuchtbalken auf "\lang1033\f6 gew\'fcnschter Wert" \f1 steht, sieht man unten einen Hinweis\f5  " >>> F1 = Hilfe <<<". \f4 Damit aber Hilfe kommt, mu\'df man eine Hilfeseite haben. Diese Seiten m\'fcssen\lang1031\b\f1  \f5 HRES1, HRES2\b0\f4  usw. hei\'dfen, d.h. f\'fcr jede der Restriktionen kann man eine spezifische Hilfeseite einrichten. Am besten legt man diese Seiten in das Datenverzeichnis, denn in der Regel werden sie datenbankspezifisch sein. \f1 
+\par  
+\par \b Besonderheiten\b0  
+\par \f4 Wenn zum Zeitpunkt dieser Men\'fcauswahl schon eine Ergebnismenge besteht, wird diese gleich anschlie\'dfend der gew\'e4hlten Restriktion unterzogen, also verkleinert. Vermutlich ist dies genau das, was der OPAC-Benutzer erwartet. Der PRESTO-Benutzer mu\'df \b\f1 Strg+F9\b0\f4  dr\'fccken, um die Restriktion ausf\'fchren zu lassen. Die eingeschaltete Restriktion wirkt sich dann aber auf alle nachfolgende Operationen aus, bis man eine andere einstellt oder sie vom Indexmen\'fc mit \b\f1 F10\b0  wieder aufhebt. In der vorletzten Zeile unten rechts wird die eingestellte Restriktion angezeigt, auch unter PRESTO. 
+\par \f4 Der Systemverwalter hat die M\'f6glichkeit, die Restriktionen auf unterschiedliche Art in APAC zu implementieren: \f1 
+\par  
+\par \f4 Die Restriktionen mit 'R' oder 'S' (statt 'r' oder 's') haben eine etwas andere Wirkung: VOR Anwendung der Restriktion wird die Ergebnismenge expandiert (siehe "Satz\'fcbergreifende Suche" in Kap.10.2.6.9), d.h. als ob man zuerst '&' dr\'fccken w\'fcrde. Au\'dferdem wird die Restriktion nach einmaliger Anwendung wieder abgeschaltet. Beim OPAC mu\'df man ja bedenken, da\'df ein Nutzer jederzeit das Ger\'e4t verlassen kann. Der n\'e4chste kommt und bemerkt gar nicht die eingeschaltete Restriktion, aber wundert sich dann nat\'fcrlich \'fcber die Ergebnisse, die er bekommt oder eben nicht bekommt. \f1 
+\par  
+\par \b Abschalten der Restriktion\b0  
+\par \f4 Auf dem ESC-Men\'fc des Registerschirms gibt es den Hinweis:\lang1033\f5   F10 : Einschr. aus. 
+\par \lang1031\f4 Zus\'e4tzlich kann die eingeschaltete Restriktion in APAC und PRESTO auch mit der R\'fccktaste [\f7\'d7\f5 --\f1 ] abgeschaltet werden. 
+\par  
+\par \pard\b\i a99\b0\i0  und \b\i alcarta\b0\i0\f4  : Die Restriktionen findet man auf dem Find-Men\'fc wieder, unterhalb der Zeilen f\'fcr die Suchbegriffe: [Dr\'fccken Sie auf [Find], dann sehen Sie es] \f1 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-658\li658\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f2\fs36 10.3\tab Testen und Optimieren\b0\fs20  
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-913\li913\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs28 10.3.1\tab\f3 Direkte \'c4nderung von Parametern\b0\f1\fs20  
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f4 Wenn man eine Parameterdatei neu erstellt, gelingt es h\'f6chst selten, sofort das richtige Ergebnis zu erzielen. Deshalb wurde eine M\'f6glichkeit geschaffen, die Parameter w\'e4hrend des Testens vom Editor aus zu \'e4ndern. Bis auf die Exportbefehle in der Kategorieliste (-\f7\'d8\f4  10.2.6.1) k\'f6nnen alle Parameter \'fcber den Befehl #p ge\'e4ndert werden:  Soll z.B. eine andere Zeilen\'e4nge getestet werden, so gebe man einfach den Befehl #pzl=60, um die Zeilenl\'e4nge z.B. auf 60 Zeichen umzustellen. Will man Zwischenteil 26 \'e4ndern: #p26=... eingeben mit der gew\'fcnschten Steuerzeichenkette hinter dem '=' . \f1 
+\par \f4 M\'f6chte man eine Druckercodierung \'e4ndern: z.B. definiert #pp \'c4 "Ae" die Ersatzdarstellung "Ae" f\'fcr das \'c4. \f1 
+\par \f4 Allgemein: man schreibt im Erfassungsmodus hinter das #p die Parameterangabe in der oben in diesem Kapitel beschriebenen Form und gibt dies als Befehl ein. Sofort wird der betreffende Parameter ge\'e4ndert (allerdings nur im Arbeitsspeicher f\'fcr die Dauer der Sitzung, nicht in der Parameterdatei!) und kann mit dem Befehl #d getestet werden. Wenn man auf diese Weise die optimalen Werte ermittelt hat, mu\'df man schlie\'dflich noch die Parameterdatei selbst entsprechend ver\'e4ndern. \f1 
+\par \b\f4 Nicht m\'f6glich\b0  ist die direkte \'c4nderung der ak-Liste (-\f7\'d8\f1  10.2.1) und der Kategorieliste (-\f7\'d8\f4  10.2.6). Eingabe entsprechender Befehle w\'fcrde eine Erg\'e4nzung (Verl\'e4ngerung) dieser Listen bewirken, keine \'c4nderung. \f1 
+\par  
+\par  
+\par \pard\fi-658\li658\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f2\fs28 10.3.2\tab Mehrere Parameterdateien gleichzeitig\b0\f1\fs20  
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f4 Es ist m\'f6glich, bis zu 3 Parameterdateien (S\'e4tze), im Programm SRCH sogar 4, gleichzeitig zu laden und abwechselnd zu benutzen. \f1 
+\par \f4 Automatisch wird immer D-1.cPR geladen, wenn man nicht per Option -p eine andere w\'e4hlt (s. Kap.12). Im Editor gibt man zum Laden weiterer Parameter den Befehl #p, w\'e4hlt dann den Unterpunkt 'e' und kreuzt in der Auswahlliste den Namen, z.B. P-NORMAL.APR, der nachzuladenden Datei an. Wenn mehr als eine Parameterdatei geladen ist, schaltet man zwischen denselben um, indem man \b\f1 F2\b0\f4  oder den Befehl #d (ohne Kategorienummer) gibt und auf dem dann erscheinenden Men\'fc die betreffende Ziffer w\'e4hlt. Der n\'e4chste Druckbefehl, z.B. #d40 , benutzt dann die ausgew\'e4hlten Parameter. Benutzen Sie den Parameter\b\f5  dn\b0\f1  (-\f7\'d8\f4  10.2.4) als Ged\'e4chtnisst\'fctze. \f1 
+\par \f4 Diese M\'f6glichkeit ist g\'fcnstig, wenn man z.B. mehrere Versionen einer Parameterdatei nebeneinander testen will. Man macht auch davon Gebrauch, wenn das Suchprogramm (-\f7\'d8\f1  Kap.8) mehrere Exporte mit unterschiedlicher Struktur gleichzeitig erstellen soll. Die Option -e ist deshalb bei diesem Programm wiederholbar (-\f7\'d8\f1  Kap.12). 
+\par \f4 Die Befehle zur direkten \'c4nderung von Parametern (siehe oben) wirken sich jeweils nur auf das gerade angew\'e4hlte Set (die gerade aktive Parameterdatei) aus. \f1 
+\par  
+\par  
+\par \pard\fi-658\li658\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f2\fs28 10.3.3\tab Export-Parameterdatei visuell testen\b0\f1\fs20  
+\par \pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 0.\tab Nehmen wir an, die zu testende Datei XYZ.APR befindet sich auf dem Programmverzeichnis. Es wird vom \lang1033\b\i CockPit\lang1031\b0\i0  aus gestartet und die Datenbank CAT auf C:\\ALLEGRO\\KATALOG benutzt. 
+\par 1.\tab\f4 Beliebigen Datensatz aufbl\'e4ttern, auf dem ANZEIGEbildschirm  \b\f1 F2 F2 F2\b0\f4   dr\'fccken. Dann hat man die Auswahlliste der Parameterdateien vor sich, die auf dem Programmverzeichnis stehen. \f1 
+\par 2.\tab\f4 Die Datei XYZ.APR mit '+' markieren, <Enter> dr\'fccken: jetzt wird sie geladen und sofort als Anzeige-Parameterdatei benutzt, auch wenn sie gar nicht f\'fcr eine Bildschirmanzeige gedacht ist! D.h. der aktuelle Datensatz wird gleich mit Hilfe dieser Parameterdatei aufbereitet und neu angezeigt. (Wenn nicht: in CP.OPT ist im Abschnitt f\'fcr PRESTO eine Eintragung f\'fcr eine Druck-Parameterdatei vorhanden; diese Zeile beginnt mit q und entspricht der Aufruf-Option -q von PRESTO. Man macht die q-Zeile ung\'fcltig, dan\f1 n geht es.) 
+\par 3.\tab\f4 Verschiedene Arten von Datens\'e4tzen aufsuchen und die Anzeigeform begutachten. Abweichungen von der gew\'fcnschten Form notieren. \f1 
+\par \f4\tab\i Tip:\i0  Wenn ak-Befehle in den Parametern vorkommen, dann sieht man mit F3 die unterschiedlichen Ausgabes\'e4tze alle hintereinander, jeweils mit Leertaste kommt der n\'e4chste. \f1 
+\par 4.\tab Zum \lang1033\b\i CockPit\lang1031\b0\i0\f4  zur\'fcck, dann \'fcber\b\f8  \'ecd e\b0\f4  die getestete Datei wieder anw\'e4hlen und bearbeiten. \'c4nderungen ausf\'fchren. Zur\'fcck zur Datenbankbenutzung ==> 1. \f1 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \b\f4 F\'fcr Experten: die "Allers'sche Testschleife"\b0\f1  
+\par \f4 Dies ist eine noch schnellere, aber auch sehr flexible Methode f\'fcr intensives Testen, benannt nach ihrem Erfinder Heinrich Allers.  \f1 
+\par Man stellt eine Batchdatei TESTAPR.BAT nach folgendem Schema zusammen: 
+\par \lang1033\f5 :START 
+\par presto -f1 -a3 -n1 -S -dC:\\ALLEGRO\\KATALOG -p %%1 
+\par pause 
+\par x %%1.APR 
+\par goto START\lang1031\f1  
+\par und gibt dann den Befehl\lang1033\f5   testapr xyz\lang1031\f1  
+\par \f4 In dieser schlichten Endlosschleife wird jeweils die Datenbank gestartet, und zwar mit XYZ.APR als Anzeige-Parameterdatei (statt der standardm\'e4\'dfigen D-1.APR), so da\'df man diese dann gar nicht erst mit \b\f1 F2 ...\b0\f4  laden mu\'df. Verl\'e4\'dft man die Datenbank, wird der Editor aufgerufen, um die Parameterdatei sofort wieder bearbeiten zu k\'f6nnen. Der Befehl\lang1033\f5  pause\lang1031\f4  erm\'f6glicht einen Abbruch der Endlosschleife mit Strg+c.  \f1 
+\par Wenn man in den EDITORzustand geht, kann man mit Befehl #a die Anwendervariablen kontrollieren. 
+\par \f4 Die Testschleife l\'e4\'dft sich universell f\'fcr alle .APR-Dateien verwenden. Der Aufruf\lang1033\f5   testapr abc\lang1031\f4   erm\'f6glicht jederzeit den Test jeder beliebigen Parameterdatei ABC.APR.  \f1 
+\par  
+\par \b "Merseburger Testschleife"\b0  
+\par Mit PRESTO gibt es eine noch schnellere Testmethode: in der Titelanzeige \b F2 F2\b0  geben (evtl. nochmal \b F2\b0\f4 ), die zu testende Parameterdatei mit dem Cursor anw\'e4hlen, \b\f1 F10\b0\f4  dr\'fccken: dann wird der X-Editor aufgerufen und die Parameterdatei zur Bearbeitung geladen (-\f7\'d8\f4  Anh.D, in 2 Minuten lernbar)! Man \'e4ndert etwas, speichert mit <Esc> q s, gelangt zur\'fcck in die Auswahlliste, dr\'fcckt '+' <Enter>, und die Parameterdatei wird geladen und f\'fcr die Anzeige benutzt, man sieht also das Resultat der \'c4nderungen. Das l\'e4\'dft sich beliebig wiederholen. \f1 
+\par \b Aber:\b0  beim PRESTO-Aufruf darf weder -q noch -e als Option gegeben werden, sonst klappt es nicht.  
+\par  
+\par Soll der Test mit SRCH laufen, ersetzt man den PRESTO-Aufruf durch einen SRCH-Aufruf: 
+\par  
+\par \lang1033\f5 :START 
+\par srch -f4 -n1 -dC:\\ALLEGRO\\KATALOG -e %%1/testlist -s0 -m0 -v0 
+\par v testlist               (Ergebnisdatei testlist anzeigen) 
+\par pause 
+\par x %%1.APR 
+\par goto START\lang1031\f1  
+\par  
+\par Durch\lang1033\f5   v testlist\lang1031\f1   wird dann die Ergebnisdatei angezeigt, bevor man wieder in die Bearbeitung der Parameterdatei kommt. Ein Trick: mit Druck auf 'x' kann man jederzeit den SRCH-Lauf abbrechen. Man kommt in den EDITOR und kann sich die zuletzt geladene Aufnahme ansehen. Mit Befehl #Da sieht man das Exportergebnis auf dem Bildschirm. Mit dem Befehl #a kann man evtl. vorhandene Anwendervariablen kontrollieren, die von den Exportparametern erzeugt werden! Mit #e bricht man den SRCH-Lauf ab und die Schleife geht weiter. 
+\par  
+\par \b So testet man eine Index-Parameterdatei:\b0  
+\par Das ist sehr einfach; man braucht auf keinen Fall erst neu zu indexieren, sondern: 
+\par  
+\par \pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 0.\tab\f4 Nehmen wir an, ABC.API liegt auf dem Programmverzeichnis und soll getestet werden. Die aktuelle Parameterdatei unserer Datenbank hei\'dft CAT.API (d.h. wir haben eine Datenbank namens CAT) und liegt auf dem Verzeichnis C:\\ALLEGRO\\KATALOG. \f1 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 1. \tab\f4 CAT.API umbenennen z.B. in CAT.XXX, ABC.API umbenennen in CAT.API. Anschlie\'dfend "denkt" dann PRESTO, dieses sei die richtige Index-Parameterdatei und benutzt sie. \f1 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 2.\tab\f4 Datenbank starten, Datens\'e4tze aufbl\'e4ttern, jeweils \b\f1 F7\b0\f4  dr\'fccken. Dann sieht man die Liste der durch ABC.API erzeugten Schl\'fcssel. Abweichungen von der gew\'fcnschten Form notieren. \f1 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 3.\tab Mit \b F8\b0  zum \lang1033\b\i CockPit\lang1031\b0\i0\f4  zur\'fcck, dann \'fcber\b\f8  \'ecd i\b0\f4  die getestete Datei wieder anw\'e4hlen und bearbeiten. \'c4nderungen ausf\'fchren. Zur\'fcck zur Datenbankbenutzung ==> 2. \f1 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par Um das \lang1033\b\i CockPit\lang1031\b0\i0  zu umgehen, damit's noch etwas schneller wird, kann man sich auch hier eine "Allers'sche Testschleife" anlegen, nennen wir sie TESTAPI.BAT : 
+\par  
+\par \lang1033\f5 :START 
+\par presto -f1 -a3 -n1 -S -dC:\\ALLEGRO\\KATALOG   (Datenbank wird aufgerufen, Test mit F7) 
+\par pause 
+\par \pard\fi-2353\li2353\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 x CAT.API\tab\tab (Parameterdatei bearbeiten) 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 goto START\lang1031\f1  
+\par  
+\par \f4 Dieses kleine Programm schaltet st\'e4ndig zwischen der Benutzung der Datenbank und der Bearbeitung der CAT.API hin und her. Man steigt aus der Schleife aus, indem man nach Verlassen der Datenbank <Strg>+c dr\'fcckt. \f1 
+\par \f4 Man mu\'df auch hierf\'fcr vorher die Parameterdateien umbenennen, wie oben unter 1. beschrieben, denn PRESTO setzt voraus, da\'df der Name der Index-Parameterdatei identisch mit dem der Datenbank ist. Meistens wird man aber Ver\'e4nderungen an der schon existierenden Parameterdatei einer Datenbank testen wollen, und dann entf\'e4llt dieser Schritt. \f1 
+\par  
+\par  
+\par \pard\fi-913\li913\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f2\fs28 10.3.4\tab Export- und Index-Parameter optimieren\b0\f1\fs20  
+\par \pard\tx350\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \f4 Kann man Zugriffe und Funktionen schneller machen? Wie spart man Speicherplatz? Wie kann ich als Systemverwalter Zeit sparen und die \'dcbersicht behalten? \f1 
+\par \f4 Je gr\'f6\'dfer und zahlreicher die Datenbanken werden, umso dr\'e4ngender werden diese Fragen. Aus den vorliegenden Erfahrungen ergeben sich eine Reihe von praktischen Tips. \f1 
+\par  
+\par \b\f4 A. Zeit\'f6konomie des Systemverwalters\b0\f1  
+\par \f4 Die eigene Zeit sollte und wird ein Systemverwalter im Zweifel h\'f6her bewerten als die Zeit, die seine Maschinen f\'fcr ihre Aufgaben ben\'f6tigen. M\'fche darauf zu verwenden, da\'df ein Computer Zeit spart, scheint vielleicht manchem schon pervers. Jedoch - beliebigen "Overhead" in Kauf zu nehmen, nur um sich jedes Nachdenken (und jede Lernanstrengung) zu ersparen, das ist das andere Extrem und f\'fchrt zu grober Ineffizienz und zu einem Schie\'dfen mit Kanonen auf M\'fccken. Solches passiert laufend in der Windows-Welt. \f1 
+\par \f4 Hat man mehrere Datenbanken zu verwalten, sollte man danach streben, die Unterschiede gering zu halten. Erstens beh\'e4lt man besser die \'dcbersicht, zweitens kann man die zeitaufwendigen Parameterdateien mehrfach verwenden. Also: gleiches Schema, gleiche Feldstrukturen f\'fcr m\'f6glichst alle Datenbanken anstreben. Die konsolidierte Konfiguration $A.CFG deckt so ziemlich alles ab, was man f\'fcr bibliographische Datenbanken braucht... \f1 
+\par \f4 Insbesondere die Exportparameterdateien vermehren sich leicht. Damit die \'dcbersicht nicht verloren geht, teilt man sie am besten in Typen ein, wie es Kap. 10.0 empfiehlt, und man orientiert sich f\'fcr ihre Gestaltung an den Prototypen. Beim Zugriff \'fcber \lang1033\b\i\f1 CockPit\lang1031\b0\i0\f4  hat man so immer alles h\'fcbsch beisammen. Abschnitte, die sich in mehreren Parameterdateien wiederholen, packt man in .APT-Dateien und l\'e4dt diese bei Bedarf an den richtigen Stellen hinzu (-\f7\'d8\f1  10.2 : Nachladebefehl\b\f5  t\b0\f1 ) . 
+\par  
+\par \f4 Auch Batchdateien sind vermehrungsfreudig. Wenn mehrere Produktionsl\'e4ufe nach demselben Schema ablaufen, nur mit unterschiedlichen Parameterdateien, kann man u.U. mit einer einzigen Batchdatei auskommen und immer vorher die jeweils gew\'fcnschten Parameterdateien auf einen immer gleichen Namen umkopieren. So macht es \lang1033\b\i\f1 CockPit\lang1031\b0\i0\f4  f\'fcr die Listenproduktionen. Es kommt daher mit nur vier Batchdateien aus:\lang1033\f5  SR-LIST.BAT\lang1031\f1  und\lang1033\f5  PR-LIST.BAT, QUEX.BAT\lang1031\f1  und\lang1033\f5  QUANT.BAT\lang1031\f1 . Mehr dazu im Kap.6. 
+\par  
+\par \b\f4 B. Zeitbedarf des Rechners (f\'fcr das Speichern und Indexieren)\b0\f1  
+\par Das A und O einer schnellen Datenbank ist die Index-Parameterdatei. Durch Optimierung sind manchmal erstaunliche Steigerungen erreichbar. Folgende Tips, nach Wirksamkeit geordnet, helfen dabei: 
+\par \pard\fi-349\li349\tx350\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\bullet\tab Globale Ersetzungen vermeiden. Besonders: Einzelzeichen immer mit p- und q-Befehlen umcodieren, denn z.B. der Befehl\b\f6   p \'e4 "ae"\b0\f1   ist erheblich schneller als\b\f6   _\'e4_ae_\b0\f1  ! 
+\par \bullet\tab Anzahl der ak-Befehle gering halten. Oft kann man mehrere zu einem "Sprungverteiler" zusammenfassen. Wenn man z.B.\lang1033\f5   ak=10+A 11+B 12+C\lang1031\f1   hat, kann man das ersetzen durch 
+\par \lang1033\f5\tab ak=1.+A\lang1031\f1  
+\par \pard\fi-913\li913\tx350\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab und dann in der Kategorieliste: 
+\par \pard\fi-349\li349\tx350\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\f5\tab #-A    \lang1031\f4\fs16 #ch ist die momentan vom ak-Befehl ausgew\'e4hlte Kategorie. Ihr zweites zeichen wird untersucht:\lang1033\f5\fs20  
+\par \tab #ch +B i2,1 e0\lang1031\f1     (wenn es #11 ist, gehe nach #-B)\lang1033\f5  
+\par \tab #ch +C i2,2 e0    (\lang1031\f1 wenn #12, dann #-C)\lang1033\f5  
+\par \tab #ch +- I2,0 e0\lang1031\f1     (wenn es nicht die #10 ist, keine Aktion)\lang1033\f5  
+\par \pard\fi-913\li913\tx350\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab ...\lang1031\f1\tab (wenn es #10 ist, geht es also hier weiter) 
+\par \pard\fi-349\li349\tx350\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\f5\tab #+# 
+\par \tab #-B\lang1031\f1    (hier wird #11 behandelt)  ... 
+\par \bullet\tab\f4 Zum selben Thema kann man noch etwas anderes tun: gleichartige Kategorien zu einer Anwendervariable zusammenfassen. Sind z.B. #130, #240, #245, und #730 alle in Stichw\'f6rter zu zerlegen, also auf dieselbe Art zu indexieren, braucht man nicht vier ak-Befehle daf\'fcr, sondern man kann mit einem auskommen: in dem Abschnitt, wo der Prim\'e4rschl\'fcssel bearbeitet wird, f\'fcgt man noch einige Zeilen hinzu, um die genannten Kategorien zusammenzufassen: \f1 
+\par \pard\fi-3073\li3073\ri2724\tx350\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\f5\tab #u1 dts e0\lang1031\f1\tab\tab\f4 Die Hilfsvariable #uts wird gel\'f6scht\lang1033\f5  
+\par \pard\fi-3073\li3073\tx350\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab #130 ats\lang1031\f1\tab\tab\tab der Inhalt von #130 wird hineinkopiert\lang1033\f5  
+\par \tab #245 p" " Ats\lang1031\f1\tab\tab\f4 #245 wird, mit Leerzeichen davor, hinten angeh\'e4ngt\lang1033\f5  
+\par \tab #240 p" " Ats\lang1031\f1\tab\tab dasselbe passiert mit #240 und #730\lang1033\f5  
+\par \pard\fi-349\li349\tx350\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab #730 p" " Ats\lang1031\f1  
+\par \tab\f4 Dann gen\'fcgt\f9  ak=uts" "+C\f4  , um alle vier zu indexieren, denn sie stehen nun alle hintereinander, mit Leerzeichen getrennt, in #uts. Dieser Befehl kommt erst an die Reihe, nachdem der  Prim\'e4rschl\'fcssel schon bearbeitet wurde, also steht die #uts dann auch bereit. [Bis Version 12.2 konnte man keine #u-Variablen in ak-Befehlen ansprechen!] \f1 
+\par \bullet\tab Mit \b einem\lang1033\b0\f5  ak\lang1031\f1 -Befehl kann man \b mehrere\b0\f4  Schl\'fcssel erzeugen: dazu mu\'df man die einzelnen Schl\'fcssel mit dem Code 8 trennen, also z.B. den Befehl\b\f5  #t\{ 8 \}\b0\f1  dazwischen setzen. \f4 Achtung: in solchen Schl\'fcsseln kann man nicht mit den Strukturbefehlen arbeiten, vor allem nicht mit dem Tabulatorsprung \b\f6 &i\b0\f4 .  Daf\'fcr mu\'df man sich etwas anderes einfallen lassen.\f1 
+\par \bullet\tab Innerhalb der Kategorieliste ersetzt man die \b bedingten\b0\f4  Spr\'fcnge\lang1033\f5  +M\lang1031\f4  durch Spr\'fcnge der Form\lang1033\f5  +#nnn\lang1031\f4  , evtl. mit einer sonst nicht benutzten Kategorienummer, die dann nur als Sprungmarke dient. In der CAT.API k\'f6nnen Sie dieses Verfahren ausf\'fchrlich studieren. Dort wird meist \b\f6 #39x\b0\f4  als Sprungmarke verwendet, mit unterschiedlichen Buchstaben '\b\f6 x\b0\f4 ' . (Aber: \b\f1 un\b0\f4 bedingte Spr\'fcnge\lang1033\f5  #+#nnn\lang1031\f1  statt\b\f5  #+M\b0\f1  gehen noch nicht!) 
+\par \bullet\tab Die meistgebrauchten Abschnitte der Kategorieliste nach oben verlagern. Wenn also z.B.\lang1033\f5  #-C\lang1031\f4  der Abschnitt f\'fcr die Titelstichw\'f6rter ist, setze man diesen Abschnitt an den Anfang der Kategorieliste. \f1 
+\par \pard\tx350\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \b C. Speicherbedarf\b0  
+\par \f4 Man h\'f6rt zuweilen die Ansicht, man brauche hier nicht mehr \'fcber Einsparungen nachzugr\'fcbeln, weil Platten fast nichts mehr kosten und schon n\'e4chste Woche wahrscheinlich noch billiger werden. Bibliotheksbest\'e4nde wachsen aber unabl\'e4ssig, und eine Art Parkinsonsches Gesetz besagt, da\'df jede Platte voll wird, und zwar schneller, als man denkt. Nun geht \lang1033\b\i\f1 allegro\lang1031\b0\i0  mit dem Speicherplatz schon "von Natur aus" sparsam um, und vom \lang1033\b\i CockPit\lang1031\b0\i0  aus hat man bequeme Funktionen zum Wiedergewinnen von Platz (\b\f8\'b5r o c\b0\f1  und\b\f8  \'b5r o R\b0\f4 ), aber ein paar kleine Ma\'dfnahmen k\'f6nnen weitere Einsparungen bewirken: \f1 
+\par \pard\fi-349\li349\tx350\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\bullet\tab\f4 Beim Datenbank-Neuentwurf nicht unn\'f6tig viele Kategorienummern definieren, sondern zusammengeh\'f6rige Elemente in eine Kategorie packen, mit Teilfeldtrennung durch das Zeichen ? \f1 
+\par \bullet\tab\f4 Die Anzahl der F\'fcllzeichen (s. Anh. A) nicht zu hoch ansetzen - oder auf Null setzen und dann immer mal "entl\'fcften". \f1 
+\par \bullet\tab\f4 Die L\'e4nge der .STL-Eintr\'e4ge evtl. unter 72 setzen (Befehl\b\f5  i0=72\b0\f1  reduzieren). 
+\par \bullet\tab\f4 Allzu \'fcppige Registereintr\'e4ge mit Bedacht einsetzen. Besonders schlagen solche zu Buche, die hinter dem eigentlichen Eintrag noch Zus\'e4tze enthalten. \f1 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par  `\cf1\ul\b Vorangehender Teil\cf2\ulnone\b0 `    /    `\cf1\ul\b Fortsetzung\cf2\ulnone\b0 `  
+\par \pard  
+\par ?Vorangehender Teil=h ac10-11 
+\par ?Fortsetzung=h ac10-13 
+\par  
+\par }
+ 

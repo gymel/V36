@@ -1,0 +1,77 @@
+  DISPREAD.FLX : Datensatz vom Anzeigefeld in Datei ausgeben und
+  2005-06-20      wieder einlesen (Display Read)
+                 ACHTUNG: erfordert mindestens V25.6 (wg. erase sub)
+
+var X
+if not "edit.adt" jump error
+
+  Anzeigefeld-Inhalt in Datei eee.adt speichern
+file eee.adt
+z=0
+  Schreibdatei ee.adt oeffnen
+open x ee.adt
+  und ausgegebene Datei zum Lesen
+open eee.adt
+
+  Schleife: zeilenweise Daten einlesen und in ee.adt ausgeben
+    dabei Leerzeilen weglassen!
+:el
+var "xxX"
+get +iV
+if can jump ende
+var +"Yyy"
+  Wenn es eine Leerzeile ist, kommt evtl. " Yyy" vor. Leerzeichen beseitigen
+  damit die Zeile ganz leer ist.
+:rep
+if % Yyy% ins _ Yyy_Yyy_;jump rep
+  Leerzeile? Text besteht dann jetzt aus xxXYyy! dann -> :el
+if "xxXYyy" jump el
+  Datenzeile: Zaehler erhoehen
+if "xxX#" z+1
+ins #ueZ
+wri #ueZ(b"xxX" e"Yyy") n
+jump el
+
+:ende
+close x
+close
+#ueZ
+
+  Zaehler <2? Dann war es keine kategorisierte Anzeige
+if z<2 end
+
+  Hierarchische Untersaetze wegnehmen, dann Datei einlesen!
+  (Untersaetze koennten verschoben worden sein, dann wuerde
+  das Zuordnen nicht klappen)
+:lop
+sub
+  ersten Untersatz ansteuern
+next sub
+  keiner mehr da, Schleife zu Ende
+if no jump les
+erase sub
+jump lop
+
+:les
+  Datei einlesen
+read rec ee.adt
+  Hilfsdateien loeschen
+delete ee.adt
+delete eee.adt
+
+disp
+sho rec
+  Bearbeiteter Satz jetzt zu sehen, was soll damit passieren?
+var "Satz speichern?" n "Nein: noch weiter daran arbeiten" n "Abbruch: Žnderungen verwerfen"
+ansi
+yesno
+if cancel undo;end
+if no end
+  yes, dann speichern
+put
+end
+
+:error
+   Fehlermeldung aktivieren, wenn gewuenscht
+  mes Daten nicht geeignet zum Einlesen!
+end

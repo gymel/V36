@@ -1,0 +1,23 @@
+  ALLSOLR.FLX : Gesamtbank fuer Solr exportieren
+  2010-05-31    aufgeteilt in Dateien mit je 100000 Saetzen
+                Einstellungen und Ausfuehrung in  allsolr.job
+
+  Batchdatei auf dem WorkDir vorbereiten, mit acon und e-solr.apr
+open x ccc.bat
+wri "@echo off" n
+wri "set -P=" P n
+wri "set -B=" B n
+wri "set -D=" D n
+wri "set -K=" K n
+wri "set -K1=" K1 n
+wri "del solr-*.xml" n
+
+wri "srch -d%-D%%B%*.%-K1%ld -ee-solr=solrdata.xml -k%-K%" n
+
+close x
+
+  ausfuehren
+ dos ccc.bat
+
+var "Erledigt"
+mes

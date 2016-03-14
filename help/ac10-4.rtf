@@ -1,0 +1,223 @@
+{\rtf1\ansi\ansicpg1254\deff0\deflang1031{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\froman\fprq2 Garamond;}{\f2\froman\fprq2\fcharset0 Garamond;}{\f3\fmodern\fprq1 Courier New;}{\f4\fmodern\fprq1 Courier;}{\f5\froman\fprq2\fcharset0 Times New Roman;}{\f6\fmodern\fprq1\fcharset0 Courier;}{\f7\fnil\fprq2\fcharset2 Wingdings;}{\f8\fmodern\fprq1\fcharset0 Courier New;}{\f9\fswiss\fprq2\fcharset0 Univers;}{\f10\fmodern\fprq1\fcharset162{\*\fname Courier New;}Courier New TUR;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;}
+\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs20 
+\par  `\cf1\ul\b Vorangehender Teil\cf2\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf2\ulnone\b0 ` 
+\par \pard  
+\par \pard\fi-658\li658\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1\fs36  
+\par 10.2.3\tab\f2 Export: \f1 Zeilen-Parameter\b0  
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs20 Diese Parameter beziehen sich auf die Struktur der ausgegebenen Zeilen, vor allem den Umbruch. 
+\par  
+\par \pard\fi-1036\li1036\tx1037\tx8236\b\f3 zb=CS\f4\tab\f0 Zeilenbruch\b0 -Zeichen\f4\tab <\f3 " -/"\f0 > 
+\par \pard\fi-1367\li1367\ri1367\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f5 Wenn Zeilenumbruch durchzuf\'fchren ist, werden diese Zeichen benutzt, um Unterbrechungsstellen zu finden. \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1036\li1036\ri1036\tx1037\tx8378\b\f3 zi=z\f0\tab\f5 Zeileneinr\'fcckung\b0\f0  (indentation). Ab der 2. Zeile des Datensatzes wird\tab <0> 
+\par \pard\fi-1366\li1366\ri1367\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab der Text\b\f3  z\b0\f5  Zeichen einger\'fcckt. \f0 
+\par \tab\tab\f5 Wird keine Einr\'fcckung gew\'fcnscht: Angabe weglassen, denn\b\f3  zi=0\b0\f0  ist Standard. 
+\par \pard\fi-1366\li1366\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\tab\tab Sonderfall:\b0  Bei einem Pauschal-Export (mit Befehl\b\f3  ##\b0\f5 ) beginnt jede Kategorie wieder am Zeilenanfang, aber bei langen Kategorien erfolgt Einr\'fcckung der umgebrochenen Zeilen. \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1036\li1036\tx1037\tx8236\b\f3 zl=k\f4\tab\f5 Zeilenl\'e4nge\b0  in Zeichen\f4    (k <= 1\f6 32\f4 )\tab <56> 
+\par \pard\fi-1366\li1366\ri1366\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\tab\tab Nach maximal k Zeichen wird ein Zeilenumbruch an den im Parameter\b\f3  zb\b0\f5  aufgef\'fchrten Zeichen durchgef\'fchrt. \f0 
+\par \b\tab\tab Sonderfall:\b0\f5  Fortlaufende Ausgabe ohne Zeilenumbruch (z.B. zur \'dcbergabe an Textprogramme wie WORD oder WordPerfect): erreichbar ist das durch die schlichte Zeile \f0 
+\par \pard\fi-1367\li1367\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\tab\tab zl=0\b0\f0  
+\par \tab\tab Wenn der Befehl C (entweder in einem Zwischenteil oder als Manipulationsbefehl) verwendet wird, gibt das Programm trotzdem den Inhalt von\b\f3  ze\b0\f0  aus (s.u.) 
+\par \i\f5\tab\tab\f0 Achtung: \i0 Bei \f3 zl=0\f0  sind \f3 zi\f0  und \f3 zm\f0  nicht nutzbar, auch nicht die Strukturbefehle & , %% , $ und # \f5    \f0 (\f3 -\f7\'d8\f0  10.2.0) 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1036\li1036\tx1037\tx8236\b\f3 zm=n\f4\tab\f0 Zeilenmaximum\b0  (max. Anzahl Zeilen) je Seite\f4\tab <65> 
+\par \pard\fi-1367\li1367\ri1367\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\tab\tab\f5 Wieviele Zeilen sollen tats\'e4chlich bedruckt werden? Nach n ausgegebenen Zeilen wird ein Seitenvorschub ausgef\'fchrt. Genauer: es wird zuerst der Seitenfu\'df, dann der n\'e4chste Seitenkopf aufbereitet. \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1036\li1036\ri1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3   =0\b0\f0\tab fortlaufende Ausgabe \b ohne Seitenumbruch\b0\f5  (dann auch sz=0). Diesen Wert setzt man insbesondere dann, wenn die Ergebnisdatei mit einem Textsystem weiterverarbeitet werden soll. Das ist der Fall, wenn Daten im RTF-Format (f\'fcr die Windows-Programme) oder in HTML (fuer's WWW) ausgegeben werden sollen. \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1036\li1036\ri1036\tx1037\tx8236\b\f3 z1=k\f0\tab minimale Zeilenzahl vor Umbruch\b0\f5  : mindestens k Zeilen m\'fcssen noch auf die Seite\f0\tab <3> 
+\par \pard\fi-1367\li1367\ri331\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab passen, sonst wird zuerst ein Seitenumbruch gemacht, bevor das Programm mit der aktuellen Aufnahme beginnt. Das verhindert die Entstehung sogenannter "Schusterjungen", d.h. alleinstehender Kopfzeilen am Seitenende. 
+\par \pard\fi-1367\li1367\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\tab\tab Sonderfall:\f3   z1=0\b0\f5  : wenn die Aufnahme nicht mehr komplett auf die Seite pa\'dft, wird vorher ein Seitenvorschub gemacht. \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1367\li1367\ri1367\tx1037\tx8236\b\f3 z2=k\f0\tab\f5 maximaler \'dcberlauf \'fcber zm\b0  : eine Toleranz von k Zeilen wird einger\'e4umt, d.h.\f0\tab <2> 
+\par \pard\fi-1367\li1367\ri331\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab das wahre Maximum je Seite ist zm+z2. Ausgenutzt wird das nur, wenn die Aufnahme dann gerade noch als Ganzes auf die Seite geht. Wenn nicht, wird schon nach der Zeilenzahl\f3  zm\f5  unterbrochen. Dies ist das Mittel gegen "Hurenkinder", vereinzelte Schlu\'dfzeilen am Seitenkopf. \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1036\li1036\ri1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 Je h\'f6her man \f3 z1\f0  und \f3 z2\f5  setzt, um so seltener wird eine Aufnahme am Seitenende getrennt. Jedoch werden die Seiten ungleichm\'e4\'dfiger gef\'fcllt. Es ist klar, da\'df  \b\f3 zm + z2 + ff\b0\f5   nicht gr\'f6\'dfer als die tats\'e4chliche Seitenl\'e4nge des Papiers sein darf. Der Wert\f3  ff\f5  entf\'e4llt, wenn kein Fu\'dfabschnitt definiert ist. \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1036\li1036\tx1037\tx8236\b\f3 ze=CS\b0\f0\tab\b Zeilenende\b0 -Steuerzeichen \tab <13 10>* 
+\par \pard\fi-1367\li1367\ri1367\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f5 Nur anzugeben, wenn nicht das normale Zeilenende "Wagenr\'fccklauf / Zeilenvorschub" anzuwenden ist. Auf die Bildschirmanzeige wirkt sich\b\f3  ze\b0\f0  nicht aus. Nur bei der Ausgabe auf Drucker oder Datei wird\b\f3  ze\b0\f5  hinter jede fertig aufbereitete Zeile gesetzt, auch hinter die letzte! F\'fcr UNIX ist der Standardwert das Zeichen "newline", ASCII-Code 10. \f0 
+\par \pard\fi-1367\li1367\ri331\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Zur Verdeutlichung: Ein Ausgabesatz wird zuerst komplett im Arbeitsspeicher aufgebaut, wobei das Programm noch keine Trennzeichen setzt, sondern sich nur die Zeilenenden "merkt". Danach wird zeilenweise auf den Drucker bzw. in die Exportdatei geschrieben. Erst zu diesem Zeitpunkt wird dann der Parameter\b\f3  ze\b0\f5  verwendet, d.h. am Ende jeder Zeile ausgegeben. F\'fcr den Umbruch innerhalb des Arbeitsspeichers und die Anzeige auf dem Bildschirm hat\b\f3  ze\b0\f0  daher keine Bedeutung. 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-658\li658\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1\fs28 10.2.4\tab\fs42 D\fs28 rucker- und Codierungs-Parameter\b0\fs20  
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0  
+\par \pard\fi-1036\li1036\tx1037\tx8236\b\f3 di=CS\f0\tab Initialisierung\b0  des Druckers. Wird vor dem ersten Exportsatz\tab <\f3 ""\f0 >* 
+\par \pard\fi-1367\li1367\ri1367\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab automatisch ausgegeben (vgl. Kap.3.5.3, Befehl #p) und wenn #pi im Eingabemodus als Befehl gegeben wird. (siehe auch \f3 -\f7\'d8\f0  10.2.6.5 "Kopfabschnitt") 
+\par \pard\fi-1367\li1367\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Keine Wirkung auf Umbruch und Bildschirm. 
+\par \tab\tab Auch verwendbar, um einen \b Dateikopf\b0  zu erzeugen. 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1036\li1036\tx1037\tx8236\b\f3 dx=1\f0\tab Zeichenumwandlung\b0\f5  \'fcber Tabelle \f0\tab <0> 
+\par \pard\fi-1367\li1367\ri1367\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3   =0\b0\f0\tab\tab\f5 1: auch f\'fcr die Bildschirmanzeige, \f0 
+\par \tab\tab 0: nur bei Druck- bzw. Dateiausgabe wirksam 
+\par \tab\tab\f5 Wenn die Parameterdatei f\'fcr Bildschirmausgabe gedacht ist und spezielle Bildschirmsteuerungen (sog. ANSI-Escape-Sequenzen) vorhanden sind: dx=1.  \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1036\li1036\ri1036\tx1037\tx8236\b\f3 dn=X\f0\tab Name der Parameterdatei\b0\f5 : ohne Bedeutung f\'fcr das Programm,\f0\tab <> 
+\par \pard\fi-1367\li1367\ri1367\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f5 nur als Merkhilfe f\'fcr den Benutzer gedacht; Anzeige bei F2  \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \b\fs24 10.2.4.1  Codiertabellen und Ersetzungsbefehle\b0\fs20  
+\par  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 Auf der Ebene des einzelnen Zeichens gibt es eine Reihe von M\'f6glichkeiten, Zeichen durch andere Zeichen oder durch  Zeichenketten zu ersetzen. \f0 
+\par \tab\f5 Es existieren w\'e4hrend des Programmlaufs zwei Codiertabellen, die \b\f0 Normaltabelle\b0  und die \b Alternativtabelle\b0\f5 , die f\'fcr jedes Datenelement wahlweise benutzt werden k\'f6nnen. Das erste Zeichen des Exportbefehls, '#' oder '!', entscheidet dar\'fcber, welche von beiden jeweils benutzt wird (\f3 -\f7\'d8\f0 10.2.6.1). 
+\par \tab\f5 Warum zwei Tabellen? Es kann z.B. vorkommen, da\'df bestimmte Datenfelder in Gro\'dfbuchstaben und/oder mit aufgel\'f6sten Umlauten gedruckt werden sollen, obwohl sie mit normaler Schreibweise erfa\'dft sind. Das kann etwa bei den K\'f6pfen von Katalogkarten der Fall sein oder bei den Ordnungskriterien in sortierten Listen. Dazu ist dann die Alternativtabelle n\'fctzlich. \f0 
+\par \tab\f5 Wahlweise kann man auch befehlen, eine bestimmte Kategorie \'fcberhaupt nicht umzucodieren: dazu gibt man den Manipulationsbefehl\f3  y0\f0  . 
+\par \tab\f5 F\'fcr die Bildschirmanzeige ist die Umcodierung normalerweise abgeschaltet. Mit dem Parameter\f3   dx=1\f5   wird sie auch f\'fcr den Bildschirm eingeschaltet. Diese M\'f6glichkeit ist wichtig, wenn z.B. unterschiedliche Attribute, auch Farben, auf den Bildschirm zu bringen sind und dazu Steuerzeichenfolgen (sog. ANSI-Escape-Sequenzen) verwendet werden. \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 Die Codiertabellen enthalten f\'fcr jedes Zeichen (256 ASCII-Codes) eine Anweisung, was statt dieses Zeichens wirklich auszugeben ist. Vordefiniert ist, da\'df jedes Zeichen unver\'e4ndert ausgegeben, also nicht umcodiert wird. Nur f\'fcr abweichende F\'e4lle mu\'df man Angaben f\'fcr die Codiertabellen machen, und zwar in folgender Form: (statt 'p' kann immer auch 'd' benutzt werden!) \f0 
+\par \b\f3 p\b0\f0\tab\f5 Codierbefehl f\'fcr die Normaltabelle, \f0 
+\par \tab wirkt in den mit '#' beginnenden Exportbefehlen (\f3 -\f7\'d8\f0  10.2.6.1);  
+\par \b\f3 q\b0\f0\tab\f5 Codierbefehl f\'fcr die Alternativtabelle, \f0 
+\par \tab wirkt in den mit '!' beginnenden Exportbefehlen; 
+\par \tab\f5 In den folgenden Beispielen wird nur 'p' benutzt. Die Form der Befehle ist f\'fcr 'q' dieselbe. \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Allgemeine Form: 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \b\f3 p\b0\f0  \i zeichen ersatzcode\i0  
+\par  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Beispiele: 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1367\li1367\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f8 p \'e4 123\b0\f0\tab\tab\f5\'e4 wird in den Code 123 \'fcbersetzt \f0 
+\par \b\f8 p \'a7 192\b0\f0\tab\tab\f5\'a7 erh\'e4lt den Code 192 \f0 
+\par \b\f3 p a/z 97\b0\f0\tab\tab a bis z werden mit 97,98,99 ... 122 codiert 
+\par \pard\fi-1799\li1799\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab (das entspricht den normalen Rechnercodes und kann deshalb entfallen; dagegen:) 
+\par \pard\fi-1367\li1367\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 p a/z A\b0\f0\tab\tab oder 
+\par \b\f3 p a/z 65\b0\f0\tab\tab\f5 diese Befehle w\'fcrden Kleinbuchstaben a...z in gro\'dfe (Codes 65...90  = A...Z) umsetzen \f0 
+\par \b\f8 p \'e4 \'c4\b0\f0\tab\tab\f5 F\'fcr die Umlaute mu\'df man eigene Befehle einsetzen (sie liegen nicht zwischen a und z) \f0 
+\par \b\f3 p .15 95\b0\f0\tab\tab Ersetzt den (nicht druckbaren) Code 15 durch 95 (= '_') 
+\par \b\f3 p A/Z 97\b0\f0\tab\tab macht das Umgekehrte: A -> a, B -> b, ... 
+\par \b\f3 p x/y =z\b0\f0\tab\tab\f5 Die Codes zwischen x und y (einschlie\'dflich) werden alle durch den Wert z ersetzt. F\'fcr z=1 hei\'dft das: die Codes x bis y werden alle ausgeblendet. Bei Sortier- und Indexparametern kann man so sehr leicht ganze Bereiche von Sonderzeichen eliminieren. \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1367\li1367\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 p x 0\b0\f0\tab\tab Zeichen x wirkt als \b globales Endezeichen\b0 . Wenn es in einer Kategorie vorkommt, wird ihre Ausgabe an dieser Stelle beendet. Ausnahme: wenn das Zeichen gleich am Anfang der Kategorie steht, wird der Text ausgegeben, weil nichts anderes in der Kategorie vorhanden ist. 
+\par \tab\tab Empfehlung:\b\f3  p \f7\'f4\f3  0\b0\f0    (Code 18) 
+\par \b\f3 p x 1\b0\f0\tab\tab\f5 Zeichen x soll gar nicht gedruckt werden (ersatzlose \'dcbergehung) \f0 
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 Die folgenden 2 Codes erm\'f6glichen es, Codierungen von Teilfeldern, wie sie bei manchen Kategoriensystemen (z.B. MARC) vorkommen, auf unterschiedliche Art zu behandeln: \f0 
+\par \pard\fi-1799\li1799\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 p x 2\b0\f0\tab Wenn x auftritt, soll es mitsamt dem nachfolgenden Zeichen ersatzlos beseitigt werden 
+\par \b\f3 p x 3\b0\f0\tab Wenn x auftritt, soll es durch Leerzeichen ersetzt und das nachfolgende Zeichen ignoriert werden. D.h. x wird zusammen mit dem nachfolgenden Zeichen durch nur ein Leerzeichen ersetzt. 
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 p x 5\b0\f0\tab\f5 Zeichen x zusammen mit dem nachfolgenden Zeichen soll unver\'e4ndert stehen bleiben. Wichtig ist dies, wenn es 2-Zeichen-Kombinationen gibt, wo bestimmte Zeichen zusammen mit ihrem Nachfolger einen Code f\'fcr ein anderes Zeichen bilden. Der Befehl \f0 
+\par \b\f3\tab p .161/.255 =5\b0\f5    w\'fcrde bewirken, da\'df alle Zeichen ab Code 161 so behandelt werden. \f0 
+\par  
+\par \pard\fi-1799\li1799\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 p x 8\b0\f0\tab Wenn x auftritt, soll es entfallen und das nachfolgende Zeichen soll durch das Zwischenteil ersetzt werden, das seiner ASCII-Nummer entspricht. Zum Beispiel:  p _ 8, dann wird aus  _K  das Zw.T. 75 (= Code von K) \f5 Mehr dazu in der `\cf1\ul\b Verlautbarung 164\cf2\ulnone\b0 `. \cf0\f2 Vgl. Anwendung in der N-Parametrierung, Kommentar in N.CFG\cf2\f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1799\li1799\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 p x 9\b0\f0\tab\f5 Wenn x auftritt, soll die nachfolgende Zeichensequenz bis zum Zeichen ib (Default: ;)  im Ersetzungsregister gesucht werden. Was im Register hinter der Sequenz steht, soll statt der Sequenz eingesetzt werden. Notwendig ist das, wenn man Unicode-Sequenzen der Gestalt &#nnn; f\'fcr Sonderzeichen nutzen will, die man sonst nicht zur Verf\'fcgung hat.  Mehr dazu in der `\cf1\ul\b Verlautbarung 164\cf2\ulnone\b0 `. 
+\par \tab\tab\tab Ausf\'fchren kann man die Sequenzen dann, f\'fcr den ganzen aktuellen Satz, mit dem Steuerbefehl  \f8 #dV\f5 . 
+\par \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par Wenn man \b Druckertreiber\b0  als Nachladetabellen organisiert (\f3 -\f7\'d8\f0  10.2), kann man darin auch alle Codierungsbefehle unterbringen, die druckerspezifisch sind. 
+\par In der Tabelle \b S.APT\b0\f5  sind die Codewandlungen untergebracht, die man f\'fcr eine Sortieraufbereitung braucht; zur  Anwendung siehe Kap.8. \f0 
+\par \f5 In den Indexparameterdateien, z.B. CAT.API, findet man lange Listen von Codierbefehlen, die man jeweils in neue Parameters\'e4tze \'fcbernehmen kann, denn f\'fcr den Index ist die Vereinheitlichung der Schreibweise, die Umlautaufl\'f6sung (siehe n\'e4chster Abschnitt) und die Eliminierung von Akzenten und Sonderzeichen sehr wichtig. Die Datei \b\f0 I.APT\b0\f5  enth\'e4lt diese Codierungen; der Zeichensatz OSTWEST.FON ist ber\'fccksichtigt.. \f0 
+\par \f5 Alle diese Tabellen sind unabh\'e4ngig vom Kategorienschema, also nach Umbenennung auch f\'fcr andere nutzbar. \f0 
+\par  
+\par  
+\par \b\f2\fs28 10.2.4.2  Ersatzdarstellungen f\'fcr Einzelzeichen\b0\f0\fs20  
+\par  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 F\'fcr jedes Zeichen kann man \'fcber die Codiertabelle ferner eine \b\f0 Ersatzdarstellung\b0\f5  definieren, wobei es zwei M\'f6glichkeiten gibt: \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\b Text-Ersatzdarstellung\b0  
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 p\b0\f0  \i zeichen "ersatztext"  \i0    
+\par \b\f3\tab\b0\i\f0 Beispiel: \b\i0\f8 p \'e4 "ae"\b0\f0  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 z.B. zur Aufl\'f6sung von Umlauten. Solche Ersatzdarstellungen werden, wie man erwarten wird, beim Zeilenumbruch ber\'fccksichtigt. Solche Befehle wirken nicht auf Zwischenteile! \f0 
+\par \b\i\tab Ausnahme:\b0\i0  das Nichtsortierzeichen kann so nicht umcodiert werden. Bei diesem Zeichen funktioniert nur der Befehlstyp\b\f3   p x k\b0\f0  . 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\b Drucker-Ersatzdarstellung\b0   :  statt \i "ersatztext"\i0\f5  eine Codesequenz oder CS mit f\'fchrendem Punkt: \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 p [ .27 82 0 91 27 82 2\b0\f0          bzw. 
+\par \b\f3 p .91 .27 82 0 91 27 82 2 
+\par p x ."abc"\b0\f0  
+\par \pard\fi-1038\li1038\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 wenn z.B. der Drucker zwar die eckige  Klammer hat, aber in einem anderen nationalen Zeichensatz. Die hier gezeigten Zahlen sind die Ersatzdarstellung von [ f\'fcr EPSON-Drucker: \f0 
+\par \tab\f5 Esc R 0 91 Esc R 2; dabei schaltet Esc R 0 auf den US-ASCII-Satz um, 91 ist der Code f\'fcr [, und Esc R 2 schaltet wieder auf den deutschen Zeichensatz zur\'fcck. Alle nationalen Sonderzeichen kann man auf diese Weise codieren. \f0 
+\par \tab\f5 Drucker-Ersatzdarstellungen haben sinnvollerweise keinen Einflu\'df auf den Zeilenumbruch: die gesamte Sequenz wird als \b\f0 ein\b0\f5  Zeichen gerechnet. Ausgef\'fchrt werden diese Befehle erst am Schlu\'df, unmittelbar vor der physikalischen Ausgabe des Zeichens, die anderen Befehle dagegen schon vor der Umbruchbearbeitung. \f0 
+\par \tab\f5 Trotz des Namens k\'f6nnen Drucker-Ersatzdarstellungen nat\'fcrlich auch zum Datei-Export verwendet werden. \f0 
+\par \tab\f5 Drucker-Ersatzdarstellungen k\'f6nnen aus mehreren Zeichen bestehen. Hinter dem Punkt sind die Druckercodes einzugeben, durch die das Zeichen zu ersetzen ist. Die Umwandlung erfolgt in zwei Schritten: zuerst werden Zeichen, f\'fcr die eine Text-Ersatzdarstellung definiert ist, durch diese ersetzt, dann der Zeilenumbruch durchgef\'fchrt, und dann werden die Rechnercodes vor dem Drucken durch die Druckercodes ersetzt, wenn f\'fcr ein Zeichen eine Drucker-Ersatzdarstellung definiert ist. F\'fcr die Ausgabe auf dem Bildsc\f0 hirm (Befehl #D) hat eine Drucker-Ersatzdarstellung keine Wirkung. 
+\par \tab\f5 Text-Ersatzdarstellungen sind dagegen auch wirksam, wenn dx=0 gesetzt wurde, wenn also keine Codeumwandlung f\'fcr den Bildschirm gew\'fcnscht wird. \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 Eine extreme Anwendung von Ersatzdarstellungen w\'e4re diese: wenn bestimmte W\'f6rter oder Wendungen in einem Datenmaterial h\'e4ufig vorkommen, w\'e4hle man ein ansonsten nicht benutztes Zeichen (z.B. Graphikzeichen) und teile diesem die betreffende Zeichenkette als Text-Ersatzdarstellung zu. W\'fcrde man etwa eine gro\'dfe Sammlung von Dissertationen einiger Technischer Universit\'e4ten erfassen und sp\'e4ter drucken wollen, k\'f6nnte man ein Zeichen x ausw\'e4hlen und schreiben \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f8 p x "Technische Universit\'e4t"\b0\f0   . 
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 Beim Drucken wird dann der Umbruch so durchgef\'fchrt, als ob tats\'e4chlich dieses anstelle von x st\'fcnde. Bei der Volltextsuche allerdings k\'f6nnte man diese Aufnahmen nicht finden, wenn man z.B. "\f3 universitaet\f5 " als Suchwort eing\'e4be! \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-658\li658\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1\fs28 10.2.4.3  Backspace-Liste\b0\f0\fs20  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 F\'fcr Druckausgaben auf \'e4lteren Druckern gibt es noch eine kleine Sondertabelle, die \b\f0 Backspace-Liste\b0 , die mit dem Befehl pb definiert wird: 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 pb 94 95 96 126\lang1033\b0\f9        die Zeichen  ^ _ ` ~   sollen einen R\'fcckschritt ausl\'f6sen\lang1031\f0   
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 Die Codes 94,95,96 und 126 sollen f\'fcr den Druck als "backspace"-Zeichen gelten, d.h. hinter jedem dieser Codes mu\'df ein backspace (= Code 8) gedruckt werden (Akzente bzw. Unterstreichungsstrich!) \f0 
+\par \tab\f5 In die "Backspace-Liste" kann man beliebig viele Codes aufnehmen. Bei der Ausgabe wird dann gepr\'fcft, ob das zu druckende Zeichen in dieser Liste vorkommt. Wenn ja, wird es gedruckt und ein Code 8 hinterhergeschickt, so da\'df das n\'e4chste Zeichen auf dieselbe Position gedruckt wird. Dies funktioniert z.B. auf EPSON-Druckern; bei anderen nicht unbedingt, aber meistens. \f0 
+\par \tab\f5 Wenn man den Zeichensatz DIN 31628 einsetzt, gibt es noch eine Anzahl andere Akzente, die auch ber\'fccksichtigt werden m\'fcssen. \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-658\li658\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1\fs28 10.2.4.4  Absatz-Endezeichen (Zeilentrennzeichen)\b0\f0\fs20  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 Wenn man in gewissen Kategorien l\'e4ngere Texte hat, kann es sein, da\'df man beim Umbruch gern an bestimmten Stellen einen Absatz (Zeilenwechsel) erzwingen m\'f6chte, d.h. einen Zeilenvorschub, obwohl noch Platz in der Zeile w\'e4re. Dazu kann man ein Zeilentrennzeichen definieren, indem man den Codierbefehl  \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 p x 255\b0\f0  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab gibt, wobei x ein sonst nicht benutztes Zeichen ist. 
+\par \i\tab Empfehlung:\i0\f5  (verwendet in den mitgelieferten Parameterdateien) ist der Code 20 = '\'b6' , auf MS-DOS-Rechnern mit CTRL+t einzugeben. Die Auswirkung: wo immer im Text dieses Zeichen steht, wird beim Umbruch eine neue Zeile begonnen. \f0 
+\par \tab\f5 N\'fctzlich ist dieser Code auch als Trennung zwischen mehreren gleichwertigen Eintragungen innerhalb einer Kategorie (\f3 -\f7\'d8\f0  10.2.1). 
+\par \tab Empfehlung: wenn Sie beide Mechanismen zugleich verwenden wollen, definieren Sie ein anderes Zeichen als Zeilentrennung. 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-658\li658\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1\fs28 10.2.4.5  Indexcodes\b0\f0\fs20  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 Diese sehen aus wie p- und q-Befehle, machen aber keine Umcodierung. Sie definieren die Sortierwerte einzelner Zeichen, wenn diese vom ASCII-Wert abweichen sollen. Die Zeichen selbst bleiben dabei unver\'e4ndert. Wenn man etwa das t\'fcrkische "dumpfe i" (ohne Punkt), zwischen i und j ordnen wollte, wie es die T\'fcrken tun, m\'fc\'dfte man schreiben: \f0 
+\par \pard\fi-2663\li2663\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 i \f10\'fd 106\b0\f3\tab\tab\f0 Zeichen \b\f10\'fd\b0\f5   erh\'e4lt den Sortierwert 106\f3  
+\par \b i j/z 107\b0\tab\f5 j erh\'e4lt 107, k 108 usw. bis z (normalerweise w\'e4re j=106 usw.) \f0 
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 Das hei\'dft: \b\f10\'fd\b0\f5   bekommt den Sortierwert 106, das ist sonst der Wert von j. Das j und alle nachfolgenden Buchstaben bis z r\'fccken eine Position weiter. \f0 
+\par \tab In deutsche OPACs wird man genau dieses nicht einbauen, sondern vielmehr schreiben: 
+\par \f10\tab p \'fd I 
+\par \tab q \'fd i\f0  
+\par \tab\f5 Dann wird in den Registern das t\'fcrkische durch ein "normales" i ersetzt und folglich auch so geordnet. Die i-Befehle wurden \'fcbrigens urspr\'fcnglich entwickelt, um kyrillische Zeichen mit ukrainischen Sonderzeichen benutzen und diese korrekt ordnen zu k\'f6nnen. \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \b\f3 o x y\tab\f0 ASCII \lang1024\f7\'df\'e0\lang1031\f0  ANSI Zuordnung\b0  
+\par \pard\li993\tx993\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f5 F\'fcr die Windows- und UNIX-Programme braucht man eine Liste solcher Zuordnungen, die in beiden Richtungen eindeutig sein m\'fcssen. Dadurch wird es m\'f6glich, da\'df die Datenbank selbst ASCII-Daten enth\'e4lt (und somit von den DOS-Programmen benutzt werden kann), da\'df sie aber unter Windows und UNIX korrekt aussieht, denn an allen relevanten Stellen werden dann die Zeichen mit Hilfe dieser Tabelle hin und zur\'fcck konvertiert. Eine komplette Tabelle dieser Zuordnungen f\'fcr den OSTWEST-Zeichenvorrat ist die Datei O.AP\f0 T, die man in die Indexparameter einfach mit dem Befehl 
+\par \pard\li993\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 to\b0  
+\par \f0 einbindet.  
+\par \f5 Man mu\'df eine andere solche Tabelle aufstellen, wenn man nicht den Ostwest-Zeichenvorrat benutzt, sondern z.B. den Pica-Code. Ansonsten kann man die O.APT unbesehen auch f\'fcr andere Konfigurationen \'fcbernehmen. \f0 
+\par \i Hinweis: \i0 Die DOS-Programme ignorieren die o-Befehle! 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-658\li658\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1\fs28 10.2.4.6  Globale Zeichenketten-Ersetzungsbefehle\b0\f0\fs20  
+\par \pard\tx8236\tab ("Lokale Ersetzung" \f3 -\f7\'d8\f0  10.2.6.3)  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 Neben den verschiedenen M\'f6glichkeiten, einzelne Zeichen durch ein oder mehrere andere Zeichen zu ersetzen, kann man jedoch auch ganze W\'f6rter, oder allgemeiner: Zeichenketten, durch andere Zeichenketten ersetzen lassen. (Aber: dies kostet viel mehr Zeit als Einzelzeichen-Ersetzungen.) \f0 
+\par \tab\f5 F\'fcr die Erfassung haben Sie den Befehl \b\f0 Suchen und Ersetzen\b0  (Befehlszeichen '\b\f3 _\b0\f0 ' oder '\b\f3 ,\b0\f0 ') kennengelernt (\f3 -\f7\'d8\f0  Kap.3.5.3). Dieselben Befehle, die im Editor anwendbar sind, kann man als Befehle in eine Export-Parameterdatei einbauen: 
+\par \tab\f5 Um eine automatische Ersetzung in jeder zu bearbeitenden Aufnahme ("globale Ersetzung") zu erreichen, braucht man nur einen oder mehrere solcher Befehle als eigene Zeilen in die Parameterdatei einzusetzen. Die Wirkung erstreckt sich auch auf nachgeladene S\'e4tze. \f0 
+\par \tab Es spielt keine Rolle, an welcher Stelle in der Datei diese Befehle stehen, d.h. sie wirken imm\f5 er\f0  global. 
+\par \tab Wenn Sie z.B. 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \b\f3 _PC_Personal Computer_\b0\f0   
+\par  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 in die Parameterdatei schreiben, ganz gleich wo, wird jedes Vorkommnis von "PC" durch "Personal Computer" ersetzt. Allerdings auch da, wo es vielleicht etwas anderes bedeutet! Anders als bei der Erfassung fragt das Programm bei der Ausgabeproduktion n\'e4mlich nicht an jeder Stelle, ob hier die Ersetzung gew\'fcnscht ist, sondern f\'fchrt sie kommentarlos aus. \f0 
+\par \tab\f5 Zus\'e4tzlich gibt es aber die "Kategoriespezifische Ersetzung". Wenn Sie z.B.  \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \b\f3 *#31_PC_Personal Computer_\b0\f0   
+\par  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f5 schreiben, wird nur in der Kategorie #31 (Schlagwort) diese Ersetzung  vorgenommen (auch in den evtl. vorkommenden Mehrfachkategorien #31a, #31b, etc.), aber nicht in den anderen Kategorien. Will man dagegen die Ersetzung in allen Titelkategorien (#20, #22, ...) vornehmen, so w\'fcrde man dieses schreiben: \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \b\f3 *#2_PC_Personal Computer_\b0\f0  
+\par  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Das dritte '_' am Ende der Ersetzungskette darf man auf keinen Fall vergessen! 
+\par \tab\f5 Innerhalb der beiden Zeichenketten k\'f6nnen Codes der Gestalt \b\f0\\n\b0\f5   mit 1<n<255 (Dezimalzahl, nicht Hexadezimal) verwendet werden f\'fcr Zeichen, die man mit seinem Texteditor nicht eingeben kann. \f0 
+\par \i\tab Vorsicht:\i0\f5  Das Dollarzeichen kann nicht ersetzt werden, d.h. es kann nicht in der ersten Zeichenkette vorkommen, denn es hat eine Sonderwirkung: es steht stellvertretend f\'fcr den ganzen Rest der Kategorie, siehe Beschreibung in Kap.3.5.3.  \f0 
+\par \i\tab Beispiel:\i0  
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 *#31p_Shakespeare$_Shakespeare, William <1564-1616>_\b0\f0  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Dadurch wird in Kategorie #31p "Shakespeare" in allen Schreibweisen durch die angegebene Ansetzungsform ersetzt. 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par  
+\par \b Sonderformen: \b0   (siehe auch Kap. 3.5.3.) 
+\par  
+\par \pard\fi-1800\li1800\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 _#980_#270_\b0\f0\tab\tab\f5 wandelt #980 in #270 um (sorgt auch f\'fcr die Umordnung innerhalb des Satzes!) \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1799\li1799\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 _#33a__\b0\f0\tab\tab\tab\f5 l\'f6scht die Kategorie #33a  (2 Unterstriche hinter #33a) \f0 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1800\li1800\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 __#33aText_\b0\f0\tab\tab\f5 f\'fcgt in jede bearbeitete Aufnahme die Kategorie\f3  #33aText\f0  ein (2 Unterstr. vor #33a) 
+\par \pard\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \pard\fi-1368\li1368\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i Anmerkung:\i0  \tab Bei den Import-Parametern hat der Ersetzungsbefehl eine etwas andere Form (\f3 -\f7\'d8\f5  Kap.11.2.2.2), weil dort auch h\'e4ufig nicht-druckbare Zeichen (Steuerzeichen) ersetzt werden m\'fcssen. \f0 
+\par  
+\par \pard\tx1037\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i Empfehlung: \i0\f5 F\'fcr  Ersetzungen von \b\f0 Einzelzeichen\b0  verwendet man besser nicht diese Befehle, sondern die p- und q-Befehle, denn die sind erheblich schneller. Statt  \b\f3 _X_U_ \b0\f0 schreibt man also besser  \b\f3 p X U\b0\f5 .  Das sind exakt gleich viele Tastenanschl\'e4ge, aber eine mindestens 10fach schnellere Abarbeitung (\f3 -\f7\'d8\f0  Kap.10.2.4.2). 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par \pard\fi-658\li658\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f2\fs28 10.2.4.7  Unicode-Ersetzungsbefehle f\'fcr UTF-8-Codes\b0\f0\fs20  
+\par \pard\fi-1036\li1036\tx1037\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \tab\f5 Ab Version 23.2 kann man in einer Datenbank statt der OstWest-Codierung oder einer anderen ASCII-Codierung die Unicode-Methode `\cf1\ul\b UTF-8\cf2\ulnone\b0 ` verwenden. Daf\'fcr gibt es neue Befehle, mit P und Q eingeleitet, mit denen man Kombinationen von 2 bzw. 3 Zeichen durch andere Zeichen oder Kombinationen ersetzen kann. \f0 
+\par \tab\f5 Sinnvoll ist das wohl nur dann, wenn man eine Datenbank vorwiegend im Internet benutzen und auch bearbeiten will. Dazu gibt es die Methode "RuckZuck". Alles Notwendige dazu ist \'fcber die Homepage zu finden: `\cf1\ul\b http://www.allegro-c-de \cf2\ulnone\b0 `\f0  
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par `\cf1\ul\b Vorangehender Teil\cf2\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf2\ulnone\b0 ` 
+\par \pard  
+\par ?Vorangehender Teil=h ac10-3 
+\par ?Fortsetzung=h ac10-5 
+\par ?Verlautbarung 164=h vb164 
+\par ?http://www.allegro-c.de=~start http://www.allegro-c.de/unicode/ 
+\par ?UTF-8=h unicode 
+\par 
+\par }
+ 

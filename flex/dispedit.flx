@@ -1,0 +1,54 @@
+  DISPEDIT.FLX : Datensatz fuer Bearbeitung im Anzeigefeld vorbereiten
+  2005-06-20     (Display Edit)
+
+  Sind die FlipButtons 9 und 10 schon korrekt belegt?
+var #uX9
+if not "X dispedit" jump x9
+var #uX0
+if not "X dispread" jump x0
+
+:start
+  Exportparameter sichern
+set dow 2
+var e
+  Wenn Exp.Param sowieso e-w0, dann nicht laden! (dann passiert das nur
+   beim ersten mal, nicht jedesmal)
+if "e-w0" jump dw
+xpo p e-w0
+  Parameter nicht vorhanden?
+if no jump param
+:dw
+  Satz ausgeben in edit.adt  (Arbeitsverzeichnis!)
+open x edit.adt
+dow
+set dow 1
+close x
+
+:sh
+  ausgegebenen Satz anzeigen, kann dann bearbeitet werden!
+h edit.adt
+  mit dispread.flx wird er hernach wieder aus dem Anzeigefeld in die Datei
+  geschrieben und diese wieder eingelesen!
+var "Datensatz kann jetzt bearbeitet werden! " n "Danach mit Alt+0 wieder einlesen, dann mit Alt+s normal speichern."
+var +n "Man kann aber auch weitermachen, ohne irgendetwas zu tun! Dann F5 o.a."
+ansi
+sho iv
+act 4
+end
+
+:x9
+#uX9  X dispedit
+:x0
+#uX0  X dispread
+var "Display Edit ist jetzt vorbereitet. So geht es:" n "Alt+9 : Anzeige in der Bearbeitungsform" n "Dann bearbeiten." n "Alt+0 : Wieder speichern" n n "Wenn Sie auf Alt+0 verzichten, passiert einfach gar nichts!"
+mes
+jump start
+
+  e-w0.xpr fehlt, deshalb
+  Parameter als Kopie von  e-w0.apr  auf DbDir bereitstellen
+:param
+var P "e-w0.apr " D "e-w0." K1 "pr"
+fcopy
+if no mes Parameterdatei e-w0.apr nicht vorhanden!;set dow 1;end
+mes Parameter e-w0 mussten erst bereitgestellt werden, aber jetzt geht es
+jump start

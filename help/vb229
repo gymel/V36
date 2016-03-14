@@ -1,0 +1,136 @@
+
+Verlautbarung 229 der Entw.Abt.                              2010-05-31
+-------------------------------
+
+                          V30.5 liegt bereit
+
+Neuerungen fuer Solr
+====================
+
+Mit dem Produkt "Solr" von Apache (frueher "Lucene"), kann eine
+allegro-Datenbank um Suchmaschinentechnik erweitert werden.
+Dies muss sich jeder Anwender selbst einrichten. Die Anleitung
+dazu steht unter
+  http://www.allegro-c.de/doku/solr.htm
+Die notwendigen Dateien fuer eine Minimalinstallation mit Nutzung in
+a99/alcarta sind die folgenden und im Gesamtpaket mit drin:
+
+e-solr.apr   : Verwendung in expsolr.flx f.d. Zeichenkonvertierung
+               (AENDERN, wenn  A.CFG  und oder OstWest-Zeichensatz 
+                nicht verwendet wird)
+               Wird von folgenden zwei FLEXen benutzt:
+
+expsolr.flx  : Export der Daten, die Solr indexieren soll
+               Exportiert eine Erg.menge! Mehr nur zum Ausprobieren.
+               (AENDERN, wenn nicht A.CFG eingesetzt wird)
+
+allsolr.flx    Exportiert Gesamtbank [viel schneller]
+               Erstellt ccc.bat mit acon drin und fuehrt diese aus.
+               Braucht man nicht zu aendern.
+
+asksolr.flx  : Abfrage an Solr senden, Erg.Menge entgegennehmen
+               (nur aendern, wenn Solr diffiziler konfiguriert wird,
+                vor allem wenn man feldspezifische Suche will)
+
+Die Dateien sind ausreichend kommentiert.
+Die Solr-Technik aendert an den bisher bekannten Funktionen und
+Gegebenheiten nichts! Es handelt sich um eine zusaetzliche
+Moeglichkeit, keinen Ersatz fuer irgendetwas Bestehendes. Das Potential
+dieser neuen Moeglichkeit wird durch die Minimalinstallation nicht
+annaehernd ausgeschoepft; diese soll den Einstieg erleichtern, liefert.
+aber auch schon ein brauchbares Resultat.
+
+SuperTip:
+Nutzen kann man auch den FLEX  onfnda99.flx, der in Aktion tritt, wenn
+in die Suchbefehlszeile kein Befehl eingegeben wird, sondern nur
+ein Wort oder mehrere. Man kopiere also  asksolr.flx  auf onfnda99.flx.
+Daran kann man sich schnell gewoehnen: Das Suchbefehlsfeld gewinnt
+dadurch eine neue Maechtigkeit als "Ganz einfach"-Einwurfschlitz.
+
+Um Solr effektvoll anwenden zu koennen, waren einige wenige 
+Verbesserungen in a99/alcarta und acon noetig:
+
+
+FLEX-Neuerungen (a99 und acon)
+---------------
+
+find @
+  bildet eine Ergebnismenge aus den Nummern, die in dem Moment in
+  der iV stehen, getrennt durch ein oder mehr nichtnumerische Zeichen.
+  Kommt zur Anwendung in asksolr.flx, der eine Erg.Menge in Form
+  einer Nummernliste von Solr bekommt.
+find @+
+  Damit wird die in dem Moment bestehende Erg.Menge um die betr. 
+  Nummern ergaenzt, die in der iV stehen.
+  Im Unterschied dazu muﬂ bei  find #...  direkt hinter dem # eine
+  Folge von Nummern stehen, die durch Komma getrennt sind.
+
+var iR   (NUR acon)
+  Die interne Nummer des letzten Satzes, der mit "fetch rec" eingelesen
+  worden war. 
+  Aber nur, wenn es sich bei der Datei um .ALD oder .LOG handelte.
+  Wozu? Es kann sein, daﬂ man sie zum Exportieren oder Nachladen
+  braucht. Der eingelesene Satz landet bei "fetch rec" in der iV,
+  seine interne Nummer wird aber dabei nicht beruecksichtigt.
+  In a99 ist es anders: mit "fet b4" liest man sie ein und erst
+  danach sagt man "fetch rec". Eine unglueckliche Differenz, ja.
+  Erstmals gebraucht wird das in srch.job, wenn man Daten fuer Solr
+  produzieren will (Aufruf von srch.job  aus allsolr.flx, dann wird
+  die iR weitergereicht als #uiR an e-solr.apr).
+
+
+Linux und Solaris: Jetzt auch  get I... und  var F...
+-----------------------------------------------------
+
+get I<url>
+
+  oder 
+
+var "<url>"
+get I
+
+holt den Inhalt einer Internetdatei in die iV. <url> muss dabei eine
+URL sein, die Text enthaelt; es kann auch eine dynamische URL sein.
+Es wird dann der Inhalt, der ueber das Internet kommt, als Text in der
+iV abgelegt.  [a99 kann dies schon seit langem.]
+
+Mit  if no ...  testet man auf Fehler.
+                in der iV steht dann die HTTP-Statusmeldung, z.B.
+                       HTTP/1.1 404 File not found
+
+Man braucht diese Funktion, um Ergebnisse von Solr zu holen:
+Eingebaut ist sie in asksolr.flx (fuer a99/alcarta) und in
+asksolr.job, der Entsprechung fuer avanti/acon, also den Einbau
+von SolrPower in Web-Schnittstellen wie PHPAC und a30.
+In a30 kann das schon genutzt werden (a30solr.job), fuer PHPAC ist 
+erst noch etwas zu tun. Man laesst im FreiRaum von a30 einen
+Suchschlitz fuer Solr erscheinen, indem man im Job schreibt:
+wri "_!_FRE " n
+wri "TE Eingabe:|100" n
+wri "IN VurS|300" n
+wri "BU Solr|a30solr" n
+Der Job a30solr.job erhaelt dann die Eingabe in der Variablen #urS,
+uebergibt sie an Solr und liefert die Ergebnisse an a30, jedenfalls
+die ersten 100 Ergebnisse. Dies zu erweitern wird nicht schwer sein,
+aber oft reichen die ersten 20 oder so, weil Solr schon ein "ranking"
+(genannt "scoring") vornimmt!
+
+NEU und wichtig fuer SolrPower in a30 (a30ajax.php + a30solr.job)
+ist die Variable (in a30_ini.php einzusetzen)
+
+$SPort="8984";  // default 8983
+
+Damit wird ein anderer Port (andere Instanz von Jetty) eingestellt,
+wenn es nicht 8983 sein soll.
+
+
+
+Korrektur : get edit ...  ( nur bei acon)
+------------------------
+Das klappte nicht mehr. Korrigiert.
+get edit first, get edit last usw. laden den betr. Satz und sperren
+ihn sofort; damit ist er gegen unmittelbar danach erfolgenden Schreib-
+zugriff von anderer Seite gesichert.
+
+
+

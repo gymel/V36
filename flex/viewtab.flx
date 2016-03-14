@@ -1,0 +1,102 @@
+  VIEWTAB.FLX : aktuellen View als Tabelle exportieren,
+  2000-08-15/2004-03-19     aber mit vollst„ndigen Kategorien
+
+  Erst den Namen der Parameterdatei ermitteln
+  der steht in der ersten Zeile der ViewListe
+clo v
+var Uv
+open 
+if no jump errv
+get
+ins #uvo
+var #uvo(b", " e"/")
+ins #uvo
+ins #uvn
+if not #uvo jump errp
+clo
+  Name der Parameter steht jetzt in #uvo
+
+  View wieder aktivieren
+view again
+  Ging nicht: Schluss
+if no jump fehler
+
+  In #uvo steht der Name der Parameterdatei
+if #uvo jump laden
+jump errp
+:laden
+var e
+ins #uve
+var #uvo "." K1 "pr"
+xport p
+if no jump errp
+
+:file
+  In #uvn steht der Name der ViewListe (.vw-Datei)
+  Die Ausgabedatei erhaelt den Typ .vt
+var #uvn(B"-") ".vt"
+open x
+if no jump errx
+    Erzeugen des Views hat ggfls. #uvx zurueckgelassen...
+var ""
+ins #uvx
+var "1"
+    #uvQ als Flag besetzen (wirkt sich auf "download" aus) 
+ins #uvQ
+#uvy
+var "Mit Gruppierung? (D.h. identische erste und zweite Spalte" 13 10
+var +"nicht wiederholen, sondern dann leer lassen"
+yesno
+if yes var "j"
+if yes ins #uvy
+
+  (Abschnitt #-Q wird dann ausgefuehrt)
+  Ausgabe-Modus auf ANSI stellen
+set c1
+  Exportieren
+download view
+  zurueck auf ASCII
+set c0
+  Alternative zu set c1/0:
+  Wenn die entstandene Tabelle nach ANSI konvertiert werden soll:
+   close view
+   var 'w'
+   ins #uvv
+   var #uvn ".vt"
+   ins #uvF
+   mes Tabelle entsteht jetzt unter dem Namen  datei.ans
+   exec X doswin.flx
+
+close x
+var #uve
+xport p
+var "Erg.menge " 34 U 34 " wurde exportiert"
+var +n "in die Datei " W "\\" #uvn(B"-") ".vt"
+var +n n "Diese kann man mit Office-Programmen einlesen und "
+var +n "in eine Tabelle umwandeln"
+message
+var ""
+ins #uvQ
+
+
+end
+
+:fehler
+var "Momentan kein View aktiviert" n "W„hlen Sie zuerst eine vorhandene ViewListe" n "oder erstellen Sie eine neue!"
+ansi
+mes
+:error
+help view
+end
+:errp
+mes Keine geeigneten Parameter vorhanden oder ViewListe ungeeignet
+end
+:errv
+var "ViewListe " Uv " nicht vorhanden!"
+mes
+end
+:errx
+var "Datei " #uvn(B"-") ".vt kann nicht ge”ffnet werden"
+ansi
+mes
+end

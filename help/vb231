@@ -1,0 +1,94 @@
+
+Verlautbarung 231 der Entw.Abt.                              2010-07-30
+-------------------------------
+
+                          V30.7 liegt bereit
+
+acon-Probleme behoben
+---------------------
+Es gab Schwierigkeiten mit den $-Variablen in acon. U.a. wurde das
+Semikolon als Teil eines Variablennamens akzeptiert, was einen Konflikt
+ausloeste, wenn eine Zeile mehrere Befehle enthielt, die durch ;
+getrennt sind.
+
+Ausserdem nochmals der Hinweis: 
+Anhaengen neuer Datenfelder mit ~  [s. schon Vb.226]
+acon betrachtet jetzt beim Einlesen von .ALG- oder .ADT-Dateien das
+Zeichen ~ als Signal, dass das betr. Feld als neues Feld mit der 
+naechsten Mehrfachkennung an schon vorhandene Felder derselben Nummer
+anzuhaengen ist. Es kommt nicht darauf an, ob die ~ auf der ersten
+Textposition steht oder auf der Position der Mehrfachkennung. Die 
+Verwirrung und die Fehlfunktionen, die es mit UPDATE.EXE gegeben hat,
+sollte damit erledigt sein.
+Statt z.B.
+  update -fm41 -ddemo2 -bcat -udatei.alg -ka -n7
+schreibt man
+  acon -jupdate -fm41 -bdemo2\cat -udatei.alg -ka -n7
+Das laeuft dann auch schneller ...
+  
+
+cat.api jetzt mit neuem ALL-Register
+------------------------------------
+Es wurden einige interne Verbesserungen vorgenommen, die z.T. auf
+die sorgfaeltigen Analysen von T. Berger zurueckzufuehren sind.
+Viele machen sich an der Oberflaeche kaum je bemerkbar.
+Eine grosse Neuerung ist jedoch, dass jetzt cat.api eine 
+zusaetzliche Indexdatei cat.aex (MultiX-Technik) anlegen kann.
+Diese enthaelt dann alle Stichwoerter aus dem Datensatz, bis auf
+die Fussnotenfelder (#81x) und Abstracts (a98x). Letztere
+koennte man auch einbeziehen, aber wir haben das nicht als
+Default schon eingebaut. In der Datei findet man Kommentare,
+aus denen hervorgeht, wie es gemacht wird.
+Zwei markierte Zeilen kann man einfach herausnehmen, um das 
+ALL-Register auszuschalten, wenn man darauf verzichten will. Diese
+Zeilen sehen beide so aus:
+
+ak=uGR"[ -/]"+z
+
+Das Feld #uGR ist ein Sammelfeld, das in dem Moment die Inhalte
+mehrerer anderer Felder enthaelt. Es wird in den entsprechenden
+Abschnitten zusammengestellt, wo z.B. die Titel verarbeitet
+werden. Diese Zeilen sehen so aus:
+
+#u1 p" " AGR     V30.7 (diese Zeile kommt mehrfach vor!
+
+Alle fuer den ALL-Index relevanten Zeilen sind mit V30.7
+als Kommentar versehen, d.h. man kann sie alle finden und
+bei Bedarf rauswerfen oder aendern.
+
+Die neue Datei befindet sich nach dem Installieren im
+Verzeichnis DEMO2. Von dort uebernimmt man sie, wenn man den
+ALL-Index haben will, d.h. man bekommt ihn nicht automatisch
+aufgedraengt.
+
+Und was hat man davon?
+Der interessanteste Effekt ist sicher, dass dadurch das Eingabefeld
+"Suchbefehl" als Einwurfschlitz nach Art bekannter Suchmaschinen
+funktioniert: Man gibt ein bis fuenf dort Woerter ein, und der neue
+FLEX  onfnda99.flx (bzw. onfndalc.flx fuer alcarta) macht daraus
+einen Suchbefehl fuer das ALL-Register, d.h. die umstaendliche
+Fernglas-Suche, fuer Google-Gourmets sowieso ein Fossil, kann
+weitgehend entfallen.
+
+Kann man auch drin blaettern, im ALL-Register?
+Ja, und so geht's:
+1. Im Schreibfeld eingeben:  x ind all a
+   Dann erscheint es, beginnend bei a
+ODER
+2. Diesen Befehl auf einen Flip-Button legen
+ODER
+3. Im Indexfenster oben in der Registerwahl-ComboBox
+   ganz nach oben scrollen, da steht ALL...
+
+Eine vielleicht auffaellige Aenderung noch: Im Reg. 6 werden an
+die Verlags- und Ortsnamen nicht mehr die Jahreszahlen angehaengt.
+Wird dies gewuenscht, muss man 4 Zeilen wieder aktivieren, die
+in cat.api nur eingerueckt sind, bei Zeile 1064. Verlags- und Orts-
+namen sind ansonsten auch im ALL-Register.
+
+Import-Fehler
+-------------
+Das 32bit-Importprogramm import.exe hatte ein Problem mit der
+ISBN, genauer gesagt mit dem Einsetzen der Bindestriche, wenn es
+sich um eine MARC-Datei handelt. Das wurde behoben.
+

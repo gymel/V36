@@ -1,0 +1,46 @@
+  SUMME.APR : Summierung einer Kategorie
+  990604
+
+  Einfachstes Beispiel
+pn="Summenbildung"
+
+  Gibt nichts aus, sondern addiert nur. Erst der Abschnitt #-S
+  fhrt eine Ausgabe durch, siehe unten
+
+  --------- Konstanten --------------------------------------------
+ff=2     um Kopfabschnitt zu aktivieren
+zm=0     kein Seitenumbruch
+  ----------------------------------------------------------
+
+  Es sollen die Seitenzahlen addiert werden.
+
+  !!!!!!!!!!!!   Anpassungen fr andere Zwecke : !!!!!!!!!!!!!!!!!!!
+  !  Setzen Sie fr #77 die Kategorie ein, die Sie addieren wollen.!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  
+  ************* Kategorieliste ************************************
+
+#uSU +S e0    Wenn #uSU besetzt:  bei #-S beginnen
+              (#uSU wird vom FLEX gesetzt!)
+
+#77 x"+su" =su         Seitenzahl addieren   #usu = #usu + #77 ,
+#+#
+
+
+   Summenabschnitt : Ausgabe der Ergebnisse am Ende
+#-S
+#t{ "Summe: " }
+#usu e"." r7               e"." schneidet den Dezimalteil ab
+#uSU dSU e0         #uSU wieder loeschen
+#+#
+
+  *********** KopfAbschnitt *********************************
+
+   Kopfteil:  Initialisierung der Variablen
+   ---------  #dt wird als nur Hilfskategorie benutzt, weil sie immer existiert
+K
+#dt x"=0" =su          #usu fr Summe der Seitenzahlen
+    das bedeutet: nimm den Inhalt vom #dt als Variable,
+                  weise ihr den Wert 0 zu
+                  und speichere diesen in #usu
+                  (etwas indirekt, aber nur so geht es)

@@ -1,0 +1,219 @@
+  KOMPLEX.APR : Rahmenstruktur fr Export von hierarchischen S„tzen
+  940602  Mit Nachladungen der ber- und untergeordneten S„tze
+pn="Hierarchie-Export, Grundschema"
+
+  Fllen Sie die Bereiche zwischen den mit <<<<<<<<<  und >>>>>>>>>
+  markierten Zeilen mit Ihren Exportbefehlen aus!
+
+  Der aktuelle (anzuzeigende oder auszugebende) Satz wird PRIMRSATZ genannt.
+  Dabei handelt es sich um entweder
+
+  A.  einen Hauptsatz
+      wenn er unabh„ngig gespeicherte Unters„tze hat, muss die
+      Kategorie #00 mit  einer eindeutigen IdNr X besetzt sein.
+      In der Anzeige sollen unter dem auptsatz alle untergeordneten
+      S„tze erscheinen.
+      Die untergeordneten S„tze haben dann in #00 IdNummern der Form  X+n
+      mit einer Bandnummer n :
+
+  B.  einen Untersatz
+      dann enth„lt #00 die IdNr des Hauptsatzes PLUS eine Bandnummer
+      z.B.  #00 123456+005=Vol.5
+      (hinter '='  kann eine Bandnummer in Textform folgen, sonst wird
+      die auf '+' folgende Nummer genommen, fhrende Nullen werden beseitigt)
+      In der Anzeige sollen stufenf”rmig die unmittelbar bergeordneten, 
+      aber nicht die nebengeordneten S„tze erscheinen.
+
+  C.  beides, auch "Mittelsatz" genannt: der Prim„rsatz ist einerseits
+      einem anderen untergeordnet, besitzt aber auch selbst Unters„tze.
+      In der Anzeige soll fr die untergeordneten S„tze nach A, fr die
+      bergeordneten nach B verfahren werden.
+
+
+  Es kann bis zu 5 untergeordnete Stufen geben (theoretisch noch mehr).
+  Jede weitere Stufe enth„lt in der #00 ein weiteres '+' . Dieses wird fr
+  den Nachladevorgang ausgewertet.
+
+zl=65       Zeilenl„nge
+zi=0        Einrckung  (wirksam ab Zeile 2)  z.B. 5 fr Listendruck
+fl=14       Kartendruck : 14 lines per form  (Listendruck: fl=0)
+fm=2        Kartenmodus : separate Karten je Band
+ zm=60       Zeilenmaximum je Seite (bei Listendruck aktivieren)
+
+  <<<<<<<<<<<<    Raum fr Ihre Zwischenteile
+  Empfehlung: Nummern 1 bis 59
+  >>>>>>>>>>>>    Ende der anwendungsspezifischen Zwischenteile
+
+        Einige Steuerelemente fr die Einrckung
+60=#250     Einrckung auf aktueller Position festsetzen
+61=#0       Einrckung ab n„chster Zeile auf 0
+62=&0       in aktueller Zeile auf Position 0 springen
+
+tPRINTER    Druckertreiber laden (Textelemente 79 - 99)
+ 
+  <<<<< Aufnahme-K”pfe definieren <<<<<
+  (wenn's nur um die Anzeige geht, brauchen wir keine)
+
+  ak=kkk+M ...
+
+  >>>>> Ende der Kopfdefinitionen >>>>>>
+
+#+@    bei #-@ beginnen, wenn es keine Kopfkategorien gibt
+
+  <<<<< Abschnitte fr Kopfbearbeitung hier einfgen <<<<<
+ 
+  #-M     Sprungmarke fr Kopfbefehl
+   ...     Bearbeitung
+  #+@     Sprung zur Hauptbearbeitung
+
+  >>>>> Ende der Kopfabschnitte     >>>>>
+
+  ****** START ******
+
+   Wenn der aktuelle Satz ein Untersatz alter Art ist,
+
+#-@
+#01 +e e0      dann nach #-e , d.h. die Nachladeprozedur berspringen
+#02 +e e0
+#03 +e e0
+#04 +e e0
+#05 +e e0
+
+  ******** Nachladeprozedur: bergeordnete S„tze laden  *******
+
+  nimm #00 und prfe, ob '+' darin vorkommt:
+#-a
+#00 +a c"+" t"+" |90   das wird "rekursiv" ausgefhrt:
+                       wenn in #00 ein '+' vorkommt, wird das letzte hinten
+                       abgeschnitten (t"+" macht das) und der verbleibende Teil
+                       wird im Index 9 gesucht, der gefundene Satz wird geladen
+                       und wird zugleich zum aktuellen Satz. Dieser Vorgang
+                       wird wiederholt (deshalb +a), bis kein '+' mehr in #00
+                       zu finden ist.
+        Nun gibt es evtl. einen Stapel mit mehreren S„tzen, der Hauptsatz
+        an der Spitze ist dann der aktuelle Satz.
+
+#<+b    Wurde tats„chlich etwas nachgeladen? Dann weiter bei  #-b
+        (#< kann nicht ausgefhrt werden, wenn der Stapel leer ist, und
+        dann wird auch +b nicht ausgefhrt.)
+#+e     Wenn nichts geladen wurde, dann #-e
+        (d.h. der Prim„rsatz ist ein Einzelsatz oder Hauptsatz)
+
+   ***** Ladeoperation beendet ******
+
+        Jetzt wird der Stapel abgearbeitet:
+#-b
+#<^     zuerst  wieder hinaufschalten, denn #<+b hat hinuntergeschaltet;
+        dann ist der Hauptsatz wieder der aktuelle Satz
+  Was jetzt kommt, bezieht sich auf den Hauptsatz:
+  <<<<<<<<<  hier einsetzen, was mit dem Hauptsatz geschehen soll <<<<<<<
+
+
+  >>>>>>>>>  Ende der Hauptsatz-Verarbeitung   >>>>>>>>>>>>>>>>>>>>>>>>>>
+  
+
+  *********  Mittelebene   **********
+
+#<     einen Schritt runterschalten, d.h. der unter dem Hauptsatz stehende
+       Satz wird nun zum aktuellen Satz
+
+
+#-c   ist es ein Mittelsatz? Wenn ja, ist der folgende Befehl ausfhrbar:
+#t{ C }    (Zeilenvorschub, bevor es weitergeht)
+#<+d       noch einen Schritt runterschalten, weiter bei  #-d
+#t{ C }    wenn das nicht geht, Zeilenvorschub
+#+e        d.h. der Prim„rsatz ist jetzt wieder erreicht, dann weiter bei #-e
+
+#-d      ja, es war ein Mittelsatz
+#<^      dann wieder raufschalten, weil  #<+d  runtergeschaltet hat
+
+#00 b"+" B"=" f" 0" P". "    Bandnummer ausgeben      
+#t60   Einrckung auf aktueller Position (hinter Bandnummer) festsetzen
+
+  <<<<<<<<<  hier einsetzen, was mit Mittels„tzen geschehen soll  <<<<<<<
+
+  >>>>>>>>> Ende der Mittelsatz-Behandlung  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#t61   Einrckung wieder auf 0 setzen
+
+#<+c        Mittelsatz-Verarbeitung fortsetzen,
+            bis der Prim„rsatz wieder erreicht ist
+
+  ********** Mittelebenen alle abgearbeitet    ******
+
+  ********** jetzt kommt der PRIMRSATZ selbst an die Reihe **************
+
+  (hier beginnt es, wenn der  Prim„rsatz bereits ein Hauptsatz war, also
+   keine bergeordneten existieren)
+
+#-e
+
+#00 b"+" B"=" f" 0" P". " P60   Bandnummer ausgeben, Einrckung dahinter setzen
+    (wenn der Prim„rsatz ein Unter- oder Mittelsatz ist, kommt in #00 eine
+     Bandnummer vor, d.h. man hat  #00 XXX+nnn=BdNr  )
+
+    wenn der aktuelle Satz ein Untersatz alter Art ist:
+    bandnummer mit gestufter Einrckung ausgeben, Einrckung dahinter setzen
+    und weiter bei #-f
+#01 +h C 62 B"=" f" 0" p"  " P". " P60
+#02 +h C 62 B"=" f" 0" p"      " P". " P60
+#03 +h C 62 B"=" f" 0" p"          " P". " P60
+#04 +h C 62 B"=" f" 0" p"              " P". " P60
+#05 +h C 62 B"=" f" 0" p"                  " P". " P60
+
+#</     Stapel jetzt beseitigen
+       (wird nicht gemacht, wenn Unters„tze alter Art vorliegen)
+
+#-f
+    <<<<<<< hier einsetzen, was mit dem Prim„rsatz geschehen soll  <<<<<<<
+
+#20   als Minimum nur der Titel
+
+    >>>>>>> Prim„rsatz abgearbeitet >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  
+   **** wenn der Prim„rsatz noch Untereinheiten hat  *******
+
+  Das findet man so heraus:
+
+  man h„ngt ein '+' an #00 um zu sehen, ob der Index Eintr„ge enth„lt, die
+  so beginnen
+  (wenn man #00 123456+005 hat, wird nach  "123456+005+"  gesucht
+   und man findet m”glicherweise etwas wie  "123456+005+1" )
+
+#00 +g e"=" F" " P"+" |92    erste Untereinheit finden
+                             und zum aktuellen Satz machen
+#+#   wenn es keine gibt, STOP
+
+   **** Untereinheiten abarbeiten (zyklisch!)  ***
+
+#-g
+#t61   Einrckung auf 0
+#t62   Beginn auf Position 0
+#00 b"+" B"=" f" 0" C P". "   Bandnummer ausgeben
+
+   <<<<<<< hier einsetzen, was mit den Untereinheiten passieren soll <<<<<<<
+
+   >>>>>>> Ende der Untersatz-Verarbeitung   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#<\   Untersatz aus dem Arbeitsspeicher entfernen
+#00 +g e"+" P"+" |93     n„chsten Untersatz aufsuchen
+                         nach #-g zurck, wenn es einen gibt
+    das wird unbegrenzt oft gemacht, solange |93 ausfhrbar ist
+
+#+#   ENDE
+   ****** Ende der Abarbeitung aller Unters„tze ****************
+
+#-h
+   <<<<<<< hier einsetzen, was mit Unters„tzen alter Art geschehen soll <<<
+   (wenn man welche hat)
+
+#+#
+   >>>>>>>>  Ende der Unters„tze alter Art >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+   **** ENDE  ****
+
+   <<<<<<<<< Unterprogramme hier anfgen, wenn man welche hat <<<<<<<
+
+
+   >>>>>>>>> Ende der Unterprogramme >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

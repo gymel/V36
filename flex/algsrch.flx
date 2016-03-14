@@ -1,0 +1,89 @@
+  ALGSRCH.FLX : Durchsuchen einer Grunddatei mit RegEx
+  20070108      oder oder mehrerer Grunddateien
+
+
+if "?" jump help
+
+  DeAktivieren, wenn auch in alcarta gewuenscht:
+var m
+if "alc" mes Sorry, das geht in diesem Programm nicht;end
+
+:begin
+  Sind Datensaetze im Offline-Speicher? Dann Hinweis
+var o
+if >0 jump sorry
+
+:start
+  Letzten Suchbegr. wieder vorlegen
+ask Suchbegriff?=#u!!
+  Leere Eingabe - Ende
+if "" end
+  sonst in #u!! speichern
+ins #u!!
+
+   Nutzer kann wahlweise eingeben: (stets ohne .alg am Ende)
+   - Dateiname, z.B.  test  oder  k:\dateien\dat27
+   - Namensmuster, z.B.  c:\allegro\*  oder k:\dateien\test*
+   - Nichts - dann kommt Dateiauswahlbox
+var "Dateiname oder Namensmuster (ohne ." K1 "lg)="
+  zuletzt gewaehlten Namen vorlegen:
+if #u!f var +"#u!f"
+if #u!F var +"#u!F"
+  und abfragen
+ask
+  Esc oder close?
+if cancel end
+  alte Vorgabe loeschen
+#u!f
+#u!F
+  Wenn * vorkommt, muss Eingabe in #u!F, sonst #u!f
+if %*% ins #u!F
+if not %*% ins #u!f
+  Zaehler fuer die Position in der OfflineDatei
+var o
+z=
+z+1
+var z
+ins #u!o
+
+  Alles fertig fuer die Verarbeitung
+  Unterprog. algsrch ist in algsrch.inc
+perf algsrch
+
+if Z<1 ins #u!E;var #u!E;mes;end
+
+  Es gibt Ergebnisse, Anzahl ist in Z
+  Hier nun beliebige Verarbeitung moeglich, z.B. Export mit dow off
+var "Die " Z " gefundenen Datensätze (aus " #u!N " Dateien) sind jetzt im Offline-Speicher" n "(Button [Datein in Bearb.] drücken)" n n
+var +"Sofort anzeigen?"
+yes
+if not yes end
+  positioniere im Offline-Speicher auf die laufende Nr #u!o
+var "q" #u!o
+set
+sho off
+end
+
+:sorry
+var "Momentan ist der Offline-Speicher nicht leer!" n
+var +"Es kann sich um Sätze handeln, die in dieser Sitzung vorher bearbeitet wurden" n
+var +"oder um andere Daten aus vorangegangenen Aktionen" n n
+var +"Sollen die neuen Ergebnisse mit hinein?"
+yes
+if yes jump start
+noyes Offline-Speicher leeren? (Nein: Anzeigen)
+if yes erase off;jump start
+if no sho off;end
+end
+
+include algsrch.inc
+
+:help
+var "Mit dieser Funktion kann man sog. Grunddateien durchsuchen lassen." n
+var +"Das sind Dateien des Typs ." K1 "LG, die nicht zur Datenbank geh”ren," n
+var +"aber korrekt strukturierte Datens„tze enthalten, wie sie z.B. vom Programm" n
+var +"IMPORT aus Fremddaten erzeugt werden." n
+var +"M”chten Sie eine solche Suche ausfhren?"
+ansi
+yes
+if yes jump begin

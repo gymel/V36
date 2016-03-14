@@ -1,0 +1,244 @@
+{\rtf1\ansi\ansicpg1253\deff0\deflang1031{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\froman\fprq2 Garamond;}{\f2\froman\fprq2\fcharset0 Garamond;}{\f3\froman\fprq2\fcharset0 Times New Roman;}{\f4\fmodern\fprq1 Courier New;}{\f5\fnil\fprq2\fcharset2 Wingdings;}{\f6\fmodern\fprq1\fcharset0 Courier New;}{\f7\fmodern\fprq1\fcharset161{\*\fname Courier New;}Courier New Greek;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs24\par
+  \fs20 `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` \par
+\pard\fi-658\li658\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1\fs36\par
+11.2\tab Die Import-Sprache \par
+\b0\f0\fs20\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\lang1033\b\f2\fs28 Konventionen f\'fcr Bezeichnungen\b0\f1\par
+\lang1031\f0\fs20\par
+\f3 F\'fcr die nachfolgende Befehls\'fcbersicht gelten diese Vereinbarungen: \f0\par
+\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f4\fs22\tab n\b0\f0\tab\f3 steht f\'fcr eine ganze Zahl >= 0 \f0\par
+\b\f4\tab k\b0\f0\tab\f3 steht f\'fcr eine ganze Zahl zwischen 0 und 255 \f0\par
+\b\f4\tab x\b0\f0\tab\f3 steht f\'fcr ein druckbares Zeichen (Buchstabe, Ziffer, Sonderzeichen) \f0\par
+\b\f4\tab CS\b0\f0\tab\f3 steht f\'fcr einen beliebigen Character String, wie in 10.2.0 beschrieben, wobei hier aber Strukturbefehle und Wiederholungsfaktoren nicht sinnvoll und deshalb unzul\'e4ssig sind. \f0\par
+\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\fs20 Wenn rechts ein <Normalwert> (engl. default) angegeben ist, wird dieser vom Programm automatisch angenommen, wenn der betreffende Parameter nicht ausdr\'fccklich gesetzt wird. \f0\par
+\par
+\pard\fi-432\li432\ri432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs24\tab\f3 Achten Sie auf Gro\'df-/Kleinschreibung bei den Befehlen! Die im folgenden gezeigte Schreibweise ist verbindlich. \par
+\tab\b Zeilen in einer Import-Parameterdatei d\'fcrfen nicht l\'e4nger als 240 Zeichen sein.\b0\f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs20\par
+\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f1\fs28 11.2.1\tab Basis-Parameter\b0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f0\fs20\par
+Wie beim Export gibt es eine Anzahl von Werten, die sich auf globale Eigenschaften der Struktur beziehen. Auch hier werden diese Werte mit zweibuchstabigen Bezeichnungen benannt. \par
+\f3 Zuerst mu\'df das Programm wissen, wie es die Fremddatens\'e4tze einzulesen hat. Die folgenden Angaben legen den Typ (A...D) fest und teilen dem Programm die zum exakten Einlesen n\'f6tigen Werte mit. \f0\par
+\par
+\par
+\lang1033\b\f2\fs28 Typ A : Feste Satzl\'e4nge\b0\f1\par
+\lang1031\f0\fs20\par
+\pard\fi-1080\li1080\tx1080\tx9413\lang1033\b\f4 rl=n\f0\tab\f3 Record L\'e4nge\b0\f0\tab <0> \par
+\pard\fi-1633\li1633\ri432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab Es werden jeweils n Zeichen eingelesen und dann die Kategorieliste (\f4 -\f5\'d8\f3  11.2.3) durchgearbeitet. Dort mu\'df dann zur Positionierung mit den Befehlen\lang1033\b\f4  j\b0\f0  und\b\f4  l\b0\f0  gearbeitet werden (\f4 -\f5\'d8\f0  11.2.3.2/.3). \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\par
+\pard\fi-1633\li1633\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\tab\tab\tab rl > 0  bedeutet f\'fcr das Programm: die Daten sind vom Typ A\b0\f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\par
+\pard\fi-1080\li1080\tx1080\tx9413\lang1033\b\f4 fh=n\b0\f0\tab\f3 L\'e4nge des \b\f0 Dateikopfes\b0  (File Header)\tab <0> \par
+\pard\fi-1633\li1633\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab Diese Anzahl Zeichen am Dateianfang wird \'fcbergangen. Bei S\'e4tzen mit fester L\'e4nge kommt es vor, da\'df vor dem ersten Satz noch einige f\'fcr \b\i\f0 allegro\b0\i0  unwichtige Steuerdaten des jeweiligen Quellsystems stehen. \par
+\tab\tab\tab\f3 Wenn der Dateikopf keine feste L\'e4nge hat, verwendet man den Parameter rs zum Einlesen (s.u.), z.B.\lang1033\b\f4   rs=0 13 10 32\b0\f0    bei Original-dBASE-Dateien. \par
+\pard\fi-1633\li1633\ri432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab Verwendbar ist\lang1033\b\f4  fh\b0\f3  auch bei den anderen Typen. Im Einzelfall l\'e4\'dft sich mit diesem Parameter der Datenbeginn individuell einstellen. Siehe auch:\b\f4  rs\b0\f0   (Typ C). \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\par
+\lang1033\b\f2\fs28 Typ B : S\'e4tze mit fester Feldanzahl\lang1031\b0\f0\fs20\par
+\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f3 Das sind die F\'e4lle, wo die einzelnen Datenfelder zwar variabel lang sind, jeder Datensatz aber dieselbe Anzahl Felder hat. Die Bedeutung jedes Feldes ergibt sich dann aus seiner Position in der Reihenfolge der Felder. Meistens gibt es bei solchen Formaten keine Feldkennungen, an denen man sich orientieren k\'f6nnte. \f0\par
+\tab\tab\f3 Dann ben\'f6tigt man diese zwei Parameter: \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1080\li1080\tx1080\tx9413\lang1033\b\f4 fx=n\f0\tab Feldanzahl\b0  je Datensatz\tab <0> \par
+\pard\fi-1633\li1633\ri432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab Hier ist die Anzahl der Felder je Fremddatensatz anzugeben. \par
+\pard\fi-1633\li1633\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab In der Kategorieliste kann jedes Feld dann mit seiner Nummer \'fcber den Befehl F aufgerufen werden (\f4 -\f5\'d8\f0  11.2.3.2): das erste mit\lang1033\b\f4   F0\b0\f0 , das zweite mit\b\f4  F1\b0\f0  usw.. \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\par
+\pard\fi-1633\li1633\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\tab\tab\tab fx > 0  bedeutet f\'fcr das Programm: die Daten sind vom Typ B\b0\f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1080\li1080\tx1080\tx9413\lang1033\b\f4 fe=CS\b0\f0\tab\b Feldende\b0\tab <0> \par
+\pard\fi-1633\li1633\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab Das Feldende kann als beliebige Zeichenkette angegeben werden, bis zu 25 Zeichen. Sehr h\'e4ufig ist der Fall \f0\par
+\pard\fi-1633\li1633\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f4\tab\tab\tab fe=13 10\b0\f3   (Wagenr\'fccklauf, Zeilenvorschub). \f0\par
+\pard\fi-1633\li1633\ri553\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab Die Zeichenkombination\lang1033\b\f4   fe\b0\f0   wird vom Programm beim Einlesen der Daten benutzt: es liest jeweils\b\f4   fx\b0\f0   Zeichenketten, die mit\b\f4   fe\b0\f0   enden, aus der Quelldatei und behandelt diese dann als einen Datensatz. \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\i Hinweis:\b0\i0\tab Es ist auch m\'f6glich, zus\'e4tzlich den Parameter\lang1033\f4  re \f3 zu benutzen (-\f5\'d8\f4 Typ C)\f3 , wenn es eine Zeichenkombination gibt, die eindeutig das Satzende markiert. Der Positionierungsbefehl\b  F\b0\f0  (\f4 -\f5\'d8\f0  11.2.3.2) funktioniert dann trotzdem. \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\par
+dBASE kann (mit dem Befehl\lang1033\f6   copy delimited...\f3 ) ASCII-files produzieren, wobei der "Feldtrenner" w\'e4hlbar ist. Alternativ kann man dBase-Dateien des Typs .DBF mit einem Hilfsprogramm namens DB2DELIM.EXE in eine ASCII-Datei mit Feldtrennern verwandeln. Wenn die Datei z.B. TITEL.DBF hei\'dft, gibt man\f6  \f4\par
+db2delim`titel`64. \par
+\lang1031\f3 Es entsteht TITEL.ASC. In diesem Fall wurde '@' als Feldtrenner gew\'e4hlt. Die Anzahl der @ je Satz ist immer gleich, und zwar in diesem Fall 17. Jeder Satz bildet eine lange Zeile, denn nur am Satzende kommen die Codes 13 10 als Satztrennung: \f0\par
+\par
+\lang1033\f4  313 134@113@fi@Eco, Umberto@@@Semiotik - Entwurf einer Theorie der Zeichen \par
+\f6  (A Theory of Semiotics, dt.)@M\'fcnchen@Fink@1987@(Supplemente ; 5)@10205/88@D \f4\par
+ eskriptor@@,,F,F,@11@Kommentar@ \par
+\f6  45 361@38@@Hood, Christopher (Hg)@Schuppert, Gunnar Folke (Hg)@@Verselbst\'e4 \f4\par
+\f6  ndigte Verwaltungseinheiten in Westeuropa : d. Erf\'fcllung \'f6ffentl. Aufgaben \f4\par
+ durch Para-Government Organizations (PGOs)@Baden-Baden@Nomos Verl.-Ges.@198 \par
+ 8@@11638@@@,,F,F,@11@@ \par
+\lang1031\f0\par
+Die Parameterdatei DBIII.AIM, mit der man dieses importieren kann, beginnt so: \par
+\lang1033\f4 re=13 10      Am Satzende stehen die Codes 13 10 \par
+fe="@"        @ ist das Feldende \par
+fx=17         Es werden 17 Felder je Satz, getrennt durch @, eingelesen \par
+\par
+#20      Sachtitel \par
+f 6      steht in Feld 6 (hinter dem sechsten '@') \par
+N        Artikel am Anfang mit Nichtsortierzeichen markieren  ... \par
+\lang1031\f0\par
+\f3 ACHTUNG: Wenn am Ende des letzten Feldes kein Feldtrenner steht, geht es nur so: \par
+\par
+\f6 fx=17 \par
+fe=0 \par
+y .64 0      \f3 Setzt den Feldtrenner @ beim Einlesen schon auf 0 (deshalb klappt dann\f6  fe=0) \par
+y .10 256    \f3 Weg mit Code 10 \f6\par
+y .13 0      \f3 und 13 wird dann ebenfalls Feldtrenner \par
+\f0\par
+\par
+\lang1033\b\f2\fs28 Typ C : Variable S\'e4tze\lang1031\b0\f0\fs20\par
+\par
+\pard\fi-1080\li1080\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f3 Bei vollst\'e4ndig variablen S\'e4tzen handelt es sich entweder um die sehr elaborierten Formen des Typs D, oder aber es gibt wohldefinierte Zeichen(kombinationen), an denen Satz- und Feldende eindeutig erkennbar sind. Welche Zeichen daf\'fcr verwendet wurden, entnehme man der Dokumentation der Fremddaten oder (falls keine vorhanden) man analysiere die Struktur selbst mit \'fcblichen Hilfsmitteln, die eine Untersuchung auf Byte-Ebene erm\'f6glichen, zur Not mit dem MS-DOS-Befehl DEBUG (Beispiel \f4 -\f5\'d8\f0  11.3). \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1080\li1080\tx1080\tx9413\lang1033\b\f4 rs=CS\f0\tab Record Start\b0    (bis zu 25 Zeichen)\tab <""> \par
+\pard\fi-1633\li1633\ri646\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab wird nur ben\'f6tigt, wenn am Dateianfang vor dem Beginn des ersten Datensatzes noch andere Angaben stehen k\'f6nnen. Das ist z.B. meistens bei "download"-Daten der Fall. \f0\par
+\tab\tab\tab\f3 rs kann auch bei den anderen Typen verwendet werden. Wenn zus\'e4tzlich fh (s.o.) gegeben wurde, liest das Programm zuerst fh Zeichen und sucht dann nach der Zeichenkette rs. \f0\par
+\tab\tab\tab\f3 rs wird nur zur Suche nach dem Anfang des ersten Datensatz benutzt! Der Anfang des n\'e4chsten ergibt sich automatisch aus: \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1080\li1080\tx1080\tx9413\lang1033\b\f4 re=CS\b0\f0\tab\b Record End\b0    (bis zu 25 Zeichen)\tab <""> \par
+\pard\fi-1633\li1633\ri646\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab die hier angegegene Zeichenkette CS wird benutzt, um beim Einlesen eines Datensatzes von der Fremddatei dessen Ende festzustellen. Der Lesevorgang wird dann unterbrochen und es erfolgt die Umwandlung des gelesenen Satzes. \par
+\tab\tab\tab Oft ist das Satzende nicht durch charakteristische Zeichen erkennbar, sondern der Satzanfang. Das tut nichts zur Sache, man nimmt dann die Anfangszeichen, und es funktioniert. rs und re d\'fcrfen also gleich sein. \f0\par
+\tab\tab\tab\f3 Beim Einlesen wird hinter dieser Zeichenkombination Schlu\'df gemacht. re selbst geh\'f6rt also noch zum eingelesenen Text. Darauf mu\'df man achten, wenn es sich in Wirklichkeit um den Satzanfang handelt. \f0\par
+\pard\fi-1633\li1633\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\tab\tab\tab Wenn   \f4 re\f3    angegeben wird, liegt f\'fcr das Programm der Typ C vor.\b0\f0\par
+\tab\tab\tab Wenn es \b\f3 Unters\'e4tze\b0  gibt, verwende man f\'fcr re eine Zeichenkette, mit der Haupt- und Unters\'e4tze getrennt eingelesen werden, damit man sie als getrennte Datens\'e4tze behandeln kann. Die Unters\'e4tze werden durch den Befehl h (\f4 -\f5\'d8\f0  11.2.3.4) an den Hauptsatz gekoppelt. \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1633\li1633\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab >>>\tab Achtung: wenn\lang1033\b\f4  re\b0\f0  nicht ganz genau stimmt, also CS gar nicht vorkommt, kommt eine Fehlermeldung \par
+\lang1031\f3\tab\tab\tab "text too long, check your 're' command" \par
+\tab     \tab\tab denn das Programm findet dann kein Satzende. \par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Das Feldende wird bei variablen S\'e4tzen \f0\par
+\pard\fi-2353\li2353\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab entweder\tab\f3 mit dem e-Befehl individuell f\'fcr jedes Feld bestimmt (\f4 -\f5\'d8\f0  11.2.3.3), \par
+\tab\tab oder\tab\tab man benutzt\lang1033\b\f4   fe\b0\f0   wie beim Typ B  (z.B.\f4   fe=13 10 ) \par
+\lang1031\f0\tab\tab oder\tab\tab man bringt durch eine globale Ersetzung (\f4 -\f5\'d8\f0  11.2.2.2) den Code 0 an die Feldende-Positionen \par
+\pard\fi-3073\li3073\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab\tab z.B. \lang1033\f4\tab\b _ 13 10\b0\par
+\tab\tab\tab\tab\tab\b _ 0\b0          "Carriage Return/Line Feed" ersetzen durch Code 0 \par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f0\tab\tab\f3 Es ist auch m\'f6glich, da\'df man die zweite oder dritte Methode anwendet, um sich nicht bei jedem Datenfeld ausdr\'fccklich um das Ende k\'fcmmern zu m\'fcssen, da\'df man aber bei einzelnen Feldern den Endebefehl einsetzt, um Feldbestandteile "herauszupr\'e4parieren". \f0\par
+\pard\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 Wenn es ein einzelnes Zeichen X gibt, das immer als Feldende (und sonst nirgends) vorkommt, kann man setzen: \par
+\b\f4 y X 0 \par
+\b0\f3 und hat dann auch in diesem Fall den Vorteil, da\'df bei den einzelnen Feldern das Ende automatisch feststeht.\par
+ \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f2\fs28 Typ D : Datens\'e4tze nach ISO-Norm\lang1031\b0\f0\fs20\par
+\par
+\pard\fi-1080\li1080\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f3 Nur bei Formaten, die dem ISO-Standard folgen, (nicht alle MAB- oder MARC-Daten sind so organisiert - "download"-Daten sind allerdings meistens Typ C!) mu\'df man die folgenden Parameter verwenden. Es gibt in diesen Formaten keine Begrenzungszeichen, sondern die L\'e4ngen der S\'e4tze sowie die Kategorienumern, L\'e4ngen und Positionen der Felder sind als Dezimalzahlen gespeichert, f\'fcr jede Kategorie 12 Byte: 3 Byte Kategorienummer, 4 Byte L\'e4nge, 5 Byte Position innerhalb des Satzes. Man erkennt daher solche Format\f0 e sofort an einer langen Folge von Ziffern am Satzanfang. \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f3 Nur das echte Magnetbandformat MAB1 hatte ein solches Directory, das Format MAB-Diskette dagegen nicht. MAB2 kennt \'fcberhaupt kein Directory mehr. Das echte USMARC, z.B. von OCLC, hat dieses noch immer. \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f3 Manche Auspr\'e4gungen von ISO-Formaten, z.B. das Original MAB1, haben Feldtrennzeichen und \b zus\'e4tzlich\b0  Satztrennzeichen; dann k\'f6nnen Sie sich aussuchen, ob Sie nach Typ C oder D verfahren. \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1080\li1080\tx1080\tx9413\lang1033\b\f4 al=k\f0\tab\f3 Adressen-L\'e4nge\b0\f0  in Bytes\tab <5> \par
+\pard\fi-1633\li1633\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab Dieser Wert gibt an, wieviele Bytes die L\'e4ngenangabe hat. \f0\par
+\tab\tab\tab\f3 Bei MARC-Bibliofile ist al=2, d.h. jeder Datensatz beginnt mit 2 byte, in denen seine L\'e4nge steht. F\'fcr ISO-Formate ist al=5 der normale Wert. \f0\par
+\pard\fi-1633\li1633\ri432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab\f3 Wenn ein Wert al>0 angegeben wird, wird vom Programm aus angenommen, da\'df Typ D oder E vorliegt: die ersten al Bytes werden gelesen, die Satzl\'e4nge daraus bestimmt (siehe am), und dann diese Anzahl Bytes aus der Fremddatei eingelesen. \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\par
+\pard\fi-1633\li1633\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\tab\tab\tab\f3 al > 0  bedeutet f\'fcr das Programm: die Daten sind vom Typ D\b0\f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\par
+\par
+\pard\fi-1080\li1080\tx1080\tx9413\lang1033\b\f4 am=k\f0\tab Adressen-Modus\b0\tab <1> \par
+\pard\fi-1633\li1633\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab zul\'e4ssig sind nur   0 = hexadezimal, 1 = dezimal \f0\par
+\pard\fi-1633\li1633\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab die in al angegebene Anzahl Bytes werden entweder als hexadezimale oder dezimale Zahl interpretiert. Bei Bibliofile ist am=0. Ansonsten gilt bei ISO-Formaten am=1, z.B. bei Bielefelder CD-ROM-Daten oder bei den US- und OCLC-MARC-Daten. \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\par
+\pard\fi-1080\li1080\tx1080\tx9413\lang1033\b\f4 fd=n\b0\f0\tab\b field directory position\b0  : Anfangsposition des \b Directory\b0\tab <24> \par
+\pard\fi-1633\li1633\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab innerhalb des Datensatzes. Bei MAB1 ist die Position  fd=192, \par
+\tab\tab\tab bei MARC meist fd=24 (vgl. BIEL.DIM  und  OCLC.DIM). \par
+\pard\fi-1633\li1633\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab Dieser Wert mu\'df exakt stimmen, sonst geht nichts. Die Befehle D und T (s.u.) benutzen  fd  als Anfangspunkt f\'fcr die Suche nach einer Kategorienummer. \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b Wichtig\b0 :\tab Die einzelnen Felder werden bei diesen Formaten mit den Positionierungsbefehlen\lang1033\f6   D und d  (und nur f\'fcr "Bibliofile"  mit  T und t) angesprochen (-\f5\'d8\f4  11.2.3.2). Die Positionierungsbefehle\b  s\b0\f0  und\b\f4  g\b0\f3  k\'f6nnen nur ausnahmsweise benutzt werden, wenn Inhalte mit Zeichenkombinationen eingegrenzt sind (\f4 -\f5\'d8\f0  11.2.2.2). Bei den echten MARC-Formaten stehen die Kategorienummern nicht vor den Feldinhalten, sondern nur im Directory! \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\par
+\b Hilfswerte f\'fcr die variablen Satzstrukturen\b0\f0\par
+\par
+Die folgenden Werte erleichtern in bestimmten Situationen die Verarbeitung. \par
+\par
+\pard\fi-1080\li1080\tx1080\tx9413\lang1033\b\f4 fs=k\f0\tab Feld-Start-Position\b0\tab <0> \par
+\pard\fi-1633\li1633\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab Wenn der Feldinhalt nicht unmittelbar hinter der Feldkennung anf\'e4ngt, sondern mehrere Positionen dahinter, kann man die Anzahl der hinter der Kennung zu \'fcbergehenden Bytes in\lang1033\b\f4  fs\b0\f0  angeben. \par
+\pard\fi-1633\li1633\ri553\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab Man m\'fc\'dfte sonst bei jedem Feld den Befehl\lang1033\b\f4  \}\b0\f0  benutzen (\f4 -\f5\'d8\f0  11.2.3.3), um die Position des Textzeigers zu verschieben. \par
+\pard\fi-1633\li1633\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab Bei Bibliofile gilt z.B.\lang1033\f4  fs=5. \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f0\par
+\pard\fi-1080\li1080\tx1080\tx9413\lang1033\b\f4 fc=k\f0\tab\f3 Feldl\'e4ngen-Korrektur\b0\f0\tab <0> \par
+\pard\fi-1633\li1633\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab Die L\'e4nge des Datenfeldes bestimmt sich normalerweise aus dem Parameter fe (Typ B und C) oder automatisch durch den Endecode 0 oder den Befehl l (Typen A - C). \f0\par
+\tab\tab\tab\f3 Bei Formaten wie Bibliofile, die sich am ISO-Standard orientieren, ergibt sich aber die Feldl\'e4nge (wie die Satzl\'e4nge) aus bin\'e4r codierten Angaben hinter der Feldkennung. In der L\'e4nge ist dann i.a. die gesamte L\'e4nge einschlie\'dflich eventueller Indikatoren und sonstiger Angaben am Anfang des Feldes enthalten. Dann wird die mit fc angegebene Zahl von der ermittelten L\'e4nge abgezogen. \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1080\li1080\tx1080\tx9413\lang1033\b\f4 fm=x\b0\f0\tab\b Mehrfachfeld-Kennzeichnung\b0\tab\f3 <\'fa> \f0\par
+\pard\fi-1633\li1633\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab Das hier angegebene Zeichen wird als Folgezeichen benutzt, um die \b\i allegro\b0\i0 -Kategorienummer eines Mehrfachfeldes zu erg\'e4nzen wenn das betr. Feld tats\'e4chlich mehrfach vorkommt. \f0\par
+\pard\fi-1633\li1633\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274     \tab\tab\tab Siehe dazu unten den Befehl\lang1033\b\f4   m\b0\f0   in der Kategorieliste (\f4 -\f5\'d8\f0  11.2.3.6). \par
+\lang1031\f3\tab\tab\tab Der Code \'fa bedeutet, da\'df IMPORT die Mehrfachcodes aus der Angabe\lang1033\b\f4  ?M\b0\f0  in der .CFG entnehmen soll. Wenn dort also z.B.\f6   #90"Signatur"?Mabcdefghijk  steht, erh\'e4lt die erste #90 das Folgezeichen 'a', die zweite 'b' usw. Wenn 'k' \'fcberschritten wird, fallen weitere Exemplare von #90 alldings weg. \f4\par
+\lang1031\f0\tab\tab\tab Ist dagegen\lang1033\f6   fm=2  gesetzt, w\'fcrde IMPORT die Felder #902, #903 usw. bilden. Sind '2' und '3' etc. nicht in der Angabe\b\f4  ?M\b0\f3  f\'fcr #90 enthalten, entfallen sie. \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\par
+\pard\fi-1080\li1080\tx1080\tx9413\lang1033\b\f4 fr=k\f0\tab Feld-Repetierfaktor\b0\tab <1> \par
+\pard\fi-1633\li1633\ri432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab\tab Wenn z.B. das Feld "Schlagwort" mehr als zweimal vorkommt, und man hat das erste in #30 umgesetzt, dann wird das zweite mit Hilfe von fm in #301 \'fcberf\'fchrt, das dritte ergibt sich durch Addition von fr, also erh\'e4lt man #302, wenn fr=1 ist. \f0\par
+\pard\fi-1633\li1633\ri1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab\f3 fr gilt global; wenn man bei einem bestimmten Feld eine andere Regelung w\'fcnscht, kann man den Faktor beim Befehl\lang1033\b\f4  m\b0\f0  (\f4 -\f5\'d8\f0  11.2.3.6) angeben.  \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f1\fs28 11.2.2  Globale Konvertierungsbefehle\b0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f0\fs20\par
+\pard\fi-1080\li1080\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f3 Das Importprogramm kann 1:1-Zeichenersetzungen vornehmen, Doppelkombinationen aus einem Protyp und einem Grundzeichen, sowie einen globalen Austausch ganzer Zeichenketten ausf\'fchren. Weitere Umwandlungen kann man \'fcber die Exportfunktionen (s.o., Einbau in die Datei I-1.cPR) nachschalten. Die Befehle lauten: \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b 11.2.2.1\tab Zeichenumwandlungen (Umcodierungen)\b0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\lang1033\b\f4 y x k\b0\f0\par
+\b\f4 y .m k\b0\f0\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab Wirkung: bereits beim Einlesen wird das Zeichen x durch den Code k (dezimal anzugeben) ersetzt bzw. der Code m durch k (beides dezimal angegeben). Notwendig ist dies z.B. beim Einlesen von EBCDIC-Daten. Der Befehl y bietet ansonsten dieselben M\'f6glichkeiten wie der Befehl p bei den Export-Parametern (s. Kap.10.2.4), bis auf die Ersetzung von Einzelzeichen durch Zeichenketten. \f0\par
+\i\tab\tab Sonderfall:\i0\f3   k = 256 : Zeichen x soll beim Einlesen \'fcbergangen werden, also entfallen. \f0\par
+\tab\tab Die \b\f3 Ausf\'fchrung\b0\f0  erfolgt schon direkt beim Einlesen, vor allen anderen Aktionen. \par
+\i\tab\tab Empfehlung:\i0  Prophylaktisch setze man \par
+\pard\fi-3073\li3073\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\f4\tab\tab y .1 32\f0\tab\tab Code 1 soll durch Leerzeichen ersetzt werden,\f4  desgl. 2 - 9 \par
+\tab\tab  [usw. bis]\f0  \tab\f3 Die umgewandelten Daten k\'f6nnen sonst Probleme machen.\f4\par
+\tab\tab y .9 32\f0\tab\tab Mit 256 statt 32 kann man sie auch ersatzlos beseitigen! \par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab Damit werden die Codes 1 bis 9 im Fremdtext durch Leerzeichen ersetzt, wenn sie vorkommen. \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b 11.2.2.2\tab Globale Ersetzungen\b0\par
+\tab\tab Sehr h\'e4ufig ist es sinnvoll, vor Beginn der Umwandlung im zu bearbeitenden Datensatz Ersetzungen bestimmter Zeichenketten vorzunehmen. Daf\'fcr gibt es den "globalen" Ersetzungsbefehl. ("Global" deshalb, weil er sich auf den gesamten Datensatz bezieht. Ersetzungen in einzelnen Feldern sind bei dem das Feld betreffenden Abschnitt anzugeben (\f4 -\f5\'d8\f3  11.2.3.4 "Lokale Ersetzungen"); Ersetzungen auf Zeichenebene, d.h. Ersetzung einzelner Zeichen durch andere, k\'f6nnen \'fcber die Export-Schnittstelle behandelt werden , siehe dazu Kap.10.2.4. \f0\par
+\tab\tab Der Befehl hat immer zwei Teile: \par
+\lang1033\b\f4 _CS1\b0\f0\tab CS1 ist die zu ersetzende Zeichenkette, \par
+\b\f4 _CS2\b0\f0\tab\f3 CS2 die daf\'fcr einzusetzende. \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Jede dieser Zeichenketten kann aus einer Mischung von Steuer- und Textzeichen bestehen. \par
+\i\tab\tab Beispiel:\i0\par
+\tab\tab _ 13 10 "     " \par
+\tab\tab _ " " \par
+\tab\tab Hierdurch wird die Folge "Wagenr\'fccklauf Zeilenvorschub 5 Leerzeichen" ersetzt durch ein Leerzeichen. Solche Ersetzungen sind oft bei "download"-Daten n\'fctzlich um einen Zeilenumbruch zu beseitigen, der in \b\i\f0 allegro\b0\i0\f3 -Daten st\'f6ren w\'fcrde. Zu beachten ist, da\'df der Befehl hier aus zwei Zeilen bestehen mu\'df, anders als bei den Export-Parametern! Dies ist n\'f6tig, weil hier in CS1 und CS2 \b\f0 alle\b0\f3  Codes, also auch Steuerzeichen, der Code 0, und das Zeichen '_' selbst enthalten sein k\'f6nnen. \f0\par
+\tab\tab Die \b\f3 Ausf\'fchrung\b0  erfolgt nach dem Einlesen, wenn die y-Befehle bereits erledigt sind. D.h. man mu\'df die durch y umgewandelten Zeichen in den CS-Ketten schon in der umgewandelten Form ber\'fccksichtigen. \f0\par
+\pard\fi-1080\li1080\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Diese Art Ersetzungsbefehl kann aber auch innerhalb einzelner Kategorieabschnitte ("Paragraphen") zum Einsatz kommen und wirkt dann nur auf die betreffende Kategorie als "Lokale Ersetzung" (\f4 -\f5\'d8\f3  11.2.3.4). Alle global gemeinten Ersetzungsbefehle m\'fcssen in der Datei oberhalb der Kategorieliste stehen. \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i\tab\tab\f3 Einschr\'e4nkung:\i0  in ISO-Formaten (al>0, z.B. "Bibliofile") m\'fcssen CS1 und CS2 bei \b\f0 globalen\b0  Ersetzungen gleich lang sein, weil sonst die Adressen nicht mehr stimmen; bei \b lokalen\b0\f3  Ersetzungen funktionieren dagegen beliebige L\'e4ngen. \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1080\li1080\tx1080\tx9413\lang1033\b\f4 ?=X\b0\f0\tab\b Maskierungszeichen umdefinieren\b0  (engl. "wildcard")\tab <?> \par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab Es kommt h\'e4ufig vor, da\'df in Ersetzungsbefehlen oder in Positionierungsbefehlen (\f4 -\f5\'d8\f3  11.2.3.2) bestimmte Zeichen variieren k\'f6nnen, also nicht festliegen. Diese Zeichen mu\'df man in der Suchzeichenkette CS1 oder CS "maskieren" k\'f6nnen. \f0\par
+\tab\tab\f3 Standardm\'e4\'dfig wird '?' als Maskierungszeichen benutzt. Kommt es in einer Suchzeichenkette CS selber als echtes Zeichen vor, dann mu\'df man es umdefinieren. Man gibt dann diesen Befehl und setzt f\'fcr 'X' ein Zeichen ein, das in keinem Ersetzungsbefehl vorkommen wird, denn es gilt dann f\'fcr den gesamten Vorgang und kann nicht zwischendurch ge\'e4ndert werden. \f0\par
+\tab\tab\f3 F\'fcr lokale Ersetzungen gilt das Zeichen auch (\f4 -\f5\'d8\f0  11.2.3.4). \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b 11.2.2.3\tab Protyp-Ersetzungen \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1080\li1080\ri432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0\tab\tab\f3 Doppelkombinationen aus einem "Protyp"-Zeichen und einem Ersatzzeichen k\'f6nnen durch Einzelzeichen ersetzt werden. Die Befehlsform ist: \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\lang1033\b\f4 p C abcde vwxyz\b0\f0\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f3\tab\tab wobei folgendes gilt: \par
+\pard\fi-2353\li2353\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f4\tab\tab C\b0\f0\tab\tab Protypzeichen \par
+\b\f4\tab\tab abcde\b0\f0\tab\f3 Zeichen, die hinter dem Protyp vorkommen k\'f6nnen \f0\par
+\b\f4\tab\tab vwxyz\b0\f0\tab Zeichen, die als Ersatz eingesetzt werden sollen \par
+\lang1031\f3\tab\tab\tab\tab (gleiche Anzahl wie in abcde) \par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i\tab\tab Ergebnis:\lang1033\b\i0\f4    Ca\b0\f0  wird durch\b\f4  v\b0\f0  ersetzt,\b\f4    Cb\b0\f0  durch\b\f4  w\b0\f0  usw. \par
+\lang1031\f3\tab\tab Beispiele sind in MARCBFC.AIM zu finden, z.B. f\'fcr das Protypzeichen \f7\'d6\f0 : \par
+\lang1033\f7\tab\tab p \'d6 aoueiyAOU a\f6\'f6\'fc\'eb\'ef_\'c4\'d6\'dc     also \f7\'d6\f6 a durch \'e4 ersetzen usw. \f4\par
+\lang1031\i\f0\tab\tab Achtung: \i0\f3 F\'fcr jedes Zeichen C nur eine solche Zeile! \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1080\li1080\ri432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i\tab\tab\f3 Ausf\'fchrung:\i0  Diese Ersetzungen werden erst im Anschlu\'df an alle Vorbearbeitungsbefehle der Kategorieliste (\f4 -\f5\'d8\f3  11.2.3) ausgef\'fchrt, d.h. f\'fcr die dort benutzten Such- und Ersetzungsbefehle gelten die Protypzeichen noch. \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b 11.2.2.4\tab Sonderersetzungen\b0\par
+\tab\tab\f3 F\'fcr Spezialf\'e4lle wurden folgende Befehle geschaffen, die alle drei global wirken: \f0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b P\b0\tab\tab Punkt direkt vor Buchstaben ersetzen durch "\lang1033\f4 . " (Punkt Leerzeichen) \par
+\lang1031\b\f0 S\b0\tab\tab Mehrfach-Leerzeichen beseitigen \par
+\b $$\b0\tab\tab\f3 sog. "Dollar-Verweisungen" aufl\'f6sen. In PICA-Daten oder auch SWD-Daten (dort "Montagebefehle" genannt) kommen solche Dinge vor. Hinter einem Dollarzeichen steht eine Kategorienummer. Wurde dieser (global wirkende) Befehl gegeben, ersetzt das Programm alle solchen Verweise durch den zugeh\'f6rigen Kategorietext, l\'f6st also die Verweise auf. Das erste Dollarzeichen ist der Befehl, das zweite das tats\'e4chlich in den Fremddaten benutzte Zeichen. \f0\par
+\tab\tab\f3 Wenn z.B. in einem Kategorietext irgendwo "$3000" vorkommt, wird dies durch den Inhalt der Fremdkategorie 3000 ersetzt. Voraussetzung: Das Feldende der Fremdkategorien mu\'df durch den Code 0 markiert sein. (Normalerweise erreicht man das durch eine globale Ersetzung.) \f0\par
+\pard\fi-658\li658\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\par
+?Vorangehender Teil=h ac11 \par
+?Fortsetzung=h ac11-2 \par
+\par
+}
+ 

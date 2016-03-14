@@ -1,0 +1,549 @@
+  E-WALF.APR : Ausleihverwaltung Mahnungsexport Quittungsparameter
+  19980708 / 20060208  aLF-Win-Version. Basis: E-ALF.APR (DOS)
+        Sprungmarken mit fester Bedeutung
+        Werden automatisch angesteuert, je nach Satztyp
+     Im FLEX wird eine Variable #uaV mit dem entspr. Kennbuchstaben besetzt
+             der FLEX-Befehl "dow" führt dann den betr. Abschnitt aus
+
+  aLF-W : kennzeichnet die Teile, die schon gebraucht werden
+
+        f   Fristzettel Entleihung/Verlängerung
+        L   Entleihung Abspann
+        q   Quittung Rückgabe
+        v   Reservierung
+        R   Gebührenquittung Einleitung
+        r   Gebührenquittung Eintrag
+        S   Gebührenquittung Abspann
+        a   Leser abmelden/Daten ändern
+
+            Mahnungen:
+        B   Einleitung Mahnbrief            /Leser #9B   aLF-W
+        e   Liste 1. Mahnung Einleitung     /Exemplar
+        E   Liste 1. Mahnung Eintrag        /Titelsatz   aLF-W
+        g   Liste Folgemahnung Einleitung   /Exemplar
+        G   Liste Folgemahnung Eintrag      /Exemplar
+        h   Liste Erinnerungen Einleitung   /Exemplar
+        H   Liste Erinnerungen Eintrag      /Exemplar
+        C   Gebührenmahnung                 /Summen
+        D   Belehrung                       /Mahngebühren
+
+            Kontoauszug:
+        b   Entleihungen Einleitung         /Leser
+        T   Entleihungen Listeneintrag      /Exemplar
+        c   Reservierungen Einleitung       /(unbestimmt)
+        U   Reservierungen Eintrag          /Exemplar
+        d   Vormerkungen Einleitung         /(unbestimmt)
+        V   Vormerkungen Eintrag            /Vormerkung
+        k   Gebühren Einleitung             /(unbestimmt)
+        W   Gebühren Eintrag                /Titelsatz+Gebühr (#9GF/G)   aLF-W
+      ***********************************************************
+
+pn="Alf Quittungen"               Kurzbeschreibung
+
+td-rtf    d-rtf.apt laden
+tad-aw    OstWestCodes
+
+sz=0                              kein Seitenumbruch
+zm=0                              kein Seitenumbruch
+fl=0                              Listendruck
+zl=92                             Zeilenlänge
+
+        Es werden keine ak-Zeilen gebraucht
+  
+  Textelemente
+1=". "
+2=", "
+3="; "
+4=C
+5=" : "
+6=13 13
+7=" = "
+8=". - "
+9=" / "
+10=C "("
+11=")"
+13=C "   "
+
+  andere Zwischenteile
+
+99=13 12 13 10
+98=C "-"*40 #4 C
+97=C "-"*40 C
+
+  Hier beginnt die Bearbeitung
+  Sprungverteiler. Wenn #uaV im FLEX mit x besetzt wird,
+    bewirkt der Befehl "download", dass Marke #-x angesprungen wird
+
+#uaV +B c"B" e0   Benutzersatz
+#uaV +f c"f" e0   Fristzettel Entleihung/Verlängerung
+#uaV +L c"L" e0   Entleihung Abspann
+#uaV +q c"q" e0   Quittung Rückgabe
+#uaV +v c"v" e0   Reservierung
+#uaV +R c"R" e0   Gebührenquittung Einleitung
+#uaV +r c"r" e0   Gebührenquittung Eintrag
+#uaV +s c"s" e0   Gebührenquittung Abspann
+#uaV +a c"a" e0   Leser abmelden/Daten ändern
+
+#uaV +B c"B" e0   Einleitung Mahnbrief            /Leser
+#uaV +e c"e" e0   List Einleitung     /Exemplar
+#uaV +E c"E" e0   Liste 1. Mahnung Eintrag        /Exemplar
+#uaV +g c"g" e0   Liste Folgemahnung Einleitung   /Exemplar
+#uaV +G c"G" e0   Liste Folgemahnung Eintrag      /Exemplar
+#uaV +h c"h" e0   Liste Erinnerungen Einleitung   /Exemplar
+#uaV +H c"H" e0   Liste Erinnerungen Eintrag      /Exemplar
+#uaV +C c"C" e0   Gebührenmahnung                 /Summen
+#uaV +D c"D" e0   Belehrung                       /Mahngebühren
+
+#uaV +b c"b" e0   Entleihungen Einleitung         /Leser
+#uaV +T c"T" e0   Entleihungen Listeneintrag      /Exemplar
+#uaV +c c"c" e0   Reservierungen Einleitung       /(unbestimmt)
+#uaV +U c"U" e0   Reservierungen Eintrag          /Exemplar
+#uaV +d c"d" e0   Vormerkungen Einleitung         /(unbestimmt)
+#uaV +V c"V" e0   Vormerkungen Eintrag            /Vormerkung
+#uaV +k c"k" e0   Gebühren Einleitung             /(unbestimmt)
+#uaV +W c"W" e0   Gebühren Eintrag                /Gebühr
+
+
+  Sonst: nix machen
+#nr +-  
+        ***************************************************
+        Mahnbriefe
+
+#-B         Einleitung Mahnung   aLF-W
+            Briefkopf mit Leserdaten
+#t{#4}
+
+        Lesersatz ist momentan geladen
+        Textbausteine laden
+        Hintergrundspeicher darf nicht zu klein sein
+
+#9B +#J51 c"k1" e0               Erwachsener?
+#9B +#J54 c"k4" e0               Kind?
+#nr +#J50 e0                      Nein
+
+#J51                              Erwachsener
+#9B n e"," dna ana               Nachnamen aufheben
+  Systemsatz  XMLK  laden (Textelemente)
+#9B k y0 "SYSXMLK" |112
+#9A dtb atb                       Aufheben in Benutzervariable
+#</    zurueck zum Lesersatz
+#nr +#J5A e0
+
+#J54                              Kind
+#9B n b", " dna ana              Vornamen aufheben
+#9B k y0 "SYSXMLK" |112
+#9A dtb atb                       Textbausteine in #utb aufheben
+#</
+#nr +#J5A e0
+
+#J50
+#9B n e"," dna ana               Nachnamen aufheben
+#nr "0" e1 dtb atb                Standardtexte muß es geben
+#utb y0 "SYSXMLK" |112
+#9A dtb atb                       Textb. in #utb aufheben
+#</
+
+#J5A                              Anschrift
+#9B n b", "                      Vorname
+#9B n e"," p" "                  Nachname
+#9B s C                          Straße
+#9B p C C                        PLZ
+#9B o " " P{ $10,5 }             Ort
+#utb b                           Betreff
+    #dts e"/" b2 p{", "} =ad          z.B. Tagesdatum
+#>D
+#t{ $15,5 }
+#9B +#J5m c"um" e0               Maennlich?
+#9B +#J5w c"uw" e0               Weiblich?
+#utb +#J5B n                     Weder noch
+
+#J5m
+#utb +#J5B a
+
+#J5w
+#utb +#J5B A
+
+#J5B
+#una " " P", "                    Nachname oder Vorname
+#utb E C C
+ #+#
+
+#-e       Liste 1. Mahnung Einleitung [obsolet]
+#t{ C }
+#+#
+
+#-E       Liste 1. Mahnung, Eintrag   aLF-W
+          Titelsatz ist geladen
+#t{#4 C}
+#>L        Listeneintrag
+#t{C}
+#9DH D p{C "Ausleihdatum" &30 ": "} =ad
+#>D
+#9DH R p{C "Rückgabedatum" &30 ": "} =ad
+#>D
+#+#
+
+#-g       Liste Folgemahnung Einleitung
+          1. Exemplarsatz
+          Leserklasse 'Gast' berücksichtigen, d.h.
+          1. Mahnung == Letzte Mahnung!
+
+#9DH +#J9g C c"3" e0
+#utb +# f p{#4 C C} P{C}
+
+#J9g
+#utb F p{#4 C C} P{C}
+#+#
+
+#-G       Liste Folgemahnung Eintrag
+          Exemplarsatz
+
+          'Letzte' Mahnung berücksichtigen:
+          Leserklasse 'Gast' berücksichtigen, d.h.
+          1. Mahnung == Letzte Mahnung!
+
+#t{#4 C}
+#9DH +#J9M n c"9" e0             Letzte Mahnung?
+#9DH +#J9m n P". Mahnung"        Nein, normal
+
+#J9M
+#9DH +#J9G C c"3" e0             Leserklasse 'Gast'?
+#9DH +#J9m p{ C "*Letzte Mahnung*" C } e0
+
+#J9G
+#9DH p{ C "*Einzige Mahnung*" C } e0
+
+#J9m
+#>L
+#t4
+#9DH D p{C "Ausleihdatum" &30 ": "} =ad
+#>D
+#9DH R p{C "Rückgabedatum" &30 ": "} =ad
+#>D
+#+#
+
+#-h       Liste Erinnerungen Einleitung
+#utb h p{#4 C C} P{C}
+                                  Exemplarsatz
+#+#
+
+#-H       Liste Erinnerungen Eintrag
+                                  Exemplarsatz
+#t{#4 C}
+#>L
+#t4
+#9DH D p{C "Ausleihdatum" &30 ": "} =ad
+#>D
+#9DH R p{C "Rückgabedatum" &30 ": "} =ad
+#>D
+#+#
+
+#-C       Gebührenmahnung
+  Wenn keine Geb.mahnung im Brief gewuenscht, diese Zeile aktivieren:
+  #+#
+                                  Summensatz
+      Diese Information könnte man herausholen...
+
+  #9GF +#J3a n x"==0" e0           Aktuelle Mahnung?
+  #9GF n p{"Mahnstufe" &30 ": "}
+  #9GG a x"/100" x"r2" p{C "Aktuell" &30 ": "} P" EUR"
+  #J3a                              Erinnerungen?
+  #9GG +#J3b e x"==0" e0
+  #9GG e x"/100" x"r2" p{C "Erinnerung" &30 ": "} P" EUR"
+  #J3b                              Ausstehende Gebühren?
+  #9GG S x"/100" x"r2" p{C "Ausstehende Gebühren" &30 ": "} P" EUR"
+  #+#
+
+      Das meiste ist für Leser uninteressant, oder?
+      Der Summensatz ist immer GETILGT
+
+#9GG +# S x"==0" e0              Nicht für NULL Gebühren
+#9GF +#J3a n x"==0" e0           Aktuelle Mahnung?
+#9GF +#J3b n x">1" e0            Ja, 1. Mahnung?
+#utb +#J3z g p{#4 C C}           Ja
+#+#
+
+#J3b                              Aktuelle Folgemahnung
+#utb +#J3z G p{#4 C C}
+#+#
+
+#J3a                              Erinnerung
+#utb k p{#4 C C}
+
+#J3z                              Ausstehende Gebühren
+#t{C C &30}
+#9GG S x"/100" x"r2" P" EUR."     Summe ausstehender Gebühren
+                                  ...OHNE Gebühren aktuelle Mahnung
+#+#                               ...OHNE Verzugsgebühren
+
+#-D       Belehrung und Ableitung
+                                  Gebührensatz Mahnung
+
+          Diese Informationen könnte man herausholen...
+
+  #t{C "BELEHRUNG" t98}
+  #nr dmg e0
+  #9GG K p{C "1. Mahnung o. T." &30 ": "}
+
+  #9GG M e"/" =mg                  1. Mahnung(en)
+  #umg e":" y0 p"SYSM" |112         Medientyp nachladen
+  #9A B p{C "1. Mahnung "}
+  #<
+  #umg b":" p{&30 ": "}
+  #nr dmg e0                        ...weitere 1. Mahnung(en)
+  #9GG M b"/" =mg
+  #-à                               Schleife
+  #umg +#J4à e":" y0 p"SYSM" |112
+  #<                                Abbruch
+  #nr +#J40 e0                      Weiter mit Folgemahnungen
+
+  #J4à
+  #9A B p{C "1. Mahnung "}
+  #<
+  #umg b":" e"/" p{&30 ": "}
+  #umg +à b"/" =mg
+
+  #J40
+  #9GG k p{C "Folgemahnung o. T." &30 ": "}
+  #nr dmg e0
+  #9GG m e"/" =mg                  Folgemahnungen
+  #umg e":" y0 p"SYSM" |112         Medientyp nachladen
+  #9A B p{C "Folgemahnung "}
+  #<
+  #umg b":" p{&30 ": "}
+  #nr dmg e0
+  #9GG m b"/" =mg                  ...weitere Folgemahnungen
+  #-ß                               Schleife
+  #umg +#J4ß e":" y0 p"SYSM" |112     Medientyp
+  #<                                Abbruch
+  #nr +#J4â e0                      Mahngebühren fehlen noch...
+
+  #J4ß
+  #9A B p{C "Folgemahnung "}
+  #<
+  #umg b":" e"/" p{&30 ": "}
+  #umg +ß b"/" =mg
+
+  #J4â                              Mahngebühren
+  #9GG S x"/100" x"r2" p{C "Mahngebühren" &30 ": "} P" EUR"
+  #+#                               ...OHNE die vor der Mahnung
+                                    bereits aufgelaufene Summe oben
+
+      Ich brauche nur Belehrung, Mahngebühren, Nachsatz und Gruß
+
+#9GG +#J4D S x"==0" e0             Für Summe NULL weniger Text.
+#utb K p{#4 C}
+#9GG S x"/100" x"r2" p{C C &30} P" EUR."
+
+#J4D
+#utb Z C C
+#utb X C C C
+#t99
+#+#
+
+          Ende Label "Mahnung"
+          Label "Gebührenquittung"
+
+#-R                               Einleitung Lesersatz
+#t{C "GEBÜHRENQUITTUNG FÜR"}
+#>B                               UP 'Leser'
+#t98
+#+#
+
+#-r         Welcher Geb.Status?
+#9GF +# G c"S" e0         S = Storno - Nichts ausgeben
+#t{ C "EINZELGEBÜHR" }          Einzelgebühren
+#9GF +#J2f i4,0 e0
+#9GF d p{C "GETILGT am" &30} =ad
+#>D
+#J2f
+#9GF D p{ " -- Registriert am:  " } =ad
+#>D
+#t{ ",  Gebührenart: " }
+
+#9GF +#J2j G c"0" p"Verzug." e"."
+#9GF +#J2j G c"4" p"Verlängerung." e"."
+#9GF +#J2j G c"5" p"Entleihung." e"."
+#9GF +#J2i G c"9" p"Extra." e"."
+#9GF +#J2i G c"U" p"gestundet." e"."
+#9GF +#J2k G c"7" e0
+#+#
+
+#J2j                              Verzugsgebühr mit Titel
+#t{C C}
+#9GG T y0 |92                    Titel nachladen
+#40 e";" F" " P": "               Verfasser, Signatur und...
+#90 >S e0                         Anfang des Sachtitels
+#20 e60 e" :" #69 9 #zz 8         Kuerzen
+#60 e30 #69 3 #76 8                 Urheber?
+
+#75 0 #76 2 #77 8 #zz 0
+#76 0 #77 8 #zz 0
+  Ausgabe, falls gew.
+  #71 " (" P")"
+#</
+
+#nr +#J2h e0
+
+#J2k                              Mahngebühren
+#9GF n e"." P". Mahnung!" e"!"
+#nr +#J2h e0
+
+#J2i
+#9GG G p{C "Grund" &30}
+
+#J2h
+  #t{C C}                           Bedingungslos
+#9GG D p{ "entliehen am  " &30 } =ad
+#>D
+#9GG R p{ "   Rückgabedatum war: " &30 } =ad
+#>D
+#9GG S t2 "   Betrag: "
+#9GG S T2 p"." P" EUR"
+#t98
+#+#
+
+#-S                               Gestundete Restgebühr
+#9GF +#J2z i4,T e0                GETILGT
+#t{C C "GESTUNDETE RESTGEBÜHR" C}
+#9GF D p{ "Registriert am" &30} =ad
+#>D
+#9GG S p{C C} t2
+#9GG S T2 p"." P" EUR"
+
+#J2z
+#nr C C "Vielen Dank!" e"!"
+#t98
+#+#
+
+          Reservierung
+
+#-v
+#t{C "NOTIZ RESERVIERUNG" t98}
+#+#
+
+          Fristzetteldruck
+
+#-f
+#t{C "LEIHQUITTUNG" t98}
+#>L
+#+#
+
+#-L
+#t{C "ABSPANN DER LEIHQUITTUNG" t98}
+#+#
+
+         Rückgabequittung
+
+#-q
+#t{C "RÜCKGABEQUITTUNG" t98}
+#>L
+#+#
+
+        Leser anmelden/Daten ändern
+
+#-a
+  #t{C "VORLŽUFIGER BENUTZERAUSWEIS" t98}
+#+-         So ABKNIPSEN! di= LEER lassen!
+#+#
+
+        Kontoauszug
+        wg. Eintrag vgl. Mahnbrief
+
+#-b       Entleihungen - Einleitung - Lesersatz geladen
+#t{C "KONTOAUSZUG für" t97 }
+#>B       UP 'Leser'
+#t{ t97 "ENTLEIHUNGEN" t97 }
+#+#
+
+#-T       Entleihungen - Exemplarsatz geladen
+#>L                              Listeneintrag
+#t{C}
+#9DH D p{C "Ausleihdatum" &30 ": "} =ad
+#>D
+#9DH R p{C "Zurückzugeben bis" &30 ": "} =ad
+#>D
+#+#
+
+#-c      Reservierungen - Einleitung
+#t{ t97 "RESERVIERUNGEN" t97 }
+#+#
+
+#-U       Reservierungen - Exemplarsatz geladen
+#>L                               Listeneintrag
+#t{C}
+#9DH w p{C "Reserviert seit" &30 ": "} =ad
+#>D
+#9DH W p{C "Ablauf am" &30 ": "} =ad
+#>D
+#+#
+
+#-d       Vormerkungen - Einleitung
+#t{ t97 "VORMERKUNGEN" t97 }
+#+#
+
+#-V       Vormerkungen - Vormerksatz geladen
+#>L                             * Listeneintrag
+#t{C}
+#9DH V p{C "Ablauf am" &30 ": "} =ad
+#>D
+#+#
+
+
+#-k       Gebühren 'Einleitung'
+#t{ t97 "GEBÜHREN" t97 }
+#+#
+
+#-W       Gebühren - Gebührensatz geladen   aLF-W
+#nr +r e0                         Benutzt GEBÜHRENQUITTUNG oben
+#+#
+
+    *******************************************************
+          Unterprogramm "Datum umdrehen" --*v99
+
+#(D      aLF-W
+#uad b6 f"0" P"."
+#uad b4 e2 f"0" P"."
+#uad e4 dad           Und löschen...
+#)D
+
+   Unterprogramm "Listeneintrag 'Exemplar/Titel'"  aLF-W
+   TitelSatz ist geladen
+#(L
+  Leerzeilen?
+    #t{C C}
+  #9DF y0 |92                       Titel nachladen, falls Expl.satz
+#40 e";" e", " F" " P": "           Verfasser
+
+#20 e60 e" :" #69 9 #zz 8         Titel kürzen
+#60 0 #69 3 #76 8                 Urheber?
+
+#75 0 #76 2 #77 8 #zz 0
+#76 0 #77 8 #zz 0
+#71 " (" P")"
+
+#<                      Gebuehrensatz zurückholen
+#9DG s "  Sign: "
+
+#)L
+
+        Unterprogramm 'Leser'
+
+#(B
+#9B n C C B", "
+#9B n e"," p" "
+#9B s C
+#9B p C C
+#9B o " "
+#9B t C C "Tel.: "
+#)B
+
+  fuer write-Befehl im FLEX, damit umcodiert wird
+#-X
+#u1
+#+#
+
+            Ersatztabelle ist kurz
+
+p ª 1
+q ª 1

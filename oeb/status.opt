@@ -1,0 +1,65 @@
+    // STATUS.OPT : Bestandsangaben abhängig vom Standort
+    // 7.10.2003
+
+    //-------------------------------------------------------------
+    //  Unterprogramm (E) : Bestandsangaben
+    //  Bem.: Ruft Unterprogramm (D) auf!
+    //-------------------------------------------------------------
+#(E
+    // Signatur zuerst auswerten :
+    // ggf. anpassen, wenn kein Status verfügbar :
+    // Default : Standort explizit gefüllt --> kein Status!
+
+#9DG +#9Dg $s e0                    // Signatur existiert
+#nr +#9Do "keine Angaben." e"." dbc abc  // Signatur existiert nicht
+#9Dg
+#9DG $s dbc abc
+#9Do
+#ubc p"Standort: " P" "              // Signatur ausgeben
+#9DG $H " " P" "                    // Bestandsnotizen 
+#9DG dad e0                     // in jedem Fall löschen        
+#9DG dso e0                     // in jedem Fall löschen
+#9DG +#9Dn $l aso e0            // Standort merken
+#nr +#9Df e0			// kein Standort, prüfen ob Sonderst.
+#9Dn
+#uso 58 9 P{t69}           // ausgeben, falls vorhanden
+#9DG +#9Dm $X 58 9 p"/ " P{ t9 t69 }  // Sonderstandort     
+#9Df
+#9DG $X 58 9 P{ t9 t69 }            // Sonderstandort           
+#9Dm
+#t90
+#080 " (" P") "                     // Zweigstelle
+#t91
+
+#9DG dvf e0
+#9DG +#9Dv $v dvf avf e0
+#9DG +#9Ds e0
+
+#9Dv        
+#uvf +#9Di i5,P p{ t59 "&nbsp;Nicht entleihbar&nbsp;" t69 } e0        // ohne Status
+#uvf +#9Ds i5,p p{ t59 "&nbsp;Pr&auml;senz&nbsp;" t69 } e0            // mit Status!
+#uvf +#9Ds i5,k p{ t59 "&nbsp;Kurzausleihe&nbsp;" t69 } e0
+#uvf +#9Ds i5,g p{ t59 "&nbsp;Bitte nachfragen&nbsp;" t69 } e0
+#9Ds
+        // Status (abhängig von der Standortangabe!)
+#uso e0               // hier Standortlogik ergänzen!        
+        
+#9DG +#9Dr i5,W p{ t48 "&nbsp;Reserviert&nbsp;" t69 } e0
+#9DG +#9Di i5,v p{ t48 "&nbsp;Verlust&nbsp;" t69 } e0
+#9DG +#9Di i5,A p{ t48 "&nbsp;Ausgesondert&nbsp;" t69 } e0
+#9DG +#9Dl i5,l p{ t48 "&nbsp;Entliehen&nbsp;" t69 } e0
+#9DG $F 92{ "<br>" } "  Bisher " P{ "-mal entliehen " t93 } 
+
+#9Dr
+#9DH +#9Di $W dad aad e0                  // Datum merken
+#9Dl
+#9DH +#9Di $R dad aad e0
+
+
+#9Di 
+#uad "&nbsp;bis&nbsp;." e"."
+#>D                                 // Datum, falls vorhanden   
+#)E
+           
+    
+    

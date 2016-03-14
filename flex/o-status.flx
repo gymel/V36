@@ -1,0 +1,70 @@
+ O-STATUS.FLX : Status der Bestellung aendern
+  2004-10-26
+
+if not #9DB jump error
+#uoT
+  Momentanen Status feststellen
+var #9DB
+if "1" var "ausgew„hlt"
+if "2" var "vorakzessioniert"
+if "3" var "bestellt"
+if "4" var "reklamiert"
+if "5" var "storniert"
+if "6" var "inventarisiert"
+if "7" var "abgeschlossen"
+if "8" var "Desiderat"
+if "Bl" var "Laufender Band"
+if "Bu" var "Unvollst. Band"
+if "Bv" var "Vollst. Band"
+if "Al" var "Laufendes Abo"
+if "Ab" var "Beendetes Abo"
+if "Ae" var "Eingestellt"
+ins #uoT
+
+if %% end
+
+var "Momentaner Status dieses Satzes: " #uoT
+mes
+set a Neuer Bestellstatus?
+var "7 : abgeschlossen" n "3 : bestellt" n "5 : storniert" n "4 : reklamiert" n "6 : inventarisiert" n "2 : vorakzessioniert" n "1 : ausgew„hlt" n "8 : Desiderat" n "Al : Laufendes Abo" n "Ab : Beendetes Abo" n "Ae : Eingestellt" n "Bl : Laufender Band" n "Bu : Unvollst. Bd." n "Bv : Vollst.Bd"
+ansi
+Aresqa
+set a
+if "" end
+var (0,2)
+  in iV jetzt Statusziffer
+  Rest von #9DB (hinter dem ersten Zeichen) dranhaengen und wieder in #9DB
+
+ins $$-#9DB
+  $I rausnehmen, falls nicht 6
+var #9DB
+if "1" $I-#9DA
+if "2" $I-#9DA
+if "3" $I-#9DA;$e-#9DB;$q-#9DB
+if "4" $I-#9DA
+if "6" $N-#9DB;$K-#9DB;$i-#9DB;$R-#9DB
+if "5" $I-#9DA
+if "7" perf Absch
+if "Bv" var "";ins $O-#9DB
+sho rec
+disp
+  Wenn sich Aenderung ergeben hat, speichern
+if diff Put
+end
+
+:Absch
+form Absch
+var #9DB$R
+  Datum zurechtmachen, wenn mit . eingegeben
+var #9DB$R(b"." b".") #9DB$R(b"." e"." 0,r2) #9DB$R(e"." 0,r2)
+ins _ _0_
+ins $R-#9DB
+var #9DB$i
+ins _,_._
+ins $i-#9DB
+return
+
+:error
+mes Das geht nur bei einem Bestell- oder Abosatz. Dies ist kein solcher.
+end
+

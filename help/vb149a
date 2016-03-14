@@ -1,0 +1,106 @@
+
+Verlautbarung 149a der Entw.Abt.                          2001-03-15
+-------------------------------
+
+Zwischenablage-Funktionen
+-------------------------
+Diese sind, genau wie vorgeschlagen, jetzt realisiert.
+Die neuen FLEX-Befehle "ccopy" und "cpaste" sind dokumentiert
+in der neuen Datei  "xccopy.rtf", und "xa.rtf" wurde ergaenzt.
+Jetzt wollen wir aber erleben, dass damit auch was anstaendiges
+gemacht wird! (Manche schoene Funktion ist schon im Arsenal
+verstaubt, nachdem zuerst lauthals danach gerufen wurde.)
+
+Kopieren aus dem Index
+----------------------
+Bisher wurden, als galanter Sonderservice, die Anfangsbuchstaben
+jedes Wortes einer kopierten Indexzeile in Versalien gewandelt.
+Solcherlei "Magie" findet keinen ungeteilten Beifall, auch gab
+es wohl Misshelligkeiten mit unkorrekt kopierten Umlauten und
+Sonderzeichen, Daher ist jetzt der Standard, dass Indexzeilen 
+exakt kopiert werden. Die "Magie" laesst sich aber jederzeit 
+einschalten und zwar mit dem neuen FLEX-Befehl  set L1
+
+Tip: Indexzeile in die IV kopieren
+----------------------------------
+Manchmal will man keinen Find-Befehl geben, um Datensaetze
+zu gewinnen, sondern man will nur eine Registerzeile haben.
+Das geht mit dem qrix-Befehl! Sagen wir, es soll aus dem 
+Register 1, PER, die erste Zeile geholt werden, die mit
+"mueller" beginnt. Dann schreibt man:
+
+qrix 2 per mueller   ODER   qrix 2 |1 mueller
+
+Fuer Register 10 und 11 kann es  |:  bzw.  |;  lauten.
+In der iV steht dann die Zeile, die VOR der ersten mit "mueller"
+beginnenden Zeile kommt, dann die Zeile selbst, und dazwischen das
+Absatzzeichen (DOS Code 20)
+Um also genau die richtige Zeile zu erhalten, macht man dieses:
+
+qrix 2 per mueller
+ins #uzz
+var #uzz(b"x")     wobei x dann Strg+t ist, das Absatzzeichen!
+ins #uzz
+
+Und nun steht die Zeile in #uzz, sogar mit der Trefferzahl vorneweg.
+Soll es NUR die Eintragung sein, ohne Trefferzahl, ergaenzt man noch
+var #uzz(b" ")
+ins #uzz
+Denn es ist immer ein Leerzeichen hinter der Zahl.
+
+Kopieren einer Indexzeile durch [Enter]
+---------------------------------------
+Wird der Index waehrend eines FLEXes aufgeklappt, bewirkt Enter,
+dass die aktuelle Zeile in das momentan geoeffnete Eingabefeld
+kopiert wird (ask oder form-Zeile).
+Bei "alcarta" ging das nicht: es kam dann die Hilfeseite zum
+aktuellen Index. Das wurde angeglichen.
+
+Formularproblemchen
+-------------------
+Eine ganz kleine Ungenauigkeit trat auf: wenn man im Formular eine
+Zeile hat wie
+$$-#97 K"Code"
+dann wird die Eingabe mit einem K vorweg an den Anfang der Kategorie
+#97 gesetzt, ohne Teilfeldzeichen, vor allen Teilfeldern, die 
+evtl. noch da sein moegen.
+Wenn aber das Formular erneut aufgerufen wird, hat man das K im
+Eingabefeld stehen, und wenn man es da laesst, sind es nachher 2.
+Das wurde ausgemerzt. Man muss K im Eingabefeld aber stehenlassen!
+
+
+Classico-Verbesserungen
+-----------------------
+Unerquicklichkeiten traten auf beim Manipulationsbefehl c"abc" und
+auch b"abc", besonders in Verbindung mit dem Jokerzeichen ?.
+Eine Innenrevision in dieser sehr tiefliegenden Schicht ergab
+Verbesserungen, die nun sowohl in den Classico-Programmen wie
+auch in den modernen implementiert wurden (d.h. a99 kann's auch):
+
+c"^abc"    reagiert, wenn Zeichenkette "abc" NICHT im AT vorkommt
+c"^~abc"   ignoriert Gross- und Kleinschreibung
+               abc kann auch ein #nnn oder #uxy sein
+c"^[abc]"  reagiert, wenn keines der Zeichen abc vorkommt
+b"?"       funktioniert endlich auch 
+           (d.h. auch: der AT hat mindestens ein Zeichen) 
+
+Und GANZ NEU, als Abfallprodukt:
+
+c">abc"    reagiert, wenn der AT alphanumerisch groesser ist als "abc"
+c">#nnn"
+c"~>abc"   dasselbe, mit Gross-Klein-Ignorierung
+c"~>#nnn"
+
+Dasselbe geht entsprechend auch mit '<' . Bisher klappten naemlich
+< und > als erste Zeichen hinter " ueberhaupt nicht, wie bemerkt.
+Es geht hierbei, wohlgemerkt, um den Anfang des AT, nicht etwa so,
+dass innerhalb des AT eine Zeichenkette vorkommen sollte, die >abc
+ist!! Das waere wohl recht abstrus. Insofern ist c nicht ganz das 
+"richtige" Funktionszeichen, aber statt ein neues einzufuehren, 
+nehmen wir das in Kauf.
+Nun kommt natuerlich noch die Frage: Und was, wenn wirklich die
+Zeichenkette "<abc" oder "^abc" etc. gesucht werden soll?
+Dann schreibt man c"?<abc" oder b"?^abc" etc.
+Wenn aber '<' auch das allererste Zeichen sein koennte - dann wuerde ?
+ja nicht greifen! Dann setzt man  #t{ s0 } vorweg und #t{ s4 } hernach.
+

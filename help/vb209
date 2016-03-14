@@ -1,0 +1,261 @@
+
+
+Verlautbarung 209 der Entw.Abt.                              2008-08-28
+-------------------------------
+FESTSCHREIBUNG V28.1
+Alle ueblichen Dateien liegen zum Download bereit.
+
+
+V28.8 mit Archivdatenbank
+=========================
+Die Idee ist einfach: Eine Datenbank im Hintergrund zu haben, in die
+hinein man sich jederzeit irgendwelche Datensaetze kopieren und aus der
+man sie bei Bedarf wieder hervorholen kann. Das koennen Momentaufnahmen
+bestimmter Saetze sein, die im laufenden Betrieb oft veraendert werden,
+das koennen auch Saetze sein, die man anschliessend loeschen will und
+von denen man zur Sicherheit eine Kopie aufbewahren will.
+Die Umsetzung war weniger einfach, aber in V28.8 ist die komplette
+Loesung enthalten. Das Ziel war, dem Anwender die Sache extrem leicht
+zu machen, vom Anlegen der Archivbank bis zu ihrer spurlosen Loeschung.
+Auch wichtig: Keine Aenderungen an den Parametern etc. der Grundbank,
+schon gar nicht in deren Daten, und sofortiges Funktionieren mit JEDER 
+allegro-Datenbank.
+
+Was muss man tun? Extrem wenig:
+
+1. Im "Fuellhorn" auf "Archivdatenbank" klicken, dann wird sie angelegt
+   (falls noch nicht existent) und/oder sofort gestartet. Man sieht
+   gleich nach dem Anlegen noch keinen Datensatz, sondern nur eine Art
+   Ueberschrift.   [Die Arbeit macht ara.flx]
+
+2. Danach bei jedem beliebigen Datensatz F8 und "s : Satz archivieren".
+   Oder auch: "e : Ergebnismenge archivieren" (wenn eine da ist).
+   In der Statuszeile erscheint "Archiviert" und wenn man umschaltet 
+   auf die Archivbank, sieht man die Kopie.  
+   [Ausfuehrung durch ark.flx, Aufruf mit "ark e" fuer Erg.Menge]
+
+
+Mehr zu den Einzelheiten und Moeglichkeiten:  h archiv
+Darin auch Tips, um das Archiv gleich beim Start der Grundbank eben-
+falls zu oeffnen bzw. am Sitzungsende automatisch zu schliessen. Das
+Archiv laeuft in einem separaten a99-Fenster als eigene Datenbank!
+
+
+ZAboM: Mahnwesen
+================
+Es wurde eine einfache Loesung gefunden, ueber die schon in der
+Mail-Liste am 28. und 30.7. berichtet wurde. Jetzt ist sie
+offiziell mit drin.
+Mehr dazu:  h zmahn.txt
+Das Verfahren ist schon in alle relevanten Menues, Dateien und
+Texte einbezogen.
+Man braucht erfreulich wenig zu tun, um das Konzept zu nutzen.
+Der Text beschreibt alles. In der DemoBank sind schon Beispiele von
+Heften, die gemahnt werden muessen: Klicken Sie im ZAboM-Menue den
+den neuen Punkt "Mahnungen", dann sehen Sie diese. Waehlen Sie einen
+davon aus, dann koennen Sie auch den Mahnbrief sofort anzeigen lassen.
+
+Besser funktioniert jetzt auch "Abos eines Lieferanten".
+Wenn das bei einzelnen nicht geht: die Hilfsliste der Lieferanten
+mal erneuern lassen. An kommt es darauf, dass in den Abosaetzen
+die Lieferantenkennung hinsichtlich Gross-/Kleinschreibung korrekt
+drinsteht, d.h. mit der Kennung im Systemsatz uebereinstimmt
+(d.h. mit der Angabe code in  #9A Lcode...).
+
+
+aLF: Ueberfaellige Sachen anzeigen
+==================================
+Eine neue Funktion auf dem Hauptmenue (alf.rtf):
+   Ueberfaellige Exemplare
+Es wird damit die Ergebnismenge unter R im Register 10 gebildet,
+von 1900 bis zum aktuellen Datum. Diese wird dann mit den aktuellen
+Druckparametern (i.d.R. p-w.apr) angezeigt. Die Standarddatei 
+p-w.apr wurde dahingehend erweitert, dass bei den Exemplarsaetzen
+auch der Entleihername und der Exemplarbarcode erscheinen, damit die
+Uebersicht umso brauchbarer ist.
+(Kein neuer FLEX, sondern der ist gleich in alf.rtf eingebettet!)
+
+Kleinere Verbesserung: Bei "Exemplar freigeben" wird jetzt nach
+Erledigung nicht mehr in die Rueckgabeschleife gesprungen.
+
+
+Kleinere Verbesserungen
+=======================
+
+Das englische Fuellhorn
+In onhlpa99.flx wird nun nur bei Sprache Deutsch die Datei
+fillhorn.rtf geladen (der Name ist ja nur ein Witz). Bei anderer
+Sprache wird aber zu cornuXXX.rtf gegriffen wobei XXX die Sprachkennung
+ist. Mitgeliefert wird cornu.rtf und enthaelt die engl. Version.
+(Fuellhorn heisst auf Englisch "cornucopia")
+Bei Druck auf das ? im Menue wird weiterhin  doku.rtf  gezeigt.
+
+
+FLEX
+====
+
+get pid
+-------
+  Kopiert die Prozess-IdNr des a99-Fensters in die iV
+
+Zwei neue Sondervariablen 
+-------------------------
+  var pid    die Prozess-IdNr
+  var st     der Inhalt des Statusfeldes (satznr/dateinr Lsatzlaenge)
+
+
+cstring.flx verbessert
+----------------------
+ ce, cn, cg, ci, cf aus der CFG werden angezeigt,
+ ferner auch die neuen pid und st
+
+
+Manipulationsbefehle von var und write: (ist schon laenger so!)
+--------------------------------------
+? maskiert einzelnes Zeichen
+z.B.:  var ...(e"?A") endet vor xA  mit bel. x
+Praktische Anwendung: Wenn man z.B. hinten 2 Zeichen abschneiden
+will in dem Datenfeld #123, dann
+var #123 "[}" (e"??[}")
+ins #123
+
+
+Feste Anzahl Zeichen vom Ende einer Zeichenfolge
+------------------------------------------------
+Im Trick 72 stand: "Es gibt leider keinen Manipulationsbefehl, der
+direkt die letzen 100 Byte herausgriffe."
+Jetzt gibt es ihn!
+Man kann jetzt  var #nnn(0,-100) schreiben, um die letzten 100
+Zeichen von #nnn zu kriegen. (Gilt auch fuer acon)
+Plausibler ist zumindest den Perl-Kennern die Syntax #nnn(-20,20),
+um die letzten 20 Zeichen zu kriegen. Das geht ab V28.8.1 ebenfalls.
+Ist #nnn kuerzer, bleibt der Text unveraendert.
+(Beschreibung jetzt auch in  xcstring.rtf)
+
+
+
+$-Variablen
+-----------
+Ab sofort gehoeren die mit $@ beginnenden $-Variablen ebenfalls
+zu den sog. "grossen" Variablen. Diese bleiben erhalten ueber den
+FLEX hinaus fuer die gesamte Sitzung. Das traf schon zu fuer alle mit
+einem Grossbuchstaben beginnenden Namen, also $A... bis $Z..., jetzt
+kommt also $@... noch hinzu.
+Das hat diesen Sinn: Es soll mit $@... eine Klasse von Variablen
+geben, die fuer Systemzwecke verwendet werden, also als Flags fuer
+besondere Zwecke, mit Gueltigkeit fuer die gesamte Sitzung.
+Man konnte sich auch bisher schon irgendeine Teilmenge der Variablen
+per Konvention fuer solche Aufgaben reservieren, aber es konnte dann
+theoretisch Kollisionen geben mit Variablen in Standard-FLEXen oder
+anderen, die man von sonstwo uebernahm. Total auszuschliessen ist das
+mit $@... auch nicht, aber wir wollen nun ganz bestimmte Variablen
+mit solchem Namen ausdruecklich reservieren und von Beginn an sicher-
+stellen, dass sie noch nicht anderweitig verwendet werden.
+
+Als erste solche Variablen fuehren wir jetzt diese ein:
+
+$@a     Archiv-Flag  (wird in ara.flx gesetzt)
+        Wenn eingeschaltet, dann ist die sog. ArchivBank eingerichtet
+        und fuer die laufende Sitzung aktiviert. 
+
+
+Befehl extern
+-------------
+
+Damit wird ein Satz mit Hilfe der Parameter e-w0.apr in eine Datei
+exx.xxx geschrieben und der Editor darauf angesetzt. Wenn man aber nur
+extern 0  gibt, unterbleibt der Start des Editors.
+
+
+Befehl ins $x
+-------------
+mit einstelligem Namen x konnte zu Fehlern fuehren, wenn ein # am
+Anfang der iV stand. Behoben.
+
+Befehl var
+----------
+var ... Jd
+Damit verwandelt man den momentanen Inhalt der iV in Dezimalzahlen,
+und zwar in die ASCII-Codes der Zeichen, durch Spatien getrennt,
+z.B. wird aus   var "abc" Jd  dann  "97 98 99 "
+Brauchen wird man das am ehesten, um ein einzelnes Zeichen mal in
+seinen dezimalen Codewert zu wandeln:
+var #20(0,1) Jd
+liefert in der iV den Zahlenwert des ersten Zeichens von #20
+
+Befehl xcode
+------------
+Die P/Q-Befehle der Parameterdatei wurden leider nicht ausgefuehrt!
+Behoben.
+
+Umcodiertabellen
+----------------
+Codetabelle du.apt wurde in utf-ad.apt umbenannt, damit sie dem
+Namensschema fuer solche Tabellen entspricht. Sie codiert von 
+UTF-8 nach OstWest-ASCII. Eingesetzt wurde dies bislang nirgends, man
+kann es aber zur Umcodierung von UTF-Dateien benutzen. Solche
+Umcodierungen kann man mit dem FLEX filecode.flx machen, der bei
+dieser Gelegenheit verbessert wurde.
+In der neuen Datei codetab.vw liegt jetzt eine Liste der amtlichen
+Umcodiertabellen vor. Neue Tabellen:
+aw-ad  :  Win-OstWest -> allegro-OstWest (Umkehrung von o.apt)
+          (einsetzbar zur Wandlung von N-Daten in A-Daten)
+aw-win :  Win-OstWest -> Windows ANSI normal (1252)
+utf-ad :  UTF-8 -> DOS-OstWest
+utf-rtf:  UTF-8 -> RTF
+Die beiden letzten sind eher fuer N-Daten geeignet und sind
+Kopien der gleichnamigen .npt-Dateien.
+
+
+Timer
+-----
+Wenn mit dem slice-Befehl ein Timer gesetzt wird, dann wurde der
+zugehoerige FLEX u.U. ausgehebelt und kam nicht zur Ausfuehrung,
+wenn zwischenzeitlich ein anderer FLEX ablief. Das ist behoben,
+der Timerflex kommt dann erst nach Ablauf des anderen FLEXes zum
+Zuge. Interessant ist das fuer den Einsatz der Memo-Funktion in
+der eigenen Datenbank.
+
+
+Notepad
+-------
+Der FLEX notepad.flx wurde verbessert, damit er korrekt funktioniert.
+Tip: In Notepac dann unter "Format / Schriftart" eine der allegro-
+Schriften einstellen.
+
+
+Unicode
+-------
+Bereit liegt ein Paket  demou.lzh:
+http://ftp.allegro-c.de/aktuelle-version/demou.lzh
+Darin alle fuer den internen Einsatz von UTF-8 noetigen Parameter
+sowie eine Beispielbank mit kyrillischen Daten.
+
+
+JanaS
+=====
+Mehrere geoeffnete a99 koennen nun jeweils ihren eigenen JanaS-Browser
+starten. "Besondere Links" sendet der jeweilige JanaS dann auch
+nur an das zugehoerige a99.
+Zur Kommunikation zwischen a99 und JanaS dienten bisher die Dateien
+j.htm bzw. j.flx. Jetzt sind dies eindeutige Namen, z.B. j1024.htm
+und j1024.flx, wobei 1024 die PID des a99-Fensters ist. Beide Programme
+loeschen bei ihrer Beendigung diese Dateien.
+
+Empfehlung: In der Registry den bisher dort eingetragenen JanaS-
+Schluessel in "Local AppWizard Generated Applications" loeschen,
+(unter HKEY_LOCAL_USERS/Software)
+er wird nicht mehr gebraucht. Es wird ein neuer angelegt, unter
+"Janas Browser".
+
+JanaS klappte mit DbAux nicht
+-----------------------------
+d.h. wenn in der INI-Datei mit DbAux=... ein anderes Verzeichnis als
+Arb.Verz. als das Startverz. von a99 eingestellt war.
+... aber jetzt geht's
+
+
+
+
+
+

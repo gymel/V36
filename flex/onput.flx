@@ -1,0 +1,47 @@
+  ONPUT.FLX : Ausfuehrung, wenn auf [Speichern] gedrueckt wird
+  2001        aber nur, wenn in INI steht:  saveask=2 (ab V23.6.2 default)
+  Wenn nicht vorhanden: Speichern mit Rueckfrage
+
+  Wenn man vor das Speichern noch eigene Pruefungen schalten will, dann
+  hier einfuegen:
+
+
+  ist es ein geloeschter Satz?
+if deleted jump del
+
+if New jump neu
+var "Satz speichern?" 13 10
+yes
+if yes jump save
+end
+
+:del
+var "Dies ist ein gelöschter Satz. Soll er neu gespeichert werden?"
+yes
+if not yes end
+jump save
+
+:neu
+  Normaler Neusatz, nur Ja/Nein fragen
+yesno Speichern?
+if yes jump save
+end
+
+:save
+  Satz in den Reservespeicher kopieren, dann sind immer alle Felder
+    des vorigen Satzes mit Eingabe von . abrufbar (auch im Formular)
+copy reserve
+
+  Evtl. noch eigene Pruefungen hier einfuegen
+  (Richtige Speicherungsweise ist jetzt durch Nutzerantwort geklaert)
+var w 
+ins #uPP
+  Wer onput.flx aus anderem FLEX aufruft, sollte dafuer sorgen, dass die
+  TBL frei ist! (Wenn "set tbl loc", dann auch "set tbl free" im selben FLEX)
+put
+if no mes
+sho rec
+disp
+var #uPP
+sho iV
+act 1

@@ -1,0 +1,60 @@
+  P-KURZ.APR : Kurzliste:   Verf.: Sachtitel. (Jahr) Signatur
+  940602  Kann leicht erweitert werden
+pn="Kurzliste"
+
+zm=57       Anzahl Zeilen je Seite
+zl=80	    Zeilenl„nge
+zi=5	    Einrckung (ausser 1. Zeile, siehe Zwischenteil 85)
+fl=0
+ae=""
+ab=13 10
+as=""
+
+
+1=". "
+4=C
+5=": "
+10="("
+11=")"
+12=" --  "    fr Namenswiederholung
+13=13
+37="  "
+38=". " #250   Einrck. auf aktuelle Cursorpos.
+
+
+#hi +A e0
+#00 =id+- e0 #zz 0           wenn identisch, keine Aktion
+
+#-A
+#01 p{ &6 #5 } e0 #zz 0        andere Pr„fixe einbauen, wenn gewnscht!
+#02 p{ &9 #8 } e0 #zz 0
+#03 p{ &12 #11 } e0 #zz 0
+#04 p{ &16 #15 } e0 #zz 0
+#05 p{ &20 #19 } e0 #zz 0
+
+#hi +a B" = " 4 #zz 38
+#t99
+#40 =nm,12 0 #zz 5     Wenn Name = #unm, dann 12=" ---" ausgeben statt #40
+                       wenn es ein neuer Name ist, wird dieser anschliessend
+                       unter #unm gespeichert fr den n„chsten Vergleich
+#t98
+#-a
+#21 f"[" F"]" p"  [" P"]  "
+#20 
+#76 p" (" P")" #zz 0
+#90 e"" e" = " R
+#+#
+
+
+K        Kopfteile
+#p2 R 0 #zz 13      Seitenzahl rechtsbndig
+#40 +# E15 F"," R 0 #zz 13  Verf.Nachname, 15 Zeichen, Komma hinten wegnehmen
+#20 u E15 R 0 #zz 13     sonst Titelanfang
+
+
+
+p ª 1
+p * 1
+
+tPRINTER        Druckertreiber laden
+

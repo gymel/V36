@@ -1,0 +1,740 @@
+  A-FUNC.FLX : Funktionen von aLF, die momentan moeglich sind
+  2005-01-31   mit dem aktuell geladenen Satz
+  aLF legt diesen FLEX auf FlipButton 3, d.h. Ausloesung mit Alt+3
+
+:start
+  Flag "ausnahmefrist" loeschen
+#uaf
+var i
+ins #uaI
+disp
+sho rec
+  Was fuer ein Satz ist es?
+  Jeweils entsprechendes Aresqa-Menue aufbereiten
+  (Dies laesst sich beliebig erweitern)
+if deleted end         // geloeschten Satz nicht verarb.
+if #9A jump systemsatz
+if #9B jump nutzer
+if #9DF jump exemp
+if #9GF jump gebhr
+if #20 jump titel
+exec onforms
+end
+
+:titel
+var "neues Exemplar"
+if hier var +n "Hierarchischen Satz in verkn¸pfte S‰tze wandeln"
+var +n "Titel vormerken"
+var +n "Gibt es Titel-Vormerkungen?"
+var +n "R¸ckbuchungen?"
+var +n "Exemplardaten zu diesem Titel"
+
+Aresqa
+
+if "neues" exec a-exemp
+if "Titel v" jump tvormerk
+if "Gibt" jump tgv
+if "R" exec a-chkin 1
+if "Exem" exec a-expl
+end
+
+:exemp
+var #9DG
+if "V" jump fvor   // vormerkung!
+if "W" jump res
+if not "0" var "Exemplar freigeben" n;jump rb
+var ""
+:rb
+if #9DH var + "RÅckbuchung" n
+var +"Exemplar Ñndern" n
+var +"Dieses Ex. ausleihen" 
+var +n "... und zwar mit Ausnahmefrist" 
+var +n "Status d. Expl. Ñndern"
+var +n "Weiteres Exemplar erfassen"
+var +n "Alle Expl. zum Titel anzeigen"
+  Vormerken und verlaengern nur, wenn ausgeliehen
+if #9DH var +n "Exemplar vormerken" n "Titel vormerken"
+  Menueliste zwischenspeichern
+ins $mnl
+var #9DG
+if not "g" var $mnl
+  Ex. noch im Gesch.gang? Dann Vormerk. ermoeglichen
+if "g" var $mnl n "Exemplar vormerken" n "Titel vormerken"
+  Menueliste weiter ergaenzen
+if #9DH var +n "VerlÑngern" n "... mit Ausnahmefrist" n "Alle Entleihungen von Leser " #9DH$u " verl‰ngern" n "dasselbe mit Ausnahmefrist"
+if #9DH$u var +n "Nutzerkonto von " #9DH$u
+var +n "Gibt es Exemplar-Vormerkungen?"
+var +n "Datum der RÅckgabe Ñndern"
+if #9DI var +n "Letzter Entleiher"
+var +n "Als Verlust markieren"
+
+ansi
+set a alf
+jump ausw
+
+:res
+var "Bereitstellung verl‰ngern" n "Exemplar vormerken" n "Reservierung tilgen" n;
+
+:ausw
+Aresqa
+if "Res" jump rtilg
+if "Ber" jump bverl
+if "R" exec a-chkin 1
+if "Status d." exec a-status
+if "Exemplar vor" jump evormerk
+if "Exemplar fre" jump chkin
+if "Titel" jump tvormerk
+if "Exemplar" jump Exemp
+if "Weite" exec a-exemp
+if "Verl" exec a-verl 0
+if "... und zwar" jump dieses
+if "..." #uaf 15;exec a-verl 0
+if "Alle Ent" exec a-verl
+if "Alle Ex" exec a-expl
+if "dass" #uaf 1;exec a-verl
+if "Gibt" jump evm
+if "Nutzerk" jump nuko
+if "Datum" jump rda
+if "Letzt" jump letzt
+if "Als Verlust" jump verlust
+if "Dieses" jump dieses
+end
+
+:bverl
+var #9DH$W
+ins #urB
+
+ask Bereitstellen bis (JJJJMMTT)=#urB
+if "" end
+ins $W-#9DH
+put
+#urB
+end
+
+:rda
+var "R¸ckgabe am=" #9DH$R
+ask
+if not "" ins $R-#9DH;Put
+
+end
+
+:letzt
+var "Dieses Exemplar war zuletzt entliehen von " #9DI$u
+var +n "und wurde zurÅckgegeben am " #9DI$r
+ansi
+mes
+end
+
+  Status W: Reservierung tilgen
+     dann normale Rueckgabe aufrufen
+:rtilg
+noyes Reservierung tilgen?
+if not yes end
+ #9DH
+ var "0"
+ ins $$-#9DG
+ put
+ jump srend
+
+  Exempl. freigeben
+:chkin
+ var #9DG
+ if "g" jump ndg
+exec a-chkin 0
+end
+
+:ndg
+var "0"
+ins $$-#9DG
+put
+sho rec
+disp
+end
+
+
+:nuko
+var "|: B" #9DH$u 
+find
+sho rec
+disp
+if #9B jump konta
+end
+
+  Entleiher zur ExplVorm.
+:entl
+var "|: E" #9DG$a
+set obj 2
+f1nd
+var "|: B" #9DH$u
+set obj 1
+f1nd
+disp
+sho rec
+end
+
+:fvor   // Vormerkung
+var "Vormerkung Ñndern"
+var +n "Vormerkung aufheben"
+if #9DH$u var +n "Nutzerkonto von " #9DH$u
+var +n "Entleiher"
+ansi
+Ar
+if "" end
+   Vormerksatz loeschen = Vormerkung aufheben!
+if "Nutzerk" jump nuko
+if "Entl" jump entl
+if %aufheb% erase;disp;sho rec;mes Vormerkung aufgehoben;end
+  Vorm. bearbeiten im Formular
+form Vorm
+Put
+jump srend
+
+:efrei
+var "0" #9DG(1,0)
+ins #9DG
+put
+sho rec
+dis
+end
+
+:nutzer
+var #9B
+if "0" var "sperren" n "abmelden"
+if "1" var "freigeben" n "abmelden"
+if "2" var "Abmeldung aufheben" 
+ins #uaS
+var "Alle Entleihungen von Leser " #9B$$(1,0) " verl‰ngern" n "dasselbe mit Ausnahmefrist"
+var +n "Konto (Entleihungen etc.)" n "Vormerkungen" n "Reservierungen" n "Forderungen" n "Summe der Forderungen" n "Sind Entl. dieses Lesers vorgemerkt?" n "Extra-Forderung eintragen" n "Nutzerdaten ‰ndern" 
+var +n "Alle Forderungen tilgen"
+var +n #uaS
+var +n "lˆschen"
+
+set a alf
+Aresqa
+if "" end
+if "Nutz" jump Nutz
+if "sperr" jump sperr
+if "abmeld" jump abmeld
+if "frei" jump frei
+if "Abme" jump frei
+if "Kont" jump konta
+if "Ford" jump ford
+if "Vorm" jump bvorm
+if "Rese" jump brese
+if "Summ" exec X a-gebsum
+if "Extra" jump nford
+if "Alle F" jump tford
+if "Alle E" jump verla
+if "dass" #uaf 1;jump verla
+if "Sind" exec a-vormc
+
+var "Lesersatz " #9B$n " lîschen?"
+ansi
+yes
+if yes erase;disp
+end
+
+  Nutzerdaten aendern
+:Nutz
+set e0
+form Benutzer/Leser 1
+if can end
+yes Speichern?
+if not yes undo:jump srend
+put
+set e1
+jump srend
+
+:sperr
+set e0
+var "1" #9B(1,0)
+ins #9B
+ask Grund?
+if not "" ins $R-#9B
+set e1
+sho rec
+dis
+yes Speichern?
+if not yes undo:jump srend
+put
+jump srend
+
+:abmeld
+set e0
+var "2" #9B(1,0)
+ins #9B
+set e1
+yes Speichern?
+if not yes undo:jump srend
+put
+dis
+var #9B$$(1,0)
+ins #usR
+var "|; B" #usR "?"
+find
+if g0 mes Es gibt noch Entleihungen!
+var "|; GB" #usR 
+find
+if g0 mes Es stehen noch Forderungen aus!
+end
+
+
+jump srend
+
+:frei
+set e0
+var "0" #9B(1,0)
+ins #9B
+  Sperrgrund wieder loeschen
+var ""
+ins $R-#9B
+set e1
+yes Speichern?
+if not yes undo:jump srend
+put
+
+:srend
+sho rec
+disp
+end
+
+:ford   // Ford. suchen
+var "|; GB" #9B(1,0 e"")
+Find
+if l1 mes Keine Forderungen offen
+end
+
+:tford    // Alle Ford. tilgen
+var "|; GB" #9B(1,0 e"")
+find
+if l1 mes Keine Forderungen offen;end
+first
+:nxf
+var "T" #9GF(1,0)
+ins #9GF
+put
+perf gebstat
+next
+if yes jump nxf
+var "#" #uaI
+f1nd
+sho rec
+disp
+mes Erledigt
+end
+
+:nford
+var #9B(1,0 e"")
+ins #uaL
+new
+#00 g?5
+#9GF0G9
+var #uaL
+ins $B-#9GF
+var #dts(0,8)
+ins $D-#9GF
+form Forder
+var #op
+ins $o-#9GF
+Put
+end
+
+  Alle Entl. von #9B verlaengern
+:verla
+var "|; B" #9B$$(1,0) "?"
+find
+  es gibt keine
+if l1 jump noent
+  es gibt welche, Verl. ausfuehren
+exec a-verl
+end
+
+  Expl wurde ausgewaehlt aus Liste der Entleihungen eines Nutzers
+:exps
+sho rec
+disp
+  Ist es eine Ausl. oder eine Verl.?
+var #9DG
+if "V" jump start
+if "W" jump res     // Wartezustand
+  jump exemp
+var "Dieses Exemplar verl‰ngern"
+var +n "... mit Ausnahmefrist"
+var +n "Alle Entleihungen von Leser " #9DH$u " verl‰ngern"
+var +n "R¸ckbuchen"
+var +n "Expl.Daten bearbeiten"
+set a alf
+Aresqa
+if "Dieses" exec a-verl 0
+if "... m" #uaf 15;exec a-verl 0
+if "Alle" exec a-verl
+if "R" exec a-chkin 1
+if "E" jump Exemp
+end
+
+  Entleihungen eines Lesers ermitteln und als ViewListe aufbereiten
+:konta
+clo v
+open x konto.txt
+wri "Diese Liste in die Anzeige kopieren: Button [List] drÅcken, dann F11" n
+wri "Ausleihen von " #9B$n " (" #9B(1,0 e"") ") am " #dt n n
+var "|; B" #9B$$(1,0) "?"
+find
+ord a0
+if l1 jump nothing
+first
+:kloop
+wri i "|"
+var #9DG
+if "V" jump kv
+if "W" jump kv
+var s ". Rckg.: " #9DH$R
+:ka2
+  Zeile zwischenspeichern
+ins #ukl
+  Titelsatz dazu holen
+var "|9 " #9DF$$
+f1nd
+if no jump ohnetit  // Titelsatz nicht gef.
+  Wenn keine #20, dann Kurzzeile!
+var #20
+if "" var s
+var (0,25 F" ")
+ins $vs1
+wri $vs1 " /" #40(0,12 F" ")
+
+:ohnetit
+wri " <" #ukl(b" ") ">" n
+
+  naechste Kontozeile
+next
+if yes jump kloop
+close x
+close res
+
+  Entleihungen des Lesers anzeigen
+View konto.txt
+close view
+   wurde eine Entleih-Zeile ausgewaehlt? (Darin kommt | vor)
+if %|% jump exps
+  Lesersatz zurueckholen
+var "#" #uaI
+f1nd
+sho rec
+end
+
+:kv
+if "W" var "Z WARTEREGAL";jump ka2
+if #9DG$e var "Z VORMERKUNG auf Ex. " #9DG$e;jump ka2
+var "Z VORMERKUNG auf Titel "
+jump ka2
+
+  Ist es eine Ausl. oder eine Verl.?
+var #9DG
+if "V" jump start
+if "W" jump res       // Wartezustand
+
+  Exemplaer aendern
+:Exemp
+form Exempl
+if ca end
+yesno Speichern?
+if yes put
+if cancel undo
+jump srend
+
+:verlust
+yes Als Verlust markieren?
+if no end
+var "v" #9DG(1,0)
+ins #9DG
+put
+jump srend
+
+:evormerk
+var #9DH$u(f"_")
+ins #uaN
+var #9DG
+ins #uaG
+if #9DF var #9DF
+  Vormerksatz ist ein eigener Datensatz!
+
+ins #uDF
+  eigentl. Vormerkfeld #9DG, vorn mit V
+var "Ve" #uaG$e "a" #uaG$a "OALF"
+if #uaG$L var +"L" #uaG$L
+ins #uDG
+
+:welcher
+ask |:Lesernummer? (Mit Alt+i im Register suchen!)
+if "" end
+var (f"_")
+if =#uaN jump selbe
+ins #uaU
+if %_% var #uaU(f"_" e"=");ins #uaU
+if %=% var #uaU(B"=");ins #uaU
+
+  Gibt es diesen Nutzer? (im Reg. 10 nachschauen)
+var "1 |: B" #uaU
+qrix
+var (f" " B" " B"B" e"^T")
+if =#uaU jump lklas
+var "!Lesernummer " #uaU " unbekannt!
+mes
+jump welcher
+
+
+:lklas
+  Leserklasse aus Lesersatz nehmen
+set obj 2
+var "|: B" #uaU
+f1nd
+var #9B$k
+ins $nuk
+set obj 1
+
+  Vormerksatz anlegen
+new 0
+#00 -
+var #uDF
+ins #9DF
+var #uDG
+ins #9DG
+var #uaU
+ins $u-#9DH
+var $nuk
+ins $C-#9DH
+var #dts
+ins $D-#9DH
+Day +120
+var (0,8)
+ins $V-#9DH
+
+sho rec
+disp
+yes Speichern?
+if no disp;sho rec;end
+if cancel erase
+if yes put
+jump srend
+
+  Titel vormerken
+:tvormerk
+#uaN
+  Sign. mitnehmen in den Vorm.Satz
+if #9DG$s var #9DG$s
+if not #9DG$s var #90
+ins $sg
+if #9DF var #9DF(e"")
+if not #9DF var #00
+ins $tid
+
+:lnumm
+ask |:Lesernummer? (Mit Alt+i im Register suchen!)
+if "" end
+var (f"_")
+ins $nu
+  Leserklasse aus Lesersatz nehmen
+set obj 2
+var "|: B" $nu
+f1nd
+if no jump klnumm
+var #9B$k
+ins $nuk
+set obj 1
+  Vormerksatz anlegen
+new 0
+var $tid
+ins #9DF
+#00 -
+var "VO" #op
+ins #9DG
+var $sg
+ins $s-#9DG
+sho rec
+var $nu
+ins $u-#9DH
+  
+var $nuk
+ins $C-#9DH
+
+var #dts
+ins $D-#9DH
+  Frist: 120 Tage (provisorisch)
+Day +120
+var (0,8)
+ins $V-#9DH
+disp
+
+sho rec
+disp
+yes Speichern?
+if no end
+if can erase
+if yes put
+jump srend
+
+:klnumm
+var "!" $nu " ist keine gÅltige Lesernummer"
+ansi
+mes
+jump lnumm
+
+:selbe
+mes Das geht nicht, das ist ja dieselbe Kennung, unter der dieses Ex. schon verbucht ist!
+end
+
+:systemsatz
+var #9A
+if "R" yes Kalendersatz bearbeiten?;if not yes end;exec a-kalx
+
+var "Systemdatensatz bearbeiten" n "Durch Kopieren einen neuen anlegen"
+Aresqa
+if can end
+if "Sys" exec X cfga
+copy
+#00 -
+mes Sie sehen jetzt den kopierten Satz. Bitte bearbeiten und Alt+8, dann ist es ein neuer Datensatz.
+exec X cfga
+
+
+:tgv
+var "|: " #00 " V?"
+find
+if empty mes Es liegen keine vor;end
+sho list
+end
+
+:evm
+var "|: " #9DF$$ ":E" #9DG$e(0,r3) " V?"
+ins _ _0_
+ins _|:0_|: _
+ins _0V_ V_
+find
+if empty mes Es liegen keine vor;end
+sho list
+end
+
+:gebhr  // gebuehrensatz
+var #9GF$G
+if "U" var "Bezahlen" n "Stornieren" n "Stundung aufheben" n "Lîschen" n "Leserdaten";jump gb2
+var #9GF
+if "T" var "Lîschen" n "Leserdaten";jump gb2
+var "Bezahlen" n "Stornieren" n "Stunden" n "Lîschen" n "Leserdaten"
+:gb2
+ansi
+Are
+if "" end
+if "Bez" jump bez
+if "Storn" jump sto
+if "Stunde" jump stund
+if "Stundu" jump stauf
+if "Leser" jump leser
+  Loeschen:
+yes Wirklich?
+if not yes end
+erase
+dis
+end
+
+  Geb.Satz schreiben (UP)
+:gbs
+ins #9GF
+var #dts(0,8)
+ins $d-#9GF
+put
+sho rec
+disp
+return
+
+:stund
+var "U" #9GF$G
+ins $G-#9GF
+var #9GF
+perf gbs
+end
+
+:stauf
+var #9GF$G(f"U")
+ins $G-#9GF
+var #9GF
+perf gbs
+end
+
+:sto
+var "S" #9GF(1,0)
+perf gbs
+end
+
+:bez
+var "T" #9GF(1,0)
+perf gbs
+
+:gebstat
+  Bei Bezahlung auch:
+  Protokolldatei f. Statistik
+var $Astk
+if "" return    // STK-Datei nicht angelegt - nichts schreiben
+var "+" $Astk
+open x
+     gDatum:GebTyp/Betrag
+wri "g" #dts(0,8) ":" #9GF$G "/" #9GG$S n
+close x
+return
+
+end
+
+  Dieses Expl. ausleihen
+:dieses
+  Funktion "... und zwar mit Ausnahmefrist"? Dann #uaf setzen
+if "... und zwar" #uaf 20
+var #9DG$a
+ins #ua1
+var "einzel"
+ins #ua=
+  In alf.flx wird Leser ausgewaehlt etc., dann exec a-chkout
+exec alf
+
+
+:leser
+var "|: B" #9GF$B
+f1nd
+sho rec
+disp
+end
+
+:nothing
+var "Keine Belastung fÅr " #9B$n
+ansi
+mes
+wri "Keine Belastung fÅr " #9B$n
+close x
+end
+
+:noent
+var #9B$n " hat momentan nichts entliehen"
+ansi
+mes
+end
+
+:bvorm
+var "|; B" #9B$$(1,0) " V?"
+Find
+if l1 mes keine Vorm.
+end
+
+:brese
+var "|; B" #9B$$(1,0) " W?"
+Find
+if l1 mes keine Reserv.
+end
+
+
+ u-VARIABLEN in a-func.flx
+ #uaG (5)   Inhalt #9DG
+ #uaI (3)   Satznummer in Reserve
+ #uaL (2)   Lesername
+ #uaN (3)   Entleiherbarcode
+ #uaS (2)   String fuer Aresqa-Menue
+ #uaU (8)   Nutzerbarcode f. Vormerkung
+ #ukl (2)   Kontozeile

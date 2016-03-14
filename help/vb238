@@ -1,0 +1,89 @@
+
+Verlautbarung 238 der Entw.Abt.                              2011-04-19
+-------------------------------
+
+  V31.3 liegt bereit
+
+
+Umgang mit ISBN verbessert
+--------------------------
+
+a) Import 32bit
+---------------
+Es hatte sich rausgestellt, dass das Unterprogramm u6 (SyHb. S.270)
+ein Fehlverhalten verursachte, wenn die vorgefundene ISBN zu
+wenige Ziffern hatte - was bei Pica-Daten vorkommen kann.
+Behoben. Das alte 16bit-Programm hatte das schon abgefangen, hatte
+aber die 13stelligen ISBNs falsch behandelt. Das neue index.exe
+macht nun beides richtig.
+
+b) Pruefung in a99 und acon (hier neu)
+--------------------------------------
+Der eher unbekannte FLEX-Befehl  hyphen  setzt in eine ISBN die
+korrekten Bindestriche ein (was beim Import, s.o., mit u6 geschieht),
+wenn keine drinstehen oder welche an den falschen Stellen.
+
+Es kommt hinzu, dass man mit  if b ...  die Pruefziffer pruefen kann.
+Die Logik ist diese:
+-- in dem Moment muss in der iV eine ISBN stehen. Bindestriche
+   oder nicht, das ist egal, eine neue allerdings muss mit
+   978-  oder  979- beginnen
+-- Wird dann  if b <befehl>  geschrieben, wird <befehl> genau
+   dann ausgefuehrt, wenn die Pruefziffer NICHT stimmt.
+-- Die Sondervariable  Err  enthaelt dann eine Fehlermeldung, die
+   mit der korrekten Ziffer (bzw. X) beginnt, d.h. an dieser Stelle 
+   kann man diese dann abgreifen.
+Zu empfehlen ist demnach diese Sequenz:
+...
+ins _-__
+hyphen
+if b jump isbnPruefzifferFehler
+...
+
+
+Hilfsprogramm  rdwr.exe  verbessert  (siehe Vb.230)
+-----------------------------------
+Dieses eher wenig bekannte Programm war noch verbesserungsbeduerftig.
+Es funktionierte insbes. bei .ALG-Dateien nicht korrekt. Jetzt tut
+es das. Anders als das gleichnamige fruehere 16bit-Programm kann
+es auch .ALD- und .LOG-Dateien zerlegen. Aus diesen macht es dann
+aber Dateien im Externformat .ADT, also Textdateien ohne die allegro-
+Steuerzeichen. Das koennte zuweilen sehr nuetzlich sein, um sich eine
+.ALD oder .LOG mal mit einem Texteditor anzuschauen. Geben Sie mal
+auf Ihrem Verzeichnis  demo2  diesen Befehl:
+  ..\rdwr 0 999 cat_1.ald cat.adt
+und sehen Sie sich dann die Datei  cat.adt  an. Dasselbe dann
+mit  cat.log.
+
+Startet man es ohne weitere Angaben (einfach mal  rdwr  eingeben),
+dann erklaert es einem, was man wie anzugeben hat.
+
+
+Hilfsprogramm  log2alg.exe  jetzt auch 32bit
+--------------------------------------------
+Dieses Programm wandelt eine .LOG-Datei in eine .ALG.
+Man startet es so (auf dem Datenverzeichnis!):
+  log2alg cat
+dann wird aus  cat.log  die Datei  cat.alg.
+Besonderheiten:
+-- geloeschte Saetze beginnen mit #u1 @@@@@
+-- Neue Saetze beginne mit  #u1 ####i  (i = Dateinummer, 1..255)
+-- Korrigierte Saetze beginnen ohne besond. Kennzeichnung
+Vorteil: Eine so produzierte Datei kann man mit 
+
+update -fm.. -u...cat.alg ...
+  bzw
+acon -jupdate -fm.. -u...cat.alg ...
+
+einmischen. Dann funktioniert die Zuordnung der Saetze zu
+den Saetzen in der Datenbank ueber Primaerschlussel statt
+ueber interne Satznummer (die im Falle der .LOG benutzt
+wird). Achtung: Nur so klappt das Einmischen korrekt, wenn man vorher
+eine Reorganisation gemacht hat ("Datenbank ganz neu aufbauen").
+
+Hinweis: Im Menue "h super" von a99 gibt es die Funktion
+"LOG-Datei besichtigen", mit der man sich online den
+momentanen Stand anschauen kann. Beachten Sie die Hinweise,
+die dabei gegeben werden.
+
+

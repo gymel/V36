@@ -1,0 +1,107 @@
+  A-0.APR : Alphabetisches Register - Schritt 1: Vorbereitung (sortierfaehige .ALG-Form)
+  940602    Prototyp fÅr den Exporttyp ALPHA, zu kopieren auf ALPHA.APR
+
+pn="Prototyp ALPHA : Namensregister"
+
+  Hinweise zur Nutzung:
+  ALPHA muss gleichzeitig, als 2. Export, neben einer PRINT.APR mitlaufen,
+                           ----------------------------------------------
+  damit die Seitenzahlen oder Satznummern protokolliert werden koennen
+  (PRINT.APR erzeugt die Hauptliste, dabei wird die Seitenzahl #pa
+  oder eine Satznummer in #unr gespeichert und kann hier benutzt werden.)
+
+  anschliessend muessen noch 2 SRCH-Laeufe folgen:
+  1. mit ALPHA2.APR um identische Eintraege zusammenzufassen
+  2. mit ALPHA3.APR, um die fertige Registerliste zu drucken
+  diese zwei sind unabhaengig von der Art des Registers!
+
+  Diese Parameterdatei erzeugt Daten im allegro-Format,
+  d.h. eine allegro-Grunddatei (Typ .ALG), aber nur zwei
+  temporaere Kategorien je Satz fuer ein Namensregister in der Form:
+  #u1 name, vorname     (Sortierform)
+  #u2 Name, Vorname     (Druckform)
+  #99zSeitenzahl   der Hauptdatei, die mit PRINT gleichzeitig entsteht
+    oder   (je nachdem, was PRINT.APR macht!)
+  #99zSatznummer   der von PRINT produzierten Liste
+
+
+  --------- Konstanten ------------------------------------------------
+
+zl=0        kein Zeilenumbruch
+
+ke=0        Kategorie-Ende = Code 0 (= allegro-Feldende)
+            An das Ende jeder ausgegebenen Kat. wird automatisch
+            der Code  ke  gesetzt
+
+ad=0        wenn aus dem ak-Befehl kein Kopf entsteht, keine Ausgabe
+ag=0
+
+ae=13 10    Aufnahme-Ende: CR LF (wichtig fuer den Sortierlauf)
+
+ts          lade die Tabelle S.APT (Sortiercodes), wirkt auf !u1
+
+dx=1        damit man beim Testen auch die Steuerzeichen auf dem
+            Bildschirm sieht. (Ansonsten nicht noetig)
+
+  ---------------------------------------------------------------------
+
+
+  ========= Kopfbefehle ===============================================
+
+   Aus den folgenden Kategorien werden Eintragungen erzeugt:
+   (Fuer andere Register: hier die gewuenschten Eintragungskategorien einsetzen)
+
+ak=4..";"+a 5..";"+a
+ak=6..";"+a
+
+ ak=40.+a     Diese Zeile aktivieren, wenn nur Verfasser gewuenscht
+
+  d.h.: nimm alle Kat. der Gruppen #4, #5 und #6, separiere sie jeweils an
+  der Kombination ";"
+  (Wegen ad=0 entsteht kein Ausgabesatz, wenn keine dieser Kat. vorkommt)
+
+  ======================================================================
+
+
+  ************* Kategorieliste ************************************
+
+
+#+-      keine Ausgabe, wenn kein Kopf, oder bei Untersaetzen
+
+#-a      Anfang (Sprungziel der ak-Befehle )
+
+!u1 u f" " p{ 1 "u1 " } e" = "
+         das ist die mittels ak ausgewaehlte (Teil-)Kategorie (siehe oben)
+         und zwar wird sie sortierfaehig umcodiert (wegen ! statt #),
+         und der Artikel wird weggelassen, { 1 "u1 " } wird davor gesetzt,
+         denn so muss der Datensatz beginnen
+
+#u1 u p"u2 " e" = "   hier derselbe Text nochmal, aber ohne Umcodierung,
+         fuer die Druckausgabe im 2. Durchgang, Ausgabe als #u2 !
+
+#unr r4 p"99z"    Satznummer oder Seitenzahl,
+         wenn eine der P-*.APR fuer die Sortiervorbereitung benutzt
+         wurde, steht in #unr die Satznummer oder die Seitenzahl (#pa)
+         d.h. PRINT.APR muss die Satznummer in #unr speichern, damit
+         ALPHA.APR sie benutzen kann!
+         Die PRINT.APR (= eine der P-*.APR) muss entweder mit
+         Satznummern arbeiten, diese also vor der Ausnahme ausgeben,
+         oder ohne solche Nummern, dann ist fuer das Register die
+         Seitenzahl zu nehmen. Eines von beiden muss also PRINT.APR
+         in #unr hinterlegen!
+         Mit der Seitenzahl kann man es auch so machen:
+
+  #pa r4 p"99z"    SEITENZAHL der Hauptliste als #99z ausgeben, Zahl 4stellig,
+                 damit sie richtig sortiert werden kann
+                 diese Seitenzahl entsteht bei der Abarbeitung von P-*.APR!
+
+  *****************************************************************
+
+  .......  Codierungen ............................................
+
+q ™ 1      Nichtsortierzeichen
+p ™ 1
+q @ 1      Entstoppungszeichen weglassen
+p @ 1
+
+

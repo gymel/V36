@@ -1,0 +1,32 @@
+  I-LFNR.APR : Ausgabe mit fortlaufender IdNr
+  950602  verwendbar bei Import, um IdNrn zu erzeugen
+
+pn="I-LFNR  #89n erzeugen "
+   -------- Konstanten ----------------------------------------------------
+                                          dieser Teil muss bleiben
+zl=0        Zeilenl„nge unbegrenzt (kein Umbruch)
+ks=1        Beginn des Ausgabetextes beim ersten Zeichen hinter #
+ke=0        Kategorie-Ende = Code 0
+as=""       Aufnahme-Start: Hierarchiekennung + 0
+                    Hauptaufnahme        : Code 01  als Startzeichen
+                    Unteraufnahme Stufe 1:      02  ...
+ae=13 10    Aufnahme-Ende: Carriage Return / Line Feed
+              bei hierarchischer Aufnahme: nur am Ende
+
+   -------- Anweisungsteil --------------------------------------------------
+
+  ********* Kategorieliste ****************************************
+#hi +C e0 #zz 0    Untersaetze ohne Nr. ausgeben
+#uct +A e0 #zz 0   Zaehler #uct schon besetzt, dann #-A
+#nr x"=1" =ct e0 #zz 0          mit 1 beginnen, evtl. andere Zahl einsetzen
+#+B
+
+#-A
+#uct b3 x"+1" =ct e0 #zz 0      1 auf #uct addieren
+
+#-B
+#uct b3 e"." r5,0 p"#89n" M #zz 0    als #89n einsortieren, 5stellig
+       evtl. Praefix aendern, z.B. "#89zvlb" bei VLB-Import
+#-C
+#t{ h0 }
+##      Pauschal ausgeben

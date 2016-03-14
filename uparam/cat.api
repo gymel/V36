@@ -1,0 +1,3372 @@
+  CAT.API Index allegro-Standard                                        <V34>
+  980405   Weiterentwicklung ACHTUNG: erfordert V15e (3.4.98 oder spaeter)
+           aLF und ORDER integriert
+  140113   Umstellung der Sonderzeichen auf \-Darstellung, z.B. \31 statt Dreieck
+             und Sprungmarken: nur noch "unproblematische" Zeichen
+             Nur noch wenige Umlaute in Textelementen!
+  150715   Unicode, kommentiert mit UTF-8
+
+  2002     Linkstrunkierung (Zeile 387... aktivieren!)
+  SWD-Variante :    Kommentar "SWD"
+  OPAC-Version :    Kommentar "OPAC"
+  aLF bzw. ORDER :  Zeilen muessen aktiviert werden (Komm. aLF / ORDER)
+     >>DOS-ORDER :  Zeilen mit Kommentar  V24.4  entfernen!
+  ALFA/ORDA :       Kommentar "ALFA" bzw. "ORDA", ferner ZABOM
+  MUSIK       :     EST beruecksichtigt ("bolero" aber noch anders!)
+  Restriktionen:    Kommentar RESTR  9704  V15
+  SR-Schluessel:              SR     9704  V15
+  V23-Ersetzungen:  Markierung durch V23  (2003)
+              und:  MemoFlex
+  Mini-Reform 2010: einige Unstimmigk. beseitigt, in |6 nicht mehr verlag,jahr
+               NEU: ALL-Register, Kommentar "V30.7" 
+                    Mit V30.7*** sind die 2 Stellen gekennzeichnet, die man nur
+                    entfernen muss, um auf ALL-Reg. zu verzichten
+
+  ACHTUNG Systemverwalter:
+  Anpassungen evtl. fuer Signatur (U.Pro. #(O ) und ZugNr. (U.Pro #(Z  )
+
+
+pn="CAT-Index V34 + aLF/ORDER"
+
+  die folgenden Zeilen gelten fuer jede Index-Parameterdatei, nicht aendern!
+ --------------------------------------------------------------------------
+zl=0           kein Zeilenumbruch
+zm=0           keine Seiteneinteilung
+ad=0           Wenn keiner der "Koepfe" (ak) vorkommt, dann keine Eintragung
+ag=0           Hierarchische Untereinheiten ebenfalls fuer Index behandeln
+ --------------------------------------------------------------------------
+    V14-Einstellungen:
+i4=1    Ersetzungen durchfuehren
+i5=_    _ ist das Steuerzeichen
+i6=10   Index 10 fuer Ersetzungsschluessel
+
+i7=10   Index 10 fuer SR-Schluessel  V15
+
+il=150         Schluessellaenge (frueher 72)
+ic=1           nur wenn Umcodierung der Eingabe gewuenscht
+                 dann werden die Sprungmarken #-1 ... #-9 benutzt
+i0=72          Laenge der Kurzanzeige
+                 wegnehmen, wenn keine gewuenscht
+ir=6           RESTRiktionen: 6 byte (s.u. Abschnitt #-/ )
+
+  V24.4: (2 Zeilen)
+ib=59       fuer V23
+
+  UTF-8: Kein Befehl pa!
+  pa=
+ 
+  Optimierung:
+  Fuer kurze, bedingte Spruenge in Vorwaertsrichtung statt mit Sprung-
+  marken ( +M ) mit Kategorienummern ( +#98x ) als Sprungziel gearbeitet.
+  (Jede andere, die sonst nicht vorkommt, taete es auch! Oder mehrere ver-
+  schiedene, aber dann wird es noch unuebersichtlicher.)
+  Die Kategorien #98x existieren nicht wirklich, sie sind nur als
+  Sprungmarken zu verstehen. Solche Spruenge gehen schneller als die mit
+  echten Sprungmarken! Ausserdem wurde exzessiv mit "Verteilern" gearbeitet,
+  d.h. z.B.  #3..+N   und #-N werden die einzelnen Kategorien dann auf
+  Sprungmarken der Form #98x verteilt. Je weniger ak-Befehle, desto schneller!
+
+  Ueberschriften der Register:
+  Wenn Umschaltung gewuenscht: Datei CAT.APT anlegen mit den folgende Zeilen:
+  !!!!!!!!!!
+|1="1 : Namen von Personen (Sonderabteilungen D Diss., F-> Festschr., W-> Werke"
+|2="2 : Koerperschaften"
+|3="3 : Woerter (Titel- und Schlagwoerter)"
+|4="4 : Buchtitel (Sonderabteilung K : Kongresse)"
+|5="5 : Zeitschriften und Reihen (Serientitel ; Bandnummer)"
+|6="6 : Verlage u. Orte (Name,Erscheinungsjahr)"
+|7="7 : Klassifikationen"
+|8="8 : Signaturen (insbes. Lesesaal-Standorte)"
+|9="9 : Identnummern  'D'atum  'i'SBN  'I'SSN  'Z'ugangsnr.  'i'SBN"
+|:="10 : Exemplar-  'B'enutzer-  'L'ieferanten-  und  'M'emosaetze"
+|;="11 : 'B'enutzerinfos   'D'atum   Namen und Stammsaetze   Ersetzungsschluessel"
+
+  Ueberschrift der Kurzanzeige: UTF-8: ' statt Code 250
+|<="      Titel                                  'Verf.     'Jahr'Signatur"
+  !!!!! Ende der CAT.APT
+
+  Ueberschrift der Titelanzeige: (anpassen!)
+
+|a="                         'allegro'-Demo-Datenbank"
+
+  Spezialzeichen:
+i1=21 39 58 62           % "':>"
+               Wenn der Anfang eines Schluessels, bis zu einem dieser Zeichen,
+               ein Stopwort ist, wird der Schluessel ignoriert
+
+i2=32 39 45 61 62        % " '-=>"
+               Indexeintraege, die mit einem dieser Zeichen anfangen,
+               werden ignoriert
+i3=46 45 44 58 59 93 32 34 39 63 8  ".,:;-]? "      diese Zeichen sollen am Ende eines Schluessels beseitigt werden
+
+
+i8=62       >        Steuerz. f. Umblaettern bei Enter
+i9=62 61    >=       bzw. bei <Cursor rechts>
+
+
+  **********************************
+  Achtung: Verwendete Sprungmarken (Umschalten auf DOS-Code, um sie richtig zu sehen!)
+
+
+   32-50: !"#$%&'()*+,-./012
+           xx   x   x xxxxxx
+  51-100: 3456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcd
+          xxxxxxx      xxxxxxxxxxxxxxxxxxxxxxxxxxxx     xxxx
+ 101-150: efghijklmnopqrstuvwxyz{|}~?ÄÅÇÉÑÖÜáàâäãåçéèêëíìîïñ
+          xxxx     xxxx    xxxx                           
+ 151-200: óòôöõúùûü†°¢£§•¶ß®©™´¨≠ÆØ∞±≤≥¥µ∂∑∏π∫ªºΩæø¿¡¬√ƒ≈∆«»
+                     x                                      
+ 201-250: … ÀÃÕŒœ–—“”‘’÷◊ÿŸ⁄€‹›ﬁﬂ‡·‚„‰ÂÊÁËÈÍÎÏÌÓÔÒÚÛÙıˆ˜¯˘˙
+                    x    x  xxx xxx  xxxxxxxxxxxxx           
+ 251-255: ˚¸˝˛ˇ
+
+
+  Noch freie Sprungmarken, die beim Editieren keine Probleme machen:
+    $%&)*,:;<>?]` 
+    ilmnorst{|}   ~ßµ
+    …¸ƒˆÛÚÙ˚˘˙Òı¯Ÿ⁄
+
+  Kopfzeilen: (= die fuer Index-Eintragungen heranzuziehenden Kategorien)
+  -----------
+
+  Primaerschluessel:
+  (fuer Benutzerstammsatz-Update die beiden Zeilen vertauschen!)
+ak=zz+@
+  ISBN: nach oben bringen, wenn sie Primaerschluessel sein soll
+ak=87." = "+ƒ
+ak=88+L
+ak=20+G
+
+ak=uGR+ï        V30.7: #uGR loeschen
+
+            Kurzanzeige: (fuer SWD evtl. rausnehmen)
+ak=zz+0     zz bewirkt, dass IN JEDEM FALL Abschnitt #-0 bearbeitet wird
+
+ak=gn.+o     GND-Vorbereit.
+
+
+ak=zz+.     SR-Schluessel  V15
+
+ak=9X.+Í    11  ALFA (234)
+
+ak=9..";"+Y       Zugangsnummer, Erfass.Datum
+ak=zz+/     RESTRictions  V15
+ak=zz+J     (hiermit wird in Wirklichkeit das Ersch.Jahr behandelt, manchmal
+             kommt naemlich keins vor, aber ak=zz wird immer ausgefuehrt)
+ak=4n+Z     V14   Pseudoschluessel
+ak=2n+Z     V14   Pseudoschluessel
+ak=6n+Z     V14   Pseudoschluessel
+
+ak=9a+j     Merksaetze  (MemoFlex)
+
+ak=99s";"+¸    RDA-Schlagw.
+
+  Signatur (die naechsten 2 muessen evtl. geaendert werden!
+ak=90." = "+O     Eintraege unter Signatur
+ak=90.+Q          Standort (wenn #90 Standort'Signatur)
+
+ak=90.+X      fuer ALFA
+
+
+   Verteiler fuer Gruppe #8..
+ak=8.."[;\20]"+L    #88/#89
+ak=8..+g          die anderen
+ak=8nr"\[;\20]"+g
+
+   Eintrag fuer #83. in Sonderabteilung K, Reg.4
+ak=83.+K
+
+
+  Personennamen: Normaleintraege
+ak=4.."[;\20]"+B 5.."[;\20]"+B
+  Verweisungen: (Hinter " = ")
+ak=4."\ = "+C 5."\ = "+C
+  Doppelnamen-Verweisungen: (Wenn '-' im Namen vorkommt)
+ak=4."[\20;]"+c 5."[\20;]"+c
+  gefeierte Person: (zusaetzl. Eintr. in Sonderabschnitt F, Reg.1 )
+ak=59."[;\20]"+b
+  Koerperschaftsnamen: (Trennung " = " weil " ; " im Namen vorkommen kann)
+ak=6.."[;\20=]"+D
+ak=6n."\\20"+D 6n."\ ; "+D
+ak=6.."[;\20]="+w      Verw. vom untergeordn. Teil
+ak=6.."[ '/]"+S    Koerp. Stichwoerter
+  Sachtitel: Woerter auseinandernehmen bei Leerzeichen, Apostroph, Schraegstrich:
+ak=2.."[ -'/\20]"+E
+ak=uk1"[ -'/\20]"+E    Kongresstitel zerlegen, sind unter #uk1, siehe #-0
+  Titel dann nochmal am Leerzeichen
+ak=2.." "+F
+
+  Titelanfang:
+ak=2.."\20"+G
+  Sammlungsvermerke: (Sonderabt. W, Reg.1)
+ak=21+H
+
+ak=30." "+M   Verteiler fuer alle Notationen und Schluessel
+
+  V30.7****  ALL-Index (#uGR wird an 7 Stellen zusammengebaut mit AGR)
+  NUR diese eine Zeile wegnehmen, wenn das nicht gewuenscht wird:
+ak=uGR"[ /\20]"+z
+
+ak=uGR+ï        V30.7: #uGR loeschen
+
+ak=31t"[;\20]"+T        Titelschlagwort nochmal zusaetzlich in Reg. 1
+ak=zz+ï     zum Beseitigen von #uGR
+
+  Verlag, Ort, Jahr, Quelle
+ak=7..";"+V
+ak=74+Y         fuer E-Land
+
+   Eintragungen fuer die Klassifikations-Stammsaetze
+ak=3.."[;\20]"+N    Verteiler fuer gesamte Gruppe #3
+               zugleich Verteiler fuer #3n., #3q. und #3t
+               (geht schneller, als sie mit einzelnen ak-Zeilen abzuhandeln)
+
+ak=uss"\`"+U    Stammsaetze Sach-SW kommen zusaetzlich noch in Reg.7 UTF-8: `statt 250
+
+ ak=3n"\ "+W          Zusatz, fuer SWD aktivieren
+ ak=una"\[ ;]"+W      Zusatz, fuer SWD aktivieren
+
+  V30.7****  ALL-Index (#uGR wird an 7 Stellen zusammengebaut mit AGR)
+  NUR diese eine Zeile wegnehmen, wenn das nicht gewuenscht wird:
+ak=uGR"[ -/\20]"+z
+
+ak=uGR+ï        V30.7: #uGR loeschen
+
+ak=3n+x        fuer Sachgr. Uebersicht unter |7\
+
+ ****** ALFA / aLF : Ausleihsystem: Marken 215-223  **  Exemplardaten
+ (mit der Nummer sind die Sprungmarken leichter auffindbar!)
+  z.T. verlagert nach #-@, mit { 8 } an Prim.Schl. angehaengt! (V15e)
+  ALFA: nur die ersten 4
+   Kategorie  Reg. Form     (Marke, ASCII-Code)
+ak=9B+Î        11  Pseudoschluessel (235)
+
+ak=9DG+Ï        8  Standort in $l von #9DG  (236)
+
+    * Alf : Marken ab 216... werden benutzt
+    * Kategorie ; Reg. ; Format /Sprungmarke, Alt-...
+
+ak=9B+ÿ
+    * 10   BLeserID                     /216
+ak=9B+Ô
+    * 10   LeserName                    /239
+
+ak=9B+
+    * 10   AAufnahmeDatum               /240
+ak=9B+È
+    *      ZAusweisEnde                 /233
+ak=9D.+‹
+    * 10   TitelID,Stueck:ExplNr Status /220 (l,a,b,f,g,W,V)
+    * 10   EExplBarcode
+    * 11   BLeserID RueckDatum...  (Belastung)
+                und
+                            10      EBarCode
+                                    Barcode fuer Exemplarsaetze
+                und
+                            11      BUsrId RueckDatum...
+                                    Benutzernummer und Rueckgabedatum
+                und
+                            10      o BestNr.tTitelId.
+                                    Bestellsaetze nach Bestellnummer und
+                                    Titelidentnummer
+ak=9DH+€
+    * 10   xDatum (x=R,V,W)             /219
+    *
+    *   XAuslDatum ABGESCHAFFT!
+    *   Statistik
+
+ak=9DH+›
+    * 11   STATLAuslDatum/MedTyp:VerlStufe;SystGruppe.LsrKlasse
+                                        /221
+
+    * Mahnungen:
+    * Exemplare
+ak=9DH+ﬂ
+    * 11    MDMahnfaelligkeit           /223
+ak=9DH+‚                                /226
+    * 11    MBLeserID/EMahndatum:Stufe
+ak=9DH+Â                                /229
+    * 11    MMMahndatum/LeserID
+ak=9DH+Ë                                /232
+    * 11    MLAblaufdatum  - Letzte Mahnung!
+
+    * Gebuehren:
+ak=9GF"[\31]"+‡
+ak=9GF+‡
+    * 11   GBLeserID                    /224
+    * 11   GDErfDatum
+    * 11   GTTyp/Klartext
+ak=9GF+·                                /225
+ak=9GF+„                                /227
+ak=9GF+Ê                                /230
+
+    * Systemsatz 'Medientypstamm'       /228
+ ak=9A+‰   wird unter #-@ mit gemacht
+
+    * Leserkonto
+    * 11 LKELeserID/Medientyp           /231
+    * 11 LKVLeserID/TitelID:Ablaufdatum
+    * 11 LKRLeserID/Reservierungsdatum
+ak=9DH+Á
+
+  **** ende aLF *************************************
+  ***********  Kopfzeilen fuer ORDER  ***************************
+   ACHTUNG: Die hier verwendeten Sprungmarken nicht veraendern, denn sie
+   werden aehnlich wie die Sprungmarke '#-@' programmintern verwendet.
+
+   Kategorie    ASCII-Code  Reg.    Form
+                d. Labels           Erlaeuterung, Anmerkung
+ak=00+◊         215         10      Údatum
+                                    Freigabedatum d. Titelsatzes f. OPAC
+                                    wird nur benoetigt, wenn man die
+                                    Freigabefunktion benutzt!
+
+ak=9A+÷         214         11      SYSSigel : Name
+                                    Bibliotheksadressen nach Sigel
+
+ak=9C" "+‘      212         11      |;zz
+                                    Kennungen f. ORDER und ZABOM
+                                    Nutzer kann damit beliebig umgehen
+
+ak=9DA+“        210         10      |:ZsID u.a.
+                                    f. ORDER und ZABOM
+
+ak=9DB+—        209         10      ®datum
+                                    Faelligkeitsdatum einer Lieferung
+
+ak=9DA+–        208         11      s x datum BestNr.
+                                      x = Statusnummer
+                                      datum = zugehoeriges Bearbeitungsdatum
+                                      BestNr. = Bestellnummer
+                                    Dieser Eintrag wird fuer die
+                                    Kursangleichung und
+                                    Kontingentrekonstruktion benoetigt
+
+  ** Zusatzeintraege, die nur der Information dienen:
+ak=9DB+œ        207         10      L liefcode Best.Nr. Status drucken
+                                    Bestellungen nach Lieferant sortiert
+
+ak=9DB+Ó        238         10      K kontingent Best.Nr. Status_der_Bestellung
+                                    Bestellungen nach Kontingent sortiert
+  ************ Ende Kopfzeilen ORDER ************
+
+  *** NUR fuer DEMO ***
+ak=9y";"+u
+  *** DEMO ***
+
+  Zwischenteile:
+
+9="'"      Trennzeichen Kurzanzeige, kann hier geaendert werden UTF-8: ' statt 250
+ 9="'"      anderes Beispiel
+
+10="|:Å"    Uebernahmeregister 10
+
+11=" -> "
+
+30="|7G "   fuer 3 Abteilungen im Reg.7
+31="|7S "
+33="|7H "
+
+38=&11
+
+45=":E"       Exemplarnummern-Praefix (evt. nur ':')
+
+60=" #"    fuer SWD ausschalten!
+
+80="/"
+81="/ho"   Diss.
+82="/af"   Aufsatzsammlung
+
+84="/sg"   Sammlung
+
+
+  Hauptteil: Kategorieliste
+  ----------
+  in den folgenden Befehlen wird fuer #u1 jeweils die oben in den ak-Zeilen
+  stehende Kategorie eingesetzt, z.B. #40 etc. bei Sprungmarke #-B.
+  (siehe oben: #4.";"+B )
+
+  Die Sprungmarke #-# darf es nicht geben, denn #+# gilt als Endebefehl.
+  (#+# muss am Ende jedes Abschnitts stehen, sonst wird der naechste auch noch
+   ausgefuehrt und es wuerden unsinnige, unerwuenschte Schluessel entstehen!)
+
+#-F   Sachtitelwoerter zwischen " "
+!u1 c"-" { "|3" }       ohne - schon unter #-E erledigt
+!u1 c"-" { 8 "~e1" }
+!u1 c"-" ,"_-__" { 8 "~e1" }
+
+ !u1 +#uty f"+- \170/(<)" e"[/\20]" F">?" y2 =tw
+#+e
+
+#-E   Sachtitelwoerter
+#ch +#20x I2,1 I2,5 I2,7 e0   
+ #ch +#20x I2,1 I2,2 I2,5 I2,7 e0     MUSIK: #22 nicht verstichworten
+#+-        nicht fuer #21, #25, #27
+
+#20x
+ #uty
+!u1 +#uty f"+- \170/(<)" F">.,?" y2 =tw      beseitige "- (" am Anfang, ">?" am Ende
+#+#
+  Zeitschr.Titelwoerter mit `Z am Ende
+
+#uty
+#utw y0
+#utz p"`Z" e2
+  #utw y0 b1 =tw
+
+ #-ô
+ #utw y0 p{ 8 "|2" }     Linkstrunkierung (aktivieren, falls gewuenscht!!)
+ #utw +ô y0 l>3 b1 =tw
+
+#-e   Doppelindexierung der Umlaute (aktivieren, wenn gewuenscht):
+      (Titelwoerter)
+ !u1 e"[-\20]" c"[ÑîÅéôö]" ,"_Ñ_a_" ,"_î_o_" ,"_Å_u_" ,"_é_a_" ,"_ô_o_" ,"_ö_u_" { 8 "|3" }
+
+
+#+#
+
+  V30.7 Abschnitt f. ALL^, Reg.1 von cat.aex
+#-z
+#u1 dGW =GW e0
+#-{
+!uGW e"_" y2 f"&*$#[(<" F"&]-`'*ı)>,.;:?!=" p{ 8 "~e1" }
+!uGW c"-" e"_" y2 f"&*$#[(<" F"&]-`'*ı)>,.;:?!=" ,"_-__" p{ 8 "~e1" } 
+ !uGW b"['-/]" e"_" y2 f"&*$#[(<" F"&]-`'*)>,.;:?!=" p{ 8 "~e1" }
+!uGW c"-" e"['-/]" e"_" y2 f"&*$#[(<" F"&]-`'*)>,.;:?!=" p{ 8 "~e1" }
+#uGW +{ b"['-/]" =GW
+#uGW dGW e0
+#+#
+
+#-ï        V30.7: #uGR loeschen
+#uGR dGR e0
+#+#
+
+#-Z
+#t{ "_1" }    Pseudoschluessel fuer V14-Verlagerung
+#--           Loeschkontrollschluessel
+!4n +# u f" " e" =" y2 p"|1"
+!2n +# u B": " f" " e" =" y2 p"|4"
+!6n +# u f" " e" =" y2 p"|2"
+
+#9A +# i4,V y0 e$ p"|:" P":"     Verteiler
+#9A +# i4,L y0 e$ p"|:" P":"     Lieferant
+#9B +# y0 b1 e$ p"|:B" P":"      Benutzerstammsatz 
+!00 p"|9" y2 P"*" 
+!00 C p"|9" P"+"  
+!00 C { "|:" }    
+#+#
+
+#-G                    Titelanfang
+#ch +#210 i2,1 e0        nicht fuer #21, #25, #27, #28
+#ch +- i2,8
+#ch +- i2,7
+#u1 p" " AGR     V30.7 (diese Zeile kommt mehrfach vor!
+#ch +- i2,5
+#ch +#2n0 i2,n e0        #2n..
+#ch +- i3,p           #20p kriegt auch keinen Eintrag (UB BS)
+#u1 +- i5,  i7,  i6,-     Titel wie z.B.  "A - E" ausblenden
+#8n +#98U "|5" e2
+#00 +#98U i4,z "|5" e2   Zeitschrift kommt in Reg.5
+#00 +#98U i4,r "|5" e2   Reihe auch in Reg.5
+#t{ "|4" }               Monogr. in Reg.4
+#98U
+     !u1 u u[] e" : " ,"_ \31 _ / _" e$ e74 f" (<."
+#u1 dfs e" : " ,"_ \31 _ / _" e$ =rs e0
+#-f
+#urs e" \170" =ts e0   Teilstring
+  #uts +#urs c"\170 [" u[] ,"_\170__" P" " Afs    (\170 [Nichtsortier] wird durch p/q beseitigt!)
+#uts +#urs c"\170 [" u[] P" " Afs
+#uts u u[] p" " Afs
+
+#urs +f b" \170" p"\170" =rs e0   Teilstring
+!ufs ,"_  _ _" ,"_, _ _" f" (<." f34      fertiger Titel
+#ufs dfs drs dts e0
+#9C +#8n c"abo" e0    gibts ein Abo? (ZAboM)
+#+#
+   dann diese Eintraege in Reg.10
+!8n +#88 u e" :" p{ 8 "|:zt " }
+!20 u e" :" p{ 8 "|:zt " }
+#88 e9 p{ 8 "|:zi " }
+#+#
+
+#-J           #76 bzw. #30y -> Reg.6
+!30y +#0c e4 p"|6"     wenn #30y existiert: dieses nehmen (mehrbd.Werke)
+!76 +#76A x"<1450" e0    z.B. #76 18.. Jahr kleiner 1450, dann #76A
+!76 +#0c B" = " x"*1" e"." s4,? p"|6"
+#76A     Sprungmarke
+#76 +#0c B" = " x"*1" e"." s4,? p"|6"    #76 sonst aus Bandaufnahme nehmen
+!81p +#0c i4,L "|6loseblatt!" e"!"
+#+-   es kommt kein Jahr vor
+!0c +# 80 e2      Literaturart dranhaengen; wenn #0c nicht existiert:
+!^0c +# 80 e2
+#819 +# p81 e0    "/ho" wenn Diss., dann noch 'ho' dranhaengen
+#83 +# p82 e0     "/af" Kongress
+#59 +# p82 e0     "/af"  und Festschrift kriegen "af" fuer "Sammelwerk"
+#21 +# p84 e0     "/sg" fuer "Sammlung"
+#+#
+
+
+#-S   Koerperschaftswoerter
+#ch +- i2,8      nicht fuer #68
+#ch +- i2,n      nicht fuer #6n..
+#uty
+!u1 u f"+- /(<)" e"_" F">,)?" y2 P"`K"      beseitige "- (" am Anfang, ">" am Ende
+#+#
+
+
+#-M              Notation
+#ch +#98l i3,l e0   #30l
+#ch +#98g i3,g e0   #30g
+#ch +#98z i3,h e0   #30h
+#ch +#98k i3,k e0   #30k
+
+  !u1 +- i3,? i4,0 i5,0        wenn 2. Zeichen = 0, dann schluss  (#30a?00 )
+#ch +- i3,y          kein Eintrag fuer #30y
+
+!u1 +#30y f"?" p"|7"
+#98k
+!u1 f"?" y0 p"|7"       BKN ohne Umcodierung
+ #8n +# p"/serie" e6
+!30y +#0c e4 p","
+!76 +#0c B" = " x"*1" e"." s4,? p","
+!76 +#0c B" = " x"*1" e"." s4,? p","   wenn #76 in HA nicht vorkommt
+#20 p" " e1   wenn ueberhaupt kein Jahr
+ #mv +-         wenn mehrbd und kein Jahr in HA, dann hier Abbruch
+#0c e0
+ !u1 b"-" p"-" e" "
+!0c +P p80 e2      Literaturart dranhaengen; wenn #0c nicht existiert:
+!819 +P p81 e0    wenn Diss., dann noch 'd' dranhaengen
+!83 +P p82 e0     Kongress
+!59 +P p82 e0     und Festschrift kriegen "f" fuer "Sammelwerk"
+!21 +P p84 e0     "Werke"
+#+#
+
+#-P   Extra-Eintraege fuer Schluessel mit '?'
+!u1 +# I4,? e0     wenn 1. zeichen kein "?", dann hier schluss
+#t{ 8 }
+!u1 e"-" e" " p"|7"
+ #8n +# p"/serie" e6
+!30y +#0c x"*1" e"." s4,? p","
+!76 +#0c B" = " x"*1" e"." s4,? p","
+#mv +-         wenn mehrbd und kein Jahr in HA, dann hier Abbruch
+!0c e0
+!u1 b"-" p"-" e" "   Aspekt anhaengen
+!0c +# p80 e2      Literaturart dranhaengen; wenn #0c nicht existiert:
+!819 +# p81 e0     wenn Diss., dann noch 'd' dranhaengen
+!83 +# p82 e0     Kongress
+!59 +# p82 e0     und Festschrift kriegen "f" fuer "Sammelwerk"
+!21 +# p84 e0     "Werke"
+#+#
+
+
+
+       Primaerschluessel : IdNummern (evtl. lokal anpassen)
+#-@
+#hi +- e0
+
+  aLF/ORDER: 2 Sonderfaelle
+#9A. +h e0     Systemsaetze werden hier abgefangen, damit der Primaerschluessel
+              fuer die Kontingentrekonstruktion korrekt ist und ein evtl.
+              vorhandene #00 fuer diese Saetze nicht im Register 9 auftaucht!
+              
+#9DA +” e0    dasselbe gilt fuer die Bestellsaetze (” = 211)
+  !09 y0 e"=" e$ p"|9" F32 P{ 8 }        wenn #09, dann diese als Primaerschl.
+!09 e"=" e$ p"|9" F32 P{ 8 }        wenn #09, dann diese als Primaerschl.
+  !00 y0 e"[=\31-]" F32 p"|9"      SWD: e"-" wg. Pruefziff
+!00 +#4n e"[=\31-]" F32 b0 p"|9"      SWD: e"-" wg. Pruefziff
+
+#89P p"|9"
+
+#4n +#98e e0    #4n #6n und #2n kriegen noch Sonderschl. in |10
+#6n +#98e e0
+#2n +#98e e0
+#8n +#98e Z        % Zeitschriften und Reihen sollen auch v14-faehig sein
+#00 +#98e i4,z Z
+#00 +#98e i4,r Z
+#3n +R p{ 8 } e0
+
+  Noch ein paar Schl. fuer besondere Satztypen
+  (das spart einige ak-Befehle!)
+#9B y0 e$ b1 p{ 8 "|:B" }    10  BUsrId 
+#9B y0 $i p{ 8 "|:B" }         10  BUsrKuerzel
+#9B +ÿ { 8 } e0         (216) Name: Reg.11
+#9DF +‹ p{ 8 } e0       (220) Falls ohne #00, dann kriegt ZgNr den PrimKey
+#+#
+
+#98e
+#t{ 8 "|:" }
+!00 +#4n e"[=\31-]" F32
+#+-   nichts, wenn kein #00
+#4n y0 p"=|2"    Ersetzungsschluessel Personennamen
+#6n y0 p"=|2"    ...  Koerp.namen
+#2n y0 p"=|2"    ...  EST
+#8n +# y0 e" : " p"=|5"
+#20 y0 e" : " p"=|5"
+#+#
+
+
+   Die Eintraege fuer die Signatur muessen lokal angepasst werden:
+#-O
+#t{ "|8" }
+#-8    Umcodierung der Benutzereingabe fuer Reg.8
+#u1 >O   UPro #(O
+#+#
+
+
+#-Q     Signatur  (#90 [Standort']Sign[ = MagSign]
+           Ergebnis:  "|8zzStandort Sign" )
+#ch +#98Q c"'" e0
+!ch +# b$L ,"_\31s_ _" e$ p"|8"
+#+-
+#98Q
+#t{ "|8" }
+#ch e$ e"'" e" = " p"ZZ" P" "         Standort
+#u1 e$ b"'" e" = " =s1 e0
+#us1 >O
+#us1 ds1 e0
+#+#
+
+#-X    ALFA-Eintragung (korr. 13.2.02)
+#u1 +#u1 $u p"|;"    Reg.11: USER,datum
+#+-    nicht ausgel.
+#u1 $D p","
+#u1 $D p{ 8 "|;X" }
+!u1 $u p","    Reg.11: Xdatum,user
+#+#
+
+#-.   SR-Hilfsschluessel fuer verkn. Untersaetze  V15
+      der Schl. wird automatisch im Register 9 angelegt (s.o. i7=9..)
+
+#00 +# c"+" y0 e"+" X9   NUR dann, wenn '+' in #00 vorkommt!
+#09 +# c"+" y0 e"+" X9     oder wenn es in #09 vorkommt
+                    Prim.schl. sind im Reg. 9
+#+-  nichts, wenn es kein verkn. Untersatz ist
+
+#-/   RESTRiktionsschluessel (einer je Satz!   V15
+      Struktur:  JahrDt    Dt=Dokumenttyp aus #0c etc.
+      evtl. erweitern fuer andere Satztypen
+#hi +- e0   hierarch Untersatz: nichts
+!08 +# p"|7" P{ 8 "|/ST" }   #08: Stammsatztyp
+#t{ "|/" }
+#76 +#0c B" = " x"*1" e"." s4,? 
+#76 +#0c B" = " x"*1" e"." s4,?
+#3ny +#0c x"*1" e"." e"." s4,?
+#00 +#76 c"+" e"+" |90
+#09 +#76 c"+" e"+" |90
+#nr +#98x e0
+#76 x"*1" e"." s4,? 
+#</
+#nr +#0c e0
+
+#98x 
+#t{ "zzzz" }   wenn kein Jahr: zzzz
+!0c +# e" " e2
+!819 +# p"ho" e2
+!83 +# p"af" e2
+!59 +# p"af" e2
+!81p +# i4,L "lb" e2
+#t{ "00" }   kein Typ angegeben
+ !30a f"?" e2   aktivieren wenn gewuenscht
+#+#
+
+#-0      Kurzeintragung fuer .STL-Datei zusammensetzen (verbessert)
+#nr dg1 dg2 dgm dgn e0
+#nr dGR e0    V30.7
+#nr dty dtz p"|3" e2 aty e0    Vorbesetzung
+#uss dss e0      SW-Stammsatz-Sachgr.
+#nr dk1 ds1 dsg ds2 dna dss dtw dyy e0      Hilfsvar. loeschen (#una SWD)
+#udd ddd e0                     * Benutzervariable loeschen!
+#uyy dyy e0                     * Hilfsvariable Erscheinungsjahrbestimmung
+#hi +- e0     fuer hierarch Untersaetze nichts machen
+  V24.4 (3 Zeilen)
+
+#dV        V23: VS-Ersetzungen im gesamten Satz
+
+#9A +#99y e0                    * Systemdatensatz
+#3n y0 i4,s b2 ass     Sachgr. d. Stamms. nach #uss
+  Vorbereitungen fuer andere Zwecke (frueher in #-@)
+#83 e" ; " ak1 e0      nur nebenbei:
+#832 e" ; " P" " ak1 e0          Vorbereitung der #83er: bei " ; " abschneiden
+#83a e" ; " P" " ak1 e0
+#8n p" " Ak1 e0
+#3na u u[] =na          SWD: #3na -> #una
+
+  ORDER und aLF:
+#20 +#00 e0
+#9B +#J9b e0                    * Lesersatz
+#9AF +#J9s e0                   * Statistiksatz
+#9DF +#J9e e0                   * Exemplardaten
+#9GF +#J9g e0                   * Gebuehrendaten
+#96b +# "|0" y0     Begr.Satz
+#gn.005 +#gn1 e0
+
+   wenn Zss.Stichwoerter in ein anderes Reg. sollen: aendern!
+
+#00 i4,z p"|3" e2 dtz atz   Zeitschrift: #uty="|3"
+#00 I4,z p"|3" e2 dty aty        sonst:       "|3"
+       #utz nur bei Zeitschr. besetzt
+
+#t{ "|0" }
+#52 +#22 e0
+
+#00 +#20 c"+" e"+" |90     Hauptsatz laden, wenn einer exist.
+#09 c"+" e"+" |90     Hauptsatz laden, wenn einer exist.
+
+   Kurzanzeige-Abschnitt fuer MemoFlex
+#9ad y0 e14 P"-"   Datum
+#9a e";" y0    Kurzeintrag
+#9at ": " y0   Text
+#9a +# e0
+
+#20 e" : " u[] U f'"' y0 e39   dessen Titel nehmen
+#76 x"*1" e4 =yy e0
+ #8n e" : " U f'"' y0 e39 { &3 }    bzw. Normtitel
+#</
+#00 +#20 b"+" B"=" y0 e9 { &32 "_ " }
+#09 b"+" B"=" y0 e9 { &32 "_ " }
+!20 +#40 e0
+#19 +#40 e" : " U f'"' y0 e39
+#18 +#40 e" : " e" / " U f'"' y0 e39
+#21 +#40 e" : " U f'"' y0 e39
+#84 e" : " e" / " y0 e39
+#84 +#76 b" / " { &42 } u y0 9 e11
+#84 +#76 e0
+#3n +# y0 i4,b b" " e39 P{ &43 " BK-Stammsatz" }
+#3n +#40 b" " U y0 e39 P{ &43 " Stammsatz" }
+#4n +# y0 "* " e39 P{ &43 " Personenstammsatz" }
+#6n +# y0 "* " e39 P{ &43 " Koerp.Stammsatz" }
+#8n +# U y0 f'"' e39 P{ &43 " Stammsatz" }
+#3t +# y0 "* " e39 P{ &43 " Thesaurussatz" }
+#2n +#40 U y0 "* " e39 P{ &43 " EinheitsTitel" } 
+#9s. +# y0 "VERW "
+
+#22 +#52 e" : " e$ U f'"' y0 e39   MUSIC: EST+Komponist
+#20 e" : " U f'"' y0 e39
+#52 +#76 { &42 } u y0 9 e11
+#20 +#40 e0
+#9A $n y0
+#9A +# i4,V y2 "  [Verteiler]!" e"!" 
+  ************ ORDER STL-Eintraege *************
+  *** Systemdatensaetze
+#9A +# i4,A p"Auftraggebersatz!" e"!" y0
+#9A +# i4,W p"WÑhrungstabelle!" e"!" y0
+#9A +# i4,K p"Kontingentdaten!" e"!" y0
+#9A +# i4,L p"Lieferantendaten!" e"!" y0
+#9A +# i4,B p"Bestellnummerngenerator!" e"!" y0
+#9A +# i4,P p"Pa·wortsatz!" e"!" y0
+#9A +# i4,X p"Textbaustein!" e"!" y0
+#9A +# i4,F p"Hilfefenster!" e"!" y0
+#9A +# i4,O p"Farbdefinition!" e"!" y0
+#9A +# i4,S p"Signaturgenerator!" e"!" y0
+#9A +# i4,Z p"Zugangsnummerngenerator!" e"!" y0
+#9A +# p" (Systemdatensatz)" E")" y0
+
+#9D. +#9Dy e0
+
+#00 +#40 c"+" e0
+#09 +#40 e0
+  ZAboM
+#9R y0 $D "Rechnung v. "
+#9R +# $a y0 " zu "
+  uebriggebliebene Saetze kriegen "xx"
+#t{ "xx" }
+#40 +#76 { &42 t9 } u y0 e11
+#41 +#76 { &42 t9 } u y0 e11   wenn kein Verf., Hrsg. oder Mitarb.
+#42 { &42 t9 } u y0 e11
+#76 +#00 { &53 t9 } B" = " x"*1" e"." s4,?
+#3ny +#00 { &53 t9 } x"*1" e"." s4,?
+#76 +#00 { &53 t9 } B" = " x"*1" e"." s4,?
+#uyy +#00 { &53 t9 } s4,?
+#81p i4,L { &53 t9 } y0 " LB " e5
+#00 i4,z { &53 t9 } "ZTS" e4
+#90 B$L ,"_\31s_:_" e$ e" = " { &58 t9 } y0
+#+#
+#9Dy
+ !9DA y0 e$ p"Best.Nr.: " P" "      Bestellnummer ausgeben
+  Verteiler:
+!9DB +#9D3 i4,1 "ausgew ." e"."
+!9DB +#9D3 i4,2 "vorakz ." e"."
+!9DB +#9D3 i4,3 "best   ." e"."
+!9DB +#9D3 i4,4 "rekl   ." e"."
+!9DB +#9D3 i4,5 "storn  ." e"."
+!9DB +#9D3 i4,6 "inv    ." e"."
+!9DB +#9D3 i4,7 "abgschl." e"."
+!9DB +#9D3 i4,8 "des    ." e"."
+!9DB +#uDA i4,A e0     ZAboM Abo/Band
+!9DB +#uDB i4,B e0
+!9DB +#9D3 i4,9 "unv inv." e"."   (wie inv. behandelt .
+!9DA +#9Du i4,V e$ b1 "Umlauf "  ZAboM
+!9DB +# e0            Rettungsanker: wenn nichts vorkommt ist hier Schluss
+
+#9D1 e0  Vorauswahl (keine Ausgabe, falls es die Kat. doch geben sollte)
+#nr y0 p"ausgewhlt: " E": " dda ada
+
+#9DA $V
+
+!9DB +# e0            und Schluss
+
+   Aenderungen fuer ORDA:
+#9D3 e0   Bestellung (keine Ausgabe, falls es #9D3 doch geben sollte)
+#9DB +#9DB $d 
+#nr y0 p"bestellt: " E": " dda ada
+#9DA $B 
+
+#9DB $j e5 s5 p" " y0
+#9DA $T |90
+#8n +#uDD y0 u e37 p"  "
+#20 y0 u e37 p"  "
+#uDD e0
+#</
+#9DG +# $Y ", "
+
+#nr y0 p"  faellig: " E": " dda ada
+#9DB $D "  "
+!9DB +# e0
+#+#
+
+  ZAboM Abo Kurzeintrag
+#uDA e0
+#9DB $j y0 e"\20" e8 s8 P" Abo "
+#9DA $T |90
+#8n +#uDD y0 u e" :" e37
+#20 y0 u e" :" e37 
+#uDD e0
+#</
+#+#
+
+  ZAboM Band
+#uDB e0
+#9DA $T |90
+#8n +#uDD y0 u e" :" e37
+#20 y0 u e" :" e37
+#uDD e0
+#</
+#9DG $Y y0 p" : Bd "
+#+#
+
+  ZAboM Umlaufsatz
+#9Du e0
+#9DA $T |90
+#8n +#9Db "  " y0 e":" e40
+#20 "  " y0 e":" e40
+#9Db
+#</
+#9DG $Y "/"
+#00 b"," ", "
+#+#
+  ************ Ende ORDER STL-Eintraege *************
+
+  *** aLF STL  ****
+       * Fuer Systemdatensaetze :
+#99y
+#9A e$ e"\20" y0 p"|0Systemsatz "
+#9A +# $N " - " y0
+#9A $n " - " y0
+#+#
+
+       * Fuer Leser :
+#J9b
+#t{ "|0B:" }
+#9B $k P" "
+#9B $n y0 
+#9B $p y0 "/"
+#9B $o y0 " "
+#9B $s y0 "/"
+#9B +# i4,0 y0 p"/FREI" e5
+#9B +# i4,1 y0 p"/GESPERRT" e9
+#9B +# i4,2 y0 p"/ABGEMELDET" e11
+#+#
+        * Fuer Exemplare :
+        * Medientyp ergaenzt
+#J9e
+#9DG +#9DF i4,V y0 p"|0VORMERKUNG." e"."
+#9DG +#9DF i4,W y0 p"|0WARTEREGAL." e"."
+#9DG +#9Dy i4,l "|0ausg.bis !" e"!" y0
+#9DG +#9Dx "|0Expl.Satz !" e"!" y0
+#9Dy
+#9DH $R e8 P" "
+
+#9Dx
+#9DG +# $T y0 e50               //Memofeld? Nimm dieses!
+#9DG $e y0 P". Ex."             //Andernfalls wird's abstrakt...
+#9DG $s y0 p"/"
+#9DG $z y0 p"/Z.-Nr.: "
+#9DG $l y0 "/S.-Ort: "
+#9DG $a y0 "/BC: "
+#9DG $m y0 "/"
+#+#
+#9DF e0
+!9DH $u " "
+#9DG $s y0 " "
+#9DF y0 p" [" P"]"
+#9DG $D " "
+#+#
+
+        * Ausleihdaten :
+
+#9DH $V y0 p{ "/VOR: " } =dd
+#9DH $W y0 p{ "/WARTE: " } =dd
+#9DH $R y0 p{ "/AUSL: " } =dd       * Vergleich als Zuweisung
+#udd b6 e2 f"0" P"."                * Datum umdrehen
+#udd b4 e2 f"0" P"."
+#udd e4
+#9DG +# i4,f y0 p"/FERN" e"N"   Indikator auf Pos. 4
+#9DG +# i4,b y0 p"/BIND" e"D"
+#9DG +# i4,a y0 p"/AUSS" e"S"
+#9DG +# i4,v y0 p"/VERL" e"L"
+#9DG +# i4,P y0 p"/PRéS" e"S"
+#9DG +# i4,k y0 p"/KURZ" e"Z"
+#9DG +# e0
+#+#
+
+        * Fuer Gebuehrensaetze :
+#J9g
+#t{ "|0G: " }
+#9GF $B P":"
+#9GF i4,S p"STORNIERT ." e"."
+#9GG $S t2
+#9GG $S T2 p"." P"     "
+#9GF $D ddd add
+#udd { &25 }
+ #>d
+#9GF +#J71 y0 $G c"0" p" (Verzug)." e"."
+#9GF +#J70 y0 $G c"1" p" (Anmeldung)." e"."
+#9GF +#J70 y0 $G c"2" p" (RÅckmeldung)." e"."
+#9GF +#J70 y0 $G c"3" p" (Ausweisersatz)." e"."
+#9GF +#J72 y0 $G c"4" p" (VerlÑngerung)." e"."
+#9GF +#J72 y0 $G c"5" p" (Entleihung)." e"."
+#9GF +#J72 y0 $G c"6" p" (Reservierung)." e"."
+#9GF +#J70 y0 $G c"7" p" (Mahnung)." e"."
+#9GF +#J70 y0 $G c"8" p" (Mahnporto)." e"."
+#9GF +#J73 y0 $G c"9" p" (Extra)." e"."
+#9GF +#J70 y0 $G c"S" p" (Exportsumme)." e"."
+#nr +# e0
+
+#J70
+#nr +# e0
+
+#J71    * Verzugsgebuehren
+#9GG $m y0 p" "
+#9GG $E y0 p" " P" "
+#9GG $r ddd add                     * eigentliches Rueckgabedatum
+#>d
+#9GG $d y0 p" " P" Tage"
+#nr +# e0
+
+#J72    * Entleihung/Verlaengerung/Reservierung
+#9GG $m y0 " "
+#9GG $E y0 p" " P" "
+#nr +# e0
+
+#J73
+#9GG $G y0 " Grund : "
+#+#
+        * Statistiksaetze
+#J9s
+#9AF "|0 STATISTIKSATZ." e"."
+#+#
+
+  GND
+#gn1 e0
+#ugn dgn e0
+
+#gn.500 e$ u!! e" ; ID" P": " =gn
+#gn.130 +#ugn ,"_\31p_ - _" ,"_\31m_. _" ,"_\31n_. _" ,"_\31p_. _" ,"_\31s_. _" ,"_\31f_. _" e$ Agn
+#gn.100 ,"_\31c_ _" =gn
+#gn.110 ,"_\31g_, _" ,"_\31b_, _" =gn
+#gn.111 ,"_\31d_ - _" ,"_\31c_ - _" =gn
+#gn.150 ,"_\31g_. _" e$ =gn
+#gn.151 ,"_\31p_ - _" ,"_\31g_, _" e$ =gn
+  In #ugn jetzt die Ansetzungsform, kommt in |0
+#ugn y0 p"|0"
+  Ersetzungsschluessel in |: (/ und - wegnehmen)
+#t{ 8 "|:" }
+#00 y0 ,"_/__" ,"_-__" 
+#ugn y0 p{ "=|2" }
+  Uebernahmeschluessel in ~g2
+#t{ 8 }
+#ugn y2 "~g2"
+#00 y0 ,"_/__" ,"_-__" p" _"
+#+#
+
+
+
+    ***** Ende aLF STL ******
+ xxx:
+  Unterprogramm D fuer die Ausgabe des Datums und Bearbeiters
+#(D
+#cc b6 e2 P"."      Ausgabe Tag
+#cc b4 e2 P"."      Ausgabe Monat
+#cc e4 P" "         Ausgabe Jahr
+#cc y0 b"(" e")" p"durch "      Ausgabe Bearbeiterkuerzel
+#)D
+
+            * Unterprogramm 'kurzes Datum'
+#(d
+#udd b6 e2 f"0" P"."
+#udd b4 e2 f"0" P"."
+#udd e4 dad         * Und loeschen...
+#)d
+
+#-ƒ    ISBN (ohne Pruefziffer!)
+  13stellig mit 978- oder 979- : dann so lassen
+!u1 +#87 f"ISBN " e" " P"zz" e17 c"^zz" p"y" c"y97?-" f"y" e15 "|9i"
+  sonst 11stellig indexieren und 978- davor
+!u1 f"ISBN " e11 "|9i978-"
+#87 e0
+!u1 B"978-" ,"_-__" e9 p{ 8 "~e1" }   ISBN auch in ALL
+#+#
+
+#-Y      Zugangsnummer und Erfass.Datum
+#ch +- i2,0         #90 wird anderswo gemacht
+#ch +#98L i2,A i4,L e0      #9A L
+#ch +#98L i2,A i4,V e0      #9A V
+#ch +#98A i2,A e0           #9A
+#ch +#9R i2,R e0            #9R   Rechnung  ZAboM
+#ch +#98B i2,D i3,B e0      #9DB
+#ch +#98D i2,D i3,G e0      #9DG
+!ch +#30y i1,7 $g y2 p"|6E "    #74
+#ch +#98S i2,s e0   #9s : allg. Verweisungen
+#ch +#99b i2,9 i3,b e0    Datum Buchbinder #99b
+#ch +#99k i2,9 i3,k e0    Datum Kollation  #99k
+#ch +#99n i2,9 i3,n e0    Erfass.Datum #99n
+#ch +#98? i2,6 i3,b e0    #96b 
+!ch +#00 i2,5 i3,v p"|:" y0 P":"    #95
+!ch +#00 i2,7 i3,  p"|:" y0 P":"    #97 (ZAboM) ExtDatei
+!ch +#00 i2,7 i3,w p"|:" y0 P":"    #97w (ZAboM)
+#ch +- I2,1   nur #91 bleibt uebrig
+#ch +- i2,y e0   #9y und #9z auch raus
+#ch +- i2,z e0
+
+#u1 i2,1 >Z        fuer #91 das UP Z aufrufen
+
+#+#
+
+!00 +# e"[=\31]" 
+#+-
+
+#98D    Signatur aus #9DG
+
+#u1 c"\31z" >Z      ZgNr Expl.Satz
+#ch $s =s1 e0
+#t{ 8 }
+#us1 +#us1 I4,- p"|8" e2      falls Signatur nicht mit "-" beginnt
+#+#
+#us1 >O
+#us1 ds1 e0
+#ch $e y0 r3,0 45    Exemplarnummer 3stellig anhaengen
+#+#
+
+#98L   
+!9A $n { "|:" }      Name des Lieferanten / Verteilers
+#9A y0 e$ " -> "   Kuerzel
+#9A y0 e$ p{ 8 "|:" }
+#+#  
+
+#98A
+#9A +- i4,C   Geb.saetze nicht
+#9A +- i4,D   Geb.saetze nicht    ???aLF
+!9A $N e54 "|;"
+#9A $L e" " " -> SYSA"
+#+#
+
+#98B
+   ZgNum im Bestellsatz wird normalerweise nicht indexiert!
+ #9DB +#9DB $z "|9Z" e"/"   ZgNr. aus Bestellsatz
+#+#
+ #9DB b"/" r5
+ #+#
+
+#98S      #9s wird hier verarbeitet
+#ch +#98F I4,| e0
+#ch +#98F V5,; e0
+#ch +#98F v5,1 e0
+#ch +#98s i3,a e0         #9sa siehe auch
+#u1 y0 f" "     unveraendert eintragen
+#+#
+#98s
+#u1 y0 e"->" f" " F" "
+#u1 y0 b"->" f" " p" s.a. -> "
+#+#
+
+#98F
+#u1 y0 p"|;Fehler"
+#+#
+
+#99b +# e8 p"|9B"    Datum Buchbinder
+#99k +# e8 p"|9K"    Datum Kollation 
+
+         Erfass.Datum in |9D
+#99n +- i4,\31            nichts, wenn nur operator  drin steht
+#99n e$ e8 p"|9D"     e14, wenn Uhrzeit auch gewuenscht
+#+#
+
+#-B   hier beginnt die Bearbeitung fuer die #4. und #5.-Kategorien
+#ch +#4n1 i2,n e0          #4n..
+#u1 p" " AGR    V30.7 
+#t{ "|1" }
+!u1 u f" " e" =" e66     Kopfform endet bei " = " , 66 Zeichen,
+!ch +#59f i1,5 i2,9 e0      wenn #59: Person als zusaetzl. Eintr.
+  Doppelindexierung der Umlaute (deaktivieren, wenn nicht gewuenscht)
+ !u1 u f" " e" =" c"[ÑîÅéôö]" ,"_Ñ_a_" ,"_î_o_" ,"_Å_u_" ,"_é_a_" ,"_ô_o_" ,"_ö_u_" e66 { 8 "|1" }
+#+#                      d.h. z.B. #40 Vorlageform = Ansetzungsform !
+
+#-V   Verteiler fuer die #7-Kategorien
+#u1 +- i2,7 e0         #77
+#u1 e$ p" " AGR         V30.7 
+#u1 +#98N i2,5 e0      #75
+#u1 +#98N i2,4 e0      #74  wegnehmen, wenn nicht gewuenscht
+#u1 +- i2,6            #76  Ersch.Jahr wird anders gemacht
+#u1 +#98S i2,0 e0      #70
+#+-
+
+#98N        Verlag:Jahr   (bzw. auch Ort:Jahr, falls gewuenscht)
+#u1 +- i4,\31   wenn nur Teilfeld
+#t{ "|6" }
+
+!u1 u B"Der " B"The " e$ f"( [" e"[,[/<(]" e67 F" "
+
+    V30.7 4 Zeilen weg, EJahr an Verlag u. Ort angehaengt ist obsolet
+ !30y +# e4 p","
+ !76 +# B" = " x"*1" e"." s4,? p","
+ !76 +# B" = " x"*1" e"." s4,? p","
+ !81p +# i4,L ",loseblatt!" e"!" 
+#mv +-         wenn mehrbd und kein Jahr in HA, dann hier Abbruch
+#+#            (denn es entstehen Eintragungen aus den Bandauffuehrungen!)
+
+
+#-o   GND
+  #gn-Felder in #ugn versammeln
+
+#ugn dgn dg2 e0
+#gn.100 Agn e0
+#gn.110 p"^T" Agn e0
+#gn.111 p"^T" Agn e0
+#gn.130 ~v p"^T" Agn e0
+#gn.150 p"^T" Agn e0
+#gn.151 p"^T" Agn e0
+
+  String-Eintraege in Reg. g2 werden unter #-0 gemacht
+
+  diese vorbereiten f. Verstichwortung unter #-n
+
+#gn.400 p" " ~v Agn e0
+#gn.410 p" " ~v Agn e0
+#gn.411 p" " ~v Agn e0
+#gn.430 p" " ~v Agn e0
+#gn.450 p" " ~v Agn e0
+#gn.451 p" " ~v Agn e0
+#gn.500 p" " u!! u; Agn e0
+#gn.510 p" " u!! u; Agn e0
+#gn.511 p" " u!! u; Agn e0
+#gn.550 p" " u!! u; Agn e0
+#gn.551 p" " u!! u; Agn e0
+#gn.710 p" " Agn e0
+#gn.711 p" " Agn e0
+
+#ugn f" ^T" y2 =gn e0
+
+  Worteintraege in g1
+#-n
+!ugn e"[ -/]" y0 p{ 8 "~g1" }
+#ugn +n b"[ -/]" =gn e0
+
+
+#+#
+
+#98S
+    Quellenangaben nur wenn Stammsatz-Referenz  (#70 _, #70c, #70i, #70s, #70z)
+!ch +#98G i4,_ e" " y2 p"|5"
+#ch +#98G i3,i e" " e9 p"|5_"    issn
+!ch +#98G i3,c e" " e6 p"|5_"    coden
+!ch +#98G i3,s y2 p"|5S "   signatur
+!ch +#98G i3,z e";" y2 p"|5Z "   zdb-nummer
+!ch +#98G i3,  u ,"_, _ _" e60 p"|5"   sonst der titel
+#+-    sonst nichts  (#702, #704 ...)
+
+#98G
+#ch +#704 b"(" x">1450" p"(" e")" P")"      #70 Title ; Vol(Year)Nr,Page
+                             alternative format:
+#76 p" (" P")"                #76 Year  #70 Title  #704 Vol  #706 Nr  #708 Pg
+#704 r3 p" "    Band
+#706 +# r4 p","    Heft
+
+#ch b";" f" " e"(" r3 p" "   Band
+#ch b"(????)" e"," r3 p","   Heft
+#+#
+
+#-L
+#ch +#98S i2,8 e0        #88
+#ch +#98X i2,9 e0        #89
+#+-
+
+    Rechnungseintraege  ZAboM
+#9R e0
+#u1 $a y0 "|:rz "                    |:rz  ZsTitelId
+#u1 $Y "-" y0
+#u1 +#99n y0 $t "="
+#u1 +#99n y0 $u "="
+#u1 +#99n y0 $q "="
+#u1 y0 $p "="
+#99n e0
+#u1 +#u1 $a b":" y0 { 8 "|:ra " }    |:ra   AboId
+#nr +#99n
+#u1 $Y "-" y0
+#99n e0
+#u1 +#99n y0 $u "="
+#u1 +#99n y0 $t "="
+#u1 +#99n y0 $q "="
+#u1 y0 $p "="
+#99n e0
+!u1 $l y0 { 8 "|:rl " }              |:rl    LieferantId
+#u1 $d "-"
+#u1 +# y0 $t "="
+#u1 +# y0 $u "="
+#u1 +# y0 $q "="
+#u1 +# y0 $p "="
+#+#
+
+#-g   Verteiler fuer die #8-Kategorien (ausser #87)
+#ch +I i2,5 e0           #85
+#ch +#98K i2,3 e0        #83
+#ch +#98q i2,4 e0        #84
+#ch +#98H i2,1 i3,9 e0   #819
+#ch +#988 i2,n e0        #8n
+#ch +#98I i2,e e0        #8e
+#ch +#98R i2,6 e0        #86
+#+-
+
+#98R 
+#u1 "|9R"    ReportNr
+#+#      
+
+#98S    ISSN, CODEN
+#ch +# i3,c p"|9C"
+#ch p"|9I" e3
+!u1 f" " e9
+#8n +#9C e" : " y0 p"  "
+#20 y0 e" : " p"  "
+!9C c"abo" y0 p" <Abo>!" e"!"
+!u1 e9 p{ 8 "~e1" }
+!u1 ,"_-__" e8 p{ 8 "~e1" }
+#+#
+
+#98X
+#u1 +# i3,D f" " p"|9DB"   DB-Nr
+#u1 +# i3,B f" " p"|9B"    BNB-NR
+#u1 +# i3,L f" " p"|9L"    LC-Nr
+#u1 +# i3,P f" " p"|9P"    PicaNr
+#u1 +# i3,Z f" " p"|9ZDB"    ZDB-Nr
+#u1 +# i3,G f" " p"|9G"    GKD-Nr
+#u1 +#98o i3,o e0          Opus#
+!u1 e"[=\31]" f" " p"|9"     andere #89
+#+#
+
+#98g             geogr. Code + geogr. Schlagwort
+!u1 p30
+!31g e";" e48 p" "
+!31g +# e";" e58 p" ->|3"    wenn zugl. #31g, dann kein Eintrag
+!31s +# e";" e58 p" "
+!30h +# e" " y0 p" geschichte "
+!31u +# e";" e58 p" "
+     bestimmte Unterschlagw entstehen automatisch:
+#30a +# c"~rt-ge" y0 p" kirchengeschichte" e18
+#30a +# c"~ge" y0 p" geschichte" e11
+#30a +# c"~ggg" y0 p" landeskunde" e12
+#30a +# c"~ggx" y0 p" heimatkunde" e12
+#30a +# c"~gg" y0 p" geographie" e11
+#30a +# c"~plf" y0 p" aussenpolitik" e14
+#30a +# c"~plc" y0 p" innenpolitik" e13
+#30a +# c"~pl" y0 p" politik" e8
+#30a +# c"~gk" y0 p" kultur" e7
+#30a +# c"~nw" y0 p" wirtschaft" e11
+#30a +# c"~rt" y0 p" religion" e9
+!33l +# e" -- " e";" p" "
+!33b +# e";" p" "
+#+#
+
+#98l           Sprachcode : fuege SW hinzu
+!u1 p31
+!31p +#98S e" " F"," p" "
+!31s +#98S e";" p" "
+!31h +#98S e";" p" "
+!31u +# e";" p" "
+!33l +# e";" e" -- " e", " p" "
+!33b +# e";" p" "
+!59 +# e", " p" "
+#0c +# i4,w y0 p" <WOERTERBUCH>" e13
+!30a +# c"~sl-ge" y0 p" literatur / geschichte" e23
+!30a +# c"~-ge" y0 p" geschichte" e11
+!30a +# c"~-pb" y0 p" unterricht" e11
+#+#
+
+#98S
+!31u e";" p" / "
+#+#
+
+#98z        Zeitcode + Hist Schlagwort
+#u1 p33
+!31h +# e";" p" "
+!31g +# e";" p" "           Geo-Schlagw., wenn es exist.
+!31s +# e";" p" "           sonst Sachschlagw.
+!31u +# e"; " p" "            sonst USW
+!33l +# e";" e" -- " p" "
+!33b +# e";" p" "
+#30g +# y0 e" " p" <" P">"          sonst Geogr. Code dahinter
+#+#
+
+#-C    #4. und #5.-Verweisungen
+#ch +- i2,n i3,z
+#ch +- i2,n i3,d     #4nd und #4nz ausschliessen
+!u1 +#98C u e" =" e38 p"|1"     Kopfform endet beim naechsten " = "
+#+-
+#98C
+!ch u e" = " e68 p" -> "
+#+#                      d.h. z.B. #40 Vorlageform = Ansetzungsform !
+
+#-c     Verweisung auf Doppelnamen
+#ch +- i2,n i3,z
+#ch +- i2,n i3,d     #4nd und #4nz ausschliessen
+!u1 +#u1 e" =" e"[;∂]" u e" <" e", " b"-" f" " p"|1"    nur wenn "-" vorkommt, geht's weiter!
+#+-
+!u1 e" =" e"[;∂]" u e" <" b", " p", "
+!u1 e" =" e"[;∂]" u e" <" E"-" p" "
+!4n +# u e30 p" -> "           % keine Umwege: Direkt zur Ansetzung verweisen
+!u1 e" =" e"[;∂]" u e30 p" -> "
+#+#
+
+    Serien: (#85)
+#-I
+#u1 p" " AGR   V30.7 
+!u1 +#98t e" ; " c".." e0      Pruefe: kommt "..." vor? dann gehe nach -t
+  !ch +#98U i4,_ e" ;" y2 p"|5_"      Kuerzel statt Serientitel
+!u1 +#98U u e" ;" e" =p " ,"_, _ _" e61 p"|5"    sonst nimm den Titel (bis " ; " )
+
+#98t         wenn "...", dann #85 aus Hauptaufnahme nehmen  (!^85 )
+
+  !^85 +#98U i4,_ e" ;" p"|5_"   pre-V14
+!^85 u e" ; " e" =p " ,"_, _ _" e61 p"|5"
+
+#98U
+#u1 +- b" ; " c".." e0         wenn "..." statt Zaehlung, dann hier schluss
+   #u1 +#98v b" ; " B" = " e" " e"/" e"(" e" : " e"," B"." p"; "
+  Zahl nehmen, 5stellig mit " ; " davor
+#u1 +#98v b" ; " e"[,]" x"*1" e"." r5 p" ;"
+
+#76 B" = " x"*1" e"." s4,? p" ; "     Jahr, falls keine Zaehlung
+#98v
+#u1 +# b" ; " B" = " b"/" e" : " r3 p"/"    mehrteilige Zaehlungen (nn/mm)
+#u1 +# b" ; " B" = " b"," e" : " r3 p"/"    mehrteilige Zaehlungen (nn,mm)
+#u1 b" ; " B" = " e" : " b"[/-,+=]" r3 p"/"    mehrteilige Zaehlungen (nn mm)
+#+#
+
+#98H    Hochschulschrift
+!u1 e":" f" " P"," y2 p"D "
+!u1 b":"
+!40 u e25 e" =" p" -> "
+#+#
+
+
+#98K                Kongresstitel -> Titelregister
+#ch +- i4,. i5,.                wenn #83 ... ; xxx, dann nichts ausgeben
+#ch +- i4,;                     wenn #83 ; xxx, dann nichts ausgeben
+#t{ "|4" }
+!u1 e" ; " u u[] f" (<" e62
+   #u1 b", 19" p", 19" e6  alt
+#u1 +# b";" e"." x">1000" f32 p", "
+#u1 +# b";" B".-" e"-" B"." B"." x">1000" f32 p", "
+#+#                            Beginn hinter " ; " und ". "
+
+#-K
+#u1 p" " AGR   V30.7 
+#t{ "|4K " }
+!u1 b" (" e")"
+!u1 +#20 b" : " x"*1" e"." s4,? p", "     Jahr, wenn in #83 genannt
+#76 B" = " x"*1" e"." s4,? p", "
+!20 u e" : " e58 p" -> "
+#+#
+
+  Sammelbd Beitr.
+#98q
+!ch i4,_ b"_" e";" y2 f" " p"|9" P"*"
+#708 e"-" r4,0   Seitenzahlen zwecks Sortierung d. Beitr.
+#708 b"-" p"-"
+#+#
+
+
+#-T         Person: Titel
+#u1 p" " AGR   V30.7 
+!u1 +#98T c": " e0      Person kommt vor
+#+-     Eintrag in Index 4 ist schon unter #-£ gemacht
+
+
+#98T
+!u1 e": " y2 f" " p"|1" P" / "         kommt in Index 1
+!u1 b": " e"_" u
+#+#
+
+
+
+#-N     Gesamt-Verteiler fuer #3..
+        Sprungmarken +#xyz gehen schneller als #+M
+#ch +#981 i2,1 e0         #31.
+#ch +#98M i2,2 e0         #32.
+#ch +#983 i2,3 I3,0 I3,1 I3,2 I3,3 I3,4 I3,5 e0    #33. (Fremd-SW)
+                         aber SW-Ketten nicht (#330-#335)
+#ch +#98A i2,n i3,a e0    #3na
+#ch +#98A i2,n i3,c e0    #3nc
+#ch +#98W i2,n i3,r e0    #3nr
+#ch +#98G i2,n i3,g e0    #3ng
+#ch +#98& i2,n i3,  e0    #3n
+#ch +#98U i2,q i3,l e0    #3ql
+#ch +#98v i2,q i3,d e0    #3qd
+#ch +#98B i2,q i3,b e0    #3qb
+#ch +#98T i2,t e0         #3t
+#ch +#98T i2,u e0         #3u
+#+-   andere kriegen hier nichts, #30. wurde anderswo gemacht
+
+#981 e0      Schlagwort-Eintragung
+#u1 p" " AGR     V30.7 
+#ch +#98/ i3,p e0
+#ch +#98C i3,h e0
+#ch +#98D i3,g e0
+#ch +#98E i3,t e0
+#ch +#98= i3,k e0
+#ch +- i3,u       kein Eintrag fuer Unterschlw!!
+   und jetzt das Sachschlagwort:  (mit "!" koennte IdNr dranhaengen)
+#uty
+!u1 u f" /(<)+-" F"* " e"_" e69       die Zeichen " /()<+-" am Anfang wegnehmen
+!31u +# e";" e60 p" / "         Unterschlagwort dranhaengen
+#30h +# y0 p" / geschichte " e13
+ moegliche automatische Zusaetze:
+ #30a +# c"~-cs" y0 p" / edv-anwendung" e16
+ #30a +# c"~-pb" y0 p" / unterricht" e13
+ #30a +# c"~-ge" y0 p" / geschichte" e13
+ #30a +# c"~-pl" y0 p" / politik" e10
+ #30a +# c"~-ph" y0 p" / theorie" e10
+ #30a +# c"~-wh" y0 p" / studium" e10
+ #30a +# c"~-re" y0 p" / recht" e8
+ #30a +# c"~-ps" y0 p" / psychologie" e14
+#t{ " *" }                * anhaengen, wenn kein USchlW und kein Aspekt
+#+#
+
+#983 e0
+#u1 p" " AGR     V30.7 
+#uty
+!u1 u f" /(<)+-" F"* " e69        die Zeichen " /()<+-" am Anfang wegnehmen
+#t{ " *" }                * anhaengen, wenn kein USchlW
+#+#
+
+#98/         Personenschlagw. -> Index 1
+!u1 f"+- /(<)" F"* " e"_" p"|1"
+!31s +# e";" p" / "             sonst Sachschlw.
+!31u +# e";" p" / "           sonst Unterschlagwort dranhaengen
+ #0c p" / "    Formschl.
+#0c +# c"bm" y0 p" / biographie" e13
+#0c +# c"bl" y0 p" / bibliographie" e16
+#0c +# c"??" y0 p" / briefe" e9
+#0c +# c"b6" y0 p" / bildband" e11
+#t{ " *" }                * anhaengen, wenn kein USchlW
+#+#
+
+#98D         Geogr. Schlw. -> Index 3
+#uty
+!u1 u f"+- /(<)" F"* " e69
+!31s +# e";" e58 p" / "            SachSW dranhaengen
+!31u +# e";" e58 p" / "            Unterschlagwort dranhaengen
+!30h +# e" " y0 p" / geschichte "
+#30a +# c"~ge" y0 p" / geschichte" e13
+#30a +# c"~ggg" y0 p" / landeskunde" e14
+#30a +# c"~ggx" y0 p" / heimatkunde" e14
+#30a +# c"~gg" y0 p" / geographie" e13
+#t{ " *" }                * anhaengen, wenn kein USchlW
+#+#
+
+#98E         Werktitel als SW
+!u1 B": " u f" " =wt,0 e0
+!u1 B": " u f" " p"|4"
+#t{ " *" }
+#+#
+
+#98C         Histor. Schlw. -> Index 3
+#uty
+!u1 u f"+- /(<)" F"* " e69
+#30h +# e";" e" " p" -> |7H "     Zeitcode dranhaengen fuer Referenz
+#t{ " *" }                * anhaengen, wenn kein Zeitcode
+#+#
+
+#98=       Koerp.Schlw -> Index 2
+!u1 f"+- /(<)" F"* " e58 p"|2"
+!31u +# e";" e58 p" / "            Unterschlagwort dranhaengen
+#t{ " *" }                * anhaengen, wenn kein USchlW
+#+#
+
+#98M             LC-Klass
+#ch +#98L i3,B e0
+#ch +- i3,Z e0   Zeitschr.Kl. nicht beruecks.
+!u1 y0 e20 f" " e" " p"|7\ "
+#+#
+
+#98L               BNB-Dewey
+#u1 y0 e20 f" " p"|7[ "
+#+#
+
+#98?          Begriff #96b
+!u1 p"|7"
+#+#
+
+#-D   Koerperschaften (#6.) werden so behandelt:
+#u1 +- i2,8 e0     #68 nicht!
+#ch +#6n5 i2,n e0    #6n
+#ch +#6n5 i2,u e0    #6u
+
+#u1 p" " AGR    V30.7  
+!u1 u f" " p"|2"    (auch hier evtl. Ansetzungsform hinter " = ")
+#+#
+
+#-w   Verweisung vom untergeordneten Teil der Koerp
+#ch +- i2,8 e0    nicht fuer #68
+#u1 +#98w c" / " e0
+#+-    nur wenn " / " vorkommt, sonst nicht
+#98w
+#ch +- i2,n e0   nicht fuer #6n
+!u1 b" / " u e"[\31_]" e" : " e55 p"|2"
+!u1 f32 e" / " u e"[\31_]" e" : " e55 p" -> "
+#+#
+
+#210                 #21
+!40 u e" =" e48           Verf.Name : Sammlungsvermerk
+#u1 e20 p" - "
+#+#
+
+#-H                #21 : zusaetzl. Eintr. unter "sammlung -> name"
+!40 u e58 e" =" p"W-> "        Sammlungen mit #21
+#+#
+
+
+#-b   Festschrift
+!u1 u e" =" f" " y2 p"|1F-> "
+#+#
+
+#59f
+ #0c p" / "    Formschl. anhaengen
+#0c +# c"bm" y0 p" / biographie" e13
+#0c +# c"ww" y0 p" / werkverzeichnis" e18
+#0c +# c"bl" y0 p" / bibliographie" e16
+#0c +# c"bb" y0 p" / briefe" e9
+#0c +# c"b6" y0 p" / bildband" e11
+#0c +# c"ka" y0 p" / katalog" e11
+#t{ " - FESTSCHRIFT" }
+#+#
+
+#-R       |7X Notation + Haupttext
+            X = G   Geogr.
+                S   Sprache
+
+!3n b" " y2 dsw asw
+!3n +#3nD e" " i4,g b1 y2 "|7G "
+!3n +#3nD e" " i4,l b1 y2 "|7S "
+!3n +#3nD e" " i4,h b1 y2 "|7H "
+!3n +#3nD e" " i4,c b1 y2 "|7"
+!3n +#3nB e" " y0 i4,b b2 "|7"
+!3n +#3nD e" " i4,a b2 y2 "|8" F"0" #zz 38
+
+!3n +# i4,s i5,g Z    geogr SW: keine Sachgr.
+
+!3n +# i4,s i6,  e0   SW-Satz ohne Sachgr.
+
+#3n +v i4,s i5,t e0   Personen-Titel-satz
+#3n +y y0 i4,d e" " e":" b1 u^^ ubs p"|7DK"
+!3n e"`" b2 e" " p"|7" P"    "   SW-Satz! UTF-8: ` statt 250
+!3n u b" " f" "
+#+#
+
+#3nB   nur fuer BK
+#3n +#3nC y0 i5,0 b" " p"  *" e3
+#3n +#3nC y0 i5,1 b" " p"    *" e5
+#3n +#3nC y0 i5,2 b" " p"      *" e7
+#3n +#3nC y0 i5,3 b" " p"        *" e9
+#+#
+#3nC
+#3nt +# y0
+#3n +# b" " y0
+#+#
+
+#3nD
+#3nt +# u y0 B": " p"    *"
+#3n u b" " y0 e60 p"    *"
+#+#
+
+#-v
+#3n +#3n c": " e0     nur, wenn auch eine Person genannt ist
+#+#
+!3n b" " e":" u
+!3n b": " u y2 p" / " P60
+#+#
+
+#-U   weitere Notationen bei SW-Stammsaetzen
+#3n +- i4,s i5,g   geogr stammsatz: keine Sachgr.
+
+!u1 e" " p"|7" P"    "   SW-Satz!
+!3n +v i4,s i5,t e0   Titelsatz
+!3n +# u b" "     SW-Satz!
+!4n +# u
+!6n +# u
+#+#
+
+#-y
+#3n y0 b":" e" " p" :" s28
+#3nt +# y0
+#3n +# y0 b" "
+#+#
+
+#-x                   Hilfseintrag fuer Sachgruppe, nur Typ c
+#3n i4,c b1 e" " y0 p"|7\ "
+#3n i4,c y0 b" " { &13 }
+#+#
+
+
+#98&             Eintrag unter Hauptbegriff im Index 3, Referenz nach 7
+#u1 +#98y b" " e0
+#4n +#98y e0     Doppelfunktion: PND+SWD
+#6n +#98y e0
+#+-      es gibt keinen Haupttext! (bei Aufstell.Syst.: Formalgruppe)
+#98y              |3Haupttext ->|7 Notation
+#3n +#98s I4,s e0   es ist KEIN SW-Satz
+   SW-Satz
+ #+-   fuer OPAC aktivieren: Eintrag fuer Stammform wird nicht benoetigt
+!4n +# u P60        #4n + #3n sp  zugleich $$S
+!6n +# u p"|2" P60        #6n + #3n sk  zugleich $$S
+!3n +# u i5,p b" " y2 P60   #4n/#6n hat Vorrang vor SWD fuer Index
+!3n +# u i5,k b" " y2 p"|2" P60
+!3n +# u i5,c b" " y2 p"|2" P60
+!3n +#985 i5,t e0
+!3n +#986 u i5,s b" " y2 p"|3" P60
+!3n +# u i5,g b" " y2 p"|3" P60
+#+-
+
+#985
+!3n u b" " c": " ,"_: _ / _" p"|1" P{ 8 }
+!3n u b" " B": " y2 p"|4"
+#+#
+    Kein SW, sonstiger Stammsatz, Verweise Reg.3 -> |7 oder |8
+#98s
+!u1 b" " e60 p"|3"
+#3n +# i4,d y0 p" !" e2   DK-Satz
+  #t{ " -> |" }
+#3n i4,g p" (GEOGR.) -> |7G !" e"!"
+#3n i4,l p" (SPRACHE) -> |7S !" e"!"
+#3n i4,h p" (ZEITRAUM) -> |7H !" e"!"
+#3n +# y0 i4,b b2 e" " p" (BK-GRUPPE) -> |7"
+!3n i4,c y2 p" (SACHGRUPPE) -> |7!" e"!"
+!3n +# i4,a e" " b2 p" (LESESAAL) -> |8" F"0"      Lesesaal-Syst
+!3n b1 e" "
+#+#
+
+#986
+!3nz b"\31cs.a.: " p"  s.a. -> "
+!3nz b"\31csiehe: " y2 p"  Siehe bei -> "
+#+#
+
+
+#98A
+#3n +#98Q i4,s e0   wenn SW-Satz
+!u1 f" " p"|3"
+#3n +# i4,d y0 p" !" e2
+
+#t{ " -> |" }
+#3n +#98P e" " i4,a e0
+!3n +# y0 e" " i4,g b1 p"7G "
+!3n +# y0 e" " i4,l b1 p"7S "
+!3n +# y0 e" " i4,h b1 p"7H "
+#3n +# y0 e" " i4,b b2 p"7"     BK
+!3n b1 p"7" e" "
+#+#
+
+#98G
+ #3n +- i5,p
+ #3n +- i5,c   Personen, Koerp. u. Titel nicht unter Geocode sortieren
+#3n +- i5,t
+ #3n +- i5,k
+!u1 y2 p"|7G "
+!3n b" " p"  "
+#+#
+
+#98Q       SW-Synon-Verw.
+#3n i5,k p"|2" e2
+#3n i5,c p"|2" e2
+#3n i5,s p"|3" e2
+#3n i5,g p"|3" e2
+#3n +#98V i5,t p"|4" e2   bei Titel-SW anders
+
+!u1 f" " u u[] e55
+#t{ " -> " }
+!3n b" " u
+#+#
+
+#98V
+!u1 f" " B": " B" / " u u[] e55
+#t{ " -> " }
+!3n +# i5,t c": " b" " u ,"_: _ / _" p"|1"
+!3n b" " u
+#+#
+
+#98P
+!3n e" " b2 p"8" F"0"
+#+#
+
+#-W          fuer SWD
+#3n +- I4,s       nur ausfuehren fuer Sach-SW-Stammsaetze
+#3n +- i5,p
+#3n +- i5,k
+#3n +- i5,c
+#3n +- i5,g
+#3n +- i5,t
+#usw dsW asW
+!u1 y2 =sW+- e0    wenn vorher schon eingetragen, ignorieren
+
+#98W e0        Referenzen
+#3n +#98X i4,s e0     wenn SW-Satz
+#3n +#98) i4,b e0     BK-Stammsatz-Verweisung
+#u1 +- p"]" c"]/" e0
+!u1 +#98W c"\31" u f" " b2 e40 F">" p"|3"    anderer Stammsatz
+!u1 u f" " e40 F">" p"|3"    anderer Stammsatz
+
+#98W
+#t{ " SIEHE AUCH -> " }
+!3n b" " u B": "
+#+#
+
+
+#98)
+#u1 +#98( b"siehe: " =vw    #3nr bei BK enth. "siehe:"
+!u1 +# c")" e0
+!u1 f" " p"|3"
+#+#
+
+#98(
+!u1 f" " e"siehe: " e55 p"|3"
+#uvw y0 p" SIEHE -> |7" e17 dvw
+#+#
+
+#98X     erzeuge s.a.-Verw. #3nr -> #3n
+#3n u i5,k p"|2" e2
+#3n u i5,c p"|2" e2
+#3n u i5,s p"|3" e2
+#3n u i5,g p"|3" e2
+#3n u i5,t p"|4" e2
+#u1 +- p"]" c"]/" e0
+!u1 +#98X c"\31" B": " u b2 f" <" ,"_->_- >_" P"'" ,"_>'_'_" F"'" e40
+!u1 B": " u f" <" ,"_->_- >_" P"'" ,"_>'_'_" F"'" e40
+
+#98X
+  #u1 B": " u f" <" ,"_->_- >_" P"'" ,"_>'_'_" e40
+#t{ " SIEHE AUCH -> " }
+!3n b" " B": " u
+#+#
+
+
+#98U e0     korrespondierende Notation LC in |7\
+#u1 e58 f" " e" " p"|7\ "
+#u1 y0 f" " b" " p"  "
+#t11
+!3n b1 e" "
+#+#
+
+#98v e0
+#u1 y0 e58 f" " e" " p"|7[ "
+#u1 y0 f" " b" " p"  "
+#t11
+!3n b1 e" "
+#+#
+
+#98B e0
+        korrespondierende Notation BK
+!u1 y0 e58 f" " e" " p"|7] "
+#u1 y0 f" " b" " p"  "
+#t11
+!3n b1 e" "
+#+#
+
+
+#98T            Thesaurus-Hauptbegriff
+!ch +# i3,  "|3" y2 P" #"
+#ch +#98Y i3,p e0
+#ch +#98Y i2,u e0
+#ch +#98Y i3,a e0
+#ch +#98Z i3,r e0
+#ch +#98V i3,b e0
+#ch +#98V i3,t e0
+#ch +#98W i3,n e0
+!u1 u p"|3"
+#t{ " **" }
+#+#
+
+#98Y           Synonyme
+!u1 u e55 f" " p"|3"
+#t{"  USE-> " }
+!3t u e20
+#+#
+
+
+#98Z            verwandte Begr.
+!u1 u e55 f" " p"|3"
+#t{ "  RT-> " }
+!3t u e20
+#+#
+
+#98V            broader term
+!u1 u e55 f" " p"|3"
+#t{ "  NT-> " }
+!3t u e20
+#+#
+
+#98W            narrower term
+!u1 u e55 f" " p"|3"
+#t{ "  BT-> " }
+!3t u e20
+#+#
+
+
+#4n1     Namens-Hauptform Person
+#ch +#4n3 i3,a e0   alternative name   $$S
+#ch +#4n2 i3,r e0   related name
+#ch +#4n2 i3,t e0   actual name
+#ch +#4n4 i3,p e0   pseudonym
+#ch +- i3,d e0
+#ch +- i3,z e0
+!u1 u p10      #4n
+!00 +# p"  _"    wenn #00, dann fuer Uebernahme anfuegen
+#t{" **" }
+#+#
+
+#4n2    siehe auch Verw Person
+!u1 u f" " e55 "|1"
+#t{ " s.a.-> " }
+!4n u
+#+#
+
+#4n3    Verw.Form Person
+!u1 u f" " e55 "|1"
+#t{ " -> " }
+!4n u
+#+#
+
+#4n4             Pseudonym
+!u1 u f" " e50 "|1"
+#t{ " [Pseud.] -> " }
+!4n u
+#+#
+
+
+#6n5      Namens-Hauptform Koerp.
+#ch +#6n6 i3,a e0   alternative form   $$S
+#ch +#6n7 i3,r e0   related name
+#ch +#6n7 i3,f e0   former name
+#ch +#6n7 i3,s e0   later name
+#ch +#6n7 i3,l e0   later name
+#ch +- i3,d e0    #6nd und #6nz ausschliessen
+#ch +- i3,z e0
+!u1 u e57 p10     #6n
+!00 +# p"  _"      #00 fuer Uebernahme
+#t{" **" }
+#+#
+
+#6n6    Verw.Form Koerp.
+!u1 u f" " e55 e"[>]" p"|2"
+#t{ " -> " }
+!6n u
+#+#
+
+#6n7    s.a. Verw.Form Koerp.
+!u1 u f" " e55 e"[>]" p"|2"
+#t{ " s.a.-> " }
+!6n u
+#+#
+
+#988      Serien-Haupttitel
+#u1 +#8nK i3,a e0    #8na  Kuerzel
+#u1 +- i3,z e0       #8nz  Kommentar
+#u1 +#8n9 I3,  e0    #8nr
+!u1 e" : " u f"( <" ,"_, _ _" e61 p"|5"
+!8na +# y2 p"  _"
+#00 +# y0 p"  _"
+!88 +# e8 p"  _"
+!88c +# e5 p"  _"
+#+#
+
+#98I
+!u1 +# y0 c"~http" e$ p"|9URL "
+!u1 y0 p"|9db "
+#+#
+
+#8n9    Verw.Form Serie
+!u1 dt5 e"[;\20]" u u[] e" : " f" " e40 p")" at5
+!8n +- u u[] e" : " f" " e40 p")" c"#ut5"
+!ut5 f")" ,"_, _ _" p"|5"
+!8n u u[] e" : " f" " ,"_, _ _" e30 p" -> "
+#+#
+
+#8nK   Kuerzel   #8na
+!u1 { "|:" }           
+#8n +# y0 e" : " p"=|5"
+#20 y0 e" : " p"=|5"
+#+#
+
+#2n0    EST
+#ch +#2nR i3,r e0
+#ch +#2nR i3,u e0
+#ch +- i3,d
+#ch +- i3,z    #2nz und #2nd ausschliessen
+!u1 u f" " ,"_, _ _" p"|4"
+#t{ " *" }
+#+#
+
+#2nR   Verw. auf EST; bei Uebersetzung : <Sprache>
+!u1 e" <" u ,"_, _ _" p"|4"
+#t{ " -> " }
+!2n u ,"_, _ _" 
+!u1 b" <" p" <"
+#+#
+
+ **** Abschnitte fuer die Wandlung der Benutzereingabe ****
+ (sog. Umcodierung)
+
+#-1   Eingabe fuer Reg.1
+#u1 0 =A0 e0
+!u1 +# i4,D i5,  b2 y2 "D "      Sonderpraefixe als Grossbuchstaben
+!u1 +# i4,F i5,- b" " y2 "F-> "
+!u1 +# i4,W i5,- b" " y2 "W-> "
+!u1 +# c"zz " y2
+
+!u1
+   Option statt dessen: Wenn kein Komma vorkommt, dann umdrehen!
+     (nicht unbedingt ratsam wegen Doppelnamen ohne Bindestrich)
+ #u1 +#ux1 c"," e0
+ !u1 +# c"^ "
+ !u1 T" " f" "
+ !u1 c" " t" " ", "
+ 
+#+#
+#ux1 e0
+!u1 e"," F" "
+!u1 b"," f" " p", " 
+#+#
+
+#-2    Reg.2
+#-6    Reg.6
+!u1 u
+#+#
+
+#-3  Reg.3
+#u1 +#98o y0 v4,[ V4,@ e7 x">0" e0     OpusNr
+!u1
+#+#
+
+#-4    Reg.4
+!u1 +# i4,K i5,  b2 y2 "K "    Sonderpraefix erhalten, sonst umcodieren
+!u1 u ,"_, _ _"
+#+#
+
+    zugl. Routine fuer 2. Durchlauf von INDEX:
+#-5
+#u1 +#98z c";" Z               Reihenzaehlungen mit ";"
+!u1 u e"(" F32 ,"_, _ _" e61               Zeitschriftenzitate
+#u1 b"(" e")" p" (" P")"
+#u1 b")" e"," f32 F32 r3 p" "
+#u1 b")" b"," f32 r4 p","
+#+#
+
+#98z
+!u1 e";" u e61 F" "
+#u1 b";" y0 f" " r5 p" ;"
+#+#
+
+#-7
+#u1 0 =ZZ e0
+#u1 +# y0 i4,G
+#u1 +# y0 i4,H
+#u1 +# y0 i4,S
+!u1
+#+#
+
+   Ein paar neue Verrenkungen wegen der neuen 13stelligen ISBNs
+#-9    Reg. 9
+#u1 +#99i i4,i e0   ISBN
+#u1 +# i4,U y0   URL: nicht veraendern
+#u1 +# i4,Z >z   Zugangsnummer
+
+#u1 +# i4,I v5,: y0   ISSN: nicht veraendern
+#u1 +# y0 i4,D   Erf.Datum
+#u1 +#98i I4,i I4,I i8,- b"-" b"-" e0    ISSN "-" an der 4. Stelle
+#u1 +# y0 I4,i I4,I i8,- ,",X,x," "I"         kein weiterer "-"
+!u1 +#
+#98i
+#u1 +# y0 p"Z" c"^Z978-" c"-" f"Z" p"i978-" e16
+#u1 +# y0 I4,i I4,I c"-" "i" e16         ISBN "-" im Text
+  Es wird ein Eintrag gesucht, der mit i beginnt:
+#u1 y0
+#+#
+#99i e0
+!u1 +# c"i978-" e16
+!u1 +# c"i979-" e16
+!u1 f"i" p"i978-" e16
+#+#
+
+
+#98o       Opus# #89o
+#t{ "|3" }
+#u1 +#98o f" " c" " e0                  Nur Nummer, z.B. $o63
+!u1 e"[.,;]" x"*1" e"." r4 "Op"
+!u1 f" 0123456879" e";"
+#+#
+#98o
+#u1 f" " e"[0123456789]" y0                  z.B. KV 525, BWV432
+!u1 e"[.,;]" x"*1" x">0" e"." r4
+!u1 e";" b"[0123456789]" f"0123456879"       z.B. KV123a
+#+#
+
+    MemoFlex
+#-j     Eintraege im Reg.10
+#u1 =mo e0     #9a Feld zerlegen bei ;
+#-k
+!umo e";" y2 p{ 8 "|:M " }
+!umo +k b";" f" " =mo
+#9ad +#op e0
+#+#
+#op e0
+#t{ 8 "|:Md" }   Eintrag f. Termin
+#9ad y0 e14 p"-" P" " y0     Md-date(user):text
+#9ao y0 p"[" P"] "     = #op (koennte fehlen)!
+#9a y0 " "
+#9av +#9av e0
+#+#
+#9av y0 e14 p{ 8 "|:Mv" } P" " y0     Mvdate:text  (Verfallsdatum)
+#9a y0
+#+#
+   // MemoFlex
+
+ **** aLF Anfang **************
+ ***** Schluessel fuer das Ausleihsystem aLF, Reg. 10 und 11 ***
+       Sprungmarken 216-222   EXEMPLARDATEN, BESTANDSDATEN
+
+#-Ï   Standort aus $l in #9DG   (236)
+#t{ "|8" }
+!9DG +#98Z $l >O
+#+-
+#98Z
+#9DG p"x" e1 =dg e0
+!9DG $l u[] e"(" b"-" r5 ddg
+!9DG $l u[] b"-" b"(" r2  ddg
+#9DG $B e"[.,/]" x"*1" x">0" e"." r5 ddg            1
+!9DG $B e"[,./]" f"0987654321" p"  " ddg            1a
+#9DG $B P" " E"[ ./,]" T1 F" "                      1,
+!9DG $B b"[.,/]" x"*1" e"." r2 ddg                1,1
+!9DG $B b"[.,/]" f"0987654321" e"[.,/]"           1,1a
+!9DG $B b"[.,/]" b"[.,/]" p"," ddg                1, x.Jahr
+!9DG $E e"." r2 p":" ddg      Ausgabe
+!9DG $e r2 p"/" ddg           Exemplar
+#9DG $l c"'" e"'" p" " ddg
+!udg     "x" hinten anhaengen, falls keine Teilfelder vorkamen
+#+#
+
+#-Î    Pseudoschluessel fuer ALFA  (235)
+#u1 +#99B { "_1|;B" } e0
+
+#-ÿ                 216
+ !u1 y0 e$ b1 p"|:B"    10  BUsrId
+  Ersetzungsschluessel:  11  UsrId=|:Abt., Anrede Vorname Name
+#9B y0 e$ b1 { "|:" } P{ "=|:" }      Ausweisnr.
+#99B e0
+#9B $f y0 P", "      Stellenzeichen
+#9B $u c"w" { "Fr. " } e0
+#9B $u c"m" { "Hr. " } e0
+!9B $n y0 b", " P" "   Vorname
+!9B $n y0 e", "        Name
+#+#
+
+#-Ô                 239
+ !u1 $n y2 "|:"           10  Name=UsrId
+ #u1 y0 b1 e$ "="
+  Uebernahmeschluessel:   11  name, anrede vorname [Abt.] _UsrId
+!u1 $n { "|:" }     
+!u1 $u c"w" { ", fr." } e0
+!u1 $u c"m" { ", hr." } e0
+#u1 $f y0 p" [" P"]"      
+#u1 +# i4,1 { "  AUSWEIS GESPERRT!" } e0
+#u1 y0 b1 e$ p"  _"
+#+#
+
+#-‹                 220
+    * 10   TitelID,Stueck:ExplNr Status (l,a,b,f,g,W,V)
+#9DB +- i4,B e0    Bandsatz
+#9DB +- i4,U e0    Umlaufsatz
+#ch +#9Do i3,A e0               * #9DA -> ..
+#ch +#9Do i3,B e0               * #9DB -> ..
+
+#ch +#J10 i3,G e0               * #9DG -> ..
+#ch +#J11 i3,H e0               * #9DH -> ..
+
+#ch +#98g i3,G e0    #9DG -> ..
+
+
+   Primaerschluessel fuer Exemplare: (aus #9DF)  |:#9DF :E#9DG$e = #9DG$s
+#9DF +#9DG e$ y0 p"|:"       10  TitelId+Bd:ExplNr Status
+                             liegt also parallel zu Register 9!
+#9DA e$ y0 p"|:"       10  TitelId+Bd:ExplNr Abo
+
+#9DG >V e0      UP fuer sortierfaehige Bandnummernaufbereitung
+
+#9DG y0 $e r3,0 p":E"    ExplNr
+#9DG +#9DZ i4,V e0      bei Vormerksatz kein Standort = Sign
+#9DG +#9DZ $l y0 " = "     Standort anhaengen, wenn existiert
+#9DG $s y0 " = "           sonst Sign. (y0 ergaenzt)
+#9DZ
+#9DG +#9DX e0       wenn Expl.Nr, dann kein Barcode anhaengen
+  2 Zeil. vertauscht: $$050131
+#9DG +#9DX y0 $a ":B"        * :Barcode anhaengen!
+#9DG +#9DX i4,V e0     bei Vormerksatz keine ":001" erzwingen
+ #9DG +#9DX i5,V e0     bei 3stell. Schema
+#9DG +#9DX $H e0   Bestandssatz: keine ExplNr anhaengen
+   #9DG +#9DX $B c"[.-/+=]" e0
+
+ #t45        "E:" , auch wenn $e nicht da ist
+
+#9DX   ALFA
+!9DG +# $v c"~p" " p" e2      Praesenz
+ !9DG +# $D " l" e2            verliehen
+#9DG I4,0 I4,V I4,W I4,\31 y0 e1 p" "     Status anhaengen, wenn nicht '0' oder V
+ #9DG I5,0 I4,\31 y0 e1 p" "   bei 3stelligem Kategoriesystem diese Zeile!
+#9DG +# I4,V I4,W e0   keine Vormerk, dann hier schluss
+ #9DG +# I5,V e0
+#9DH $W p" W" P";"
+#9DH $D p" V"     Datum/Uhrzeit anhaengen bei Vormerkungen
+#9DH $V p";A"
+#+#
+
+#98g  (nur als Sprungmarke)
+#9DG +- i4,V e0    nicht fuer Vormerksaetze
+ #9DG +- i5,V e0   3stell Schem
+#u1 $a y0 p"|:E"     10  EBarkode    (Endebefehl entfernt)
+
+#u1 +#u1 $z y0 =s1   Invnr
+#+#
+
+#u1 $a { 8 } e0      Barkode vorhanden: neuen Schluessel einleiten
+#us1 >Z              9  ZInvnr
+#us1 ds1 e0
+#+#
+
+
+#-Í    (234)
+#u1 +#99V $v e"%" F32 y0 "|:B"     Verteiler ->
+#u1 $u y1 "|;"       Entleihername,datum 
+!u1 $D p"," P{ 8 }
+#u1 $D "|;X"         Datum,Leiher
+!u1 +#u1 $u y2 p"," P{ 8 }
+#+-    sonst nicht verliehen
+#u1 +#u1 $u y0 "|;B"        Entleihername ->
+#u1 $D ", "   Ausleihdatum
+#9DG +#99D $s "*" P"*" c"*-*" e0   falls '-' als Signatur: ->
+#9DG $s y0 ", "      Signatur aus ExplSatz
+#9DG $e y0 r3,0 45   Exemplarnr.
+#9DG +#99D e0        weiter
+#90 y0 ", "          Signatur
+#u1 y0 e$ "; "     Heftnr.
+
+  Ausleihdatum separat:
+#99D e0
+#u1 $D { 8 "|;D" }          11  DAusleihDat
+
+  Eintrag unter Namen:      11  name, anrede [Abt.], Datum, Signatur ExplNr.
+#u1 +#99A $a e0      nicht fuer Ausleihen ueber Ausweisnummern
+!u1 +#u1 $u { 8 "|;" } B"," b". " e"[ ,(]"       mit Namen beginnen
+#+#    nicht vorhanden: fertig
+!u1 $u B"," e". " f32 ", "         Anrede
+#u1 $u y0 c"," e"," p". [" P"]"    [Stellenzeichen]
+#u1 $D ", "   Ausleihdatum
+#9DG +# $s "*" P"*" c"*-*" e0      falls '-' als Signatur: fertig
+#9DG $s y0 ", "      Signatur aus ExplSatz
+#9DG $e y0 r3,0 45   Exemplarnr.
+#+#
+
+#99A e0       Eintrag unter Ausweisnr.:
+#u1 $a y0 { 8 "|:B" }       10  BUsrId:AusleihDat,IdNr[,Sign:ExplNr]
+#99V e0       Einsprung fuer Verteiler
+#u1 $D ":"    Ausleihdatum
+#u1 $v b"%" f32 r2,0 "/"
+#9DF +#9DG y0 ","    IdNr Titelaufnahme
+!00 e"[=\31]" ","      IdNr ZS-Bandaufnahme
+#90 y0 ","           Signatur
+#u1 y0 e$ B"Heft " ";"    Heftnr.
+#+#                  fertig
+#9DG $s y0 ","       Signatur
+#9DG $e y0 r3,0 45   :EExplNr.
+#+#
+
+  ** ORDER: Freigabedatum fuer Titel- und Exemplarsatz
+  ** Register 10
+#-◊  ( ◊ = 215 )
+!u1 $F e"(" p{ "|:Ú" }       ( Ú = 242 )
+#+#
+  ** Ende ORDER: Freigabedatum fuer Titel- und Exemplarsatz
+
+66=" "
+
+#(O    Signaturaufbereitung. Form:  gruppe[ .-/]zahl[(, ]anhang
+       wenn andere Struktur, dann dieses Unterprogramm aendern
+ !cc e$ E"[ .-/]"
+ !cc e$ b"[ .-/]" e"[(, ]" r5
+ !cc e$ b"[ .-/]" b"[(, ]" r3 p" "
+!cc e$ B"'" e"[0123456789\31]" F" " dsg asg     bis zur ersten Ziffer
+!cc e$ B"'" e$ x"*1" e"." f"-0" b0 r5 Asg           Zahl, 5stellig, ohne fuehrd. 0
+!cc e$ B"'" e$ b"[0123456789]" f"01234567890" Asg    Rest
+!usg f" "
+!usg dsg e0
+#)O
+
+        * aLF  Register  10 und 11
+        * Sprungmarken 216...
+
+        * Gebuehrensaetze:
+        * Storno oder Tilgung
+        * Bem.: In der ak-Zeile wird bei '' getrennt.
+        * #u1 enthaelt (Kategorienr. und als Kategorietext)
+        * Teilfeldinhalt PLUS Kennung
+        *
+
+#-‡                             * 224
+#ch +#J01 i4,T e0               * getilgt
+#ch +#J05 i4,S e0               * storniert
+#u1 +# i4,B y0 p"|;G"           * 11 GBLeserID
+#u1 +#J06 i4,D y0 p"|;G"        * 11 GDErfDatum/Typ[:*:Summe]
+#u1 +#J02 i4,G y0 b1 p"|;GT"    * 11 GTTyp/LeserId:Erf.Datum
+#+#
+
+#J06
+#9GF y0 $G "/"                  * .../Typ
+ #9GF +#J07 y0 $G c"9" e0        * Typ 'Extra'?
+ #+#
+
+#J07                            * 'Extra' weiterverarbeiten...
+ #9GG y0 $G c"STUNDUNG" "*." e1  * STUNDUNG? z.B. /9*:200
+#9GG y0 $S ":"                  * ...Summe
+#+#
+
+
+#J02
+#9GF $B y0 p"/"
+#9GF $D y0 p":"
+#+#
+
+#J01                            * getilgt und sortiert nach...
+#u1 +#J03 i4,G y0 b1 p"|;TGT"   * Typ...
+#u1 +#J04 i4,B y0 p"|;TG"       * LeserId...
+#u1 +#J08 i4,d y0 b1 p"|;TGD"   * TilgDatum...
+#u1 +#J09 i4,D y0 b1 p"|;TGE"   * Erfassungsdatum...
+#+#
+
+#J05                            * storniert und sortiert nach...
+#u1 +#J03 i4,G y0 b1 p"|;SGT"   * Typ
+#u1 +#J04 i4,B y0 p"|;SG"       * LeserId
+#u1 +#J08 i4,d y0 b1 p"|;SGD"   * StornoDatum
+#u1 +#J09 i4,D y0 b1 p"|;SGE"   * Erfassungsdatum
+#+#
+
+#J03
+#9GF $B y0 p"/"                 * 11 (T,S)GTTyp/LeserID:Datum
+#9GF $d y0 p":"
+#+#
+
+#J04
+#9GF $d y0 p"/"                 * 11 (T,S)GBLeserId/Datum
+#+#
+
+#J08
+#9GF y0 $G "/"                  * 11 (T,S)GDDatum/Typ:Summe
+#9GG y0 $S ":"
+#+#
+
+                                * Erfassungsdatum STUNDUNG
+#J09                            * 11 (T,S)GEErfDatum/Typ[*]:Summe;T.-Datum
+#9GF y0 $G "/"
+#9GG y0 $G c"STUNDUNG" "*." e1  * '*' fuer STUNDUNG
+#9GG y0 $S ":"
+#9GF y0 $d ";"                  * TilgDatum
+#+#
+
+
+        * Lesersatz
+  xxx:
+ #-ÿ                             * 216
+ !u1 y0 e$ b1 p"|:B"           * 10    BLeserID
+ #+#
+
+
+#-                             * 240 10  AAufnahmeDatum
+#t{ "|:A" }
+!9B $k P" "
+#u1 $A y0                 * Datum der Anmeldung
+#+#
+
+                                * 94.09
+#-È                             * 233 10 ZAusweisEnde
+#u1 $a y0 p"|:Z"                * Aktiver Leser?
+#+#
+
+
+  ========== aLF, ORDER Rueckgabe, Wartezeit Ende, Vormerkende
+#-€                              * 219
+#u1 +# y0 $R p"|:R"              * 10    RRueckgabeDatum
+#u1 +# y0 $W p"|:Wr"             * 10    WReservierungEndeDatum
+#u1 y0 $V p"|:Vm"                * 10    VVormerkungEndeDatum
+#+#
+
+
+            * ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+            *  Exemplarsaetze und Vormerksaetze:
+            *
+            *  ExplNr durchweg durch Barcode ersetzt!
+            *
+
+#9DF e$ y0 p"|:"          * 10  TitelID+Bd:Barcode Status
+
+#9DG >V e0                  * UP sortierfaehige Bandnummernaufbereitung
+#9DG +#J12 y0 $a ":"        * :Barcode anhaengen!
+
+#J12
+#9DG I4,0 y0 e1 p" "        * Status anhaengen, wenn nicht '0'
+ #9DG I5,0 y0 e1 p" "       * 3stellig
+#9DG +# I4,V e0             * Keine Vormerkung? Dann Schluss...
+ #9DG +# I5,V e0
+#9DH $D                     * Datum/Uhrzeit bei Vormerkungen
+#9DH $V p";A"               * ;AAblaufdatum anhaengen
+#+#
+
+#J10                        * Sprungmarke
+#9DG +- i4,V e0             * nicht fuer Vormerksaetze
+ #9DG +- i5,V e0            * 3stellig
+#u1 +# $a y0 p"|:E"         * 10  EExplBarcode
+  #9DF e$ y0 p"|:E"         * ETitelId  als Ersatz ??? NEIN
+#+#
+
+#J11                        * 11  BLeserID RueckDat,TitelID:Barcode
+#u1 $u y0 p"|;B"            * BLeserID
+#9DH $R p" "                * RueckDat
+#9DH $W p" W"               * WWarteDat Reservierung
+#9DH $V p" V"               * VEndeDat  Vormerkung
+!9DF y0 e$ p","           * ,TitelId
+#9DG +#J13 $B y0 p","       * ,BandNr
+#9DG $b y0 p"+"             * +BandNr   (sortierfaehig)
+#J13
+#9DG +# $a y0 ":"              * :Barcode! 2.95
+#9DG +# $e y0 r3,0 ":"    :ExplNr
+#+#
+
+                            * STATISTIK
+#-›                         * 221   11 STATL...
+#9DG +# i4,V e0             * nicht fuer Vormerkung
+ #9DG +# i5,V e0            * 3stellig
+
+#9DG +# i4,W e0             * nicht fuer Reservierungen
+ #9DG +# i5,W e0
+                            * Nur bei VORHANDENEN Leihdaten!
+#9DH $D y0 "|;STATL"        * STATLAuslDatum...
+#9DG +#J19 c"\31m" e0         * Existiert Medientyp?
+#nr +#J18 "/BM" e3          * Nein -> Standardmedientyp
+
+#J19
+#9DG $m y0 "/"              * .../MedienTyp...
+#J18
+#9DH $Z y0 ":"              * ...:VerlStufe...
+#9DG +#J17 c"\31s" e0         * Ex. Signatur?
+#nr +#J16 ";0" e2           * Nein - Standard?
+
+
+#J17
+#9DG $s y0 ";" e2           * Ja - ANPASSEN! Moeglichst kurz.
+#J16
+#9DH $C y0 "."              * ...,LeserKlasse
+#+#
+
+
+            * ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+            *   Systemdatensaetze und Statistiksaetze
+
+#-h                           ORDER
+#9AF +#J29 e0               * STATISTIK?
+  ** ORDER: Systemdatensaetze in Register 11
+              hierher wird aus dem Abschnitt #-@ gesprungen, daher die
+              direkte Angabe der Kategorienummern
+#9A +#9Aa y0 i4,A e0                   Auftraggeber/Bibliotheksadresse (Sigel)
+#9A +# y0 i4,B e$ p"|;SYS"       Bestellnummergeneratoren
+#9A +# y0 i4,F e$ p"|;SYS"       Helpfenster
+#9A +# y0 i4,K e$ p"|;SYS"       Kontingent
+#9A +# y0 i4,L e$ p"|;SYS"       Lieferanten
+#9A +# y0 i4,S e$ p"|;SYS"       Signaturgeneratoren
+#9A +#9AU y0 i4,U e"\20" p"|;SYS"       UNICODE VS-Saetze   V23
+#9A +# y0 i4,W e$ p"|;SYS"       Waehrungstabellen
+#9A +# y0 i4,Z e$ p"|;SYS"       Zugangsnummerngeneratoren
+                                       nicht da sein sollte!
+                            * i5,.. bei 3stell. Schema
+#9A +# e$ y0 i4,P p"|;SYS"    * Passwort
+#9A +# e$ y0 i4,C p"|;SYS"    * Leserklassen
+
+#9A e$ y0 i4,D p"|;SYS"    * Gebuehrensatz Typ
+#9A +# y0 i4,D $B p"/"    * /Benutzerklasse   ???aLF
+
+#9A +# e$ y0 i4,R p"|;SYS"    * Kalender
+#9A +# e$ y0 i4,F p"|;SYS"    * Fenster
+#9A +# e$ y0 i4,O p"|;SYS"    * Farben
+#9A +‰ e$ y0 i4,M p"|;SYS"    * Medientypenstamm
+#9A +# e$ y0 i4,V p"|;SYS"    * Verteiler
+#9A +# e$ y0 i4,D p"|;SYS"       * Medientypen!
+
+#9A +# e$ y0 i4,X p"|;SYS"    * Textbaustein
+#9A y0 e$ p"|;SYS[SCHROTT!!"         Alles was sonst noch da ist, aber
+#+#
+
+#J29                            * Tages-, Monats-, Jahresstatistik
+#9AF y0 e$ p"|;"              * Hauptteil : '|;STATD[K]...
+#9AF y0 $D                      * ...Datum...
+#9AF y0 $m p"/"                 * .../Medientyp
+#+#                             * ...fehlt bei Kasse
+
+#-‰
+#9A $C y0 p{ 8 "|;SYSE" }             * Medientypkuerzel
+#+#
+
+            * ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+            *
+            * Leserkonto aus Exemplarsaetzen
+            *
+            *
+#-Á                             * 231
+#9DG +#J30 I4,l e0              * Entliehen?
+#9DH $u y0 p"|;LKE"             * LKELeserID...
+#9DG +#J39 c"\31m" e0             * .../Medientyp
+#nr p"/BM" e3                   * Medientyp fehlt? Standard!
+#+#
+
+#J39
+#9DG $m y0 p"/"                 * Medientypkuerzel
+#+#
+
+#J30
+#9DG +#J31 I4,W e0              * Reserviert?
+#9DH $u y0 p"|;LKR"             * LKRLeserID...
+#9DH $w y0 p"/"                 * .../Reservierungsdatum
+#+#
+
+#J31
+#9DG +# I4,V e0                 * Vormerkung?
+#9DH $u y0 p"|;LKV"             * LKVLeserID...
+#9DF y0 e$ "/"                * .../TitelID...
+#9DH $V y0 ":"                  * ...:Ablaufdatum
+#+#
+
+
+            *ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+            *
+            * Fuer Mahnungen aus Exemplar- und Gebuehrensaetzen
+
+            * Exemplarsatz:
+            * In Vormerksaetzen und in reservierten
+            * Exemplaren gibt's die Teilfelder nicht.
+
+
+#-ﬂ                             * 223
+#9DH $M p"|;MD" y0              * 11 MDMahndatum
+#+#
+
+#-‚
+#9DH +#J00 c"\31m" e0             * Existiert das Feld?
+#+#
+
+#J00                            * Exemplarmahnung
+#9DH $u p"|;MB" y0              * 11 MBLeserID/Ewirk. Datum:Stufe
+#9DH $m p"/E" y0
+#9DH $n p":" y0
+#+#
+
+#-Â                             * 229
+#9DH +#J14 c"\31m" e0             * Existiert das Feld?
+#+#
+
+#J14
+#9DH $m p"|;MM" y0              * 11 MMwirkl.Datum/LeserID
+#9DH $u p"/" y0
+#+#
+
+#-Ë                             * 94.09
+#9DH +#J15 c"\31U" e0             * 232 Letzte Mahnung
+#+#                             * MLAblaufdatum
+
+#J15
+#9DH $U "|;ML" y0
+#+#
+
+
+                * Gebuehrensatz:
+                * Nicht bei getilgten Gebuehren
+                * Nicht bei stornierten Gebuehren
+
+
+#-·                             *   225
+#9GF +- i4,T                    *   nicht bei getilgten und...
+#9GF +- i4,S                    *   nicht bei stornierten Gebuehren
+  sondern nur bei Mahngebuehren
+#9GF $M p"|;MD" y0              *   11 MDBerechnetes Datum
+#+#
+
+#-„                             *   227
+#9GF +- i4,T                    *   nicht bei getilgten und..
+#9GF +- i4,S                    *   nicht bei stornierten Gebuehren
+#9GF +#J20 c"\31m" e0             *   existiert Teilfeld?
+#+#
+
+#J20
+#9GF $B p"|;MB" y0              *   11 MBLeserID/Gwirk. Datum:Stufe
+#9GF $m p"/G" y0                *   Gebuehrenmahnung
+#9GF $n p":" y0
+#+#
+
+#-Ê                             *   230
+#9GF +- i4,T                    *   nicht bei getilgten und...
+#9GF +- i4,S                    *   nicht bei stornierten Gebuehren
+#9GF +#J21 c"\31m" e0
+#+#
+
+#J21
+#9GF $m p"|;MM" y0              *  11 MMwirk.Datum/LeserId
+#9GF $B p"/" y0
+#+#
+
+
+  **** aLF ENDE *********
+
+  ******* ORDER Anfang  ************
+#9Aa e0           (nur Sprungmarke)
+
+#9A e$ b1 p"|;SYSA:"   ORDA 2 Zeilen zusaetzlich
+#9A $N p"=" y0
+
+#9A e$ b1 p{ 8 "|;SYSA" }
+#9A $N p" " y0
+#+#
+
+#-÷             214 Bibliotheksadresse mit Teilfeld $L
+!00 p"|9" P{ 8 }
+#u1 +#9A i4,A $L p"|;SYSA:"
+#u1 +#9Ax i4,L e0         ORDA
+#+#             Schluss, falls $L nicht da
+#9A $N p"=" y0
+#+#
+
+   ORDA:
+#9Ax           NEU  Schluessel |:L:xx=Name
+#t{ "|:L:" }
+#9A e$ b1
+#9A $n y0 p"="
+#+#
+
+#9AU     Unicode VS-Saetze  V23
+
+#9A f"U" =vs e0
+#-¢
+#uvs e"\20" e":" y0 p{ 8 "|:" }
+#uvs e"\20" b":" y0 p{ 8 "|:u " }  Eintrag unter u im Reg. 10
+#uvs e"\20" e":" y0 p" _" e";" P";"
+#uvs +¢ b"\20" =vs
+#+#
+
+  ** Ende ORDER: Systemdatensaetze in Register 11
+
+  ** ORDER/ZABOM: Kennungen f. div. Zwecke
+#-‘  ( ‘ = 212 )
+!u1 y2 "|;zz "
+#+#
+  ** Ende ORDER: Titelidentnummer Register 11
+
+  ** ORDER: Vorhandene Bestellungen Register 10
+             t TitelId : Bestellsatzuebersicht
+
+             Hierher wird von Abschnitt #-@ gesprungen
+
+             Die Kennung muss durch 1 (ein) Leerzeichen von
+             der individuellen Satzkennung getrennt sein.
+
+             Beispiele:
+                       t 34567+2345692039
+                       ¿ƒƒ Gruppenkennung
+                oder   idn 34567 Bestellung Nr. 459876
+                       ¿¬Ÿ
+                        ¿ƒƒ Gruppenkennung
+                oder aehnlich
+
+             Desweiteren MUSS nach der Gruppenkennung die vollstaendige
+             Titelidentnummer stehen, damit ORDER Bestellungen finden kann
+
+            Weiter muss dies parametriert werden: Fuer die Uebersicht der
+            Bestellungen zu einem Titel (erscheint, wenn man vom Titel aus
+            TAB drueckt), muessen die Zeilen hier ebenfalls parametriert
+            werden. Nach dem eben beschriebenen Eintrag muss das Zeichen :
+            (= ASCII 58) folgen. Direkt nach dem : folgt die Zeile, die
+            fuer diese Bestellung in das Uebersichtsmenue soll. Also z.B.
+
+                        t 34567 : 000011  23.04.1994   1   EE  HBIB  inv.
+
+#-”  ( ” = 211 )
+!00 p"|9" P{ 8 }  
+#9DA +#uad y0 $A P{ "|:tz " } e0     abgesch. Bestellung
+  ZAboM:
+#9DB +#uYV i5,l e0       Zs lfd. Abo
+#9DB +#uYQ y0 i5,e p{ "|:abo-e" 8 } e0    Zs gekuend. Abo
+#9DB +#uYQ y0 i5,b p{ "|:abo-b" 8 } e0    Zs beendetes Abo
+#nr +#uYQ e0
+  ZAboM spezif. extraSchl.
+#uYV
+!9DB i4,A $j y0 "|:abo " P{ 8 }   abo liefcode
+!9DB i4,B $j y0 "|:band " P{ 8 }   abo liefcode
+#uYQ
+#9DB +#uad { 8 "|:t " } e0
+   kein #9DB: Heftumlaufsatz  ZAboM
+!9DA $J { 8 "|:u-" }    u-zabo...
+#00 b"," p","            Heft
+!9DA $T { 8 "|:u-" }    z-zid
+#9DG $Y "/" y0
+#00 b"," p"," y0         Heft
+
+#9DU y0 e$ { 8 "|;ZH" }
+
+#+#
+
+    Datum, abhaengig vom Status der Bestellung
+#uad dad da2 e0
+!9DB +#9D0 i4,A e0
+#9DB +# i4,B e0
+#9DA y0 $T P{ " :" }    hier muss :  stehen fuer DOS-Order
+!9DA y0 e$ r14,  0             Bestellnummer
+#9DB +#9D1 i4,1 e0        vorausgewaehlt
+#9DB +#9D2 i4,2 e0        vorakzessioniert
+#9DB +#9D3 i4,3 e0        bestellt
+#9DB +#9D4 i4,4 e0        reklamiert
+#9DB +#9D5 i4,5 e0        storniert
+#9DB +#9D6 i4,6 e0        inventarisiert
+#9DB +#9D7 i4,7 e0        abgeschlossen
+#9DB +#9D8 i4,8 e0        Desiderat
+#9DA +#9D9 $I e"(" dad aad      unvoll. inventarisiert
+
+#9D0 e0
+!9DA $T y2 { 8 "|:" }
+!9DB e2 p"-"
+!9DG $L "  "
+!9DG $s "  "
+!9DA $B b6 "   best.am "
+!9DA $B b4 e2 "."
+!9DA $B e4 "."
+#+#
+#9D1 e0             Nur Sprungmarke
+#9DA +#9D9 $V e"(" dad aad      vorausgewaehlt
+#9D2 e0             Nur Sprungmarke
+#9DA +#9D9 $E e"(" dad aad      vorakzessioniert
+#9D3 e0             Nur Sprungmarke
+#9DA +#9D9 $B e"(" dad aad      bestellt
+#9D4 e0             Nur Sprungmarke
+#9DA +#9D9 $R e"(" dad aad      reklamiert
+#9D5 e0             Nur Sprungmarke
+#9DA +#9D9 $S e"(" dad aad      storniert
+#9D6 e0             Nur Sprungmarke
+#9DA +#9D9 $I e"(" dad aad      inventarisiert
+#9D7 e0             Nur Sprungmarke
+#9DA +#9D9 $A e"(" dad aad      abgeschlossen
+#9D8 e0             Nur Sprungmarke
+#9DA $O e"(" dad aad            Desiderat
+
+#9D9 e0             Nur Sprungmarke: Ausgabe des Datums
+#uad b6 e2 P"." da2 aa2     Tag
+#uad b4 e2 P"." Aa2         Monat
+#uad e4 Aa2                 Jahr
+#ua2 p" " s10
+
+#9DB $n r10                 Ausgabe der Exemplare
+#9DB $j p" " s11            Lieferantenkuerzel
+#9DB +#9D1 $A s13           Auftraggeber
+
+#nr +#9D1 e0                Unbedingter Sprung falls Desiderat,
+                            (es gibt dann keinen Auftraggeber)
+
+
+
+  ========== ZAboM: Eintraege f. Abo bzw. Band unter ZsId
+#-“  ( “ = 210 )
+#9DB +#9DU i4,A e0
+#9DB +#9z i4,B e0
+#+#
+
+  Abo:  TitelId-AboId -A ...
+!9DU p{ "|:V" } y0  Verteiler (nur Abo-Satz)
+#00 +#9DA c"zabo" e0
+#+#
+#9DA e0
+#t{ 8 "|:zz" }   Praefix f. Sonderregister Abo+Bde
+#9DA $T y0     TitelId
+#00 B"zabo" x"-1000000" f"-" e"." p"-" y0 P" -"
+!9DB $$ 
+#9DG $Y e"/" p"  " P"," y0
+#9DG $L " Standort:" y0
+  #9DA $B " bestellt: " y0       Jahr d. Bestellung
+#9DB $j "  Lief.: " y0
+#+#
+
+  Band:  TitelId-AboId -B ...
+#9z e0
+#9DA +#9z c"zabo" e0
+#+#
+#9z
+#t{ "|:zz" }
+#9DA $T y0
+#9DA $J B"zabo" x"-1000000" f"-" e"." p"-" y0
+  Trick: 10000-Jahr sorgt f. umgekehrte Sortierung
+!9DB $$ p" -"
+#9DG $Y y0 x"-10000" f"-" e"." p" "
+#9DG $Y y0 p"="
+#+#
+
+
+  ========== ORDER: Faelligkeitsdatum in Register 10
+#-—  ( — = 209 )
+  !u1 i4,3 $D p{ "|:®" }   ( ® = 168 )
+                         fuer dreistelliges Schema i5, ... verwenden!
+!u1 i4,3 $D p{ "|:F " }    20071001
+#+#
+  ========== Ende Faelligkeitsdatum
+
+
+  ** TitelId+Bd:ExplNr Status
+  ** EBarkode
+  ** BUsrId RueckDat,TitelId:ExplNr
+  ** o BestNr.tTitelId.
+
+#9Do
+  Verteiler:
+#ch +#9Dg i3,G e0    #9DG -> ..
+#ch +#9Dh i3,H e0    #9DH -> ..
+#ch +#9Da i3,A e0    #9DA -> ..
+#ch +# i3,B e0
+                   Primaerschluessel fuer Exemplare:
+#9DF e$ y0 p"|:"       10  TitelId+Bd:ExplNr Status
+                             liegt also parallel zu Register 9!
+#9DG >V e0      UP fuer sortierfaehige Bandnummernaufbereitung
+#9DG +#9DX y0 $e r3,0 ":"   ExplNr mit ':' anhaengen (ORDER verlangt fuer die
+                            Inventarisierungsroutine ein ':'! nicht aendern)
+#9DG +#9DX i4,V e0     bei Vormerksatz keine ":001" erzwingen
+ #9DG +#9DX i5,V e0     bei 3stell. Schema
+#t{ ":001" }   wenn $e nicht da ist
+#9DX
+#9DG I4,0 y0 e1 p" "     Status anhaengen, wenn nicht '0'
+ #9DG I5,0 y0 e1 p" "   bei 3stelligem Kategoriesystem diese Zeile!
+#9DG +# I4,V e0   keine Vormerk, dann hier schluss
+ #9DG +# I5,V e0
+#9DH $D    Datum/Uhrzeit anhaengen bei Vormerkungen
+#+#
+
+#9Dg  (nur als Sprungmarke)
+#9DG +- i4,V e0    nicht fuer Vormerksaetze
+#u1 +#9Df $a y0 p"|:E"      10  EBarkode
+#9DF e$ y0 p"|:E"          ETitelId  als Ersatz, wenn kein Barcode!
+#9Df  (nur als Sprungmarke)
+        09.11.1995 16:38:55 ho:
+#t{ 8 }     Beginn eines neuen Registereintrages: Exemplarsaetze nach
+            Zugangsnummer und Zugangsdatum in Register 11( ZNznr zdatum )
+#9DG +#9Dg $z p"|;ZN"      Zugangsnummer
+#t{ "|;ZNkeine Zugangsnummer!" }
+#9Dg    (nur Sprungmarke!)
+#9DG +#9Dg $d p" "         Zugangsdatum
+#t{ " kein Zugangsdatum!" }
+#9Dg    (Sprungmarke)
+#t{ 8 }     Beginn eines neuen Registereintrages: Exemplarsaetze nach
+            Zugangsdatum und Zugangsnummer in Register 11 ( ZDzdatum znr)
+#9DG +#9Dg $d p"|;ZD"   Zugangsdatum
+#t{ "|;ZDkein Zugangsdatum!" }
+#9Dg    (Sprungmarke)
+#9DG +#9Dg $z p" "      Zugangsnummer
+#t{ " keine Zugangsnummer!" }
+#9Dg    (Sprungmarke)
+#+#
+
+
+#9Dh  (nur Spr.M.)       11  BUsrId RueckDat,TitelId:ExplNr
+#u1 $u y0 p"|;B"          BUsrId
+#9DH $R p" "              RueckDat
+#9DH $W p" W"             WWarteDat  fuer Buecher im Abholregal
+#9DH $V p" V"             VEndeDat fuer VormerkEnde
+!9DF +#9DG e$ p","            ,TitelId
+#00 e$ p","
+#9DG +#9Dx $B y0 p","      ,BandNr
+#9DG $b y0 p"+"           +BandNr   (sortierfaehig)
+#9Dx
+#9DG +# $e y0 r3,0 ":"    :ExplNr
+#+#
+
+  ** Bestellungen nach Kontingent sortiert
+  ** k Kontingent Bestellnummer Status_der_Bestellung
+#-Ó  ( Ó = 238 )
+#u1 $a p"|:K "                 Kontingent ausgeben
+#9DA p{ "   " } e$ P{ "  " }    Bestellummer
+#u1 >T                         Status_der_Bestellung
+#+#
+
+  ** Bestellungen nach Lieferant sortiert
+  ** angegeben ist der Lieferantencode. Wenn der nicht exisitert,
+  ** die ersten 10 Zeichen des Lieferantenfeldes $J
+  ** Dann kommt die Bestellnummer, der Status und zum Schluss ein
+  ** Schalter, der anzeigt, ob gedruckt werdn muss oder nicht
+  ** Anmerkung: Dieser Indexeintrag wird NICHT von ORDER ausgewertet
+  **            Er soll nur zeigen, was man mit den Daten noch alles
+  **            machen kann. Sie koennen ihn wegfallen lassen, indem
+  **            Sie oben die entsprechende ak-Zeile auf Kommentar
+  **            setzen.
+#-œ  ( œ = 207 )    u1=9DB
+#u1 +#uZB i4,B e0      ZAboM
+#u1 +#9DA $j y0 p"|:L "       Lieferantencode
+#u1 +#9DA $J e10 p"|:L "   Lieferadresse direkt (10 Zeichen)
+#t{ "|:L ohne" }           Rettungsboot! Kein Lieferant angegeben
+                           (sollte eigentlich nicht vorkommen!)
+#9DA y0 e$ p{ &14 " Best.Nr.: " } P" "      Bestellnummer ausgeben
+#>T                      Status ausgeben
+#nr daa e0
+#uaa y0 E"!" p{ &43 }
+#+#
+
+   ZAboM
+#uZB e0    ZsBandsatz
+#9DB $O y2 "|:ZM" P{ 8 }  Mahndatum nchst. Heft
+!9DA $T y2 "|:" P"-b"     Titel ID
+!9DB b1 e1
+#9DG $Y ","
+!9DA $J y2 { 8 "|:"} P"-b"    Abo ID
+!9DB b1 e1
+#9DG $Y ","
+#+#
+
+                            *** Bestellungen nach Bestellnummer
+#9Da  (Nur Sprungmarke!)    Register 10  BestNr.tTitelId.
+
+#9DB +#u1 e0   Nur weiter, wenn es auch #9DB gibt
+#+#
+!u1 y0 e$ p{ "|:o " }     Bestellsatz (Index 10 o bestnr : titelid)
+!u1 y0 $T p" : " P"  "       Teilfeld T mit " : " wieder dranhaengen
+
+#9D1  (Nur Sprungmarke, Sprung erfolgt von Marke -” aus)
+#t{ " " }
+#(T  Bestellstatus anzeigen
+!9DB i4,1 e1 daa P{ "ausgew." } aaa
+!9DB i4,2 e1 daa P{ "vorakz." } aaa
+!9DB i4,3 e1 daa P{ "best." } aaa
+!9DB i4,4 e1 daa P{ "rekl." } aaa
+!9DB i4,5 e1 daa P{ "storn." } aaa
+!9DB i4,6 e1 daa P{ "inv." } aaa
+!9DB i4,7 e1 daa P{ "abgschl." } aaa
+!9DB i4,8 e1 daa P{ "des." } aaa
+!9DB i4,9 e1 daa P{ "unv.inv." } aaa
+!9DB +#9DB i4,A i5,l p"abo!" e"!"
+!uaa b1
+#)T
+#9DB i4,A i5,l $a { 8 "|:Z " }
+#+#
+  ========== Bestellungen nach Status sortiert. Diese Eintraege
+             werden fuer die Kursangleichung und Kontingentrekonstruktion
+             benoetigt. Die Marke darf veraendert werden, aber nicht der
+             Anfang des Registereintrages. Das gilt auch fuer das Register
+             selbst!
+
+             Der Anfang muss immer so aussehen: "s n ......", wobei n der
+             Status ist (1 - 9)!
+
+#-–  ( – = 208 )
+#9DB +- i4,A e0     Abosatz ZAboM
+#9DA +- i4,V e0     Umlaufsatz
+#9DB +- i4,B e0     ZsBandsatz
+!9DB e1 p"|;s "
+            Verteiler, um das zum Status gehoerige Bearbeitungsdatum
+            zu ermitteln
+#9DB +#9D1 i4,1 e0      Status vorgeschlagen?
+#9DB +#9D2 i4,2 e0      Status vorakzessioniert?
+#9DB +#9D3 i4,3 e0      Status bestellt?
+#9DB +#9D4 i4,4 e0      Status reklamiert?
+#9DB +#9D5 i4,5 e0      Status storniert?
+#9DB +#9D6 i4,6 e0      Status inventarisiert?
+#9DB +#9D7 i4,7 e0      Status abgeschlossen?
+#9DB +#9D8 i4,8 e0      Status Desiderat?
+#9DB +#9D6 i4,9 e0      Status unvollstaendig inventarisiert? = inventarisiert
+#u1 +Ì e0               kein erlaubter Status -> unbed. Sprung zur Ausgabe
+                        der Bestellnummer
+#9D1 e0                 (nur Sprungziel)
+#u1 +Ì $V e"(" p{ &7 }  Datum vorgeschlagen
+#9D2 e0                 (nur Sprungziel)
+#u1 +Ì $E e"(" p{ &7 }  Datum vorakzessioniert
+#9D3 e0                 (nur Sprungziel)
+#u1 $B e"(" p{ &7 }  Datum bestellt
+#9DB $j p" " y0
+#u1 +# e$ p{ &22 }       Bestellnummer ausgeben
+#+Ì
+#9D4 e0                 (nur Sprungziel)
+#u1 +Ì $R e"(" p{ &7 }  Datum reklamiert
+#9D5 e0                 (nur Sprungziel)
+#u1 +Ì $S e"(" p{ &7 }  Datum storniert
+#9D6 e0                 (nur Sprungziel)
+#u1 +Ì $I e"(" p{ &7 }  Datum inventarisiert und unvollstaendig inventarisiert
+#9D7 e0                 (nur Sprungziel)
+#u1 +Ì $A e"(" p{ &7 }  Datum abgeschlossen
+#9D8 e0                 (nur Sprungziel)
+#u1 +Ì $O e"(" p{ &7 }  Datum Vormerker (Desiderat)
+#-Ì
+#u1 e$ p{ &18 }       Bestellnummer ausgeben
+#+#
+
+  ** ORDER Ende *****************
+
+#(Z    ZgNr. in #cc 
+#cc +#cc p"|9Z!" e"!" 
+#+#
+   Umcodierung (hierher aus #-9)
+#(z
+   wenn $z, dann nur dieses (#9DG)
+#cc B$z e$ =zn
+#uzn y0 f" " e"[:.,-/ ]"   erster Teil ohne Aenderung
+#uzn f" " e"(" b"[:.,-/ ]" x"*1" x">0" e"." r5     lfd.Nr. 5stellig
+#uzn f" " b"[:.,-/ ]" f"01234567890" p" " y0    falls noch was danach kommt
+#uzn dzn e0
+#)z
+  Neu f. ALFA mit Ausl.Angaben in #91  $$20140113
+!cc b$u ,"_\31D_,_" p{ 8 "|;" }
+#cc b$D p{ 8 "|;X" }
+!cc $u ","
+#)Z
+
+#(V    Bandnummernaufbereitung fuer Bestandssaetze Teilfeld $B
+       ENTWEDER RAK:   NR1[{-/=+,}NR2][,nr1{-/=+,}nr2](Jahr/Jahr2)zusatz
+                       (wichtig: immer "(" vor dem ersten Jahr)
+       ODER NZN:       NR1-Nr2.Jahr1-Jahr2,nr1-nr2
+                       (wichtig: immer "." vor dem ersten Jahr)
+       wobei die beiden Nummern auch Nummernbereiche sein koennen mit
+       den Zeichen -,/+= als Trennung
+#nr dbB dbH e0
+#cc $L p"'"              zuerst Sigel mit ' anhaengen, wenn vorh.
+  Abtrennung der Banddaten mit ' oder " ? (Auswirk. auf Anzeige)
+  #cc $B =bB,66 p'"' e1      entw. Bandbez. in #ubB zwischenspeichern
+#cc $B =bB,66 p"'" e1      entw. Bandbez. in #ubB zwischenspeichern
+  #cc $H u =bH,66 p'"' e1      oder  Bestand  in #ubH zwischenspeichern
+#cc $H u =bH,66 p"'" e1      oder  Bestand  in #ubH zwischenspeichern
+#cc +#99Z $b "+"
+#cc >W    bestandteile vorbereiten
+#ujj f".(" e"[-; ,/)]"     erstes Jahr zum Vorsortieren
+#cc +#9DX $H e1 p" " e1    ' ' vor summarischer Angabe
+#cc $B e1 p" " e1          ' ' vor Bandangabe
+#9DX
+!uv1         NR1 Angabe vor dem Jahr, 1.Teil
+!uv2         NR2                     2.
+#ujj         Jahr/Jahr2
+!uh1         nr1 Angabe hinter dem Jahr, 1.Teil
+!uh2         nr2                         2.
+#)V
+#99Z
+#ubB dbB p" = "    $B zusaetzlich an sortierfaehige Nummer dranhaengen
+#)V
+
+#(W    Vorbereitung der einzelnen Teile, einschl. Interpunktion!
+#nr djj dv1 dv2 dh1 dh2 e0    alle Teile zuerst loeschen
+#ubB 0 =bH
+#ubH e"[.=+(/,-]" x"*1" f"0" e"." r5 =v1  das ist fuer beide gleich
+!ubH e"[.=+(/,-]" F". " f"0123456789" y2 Av1  das ist fuer beide gleich
+!ubH E"[.=+(/,-]" T1 f"0123456789" F". " Av1  das ist fuer beide gleich
+#ubH +#99W c"(" e0      kommt "(" vor? RAK-Form
+#ubH e"." b"[/,-+=]" x"*1" f"0" e"." r2 =v2   hinten a,b,c abschneiden
+!ubH e"." b"[/,-+=]" f"0123456789" y2 Av2   wieder ansetzen
+#ubH y0 b"." p"." =jj     gesamter Rest, wenn #ubH
+#ubB b"." e"[,. ;\31]" y0 p"." =jj    nur Jahr, wenn #ubB
+!ubB y0 b"." b"[,.;]" E"[=+-/]" r5 p"," =h1
+#ubB y0 b"." b"[,.;]" b"[=+-/]" =h2
+#)W
+
+#99W  Spr.Marke:  RAK-Form der Bestandsangaben
+#ubH b"(" e$ p"(" =jj
+#ubB b"(" E")" p"(" =jj
+#ubH e"(" b"[/,-+=]" F" " =v2
+#ubH +#99X P"@" c")@" e0   hinter ")" kommt nix mehr
+#ubB b")" E"[/-+=]" r5 p"," =h1
+#ubB b")" b"[-/+=]" =h2
+#99X
+#)W
+#+#
+  *** NUR fuer DEMO ****
+
+#-u  Demo-Schlagwort
+!u1 u e"_" f" /(<)+-" F"* " p"|1zz "
+#+#
+
+
+#-¸    RDA-Schlagw #99s
+!u1 f" " y2 "~g4"
+!u1 b": " y2 p{ 8 "~g4" }
+!u1 c": " e":" f" " p" --> "
+#+#
+
+H  HilfsAbschnitt fuer PV (programmierbare Validierung)
+
+90="Keine Identnr. hierzu vorhanden, bitte korrigieren!"
+91="Keine Identnr. zu #00/#9DF vorhanden, bitte korrigieren!"
+92="Ausweisnr. schon vergeben an: "
+93="Hefte schon beim Buchbinder!"
+94="Weitergabe an Buchbinder nicht moeglich, Heft(e) noch verliehen!"
+
+#uzo +9 e0   Es ist a99
+
+  (nur bei Modus 3 soll es weitergehen!)
+#u2 +# c"0" e0
+#u2 +# c"1" e0
+#u2 +# c"2" e0
+ 
+  ist die Form  #u1 #nn Text? Dann nach #upV kopieren
+#-9
+#u1 +0 y0 i4,# =pV e0
+
+  nein, die Form ist  #nn Text  (an der Adresse #u1)
+   das ist bei Modus 3 der Fall!
+#t{ s0 }
+   Dann soll das nach #upV
+#u1 =pV e0
+#t{ s4 }
+  
+  #upV hat jetzt immer dieselbe Form, und zwar
+           #upV#nn Text von #u1
+  Deshalb muss es dann i5 statt i1 heissen, i6 statt i2 usw.
+  Achtung: "y0 b4 " ergaenzen, wenn der Eingabetext als solcher
+  gebraucht wird, denn der beginnt hinter "#upV#nn "
+  (bzw. b8, wenn man  #t{ s0 } gemacht hat!)
+  ACHTUNG: Wenn nur b4 gegeben wird, kann es sein, dass das '#'
+  am Anfang verschwindet, wegen der Umcodierung, und dadurch ein
+  Zeichen vom Text verlorengeht! Daher y0 b4, sonst waere b3 richtig.
+  Das haengt von den p-Befehlen der konkreten Parameter ab!
+
+  Beginn der eigentlichen PV-Routinen, hier wird immer
+  #upV statt #u1 genommen!
+#-0
+  Variablen f. GND freimachen
+#dts dg0 dg1 dg2 dg3 dg4 dg5 dg6 dg7 dg8 dg9 dgm dgn e0
+
+#u2 +#98E c"E" dhn e0   falls Bearbeitung -> #98E
+#u2 +#98E c"C" dhn e0   falls Kopie  -> #98E
+#u2 +# c"I" dhn e0   falls Neuaufnahme
+#u2 +e c"e" dpv e0   falls Abfrageliste beendet -> #-e
+#u2 +N c"N" e0       nach Identnr.-generierung -> #-N
+#u2 +B c"s" e0       vor dem Speichern: Bestellnr
+
+#upV +#8na i5,8 i6,n i7,a e0
+#upV +#70 i5,7 i6,0 i8,_ e0
+#upV +U i5,8 i6,e e0            #8e : _ ersetzen!
+#upV +- I5,9 e0       nichts fuer andere ausser #9..-Kategorien
+#upV +#98B i6,2 i7,  e0         #92   ZS-Bestandsinformationen
+#upV +C i6,9 i7,k e0            #99k  ZS Kollationsdatum
+#upV +D i6,9 i7,b e0            #99b  ZS Buchbinderdatum
+#upV +#9B i6,B i7,  e0          #9B   Benutzerstammsatz
+#upV +# e0         #9DF  Identnr. Titelaufnahme
+#upV +A i6,X dva dvn dvx e0     #9X   ALFA
+   ORDA:
+#+#
+
+!8na y2 p"xxxx" ,"_-__" ,"_/__" ,"_ __" f"x_" p"#8na" M     Kleinbuchst.
+#+#
+
+!70 y2 p"xxxx" ,"_-__" ,"_/__" ,"_ __" f"x" p"#70 " M     Kleinbuchst.
+#+#
+
+#9B +#99B c"\31" e0    Benutzerstammsatz: falls schon Teilfelder vorhanden ->
+#9B +#9B y0 b1 e$ "B" |:0    Ausweisnummer schon vergeben?
+#nr +#dts e0         nein: ->
+#9B $n y0 92            ja: Meldung ausgeben
+#</    zurueckschalten
+#dts e8 p$A dpv apv        sonst aktuelles Datum mit "A" nach #upv
+#9B apv       Rest davor
+#upv "#9B 0" y0 M    #upv als #9DB ausgeben, Status = 0
+#+#    fertig
+#99B e0
+#</    zurueckschalten
+#+#
+
+
+#-U   #8e   _ durch %5f ersetzen, sonst evtl. V14-Aerger
+#upV ,",_,%5F," M
+#t{ "-" }
+#+#
+
+#-A
+#upV +#99A $D e0      falls verliehen ->
+#9DG i4,l y0 b1 "#9DG0" M   sonst ggf. Ausleihstatus loeschen
+#t{ s0 }      Kategorie-Start auf "#" setzen
+#upV c"\31a" ~a ~v M    ggf. Teilfelder a und v loeschen
+#t{ s4 }      Kategorie-Start auf Textanfang setzen
+#+#           fertig
+#99A e0
+#upV +#9DG $u e0      nur weiter, falls Entleiher eingetragen
+#+#
+#9DG +#9X $v c"p" e0        keine Ausl. von Praesenzex.
+#9DG I4,l y0 b1 "#9DGl" M       ggf. Ausleihstatus setzen
+#upV $v ava    falls vorheriger Entleiher vorhanden: in #uvt speichern
+#upV +#95v $u "*" P"*" c"*v*" e0     falls "v" als Entleiher eingegeben: ->
+#upV $u "**" b"**v" avx      falls "v" am Anfang: Rest nach #uvx
+#uvx +#95v V4,/ v4,: x"*1" x">0" dvx avx         falls Ziffer: ->
+#t{ s0 }      sonst Kategorie-Start auf "#" setzen
+#upV y0 b4 ~a dva ava       #upV ohne Teilfeld a in #uva uebernehmen
+#t{ s4 }      Kategorie-Start auf Textanfang setzen
+#uva c"\31v" ~v ~D dva ava    ggf. alte Verteilerinfos entfernen
+#upV $u e"[, ]" b"_" p$a Ava       Ausweisnr. ohne Unterstrich ins Teilfeld a
+#uva y0 M     neue Entleiherkategorie ausgeben
+#+#    fertig
+#95v +#9A |:0        Verteilerliste nachladen
+#+-    nicht gefunden: abbrechen
+#9A +#uvx $e e";" F32 p$v avn     1. Name der Verteilerliste in #uvn
+#<     keine Angaben vorhanden: zurueckschalten
+#+-    Abbruch
+#uvx +#9A >Q         falls Zaehler uebergeben: Unterprogramm Q aufrufen
+ #uvx +v >Q    falls Zaehler uebergeben: Unterprogramm Q aufrufen
+ #uva +#9A dvn e0
+ #+v
+ #9A $e b"#uva" b";" f32 e";" F32 p$v avn
+ #-v
+#uva >P e"%" F32 dvx avx    falls Entleiher bereits vorh.: UP P aufrufen
+#9A dvx e0    Zaehler loeschen
+#<     zurueckschalten
+#t{ s0 }      Kategorie-Start auf "#" setzen
+#uvn +a e0    falls #uvn belegt: weiter bei #-a
+#upV y0 b4 e4 M      sonst Kategorie loeschen (letzter Name im Verteiler erreicht)
+#t{ s4 }      Kategorie-Start auf Textanfang setzen (Normaleinstellung)
+#+#           fertig
+#-a
+#upV +#uvn y0 c"\31v" b4 ~v ~D ~u ~a avn       Kat. ohne Ausleihdaten vor #uvn setzen
+#upV y0 b4 ~u avn    falls Erstausleihe via Verteiler
+#uvn y0 b4 M  Manipulationen speichern
+#t{ s4 }      Kategorie-Start auf Textanfang setzen (Normaleinstellung)
+#+#
+#9X y0 ~u ~D "#9X " M       Ausl. von Praesenzex. unterdruecken
+#+#
+
+#98E    Bearbeitung/Kopie
+#00 +#92 i4,z c"+" e0       nur fuer ZS-Bandaufnahmen
+#+-
+#92 +# F",-/ " T"," B"-" f", " =hn        letzte Heftnr. aus #92 extrahieren
+#92 +# F",-/ " B"-" f" " =hn        dto., falls kein Komma vorh.
+#+-    nichts fuer andere Kategorien
+
+#98B
+#00 +#92 i4,z c"+" e0       nur fuer ZS-Bandaufnahmen
+#+-
+  letzte Heftnr. aus #92 extrahieren, mit #uhn (vergl. #-E) vergleichen
+  falls identisch: Sprung nach #-X, sonst weiter bei #dts:
+#92 +#dts F",-/ " T"," B"-" f", " =hn+[ e0
+#92 +#dts F",-/ " B"-" f" " =hn+[ e0      falls kein Komma vorh.
+
+#-[
+#+-    nichts gefunden: Abbruch
+#dts e8 p$d Ahn
+#9X +#98b e0     falls #9X bereits belegt: ->
+#uhn +# "#9X Heft " y0 M    sonst #uhn unter #9X speichern
+#98b
+#uhn "#9X~Heft " y0 M       #uhn unter naechster Folgekategorie speichern
+#+#
+
+#-N
+    ab V28.2 obsolet, weil Nummernvergabe per FLEX
+
+#9DB +#9De $e e0    Nach Inventarisierung ist $e besetzt
+#9DA +#nr i4,\31 e0   Bestellnr vergeben wenn in #9DA noch keine steht
+#+-
+#nr dnn "<o 999999!" e"!" |:8
+#ux: b" " e$ x"+1" e"." r6,0 =nn
+#9DA Ann
+#unn p"#9DA" M
+#+#
+
+#9De     Zug.Nr. vergeben wenn in #9DB noch keine steht
+  #+#     aktivieren, wenn das unterbleiben soll
+#9DB +- $z e0       $z ist schon da
+#nr dnn "<Z2009!" e"!" |98        Form der ZgNr hier wichtig!
+#ux9 +#9DB b" " x"+1" e"." p"\31z2008/" =nn
+#nr p"\31z2008/1!" e"!" =nn
+#9DB ann
+#unn p"#9DB" M
+#+#
+
+
+#-C    #99k: Kollationsvermerk
+#00 +#99b i4,z c"+" e0      nur fuer ZS-Bandaufnahmen
+#+-
+#99b 93 "#99k" y0 e4 M      kein Datum, falls schon beim Buchbinder
+#+#
+
+#-D    #99b: Buchbindervermerk
+#00 +d i4,z c"+" { s0 } e0         nur fuer ZS-Bandaufnahmen
+#+-
+#-d
+#9X. +#99b c"\31u" e0         falls Heft verliehen ->
+#9X. +#99b c"\31v" e0         falls Heft im Umlauf ->
+#9X. y0 e4 M         sonst Heftangaben loeschen
+#9X. +d e0    noch ein Heft vorhanden: Schleife bei #-d
+#92 y0 e4 M   Bestandsangaben loeschen
+#95v y0 e4 M         Verteiler dto.
+#99k y0 e4 M         Kollationsvermerk dto.
+#nr "#9X Band!" e"!" y0 M   Bandangabe anlegen
+#t{ s4 }
+#+#    fertig
+#99b y0 e4 M         Datum loeschen, falls noch verliehene Hefte vorhanden
+#t{ s4 t94 }         Meldung ausgeben
+#+#
+
+#-e    Abfrageliste beendet
+#9DG +#9DF y0 e$ =pv      Exemplarstatus in #upv speichern
+#+-    nichts fuer alle anderen Satztypen
+#9DF +#90 e0         falls Titelidentnr. schon vorhanden ->
+#00 +#00 y0 e"[=\31-]" F32 |98       sonst: Titelaufnahme im Reg. 9 vorhanden?
+#nr +#90 90 e0       nein: Hinweis, ->
+#00 y0 "#9DF" e"[=\31-]" F32 M       ja: #00 in #9DF ueberfuehren
+
+#90 +#90 y0 p$s Apv        falls Signatur in #90: an #upv anhaengen
+#nr +#9X e0          sonst weiter mit Ausleihkategorie
+#90 "#90 " e4 M      #90 loeschen
+#9DG y0 b$ p$ Apv        restliche Angaben aus #9DG an #upv anhaengen
+#upv y0 "#9DG" M     #upv als #9DG ausgeben
+
+#9X +# e0     falls Ausleihkategorie bereits existiert: fertig
+#9DG +# $e y0 "#9X " P". Ex." M    sonst aus ExplNr erzeugen
+#nr y0 "#9X 1. Ex.!" e"!" M        bzw. neu generieren
+#+#
+
+#-B
+#+#
+ #+-
+ #9A +#00 e0          fuer Lieferanten-
+ #9B +#00 e0          ... Benutzerstamm-
+  #9DF +#00 e0         ... und Bestandssaetze
+#+#
+#00 y0 "#00 -" e5 M         Identnr. mit "-" belegen
+ #00 y0 "#00 " e4 M   Identnr. loeschen
+#9DF +# e0
+#99n y0 "#99n" e4 M         Datum dto.
+#+#
+
+#(P
+#9A $e =vn    Entleiherliste nach #uvn speichern
+#-P
+#uvn +p e"[;%]" F32 c"#uvx" e0     falls 1. Name mit #uvx identisch -> #-p
+  sonst 1. Namen ueberlesen, Rest wieder nach #uvn, Schleife bei #-P:
+#uvn +P b";" f32 dvn avn
+#9A +x $e e";" F32 p$v =vn        nichts gefunden: 1. nehmen
+#-p
+#uvn +x b";" f32 e";" F32 p$v dvn avn    naechster Name nach #uvn
+#nr dvn e0    keiner mehr vorhanden: #uvn loeschen
+#-x
+#)P
+
+#(Q
+#9A $e =vn    Entleiherliste nach #uvn
+#-Q
+#uvx x"-1" =vx       Zaehler dekrementieren
+#uvx +q x"<=0" e0    falls <= 0: -> #-q
+#uvn +Q b";" f32 dvn avn    sonst ersten Entleiher ueberlesen, Schleife
+#nr dvn e0    keiner mehr vorhanden: #uvn loeschen
+#-q
+#uvn e";" F32 p$v dvn avn         #uvn mit akt. Entleiher belegen
+#)Q
+
+   Zeichenumwandlungen:
+
+tiu      UTF-8
+p & 9    wg. der Sequenzen-Ersetzungen
+q & 9
+
+      i.apt laden
+  Kurznamen der Register (fuer f-Befehle von "avanti")
+I ALL e1 "ALL-Wortregister"          NEU V30.7
+I PER 1 "Personennamen"
+I TIT 3 "Titelwoerter, Schlagwoerter"
+I TAF 4 "Titelanfang"
+I WRK 1W->. "Gesammelte Werke"
+I KET 2 "Koerperschafts-Namen"
+I KON 4K. "Kongress-Ort,Jahr"
+I SER 5 "Serientitel ; Nummer"
+I VOJ 6 "Verlag, Ort, Jahr"
+I CLA 7 "Klassifikation"
+I SIG 8 "Signatur"
+I DIS 1D. "Diss. Ort,Jahr"
+I FSC 1F->. "Festschrift-Empf."
+I PPN 9 "IdNummern"
+I ISN 9i "ISBN neu"
+I ISB 9i978- "ISBN alt"
+I ISS 9I "ISSN"
+I ZDB 9Z "ZDB-Nummern"
+ I GEO 7G. "GeoCodes"
+ I SPR 7S. "Sprachcodes"
+ I UDK 7DK "UDK-Zahlen"
+ I HIS 7H. "Zeitzahlen"
+I LFZ :zt. "Laufende Zeitschr."
+I ZAB :zz "Zeitschr. Abos und Bde"   ZAboM
+I EXN :E "Exemplarnummern"
+ I DIE : "Dienstlich!"
+I KNG ;zz. "Kennungen"
+ I GEH ; "Geheim!!"
+
+I GND g2 "GND Normsatz"
+I GNW g1 "GND Wortregister"
+I RDA g4 "RDA Themen"
+
+  Restriktions-Hilfszeilen  V15
+R PYR r1 "Erscheinungsjahr"
+R TYP r5 "DokumentTyp"
+  evtl. zusaetzlich: (dann aber ir=8)
+  R FGR r7 "Fachgruppe"
+R BDT s8 "Bestelldatum"
+
+         Dann wird noch die Stopwortliste SWL1.APT nachgeladen
+         (sie koennte anders heissen, aber .APT muss sein!)
+         Sie koennte auch hier direkt folgen!
+tswl1
+
+to       ASCII->ANSI Tabelle fuer a99 + avanti
+  
+  Tabelle ucodes.apt hier eingebettet
+          V23: u-Befehle nur fuer a99 bei Einlesen von Fremddaten
+          und fuer avanti bei Schreibfunktion  UTF-8 -> OstWest
+
+q * *
+
+p # 2
+q # 2
+p .8 0
+  Code 31 -> / (z.B. ergzt. Urh. im Titel)
+q .31 /
+
+q ; ;
+q .20 32
+  Unterfeld-Codes durch Spatium ersetzen
+q .31 3
+
+
+  UTF-8:  ucodes.apt
+      V23: u-Befehle nur fuer a99 bei Einlesen von Fremddaten
+      und fuer avanti bei Schreibfunktion
+  Statt  tucodes  nur folgende Zeilen
+  u-Tabelle: Nur sehr wenige Codes, es ist ja intern schon UTF-8
+  (Wird nur wirksam beim Einordnen von Fremddaten und Daten aus dem externen Editieren in Notepad)
+
+u 000
+
+u 194 182 020        PILCROW SIGN (Absatzende, wenn's in Fremdsatz vorkommt)
+u 226 150 188 031    BLACK DOWN-POINTING TRIANGLE
+u 194 167 021        SECTION SIGN (Paragr.)
+u 194 172 170        NOT SIGN
+u 194 182 020        PILCROW SIGN
+u 226 150 188 031    BLACK DOWN-POINTING TRIANGLE
+u 226 150 190 031    BLACK DOWN-POINTING SMALL TRIANGLE
+
+

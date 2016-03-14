@@ -1,0 +1,117 @@
+
+Verlautbarung 145 der Entw.Abt.                          2001-01-23
+-------------------------------
+                                Die naechste gibt's erst im Februar
+
+Abholbereit auf  ac20/update :
+(Selten hat sich das so gelohnt!)
+
+   a99.lzh      --> ProgDir (enth. _backup.bat/_restore.bat)
+   alcarta.lzh  --> ProgDir
+   helpnew.lzh  --> ProgDir\help (neu: Handbuch 7 und 8)
+   flexnew.lzh  --> ProgDir\flex (neu: _backup/_restore/files)
+
+Zahlreiche Verbesserungen in den RTF- und FLX-Dateien.
+
+
+Der Fruehdunst lichtet sich
+---------------------------
+
+... und immer deutlicher tritt die Gestalt einer allerersten V21
+hervor, deren Hauptbestandteil das a99-Paket mit dem gesamten
+Zubehoer von FLX- und RTF-Dateien sein wird. Fast alle nennenswerten
+Arbeiten lassen sich nun mit diesem Paket verrichten!
+
+Als GEWICHTIGER Brocken kommt jetzt die neugestaltete Sicherungs- 
+und Restaurierungsmethodik hinzu. Eingebunden ist sie in das
+ORG-Menue: Ueber die Verfahrensweise und die Dateien als solche
+muss man wenig wissen (wer will das auch schon) - man klickt nur ein 
+paarmal, und die Arbeit wird erledigt. Wie man sich das eben so 
+vorstellt bei einem Windows-Programm.
+Die bisherige Kombination _dbcopy.flx/_dbcopy.bat kann man loeschen,
+sie ist vollkommen integriert in dieses Paket.
+
+Nur fuer Neugierige folgende Angaben:
+
+Das Paket besteht aus:
+
+_backup.flx     Sicherungskopie/Normalkopie anlegen
+_backup.bat     wird von _backup.flx gestartet
+backup.rtf      Text mit Hintergrundinformation zu "backup"
+
+_restore.flx    Datenbank aus Sich.Kopie restaurieren
+_restore.bat    wird von _restore.flx gestartet
+restore.rtf     Text mit Hintergrundinformation zu "restore"
+
+Um die Sache noch besser zu machen, gibt es den neuen INI-Befehl
+
+DbBack=<pfadname>
+
+Hier kann man das Verzeichnis setzen, wo normalerweise die Sicherungs-
+kopie abgeladen werden soll. Wenn man nichts eintraegt, dann traegt
+a99 nach der ersten Sicherungskopie selber den Pfadnamen hier ein.
+
+Die Routinen sind soweit selbsterklaerend, dass weitere Ausfuehrungen
+an dieser Stelle nicht noetig sind. Man ruft das ORG-Menue auf,
+dann sieht man schon, was es da neues gibt.
+
+Um die Sache NOCH besser zu machen: in _backup.bat wird zusaetzlich
+eine Stapeldatei  <name>REST.BAT  auf dem DbDir angelegt. Wenn a99
+nicht mehr startet, weil z.B. TBL und/oder cDX kaputt sind, kann
+man ja auch keinen FLEX mehr starten! Dann geht man schlicht auf 
+das Datenverzeichnis und gibt im DOS-Fenster ein: <name>rest
+wobei <name> natuerlich der Datenbankname ist, im Standardfall
+heisst es also  catrest
+In der RESTaurierroutine stehen genau die Kopier- und Update-Befehle,
+die fuer die Restaurierung noetig sind.
+
+Ansonsten bleiben die DOS-Routinen weiterhin in vollem Umfang
+moeglich - an der Datenbankstruktur aendert sich ja nichts.
+Bei sehr grossen Datenbanken wird man vermutlich die existierenden
+Routinen der naechtlichen Bandsicherung u.dgl. beibehalten wollen,
+aber fuer kleine und mittlere Datenbanken ist die neue Methodik
+an Bequemlichkeit hoch ueberlegen. Manch einer, der bisher aus
+Mangel an Zeit nie sicherte, wird jetzt Geschmack dran finden...
+
+Weitere FLEXe (auch die lohnen sich)
+-------------
+Zum Standardpaket gehoeren jetzt auch (eingebunden in doku.rtf)
+
+FILES.FLX  (Menuepunkt "So viele Dateien!?")
+           Einfach mal starten ...
+
+EURO.FLX   W„hrungsumrechnungen
+DOLLAR.FLX
+
+Jeweils auch aufrufbar mit X name, also z.B. X euro
+
+Diese drei sind zugleich exemplarisch fuer eine ganze Reihe von
+Funktionen, die man darin und daran studieren und lernen kann.
+Die Dateien sind ausfuehrlich kommentiert.
+DOLLAR.FLX enthaelt einen besonderen Trick: er erneuert sich selbst,
+wenn der Umrechnungskurs geaendert wird! Dadurch wird der neue Kurs
+(und das Datum der letzten Aenderung) ueber die Sitzung hinaus
+aufbewahrt.
+
+
+UIF: jetzt auch auf DbDir moeglich
+----------------------------------
+Interne Umstellungen haben es ermoeglicht, jetzt auch die UIF-Dateien
+auf das Datenverzeichnis zu legen. Interessant ist das z.B. fuer die
+Ueberschriften der Register- und Find-Fenster. (Zeilen 350 ff)
+Die Reihenfolge ist jetzt  DbDir / Lokal / ProgDir
+
+
+FLEX : Kleinere Verbesserungen
+------------------------------
+
+if %~abc% jetzt moeglich: Wenn die gross-/kleinschreibung nicht
+          bekannt ist, setzt man ~ vor den Suchbegriff, um festzustellen,
+          ob abc oder Abc oder aBc etc. in der iV vorkommt.
+
+help name
+  Mit "if no ..." checkt man, ob die Datei nicht existiert
+  mit "if cancel ...", ob sie zu gross fuer die Anzeige ist
+  Denn die sonstigen Meldungen kommen nicht, wie bei direktem Aufruf
+  per "h name" im Schreibfeld.
+

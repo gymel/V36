@@ -1,0 +1,212 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\fmodern\fprq1 Courier New;}{\f2\froman\fprq2\fcharset0 Garamond;}{\f3\froman\fprq2\fcharset0 Times New Roman;}{\f4\fnil\fprq2\fcharset2 Wingdings;}{\f5\fmodern\fprq1\fcharset0 Courier New;}{\f6\froman\fprq2 Garamond;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;}
+\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs24   
+\par     \lang1031\fs20 `\cf1\ul\b Vorangehender Teil\cf2\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf2\ulnone\b0 ` 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\f1 
+\par \b\f2\fs28 11.2.3.4  Manipulationsbefehle, Vergleiche, Spr\'fcnge, Unterprogramme\b0\f1\fs20 
+\par 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\tab\tab An einem Datenfeld, dessen Beginn und L\'e4nge mit den vorgenannten Befehlen bestimmt wurde, k\'f6nnen gewisse Bearbeitungen vorgenommen werden, bevor es tats\'e4chlich abgespeichert (d.h. in den \lang1031\b\i allegro\lang1033\b0\i0 -Datensatz \'fcbernommen) wird. 
+\par \tab\tab Zwischen den Zeilen k\'f6nnen, wie beim Export, Leerzeilen und mit Leerzeichen beginnende Kommentarzeilen stehen. 
+\par \tab\tab Wichtiger Unterschied zur Exportsprache: \b jeder Befehl\b0  steht auf einer \b eigenen Zeile\b0 . 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b _ CS1\b0\tab\b\f3 Lokale Ersetzung, mehrfache Ausf\'fchrung\b0\f1 
+\par \pard\fi-1080\li1080\ri1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b _ CS2\b0\tab\f3 wirkt wie die globale Ersetzung (\f1 -\f4\'d8\f1  11.2.2)\f3 , aber nur in der aktuellen Kategorie. Jedes vorkommende CS1 wird durch CS2 ersetzt. 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i\tab\tab Sonderfall:\i0  wenn das letzte Zeichen von CS2 der Code 0 ist, wird zugleich automatisch das Feldende auf diese Position gesetzt, der hinter CS1 stehende Teil also abgeschnitten. \f1 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1080\li1080\ri1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b %% CS1\tab\f3 Lokale Ersetzung, einfach\b0\f1 
+\par \b _ CS2\b0\tab\f3 wie oben, jedoch wird nur das erste CS1 in der aktuellen Kategorie durch CS2 ersetzt. 
+\par \pard\fi-1080\li1080\ri648\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i\tab\tab Sonderfall:\i0  Wenn das letzte Zeichen von CS2 der Code 0 ist, wird automatisch das Feldende auf diese Position gesetzt. (Dieser Befehl kann nicht global angewandt werden.) 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Es kann mehrere lokale Ersetzungsbefehle hintereinander geben. Die Anzahl ist nicht begrenzt. Man mu\'df nur darauf achten, da\'df jeder Befehl aus zwei Zeilen besteht. \f1 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b i k\tab\tab\f3 Ignoriere f\'fchrende\b0  Nullen (k=48), Leerzeichen (k=32) etc. 
+\par \pard\fi-1080\li1080\ri648\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Wenn der ASCI-Code k ein- oder mehrfach am Anfang des aktuellen Feldes steht, wird er weggelassen, d.h. der Textzeiger wird hinter diese Zeichen gestellt. k ist eine Dezimalzahl. 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b .\b0\tab\tab\b\f3 Punkt am Ende nicht beseitigen\b0 
+\par \pard\fi-1080\li1080\ri648\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Am Ende eines Datenfeldes werden normalerweise die Interpunktionszeichen ".,:;" sowie Leerzeichen beseitigt. Der Punkt am Ende bleibt stehen, wenn man diesen Befehl gibt. (Z.B. wendet man dies an bei Feldern, die meist am Ende eine Abk\'fcrzung enthalten. Wenn am Ende des Feldes eine einbuchstabige Abk\'fcrzung steht, wird der Punkt nicht entfernt.) \f1 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab 
+\par \b :\tab\tab Interpunktion am Ende nicht beseitigen\b0 
+\par \tab\tab Alle evtl. am Ende des Feldes stehenden Interpunktionszeichen bleiben stehen. 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b N\b0\tab\tab\b\f3 Nichtsortierwort am Anfang kennzeichnen\b0 
+\par \pard\fi-1080\li1080\ri648\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Das erste Wort der fertig aufbereiteten Kategorie (nicht des Arbeitstextes!) wird mit der Liste der Artikel verglichen. Wenn es darin vorkommt, wird es als Nichtsortierwort gekennzeichnet. (Vgl. dazu die Befehle n und N in der Konfigurationsdatei, Anh.A.) Die Anwendung erfolgt nicht auf den momentanen Arbeitstext, sondern auf das fertige Datenfeld, wenn der Paragraph abgearbeitet ist. 
+\par \tab\tab Empfehlung, wenn's nicht klappt: anschlie\'dfend noch diesen Abschnitt\f5  \f1 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\b #xyz\b0 
+\par \pard\fi-1080\li1080\ri648\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab kxyz 
+\par \tab\tab N 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\tab\tab\b Write-Befehle, Hintergrundspeicherbefehle\b0\f1 
+\par \b w CS\tab\f3 Pr\'e4fix\b0  : CS wird sofort in den Transferbereich geschrieben, der Arbeitstext bleibt unver\'e4ndert\f5  \f1 
+\par \b W CS\b0\tab\b\f3 Postfix\b0  : der Arbeitstext wird in den Transferbereich geschrieben, CS dahinter. Nach einem W-Befehl ist also der Arbeitstext nicht mehr f\'fcr \'c4nderungen verf\'fcgbar! 
+\par \tab\tab Die Zeichenkette CS wird in die \lang1031\b\i allegro\lang1033\b0\i0 -Kategorie eingef\'fcgt, und zwar bei\lang1031  'w'\lang1033  vor bzw. bei\lang1031  'W'\lang1033  hinter den importierten Text. Vgl. dazu den bei Befehl\lang1031  '\lang1033 l' beschriebenen Sonderfall.\f1  
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b Kxy\tab\tab\f3 Arbeitstext zwischenspeichern\b0  : der aktuelle Arbeitstext wird in die Anwendervariable\b  #uxy\b0  \'fcbertragen.  Mit\b\f1  kuxy\b0  (!)  \f3 kann man wieder darauf zugreifen (--> 10.2.6.3; 11.2.3.2).
+\par \tab\tab Dabei erfolgt keine Umcodierung mittels der u-Befehle in den Exportparametern! Das geschieht aber im Normalfall, wenn der Arbeitstext am Ende eines Paragraphen in ein Datenfeld \'fcbernommen wird.\f1 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b Yxy\tab\tab\f3 Transferbereich zwischenspeichern\b0  : Innerhalb eines Paragraphen k\'f6nnen mehrere Positionierungsbefehle vorkommen. Jeder neue solche Befehl bewirkt, da\'df der Arbeitstext in einen anderen Bereich kopiert wird, den Transferbereich. Dieser enth\'e4lt praktisch den schon fertiggestellten Teil der neuen Kategorie. Der Befehl\b  W CS\b0  (s.o.) bewirkt ebenfalls, da\'df der Arbeitstext an den Transferbereich geh\'e4ngt wird (und\b  CS\b0  selbst hintendran). Der Befehl\b\f1  Yxy\b0  \f3 kopiert den Inhalt dieser noch unfertigen Kategorie in die Anwendervariable\b\f1  #uxy\b0 . 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b v a=x\tab\f3 Hilfsvariable \b0 a auf den Wert x setzen; a = Buchstabe oder Ziffer, x = beliebiges Zeichen 
+\par \tab\tab Alle Buchstaben und Ziffern kann man als Namen f\'fcr Hilfsvariablen benutzen und ihnen beliebige Zeichen als Werte zuweisen. An anderer Stelle kann man diese Variablen mit dem Befehl\b   V a=y\b0   wieder auswerten (\f1 -\f4\'d8\f5  11.2.3.5)\f3 . Besonders wichtig: die Werte bleiben auch f\'fcr nachfolgende S\'e4tze erhalten. \f1 
+\par \b h\tab\tab\f3 Hierarchie-Ebene erh\'f6hen\b0    (sehr selten n\'f6tig) 
+\par \pard\fi-1080\li1080\ri432\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Haupt- und Unters\'e4tze laufen als getrennte S\'e4tze durch die Verarbeitung, wenn\b  re\b0  auch zwischen Haupt- und Untersatz steht (\f1 -\f4\'d8\f1  11.2.1, Typ C) 
+\par \pard\fi-1080\li1080\ri648\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\tab\tab Wenn eine Bedingungspr\'fcfung ergeben hat, da\'df der aktuelle Satz ein Untersatz des vorangehenden ist, erh\'f6ht dieser Befehl die Hierarchiekennung des Satzes, d.h. er macht #01 aus #00 etc. Wichtig: vorher mu\'df die Kategorie #00 eingerichtet werden, sonst w\'fcrde z.B. #21 aus #20 gemacht, wenn zuf\'e4llig #20 die erste Kategorie des aktuellen Satzes ist. Wenn man also mit hierarchischen S\'e4tzen arbeitet, sollte man in der Kategorieliste immer mit #00 beginnen.\f5  \f1 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b H\tab\tab\f3 Neuen Datensatz beginnen\b0 
+\par \tab\tab Der aktuelle Satz wird beendet, die aktuelle Kategorie kommt bereits in den n\'e4chsten Datensatz, der nun neu angelegt wird. Mit diesem Befehl kann man erreichen, da\'df aus einem Fremdsatz mehrere Datens\'e4tze gemacht werden. Es wird ein Hauptsatz sein, falls man nicht als erstes dann eine Kategorie #01, #02 etc. erzeugt. 
+\par \i\tab\tab Andere M\'f6glichkeit:\i0  man legt innerhalb der Bearbeitung eines Satzes eine neue Kategorie #00 an. (D.h. die erste in der CFG definierte Kategorie.) \f1 
+\par \b U\tab\tab\f3 Zur vorigen Aufnahme zur\'fcckkehren\b0 
+\par \tab\tab Von der aktuellen Aufnahme wird zur vorhergegangenen zur\'fcckgekehrt, die aktuelle Kategorie wird dort einsortiert. Mit dem Befehl\b  H\b0  (im nachfolgenden Paragraphen!) kann man erneut zur\'fcckschalten. (Bis V15.0 wurde bei Vorliegen dieses Befehls immer intern auf manuellen Modus geschaltet, als ob man  -m0  gegeben h\'e4tte. Dieses Problem wurde beseitigt.) \f1 
+\par \b x\tab\tab\f3 Feld im Fremdsatz ung\'fcltig machen\b0 
+\par \pard\fi-1080\li1080\ri432\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Das mit dem letzten Positionierungsbefehl angesteuerte Feld im Fremddatensatz wird dort ung\'fcltig gemacht, so da\'df es mit einem nachfolgenden Positionierungsbefehl nicht mehr gefunden wird. Sinnvoll ist dies, wenn bestimmte Feldkennungen mehrfach vorkommen k\'f6nnen, aber nicht alle unter derselben \lang1031\b\i allegro\lang1033\b0\i0 -Kategorie mit Mehrfachbesetzung untergebracht werden sollen, also der Befehl m nicht anwendbar ist. 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1 
+\par 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b @X\tab\tab\f3 Umsetzung per Konkordanzliste\b0 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\tab\tab Zus\'e4tzlich zu den globalen und lokalen (kategoriespezifischen) Ersetzungen gibt es die M\'f6glichkeit, umfangreichere Umsetzungen mit Hilfe von Konkordanzlisten vorzunehmen. 
+\par \tab\tab Die \b lokalen\b0  Ersetzungen werden in der gesamten Kategorie, nicht nur am Anfang, ausgef\'fchrt. 
+\par \tab\tab Allzuviele \b globale\b0  Ersetzungen verlangsamen den Ablauf. Man sollte sie nur anwenden, wenn die zu ersetzenden Zeichenketten innerhalb des Datensatzes an beliebigen Stellen stehen k\'f6nnen. Darunter fallen Zeilenbegrenzungen (die aus mehr als einem Zeichen bestehen) und Einr\'fcckungen umbrochener Zeilen. 
+\par \tab\tab Eine \b Konkordanzliste\b0  erm\'f6glicht die Zuordnung und den Austausch von Kategorieinhalten durch andere Inhalte, und zwar mit hoher Geschwindigkeit. 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Dazu folgendes Beispiel, das in der Import-Parameterdatei MARCBF.AIM enthalten ist: 
+\par \tab Die Library of Congress Classification ist in der MARC-Kategorie 050 zu finden. F\'fcr die Datenbankstruktur CAT (\f5 -\f4\'d8\f5  1.0) \f3 sollen die Hauptgruppen dieser Klassifikation in die SWD-Sachgruppen der Deutschen Bibliographie umgesetzt werden. Das leistet dieser Importparagraph: (f\'fcr das Bibliofile-MARC) \f1 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par          Befehle    Kommentare 
+\par 
+\par \pard\fi-2353\li2353\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274          #30a\f0\tab "allegro"-Kategorie #30a soll das Element aufnehmen:\f1 
+\par          T 0 50\f0\tab finde die MARC-Kategorie ("tag") 050\f1 
+\par           \f0\tab\tab\f3 (z.B. f\'fcr das OCLC-MARC m\'fc\'dfte es hier D "050" hei\'dfen, \f0 
+\par  \tab\tab\tab\tab\f3 f\'fcr das BNB-MARC von der CD-ROM dagegen s "050" ...)\f1 
+\par          @A \f0\tab\tab Konkordanzliste A zur Umsetzung benutzen  (s.u.)\f1 
+\par          m"; "\f0\tab kann mehrfach auftreten: Elemente mit "; " trennen.\f1 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\tab und dazu geh\'f6rt die Konkordanzliste A, die am Ende der Import-Parameterdatei steht und so beginnt und endet: 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-2353\li2353\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1\tab\tab @@A\f0\tab\tab Beginn Liste A\f1 
+\par \tab\tab "A"\f0\tab\tab wenn der Kategorieinhalt mit "A" beginnt, wird dieses\f1 
+\par \tab\tab "01" 0\f0\tab\f3 durch die Zeichenfolge "01" und Byte 00 (als Abschlu\'df) ersetzt.\f1 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-2353\li2353\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab "BF10"\f0\tab "BF10" wird durch "11p" 0  ersetzt.\f1 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab "11p" 0 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-2353\li2353\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab "BF"\f0\tab andere mit "BF" beginnende Klassifikationen durch "11" 0\f1 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab "11" 0 
+\par \tab\tab "BA" 
+\par \tab\tab "10" 0 
+\par \tab\tab\f0    ... usw.  usf. ...\f1 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-2353\li2353\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab "Z2"  \f0\tab electronic publishing\f1 
+\par \tab\tab "28" 0   \f0\tab wird zu 28 = Informatik geschlagen\f1 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-2353\li2353\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab "Z"    \f0\tab Buchwesen wird ansonsten Gruppe 02 zugeordnet\f1 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab "02" 0  
+\par \pard\fi-2353\li2353\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab @\f0\tab\tab Ende der Liste\f1 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f3 Regeln f\'fcr Konkordanzlisten\b0 : 
+\par 
+\par \pard\fi-432\li432\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \f1\bullet\f3\tab Es kann mehrere solche Listen geben. Jede kann in mehr als einer Kategorie zur Anwendung kommen. 
+\par  \f1\bullet\f3\tab Die Listen stehen am Ende der Import-Parameterdatei, hinter dem letzten Paragraphen der Kategorieliste. 
+\par  \f1\bullet\f3\tab Jede Liste beginnt mit @@X (mit einem Gro\'dfbuchstaben X) und endet mit @ 
+\par  \f1\bullet\f3\tab Die Liste besteht aus Paaren von Zeichenketten, die in der \'fcblichen CS-Notation anzugeben sind (druckbare Zeichen in "..", Steuerzeichen als Dezimalzahlen). Die jeweils erste Zeichenkette des Paares wird durch die zweite ersetzt, aber nur, wenn sie am Anfang des vorher aufbereiteten Kategorietextes steht. Der Rest des Textes bleibt erhalten, es sei denn, die zweite Zeichenkette endet mit 0 (siehe oben!). 
+\par \tab Im Prinzip ist also die Syntax dieselbe wie bei den anderen Ersetzungen, nur ohne das Zeichen '_' am Anfang. Alle Listen einer Parameterdatei k\'f6nnen zusammen 1.000 solche Paare von Zeichenketten enthalten. Es m\'fcssen keine Leerzeilen zwischen den Paaren stehen, doch verbessert das die \'dcbersicht. 
+\par  \f1\bullet\f3\tab Die L\'e4nge einer Zeichenkette ist auf 255 Zeichen begrenzt, die Gesamtl\'e4nge der Konkordanzen dadurch, da\'df alle Parameter zusammen (Import und Export) in einen Bereich von 64K passen m\'fcssen. 
+\par  \f1\bullet\f3\tab Kommentare k\'f6nnen, wie sonst auch, durch mindestens zwei Leerzeichen abgesetzt oder auf eigenen Zeilen, die mit Leerzeichen beginnen, zwischengef\'fcgt werden. 
+\par  \f1\bullet\f3\tab Der eigentliche Austausch wird durch den Befehl @X vorgenommen, der nach eventuellen Manipulationsbefehlen eingesetzt wird (s.o.). Bei diesem Vorgang wird die Liste von oben nach unten abgearbeitet. Deshalb hat man die M\'f6glichkeit, wie man oben sieht, z.B. "Z2" durch "28" zu ersetzen, und danach dann alle anderen mit "Z" beginnenden Zeichenketten durch "02". D.h.: die Liste ist nicht alphabetisch zu ordnen, sondern so, da\'df die Abarbeitung sinnvolle Resultate liefert. 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1 
+\par \pard\fi-432\li432\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b un\b0\tab\b\f3 Standard-Unterprogramm n ausf\'fchren\b0\f1 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\tab\tab Es gibt mehrere vorgefertigte \b Standard-Unterprogramme\b0  f\'fcr besondere Aufgaben: 
+\par \pard\fi-1656\li1656\ri648\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1\tab    n =  \f3 1\tab Jahreszahl aus dem Text herausl\'f6sen. Im Textfeld wird nach einer Jahreszahl gesucht und nur diese dann in das aktuelle \lang1031\b\i allegro\lang1033\b0\i0 -Feld \'fcbernommen. 
+\par \pard\fi-1656\li1656\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab    2\tab R\'f6mische Zahlen in Gro\'dfbuchstaben umsetzen: die Buchstaben ivxlcdm werden in Gro\'dfbuchstaben umgesetzt. (Anwendbar z.B. bei den Seitenzahlen aus MARC-Daten) 
+\par \tab\tab    3\tab Namen in RAK-WB-Form \'e4ndern. Der zweite Vorname wird auf die Initiale gek\'fcrzt, weitere Vornamen weggelassen (nicht mehr zu empfehlen, die Regel wurde abgeschafft). 
+\par \pard\fi-1656\li1656\ri648\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab    4\tab Nur die erste Initiale wird \'fcbernommen, der Rest und alle anderen Vornamen entfallen. 
+\par \pard\fi-1656\li1656\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab    5\tab alle Vornamen auf Initialen k\'fcrzen 
+\par \pard\fi-1656\li1656\ri648\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab    6\tab Bindestriche in ISBN einsetzen (in MARC-Daten ist die ISBN oft ohne Bindestriche angegeben). Bei mit\lang1031  '\lang1033 9' beginnenden ISBNs gibt es aber Ungenauigkeiten. 
+\par \tab\tab    7\tab MARC subfield codes durch "--" ersetzen. 
+\par \tab\tab    8\tab MARC subfield codes umsetzen: aus "?x" wird " x) " 
+\par \pard\fi-1656\li1656\ri576\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab    9\tab Nichtsortierkennzeichnung gem\'e4\'df MAB (^Der ^Name der Rose) ersetzen durch Kennzeichnung gem\'e4\'df NMN (\'acDer Name der Rose). 
+\par \pard\fi-1656\li1656\ri648\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab   10\tab Zusatz zum Sachtitel gro\'df schreiben. Der erste Buchstabe hinter der Zeichenkombination " : " wird in einen Gro\'dfbuchstaben umgewandelt. 
+\par \pard\fi-1656\li1656\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab   11\tab Jedes Wort des Datenfeldes mit gro\'dfem Anfangsbuchstaben versehen. Wenn die Fremddaten z.B. alle in Gro\'dfbuchstaben sind, setzt man vorher mit dem Befehl\f5  \f1 
+\par \b\tab\tab\tab y A/Z a\b0 
+\par \f3\tab\tab\tab alles in Kleinschreibung um und wendet dann u11 bei jedem Datenfeld an, wo es sein soll. 
+\par \tab\tab   12\tab Umsetzung Gro\'df->klein auf Feldebene. Wenn z.B., wie bei "Current Contents on Diskette", ein einzelnes Feld in Gro\'dfbuchstaben ankommt, kombiniert man  (auf zwei Zeilen hintereinander, u12  u11, dann wird es wie gew\'fcnschtin Normalschrift umgesetzt. Umlaute werden ber\'fccksichtigt, andere Zeichen (z.B. akzentuierte Buchstaben) jedoch nicht. 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Vor der Verwendung von 3 - 5 wird ausdr\'fccklich gewarnt: erstens hat man die RAK-WB-Form der Personnenamen so gut wie abgeschafft, zweitens, wenn man es denn will, kann man diese Form, z.B. f\'fcr einen Zetteldruck, auch beim Export herstellen. Wenn man schon vollst\'e4ndige Namen bekommt (z.B. von der DB, die nie gek\'fcrzt hat), warum sollte man sie dann verst\'fcmmeln? \f1 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b >P\tab\lang1031\f5\tab\lang1033\f3 Eigenes Unterprogramm ausf\'fchren\b0 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Hat man irgendwo in einem anderen Paragraphen (weiter \b oben\b0  in der Liste) eine Zeilengruppe mit dem Buchstaben P markiert (siehe unten), kann diese Zeilengruppe von jedem anderen Paragraphen aus aufgerufen werden. Sie wird dann ausgef\'fchrt und auf den aktuellen Arbeitstext angewendet, als w\'e4re sie Teil desselben Paragraphen. P kann jedes beliebige Zeichen sein, d.h. man kann sehr viele Unterprogramme machen. Hier jedoch, im Gegensatz zu den Sprungmarken, kann nur ein einzelnes Zeichen als Name benutzt werden. Au\'dferdem sind \b keine Verschachtelungen\b0  m\'f6glich, d.h. kein Aufruf eines UP aus einem anderen heraus. 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-3073\li3073\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1 (P\tab\lang1031\f5\tab\lang1033\f3 Unterprogramm P beginnt\b0\tab Diese Befehle m\'fcssen innerhalb desselben Paragraphen stehen. Sie st\'f6ren 
+\par \b\f5 )P\f3\tab\lang1031\tab\lang1033 Unterprogramm P endet\b0\tab\tab den Ablauf selbst nicht, bilden aber eine \b Zeilengruppe\b0 , die von anderswo (weiter \b unten\b0 ) als Unterprogramm aufrufbar ist. Diese zwei Befehle m\'fcssen jeweils auf eigener Zeile stehen. (Siehe auch: Vergleichsbefehle, 11.2.3.5) 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1 
+\par \b\f6\fs28 Steuerbefehle\b0\f3\fs20  : \b Vergleiche und Spr\'fcnge\b0 
+\par 
+\par Au\'dfer denjenigen Befehlen, die sich direkt auf einzelne Kategorien beziehen, gibt es auch noch einige Befehle zur Ablaufsteuerung. Hierdurch erst wird die Importsprache tats\'e4chlich zu einer speziellen Programmiersprache. 
+\par 
+\par \i Wichtig:\i0  Diese Befehle k\'f6nnen nur \b innerhalb\b0  von Paragraphen vorkommen, \b nicht dazwischen\b0 . Also z.B. nicht sofort hinter einer Sprungmarke: dort kann nur eine Kategorie-Angabe stehen. Auch nicht sofort unter einer Kategorie-Angabe, dort mu\'df zuerst ein Positionierungsbefehl stehen. 
+\par \f1 
+\par 
+\par \b\f6\fs28 11.2.3.5  Vergleichsbefehle\b0\f1\fs20 
+\par 
+\par \f3 Alle Vergleichsbefehle haben dieselbe Wirkungsweise: Die einem Vergleichsbefehl folgende Zeile des Paragraphen wird nur ausgef\'fchrt, wenn die Bedingung erf\'fcllt ist, sonst wird sie \'fcbergangen. Wenn die betr. Zeile ein Sprungbefehl ist, ergibt sich dadurch auf einfache Weise ein bedingter Sprung. 
+\par Textzeiger und Textl\'e4nge bleiben unver\'e4ndert. 
+\par Umwandlungen durch y-Befehl und globale Ersetzungen sind bei den Vergleichen zu ber\'fccksichtigen, denn sie werden vorher, gleich nach dem Einlesen, ausgef\'fchrt. 
+\par 
+\par \b Sonderf\'e4lle\b0 : 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f1\bullet\f3\tab Wenn auf den Vergleichsbefehl ein lokaler Ersetzungsbefehl folgt, der ja immer aus zwei Zeilen besteht (\f1 -\f4\'d8\f5  11.2.3.4)\f3 , wird das Programm im Falle eines negativen Vergleichsergebnisses diese Zeilen beide \'fcbergehen. Also kann man sehr leicht Ersetzungen von Vergleichen abh\'e4ngig machen. 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\bullet\tab\f3 Wenn die dem Vergleichsbefehl folgende Zeile nur aus "(P"  oder "(" besteht, werden alle nachfolgenden Zeilen \'fcbergangen, bis eine kommt, die mit ")" anf\'e4ngt. Also kann man Befehle ganz einfach zu \b Zeilengruppen\b0  zusammenfassen (aber immer nur innerhalb eines Paragraphen!), die als Ganzes ausgef\'fchrt oder \'fcbergangen werden. Wichtig ist, da\'df die Klammer jeweils am Zeilenanfang stehen mu\'df und dahinter h\'f6chstens noch ein Kommentar. Die Klammern bilden demnach eigene Befehlszeilen. Ist ein Buchstabe oder anderes Zeichen hinter der Klammer, kann diese Zeilengruppe von weiter unten als Unterprogramm aufgerufen werden (siehe oben). 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1 = CS\tab\f3 Pr\'fcfen auf Gleichheit\b0\f1 
+\par \pard\fi-1656\li1656\ri576\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 = \b #nnn\b0\tab\tab\f3 Mit Beginn an der Stelle des vorher ermittelten Textzeigers wird der Text mit CS verglichen. Bei Gleichheit wird die nachfolgende Zeile(ngruppe) ausgef\'fchrt, sonst wird sie \'fcbergangen. Statt einer Zeichenkette CS kann auch eine Kategorienummer #nnn verwendet werden oder eine #u-Variable. Deren Inhalt wird dann zum Vergleich benutzt. \f1 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b L n CS\tab\f3 Vergleich an anderer Position\b0\f1 
+\par \pard\fi-1656\li1656\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b R n CS\b0\tab\tab\f3 Der Vergleich wird n Zeichen links bzw. rechts vom Textzeiger ausgef\'fchrt \f1 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b c CS\b0\tab\f3 Ist \b CS im Fremdfeld enthalten\b0 ? 
+\par \pard\fi-1656\li1656\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab Wenn die Zeichenkette CS in der aktuellen Fremdkategorie vorkommt, wird die n\'e4chste Zeile(ngruppe) ausgef\'fchrt, sonst \'fcbergangen. \f1 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b z CS\b0\tab\f3 dasselbe, aber Gro\'df-/Kleinschreibung werden ignoriert (CS in Kleinbuchstaben angeben) \f1 
+\par \b C CS\b0\tab\f3 Ist CS \b in der gesamten Aufnahme enthalten\b0 ? 
+\par \pard\fi-1656\li1656\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab Wenn die Zeichenkette CS irgendwo in der eingelesenen Aufnahme vorkommt, wird die n\'e4chste Zeile(ngruppe) ausgef\'fchrt. (s.a. \f5 -\f4\'d8\f1  11.2.3.\lang1031\f5 2\lang1033\f1 ) 
+\par \pard\fi-1080\li1080\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b Z CS\b0\tab\f3 dasselbe, aber Gro\'df-/Kleinschreibung werden ignoriert (CS in Kleinbuchstaben angeben) \f1 
+\par \b V a=y\b0\tab\b\f3 Hilfsvariable pr\'fcfen\b0  : wenn Hilfsvariable a den Wert y hat, n\'e4chste Zeile(ngruppe) ausf\'fchren. Die Hilfsvariable a mu\'df vorher mit einem Wert besetzt worden sein (\f5 -\f4\'d8\f1  11.2.3.4). 
+\par \pard\tx432\tx1080\tx1656\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f6\fs28 11.2.3.6  Sprungbefehle\b0\f1\fs20 
+\par \pard\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1079\li1079\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b /\tab\tab\f3 N\'e4chste Zeile(ngruppe) bedingungslos \'fcbergehen\b0\f1 
+\par \pard\fi-1511\li1511\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\tab\tab\tab Sinnvoll ist dies nur hinter einem Vergleichsbefehl: die Vergleichslogik wird dadurch umgekehrt. Wenn eine Zeilengruppe folgt (runde Klammern am Anfang und Ende) wird sie als Ganzes \'fcbergangen (\f5 -\f4\'d8\f5  11.2.3.5 \f3 unter "Sonderf\'e4lle").\f5  \f1 
+\par \pard\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1080\li1080\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b +LABEL\tab\f3 Feld abschlie\'dfen, dann Sprung\b0\f1 
+\par \pard\fi-1511\li1511\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\tab\tab\tab Das Textfeld wird mit der vorher ermittelten L\'e4nge in die \lang1031\b\i allegro\lang1033\b0\i0 -Kategorie #xxf \'fcbertragen, dann sucht das Programm die Sprungmarke -LABEL (s.u.) und macht mit dem darauf folgenden Paragraphen weiter. Hier kann LABEL ein beliebig langes "Wort" aus Buchstaben und Ziffern sein, Sonder- und Leerzeichen sind nicht erlaubt. 
+\par \tab\tab\tab (Man beachte den Unterschied zum Exportprogramm, wo leider nur Einzelzeichen als Sprungmarken erlaubt sind.) \f1 
+\par \pard\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1080\li1080\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b qLABEL\tab\f3 Sprung ohne Speicherung\b0  ("quit") 
+\par \pard\fi-1511\li1511\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab Hinter einem Vergleichsbefehl kann es sinnvoll sein, die Bearbeitung des Feldes abzubrechen, ohne es zu speichern. Dazu dient dieser Befehl. Der Paragraph wird ohne Wirkung beendet, #xxf wird nicht gespeichert, ansonsten wirkt\f1  qLABEL wie +LABEL. 
+\par \pard\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1079\li1079\ri886\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\tab\tab Wenn LABEL nicht existiert, wirkt der Sprungbefehl in beiden F\'e4llen als \b Endebefehl\b0 , d.h. der aktuelle Satz gilt als fertiggestellt, die Bearbeitung des n\'e4chsten beginnt. 
+\par \pard\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1080\li1080\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1 >P\tab\f3 Unterprogramm P ausf\'fchren\b0   (\f1 -\f4\'d8\f1  11.2.3.4) 
+\par \pard\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1080\li1080\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b -LABEL\tab\f3 Sprungmarke\f1  
+\par \pard\fi-1511\li1511\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0\tab\tab\tab\f3 unmittelbar vor einem Paragraph, d.h. vor einem Kategoriebefehl (nicht innerhalb eines Paragraphen) kann eine Sprungmarke stehen. Sie beeinflu\'dft selbst den Ablauf nicht, sondern wird mittels der Befehle +LABEL und qLABEL angesprungen. R\'fcckspr\'fcnge sind m\'f6glich (Schleifengefahr!). Wenn -LABEL mehrfach vorkommt, wirkt nur das erste. 
+\par \tab\tab\tab Wenn das Programm w\'e4hrend der normalen Abarbeitung auf eine Sprungmarke st\'f6\'dft, wird sie ignoriert.\f5  LABEL \f3 darf \b kein Leerzeichzen\b0  enthalten.\f5 
+\par \f1 
+\par \pard\fi-1080\li1080\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b mk\tab\f3 Mehrfachbesetzung\b0  - Kategorie-Wiederholung\f1  
+\par \pard\fi-1511\li1511\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\tab\tab\tab Wenn\b  mk\b0  am Ende eines Paragraphen steht, wird dieser mehrfach durchlaufen. Der Positionierungsbefehl wird dann wiederholt und die Kategorie #xxf mehrfach besetzt, wenn die gesuchte Zeichenkette mehrfach vorkommt. Wenn eine Ziffer\b  k\b0  angegeben ist, wird sie auf\b  f\b0  addiert f\'fcr jede weitere Kategorie. Wenn\b  f\b0  fehlt, wird bei der zweiten Kategorie der Wert\b  fm\b0  eingesetzt, bei jeder weiteren wird\b  k\b0  bzw.\b  fr\b0  (wenn\b  k\b0  fehlt) addiert (\f1 -\f4\'d8\f1  11.2.1).\lang1031  
+\par \f5\tab\tab\tab\i\f1 Hinweis:\i0\f5  \f3 Wenn die n\'e4chste laut CFG erlaubte Folgekategorie benutzt werden soll, mu\'df man vorgehen wie in 11.2.3.1 erl\'e4utert! (~ als Folgezeichen).\lang1033  \f1 
+\par \pard\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1080\li1080\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b m"xyz"\tab\f3 Mehrfachbesetzung\b0  - Wiederholung innerhalb Kategorie 
+\par \pard\fi-1511\li1511\ri432\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab mehrfach besetzte Felder werden alle in dieselbe \lang1031\b\i allegro\lang1033\b0\i0 -Kategorie  #xxf  \'fcberf\'fchrt, getrennt jeweils durch die Zeichenkette\b  xyz\b0 . Ein Beispiel w\'e4re \f1 
+\par \pard\fi-1511\li1511\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\tab\tab\tab m"; "\b0  . 
+\par \f3\tab\tab\tab\i Achtung:\i0  Kein Leerzeichen zwischen m und " 
+\par \pard\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1 
+\par \i\f3 Zu beachten\i0  ist, da\'df alle diese Sprungbefehle nur innerhalb eines Paragraphen vorkommen d\'fcrfen. Insofern sind es immer bedingte Spr\'fcnge: sie funktionieren nur, wenn eine Kategorieangabe \i und\i0  eine Positionierung vorangeht. Bei\b   \f1 q\lang1031\f5  \lang1033\b0\f3  kann die Positionierung entfallen: 
+\par Einen \b unbedingten Sprung\b0  zur Marke\b\f1  -LABEL\b0  \f3 konstruieren Sie am besten so:\f1  
+\par 
+\par \pard\fi-1512\li1512\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b #99\b0\f0\tab\tab Kategorieangabe pro forma\f1 
+\par \b qLABEL\b0\f0\tab\tab Absprung nach\b\f1  -LABEL\b0\f3  (ohne da\'df eine\f1  #99\f0  erzeugt wird)\f1 
+\par \pard\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-658\li658\tx194\tx1080\tx1512\tx2232\tx2952\tx3672\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par ?Vorangehender Teil=h ac11-2 
+\par ?Fortsetzung=h ac11-4 
+\par 
+\par \pard\lang1031\f0 
+\par }
+ 

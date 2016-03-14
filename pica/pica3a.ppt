@@ -1,0 +1,387 @@
+ Dateiname:        PICA\PICA3A.PPT
+ Inhalt:           Export-Tabelle, die eingebunden ist in der Export-Para-
+                   meterdatei D-1.PPR (fr die Bildschirmanzeige von Pica3-
+                   Daten)
+ Stand vom         21.08.95 (S. Busemann)
+ nderungen am:    11.10.95 Die PPN kann sowohl 'X' als auch 'x' als Prf-
+                            ziffer enthalten. Mit 'x' in einer PPN in der
+                            Kategorie #4000 funktioniert aber das Nachladen
+                            nicht. Deshalb wurde in den beiden Zeilen unter
+                            der Marke #-a ein lokaler Ersetzungsbefehl ein-
+                            gefgt.
+                   17.11.95 Die unterhalb der #424x-Gruppe mit 'bedingtes
+                            Postfix l”schen' kommentierte Zeile wurde vor
+                            die #4241-Zeile gesetzt.
+                   28.11.95 In den Zeilen #3160 ... und #3161 ... Pr„fix-
+                            befehle ge„ndert und Ersetzungsbefehl erg„nzt.
+                   30.11.95 In den Zeilen #4201 ..., #4211 ... und #4212 ...
+                            Ausblendung des '@' eingebaut.
+                   15.01.97 Texte fr die Ausleihindikatoren in den Zwischen-
+                            teilen 21 bis 27 aktualisiert.
+                            Zwischenteil 30 ge„ndert, da Lokalkategorie #4715
+                            nicht bndig ausgegeben wurde.
+                   16.01.97 Da in Pica in den Kat. 4020/4021/4060/4061 ein
+                            Abkrzungspunkt weggelassen wird, in den ent-
+                            sprechenden Zeilen p0 durch P37 ersetzt.
+                            In Angleichung an den Pica-OPAC die Zeile #4236
+                            (Allgemeiner Hinweis Sekund„rausgaben) aus-
+                            kommentiert.
+                   20.01.97 Um von einer Serienhauptaufnahme zu den Stcken
+                            zu gelangen, wurde ein Flip zu der Stelle in
+                            Register 5 eingerichtet, an der unter dem Serien-
+                            titel alle B„nde aufgelistet sind. Hinzugefgt
+                            wurden die Zeile '#dt dZl e0' und 3 Zeilen am
+                            Ende der Datei sowie das Zwischenteil 41.
+                   28.02.97 Als Prfziffer enthalten die PPNs in #4000 und
+                            #4261 nicht nur 'X', sondern manchmal auch das
+                            kleine 'x'. Zur Nachladung bergeordneter S„tze
+                            unter -#a wurden Zeilen hinzugefgt, die andere
+                            Schreibweisen im Nachladeregister bercksich-
+                            tigen.
+                   07.04.97 Da in Version 15 die Befehle b"#" und e"#" nicht
+                            mehr wie vorher funktionieren, "#" durch "[#]"
+                            ersetzt.
+                   09.04.97 Der Flip-Hinweis 'Alle B„nde dieser Schriften-
+                            reihe ...' wird nur dann eingeblendet, wenn B„nde
+                            vorhanden sind.
+                   15.04.97 Auch bei der bibliographischen Erscheinungsform
+                            b (Zeitschrift/Zeitung) wird nun ein Flip-Hinweis
+                            eingeblendet. šberarbeitet wurde der Abschnitt
+                            'Flips' am Dateiende, neu ist Zwischenteil 42.
+                   17.12.96 Ausgabe der Schlagwort-Kategorien #5551 bis #5559
+                            hinter #5550 eingefgt.
+
+
+   Der aktuelle (anzuzeigende oder auszugebende) Satz wird PRIMRSATZ genannt.
+   Dabei handelt es sich um entweder
+
+   A. einen Hauptsatz:
+      er hat evtl. unabh„ngig gespeicherte Unters„tze, aber keinen ber-
+      geordneten Satz.
+      In der Anzeige sollen unter dem Hauptsatz alle untergeordneten S„tze
+      erscheinen.
+
+   B. einen Untersatz:
+      er hat bergeordnete S„tze, aber keine Unters„tze.
+      In der Anzeige sollen stufenf”rmig die bergeordneten, aber nicht
+      die nebengeordneten S„tze erscheinen.
+
+   C. einen 'Mittelsatz':
+      er ist einerseits einem anderen untergeordnet, besitzt aber auch
+      selbst Unters„tze.
+      In der Anzeige soll fr die untergeordneten S„tze nach A, fr die
+      bergeordneten nach B verfahren werden.
+
+
+   Es kann bis zu 5 untergeordnete Stufen geben (theoretisch noch mehr).
+   Die Verknpfung einer Stufe der Zwischenebenen bzw. der untersten
+   Ebene zur bergeordneten Stufe erfolgt in der Kategorie 4000. Dieses
+   wird fr den Nachladevorgang ausgewertet.
+
+
+   ----- Konstanten -------------------------------------------------------
+
+         hier werden nur die Konstanten aufgefhrt, die sowohl fr die
+         Bildschirmanzeige wie fr die Kartenausgabe gelten!
+
+dx=1               generell Zeichenumwandlungen durchfhren
+                   (auch bei Druckausgabe ber F3!)
+
+
+   ----- Zwischenteil-Definitionen ----------------------------------------
+
+         hier werden nur die Zwischenteile aufgefhrt, die sowohl fr die
+         Bildschirmanzeige wie fr die Kartenausgabe gelten!
+
+   1=    ist in D-1.PPR definiert
+2=" / "
+3=C C
+4=C
+5=":"
+6=". - "
+7="- "
+8=". "
+9=", "
+10=C C #0 &1 t78 "- Bibliothek   " t70
+11= t78 " ---------------------------------------------------"
+12=C &0 t78 " Signatur:  " &15 t70 #14
+   13=   ist in D-1.PPR definiert
+14=C C t78 "Bestand siehe Óbergeordnete Aufnahme (Taste b, evtl. mehrfach)" t76
+15=" [Interpret]" C
+16=": Festschrift"
+17=C &0 t78 " Schlagw.:    " t76 t60
+18=C &3 t70
+19=C &0 t78 " Bestand:     " t76 t60
+20=C &0 t78 " Vermerk:     " t76 t60
+21=t76 " (ausleihbar)"
+22=t76 " (verkÓrzt ausleihbar)"
+23=t76 " (mit Zustimmung ausleihbar)"
+24=t76 " (Lesesaalausleihe)"
+25=t76 " (bestellt)"
+26=t76 " (fÓr die Ausleihe gesperrt)"
+   Standardtext fr Ausleihcode:
+ 27=""
+27=t76 " (ausleihbar)"
+ 27=t76 " (verkÓrzt ausleihbar)"
+ 27=t76 " (mit Zustimmung ausleihbar)"
+ 27=t76 " (Lesesaalausleihe)"
+ 27=t76 " (bestellt)"
+ 27=t76 " (fÓr die Ausleihe gesperrt)"
+   28=   ist in D-1.PPR definiert
+29=C &0 t78 " Notation:    " t76 t60
+30=C &15 #14 t76
+   31=   ist in D-1.PPR definiert
+32=C &15 #14 t76             falls Exemplar-Kommentar in magenta angezeigt
+                             werden soll, 't76' durch 't70' ersetzen!
+33=":" C
+34=C "ISBN "
+35=" : "
+36=C "ISSN "
+37="."
+38="." C
+39=" ; "
+40=" + "
+41=C C &2 t78 "Alle BÑnde dieser Schriftenreihe mit Taste l" t76
+42=C C &2 t78 "Alle BÑnde dieser Zeitschrift mit Taste l" t76
+
+
+   fr weitere Zwischenteile nur Nummern bis 59 verwenden!
+
+
+
+   60=   ist in D-1.PPR definiert
+61=#0              Einrckung ab n„chster Zeile auf 0
+62=&0              in aktueller Zeile auf Position 0 springen
+
+                   Farben:   (wegnehmen, wenn nicht gewnscht)
+70=27 91 48 59 51 53 59 52 55 109      magenta
+71=27 91 49 59 51 49 109               rot
+72=27 91 49 59 51 50 109               grn
+73=27 91 49 59 51 51 109               gelb
+74=27 91 48 59 51 52 59 52 55 109      blau
+75=27 91 48 59 51 51 109               magenta
+76=27 91 48 59 51 48 59 52 55 109      reset / schwarz - weiá
+77=27 91 53 59 51 55 109               weiss   mit BLINK
+78=27 91 49 59 51 55 109               weiss
+
+
+ tPRINTER           Zwischenteile 79 - 99 mit Drucker-spezifischen Steuer-
+                    zeichen
+
+
+   ----- Kategorieliste (Aufnahmekorpus) ----------------------------------
+
+         --------- bergeordnete S„tze nachladen: -----
+
+#-a
+#4261 +a b"!" e"!" |100                Verknpfung zur Prim„rausgabe
+#4261 +a b"!" e"!" ,"_x_X_" |100
+#4261 +a b"!" e"!" ,"_X_x_" |100
+#4000 +a b"!" e"!" |100                Verknpfung zur bergeordneten Stufe
+#4000 +a b"!" e"!" ,"_x_X_" |100
+#4000 +a b"!" e"!" ,"_X_x_" |100
+
+         Wenn in #4261 bzw. #4000 '!...!' vorkommt, wird die Ident-Nr. in
+         Register 10 gesucht. Der gefundene Satz wird geladen und zugleich
+         zum aktuellen Satz. Dieser Vorgang wird wiederholt (deshalb '+a'),
+         bis kein '!' mehr in #4000 zu finden ist.
+         Nun gibt es evtl. einen Stapel mit mehreren S„tzen, der Hauptsatz
+         an der Spitze ist der aktuelle Satz.
+
+#dt dZl e0
+
+         --------- Stapel untersuchen und verzweigen: -----
+
+#<+b     Wurde tats„chlich etwas nachgeladen? Dann weiter bei '#-b'
+         (#<+b kann nicht ausgefhrt werden, wenn der Stapel leer ist)
+#>V                (Verfasser- bzw. Urheberkopf)
+#+e      Wenn nicht nachgeladen wurde, ist der Prim„rsatz ein Hauptsatz
+
+#-b                es wurde nachgeladen,
+#9D00F +i e0       aber ist der Prim„rsatz ein Lokal- oder Exemplarsatz?
+#<^                zuerst wieder hinaufschalten, denn '#<+b' hat hinunter-
+#+H                geschaltet, und weiter bei '#-H'
+#-i                Prim„rsatz ist Lokal- oder Exemplarsatz
+#<^                zuerst wieder hinaufschalten, denn '#<+b' hat hinunter-
+#>V                (Verfasser- bzw. Urheberkopf)
+#+e                geschaltet, und weiter bei '#-e'
+
+         --------- Hauptsatz ausgeben: -----
+
+#-H                der Hauptsatz ist der aktuelle Satz
+#>V                (Verfasser- bzw. Urheberkopf)
+#>K                bibliographische Angaben
+
+         --------- Stapel untersuchen und verzweigen: -----
+
+#<                 einen Schritt runterschalten, d. h. der unter dem Haupt-
+                   satz stehende Satz wird nun zum aktuellen Satz
+#-c                ist es ein Mittelsatz?
+#t3                Leerzeile einfgen
+#<+d               noch einen Schritt runterschalten, weiter bei '#-d'
+#+e                wenn das nicht geht, ist der Prim„rsatz erreicht
+
+#-d
+#0100 +h e0        ist der darunterliegende Satz ein Titelsatz?
+#<^                es war kein Mittelsatz: wieder raufschalten, weil '#<+d'
+#+e                runtergeschaltet hat, und weiter bei '#-e'
+#-h                es war ein Mittelsatz:
+#<^                dann wieder raufschalten, weil '#<+d' runtergeschaltet hat
+
+         --------- Mittelsatz ausgeben: -----
+
+#>K
+#<+c               Mittelsatz-Verarbeitung fortsetzen,
+                   bis der Prim„rsatz erreicht ist
+
+         --------- Prim„rsatz ausgeben: -----
+
+#-e
+#>H                          bibliographische Angaben
+#>U                          Ausgabe der Bestandsdaten und Unters„tze
+#+#                          Ausgabe der Titels„tze beendet
+
+
+         ----- Aufnahmekorpus erzeugen -----
+
+#-j
+                                                 Ausgabebezeichnung:
+#4020 P37 #0000 0 #1100 6 #3161 37 #4028 6 #4063 6 #zz 37  Ausgabebezeichnung
+#4026 p0 #0000 0 #1100 6 #3161 37 #4028 6 #4063 6 #zz 37   Maástab
+#4027 p0 #0000 0 #1100 6 #3161 37 #4028 6 #4063 6 #zz 37   Projektion
+#4028 p0 #0000 0 #1100 6 #3161 37 #4028 6 #4063 6 #zz 37   Koordinaten
+#4021 P37 #0000 0 #1100 6 #3161 37 #4063 6 #zz 37          Reprintvermerk
+                                                 Erscheinungsvermerk:
+#4030 p0 #0000 0 #1100 9 #3161 0 #4063 6 #zz 0        Ort, Verlag
+#1100 B" $ " p0 #3161 0 #4063 6 #zz 0                 Erscheinungsjahr
+                                                 Kollationsvermerk:
+#4060 P37 #3161 0 #4061 35 #4062 39 #4063 40 #zz 0    Umfangsangabe
+#4061 P37 #3161 0 #4062 39 #4063 40 #zz 0             Illustrationsangabe
+#4062 p0 #3161 0 #4063 40 #zz 0                       Format
+#4063 p0 #3161 0 #zz 0                                Begleitmaterial
+                                                 Kongreátitel:
+#3160 p"[Kongr.:] " p1 ,"_@__"                        Kongreá
+#3161 p"[Kongr.:] " p1 ,"_@__"
+
+                                       Gesamttitelangabe (Serie):
+#4170 e"[#]" p"(" p1 ,"_@__" ,"_$ _: _"     1. Gesamtheit in Vorlageform
+#4170 b"[#]" p" : " ,"_@__" ,"_$ _: _"   (weil die lokale Ersetzung ,"_#_ : _"
+#4170 p")" e1                             leider nicht funktioniert!          )
+#4171 e"[#]" p"(" p1 ,"_@__" ,"_$ _: _"     2. Gesamtheit in Vorlageform
+#4171 b"[#]" p" : " ,"_@__" ,"_$ _: _"
+#4171 p")" e1
+#4172 e"[#]" p"(" p1 ,"_@__" ,"_$ _: _"     3. Gesamtheit in Vorlageform
+#4172 b"[#]" p" : " ,"_@__" ,"_$ _: _"
+#4172 p")" e1
+#4173 e"[#]" p"(" p1 ,"_@__" ,"_$ _: _"     4. Gesamtheit in Vorlageform
+#4173 b"[#]" p" : " ,"_@__" ,"_$ _: _"
+#4173 p")" e1
+#0100 e0 p0 #zz 0                      bedingte Postfixe l”schen
+
+#3210 p"EST: " p1 ,"_@__"              Einheitssachtitel, Formalsachtitel (HE)
+#3211 p"EST: " p1 ,"_@__"              Einheitssachtitel (NE)
+#0100 e0 p0 #0100 0 #zz 4              bedingtes Postfix setzen
+                                       Fuánoten:
+#4201. ++ p0 ,"_@__" #0100 0 #zz 6          Unaufgegliederte Fuánoten
+#4202 p0 #0100 0 #zz 6                      Deutsche šbersetzung des HST
+#4203 p0 #0100 0 #zz 6                      Zusammenfassende Register
+#4204 p0 ,"_@__" #0100 0 #zz 6              Hochschulschriftenvermerk
+#4211. ++ p0 ,"_@__" #0100 0 #zz 6          Angabe von Paralleltiteln
+#4212. ++ p0 ,"_@__" #0100 0 #zz 6          Angabe von Nebentiteln
+#4213 p0 #0100 0 #zz 6                      Angaben zum HST und zu den Zus„tzen
+#4215 p0 #0100 0 #zz 6                      Vermerke zur Verfasserangabe
+#4216 p0 #0100 0 #zz 6                      Angaben zur Ausgabebezeichnung
+#4217 p0 #0100 0 #zz 6                      Angaben zum Erscheinungsvermerk
+#4218 p0 #0100 0 #zz 6                      Angaben zum Kollationsvermerk
+#4219 p0 #0100 0 #zz 6                      nderungen im Impressum
+#4220 p0 #0100 0 #zz 6                      Erg„nzungen zur Gesamttitelangabe
+#4221 p0 #0100 0 #zz 6                      Angaben ber Schrift, Sprache ...
+#4222 p0 #0100 0 #zz 6                      Angaben zum Inhalt
+#4223 p0 #0100 0 #zz 6                      Angaben der Namen von Interpreten
+#4025 p"Erschienen: " #0100 0 #zz 6         Erscheinungsverlauf
+#4224 p0 #0100 0 #zz 6                      Teilungsvermerk bei fortl. Sammelwerken
+#4225 p0 #0100 0 #zz 6                      Angaben ber Erscheinungsweise und Dauer
+#4226 p0 #0100 0 #zz 6                      Hinweise auf unselbst„ndig enth. Werke
+#4227 p0 #0100 0 #zz 6                      Herkunftsangabe
+#4228 p0 #0100 0 #zz 6                      Titel von rezensierten Schriften
+#4229 p0 #0100 0 #zz 6                      Hinweise auf parallele Ausgaben
+#4230 p0 #0100 0 #zz 6                      Titelkonkordanzen
+ #4236. ++ p0 #0100 0 #zz 6                  Allgemeiner Hinweis Sekund„rausgaben
+#0100 e0 p0 #zz 0                      bedingtes Postfix l”schen
+                                       Verknpfungen:
+#4241 u!! p1                                Verknpfung zur gr”áeren Einheit
+#4242 ++ u!! ,"_@__" p1 m1                  Verknpfung zur kleineren Einheit
+#4243 ++ u!! ,"_@__" p1 m1                  horizontale Verknpfung
+#4244 ++ u!! ,"_@__" p1 m1                  chronologische Verknpfung
+
+                                       ISBN, ISSN und sonst. Standardnummern:
+#2000 e" (" e"*" e" : " p34                                ISBN
+#2001 ++ e" (" e"*" e" : " p34 m34                         2. und weitere ISBN
+#2009 ++ e" (" e"*" e" : " p34 m34 P" [formal falsch]"     Formal falsche ISBN
+#2010 ++ e" (" e"*" e" : " p36 m36                         ISSN
+#2019 ++ e" (" e"*" e" : " p36 m36 P" [formal falsch]"     Formal falsche ISSN
+#2205 p"Reportnr.: " p1                                    Reportnummer
+#2210 p"Normnr.: " p1                                      Normnummer
+                                       nur beim Kartendruck:
+  #4710 p"NE: " p1                       Nebeneintragungsvermerke
+  #0100 p" PPN: " p1 R                   PPN
+
+#>R
+#5100 B"| " B"!" B"!" p{ C t78 "RSWK-Ketten:  " t76 t60 }
+#5101 B"| " B"!" B"!" p2
+#5102 B"| " B"!" B"!" p2
+#5103 B"| " B"!" B"!" p2
+#5104 B"| " B"!" B"!" p2
+#5105 B"| " B"!" B"!" p2
+#5110 B"| " B"!" B"!" p4               2. RSWK-Grundkette
+#5111 B"| " B"!" B"!" p2
+#5112 B"| " B"!" B"!" p2
+#5113 B"| " B"!" B"!" p2
+#5114 B"| " B"!" B"!" p2
+#5115 B"| " B"!" B"!" p2
+#5120 B"| " B"!" B"!" p4               3. RSWK-Grundkette
+#5121 B"| " B"!" B"!" p2
+#5122 B"| " B"!" B"!" p2
+#5123 B"| " B"!" B"!" p2
+#5124 B"| " B"!" B"!" p2
+#5125 B"| " B"!" B"!" p2
+#5130 B"| " B"!" B"!" p4               4. RSWK-Grundkette
+#5131 B"| " B"!" B"!" p2
+#5132 B"| " B"!" B"!" p2
+#5133 B"| " B"!" B"!" p2
+#5134 B"| " B"!" B"!" p2
+#5135 B"| " B"!" B"!" p2
+
+#>R
+#5301 B"!" B"!" p{ C t78 "Sachgruppen:  " t76 t60 }
+#5302 B"!" B"!" p4
+#5303 B"!" B"!" p4
+#5304 B"!" B"!" p4
+#5305 B"!" B"!" p4
+
+#>R
+#5550 ++ B"!" B"!" p{ C t78 "SchlagwÒrter: " t76 t60 } m" ; "
+#5551 ++ B"!" B"!" p{ C } m" ; "
+#5552 ++ B"!" B"!" p{ C } m" ; "
+#5553 ++ B"!" B"!" p{ C } m" ; "
+#5554 ++ B"!" B"!" p{ C } m" ; "
+#5555 ++ B"!" B"!" p{ C } m" ; "
+#5556 ++ B"!" B"!" p{ C } m" ; "
+#5557 ++ B"!" B"!" p{ C } m" ; "
+#5558 ++ B"!" B"!" p{ C } m" ; "
+#5559 ++ B"!" B"!" p{ C } m" ; "
+
+                             Flips bei Zeitschriften und Schriftenreihen:
+#0500 +#0100 i7,b e0                   Zeitschrift/Zeitung?
+#0500 +#0100 i7,d e0                   Schriftenreihe?
+#+k
+#0100 P" ; " |58                       B„nde vorhanden?
+#ux5 +#0100 e0
+#+k
+#0100 dZl e8 p"?|5" =Zl e0             Dann PPN in #uZl
+#0500 i7,b p42 e0                      und Flip-Hinweis ausgeben
+#0500 i7,d p41 e0
+#+k
+
+   ----- Codierungen ------------------------------------------------------
+

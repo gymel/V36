@@ -1,0 +1,57 @@
+  D-SIMP.APR : Simple Katalogkartenanzeige oder -druck
+  2005-04-29
+
+  Spezifischer Teil  (abhaengig von der eigenen CFG)
+  -----------------
+  Kategorieliste (Welche Felder, Interpunktion usw.
+
+  Signatur rechtsbuendig (Zeilenlaenge 90 Zeichen, s.u.)
+#90 R
+  Neue Zeile (d.i. Textkonstante 13)
+#t13
+  Verfassername mit ":" dahinter, dann neue Zeile, dann Titel
+#40 P{ ":" C }
+#20
+  Wenn #39 vorkommt, dann mit " / " davor ausgeben
+#39 p" / "
+#71 p". - "
+#74 C
+#75 " : "
+#76 ", "
+#77 ". - "
+  Serientitel auf neuer Zeile in Klammern
+#85 C "(" P")"
+#+#   Ende
+
+
+  Allgemeiner Teil:
+  -----------------
+zl=90       Zeilenlaenge (nach Bedarf zu aendern, <130)
+zi=0        keine Einrueckung der Folgezeilen
+fl=12       Anzahl Zeilen je Karte
+fm=2        Modus: Einzelkarten fuer die Baende (1 = keine Einzelkarten)
+dx=1        =0, wenn Farbe nicht gewuenscht
+
+i4=1        V14 Ersetzungsmodus
+i5=_            Steuerzeichen
+i6=10       V23: Reg.10 fuer die V23-Ersetzungen
+
+fb 13 10 10 10   Kartenvorschub : 3 Leerzeilen
+
+  Textkonstanten: nur eine
+13=C     bedeutet Zeilenvorschub
+   Lade ad-aw.apt:
+tad-aw   Zeichenumwandlung DosOstWest -> WinOstWest
+
+
+p  255   Absatzende, d.h. neue Zeile
+p ª 1     Nichtsortierzeichen weglassen
+p .31 0   Dreieck als Endezeichen
+
+
+  Internformat-Anzeige: (gilt fuer jede CFG)
+#-(
+#t{ s0 }
+##
+#t{ C "}" }
+#+#

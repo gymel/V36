@@ -1,0 +1,155 @@
+
+Verlautbarung 134 der Entw.Abt.                            2000-08-22
+-------------------------------
+
+"Warschauer Paket"
+------------------
+Vorgeschmack zum Expertentreffen
+
+Bei einem Arbeitsbesuch in der polnischen Hauptstadt, daher der 
+Codename, entstanden vor geraumer Zeit die ersten Skizzen, die 
+letztendlich zu einem ganz neuen Funktionspaket in a99/alcarta 
+gefuehrt haben.
+
+Der groessere Teil wird erst auf dem Expertentreffen enthuellt werden,
+nicht zuletzt weil dafuer erst noch einiges an Dokumentation zu
+schreiben ist, und das muss mit Sorgfalt und viel Testaufwand 
+geschehen. Es soll ja alles in jeder Umgebung funktionieren ...
+
+Ein GANZ kleiner Teil, sozusagen zum Appetitmachen, wird aber schon
+jetzt ausgepackt. Dafuer braucht's nicht viel Doku, das ist mal
+ausnahmsweise sehr sehr einfach. (Aber was sonst noch im Paket ist,
+kann man daraus noch nicht erraten ...)
+
+Und das ist es:
+Das Kurzanzeigefenster kann jetzt nebenbei zu einem ganz anderen Zweck
+benutzt werden: zum Anzeigen einer beliebigen ASCII-Datei, also
+einer Datei, die nur aus lauter Zeilen besteht, im ASCII-Code, mit
+den Zeilenwechsel-Codes 13 10 dazwischen. So etwas kann man mit dem
+X-Editor o.ae. bearbeiten. Nicht mit Notepad, dann sind's ANSI-Codes,
+d.h. die Umlaute sind falsch. Die Datei kann beliebig gross sein.
+(Wenn das nicht einfach ist! Noch einfachere Dateien gibt es gar 
+nicht.)
+
+Aber was soll das bringen? Mit h dateiname  kriegt man die Datei doch
+auch so schon ins Anzeigefenster?
+Nun, die Anzeige ist nicht alles. Die hat keinerlei Wirkung. Nur fuer
+Cut-and-Paste kann man sie nutzen. Aber Vorgaenge kann sie nicht 
+ausloesen.
+Zwei Dinge sind wichtig:
+
+1.) Suchfunktion
+    In dem kleinen Eingabefeld unten rechts gibt man ein Suchwort ein.
+    Umlaute koennen als solche oder auch aufgeloest eingegeben werden,
+    Gross-Kleinschreibung ist auch egal (!).
+    Das Programm findet das erste Vorkommnis. Mit den Buttons [>>] und
+    [<<] geht man VOR und ZURUECK zwischen den Vorkommnissen.
+    Oben sieht man, welche Zeile die oberste in der Anzeige ist,
+    oben rechts steht die Gesamtzahl der Zeilen.
+    Auch das ist, fuer sich genommen, noch nicht eindrucksvoll. 
+    Noch viel wichtiger:
+
+2.) Die ausgewaehlte Zeile wird beim Druck auf Enter in die interne
+    Variable kopiert, und da kann nun ein FLEX zugreifen und damit
+    alles machen, was die Phantasie ersinnen mag. Das ist der Punkt,
+    denn so kann man ploetzlich was passieren lassen.
+
+Als Verfeinerung gibt's noch dieses:
+
+3.) Jede Zeile kann vorn einen Vorspann haben, abgetrennt durch das
+    Zeichen '|'. Dieser Vorspann wird nicht angezeigt, ist aber in
+    der internen Variablen dann auswertbar. Das erhoeht die 
+    Moeglichkeiten ganz gewaltig. Da koennen FLEX-Aufrufe stehen, 
+    Suchbefehle, Hilfedatei-Aufrufe, ...
+
+Wer das jetzt sofort sehen will, muss sich zuerst die aktuellen
+Versionen (von heute frueh) abholen: (von ac20/update)
+
+  a99.lzh
+  alcarta.lzh
+und
+  bwv.lzh     (Beispiele)
+
+Als einfachstes Beispiel haben wir mal eine Liste der Bach-Werke
+hergenommen und stellen sie zum Ausprobieren bereit. 1148 Zeilen.
+Schliesslich ist Bach-Jahr, das muss irgendwo mal sich niederschlagen.
+Ein Ausschnitt: (Liste entstammt einer englischsprachigen Quelle)
+
+ 1041  Violin Concerto in a minor
+ 1042  Violin Concerto in E major
+ 1043  Concerto for 2 violins in d minor
+ 1044  Concerto for flute, violin and harpsichord
+ 1045  Sinfonia, 2 horns, 3 oboes, bassoon, strings and continuo
+ 1046  Brandenburgisches Konzert 1 in F
+ 1047  Brandenburgisches Konzert 2 in F
+ 1048  Brandenburgisches Konzert 3 in G
+ 1049  Brandenburgisches Konzert 4 in G
+ 1050  Brandenburgisches Konzert 5 in D
+ 1051  Brandenburgisches Konzert 6 in B
+ 1052  Harpsichord Concerto
+ 1053  Harpsichord Concerto
+
+Diese Datei, BWV.VW, kopiert man auf's Startverzeichnis oder auf
+c:\allegro\view  (NEU, fuer solche Dateien vorgesehen).
+Dann ruft man den FLEX BWV.FLX auf: (er ist nicht lang und 
+kommentiert!)
+
+X bwv
+
+im Schreibfeld eingeben.
+Schon sieht man die Liste. F1 bringt Hilfe  (Datei HE_VWGER)
+Bei [Enter] wird der FLEX die gewaehlte Zeile nehmen, vorn die Nummer
+abschneiden, "BWV " davor setzen und das dann in #89o kopieren
+(die "bolero"-Kategorie fuer die Opusnummer). Im Schreibfeld zeigt er
+ferner die vollstaendige Zeile an.
+
+Nach demselben Strickmuster kann man sich eine Liste der Sprachencodes
+machen (liegt schon vor, wer will kann sie haben), eine 
+Systematikliste, praktisch alles, was zum Erfassen gebraucht wird und 
+aus festgelegten Listen entnommen werden soll. Bisher musste man fuer 
+sowas Stammsaetze machen etc. pp.
+
+Fuer die FLEXologen geht's aber dann noch viel weiter:
+
+Wenn man sich z.B. eine View-Datei  DOKU.VW  macht, in der steht:
+
+  Hilfen fuer a99/alcarta. Waehlen Sie aus dieser Liste:
+h doku|UEbersicht der Dokumentation                    
+h handbuch|Systemhandbuch                             
+x h ac0-1|Kapitel  0 : Grundbegriffe                  
+x h ac10|Kapitel 10 : Export                          
+h start|Anfangsbild dieser Datenbank                  
+c:\bol|Bolero (Aufruf der "bolero"-Datenbank)         
+
+und dazu diese FLEX-Datei  DOKU.FLX:
+Mit  X doku   ruft man sie dann auf.
+
+  Zeige die Datei doku.vw,
+  fuehre den Befehl am Anfang der gewaehlten Zeile aus
+View doku.vw
+if cancel end
+  gewaehlte Zeile -> #uzz
+ins #uzz
+  Gebraucht wird der Teil vor dem |
+var #uzz(e"|")
+  ViewDatei schliessen
+close view
+  jetzt iV untersuchen:
+  faengt Zeile mit "x " an? dann ausfuehren (exec startet neuen FLEX)
+if "x " exec
+  faengt Zeile mit "X " an? dann ausfuehren
+if "X " exec
+  faengt Zeile mit "h " an?
+if "h " jump help
+  wenn weder x noch h, dann als Programmaufruf benutzen
+call
+end
+:help
+  iV nach #uhh
+ins #uhh
+  Teil hinter dem "h " nehmen
+var #uhh(b"h ")
+help
+
+Beides ist in dem Paket  BWV.LZH  zum Ausprobieren mit drin.
+

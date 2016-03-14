@@ -1,0 +1,566 @@
+  D-K.APT : Hauptteil fuer Komplexes Anzeigemodell
+  2002-02-18 / 2010-09-09 / 20140120
+    eingebunden in  d-kdos.apr, d-krtf.apr, d-khtm.apr, d-a30.apr:
+  d-kdos.apr : fuer PRESTO
+  d-krtf.apr : fuer a99/alcarta
+  d-khtm.apr : fuer avanti/RuckZuck
+  d-a30.apr  : fuer a30
+    >>> fuer ALFA nur eine Zeile zustaendig (mit ALFA markiert)
+        und dazu das Unterprogramm #(c in d-krtf.apr bzw. d-khtm.apr
+  ***** eigentliche Ausgabebefehle ******************
+        Fuer andere Konfigurationen muss man hier die Feldnummern aendern!
+        Die individuellen Teile stehen zwischen >>>> und <<<<
+         und sind kommentiert
+  Achtung hierarchische Saetze:
+  Folgende Zeile wirksam nur wenn man hierarchische Saetze hat:
+  (denn fuer jeden Untersatz wird die nachfolgende Liste abgearbeitet)
+  Kleineres Modell ohne hierarch. Strukturen:  D-S.APT
+
+  2014: kritische Zeichen beseitigt, Sprungmarken verbessert
+  Spr.Marken in  d-krtf.apr :  # ( ) + - % & :
+  d.h. Buchstaben hier alle nutzbar
+
+  Verwendete Sprungmarken (inkl. d-k???.apr):
+   33-50: !"#$%&'()*+,-./012
+           xx xx xx x x  x  
+  51-100: 3456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcd
+                 x     xxxxxx xxxx       x  xx   x      xxxx
+ 101-150: efghijklmnopqrstuvwxyz{|}~
+          xxx xxxxxx      x    x                            
+ Moeglich sind auch:
+ 201-250: ÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùú
+                                                 
+ 251-255: ûüışÿ
+
+
+
+#uEM +E e0
+#hi +0 e0
+#nr dZ~ dY~ dfl dnr dst e0
+
+   Tabulatorsetzungen fuer die Tabelle: (nur HTML)
+
+#t19
+
+#uaF daF e0
+#+@
+
+#-0
+    Ist alternat. Flag gesetzt? dann #-(
+#uaF +( e0
+
+   Wenn der aktuelle Satz ein Untersatz alter Art ist,
+
+#-@
+#01 +e e0      dann nach #-e , d.h. die Nachladeprozedur ueberspringen
+#02 +e e0
+#03 +e e0
+#04 +e e0
+#05 +e e0
+   Tab-Einstellung: 1500, Schriftgroesse: 22 = 11pt
+#t19
+
+#9A +V e0
+#9B +U e0
+
+#9DA +I i4,V e0   // Umlaufsatz
+#9DB +m i4,B e0   // Bandsatz
+#9DB +æ i4,A e0   // AboSatz
+#9DA +J T e0     // Bestellsatz
+#gn. +o e0
+#9R +k e0    // Rechnung
+
+#9C c"abo" P{ t79 t66 "Laufende Zeitschrift" t98 t111 C } e0
+#uzt dzt e0
+
+#20 +a e" : " =zt
+#8n +a e" : " =zt
+#19 +a e" : " =zt
+
+
+  andere Saetze: #-(   (in d-krtf.apr)
+#+(
+  ******** Nachladeprozedur: uebergeordnete Saetze laden  *******
+
+#-a
+
+#nra +#00 "#99z" M
+#nr "#99z" M
+  nimm #00 und pruefe, ob '+' darin vorkommt:
+#00 +a c"+" t"+" |90   das wird "rekursiv" ausgefuehrt:
+#09 +a c"+" t"+" |90   das wird "rekursiv" ausgefuehrt:
+                       wenn in #00 ein '+' vorkommt, wird das letzte hinten
+                       abgeschnitten (t"+" macht das) und der verbleibende Teil
+                       wird im Index 9 gesucht, der gefundene Satz wird geladen
+                       und wird zugleich zum aktuellen Satz. Dieser Vorgang
+                       wird wiederholt (deshalb +a), bis kein '+' mehr in #00
+                       zu finden ist.
+        Nun gibt es evtl. einen Stapel mit mehreren Saetzen, der Hauptsatz
+        an der Spitze ist dann der aktuelle Satz.
+
+
+#<+b    Wurde tatsaechlich etwas nachgeladen? Dann weiter bei  #-b
+        (#< kann nicht ausgefuehrt werden, wenn der Stapel leer ist, und
+        dann wird auch +b nicht ausgefuehrt.)
+
+#+e     Wenn nichts geladen wurde, dann #-e
+        (d.h. der Primaersatz ist ein Einzelsatz oder Hauptsatz)
+
+   ***** Ladeoperation beendet ******
+
+        Jetzt wird der Stapel abgearbeitet:
+#-b
+
+#<^     zuerst  wieder hinaufschalten, denn #<+b hat hinuntergeschaltet;
+
+        dann ist der Hauptsatz wieder der aktuelle Satz
+#99z >E e0     Link "Hierarchieanzeige", #nra ist jetzt gesetzt!
+
+#90 >c e0    Wenn Sign. d. uebergeordn. Satzes AUCH erscheinen soll
+
+  Was jetzt kommt, bezieht sich auf den Hauptsatz:
+  <<<<<<<<<  hier einsetzen, was mit dem Hauptsatz geschehen soll <<<<<<<
+
+#-H
+
+#nr =za    #uza besetzten, dient fuer den gezielten Ruecksprung zu #-A
+#+Z     Unterprog. #-Z ausfuehren
+#-A
+
+  >>>>>>>>>  Ende der Hauptsatz-Verarbeitung   >>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+  *********  Mittelebene   **********
+
+#<     einen Schritt runterschalten, d.h. der unter dem Hauptsatz stehende
+       Satz wird nun zum aktuellen Satz
+
+
+#-c   ist es ein Mittelsatz? Wenn ja, ist der folgende Befehl ausfuehrbar:
+#t{ C }    (Zeilenvorschub, bevor es weitergeht)
+#<+d       noch einen Schritt runterschalten, weiter bei  #-d
+#t{ C }    wenn das nicht geht, Zeilenvorschub
+#+e        d.h. der Primaersatz ist jetzt wieder erreicht, dann weiter bei #-e
+
+#-d      ja, es war ein Mittelsatz
+#<^      dann wieder raufschalten, weil  #<+d  runtergeschaltet hat
+
+
+
+#00 b"+" B"=" { t13 t20 "Abteilung:" t21 } P22
+
+#t60   Einrueckung auf aktueller Position (hinter Bandnummer) festsetzen
+
+  <<<<<<<<<  hier einsetzen, was mit Mittelsaetzen geschehen soll  <<<<<<<
+#nr =zb
+ #>H     Unterprog. #(H ausfuehren
+#+Z
+#-B
+
+  >>>>>>>>> Ende der Mittelsatz-Behandlung  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#t61   Einrueckung wieder auf 0 setzen
+
+#<+c        Mittelsatz-Verarbeitung fortsetzen,
+            bis der Primaersatz wieder erreicht ist
+
+  ********** Mittelebenen alle abgearbeitet    ******
+
+  ********** jetzt kommt der PRIMAERSATZ selbst an die Reihe **************
+
+  (hier beginnt es, wenn der  Primaersatz bereits ein Hauptsatz war, also
+   keine uebergeordneten existieren)
+
+#-e
+
+#00 +f b"+" B"=" { t4 t23 t20 "Band: " t21 t66 } P{ t98 t22 }
+#09 +f b"+" B"=" { t12 t4 t20 "Band: " t21 t66 } P{ t98 t22 }
+#hi +f P"Y" c"=Y" { t23 t20 "enth.: " t21 t66 } P{ t98 t22 }
+#hi +f { t4 t23 t20 "Band: " t21 t66 } P{ t98 t22 }
+
+#</     Stapel jetzt beseitigen
+       (wird nicht gemacht, wenn Untersaetze alter Art vorliegen)
+
+#-f
+    <<<<<<< hier einsetzen, was mit dem Primaersatz geschehen soll  <<<<<<<
+
+#nr =zc
+#+Z     Unterprog. #(H ausfuehren
+#-C
+
+    >>>>>>> Primaersatz abgearbeitet >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+   **** wenn der Primaersatz noch Untereinheiten hat  *******
+
+  Das findet man so heraus:
+
+  man haengt ein '+' an #00 um zu sehen, ob der Index Eintraege enthaelt, die
+  so beginnen
+  (wenn man #00 123456+005 hat, wird nach  "123456+005+"  gesucht
+   und man findet moeglicherweise etwas wie  "123456+005+1" )
+
+#00 +g e"=" F" " P"+" |92    erste Untereinheit finden
+                             und zum aktuellen Satz machen
+
+#+R   ENDE, d.h. wenn es keine #00 gibt, STOP
+      #-R ist in d-X.apr 
+
+   **** Untereinheiten abarbeiten (zyklisch!)  ***
+
+#-g
+#nra "#99z" M    interne Nr. d. nachgeladenen Satzes
+#00 +#90X b"+" B"=" { t13 t20 t4 "Band: " t21 t66 } P{ t98 t22 }
+#09 +#90X b"+" B"=" { t13 t20 t4 "BAND: " t21 t66 } P{ t98 t22 }
+
+   <<<<<<< hier einsetzen, was mit den Untereinheiten passieren soll <<<<<<<
+#90X
+#nr =zd
+#+Z     Unterprog. #(H ausfuehren
+#-D
+
+   >>>>>>> Ende der Untersatz-Verarbeitung   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#</   Untersatz aus dem Arbeitsspeicher entfernen
+#00 +g e"+" P"+" |93     naechsten Untersatz aufsuchen
+                         nach #-g zurueck, wenn es einen gibt
+    das wird unbegrenzt oft gemacht, solange |93 ausfuehrbar ist
+#+R   ENDE
+   ****** Ende der Abarbeitung aller Untersaetze ****************
+
+
+   **** ENDE  ****
+
+   <<<<<<<<< Hauptabschnitt fuer die Ausgabe der Felder <<<<<<<
+             wird fuer jeden Satztyp abgearbeitet!
+
+    Fuer Kenner: dies ist NICHT als Unterprog. angelegt, damit man
+       hier noch Unterprogramme anlegen kann, siehe #8e fuer die URL
+#-Z
+#-z
+
+#>A    Flip "Titeldaten bearb."
+  ALFA steckt in UP #(c  in d-khtm.apr bzw. d-krtf.apr
+
+#90. ++ p>c m>c
+#90. +#52 e0 P22
+
+#91 p>c       ZgNr. zum Ausl. nutzen, falls keine Signatur
+
+   Grundmuster einer Tabellenzeile:
+
+#52 { t20 "Komp.: " t21 t66 } P{ t98 t22 }
+#40. ++ e" = " p{ t20 "Verfasser:" t21 } m{ "; " }
+#40. P22 e0
+#41. ++ e" = " p{ t20 "Hrsg.:" t21 } m{ "; " }
+#42. ++ e" = " p{ t20 "beteiligt:" t21 } m{ "; " }
+#41. +#8n P22 e0
+#42. P22 e0
+
+#8n +#18 =zt
+#20 +#18 =zt
+
+#18 +#71 { t20 "TITEL:   " t21 } P22
+#19 +#71 { t20 "TITEL:   " t21 } P22
+
+#20 p22 e" : " { t20 "Titel:   " t21 t66 } P98
+#20 b" : " p" : "
+#20 p22 e0
+
+#8n { t20 "Zs.Titel:" t21 t66 } P{ t98 t22 }
+#23 { t20 "Nebentit.:" t21 } P22
+#23r { t20 "EZB-Titel: " t21 } P22
+#22 { t20 "Orig.Titel:" t21 } P22
+
+#61 { t20 "Krp.: " t21 } P22
+#61i { t20 "Orch.: " t21 } P22
+#57d { t20 "Dirig.: " t21 } P22
+#57i { t20 "Solisten: " t21 } P22
+
+
+
+#71 { t20 "Ausgabe: " t21 } P22
+
+ #76 { t20 "JAHR:    " t21 t66 } P{ t22 t98 }
+
+ #75 { t20 "Verlag:  " t21 } P22
+
+  Impressum in #uim zusammensetzen
+
+#uim dim Z
+#74 e"" Aim
+#75 p" : " Aim
+#76 p", " Aim
+#uim p20 p"erschienen: !" e"!" P21
+
+#uim dim f",: " P22
+
+
+#84 { t20 "In:" t21 } P22
+
+#76p { t20 "Verlauf:  " t21 } P22
+#77 { t20 "Umfang:  " t21 } P22
+#77z { t20 "Zeit:  " t21 } P22
+
+
+#33s { t20 "Schlagwort:  " t21 } P22
+
+#8e. ++ p>U m>u
+
+#83. ++ p{ t20 "Event:   " t21 } m{ t23 }
+#83. P22 e0
+#85. ++ p{ t20 "Serie:   " t21 } m{ t23 }
+#85. P22 e0
+#87 { t20 "ISBN:" t21 } P22
+#88 { t20 "ISSN:" t21 } P22
+#88z { t20 "E-ISSN:" t21 } P22
+#88L { t20 "L-ISSN:" t21 } P22
+#92 { t20 "Bestand:" t21 } P22
+#>w
+
+#70 +#704 { t20 "In:" t21 } P" "
+#+u
+#704
+#76 p"(" P")"
+#706
+#708 p", S."
+#70 P22 e0
+
+#-u
+   Weitere Felder
+   Muster fuer wiederholbare Felder:
+
+#31. ++ e"_" p{ t20 "Themen:  " t21 } m{ t23 }
+#t22
+
+#81. ++ I3,9 p{ t20 "Anm.: " t21 } m{ t23 }
+
+#t22
+
+#98 { t20 "Hinweise:" t21 } P22
+
+#3n { t20 "Stammsatz: " t21 } P22
+
+#00 >X e0    Exemplare
+
+#>Z
+
+#</   zurueck zum Ausgangssatz
+  Hier Ruecksprung, wenn #-z als UPro aufgerufen
+#uzZ +i c"I" dzZ e0    Heftsatz
+#uzZ +n c"á" dzZ e0    Bandsatz
+#uzZ +l c"æ" dzZ e0    Abosatz
+
+  Abo-Satz vh?
+#00 +l P"-a" |:2
+
+#>B     Flip "Jg./Bde."
+
+  gezielte Rueckspruenge, je nachdem, welches #uzi besetzt ist!
+#uza +A dza e0
+#uzb +B dzb e0
+#uzc +C dzc e0
+#uzd +D dzd e0
+#+R
+
+  Bandsatz
+#-m
+#nr "á" =zZ
+
+#>C    Flip "Gesamtdaten anzeigen"
+
+#9DA +z T |92
+
+#-n
+ #</
+#t{ t13 t13 t79 t66 "Band-Satz" t98 t111 }
+
+#>D    Flips f. Heftfunktionen
+
+
+#t22
+#9DG z { t20 "Zg.Nr.: " t21 t66 } P{ t98 t22 }
+ #t{ t20 "von: " t21 }
+ #9DA T |92
+ #8n P" / "
+ #20 
+ #t22
+#9DN 0 =hf e0
+#9DU { t20 "Umlauf: " t21 } P22
+#>w
+
+  Heftliste
+#-j
+#uhf e"/" C p{ t20 "   " t21 } P". ("
+#uhf >h 
+#uhf ")" e1
+#t{ t22 }
+#uhf +j b";" =hf
+#uhf dhf e0
+#>w
+#9DA +n J P"-bl" |:3
+#</
+#+R
+
+#-æ   AboSatz
+#nr "æ" =zZ
+
+#>E    Flip "Gesamtdaten"
+
+#9DA +z T |92
+ #t{ t20 "von: " t21 t66 }
+ #9DA T |92
+ #8n P" / "
+ #20 
+ #t{ t98 t22 }
+
+#-l
+ #</
+#t{ t13 t13 t79 t66 "Abonnement" t98 t111 }
+
+ #>F   Flips f. Abo
+
+
+#9DG Y { t20 "Jg./Bde." t21 t66 } P{ t98 t22 }
+#9DC k ,"_k_Kauf_" ,"_g_Geschenk_" { t20 "Erw.Art:" t21 } P22
+#9DB j { t20 "Lieferant:" t21 } e0
+#9DB j "SYSL" |;2
+#9A n
+#<
+#t22
+#9DB p { t20 "Preis:" t21 } P22
+
+#9DC w { t20 "Anz.Hefte:" t21 } P22
+#9DU { t20 "Umlauf:" t21 } P22
+#>w
+  Band-Satz vh?
+#</
+#00 +n c"zabo" P"-bl" |:2
+#00 +l P"-a" |:3
+#+R
+
+#-J    Bestellsatz
+#9DA +#uDU i4,V e0
+#9DB +#9z i4,B e0
+#t{ "  " "*** Bestellung " }
+#9DA e"" f"0" p" Nr. "
+#9DA daa e0
+#9DB i4,1 p"  Status: vorausgew„hlt!" e"!" Aaa
+#9DB i4,2 p"  Status: vorakzessioniert!" e"!" Aaa
+#9DB i4,3 p"  Status: bestellt!" e"!" Aaa
+#9DB i4,4 p"  Status: reklamiert!" e"!" Aaa
+#9DB i4,5 p"  Status: storniert!" e"!" Aaa
+#9DB i4,6 p"  Status: inventarisiert!" e"!" Aaa
+#9DB i4,7 p"  Status: abgeschlossen!" e"!" Aaa
+#9DB i4,8 p"  Status: Desiderat!" e"!" Aaa
+#9DB i4,9 p"  Status: unvollst. inv.!" e"!" Aaa
+#9DB i4,A P{"  Status: " t79 "Abonnement" t111 } daa e0
+#9z e0
+#9DB +#9DA i4,B p"  Zs-Bandsatz!" e"!" P4
+#uaa daa
+#t{ " ***" t111 C C }
+
+#9DA T |90
+
+#20 +#75 { t20 "Titel: " t21 } P22 
+#8n { t20 "Titel: " t21 } P22
+#75 C { t20 "Verl.: " t21} P22
+#76 " (" P")"
+#</
+#9DG $Y { t20 "Jahr: " t21 } P22
+#9DG $z { t20 "Zg.Nr:" t21 } P22
+#9DG $a { t20 "Barcode:" t21 } P22
+#9DA B C "Bestellt am: "
+#+R
+
+#-I    Heftsatz
+#nr "I" =zZ
+
+#9DA +z T |92
+
+#-i
+#t{ t13 t13 t79 t66 "Heftumlauf" t98 t111 C }
+
+#>H    Flips "Heftumlauf"
+
+ #8n P" /" =at 
+ #20 p" " e" : " Aat
+ #</
+ #uat F"/ " P22
+
+#9DG Y p{ t20 "Jg./Band: " t21 t66 } P{ t98 t22 }
+#00 b"," p{ t20 "Heft: " t21 t66 } P{ t98 t22 }
+#9DA e"" b1 p{ t20 "Uml.Name: " t21 } P22
+#9DU e"[/%]" p{ t20 "momentan bei:" t21 } 
+#9DU e"" c"/" " seit: " e7
+#9DU e"" b"/" >h P22
+
+#9DU m p{ t20 "wartend:" t21 } P22
+#>w
+#</
+#+R
+
+
+#(h    Datum steht hinter /, invertieren
+#cc b"/" b6 e2 f"0"
+#cc b"/" b4 e2 f"0" "."
+#cc b"/" e4 "."
+#)h
+
+#(d    Datum steht in #udt, invertieren
+#)d
+
+#-U   user
+#t{ t79 t66 "Nutzerdatensatz" t98 t111 C }
+#9B n p{ t20 "Name:" t21 t66 } P{ t98 t22 }
+#9B k p{ t20 "Klasse:" t21 } P22
+#9B e"" b1 p{ t20 "Id.: " t21 } P22
+#+R
+
+#-V   verteiler
+#t{ t79 t66 "Systemsatz" t98 t111 t4 }
+#9A y0 e1 p{ t20 "Typ :" t21 t66 } P{ t98 t22 }
+#9A n p{ t20 "Name:" t21 t66 } P{ t98 t22 }
+#9A c"a" e y0 p{ t20 "Mail:" t21 t66 } P{ t98 t22 }
+#9A F p{ t20 " FAX:" t21 t66 } P{ t98 t22 }
+#9A e"" b1 p{ t20 "Code:" t21 } P22
+#9A i4,V e p{ t20 "Teilnehmer: " t21 } P22
+#+R
+
+#-k 
+#nr x"=0" =bT
+#nr x"=0" =bt
+
+#t{ t79 t66 "Rechnung" t98 t111 C }
+#9R ++ p>T m>t
+  noch Extrakosten drauf:
+#9R $x x"+bt" =bt e0
+
+#ubt x"r2" { " Teilbetr.Summe: " }
+#9R +R $p x"==bt" e0
+#9R $p x"<bt" "  ist groesser als Ges.Betrag "
+#9R $p x">bt" "  ist kleiner als Ges.Betrag "
+
+#+R
+
+  GND
+
+#-o
+#gn.100 ,"_^_c_ _" p{ t20 "Person: " t21 } P22
+#gn.110 p{ t20 "K&ouml;rp.: " t21 } P22
+#gn.111 p{ t20 "Event: " t21 } P22
+#gn.130 p{ t20 "Titel: " t21 } P22
+#gn.400 ,"_$$P__" ,"_$$v__" p{ t20 "auch: " t21 } P22
+#gn.410 p{ t20 "auch: " t21 } P22
+#gn.411 p{ t20 "auch: " t21 } P22
+#gn.430 p{ t20 "auch: " t21 } P22
+#gn.150 p{ t20 "Thema: " t21 } P22
+#gn.151 p{ t20 "Geogr.: " t21 } P22
+#gn.450 p{ t20 "auch: " t21 } P22
+#gn.451 p{ t20 "auch: " t21 } P22
+#gn.548 ,"_$$b_-_" e"$" p{ t20 "Zeit: " t21 } P22
+#gn.500 u!! ,"_$$4bezf_; : _" u;; ,"_$$P__" ,"_$$v_ [_" p{ t20 "Bez.: " t21 } P22
+#gn.550 u!! e" ; ID" e"$$" p{ t20 "Inf." t21 } P22
+
+#+#
+

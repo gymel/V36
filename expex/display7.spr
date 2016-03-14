@@ -1,0 +1,77 @@
+ Substitutions in export lines.
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ It is possible to perform straight substitutions in an export line. MARC
+ records invite this treatment, as the arrangement of subfields within each
+ field usually follows ISBD order, which is a commonly used display format.
+
+ We will use this device to display the imprint field #260. We could also have
+ exported most of the main title field #245 in this way - the flexibility of
+ the allegro export language often allows the same result to be achieved in a
+ number of different ways. 
+
+ The portions of the parameter file explained so far will be passed over
+ without comment:
+ 
+zl=76
+dx=1
+
+4=C       
+60=%12
+65=%76 $ #13 &14
+74=27 91 48 59 51 52 59 52 55 109
+76=27 91 48 59 51 48 59 52 55 109
+
+#050 60 a
+#050 C b
+#t65
+#t74
+#100 a F", " P":"
+#t76
+#t4
+#240 a p"["
+#240 l p" "
+#240 p"]" e1 P4
+#245 a F" :/"
+#245 h p" " F" :/"
+#245 b " : " F"./ "
+#245 c " / " F". "
+#t{"."}
+
+ The imprint line follows, making extensive use of the "local substitution"
+ command. First learn its syntax:
+ 1. It begins with a comma: ,
+ 2. The substitution is enclosed in quotation marks: ,"........"
+ 3. The substition takes the form _old string_new string_
+ Putting all this together, we get:
+ ,"_old string_new string_"
+ 
+ Now we apply it to field #260:
+#260 C b"a" ,"_a_ ; _" ,"_; ;_;_" ,"_b_ : _" ,"_ : :_ :_" ,"_c_, _" ,"_,, _, _" p"    " F". " P"."
+
+ Note:
+ 1. The imprint begins on a new line (C).
+ 2. If the punctuation was already included in the data (as it is in true US
+    MARC records), the substitution will have produced double punctuation; in
+    this case, the following substitution will remove it - a clumsy, but
+    necessary expedient.
+ 3. The prefix p"    " has the effect of indenting the imprint line, making the
+    shape of the record a little clearer.
+ 4. All the export commands for a given field must be strung in a continuous
+    line with no breaks, even if this is long.
+
+ Try to arrange the output of #245 by using local substitutions.
+ Conversely, try to arrange the output of #260 by picking out the subfields
+ one by one.
+
+ 컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴
+ What follows is explanatory, and not part of the experiment. Do not change.
+#t{27 91 49 59 51 48 59 52 55 109 &0 #0 %56}
+#t{C C C "�"*56 C "Most of the record display is now in place, with only the "}
+#t{"added entries remaining to be processed."}
+#t{C "This involves some more complicated manoevres which will be explained "}
+#t{"in DISPLAY8 and DISPLAY9."}
+#t{C "In the meantime, edit DISPLAY7.SPR (F2 F2 F10), trying this time "}
+#t{"to achieve the same display by different means."}
+
+pn="DISPLAY7.SPR"  19960224

@@ -1,0 +1,24 @@
+  I-NR.APR : Ausgabe im Original-"allegro"-Format (Grunddatei .cLG)
+  950531  mit interner Satznummer in #00
+pn="Grunddatei, #00 <interne Nr>"
+
+  !!! diese Datei funktioniert fÅr alle Konfigurationen !!!
+      wenn Sie sie fÅr P.CFG benîtigen:
+      mit  COPY I-NR.APR I-NR.PPR  eine Kopie machen
+
+   -------- Konstanten -------
+zl=0
+ks=1
+ke=0
+as=h0   Hierarchiekennung am Satzanfang ausgeben
+ae=13 10
+   -------- Anweisungsteil ---
+
+#hi +A e0 #zz 0          nicht bei UntersÑtzen!
+#00 b3 "#89 " M #zz 0    Wenn es eine #00 gibt: in #89  kopieren
+
+#nr b3 r6,0 "00 "        #00 aus #nr bilden und ausgeben
+
+#-A
+##     Pauschalexport, jede Kat. mit  ke  abschlie·en
+/00    dabei die alte #00 nicht mit ausgeben!

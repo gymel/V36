@@ -1,0 +1,115 @@
+  FORMEDIT.FLX : Bearbeiten der Formulardatei
+  2002-07-09
+
+var m
+if ="alc" end
+
+var x
+if "x" jump xed
+var "Sie k”nnen jetzt die Formulardatei bearbeiten." n "Das geschieht in einem Fenster mit dem Editor " x
+jump edit
+:xed
+var "Sie k”nnen jetzt die Formulardatei bearbeiten." n "Das geschieht in einem DOS-Fenster mit dem X-Editor"
+var +n "Wenn Ihnen das nichts sagt, schauen Sie sich zuerst die Beschreibung dieses Editors an!" n
+var +"Wollen Sie jetzt bearbeiten? (Nein: Editor-Beschreibung sehen)"
+:edit
+ansi
+yes
+if yes jump start
+if no jump acd
+end
+
+:acd
+var x
+if "x" help acd
+end
+
+:start
+get env comspec
+ins #uwC
+
+  Diverse Angaben in #u-Variablen kopieren
+show rec
+var E
+ins #uwE
+var e
+ins #uwe
+  Zuerst auf dem DbDir nachsehen:
+var D B ".frm"
+ins #upI
+fsize
+if no jump d2
+var #upI
+ftime
+ins #upT
+var #uwC " /c " x " " #upI
+call
+jump aktiv
+
+  Dann auf dem ProgDir
+:d2
+var P B ".frm"
+ins #upI
+fsize
+if no jump d3
+var #upI
+ftime
+ins #upT
+var #uwC " /c " x " " #upI
+call
+  Wenn die Datei auf dem ProgDir war: kopieren auf's Datenverz
+  (denn dort war sie nicht, gehoert sie aber jetzt hin)
+var #upI " " D B ".frm"
+fcopy 
+jump aktiv
+
+  zuletzt auf dem Arbeitsverz.
+:d3
+var B ".frm"
+ins #upI
+fsize
+if no jump d4 
+var #upI
+ftime
+ins #upT
+var #uwC " /c " x " " #upI
+call
+jump aktiv
+
+:d4
+var B ".frm"
+xport f
+wri "  Formulardatei fuer Datenbank " B ", Konfiguration " K n
+wri "  50 Abschnitte mit Ueberschrift und bis zu 14 Zeilen nach dem Muster" n n
+wri "[Formular 1]" n
+wri '#nnn "Bezeichnung"|i        i = Index zum Nachschlagen fuer #nnn' n 
+wri '#mmm "Bezeichnung"|j        j = Index fuer #mmm' n 
+wri '#kkk ...' n
+wri 'Sollen Teilfelder erfasst werden, kann man schreiben:' n
+wri '$a-#nnn "Bezeichn.f. Teilfeld a"' n
+wri '$b-#nnn "Bezeichn.f. Teilfeld b"' n
+var #uwE
+xpo f
+var #uwe
+xpo p
+var #uwC " /c " x " " B ".frm"
+call
+end
+
+:aktiv
+var #upI
+ftime
+if =#upT jump ende
+  "Testschleife", aber mit Frage (rausnehmen, falls nicht gewuenscht)
+yesno Sofort aktivieren?
+if no end
+if cancel end
+  Befehl
+var m
+ins #uwM
+var P #uwM(e" " F"b") " " V
+
+  starten
+  und aktuelles Programm stoppen
+STOP
+:ende

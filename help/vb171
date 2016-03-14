@@ -1,0 +1,146 @@
+
+Verlautbarung 171 der Entw.Abt.                             2003-11-20
+-------------------------------
+                             Es liegen bereit: a99.lzh / a99a.lzh
+                                               alcarta.lzh
+
+V23.6.1 : Abrundungen
+---------------------
+
+V23.6 hat wohlwollende Aufnahme gefunden und bew„hrt sich ganz
+offensichtlich in der Praxis - es gab nach einer Freigabe noch
+nie so wenig Resonanz.
+Gleichwohl, auch das Gute vertraegt immer noch Verbesserungen,
+und so haben wir einige gemacht. Der "Zettel fuer V24" ist
+dadurch wieder sehr kurz geworden.
+
+1. Formulare : jetzt 250
+------------------------
+Die maximale Formularzahl wurde auf 250 hochgeschraubt.
+Wichtig ist, den Platz fuer Phrasen evtl. zu vergroessern,
+d.h. den Wert mP in der CFG. Sonst kommt die Fehlermeldung
+"Kein Platz mehr fuer Phrasen" und nichts geht mehr.
+Es konnte zu (allerdings harmlosen) Fehlermeldungen kommen,
+wenn das letzte Formular benutzt wurde, darin konnten auch
+schon mal unsinnige Dinge stehen. Das wurde behoben.
+
+2. Indexfenster : 2 neue Buttons
+--------------------------------
+Das Blaettern im Index ging nur per Tasten: Bild rauf und runter.
+Dafuer wurden zwei neue Buttons spendiert, auf denen <<< bzw.
+>>> steht (fuer rauf bzw. runter). Sie sind rechts oben neben
+der Register-Auswahlzeile. Nun muss man die Hand nur noch dann
+von der Maus nehmen, wenn's ein Suchwort einzutippen gilt oder
+wenn man zeilenweise scrollen will.
+
+3. Ausstieg
+-----------
+Default beim Ausstieg mit Alt+F4 oder Exit ist jetzt [Ja], und
+[Abbrechen] gibt's an der Stelle nicht mehr, nur [Nein], was
+sowieso dasselbe bewirkte wie [Abbrechen].
+
+4. ViewListe als Tabelle (VIEWTAB.FLX)
+------------------------
+Zwischenueberschriften (bei "Gruppierung") kamen mit falschen
+Zeichen fuer die Umlaute heraus. Korrigiert.
+
+5. FLEX-Bef. "next sub" und "prev sub"
+--------------------------------------
+Bei hierarchischen Saetzen kann man mittels "next sub" bzw.
+"prev sub" den internen Zeiger auf den Anfang des naechsten
+Untersatzes bzw. des vorigen setzen. "insert" wirkt dann auf
+den betr. Untersatz. Nicht jedoch "form", denn der Auswahlbalken
+in der Auswahlliste links wurde nicht mit verschoben. Das wurde
+korrigiert, auch im Formular erscheint dann der Untersatz.
+
+6. Menue "Extras" mit Hilfe
+---------------------------
+Im Menue "Extras" bringt jetzt die Wahl der Ueberschriftszeilen
+"Offline-Datei" bzw. "Datenbank (ONLINE)" den Hilfetext
+off.rtf hervor, der ueber die Hintergruende informiert.
+Vorher passierte da nichts.
+
+7. Find-Befehl mit Restriktion am Anfang
+----------------------------------------
+Es ist ja moeglich, Befehle zu geben wie
+PYR >1980 and sig a?
+also mit einer Restriktion an erster Stelle. Wenn dagegen die Restriktion
+hinter dem eigentlichen Suchbefehl steht, kann es auch heissen
+sig a? and PYR>1980
+also ohne Leerzeichen hinter PYR.
+Diese Asymmetrie besteht nicht mehr, es kann nun auch heissen
+PYR>1980 and sig a?
+
+8. Editor-Fragen  (UIFEGER / UIFEENG)
+----------------
+Die Fragen bei fehlerhafter ISBN/ISSN und beim Ordnungswort
+wurden verbessert. Vorher waren sie nicht genuegend
+unmissverstaendlich formuliert.
+
+9. QUICK.VW
+-----------
+Die Schnellwahl-Viewliste  quick.vw  wurde um etliche Punkte
+ergaenzt. Man erhaelt sie ueber Fuellhorn oder durch direkte
+Eingabe von "v quick" im Schreibfeld, standardmaessig auch
+durch Alt+4 (Einstellung in _start.flx).
+
+10. ASORT.EXE : Pfadnamen
+-------------------------
+Im Programm asort.exe wurden die Pfadnamen der Ein- bzw. Ausgabedatei auf 40 
+Zeichen gekuerzt. Diese archaische Beschraenkung wurde ausgemerzt.
+Fuer UNIX muss dies noch nachvollzogen werden, wenn Bedarf besteht.
+Normalerweise wird das Programm nicht mit Pfadnamen, sondern mit Dateinamen 
+aufgerufen, d.h. es wird auf dem Verzeichnis gestartet, wo auch die Daten liegen. 
+Dann tritt kein Problem auf.
+
+11. Neuer OnFLEX: onglobal.flx
+------------------------------
+Bei Betaetigung eines der drei Menuepunkte im Menue "Global" wird nun
+der FLEX  onglobal.flx  ausgeloest. Und zwar steht in der iV zu dem 
+Moment eine Ziffer: 1=Ersetzung, 2=Manipulation, 3=Loeschung
+Damit kann man unterscheiden, um was es sich handelt.
+Nur wenn der FLEX wiederum dieselbe Ziffer in der iV zurueckgibt, also
+z.B. am Ende den Befehl  var '1'  geben, wird die Aktion dann wirklich
+ausgefuehrt. Der OnFLEX kann also dazu dienen, vor der Ausfuehrung noch
+eigene Aktionen vorzuschalten.
+Wenn keine Erg.Menge besteht, kommt aber nun, anders als bisher,
+die Meldung "Sie haben keine Erg.menge aktiviert" und es passiert
+nichts, auch der OnFLEX wird nicht ausgefuehrt. (Es war vorher 
+kontraintuitiv, dass einfach nichts passierte.)
+
+12. Neuer FLEX  vbfind.flx
+--------------------------
+Damit man in den Verlautbarungen was wiederfinden kann, gibt es neu
+den FLEX "vbfind.flx". Er steht mit auf dem Menue  vb.vw, man braucht
+also nur  "v vb"  einzugeben und dann "Suche in den Verlautbarungen"
+auszuwaehlen. Gesucht kann werden nur nach einzelnen Zeichenfolgen, 
+nicht nach Kombinationen. Gross-/Kleinschreibung ist allerdings
+egal. Umlaute aufloesen! Denn in den Vb-Texten sind sie alle aufgeloest.
+
+13. Menue "Bearbeiten"
+----------------------
+Neu: "Anzeigetext kopieren" (Strg+c). Der erste Punkt heisst jetzt
+"Anzeigetext markieren (Strg+a)". Der bisherige Punkt "Kopieren"
+heisst jetzt zutreffender "Feld kopieren in Reserve (Alt+k)"
+
+14. Warndreieck und Rote Karte
+------------------------------
+Wenn beim FLEX-Befehl  yesno <frage>  bzw.  noyes <frage> der Text von 
+<frage> mit ! beginnt, dann wird in der Ja/Nein-Box statt des Frage-
+zeichens ein Warndreieck (gelb) mit Ausrufzeichen angezeigt. Damit
+hat man die Moeglichkeit, wenn man das nicht zu oft einsetzt, der
+Frage eine gewisse Aufmerksamkeit zu sichern.
+Dasselbe gilt auch fuer den Befehl "message <text>": man laesst
+den <text> mit einem ! beginnen. Zusaetzlich bei "message": wenn 
+der Text mit @ beginnt, wird die "rote Karte" gezeigt.
+
+15. classico : Pfadnamen
+------------------------
+Bisher klappten die Programme nicht auf dem root-Verzeichnis einer
+Platte, also z.B. mit  -dd:\
+Jetzt geht's.
+
+
+
+
+

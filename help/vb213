@@ -1,0 +1,200 @@
+
+Verlautbarung 213 der Entw.Abt.                              2009-01-29
+-------------------------------
+
+V29.0 war als Vorab-Release gedacht, um den Anwendern fruehestmoeglich
+zum Genuss wichtiger Neuerungen zu verhelfen. Insofern koennte man von
+einem Schnellschuss reden. Jetzt sind die  noetigen Nachjustierungen 
+erledigt, der Nullnummer folgt nun eine ordentliche erste V29, welche
+die V28.8 abloest.
+
+1. XML-Parsing mit FLEX
+2. acon-Verbesserungen, insbes. Updating
+3. Neue Standard-FLEXe: doppfind.flx, xml-rtf.flx
+4. Neuer FLEX-Befehl "pipe"
+5. Neu in acon : open <datei>  und  get
+6. Vormerkung am OPAC in Selbstbedienung (alcarta und PHPAC)
+7. OAI: Jetzt auch aktiv - Werden Sie Data Provider!
+
+
+1. XML-Parsing mit FLEX
+-----------------------
+Es war zu Recht gefordert worden, dass der x-Befehl bei der Suche
+nach XML-Attributen auch mit '...' (single quotes) klarkommen muesse
+sowie mit Spatien vor und hinter dem = und anderswo.
+M.a.W., wenn in den XML-Daten steht:
+
+<dc:creator   type   =   'supporter'>  Th. Berger  </dc:creator>
+   dann soll mit
+var (x'dc:creator type="supporter"')
+das Ergebnis  "Th. Berger" lauten. Das ist jetzt gewaehrleistet.
+Merke: Im FLEX-Befehl immer Doppelquotes beim Attribut und keine 
+Spatien vor und hinter dem = ! In den Daten kann stehen, was will.
+Und:
+Mehrfachfelder werden jetzt nicht mehr durch ;;; getrennt sondern
+durch 2mal Code 20. Warum 2mal? Weil beim Einordnen eines Textes
+mit  ins #xyz  die Zeilentrennungen durch einen Code 20 ersetzt werden.
+
+
+2. acon und Update
+------------------
+Das Konsolprogramm acon.exe bzw. acon (UNIX) soll ja u.a. das alte
+Programm update.exe ersetzen. Dazu muss man ihm den Job  update.job
+zusammen mit den richtigen Optionen uebergeben (s. V28.5, Vb.207).
+Es zeigte sich, dass die Sache versagte, wenn die einzulesende
+Datei (Option -u) aus nur EINEM Satz bestand. In update.job wurde
+dies von einer unrichtigen Fehlerpruefung verursacht. Behoben.
+
+Hier kurz das Rezept, mit dem  acon  ein Update ausfuehren kann:
+Man will die Datei abc.alg in die Datenbank einmischen, die in 
+c:\allegro\katalog liegt und cat heisst. Neue Saetze sollen in die
+Datei 56, Update-Modus soll m41 sein. So wird gestartet:
+
+acon <update.job -fm41 -ka -bc:\allegro\katalog\cat -n56 -uabc.alg
+
+  wogegen dieselbe Aufgabe mit dem alten update.exe so zu loesen war:
+
+update -fm41 -ka -dc:\allegro\katalog -bcat -n56 -uabc.alg
+
+Der Unterschied liegt also nur in den Optionen -d und -b, die bei
+acon zu -b zusammengefasst sind.
+
+Der  update.job  wurde ferner etwas verbessert. (S. Vb.207)
+U.a. klappte es nicht, wenn die Update-Datei (Option -u) aus nur
+einem Satz bestand.
+
+Bei "find" konnte acon abstuerzen, wenn ein leerer Suchbefehl angegeben
+war. Das wurde behoben, es kommt dann die Meldung "Leerer Suchbefehl".
+Besser ist daher, wenn das Problem auftreten koennte, statt dessen
+...
+if "" jump error
+find
+
+zu schreiben, und eine Fehlerbehandlung unter  :error  zu machen.
+
+
+Fehler beim Updating
+--------------------
+Folgende seltene Situation: 
+1. im Neusatz ein Datenfeld mit ~ auf der ersten Textposition,
+    (damit das Feld als zusaetzliches Mehrfachfeld eingeordnet wird)
+2. i4 und i5 in den Indexparametern gesetzt, und 
+3. i5-Zeichen kommt in dem betr. Datenfeld vor.
+Sind alle drei Bedingungen erfuellt, entsteht intern eine Schleife und 
+acon steigt aus, wenn der Satz gespeichert werden soll oder die Index-
+eintraege berechnet werden sollen (var sk).
+Das wurde ausgemerzt.
+
+
+3. Standard-FLEXe
+-----------------
+
+1. NEU : doppfind.flx
+   Findet Eintraege in jedem gewaehlten Registerabschnitt, die mehr als
+   eine Eintragung haben, also vor allem z.B. Dubletten in Registern,
+   wo es nur eindeutige Eintraege geben sollte.
+
+2. VERBESSERT : ergnum.flx
+   Macht aus einem Satznummernbereich eine Ergebnismenge
+   Tip: 1-100000000 eingeben, wenn Gesamtbank als Erg.Menge gewuenscht
+
+Beide kann man natuerlich direkt mit X aufrufen, sie sind aber auch in
+die Quick-Liste eingebaut.
+
+3. NEU : xml-rtf.flx
+   Macht aus einer XML-Datei eine RTF-Datei, in der
+   -- jedes oeffnende Tag auf neuer Zeile beginnt
+   -- Tag-Namen rot erscheinen (nur die oeffnenden!)
+   -- Attributwerte grau
+   -- Feldtext (Inhalt des Tags) schwarz und fett
+   Genutzt wird dies innerhalb des OAI-Pakets, um die Antwort eines 
+   OAI-Servers ein klein wenig formal zu vereinheitlichen und besser
+   lesbar zu machen: An dem Nebeneinander von gruen und schwarz wird
+   jeweils Feldname und Inhalt sofort erkennbar. Noch besser waeren
+   natuerlich Einrueckungen bei Verschachtelungen, aber wir wollen
+   mal nicht uebertreiben, dafuer gibt's genug andere Werkzeuge. Hier
+   geht's NUR darum, ohne Einschalten eines Drittprogramms schnell mal
+   eben eine Ergebnisdatei in Augenschein zu nehmen, und dazu ist
+   nacktes XML nun mal nicht immer leicht ueberschaubar.
+   Eingebunden ist das jetzt in quick.vw und in den Dateienbrowser 
+   files.flx. Direktnutzung:   X xml-rtf <dateiname>
+
+
+4. Neu: FLEX-Befehl "pipe"    [Beschreibung: h xopen ]
+--------------------------
+Mit  pipe <programmname>  kann man ein externes Programm starten und
+dann dessen Ausgabe so einlesen, als waere es eine Datei. D.h.:
+Mit dem Befehl  get  bekommt man danach zeilenweise das, was das 
+gestartete Programm ueber seine Standard-Ausgabe ausgibt. 
+Mit  if cancel  nach einem  get  prueft man, ob das Programm sich 
+beendet hat und somit nichts mehr ausgeben wird.
+
+
+5. Neue Befehle fuer avanti
+---------------------------
+Die Befehle  
+open <dateiname>     Datei zum Lesen oeffnen
+get                  Zeile aus der Datei lesen
+wurden jetzt auch in avanti realisiert.
+Der Befehl  open x <dateiname>  geht dagegen nicht. Als Ersatz dafuer
+macht man folgende Konstruktion:
+
+switch dow 2 
+export file <dateiname>
+write ... 
+ (export param <dateiname>
+  export ... ) 
+switch dow 1 
+
+
+6. Jetzt auch Vormerkung in Selbstbedienung
+-------------------------------------------
+                 Schnellinfo:   http://www.allegro-c.de/alf/alfh.htm
+Zur Selbstverlaengerung kommt die Selbstvormerkung. 
+Zunaechst einmal wird nur die wichtigere Titelvormerkung angeboten.
+Die Anzeigeparameter d-khtm.apr (fuer PHPAC) bzw. d-krtf.apr (fuer
+alcarta) zeigen, wenn alle Exemplare verliehen sind, einen Link bzw.
+Flip "Vormerken".
+Es kommt dann die Abfrage von Lesernummer und Passwort. Das Ansinnen
+wird abgewiesen, wenn der Leser schon ein Exemplar des Titels
+ausgeliehen hat oder eine Vormerkung fuer ihn bereits besteht. Nicht
+jedoch, wenn er noch was zu zahlen hat oder sein Ausweis abgelaufen
+ist - denn er muss dann ja zum Abholen kommen, und bei der Gelegenheit
+kriegt man ihn endlich mal wieder zu fassen!
+Funktionieren tut es auch bei verknuepften Untersaetzen, wenn diese
+unter dem Gesamttitel alle aufgelistet sind. Bei hierarchischen
+dagegen nicht. Um es an dieser Stelle kurz zu machen:
+Mit  h alfh  erhaelt man die vervollstaendigte Beschreibung der aLF-
+Funktionen einschl. jetzt der OPAC-Selbstbedienungsfunktionen.
+Die neuen FLEXe und Parameter sind im Gesamtpaket mit drin, die 
+avanti-Jobs und -PHPs sind im PHPAC-Paket.
+
+
+7. OAI : Jetzt auch aktiv - Werden Sie Data-Provider!
+-----------------------------------------------------
+Was ist eigentlich OAI? Hier steht's:  http://www.allegro-c.de/oai.htm
+
+Wer mittels OAI Daten anderswo aberntet und sinnvoll verwendet, wird 
+"Service Provider" genannt, weil er aus den geernteten Daten einen
+(Mehrwert-)Dienst macht. Wer auf der anderen Seite sitzt, also seine
+eigenen Daten zum Abernten per OAI freigibt, ist ein "Data Provider".
+Vielleicht wollen auch Sie dieser Erzeugergemeinschaft beitreten? 
+Die Voraussetzungen dafuer wurden jetzt geschaffen mit einer Anzahl von
+PHPs und JOBs. Das Skript  oai.php  bildet die Basis-Adresse der Sache,
+d.h. wenn z.B.
+http://www.ub-golfsburg.de/katalog
+die Startseite Ihres Katalogs ist, dann ist
+http://www.ub-golfsburg.de/katalog/oai.php
+die Basis-URL fuer Ihren Datendienst. Es bedeutet, dass hinten an diese
+Basis-URL die OAI-Befehle ("verbs") und Argumente anzuhaengen sind, 
+z.B. so:
+http://www.ub-golfsburg.de/katalog/oai.php?verb=ListSets
+um die Liste der Sets abzurufen, die Sie eingerichtet haben.
+Die PHP-Skripte, JOBs und HTM-Dateien kommen in das PHPAC-Paket, das
+getrennt bereitgestellt wird.
+Start des OAI-Browsers:  h oai  (HILFE..HILFE beachten)
+OAI 2.0 Doku im Original:
+   http://www.openarchives.org/OAI/openarchivesprotocol.html
+
+
+

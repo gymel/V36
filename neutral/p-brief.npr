@@ -1,0 +1,87 @@
+  P-BRIEF.APR : Ausgabe als Kurzanzeige
+  20011210
+    Numerierung u. ein Teil der HTML-Tags wird in av_rset.php gemacht!
+  
+pn="BriefList"
+
+       xxx Aktivieren, wenn intern ASCII, extern aber UTF-8 gewuenscht:
+td-utf8   lade d-utf8.apt
+td-htm    Schriftarten, Farben etc.
+p ` 1
+
+  --------- Konstanten -----------------
+
+zl=0     Zeilenlaenge
+zm=0        kein Seitenumbruch (fortlaufende Ausgabe)
+
+ae=13 10    Zeilenvorschub am Aufnahme-Ende
+
+fl=0        Listenstruktur (keine Karten)
+
+dx=1        damit man beim Testen auch die Steuerzeichen auf dem
+            Bildschirm sieht. (Ansonsten nicht noetig)
+i4=1        V14-Ersetzungen ausfuehren
+
+zb=" "      Zeilentrennung nur bei Leerzeichen
+
+ze=13 10
+
+zb=" "
+
+  Sonderzeichen:
+p ª 1
+p < "&lt;"
+p  ". - "
+
+
+  --------------------------------------
+
+4=C
+
+  ********* Kategorieliste *************
+
+#t4
+
+
+   xxx Hier Die Feldnummern durch die gewuenschten ersetzen:
+#070 B"u" e"" p{ '<a href="' } P{ '">' } 
+#n30
+#200 e"" P": "
+#20c e"" P": "
+#21e e"" P" [Hrsg.]: "
+
+#100 e" : " e""
+#100 w p" [" e2
+#100 w e";" c"^ " p"Op " e3
+#100 w P"]" 
+
+#070 B"y" e"" p"</a>" y0 e4
+#t98
+#n10 +#030 i5,p p" [Personen-Normsatz]!" e"!" 
+#n10 +#030 i5,s p" [Sachschlagwort]!" e"!" 
+#n10 +#030 i5,b y0 p" [K&ouml;rperschaft]!" e"!" 
+#n10 +#030 i5,s p" [Sachschlagwort]!" e"!" 
+#n30 p" [Normdatensatz]!" e"!"
+#030 +e c"T" p" [Musikaufnahme]!" e"!"
+#070 +#630 e0   // URL angegeben?
+#+e
+#630 +e c"ho" e0
+#630 x">1" " [Web-Adresse]!" e"!"
+#-e
+#t{ C "</dt><dd>" }
+#100 b" : " e"" P". - "
+#120 e"" p{ t73 " (" } P{ ") / " t105 }
+#25c { t73 "Dirigent: " t105 } P{ "&nbsp;&nbsp;" }
+#35e { t73 "Orchester: " t105 } P{ "&nbsp;&nbsp;" }
+#25s { t73 "Solist(en): " t105 } P{ "&nbsp;&nbsp;" }
+#040 e" = " p" (" P")"
+#04p p" [" P"]"
+
+#900 e"" y1 { t79 " Signatur: " t111 }
+
+#+#
+
+
+
+
+p | "; "

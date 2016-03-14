@@ -1,0 +1,115 @@
+  D-FLIP.APR  Anzeige mit Feldbezeichnungen und mehreren Flips
+  951228/970709  alternatives Beispiel fr ein DISPLAY und PRINT
+pn="Kurzanzeige mit Feldbez. u. Flips"
+
+  --------- Konstanten -------------------
+
+zl=66	    Zeilenl„nge
+zi=11	    11 Zeichen Einrckung bei Folgezeilen
+zm=0        kein Seitenumbruch
+
+dx=1
+
+fl=16       wenn es fr DISPLAY benutzt werden soll
+ fl=0         aktivieren, wenn es fr Listendruck benutzt werden soll
+              oder fr VP
+
+ke=C &0     Kategorie-Ende: Zeilenvorschub und Sprung auf Position 0
+                das &0 ist n”tig, weil sonst auf der neuen
+                Zeile die Einrckung wirksam wird (zi=11)
+                (d.h. neue Kategorie beginnt wieder am Zeilenanfang)
+            soll das ausnahmsweise wegfallen, muá man in der Anweisung
+            den Postfixbefehl #zz 0 geben, siehe unten bei #75
+
+i4=1       Falls V14-Verknp. existieren, dann werden sie aufgel”st
+
+  ----------------------------------------
+
+  ......... Zwischenteile ................
+
+13=C &0     Zeilenvorschub mit Beginn am Zeilenanfang (macht dasselbe wie ke)
+
+   Farben: (fuer VP wegnehmen)
+71=27 91 49 59 51 49 109          rot
+72=27 91 49 59 51 50 109          grn
+73=27 91 49 59 51 51 109          gelb
+76=27 91 48 59 49 59 51 54 109    reset / hellblau (normal)
+78=27 91 49 59 51 55 109          weiss
+  ........................................
+ 
+  ********* Kategorieliste ***************
+
+  Beim 1. Durchlauf wird #uad besetzt:
+          0 : keine zweite Datenbank
+          1 : es wurde eine 2. Datenbank angegeben (2mal -d)
+
+#uad +A e0       #uad schon besetzt, dann -> #-A
+#<2B             Wenn Umschaltung auf 2. Datenbank moeglich -> #-B
+#nr p"0" e1 =ad     nicht moeglich: #uad = 0
+#+A
+
+#-B
+#<1     zurueckschalten 
+#nr p"1" e1 =ad    #uad=1
+
+
+#-A
+#01 "     BAND: " p13          nur bei Unteraufnahmen: noch'n Zeilenvorschub
+#40 "Verfasser: "
+#20 +#74 "    Titel: "
+#8n "    Titel: "
+#74 "   E.-Ort: " e"" #74 0 #75 13 #76 1 #zz 13
+#75 "   Verlag: " #zz 0        der Befehl #zz 0 bedeutet: kein Postfix ausgeben,
+                               hier soll also  ke  entfallen
+#74 +J e0 #zz 0
+
+#76 +#77 "  E.-Jahr: "         wenn kein Verl. vorkommt
+#-J
+#76 +#77 p" (" P")"                 E.-Jahr wird in Klammern hinter Verlag gesetzt
+#t13
+#77 "   Umfang: "
+#85 "    Serie: "
+#70 "       in: "
+#90 e"" " Signatur: "
+
+  ********** FLIPs ***********************
+
+#hi +# e0 #zz 0   Wenn hierarchischer Untersatz, hier Schluss
+
+#nr dZ1 dZ2 dZ3 dZg e0      #uZ-Variablen l”schen
+
+#40 p{ t78 "[" t71 "1" t78 "]   Andere Werke des Verfassers" t76 } e0 #zz 0
+#40 p"?|1" aZ1
+
+#31s p{ t78 "[" t71 "2" t78 "]   Andere Werke zum Thema" t76 } e0 #zz 0
+#31s +#90 p"?|3" aZ2
+
+#31 p{ t78 "[" t71 "2" t78 "]   Andere Werke zum Thema" t76 } e0 #zz 0
+#31 p"?|3" aZ2
+
+#90 p{ t78 "[" t71 "3" t78 "]   Bcher auf demselben Regal" t76 } e0 #zz 0
+#90 p"?|8" aZ3
+
+#00 c"+" { t78 "[" t73 "g" t78 "]   Anzeige des Gesamtwerks" t76 } e0 #zz 0
+#00 c"+" e"+" p"|9" aZg
+
+#t{ t78 "[" t73 "Bild^" t78 "] zurckbl„ttern" t76 t13 } 
+
+#uad +V c"0" e0    keine andere Datenbank da -> #-V
+
+#t{ t78 "   [" t73 "a" t78 "] umschalten auf die andere Datenbank" t76 t13 } 
+#uxb "<0|" dZa aZa   #uZa = Umschaltbefehl
+
+  Wenn es verknpfte S„tze gibt, passiert noch was:
+#-V
+#00 +#ux9 e"+" P"+" |98 #zz 0    In Reg. 9 wird nachgesehen, ob die IdNr
+                                 dort mit einem '+' hinten dran vorkommt
+#09 e"+" P"+" |98 #zz 0          das ist eine Alternative
+#ux9 { t78 "[" t73 "B/b" t78 "] Teilb„nde vor/zurck durchbl„ttern" t76 } e0 #zz 0
+
+
+  Jetzt existieren #uZ1, #uZ2, #uZ3 und #uZg 
+  (falls die betr. Kategorien existieren!)
+  Wenn auf '1' gedrueckt wird, flippt das Programm ins Register 1
+    zu dem Namen des Verfassers, etc.
+

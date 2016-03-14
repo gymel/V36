@@ -1,0 +1,214 @@
+
+
+rs="SET: "   An dieser Kombination beginnt der erste Satz
+
+re=13 10 "SET: "   zugleich ist diese Kombination als Satzende zu betrachten
+
+_ 13 10 " "        Zeilenumbruch innerhalb Kategorien beseitigen
+_ " "
+
+_ 13 10 "0100"     damit diese beim Pauschalimport kein Problem macht
+_ 13 10 "oooo"     sie steht nÑmlich nicht am Anfang, sondern die 0200!
+
+_ 13 10            sonstige Zeilenenden in allegro-Endezeichen 0 verwandeln
+_ 0
+
+
+_ 0 "70"     statt 7001, 7002, ...
+_ 0 "7001 "    jetzt 7001 01, 7001 02, ...
+
+$$     Dollarverweisungen sollen aufgelîst werden
+S      Mehrfach-Leerzeichen beseitigt
+
+#0100            diese zuerst importieren
+s "PPN: "
+l9
+
+#0200            dann die 0200, danach alle anderen:
+s "SEITE???" 13 10 13 10
+
+##     Pauschalimport der eingelesenen Daten
+R5 "!"
+l 16      Text hinter !.........! abschneiden
+R7 "| !"
+l20
+R3 " "    3stellige Nummer?
+(
+Krr
+l0
+kurr
+e" "
+kurr
+b" "
+w" £"    Mehrfach!
+)
+   Zeichen-Umwandlungstabelle: (256 heisst: Zeichen weglassen)
+
+  .    219    € ;SchrÑgstrich, nicht vorrÅckend
+  .    222    ﬁ ;Minus, nicht vorrÅckend
+y .001 256
+y .002 256
+y .003 256
+y .004 256
+y .005 256
+y .006 256
+y .007 256
+y .008 256
+y .009 256
+  .010
+y .011 256
+y .012 256
+  .013
+y .014 256
+y .015 256
+y .016 256
+y .017 256
+y .018 256
+y .019 256
+y .020 256
+y .021 256
+y .022 256
+y .023 256
+y .024 256
+y .025 256
+y .026 256
+y .027 256
+y .028 256
+y .029 256
+y .030 256
+y .031 031
+y .128 256
+y .129 256
+y .130 256
+y .131 256
+y .132 256
+y .133 256
+y .134 256
+y .135 256
+y .136 256
+y .137 256
+y .138 256
+y .139 256
+y .140 256
+y .141 256
+y .142 256
+y .143 256
+y .144 256
+y .145 256
+y .146 256
+y .147 256
+y .148 256
+y .149 256
+y .150 256
+y .151 256
+y .152 256
+y .153 256
+y .154 256
+y .155 256
+y .156 256
+y .157 256
+y .158 256
+y .159 256
+y .160 032      ;Diakritisches Leerzeichen
+y .161 185    π ;Polnisches L (gro·) /L 219, 76
+y .162 186    ∫ ;DÑnisches ô (gro·) /O 219, 79
+y .163 187    ª ;Serbokroatisches D (gro·) -D 222, 68
+y .164 177    ± ;Thorn (gro·)
+y .165 146    í ;Ligatur AE (gro·)
+y .166 166    ¶ ;Ligatur OE (gro·)
+y .167 167    ß ;Kyrillisches Weichheitsz. (Translit.)
+y .168 169    © ;Griechischer halbhoher Punkt
+y .169 175    Ø ;Mol
+y .170 215    ◊ ;Registr. Warenzeichen
+y .171 241    Ò ;Plus-Minus
+y .172 193    ' ;Vietnamesischer O-Haken  (gro·)
+y .173 194    ' ;Vietnamesischer U-Haken  (gro·)
+y .174 218    ⁄ ;Hamzah
+y .175 143    è ;Angstrîm A (gro·)
+y .176 213    ’ ;Ain
+y .177 201    … ;Polnisches l (klein) /l 219,108
+y .178 237    Ì ;DÑnisches î (klein)
+y .179 179    ≥ ;Serbokroatisches d (klein) -d 222,100
+y .180 178    ≤ ;Thorn (klein)
+y .181 145    ë ;Ligatur ae (klein)
+y .182 180    ¥ ;Ligatur oe (klein)
+y .183 188    º ;Kyrillisches HÑrtezeichen (Translit.)
+y .184 176    ∞ ;TÅrkisches i ohne Punkt (klein)
+y .185 156    ú ;Pfund Sterling
+y .186 202      ;Eth
+y .187 224    ‡ ;Alpha
+y .188 172    ' ;Vietnamesischer o-Haken (klein)
+y .189 174    ' ;Vietnamesischer u-Haken (klein)
+y .190 225    · ;Deutsches ·
+y .191 134    Ü ;Angstrîm (klein)
+y .192 192    ¿ ;NiederlÑndisches IJ (gro·)
+y .193 142    é ;Umlaut é (gro·)
+y .194 153    ô ;Umlaut ô (gro·)
+y .195 154    ö ;Umlaut ö (gro·)
+y .196 256      ;Umgekehrtes C (gro·)
+y .197 256      ;Umgekehrtes E (gro·)
+y .198 216    ÿ ;Ungleich-Zeichen
+y .199 220    ‹ ;Pfeil nach rechts
+y .200 243    Û ;Kleiner/Gleich-Zeichen
+y .201 236    Ï ;Unendlich-Zeichen
+y .202 244    Ù ;Integral-Zeichen
+y .203 203    x ;Mal-Zeichen
+y .204 021     ;Paragraph
+y .205 251    ˚ ;Quadratwurzel-Zeichen
+y .206 256      ;Reaktion
+y .207 242    Ú ;Grî·er/Gleich-Zeichen
+y .208 209    — ;NiederlÑndisches ij
+y .209 132    Ñ ;Umlaut Ñ (klein)
+y .210 148    î ;Umlaut î (klein)
+y .211 129    Å ;Umlaut Å (klein)
+y .212 256      ;Umgekehrtes c (klein)
+y .213 256      ;Umgekehrtes e (klein)
+y .214 168    ® ;Einleitendes Fragezeichen
+y .215 173    ≠ ;Einleitendes Ausrufezeichen
+y .216 225    · ;Beta
+y .217 256      ;
+y .218 231    Á ;Gamma
+y .219 227    „ ;Pi
+y .220 256      ;
+y .221 256      ;
+y .222 256      ;
+y .223 256      ;
+y .224 256      ;Tonanstieg (vietnamesisch)
+y .225 182    ∂ ;Gravis, umgesetzt in  Ö ä ç ï ó
+p ∂ aeiou Öäçïó
+y .226 181    µ ;Akut, umgesetzt in  † Ç ° ¢ £ ê
+p µ aeiouE †Ç°¢£ê
+y .227 183    ∑ ;Zirkumflex, umgesetzt in  É à å ì ñ
+p ∑ aeiou Éàåìñ
+y .228 126    ~ ;Tilde, umgesetzt in  § •
+p ~ nN §•
+y .229 208    – ;Balken
+y .230 190    æ ;Halbkreis Åbergesetzt
+y .231 184    ∏ ;Punkt Åbergesetzt
+y .232 189    Ω ;Trema, umgesetzt in  â ã ò
+p Ω eiyaiouAOU âãòÑãîÅéôö
+y .233 199    « ;Hacek
+y .234 207    œ ;Ringel Åbergesetzt, umgesetzt in  Ü è
+p œ aA Üè
+y .235 256      ;Ligatur links
+y .236 256      ;Ligatur rechts
+y .237 232    ' ;Komma als Akzent (oben)
+y .238 198    ∆ ;Doppelakut
+y .239 256      ;Candrabindu
+y .240 211    ” ;CÇdille, umgesetzt in  á Ä
+p  cC áÄ
+y .241 256      ;Haken oben links
+y .242 212    ‘ ;Punkt untergesetzt
+y .243 256      ;2 Punkte untergesetzt
+y .244 212    ‘ ;Ringel untergesetzt
+y .245 223    ﬂ ;Doppelter Unterstrich
+y .246 223    ﬂ ;Unterstrich
+y .247 256      ;Haken oben rechts
+y .248 210    “ ;CÇdille rude
+y .249 256      ;Upadhmaniya (kein Akzent)
+y .250 256      ;Halbe Tilde rechts
+y .251 256      ;Halbe Tilde links
+y .252 256      ;
+y .253 256      ;
+y .254 256      ;Komma rechts (mittelhoch)
+

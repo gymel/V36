@@ -1,0 +1,43 @@
+  t-simpel.apr  fÅr eine schlichte Tabellen-Ausgabe
+  2003-12-13
+
+1=0    Ende des Sortierfelds
+2=9    Delimiter (TAB)
+3=C    Satzende (=neue Zeile)
+zl=0   Kein Zeilenumbruch
+
+zm=0   Kein Seitenumbruch
+i4=1   Stammsatz-Ersetzungen vornehmen
+
+#uwh +0 e0
+#uSo +h c'nein' e0
+#+H
+#-0
+
+#uSo +B c'nein' e0
+
+!76 +A u p"u1 "    
+#+-
+
+#-A
+#t1
+
+#-B
+#40       Verfasser
+#t2
+#20       Titel
+#t2
+#76       Jahr
+#t2
+#90       Signatur
+#t3
+#+#
+
+#-H      Headline mit Sortieren
+#t{ 'u1 -----------------' t1 'Verfasser	    Titel	    Jahr	    Signatur' C }
+#nr =wh e0
+#+0
+#-h      Headline ohne Sortieren
+#t{ 'Verfasser	    Titel	    Jahr	    Signatur' C }
+#nr =wh e0
+#+0

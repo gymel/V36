@@ -1,0 +1,116 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fscript\fprq2 Comic Sans MS;}{\f1\fswiss\fprq2 Verdana;}{\f2\fswiss\fprq2\fcharset0 Verdana;}{\f3\fmodern\fprq1\fcharset0 Courier New;}{\f4\fmodern\fprq1 Courier New;}{\f5\fswiss\fprq2\fcharset0 Arial;}{\f6\fswiss\fprq2 Arial;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue0;\red0\green0\blue215;\red0\green0\blue255;}
+\viewkind4\uc1\pard\qc\f0\fs24 
+\par \cf1\b\fs26 Suchbefehle 
+\par und 
+\par Ergebnismengenbildung\cf2\f1\fs22 
+\par \pard\fs20 
+\par \f2\fs22 Das Eingabefeld "Schnelle Suche" (ganz unten Mitte) setzt schon ein paar Kenntnisse voraus. Es ist f\'fcr Suchbefehle unterschiedlicher Art gedacht,  aber auch f\'fcr ein paar andere Befehle: 
+\par \pard\tx426\tx1134\b0\f1\fs20 Einfacher ist es, wenn man sich noch nicht auskennt, mit dem Find-Dialog (\f2 klicken Sie auf das \cf3\b Fernglas\cf2\b0 ). Anschlie\'dfend sieht man in der Befehlszeile, wie der zugeh\'f6rige Find-Befehl aussehen mu\'df, und dort kann man ihn \'e4ndern und erneut ausf\'fchren lassen! 
+\par Das Suchen mit Suchbefehlen geht \'fcber dieselben Register, die man auch direkt \'fcber den Indexbutton einsehen kann. Etwas anderes ist dagegen die `\cf4\ul\b Volltextsuche\cf2\ulnone\b0 ` in der Gesamtdatenbank. Nur dabei wird wirklich alles durchsucht.\f1 
+\par 
+\par \i\f2 Tip:\i0  Ab V30.7 gibt es eine \b Einfach-Methode\b0 : In das Suchbefehl-Feld ein bis f\'fcnf W\'f6rter eingeben, jedes kann mit ? trunkiert sein, und Enter. Ein FLEX namens \f3 onfnda99.flx\f2  tut dann die Arbeit mit Hilfe des neuen \b ALL\b0 -Registers, in dem alle W\'f6rter aus allen Datens\'e4tzen stehen. 
+\par Dies gilt jedoch nur f\'fcr Anwender, die mit der aktuellen Indexparameterdatei  \b\f3 cat.api\b0\f2   der DemoBank arbeiten, der Standardanwendung also. Bzw. die sich f\'fcr ihre eigene Konfiguration ebenfalls ein Allwort-Register namens \b ALL\b0  parametriert haben.\f1 
+\par 
+\par \pard\tx426\tx851\tx1134\b a)\b0\tab\b Online-Suchbefehl: \b0 
+\par \b\tab 1.\tab Suchbefehle, wie sie auch d\f2 as Programm acon\f1  kennt:\b0 
+\par \pard\li852\tx426\tx851\tx1134 z.B. (wenn \f4 per\f1  und \f4 tit\f1  als symbolische Registernamen definiert sind) 
+\par \pard\tx426\tx851\tx1134\tab\tab\f4 per shakesp? and tit hamlet\f1 
+\par \pard\li851\tx426\tx851\tx1134\f2\'dcber das Men\'fc 'Global / Datenbank-Information' erf\'e4hrt man, welche Register es gibt  (wie z.B.  \f4 PER, TIT, ...\f1 ). 
+\par \f2 Will man die Werke von Shakespeare und Goethe zusammenfassen, m\'fc\'dfte man eingeben: \f1 
+\par \pard\tx426\tx851\tx1134\f4\tab\tab per shakesp? or per goethe?\f1 
+\par \pard\li851\tx426\tx851\tx1134 Das \b Trunkierungszeichen\b0\f2  ? am Ende bedeutet, da\'df alle Eintr\'e4ge gesucht werden, die mit "shakesp" bzw. "goethe" anfangen - sonst m\'fc\'dfte man die exakte Schreibweise wissen und eingeben! \f1 
+\par \pard\li852\tx426\tx851\tx1134 Sollen es aber die Werke Shakespeares mit Ausnahme von Hamlet sein: 
+\par \pard\tx426\tx851\tx1134\f4\tab\tab per shakesp? not tit hamlet\f1 
+\par \pard\li851\tx426\tx851\tx1134 
+\par \f2 Will man mehr als zwei Suchbegriffe kombinieren, mu\'df man u.U. \b\f1 Klammern\b0  einsetzen: 
+\par \f4 tit umwelt and tit energie or tit kernenergie\f1  
+\par liefert mehr Ergebnisse als 
+\par \f4 tit umwelt and (tit energie or tit kernenergie) 
+\par \f2 denn im ersten Fall erh\'e4lt man alle Titel mit "kernenergie", im zweiten Fall nur diejenigen, in denen auch "umwelt" vorkommt. \f1 
+\par \pard\tx426\tx851\tx1134 
+\par \tab\tab Auch \b Restriktionen\b0\f2  k\'f6nnen eingesetzt werden, z.B.: \f1 
+\par \tab\tab\f4 erj >=1989 and per shakesp?\f1 
+\par \pard\li851\tx426\tx851\tx1134 Dann werden von den Shakespeare-Titeln nur die genommen, die ab 1989 erschienen sind. 
+\par Gibt man \b nur\b0  eine Restriktion ein, wird diese auf die momentane Erg.menge angewendet. 
+\par \pard\fi-852\li852\tx426\tx851\tx1134 
+\par \tab\tab\f2 Gibt man nur  &  ein, wird die momentane Erg.Menge expandiert (nur relevant bei Datenbanken, die SR-Schl\'fcssel haben). \f1 
+\par \pard\li852\tx426\tx851\tx1134 
+\par Wenn man die \b Registernamen\b0  nicht kennt, kann man ersatzweise\f4  |1 ... |9\f2  daf\'fcr schreiben, und \b\f4  |:\b0\f2  f\'fcr Register 10 sowie \b\f4 |;\b0\f2  f\'fcr Register 11. \f1 
+\par 
+\par Die \b Von/Bis-Suche\b0  geht so: 
+\par \f4    key A---B \f1 
+\par wobei \f4 key\f1  der Name eines Registers ist, \f4 A\f1  und \f4 B\f2  beliebige Zeichenfolgen. In FLEX w\'e4re zu schreiben:
+\par \f3 find \f4 key A---B\f2 
+\par Es werden dann alle Eintr\'e4ge zusammengefa\'dft, die zwischen A und B liegen. Wenn A selbst im Register steht, geh\'f6rt es dazu, B dagegen nicht, d.h. Ende der Liste ist direkt vor B.. \f1 
+\par \f2 Will man z.B. alles aus dem PER-Register von a bis z haben, m\'fc\'dfte man schreiben: \f1 
+\par   \f2 per\f1  a---zzzzzzzz
+\par \f2 oder 
+\par \f1   \f2 per\f1  a---\f2 ~
+\par wenn auch noch alles kommen soll, was hinter z noch folgt (~ ist Code 126).\f1 
+\par \f2 Wenn hinter --- nichts angegeben wird, ist es ein normaler Suchbefehl, d.h. es wird nach  a---  als Registereintrag gesucht. [Das gilt erst ab V35.8]
+\par \f1  
+\par \i Sonderbedingungen:\i0 
+\par Setzt man den \b Unterstrich\b0\f2  _ vor ein Suchwort, z.B. per _goethe, dann wird die interne Umcodierung des Suchworts nicht angewendet. Das ist nur in solchen Registern n\'fctzlich, wo es mehrere Abteilungen gibt, z.B. mit einem Gro\'dfbuchstaben beginnend, und wo die Umcodierung in den Indexparametern (Sprungmarke #-1 f\'fcr Reg. 1 usw.)  sonst den gro\'dfen wieder in einen kleinen Buchstaben wandeln w\'fcrde. Bei der Von/Bis-Suche mu\'df der Unterstrich separat vor A und/oder B gesetzt werden. 
+\par Wenn  key  f\'fcr ein symbolisches \b Register mit Pr\'e4fix\b0  steht, wie z.B. DIS f\'fcr "D " im Reg. 1, dann mu\'df bei der Zeichenfolge B das Pr\'e4fix mit angegeben werden:  \b DIS a---D g\b0   w\'fcrde alle Eintr\'e4ge unter \b D a\b0  bis direkt vor \b D g\b0  finden. Mit  \b DIS a---g\b0   k\'e4me viel mehr heraus!\f1 
+\par Das \b Ausrufzeichen\b0\f2  innerhalb von Suchbegriffen wird vor dem eigentlichen Zugriff durch das Leerzeichen ersetzt. Dadurch hat man die M\'f6glichkeit, bei Vorhandensein von Mehrfach-Leerzeichen in Registerzeilen trotzdem erfolgreich zu suchen. Ab V24.4 wird das Ausrufzeichen daf\'fcr nicht mehr gebraucht. \f1 
+\par Das \b &-Zeichen\b0\f2  vor den Suchbegriff gesetzt bewirkt die "Expansion" der Erg.Menge, d.h. da\'df alle verkn\'fcpften Unters\'e4tze hinzugenommen werden (sog. "Schiller-R\'e4uber-Suche"). Gilt auch f\'fcr die Von/Bis-Suche: & vor A setzen (und ggfls. vor _). \f1 
+\par \pard\tx426\tx851\tx1134 
+\par \b\tab 2.\tab Volltextsuche in der Ergebnismenge\b0 
+\par \pard\li851\tx426\tx851\tx1134\f2 '+' vor das Suchwort setzen. Gro\'df-/Kleinschreibung und Akzente brauchen nicht beachtet zu werden, statt \'fc kann man auch ue eingeben usw., statt \'df auch ss. \f1 
+\par \f2 Durchsucht wird immer die aktuelle Ergebnismenge, deren Name gerade unten auf der Schaltfl\'e4che steht. \f1 
+\par \f2 M\'f6glich ist hier (aber nur hier) auch das ? als Maskierung einzelner Zeichen, d.h. z.B. "differen?ial" findet "differential" und "differenzial" \f1 
+\par \pard\tx426\tx851\tx1134\tab\tab Die Ergebnismenge kann aus Online- oder Offline-Dateien bestehen. 
+\par 
+\par \pard\fi-852\li852\tx426\tx851\tx1134\b b)\b0\tab\b Offline-Suchbefehl: \b0\f2 Etwas f\'fcr Experten. \f1 
+\par \tab Es bedeutet: Suche in der `\cf4\ul\b Offline-Datei\cf2\ulnone\b0 `. 
+\par \pard\tx426\tx851\tx1134\tab\f2 Dabei gibt es drei M\'f6glichkeiten: \f1 
+\par 
+\par \b\tab 4.\tab ?abc\b0 
+\par \pard\fi-852\li852\tx426\tx851\tx1134\tab\tab\f2 Suche die Zeichenkette "abc" in der Offline-Datei. Exakte Gro\'df-Klein-Schreibung nicht n\'f6tig. \f1 
+\par \pard\tx426\tx851\tx1134\b 
+\par \tab 5.\tab ?#nnn,abc\b0 
+\par \pard\li851\tx426\tx851\tx1134 Nur im Feld #nnn nach "abc" suchen z.B.  \f4 ?#74,Berlin\f2   : alle S\'e4tze, in denen im Feld #74 das Wort Berlin vorkommt. \f1 
+\par \f2 Hier ist exakte Schreibweise n\'f6tig! Maskierung mit ? ist m\'f6glich. z.B.  Me?er : alle S\'e4tze, in denen Meyer oder Meier vorkommt (aber auch Meter !) \f1 
+\par \pard\tx426\tx851\tx1134 
+\par \pard\fi-852\li852\tx426\tx851\tx1134\b\tab 6.\tab ?X|Y\b0\f2    Suchen und Ersetzen in der Offline-Datei. Exakte Schreibweise n\'f6tig! \f1 
+\par \pard\tx426\tx851\tx1134\tab\tab Zeichenkette X soll durch Zeichenkette Y ersetzt werden 
+\par \tab\tab\f4 ?Geige|Violine\f2   ersetzt \'fcberall "Geige" durch "Violine" \f1 
+\par \tab\tab Auch dieses geht kategorispezifisch: 
+\par \tab\tab\f4 ?#81,Geige|Violine\f1    tut dieses nur im Feld #81 
+\par \tab\tab\f2 (Suchen und Ersetzen in der Datenbank: Men\'fc "Global"!) \f1 
+\par 
+\par \pard\fi-852\li852\tx426\tx851\tx1134\b\tab\f2 7\f1 .\tab\f2 +X\b0    Volltextsuche in der Ergebnismenge. Keine exakte Schreibweise n\'f6tig! \f1 
+\par \pard\tx426\tx851\tx1134\tab\tab Zeichenkette X soll \f2 in allen S\'e4tzen der Erg.Menge gefunden werden 
+\par \f1  
+\par \pard\fi-852\li852\tx426\tx851\tx1134\b\tab\f2 8\f1 .\tab\f2 +#nnn,X\b0    Volltextsuche in allen Feldern #nnn der Ergebnismenge. Keine exakte Schreibweise n\'f6tig! \f1 Zeichenkette X soll \f2 in jedem Feld #nnn der Erg.Menge gefunden werden 
+\par \pard\tx426\tx851\tx1134 
+\par \pard\fi-852\li852\tx426\tx851\tx1134\b\f1\tab\f2 9\f1 .\tab\f2 +-#nnn,X\b0    Volltextsuche in allen Feldern #nnn der Ergebnismenge. Keine exakte Schreibweise n\'f6tig! \f1 Zeichenkette X soll \f2 im Feld #nnn des Datensatzes \b nicht\b0  vorkommen 
+\par \pard\tx426\tx851\tx1134 
+\par Bei 7. bis 9. entsteht jeweils eine neue Ergebnismenge, mit der man wieder alles machen kann, was mit einer Erg.Menge m\'f6glich ist.\f1 
+\par  
+\par \b 
+\par c)\b0\tab\b %% \b0 und eine\b  Zahl:\b0\tab um einen bestimmten \i Offline\i0 -Satz zu laden 
+\par \tab\tab z.B.  %%1500  um den 1500. Satz zu holen 
+\par \b\f2 
+\par d\f1 )\b0\tab\b\f2 #\f1  \b0 und eine\b  Zahl:\b0\tab um einen bestimmten\f2  Online-Satz anhand seiner internen Nummer zu laden\f1  
+\par \pard\li851\tx426\tx851\tx1134\f2 Eine Zahl mit  \b\f1 # \b0  vorweg \f2 eingeben\f1 :  
+\par z.B.  #12345 holt den Satz mit der internen Nummer 12345 
+\par \pard\tx426\tx851\tx1134 
+\par Befehle \b a)\b0  und \b b)\b0  erzeugen `\cf4\ul Ergebnismengen\cf2\ulnone\f2 `  , Mit Alt+e k\'f6nnen Sie die Liste der Ergebnismengen anzeigen lassen (im Auswahlfeld links) und dann jede einzelne daraus wieder ausw\'e4hlen. \f1 
+\par 
+\par \f2 Au\'dferdem ist auch noch die Eingabe von Hilfebefehlen m\'f6glich, wie im Schreibfeld: "h view" holt den Text VIEW.RTF, und schlicht "h" holt DOKU.RTF. \f1 
+\par \b\f2\fs22 
+\par \b0\i\f1 Tip: \i0 Wenn etwas eingegeben wurde, was nicht als Befehl interpretiert werden konnte, wird die FLEX-Datei \b\f4 onfnda99.flx\b0\f1  bzw. \b\f4 onfndalc.flx\b0\f2  (bei a99 bzw. alcarta) ausgef\'fchrt. Dadurch hat man die M\'f6glichkeit, eigene Sonderbefehle zu programmieren. Was eingegeben wurde, steht in dem Moment in der Variablen \b\f4 #ux0\b0\f1 .\b 
+\par \f2 
+\par Aber oft ist eine andere Suchmethode g\'fcnstig: 
+\par \pard\fi-425\li425\tx426\tx851\tx1134\cf4 `[\ul Index\ulnone ]` \cf2\f5  (Alt+i) : \b0 Dann bl\'e4ttern Sie in alphabetischen Registern. Das ist die bequemste und sicherste Art der Benutzung.\b  \f6 
+\par \pard\qr\b0\f2 1999-10-05/2013-04-23\b 
+\par \pard 
+\par ?[Index]=h index 
+\par ?Ergebnismengen=x h reslt 
+\par ?Offline-Datei=h off 
+\par ?Volltextsuche=X fulltext 
+\par 
+\par }
+ 

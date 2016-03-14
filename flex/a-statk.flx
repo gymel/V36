@@ -1,0 +1,180 @@
+  A-STATK.FLX : Statistiklisten kumulieren
+  2006-11-06    Verarb. von Dateien des Typs .STT, .STM, .STJ
+
+  Welche Funktion?
+var #ulW
+if "5" jump Monat
+if "6" jump Jahr
+
+  STT-TagesDateien werden in a-stat.flx aus .STK-Dateien erzeugt
+
+  Abarbeitung einer STT- oder STM-Datei (Unterprogramm):
+:loop
+  Zeile lesen
+get
+if not yes jump lend   // Dateiende
+  Leerzeilen und mit Blank beginnende uebergehen
+if " " jump loop
+if "" jump loop
+  Zeile in #uAS tun
+ins #uAS
+  Praefix f. freie Variable setzen, normal ist $a
+#uAP$a
+  Praefix fuer 2 besondere Faelle
+if "Entl" #uAP$y
+if "Geb" #uAP$z
+  Variablenname = Praefix + Anfang der Zeile bis erstes Space
+var #uAP #uAS(e" ")
+  Inhalt der entspr freien Var
+var
+  in Z kopieren
+Z=
+  Inhalt der Zeile addieren
+  (nur die Zahl, deshalb T"   " , denn es steht immer "   " davor!)
+var  #uAS(T"   ")
+Z+
+  und Summe wieder in der Var speichern (wieder mit "   " vor der Zahl)
+var #uAP #uAS(e" ") "   " Z
+  Dadurch entstehen recht eigentuemliche Variablennamen, aber das klappt:
+  z.B. aus Zeile "L:1;CD-Ui   15"  entsteht->  $aL:1;CD-U   15
+ins
+jump loop
+
+:lend
+return
+
+  Monatsstatistik aus STT-Dateien (Tagesdateien) erstellen
+:Monat
+var "Monat:=" #dts(0,6)
+ask
+if "" end
+if " " end
+if "0" end
+ins #ulN
+var $Astd #ulN "??.stt"
+jump kumul
+
+  Jahresstatistik aus STM-Dateien erstellen
+:Jahr
+var "Jahr:=" #dts(0,4)
+ask
+if "" end
+if " " end
+if "0" end
+ins #ulN
+var $Astd #ulN "??.stm"
+
+  Kumulierung der gewaehlten Dateien ausfuehren
+:kumul
+
+  den oben vorbereiteten dir-Befehl ausfuehren
+dir
+
+ins _^T_^M^J_
+ins $dir
+if "" mes Nichts angefallen;end
+open x stk.lst
+wri $dir
+close x
+
+  Die dabei entstandene Liste der Dateien oeffnen
+fsi stk.lst
+  es gibt sie nicht?
+if no jump nofiles
+  oder leer?
+if "0" end
+open stk.lst
+  Schleife
+:stkl
+get
+if not yes jump lok
+ins #ulK
+var #uLK ";" #ulK
+ins #uLK
+jump stkl
+
+
+  und abarbeiten
+:lok
+var "Dateien: " #uLK n
+mes
+
+close
+var #uLK(f";" e";")
+if "" jump lend
+var $Astd #uLK(f";" e";")
+
+  Datei oeffnen
+open
+  verarbeiten im UP loop (ganz oben)
+perf loop
+  schliessen
+close
+  weiter zur naechsten Datei
+var #uLK(f";" b";")
+ins #uLK
+if #uLK jump lok
+  alle verarbeitet
+:lend
+
+  Dateiname f.d. Kumulation
+var #ulW
+if "5" var $Astd #ulN ".stm"
+if "6" var $Astd #ulN ".stJ"
+ins #ulQ
+
+var ""
+ins $dir
+  Die "kleinen" Variablen rausschreiben in a-stat.var
+$0>a-stat.var
+open a-stat.var
+open x asta
+:astal
+get
+if no jump aste
+ins #uaS
+wri #uaS(2,0) n
+jump astal
+:aste
+close
+close x
+  Diese Liste ist aber unsortiert! Sortieren:
+var P "asort asta astas"
+dos
+del a-stat.var
+del asta
+var "astas " #ulQ
+fcopy
+del astas
+  #ulQ ist jetzt die fertige Statistikliste!
+var #ulQ
+mes
+help
+  Die "kleinen" Variablen verschwinden bei Ende dieses FLEX!
+end
+
+
+  dir-Liste zeigen, Nutzer soll auswaehlen (+ davorsetzen)
+:vi
+help stk.lst
+
+  #ulW setzen, Befehl fuer Auswertung in #uX9 setzen, fuer Alt+9
+#uX9x #ulW 1\\exec a-stat
+end
+
+:nofiles
+var "Keine Dateien " $Astd #ulN "??.stt gefunden"
+mes
+end
+
+ u-VARIABLEN in a-statk.flx
+ #uAP (5)  Praefix f. freie Var.
+ #uAS (4)  Inhalt einer gelesenen Zeile
+ #uLK (7)  Liste der zu verarb, Dateien, durch ; getrennt
+ #uX9 (1)  f. Alt+9
+ #uaS (2)  Zeile aus STT- oder STM-Datei
+ #ulK (2)  Name einer zu verarb. Datei
+ #ulN (6)  Monatsname: JJJJMM
+ #ulQ (3)  Dateiname f.d. Kumulation
+ #ulW (3)  Funktionsziffer 5 oder 6
+

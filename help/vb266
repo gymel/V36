@@ -1,0 +1,95 @@
+
+
+Verlautbarung 266 der Entw.Abt.                              2015-01-15
+-------------------------------
+
+V35.1 ist da
+------------
+
+acon: get I ...
+---------------
+Beim Heranholen einer Datei aus dem Internet zeigte sich ein sehr 
+aergerliches Problem: Ein Zeichen % im Inhalt der Datei fuehrte zu
+Fehlern: die nachfolgenden zwei Byte wurden u.U. verfaelscht.
+Dies wurde behoben.
+Die dafuer zustaendige Quelldatei  gethttp.cpp  wurde  fast voellig
+neu geschrieben. Das war auch aus rechtlichen Gruenden geboten, weil
+sie urspruenglich abgeleitet war von einer vermeintlich freien
+Quelle. Deren Lizenz stellte sich aber als in Wahrheit hoechst
+restriktiv heraus. Zwar existiert die im Text angegebene Firma
+nicht mehr, aber sicher ist sicher, also haben wir die Funktion
+so vereinfacht, abgespeckt, ausgemistet und umgeschrieben, dass sie 
+erstens nicht wiederzuerkennen ist und zweitens auch keinesfalls mit
+dem Urtext in Wettbewerb treten koennte. Und nebenbei ist sie jetzt
+frei von dem besagten Fehler. Dank ergeht an T. Berger fuer die findige
+Aufdeckung des Fehlers wie der Lizenzproblematik.
+Nebenbei:
+a99 macht von besagter Quelle keinen Gebrauch, sondern benutzt eine 
+Microsoft-MSC-Funktion. Die konnten wir fuer acon nicht gebrauchen,
+weil acon auch unter Linux/UNIX kompilabel sein soll.
+
+
+FLEX xchange   (s. h xxcode)
+------------
+Statt '_' und ',' als Steuerzeichen kann man hier auch den Code 27
+benutzen, der in einem Datensatz nicht vorkommen kann:
+var 27 #uef 27 #ugh 27
+xchange
+wuerde im Datenatz nach dem Inhalt von  #uef  suchen und diesen durch
+den Inhalt von  #ugh ersetzen. Es ist dann unerheblich, ob die 
+Zeichen _ und , beide vorkommen!
+(Der Code 27 steht nicht fuer ein darstellbares Zeichen, sondern wird
+ausgeloest durch die "Esc"-Taste, das ist hier aber egal.)
+
+Das galt fuer acon schon laenger, nun auch fuer a99. Gebrauch wird
+gemacht davon in dem Job  a35gre.job, den a35 fuer die globalen
+Ersetzungen verwendet.
+
+
+Suchfunktion in Kurzlisten (a99/alcarta)
+----------------------------------------
+In den ViewListen und Ergebnis-Kurzlisten klappte das Suchen nicht
+mehr so gut, bzw. beim Rueckwaertssuchen wurde die erste Zeile nicht
+gefunden. Behoben.
+
+
+Bequemes Suchen in den Verlautbarungen
+--------------------------------------
+Wir machen nochmal aufmerksam auf die Suchfunktion
+  "Suche in allen Verlautbarungen (mit regulaeren Ausdruecken)"
+die es in der ViewListe  vb.vw gibt  (v vb  eingeben!)
+Sie arbeitet mit regulaeren Ausdruecken. Insbes. dann ist das
+interessant, wenn man gezielt eine bestimmte Schreibweise sucht.
+Will man alle Stellen finden, an denen "FLEX" vorkommt, dann muss man
+"_FLEX"  eingeben. "FLEX" findet gar nichts, aber "flex" findet auch
+Woerter, in denen "flex" vorkommt, wie z.B. "unflexibel", was ja in 
+diesem Falle hochgradig unerwuenscht waere.
+Nebenbei: Es sind nicht ALLE Verlautbarungen, sondern nur ab Nr. 125.
+Wer die aelteren, allesamt inhaltlich nicht mehr interessanten, noch
+haben moechte, kann sich melden. Kopiert man die in allegro\HELP zu den 
+anderen, werden sie mit durchsucht. (Die Nummer 1 ist vom 28.4.1995.)
+
+
+Einige Quelltexte ueberarbeitet
+-------------------------------
+Die Quellen von a99 waren sehr dringend verbesserungsbeduerftig in
+formaler Hinsicht und wegen allzu eklatanter, enorm zahlreicher 
+Verstoesse gegen gute Programmierpraktiken.
+Der jetzt erreichte Stand soll noch nicht als irgendwie gut
+bezeichnet werden, ist aber schon relativ besser. Wir wollten nicht
+zahlreiche Zwischenstaende jeden Tag ins SVN schieben, das waere
+arg unuebersichtlich geworden und haette wohl keinem geholfen.
+Nun sind wir soweit, die Quellen von a99 und acon im SVN mal
+wieder aktualisieren zu koennen. Die HFM-Funktionen waren ja u.a.
+ganz neu hinzugekommen und in den veroeffentlichten Quellen bisher noch
+nicht enthalten. 
+In acon wurde relativ wenig getan, aber HFM ist da jetzt auch mit drin.
+In der Klassenbibliothek (ac15) betrifft das nur die Dateien exet.cpp,
+exet2.cpp und record.cpp.
+Die Quadriga-Programmquellen (srch, index, qrix, import) sind auch
+erneuert worden, auch diese enthalten nun die HFM-Neuerungen.
+Einzig die aindex-Funktionen blieben unberuehrt, denn sie haben mit
+der Datensatzstruktur nichts zu tun.
+
+
+

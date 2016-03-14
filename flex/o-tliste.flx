@@ -1,0 +1,63 @@
+  O-TLISTE.FLX : Kurz-Titelliste der Bestellungen bzw. Exemplare
+  20070529       ausgehend v. einer entspr. Erg.Menge
+
+  Erster Satz d. Erg.menge
+first
+  Sind das ueberhaupt Bestell- oder Expl.saetze?
+if not #9DA if not #9DF jump sorry
+
+open x liste.txt
+  Titel d. Erg.Menge
+wri n U n n
+
+:loop
+  TitelID aus Bestellsatz entnehmen
+var "|9 " #9DA$T #9DF$$
+set obj 2
+  Titelsatz dazu laden
+f1nd
+  V14-Verkn. aufloesen
+if v14 export Ref
+  **** Titeldaten ausgeben
+wri #20(e" : ") " / " #40 ". - " #74 " : " #75 ", " #76 n
+if #87 wri "ISBN " #87
+  zurueck zum Bestellsatz
+set obj 1
+  **** Bestelldaten ausgeben
+ wri "   A:" #9DB$A "  L:" #9DB$j "  D:" #9DB$d " : " #9DB$c " " #9DB$p n n
+
+if #9DF jump expl
+
+  Wenn schon invent., dann Invent.Datum
+if #9DA$I wri " - Invent.Datum: ";var #9DA$I;jump inv
+wri " - Best.Datum: "
+var #9DA$B
+:inv
+ins #udd
+wri #udd(6,2) "-" #udd(4,2) "-" #udd(0,4)
+  Wenn schon Endpreis, dann diesen
+if not #9DB$q wri ", Preis: " #9DB$c " " #9DB$p
+if #9DB$q wri ", Preis: EUR " #9DB$q
+wri " (" #9DB$j ")"
+wri n n
+jump nxt
+
+  Expl.Satz entspr. anders
+:expl
+wri " - Exemplar " #9DG$e
+if #9DH wri " (momentan ausgeliehen)"
+
+wri n n
+:nxt
+  naechster Bestellsatz
+next
+if yes jump loop
+close x
+  Datei schliessen und anzeigen
+h liste.txt
+end
+
+:sorry
+var "Sorry, die aktuelle Ergebnismenge besteht nicht aus Bestelldaten"
+mes
+end

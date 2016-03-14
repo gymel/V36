@@ -1,0 +1,29 @@
+  CPSTART.FLX : Produziert eine Batch-Datei
+  2005-09-28    wird aus cpopt.flx/cpopt.rtf gestartet
+
+  Beim Aufruf steht der Befehl (meist Batchname) in der iV
+    speichern in #ucZ
+ins #ucZ
+if #ucP jump st
+var P
+var (F"\\")
+ins #ucP
+:st
+  Batchdatei erstellen
+open x cpstart.bat
+wri "rem  CPSTART.BAT : Start einer CP.OPT-Routine" n
+wri "rem  " #dts(0,8) n n
+wri "set -K=" #ucK n
+wri "set -K1=" #ucK(f"$" 0,1) n
+wri "set -B=" #ucB n
+wri "set -P=" #ucP n
+wri "set -L=" #ucL n
+wri "set -D=" #ucD n
+// Klappt nur bei 32bit:
+// wri "%-P%\\ansi.com" n
+wri "cls" n
+wri "call " #ucZ n
+close x
+  Batchdatei ist fertig, starten
+Dos cpstart.bat
+

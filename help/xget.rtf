@@ -1,0 +1,182 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\froman Times New Roman;}{\f2\froman\fprq2 Times New Roman;}{\f3\froman\fprq2\fcharset0 Times New Roman;}{\f4\fmodern\fprq1 Courier New;}{\f5\fmodern\fprq1\fcharset0 Courier New;}{\f6\froman\fcharset0 Times New Roman;}{\f7\fmodern\fprq1\fcharset0 Courier;}{\f8\fswiss\fprq2\fcharset0 Verdana;}{\f9\fswiss\fprq2 Verdana;}{\f10\fswiss\fcharset0 Arial;}{\f11\fswiss Arial;}{\f12\fmodern allegro Lucida Console;}{\f13\fmodern\fcharset0 allegro Lucida Console;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red255\green0\blue0;\red0\green176\blue0;}
+\viewkind4\uc1\pard\qr\f0\fs24     \f1\fs18 `\cf1\ul\b Register\cf2\ulnone\b0 ` 
+\par \pard\f2\fs20\tab\b\i Achtung:\b0\i0  In\f3  \f2  \cf3\i\f3 acon\cf2\i0\f2  \f3  \f2 hat dieser Befehl\f3  bis auf Ausnahmen\f2  eine `\cf1\ul\b\f3 andere Funktionsweise\cf2\ulnone\b0\f2 `. \cf4\ul\b 
+\par \f4 
+\par \ulnone get\cf2  #xyz \f5    \b0\f3 Bei \i acon\i0  nicht\b\f4 
+\par \cf4 get\cf2  \b0 [iV] \f5    \cf3\b\i\f6\fs18 acon:  \cf2\b0\i0\f3\fs20 nur  \cf4\b\f4 get\cf2\b0 
+\par \cf4\b get\cf2  +\b0 [iV] \f5   \cf3\b\i\f6\fs18 acon:  \cf2\b0\i0\f3\fs20 nur  \cf4\b\f4 ge\f5 t +\cf2\f4 
+\par \pard\li709\b0\f2 Aus der mit \b\f4 `\cf1\ul open\cf2\ulnone ` ...\b0\f3  ge\'f6ffneten Datei (z.B. auch Internetdatei!) wird eine Zeile gelesen (als Zeilenende gilt 13 10 oder nur 10) und in die Kategorie #xyz bzw. in die iV kopiert. Codes 13, 10 und 9 (TAB) am Ende der Zeile werden nicht mit \'fcbernommen. Wenn das  \b\f4 +\b0\f3   gesetzt ist, wird der gelesene Text an die iV angeh\'e4ngt. \f2 
+\par Mit \b\f4 `\cf1\ul ascii\cf2\ulnone `\b0\f2  bzw. \b\f4 `\cf1\ul ansi\cf2\ulnone `\b0\f2  kann man d\f3 en Text in der\f2  `\cf1\ul\b iV\cf2\ulnone\b0 ` um\f3 codiere\f2 n. 
+\par Wenn also die Datei ANSI-Daten hat, man braucht aber ASCII:  
+\par \b\f4 get i\f5 V\f4\\ascii\\ins #uxy\b0\f2    statt nur   \b\f4 get #uxy\b0\f2 . 
+\par Mit \cf1\b\f4 `\ul if cancel\ulnone `\cf2  ...\b0\f2  kann man checken, ob die Datei zu Ende war (d.h. es konnte nichts mehr gelesen werden), 
+\par mit \b\f4 if no ...\b0\f3  ob sie gar nicht ge\'f6ffnet ist (werden konnte), 
+\par mit  \b\f4 if yes ...\b0\f3  ob es geklappt hat.  \f2 
+\par \i Siehe auch \b\i0\f4 `\cf1\ul fetch\cf2\ulnone `\b0\i\f2  : \i0 wenn eine bestimmte Anzahl Bytes gelesen werden soll statt einer Zeile, \f3 oder \f2 wenn bis zu einem bestimmten Endezeichen gelesen werden soll, etc. 
+\par \pard\b\f4 
+\par \cf4 get \f5 I\cf2\f4  \b0\i\f5 url \i0  \cf3\b\i\f6\fs18 acon\cf2\b0\f2\fs20 
+\par \pard\li710\i0 Die \f3  \i\f5 url \i0\f3  ist ein beliebiger Internetdateiname, der mit  \f5 http://\f3   oder  \f5 ftp://\f3   oder  \f5 file:///\f3    beginnt. Es eignen sich jedoch nur simple Textdateien, keine .JPG, PDF, .DOC, .PPT, .XLS  usw. wegen der darin enthaltenen Steuerzeichen.  Dateien mit .html, .php, .py, .pl gehen, sofern sie reinen Text liefern, d.h. man erh\'e4lt - wie im Browser -  den HTML-Datenstrom, den der Server \'fcbermittelt. 
+\par Fehlt \i\f5 url\i0\f3 , wird der Inhalt der iV genommen, d.h. man kann sich die \i\f5 url\i0\f3  vorher mit  \f5 var\f3   zusammenbasteln. Tut man das nicht, mu\'df man sie in "..." einschlie\'dfen, weil sonst bei der Zeichenfolge // abgeschnitten wird - sie markiert den Beginn eines Kommentars. Also: 
+\par \f5 var "http://..." 
+\par get I\f3 
+\par Der Inhalt dieser Datei wird in die iV kopiert, eine\b  zweite Kopie\b0  kommt in die\b  iV2\b0 . Die letztere kann man sp\'e4ter mit  \f5 var $\f3   wieder in die normale iV holen, d.h. man mu\'df keine benannte $-Variable dazu benutzen (diese sind auf  64K  begrenzt! Die Variable $ kann  4MB fassen). 
+\par Die URL kann eine dynamische sein, d.h. z.B. eine mit  \f5 .php?...\f3   oder  \f5 .pl?...\f3   o.a. 
+\par Mit \f5 if no ...\f3  kann man testen, ob die Datei zu lang war, um in die iV zu passen, d.h. l\'e4nger als 4MB Zeichen. Ist das der Fall, kann man sich die Datei entweder mit dem Befehl  \f5 `\cf1\ul\b open \i url\cf2\ulnone\b0\i0 `\f3   holen und dann zeilen- oder blockweise lesen, oder sie mit \f5 `\cf1\ul\b write Furl\cf2\ulnone\b0 `\f3  holen und sofort in die momentan offene Exportdatei schreiben. Nur die Methode mit \f7 open\f3  ist gegen \'fcberlange Dateien sicher. 
+\par Und wenn es die Datei nicht gibt? 
+\par Beim Typ  \f5 file:///\f3   ist es so, da\'df der FLEX an dieser Stelle ganz abbricht - wenn auch nicht ohne Fehlerhinweis. 
+\par Bei  \f5 http://\f3   und  \f5 ftp://\f3   liefert der betr. Server immer einen output, in dem dann z.B. die Fehlermeldung 404 steht. 
+\par Ob allerdings der Server gar nicht existiert oder nicht arbeitet oder keine Netzverbindung da ist, kann man abfangen mit der Pr\'fcfung  \f5 if cancel ... \f3 (Windows) bzw.  \f5 if "ERROR" ...\f3   (Linux/UNIX). Siehe Beispiel 3. 
+\par \i Hinweise:\i0  Mit  \f5 var ... F\i url\i0  ...\f3   kann man Dateiinhalte auch direkt in `\cf1\ul\b cstrings\cf2\ulnone\b0 ` einbauen. Dabei gibt es jedoch keine Fehlerkontrolle.
+\par Ausgenutzt wird dieser Befehl z.B. im FLEX  \f5 getfile.flx\f3 ,  mit dem man sich vom Braunschweiger Server neue Dateiversionen holen kann. Beispiel:  \f5 X getfile d-wrtf.apr\f3  .
+\par \i Tip:\i0  Will man sich eine bin\'e4re Datei holen, z.B. eine Grafikdatei, geht das nur mit \f5 open ...\f3  und dann  \f5 fetch / write ^\f3 . 
+\par Das Ergebnis wird au\'dferdem noch in die zus\'e4tzliche interne Variable $ kopiert. Danach kann man mit  \f5 var $\f3   diesen Inhalt immer wieder in die normale iV kopieren, um z.B. Werte daraus zu extrahieren. Das kann auch geschehen mit Befehlen wie  \f5 var $ (b"..." e"...")\f3   oder  \f5 var $ (x"...")\f3   im Fall von XML-Daten (Beschreibung siehe unter  `\cf1\ul\b cstring\cf2\ulnone\b0 `). \f2 
+\par 
+\par \pard\cf4\b\f4 get adr\cf2  \b0\i nnn\f2 
+\par \pard\li710\i0 Die Adresse des Satzes mit der internen Nummer \i\f4 nnn\i0\f3  wird ermittelt. 
+\par Fehlt\b\f4  \b0\i nnn\i0\f3  , wird der iV-Inhalt genommen. 
+\par In der iV steht anschlie\'dfend \f2 
+\par \i\f4 dn / pos\i0\f2 
+\par wobei  \i\f4 dn\i0\f2   die \f3 N\f2 ummer\f3  der .ALD-Datei\f2  ist (1...255) und  \i\f4 pos\i0\f2   die Position innerhalb der Datei \i\f4 dn\i0\f2 . 
+\par \f3 (\f2 Ermittelt werden diese Zahlen durch Zugriff auf die TBL-Datei\f3 , nicht auf die Datendatei\f2 .\f3 )\f2  
+\par \i\f3 Sonderf\'e4lle:\i0  In der iV steht "too large" bei einer zu gro\'dfen nnn, bzw. "no recnr" bei nnn=0 oder kleiner, bzw. "unused" bei unbesetzter Satznummer.\f2  
+\par \f3 Verwendung z.B. in dem FLEX  \f5 ald-chk.flx\f3 .\f2 
+\par \pard 
+\par \cf4\b\f4 get env\cf2  \b0\i name\f5    \i0  \cf3\b\i\f6\fs18 acon\cf2\b0\f2\fs20 
+\par \pard\li710\i0 Die Environment-Variable \i name\i0  wird in die iV kopiert. (Umgekehrt: --> \f4 `\cf1\ul\b set env\cf2\ulnone\b0 `\f2  ) 
+\par Mit  \b\f4 if no ... \b0\f3  kann man checken, ob sie nicht existierte; die iV ist dann unver\'e4ndert. \f2 
+\par \pard 
+\par \cf4\b\f4 get phr\cf2  \b0\i name\f2 
+\par \pard\li710\i0 Die Phrasendatei \i name\i0  wird eingelesen. (Umgekehrt: --> \f4 `\cf1\ul\b save phr\cf2\ulnone\b0 `\f2  ) 
+\par \f3 Die darin enthaltenen Phrasen werden zu den momentan existierenden erg\'e4nzt, wobei eine vorhandene durch die in \i\f2 name\i0  enthaltene gleichnamige ersetzt wird. 
+\par \pard\li709\f1 Wenn \i\f2 name \i0\f1 fehlt, wird der Inhalt der iV genommen. \f2 
+\par \pard 
+\par \cf4\b\f4 get p\f5 id\cf2\f4  \b0\i\f5    \i0  \cf3\b\i\f6\fs18 acon\cf2\b0\f2\fs20 
+\par \pard\li710\i0 D\f3 er "process identifier" (Prozess-Identifikationsnummer) des Programms wird in die iV geschrieben. Es handelt sich um eine eindeutige Nummer bezogen auf alle momentan im System laufenden Prozesse. Man kann sie nutzen, um im Falle mehrerer gleichzeitig laufender a99-Programme das eine vom anderen zu unterscheiden.\f2  \f3 Genutzt wird der pid auch vom `\cf1\ul\b JanaS-Browser\cf2\ulnone\b0 `.  
+\par \i Hinweis:\i0  Mit  \f5 var ... pid ...\f3   kann man die pid auch in einen cstring einbauen.\f2 
+\par 
+\par \pard\cf4\b\f5 g\f4 et \f5 q \cf2\b0\i\f3 num\b\i0\f4 
+\par \pard\li709\b0\f3 Im  \b `\cf1\ul Offline-Speicher\cf2\ulnone `\b0   (Alt+q) auf den Satz mit der laufenden Nummer  \i num\i0   \b positionieren\b0  und diesen anzeigen. 
+\par \f1 Wenn\f6  \f1  \i\f2 num \f3  \i0\f1 fehlt, wird der Inhalt der iV genommen\f6 , in die man also vorher die Nummer schreiben mu\'df. 
+\par Man erh\'e4lt den aktuellen Zustand (also gr\'fcn oder gelb, je nachdem), als ob man den Satz mittels Alt+q manuell aufgesucht h\'e4tte. 
+\par Mit  \f5 if no ...\f6   checkt man, ob das nicht geklappt hat (\i\f3 num\i0\f6  zu klein oder zu gro\'df)\f1 
+\par \i\f3 Hinweise: 
+\par \i0 A\i . \i0  Mit  \f5 first off / last off\f3   kann man auf den ersten bzw. letzten Offline-Satz positionieren.\f2 
+\par \f3 B.  Von Hand kann man zum n-ten Offline-Satz gehen, indem man in der Suchbefehlszeile  \f5 %%n\f3   gibt. 
+\par C.  Zum Umgang mit dem Offline-Speicher: 
+\par \cf0\f8 1. Die laufende Nummer des aktuellen Satzes in der Offline-Datei erh\'e4lt man mit  \f5 var oq\f8   
+\par     (Die Nummer steht dann in der iV) 
+\par 2. Um den Satz mit der laufenden Nummer  num  aus der Offline-Datei zu laden:  \f5 get q\f8  \i num 
+\par \i0 3. Um sich die lfd.Nr. des aktuellen Satzes in der Offline-Datei zu merken:  \f5 var oq\\ins $nu 
+\par \f8 4. Um den in \f5 $nu\f8  gemerkten Satz sp\'e4ter wieder zu laden:  \f5 var $nu\\get q\f9 
+\par \cf2\b\f4 
+\par \pard\cf4 get view\cf2  \b0\i\f2 num 
+\par \pard\li710\i0 Aus der momentanen Viewdatei wird die Zeile mit der Nummer\f3  \f2  \i\f4 num\i0\f2  \f3  \f2 geholt. 
+\par Mit  \b\f4 if no ...\b0\f3  kann man checken, ob die Nummer zu gro\'df war, mit \b\f4 if cancel ...\b0\f3 , ob gar keine ViewListe ge\'f6ffnet ist. \f2 
+\par \pard\li709\f1 Wenn\f6  \f1  \i\f2 num \f3  \i0\f1 fehlt, wird der Inhalt der iV genommen\f6 , in die man also vorher die Nummer schreiben mu\'df.\f1 
+\par \i\f6 Hinweis:\i0  Mit  \cf4\b\f5 save\f4  view\cf2  \b0\i nummer\i0\f6    kann man den iV-Inhalt in die ViewListe zur\'fcckschreiben.\f1 
+\par \f2 
+\par \pard\cf4\b\f4 get x\cf2\b0\i\f2 
+\par \cf4\b\i0\f4 get x+\cf2\b0\i\f2 
+\par \pard\li709 S\f3 pezial\f2 fall \i0\f6 : Gedacht f\'fcr Parameterdateien. Aus der ge\'f6ffneten Datei wird eine Zeile gelesen. An der Stelle, wo der Kommentar beginnt, wird die Zeichenfolge //-- eingef\'fcgt. Benutzt wird dies in  \b\f1 `\cf1\ul hilite.flx\cf2\ulnone `\b0 , um eine Parameterdatei mit Syntax-Highlighting darzustellen.   
+\par \f2 
+\par \pard Wenn hinter \cf4\b\f4 get\cf2\b0\f2  nur #, adr, env, phr oder view steht, wird \f3 jeweils \f2 der Inhalt der iV hinzugenommen. 
+\par 
+\par \pard\tx1704\cf3\b\i\f3 N\f2 ur acon:\b0\i0\tab\cf2 gleichwertig (auch bei acon!): 
+\par \cf4\b\f4 get first\tab\cf2 `\cf1\ul first\cf2\ulnone `  \b0\f2 Ersten Satz der Erg.Menge laden\cf4\b\f4 
+\par get next\tab\cf2 `\cf1\ul next\cf2\ulnone `   \b0\f3 n\'e4chsten ...\cf4\b\f4 
+\par get prev\tab\cf2 `\cf1\ul prev\cf2\ulnone `   \b0\f2 vorigen ... 
+\par \cf4\b\f4 get last\tab\cf2 `\cf1\ul last\cf2\ulnone `   \b0\f2 letzten ...\cf4\b\f4 
+\par \pard\cf2\b0\f2 
+\par \b\f10 Ebenfalls nur\b0  i\f11 n \cf3\b\i\f0 acon\cf2\b0\i0\f11   \f10  gibt es noch folgende wichtige Besonderheit, z.B. f\'fcr den Fall da\'df man Ergebnismengen zwecks Ver\'e4nderungen durcharbeiten will\f11 : 
+\par \f0 
+\par \cf4\b\f4 get edit ...  \cf2\b0\f3 Satz laden u\f2 nd zugleich zum Bearbeiten reservieren (sperren\f3 )\f2 
+\par \f3\tab\tab\tab (\f5 edit\f3   nicht n\'f6tig, wenn  \f5 `\cf1\ul\b set getlock on\cf2\ulnone\b0 `\f3   gesetzt wurde)\f2  
+\par 
+\par \f3 Statt " ... " mu\'df eine der nachfolgend beschriebenen Optionen stehen: \f2 
+\par 
+\par \f4 get first / last\f2\tab Ersten / letzten Satz der Ergebnismenge laden 
+\par \f4 
+\par get edit first / get edit last\f2\tab dasselbe, aber den Satz zugleich sperren 
+\par 
+\par \f4 get next / prev\f2\tab\f3 N\'e4chsten / vorigen Satz der Ergebnismenge laden \f2 
+\par \tab\tab\tab\f3 ERROR, wenn Ende / Anfang \'fcberschritten wird. \f2 
+\par \f4 get edit next / get edit prev\f2\tab\tab Satz zugleich sprerren 
+\par 
+\par \f4 get\f5  edit\f4  \i\f2 nummer\i0\tab\tab Satz mit der laufenden \i nummer\i0  aus der aktuellen Ergebnismenge laden 
+\par 
+\par \f4 get\f5  edit i\i\f2 nummer\i0\tab\tab Satz mit der \f3 intern\f2 en \i nummer\i0  aus der \f3 Datenbank\f2  laden 
+\par 
+\par \f3            \f2 ERROR wenn \i nummer\i0 <1 oder \i nummer\i0\f3 >N  (N = Gr\'f6\'dfe der Erg.menge) \f2 
+\par 
+\par \f3 Die Option  \b\f5 edit\b0\f3   bewirkt zugleich, da\'df direkt nach dem Sperren intern die aktuellen Schl\'fcssel des Satzes berechnet werden. Kommt sp\'e4ter ein  \f5 put\f3 , ist das Programm dann in der Lage, korrekt die nicht mehr g\'fcltigen Schl\'fcssel zu erkennen und zu l\'f6schen. Automatisch erfolgt in diesen F\'e4llen aber auch dann die Freigabe, wenn ein Satz nicht gespeichert wird! Zur\'fcckgreifen kann man auch auf die neue Variable \f5 sL\f3   (V32.4), mit der rman Aufschlu\'df \'fcber das Ge- oder Mi\'dflingen des Sperrens erh\'e4lt. \f2 
+\par 
+\par ERROR, wenn \i nr\i0\f3  zu hoch oder Satz gel\'f6scht, d.h. man kann mit  \f5 if no ...\f3   den Mi\'dferfolg erkennen und dann bei Bedarf mit  \f5 var sL\f3   n\'e4heres dazu erfahren (s. Befehl \f5 `\cf1\ul\b set lock\cf2\ulnone\b0 `\f3 )\f2 
+\par 
+\par siehe auch: \f4  \b `\cf1\ul list internal, list recnum\cf2\ulnone `\b0  \f2 
+\par 
+\par \pard\li710\f4  \f2 
+\par \pard\cf3 Beispiel \f3 1\f2 :\cf2 
+\par Die FLEX-Datei  \b\f4  `\cf1\ul file.flx\cf2\ulnone ` \b0\f2   kann als Muster herangezogen werden, wie eine ASCII-Datei in einer Schleife zeilenweise eingelesen und wieder geschrieben werden kann. 
+\par \f12\fs22 
+\par \cf3\f2\fs20 Beispiel \f3 2\f2 :\cf2 
+\par Mit   \b\f4  `\cf1\ul file-zer.flx\cf2\ulnone ` \b0\f3   wird eine Datei zeilenweise gelesen und die Zeilen je nach dem Anfangsbuchstaben in eigene Dateien geschrieben, d.h. die Datei wird zerlegt in Bl\'f6cke mit gleichem Anfangsbuchstaben. \f2 
+\par \f13\fs22 
+\par \cf3\f3\fs20 Beispiel\f2  \f3 3\f2 :\cf2 
+\par \f3 Ein kleiner Web-Service soll genutzt werden, und zwar einer, der den Wechselkurs des US-Dollar liefert.\f2 
+\par \f3 
+\par \b Windows:  \b0 Wir schreiben einen  \f5 doll.flx\f3   und starten ihn mit  \f5 X doll\f3      ( `\cf1\ul\b Ausprobieren\cf2\ulnone\b0 `  ) 
+\par \f5 
+\par get Ihttp://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml 
+\par   USD-Kurs herausziehen (entsprechend geht das mit anderen Waehrungen) 
+\par var (b"currency='USD' rate='" e"'") 
+\par ins $d 
+\par eval 1 / $d 
+\par ins $e 
+\par var "1 USD = " $e " EUR" n "1 EUR = " $d " USD" 
+\par mes\f3 
+\par \b 
+\par Linux/UNIX:  \b0 Wir schreiben einen Job  \f5 usd.job\f3   und starten ihn mit der Kommandozeile  \f5 acon -jusd\f3 
+\par \f5 get Ihttp://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml 
+\par //  USD-Kurs herausziehen (entsprechend geht das mit anderen Waehrungen) 
+\par var (b"currency='USD' rate='" e"'") 
+\par ins $d 
+\par eval 1 / $d 
+\par ins $e 
+\par wri "1 USD = " $e " EUR" n "1 EUR = " $d " USD" 
+\par 
+\par \i\f3 Tip:\i0  Statt "USD" kann man in der URL auch den Code einer anderen W\'e4hrung angeben, z.B. "PLN", und erh\'e4lt den Umrechnungsfaktor des Euro zu der betr. W\'e4hrung. 
+\par Alle bedeutenden W\'e4hrungen sind abrufbar.\f13\fs22 
+\par 
+\par 
+\par ?file.flx=h file.flx 
+\par ?file-zer.flx=h file-zer.flx 
+\par ?open=h xopen 
+\par ?ascii=h xansi 
+\par ?ansi=h xansi 
+\par ?iv=h xiv 
+\par ?if cancel=h xif 
+\par ?fetch=h xfetch 
+\par ?Register=h xa 
+\par ?set env=h xset=set env 
+\par ?cstring=h xcstring 
+\par ?first=h xfirst 
+\par ?last=h xlast 
+\par ?next=h xnext 
+\par ?prev=h xprev 
+\par ?save phr=h xsave 
+\par ?hilite.flx=h hilite.flx 
+\par ?list internal, list recnum=h xlist 
+\par ?acon=h xget#47 
+\par ?andere Funktionsweise=h =in acon 
+\par ?cstrings=h xcstring 
+\par ?open url=h xopen=open url 
+\par ?JanaS-Browser=h xjanas 
+\par ?write Furl=h xwrite=write F 
+\par ?Ausprobieren=X doll 
+\par ?set lock=h xset=set lock 
+\par ?Offline-Speicher=h off 
+\par ?set getlock on=h xset=set getlock 
+\par 
+\par }
+ 

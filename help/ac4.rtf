@@ -1,0 +1,250 @@
+{\rtf1\ansi\ansicpg1253\deff0\deflang1031{\fonttbl{\f0\fscript\fprq2 Comic Sans MS;}{\f1\fscript\fprq2\fcharset0 Comic Sans MS;}{\f2\froman\fprq2 Garamond;}{\f3\froman\fprq2\fcharset0 Times New Roman;}{\f4\froman\fprq2 Times New Roman;}{\f5\froman\fprq2\fcharset0 Garamond;}{\f6\fmodern\fprq1 Courier New;}{\f7\fnil\fprq2\fcharset2 Wingdings;}{\f8\fmodern\fprq1\fcharset0 Courier New;}{\f9\fmodern\fprq1\fcharset161{\*\fname Courier New;}Courier New Greek;}{\f10\froman\fprq2\fcharset2 Symbol;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue128;\red0\green0\blue255;}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\qc\cf1\b\i\f0\fs28\par
+allegro S\i0 ystemhandbuch V\f1 32 \par
+\par
+\pard\fi-658\li658\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\cf0\lang1033\f2\fs48 4\tab Volltext-Suche und Selektion\b0\par
+\pard\qr\lang1031\f3\fs20 `\cf2\ul\b Sofort eine Volltextsuche starten\cf0\ulnone\b0 `\f4\par
+\pard\fi-658\li658\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f2\par
+\i\f5 Hinweis:\i0  Ab V27 gibt es eine `\cf3\ul\b Volltextsuche per FLEX\cf0\ulnone\b0 ` mit der M\'f6glichkeit, "regul\'e4re Ausdr\'fccke" einzusetzen. Dadurch wird das in diesem Kapitel beschriebene DOS-Programm SRCH.EXE weitgehend abgel\'f6st. Ab V32 ist es aber als 32bit-Programm realisiert und kann weiter in bew\'e4hrten Batchprozessen auch unter Win'7/64 eingesetzt werden.\f2\par
+\par
+\b\fs36 4.0\tab Aufgabenstellung und Konzept\b0\fs20\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f4\par
+Die sonst so bequemen Register sind nutzlos, wenn man \par
+\bullet   Wortbestandteile oder \par
+\bullet   Inhalte von nicht indexierten Kategorien oder Kategorieteilen \par
+\f3 sucht. Daf\'fcr gibt es ein ganz anders arbeitendes Programm: SRCH f\'fcr die "Volltext-Suche". \f4\par
+\f3 Dieses Programm hat allerdings zwei Aufgaben, und wichtiger d\'fcrfte die zweite sein: \f4\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 1.\b\tab Volltext-Suche:\b0\f3  im Gegensatz zum Schnellzugriff, wo es keine "Linkstrunkierung" gibt, findet es einen Datensatz sogar dann, wenn das gesuchte Wort darin nur als Wortbestandteil vorkommt (z.B. "energie" als Teil von "Atomenergie"), also eben auch, wenn es nicht im Index steht. Au\'dferdem kann es nicht nur Datenbank-Dateien durchsuchen, sondern auch Grunddateien, die im Schnellzugriff (mit PRESTO) unzug\'e4nglich sind! Gleichwohl: der Indexzugriff ist erheblich schneller und f\'fcr den Benutzer viel komfortabler. Man wird deshalb nicht die Volltextsuche als OPAC-Variante anbieten wollen. Es ist ein Werkzeug f\'fcr Auswertungen, die anders nicht durchf\'fchrbar sind. \f4\par
+2.\b\tab Formatierung:\b0\f3  SRCH kann gefundene Datens\'e4tze in jedem gew\'fcnschten Format, das sich mittels der Export-Sprache beschreiben l\'e4\'dft (\f6 -\f7\'d8\f4  Kap.6 und 10), ausgeben. Es leistet also \b Selektion\b0\f3  und Export in einem Durchgang, und zwar sogar bis zu vier Exportvorg\'e4nge gleichzeitig. Insbesondere kann man Ergebnisse als Grunddatei (Typ .cLG) ausgeben lassen und anschlie\'dfend mit Programm 7 oder 9 (\f6 -\f7\'d8\f3  Kap. 7 und 9) in eine andere Datenbank \'fcberf\'fchren. \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+Was mit SRCH \b nicht\b0\f3  geht: gefundene Datens\'e4tze sofort in der Datenbank korrigieren. Dazu ben\'f6tigt man: \f4\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab\f3 DOS: PRESTO (f\'fcr Dateien des Typs .cLD per Schnellzugriff \f6 -\f7\'d8\f4  Kap.1). Das ist der Normalfall. \par
+ \bullet\tab Windows: \b\i a99 \par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0\i0\par
+\i Wichtige Voraussetzung:\i0  die Datei \b S1.ASP\b0\f3  mu\'df vorhanden sein. Sie enth\'e4lt eine Tabelle von Zeichenumwandlungen, z.B. Umlautaufl\'f6sungen. Ohne diese Datei funktioniert SRCH zwar auch, aber man mu\'df alle Suchbegriffe in exakter Schreibweise (Gro\'df- und Kleinbuchstaben, Umlaute etc.) eingeben. \f4\par
+\b S1.ASP\b0\f3  enth\'e4lt eine Zeile f\'fcr jedes umzuwandelnde Zeichen. Kommentare sind darin nicht erlaubt. Man schreibt an erster Stelle das umzuwandelnde Zeichen, nach einem Leerzeichen folgt das statt seiner zu benutzende Zeichen, oder eine Zeichenkombination (bei Umlauten) oder nichts, wenn das Zeichen zu ignorieren ist: \f4\par
+\par
+\b\f3 Beispiele f\'fcr Eintr\'e4ge in S1.ASP:\b0\f4\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f6 A/Z a\b0\f4   \tab A...Z in a...z wandeln     \f3\fs16 (dies ist das Muster f\'fcr die Behandlung einer \b\f4 Folge\b0  von Zeichen)\fs20\par
+\b\f8\'e4 ae\b0\f4\tab\f3\'e4 in ae aufl\'f6sen \f4\par
+\b\f6 . P\b0\f4\tab damit man einen Punkt finden kann: das Zeichen '.' in 'P' umwandeln\f3 .. Man mu\'df in einem Suchwort \par
+\tab dann P statt des Punktes eingeben\f4  \par
+\b\f6 @\b0\f4\tab den Klammeraffen ignorieren \par
+\b\f6 !/-\b0\f4\tab die Zeichen\f6  '!'\f4  bis\f6  '-'\f4  ignorieren \par
+\b\f8\'e9 e\b0\f4\tab Akzent beseitigen \par
+\b\f6   X\b0\f4\tab\f3 Leerzeichen durch X ersetzen (Leerzeichen innerhalb von Suchbegriffen nicht zul\'e4ssig!) \par
+\tab Man mu\'df in einem Suchwort dann X statt des Leerzeichens eingeben. \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f6 ...\b0\f4\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i Hinweis:\i0\tab\f3 Die Umwandlungen gelten nur f\'fcr den Vergleich mit dem eingegebenen Suchbegriff, es werden keine Daten dabei ver\'e4ndert. \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\tx9230\b Ab Version 14:\b0\f3  Wenn mit Stamms\'e4tzen gearbeitet wird, z.B. f\'fcr Personen oder Schlagw\'f6rter, kann man mit der Volltextsuche die Namen und Schlagw\'f6rter auch dann finden, wenn in den Datens\'e4tzen nur die Identnummern der Stamms\'e4tze stehen. Jedoch auch die Nummern k\'f6nnen gesucht werden. Intern wird jeder eingelesene Datensatz, bevor die Suche beginnt, vorbearbeitet: die Zeichenersetzungen werden ausgef\'fchrt, und zu den Identnummern werden \'fcber das Ersetzungsregister die Ansetzungsformen herangeholt. \f4\tab (\f6 -\f7\'d8\f4  10.2.6.8) \par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-658\li658\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f2\par
+\b\fs36 4.1\tab Programmablauf\b0\f3\fs20     [interaktiv, ab V32 nur noch im Batch, s. 4.2]\f2\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f4\par
+\f3 Die hier folgende Beschreibung ist f\'fcr Systemverwalter gedacht, die auch einmal einen Vorgang "von Hand" starten wollen. Der "Normalverbraucher" startet die Volltextsuche am bequemsten \'fcber \b\i\f4 CockPit\b0\i0 , und zwar \par
+\pard\fi-913\li913\tx914\tx9372  \bullet\tab\f3 ohne Export: Men\'fc "\b\f4 R\b0 outinen / Volltextsuche/Listen / 3"\b\f9\tab\'ecr e 3\b0\f4\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab\f3 mit Export: Men\'fc "\b\f4 R\b0\f3 outinen / Volltextsuche/Listen / 2"  oder  Men\'fc "\b\f4 F\b0 unktionen / 4 = SRCH" \par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3 Dann l\'e4uft bis auf die Eingabe des Suchbegriffs (siehe unten Punkt 8. und Beispiele in Abschnitt 4.3) alles automatisch bzw. men\'fcgef\'fchrt ab. Die Exportfragen sind beschrieben im Kap. 6.2. \f4\par
+\par
+\f3 Nehmen wir an, es sollen aus den Dateien, die auf dem Unterverzeichnis  KATALOG  des Programmverzeichnisses stehen, alle S\'e4tze selektiert werden, in denen die Namen G\'f6del, Escher oder Bach irgendwo vorkommen. Die Ergebnisse sollen auf das Verzeichnis F:\\TEXTE mit dem Parametersatz P-NORMAL.APR ausgegeben werden, und zwar in eine Datei namens LISTE. Wenn die schon existiert, wollen wir die neuen Daten hinten anh\'e4ngen. \f4\par
+Die Fragen und Meldungen des Programms sehen Sie im folgenden in\f6  Courier-Schrift\f4 , die Antworten\b\f6  fett\b0\f4 . \par
+Das Suchprogramm wird gestartet: \par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 a)\tab mit dem Befehl\b\f6  \lang1033\f8 SRCH\lang1031  -f4\b0\f3   (den Ablauf sehen Sie gleich anschlie\'dfend), oder \f4\par
+b)\tab vom \b\i CockPit\b0\i0\f3  aus \'fcber\b\f6  \f9\'ecf 4\b0\f3   (Men\'fc "Funktionen" mit bequemer Eingabemaske), oder \f4\par
+c)\tab\f3 aus einer Stapeldatei heraus, indem man SRCH mit den geeigneten Optionen aufruft. Damit kann man Routineabl\'e4ufe vollst\'e4ndig automatisieren (\f6 -\f7\'d8\f4  4.3). Dann wird SRCH aus einem Batchfile u.U. mehrmals aufgerufen. Die Erstellung \b sortierter Listen\b0\f3  ist der wichtigste Anwendungsbereich, wo SRCH routinem\'e4\'dfig im Batch aufgerufen werden mu\'df (\f6 -\f7\'d8\f4  Kap.6). Das \b\i CockPit\b0\i0\f3 -Men\'fc "Routinen`/`Volltextsuche/Listen" startet solche Vorg\'e4nge. Endanwender, die sich auf diese Standardanwendungen beschr\'e4nken, brauchen vom Programm SRCH fast nichts zu wissen, nur wie man einen Suchbegriff eingibt. \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\f3 Im ersten Fall l\'e4uft folgender Dialog ab: \f4\par
+\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 1.\f6\tab\f8 Bitte Dateien zum Durchsuchen ausw\'e4hlen:\f4\par
+\f6\tab (Laufw.:)(Pfad\\)   (x = Irrtum)  \b katalog\b0\f4\par
+\tab Sie geben je nach Situation nur den Laufwerksbuchstaben oder auch den Namen eines Unterverzeichnisses ein. In diesem Fall reicht\f6  katalog\f3 , weil das Verzeichnis direkt am Programmverzeichnis h\'e4ngt. \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 2.\tab Es erscheint zur Auswahl die sortierte Liste (\f6 -\f7\'d8\f3  0.5.) der .ALG- und .ALD-Dateien, die auf dem gew\'fcnschten Verzeichnis stehen. Man markiert die zu durchsuchenden Dateien mit '+' . Wenn alle durchsucht werden sollen, gibt man nur 'a'.  Dann: <Enter> \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 3.\f6\tab\f8 Export gew\'fcnscht? (= Ausgabe auf Drucker/Datei) ? j/n  \b\f6 j\b0\f4\par
+\pard\fi-1633\li1633\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Man antwortet mit j oder n, was zur Folge hat: \par
+\pard\fi-2353\li2353\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab n:\tab Ausgabe der Ergebnisse nur am Bildschirm \par
+\tab\tab j:\tab\f3 es erscheint die Auswahlliste der verf\'fcgbaren Export-Parameterdateien (Typ .cPR), aus der man wie \'fcblich eine ausw\'e4hlt. Mit F5 kann man sich jeweils die erste Zeile einer Parameterdatei anzeigen lassen, um zu sehen, um was es sich handelt. \f4\par
+\pard\fi-1633\li1633\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\par
+\tab\tab\f3 Wenn die Ergebnisse ausgegeben (und nicht nur am Bildschirm angezeigt) werden sollen, wird die Ausgabe durch frei w\'e4hlbare Parameter gesteuert. Daher wird an dieser Stelle eine Export-Parameterdatei ben\'f6tigt (\f6 -\f7\'d8\f4  Kap.10). \par
+\tab\tab\f3 Also: Man setzt ein '+' vor den Namen der .APR-Datei, die f\'fcr die Ausgabe zu benutzen ist z.B.  P-NORMAL oder  I-1  oder  E-1. Diese mitgelieferten Standardparameter haben folgende, oft ben\'f6tigte Funktionen: \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-1633\li1633\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f6\tab\tab P-NORMAL\b0\f4\tab Ausgabe als Literaturliste mit Seitenaufbereitung. Die Datei \par
+\pard\fi-2353\li2353\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab\f3 P-NORMAL.APR ist kommentiert; Sie k\'f6nnen darin z.B. die Ausgabe der Seitenz\'e4hlung so \'e4ndern, da\'df alternierend ungerade Zahlen rechts und gerade Zahlen links erscheinen, wie man es f\'fcr einen zweiseitigen Druck braucht. Die daf\'fcr n\'f6tigen \'c4nderungen sind in P-NORMAL.APR erl\'e4utert. \f4\par
+\b\f6\tab\tab I-1\b0\f4\tab Ausgabe im \b\i allegro\b0\i0\f3 -Grundformat (zwecks Nachbearbeitung oder Einmischen in eine andere Datenbank) (fr\'fcher: PA.APR) \f4\par
+\b\f6\tab\tab E-1\b0\f4\tab\f3 Ausgabe mit Kategorienummern als ASCII-Textdatei. (fr\'fcher: PK.APR) \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f3 Die mit I-1 erstellten Ausgabedateien sollten den den Typ .ALG erhalten, dann k\'f6nnen sie aufgrund ihrer Struktur mit dem Programm 3 = ALLEGRO redigiert werden oder auch mit 7 = INDEX oder mit 9`=`UPDATE in eine andere Datenbank eingespeist werden. Alle diese Parameterdateien lassen sich beliebig abwandeln und somit speziellen W\'fcnschen anpassen. Die Kommentare in den Dateien sagen Ihnen, was nicht ver\'e4ndert werden darf und wo welche Anpassungen m\'f6glich sind (\f6 -\f7\'d8\f4  Kap.10). \par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 4.\f6\tab Ausgabe auf (Laufwerk:)(Pfad\\)Datei: \par
+\tab\f8 (x = keine Ausgabe gew\'fcnscht)\f4  \par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-2353\li2353\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Antwort:\b\f6\tab f:\\texte\\liste\b0\f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Die Frage ist also mit dem Namen (mit Laufwerk und/oder Unterverzeichnis, falls es nicht das aktuelle Verzeichnis ist) der Datei zu beantworten, in welche die Ergebnisse zu schreiben sind. \par
+\tab Antwort\b\f6   x\b0\f3   hat keine direkte Wirkung; wenn man w\'e4hrend der Suche mit Druck auf 'x' in den Bearbeitungsmodus geht, kann man aber jeden Datensatz mit Befehl #d ausgeben lassen. \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Wenn\b\f6  LISTE\b0\f4  schon auf\b\f6  F:\\TEXTE\b0\f4  existiert, kommt noch die Entscheidung: \par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f6\tab Datei f:\\texte\\liste existiert schon \par
+ \tab\f8  1 = neue Daten anh\'e4ngen   0 = Datei l\'f6schen   Esc = Irrtum\b\f6   1\b0\f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Man antwortet mit '1' oder '0' oder <Esc>. \par
+\tab Wenn man mit <Esc> antwortet, wird ein neuer Name abgefragt. \par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Will man ohne Umschweife die Ergebnisse sofort gedruckt bekommen: \par
+\b\f6\tab prn\b0\f4   oder\b\f6   lpt1\b0\f4     statt eines Dateinamens eingeben. (Nicht sinnvoll, wenn man\f6  I-1\f3  gew\'e4hlt hatte) \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 5.\f6\tab noch weitere Ausgabe? j/n  \b n\b0\f4\par
+\tab\f3 Es k\'f6nnen mehrere Exportvorg\'e4nge parallel abgewickelt werden, d.h. die Prozedur unter 3./4. ist bis zu 3mal wiederholbar. \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 6.\tab\f6 manueller Eingriff? j/n   \b j\b0\f4\par
+\tab\f3 normalerweise mit 'j' zu beantworten; l\'e4ngere Auswertungen gehen bei 'n' etwas schneller. Wenn man die Ergebnisse sofort bearbeiten will, bevor der Export erfolgt, antwortet man 'j' (siehe 10.) \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 7.\tab\f8 Anzeige gew\'fcnscht? j/n   \b\f6 j\b0\f4    \par
+\tab (Frage kommt nur, wenn 3. mit 'j' beantwortet wurde) \par
+\tab\f3 Wenn man neben der automatischen Produktion noch eine Bildschirmanzeige der Ergebnisse w\'fcnscht, um das Geschehen zu verfolgen und gegebenenfalls mit 'x' einzugreifen, w\'e4hlt man hier 'j'. \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 8.\tab Jetzt erst kommt die Frage nach dem \b Suchbegriff\b0\f3 . Dieser kann aus einem simplen Wort oder einer beliebigen Zeichenkette (Buchstaben und Ziffern, keine Sonderzeichen au\'dfer ",-;:/()><" , siehe unten) bestehen. Es kann aber auch ein kompliziert zusammengesetzter Ausdruck sein. \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f3 Das Programm informiert Sie kurz \'fcber seine Modalit\'e4ten und stellt dann die Frage nach dem Suchbegriff: \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\f6 Suchbegriff = jede Zeichenkette aus Buchstaben und Ziffern  \par
+\pard\fi-6673\li6673\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 Eingabe in Kleinbuchstaben\tab\f8\'e4 = ae usw.\f6\tab\tab\tab . = Maskierung \par
+logische Operatoren:\tab\tab + = UND    / = ODER\tab - = NICHT \par
+Vergleichsoperatoren:\tab\tab < = KLEINER\tab\tab\tab > = GROESSER \par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f8 Einschr\'e4nkungs-Operator:  x,y = Nur im Feld x nach y suchen\f6\par
+\pard\fi-1633\li1633\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 Beispiel:\tab (goethe/lessing)-schiller \par
+\tab\tab\f8 = alles von und \'fcber Goethe oder Lessing, ohne Schiller \f6\par
+Beispiel:\tab #40,goethe \par
+\tab\tab = Goethe nur als Verfasser \par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f8 Beispiel: \tab #76>1985   bzw.   (#76>1990)+(#76<2001) \par
+\tab\tab = Erscheinungsjahr nach 1985  bzw. ersch. nach 1990 und vor 2001\f6\par
+\par
+Suchbegriff?  \b goedel/escher/bach\b0\f4\par
+\par
+Der Suchbegriff kann bis zu 300 Zeichen lang sein. Die Bearbeitung des Suchbegriffs geht genauso vor sich wie die Fenster-Bearbeitung langer Datenfelder mit dem Editorbefehl #b (\f6 -\f7\'d8\f4  3.3). \par
+\f3 Beispiele f\'fcr Suchbegriffe und Bemerkungen zu Sonderf\'e4llen finden Sie in Abschnitt 4.3. \f4\par
+\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 9.\tab\f3 Wurde bei 3. 'j' gesagt, l\'e4uft alles automatisch ab. Am Ende hat man die Ergebnisse in der gew\'fcnschten Datei stehen bzw. man bekommt sie formatiert ausgedruckt, den gew\'e4hlten Parametern entsprechend. \f4\par
+\tab\f3 Wurde bei 3. 'n' gesagt, h\'e4lt das Programm nach jedem Treffer an, damit man den gefundenen Datensatz in Ruhe betrachten kann. Auch das Bl\'e4ttern in den bereits gefundenen Datens\'e4tzen ist m\'f6glich: mit '+' und '-' geht es vor- und r\'fcckw\'e4rts. Fortsetzung der Suche durch 'Leertaste'. \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 10.\tab\b Unterbrechung:\b0\f3  Der Suchvorgang kann jederzeit mit Druck auf 'x' unterbrochen werden. Man erh\'e4lt dann den zuletzt gefundenen Datensatz im Eingabeformat angezeigt und befindet sich automatisch im Editor (\f6 -\f7\'d8\f3  Kap.3). Das Suchprogramm reiht die gefundenen Datens\'e4tze im Arbeitsspeicher sozusagen wie in einer Warteschlange hintereinander, wenn man 6. mit 'j' beantwortet hatte. Erst dann, wenn der Platz knapp wird, erfolgt jeweils die Ausgabe des ersten (\'e4ltesten) Satzes in der Schlange auf dem Drucker bzw. in die Datei. Was noch im Arbeitsspeicher steht, kann also vor der Ausgabe noch bearbeitet werden. Mit <Bild\f10\'af\f4 > und <Bild\f10\'ad\f3 > bl\'e4ttert man die S\'e4tze im Arbeitsspeicher durch. \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Im Editor gibt es zwei Befehle mit besonderer Wirkung:    \par
+\tab #r  oder  F10:  \b Weitersuchen\b0  ("resume") \par
+\tab #e  oder   F8:  \b Ende des Suchlaufs\b0\f3  (Abbruch), (R\'fcckkehr zum \b\i\f4 CockPit\b0\i0 , wenn von dort gestartet) \par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\f3 Experimentieren Sie mit den Beispieldaten, um die M\'f6glichkeiten gr\'fcndlich kennenzulernen. \f4\par
+\par
+Derselbe Vorgang wird vom \b\i CockPit\b0\i0\f3  aus dem "Funktionen"-Men\'fc so gestartet: \f4\par
+\par
+\pard\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\f6\fs16 Funktionen\b0      Routinen     Makros     Dateien     Optionen     HELP     EXIT \par
+ +--------------+ \par
+\f8  \'a6              \'a6   +----------------------- Optionen -----------------------+ \f6\par
+\f8  \'a6  HELP        \'a6   \'a6 k : Konfiguration:         A                           \'a6 \f6\par
+\f8  \'a6              \'a6   \'a6 f : Funktion:              4                           \'a6 \f6\par
+\f8  \'a6 1 : PRESTO   \'a6   \'a6 c : Laufwerke:             C                           \'a6 \f6\par
+\f8  \'a6 2 : OFFLINE  \'a6   \'a6 d : Datenverzeichnis:      c:\\allegro\\demo             \'a6 \f6\par
+\f8  \'a6\b\f6  4 : SRCH+EX  \b0\f8\'a6   \'a6 s : Suchbegriff     :      goedel/escher/bach          \'a6 \f6\par
+\f8  \'a6 5 : IMPORT   \'a6   \'a6 manuelle Unterbrechung     1                           \'a6 \f6\par
+\f8  \'a6 7 : INDEX    \'a6   \'a6 visuelle \'dcberwachung       0                           \'a6 \f6\par
+\f8  \'a6 q : QRIX     \'a6   \'a6 e : Export Parameter:      P-NORMA+--------------------+ \f6\par
+\f8  \'a6 8 : SORT     \'a6   \'a6    \b\f6  Export Datei \b0\f8    :             \'a6f:\\texte\\liste      \'a6 \f6\par
+\f8  \'a6 9 : UPDATE   \'a6   \'a6 e : Export Parameter:             +-----Dateiname------# \f6\par
+\f8  +--------------+   \'a6     Export Datei    :                                  \'a6 \f6\par
+\f8                     \'a6 e : Export Parameter:                                  \'a6 \f6\par
+\f8                     \'a6     Export Datei    :                                  \'a6 \f6\par
+\f8                     \'a6 e : Export Parameter:                                  \'a6 \f6\par
+\f8                     \'a6     Export Datei    :                                  \'a6 \f6\par
+\f8                     \'a6 GO (START)                                             \'a6 \f6\par
+                    +--------------------------------------------------------# \par
+\b  in welche Datei soll exportiert werden? \par
+\b0  C:\\ALLEGRO\\DEMO \par
+ Datenbank = CAT         Konfiguration = A   Progr.Verz. =    C:\\ALLEGRO \par
+ Einzelplatzbetrieb                          Sprache = GER    Laufwerk = C  V2\f8 6.6\f6  \par
+\f4\fs18\par
+\f3\fs20 Sie sehen hier die Momentaufnahme zu dem Zeitpunkt, wo der Name f\'fcr die Ausgabedatei eingegeben wird. Das abgebildete Men\'fc wird so benutzt: \f4\par
+\pard\fi-426\li426\tx426\tx834\tx1554\tx2274\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\bullet\tab\f3 man bewegt den Leuchtbalken in der linken H\'e4lfte auf die zu \'e4ndernden Optionen und dr\'fcckt jeweils <Enter> \f4\par
+\pard\fi-426\li426\tx426\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\bullet\tab\f3 die betreffenden Elemente werden, ihrer Art entsprechend, \'fcber ein Eingabefeld oder eine Auswahlliste abgefragt \f4\par
+\bullet\tab\f3 Ist alles richtig ausgef\'fcllt, startet man das Programm durch Aktivierung von \b\f4 GO (START)\b0 . \par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\i CockPit\b0\i0\f3  produziert und startet dann eine Batchdatei namens CCC.BAT. Dieses enth\'e4lt den korrekten Aufruf von SRCH, wie ihn der n\'e4chste Abschnitt zeigt: \f4\par
+\par
+\pard\fi-658\li658\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f2\par
+\b\fs36 4.2  Aufruf des Programms aus Batchdateien\b0\fs20\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\f3 Das Programm SRCH kann, wie die anderen, auch als Modul in Stapeldateien benutzt werden. S\'e4mtliche oben beschriebenen Angaben, die das Programm abfragt, kann man ihm als Optionen "von au\'dfen" mitgeben, dann l\'e4uft es automatisch ab. Diejenigen Angaben, die es nicht \'fcber Optionen erh\'e4lt, fragt es noch ab. Man kann es daher so einrichten, da\'df immer nur die wirklich ver\'e4nderlichen Angaben im Dialog einzugeben sind. Aufrufe in Batchdateien werden ausf\'fchrlich in Kap.12 behandelt. SRCH wird h\'e4ufig in dieser Weise f\'fcr Exportvorg\'e4nge eingesetzt, die mehr oder weniger regelm\'e4\'dfig als Routineproduktionen ablaufen. So z.B. in SR-LIST.BAT und PR-LIST.BAT. \f4\par
+\f3 Der in 4.1 als Beispiel beschriebene Vorgang w\'e4re mit folgendem Befehl zu starten: \f4\par
+\b\f6 srch -f4 -d katalog\f8\\*.ald\f6  -e p-normal+f:\\texte\\liste -m1 -v1 -s goedel/escher/bach\b0\f4\par
+\f3  \f4\par
+\f3 Wenn innerhalb P-NORMAL.APR S\'e4tze nachzuladen sind (\f6 -\f7\'d8\f3  10.2.6.7) und wenn mit Stamms\'e4tzen gearbeitet wird (V14), mu\'df man noch die Option\b\f6  -b`katalog\\kat\b0\f3  hinzuf\'fcgen, damit SRCH wei\'df, welche Datenbank daf\'fcr zu benutzen ist.  Wenn Sie die Befehlszeile mit dem Dialog und der \b\i\f4 CockPit\b0\i0 -Anzeige vergleichen, erkennen Sie leicht die Bedeutung der Optionen, und wie sie anzuwenden sind. \par
+\b TIP:\b0  Option \b -F \b0\f3  hinzuf\'fcgen, wenn bei dem betr. Export keine V14-Ersetzungen notwendig sind. Dann geht es schneller. \f4\par
+\par
+\pard\fi-658\li658\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\b\f5\fs36 4.3  Beispiele f\'fcr Suchbegriffe\b0\f2\fs20\par
+\f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b Achtung: \b0\f3  Bei Start \'fcber \b\i\f4 CockPit\b0\i0  oder Batch: 'G' statt '>' und 'S' statt '<' , sonst Fehlfunktion!!! \par
+\f3 Kleinbuchstaben ujnd aufgel\'f6ste Umlaute eingeben! Voraussetzung ist aber, da\'df im Programmverzeichnis die Datei S1.ASP vorhanden ist. Sonst k\'f6nnte man alles nur bei exakter Eingabe finden, denn S1.ASP wandelt die Daten vor dem Vergleichen um.\f4\par
+\par
+\pard\fi-2353\li2353\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f6 kunst+philosophie\f4\tab\f3 beide W\'f6rter sollen irgendwo im Datens\i\f4 atz\i0\f3  vorkommen (Reihenfolge gleichg\'fcltig) \f4\par
+\f6 kunst,philosophie\f4\tab "Kunst" und "Philosophie" sollen im selben Daten\i feld\i0  in dieser Reihenfolge vorkommen (egal in welchem) \par
+\f6 #971>99999\f4          \tab\f3\tab in #971 soll eine Zahl gr\'f6\'dfer als 99999 stehen \f4\par
+\f6 #99n\f8 >\f6 19910631\f4    \tab\f3 alle ab 1.7.1991 erfa\'dften Datens\'e4tze (wenn #99n das Erfassungsdatum enth\'e4lt) \f4\par
+\f6 #40.<m\tab\f4       \tab\tab einer der Verfassernamen (#40, #40a oder #40b) soll mit A...L anfangen  \par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f6 (#20X>jzzz)+(#20X<q)\f3   Titelanfang zwischen k und p (einschlie\'dflich; denn es ist k>jzzz und pz<q) \f4\par
+\pard\fi-2353\li2353\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f6 #15\f4\tab\tab\tab alle \f3 S\'e4tze\f4  selektieren, in denen die Kategorie #15 vorkommt. \par
+\f6 #3,goethe\f4\tab\tab\f3 "Goethe" mu\'df in einer Kategorie der Gruppe #3 vorkommen (Sacherschlie\'dfungsdaten) \f4\par
+\f6 #8;formaldehyd\f4\tab suche "formaldehyd" nur in Kategorie #80..#99 (wenn man ';' anstatt ',' verwendet, wird der gesamte Rest des Datensatzes durchsucht, also alles, was hinter der Zeichenkette X kommt - auch wenn dort noch Kategorien kommen, die nicht mit #9 beginnen. \par
+\f6 ma.er\f4\tab\tab\tab\f3 "Mayer" und "Maier" werden gefunden - aber auch "Maler" und "mager" etc. Sucht man ausdr\'fccklich nach "Mayer" oder "Maier", dann "mayer/maier" geben. \f4\par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f6 (goethe/lessing)-(schiller/fichte)\f4\par
+\pard\fi-2353\li2353\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab "Goethe" oder "Lessing" sollen vorkommen, "Schiller" oder "Fichte" aber nicht. \par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f6 (goethe/lessing)-(#4,schiller\f4 ) \par
+\pard\fi-2353\li2353\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab "Goethe" oder "Lessing" sollen vorkommen, jedoch keine Werke von Schiller. ("Schiller" darf hierbei im Titel oder sonstwo vorkommen, nur nicht in einer mit #4 beginnenden Kategorie.) \par
+\pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\f3 Jedes dieser Beispiele kann man in Klammern einschlie\'dfen und mit anderen geklammerten Suchbegriffen verkn\'fcpfen. \f4\par
+\f3 Die zwei Teile links und rechts vom Komma oder Semikolon d\'fcrfen keine mehrteiligen Ausdr\'fccke sein, also \par
+z.B. (#40/#41),goethe w\'e4re nicht m\'f6glich: man m\'fc\'dfte statt dessen (#40,goethe)/(#41,goethe) schreiben. \par
+Komma-Ausdr\'fccke m\'fcssen in Klammern eingeschlossen sein, wenn sie mit anderen Ausdr\'fccken kombiniert werden sollen! \f4\par
+\i Besonderheit:\i0\f3  die Operatoren '<' und '>' reagieren automatisch "richtig": wenn eine Zahl dahinter steht, wird der numerische Wert, wenn ein Buchstabe, dann der lexikalische Wert verglichen. Vor dem Vergleichsoperator mu\'df eine Kategorienummer stehen, sonst ergibt er keinen Sinn. Im Beispiel oben sieht man \f6 (#20X>jzzz)\f3 ; damit ist gemeint: Suche im Datensatz nach der Zeichenfolge \f6 #20\f3  mit einem Blank dahinter und vergleiche dann, was genau hinter dem Blank steht, mit dem Wert \f6 jzzz\f3 . \par
+Schreibt man statt dessen \f6 (#20\f8 .\f6 >jzzz)\f3 , wird jedes Feld \f6 #20\f8 x\f3  verglichen!\f4\par
+\par
+\f3 Ab V32: Statt  \f8 -s\f3   auch  \f8 -r\f3   m\'f6glich, dahinter ein `\cf3\ul\b regul\'e4rer Ausdruck\cf0\ulnone\b0 `. Darin stecken noch viele andere M\'f6glichkeiten.\f4\par
+\par
+\f3 Nochmals der Hinweis: Gro\'df-/Kleinschreibung ist nur dann egal, wenn die Tabellendatei \b S1.ASP\b0  vorhanden ist.\f4\par
+\par
+\b\f3 Sonderf\'e4lle:\b0\f4\par
+\pard\fi-913\li913\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab Gibt man '0' (eine Null) als Suchbegriff ein, so wird \b jede\f3 r\f4  \f3 Datensatz\f4  als Treffer\b0  behandelt. Sinnvoll ist das, wenn man Dateien \b komplett\b0  (ohne Selektion) \b exportieren\b0  will (\f6 -\f7\'d8\f4  Kap.6). Dies ist der einzige Unterschied, wenn man SRCH als Exportprogramm (d.h. mit Startoption\f6  -f6\f4 ) und nicht als Suchprogramm (mit\f6  -f4\f4 ) benutzt. \par
+ \bullet\b\tab Leerzeichen in Suchbegriffen\b0\f3  sind durch 'X' zu ersetzen: wenn man z.B. "K\'fcnstliche Intelligenz" sucht, gibt man "kuenstlicheXintelligenz" ein. (Der Grund f\'fcr diese Besonderheit liegt im Betriebssystem) \f4\par
+ \bullet\b\tab Punkte in Suchbegriffen\b0  sind durch 'P' zu ersetzen. Dieser Trick ist notwendig, weil der Punkt '.' als "Jokerzeichen" oder Maskierungszeichen fungiert. \par
+ \bullet\tab Die \b Funktionszeichen \b0\f6  /+,;\f8 _\f6 )><\f3   m\'fcssen, falls sie in einem Suchbegriff vorkommen sollen, mit vorgesetztem\f6  '/'\f4  eingegeben werden, also z.B.\f6  1987//88\f4  statt\f6  1987/88\f4 . Die Zeichen\f6  '-'\f4  und\f6  '('\f4  , die auch als Funktionszeichen direkt hinter\f6  '/'\f3  vorkommen k\'f6nnen, m\'fcssen in der Form\f6     "--"\f4  bzw.\f6  "(("\f4  eingegeben werden, wenn man sie als Zeichen sucht. \par
+ \bullet\tab Wenn man vom \b\i CockPit\b0\i0\f3  aus startet oder SRCH in einem Batch aufruft benutzt, mu\'df man die Zeichen '>' und '<' ersetzen durch 'G' (f\'fcr "greater") und 'S' (f\'fcr "smaller"), denn die Spitzklammern haben leider innerhalb von Batchfiles eine Sonderbedeutung (sog. Umlenkzeichen), die das korrekte Funktionieren verhindert. Also (auch hier wieder X statt Leerzeichen): \f4\par
+\b\f6\tab SRCH -s #76XG1980\b0\f4     statt\f6     SRCH -s #76 >1980\f4       um Titel nach 1980 zu selektieren. \par
+ \bullet\tab\b Klammern\b0\f3  k\'f6nnen mehrfach geschachtelt werden. Man braucht sie haupts\'e4chlich, um ODER-Verbindungen zusammenzufassen. (Keine Leerzeichen vor und hinter den Operatoren!) \par
+\f4  \bullet\tab\f3 Das \b\f4 K\f3 omma\b0  wirkt so: Zuerst wird das gesucht, was vor dem Komma steht. Das dann gefundene Datenfeld wird von der Stelle ab zum Feldende hin nach der Zeichenfolge durchsucht, die hinter dem Komma steht. Wenn man also z.B. die Zeichenfolge \f6 #3,goethe\f3  eingegeben hat, bedeutet das: Zuerst wird nach \f6 #3\f8  \f3  gesucht. Damit werden dann Feldnummern wie \f6 #3\f8 0, #31, ...\f3   gefunden. Jedes dieser Felder wird durchsucht, und zwar exakt ab dem Zeichen, das hinter der Zeichenfolge \f6 #3\f3  steht.  Das Komma kann somit auch als "Mitteltrunkierung" gelten:  \par
+\tab Die Eingabe  atom,energie \par
+\tab w\'fcrde auch das Wort Atomkernenergie oder die Phrase "Atom- und Fusionsenergie" finden. Nichts jedoch, wenn "energie" nicht im selben Feld steht. \par
+ \f4\bullet\tab\b\f3 Eckige Klammern \b0 und andere Sonderzeichen kann man nur finden, wenn man in die Datei S1.ASP eingreift: \par
+\tab Entweder man nimmt dort die betr. Zeile heraus (Leerzeichen davor),  in diesem Fall w\'e4re das die Zeile: \par
+\par
+\b\f8\tab [/`\b0\f3        [\\]^_` eliminieren \par
+\par
+\tab Oder man h\'e4ngt an das Ende je eine neue Zeile f\'fcr das betr. Zeichen: \par
+\par
+\b\f8\tab [ [ \par
+\b0\f3\par
+\tab In beiden F\'e4llen kann man anschlie\'dfend eingeben \par
+\par
+\b\f8\tab #56,[\b0\f3\par
+\par
+\tab um mit SRCH Vorkommnisse der eckigen Klammer in #56 zu finden. \par
+\tab ABER: \par
+\tab F\'fcr die Volltextsuche per FLEX gilt dies nicht, da gelten vielmehr die p- bzw. q-Befehle der Indexparameter. Und zwar je nachdem, welche davon das A auf a umcodieren! Bei cat.api sind es die q-Befehle. \par
+  \par
+?Sofort eine Volltextsuche starten=h exprt \par
+?Volltextsuche per FLEX=X fulltext \par
+?regul\'e4rer Ausdruck=h ftr \par
+\par
+}
+ 

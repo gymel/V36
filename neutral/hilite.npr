@@ -1,0 +1,52 @@
+  HILITE.APR : Einen Feldinhalt nach RTF wandeln
+  2004-01-04  insbes. wirkt sich dies auf den FLEX-Befehl "write" aus
+
+zl=0
+dx=1
+
+#+-
+
+  Wenn im FLEX "write" gegeben wird, steht der Inhalt in #u1
+  Ausgeben wird dieser Inhalt, codiert nach RTF mit Hilfe der p-Befehle
+  Sprungmarke #-X wird in hilite.flx gesetzt mit  "dow wX"
+#-X
+#u1 
+#+#
+
+  ASCII -> RTF   Tabelle laden
+
+p .001 "grz"
+p .002 "grz"
+p .003 "grz"
+p .004 "grz"
+p .005 "grz"
+p .006 "grz"
+p .007 "grz"
+p .008 "grz"
+p .011 "grz"
+p .012 "grz"
+p .026 "grz"
+
+p .014 130    Notenzeichen
+p .015 131    Sonne
+p .016 187    Dreieck nach rechts
+p .017 132    Dreieck nach links
+p .018 137    o mit Doppelakut
+p .019 134    u mit Doppelakut
+p .020 182    Absatzzeichen
+p .021 167    Paragraph
+p .022 135    u mit ogonek
+p .023 133    g mit breve
+p .024 189    Pfeil hoch
+p .025 139    Pfeil runter
+p .028 159    Verweisungsstrich (obsolet)
+p .030 165    Dreieck Spitze oben
+p .031 178    Subfield Code = AltGr+2 (Dreieck Spitze unten)
+p .037 "\'25"    Prozentzeichen problematisch, wenn Zahlen folgen!
+p .096 "``"     gravis muss verdoppelt sein!
+
+  fuer RTF sehr wichtig:
+p { "\{" 
+p } "\}"
+p \ "\\"
+

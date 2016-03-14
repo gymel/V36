@@ -1,0 +1,81 @@
+  alpha3.apr  Namensreg Schritt 3 :
+  19940602    Druck eines Namensregisters mit Seitenumbruch
+
+  verwendbar fr jedes Kategoriesystem, nur #99 muss definiert sein !!!
+pn="alphabetisches Register - Schritt 3"
+
+   die Datens„tze wurden von ALPHA2.APR in diese Form gebracht:
+   #u2  Text der Registerzeile
+   #99z Nummern, durch ", " getrennt (Seitenzahlen oder Lfd.Nummern)
+
+  --------- Konstanten --------------------------------------------
+zl=77	    Zeilenl„nge
+zi=5	    Einrckung (wirksam ab 2. Zeile einer Eintragung)
+zm=64       Zeilenmaximum pro Seite
+
+fl=0        Listendruck (kein Formulardruck)
+
+ks=4	    Startpos. 4 innerhalb jeder Kategorie
+ke=""       kein automatisches Kategorieende
+
+ae=""       am Aufnahmeende keine weiteren Zeichen anh„ngen
+
+  ----------------------------------------------------------------
+
+  +++++++++ Zwischenteile: +++++++++++++++++++++++++++++++++++++++
+
+
+1=13 13
+50=13 13 &0      2x Zeilenvorschub, dann auf Position 0
+
+  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  ========= Kopfbefehle: =========================================
+ak=zz+a zz+b
+
+
+  ********* Kategorieliste ***************************************
+
+   Manipulationsbefehl =tx vergleicht den Text mit Hintergrund-
+   kategorie #utx. Bei Gleichheit wird die direkt folgende Aktion
+   (Sprung oder Zwischenteil) ausgefhrt, bei Ungleichheit die
+   nachfolgende Aktion, wobei zus„tzlich automatisch der neue Text
+   in #utx kopiert wird, fr den n„chsten Vergleich
+
+#-a
+#u2 +c =tx,0             Name gleich #utx? dann keine Ausgabe, sonst
+
+#-d                      Kategorie #u2 ausgeben und in #utx kopieren
+#99z p"  "    Seitenzahlen dahinterschreiben
+              (im Schritt 2 sind alle Seitenzahlen zu einem Namen in
+               #99z zusammengefasst worden!)
+#+#     ende
+
+#-c     Hier kommen wir bei Ungleichheit von #u2 hin
+#u2     dann wird #u2 ausgegeben
+#+d
+
+
+#-b         Dieser Abschnitt ist nur
+#u2 =ww        zum Schein, um ww zu belegen (wird bei Seitenwechsel benutzt)
+#+-   Abbruch, d.h. keine Ausgabe
+
+   ********* Kopf- und Fuáabschnitte ***********************************
+
+   Seitenkopf
+K  
+#u2 E20 R #zz 0      aktueller Name (20 Stellen) rechtsbndig
+#t1                  dann wird #uww gebraucht:
+#u2 =ww+B e0 0       wenn er schon am Ende der vorigen Seite vorkam: #-B
+#+#
+
+#-B                  Name wird nochmals ausgegeben
+#u2 50
+#t{ " [Forts]" }     mit [Forts.] dahinter
+#+#
+
+   Fuá : Seitenzahl
+F
+#p2 p{ &35 "- " } P" -" #zz 0    Seitenzahl wird auf Pos. 35 gesetzt
+
+  ***********************************************************************

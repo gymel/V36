@@ -1,0 +1,175 @@
+
+Verlautbarung 205 der Entw.Abt.                              2008-05-02
+-------------------------------
+
+V28.3 mit extrem erweitertem Aktionsradius
+==========================================
+("Neue Wege soll sie weisen, Alleen, keine schmalen Schneisen!")
+
+Wer nur ganz schnell und nüchtern das Allerwichtigste wissen will,
+installiert V28.3 und gibt ein:  h marc  bzw.  h aiaqs
+
+V28.3 zeichnet sich hauptsaechlich durch Verbesserungen an
+vielen FLEXen der Utilome  ORDER, aLF und ZAboM  aus, die von einigen
+fleissig testenden und anwendenden Anwendern angeregt wurden.
+Das ist aber nicht alles, nebenbei wurden auch wieder ein paar alte
+Stolperschwellen weggemeisselt, also ordentlich was fuer die
+Barrierefreiheit getan.
+
+
+Neuer INI-Befehl StartFLEX
+--------------------------
+Ausgeweitet und diversifiziert haben sich die Aufgaben, die a99
+bei Beginn einer Sitzung erledigen soll, bevor der Nutzer etwas
+tun darf. Es erwies sich als praktisch, diese Aufgaben auf mehr
+als eine einzige FLEX-Datei aufteilen zu koennen. Das geht jetzt. Man
+schreibt in der INI-Datei:
+
+StartFLEX=fx1;fx2;fx3;...
+
+wobei fx1, fx2, ... beliebig viele Namen von FLEX-Dateien sind.
+Dann werden diese am Sitzungsbeginn, nach Oeffnen der Datenbank
+und vor Freigabe des Dialogs, abgearbeitet. Jeder fxi kann
+seinerseits mittels  exec ...  einen anderen FLEX aufrufen, der
+dann vor der Abarbeitung des naechsten fxi auf der Liste erledigt
+wird.
+Einfaches Beispiel:
+
+StartFLEX=_start;offcheck;z-init
+
+Damit wird im Anschluss an die normalen Vorbereitungen incl.
+Pruefung der Offline-Daten gleich noch ZAboM initialisiert.
+
+
+Neu: MARC-ExportParameter
+-------------------------
+Es war an der Zeit, die bisher so enge Pforte zur MARC-Welt zu einer
+komfortablen, schwellenlosen Durchfahrt zu verbreitern.
+Auf dem Export-Komfortmenue steht neben XML nun "MARC21". Damit wird
+der neue FLEX  marcexp.flx  aktiviert, der die Wahl zwischen MARCXML
+(mit UTF-8) und Textausgabe (mit ANSEL-COde) bietet.
+Neue Kurzdokumentation zu MARC:  h marc  eingeben.
+Beides kann anschliessend mit der freien Software MARCEDIT in echtes
+MARC umgewandelt werden, also mitsamt "directory" - die ganz alte, aber
+immer noch gebraeuchliche Magnetband-Austauschform.
+Die Parameter heissen MARCXML.APR und MARCTXT.APR. Sie wurden so
+konstruiert und kommentiert, dass Erweiterungen und Modifikationen
+nicht wirklich schwer sind.
+
+MARCEDIT (verfasst von Terry Reese) gibt es hier:
+http://oregonstate.edu/~reeset/marcedit/html/index.php
+
+
+FLEX Neuerungen
+---------------
+
+Zuerst zwei Kleinigkeiten:
+
+var cf
+   Aktuelle Anzahl der Fuellzeichen, die ein Neusatz erhaelt
+   (Befehl f in der CFG)
+
+set cf<anzahl>
+   Anzahl der Fuellzeichen setzen, die ein Neusatz erhalten soll
+   (nur fuer die Sitzung, wird nicht in die CFG uebernommen!)
+
+
+Die folgenden Neuerungen reissen die Wand nieder zwischen dem eigenen
+Dateisystem und dem Datenuniversum namens Internet. Das Potential
+dieser Oeffnung ist erst ansatzweise ausgelotet. Diese Dinge werden
+zusammengefasst unter der Bezeichnung "aiaqs" : allegro Internet-
+Abrufe quer und schnell". Die phonetische Namensgleichheit mit AJAX
+ist rein zufaellig: weder ist JavaScript beteiligt noch gar XML, die
+Sache ist wesentlich einfacher.
+
+open <dateiname>
+  Jetzt darf <dateiname> auch eine URL sein, die mit http:// beginnt
+  oder auch ftp:// (Internetdatei) oder mit file:/// (lokaler
+  Dateiname). Die get-Befehle  get #nnn bzw.  get iV  und  get +iV
+  arbeiten dann eben entsprechend anders. Und mit  fetch <number> kann
+  man auch "Binaerdaten" einlesen.
+  Aber mehr noch:
+  Die "Internetdatei" muss keine echte Datei sein, es kann sich auch
+  um einen Skriptaufruf (.php, .pl, .py etc.) handeln. Es wird dann
+  eben so getan, als sei es eine Datei, d.h. gelesen wird der Output
+  des Skriptes. Der Befehl "close" gilt entsprechend.
+  Demo:  FETCHFIL.FLX
+  Geben Sie ein:
+        X fetchfil http://www.allegro-c.de/flex/FLEX-Einstieg.pdf
+  um sich das FLEX-Lehrbuch als PDF zu holen
+
+get I <url>     [einfach so, ohne vorangehendes  open <url> !]
+  Der Inhalt der durch <url> angegebenen Datei wird, quer ueber das
+  Internet hinweg, in die iV kopiert.
+  Wie bei  open ...  kann <url> von der Form  http://...  oder auch
+  file:///... sein.
+  Beispiel 1: Geben Sie ein
+              x get I http://www.allegro-c.de/vb164\sho IV
+                Die Datei vb164 wird geholt und gezeigt
+       oder versuchen Sie
+     x get I ftp://sun250.biblio.etc.tu-bs.de/pub/help/aoz.txt\sho IV
+
+  Beispiel 2: X vks   startet einen neuartigen, ganz simplen Zugang
+              zum alten VK. Dazu gehoeren noch drei andere FLEXe. 
+              Damit soll aber nicht gesagt sein, der VK waere nun
+              immer noch was Tolles, es sind nur Beispiele zur
+              Vorfuehrung neuer Moeglichkeiten!
+
+var ... F<url> ...    [auch ohne vorangehendes  open <url> !]
+  So kann man den Inhalt einer Internetdatei an beliebiger Stelle in
+  einen cstring einbauen, ganz wie bei einer normalen Datei.
+
+Mehr dazu in der Doku:  h xopen  bzw.  h xget, 
+                        und zur Einfuehrung  h aiaqs
+
+Sonderservice: Nach Installation von V28.3 koennen Sie folgenden Befehl
+eingeben:
+   H marc.rtf
+statt mit kleinem h. Dann wird die Datei vom FTP-Server geholt, wo wir
+ein Verzeichnis  pub/help  angelegt haben mit allen Hilfetexten.
+Erledigt wird das von einem neuen Abschnitt in  onerror.flx. 
+So koennte man nun zentral gelagerte Hilfetexte realisieren...
+
+
+Und noch zwei Kleinigkeiten:
+
+Aenderung bei "export":
+Beim Befehl  exp set  bzw.  exp database  werden die Fortschrittszahlen
+und die Endemeldung "Export finished" nun nicht mehr im Schreibfeld
+ausgeworfen, was irritierend sein konnte, sondern im Statusfeld unter
+dem Fortschrittsbalken, wo sonst Satznummer, Datei und Laenge stehen.
+
+Aenderung bei "exec":
+Jetzt kann man auch innerhalb von Unterprogrammen "exec ..."
+sagen. Man beachte aber, dass  exec  auch dann den laufenden FLEX
+abbricht und nicht zu ihm zurueckkehrt.
+
+
+a99: Mehr Arbeit fuer den Besen
+-------------------------------
+Der Besen gehoert zu den aeltesten Werkzeugen nicht nur im Programm
+a99, sondern der Menschheit. Nach undenklichen Zeiten bekommt er
+jetzt erstmals wieder eine neue Aufgabe:
+Er kann nun auch den Offline-Speicher leeren. Dafuer musste man
+bisher den Befehl  x erase off  wissen.
+Hierzu erforderlich ist die neue Zeile 237 in UIFEGER:
+237 "Offline-Speicher leeren"
+
+
+Obsolete Dateien (kuenftig nicht mehr im GP)
+----------------
+
+ProgDir:
+$a28.cfg
+zabom.apr
+a-stat.apr
+
+FLEX:
+eu-*.flx   (EUR-Umstellung 2002)
+
+HELP: (folgende kommen stattdessen auf demo2)
+a-clas.vw
+vert.vw
+kont.vw
+
+

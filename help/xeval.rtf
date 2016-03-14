@@ -1,0 +1,146 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman\fcharset0 Times New Roman;}{\f1\froman Times New Roman;}{\f2\fswiss MS Sans Serif;}{\f3\fswiss\fcharset0 MS Sans Serif;}{\f4\froman\fprq2\fcharset0 Times New Roman;}{\f5\fmodern\fprq1\fcharset0 Courier New;}{\f6\fswiss\fprq2\fcharset0 Verdana;}{\f7\froman\fprq2 Times New Roman;}{\f8\fmodern\fprq1 Courier New;}{\f9\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red0\green0\blue0;\red0\green0\blue255;\red255\green0\blue128;\red255\green0\blue0;\red0\green176\blue0;}
+\viewkind4\uc1\pard\qr\cf1\f0\fs18          \f1 `\cf2\ul\b Register\cf1\ulnone\b0 ` 
+\par  
+\par \pard\cf0\b\f2\fs20 Das Rechnen in der FLEX-Sprache\f3 , Teil 2\cf1\f4   (erst ab V27.2)\f5 
+\par \b0\f6 Rechenbefehle mit arithmetischen Ausdr\'fccken\f7 
+\par 
+\par \pard\qc\cf3\b\f6\fs18 Zum Ausprobieren:\cf1\b0\f0  
+\par \f6 `\cf2\ul\b Rechenbefehl selber eingeben\cf1\ulnone\b0 `  --  `\cf2\ul\b Umrechnungen\cf1\ulnone\b0  ` --  `\cf2\ul\b Verzinsung\cf1\ulnone\b0 `  --  `\cf2\ul\b Tilgung\cf1\ulnone\b0  `\f0  
+\par \pard 
+\par Es gibt zwei Formen: (beide auch f\'fcr \i\f7\fs20  \cf4\b acon\cf1\b0\i0\f0\fs18 ) 
+\par 
+\par \cf5\b\f5\fs20 eval\cf1\b0\f8  \i\f4 rechenbefehl\f7         \i0  
+\par \f0\fs18    \i und\cf5\b\i0\f5\fs20 
+\par Z=\cf1\b0\i\f4 rechenbefehl\f7  
+\par \pard\li709\i0 
+\par Der  \i\f4 rechenbefehl\f7  \i0  wird \f4 als arithmetischer Ausdruck \f7 interpretiert und \f4 das Ergebnis im ersten Fall \f7 in die `\cf2\ul\b interne Variable\cf1\ulnone\b0\f4 ` kopiert, im zweiten Fall in die "interne Zahl" (beschrieben in `\cf2\ul\b Teil 1\cf1\ulnone\b0 `). 
+\par (Mit dem kleinen z, dem "internen Z\'e4hler", geht es nicht!) 
+\par Das Ergebnis ist immer eine Zahl mit Dezimalpunkt, Nullen am Ende werden entfernt. 
+\par Wenn hinter dem Punkt nur Nullen stehen, wird der Punkt auch entfernt - eine Zahl mit Punkt am Ende s\'e4he nicht gut aus. 
+\par Wenn \i rechenbefehl \i0  fehlt, wird der Inhalt der iV genommen. Man kann also auch zuerst mittels  \f5 var\f4   in der  iV einen beliebigen Rechenbefehl zusammensetzen und diesen dann auswerten lassen. 
+\par \pard\f0\fs18 
+\par \i Gleich ein Beispiel zum Ausprobieren: \i0 In \f5 #upr\f0  steht ein Betrag, es soll dazu die Mehrwehrtsteuer ausgerechnet werden. 
+\par \f5 Z=0.19 * #upr 
+\par var "19%% von " #upr " sind " Z " EUR" 
+\par mes\f0 
+\par 
+\par Das einfachste Rezept zum Rechnen ist also: zuerst mit \f5 Z=...\f0  die Zahl ausrechnen, dann mit  \f5 var ... Z ...\f0  in eine Zeichenfolge einbauen. 
+\par 
+\par \b Regeln\b0 
+\par Ein \i\f4\fs20 rechenbefehl\i0\f0\fs18  ist eine Folge von Elementen mit Operatoren dazwischen: 
+\par 
+\par \i\fs22        elem\i0  \b\f5 op\b0\f0  \i elem\i0  \b\f5 op\b0\f0  ... \i elem\i0\fs18 
+\par 
+\par Jedes  \b\f5\fs22 op\b0\f0\fs18   ist einer der Operatoren   \b\f5 +  -  *  / ^ \b0\f0  
+\par f\'fcr Addition, Subtraktion, Multiplikation Division und Potenzierung. 
+\par \b Leerzeichen\b0  links und rechts davon sind \b nicht n\'f6tig\b0 , auch nicht bei dem = im Z-Befehl. 
+\par \pard\qc\f6 
+\par \pard\f0 Ein \i elem\i0  kann sein: 
+\par \pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent0{\pntxtb\'B7}}\fi-284\li284\tx284 eine Zahl. Negative Zahlen beginnen mit \b\f5 -\b0\f0 , positive aber nicht mit \b +\b0 
+\par \pard\tx284\tab Sehr gro\'dfe und sehr kleine Zahlen kann man in Exponentialdarstellung schreiben: z.B. 
+\par \tab\f5 1E15\f0   bzw.  \f5 1E-20\f0 . Auch e statt E m\'f6glich. 
+\par \i\tab Weitere Beispiele:\i0  \f5 5e+3 = 5000, 75E-4 = 0.0075, 4.81E6 = 4810000\f0  
+\par \pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent0{\pntxtb\'B7}}\fi-284\li284\tx284 eine Feldangabe \f5 #nnn\f0  oder \f5 #nnn$x\f0 , wobei \f5 #nnn\f0  auch eine \f5 #u\f0 -Variable sein kann. Es ist nicht notwendig, da\'df ein solches Feld nur eine Zahl enth\'e4lt, sondern das Programm wird sich die Zahl selbst heraussuchen, wenn z.B. Buchstaben davor oder Klammern darum herum stehen. Stehen allerdings zwei Zahlen drin, wird nur die erste genommen. (Die Manipulationsbefehle, die es bei \f5 var\f0  gibt, sind hier nicht anwendbar, siehe aber Beispiel 3.) 
+\par \pard\tx284\tab\i Beispiel:\i0  19% vom Betrag in #9DB$p:  \f5 Z=#9DB$p * 0.19\f0 
+\par \pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent0{\pntxtb\'B7}}\fi-284\li284\tx284 Eine `\cf2\ul\b freie Variable\cf1\ulnone\b0 ` \f5 $Abc\f0 , auch hier bei Bedarf mit Unterfeld-Code:  \f5 $Abc$d\f0   (freie Var. ab V31.7 auch bei \cf4\i\f4\fs20 acon \cf1\i0\f0\fs18 ) 
+\par {\pntext\f9\'B7\tab}einer der `\cf2\ul\b internen Zahlenwerte\cf1\ulnone\b0 ` z oder Z. [Bis V27.1 waren dies die einzigen Rechenvariablen] 
+\par \pard 
+\par \i Zu beachten:\i0 
+\par \pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent0{\pntxtb\'B7}}\fi-284\li284 Wenn ein Element \b nicht existiert\b0  oder keine Zahl enth\'e4lt, wird als Wert 0 angenommen. Keine Fehlermeldung! 
+\par {\pntext\f9\'B7\tab}Wenn \b am Ende noch ein\b0  \b\f5 op\b0\f0  steht, hat das keine Wirkung. 
+\par {\pntext\f9\'B7\tab}Dezimalzahlen k\'f6nnen mit \b Komma oder Punkt\b0  angegeben werden, das Ergebnis hat immer einen Punkt (falls es nicht eine Ganzzahl ist). 
+\par {\pntext\f9\'B7\tab}Das Ergebnis ist \b immer\b0  eine Zahl ohne E-Darstellung. 
+\par {\pntext\f9\'B7\tab}Bei Zahlen mit \b mehr als 14 Stellen\b0  wird das Ergebnis hinter der 14. Stelle ungenau. Jedoch ist beim Rechen mit realen Zahlen eine Genauigkeit von mehr als 14 Stellen ohne praktischen Belang. 
+\par {\pntext\f9\'B7\tab}Wenn man \b Division durch 0\b0  verlangt, erh\'e4lt man ein Ergebnis mit ca. 300 Stellen, das f\'fcr alle praktischen Belange so gut wie unendlich gro\'df ist. Auch hier keine Fehlermeldung oder gar Absturz! 
+\par {\pntext\f9\'B7\tab}Die Abarbeitung erfolgt \b von links nach rechts\b0 , also \b ohne Priorit\'e4t der Operatoren\b0 ! 
+\par \b{\pntext\f9\'B7\tab}Klammerung ist nicht m\'f6glich\b0 . Stets kann man statt dessen zuerst zwei oder mehr Zwischenergebnisse bilden und in Variablen lagern, die man am Ende in geeigneter Weise miteinander verrechnet. Am bequemsten ist Z: statt (a+b)*(c+d) k\'f6nnte man z.B. schreiben: 
+\par \pard\f5\tab Z=a+b\\eval c+d*Z\f0     // a+b ausrechnen, dann mit c+d malnehmen 
+\par \pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent0{\pntxtb\'B7}}\fi-284\li284\b Maximale L\'e4nge\b0  des Befehls? 250 Zeichen. Das w\'e4re aber recht un\'fcbersichtlich, man teilt dann die Rechnung besser auf zwei oder mehr Zeilen auf. 
+\par \b{\pntext\f9\'B7\tab}Potenzen:\b0  Z.B.  2^8 f\'fcr 2 hoch 8; \f5 #uxa^2\f0  erhebt den Wert in \f5 #uxa\f0  zum Quadrat  
+\par \b{\pntext\f9\'B7\tab}Wurzeln:\b0   Z.B.   2^0.5 bzw. 2^0.3333333 f\'fcr Quadrat- bzw. Kubikwurzel aus 2 (2 hoch 1/2 bzw. 1/3). 
+\par {\pntext\f9\'B7\tab}Den \b Divisionsrest\b0  beim Dividieren ganzer Zahlen kann man mit dem "internen Z\'e4hler" z ausrechnen. Das Rezept daf\'fcr steht in der betr. `\cf2\ul\b Dokumentation\cf1\ulnone\b0 ` zum internen Z\'e4hler. 
+\par \pard{\pntext\f9\'B7\tab}{\*\pn\pnlvlblt\pnf9\pnindent0{\pntxtb\'B7}}\fi-284\li284\tx284\b Rundung?\b0  Wer z.B. nur  2 Nachkommastellen braucht, verf\'e4hrt so, wobei die letzte Stelle dann gerundet ist:\f5 
+\par \pard\tx284\tab eval ... 
+\par \tab Z= 
+\par \tab var Z2 
+\par \pard\fi-284\li284\tx284\tab\f4 Das ist gerade dann hilfreich, wenn das Ergebnis ein Geldbetrag sein soll. Es fallen dann auch keine Nullen am Ende weg, sondern .00 bleibt stehen. 
+\par \pard\i\f0 
+\par Hinweis:\i0  Rechenbefehle kann man nur mit den Befehlen \f5 eval ... \f0  und  \f5 Z=...\f0  auswerten, nicht innerhalb von \f5 var\f0 - oder \f5 write\f0 -Befehlen o.a. Das Ergebnis einer Rechnung mu\'df also zuerst in eine Variable oder \f5 Z\f0 , diese kann anschlie\'dfend angezeigt oder ausgegeben werden. 
+\par \pard\fi-284\li284 
+\par \pard\i Hinweis:\i0   
+\par 
+\par \i Fertige Anwendung:\i0  `\cf2\ul\b Umrechnen\cf1\ulnone\b0 `verschiedener Einheiten. Der FLEX \f5 umrech.flx\f0  f\'fchrt die Sache aus, die Auswahlliste \f5 umrech.vw\f0  (auf HELP) kann leicht erweitert werden um weitere Umrechnungen. 
+\par 
+\par \cf4 Beispiel 1:\cf1  
+\par Wenn man in \f5 #uzy\f0  einen Z\'e4hler hat und diesen um 1 erh\'f6hen und dann pr\'fcfen will, ob die Zahl 100 erreicht ist, macht man dies so: 
+\par \f5 eval #uzy+1 
+\par ins #uzy 
+\par if =100 jump xyz\f0  
+\par 
+\par \cf4 Beispiel 2:\cf1  
+\par \i Aufgabe:\i0  Betrag im Teilfeld \f5 $p\f0  von \f5 #9DG \f0  in Euro umrechnen\f5 
+\par eval #9DG$p/1.95583\f0  
+\par Damit wird der Zahlenwert im Unterfeld \f5 p\f0  von \f5 #9DG \f0  genommen und durch  \f5 1.95583 \f0  dividiert. 
+\par 
+\par \cf4 Beispiel 3:\cf1  
+\par \i Aufgabe: \i0  In  \f5 #95\f0  sei am Ende, immer hinter einem Semikolon, eine Preisangabe. Diese soll man auf die Variable \f5 #upr\f0  aufaddieren. 
+\par Hier mu\'df man den arithmetischen Ausdruck zuerst per \f5 var\f0  zusammenstellen, weil man mit \f5 eval\f0  nicht die Manipulationsbefehle zur Verf\'fcgung hat, um z.B. hinten am Ende den Teil hinter dem Semikolon herauszugreifen. 
+\par \f5 var #95(T";") " + " #upr 
+\par eval 
+\par ins #upr 
+\par 
+\par \cf4\f0 Beispiel 4:\cf1  
+\par \i Aufgabe: \i0  Dasselbe, aber die gesamte aktuelle Ergebnismenge durcharbeiten und dann die Gesamtsumme anzeigen. 
+\par Dazu erweitern wir die Sache um eine Schleife: 
+\par \f5 #upr 0 
+\par first 
+\par :loop 
+\par var #95(T";") " + " #upr 
+\par eval 
+\par ins #upr 
+\par next 
+\par if yes jump loop 
+\par var "Gesamtsumme: " #upr 
+\par mes 
+\par \f0 
+\par \cf4 Beispiel 5:\cf1  
+\par \i Aufgabe:\i0   Celsius in Fahrenheit umrechnen und umgekehrt. Dies ist eingebaut in den Beispiel-FLEX \f5 `\cf2\ul\b umrech.flx\cf1\ulnone\b0 `\f0  
+\par 
+\par \f5 :beginn 
+\par ask Temperatur? 
+\par if "" end 
+\par ins #ute 
+\par z= 
+\par   Celsius -> Fahrenheit 
+\par Z=z*1.8+32 
+\par   mit 1 Nachkommastelle 
+\par var Z1 
+\par ins #utf 
+\par   Fahrenheit -> Celsius 
+\par Z=z-32*5/9 
+\par var Z1 
+\par ins #utc 
+\par   Zeile aufbereiten 
+\par var #ute(0,r3) "C = " #utf(0,r5) "F" n #ute(0,r3) "F = " #utc(0,r5) "C" n 
+\par mes 
+\par jump beginn 
+\par \f0 
+\par 
+\par 
+\par ?Register=h xa 
+\par ?interne Variable=h xiv 
+\par ?internen Zahlenwerte=h xiz 
+\par ?freie Variable=h xfreevar 
+\par ?Dokumentation=h xiz=Beispiel 7 
+\par ?interne Zahl=h xiz 
+\par ?Umrechnen=X umrech 
+\par ?Rechenbefehl selber eingeben=X evt 
+\par ?Umrechnungen =X umrech 
+\par ?Verzinsung=X zins 
+\par ?Tilgung =X tilg 
+\par ?Teil 1=h xiz 
+\par ?umrech.flx=h umrech.flx 
+\par 
+\par }
+ 

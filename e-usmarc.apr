@@ -1,0 +1,334 @@
+  E-USMARC.APR : Ausgabe als USMARC Datei
+  970708         Ohne directory! 
+  identisch mit z-usmarc.apr f. Z39 bis auf zl=0
+
+pn="USMARC"
+
+  fÅr Bildschirmanzeige (zum Testen):
+zl=72
+zi=4
+zm=0
+  fÅr echte Z39- Ausgabe aktivieren:
+ zl=0   kein Zeilenumbruch bei langen Kat. (Dateiausgabe)
+
+ke=13 10 &0
+dx=1
+i4=1
+
+4=C &0
+
+   Variable:
+   #uln  lfd.Nr. des Datensatzes
+   #ulz  lfd.Zlg. d. Austauscheinheit
+   #usn  Satznummer innerhalb d. Austauscheinheit (0000 fÅr Hauptsatz)
+   #uin  Indikator (fÅr Pers. und Kîrp.)
+
+  Keine ak-Befehle, d.h.
+  FÅr jeden Satz beginnt der Vorgang hier:
+
+#hi +# e0 #zz 0
+
+#uln +#99x e0 #zz 0     wenn #uln noch nicht besetzt, dann:
+#dt p"1" e1 =ln e0 #zz 0     #uln = lfd.Nr. auf 1 setzen
+#dt p"0" e1 =lz e0 #zz 0     #ulz = lfd.Zlg. mit 0 besetzen
+#99x  (nur als Sprungmarke)
+
+#t{ "00L n" }
+#8e +A p"m" e1 #zz 0
+#77z +A p"j" e1 #zz 0
+#4n +A p"z" e1 #zz 0
+#6n +A p"z" e1 #zz 0
+#t{ "a" }
+#-A
+#00 +B i4,z p"s" e1 #zz 0
+
+#t{ "m" }
+#-B
+#t{ "  22000002i 4500" t4 }
+
+
+#00 p"001   "
+
+  ********** Vorspann ************************************************
+  Hier immer #zz 0, um Ausgabe von ke zu verhindern
+  #99x wird immer als Sprungmarke verwendet, damit werden Buchstaben gespart
+
+#t{ "008 " }
+#99n +#99x i4,1 b2 e6 #zz 0
+#99n +#99x i4,2 b2 e6 #zz 0
+#99n +#99x e6 #zz 0
+#t{ "000000" }
+#99x
+
+#76 +#99x x"*1" e"." p"s" #zz 0
+#76p +#99x B"." x"*1" e"." p"s" #zz 0
+#t{ "b    " }
+#99x
+#t{ "    " }
+#74 +#99x g B"-" e2 P" " #zz 0
+#t{ "zzz" }
+
+#99x
+#77 +#99x c"Ill" p"a   " e4 #zz 0
+#t{ "    " }
+#99x
+
+#t{ " " }   Audience code
+#77 +#99x c"iche" p"b" e1 #zz 0
+#t{ " " }
+#99x
+#0c +#99x c"bg" p"b   " e4 #zz 0   bibliogr
+#0c +#99x c"we" p"d   " e4 #zz 0   dictionary
+#t{ "    " }
+
+#99x
+#t{ " " }    Govt Publ Indic
+#83 +#99x p"1" e1 #zz 0   Conference
+#t{ "0" }
+#99x
+#59 +#99x p"1" e1 #zz 0   Festschr
+#t{ "0" }
+#99x
+
+#t{ "    " }    4 more codes
+
+#t4    Feldende von 008!
+
+
+  ****** Ende des Vorspanns ********************************************
+
+#89L p"010 00a"
+
+#87 e" = " p"020 10a" ,"_-__"
+#87 b" = " e" = " p"020 10a" ,"_-__"
+
+#4n p"100 1 a" #zz 0
+#4nd p"d" #zz 0
+#4n e0
+
+#6n p"110 1 a" #zz 0
+#6nd p"d" #zz 0
+#6n e0
+
+#40 p"100 10a"
+#60 p"110 10a"
+
+#uaz daz e0 #zz 0
+#8n >a e0 #zz 0
+#8n p"240 1" e5 #zz 0
+#uaz e"." #zz 0
+#8n ,"_ : _ :b" p"a" #zz 0
+#8n e0
+
+#uaz daz e0 #zz 0
+#20 +#20z >a e0 #zz 0
+#84 e";" >a e0 #zz 0
+  #20 p"245 1" e5 #zz 0
+#20z
+#t{ "245 1" }
+#uaz e"." #zz 0
+#20 +#25 ,"_ : _ :b" p"a" #zz 0
+#84 e";" e" / " e". - " p"a" #zz 0
+#09 b"+" B"=" p"p" #zz 0
+#t4
+#25 p" :b" #zz 0
+#39 p" /c" #zz 0
+#20 e0
+
+#71 p"250   a"
+
+
+10=" :"
+11=", "
+
+#74 +#74 p"260 10" e6 #zz 0
+#75 +#75 p"260 10" e6 #zz 0
+#76 +#76 p"260 10" e6 #zz 0
+#76p +#76p p"260 10" e6 #zz 0
+#74 e"g" p"a" #75 10 #76p 11 #zz 0
+#75 p"b" #76p 11 #zz 0
+#76 p"c" #zz 0
+#76p p"c" #zz 0
+#74 +#77 e0
+#75 +#77 e0
+#76 +#77 e0
+#76p +#77 e0
+
+#77 p"300 10a"
+
+#upn dpn e0 #zz 0
+#4na =pn e0 #zz 0
+#4np p";" Apn #zz 0
+#4nr p";" Apn #zz 0
+#upn f";" =pn #zz 0
+
+#-4
+#upn e";" F" " p"400 10a" #zz 0
+#4nd p"d" #zz 0
+#upn e0
+
+#upn +4 b";" f" " dpn apn #zz 0
+
+#upn dpn e0 #zz 0
+#6na =pn e0 #zz 0
+#6np p";" Apn #zz 0
+#6nr p";" Apn #zz 0
+#upn f";" =pn #zz 0
+
+#-6
+#upn e";" F" " p"410 20a" #zz 0
+#6nd p"d" #zz 0
+#upn e0
+
+#upn +6 b";" f" " dpn apn #zz 0
+
+#6nf p"510 20waa"
+#6ns p"510 20wba"
+
+
+
+#uaz daz e0 #zz 0
+#85 >a e0 #zz 0
+#85 p"440 1" e5 #zz 0
+#uaz e"." #zz 0
+#85 ,"_ ; _ ;v" p"a" #zz 0
+#85 e0
+
+#uaz daz e0 #zz 0
+#852 >a e0 #zz 0
+#852 p"440 1" e5 #zz 0
+#uaz e"." #zz 0
+#852 ,"_ ; _ ;v" p"a" #zz 0
+#852 e0
+
+  505: Contents note
+
+#<du    zum ersten U.Satz
+#+V   es gab keinen
+#-u
+#t{ p"505 1 a" }
+#+Y
+#-v
+#t{ ". - " }
+#-Y
+#01 B"=" P". " #zz 0
+#40 P": " #zz 0
+#19 +y #zz 0
+#20 0 #zz 0
+#-y
+#<dv
+#<U  keiner mehr
+#nr e0   nur wg. Postfix  (neue Zeile nach 505)
+#+W
+
+#-V    verkn. Saetze
+#00 +r P"+" |92 #zz 0    zum ersten V.Satz
+#+W   es gab keinen
+#-r
+#t{ p"505 1 a" }
+#+Z
+#-R
+#t{ ". - " }
+#-Z
+#00 b"+" B"=" P". " #zz 0
+#40 P": " #zz 0
+#19 +z #zz 0
+#20 +z 0 #zz 0
+#09 b"+" B"=" #zz 0
+#-z
+#</
+#00 +R P"+" |93 #zz 0   naechster Untersatz
+#</  keiner mehr
+#nr e0   nur wg. Postfix
+
+#-W
+#59 p"600 10a"
+#31p p"600 10a" e"; "
+#31p b"; " e"; " p"600 10a"
+#31p b"; " b"; " e"; " p"600 10a"
+#31p b"; " b"; " b"; " e"; " p"600 10a"
+
+#33L p"650 10a" e"; "
+#33L b"; " e"; " p"650 10a"
+#33L b"; " b"; " e"; " p"650 10a"
+#33L b"; " b"; " b"; " e"; " p"650 10a"
+
+#31s p"650 10a" e"; "
+#31s b"; " e"; " p"650 10a"
+#31s b"; " b"; " e"; " p"650 10a"
+#31s b"; " b"; " b"; " e"; " p"650 10a"
+
+#402 p"700 10a"
+#403 p"700 10a"
+#41 p"700 10a"
+#412 p"700 10a"
+#42 p"700 10a"
+#43 p"700 10a"
+#44 p"700 10a"
+#45 p"700 10a"
+#46 p"700 10a"
+#47 p"700 10a"
+#48 p"700 10a"
+#49 p"700 10a"
+#50 p"700 10a"
+#51 p"700 10a"
+#52 p"700 10a"
+#53 p"700 10a"
+#54 p"700 10a"
+#55 p"700 10a"
+#56 p"700 10a"
+#57 p"700 10a"
+#58 p"700 10a"
+
+#09 e"+" p"787 1pw" #z 0
+#09 +# b"+" ,"_+_,_" p"n"
+
+#00 c"+" e"+" p"787 1pw" #z 0
+#00 +# c"+" b"+" ,"_+_,_" p"n"
+
+  Signatur, neu 20030610
+
+#90 p"852 81" #z 0
+#90 c"'" e"'" p"a" #z 0
+#90 B"'" p"h"
+
+#+#
+
+    UP fuer Artikel: Zeichen zaehlen; Ergebnis in #uaz
+    Aufruf:  #20 >a #zz 0   danach ist Laenge des Art. +1 in #uaz
+
+#(a
+#nr x"=0" =az e0 #zz 0
+!cc +#98c I4,™ e0 #zz 0
+#cc dtt att e0 #zz 0
+#-a
+!utt b1 =tt e0 #zz 0
+!utt +b i4,™ b1 dtt att #zz 0
+#uaz x"+1" e"." =az e0 #zz 0
+#uaz +#98c x">8" e0 #zz 0       Indik. nicht gr. 9!
+#utt +a e0 #zz 0
+
+#-b
+!utt i4,  p"1" e1 x"+az" e"." =az e0 #zz 0
+#98c
+#)a
+
+
+p ™ 1
+
+p _ 1
+
+
+  wenn Zeichensatz 850 codiert werden soll:
+  (die Liste mu· noch erweitert werden, im wesentlichen um
+   die Gro·buchstaben mit den Akzenten. Bringt nicht viel)
+   Einige VGAFONT-Zeichen mÅ·te man leider ausblenden, z.B.
+   das Hacek und den polnischen Querstrich!)
+
+ _~a_÷_
+ _~o_‰_
+
+
+  Der Zeichensatz ist iso 5426 (ansel)
+tad-ansel
+

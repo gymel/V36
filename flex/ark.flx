@@ -1,0 +1,57 @@
+  ARK.FLX : Datensatz in die Archivbank kopieren
+  2008-08-04
+  Wird ausgefuehrt von dem a99, das an der HauptBank arbeitet
+  Aufruf mit e: Erg.Menge kopieren, sonst nur aktuellen Satz
+
+ins $e
+
+var "1"
+ins $ARCV
+
+if not $@a exec X ara
+
+var ""
+ins $ARCV
+
+  Arb.Verz. umschalten, damit es leichter wird
+var W
+ins $w
+
+var M "arc-" B
+set W
+
+  Datei arc.xlg schreiben mit den Parametern i-1.xpr
+set dow 2
+var "arc." K1 "lg"
+exp f
+exp p i-1
+if no var "Parameter i-1." K1 "pr nicht vorhanden";end
+  Erg.Menge oder aktueller Satz?
+if $e exp set
+if not $e exp
+
+close x
+
+set dow 1
+var $w
+set W
+
+  Datensatz liegt in Datei arc.xlg bei der Archivbank bereit
+  Signal dorthin senden!
+  FLEX catcp.flx starten, liegt bei der ArchivBank
+                          und ist Kopie von  arccop.flx
+var B "cp"
+flex
+  Der Erfolg laesst sich hier schwer kontrollieren! D.h. man
+  kann nicht direkt feststellen, ob der FLEX abgearbeitet wurde.
+  Es wird deshalb hier vorerst nichts in der Richtung getan.
+
+  Erfolgsmeldung im Statusfeld
+var "Archiviert"
+sho Status
+end
+
+:ergm
+mes geht noch nicht
+
+

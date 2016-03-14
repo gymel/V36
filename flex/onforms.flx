@@ -1,0 +1,137 @@
+  ONFORMS.FLX : Bei Druck auf [Formulare]
+  2002-02-22    Oeffnet das richtige Formular abhaengig vom Satztyp
+  Empfehlung: Datenspezifische Kopie auf DbDir legen
+
+act 1
+var K1
+disp
+   Wenn nicht A.CFG, dann Formular 1
+if not "~a" jump f1
+
+var #00
+if %+% jump V
+if "u-" jump heft
+
+if hs jump hsub
+if #9DF jump I
+if #9DA jump b
+if #70 jump A
+if #8n jump Z
+if #88 jump Z
+if #20 jump T
+if #4n jump P
+if #6n jump K
+if #3n jump C
+if #3t jump t
+if #9A jump L
+if #9B jump B
+if #9a jump J
+if #9R form Rech;end
+  Wenn keine dieser Kategorien belegt, dann Formular 1:
+:f1
+form 1
+end
+
+:b
+var #9DB
+if "7" form Absch;end
+if "A" form Abo;end
+if "B" form ZsBand;end
+form Bestel
+if no form 1
+end
+
+:A
+form Auf
+if no form 1
+end
+
+:B
+var #9B(0,1)
+ins $sp
+form Benutz
+if no form 1;end
+form Benutzer/Leser 2
+var $sp
+if "0" var "Leser ist momentan ausleihberechtigt. Sperren?"
+if "1" var "Leser ist gesperrt. Entsperren?"
+yesno
+if not yes jump kA
+eval 1 - $sp
+ins $sp
+
+  Keine Aenderung
+:kA
+var $sp #9B(1,0)
+ins #9B
+disp
+sho rec
+end
+
+
+:C
+form Klas
+if no form 1
+end
+
+:I
+if #9DG$H form Best
+if not #9DG$H form Exemp
+if no form 1
+end
+
+:K
+form K
+if no form 1
+end
+
+:L
+var #9A
+if ="L" form Lief;end
+if ="A" form Auft;end
+if ="K" form Konting;end
+exec X cfga
+end
+
+:t
+form Thesa
+if no form 1
+end
+
+:J
+form Memo
+if no form 1
+end
+
+:Z
+form Zeit
+if no form 1;end
+form Zeitschriften-Stamm, 2.Teil
+end
+
+:T
+form B
+if no form 1;end
+form Buch: Teil 2
+end
+
+
+
+:P
+form Per
+if no form 1
+end
+
+:V
+form Verk
+if no form 1
+end
+
+:hsub
+form Hier
+if no form 1
+end
+
+:heft
+form Heftum
+end

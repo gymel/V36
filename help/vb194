@@ -1,0 +1,123 @@
+
+Verlautbarung 194 der Entw.Abt.                          2006-08-26
+-------------------------------
+
+FLEX-Befehl if und $-Variable
+-----------------------------
+Jetzt kann man auch die Existenz einer $-Variablen mit if testen,
+genau wie die der #u-Variablen:
+
+if $xyz <befehl>   bzw.   if not $xyz <befehl>
+
+Dann wird <befehl> ausgefuehrt, wenn $xyz belegt bzw. nicht belegt ist.
+Lebensnotwendig war das nicht, denn man konnte auch mittels
+
+var $xyz
+if not "" <befehl>   bzw.   if "" <befehl>
+
+dasselbe erreichen. So ist's aber eleganter und kann vor allen Dingen
+kombiniert werden:
+
+if $xyz if $abc <befehl>
+
+wuerde den Befehl ausfuehren, wenn sowohl $xyz als $abc belegt sind.
+
+
+Von/Bis-Suche
+-------------
+Wenn die Von/Bis-Suche in einem virtuellen Register ausgefuehrt
+werden soll, also z.B.  find dis A---B
+dann muss A verkuerzt angegeben werden, also im Sinne des
+virtuellen Registers, B aber vollstaendig - d.h. im Sinne des
+realen Registers. Z.B.  find dis berlin---D frankfurt
+wuerde alle Dissertationen einsammeln, die in Berlin bis
+ausschliesslich Frankfurt erschienen sind.
+Das gilt auch fuer qrix. Die Doku-Texte wurden aktualisiert.
+
+
+Unerlaubte Folgezeichen und Unterfeldcodes
+------------------------------------------
+Man konnte bisher nicht #2na eingeben oder in #74 ein Unterfeld $x,
+weil dies per $A.CFG verboten ist.
+ABER: wenn man in umgewandelten Daten solche Codes hat und in die
+eigene Datenbank einspeist, bleiben solche Felder bzw. Teilfelder
+immerhin drin und werden nicht beseitigt, sie werden auch angezeigt
+in a99/alcarta, man kann sie jedoch nicht aendern.
+NICHT erlaubt und nicht speicherbar sind Felder, die keinen
+eigenen Eintrag mit einer #-Zeile in der CFG haben! Wenn solche,
+also z.B. eine #29, in Fremddaten stehen, fliegen sie beim 
+Einmischen raus - das Programm kann nichts damit anfangen. Es
+muss jedem Feld eine interne Nummer zuweisen (die man nie zu sehen
+bekommt), und diese richtet sich nach der Abfolge der Felder in
+der Deskriptorliste (das sind die #-Zeilen). Was da nicht vorkommt,
+hat keine interne Nummer. Wiederholungscodes und Teilfeldcodes lassen
+sich aber handhaben, auch wenn sie nicht in der Definition stehen.
+
+
+Absicherung
+-----------
+Wenn man schreibt   
+var ...
+mes
+wird der Inhalt der vorher aufbereiteten internen Variablen in einer
+MessageBox angezeigt. Dies fuehrte zum Absturz, wenn dieser Inhalt
+laenger als 1023 Byte war! Das wurde abgestellt, es werden nun in
+einem solchen Fall nur 1023 Byte angezeigt.
+
+TABLE-Fehler
+------------
+In der table.rtf gab es einen kleinen internen Fehler, und zwar eine
+Zeichenfolge \f4  innerhalb eines eingebetteten FLEXes. Das konnte zu
+falschen Reaktionen fuehren (ploetzlich angeblich keine Erg.Menge mehr).
+Behoben.
+
+avanti
+------
+Die Rechenbefehle waren nicht ganz in Ordnung, das wurde behoben.
+Zu beachten ist, dass man Spatien setzen muss, und zwar hinter
+dem z bzw. Z. Hinter dem Operator ist keines noetig.
+
+z =
+z + 1    (auch  z +1  moeglich)
+z - 2
+z * 3
+z / 4
+z % 5
+
+Bei a99 koennen zwar die Spatien unterbleiben, aber wer kompatibel sein
+will, setzt sie. Sieht auch besser aus.
+Ausgetestet wurde das mit dem Gauss-Algorithmus, der jetzt auch mit
+avanti funktioniert.
+
+Uebrigens: avanti kann bei #u-Variablen auf der Position hinter dem u
+kein Sonderzeichen jenseits 122 vertragen. Darauf kann man gut
+verzichten, aber in gauss.flx hatten wir genau das | verwendet, also
+den Code 124. Das | wurde daraufhin durch ! ersetzt.
+
+$A.CFG
+------
+Eine leichte Asymmetrie gab es bei den Stammsaetzen fuer Einheitstitel.
+#2na war nicht erlaubt, waehrend #3na, #4na und #6na jeweils die
+Bedeutung einer Verweisungsform haben und #3nr, #4nr und #6nr einen
+siehe-auch-Hinweis darstellen.
+Dies wurde aufgehoben: #2na ist jetzt als Verweisungstitel erlaubt,
+Bisher wurde unseres Wissens statt dessen die #23 genutzt. Das kann man
+auch so lassen. Unterschied: #23 erzeugt im Index keinen Hinweis auf
+den anderen Titel, sondern steht fuer sich da, was fuer einen 
+Alternativtitel womoeglich auch erwuenscht ist.
+
+
+Hierarchische Saetze
+--------------------
+Es konnte Fehler beim Bearbeiten von hierarchischen Saetzen geben,
+bis hin zu einem faelschlichen Ueberschreiben der #00 durch eine
+#01 bei Formularbearbeitung.
+Diese Fehler wurden ausgemerzt.
+Hinzuweisen ist auf die "Bearbeitung im Anzeigefeld", die man
+im Fuellhorn und in der Quick-Liste findet. Dabei kann man
+hierarchische Saetze sehr gut manipulieren - mit Copy&Paste
+beliebig verschieben und vermehren. Mancher Anwender empfindet
+dies als die einfachste und schnellste Methode. Der zugehoerige
+FLEX dispedit.flx wurde verbessert. Er benoetigt d-w0.xpr.
+Wenn die nicht existiert, wird sie als Kopie von d-w0.apr
+erstellt.

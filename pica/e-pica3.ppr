@@ -1,0 +1,50 @@
+ Ausgabe als ASCII-Datei mit Kategorie-Nummern und Zeilenumbruch
+ ----------- mit Nachladung von untergeordneten S„tzen ---------
+ E-PICA3.PPR  940819
+
+pn="Pica3-Download mit Expansion" 
+
+zl=75	    Zeilenl„nge
+zi=1	    4 Zeichen Einrckung bei Folgezeilen
+zm=0        kein Seitenumbruch
+  
+ae=13 10    Zeilenvorschub am Aufnahme-Ende
+ 
+fl=0        Anzahl Zeilen je Karte unbegr.
+ 
+ks=1	    Startpos. 0  (= Zeichen '#') innerhalb jeder Kategorie
+            (k2=1 setzen, wenn '#' wegfallen soll)
+ke=C        Kategorie-Ende: Zeilenvorschub
+i4=5     wegnehmen, wenn keine Expansion gewnscht!
+
+##          s„mtliche Kategorien ausgeben in interner Reihenfolge
+
+  die folgenden Zeilen wegnehmen wenn Nachladung nicht gewnscht
+
+#0100 +A b5 f" " P"+" |92      ersten Untersatz laden
+#+#
+
+#-A
+
+##
+
+#<
+#0100 +A b5 f" " P"+" |93     n„chsten laden, nach #-A wenn gefunden
+
+
+
+ Weglassungen: Kategorienummern mit / hier anfgen, z.B.
+ /98   dann wird #98 weggelassen
+ oder: hier eine Liste der auszugebenden Kategorien eintragen (statt ##)
+ z.B.
+ #20
+ #40
+ #74
+ #75
+ #87
+ #90
+ dann werden nur diese Kategorien ausgegeben
+
+
+ Code-Umwandlungen: p-Befehle bei Bedarf hier anfgen
+                    oder mit Befehl t hinzuladen

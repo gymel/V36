@@ -1,0 +1,159 @@
+
+Verlautbarung 236 der Entw.Abt.                              2011-01-31
+-------------------------------
+
+  V31.1 liegt bereit
+
+Sicherungskopien : Mehrfach gesichert
+-------------------------------------
+Das Verfahren wurde ueberarbeitet und an einigen Stellen verbessert.
+Das Wichtigste: jetzt wird acon verwendet statt update, um die LOG-
+Datei einzuspeisen. Es sollte damit auch unter Win'7/64 gehen.
+acon wurde zu dem Zweck noch in Einzelheiten verbessert: das Einlesen
+der LOG-Datei war z.B. noch inkorrekt.
+Mehr:  h backp  eingeben in a99
+
+Verbesserte Dateien (auch die Kommentare darin):
+
+_backup.flx                    auf FlexDir
+_backup.bat und _restore.bat   auf ProgDir
+backp.rtf und restr.rtf        auf HelpDir
+update.job  (Aufruf aus _restore.bat)  auf ProgDir
+
+Das Einspeisen einer .LOG-Datei (in _restore.bat) wird damit so
+gestartet:
+
+acon -j update -bcat -dc:\allegro\demo2 -uc:\allegro\demo2\cat.log 
+
+  statt bisher:
+
+update -f9 -bcat -dc:\allegro\demo2 -uc:\allegro\demo2\cat.log -F -m0
+
+Die Option  -f9  ist fuer acon unnoetig, der Dateityp .log reicht
+dem Programm schon aus. -m0 und -F haetten keine Wirkung.
+Es kommt noch  -kx  hinzu, wenn man x.cfg statt a.cfg hat.
+
+Man erkennt, dass einfach der Aufruf
+update ...
+  ersetzt wird durch
+acon -j update ...
+
+Das ist wichtig, wenn man vorhandene Prozeduren umstellen will.
+
+Tip: 
+Fuer erhoehte Sicherheit koennen Sie jedesmal einen neuen Ordnernamen
+waehlen, z.B. d:\backup\20110131 usw., also mit dem Datum als Name. 
+In diesen Ordner wird dann auch automatisch die aktuelle LOG-Datei mit
+kopiert, aber mit einem _ vor dem Namen, also _cat.log statt cat.log. 
+Damit wird es dann moeglich, eine aeltere Sicherungskopie
+heranzuziehen, wenn die letzte schon schadhaft war, und dann die 
+angefallenen Logdateien eine nach der anderen einzuspeisen, jeweils mit
+
+acon -j update -b... -d... -u...\_cat.log ...
+
+(Sicherungskopien sind ja funktionsfaehige Datenbanken, daher kann
+man zuerst pruefen, welche davon noch in Ordnung ist.)
+
+
+acon: Verbesserungen
+--------------------
+
+Es gab Fehler beim Einlesen einer .LOG-Datei, diese wurden behoben.
+Man liest einen Satz mit  fetch rec  ein, und mit  if ok ...
+reagiert man auf den Erfolgsfall bzw. mit  if cancel ...  auf den
+Fehlerfall (Datei zu Ende). [if not ok ...  geht auch]
+
+
+set tbl lock/free  geht jetzt. 
+-----------------------------
+Insbes. kann man damit das 16bit-Programm  free.exe  ersetzen, indem
+man sich einen ganz kleinen Job  free.job  anlegt, in dem nur steht:
+
+set tbl free
+
+und diesen dann so aufruft:
+
+acon -j free -d<DbDir\DbName> 
+
+statt bisher
+
+free <DbDir\DbName>.tbl
+
+Analog geht's mit  set tbl lock.
+Selbstredend kann man diese Befehle, wo immer noetig, in eigene Jobs
+einfuegen.
+
+
+avanti
+------
+zeigt jetzt im Log endlich wieder zu jedem Job den Datenbanknamen an,
+falls der Loglevel "note" aktiviert ist (bei level "all" mit drin).
+
+
+a30 Neuheiten  [ Freigabe: 1.2.2011 ]
+=============
+
+Textsuche im Anzeigefeld
+------------------------
+Im Befehlsfeld (oben links neben dem allegro-Icon) kann man einen
+Suchbefehl eingeben:  s xyz
+Dann wird im Text unter dem gerade geoeffneten Tab (Intern, Extern,
+Info oder Menu) nach xyz gesucht und dieses, falls gefunden, 
+hervorgehoben. Das kann durch Klick auf [Get] mehrfach wiederholt
+werden. Gross-klein ist unerheblich, Sonderzeichen muessen aber exakt
+eingegeben werden, nicht etwa oe fuer den Umlaut, wenn dieser als 
+solcher zu suchen ist.
+
+FreiRaum frei positionier- und skalierbar
+-----------------------------------------
+Die freischwebenden FreiRaeume waren bisher in Groesse und Position
+festgelegt, lediglich nach Erscheinen dann verschiebbar.
+Nun gibt es neue Elementcodes
+
+siehe  http://www.allegro-c.de/doku/a30/frr.htm  
+darin Abschnitt 7.
+
+zur Positionierung und Groesseneinstellung des Fensters sowie dessen
+Ueberschrift:
+
+
+TI Titel (Ueberschrift)
+    Setzt den Titel des FreiRaum-Fensters.
+    Standard ist  "FreiRaum i"  (i = 0...9)
+
+WH weite|hoehe
+    Setzt die Groesse des Fensters in Pixeln. Standard ist  960|480
+
+wh weite|hoehe
+    Setzt die Groesse des Fensters in Prozent des Hauptfensters.
+
+LT left|top
+    Setzt die Position des Fensters (linke obere Ecke) in Pixeln. 
+    Standard ist  160|160
+
+lt left|top
+    Setzt die Position des Fensters (linke obere Ecke) in Prozent
+    des Hauptfensters. 
+
+(Wie kann man sich den Unterschied zwischen gross und klein merken?
+Die Prozentzahlen sind kleiner als die Pixelzahlen, daher lt und wh.) 
+Wozu die Prozentbefehle? Sie sind interessant, weil damit bei
+unterschiedlicher Aufloesung die relative Groesse des Unterfensters
+die gleiche ist.
+
+Diese Groessen- und Positionsbefehle koennen auch nachtraeglich gegeben
+werden, dann aber das + nicht vergessen, wenn der Inhalt bleiben soll
+z.B.  _!_FRE4 +   macht FreiRaum 4 wieder auf, Inhalt wie vorher.
+
+Anwendungsbeispiel (zugleich ein neuer Ueberblick fuer allegro-
+Novizen und -Nichtkenner):
+
+  http://www.biblio.tu-bs.de/db/a30/demo.htm
+
+Rechts, den Index ueberlagernd, sieht man ein FreiRaum-Fenster. Man
+klicke auf die Ziffern, zum Schliessen auf den Button ganz unten.
+(Hinter demselben steckt der Befehl  _!_FRE0 - )
+Ein anderes Beispiel: a30id.job, aufgerufen aus a30son.htm.
+
+
+

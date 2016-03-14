@@ -1,0 +1,264 @@
+  p-rtf.apt : Textausgabe im RTF-Format ohne Seitenumbruch als fortlaufende Datei
+  1994-06-06  geeignet fr Nachbearbeitung mit Textsoftware wie WORD oder WordPerfect
+
+    RTF = Rich Text Format von Microsoft ist ein allgemeines Format,
+    das fr den Austausch von Dokumenten gedacht ist.
+
+    Dieser Treiber funktioniert mit folgenden Parameterdateien fr die
+    Listengestaltung (CockPit-Men æo"Listengestaltung"):
+        (sie haben jeweils am Ende den Befehl tPRINTER)
+
+        - P-1ZEIL.APR
+        - P-2Zeil.APR
+        - P-EINZEL.APR
+        - P-ALLGEM.APR
+        - P-DIN.APR
+        - P-NORMAL.APR
+
+    Achtung: Der Befehl 
+    tp-rtf
+    muss am Schluss der .APR stehen, wegen des Kopf-/Fussabschnitts (s.u.)
+
+    Installation
+    Kopieren Sie diese Datei in das allegro-Programmverzeichnis. Danach
+    wird der Treiber Ihnen im CockPit-Men æo"Drucker" ebenfalls zur
+    Auswahl angeboten, als ob es ein Druckertreiber w„re.
+
+    Der Treiber ist nur geeignet fr die Ausgabe einer Liste in eine
+    Datei. Diese Datei l„dt man dann in ein Textverarbeitungsprogramm.
+    Es gibt prinzipiell zwei M”glichkeiten, einen Text im RTF-Format in ein
+    Textverarbeitungsprogramm zu laden: Entweder kann das Programm das
+    Format direkt lesen und umwandeln, oder man muá das Formatkonvertierungs-
+    programm, das es zu jedem guten Textverarbeitungsprogramm gibt, bemhen.
+    Im letzten Fall erh„lt man eine Datei im "Haus-"Format des Text-
+    verarbeitungsprogramms.
+
+    Die oben genannten Parameterdateien funktionieren mit diesem Treiber
+    (nahezu) ohne Žnderungen. Vorraussetzung ist, daá der Befehl
+    tPRINTER, der diesen Treiber nachl„dt, als LETZTER Befehl in der
+    Parameterdatei steht!
+
+    Nachteil dieses Treibers: Um ein gutes Druckergebnis zu erhalten, kann
+    man in der Textverarbeitung nur eine Schrift mit festem Zeichenabstand
+    benutzen. Das sind die schreibmaschinen-„hnlichen Schriften Courier oder
+    PICA. Eine andere Bezeichnung kann Line Printer sein. Andere Schriften
+    ergeben kein gutes Erscheinungsbild der Liste.
+
+    Falls man andere Schriften benutzen m”chte, kommt man um eine
+    Nachbearbeitung des Ergebnisses im Textverarbeitungsprogramm nicht herum.
+    Oder man muá sich bemhen, neue Versionen der Parameterdateien zu
+    erstellen, wo dann etliche allegro-Befehle durch RTF-Befehle ersetzt
+    werden mssen. Dazu geh”ren alle Positionierungsbefehle, die eine
+    Ausgabe ab einer bestimmten Zeichenposition bewirken, die Befehle R und C
+
+    Die RTF-Spezifikation (in englisch) ist als Datei in der Mailbox und
+    auf dem ftp-Server zu finden.
+
+di=""           d.h. keine Initialisierung
+ff=2            2 Fuázeilen
+zl=120          Zeilenl„nge auf 120, damit kein automatischer Zeilen-
+                umbruch erfolgt, wenn RTF-Formatbefehle im Text erscheinen
+zm=0            Zeilenmaximum ist Null, denn wir produzieren eine fort-
+                laufende Liste OHNE Seitenumbruch
+z1=0            Minimale Zeilen vor dem Umbruch entf„llt, siehe zm
+z2=0            maximaler šberlauf ber zm entf„llt ebenfalls
+ze="\par " 13 10        Zeilenende. \par ist der eigentliche RTF-Befehl fr
+                eine feste Zeilenschaltung. 13 10 bewirkt nur eine
+                Formatierung der RTF-Datei, bewirkt im Endprodukt aber
+                nichts
+fl=0            Formularl„nge 0, da wir eine Endlosliste erzeugen
+
+K               Kopfabschnitt fr den Dateianfang
+#t{ "{\rtf0\ansi" }       Anfang RTF-Dokument
+#t{ "\margl1440" }      linker Rand
+#t{ "\margr568" }       rechter Rand
+#t{ "\margt1440" }      oberer Rand
+#t{ "\margb1440" }      unterer Rand
+#t{ "{\header \pard \qr\sl0 {\plain \chpgn \par}}" }  Seitennummerierung als
+                Kopftext in der Datei. Damit ist die automatische
+                Seitennummerierung des Textverarbeitungsprogrammes
+                aktiviert.
+
+F
+#t{ 13 10 "}" }     Ende RTF-Dokument
+
+         Spezielle Druckarten
+99=092 098 032          "\b "       Fettschrift
+98=092 098 048 032      "\b0 "      Fettschrift l”schen
+97=092 117 108 032      "\ul "      Unterstreichen setzen
+96=092 117 108 048 032      "\ul0 "     Unterstreichen l”schen
+95=092 117 112 049 050      "\up12 "    Hochstellen
+94=092 100 110 049 050      "\dn12 "    Tiefstellen
+93=092 117 112 048 032 092 100 110 048 032
+                    "\up0 \dn0 " Hoch-/Tiefstellen l”schen
+ 92=                             Breitschrift setzen
+ 91=                             Breitschrift l”schen
+ 90=                             doppelt hohe Schrift setzen
+ 89=                             doppelt hohe Schrift l”schen
+88=092 105 032          "\i "       Kursivschrift
+87=092 105 048 032      "\i0 "      Kursivschrift l”schen
+ 86=                                        Proportionalschrift setzen
+ 85=                                        Proportionalschrift l”schen
+
+        Internationale Zeichens„tze
+ 84=                                        Internationalen Zeichensatz w„hlen
+
+        Zeichenabst„nde
+83=092 102 115 050 052 032      "\fs24 "    12 Punkt ÷ 10 CPI
+82=092 102 115 050 048 032      "\fs20 "    10 Punkt ÷ 12 CPI
+81=092 102 115 049 052 032      "\fs14 "    7 Punkt ÷ 15 CPI
+
+        Rand setzen
+ 80=                                        linken Rand setzen
+ 79=                                        rechten Rand setzen
+
+
+  Zeichenumwandlungen n”tig, da RTF keinen erweiterten ASCII-Zeichensatz
+  kennt
+
+p .016 187    Pfeil nach rechts   >>
+  p .020 182    Absatzzeichen
+p .018 137    o mit Doppelakut
+p .019 134
+p .020 "\par "    Absatzzeichen
+p .021 167    Paragraph
+p .022 135    u mit ogonek
+p .023 133    g mit breve
+p .028 177    Verweisungsstrich !! +-
+p .024 189    Pfeil nach oben
+p .030 165    Dreieck           !! Yen
+p .031 178    Subfield Code
+p .092 "\\"
+p .123 "\{"
+p .125 "\}"
+
+   ASCI ANSI  Bedeutung          Ersatz     Unicode   hex
+p .127 202   e mit hacek        !! ^E      1  27     011B
+p .128 199   C mit cedille                 0 199       C7
+p .129 252   ue                            0 252       FC
+p .130 233  'e                             0 233       E9
+p .131 226  ^a                             0 226       E2
+p .132 228   ae                            0 228       E4
+p .133 224  `a                             0 225       E1
+p .134 229   a mit Ringel                  0 229       E5
+p .135 231   c mit cedille                 0 231       E7
+p .136 234  ^e                             0 234       EA
+p .137 235   e mit Trema                   0 235       EB
+p .138 232  `e                             0 232       E8
+p .139 239   i mit Trema                   0 239       EF
+p .140 238  ^i                             0 238       EE
+p .141 236  `i                             0 236       EC
+p .142 196   Ae                            0 196       C4
+p .143 197   A mit Ringel                  0 197       C5
+p .144 201  'E                             0 201       C9
+p .145 230   ae Ligatur                    0 230       E6
+p .146 198   AE Ligatur                    0 198       C6
+p .147 244   ^o                            0 244       F4
+p .148 246   oe                            0 246       F6
+p .149 242  `o                             0 242       F2
+p .150 251  ^u                             0 251       FB
+p .151 249  `u                             0 249       F9
+p .152 "\'ff"   y mit trema                   0 255       FF
+p .153 214   Oe                            0 214       D6
+p .154 220   Ue                            0 220       DC
+p .155 162  't                  !!  cent   1 101     0165
+p .156 163   Brit. Pfund                   0 163       A3
+p .157 204   s mit Cedille!!    !! `I      1  95     015F
+p .158 195   u mit Ringel       !!  ~A     1 111     016F
+p .159 221   U mit Ringel       !!  'Y     1 110     016E
+p .160 225  'a                             0 225       E1
+p .161 237  'i                             0 237       ED
+p .162 243  'o                             0 243       F3
+p .163 250  'u                             0 250       FA
+p .164 241  ~n                             0 241       F1
+p .165 209  ~N                             0 209       D1
+p .166 208   C mit hacek        !! -D      1  12     010C
+p .167 240   c mit hacek        !! -d      1  13     010D
+p .168 194   r mit hacek        !! ^A      1  89     0159
+p .169 174   R mit hacek        !! (R)     1  88     0158
+p .170 1   72   Nichtsortierzeichen             172       AC
+p .171 138   S mit hacek        !!  1/2    1  96     0160
+p .172 154   s mit hacek        !!  1/4    1  97     0161
+p .173 253  'y                               253       FD
+p .174 219   Z mit hacek        !! ^U      1 125     017D
+p .175 190   z mit hacek        !!  3/4    1 126     017E
+p .176 185   tuerk. i           !! Exp1    1  49     0131
+p .177 222   grosses Thorn                   222       DE
+p .178 254   kleines Thorn                   254       FE
+p .179 132   grafik  
+p .180 144   ...
+p .181 180   ' akut ???         !!           180       B4
+p .182 145   ` gravis ???       !!         3   0     0300
+p .183 136   ^ circumflex ???   !!            94       5E
+p .184 149   Punkt uebergesetzt            3   7     0307
+p .185 144   grafik
+p .186 131   ...
+p .187 144   ...
+p .188 144   ...
+p .189 168   Trema/diaeresis  ???             168       A8   -> 0308 !
+p .190 166   Halbkr.ueberg/breve!! Exp2    3   6     0306
+p .191 141   grafik
+p .192 135   ...
+p .193 156   ...   ??? Lig. oe ?
+p .194 137   ...  
+p .195 144   ...  
+p .196 139   ...  
+p .197 144   ...  
+p .198 227   Doppelakut         !! ~a      3  11     030B
+p .199 179   Hacek/Caron        !! Exp3    3  12     030C
+p .200 144   grafik
+p .201 134   ...
+p .202 142   ...
+p .203 143   ...
+p .204 144   ...
+p .205 144   ...
+p .206 144   ...
+p .207 186   Ringel             !! o hochg 3  10     030A
+p .208 175   Ueberstrich/Macron              175     00AF  ->   0304 !
+p .209 215   Halbkr.unter (breve) !! x     3  46     032E
+p .210 171   Ogonek             !!  <<     3  40     0328
+p .211 184   Cedille                       3  39     0327
+p .212 191   untergesetzter Punkt  !!?umg  3  35     0323
+p .213 146   Ain                !! '??     6  57     0639
+p .214 169   Copyright                     0 169       A9
+p .215 216  /O daenisch  (97 neu)          0 216       D8
+p .216 164   Waehr.Symb.                   0 164       A4
+p .217 133   grafik
+p .218 130   grafik  
+p .219 161   diakrit /          !! ! umg.  3  56     0338
+p .220 129   Pfeil nach rechts  !! gr.    33 146     2192
+p .221 128   Euro-Symbol (neu 97)         32 160     20A0
+p .222 173   diakr. Mittelstrich           3  54     0336
+p .223 247   diakr. Unterstrich            3  49     0331
+p .224 151   "[alpha]"                     3 177     03B1
+p .225 223   scharfes s                    0 223       DF
+p .226 "\'98"   152   "[Gamma]"                     3 147     0393
+p .227 153   "pi"                          3 192     03C0
+p .228 188   a mit breve                   3 163     03A3
+p .229 155   "[sigma]"                     3 195     03C3
+p .230 181   "[mue]" (mikro-Zeichen)       0 181       B5
+p .231 157   "[gamma]"                     3 179     03B3
+p .232 150   diakr. Tilde                  3   3     0303
+p .233 157   I mit Punkt                   3 152     0398
+p .234 144   t mit ogonek                  3 169     03A9
+p .235 147   "[delta]"                     3 180     03B4
+p .236 148   "[unendlich]"                34  30     221E
+p .237 248  /o daenisch                   0 248       F8
+p .238 170   a mit ogonek       !! a hoch  1   5     0105
+p .239 200   e mit ogonek       !!  `E     1  25     0119
+p .240 206  'C                  !! ^I      1   6     0106
+p .241 205  'c                  !! 'I      1   7     0107
+p .242 217  /L                  !! `U      1  65     0141
+p .243 218  /l                  !! 'U      1  66     0142
+p .244 213  'N                  !! ~O      1  67     0143
+p .245 245  'n                  !! ~o      1  68     0144
+p .246 211  'O                             0 211       D3
+p .247 192  'S                  !! `A      1  90     015A
+p .248 176   Gradzeichen                   1 176     00B0
+p .249 193  's                  !! 'A      1  91     015B
+p .250 183   Punkt in der Mitte            0 183       B7
+p .251 212  'Z                  !! ^O      1 121     0179
+p .252 210  'z                  !! `O      1 122     017A
+p .253 203   Z mit Punkt oben   !! E trema 1 123     017B
+p .254 207   z mit Punkt oben   !! I trema 1 124     017C
+  p .255 255  [unbenutzbar]

@@ -1,0 +1,125 @@
+  REVIS1.APR : Revision, erster Durchlauf: Sortiervorbereitung
+  940603  zwecks Feststellung von LÅcken in einer Zahlenfolge
+pn="Revisions-Vorbereitung"
+
+  Es entstehen DatensÑtze der Struktur
+
+  #u1 sortierbegriff (Buchstaben in Zahlen umgewandelt)
+  #u2 Druckfeld in unverÑnderter Schreibweise. Nur dieser wird nachher 
+      ausgegeben; #u1 wird zum Sortieren und Vergleichen gebraucht
+ 
+  anschlie·end mu· ASORT die entstandene Datei sortieren, dann
+  mit SRCH und REVIS2.APR der zweite Durchlauf erfolgen
+
+  Hinweis: REVIS2 ist unabhÑngig vom Kategoriesystem, d.h. mit jeder
+           .CFG verwendbar!!!
+
+  --------- Konstanten --------------------------------------------
+
+zl=0        ZeilenlÑnge unbegrenzt (kein Umbruch)
+
+  --------- mehr wird nicht gebraucht! ----------------------------
+
+   wenn man ein anderes Kategoriesystem verwendet, oder
+   wenn eine andere Kategorie und eine andere Trennung gebraucht wird,
+   dann nur in der folgenden ak-Zeile die nîtigen énderungen vornehmen,
+        der Rest lÑuft dann unverÑndert
+
+   Dieses Beispiel arbeitet mit der Kategorie #90, um LÅcken in einer
+   Signaturfolge festzustellen
+
+   Ñndern Sie den Kopfbefehl, wenn eine andere Kategorie die zu
+   verwendende Nummer enthÑlt
+   ======== Kopfbefehl ===========================================
+
+ak=90."[;=]"+A     alle #90er Kat. an  ';' und '' und '=' trennen
+
+   ===============================================================
+
+   ******** Kategorieliste ***************************************
+   kann sehrwahrscheinlich auch fÅr andere Konfigurationen verwendet werden!
+   
+#+-           wenn keine Kopfkategorie vorkommt, keine Ausgabe
+
+    Bei der Aufbereitung von !u1 sind evtl. énderungen nîtig, wenn
+    die Signaturen, insbes. die laufenden Nummern, nicht alle die gleiche
+    Stellenzahl haben, und wenn hinter den Nummern noch andere Anteile
+    stehen kînnen!
+
+#-A
+!u1 e"" f" " F" " p{ 1 "u1 " }     Sortierbegriff = Satzanfang (Code 1)
+#t{ 0 }                        Feldende : Code 0
+   
+  Alternative: Signatur hat die Form #90 XXX nnnnn  wobei nnnnn eine Zahl
+  mit 1 bis 5 Stellen sein kann.
+  #-A
+  !u1 e"" f" " F" " e" " p{ 1 "u1 " }
+  !u1 b" " r5,0
+  #t{ 0 }
+
+
+#u1 e"" f" " F" " p"u2 "           Drucktext  #u2
+#t{ 0 13 10 }                  Satzende : codes 0 13 10
+ 
+   ****************************************************************
+
+q - 1        Bindestriche rausnehmen
+q / 1        Querstriche auch
+q .32 1      Leerzeichen auch
+
+q A "65"     Buchstaben in 2stellige Zahlen wandeln
+q B "66"
+q C "67"
+q D "68"
+q E "69"
+q F "70"
+q G "71"
+q H "72"
+q I "73"
+q J "74"
+q K "75"
+q L "76"
+q M "77"
+q N "78"
+q O "79"
+q P "80"
+q Q "81"
+q R "82"
+q S "83"
+q T "84"
+q U "85"
+q V "86"
+q W "87"
+q X "88"
+q Y "89"
+q Z "90"
+ 
+q a "65"   Kleinbuchstaben in dieselben Zahlen
+q b "66"
+q c "67"
+q d "68"
+q e "69"
+q f "70"
+q g "71"
+q h "72"
+q i "73"
+q j "74"
+q k "75"
+q l "76"
+q m "77"
+q n "78"
+q o "79"
+q p "80"
+q q "81"
+q r "82"
+q s "83"
+q t "84"
+q u "85"
+q v "86"
+q w "87"
+q x "88"
+q y "89"
+q z "90"
+ 
+
+

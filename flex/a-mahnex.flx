@@ -1,0 +1,373 @@
+  A-MAHNEX.FLX : Mahnungen exportieren
+  20060227
+
+  I.d.R. unmittelbar vorher wurde mit A-MAHNRG.FLX das Registrieren
+  der Mahnungen vorgenommen. Dabei entstanden dann Gebuehrensaetze
+  Das Mahndatum ist in Reg.11 GDjjjjmmtt indexiert
+  Es werden nun die an einem bestimmten Datum registrierten Mahnungen,
+  also Gebuehrensaetze, als Erg.Menge genommen und verarbeitet
+
+  XXX Zeilen, die lokal angepasst werden koennten
+
+ask Datum der Registrierung JJJJMMTT (Enter: heute)
+if cancel end
+  Nichts eingegeben? aktuelles Datum nehmen
+if "" var #dts(0,8)
+  Das Datum in #uaG sichern
+ins #uaG
+
+  Einige Variablen loeschen (Zaehler etc.)
+#uA1
+#uA2
+#ua1
+#ua8
+#ua9
+Z=0
+  Gebuehrensaetze des gewaehlten Registrierdatums finden
+  Mit Gebuehrenmahnungen:
+  var "|; GD" #uaG "? or |; GB?"
+  ohne Geb.Mahnungen
+var "|; GD" #uaG "?"
+find
+if l1 jump nix
+
+  Hilfsdatei oeffnen, sie wird eine Zeile je Mahnung enthalten
+open x mahn.x
+
+  Jetzt haben wir die Gebuehrensaetze als Erg.Menge
+  Der erste wird geladen, dann kommt die Schleife zur Verarbeitung
+first
+:loop
+  Falls keine Geb.Mahnungen gewuenscht, dann in a-mahnrg.flx aktivieren:
+     if #9GF jump nxt
+
+  Datum $m (wirkliches Mahndatum) in #9GF einsetzen
+  Es entstehen dann die Eintraege:
+  MBlesernr/datum  und  MMdatum/lesernr   im Reg. 11
+var #dts(0,8)
+ins $m-#9GF
+  und Geb.Satz wieder speichern, falls Gebuehr nicht 0
+eval #9GG$S
+  Wenn 0, dann Geb.Satz loeschen!
+if =0 erase;jump zeile
+
+if not #00 #00 -
+put
+
+:zeile
+  Daten als eine einzelne Zeile in Hilfsdatei ausgeben
+  Lesernummer/Gebuehrenart  Lesername/Titel--#9GF//#9GG
+  Lesernummer/zz   bei Geb.Saetzen mit frueherem Datum als #uaG
+write #9GF$B "/"
+var #9GF$M
+if not =#uaG wri "zz  ";jump mhg
+write #9GF$G "  "
+:mhg
+  die zwei Felder des GebSatzes retten in #uGE
+var #9GF "///" #9GG
+ins #uGE
+  Lesersatz finden
+var "|: B" #uGE$B
+f1nd
+  und den Namen ausgeben
+wri #9B$n "/"
+  Titelsatz finden (Haupttitel falls verkn. Untersatz!)
+var "|9 " #uGE$T(e"+")
+f1nd
+  und Titel ausgeben
+wri #20(e":" 0,32) "---"
+  hinter "---" noch die Gebuehrendaten
+write #uGE n
+
+:ngs
+  naechsten
+next
+if yes jump loop
+  alles verarbeitet, Hilfsdatei zumachen
+close x
+
+  ***   Hilfsdatei jetzt sortieren mit asort, ergibt mahn.dat
+         Ordnung nach Lesernummern
+
+var P "asort mahn.x mahn.dat"
+cAll
+  Hilfsdatei wieder loeschen
+del mahn.x
+  ***  Ende Hilfsdatei sortieren
+
+var "mahn.dat"
+ins #uGM
+delete aresqa.lst
+
+  sortierte Hilfdsdatei im aresqa-Fenster zeigen
+  (dort kann man Zeilen loeschen)
+aresqa mahn.dat
+  Wurde was veraendert? Dann gibt es die Datei aresqa.lst
+fsize aresqa.lst
+if no jump expo
+
+yes Bearbeitete Datei nehmen? (Nein: Originaldatei)
+if yes var "aresqa.lst"
+if no var #uGM
+ins #uGM
+
+  Jetzt ist in #uGM der Name der Datei mit den Mahndaten
+:expo
+  Exportparam. und -datei  festlegen
+exp p e-walf
+var $Mahn
+if "" var "mahn.rtf"
+exp f
+wri "{\\rtf1\\ansi\\deff0{\\fonttbl{\\f0\\fswiss\\fprq2\\fcharset0 Arial;}}" n
+  Sortierte Datei mahn.dat verarbeiten (Name in #uGM)
+var #uGM
+open
+if no jump derror
+  Es gibt Datenzeilen und unbezahlte Gebuehrenzeilen von zurueckliegenden Mahnungen
+  Zeile einlesen in #uaz
+get #uaz
+  Schleife Abarbeitung der Mahnungszeilen
+:sloop
+  Zeile zerlegen in 4 Elemente
+var #uaz(e"/")
+ins #ua1        // Lesernummer
+var #uaz(b"/" e"  ")
+ins #ua2        // Geb.Art
+var #uaz(b"---" e"///")
+ins #uGF        // Inhalt #9GF
+var #uaz(b"///")
+ins #uGG        // Inhalt #9GG
+
+  Lesersatz holen
+var #ua1
+  derselbe wie beim vorigen Satz?
+if =#ua8 jump gbart
+  Nein, ein anderer
+  Ist dies der erste dieses Durchlaufs? dann -> :anderer
+  if not #ua8 ins #ua8;jump anderer
+ins #ua8
+  Daten des Lesers sind zu ende.
+Z/100
+var Z
+perform seitenende
+Z=0
+  Lesersatz laden
+var "|: B" #ua1
+f1nd
+wri #9B$n "/"
+var #9B$$(1,0)
+ins #ugB
+var #9B$k
+ins #ugK
+
+  Mahnporto ermitteln
+var "C" #9B$k
+ins #uAC
+var $Aclas (b"#uAC" e"///")
+  zugehoerigen Abschnitt in $Aclas suchen
+if "" jump deflt
+ins #uPO
+  Porto ist in $p
+var #uPO$p
+#uPO
+if >0.01 ins #uPO
+  Wenn $p0.00, dann #oPU leer!
+jump gts
+:deflt
+
+  XXX Hier deaktivieren, wenn kein Porto gewuenscht!
+#uPO 0.55
+
+:gts
+  Briefkopf schreiben
+var "F" $Mahnkopf
+var
+ins #uko
+wri #uko
+wri "\\qr "
+wri #dts(6,2) "." #dts(4,2) "." #dts(0,4) "\\par\\pard " n
+
+  Briefe zaehlen:
+var #uA2
+z=
+z+1
+var z
+ins #uA2
+
+  Name und Adresse ausgeben (Sprungmarke #-B)
+         Lesersatz geladen
+#uaV B
+dow
+
+  Gebuehrenart
+:gbart
+var #ua2
+  dieselbe wie beim vorigen Satz?
+if =#ua9 jump expl
+ins #ua9
+  Z/100
+  var Z
+  perf seitenende
+  Z=0
+  Einleitung Liste der 1. Mahnungen
+wri n
+
+  Titelsatz holen
+:expl
+var "|9 " #uGG$T(e"+")
+f1nd
+
+  Angaben exportieren mit Flag E  (d.h. #-E in den Exp.Param.)
+#uaV E
+dow
+
+ Expl.Satz holen. Ist #9DH$u = #9GF$B? Dann Buch noch nicht zurueck
+var #uGF$B
+ins #uaB
+set obj 2
+var "|: E" #uGG$E
+f1nd
+if no jump erinn
+if not #9DH jump erinn
+var #9DH$u
+  Ist #9DH$u = #9GF$B? Dann Buch noch nicht zurueck, nicht "Erinn" ausgeben
+if =#uaB jump ng
+:erinn
+wri "**ERINNERUNG**" n
+:ng
+set obj 1
+
+  Betrag addieren
+var #uGG$S
+Z+
+
+  Gebuehrendaten in #9GF/#9GG packen [Titelsatz ist momentan geladen!]
+var #uGF
+ins #9GF
+var #uGG
+ins #9GG
+
+  und Export mit Flag W  (#-W in den Exp.Param.)
+#uaV W
+dow
+  gemahnte exemplare zaehlen:
+var #uA1
+z=
+z+1
+var z
+ins #uA1
+  #9GF und #9GG wieder rausnehmen (unnoetig?)
+#9GF
+#9GG
+  Rueckschalten zum unveraend. TitelSatz
+undo
+  naechste Zeile aus mahn.dat holen
+get #uaz
+if yes jump sloop
+
+  Ende erreicht
+  Letzte Summe noch ausgeben
+Z/100
+perf seitenende
+Z=0
+
+  mahn.dat und mahn.rtf zumachen
+close
+wri n " }" n
+close x
+  Mahnbriefdatei anzeigen
+help mahn
+var "Erledigt, Datei " $Mahn " kann gedruckt werden" n
+var +"Es wurden " #uA2 " Mahnschreiben erstellt und "
+var +#uA1 " Exemplare gemahnt"
+mes
+end
+
+:seitenende
+var Z2
+ins #uA3
+if not #uA1 return  // es war noch nichts passiert
+
+if not #uPO jump evalu
+
+  Deaktivieren, falls nicht gewuenscht:
+wri n "Porto: " #uPO " EUR\\par "
+
+  Gebhr.Satz f. Porto anlegen
+var i
+ins $i
+new 0
+#00 -
+var "0G8B" #ugB "K" #ugK "D" #dts(0,8)
+ins #9GF
+var "S" #uPO(e"." f"0") #uPO(b".") "GPorto"
+ins #9GG
+   TEST:
+ disp
+ sho rec
+ mes Fertiger Geb.Satz
+ erase
+  speichern
+put
+
+  Satz zurueckholen
+var "#" $i
+f1nd
+
+:evalu
+eval #uA3 + #uPO
+ins #uA3
+
+  Deaktivieren, falls nicht gewuenscht:
+wri n "Summe: " #uA3 " EUR\\par "
+  Brieffuss schreiben
+  veraltet:  Feststellen, ob noch aeltere Gebuehrensaetze:
+ var "|; GB" #ua1 " not |; GD" #uaG "?"
+ find
+ if l1 jump anderer
+  Es gibt welche:
+ wri "\\par Es gibt auch noch ausstehende Gebuehren!\\par "
+
+:anderer
+var "F" $Mahnfuss
+var
+ins #uko
+wri #uko
+
+  Befehl page macht in Word einen Seitenwechsel:
+wri "\\page \\par " n n
+return
+
+:nix
+var "Es liegen keine Mahnungen zum Datum " #uaG " vor. Vielleicht wurde das Registrieren" n
+var +"der Mahnungen vergessen. Wollen Sie dies jetzt erledigen lassen?"
+yes
+if yes exec a-mahnrg
+end
+
+:derror
+mes Datei mahn.alg nicht vorhanden oder nicht verarbeitbar
+end
+
+
+
+ u-VARIABLEN in a-mahnex.flx
+ #uA1 (4)  Anz. gemahnte Exemplare
+ #uA2 (4)  Anz. erstellte Mahnbrief
+ #uA3 (2)  Gesamtbetrag auf dem Mahnbrief
+ #uGE (4)  #9GF//#9GG
+ #uGF (3)  #9GF
+ #uGG (4)  #9GG
+ #uGM (4)  Name der sortierten MahndatenDatei
+ #ua1 (4)  Lesernummer
+ #ua2 (2)  Geb.Art
+ #ua8 (3)  Leser vom vorigen Satz
+ #ua9 (3)  Geb.Art vom vorigen Satz
+ #uaB (2)  Leserbarcode des Geb.Satzes
+ #uaG (5)  Datum der Auswertung
+ #uaV (4)  Flag f. e-walf.apr (B e E W)
+ #uaz (6)  Datenzeile aus Mahnregistrierung (a-mahnrg.flx)
+ #uko (4)  Text f. Kopf des Mahsnchreibens
+
+
+

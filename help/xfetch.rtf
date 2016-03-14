@@ -1,0 +1,118 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\froman Times New Roman;}{\f2\fmodern\fprq1 Courier New;}{\f3\froman\fprq2\fcharset0 Times New Roman;}{\f4\fmodern\fprq1\fcharset0 Courier New;}{\f5\froman\fprq2 Times New Roman;}}
+{\colortbl ;\red0\green0\blue255;\red0\green176\blue0;\red255\green0\blue0;\red0\green0\blue0;}
+\viewkind4\uc1\pard\qr\f0\fs24                                 \f1\fs18 `\cf1\ul\b Register\cf0\ulnone\b0 `\cf2\b\f2\fs20 
+\par \pard fetch\cf0  \b0\i number \i0\f3 oder   \cf2\b\f2 fetch\cf0  \f4 +\b0\i\f2 number 
+\par \pard\li709\i0\f5 Aus der mit \b\f2 `\cf1\ul open\cf0\ulnone `\b0\f3  ge\'f6ffneten Datei werden \i\f2 number\i0\f5   Bytes in die interne Variable gelesen\f3  bzw. an diese angeh\'e4ngt. Dies funktioniert ab V28.3 auch mit \b Internetdateien\b0 , die weiteren Befehlsvarianten jedoch nicht. (Demo dazu:  `\cf1\ul\b\f4 fetchfil.flx\cf0\ulnone\b0\f3 ` ) 
+\par Obergrenze f\'fcr  \i\f2 number\f4  \i0\f3 ist 255999.\f5 
+\par Dabei werden die Codes 0,1 ... 3\f3 1\f5   durch ^@, ^A ... ^\f3 _\f5  ersetzt, \f3 also durch je zwei Zeichen!\f5 
+\par \f3 D\f5 as Zeichen ^ selbst wird durch  ^~ ersetzt. 
+\par Fehlt \i\f2 number\i0\f5 , wird 100 angenommen. 
+\par \f3 Mit \b\f2 `\cf1\ul if cancel\cf0\ulnone ` ...\b0\f5   \f3 pr\'fcft man, ob keine Daten mehr vorgefunden wurden. 
+\par Mit \b\f4  if "" .\f2 ..\f4  \b0\f3  kann man dasselbe auch feststellen. 
+\par \i Hinweis:\i0  Auch eine ganze Datei in die iV einlesen kann man:  \f4 var F\i\f3 filename. \i0 Dabei bleiben aber die Steuerzeichen unver\'e4ndert erhalten, d.h. Code 10 bleibt 10 usw.\f5 
+\par \i\f3 Tip:\i0  Mit dem Befehl  \f4 spaces\f3   kann man anschlie\'dfend erreichen, da\'df alle Mehrfach-Spatien und sonstige aufeinanderfolgende Whitespace-Zeichen (9, 10, 13) durch ein einzelnes Spatium ersetzt werden.\f5 
+\par 
+\par \pard\cf2\b\f2 fetch\cf0  ^\b0\i code\f4  \i0\f3 oder   \cf2\b\f2 fetch\cf0  \f4 +\f2 ^\b0\i code\i0\f5 
+\par \pard\li709\f3 Diese Variante bewirkt, da\'df alles bis zum n\'e4chsten Code \i\f5 code\i0  (dezimal, \f3 1\f5 ...255) inclusive gelesen \f3 und in der iV abgelegt \f5 wird\f3 . Also auch der Code selbst am Ende bleibt erhalten, allerdings z.B. ^M wenn es sich um den Code 13 handelt, oder ^I wenn man ^9 geschrieben hat\f5 . 
+\par \i\f2 code\i0\f5  kann auch ein Buchstabe sein: ^A bedeutet dann z.B. den Code 1. \f3  
+\par F\'fcr den Wert 0 ist ^@ zu setzen, denn ^0 geht nicht.\f5 
+\par \f3 
+\par Ein vorgesetztes + bewirkt in beiden F\'e4llen, da\'df die gelesenen Zeichen an den in der  iV schon vorhandenen Text angeh\'e4ngt werden. 
+\par \f5 
+\par Mit \b\f2 `\cf1\ul if no\cf0\ulnone ` ...\b0\f3  kann man pr\'fcfen, ob \'fcberhaupt gelesen werden konnte, \f5 
+\par mit \b\f2 `\cf1\ul if cancel\cf0\ulnone ` ...\b0\f5   ob das Ende der Datei erreicht wurde. 
+\par Soll genau eine Zeile gelesen werden (Begrenzungscodes 13 10):  \i --> \b\i0\f2 `\cf1\ul get\cf0\ulnone `\b0\f5 
+\par \pard 
+\par \cf2\b\f2 fetch\f4  T^\cf0\b0\i\f2 code\b\i0  \b0\i\f4  \i0\f3 oder   \cf2\b\f2 fetch\f4  A^\cf0\b0\i\f2 code\b\i0  \b0\f5 
+\par \pard\li709\f3 Es wird nur Text (nicht die Codes 13 10) bzw. nur \i allegro\i0 -Text (ohne die Codes <11 und 13, 26 und 27) gelesen. Die Code-Umwandlung in ^X findet dann bei Codes unterhalb 32 nicht statt. Hinter dem T bzw. A kann auch noch + stehen.\f5 
+\par \f3 
+\par \pard\i Sonderf\'e4lle:\i0\f5  
+\par \pard\li709\f3 
+\par \pard\cf2\b\f2 fetch\f4  b\cf0\f2  \b0\i\f4  \i0\f3 oder   \cf2\b\f2 fetch\f4  c\cf0\f2   \b0\f3  \cf3\i acon\cf0\i0  \f5 
+\par \pard\li709\f3 Es wird nur \b ein\b0  Byte gelesen und als Zahlenwert (0....255) in die iV geschrieben. 
+\par Bei  \cf2\b\f4 b\cf0\b0\f3   geht der Lesezeiger auf das n\'e4chste Byte \'fcber, bei \cf2\b\f4 c\cf0\b0\f3  bleibt er stehen. 
+\par Letzteres kann dazu dienen, vor dem n\'e4chsten 'fetch' oder 'get' schon mal zu pr\'fcfen, mit welchem Zeichen die n\'e4chste Zeile beginnt. 
+\par Wenn nichts (mehr) gelesen werden kann, kommt \f4 -1\f3  heraus, d.h. man pr\'fcft diesen Fall mit
+\par \f4 if ="-1" ...\f3 .\f5 
+\par \f3 
+\par \pard\cf2\b\f2 fetch\f4  b2 / b3 / b4\cf0\f2   \b0\f3  \cf3\i acon\cf0\i0  \f5 
+\par \pard\li709\f3 Es werden 2 bzw. 3 bzw. 4 Bytes gelesen und als hexadezimale Zahl interpretiert. Das Ergebnis steht dann als Dezimalzahl in der iV. 
+\par N\'fctzlich ist dies f\'fcr interne, bin\'e4r codierte Zahlen wie z.B. Satznummern, etwa die Satznummer eines Datensatzes in einer Datenbankdatei (Typ .ALD). 
+\par 
+\par \pard\cf2\b\f2 fetch\f4  rec\cf0\f2  \b0\f3  \cf3\i acon\cf0\i0  \f5 
+\par \pard\li709\f3 Einen Datensatz einlesen von der aktuellen Position der ge\'f6ffneten Datei des Typs .ALG , .ALD, .LOG oder .ADT. Zu diesem Zeitpunkt mu\'df der Lesezeiger auf dem ersten Byte stehen, d.h. normalerweise auf der ersten 0 der Kategorienummer 00. 
+\par \b\i Achtung:\b0\i0  Der Datensatz steht dann aber erst in der iV! Mit  \b\f4 insert\b0\f3   kopiert man ihn in den Arbeitsspeicher, meistens wird man aber vorher noch mit  \f4 new 0\f3   dort einen neuen Satz anlegen, sonst mischt er sich mit dem aktuellen Satz. 
+\par \i Genauer:\i0  Der Befehl  \f4 fetch rec\f3   holt den Satz in die iV, wobei zunaechst die Codes 10 und # als Trennung zwischen den Feldern fungieren. Mit dem Befehl 
+\par \f4 ins _^J#_;#_"\f3  
+\par wandelt man diese Trennung um in \f4 ;#\f3  , und damit kann  ein simples 
+\par \f4 insert\f3 
+\par den iV-Inhalt in den aktuellen Satz einfuegen, oder 
+\par \f4 insert $satz\f3 
+\par in eine Variable  \f4 $satz\f3 . Genau das nutzt  \f4 update.job\f3   aus. 
+\par 
+\par Mit  \f4 if cancel ...\f3  kann man pr\'fcfen, ob nichts mehr gelesen werden konnte (Dateiende). 
+\par F\'fcr a99/alcarta gilt: (\cf3 NICHT f\'fcr \i acon\cf0\i0 ) 
+\par Wenn es eine Grunddatei ist (.ALG), mu\'df man vorher \f4 fet b\f3  geben (in  iV steht dann "9", wenn es ein gel\'f6schter Satz ist), bei einer Datendatei (.ALD)  noch dazu  \f4 fet b4\f3 , womit man die interne Satznr. in der iV hat; erst dann  \f4 fetch rec\f3 . (Bei \i acon\i0  kann man das auch machen, mu\'df man aber nicht.) 
+\par \cf3 Beispiel: \cf0 Ausgenutzt wird das alles in  \f4 ftr.flx\f3 , dem FLEX f\'fcr die Volltextsuche. 
+\par \cf3 Nur f\'fcr \i acon\i0 :\cf0   \tab Nach dem Einlesen steht dann in der Sondervariablen  \f4 iR\f3   die interne Satznummer des Satzes. 
+\par \tab\tab\tab Gel\'f6schte S\'e4tze werden nicht \'fcbergangen, aber beginnen dann mit    \f4 #u1    @@@@@\f3  . 
+\par                             \tab Mit  \f4  if Del\f3    kann man sofort danach feststellen, ob es ein gel\'f6schter Satz war.  
+\par \tab 
+\par \cf3\i Sonderfall nur bei acon\cf0\i0  : Die Datei kann auch eine LOG-Datei sein.  
+\par War es ein gel\'f6schter Satz, beginnt er mit \f4 #u1 @@@@@\f3 , 
+\par war es ein neuer Satz, beginnt er mit \f4 #u1 #####\i N\i0\f3 , und \i\f4 N\i0\f3  ist die Nummer der Datendatei, in die er zu speichern ist. Ausgenutzt wird alles dies im Job  \f4 `\cf1\ul\b update.job\cf0\ulnone\b0 `\f3 , mit dem das Programm acon Dateien die Arbeit des fr\'fcheren Programms \f4 UPDATE.EXE\f3  \'fcbernehmen kann. 
+\par \i 
+\par Hinweis:\i0  In \cf3\i acon\cf0\i0  kann man einen Satz auch mit  `\cf1\ul\b\f4 read\cf0\ulnone\b0\f3 `  einlesen, den ersten der Datei mit  \f4 read \i\f3 filename\i0 , womit die Datei zugleich ge\'f6ffnet wird. Dabei hat dann aber die Tilde nicht die Funktion, eine neue Wiederholungskategorie zu erzeugen, das geht nur mit  \f4 fetch rec\f3 . und danach  \f4 insert\f3 . 
+\par 
+\par \pard\cf2\b\f2 fetch\f4  e\cf0\i N \b0\i0\f3     (ab V27.2)   \b\f2  \b0\f3  \cf3\i acon\cf0\i0    (ab V32.1)\f5 
+\par \pard\li709\f3 Es wird eingelesen, bis die Zeichenfolge gefunden wird, die momentan in der iV steht, und zwar die ersten N Zeichen davon. Dadurch kann man vorher eine beliebige Zeichenkombination in die iV schreiben, nach der dann beim Einlesen gesucht wird. (Auch der Code 0 kann dabei vorkommen!) Der eingelesene Text, der danach in der iV steht, endet dann genau \b vor\b0  dieser Zeichenfolge, d.h. diese geh\'f6rt nicht mehr dazu. 
+\par Ohne \b\i\f4 N \b0\i0\f3 wird der in der iV stehende Text in voller L\'e4nge genommen, kann dann aber keinen Code 0 enthalten. Aber: 
+\par \i Sonderfall:\i0  Soll bis zum n\'e4chsten Code 0 gelesen werden: 
+\par \f4 var 0 
+\par fet e1\f3 
+\par Wichtig ist dieser Befehl beim Einlesen von Fremddaten zwecks Konvertierung, bes. im Fall XML. 
+\par Mit  \f4 if can ...\f3  pr\'fcft man, ob die Zeichenfolge nicht gefunden wurde, 
+\par und mit \f4 if "" ...\f3  , ob keine Daten mehr vorhanden waren, d.h. das Ende erreicht ist. 
+\par \i Tip:\i0  Mit dem Befehl  \f4 spaces\f3   kann man anschlie\'dfend erreichen, da\'df alle Mehrfach-Spatien und sonstige aufeinanderfolgende Whitespace-Zeichen durch ein einzelnes Spatium ersetzt werden.\f5 
+\par \f3 
+\par \pard\cf2\b\f2 fetch\f4  p\cf0\f2  \b0\f3    \b\f2  \b0\f3  \cf3\i acon\cf0\i0    (ab V32.8)\f5 
+\par \pard\li709\f3 Die Position des Lesezeigers in der Datei wird festgestellt. Diese ist 0, wenn noch nichts gelesen wurde. 
+\par Das Ergebnis, eine Zahl, steht dann in der iV.\f5 
+\par \f3 
+\par \pard\cf2\b\f2 fetch\f4  m\cf0\f2  \b0\f3    \b\f2  \b0\f3  \cf3\i acon\cf0\i0    (ab V32.8)\f5 
+\par \pard\li709\f3 Der Lesezeiger in der Datei wird auf die Position gesetzt, die in der iV angegeben ist. Das n\'e4chste \b\f4 fetch\b0\f3  oder \b\f4 get\b0\f3  wird von dieser Stelle aus lesen. Um den Zeiger wieder an den Anfang der Datei zu setzen, mu\'df man schreiben: 
+\par \f4 var "0" 
+\par fetch m\f5 
+\par \f3 Mit   \f4 fet c\f3   und dann  \f4 if ='-1' ...\f3   kann man checken, ob es  nicht geklappt hat. 
+\par 
+\par \pard Mit  \f4 if no ...\f3   kann man checken, ob diese Sonderf\'e4lle nicht funktioniert haben, weil die Datei nicht ge\'f6ffnet ist.\f5 
+\par 
+\par Mit \b\f2 `\cf1\ul write\cf0\ulnone ` \b0 bzw. \b `\cf1\ul write ^\cf0\ulnone `\b0  \f5  kann man die Daten aus der iV in die Export-Ausgabedatei schreiben lassen.  
+\par 
+\par \cf3\i\f3 Beispiel 1:\cf4 
+\par \i0 Eine Datei, Typ .ADT oder .ALG, ist satzweise einzulesen und mit den S\'e4tzen irgendetwas anzustellen: 
+\par 
+\par \f4\fs18 open \i datafile\i0\f3\tab // QuellDatei wird ge\'f6ffnet, noch nichts gelesen 
+\par \f4 fetch rec 
+\par :loop 
+\par ...\f3\tab\tab Verarbeitung  
+\par \f4 fetch rec\f3\tab n\'e4chsten Satz einlesen 
+\par \f4 if not cancel jump loop\f3\tab  wenn noch einer da war, Sprung nach \f4 :loop\f3  
+\par ...\tab\tab  weitere Befehle oder Ende des Auftrags\f5 
+\par 
+\par \cf3\i\f3\fs20 Beispiel 2:\cf4 
+\par \i0\f5 Die FLEX-Datei  \cf0\b\f2 `\cf1\ul bfile.flx\cf0\ulnone `\cf4\b0\f3   kann als Muster herangezogen werden, wie eine bin\'e4re Datei in einer Schleife st\'fcckweise eingelesen und wieder geschrieben werden kann. Mit bin\'e4ren Dateien etwas wirklich Sinnvolles anzustellen ist allerdings eine heikle Aufgabe. Mehr dazu, besonders zum Lesen und Durchsuchen Byte f\'fcr Byte, steht in dem Text "Trick 58".\cf0\f5 
+\par \f3 
+\par ?Register=h xa 
+\par ?open=h xopen 
+\par ?if no=h xif 
+\par ?if cancel=h xif 
+\par ?get=h xget 
+\par ?write=h xwrite 
+\par ?write ^=h xwrite 
+\par ?bfile.flx=x var P "flex" 92 "bfile.flx"\\help 
+\par ?fetchfil.flx=h fetchfil.flx 
+\par ?read=h xread 
+\par ?update.job=h update.job 
+\par }
+ 

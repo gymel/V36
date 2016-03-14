@@ -1,0 +1,83 @@
+  O-ERGREC.FLX : Ergebnismenge durchrechnen: Bestellsumme
+  2003-12-19
+
+if g0 jump beginn
+var "Momentan keine Ergebnismenge vorhanden." n "Diese Funktion kann nur arbeiten, wenn zuerst eine" n "Ergebnismenge aus Bestellungen gebildet wurde"
+mes
+end
+
+:beginn
+  ExportParam sichern
+var e
+ins #uvE
+var "#" i
+ins $oi
+
+var ""
+  interne Whrgsliste loeschen (wird neu geladen)
+ins #uuK
+ins #uSU
+
+  Lade Parameter KONT.APR
+export p kont
+if no jump error
+  Datei fuer Ergebn. ist ERGEBNIS
+export f ergebnis
+
+  Ergebnismenge verarbeiten
+  Flag setzen
+var "xx"
+  Kopfteil verarbeiten (Initialisierung der Variablen)
+ins #uoH
+export
+var ""
+  Flag loeschen
+ins #uoH
+
+  Gesamte ErgMenge verarbeiten (d.h. rechnen)
+exp set
+
+  #uEM mit "xxx"  besetzen (Flag)
+var "xxx"
+ins #uEM
+  Endabschnitt fuer Ergebnisse ausfuehren!
+exp
+  #uEM wieder wegnehmen
+#uEM
+  ExportParameter wieder laden
+var #uvE
+export p
+
+
+:exit
+  Satz zurueckholen und wieder anzeigen
+var $oi
+find
+show rec
+
+
+  Var. loeschen (bei Bedarf aktivieren)
+var ""
+
+ins #uvE
+ins #uuK
+ins #uSU
+  Ergebn. anzeigen:
+help ergebnis
+end
+
+:error
+mes Datei kont.apr nicht gefunden
+var $oi
+find
+show rec
+end
+
+ u-VARIABLEN in o-ergrec.flx
+ #uEM (2)  Flag f. Export mit kont.apr
+ #uSU (2)  Summe (in kont.apr errechnet)
+ #uoH (2)  Flag f. Kopfteil in kont.apr
+ $oi  (3)  gesicherte int. Nr. des letzten Satzes
+ #uuK (2)  Waehrungsliste (wird in kont.apr praepariert)
+ #uvE (3)  Exp.Parameter gesichert
+

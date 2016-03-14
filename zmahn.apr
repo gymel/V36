@@ -1,0 +1,50 @@
+  ZMAHN.APR :  Rechnungsdaten als TAB delimited Text z.B. fr Serienbrieffunktion
+  2008-07-29   zur Uebergabe an WinWord, Beispiel: ZMAHN.DOC
+
+zl=0
+zm=0     kein Seitenumbruch
+
+ke=""
+
+ze=13 10   wird mit #t{ C } ausgegeben
+  Damit wird TAB (= 09) ausgegeben, wenn  #t4  geschrieben wird:
+4=9
+
+    Header, nur vor dem ersten Satz
+#uzz +A e0 #zz 0
+ #t{ 'LName' 9 'LAdr' 9 'BDat' 9 'Ztit' 9 'ZRefnr' 9 'Zhnr' }
+  Feldnamen fuer den Serienbrief  zmahn.doc
+#t{ 'M1' 9 'M2' 9 'Ma' 9 'Mb' 9 'Mc' 9 'Md' 9 'M3' 9 'M4' 9 'M5' 9 'M6' }
+
+#t{ C }
+  Hier wird #uzz belegt, ab dem zweiten Satz gehts dann bei #-A los
+#nr azz e0
+
+#-A
+#uM1          $LName
+#t4
+#uM2 e"\par "     $LAdr, 1. Zeile
+#t4
+#uM2 b"\par " e"\par " 
+#t4
+#uM2 b"\par " b"\par " e"\par "
+#t4
+#uM2 b"\par " b"\par " b"\par " e"\par "
+#t4
+#uM2 b"\par " b"\par " b"\par " b"\par " e"\par "
+#t4
+#uM3          $BDat
+#t4
+#uM4          $Ztit
+#t4
+#uM5          $ZRefnr
+#t4
+#uM6          $Zhnr
+#t4
+
+#t{ C }
+
+  Zeichentabelle DOS->Win mit OstWest
+   (allegro-Schrift noetig!)
+tad-aw
+

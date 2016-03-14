@@ -1,0 +1,62 @@
+
+Verlautbarung 149b der Entw.Abt.                          2001-03-27
+-------------------------------
+
+Linkstrunkierung etc.
+---------------------
+
+Ergaenzend zur Sonder-Vb.2 und der nachfolgenden Diskussion wurden
+folgende Verbesserungen vorgenommen.
+
+1. Manip.Befehl l< und l>
+-------------------------
+(Kleinbuchstabe l, nicht Ziffer 1 !!!)
+Wenn man schreibt ... l>2 ... dann wird die Zeile nur dann 
+fortgesetzt, wenn der Arbeitstext in dem Moment laenger als 2 Zeichen 
+ist. Das ist auch in INDEX, PRESTO und UPDATE eingebaut.
+AVANTI und die UNIX-Programme werden folgen.
+Damit lassen sich u.a. die allzu kurzen Restschluessel bei der
+Linkstrunkierungsmethode eliminieren.
+
+2. Verdopplung der max. Schluesselzahl
+--------------------------------------
+Der interne Bereich fuer die Schluesselgenerierung wurde
+verdoppelt: man kann jetzt bis zu 1000 je Satz anlegen.
+Evtl. muss bei PRESTO an den m-Befehlen gedreht werden, wenn
+der Arbeitsspeicher knapp ist!
+
+3. Vorspiegelungen
+   Sichtbare Schluessel und tatsaechliche Schluessel
+   -------------------------------------------------
+Mehrfach vehement gefordert: Jetzt kann das, was man zu sehen
+bekommt, anders aussehen, als das, was tatsaechlich gespeichert
+ist. Im Normalfall ist es dasselbe.
+Wenn man dies nutzen will, muss man in den Indexparametern einen
+Fussabschnitt anlegen! Der kommt unterhalb des Hilfsabschnitts
+(PV-Abschnitt) zu stehen und muss mit einer Zeile
+F
+beginnen. Dort muss man die Variable #u1 nach Wunsch manipulieren.
+Der Output, den man da erzeugt, ist dann die sichtbar gemachte
+Registerzeile. Die erste Textposition von #u1 ist die Registerziffer,
+1,2,...9, bzw. : und ; fuer Reg. 10 und 11.
+Ausgefuehrt wird das im Moment des Zugriffs!!! Nicht beim Indexieren.
+Die Indexdatei veraendert sich in keiner Weise!!!
+Ob sich das auf das Zeitverhalten auswirkt, muss man mal sehen.
+Mit Sicherheit dann, wenn man in dem Abschnitt auch noch wieder
+Nachladungen veranstaltet! Also Nutzung auf eigene Gefahr.
+
+Wenn man also schreibt:
+
+F
+#u1 y0 b1
+#+#
+
+kommt dasselbe raus wie bisher oder wenn man gar nichts macht.
+
+Die voraussehbare naechste Forderung wurde gleich mit realisiert:
+Man kann zwischen beiden Darstellungen umschalten: Alt+u
+Das ist ein unsichtbarer Button. Wenn wir den auch noch sichtbar 
+machen, wird der Verwirrung kein Ende mehr sein. Zumal sowieso die 
+gestern angekuendigten drei neuen Eingabefelder (fuer Trunkierung 
+etc.) dazugekommen sind.
+

@@ -1,0 +1,101 @@
+
+Verlautbarung 221 der Entw.Abt.                              2009-09-09
+-------------------------------
+
+Diese Version soll im Oktober als definitive V29 auf CD erscheinen.
+
+V29.9
+=====
+
+a99 : 1000 Schluessel
+---------------------
+Das Maximum von 1000 Schluesseln, die a99 je Satz erzeugen koennen
+soll, hatte sich auf 500 halbiert. Dies wurde restituiert. (500
+ist und bleibt die Grenze in PRESTO.)
+
+
+FLEX und avanti-Jobs
+====================
+
+if res
+------
+Falsch wurde der Befehl "if res" ausgewertet, jetzt stimmts.
+Und auch avanti (d.h. acon) versteht sich nun auf diese Auswertung,
+sowie auch auf  "if v14 ..."
+
+
+if #nnn$x
+---------
+avanti (d.h. acon) kam nicht immer klar mit  
+if #nnn$x
+d.h. es reagierte nicht, wenn Feld #nnn ein Unterfeld $x hatte.
+Jetzt geht's.
+
+
+Befehl update
+-------------
+Es wurden von eingelesenen ADT-Dateien jeweils die letzten Felder
+ignoriert, ausser beim allerletzten Satz. Korrigiert.
+
+
+Programm index.exe
+==================
+Es hat die V14-Ersetzungen nicht im 2. Durchlauf erledigt, sondern
+erst im dritten, mit der Option -fa1.
+Das wurde behoben, INDEX16.EXE machte es dagegen schon richtig.
+
+MultiX-Fehler
+-------------
+Das Erneuern einer von mehreren Indexdateien scheiterte, wenn
+man eine CFG mit einem Namen hatte, der mehr als einen Buchstaben
+hat, also z.B. ANEU.CFG statt schlicht A.CFG oder $A.CFG.
+Es lag nur an einem falschen K1 in Zeile 35 des FLEX inxprod.flx,
+wo die Option -k beim Aufruf von index.exe gesetzt wird.
+Korrigiert, da muss K stehen.
+
+
+MARC-Export
+-----------
+Zu den MARC-Exportparametern MARCTXT.APR und MARCXML.APR wurden
+die LC-Schlagwoerter (#33L) und die Dewey- und LC-Notationen 
+(#32B und #32L) ergaenzt (MARC 650, 082, 050), die noch nicht
+beruecksichtigt gewesen waren. Ebenfalls 010: aus #89L.
+
+MARC-Import
+-----------
+Die sehr alte OCLC.AIM wurde ergaenzt um die Serienfelder, die
+noch unberuecksichtigt waren, und die E-Adresse 856 -> #8e.
+Nun wird die Datei endlich unter dem Namen MARC21.AIM geliefert,
+unter dem jeder sie intuitiv sucht.
+Uebrigens werden MARC-Felder, fuer die es in den Parametern
+keine Vorkehrung gibt, unter #99 gesammelt, wo dann ihre
+MARC-Nummer in Klammern vorangestellt ist. So sieht man, was
+evtl. noch konvertiert werden sollte, um nichts zu verlieren.
+
+
+MARC-CFG
+--------
+Eine Konfig. fuer MARC gibt es schon lange unter $u.cfg. Diese
+wurde ergaenzt um die neuen Felder
+#336 "Content type"
+#337 "Media type"
+#338 "Carrier type"
+
+
+PHPAC
+=====
+Das Paket wurde neu bereitgestellt. Verbessert wurden insbes. die
+Skripte
+
+edrec.php   : Beispiel fuer den Aufbau eines Formulars fuer die
+              Dateneingabe und Bearbeitung
+              Anzahl, Reihenfolge, Typ (ein- oder mehrzeilig,
+              auch Combo-Box moeglich) und Inhalt (Datenfeld)
+              koennen beliebig nach einem einfachen Schema
+              konfiguriert werden.
+
+write.php   : Universelles Skript zum Verarbeiten des Formulars,
+              das mit edrec.php praesentiert wird, oder jedes 
+              anderen Formulars, das mit derselben Methodik
+              konfiguriert wurde.
+

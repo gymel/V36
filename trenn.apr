@@ -1,0 +1,147 @@
+  TRENN.APR : Separieren von hierarchischen mehrb„ndigen Werken
+  940604    Erzeugen von selbst„ndig gespeicherten, verknpften Unters„tzen
+pn="Trennung hierarchischer S„tze"
+
+     benutzbar fr jedes Kategorienschema, zu „ndern sind evtl.
+     die Kategorien #00, #01, ... #05, falls diese nicht so heissen
+     Voraussetzung:
+       Es muss eine IdNr. geben (in der Regel in #00)
+       In #01...#05 mssen sortierbare Bandnummern stehen
+                    z.B. #01 013 = Bd.13
+       Evtl. hinterher manuell korrigieren
+     Fr die Trennung der hierarchischen Bestandteile der Bandnummer
+     wird das '+' Zeichen benutzt
+
+  ************ allgemeine Einstellungen *****
+am=1
+zl=0
+ke=0
+ks=1
+ae=""
+dx=1
+  *******************************************
+
+#hi +a e0 #zz 0
+
+  die #00 des Hauptsatzes in #ub0 deponieren:
+#00 b3 =b0 e0 #zz 0
+#+b
+
+#-a
+#01 b3 =b1 e0 #zz 0    Bandnummern zwischenlagern in #ub1, #ub2, ...
+#02 b3 =b2 e0 #zz 0
+#03 b3 =b3 e0 #zz 0
+#04 b3 =b4 e0 #zz 0
+#05 b4 =b5 e0 #zz 0
+
+
+#01 +1 e0 #zz 0     Sprung zur jeweiligen Hierarchiestufe
+#02 +2 e0 #zz 0
+#03 +3 e0 #zz 0
+#04 +4 e0 #zz 0
+#05 +5 e0 #zz 0
+
+
+     #01 ... #05 beim Pauschalexport  nicht ausgeben
+/01
+/02
+/03
+/04
+/05
+
+   Hauptaufnahme
+#-b
+#t{ 1 }
+##   unver„ndert ausgeben
+#t{ C }
+#+#     Ende
+
+
+#-1     #01
+#t{ 1 }            Abschluss des vorigen, Beginn des neuen Satzes
+#ub0 b3 p"09 " #zz 0
+#t{ "+" }
+#ub1 +#01 b3 e" = " x"*1" x">0" t".0" ,"_._,_" r2,0 P" = " #zz 0
+!ub1 b3 e" = " P" = " #zz 0
+#01 y0 b3 B" = " #zz 0
+#+Y
+
+#-2     #02
+#t{ 1 }
+#ub0 b3 p"09 " #zz 0
+#ub1 b3 e" = " p"+" #zz 0
+#ub2 b3 e" = " p"+" #zz 0
+#ub1 +c c" = " e0 #zz0          wenn " = " in #01 oder #02 vorkommt,
+#ub2 +c c" = " e0 #zz0
+#+Y                      wenn nicht, Rest ausgeben
+#-c
+#t{ " = " }
+#ub1 B" = " P"," #zz 0        dann muss noch eine Druckform erzeugt werden
+#02 B" = " #zz 0
+#+Y
+
+#-3     #03
+#t{ 1 }
+#ub0 b3 p"09 " #zz 0
+#ub1 b3 e" = " p"+" #zz 0
+#ub2 b3 e" = " p"+" #zz 0
+#ub3 b3 e" = " p"+" #zz 0
+#ub1 +d c" = " e0 #zz0          wenn " = " in #01 oder #02 vorkommt,
+#ub2 +d c" = " e0 #zz0
+#ub3 +d c" = " e0 #zz0
+#+Y
+#-d
+#t{ " = " }
+#ub1 B" = " P"," #zz 0
+#ub2 B" = " P"," #zz 0
+#03 B" = " #zz 0
+#+Y
+
+#-4     #04
+#t{ 1 }
+#ub0 b3 p"09 " #zz 0
+#ub1 b3 e" = " p"+" #zz 0
+#ub2 b3 e" = " p"+" #zz 0
+#ub3 b3 e" = " p"+" #zz 0
+#ub4 b3 e" = " p"+" #zz 0
+#ub1 +e c" = " e0 #zz0          wenn " = " in #01 oder #02 vorkommt,
+#ub2 +e c" = " e0 #zz0
+#ub3 +e c" = " e0 #zz0
+#ub4 +e c" = " e0 #zz0
+#+Y
+#-e
+#t{ " = " }
+#ub1 B" = " P", " #zz 0
+#ub2 B" = " P", " #zz 0
+#ub3 B" = " P", " #zz 0
+#04 B" = " #zz 0
+#+Y
+
+#-5     #05
+#t{ 1 }
+#ub0 b3 p"09 " #zz 0
+#ub1 b3 e" = " p"+" #zz 0
+#ub2 b3 e" = " p"+" #zz 0
+#ub3 b3 e" = " p"+" #zz 0
+#ub4 b3 e" = " p"+" #zz 0
+#ub5 b3 e" = " p"+" #zz 0
+#ub1 +f c" = " e0 #zz0          wenn " = " in #01 oder #02 vorkommt,
+#ub2 +f c" = " e0 #zz0
+#ub3 +f c" = " e0 #zz0
+#ub4 +f c" = " e0 #zz0
+#ub5 +f c" = " e0 #zz0
+#+Y
+#-f
+#t{ " = " }
+#ub1 B" = " P", " #zz 0
+#ub2 B" = " P", " #zz 0
+#ub3 B" = " P", " #zz 0
+#ub4 B" = " P", " #zz 0
+#05 B" = " #zz 0
+
+#-Y       Rest-Ausgabe
+#t{ 0 }   Abschluss der vorigen Kategorie
+##        alle Kategorien des aktuellen Satzes
+#t{ C }
+
+q A/Z a

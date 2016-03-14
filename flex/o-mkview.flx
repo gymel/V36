@@ -1,0 +1,341 @@
+  O-MKVIEW.FLX : ViewListen erstellen aus den SYS-Saetzen
+  2001-03-19
+
+  Bei Aufruf: #uoV = Typ 1-5
+              Wenn nur eine der Listen zu produzieren, dann #uoV besetzt!
+              #uoZ = zabom, zabom-e, order / default: orda
+
+if #uoI jump cv
+var "#" i
+ins #uoI
+
+:cv
+close view
+if not #uoV jump auft
+var #uoV
+if "1" jump auft
+if "2" jump lief
+if "3" jump kont
+if "4" jump whrg
+if "5" jump vert
+
+  1. Auftraggeber
+:auft
+#uoW auft
+find |; SYSA?
+if l1 jump error
+var D "auft.u"
+open x
+if no jump werr
+var "   Liste der Auftraggeber"
+ins #uoC
+wri "  " #uoC(0,74) n
+
+first
+
+:loop
+var #9A(e"")
+
+ins #uoC
+var #uoC(1,0)
+ins #uoC
+var #9A$n
+ins #uoD
+var #uoC "|" #uoC " = " #uoD
+ins #uoC
+wri #uoC(0,76) n
+:nxt
+next
+if yes jump loop
+
+close x
+
+get env comspec
+ins #uwC
+var #uwC " /c " P "asort " D "auft.u " D "auft.vw"
+cAll
+
+var D "auft.u"
+del
+#uoC
+
+var "Auftraggeberliste fertig"
+sho IV
+if #uoV jump exit
+jump lief
+
+:werr
+var "Kein Schreibrecht auf " D "?"
+mes
+if #uoI jump retr
+end
+:retr
+var #uoI
+if not ="#0" find
+sho rec
+end
+
+:error
+var "Es gibt keine Auftraggeber! Legen Sie erst welche an" n
+var +"Ein Auftraggeber ist eine Person oder Stelle, die Bestellungen" n
+var +"veranlassen kann."
+ansi
+mes
+
+
+  2. Lieferanten-ViewListe (auch $Lief erneuern!)
+:lief
+#uoW lief
+find |; SYSL?
+if l1 jump lerror
+var D "lief.u"
+open x
+if no jump werr
+var "   Liste der Lieferanten"
+ins #uoC
+wri "  " #uoC(0,74) n
+
+first
+var ""
+ins $Lief
+
+:loopl
+var $Lief "///" #9A
+ins $Lief
+var #9A(e"")
+   Mit zzz beginnt der jetzt unnoetige Uebersichtssatz
+
+ins #uoC
+var #uoC(1,0)
+ins #uoC
+var #9A$n
+ins #uoD
+var #uoC "|" #uoC " = " #uoD
+ins #uoC
+wri #uoC(0,76) n
+:nxtl
+next
+if yes jump loopl
+
+close x
+
+get env comspec
+ins #uwC
+var #uwC " /c " P "asort " D "lief.u " D "lief.vw"
+cAll
+
+var D "lief.u"
+del
+#uoC
+
+var "Lieferantenliste fertig"
+sho IV
+
+if #uoV jump exit
+jump kont
+
+:lerror
+var "Es gibt keine Lieferantens„tze! Legen Sie erst welche an." n
+var +"Ein Lieferant ist eine Buchhandlung oder eine andere Einrichtung," n
+var +"bei der etwas bestellt werden kann."
+ansi
+mes
+
+
+  3. Kontingenten-ViewListe
+:kont
+#uoW kont
+find |; SYSK?
+if l1 jump kerror
+var D "kont.u"
+open x
+if no jump werr
+var "   Liste der Kontingente"
+ins #uoC
+wri "  " #uoC(0,74) n
+
+first
+
+:loopk
+var #9A(e"")
+   Mit zzz beginnt der jetzt unnoetige Uebersichtssatz
+if "Kzzz" jump nxtk
+ins #uoC
+var #uoC(1,0)
+ins #uoC
+var #9A$K
+ins #uoD
+var #uoC "|" #uoC " = " #uoD
+ins #uoC
+wri #uoC(0,76) n
+:nxtk
+next
+if yes jump loopk
+
+close x
+
+get env comspec
+ins #uwC
+var #uwC " /c " P "asort " D "kont.u " D "kont.vw"
+cAll
+
+var D "kont.u"
+del
+#uoC
+var "Kontingentliste fertig"
+sho IV
+
+if #uoV jump exit
+jump whrg
+
+:kerror
+var "Es gibt keine Kontingents„tze!" n "Legen Sie erst welche an"
+ansi
+mes
+
+
+  4. Waehrungs-ViewListe erstellen aus dem SYSW-Satz
+:whrg
+#uoW whrg
+find |; SYSWWHRG?
+if l1 jump werror
+ var D "whrg.u"
+var D "whrg.vw"
+open x
+if no jump werr
+var "   Liste der W„hrungen"
+ins #uoC
+wri "  " #uoC(0,74) n
+
+first
+
+var #9A(b"W")
+ins #uoC
+ins #uoD
+if not #uoD jump ready
+:loopw
+var #uoC(e"%")
+ins #uoC
+var #uoC(e":") "|" #uoC(b":")
+ins #uoC
+wri #uoC(0,76) n
+
+var #uoD(b"%")
+if "" jump ready
+ins #uoD
+ins #uoC
+jump loopw
+
+  5. Verteiler-Liste
+:vert
+#uoW vert
+find |; SYSV?
+if l1 jump verror
+var D "vert.u"
+open x
+if no jump verr
+var "   Liste der Verteiler"
+ins #uoC
+wri "  " #uoC(0,74) n
+
+first
+
+:loopv
+var #9A(e"")
+   Mit zzz beginnt der jetzt unnoetige Uebersichtssatz
+if "Vzzz" jump nxtv
+ins #uoC
+var #uoC(1,0)
+ins #uoC
+var #9A$n
+ins #uoD
+var #uoC "|" #uoC " = " #uoD
+ins #uoC
+wri #uoC(0,76) n
+:nxtv
+next
+if yes jump loopv
+
+close x
+
+var "asort " D "vert.u " D "vert.vw"
+cAll
+
+var D "vert.u"
+del
+#uoC
+var "Verteiler-Liste fertig"
+sho IV
+jump ready
+
+:verror
+var "Es gibt keine Verteilers„tze!" n "Legen Sie erst welche an"
+ansi
+mes
+
+:ready
+close x
+
+#uoC
+#uoD
+
+if #uoV jump exit
+
+mes ViewListen fertig, jetzt kann's weitergehen!
+jump exit
+
+:werror
+  Waehrungssatz fehlt, anlegen
+new
+#9A WWHRG
+var "EURd20150424"
+ins $c-#9A
+var "EUR:1.00000:Euro%DEM:1.95583:Deutsche Mark%AUD:1.3937:Austral.Dollar%CAD:1.3170:Canad.$%SWF:1.0383:Schweiz.Franken%CNY:6.6764:China.Yuan%DKK:7.4601:D„n. Krone%GBP:0.71700:Brit. Pfund%JPY:129.36:Japan.Yen%NOK:8.5160:Norw. Krone%PLN:4.0185:Poln. Z?oty%RUB:55.2952:Russ.Rubel%SEK:9.3790:Schwed.Krone%USD:1.0772:US $"
+ins $W-#9A
+
+var p
+if not "|;SYSWWHRG" jump wfehler
+
+put
+sho rec
+jump whrg
+end
+
+:exit
+
+var #uoI
+if not ="#0" find
+#uoI
+
+  Menue wieder anzeigen, Name steht in #uoZ, sonst orda
+if not #uoZ help orda
+if #uoZ var #uoZ;help
+
+var #uoV
+if "1" var "Auftraggeberliste "
+if "2" var "Lieferantenliste "
+if "3" var "Kontingentenliste "
+if "4" var "W„hrungsliste "
+if "5" var "Verteiler-Gesamtliste "
+var +"ist neu erstellt"
+ansi
+sho iv
+  ViewListe zeigen, wenn nur eine produziert wurde
+if #uoV if #uoW var #uoW;View
+
+#uoV
+#uoW
+end
+
+:wfehler
+var "Indexparameter: Waehrungssatz wird nicht korrekt indexiert!" n "Dies muss analog cat.api eingerichtet werden"
+mes
+end
+
+   Variablen:
+   #uoI    Satznummer vor dem Start (zum Zurueckholen)
+   #uoV    1,2,3,4,5 wenn nur eine der Listen gewuenscht
+   #uoW    lief, kont, ...
+   #uoZ    ProgName zabom, order, orda
+   #uoC    Hilfsvar
+   #uwC    fuer COMSPEC

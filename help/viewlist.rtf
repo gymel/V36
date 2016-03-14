@@ -1,0 +1,171 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss\fcharset0 MS Sans Serif;}{\f1\fswiss MS Sans Serif;}{\f2\fswiss\fprq2\fcharset0 Verdana;}{\f3\fmodern\fprq1 Courier New;}{\f4\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red255\green0\blue0;}
+\viewkind4\uc1\pard\tx10065\f0\fs24  \f1 
+\par \b\f2 Einzelteile des View-Konzepts \b0\fs20                          [Hintergrundwissen f\'fcr \i Allegrologen\i0 ] 
+\par \pard (aus `\cf1\ul news 58\cf2\ulnone `) 
+\par \pard\qr `\cf1\ul\b Hauptseite zum Thema "Views"\cf2\ulnone\b0 ` 
+\par \pard Nutzung der View-Technik setzt Schreibrecht auf dem Start- und auf dem Tempverzeichnis voraus. Wenn in der INI-Datei kein Befehl  \f3 DbAux=... \f2  steht (mit dem man das Arbeitsverzeichnis setzt), wird als Tempverz. dasjenige genommen, das in der Environment-Variablen TEMP steht. Das w\'e4re z.B.  \f3 c:\\windows\\temp\f2 . Dort kommen die tempor\'e4ren Dateien zu liegen, die nach Ende einer Sitzung ohne weiteres gel\'f6scht werden k\'f6nnen. Die Parameterdateien (vom Typ \f3 v-*.cpr\f2  ), die man nicht selten sp\'e4ter erneut gebrauchen kann, werden auf das Startverzeichnis geschrieben (Standard c:\\allegro), desgleichen Exporte, was man durch Eingriff in die FLEXe aber \'e4ndern k\'f6nnte. 
+\par 
+\par Zun\'e4chst aber zum wichtigen Begriff  \cf3\b ViewListe\cf2\b0 
+\par Eine \b ViewListe\b0  ist eine Textdatei vom Typ \b\f3 .VW\b0\f2 .  Sie besteht aus Zeilen von exakt gleicher L\'e4nge (Auff\'fcllung am Ende mit Leerzeichen!). Ist das beim Aufruf nicht gegeben, wird das Programm selbst\'e4ndig eine Kopie der Datei erstellen und darin alle Zeilen an der l\'e4ngsten ausrichten. Jede ViewListe kann aber ihre individuelle, passende Zeilenl\'e4nge haben. 
+\par So sieht, schematisch, ein Datensatz, d.h. also eine Zeile, in einer ViewListe aus: 
+\par \f3\fs24 
+\par 00001234|TEXT ...                              \ul\up12\fs16 13\ulnone\up0\fs24  \ul\up12\fs16 10\ulnone\up0\fs24 
+\par \f2\fs20 
+\par Die hochgestellten, unterstrichenen Zahlen 13 und 10 sind die \'fcblichen ASCII-Steuercodes f\'fcr die Zeilentrennung. Warum die feste L\'e4nge? Dadurch geht es viel schneller als bei variabler Zeilenl\'e4nge, die Anzeige dann erscheinen zu lassen und darin zu bl\'e4ttern. Bei Ergebnismengen von mehreren tausend S\'e4tzen wirkt sich dies sp\'fcrbar aus. ViewListen sind sehr oft tempor\'e4r, daher kann man sich diese Ineffizienz leisten. (Nochmals: Hat eine ViewListe ausnahmsweise Zeilen unterschiedlicher L\'e4nge, merkt das Programm dies beim Einlesen und korrigiert es, d.h. die Datei wird entsprechend ver\'e4ndert; es dauert deshalb nur beim ersten Mal etwas l\'e4nger, bis sie dann erscheint!  
+\par Der Inhalt eines View-Satzes ist zweiteilig: eine interne Satznummer (hier 8stellig mit f\'fchrenden Nullen, das ist jedoch nicht verbindlich), und ein davon durch das Zeichen '\b |\b0 ' getrennter TEXT, eine beliebige Zeichenkette. Diese besteht normalerweise aus Elementen des Datensatzes, dessen Nummer vorn steht, und zwar genau den Elementen, die man f\'fcr einen bestimmten Zweck braucht. In der Regel wird dieser Text in sinnvoller Weise sortierbar sein, wobei die zum Sortieren dienenden Elemente vorn stehen m\'fcssen. Das Zeichen \b |\b0  braucht ansonsten nicht immer an derselben Stelle der Zeile zu stehen. 
+\par Vor dem \b |\b0  kann auch statt einer Nummer etwas anderes stehen, und dadurch wird das View-Konzept noch viel flexibler: 
+\par 
+\par h \i dateiname  \tab\tab\i0 Die Datei \i dateiname \i0 wird sofort angezeigt, sobald die Zeile \i an\i0 gew\'e4hlt wird 
+\par v \i ViewListenname\i0\tab Die ViewListe erscheint, wenn die Zeile mit Enter \i aus\i0 gew\'e4hlt wird 
+\par x \i FLEX-Befehle\i0\tab Die FLEX-Befehle werden ausgef\'fchrt 
+\par X \i FLEX-Dateiname\i0\tab Die FLEX-Datei wird ausgef\'fchrt (beides erst nach Druck auf  Enter) 
+\par 
+\par \i Beispiel:\i0  Die ViewListe  \b\f3 quick.vw\f4 :\f3  \b0\f2 Betrachten Sie diese einmal `\cf1\ul\b als Datei\cf2\ulnone\b0 `, einmal `\cf1\ul in ihrer Funktion als ViewListe\cf2\ulnone `.\b 
+\par \b0 
+\par Es gibt eine Funktion zur \cf1\b `\ul Auflistung und Bearbeitung\cf0\ulnone\b0\fs24 `\cf2\fs20 aller vorhandenen ViewListen. 
+\par 
+\par \i Erfreuliche Nebenwirkung\i0 : Jede Datei \i xyz\i0 , die wie beschrieben aussieht, kann mit dem FLEX-Befehl \f3  \b View \b0\i xyz\i0  \f2  als ViewListe angezeigt werden, egal wie man sie erstellt hat! Im Extremfall ist es eine Textdatei ohne ein '|' oder mit jeweils "\f3 abc|\f2 " am Anfang jeder Zeile, wobei '\f3 abc\f2 ' nicht mit einer Ziffer beginnt.  Die ViewListe wird angezeigt im Kurzanzeige-Fenster und erlaubt dann die Auswahl einer Zeile. Beginnt die Zeile mit einer Nummer gr\'f6\'dfer als Null, wird der zugeh\'f6rige Satz sofort angezeigt, wenn der Leuchtbalken darauf geht. 
+\par Man hat hier nebenbei eine Alternative zum FLEX-Befehl "\f3 select\f2 ", denn: 
+\par Anschlie\'dfend (nach Druck auf [Enter]) steht die ausgew\'e4hlte Zeile dann in der "internen Variablen". D.h. die Angabe "\f3 abc\f2 ", im View nicht sichtbar, kann dann auch per FLEX ausgewertet werden! Kommt kein \f3 '|'\f2  vor, ist die ganze Zeile sichtbar. 
+\par Eine Befehlsfolge kann demnach so aussehen: 
+\par \f3 
+\par View liste 
+\par if "" jump ... \f2 (es wurde nichts ausgew\'e4hlt, sondern Esc gedr\'fcckt)\f3 
+\par if no jump ... \f2 (die Datei  \f3 liste.vw\f2  gibt's nicht)\f3 
+\par ins #uvV 
+\par \f2 
+\par Anschlie\'dfend steht also die ausgew\'e4hlte Zeile in der Variablen #uvV. 
+\par \i Hinweis:\i0 
+\par ViewListen sind normalerweise in ASCII codiert, also im DOS-Code. Hat man eine im Windows-Code erstellt, dann vor dem View-Befehl noch set c1 geben und hinterher set c0. 
+\par 
+\par 
+\par \b Nun zur Produktion von ViewListen mit dem View-Paket \b0  ( `\cf1\ul\b h view\cf2\ulnone\b0 ` ) 
+\par Das Ziel ist, Ergebnismengen als ViewListen aufbereiten und dann anzeigen zu k\'f6nnen. 
+\par Es folgt die genaue Erkl\'e4rung des Konzepts f\'fcr Neugierige. Normalerweise kommen Sie ohne diese Kenntnisse zurecht! 
+\par 
+\par Wie k\'f6nnte der TEXT der ViewListen-Zeilen zusammengestellt werden? Vielleicht einfach die gew\'fcnschten Kategorienummern angeben? Das mag in einfachen F\'e4llen reichen und wird auch \'fcber ein `\cf1\ul\b Formular\cf2\ulnone\b0 ` komfortabel gel\'f6st, siehe unten (Seite 6), aber wenn die gesamte Bandbreite der potentiellen W\'fcnsche abgedeckt werden soll, ist man vieles zu bedenken: 
+\par \pard\ri-284 
+\par \pard\fi-360\li360\ri-284\tx360 1.\tab Nicht jedes Feld kommt jedesmal vor, manchmal wird statt eines fehlenden Feldes ersatzweise ein anderes an seine Stelle treten sollen. Das ist vor allem dann wichtig, wenn eine Ergebnismenge unterschiedliche Satztypen enth\'e4lt. 
+\par 2.\tab Wenn die Datenbank mit V14-Ersetzungen arbeitet, m\'f6chte man Klartexte statt Stammsatznummern. 
+\par 3.\tab Manchmal wird man Teilfelder oder andere Bestandteile als Elemente brauchen, nicht den gesamten Feldtext. 
+\par 4.\tab Die L\'e4nge jedes am TEXT beteiligten Feldes sollte begrenzbar sein. 
+\par 5.\tab Nichtsortierzeichen sollten sich ber\'fccksichtigen lassen. 
+\par 6.\tab Zeichenumcodierungen und Textersetzungen k\'f6nnen n\'f6tig sein. 
+\par 7.\tab Zahlenwerte sollten aus Textfeldern herausgel\'f6st oder auch aus mehreren Feldinhalten berechnet werden k\'f6nnen. 
+\par 8.\tab Die Sortierung wird nicht immer unmittelbar durch den Inhalt eines Feldes definiert werden k\'f6nnen, vielmehr braucht man die M\'f6glichkeit, einen ver\'e4nderten und/oder zusammengesetzten Sortierschl\'fcssel zu definieren. Korrekte Sortierung von Umlauten und Akzentbuchstaben wird man ebenfalls erwarten. 
+\par 9.\tab Es sollte m\'f6glich sein, die ViewListe in Gruppen einzuteilen, d.h. Zwischen\'fcberschriften zu erzeugen. 
+\par 10.\tab Zahlen sollte man addieren und im Falle von Gruppierungen auch Zwischensummen bilden k\'f6nnen. 
+\par 11.\tab Mehrfach besetzte Felder sollen evtl. mehrere Eintr\'e4ge in der Liste erzeugen. 
+\par 12.\tab Letzte, aber f\'fcr viele Anwender vielleicht sogar wichtigste Wunschvorstellung: Eine ViewListe sollte exportiert werden k\'f6nnen, und zwar wahlweise die vollst\'e4ndigen Datens\'e4tze mit allen geeigneten Druckparametern oder die Liste als \b Tabelle\b0 , mit einem eindeutigen Trennzeichen zwischen den (ungek\'fcrzten) Datenfeldern, damit sie dann leicht in andere Programme \'fcbernommen werden kann (Textsysteme, Tabellen- und relationale Datenbanksysteme). 
+\par \pard\ri-284  
+\par \pard Das alles weist auf die Exportsprache als Mittel zur Herstellung von ViewListen. Dabei gibt es zwei M\'f6glichkeiten: 
+\par 
+\par \pard\fi-360\li360\tx360 A)\tab die TEXT-Zeilen sind unmittelbar sortierf\'e4hig. Dann kann die Liste direkt in der beschriebenen Form exportiert und dann sortiert werden, bevor man sie anzeigen l\'e4\'dft. 
+\par B)\tab die TEXT-Zeilen sind nicht unmittelbar sortierf\'e4hig. Dann kann die Erstellung der ViewListe nur \'fcber einen Umweg laufen: es wird zuerst eine sortierbare Grunddatei mit zwei Kategorien je Satz erstellt. Die erste Kategorie, \b #u1\b0 , enth\'e4lt den Sortierwert, die zweite, \b #u2\b0 , die anzuzeigende Zeile. Beide k\'f6nnen in ihrer Form, aber auch im Inhalt, ganz verschieden sein. Nach dem Sortieren  wird dann die #u1 ganz beseitigt und es bleibt die geordnete ViewListe \'fcbrig. 
+\par \pard 
+\par Das Sortieren im Fall 2) geschieht mit dem \i allegro\i0 -Sortierprogramm ASORT.EXE, welches bef\'e4higt wurde, die Beseitigung des Sortierfeldes #u1 am Dateiende automatisch zu machen (neue Option -u3). \i\'dcbrigens: \i0 #u1 braucht nicht von fester L\'e4nge zu sein, nur #u2. 
+\par 
+\par Eine ViewListe entsteht in beiden F\'e4llen als Export einer Ergebnismenge mit Hilfe einer View-Parameterdatei, kurz \b ViP\b0  genannt, mit einem Namen der Form \f3 V-XYZ.APR\f2 , die immer denselben Aufbau hat. Den Teil mit den allgemeinen Exportparametern kann man f\'fcr andere Kategoriesysteme einfach kopieren. Die speziellen, auf den jeweiligen Zweck bezogenen Angaben bilden einen Block, der jeweils f\'fcr eine neue Aufgabe zu bearbeiten ist. Im classico-System entsprechen diesen Dateien die Parameterdateien \f3 S-*.APR\f2  zur Erstellung einer Sortierdatei. Es kann beliebig viele solche ViPs geben. 
+\par Das \i Erstellen\i0  von ViP-Dateien ist Sache des Systemverwalters, der daf\'fcr aber nur relativ wenige Parametrierkenntnisse braucht (es sei denn, man hat sehr diffizile W\'fcnsche).  
+\par Das \i Anwenden\i0  der ViPs ist, wie das Anwenden der Sortierdateien im classico-System, ohne Parameterkenntnisse m\'f6glich, zumal wenn die Anwendung auch noch in FLEXe eingebettet wird. Als kommentierte Vorlage benutzt man die Datei \f3 V-STAND1.APR\f2   oder  \f3 V-STAND2.APR\f2   (letztere mit Gruppierung und Summierung) oder eine andere vorhandene ViP. 
+\par 
+\par \i Hier ein Beispiel: 
+\par \i0 In der Datei  \f3  V-STAND2.APR \f2  (f\'fcr den Standard-View 2 ) findet man in der Mitte diesen Abschnitt: 
+\par 
+\par 
+\par \f4\fs18   #-A     (Oberhalb befindet sich das Kopfst\'fcck, der standardisierte Abschnitt view1.apt) \f3 
+\par 
+\par   ****** Variabler Teil ******** 
+\par   Nur hier muss man eingreifen, und zwar diejenigen Kategorien einsetzen, aus denen der View bestehen soll, 
+\par   jeweils mit geeigneten Manipulationsbefehlen 
+\par 
+\par \f4   Abschnitt f\'fcr die ViewListen-Zeile: \f3 
+\par 
+\par   #nr p'j!' e'!' =vY         Gruppierung gewuenscht 
+\par 
+\par   \cf3 #76 +#40 x"*1" x">1449" e"." u e4 P'///' Avv\cf2 
+\par   #nr p"o.J.///" e7 Avv 
+\par \cf3   #40 e" = " u e15 F" " P": " Avv 
+\par   #20 u e40 Avv 
+\par   #77 +D x"*1" x"r2" r7 F"." =vu 
+\par \cf2   #nr p'00000000' e7 =vu 
+\par   #+D      Sprung zur Verarbeitung von #uvv 
+\par 
+\par            Abschnitt fuer den Tabellenexport (Felder mit Trennzeichen) 
+\par            aus VIEWTAB.FLX heraus mit "download view" 
+\par   #-Q 
+\par            #uzV enthaelt die aktuelle View-Zeile 
+\par            mit 00000t|... beginnen Trennstrichzeilen, 
+\par            mit 00000a|... beginnen Ueberschriftzeilen 
+\par   #uzV +- c't|' B'|' f' |' e0 
+\par   #uzV c'a|' B'|' f' |' F' ' 
+\par    #76 +E 
+\par    #nr p"o.J." e4 
+\par   #-E 
+\par   #t9 
+\par \cf3   #40 e" = " 
+\par \cf2   #t9 
+\par \cf3   #20 
+\par \cf2   #t9 
+\par \cf3   #77 x"*1" e"." r7 
+\par \cf2            mit 00000s|... beginnen Summenzeilen 
+\par   #uzV c's|' B'|' f' |' F' ' e"." 
+\par \f2\fs20 
+\par Nur die roten Zeilen sind zu ver\'e4ndern, alles andere kann \'fcbernommen werden, auch f\'fcr andere Konfigurationen. 
+\par \i Wichtig: \i0 Im ersten Abschnitt wird keine eigentliche Ausgabe gemacht! Es wird hier nur eine Variable #uvv erstellt, aus der dann weiter unten erst (unter \f3 #-D\f2 ) die Zeilen der ViewListe gemacht werden. Dort braucht man allenfalls noch die L\'e4nge (default: 80 Zeichen) zu ver\'e4ndern, sonst weiter nichts. 
+\par Will man f\'fcr die ViewListe eine Spaltenanordnung, kann man das jeweils mit den Befehlen   \b\f3 en sn\b0\f2    erreichen, also z.B.  \b\f3 e20`s20\b0  \f2 um die L\'e4nge des Abschnitts auf 20 Zeichen zu begrenzen und mit Leerzeichen aufzuf\'fcllen. 
+\par F\'fcr die Differenzierung der Anzeige des Views gibt es zwei M\'f6glichkeiten. Dabei wird nach dem Sortieren die Parameterdatei \b\f3 VIEWGRUP.APR\b0\f2   benutzt, die man unver\'e4ndert auch f\'fcr andere Kategoriesysteme einsetzen kann. 
+\par 
+\par \pard\fi-360\li360\tx360\b 1.\tab Gruppierung:\b0  Dazu ist \i hinter dem ersten Feld\i0  ein '\b :\b0 ' n\'f6tig statt irgendeines anderen Trennzeichens, dann wird der Inhalt des ersten Feldes als Zwischen\'fcberschrift verwendet 
+\par \b 2.\tab Summierung:\b0  Dazu hat \i vor dem letzte Feld\i0  ein '_' statt irgendeines anderen Trennzeichens zu stehen. Dies f\'fchrt, wenn "Gruppierung" eingestellt ist, nicht nur zur Gesamtsummierung, sondern auch auch zur Errechnung von Zwischensummen f\'fcr die Gruppen. 
+\par \pard 
+\par Wenn beides zutrifft, hat das Feld TEXT also die Form: 
+\par 
+\par \pard\qc\b\f3\fs24 Gruppe:Text_Zahl 
+\par \pard\b0\i\f2\fs20 F\'fcr Allegrologen: 
+\par \i0 Daraus macht das Programm SRCH mit der Parameterdatei VIEWGRUP.APR eine \'fcbersichtliche ViewListe. Die Funktion der Zeichen  \b : \b0  und  _  ist nicht im Programm "verdrahtet", sondern nur in VIEWGRUP.APR. Wer parametrieren kann, darf sich auch ganz andere Dinge ausdenken, um die ViewListe zu erstellen. 
+\par 
+\par Folgende Funktionen braucht man f\'fcr den Umgang mit Views: 
+\par 
+\par \pard\fi-360\li360\tx360 1.\tab Ergebnismenge in eine ViewListe umwandeln : FLEXe  \f3 view1.flx\f2   und  \f3 view2.flx \f2  mit vorgegebenen ViPs, \f3 viewform.flx \f2  und  \f3 viewpara.flx \f2  f\'fcr ad-hoc erstellbare ViPs. 
+\par 2.\tab ViewListe betrachten, S\'e4tze ausw\'e4hlen und bearbeiten: FLEX-Befehl  \b\f3 View\b0\f2 
+\par 3.\tab ViewListe exportieren: FLEX-Befehl  \b\f3 download view\b0\f2 
+\par \pard 
+\par Auch eine extern (mit PRESTO oder SRCH oder anders) erstellte ViewListe kann mit den Schritten 2 und 3 benutzt werden. 
+\par Aber noch mehr: die schlichte Struktur der ViewListen erlaubt es sogar, Auswahllisten beliebiger Art in derselben Form zu erstellen, die dann mit dem Befehl  \b\f3 View\b0\f2   pr\'e4sentiert werden k\'f6nnen. Zeilen, die nicht mit einem Satz verbunden sind, sollten am Anfang die Angabe "\f3 0|\f2 " haben oder aber das Zeichen '|' nicht enthalten. Die ausgew\'e4hlte Zeile geht dann in die interne Variable \'fcber und kann beliebig weiter verwertet werden. Im FLEX sieht das so aus: 
+\par 
+\par \f3   ViewListe anzeigen: 
+\par \b View \b0\i dateiname  \i0     \f2 (\i Achtung:\i0  \f3 View\f2  mit gro\'dfem V, sonst keine Anzeige, sondern nur Datei\'f6ffnung)\f3 
+\par \f4   Es wurde [Esc] gedr\'fcckt: \f3 
+\par \b if cancel jump xxx 
+\par \b0\f4   Es wurde eine Zeile ausgew\'e4hlt (mit Enter oder [OK]): in #uaw kopieren \f3 
+\par \b ins #uaw 
+\par \b0 ... 
+\par \f2 
+\par In \f3 #uaw\f2  hat man anschlie\'dfend die ausgew\'e4hlte Zeile aus der ViewList und kann damit beliebig umgehen. 
+\par \i Tip: \i0 Um eine bestimmte ViewListe, die man vorher produziert hat, erneut zu sehen, kann man sie auch manuell aufrufen:  man gibt im Schreibfeld ein 
+\par \b\f3 v\b0  \i dateiname\i0\f2 
+\par 
+\par \b Verbesserungen von ASORT\b0 
+\par Das DOS-Sortierprogramm `\cf1\ul\b ASORT.EXE\cf2\ulnone\b0 ` wurde geeignet verbessert, um die Aufgaben des View-Konzepts wahrnehmen zu k\'f6nnen, wenn auf DOS-Ebene eine ViewListe hergestellt werden soll: 
+\par 
+\par Option  \b\f3 -u3\b0\f2 
+\par \pard\li708 beseitigt die Kategorie #u1 \i und\i0  verwandelt #u2 in eine reine Textzeile 
+\par (Option \b\f3 -u1\b0\f2  w\'fcrde nur  #u1  weglassen,. \b\f3 -u2\b0\f2  beseitigt #u1 und #u2) 
+\par 
+\par \pard Option \b\f3 -r\b0 
+\par \pard\li708\f2 sorgt f\'fcr umgekehrte Sortierung (wird im Standardpaket nicht ausgenutzt). 
+\par 
+\par ?h view=h view 
+\par ?Hauptseite zum Thema "Views"=h view 
+\par ?als Datei=h quick.vw 
+\par ?in ihrer Funktion als ViewListe=x View quick 
+\par ?Formular=h view 
+\par ?ASORT.EXE=h ac8 
+\par ?news 58=x jan view.htm 
+\par ?Auflistung und Bearbeitung=x var "*.vw"\\ins #uwz\\exec X param.flx 
+\par 
+\par \pard\qr 
+\par }
+ 

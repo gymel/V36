@@ -1,0 +1,236 @@
+
+
+Verlautbarung 270 der Entw.Abt.                              2015-07-07
+-------------------------------
+
+V35.6 ist da
+------------
+
+
+NEU...NEU...NEU
+===============
+acon : Erg.Mengen logisch kombinieren  [noch nicht in a99]
+-------------------------------------
+Schmerzlich vermisst wurde schon lange eine Moeglichkeit, zwei oder
+mehr Erg.Mengen logisch zu kombinieren. Zwar kann man laengere
+Folgen von "OR" oder "AND"-Befehlen zusammenbauen, diese aber immer
+nur als Ganzes ausfuehren. Und so ein Befehl kann schon mal zu lang
+werden, mit u.U. unerfreulicher Fehlfunktion.
+In a99 ist das Thema nicht virulent, denn da gibt es ja die drei
+Buttons unter der Alt+e-Liste, mit denen man jeweils zwei Erg.Mengen
+per Maus kombinieren kann. Und im Index kann man ebenfalls die 
+Erebnisse zu einzelnen Zeilen, auch mit Trunkierung, beliebig logisch
+kombinieren (/, + oder - druecken oder die Buttons klicken). 
+Solche interaktive Arbeitsweise ist in acon nicht moeglich. 
+Aber noch schlimmer: acon hat immer nur *eine* Erg.Menge! Jeder 
+"find"-Befehl ueberschreibt diese wieder. Man konnte die a99-Methode
+programmtechnisch auch deshalb nicht uebernehmen, weil acon sich u.U. 
+keine Hilfsdateien anlegen kann, wie es a99 tut.
+Es musste deshalb eine andere Loesung her. Die gibt es aber zunaechst
+nur fuer acon und ist momentan eher ein ad-hoc Provisorium, denn:
+Im Prinzip waere es hier einzig richtig, eine Klasse "RESULTSET" zu
+schaffen und ein Array solcher Objekte anzulegen, die sich dann frei-
+zuegig kombinieren liessen mittels bequemer Klassenmethoden. Das hat
+uns durchaus vorgeschwebt, aber der Aufwand konnte vorlaeufig nicht
+getrieben werden. Wir haben fix eine etwas provisorische Loesung 
+geschaffen, die leicht zu nutzen ist und im Falle einer spaeteren, 
+blitzsauber objektorientierten Loesung immer noch bestehenbleiben 
+kann - damit man die mit der provisorischen Loesung geschriebenen,
+einwandfrei funktionierenden Jobs dann unveraendert weiternutzen kann
+und nichts zu revidieren braucht.
+
+So wird's gemacht:
+Es gibt intern 2 Ergebnislisten, jede kann bis zu 4.000.000 Nummern
+fassen. Genutzt wird normalerweise nur die Liste 1. Bei Bedarf kann
+man die zweite mit "find set2" einschalten und hernach beide mit
+logischen Operatoren kombinieren.
+Folgendes Beispiel zeigt das Schema, das man nur zu kopieren und
+zu modifizieren braucht:
+
+find set1                 // Liste 1 einschalten
+find all shakespeare?     // Erg.Menge bilden
+order num                 // nach Satznummern ordnen
+
+find set2                 // Liste 2 einschalten
+find all goethe?          // Erg.Menge bilden
+order num                 // nach Satznummern ordnen
+find OR                   // beide Listen verODERn
+order num                 // und wieder nach Satznummern ordnen
+                          // hier gehen auch AND und NOT
+find set1                 // Liste 1 wieder einschalten
+   // Ergebnis der Kombination steht in Liste 1
+   // Liste 1 verarbeiten.
+
+Die mittleren fuenf Zeilen kann man beliebig wiederholen mit jeweils
+anderem Suchbefehl. Stets wird das Ergebnis mit der in Liste 1 
+vorher entstandenen Erg.Menge wieder per ODER verknuepft, d.h. die
+Menge 1 ist immer das Resultat aller vorangegangenen Operationen
+und ist nach dem Kombinierbefehl auch sofort wieder die aktive Menge.
+D.h. ein neuer find-Befehl ueberschreibt immer die Liste 1.
+Das ist eine Asymmetrie, um es klar zu sagen, aber das duerfte fuer
+die Praxis kein Problem sein.
+
+Neu sind also die Befehle
+
+find seti   (i = 1,2) : Liste 1 bzw. 2 einschalten
+
+find Op     (Op = OR,AND,NOT)  Liste 1 mit 2 kombinieren
+            Ergebnisse sind dann in Liste 1; 2 bleibt unveraendert
+
+Die Liste 2 kann man natuerlich auch nutzen, um zwischendurch mal
+eine andere Erg.Menge anzulegen und abzuarbeiten und dann zur
+ersten zurueckzukehren. Achtung: "find set1" bzw. "find set2" schalten 
+nicht nur zur betr. Liste um, sondern mit "next" wird dann auch 
+weitergemacht an der vorher in der betr. Liste erreichten Position. 
+Dafuer braucht man also nicht selber zu sorgen (mit var r ... usw.), 
+d.h. das Programm weiss selber, wenn "next" oder "prev" kommt, bei 
+welchem Satz man in der betr. Liste zuletzt war. 
+Wohlgemerkt: "find set1" und "find set2" laden nicht automatisch den
+betr. letzten Satz der Liste 1 bzw. 2, erst bei "next" und "prev" 
+geht's korrekt weiter. Will man nach "find set1" zurueck zum vorher
+geladenen Satz der Liste 1, muss man dies selber arrangieren.
+
+Keine richtig elegante Loesung, gewiss, und wenig intuitiv, sehr
+gewoehnungsbeduerftig. Fuer was Besseres war die Zeit, obschon reif,
+leider nicht vorhanden.
+
+
+Weitere Nachrichten
+===================
+
+Datenbank-Info
+--------------
+Hinzugefügt wurde Datum und Uhrzeit der letzten Sicherungskopie.
+(Falls diese mit der Standardmethode gemacht wurde)
+Ferner sind in der Datei dbi.rtf die zahlreichen Variablen #uvX 
+ersetzt durch #uüX. Sie werden zwar sofort wieder gelöscht, aber
+#uvX kommen auch an einigen Stellen in anderen FLEXen vor und sollten
+nicht in dem Zusammenhang in Kollision geraten.
+
+ODER-Funktion (a99 und alcarta)
+-------------
+Diese arbeitete inkorrekt, aber nur bei der Verknuepfung zweier
+Mengen mit dem [Oder]-Button in der Anzeige Alt+e der Erg.Mengen.
+(D.h. find-Befehle mit "or" klappten und Oder-Verknuepfungen im
+Index auch.)
+Korrigiert.
+
+Maximale Erg.Mengen-Groesse (a99, alcarta und acon)
+---------------------------
+Diese betrug nur 250.000. Zu knapp fur manche Grossbanken.
+Die Grenze wurde hochgestemmt auf 4.000.000. Warum nicht auf 
+"unbegrenzt"? Das waere uns auch sympathischer, aber aus internen
+Gruenden geht das nicht.
+
+
+ViewListen / Ergebnismengen
+---------------------------
+Das Eingeben von suchwoertern mit ^ am Anfang klappte nicht korrekt,
+wenn auf ^ etwas folgte, was nicht vorkam. Es sollte dann die letzte
+Zeile kommen, die dem Suchbegriff vorangehen wuerde, aber die 
+Anzeige sprang auf die erste Zeile zurueck.
+Behoben.
+
+
+IMPORT
+------
+Das Programm import.exe hatte einen Fehler bei dem Unterprogramm u6
+(Einfuegen der Bindestriche in eine ISBN), Handbuch 11.2.3.4, S. 270.
+Es blieb haengen, wenn das Fremdfeld laenger als 120 Zeichen war.
+Erweiterung auf 1024 hat's geloest.
+Auf fiel dies bei neuen DNB-Testdaten, wo es vorkommt, dass nicht
+nur eine ISBN da steht, sondern noch dazu mehrere Preis- und andere
+laengliche Angaben und Unterfelder.
+
+a99: ISBN mit 979- problematisch
+--------------------------------
+Die FLEX-Funktion "hyphen" soll Bindestriche in eine ISBN korrekt
+einsetzen. Das klappte auch bei neuen ISBNs mit 978-, aber nicht
+mit 979-. (Solche gibt es noch nicht so lange.)
+Wurde korrigiert. Die Pruefroutine bei der Eingabe war schon korrekt.
+
+Wir haben nebenbei einen neuen FLEX  isbn.flx  gemacht, der einem eine
+eingegebene ISBN oder ISSN durchrechnet und die Pruefziffer ermittelt,
+wenn man sie nicht mit eingegeben hat, bzw. korrigiert, wenn sie
+nicht stimmt. Eine ISSN erkennt der FLEX daran, dass es 7 oder 8
+Ziffern sind und an der 5. Position ein - steht. Das ist demnach
+bei der Eingabe zu beachten! Hinter 978 oder 979 sollte auch ein -,
+andere koennen entfallen und werden dann eingefuegt.
+Ausprobieren:  X isbn  eingeben.
+Eignet sich als Unterprogramm zum Einbau in eigene FLEXe oder Jobs. 
+Kommentare dazu stehen drin.
+
+
+a99: Seltenes Problem
+---------------------
+Wer etliche 1000 Sätze per FLEX verarbeiten laesst und bei jedem Satz
+den Befehl "sho rec" anwendet, konnte u.U. erleben, dass das Programm
+sehr langsam wurde. Es lag, wie Kollege Berger rausfand, an einer
+internen Sache, den sog. GDI-Objekten, die bei jedem solchen Befehl
+intern angelegt wurden und dann irgendwann zuviele wurden. Dieses
+Missverhalten konnte reduziert werden, man kann es jetzt aber auch
+ganz abstellen:
+Abhilfe ist ein neuer set-Befehl:
+set H1 : Anzeige des Hintergrundspeichers mit grauem Hintergrund statt
+         in Kursivschrift
+Default bleibt  set H0  wegen der Kontinuität und weil in der Doku
+überall steht, dass der Hintergrundspeicher in Kursivschrift erscheint.
+Empfehlung:  set H1  in _start.flx
+aber Umschaltung zur Laufzeit klappt auch, obwohl wenig sinnvoll.
+[GDI bedeutet "Graphics Device Interface". Darunter fallen alle 
+graphischen Oberflaechenelemente, incl. Fonts, und das ist hier der
+Punkt gewesen, wo es kritisch war: beim Umschalten mit Alt+r entstand
+jedesmal ein neues GDI. Dank fuer die Aufdeckung gebuehrt einmal mehr
+Thomas Berger.]
+
+
+ORDER: Zwei FLEXe fehlten
+-------------------------
+Die beiden FLEXe o-zeit.flx und o-vonbis.flx fehlten im GP. Beide sind
+dazu da, ORDER-Bestellungen eines gewuenschten Zeitraums als Erg.Menge
+zusammenzufassen:
+
+o-zeit.flx   : Fragt nach einer Eingabe in Form von JJJJMMTT
+      wobei man bis zu 4 Zeichen von rechts weglassen kann,
+      um einen ganzen Monat oder ein ganzes Jahr zu selektieren
+
+o-vonbis.flx : Fragt nach Anfangs- und Endedatum
+      beides einzugeben in der Form  TT.MM.JJJJ, und bei TT sowie MM
+      kann man eine fuehrende 0 auch weglassen, z.B. 1.1.2015
+
+Beide startet man mit Direkteingabe: X o-zeit  bzw.  X o-vonbis
+oder vom ORDER-Menue:  Bestellungen vom ...  /  von-bis
+
+
+update.job : Problem mit .alg-Daten
+-----------------------------------
+acon geriet unter schwer erklaerbaren Umstaenden ins Straucheln,
+wenn in den mit update.job einzuspeisenden Daten vom Typ .alg
+die Struktur nicht genau stimmte, und zwar wenn es hier und da mehr
+als einen Code 0 am Feldende gab.
+So etwas kommt nur vor, wenn man .alg-Daten mit anderen als Bordmitteln
+herstellt, also nicht per Export mit einem der Programme und mit der
+Parameterdatei i-1.apr. Speziell bei Erstellung per FLEX kann das auch 
+passieren, wenn man nicht aufpasst.
+Die Ursache wurde aufgeklaert und beseitigt.
+
+
+RDA: Codelisten
+---------------
+Fuer den Inhaltstyp (#0c.1) und den Datentraegertyp (#77.1) gibt es
+zwei ViewListen: ctype.vw und mtype.vw. Damit kann man die Typcodes
+korrekt erfassen, wenn man in ein Formular schreibt:
+
+#0c.1"Inhaltstyp:"|Vctype
+#77.1"Datentr.typ:"|Vmtype
+
+Was man mit diesen Feldern anstellt, bleibt vorerst dem Anwender
+ueberlassen. Man muss ja bedenken, dass zunaechst nur neue Daten solche
+Angaben enthalten.
+ACHTUNG: Damit das Feld #0c.1 erfassbar wird, muss in der CFG (sofern
+man eine eigene Variante der $a.cfg hat) diese Zeile stehen:
+
+#0c"Codes"$M.
+
+
+

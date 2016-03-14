@@ -1,0 +1,42 @@
+  FLEXIKON.FLX : Liste der Standard-FLEXe zeigen
+  2005-05-21
+
+:begin
+var "*" P "HELP\\flexikon.vw
+Aresqa
+ flexikon
+:anfang
+if "" jump exit   // nichts gewaehlt
+if no jump exit
+if "   " jump begin
+if " X " jump begin
+if " * " jump begin
+
+  Eine Zeile gewaehlt, die mit X beginnt
+ins #ufX
+
+:show
+var #ufX
+if not "X" jump showfile
+  Zeile beginnt mit X
+var "Starten (" #ufX(f"X " e" ") ".flx ausführen)"
+var +n "Anzeigen der Datei " #ufX(f"X " e" ") ".flx"
+var +n "Liste wieder anzeigen"
+Aresqa
+if "" jump exit
+if "Start" jump start
+if "Liste" jump begin
+
+:showfile
+var #ufX(f"X " f" " e" ") ".flx"
+help
+mes Das ist die Datei
+jump begin
+
+
+:start
+var "X " #ufX(f"X " e" ") ".flx"
+exec
+
+:exit
+

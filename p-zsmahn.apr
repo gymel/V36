@@ -1,0 +1,43 @@
+  P-ZSMAHN.APR : Mahnungen ueberfaelliger ZS-Lieferungen
+  980416  
+    Winfried Goss
+
+pn="ZS-Liefermahnungen"
+
+  ----------- Konstanten --------------------------------------------------
+
+zl=66         Zeilenlaenge
+zm=60         Zeilen je Seite
+ae=13 10 13 10       Aufnahme-Ende: Zeilenumbruch
+
+  ----------- Anweisungsteil -----------------------------------------------
+
+#u1 +#9A |:0         Lieferantenstammsatz laden
+#u1 +#9X "Kein Lieferantenstammsatz gefunden zu "
+#+-    #u1 nicht vorhanden: Abbruch
+#9A n { "Lieferant   : " #250 }
+#9A t { #0 C "Telefon     : " }
+#9A x { #0 C "Kundennummer: " }
+#<
+
+#9X ++ >A m>A        fuer alle ueberfaelligen Hefte UP A aufrufen
+#+#    fertig
+
+  ----------- Unterprogramme -----------------------------------------------
+
+#(A
+#t{ #0 C C }
+#cc +#8n e"[+=]" |90      ZS-Stammsatz laden
+#cc +#cc e"[+=]" "Kein Zeitschriftenstammsatz gefunden zu "
+#8n { " * " #250 }
+#97n C "- Vorgangsnummer: "
+#<
+!cc b"+" C "- Letzte Ausgabe: "
+#)A
+
+  ----------- Zeichenumwandlungen etc.: ------------------------------------
+
+p ª 1         Nichtsortierzeichen weglassen
+
+q = " / "
+q  "; "

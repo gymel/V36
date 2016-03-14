@@ -1,0 +1,105 @@
+  CFGB.FLX : Anzeigefeld-Inhalt nehmen und in den Datensatz ueberfuehren
+  2004-09-09   (Anzeige kommt durch cfga.flx zustande!)
+
+  Anzeige speichern in Datei nnn
+file nnn.
+  zaehler auf 0
+var "0"
+z=
+set e0   // Editor-Fehlermeldungen aus
+
+  diese Datei zum Einlesen oeffnen
+open nnn
+if no mes Datei nnn nicht gefunden;end
+  erste Zeile in iV einlesen
+get
+:loop
+  womit beginnt die Zeile?
+if "#" jump feld
+if "   " jump tf
+  if not "" jump ff
+  Zeile ist leer oder Kommentar, naechste lesen
+get
+  keine mehr?
+if can jump exit
+jump loop
+
+  Zeile ist ein Teilfeld:
+:tf
+var (b"")
+ins #ueT
+
+var #ueT
+if not %ú% jump otf
+var (b"ú")
+ins #ueI
+jump mtf
+:otf
+if not % % jump getf
+var (b" ")
+ins #ueI
+
+:mtf
+  Subfield einbauen (Feldnummer steht in #ueF)
+  ACHTUNG: bei 3stell. Schema hier (0,5) !
+var "$" #ueT(0,1) "-" #ueF(0,4) #ueI(f" ")
+ins
+
+get
+if can jump exit
+jump loop
+  Es ist ein Datenfeld (beginnt mit #)
+:feld
+  Zaehler erhoehen
+z+1
+
+if not %% jump nosf
+var (e" ")
+ins
+ins #ueF
+  naechste Zeile aus Datei nnn
+:getf
+get
+if can jump exit
+jump loop
+:nosf
+if not %ú% jump ohne
+ins #ueK
+jump mit
+
+:ohne
+if not % % jump getf
+ins #ueK
+
+:mit
+
+var "$$-" #ueK(e" ") " " #ueK(B" " B"ú" f" ")
+ins
+  Feldnummer in #ueF bereitlegen
+var #ueK(e" ") "   x"
+ins #ueF
+jump getf
+  Es ist eine Fortsetzungszeile (beginnt nicht mit #):
+:ff
+  zwischenspeichern
+ins #ueG
+  Befehl basteln, um das vorige Feld wieder in die iV zu bringen
+var '"' #ueF(0,4) '" ' #ueF(0,4)
+  und diesen Befehl ausfhren
+var
+  dann #ueG hinten anh„ngen
+var +#ueG(e" ú")
+  und das ganze in den Datensatz einsetzen
+mes
+ins
+jump getf
+:exit
+close
+ delete nnn
+set e1   // Editor-Fehlermeldungen wieder ein
+sho rec
+disp
+  wenn eine Zeile gewesen ist:
+var z
+if not "0" Put
+

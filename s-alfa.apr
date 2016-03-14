@@ -1,0 +1,156 @@
+  S-ALFA.APR Sortieren nach Hauptsach- oder ZS-Titel, +Ausleihdaten
+  980428     (Listendruck nach dem Sortieren mit P-ALFA.APR vornehmen)
+     Winfried Goss   980428 b.e.
+
+    *  Bei der Ausgabe verknuepfter Baende werden Verfasser und Erscheinungs-
+       jahr ggf. aus der Hauptaufnahme uebernommen; der Sachtitel der Haupt-
+       aufnahme wird dem der Bandaufnahme mit " : " vorangestellt.
+
+    *  Zu den Titelaufnahmen werden die Signaturen aller Exemplarsaetze
+       (bzw. die Heftangaben zu ZS-Bandaufnahmen) in #90 ausgegeben.
+       (Ist ein Exemplarsatz in Arbeit, wird die Titelaufnahme nachgeladen.)
+       Die Belegung von #90 hat folgendes Format:
+       90 {Status}{Signatur}[:E{Exemplarnr}][u{Entleiher}D{Datum}][; ...]
+
+    *  Falls beim Aufruf die Variable #uai mit '0' belegt ist ( -U"ai0" ),
+       erfolgt keine Ausgabe der Ausleihinformationen!
+
+    *  Zu selektierten Benutzerstammsaetzen werden alle entliehenen
+       Exemplare ausgegeben
+
+pn="Sortierformat nach #20/#8n"
+
+  ----------- Konstanten --------------------------------------------------
+
+zl=0          Zeilenlaenge unbegrenzt (kein Umbruch)
+ks=1          Beginn des Ausgabetextes beim ersten Zeichen hinter #
+ke=0          Kategorie-Ende = Code 0
+ae=""         Aufnahme-Ende: Carriage Return / Line Feed
+
+  ----------- Anweisungsteil -----------------------------------------------
+
+1=":E"        Exemplarnummern-Praefix
+2=0 C
+3=1 "u1 "
+
+#hi +- e0 #zz 0      keine Unteraufnahmen
+#2n +- e0 #zz 0      Stamms„tze weglassen
+#3n +- e0 #zz 0
+#4n +- e0 #zz 0
+#6n +- e0 #zz 0
+#96b +- e0 #zz 0     Begriff-/Erklaerungssaetze dto.
+#9G. +- e0 #zz 0
+#9A. +- e0 #zz 0
+#9DG +- i4,V e0 #zz 0
+#3t +- e0 #zz 0
+#9s. +- e0 #zz 0
+
+
+#9B +B b4 e"" "B" P":" |:2 #zz 0         Benutzerstammsatz: 1. Ex. laden
+#9DF +B e0 #zz 0     Exemplarsatz ->
+#00 +A I4,- e0 #zz 0        'normale' Aufnahmen ->
+#+-
+
+#-A
+#>T    Kurztitel aufbauen und ausgeben
+#9X. ++ >Z m>Z #zz 0        ZS-Band in Arbeit? -> UP Z
+#9X. +X e0            ZS-Band hier fertig
+#00 +E b3 e"[=-]" P" =" |102 #zz 0       sonst: erstes Exemplar laden, ->
+#90 b3 e"" "0" #zz 0       nichts vorhanden: Signatur anhaengen
+#t{ 0 }       Signatur abschliessen
+#+X
+
+#-E
+#>E    Exemplarangaben ausgeben
+#<     zurueck zur Titelaufnahme
+#00 +E { "; " } b3 e"[=-]" P" =" |103 #zz 0     naechstes Ex. laden, Schleife
+#t{ 0 }       keines mehr vorhanden: Signatur abschliessen
+#+X
+
+#-B
+#9DF b3 |90 #zz 0    ggf. Titelaufnahme zum Exemplarsatz laden
+#>T    Kurztitel aufbauen und ausgeben
+#9X. +b >B e0 #zz 0         fuer ZS-Band ->
+#<     sonst zurueck zum Explsatz
+#>E    Exemplarangaben ausgeben
+#-b
+#t{ 0 }       Signatur abschliessen
+#<     zurueck zum Benutzerstammsatz
+#9B +B b4 e"" "B" P":" |:3 #zz 2  naechstes Ex. zu Benutzerstammsatz laden
+#+X
+
+#-X
+#t{ C }
+#+#
+  ----------- Unterprogramme -----------------------------------------------
+
+#(B    verliehene ZS-Baende via Benutzerstammsatz
+#ux: b"," b"[,;]" ,"_;_ _" "l" #zz 0      lSignatur Heft
+#ux: b"," e"[,;]" b"+" b2 ,"_+_-_" "/" #zz 0     /Jahr-Exemplarnr.
+#uai +#98b i4,0 e0 #zz 0    falls #uai mit 0 belegt: naechste Zeile ueberspr.
+#ux: b4 e"[,/]" ,"_:_D_" "u_" #zz 0     u_Ausweisnr.DAusleihdatum
+#98b
+#)B
+
+#(E    Exemplarangaben
+#9DG +#98E v e1 #zz 0      Status Ausleihbarkeit
+#9DG b3 e1 #zz 0     ansonsten Exemplarstatus nehmen
+#98E
+#9DG s #zz 0        Signatur
+#9DG e r3,0 1 #zz 0        Exemplarnr. 3stellig anhaengen
+#uai +#98e i4,0 e0 #zz 0    falls #uai mit 0 belegt: naechste Zeile ueberspr.
+#9X u "u" #zz 0    Ausleihinformationen anhaengen
+#9X D "D" #zz 0    Datum anhaengen
+#98e
+#)E
+
+#(T    Kurztitel aufbauen
+#nr >U dti dvf dej e0 #zz 0        Kategorien in Variablen speichern
+#00 +#nr b3 c"+" e"+" |90 #zz 0      falls verknuepft: Hauptaufnahme laden, ->
+#+t
+#nr >U e0 #zz 0
+#<
+#-t
+#t3    #u1 ausgeben
+!uti u b3 P"" #zz 0        Titel
+!uvf u b3 #zz 0      und/oder Verf./Hrsg./Urheber
+#t{ 0 }       Kategorie abschliessen
+#00           Identnr. (nicht notwendig)
+#uti b3 "20 "        Titel
+#uvf b3 "40 "        Verf./Urheber
+#uej b3 "76 "        Jahr
+#95           Preis (wird bei Unteraufn. nicht aus Hauptaufnahme geholt)
+#92p b3 "95 "        Abo-Preis
+!fna b3 e"[123456789]" "90 " P" " #zz 0   Signatur: Datenbankname am Anfang
+#)T
+
+#(U    Unterprogramm zur Uebernahme best. Kategorien in Anwendervariablen
+#uti " : " e3 ati #zz 0    falls #uti schon belegt: Praefix " : "
+#20 +#uvf b3 e" : " ati #zz 0      Zusatz abschneiden, in #uti speichern
+#8n b3 e" : " P" [ZS]" ati #zz 0
+#uvf +#uej e0 #zz 0         falls #uvf schon belegt: weiter
+#40 +#uej b3 e"[;=]" F" " avf #zz 0       sonst 1. Verf in #uvf speichern
+#41 +#uej b3 e"[;=]" F" " P" [Hrsg.]" avf #zz 0    oder Hrsg.
+#60 b3 u e"[;=]" F" " avf #zz 0          ggf. Urheber nehmen
+#uej +#nr e0 #zz 0          falls #uej schon belegt: weiter
+#76 b3 x"*1" e4 aej #zz 0          sonst Erscheinungsjahr nach #uej
+#nr e0 #zz 0
+#)U
+
+#(Z    ZS-Band
+#cc +#90 D "l" e1 #zz 0    ausgeliehen?
+#t{ "0" }            ansonsten...
+#90 b3 e"" #zz 0    Signatur anhaengen
+#cc b3 e"" B"Heft " " " #zz 0     Heftnr.
+#00 e"[=-]" b"+" b2 ,"_+_-_" "/" #zz 0   Jahr
+#uai +#98z i4,0 e0 #zz 0    falls #uai mit 0 belegt: naechste Zeile ueberspr.
+#cc u "u" #zz 0    Entleiher
+#cc v e"%" "u_" P" (V)" #zz 0    Ausleihe via Verteiler
+#cc D "D" #zz 0    Ausleihdatum
+#98z
+#t{ "; " }    naechstes Heft
+#)Z
+
+  ----------- Zeichenumcodierungen -----------------------------------------
+
+ts     S.APT fuer Zeichenumwandlung des Sortierschluessels #u1 laden

@@ -1,0 +1,69 @@
+  I-0.APR : Ausgabe im Original-"allegro"-Format ("Download" im Internformat)
+  940613          Prototyp fÅr den Exporttyp INTERN
+
+pn="INTERN Prototyp"
+
+  Diese Parameterdatei erzeugt Daten im allegro-Format,
+  also eine identische Reproduktion der Daten
+  wobei einige Zusatzmîglichkeiten existieren:
+
+  !!! diese Datei funktioniert fÅr alle Konfigurationen !!!
+      wenn Sie sie fÅr P.CFG benîtigen:
+      mit  copy i-0.apr i-0.ppr  eine Kopie machen
+
+  ------------- Konstanten -------------------------------------
+
+zl=0        ZeilenlÑnge unbegrenzt (kein Umbruch)
+zi=0
+ks=1        Beginn des Ausgabetextes beim ersten Zeichen hinter #
+              d.h. Kategorienummer wird mit ausgegeben
+
+ke=0        Kategorie-Ende = Code 0 (allegro-Steuerzeichen "Kategorie-Ende")
+
+as=""       Aufnahme-Start: nichts (siehe unten)
+
+ae=""       Aufnahme-Ende: nichts (siehe unten)
+
+dx=1        damit man beim Testen auch die Steuerzeichen auf dem
+            Bildschirm sieht. (Ansonsten nicht nîtig)
+  -----------------------------------------------------------------
+
+  ************* Kategorieliste ************************************
+
+  Zuerst kînnten BedingungsprÅfungen kommen, um bestimmte Daten vom
+  Export auszuschliessen, z.B.
+
+  #9B +- #zz 0     BenutzersÑtze nicht ausgeben
+
+
+#t{ h0 }    Hierarchiekennung
+
+  #hi +H e0 #zz 0     wenn UntersÑtze anders behandelt werden sollen,
+                      muss hier der Sprung erfolgen
+
+  Hier fÅhrt man nur die Kategorien auf, die ausgegeben werden sollen
+
+       Wenn vollstÑndige Ausgabe gewÅnscht, folgende Zeile aktivieren:
+ ##    als Befehl fÅr Pauschalexport - das reicht.
+       dann aber die Kategoriezeilen unten beseitigen!
+
+ /kk   wenn #kk vom Pauschalexport ausgeschlossen sein soll
+
+#01         Hierarchie-Angaben bei UntersÑtzen
+#02
+#03
+#04
+#05
+
+#20              Sachtitel
+#40. ++          alle Verfasser
+#74              Ersch.Ort
+#75              Verlag
+#76              Ersch.Jahr
+#77              Umfang
+#90              Signatur
+
+#nr e0 #zz 0
+#t{ 13 10 }      Abschluss
+
+  ****************************************************************************

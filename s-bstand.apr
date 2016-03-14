@@ -1,0 +1,57 @@
+  S-BSTAND.APR : Sortieren nach Titel (#20 oder #8n)
+  970719    MUSS mit S-VOLL.APT zusammen laufen
+
+  Ergebnismenge = Bestandss„tze von Zeitschriften
+pn="Sortierformat Zeitschr."
+
+  die folgenden Angaben mssen so bleiben
+  damit die fr die Weiterverarbeitung n”tige .ALG-Form entsteht
+  --------------------------------------------------------------
+zl=0        ... Zeilenl„nge unbegrenzt
+ks=1        ... Beginn beim ersten Zeichen hinter #
+ke=0        ... Kategorie-Ende = 0
+as=""       ... Aufnahme-Start
+ae=13 10    ... Aufn.Ende
+
+ts          ... l„dt die Zeichenumwandlungstabelle S.APT fr das Sortieren
+ag=0        ... Unteraufnahmen getrennt verarbeiten
+ad=0        ... wenn keine ak-Kategorie, keine Ausgabe
+am=1        ... nur 1 Ausgabesatz soll produziert werden
+
+ ---------------------------------------------------------------
+
+ak=9DF+a    Nur was tun, wenn es ein #9DF gibt
+
+#+-  wenn keine IdNr: kein output
+
+  ******************************************
+  Beginn der Verarbeitung von Hauptaufnahmen
+  ******************************************
+ 
+#-a
+        der Sortierbegriff wird als #u1 ausgegeben
+
+#9DF +b b3 |90 #zz 0   Titelsatz laden
+#+-    existiert nicht
+
+#-b
+#t { h0 }    Aufnahme-Start
+!20 +#74 b3 u e" : " p"u1 " #zz 0    erster Teil
+!8n u b3 u e" : " p"u1 " #zz 0       erster Teil  wenn #20 unbesetzt
+!74 e"" b3 e";" p"" #zz 0                    zweiter Teil
+#t{ 0 }
+     Die Druckform des Sortierfeldes: Produktion als #u2
+     (genauso wie #u1, nur ohne Umcodierung, dann fr den Druck verwertbar!)
+
+#20 +#74 b3 e" : " p"u2 " #zz 0    erster Teil
+#8n b3 e" : " p"u2 " #zz 0       erster Teil  wenn #20 unbesetzt
+#74 b3 e"" e";" p"" #zz 0                    zweiter Teil
+#t{ 0 }
+
+#^9DG b3 p"92 " M #zz 0     #9DG als #92 einordnen
+
+tselect     Select.APT nachladen
+            diese Tabelle enth„lt die auszugebenden Kategorien
+            (S-KURZ, S-MITTEL, S-LANG, S-VOLL)
+/00     #00 nicht, sonst werden Doppeleintraege weggelassen
+

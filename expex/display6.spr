@@ -1,0 +1,93 @@
+ Positioning commands.
+ ~~~~~~~~~~~~~~~~~~~~~
+
+ So far, each line has begun at the left margin, and we have only influenced
+ the shape of the display by experimenting with line length (zl=56) and
+ introducing line feeds and carriage returns (C). We can also determine at
+ what position in the line output should start, by how much a line should be
+ indented, and at which line output should begin.
+
+ With these commands, we can now determine the final shape of our output of
+ MARC records. At the same time, we begin to arrange the fields into the
+ required order, and supply appropriate punctuation.
+ 
+zl=76
+ each line is 76 characters long (after which it will break)
+dx=1
+ activate ANSI escape sequences
+
+ Text elements:
+4=C       
+    start a new line (a useful "texel")
+60=%12
+    set the line length to 12 characters
+65=%76 $ #13 &14
+   %76 = set line length to 76 characters
+       $ = go to home position (line 1)
+         #13 = set indentation to position 13 (output therefore begins at 14)
+             &14 = go to position 14 of current line
+74=27 91 48 59 51 52 59 52 55 109    blue
+76=27 91 48 59 51 48 59 52 55 109    normal
+       (the figures  ^^^^^^^^  stand for a white background)
+
+ First display the shelfmark in the top left:
+#050 60 a
+ ouput #050 subfield a (the LC classification), prefixing it with texel 60,
+ which will set the line length to 12 characters 
+#050 C b
+ then output subfield b, on a new line
+
+ At this point, we arrange for the body of the record to be displayed in
+ another column level with the shelfmark. The series of positioning commands
+ required to achieve this are strung together in texel 65:
+#t65
+ We could introduce them directly with the "t" command, in which case they
+ would have to be enclosed in braces:
+ #t{%76 $ #13 &14}
+ Try altering the values in texel 65 to see how it affects the shape of the
+ display.
+
+#t74
+ change to blue for author's name
+#100 a F", " P":"
+#t76
+ change back to normal colour
+#t4
+ new line (i.e. texel 4; we could have put t{C}
+
+#240 a p"["
+ a of #240 contains the uniform title
+#240 l p" <" P">"
+ l contains the language, and will be enclosed in <...>
+#240 p"]" e1 P4
+ Note the "e" (end) command, here used for the first time. "e1" means "end
+ after the 1st character of the export string". Since this is "]" (the prefix
+ has seen to that), this line effectively means "output ']' if field #240 is
+ present, but do not output the content of the field itself".
+ Note also that we start a new line here by means of a postfix, not
+ unconditional text entry as above. This is because field #240 is not always
+ present, and if it is not present, we don't want another carriage return.
+ Above, however, we want to start a new line irrespective of whether #100 is
+ present, so that the title information always starts on the same line.
+#245 a F" :/"
+#245 h p" " F" :/"
+#245 b " : " F"./ "
+#245 c " / " F". "
+#t{"."}
+ Put a full stop after all the title information.
+ Note how character strings in text elements must be enclosed in inverted
+ commas, but not positioning commands.
+
+ 컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴
+ What follows is explanatory, and not part of the experiment. Do not change.
+#t{27 91 49 59 51 48 59 52 55 109 &0 #0 %56}
+#t{C C C "�"*56 C "By a series of positioning commands, we have now begun to "}
+#t{"present the data in its final form."}
+#t{C "We have arranged for the shelfmark and the main part of the record to "}
+#t{"appear alongside each other."}
+#t{C "The author (i.e. heading) is displayed in blue, and the title "}
+#t{"information begins on a new line."}
+#t{C "Edit DISPLAY6.SPR again (F2 F2 F10) to experiment with changing the "}
+#t{"positions in which the various parts of the record are displayed."}
+
+pn="DISPLAY6.SPR"  19960224

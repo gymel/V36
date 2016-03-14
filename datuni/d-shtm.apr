@@ -1,0 +1,97 @@
+  d-shtm.apr : Datensatzanzeige im Browser, Tabellenform
+
+pn="Anzeige fuer Web"
+
+zl=0   Zeilenlaenge: Kein Umbruch
+
+ze=""     Kein Code f. Zeilenende
+
+zm=0      keine Seitenschaltung
+
+i4=1    V14-Ersetzungen ausfuehren
+
+zi=0        keine EinrÅckung
+fl=0        Anzahl Zeilen je Karte
+fm=0        Modus: keine Einzelkarten fÅr die BÑnde (2 = Einzelkarten)
+i4=1
+
+
+#uII +( e0
+
+
+  ********* ZWISCHENTEILE  1 - 78  *************
+1=". "      Interpunktion
+2=", "
+3="; "
+4="<br>" C
+5=" : "
+6="<br>" C "<br>" C
+7=" = "
+8=". - "
+9=" / "
+10="("
+11=")"
+12="<br>" C "<br>" C "<br>" C
+13="<br>" C "   "
+14=". - ("
+15="." "<br>" C "   "
+
+20=C "<tr><td valign=top><i>"     Neue Tabellenzeile
+21="</i></td><td>"                zwischen zwei Tab.Spalten
+22="</td></tr>" C                 Ende der Tab.Zeile
+23="<br>"                     Vorschub innerhalb Tab.Zelle
+
+
+
+30="<br>" C "Kongr.: "
+60=#250     Einrueckung auf momentaner Position festsetzen
+61=#0       Einrueckung auf 0 setzen
+62=&0       Sprung auf Pos. 0
+
+    ******  Hauptteil : Konstr. der "Einheitskarte" ****
+    ** Durchlauf ab hier fuer Hauptsatz und Untersaetze **
+
+#t{ "<table>" }
+td-s             d-s.apt laden
+#t{ "</table>" }
+
+#+#
+
+#-(
+#bp .35 35    Texel
+#bp & &    V23
+#bi5=0
+#bi4=0
+
+#t{ s0 }
+#t{ "<table>" }
+
+  ##        oder diese 5 Zeilen:
+
+#u01 dnz anz e0
+#-[
+#unz b4 e4 p20 P21
+#unz b8 P22
+#u02 +[ =nz e0
+
+#t{ "</table>" }
+
+#bp .35 8
+#bi5=95
+#bi4=1
+#t{ s4 }       oder 5 statt 4 wenn 3stelliges Schema!
+
+#+#
+
+
+   ******** Sonderzeichen ***********
+td-htm
+
+p < "&lt"
+p > "&gt"
+p & "&amp"
+p  255    Absatz
+ p ™ 1
+ q ™ 1
+q a/z A
+

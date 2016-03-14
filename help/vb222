@@ -1,0 +1,92 @@
+
+Verlautbarung 222 der Entw.Abt.                              2009-10-29
+-------------------------------
+
+Diese Version soll im November als definitive V29 auf CD erscheinen.
+Es hatten sich nach Freigabe der V29.9 noch Aenderungsbedarfe
+gezeigt, weshalb der Termin der CD-Produktion verschoben wurde.
+
+V29.10
+======
+
+Sequenzen-Ersetzung bei Export (siehe h vb164, Punkt 5)
+------------------------------
+Diese Methodik erwies sich an einem Punkt als problematisch.
+Hat man eine Zeichenfolge wie diese:
+  aaa bbb & ccc ddd&#1040;eee&#1040;fff&#1040;ggg hhh iii
+so ergab sich beim Export
+  aaa bbb & ccc ddd&#1040;eeeAfffAggg hhh iii
+falls die Sequenz &#1040; in A gewandelt werden soll.
+Man wuenscht in dem Fall aber
+  aaa bbb & ccc dddAeeeAfffAggg hhh iii
+Nun kann man einerseits empfehlen, das Zeichen &, wird es als
+solches gewuenscht, stets als &amp; zu erfassen. Aber das ist nicht
+immer genehm, daher wurden die Programme (alle, die den Export
+beherrschen) nun angewiesen, sich am Auftreten eines & ohne nach-
+folgende gueltige Sequenz nicht mehr zu stoeren und es eben auch
+unveraendert auszugeben.
+
+ORDER : Inventarisierung
+------------------------
+Das Produzieren eindeutiger Zugangsnummern, d.h. die Verhinderung
+von Doppelvergaben, musste anders geloest werden. Das ist nun
+in  o-invent.flx  geschehen.
+Hinweis: Einzugreifen ist in o-invent.flx dann, wenn nicht #91
+sondern eine andere Kategorie fuer die Inventarnummer im Titelsatz
+verwendet wird oder wenn die #91 gar nicht zu verwenden ist, sondern
+die Zugangsnummern nur in die Exemplarsaetze sollen oder wenn
+sie NICHT zusaetzlich auch in die Bestellsaetze sollen. Alle diese
+Stellen sind in  o-invent.flx  kommentiert.
+In den Indexparamatern muss gleichwohl die Indexierung der #91
+(bzw. der sonst dafuer vorgesehenen Kategorie) korrekt angelegt
+sein, auch wenn sie nicht verwendet wird.
+
+
+aLF : Kleinere Korrekturen
+--------------------------
+In a-chkout.flx und a-func.flx wurden kleinere Korrekturen
+vorgenommen, auch in  a-mahnrg.flx  und  a-mahnex.flx
+
+
+Erg.Menge in Druckform
+----------------------
+Bei access<4 kam es zu einem Absturz bei der Funktion
+Ansicht / Erg.Menge in Druckform
+Das wurde behoben.
+
+
+Artikelpruefung (a99 und acon)
+---------------
+Es gab Unerquicklichkeiten bei der Artikelpruefung per FLEX und
+beim "insert". Diese wurden behoben.
+Der Hilfetext  xif.rtf  ist im Abschnitt "if Artic" geaendert:
+
+if Artic command      (auch avanti)
+Wenn der Inhalt der iV mit Artikel beginnt, wird command  ausgefuehrt.
+Die Artikel sind in der CFG definiert.
+Gross-/Kleinschreibung ist dabei nicht relevant: 'der' ist identisch
+mit 'Der' und 'DER' usw.
+Mit "if ARtic" (also grossem R) wird darueber hinaus das Wort dann mit
+Nichtsortierzeichen markiert.
+Tip: Mit "if ARtic set" bewirkt man, dass die Nichtsortierzeichen
+gesetzt werden, sonst aber nichts passiert
+
+Beim Befehl "insert ..." wurde im Fall z.B. der Kategorie #20 das
+Nichtsortierzeichen automatisch gesetzt. Das passiert nicht mehr.
+Will man es trotzdem erreichen, schreibt man:
+
+var "Der Titel..."
+if ARt set
+ins #20
+
+(Der Befehl "set" ohne Argument hat keine Wirkung, er steht hier nur,
+damit der if-Befehl nicht offen endet, das geht sonst schief. M.a.W.:
+"set" ohne was dahinter bedeutet "nop", was es in FLEX nicht gibt.)
+
+
+MARC-Export
+-----------
+Der Export mit  marctxt.apr  gibt jetzt UTF-8 aus statt ANSEL,
+dies ist kommentiert. Das Freeware-Programm MARCEDIT kann damit
+umgehen, um echte MARC-Daten (mit "directory") draus zu machen.
+

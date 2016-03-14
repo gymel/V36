@@ -1,0 +1,140 @@
+      OCLC Tape Format --> MARC allegro
+
+      This is a partially self-explanatory parameter file
+      for the import function. it controls the processing
+      of MARC records
+
+
+al=5         rec length is coded in first two bytes      
+am=1          in decimal digits
+
+y .30 0      replace 1E = MARC field terminator by zero (allegro field end)
+             it's also the last byte of directory!
+
+ fs=4         field start = 4 bytes after position given in directory
+              (all fields start with 2 indicators + a)
+fc=1         field length correction: subtract fc from directory length
+
+fr=1         field repetition increment
+fm=a         #650a follows #650
+
+
+
+
+    conversion of coded special characters, e.g. èa -->> „
+
+p è aouAOU „”Ž™š
+p â aeiouE  ‚¡¢£
+p á aeiou …Š•—
+p ã aeiou ƒˆŒ“–
+p à nN ¤¥
+p ä nN ¤¥
+p ð cC ‡€
+p ê aA †
+p  b á
+
+    now we come to the field description paragraphs:
+    each begins with an allegro tag number, followed by a srch command
+    (e.g. D"008"  means: search for MARC tag 008
+    pre-processing commands may follow
+
+
+ command:     comment:
+ ---------------------------------------------------------------------------
+           (lines beginning with spaces are treated as comments;
+           2 spaces separate comment from command)
+
+#001
+D0 "001"
+
+
+#005    last date and time
+D0 "005"
+ { 4       go 4 byte left: field has no indic nor subf
+l 8       take 8 bytes: format of date is YYYYMMDD
+
+#010
+D0 "010"       001 : LC-Id.-Nr.
+i 32
+w "  "     this field has no indicators
+
+
+#153          Classification authority records
+D0 "153"      multiple subf. a and c must be eliminated
+% "a"
+_ "A"
+_ "a"
+_ ""
+_ "A"
+_ "a"
+
+% "c"
+_ "C"
+_ "c"
+_ ""
+_ "C"
+_ "c"
+
+
+
+#245
+D0 "245"        MARC 245 : title proper
+(P
+_ " /"     activate these lines if punctuation to be removed
+_ ""
+_ " :"
+_ ""
+_ ","
+_ ""
+)P
+
+#240
+D0 "240"        MARC 240 : Uniform title
+>P            call the subroutine for punctuation removal
+
+#241
+D0 "241"        MARC 241 : Romaniz title
+>P
+
+#242
+D0 "242"  
+>P
+
+#243
+D0 "243"  
+>P
+
+
+#260          260 : Imprint area
+D0 "260"
+_ " /"     activate these lines if punctuation to be removed
+_ ""
+_ " :"
+_ ""
+_ ","
+_ ""
+
+#263
+D0 "263"
+m
+
+
+#300
+D0 "300"        300   phys. descr. area
+_ " :"
+_ ""
+_ ","
+_ ""
+_ " ;"
+_ ""
+m
+
+
+   collect all remaining fields 
+   using this special syntax:
+
+#999
+M "???"   collect all fields that haven't been invalidated 
+m         the result is:
+          #tag1  text
+          #tag2  text...

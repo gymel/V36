@@ -1,0 +1,120 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman Times New Roman;}{\f1\fmodern\fprq1 Courier New;}{\f2\froman\fprq2 Times New Roman;}{\f3\froman\fprq2\fcharset0 Times New Roman;}{\f4\fmodern\fprq1\fcharset0 Courier New;}{\f5\froman\fcharset0 Times New Roman;}{\f6\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red0\green176\blue0;\red255\green0\blue0;\red0\green0\blue128;\red0\green128\blue0;}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\fi-710\li710\qr\f0\fs18\par
+`\cf1\ul\b Register\cf2\ulnone\b0 `\cf3\par
+\pard\f1\fs24\par
+\cf4\b\i\f2\fs28 acon-\i0 Auftragssprache,\i  \cf2\b0\i0\fs24 `\cf1\ul\b\fs28 Sonderbefehle\cf2\ulnone\b0\fs24 ` \cf4\b\fs28 und\cf2\b0\fs24  `\cf1\ul\b\fs28 Fehlermeldungen\cf2\ulnone\b0\fs24 `\i\par
+\i0\par
+\f3 Der \i avanti\i0 -Server kann sog. "Auftr\'e4ge" abarbeiten. Dies erledigt in Wirklichkeit das Programm `\cf1\ul\b\f4 acon\cf2\ulnone\b0\f3 `, das dazu von \f4 avanti\f3  aufgerufen wird.\f2\par
+Ein Auftrag (engl. \b\f3 job\b0\f2 ) ist eine Kette von Befehlen, formuliert in der \f4 acon\f3 -Sprache. Der Server kann diese Befehle ausf\'fchren. Aus der \f4 acon\f2 -Sprache ist die `\cf1\ul\b FLEX\cf2\ulnone\b0 `-Sprache des Windows-Programms \b\i a99/alcarta\b0\i0\f3  urspr\'fcnglich hervorgegangen, hat sich dann aber teilweise verselbst\'e4ndigt, denn \i a99\i0  ist ein interaktives Programm mit Windows-Oberfl\'e4che und stellt viele zus\'e4tzliche Anforderungen. Daraus erwuchsen neue Befehle, die \f4 acon\f3  nicht kennt und auch nicht ausf\'fchren k\'f6nnte. Leider gibt es bei den gemeinsamen Befehlen auch kleinere Unterschiede, die nicht n\'f6tig gewesen w\'e4ren, auf die bei der Beschreibung der einzelnen Befehle aber hingewiesen wird.\f2\par
+\par
+\i\f3 Beispiel f\'fcr einen Job:  \i0\f2 (Zeilennummern nur zur Verdeutlichung, sie stehen nicht in der Jobdatei!)\i\par
+\i0\par
+\i Zeile\tab Anweisungen\tab\tab\tab Bedeutung \par
+\i0 1\tab\f1 & c:\\allegro\f2\tab\tab // & leitet einen neuen Auftrag ein \par
+2\tab\f1 find YOP>1990\f2  \tab\tab // Restriktion setzen \par
+3\tab\f1 find PER shake?\f2\tab // Trunkierte Suche im Personenregister \par
+4\tab\f1 list\f2\tab\tab\tab\tab // Kurztitel der Ergebnisse \par
+5\tab\f1 @ DB=avdemo ID=admin/MASTER \par
+\tab\tab\tab\tab\tab\f2 // Auswahl der Datenbank, ClientID \par
+6\tab\f1 a\f4 vanti\f1 :EOJ\f2\tab\tab // Ende-Signal \par
+\par
+\f3 Das Konsolprogramm  \f4 acon\f3   braucht die Zeilen 1, 5 und 6 nicht unbedingt. \f4 avanti\f3  liefert sie mit, wenn es \f4 acon\f3  startet.\par
+F\'fcr das Zusammenspiel zwischen  \f4 avanti\f3   und  \f4 acon\f3   von\f2  besonderer Bedeutung sind die Steuerzeilen 1 und 5\f3 , und zwar\f2 : \par
+\f3 Das &-Zeichen mu\'df am Beginn eines Auftrags stehen. Hinter dem &  \i\f2 kann\i0\f3  ein Pfadname folgen (\'84virtueller Aufrufpfad"). Dort sucht der Server Parameter-Dateien, die im Datenbankverzeichnis nicht gefunden werden. Die Suchreihenfolge ist diese: \f2\par
+\par
+1.\tab Datenbankverz. \f3 (wird entnommen aus dem Eintrag \f4 [avdemo]\f3  der Datei  \f4 avanti.con\f3 )\f2\par
+2.\tab\f3 Programmverz. (wo \f4 avanti\f3  gestartet wurde), d\f2 enn\f3  \f2  \f4 acon\f3  \f2  \f3 wird gleichfalls dort gestartet\f2  \par
+3.\tab\f3 V\f2 irtueller Aufrufpfad  (steht in Zeile 1 hinter & ) \par
+\par
+\f3 Als Abschlu\'dfzeile mu\'df dem avanti-Server die gew\'fcnschte Datenbank und der Benutzername mitgeteilt werden. Diese Steuerzeile wird durch das Zeichen @ eingeleitet. Aber erst wenn der End-of-Job-Befehl (Zeile 6) angekommen ist, beginnt die Abarbeitung des Auftrags - nicht fr\'fcher, d.h. der gesamte Job wird zuerst einmal eingelesen. (Bei direktem Aufruf von acon als Konsolprogramm teilt man die Datenbank \'fcber die Optionen \f4 -d, -b \f3 und\f4  -k\f3  mit.)\f2\par
+\f3 Wie ein solcher Auftrag an den Server \'fcbergeben und wie das Ergebnis angenommen wird, kann man z.B. in der Skriptdatei   \f4 av_ini.php\f3   des Paketes `\cf1\ul\b\f4 phpac\cf2\ulnone\b0\f2 ` sehen\f3 , und zwar in der Funktion \f4 sendjob()\f2 . \f3 Desgl. in  \f4 a35ini.php\f3   des Pakets a35.\f2\par
+\par
+\f3 Die Zeilen 2 bis 4 sind die eigentlichen Anweisungen, die an der Datenbank ausgef\'fchrt werden sollen. \f2\par
+\par
+\f3 F\'fcr \b\i\f2 a\f3 vanti\b0\i0\f2  \f3 (d.h. \f4 acon\f3 ) \f2 gelten folgende allgemeine, von \b\i a99\b0\i0  abweichende Regeln: \par
+\par
+\pard{\pntext\f6\'B7\tab}{\*\pn\pnlvlblt\pnf6\pnindent720{\pntxtb\'B7}}\fi-720\li720 Das \b &\b0 -Zeichen, am Anfang der ersten Zeile stehend, markiert den Beginn eines neuen Auftrags \par
+\pard\tab  \par
+\pard{\pntext\f6\'B7\tab}{\*\pn\pnlvlblt\pnf6\pnindent720{\pntxtb\'B7}}\fi-720\li720\sl480\slmult1\f3 Befehlszeilen d\'fcrfen mit einem oder mehreren Leerzeichen beginnen (!!) \f2\tab\par
+\pard{\pntext\f6\'B7\tab}{\*\pn\pnlvlblt\pnf6\pnindent710{\pntxtb\'B7}}\fi-710\li710 Mehrfach-Leerzeichen sind erlaubt, sie wirken wie nur ein Leerzeichen. (In "write"-Befehlen innerhalb von "..." oder '...' bleiben sie aber erhalten) \par
+\pard\tab\tab\par
+\pard{\pntext\f6\'B7\tab}{\*\pn\pnlvlblt\pnf6\pnindent720{\pntxtb\'B7}}\fi-720\li720 Tabulatorzeichen wirken wie Leerzeichen. \par
+\pard\tab\tab\par
+\pard{\pntext\f6\'B7\tab}{\*\pn\pnlvlblt\pnf6\pnindent720{\pntxtb\'B7}}\fi-720\li720\b Kommentare\b0\f3  werden mit // (Doppelschr\'e4gstrich) eingeleitet und k\'f6nnen \'fcberall stehen. Der Rest der Zeile wird dann ignoriert. Kommentare sollten aus Zeitgr\'fcnden evtl. nicht allzu \'fcppig sein. \f2\par
+\pard\tab\tab\par
+\pard{\pntext\f6\'B7\tab}{\*\pn\pnlvlblt\pnf6\pnindent720{\pntxtb\'B7}}\fi-720\li720\f3 In einer Zeile k\'f6nnen mehrere Befehle stehen, sie m\'fcssen dann mit Semikolon ';' getrennt werden. Kommt in einem Suchbegriff ein Semikolon vor, mu\'df der Text in Anf\'fchrungszeichen eingeschlossen werden. \f2\par
+\pard\tab\tab\tab\par
+\pard{\pntext\f6\'B7\tab}{\*\pn\pnlvlblt\pnf6\pnindent720{\pntxtb\'B7}}\fi-720\li720 ERROR (in der Befehlsbeschreibung) bedeutet: es wird der Fehlerzustand gesetzt, wenn bei dem Befehl was schiefging. \par
+\pard\tab Mit dem Befehl:  \f1 if error \i anweisung\i0\f2  \f3  \f2 oder  \f1 if ok \i anweisung \i0\f2  in der nachfolgenden Zeile kann man darauf reagieren und woanders hinspringen, wenn ein Fehler aufgetreten ist bzw. wenn alles ok ist. Die \i\f1 anweisung \i0\f2  kann aber auch eine \f3 F\f2 olge\f3  mehrerer Befehle\f2  sein, mit ; als Trennung. \par
+\i\par
+\par
+\cf5\i0\fs28 Es folgen nun die \i acon\i0 -Sonderbefehle\cf2\i\par
+\i0\f0\fs24\par
+Auch der Befehl \f1 `\cf1\ul\b list\cf2\ulnone\b0 `\f0  ist auf \i acon\i0\f5  beschr\'e4nkt, wird aber in einem eigenen Text beschrieben. \f0\par
+\f2\par
+\cf6\b\f1 @ DB=\cf2\b0\i\f2 datenbank\cf6\b\i0\f1  ID=\cf2\b0\i\f2 user/PASSWORD\i0\tab\par
+\tab\b Zugriffs-Steuerzeile\b0  am Ende des Auftrags. \par
+\pard\li710\tab\f3 Da der avanti-Server mehrere Datenbanken ansprechen kann, mu\'df der Client dem Server die gew\'fcnschte und dem Server bekannte Datenbank w\'e4hrend der Job\'fcbergabe mitteilen. \f2\par
+\f3 Au\'dferdem sollte sich der Anwender durch die Angabe eines  eingetragenen Nutzernamens + Password identifizieren, falls er mehr als nur Lesezugriff erwartet. \f2\par
+Dabei steht \i datenbank\i0\f3  f\'fcr ein dem avanti-Server bekannten Alias-Namen der gew\'fcnschten Datenbank und \i\f2 user/password\i0  identifiziert den Benutzer. \par
+Der Server vergleicht diese Angaben mit den Eintragungen in seiner Datei  \b\f1 a\f4 vanti\f1 .conf\b0\f3 . Daraus entnimmt es auch die Angaben Datenbankpfad, Datenbankname und Konfiguration (Optionen -d, -b und -k f\'fcr \f4 acon\f3 ). \f2\par
+\i Beispiel:\i0  \b\f1 @ DB=avdemo ID=opac/opac\b0\f2\par
+Die Steuerzeile ist, das sei nochmals betont, die \b letzte\b0\f3  Zeile eines Auftrags. In dieser Zeile keine Leerzeichen weglassen oder hinzuf\'fcgen. \par
+Das Pa\'dfwort hinter dem / mu\'df exakt stimmen, auch hinsichtlich Gro\'df-/Kleinschreibung, die bei den anderen Angaben egal ist.\f2\par
+\pard\cf3\b\f1\par
+echo off\cf2\b0\f2   \b\f1\par
+\pard\li709\b0\f2\tab\f3 unterdr\'fcckt einige \f4 acon\f3 -Meldungen an den Client, die im Verlauf des Auftrags auftreten k\'f6nnen, incl. der Fehlermeldungen. \f2\par
+\f3 Evt. auftretende Fehler sollten vielmehr in den Jobs mit Hilfe der Bedingungspr\'fcfung \f1 if error\f2  aufgefangen werden. Eine Meldung kann dann im Fehlerfall mit dem \f1 write\f2 -Befehl selbst generiert werden. \par
+Der Befehl \f1 echo off\f3  wird in komplexen Auftr\'e4gen eingesetzt, um bei der Weiterbearbeitung von Teilergebnissen nicht zuvor die Meldungen des \i\f2 a\f3 vanti\f2 -\i0\f3 Servers herausfiltern zu m\'fcssen. \f2\par
+\pard\par
+\cf3\b\f1 echo on\cf2\b0\f2      \cf4\b\i  \par
+\pard\li709\cf2\b0\i0 hebt ein vorangegangenes  \f1 echo off \f2  auf. \par
+\pard\f0\fs18\par
+\fs24\par
+\cf1\b Fehlerbedingungen\b0\par
+\cf2\f4 acon\f0  liefert genauere Fehlerangaben als \f4 a99\f0 . \par
+Dazu gibt es eine Erweiterung des Befehls  \f1 if error\f0  : \par
+\par
+\cf3\b\f1 if error[=\cf2\b0\f0  \i qualifier\i0 ] \i command\i0\par
+\par
+Wenn ein Fehler beim vorangegangenen Befehl auftrat, dann \i\f1 c\f0 ommand\i0\f5  ausf\'fchren. (Das kann eine Folge von Befehlen sein). \f0\par
+\par
+\f5 Die optionale Erg\'e4nzung  \i\f0 qualifier\i0\f5   differenziert den zu \'fcberpr\'fcfenden Fehlerstatus. Daf\'fcr kann man  folgende Zeichenketten einsetzen: \f0\par
+\par
+\ul\i qualifier\i0\tab\tab\i Bedeutung                          \i0\par
+\ulnone\f1 locked\f0\tab\tab Datensatz ist gesperrt \par
+\f1 noaccess\f0\tab\tab (Schreib-)Zugriff wurde verweigert \par
+\f1 writeerror\f0\tab allgemeiner Fehler beim Schreiben in dieDatenbank (put, update). \par
+\f1 xporterror\f0\tab allgemeiner Fehler beim \f5 e\f0 xport-Befehl (meist Fehler in Param.Datei) \par
+\f1 readerror\f0\tab\tab allgemeiner Fehler beim read-Befehl \par
+\f1 ordererror\f0\tab allgemeiner Fehler beim order-Befehl \par
+\f1 qrixerror\f0\tab\tab allgemeiner Fehler beim qrix-Befehl \par
+\f1 norecord\f0\tab\tab kein Datensatz geladen \par
+\f1 nofile\tab\f0\tab\f5 ein (Parameter)-File konnte nicht ge\'f6ffnet werden \f0\par
+\pard\tx2130\f1 overflow\f0\tab\tab 1. zuviele Treffer (find-Befehl) \par
+\pard\li2130\tx2130\tab\f5 2. die auszugebende Datenmenge konnte vom Ergebnisspeicher nicht aufgenommen werden. Der Auftrag wurde unvollst\'e4ndig ausgef\'fchrt. \f0\par
+\pard\f1 foundnothing\f0\tab kein Treffer (find-Befehl) \par
+\pard\fi-2130\li2130\tx2130\f1 endindex\f0\tab\tab\f5 durch einen vorangegangenen qrix-Befehl wurdedas Registerende erreicht oder \'fcberschritten. \f0\par
+\f1 unknown\f0\tab\tab\f5 allgemeiner Fehler (kann immer gepr\'fcft werden). Die Angabe unknown entspricht der Pr\'fcfung ohne =\i\f0 qualifier\i0 . \par
+\pard\par
+\f5 Nach Auftreten eines Fehlers ist eine interne Fehlernummer gesetzt. Diese kann man sich mit dem Befehl  \f4 var Err\f5   in die iV schreiben lassen. Man setzt dazu direkt unter den abzupr\'fcfenden Befehl die Zeilen\par
+\f4 if error var Err;ins $err\f5\par
+und hat dann in  \f4 $err\f5   die Fehlermeldung.\f0\par
+\par
+\f5\fs18 --------------------------------------------------------------\f0\par
+\cf3\b\f1\fs24 compress \f4     \cf4\b0\i obsolet\cf3\b\i0\f1\par
+\pard\li709\cf2\i\f0 acon\b0\i0\f5  verf\'fcgte \'fcber die M\'f6glichkeit, den Ergebnisspeicher nach dem ZIP-Methode zu komprimieren. \f0\par
+\pard\f5\tab Dieses Feature hat sich als nicht besonders notwendig erwiesen und wurde daher vor Jahren aufgegeben.\f0\par
+\par
+\par
+?Register=h xa \par
+?list=h xlist \par
+?Sonderbefehle=h =Es folgen \par
+?Fehlermeldungen=h =Fehlerbedingungen \par
+?FLEX=h flex \par
+?phpac=h phpac \par
+?acon=h acon \par
+\par
+}
+ 

@@ -1,0 +1,205 @@
+
+
+Verlautbarung 193 der Entw.Abt.                          2006-06-26
+-------------------------------
+                                V26.6
+                                =====
+                   Letztes groesseres Release 2006
+
+Vorweg zur Beruhigung: Umstellung auf V26.6 macht null Arbeit!
+NUR wenn man wegen der ISBN die neue cat.api von der DemoBank
+uebernimmt, muss man Index erneuern. Die anderen Vorteile nutzt
+man ohne irgendwelche Aenderungen an eigenen Einstellungen.
+
+Mehr Register
+-------------
+Dies ist noch nicht die MultiX-Loesung, aber ein Schritt dorthin.
+Bisher sieht man in der ausklappbaren Liste am oberen Rand des Index-
+fensters die Ueberschriften der bis zu 11 vorhandenen Register. Anders
+dagegen ist es im Fernglas-Menue. Das muss irritieren!
+V26.6 raeumt damit auf: Man sieht im oberen Teil die Namen der
+symbolischen Register und erst darunter die bisher allein sichtbaren
+Ueberschriften der "wirklichen" Register.
+Aber es kommt noch besser! Waehlt man eines der symbolischen Register
+und hat dieses ein Praefix (z.B. "D " fuer das Register der Hochschul-
+orte bei Dissertationen im Reg. 1 oder i fuer die ISBN im Reg. 9),
+dann werden nur diejenigen Zeilen sichtbar, die ein solches Praefix
+haben, aber das Praefix selber wird dabei nicht sichtbar. Das sieht
+dann so aus, als haette man ein "normales" Register vor sich.
+Bildet man im symbolischen Register eine Erg.Menge, wird deren Titel
+statt z.B. mit  |1  mit PER gebildet, was man auf dem Erg.Mengen-Balken
+und in der Liste der Erg.Mengen sieht.
+Und noch besser: auch per FLEX kann man ein symbolisches Register
+in dieser Weise erscheinen lassen. Geben Sie versuchsweise mal ein:
+x index dis berlin
+und Sie sehen das Dissertationenregister, beginnend an der Stelle
+"berlin", ohne das "D " davor, und sonst nichts vom Register 1.
+Mehr dazu in der Dokumentation:  h xindex  eingeben.
+Wenn der im FLEX angegebene Registername nicht definiert ist, erscheint
+als Default das erste der symbolischen Register.
+Da man bis zu 50 virtuelle Register haben kann, spielt auf einmal
+die reale Grenze von 11 physischen Registern praktisch keine Rolle
+mehr. In den virtuellen Registern klappt auch das Trunkieren genauso
+wie in den realen!
+Praktische Anwendung: Es gibt jetzt scheinbar zwei ISBN-Register,
+alt und neu, aber in Wahrheit ist es nur ein einziges, und zwar
+mit dem Praefix i fuer neu und i978- fuer alt. [Voraussetzung ist,
+dass im Register die (nicht identische) Pruefziffer weggelassen wird.
+Das ist unbedenklich, denn sie ist redundant, siehe unten.]
+Die Funktion der 10 Registerbuttons bleibt unveraendert! Mit Alt+5
+loest man also das Register 5 aus, ohne symbolischen Namen, wobei
+alle Praefixe sichtbar werden, wie man es bisher kennt.
+Es kommt aber noch besser, damit sich's richtig lohnt:
+Wir antizipieren die Frage: Kann man die Liste der Ueberschriften
+nicht GANZ ausblenden und NUR die symbolischen Register zeigen?
+Ja. Man setzt in der INI-Datei:
+ShowIndex=00000000000
+also 11 Nullen. Die Buttons klappen trotzdem, aber nur diejenigen,
+fuer die es einen symbolischen Namen gibt. (Wenn mehrere, dann der
+erste.) Dieser Name wird dann statt z.B. 1:... oben sichtbar.
+
+WOHLGEMERKT: die Struktur der Registerdateien aendert sich in keiner
+Weise, man muss nicht neu indexieren!!! Denken Sie sich einfach nur,
+dass beim Anzeigen eines symbolischen Registers NUR die Zeilen mit
+einem bestimmten Praefix gezeigt und das Praefix weggelassen wird.
+Und wer sich auskennt, dem ist auch klar:
+Wenn man neue symbolische Register einbaut, d.h. neue I-Zeilen
+in den Indexparametern, ansonsten aber keine Aenderungen macht,
+braucht man nicht neu zu indexieren!!! Sondern kann unmittelbar
+sofort damit suchen, jetzt auch im Indexfenster. a99 liest beim
+Start diese Zeilen und merkt sich die symbolischen Namen als
+Synonyme fuer die realen Namen  |1, |2  usw., wobei ein Praefix
+hinzukommen kann, aber nicht muss.
+
+PRESTO/APAC ist unbetroffen und unbeeindruckt: es kennt nach wie vor
+nur die 11 realen Register und zeigt die Ueberschriften, die in den
+Indexparametern definiert sind (die mit | beginnenden Zeilen).
+
+
+Neue ISBN - Die allegro-Loesung
+-------------------------------
+
+Die gute Nachricht: Ab 1.1.2007 braucht man sich keine Gedanken zu
+machen, sofern man das A- oder N-Modell ab V26.6 installiert hat.
+Man gibt die ISBN so ein, wie sie im Buche steht, egal ob 10 oder 13
+Stellen. Die Pruefung der Pruefziffer klappt ja schon seit
+einer Weile, jetzt wurde auch die Indexierung modernisiert.
+
+So sieht die neue Loesung aus, die wir in cat.api eingebaut haben und
+auch entsprechend in bank.npi:
+
+1. Die Indexierung:
+
+ak=87." = "+A
+
+#-A    ISBN (ohne Pruefziffer!), Zeichen ISBN vorne wegnehmen
+   ist 13stellig mit 978- oder 979- : dann so lassen
+!u1 +# f"ISBN " e" " P"zz" e17 c"^zz" p"q" c"q97?-" f"q" e15 "|9i"
+   sonst 11stellig indexieren und 978- davor
+!u1 f"ISBN " e11 "|9i978-"
+#+#
+
+
+2. Die Umcodierung:
+#-9    Reg. 9
+#u1 +#99i i4,i e0   ISBN
+...
+#+#
+#99i e0
+!u1 +# c"i978-" e16
+!u1 +# c"i979-" e16
+!u1 f"i" p"i978-" e16
+#+#
+
+3. Der symbolische Name: Wenn in CAT.API unveraendert definiert ist:
+
+I ISB 9i "ISBN u.a. Nummern"
+
+findet man per Fernglas jede ISBN mit den Suchbefehlen
+  isb 3-446-20381-8
+  isb 3-446-20381
+  isb 978-3-446-20381-4
+  isb 978-3-446-20381
+
+und auch jede denkbare Trunkierung.
+
+Im Index steht damit also alles unter i978- und ohne Pruefziffer!
+Bei der Suche gibt man die ISBN mit oder ohne 978- bzw.
+Pruefziffer ein - das spielt alles keine Rolle. Nur die ganz neuen
+Nummern mit 979- muessen 13stellig eingegeben werden.
+Noch schoener: Wenn im Buch zwei eigentlich gleiche Nummern stehen,
+die eine mit 978 vorne und die andere ohne, ist es egal, welche man
+erfasst, man braucht sie nicht beide einzugeben!
+
+NUR bei direktem Indexeinblick gibt es EVTL. eine Irritation.
+Man gibt z.B. im Register 9 ein (egal ob PRESTO oder a99)
+
+i3-446-20381-8
+
+und landet bei
+
+i978-3-446-20381
+
+Die neue Loesung soll insbesondere das Abfragen von ISBNs per
+avanti verbessern, wo es ja z.B. via ZACK sehr wichtig ist.
+Wir haben schon unseren allegro-OPAC, der in ZACK eingebunden ist,
+entsprechend modifiziert. Bisher war dort die ISBN-Abfrage
+nicht so toll geloest. Ueberzeugen Sie sich:
+  http://www.biblio.tu-bs.de/db/opac/detail.php
+
+NOCH besser waere aus dieser Sicht allerdings, wenn wir die
+Bindestriche aus dem Index noch herausnaehmen. Dann freilich
+waere der Index bei direktem Einblick noch ein klein wenig
+mehr irritierend. Aber vielleicht koennte man damit leben?
+Beim Abfragen waeren dann die Bindestriche voellig egal.
+Darueber wird nochmals nachzudenken sein.
+
+
+OnF8 weiter verbessert
+----------------------
+F8 bringt seit einer Weile ein situationsabhaengiges Hilfemenue.
+Der dahinter sich verbergende FLEX onf8.flx wurde erweitert.
+Jetzt stellt er zuerst fest, ob gerade ein Hilfetext in der
+Anzeige steht, und bietet dann an, diesen zu bearbeiten. Wenn
+man sich dazu entscheidet, wird derselbe Text mit dem Zusatz
+".rtf" geladen, weil nur dann eine sicher Bearbeitung moeglich
+ist. Existiert aber diese Datei nicht, und auch nicht mit
+Sprachkennung (!), wird angenommen, dass es kein RTF-Text
+ist, und normale Bearbeitung zugelassen.
+>>Tip: Wer statt F8 was anderes moechte, kann ihn auf eine
+Strg-Phrase legen oder auf einen der Flip-Buttons. Z.B.:
+(a) Soll OnF8 mit Strg+d ausgeloest werden, gibt man ein
+    p ^d X onf8
+(b) Will man den Button 2 dafuer nehmen, schreibt man in seine
+    Datei _start.flx  diese Zeile hinein:
+    flip 2&2: Spez=X onf8
+    und schon kriegt man dieselben Funktionen mit Alt+2.
+(c) Soll F3 statt F8 genutzt werden: onf8.flx umbenennen in
+    onf3.flx.
+
+Der FLEX  OnF8.flx  ist auch ganz gut als Beispiel zum
+Lernen geeignet. Geben Sie  h onf8.flx, dann sehen Sie das
+Ding vor sich.
+
+
+Kleinere Verbesserungen
+-----------------------
+Die Funktion [List] im Index konnte bei a99/alcarta zu Problemen
+fuehren, was an internen Speichereinstellungen lag. Diese wurden
+ausgemerzt.
+Besonders sorgfaeltig ueberarbeitet wurde die Tastaturhilfe, d.h.
+die Datei he_sp. Aus der Version ha_sp fuer alcarta wurden die
+dafuer nicht relevanten Angaben herausgenommen.
+Die DemoBank wurde ein wenig aktualisiert. Achtung: sie wird Ihnen
+auf Ihr Verzeichnis DEMO  und  DEMO2 kopiert! Bei Benutzung arbeiten
+Sie nur mit der DEMO2. Wenn Sie eine frische Demo wollen, machen Sie
+eine Kopie von DEMO. Dafuer gibt es auch eine Funktion im Startmenue.
+("Eine neue Datenbank anlegen / Neue Kopie der DemoDatenbank")
+Die Umschaltung Deutsch<->English ist jetzt auch im mageren Fuellhorn
+von alcarta mit drin (und startet dann nicht etwa a99).
+
+Ansonsten wurden die Hilfetexte nochmals aktualisiert, die von den
+Neuerungen betroffen sind - wie immer in solchen Faellen.
+
+
+

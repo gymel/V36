@@ -1,0 +1,78 @@
+  c-subf.apr : Unterfeld-Statistik  
+  960522   Count frequency of subfields in database
+        Necessary places for change indicated by $$ (4 lines)
+        Notwendige Aenderungen bei anderen Kategoriesystemen: siehe $$
+        (4 Zeilen unten sind zu aendern)
+                     +---------------------------------------------------+
+             >>>>>>> | Benutzung des X-Editors: Handbuch Anhang D, S.307 |
+                     +---------------------------------------------------+
+
+
+  Output : sortable records containing
+           #u1 tagsubf 
+           #u2 TagSubfield
+
+  Batch  : COUNT.BAT
+           copy this file to count.apr first:
+           copy c-subf.apr count.apr
+
+pn="C-SUBF.APR " 
+
+  No Configuration specific parts!
+  Application specifics are marked with ~~~
+  ~~~~~~~~~~~
+  This parameter set produces records in this format:
+
+  #u1 sort code (in small letters and without special characters)
+  #u2 Original form of the field represented by #u1
+      this will be used in the last stage to prepare the listing
+ 
+  2nd stage : ASORT sorts the resulting file
+  3rd stage : SRCH exports the sorted file using COUNT2.APR
+
+  COUNT2.APR is independent of the underlying format, i.e. you can use it
+  with any .CFG.    
+
+  --------- Constants ---------------------------------------------
+
+zl=0        no line breaking
+ks=1        we want the tags, not the text!
+ze=""       no line end character
+  --------- this is all! ------------------------------------------
+
+   The heading command is very probably the only thing you need
+   to change if you want to evaluate other fields:
+
+   ======== heading command ======================================
+
+ak=0.."\"+A 1.."\"+A 2.."\"+A 3.."\"+A 4.."\"+A
+ak=5.."\"+A 6.."\"+A 7.."\"+A 8.."\"+A 9.."\"+A
+
+
+   ===============================================================
+
+   ******** field list *******************************************
+   
+#+-         if there was no heading, do nothing
+
+#-A
+#ch e2 p{ 1 "u1 " }     #u1 contains the string to be evaluated.
+    $$    MARC: 3        it is prefixed by <01h> and "u1 " to make it
+#u1 b3 e1 p""                     exportable (after the sort) by SRCH
+    $$    MARC: 6
+
+   If only part of the field is to be evaluated, add appropriate
+   manipulation commands. For example:
+   !u1 e"-" p{ 1 "u1 " }     cut #u1 at '-' , use only the part preceding '-'
+                             may be useful to evaluate call number groups
+
+#t{ 0 }                      field end : Code 00h
+   
+#ch e2 p"u2 #"         same field in printable form as #u2
+    $$    MARC: 3
+#u1 b3 e1 p""                     exportable (after the sort) by SRCH
+    $$    MARC: 6
+
+#t{ 0 13 10 }                record end : codes 0 13 10
+
+

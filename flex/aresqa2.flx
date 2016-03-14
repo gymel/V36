@@ -1,0 +1,197 @@
+  ARESQA2.FLX : Einlesen einer Tabelle
+  2004-11-26    Zuordnen zu den richtigen Datens‰tzen und einordnen der Felder
+
+  Strukturdatei lesen (Name in #uqQ, mit oder ohne q- am Anfang)
+if not #uqQ jump strerr
+var "q-" #uqQ(B"~q-") ".str"
+open
+if no jump strerr
+  loesche #uqP (prim.schl.Buchstabe) und #uqR (Reg.Praefix)
+#uqP
+#uqR
+#uqA
+#uqC
+  Exp.param sichern
+var e
+ins #uwe
+
+  optional:
+  Parameter p-unicod.apr laden (Falls man Unicode will!)
+ xpo p p-unicod
+ if no jump perror
+  darin Sprungmarke #-X einschalten (wirkt bei write-Befehlen)
+ dow wX
+
+  Datei q-xyz.str jetzt lesen: Struktur -> #uqA
+    darin steht dann  #nnn//$x-#nnn//#nnn...
+:1stline
+
+  .STR abarbeiten
+:loop
+get
+if can jump verarb
+if " " jump loop
+if "" jump loop
+ins #uqB
+  Prim.Schl.-Angabe?
+if "p" jump prk
+  Anderer eindeut.Schl?
+if "|" jump schl
+if "~u" jump unic
+if "~l" jump loop
+
+if %$% jump tc
+  Feldbez. wird nicht gebraucht
+var #uqB(e" ")
+ins #uqB
+jump add
+  Zeile mit #nnn$x -> $x-#nnn
+:tc
+var "$" #uqB(b"$" e" ") "-" #uqB(e"$")
+ins #uqB
+
+:add
+var #uqA "//" #uqB
+ins #uqA
+jump loop
+
+  Statt interner Satznummer ist erste Spalte ein eindeutiger Schluessel:
+:prk
+ins #uqP
+jump loop
+  Erste Spalte enthaelt einen Schluessel mit Praefix #uqR
+:schl
+ins #uqR
+jump loop
+
+:unic
+#uqC1
+jump loop
+  Jetzt ist .STRukturdatei eingelesen
+:verarb
+close
+  vorn // beseitigen
+var #uqA(f"/")
+ins #uqA
+
+  Tabellendatei oeffnen
+var "q-" #uqQ(B"~q-") ".tab
+open
+if no jump taberr
+  Eingelesene Codes nicht wandeln: sind ANSI oder Unicode
+ set c1
+
+  Tabelle zeilenweise lesen und verarb
+:tloop
+get
+if can jump tend
+  Tabellenzeile -> #uqZ
+if #uqC set U1
+ set c1
+ins #uqZ
+if #uqC set U0
+  Liste der Felder -> #uqB zum Abarbeiten
+var #uqA
+ins #uqB
+
+  Erstes Feld der Zeile = Schluessel
+var #uqZ
+  Was steht in der ersten Spalte?
+if "i" jump inu
+if "|" jump ischl
+if "0" jump newrec
+var #uqR #uqZ(e"	")
+find
+jump satz
+
+  interne Satznummer ist angegeben
+:inu
+
+var "#" #uqZ(e"	" 1,0)
+find
+
+jump satz
+
+  eindeutiger Schluessel
+:ischl
+var #uqZ(e"	")
+find
+jump satz
+
+  Neuer Satz
+:newrec
+new
+
+:satz
+  nachste Tab-Spalte
+if #uqC set U1
+var #uqZ(b"	")
+ins #uqZ
+if #uqC set U0
+
+:zloop
+var #uqB
+  &-Felder nicht beachten
+if "&" jump nxtf
+var #uqB(e"//") " " #uqZ(e"	")
+  Unicode?
+if #uqC jump uc
+  Feld ist praepariert
+asci
+  und einordnen in den aktuellen Satz
+ins
+  Naechstes Feld
+:nxtf
+ set c0
+if #uqC set U1
+var #uqZ(b"	")
+ins #uqZ
+if #uqC set U0
+ set c1
+var #uqB(b"//")
+if "" jump tloop
+ins #uqB
+jump zloop
+
+  es ist Unicode
+:uc
+  Feld einsetzen (u-Befehle werden wirksam!)
+set U1
+ins
+set U0
+jump nxtf
+
+:tend
+close
+mes Datei eingelesen
+set c0
+end
+
+:strerr
+if #uqQ jump ngef
+var "Keine Strukturdatei (Variable #uqQ nicht belegt)" n
+var +'WÑhlen Sie zuerst Åber "Tabellenstrukturen sichten"' n
+var +"die passende STR-Datei zu der einzuspeisenden Tabelle"
+ansi
+mes
+jump exx
+:ngef
+var "Strukturdatei q-" #uqQ(B"~q-") ".str nicht gefunden"
+mes
+jump exx
+
+:taberr
+var "Tabellendatei q-" #uqQ(B"-") ".tab nicht gefunden" n
+var +"Diese Datei muss vorher produziert worden sein, entweder" n
+var +"mit SQL aus einer RDB heraus, oder auch auf andere Weise." n
+var +"Die Datei muss hinsichtlich der Felder mit der STR-Datei zusammenpassen!"
+ansi
+mes
+jump exx
+
+:tend
+close
+
+:exx
+end
+

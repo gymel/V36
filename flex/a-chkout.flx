@@ -1,0 +1,481 @@
+  A-CHKOUT.FLX : Ausgabe von Buechern u.a.
+  2004-09-06     Wird aufgerufen von alf.flx, nicht direkt!
+  Wenn #uaf gesetzt (Anzahl Tage) dann wird eine Ausnahmefrist gewuenscht
+           (alf.rtf "Ausl. m. Ausn.frist")
+  Einbindung in a-batch.flx zur Nutzung von Unterprog :leih
+
+  Quittungstext loeschen
+#umS
+  Anzahl der ausg. Med. an diesen Nutzer bei diesem Vorgang
+var "0"
+ins $aus
+  Wenn #ua= gesetzt, dann steht Barcode in #ua1, Lesercode in #uaU
+       (aus a-func.flx, Funktion "Dieses Ex. ausl.")
+if #ua= jump verb
+  Gewisse Variablen muessen gesetzt sein, sonst zuerst a-init.flx:
+if not #uaC jump ainit
+
+:start
+  Nutzer abfragen (Barcode steht in #uaU, wenn nicht: alf.flx
+if not #uaU exec alf
+
+  Leserklasse steht in #uaL, Mitgl.Endedatum in #uAg
+if not #uaL exec alf
+  die 10 Formularzeilen loeschen
+#ua1
+#ua2
+#ua3
+#ua4
+#ua5
+#ua6
+#ua7
+#ua8
+#ua9
+Day
+var (b" = ")
+ins #uaD
+
+:formu
+#ua0
+  Formular [aLF]  anzeigen, Eingaben abwarten
+form aLF
+  mit Esc verlassen?
+if cancel end
+  Formular [aLF] nicht gefunden?
+if no jump af
+
+  ***** Hauptteil Verbuchung **********+
+:verb
+  Exemplare verbuchen (bis zu 10), Formularzeile jeweils loeschen
+var #ua1
+perf leih
+#ua1
+var #ua2
+perf leih
+#ua2
+var #ua3
+perf leih
+#ua3
+var #ua4
+perf leih
+#ua4
+var #ua5
+perf leih
+#ua5
+var #ua6
+perf leih
+#ua6
+var #ua7
+perf leih
+#ua7
+var #ua8
+perf leih
+#ua8
+var #ua9
+perf leih
+#ua9
+var #ua0
+perf leih
+var #ua0
+if not "" yes Noch mehr an denselben Leser ausleihen?;if yes jump formu
+#ua0
+
+  #umU Ueberschr. fuer Quittung vorbereiten: Kopfzeile = Leserkennung
+var $aus
+if >1 var $aus " Ausgegebene Medien " #uaD n n
+if =1 var "Ausgegeben " #uaD n n
+var +"Entleiher: \\b " #uan "\\b0  (" #uaU ")\\par " n n
+ins #umU
+
+  Bestaetigung anzeigen, Schriftgrad 13 Punkt
+var "\\fs26 " #umU #umS
+ansi
+sho IV
+sho rec
+  Ausnahmefrist loeschen
+#uaf
+  #uaL
+
+  War irgendwas verbucht worden? Dann kommt "Rckg" vor in #umS
+var #umS
+if not %Rckg% help alf;end
+  Diese 2 Zeilen raus, wenn Drucken nicht erwuenscht
+  (Printer-Button aber immer moeglich!)
+yesno Drucken?
+if yes print
+var "|: B" #uaU
+find
+disp
+sho rec
+#uaU
+#ua=
+end
+
+  Formulardatei ist nicht vorhanden? dann gehts nicht:
+:af
+addform alf.frm   // die Ausleih-Formulardatei laden
+if no mes Formulardatei alf.frm fehlt;end
+form aLF
+if cancel disp;sho rec;end
+jump verb
+
+  Hier kommt die eigentliche Arbeit:
+  Unterprog. zum Ausleihen eines Exemplars, Barcode steht in iV
+     (Aufruf auch aus a-batch.flx)
+:leih
+  Formularzeile leer:
+if "" return
+  BuchBarcode -> #uaB
+ins #uaB
+  im Reg. 10 den Eintrag d. Ex. suchen
+var "|: E" #uaB
+find
+  barcode nicht gefunden: Vielleicht ist es eine Signatur? Versuchen...
+if empty var "|8 " #uaB;find
+if empty jump nx
+if g1 jump nx
+:gotit
+  Jetzt haben wir den Exemplarsatz! Satznummer -> #uaX
+var i
+ins #uaX
+  ist es bereits ausgeliehen oder reserviert?
+var #9DG
+if "l" jump out
+if "v" disp;var #uaB " war verlustig! Meldung an Katalogisierung";mes
+if "g" jump gg
+if not "W" jump exlf
+  Ja. Auf denselben Nutzer, der es entleihen will?
+var #9DH$u
+if =#uaU jump exlf
+
+if #uab
+
+sho rec
+disp
+
+var "Exemplar " #uaB " ist reserviert fr den Leser " #9DH$u "! Trotzdem verbuchen?"
+ansi
+yes
+if yes jump exlf
+  sonst keine Verbuchung
+return
+
+:out
+var "Exemplar " #9DG$a " ist bereits verbucht an " #9DH$u ". Trotzdem verbuchen?"
+yes
+if yes jump exlf
+return
+
+:gg
+var #9DG$a " ist im Gesch„ftsgang, kann nicht ausgeliehen werden!"
+ansi
+mes
+return
+
+  Exemplar kann entliehen werden
+:exlf
+
+eval $Amax -$Anow
+if >0 jump frista
+var "Leser " #uaU " hat schon " $Anow " Entleihungen auf dem Konto! Erlaubt sind " $Amax
+var +n "Trotzdem ausleihen?"
+yes
+if not yes end
+
+:frista
+  Expl.Leihfrist angegeben? Dann nur diese nehmen!
+#uaF
+var #9DG$f
+if not "" ins #uaF
+
+  Ausleihtyp entnehmen aus $v: k,a,p, a ist default
+var #9DG$v
+  Ersetzen durch die Kennbuchstaben im MedienTypsatz
+if "" var "a"
+if "a" var "L"   // normal
+if "k" var "K"   // Kurz
+if "p" var "0"   // praesent
+ins #uaT
+
+  Medientyp entnehmen, default 0 wenn nicht gesetzt
+  Buchstabencodes umsetzen in Zifferncodes, in $Amcod stehen
+  die Zuordnungen (a-init.flx)
+
+var #9DG$m
+ins #ulC     // z.B. CD-U
+
+clo res
+
+ ALT:  Medientypsatz laden  (SYSDM/L im Reg. 11)
+ var "|; SYSD" #uaM "/" #uaL " or |; SYSD" #uaM "," #uaL
+ find
+ if not empty jump amtyp
+
+ NEU:
+  Medientypcode bestimmen (Liste in $Amcod)
+var #9DG$m "="
+ins #uLC         // z.B. CD-U=
+
+var $Amcod (b"#uLC" e"///")
+if "" var "0"
+ins #uAM      // z.B. 3 statt CD-U
+
+var #ulC "B" #uaL   // medTypBLeserklasse, z.B. CD-UB1
+
+ins #uAS
+
+  zugehoerigen Abschnitt in $Amtyp suchen
+var $Amtyp (b"#uAS" e"///")  // Abschnitt mit den Bedingungen des Typs
+ins #uAS
+
+
+if #uAS jump amtyp
+
+  Es gibt keinen MedienTypsatz, defaults nehmen:
+var #umL    // Mahnfrist d. Leserkl (aus alf.flx)
+ins #umF
+
+var #uaT   // Lang oder kurz?
+if %L% if #ual var #ual;if not #uaF ins #uaF;jump frist    // normal-default der Leserklasse, wenn es einen gibt
+if %K% if #uak var #uak;if not #uaF ins #uaF;jump frist    // kurz-default der Leserklasse, wenn es einen gibt
+var #uaT
+if %L% var "25"   // 25 Tage
+if %K% var "7"    // 7 Tage
+if not #uaF ins #uaF
+var "10"
+ins #umF
+jump frist
+
+:amtyp
+
+ ALT: #9A = Medientypsatz
+ var #9A
+
+   Frist nehmen, die beim Ausleihtyp steht, wenn keine: 20
+ var "" #uaT
+ ins #uaT
+ var #9A(b"#uaT" e"")
+ if "" var "20"
+ ins #uaF
+ var #9A$N
+    erste Mahnfrist
+ ins #umF
+ clo res
+
+ NEU: #uAS = Inhalt vom Medientypsatz
+   Frist nehmen, die beim Ausleihtyp steht, wenn keine: 20
+var "" #uaT(f"")
+ins #uaT
+var #uAS(b"#uaT" e"")
+if not "" jump thisfrist
+// MedTypsatz enthielt die Frist nicht, Klassensatz nehmen
+var #uaT   // Lang oder kurz?
+if %L% if #ual var #ual;if not #uaF ins #uaF;jump thisfrist
+if %K% if #uak var #uak;if not #uaF ins #uaF;jump thisfrist
+
+if "" var "20"
+:thisfrist
+if not #uaF ins #uaF
+var #uAS$N
+    erste Mahnfrist
+ins #umF
+
+:frist
+var #uaT
+  // Praesenz?
+if %0% jump praes
+  Jetzt haben wir die Frist:
+  (wenn im Medientypsatz nicht gesetzt, dann ist #uaF aus dem Exemplarsatz,
+   (Exemp.leihfrist $f) gesetzt, sonst aus dem Leserkl.satz (#ual) heraus.)
+:fr0
+  Ausnahmefrist gewuenscht? Dann #uaf besetzt
+if not #uaf jump fr1
+ask Ausnahmefrist?=#uaf
+if not "" ins #uaF;ins #uaf
+
+:fr1
+var #uaF
+z=
+if "0" jump praes
+
+:fr2
+var #uaF
+if "" var #uaf
+  Rueckgabedatum errechnen
+Wday
+  und in #uaS speichern
+  aber wenn Mitgl.schaft vorher auslaeuft, dann dieses Datum!
+if >#uAg var #uAg
+ins #uaS
+  erste Mahnfrist draufaddieren
+var #umF
+z+
+var z
+  Tag ausrechnen und in #umM sichern
+Wday
+  Mahndatum soll nicht zu weit hinter Ablauf der Mitgl.schaft sein
+if >#uAg var #uAg "+5";Wday
+ins #umM
+  Expl.Satz zurueckholen
+var "#" #uaX
+find
+  Wenn es #9DH noch gibt, z.B. weil Rueckbuchung nicht erfolgt,
+  dann in #9DI kopieren (vorige Ausleihe)
+var #9DH
+  aber nur, wenn #9DH keine Vormerkung ist (sonst ueberschreiben)
+if not "" if not %W% ins #9DI
+
+  Ausleih-Kategorie #9DH zusammenstellen:
+                     $u Leser $C Klasse $R RueckgDatum
+                     $A und $D Ausl.Datum ($D beim Verlaengern geaendert!)
+                     $M erstes Mahndatum $n Mahnstufe
+var "#9DHu" #uaU "C" #uaL "R" #uaS(e"/") "A" #dts(0,8) "D" #dts(0,8) "M" #umM(0,8) "n0"
+ins
+  Anzahl der Ausleihen erhoehen
+var #9DG$F
+z=
+z+1
+var z
+ins $F-#9DG
+
+  Indikator in #9DG auf l setzen (ausgeliehen)
+var "l" #9DG(1,0)
+ins #9DG
+put
+if no jump probl
+
+  NEU: Zaehler der momentanen Ausl. d. Lesers erhoehen
+eval $Anow +1
+ins $Anow
+
+  Zaehler d. Entl. beim momentanen Vorgang
+eval $aus +1
+ins $aus
+
+  ---------------------------
+  Protokolldatei f. Statistik
+var $Astk         // ist ein Dateiname fuer Statistik gesetzt?
+if "" jump mldg   // $Astk nicht vorhanden - nichts schreiben
+var "+" $Astk     // sonst die Datei zum Anhaengen oeffnen
+open x
+var #9DG$m        // Med.Typ u.U. nicht immer besetzt, dann ZZZ
+if "" var "ZZZ"
+ins #uMT
+  schreiben:   aDatum:Leserkl;Medtyp/Signatur neueZeile
+wri "a" #dts(0,8) ":" #uaL ";" #uMT "/" #9DG$s n
+close x
+  ----------- Ende Protokoll ----
+
+:mldg
+var #umS n n #9DG$e ". Ex. von"
+ins #umS
+var #9DH$R
+ins #uaR
+  ACHTUNG: ppn als log. Register muss existieren, darin muessen die
+           IdNummern der Titelsaetze stehen,
+            sonst |9,falls dort die IdNummern stehen
+  var "ppn " #9DF$$       // Titelsatz zum Exemp laden
+var "|9 " #9DF$$       // Titelsatz zum Exemp laden
+find
+var #20
+  Wenn keine #20, dann die Kurzzeile!
+if "" var s
+var (0,50 e"ú")
+ins $uvs
+var #umS " " $uvs "... " n "   Rckg.: " #uaR(6,2) "." #uaR(4,2) "." #uaR(0,4)
+ins #umS
+  Erg.Menge wieder weg
+clo res
+
+return
+
+:probl
+var #9DF n #9DH " kann nicht gespeichert werden"
+mes
+return
+
+:nx
+var "Exemplar " #uaB " nicht gefunden!" n "Provisorischen Titelsatz anlegen, dazu kommt jetzt ein Eingabeformular."
+yes
+if not yes return
+var "#" i
+ins $idno
+new
+form Sim            // Formular fuer "Simpler Satz"
+if not #20 erase;var $idno;find;sho rec;return   // UPro leih zu beenden, schleife fortsetzen
+#30 provisorisch
+put
+var #00 "XProvisor"
+ins #uDF
+var #90
+ins #u90
+new
+#00 -
+var #uDF
+ins #9DF
+var "0s" #u90 "e1a" #uaB
+ins #9DG
+put
+jump gotit
+
+:praes
+if not #uaF #uaF10
+var #uaB " nicht verleihbar! Trotzdem verbuchen?"
+yes
+  Wenn ja, dann verbuchen
+if not yes return
+  Ausnahmefrist gewuenscht? Dann #uaf besetzt
+if not #uaf jump fr2
+ask Ausnahmefrist?=#uaf
+if not "" ins #uaF;ins #uaf
+jump fr2
+
+
+
+:ainit
+  aLF initialisieren (Kalender laden etc.)
+#uaC1
+  Es wird dann wieder dieser FLEX aufgerufen!
+exec a-init.flx
+
+
+ u-VARIABLEN in a-chkout.flx, $-Var. s. a-init.flx
+ #u90 (2)  Zw.Sp. f. #90
+ #ua0 (4)  10 Variablen f. das Formular der 
+ #ua1 (3)    eingescannten Barcodes
+ #ua2 (3)
+ #ua3 (3)
+ #ua4 (3)
+ #ua5 (3)
+ #ua6 (3)
+ #ua7 (3)
+ #ua8 (3)
+ #ua9 (3)
+ #ua? (1)  Jahreszahlen d. Kalenderdaten, in a-init.flx gesetzt  
+ #ua=      Einzelausleihe, ausgehend vom Expl.Satz
+ #uaB (6)  Buchbarcode aus Formularzeile
+ #uaC (1)  Flag f. a-init.flx  
+ #uaD (2)  Datum in Textform 
+ #uaF (9)  Frist f. diese Ausl. in Tagen
+ #uaL (7)  Leserklasse
+ #uaM (4)  Medientyp (aus $Amcod)
+ #uLC (3)  Medientypcode #9DG$m 
+ #uaR (4)  Rueckgabedatum f. Meldung  
+ #uAS (5)  Medientypsatz zum aktuellen Ex. und Lesertyp
+            (zur Entnahme der Frist)
+ #uaS (2)  Zw.Sp. f. errechnetes Rueckgabedatum
+ #uaT (5)  Ausl.Typ L K 0  
+ #uaU (5)  Lesernummer
+ #uaX (2)  Satznummer Expl.Satz d. auszul. Exemp.
+ #uaf (3)  Ausnahmefrist aus alf.rtf
+ #ual (2)  Ausleihfrist der Leserklasse
+ #uan (1)  Lesername (aus alf.flx)
+ #uDF (2)  "Provisor" (f. prov. Satz, #00)
+ #ulC (2)  Medientyp Buchstabencode
+ #uMT (2)  dasselbe, oder ZZZ falls nicht vorh.
+ #umF (4)  Mahnfrist der Leserklasse  
+ #umL (1)  dsgl., aus alf.flx
+ #umM (2)  Mahndatum  
+ #umU (7)  Kopfzeile f. Meldung
+ #umS (7)  Meldung
+

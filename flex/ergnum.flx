@@ -1,0 +1,72 @@
+  ERGNUM.FLX : Ergebnismenge aus Nummernbereich bilden
+  2008-05-21
+               Aufruf:  X ergnum num1-num2
+
+var E
+ins #uwE
+
+  num1-num2 in #unE sichern
+ins #unE
+if #unE jump begin
+
+  Es wurde nichts uebergeben
+ask Satznummern? (z.B. 1000-2000)
+if "" end
+ins #unE
+
+:begin
+  Kein Bindestrich? Dann nur 1 Satz
+if not %-% jump single
+
+  num2+1 in #unL sichern
+var #unE(b"-")
+ins #unL
+
+var t
+ins #unT
+
+var #unL
+if >#unT var t
+ins #unL
+
+eval #unL +1
+ins #unL
+var "von " #unE(e'-') " bis " #unL
+
+
+Z=#unE
+
+  Datei f. externe Erg.Menge oeffnen
+open x x.set
+  Ueberschrift
+wri "Saetze " #unE n
+
+  Schleife zur Abarbeitung von #unE bis #unL
+:loop
+  Satznummer schreiben, neue Zeile
+wri Z n
+  erhoehen
+Z+1
+if Z<#unL jump loop
+  #unL ist erreicht, dann Datei zumachen
+close x
+var #uwE
+open x
+
+  und einlesen als ext. Erg.Menge
+read set x.set
+  zeigen
+show list
+jump exit
+
+  Einzelner Satz gewuenscht, laden
+:single
+var "#" #unE
+Find
+
+:exit
+#unE
+#unL
+#unT
+
+

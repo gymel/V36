@@ -1,0 +1,99 @@
+  IPAREDIT.FLX : Bearbeiten der Indexparameter
+  2001-12-14
+  mit "Merseburger Testschleife" (in PRESTO nicht moeglich!)
+
+var m
+if ="alc" end
+
+var x
+if "x" jump xed
+var "Sie k”nnen jetzt die Indexparameter bearbeiten." n "Das geschieht in einem Fenster mit dem Editor " x
+jump edit
+:xed
+var "Sie k”nnen jetzt die Indexparameterdatei  " B "." K1 "pi  bearbeiten." n "Das geschieht in einem DOS-Fenster mit dem X-Editor"
+var +n "Wenn Ihnen das nichts sagt, schauen Sie sich zuerst die Beschreibung dieses Editors an!" n
+var +"Wollen Sie jetzt bearbeiten? (Nein: Editor-Beschreibung sehen)"
+:edit
+ansi
+yes
+if yes jump start
+if no jump acd
+end
+
+:acd
+var x
+if "x" help acd
+end
+
+:start
+get env comspec
+ins #uwC
+
+  Zuerst auf dem DbDir nachsehen:
+var D y "." K1 "pi"
+ins #upI
+fsize
+if no jump d2
+var #upI
+ftime
+ins #upT
+  gefunden, Editorbefehl vorbereiten
+var #uwC " /c " x " " D y "." K1 "pi"
+  ausfuehren
+call
+  nach Bearbeitung neu laden (damit Žnderungen wirksam werden)
+jump aktiv
+
+  Dann auf dem ProgDir
+:d2
+var P y "." K1 "pi"
+ins #upI
+fsize
+if no jump d3
+var #upI
+ftime
+ins #upT
+var #uwC " /c " x " " P y "." K1 "pi"
+call
+  Wenn die Datei auf dem ProgDir war: kopieren auf's Datenverz
+  (denn dort war sie nicht, gehoert sie aber jetzt hin)
+var P y "." K1 "pi " D y "." K1 "pi"
+fcopy
+jump aktiv
+
+  zuletzt auf dem Arbeitsverz.
+:d3
+var y "." K1 "pi"
+fsize
+if no jump d4
+var y "." K1 "pi"
+ins #upI
+ftime
+ins #upT
+var #uwC " /c " x " " #upI
+call
+jump aktiv
+
+:d4
+var "Sorry, " #upI " nicht gefunden!"
+message
+end
+
+  IndexParam evtl. neu laden
+:aktiv
+var #upI
+ftime
+if =#upT jump ende
+
+
+  "Testschleife", aber mit Frage (rausnehmen, falls nicht gewuenscht)
+yesno Sofort aktivieren?
+if not yes jump ende
+  Name der Indexparam in die iV kopieren
+var y
+  dann Indexparameter neu laden
+index p
+  jetzt kann man mit F7 die Auswirkungen sehen!
+:ende
+act 1
+end

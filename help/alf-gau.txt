@@ -1,0 +1,97 @@
+
+aLF : Notbetrieb tut not!
+-------------------------
+
+Zu Zeiten, als die Server noch ”fter ausfielen als heute,
+galt ein "Notbetrieb" als unverzichtbare Anforderung im
+Pflichtenheft fr ein Ausleihverbuchungssystem.
+Gut betreute lokale Systeme gl„nzen zwar heute mit hoher
+bis h”chstm”glicher Verfgbarkeit, gleichwohl kann man
+in einem Gesch„ftszweig wie der Ausleihe immer noch ruhiger
+schlafen, wenn es im Fall des Falles einen Notbetrieb gibt.
+Will sagen ein Verfahren, mit dem die unaufschiebbaren
+Vorg„nge ausfhrbar sind und sichergestellt wird, daá man die
+aufschiebbaren nachholen kann.
+Wie kann so etwas im Falle aLF aussehen, welche Vorg„nge sind
+als unaufschiebbar einzustufen?  Klar ist eins:
+Will man gewappnet sein fr den Serverausfall, dann muá man von
+einer Unzug„nglichkeit der Datenbank ausgehen. Jedes Nachsehen
+darin und schon gar jedwedes Speichern entzieht sich dann der
+Machbarkeit. Wichtig ist ferner, daá ein Notbetrieb unverzglich
+einsetzen kann und ohne daá weitgehende Kenntnisse dazu erforderlich
+sind, d.h. es darf nicht so sein, daá erst jemand mit Durchblick
+kommen und etwas einrichten oder in Gang setzen muá. M.a.W.:  Minimaler
+Administrieraufwand ist ein grundlegendes Erfordernis, man muá
+schnellstm”glich mit sehr wenigen Handgriffen einsatzbereit sein.
+
+Zum Glck brauchen die Kernvorg„nge, das Ausgeben und Zurck-
+nehmen, nicht zwingend den Realzeit-Zugriff zur Datenbank, wenn
+man gewisse Dinge wie Gebhrnis- und Vormerkfeststellung
+notgedrungen als "aufschiebbar" einstuft. Unverzichtbar ist
+einzig das Registrieren der Ausgabe ("wer hat was mitgenommen")
+sowie der Rcknahme ("Was wurde zurckgegeben?"). Sind Bcher
+und Leser verbarcodet, also mit zuverl„ssigen Identifikatoren
+ausgestattet, kann man dabei in der Tat ohne Datenbankzugriff
+auskommen. Selbst im GAU-nahen Fall eines Blackout k”nnte man
+das Unaufschiebbare tun, wenn man einen Zettel nimmt und schlicht
+aufschreibt:
+
+L<lesernummer>
+E<entleihung-barcode>
+R<ruecknahme-barcode>
+
+wobei einer L-Zeile natrlich mehrere E-Zeilen folgen k”nnen
+und die R-Zeilen mit den E-Zeilen nichts zu tun haben. Anders 
+gesagt, einer R-Zeile muá keine L-Zeile mit dem Barcode des
+betr. Lesers vorangehen, es kann ein ganz anderer sein als der
+aus der letzten L-Zeile.
+
+Steht ein PC, und sei es bei Blackout ein Notebook, mit Barcodeleser
+zur Verfgung, kann der diese Liste aufschreiben. Mit welcher
+Software man diese h”chst simple Aufgabe bewerkstelligt, ist
+unerheblich. Wir liefern einen FLEX  a-gau.flx, der nichts
+anderes tut als das. Man braucht also auf dem PC nur ein
+Standard-allegro mit DemoBank - die als solche nur da sein
+muá, damit a99 l„uft. Gespeichert wird darin nichts, sondern
+die beschriebene Liste wird als Textdatei aufgezeichnet mit Namen
+"batch.txt", auf dem Startverzeichnis dessen, der a99 gestartet hat,
+meistens ist das wohl %temp%. Man startet also a99 und gibt  X a-gau,
+und schon kann's losgehen mit der Notverbucherei.
+ExtraTip: Im  _start.flx  der betr. DemoBank unten anfgen  
+exec a-gau
+dann braucht man sie nur per Icon zu starten und ist "drin" in
+der Notverbuchung - NOCH schneller geht's nimmer. Auch mehrere
+(voneinander unabh„ngige) Notverbuchungspl„tze mit jeweils eigener
+batch.txt sind m”glich, man verarbeitet sie dann in beliebiger
+Reihenfolge. Wichtig w„re dann aber, daá nicht am einen Platz etwas
+ausgegeben und am anderen gleich wieder zurckgegeben wird.
+
+Und dann?
+Ist endlich der Server wieder "up", kann die Datei  batch.txt
+genommen und mit dem FLEX  a-batch.flx  eingespeist werden.
+Derjenige, der es durchfhrt, braucht dann die Datei batch.txt
+auf seinem Startverzeichnis. Am Ende dann die Datei l”schen!
+Dieser FLEX tut so, als wrden die in  batch.txt  stehenden
+Ausgaben und Rcknahmen dann real durchgefhrt. Er bindet
+deshalb die FLEXe  a-chkout.flx  und  a-chkin.flx  ein, und
+zwar mit "include". Sie sind jetzt so konstruiert, daá das klappt.
+St”át dann der FLEX auf Gebhrenf„lle und Vormerkungen,
+tut er dasselbe wie im Online-Fall: er legt auch die Gebhrens„tze
+an bzw. gibt die Meldung aus, das und das Buch geh”re nun im
+Warteregal bereitgestellt fr Leser Soundso. Das geht bis hin zum 
+Schreiben der Statistikdaten.
+Selbstverst„ndlich kann  a-batch.flx  auch Dateien der
+beschriebenen Art verarbeiten, wenn sie nicht mit  a-gau.flx
+erstellt wurden. Sondern z.B. nachtr„glich durch Abschreiben
+des w„hrend Blackout bei Taschenlampenlicht geschriebenen Zettels.
+Oder im Fall einer Massenrckgabe von Bchern, die aus der
+Binderei zurckkommen oder von sonstwo.
+
+Vermutlich sollten wir noch ein Protokoll produzieren lassen, das
+man sich hinterher anschauen und/oder abheften kann, und aus dem
+hervorgeht, was alles gemacht wurde incl. Fehlermeldungen.
+Es k”nnen w„hrend des Notbetriebs ja auch gesperrte Leser 
+Pr„senzbcher ausleihen, wenn man nicht aufpaát, oder Bcher
+"zurckgeben", die der Bibliothek gar nicht geh”ren...
+
+

@@ -1,0 +1,939 @@
+  D-bol.APR : PRESTO bolero-Titelanzeige
+  940628
+  Wie d-1.apr, nur
+  6. MUSIK : #52 / #22 als Kopf der Einheitskarte
+
+pn="Anzeigeformat mit Nachladung"
+
+zl=75       Zeilenl„nge (nach Bedarf zu krzen)
+ zl=62        fr Kartendruck
+zi=0        keine Einrckung
+fl=12       Anzahl Zeilen je Karte
+fm=1        Modus: keine Einzelkarten fr die B„nde (2 = Einzelkarten)
+dx=1        =0, wenn Farbe nicht gewnscht
+i4=1    V14
+ab=""
+as=""
+ze=13 10
+  Besetzte Sprungmarken:
+  -----------------------------
+    1-50:           !"#$%&'()*+,-./012
+                                           xxxx x   x x     
+  51-100: 3456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcd
+            x         xxxx  xxxx xxx xxxxxxx xx         xxxx
+ 101-150: efghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–
+            x xxxxxx xxxxxxxxxxx      x  x         x     x  
+ 151-200: —˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈ
+             x                                              
+ 201-250: ÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùú
+                                       xx                   
+ 251-255: ûüışÿ
+ -----------------------------
+
+
+   Haupteintragung: (Titels„tze enthalten #20)
+ak=9DG+B 9A+A 
+   andere Satztypen:
+ak=3n+W 3t+T 4n+P 6n+N 2n+E
+
+ak=zz+@    Einheitskarte wird bei #-@ erzeugt   
+   Nebeneintragungen f. Personen
+ak=40.";"+V 41.";"+F 42+F 43+F 44+F 45+F 46+F 47+F 59.+J
+ak=50.+F 51.+F 52+F 53+F 54+F 55+F
+  Sachtitel:
+ak=22+O 23.+S 24.+S
+  K”rperschaften:
+ak=60.+K 61.+K 61a+L
+  Serientitel und Kongresse
+ak=85.+G 83.+K
+  Zusatzk”pfe:
+ak=27.+S
+
+
+  tPRINTER    Druckertreiber; enth„lt Zwischenteile 79-99
+    aktivieren, wenn notwendig
+
+  ********* ZWISCHENTEILE  1 - 78  *************
+1=". "      Interpunktion
+2=", "
+3="; "
+4=13
+5=" : "
+6=13 13
+7=" = "
+8=". - "
+9=" / "
+10="("
+11=")"
+12=13 13 13
+13=13 "   "
+14=". - ("
+15="." 13 "   "
+     Funktionsbezeichnungen
+16=" [Hrsg.]"
+17=" [Mitarb.]"
+18=" [Bearb.]"
+19=" [Begr.]"
+20=" [Samml.]"
+21=" [Texter]"
+22=" [šbers.]"
+23=" [Illustr.]"
+24=" [Komment.]"
+25=" [Kompon.]"
+26=" [Pr„ses]"
+27=" [Resp.]"
+28=" [Vorw.]"
+29=" [Interpret]"
+31=" [Dirigent]"
+
+30=13 "Kongr.: "
+
+50=""
+
+60=#250     Einrckung auf momentaner Position festsetzen
+61=#10      Einrckung auf 0 setzen
+62=&0       Sprung auf Pos. 0
+63=&40
+
+  Farben:  (wegnehmen, wenn nicht gewnscht)
+71=27 91 48 59 51 49 59 52 55 109          red
+72=27 91 49 59 51 50 59 52 55 109          green
+73=27 91 48 59 51 51 59 52 55 109          yellow
+74=27 91 48 59 51 52 59 52 55 109          blue
+75=27 91 48 59 51 53 59 52 55 109          magenta
+76=27 91 48 59 51 48 59 52 55 109          normal    ist aber nicht normal,
+                                                     wenn Farbumstellungen
+                                                     bei nachgeschalteten
+                                                     Datenbanken eingerichtet
+                                                     wurden, Probleme mit der
+                                                     Hintergrundfarbe !!!!
+77=27 91 49 59 51 54 59 52 55 109          cyan
+78=27 91 49 59 51 55 59 52 55 109          white
+
+    flag #utt ist "1", w„hrend eine Nachladung bearb wird, sonst "2"
+
+
+    ******  Hauptteil : Konstr. der "Einheitskarte" ****
+    ** Durchlauf ab hier fr Hauptsatz und Unters„tze **
+#-@
+
+
+#01 +g e0      fr B„nde eines normalen mehrb„ndigen Werkes
+#02 +g e0      wird das Folgende nicht gemacht
+#03 +g e0
+#04 +g e0
+#05 +g e0
+#20 +a e0
+ #8n +R e0    bei Kartendruck inaktiv
+
+  prfe: gibt es einen bergeordneten Satz?
+      Wenn es bergeordnete Einheiten gibt, werden diese zuerst geladen:
+      (in #00 kommt dann '+' vor, dieser Teil wird zuerst abgeschnitten,
+      dann im Index 9 nach der restlichen Id.Nr. gesucht)
+#-a
+#00 +a c"+" t"+" |90      rekursiv! bis kein '+' mehr vorkommt
+        Nun sind evtl. mehrere bergeordnete Stufen geladen
+#09 +a t"+" |90     #09 enth. bergeordn. Nr. (… la MAB oder Pica)
+#<+b    war wirklich was geladen worden?, dann #-b
+#+k     nein, dann #-k
+
+  jetzt arbeiten wir die šberordnungen ab:
+#-b
+#<^    zuerst wieder hochschalten (mit #<+b war 1 runtergeschaltet worden!)
+
+       Der oberste, d.h. zuletzt geladene Satz (Hauptaufnahme) wird ausgegeben
+#40 +#90 e" = " e";" F" " P": "   erste Zeile: 1.Verf. und Signatur
+!20 +#90 e" : " U E40    oder Anfang des Sachtitels, evtl. f. Kartendr. aktivieren
+!8n +#90 e" : " U E40    Serientitel, wenn #20 nicht besetzt
+#90 +n >S e0
+#t4    Leerzeile, wenn keine Sign.
+#-n
+#nr p"1" e1 =tt Z     besetze #utt als flag mit "1"
+
+   ***** Programmteil fr Aufnahme-Korpus *******
+#-H
+#18 e" : "
+#wh
+#18 b" : " p5
+#18 +#71 e0 #zz 8    wenn #18 besetzt, bei #71 weiter
+
+#19 e" : " 
+#wh
+#19 b" : " p5
+#19 +#39 e0 #69 9 #zz 8    wenn #19 besetzt, bei #39 weiter
+
+#21 p"[" P"]" P{ C }
+
+#nr dhs dtz e0
+
+#20 +#20 e" : " dtz ahs
+#8n ahs
+#22 ahs
+#20 b" : " atz
+
+#uhs e""   enth„lt jetzt den auszuwerfenden Titel
+#wh             bei Fortsetz.karten bis hier wiederholen
+#utz p" : "
+#uhs e0 #25 5 #69 9 #zz 8
+#-i
+#25 0 #69 9 #zz 8 
+#39 +#71 P8     wenn #39 besetzt, bei #71 weiter
+#40 ++ >K m>k #40z 3 #69 3 #70 0 #77z 8 #zz 0
+#60e 0 #69 3 #76 8     zu erg. Urh.
+#60 0 #69 3 #76 8
+#41 ++ >K m>k #412 3 #69 >l #zz >m
+#42 >K #69 >l #zz >m        Die Unterprogramme machen folgendes:
+#43 >K #69 >l #zz >m           #(K macht die Invertierung "Vorname Name"
+#44 >K #69 >l #zz >m           #(l : "[Funktionsbez.]; "   hintersetzen
+#45 >K #69 >l #zz >m           #(m : "[Funktionsbez.]. - "
+#46 >K #69 >l #zz >m        wenn also ein weiterer Personen- oder
+#47 >K #69 >l #zz >m           K”rperschaftsname folgt, wird "; " als
+#50 >K #69 >l #zz >m           Postfix ausgegeben, sonst ". - "
+#51 >K #69 >l #zz >m
+#52 >K #69 >l #zz >m
+#53 >K #69 >l #zz >m
+#54 >K #69 >l #zz >m
+#55 >K #69 >l #zz >m
+#56. ++ >K m>K #69 >l #zz >m
+#57. ++ >K m>K #69 >l #zz >m
+#60a 0 #69 3 #zz 8
+#61 0 #69 3 #zz 8
+#61i " [Orch.:] " #69 3 #zz 8
+            unselbst„ndiges Werk?
+#70 +#83 e0      wenn #70, dann #71 bis #77 bergehen
+#70c +#83 e0     oder #70c
+#70i +#83 e0     oder #70i
+
+#71 0 #75 0 #77z 8
+#74 +#75 e"" 13 #75 0 #76p 2 #zz 8
+#75 ": " #76p 2 #zz 8
+#76 0 #zz 8
+
+#76p 0 #zz 8  Erscheinungsverlauf
+#77 p". - "
+
+#81F { C t78 "Frher: " t76 }
+#81S { C t78 "Sp„ter: " t76 }
+#81Z { C t78 "Zeitweise: " t76 }
+#83 ++ 30 #833 4 #zz 1
+
+   ******** Quellenangabe bei Aufs„tzen ***********
+
+#70 +#8n i4,_ e";" F" " P"  " |52    wenn #70 _krzel : nachladen
+#70 +#70 e";" C p"In: "   wenn  #70 text  vorkommt, ausgeben, weiter bei #702
+#70c +#8n e5 p"_" P"  " |52        in #70c steht CODEN? 
+                       danach wird im Index 5 gesucht und der Satz geladen.
+#70i +#8n e8 p"_" P"  " |52         wenn kein CODEN, dann ISSN?
+#+„   nichts davon: weiter bei #-„
+
+#8n +#70 C p"In: "    der geladene Ansetzungstitel aus #8n wird genommen
+            hier #8n1... einsetzen, wenn Zitiertitel 1 u.a. gewnscht!
+#20 C e" :" p"In: "     wenn #8n nicht besetzt, dann #20
+#70 e0    nur als Sprungmarke
+#<               zurckschalten, dann die Aufsatzdaten
+#70 +„ b";" f" " p" ; "      #70 titel ; heft...    ODER:
+#702 p" [" P"]"    ELand  diese Angaben k”nnen hier beliebig anders
+#t{ " ; " }
+#704               Band    zusammengesetzt werden
+#76 p"(" P")"      Jahr
+#706               Heft
+#708 ", S."
+
+#-„
+#t88   kursiv ein
+
+       Serientitel
+#85 >4
+#85a >4
+#85b >4
+#852 >4
+#853 >4
+
+    wenn in #84 eine Stammsatznummer steht: nachladen und nach #-u
+    (unselbst„ndige Beitr„ge aus Sammelb„nden) *******************
+#84 +u i4,_ B"_" e";" F" " |90
+#09 +#84q e0     wenn #09, dann in #84 Textangaben zum bergeordn. Werk
+#84 +q C e";" F" " p"In: "      nur wenn keine #09
+#84q
+#t87   kursiv aus
+#77z C { t78 "L„nge: " t76 }
+#76a { t78 "    Aufz.: " t76 }
+#81. ++ C p>N m>N
+#23 ++ { C t78 "Nebentitel   : " t76 } m"; "
+
+#818 { C t78 "Hochschulschrift: " t76 }
+
+#87 C p"ISBN "
+#87m C p"ISMN "
+#88 C p"ISSN "
+#31m C { &0 t78 "Emotion      : " #260 t76 } e0
+#31m >M e0
+
+#52 +#22 e0     MUSIK
+#+á
+#22 p{ C &0 t78 "Einheitstitel: " t76 }
+#89o p{ C &0 t78 "Opus         : " t76 }
+#-á
+#24 ++ p{ C t78 "Paralleltitel: " t76 } m". "
+
+ Wenn man die Datenbank-Umschaltung auf Taste '1' legen will:
+ #t{ C "[" t71 "1" t76 "] n„chste Datenbank" }   FLIP
+ #uxb p"<0|" dZ1 aZ1
+ #uxa AZ1    TEST
+
+#-š
+#31 C u_; F";" { &0 t78 "Schlagw”rter: " #250 t76 }
+#31g C e"_" { &0 t78 "Geogr. Schlagwort: " #250 t76 }
+#31c C e"_" { &0 t78 "K”rperschafts-SW : " #250 t76 }
+#31k C e"_" { &0 t78 "K”rperschafts-SW : " #250 t76 }
+#31p C e"_" { &0 t78 "Personenschlagwort: " #250 t76 }
+#31s C u_; F";" { &0 t78 "   Sach-Schlagwort: " #250 t76 }
+#33B C e"_" { &0 t78 "Brit. Schlagwort: " #250 t76 }
+#33L C e"_" { &0 t78 "LoC-Schlagwort : " #250 t76 }
+#30b +#82 C { &0 t78 "Sachgruppen: " t76 } P" (bearbeitet)"
+#30a C { &0 t78 "Sachgruppen  : " t76 }
+#30m C { &0 t78 "Sachgruppen  : " t76 }
+#30t 63 { t78 "Tonart: " t76 }
+
+#90 + c"," e0
+#+Q
+#-
+#90 e" " dsg asg
+#90 b" " e"[,-]" r5 Asg
+#usg +/ |80
+#+Q
+#-/
+#20 C "(" 
+#57i p". - [Interpr.:] "
+#76a p". - [Aufn.:] "
+#t{ ")" }
+#-Q
+#<
+#82 C "NE: "     (NE-Vermerk)
+#902 p78 e0
+#902 ++ p>T m>T
+#90a ++ p>T m>T
+#902 p76 e0
+
+
+#92 ++ p>B m>b e0        Bestandszeilen
+#90z { C t78 "Alte Signatur bis 1971: " t76 }
+#92 +#90X e0
+#00 i4,z C p"kein Bestand in der UB, evtl. im Zettelkatalog nachsehen!? " e"?" p78 P76
+#>C   wenn keine #92 vorkommt
+
+   Vielleicht gibt's noch unselbst„ndige Teile (enthalt./beigef. Werke)
+
+
+#90X
+#90 +#00 c"[,-]" e0
+#90 e" " dsg asg
+#90 b" " e"[,-]" r5 Asg
+#usg +p P"," |82
+#00 +p P"*" |92    wenn ja, dann den ersten nachladen
+#+v   nein
+
+   ****  Ausgabe der selbst„ndig gespeicherten Bestandteile in Kurzform:
+    (der n„chste Abschnitt wird zyklisch fr alle Untereinheiten durchlaufen)
+
+#-r
+#t4
+#+s
+#-p
+#t{ C t78 "Hierin enthalten:" t76 C }
+#-s
+#t61
+#t62
+#52 +#20 P": "
+#40 e";" P": "
+#20 
+#<
+#usg +r |83
+#00 +r P"*" |93     n„chsten Band laden, dasselbe nochmal
+#</
+#t{ #0 }
+#-v
+#hi +#90 e0   wenn Untersatz, dann jetzt nach #90
+
+   *** Hauptprozedur zu Ende, im  Normalfall Sprung  nach #-m ********
+
+
+#utt +m i4,2 Z        bedingter Sprung, wenn "2" in #utt steht
+#<
+#+c
+#90 e0     nur als Sprungmarke von #-v aus!
+ #90 >S e0          Sign. mit UP aufbereiten
+ #90 p"Sign.: " R   Signatur des Bandes normal ausgeben
+#+#
+
+
+    **************************
+    jetzt die Zwischenstufen abarbeiten, wenn was nachgeladen wurde
+
+#-c
+#<+d   geht's noch weiter runter?
+#t{ C t61 t62 }
+#+g    nein, wir sind schon auf der Ausgangsaufnahme
+
+#-d
+#<^    ja, dann erst wieder hochschalten, dann die
+       Zwischendaten ausgeben
+#t{ C }
+#00 b"+" B"=" f" " P{ ". " #250 }
+#19 +#40
+#20
+#40 e";" F" " p" / "
+#41 e";" F" " p" / " P" [Hrsg.]"
+#<+c        rekursiv zurckschalten
+
+   **********************************************
+   jetzt sind wir wieder auf der Ausgangsaufnahme
+   hier kommen wir auch bei "normalen" Aufnahmen und Unters„tzen hin
+#-g
+    sind wir bei einem normalen Untersatz?
+#00 +l c"+" b"+" B"=" f" " P". " P60   nein, ein selbst„ndig gespeicherter
+#84 +l T" ; " b"; " P". " P60   nein, ein selbst„ndig gespeicherter
+#84 +l e0        (" ; " fehlt)
+   wenn man "#01 1 =" hat, ist es ein enthaltenes Werk.
+#90 { &1 #5 } e0
+#01 +l { C &1 } B" = " c" =" p"Enth„lt: !" e"!" p78 P{ #250 t76 }
+#01 +l { C &1 } B" = " P{ ". " #250 } 
+#02 +l { C &4 } B" = " P{ ". " #250 }
+#03 +l { C &8 } B" = " P{ ". " #250 } 
+#04 +l { C &11 } B" = " P{ ". " #250 } 
+#05 +l { C &14 } B" = " P{ ". " #250 } 
+
+#</     alle nachgeladenen beseitigen (falls welche da sind)
+        (bei den mehrb„ndigen alter Art darf das nicht passieren, sonst
+        wird zur Hauptaufnahme zurckgeschaltet, daher die obigen Befehle.)
+#-k
+#nr p"2" e1 =tt Z    besetzt flag #utt mit "2" = Normalfall
+#52 +#22 e"[=;]" F" " P" [Komponist]: " #zz 4   MUSIK
+#40 +#90 e"[=;]" F" " P": "   erste Zeile: 1.Verf. und Signatur
+  bei kartendruck: n„chste 2 Zeilen aktiv
+!20 +#90 e" : " U E40   oder Titelanfang + Signatur   evtl. f. Kartendr.
+!8n +#90 e" : " U E40   oder Serientitel
+#22 B": " P4    MUSIK
+#90 >S e0
+#t4
+#t4   aktiv, wenn Leerzeile nach Signatur gewnscht (Karte)
+#+H     zum Hauptteil
+
+        ***** Bandauffhrung formatieren ****************
+#-l
+#nr p"2" e1 =tt Z    besetzt #utt mit "2"
+#90 >S e0
+  wenn Bandverfasser unterstrichen: n„chste zeile (Karte!)
+ #40 e";" F" " P": " p97 P96   erste Zeile: 1.Verf. und Signatur, unterstr.
+ sonst diese:
+#40 e";" F" " P": "   erste Zeile: 1.Verf. und Signatur, unterstr.
+#t4
+#19 +i #32 0 #69 9 #77 8 #zz 0
+#20 0 #25 5 #32 0 #69 9 #77 8 #zz 0
+#+i     zum Hauptteil
+
+
+#-m
+#01 +# e0      fr B„nde eines normalen mehrb„ndigen Werkes
+#02 +# e0      wird das folgende nicht gemacht,
+#03 +# e0      sondern hier beendet
+#04 +# e0
+#05 +# e0
+
+   ***** Es k”nnten noch selbst„ndig gespeicherte B„nde da sein: *******
+         deshalb wird eine Nachladung ber Index 9 versucht:
+
+#00 +#99J e"=" F" " P"+" |92    wenn ja, dann den ersten nachladen
+#+z   nein, keiner da
+
+   ****  Ausgabe der selbst„ndig gespeicherten Untereinheiten in Kurzform:
+    (der n„chste Abschnitt wird zyklisch fr alle Untereinheiten durchlaufen)
+
+#99J
+#00 i4,z { C t78 "Beilagen:" t76 C } e0
+
+#-j
+#t4
+#t61
+#t62
+#00 +#90 b"+" B"=" f" " C P". " P60   1. Fall: echte Hierarchie
+#09 +#90 b"=" C P". " P60             2. Fall: "=" Bandangabe in #09
+#09 +#90 b"+" F"0" C P". " P60        3. Fall: "+" in #09
+#84 T" ; " b"; " P"." P60             4. Fall: textuelle nach-oben-Verkn.
+#90 >S e0
+#19 +#71 #zz 8
+#20 0 #zz 8
+#71 0 #zz 8
+#76 0 #zz 8
+#77.
+#92 ++ p>B m>b e0        Bestandszeilen
+#<
+#00 +j e"+" P"+" |93     n„chsten Band laden, dasselbe nochmal
+       keiner mehr zu finden
+#-z    dann Schluss machen,
+#</    alle nachgeladenen S„tze beseitigen
+#+#
+    ****** ENDE **************
+
+    ****** Sonderabschnitte ** 
+
+#-u     unselbst. Werk: Stammsatz ist geholt, jetzt Titel+Verf. ausgeben
+#20 C "In: "
+#40 e";" F" " " / "
+#41 e";" F" " " / Hrsg.: "
+#<    zurckschalten
+
+#-q              Sammelband-Beitrag
+#84 b";" f" " p" ; "   entweder #84 _nnn ; Seiten
+#708 p" ; S."      oder die Seiten stehen in #708
+#<^
+#90 C >S           noch die  Signatur aus der Hauptaufnahme nehmen
+#<
+#+š   SchlW
+
+#-A     Adressensatz
+#9A +#9AA i4,A e0
+#+-
+
+#9AA
+#9A N
+#9A n C
+#9A a C
+#9A t C "Tel. "
+#9A O "™ffn: " C
+#9A B " (" P")"
+#9A Z C 
+#+#
+
+
+  ******** Abschnitte fr Kartenk”pfe  *********
+
+#-V   NE fr weitere Verf.
+#u1 +- i3,  e0      nicht ausfhren fr den 1. Verf. (Position 3 = blank)
+!u1 f" " P":"
+#20 4 e" : " U E40
+#t4
+#+@
+
+#-E        Stammsatz fr EST
+#t { t78 "              EST: " #250 t76 }
+#u1
+  #52 { C C }
+#2nr { C C &0 t78 "Verweisungsformen: " #250 t76 }
+#2nu { C C &0 t78 "  andere Sprachen: " #250 t76 }
+#2nz {C C &0 t78 "        Anmerkung: " t76 }
+#89o { C C &0 t78 "             Opus: " t76 }
+#2n { C C &0 "--"*36 C &0 "press [" t71 "1" t76 "] to find entries for this work" C } e0
+ #2n { C C &0 t78 "Die Eintr„ge hierzu finden Sie im Register 2 unter" t76 C }
+
+#+#
+
+#-F   Hrsg. u.a. beteiligte Personen
+!u1
+#>F   Unterprog.: Funktionsbezeichnung ermitteln und ausgeben
+#t4   Zeilenvorschub
+#+@
+
+#-G    Gesamttitel : NE unter Serie
+           (wenn "#85 _IdNr ; z„hlung" vorliegt:
+#ch +#20 i4,_ e" " F";" P"  " p"_" |52   Stammsatz holen, nach #8n
+#+”
+#20 +t e" : "
+#8n e" : "
+#-t
+#<
+#u1 +@ N p"  " C P4      sortierbare Z„hlung
+#u1 C b"; " e"" p"  " P4    Z„hlung auf neuer Zeile und einrcken
+#+@
+
+#-”
+!u1 +t A     Ansetzungsform der Serie
+
+!u1 +t ,"_  _ / _" e" ; " e""     sonst Inhalt von #85 ausgeben
+#t4
+#+@
+
+
+#-J           Festschrift  (die Angabe ak=59+J fhrt hierher)
+!u1 99 e" =" P": Festschrift" P98
+#t4
+#+@
+
+#-K       beteiligte K”rperschaft
+#u1 +- i3,a
+!u1 U P4
+#+@
+
+#-L   #61 mit #85,  K”rperschaft: Serientitel ; Nr
+#85 +#61a c"  " e0
+#+-
+#61a P": "
+#85 C e"  "
+#85 b" ; " " ; "
+#t4
+#+@
+
+#-N      Stammsatz fr K”rperschaftsnamen
+#t{ t78 "          Name: " t76 #250 }
+#u1
+#6nd {C &0 t78 " 'Lebensdaten': " t76 }
+#6nr {C C &0 t78 "   Verw.Formen: " #250 t76 }
+#6np {C C &0 t78 "  frhere Form: " #250 t76 }
+#6nl {C C &0 t78 "  sp„tere Form: " #250 t76 }
+#6ns {C C &0 t78 "      Kurzform: " #250 t76 }
+#6ue {C C &0 t78 "    engl. Form: " #250 t76 }
+#6na {C C &0 t78 "    siehe auch: " #250 t76 }
+#6nz {C C &0 t78 "     Anmerkung: " t76 }
+#t{ C C t78 "Sie finden diesen Namen im Register 1" t76 }
+#+#   das w„r's
+
+#-O        1.Verf. mit Originalsachtitel/EST
+!40 99 P": " P98
+!u1 U P4     hier ist #u1 = #22
+#+@
+
+#-P    Stammsatz fr Personennamen
+#t{ t78 "          Name: " #250 t76 }
+#u1
+#4nd {C &0 t78 "   Lebensdaten: " t76 }
+#4no {C &0 t78 " geb.-gestorb.: " t76 }
+#4nr {C C &0 t78 "   Verw.Formen: " #250 t76 } 
+#4np { C &0 t78 "    Pseudonyme: " #250 t76 } 
+#4nt { C &0 t78 "   wirkl. Name: " #250 t76 } 
+#4na { C &0 t78 "    siehe auch: " #250 t76 } 
+#75 { C &0 t78 "      Verleger: " t76 } 
+#4nz { C &0 t78 "     Anmerkung: " t76 } 
+#+#
+
+#-R     Stammsatz fr Reihe/Stcktitel-Serie
+#8na p" "
+#t { C C t78 " Zeitschrift/Serie: " #250 t76 }
+#60 P": "
+#8n 0 
+#8n1 { C &0 t78 "     Zitiertitel 1: " #250 t76 }
+#8n2 { C &0 t78 "     Zitiertitel 2: " #250 t76 }
+#8n3 { C &0 t78 "     Zitiertitel 3: " #250 t76 }
+#74 C e"" 
+#75 ": "
+#76p { C C &0 t78 "     Ersch.Verlauf: " t76 }
+
+#8nr { C C &0 t78 " Verweisungsformen: " #250 t76 }
+#88c { C &0 t78 "             CODEN: " t76 } 
+#88 { C &0 t78 "              ISSN: " t76 }
+#8nz {C C &0 t78 "         Anmerkung: " t76 }
+#t { #0 C }
+#+#
+
+#-S   SachTitelk”pfe (Haupt-, Neben-, Serientitel)
+!u1 U e" : " B" =p " e" ; " 99 P98
+#t4
+#+@
+
+#+#
+
+#-B    Bestandsdatensatz
+#9DF "IdentNr. :  "
+#t4
+#9DF +#40 e"+" e"=" |90    Titelsatz holen
+#9DF b1 e"+" e"=" |90    Titelsatz holen
+#40 P{ " : " C }
+#20 P4               Titel anzeigen
+#</
+#9DG L "Bestand von " P": "
+#9DG l C "Standort     : "
+#9DG B C "Band         : "
+#9DG b "   [" "]"
+
+#9DG H C "Bestand      : "
+#9DG n C "Anmerkung    : "
+#t4
+#9DG e p"               " P". Exemplar  "
+#9DG v c"p" "  Pr„senz!" e"!"
+#9DG v c"a" "  ausleihbar!" e"!"
+#9DG v c"k" "  Kurzausleihe!" e"!"
+#9DG E C "Ausgabe      : "
+#9DG Y C "E.-Jahr      : "
+#9DG d C "Zugangsdatum : "
+#9DG z C f" " "Zugangsnummer: "
+#9DG a C "Barcode      : "
+#9DG s e4 C "Signatur     : "
+#9DG +# s b4 e4 x">1000" p"-"
+#9DG s b4 
+#+#
+#-T    Stammsatz fr Thesaurus-Eintragungen
+#t {"  Hauptbegriff: " #250 }
+#u1
+#3ta {C C &13 "UF: " #250 }
+#3tr {C C &13 "RT: " #250 } 
+#3tb {C C &13 "BT: " #250 } 
+#3tt {C C &13 "TT: " #250 } 
+#3tn {C C &13 "NT: " #250 }
+#3s  {C C &13 "CC: " #250 }
+#3sd {C C &13 "DI: " #250 }
+#+#
+
+#-W           Sacherschliessungs-Stamms„tze
+#3n +w i4,c b1 e" " { t78 "      Sachgruppe: " t73 #250 } #zz 76
+#3n +w i4,l b1 e" " { t78 "         Sprache: " t73 #250 } #zz 76
+#3n +w i4,g b1 e" " { t78 "   Geograph.Code: " t73 #250 } #zz 76
+#3n +w i4,h b1 e" " { t78 "        Zeitcode: " t73 #250 } #zz 76
+#3n +w i4,a e" " b2 { t78 "     Aufstellung: " t78 #250 } #zz 76
+#3n +w i4,z b1 e" " { t78 "  Zeitschr.Klass: " t73 #250 } #zz 76
+#3n +w i4,b b2 e" " { t78 "  BASIS-Klassif.: " t73 #250 } #zz 76
+#3n +? i4,s i5,p b" " { t78 "     Personen-SW: " t73 #250 } #zz 76
+#3n +? i4,s i5,t b" " { t78 "        Titel-SW: " t73 #250 } #zz 76
+#3n +? i4,s i5,s b" " { t78 "         Sach-SW: " t73 #250 } #zz 76
+#3n +? i4,s i5,k b" " { t78 "K”rperschafts-SW: " t73 #250 } #zz 76
+#3n +? i4,s i5,c b" " { t78 "K”rperschafts-SW: " t73 #250 } #zz 76
+#3n +? i4,s i5,g b" " { t78 "    Geograph.-SW: " t73 #250 } #zz 76
+#3n i4,d b1 u^^ e" " { t78 "        DK-Zahl:  " t73 #250 } #zz 76
+#3nt +y
+#3n b" " p{ "   " #250 } 
+#3na u() C
+#-y
+#t{ C &0 #0 }
+#+x
+#-w
+#t{ #1 }
+#3nt +#3qd p" " 
+#u1 b" " p" "
+#-?
+#3na f" " { C &0 t78 "         Synonym: " #250 t76 }
+#>R
+#-x
+#3qd { C C &0 t78 "        Dewey 19: " #250 t76 } 
+#3ql { C C &0 t78 "   LC-Systematik: " #250 t76 } 
+#3qb { C C &0 t78 "   BASIS-Klassif: " #250 t76 } 
+#3n +#3nr i4,a i5,0 p{ "Das ist ein allgemeiner Schlssel, keine Fachgruppe" }
+
+    Aufstellungs-Klassifikation: Differenzierung nach Bereichen 
+ #3n i4,a p{ C C &0 #0 "Eine Auswahl von Bchern finden Sie" } e0 
+ #3n +#3nr i4,a i5,1 p{ C t72 "im Lesesaal 1 (1. Obergeschoá)" t76 } e0 
+ #3n +#3nr i4,a i5,2 p{ C t73 "im Lesesaal 2 (2. Obergeschoá)" t76 } e0 
+ #3n +#3nr i4,a i5,3 p{ C t71 "im Lesesaal 3 (3. Obergeschoá)" t76 } e0 
+ #3n i4,a i5,4 p{ " im Bibliographischen Handapparat" } e0 
+ #3n i4,a i5,6 p{ " in der Chemiebibliothek, Hagenring 30" } e0 
+
+#3nr e"" { C C &0 t78 "      siehe auch: " #250 t76 } 
+#3nr b"b" { C C &0 t78 "     Oberbegriff: " #250 t76 } e"f" e"s" e"n" e"a"
+#3nr b"f" { C C &0 t78 "          frher: " #250 t76 } e"s" e"fn" e"f"
+#3nr b"s" { C C &0 t78 "          sp„ter: " #250 t76 } e"n" e"a"
+#3nr b"n" { C C &0 t78 "   neuer Begriff: " #250 t76 } e"a"
+#3nr b"a" { C C &0 t78 "   alter Begriff: " #250 t76 }
+#3nc { C C &0 t78 " im Zettel-Schlagwortkatalog finden Sie evtl. noch weiteres Material unter: " #250 t76 }
+
+#3nz { C C &0 t78 "     Anmerkungen: " #250 t76 } e""
+#3nz b"a" { C C &0 t78 "          Quelle: " #250 t76 } e""
+#3nz b"b" { C C &0 t78 "      Definition: " #250 t76 } e""
+#3nz b"c" { C C &0 t78 "     Bemerkungen: " #250 t76 } e""
+#3nz b"S" { C C &0 t78 "     DB-Sachgrp.: " #250 t76 } e""
+#3nz b"P" "(Erfassung: " P")" R
+#+#
+
+#(R    #3n-Satz geladen
+#3ng +' p"G " |72             Geosatz laden
+#-$
+#3n +% i4,s I6,  b2 e" " e"ú" e"-" P"  *" |78      Sachgebiets-Stammsatz laden
+#)R    kein Erfolg
+#-'
+#3nt +$ { C C &0 t78 "          Region: " #250 t76 }
+#3n b" " { C C &0 t78 "          Region: " #250 t76 }
+#-$
+#)R
+#-%
+#ux7 b"*" { C C &0 t78 "      Sachgebiet: " #250 t76 }
+#)R
+
+  ****** UNTERPROGRAMME ****************
+
+#(K         UP fr Personennamen
+#cc dpr apr
+#-
+#upr e";" u e" = " b", " e" ["    Verweisungsformen abschneiden, hinter ", " beginnen
+#upr e";" e", " p" "      Text vor dem ", " nehmen, " " davorsetzen
+#upr e";" b"u.a" p" u.a." 
+#upr e";" b" [" p" [" 
+#upr + b";" f" " =pr,15 3 e0      wenn mehrere Personen in einer Kategorie
+#)K                      in beiden F„llen kein Postfix! (#zz 0)
+
+#(k            hier k”nnte man den 2. und 3. Verf. anders behandeln!
+#cc dpr apr
+#-&
+#upr e";" u e" = " b", " e" ["    Verweisungsformen abschneiden, hinter ", " beginnen
+#upr e";" e", " p" "      Text vor dem ", " nehmen, " " davorsetzen
+#upr e";" b"u.a" p" u.a." 
+#upr e";" b" [" p" [" 
+#upr +& b";" f" " =pr,15 3 e0      wenn mehrere Personen in einer Kategorie
+#)k
+
+#(l    zuerst wird ein weiteres Unterprogramm aufgerufen: 
+#>F    gib die Funktionsbezeichnung aus
+#t3    schreibe "; "
+#)l
+
+#(m    dasselbe wie #(l, bis auf das Postfix:
+#>F
+#t8    schreibe ". - "
+#)m
+
+#(M     Musikschlagwort
+#31m dms ams
+#-=
+#ums e";" b":" P": "
+#ums e";" e":"
+#ums += b";" f" " p3 dms ams
+#)M
+
+#(F     Funktionsbez. Ausgabe
+#i1,5 +C   erste Kategorieziffer =5: weiter bei #-L
+        4er-Kategorien:
+#i2,1 16    wenn 2. Kategorieziffer = 1, dann Zwischenteil 16 = " [Hrsg.]"
+#i2,2 17    Mitarb. usw.
+#i2,3 18
+#i2,4 19
+#i2,5 20
+#i2,6 21
+#i2,7 22
+#)F        Ende Unterprogramm F
+#-C          #5er Kategorien
+#i2,0 23    Illustr. ...
+#i2,1 24
+#i2,2 25
+#i2,3 26
+#i2,4 27
+#i2,5 28
+  #i3,i 29   Interpret
+#i3,d 31
+#)F        Ende Unterprogramm F (!)
+
+#(4         Unterprog. fr Serientitel:
+            m”gliche Eingabeform: #85 Serientitel =p Ordnungsworte ; BdNr
+            oder                  #85 _krzel ; BdNr
+#cc +#8ny i4,_ e" " F";" P"  " |52   Stammsatz? holen, nach #8n
+#cc +#8nx e" =p " e" ; " ,"_  _ / _" C e"" p"("     daraus wird gemacht:
+#8ny
+#t{ C "(" }
+#60 P": "
+#8n +                      Stammsatztitel
+#20        wenn #8n nicht besetzt
+#-
+#<
+#8nx
+#cc B" =p " b" ; " e"" p' ; '    (#85 Serientitel ; BdNr)
+#t{ ")" }
+#)4
+
+#(N   Fussnote
+#cc i3,f "[Film:] !" e"!"
+#cc
+#)N
+
+#(B    Bestandsangaben
+#cc L C P":" p73 P76
+#cc +#92X s p"  "
+#cc C { t71 "Bestand der UB: " t76 }
+#92X
+#(C
+#00 +æ P"'" |108
+#)B
+#)C
+#-æ
+#t{ C t78 "Institutsbest„nde: " t76 }
+#-ç
+#ux: +#92A P"xx" b72 e0
+#ux: +#92B e0
+#92A   Bestandszeile zu lang, Bestandssatz laden
+#ux: |100
+#t{ C #0 &0 }
+#ux: b"'" e'"' F"-" p"SYSA" |118     Adressenzeile aus Reg.11
+#ux; C b" " p75 P76
+#9DG H C dx:
+#</
+
+#92B
+#ux: =xy
+
+#ux: b"'" e'"' F"-" p"SYSA" |118
+#ux; C b" " p75 P76
+#uxy C b" " 
+
+#00 +ç P"'" |109
+#t{ C #0 &0 }
+#)B
+#)C
+
+#(b    Bestandsangaben
+#cc L C P":" p73 P76
+#cc +#92Y s p"  "
+#cc
+#92Y
+#)b
+
+      aktivieren, wenn gewnscht:
+  #(S    Signatur-UP
+  #cc p"Signatur: " R
+  #)S
+
+#(S       Signatur-Unterprogramm     ersetze u durch "Kassette"
+#cc +o e"" i4,s b1 p"Schallplatte " R      rechtsbndig ausgeben
+#cc +o e"" i4,u b1 p"Kassette " R      rechtsbndig ausgeben
+#cc +o e"" i4,n b1 p"Noten " R      rechtsbndig ausgeben
+#cc +o e"" i4,c b1 p"CD " R       ersetze c durch CD
+#cc +o e"" i4,v b1 p"Video " R    ersetze v durch Video
+#cc +o e"" i4,b b1 p"Buch " R    ersetze b durch Buch
+#cc +o e"" i4,a b1 p"Artikel " R    ersetze a durch Artikel
+#cc e"" R
+#-o
+#cc u C "ausgeliehen an " R      wegnehmen, wenn nicht gewnscht
+ #cc u C "ist ausgeliehen!x" e"x" R      aktivieren, wenn gewnscht
+#)S
+
+#(T       fr weitere Exemplare
+#cc C e"" p"weiteres Exemplar: " R      rechtsbndig ausgeben
+#cc u C "ausgeliehen an " R      wegnehmen, wenn nicht gewnscht
+ #cc u C "ist ausgeliehen!x" e"x" R      aktivieren, wenn gewnscht
+#)T
+
+
+#-`
+#2n +# u "?|2"
+#+-
+
+
+   ******** Sonderzeichen ***********
+
+p  255    Absatz
+
+p ª 1
+q ª 1
+
+p ; "; "
+p  2
+
+q a/z A
+q „ "AE"
+q ” "OE"
+q  "UE"
+q  "AE"
+q ™ "OE"
+q š "UE"
+q á "SS"
+
+ q [ 1
+ q ] 1
+q _ 1
+p _ 1
+
+p  1    Verweisungsstrich
+q  1
+
+  nur fr Druck:
+ p  .27 83 49    Tiefstellung
+ p  .27 83 48    Hochstellung
+ p  .27 84       Aufhebung
+
+ q  .27 84
+ q  .27 83 49
+ q  .27 83 48
+
+

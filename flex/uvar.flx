@@ -1,0 +1,219 @@
+  UVAR.FLX : FLEX-Datei lesen, Liste der Variablen anfertigen
+  2004-11-08  und Liste hinten an die Datei anhaengen
+             hinter jeder Var. die Haeufigkeit des Vorkommens
+var m
+if "alc" end
+sho rec
+  In #uFN steht schon der Dateiname;
+if #uFN jump neuname
+
+  sonst Zuerst eine Datei auswaehlen lassen
+var "Wählen Sie eine FLEX-Datei:|" P "FLEX\\*.flx"
+fname
+if no end
+  den gewaehlten Namen in #uFN speichern
+ins #uFN
+  zum Lesen oeffnen (Name steht noch in iV)
+:neuname
+var "F" #uFN
+var
+var (b"u-VARIABLEN")
+if "" jump anfang
+sho IV
+yes Var.Liste schon vorhanden! Erneuern?
+if yes jump anfang
+#uFN
+end
+
+:anfang
+var #uFN
+open
+if no jump exit
+
+var #uFN(e".") "-neu.flx"
+  den eingegebenen neuen Namen in #uNN speichern
+ins #uNN
+:start
+  und zum Schreiben (Exportieren) oeffnen (Name steht noch in iV)
+var "uvar.txt"
+open x
+if no jump exit
+
+  erste Zeile lesen (X  davor setzen)
+var "X "
+get +iV
+
+Z=0
+  ^^^^^^^^^^^^^^^^^ Beginn der Schleife
+:loop
+  gelesene Zeile (steht in iV) in #uZL speichern, mit X davor
+  (sonst wuerden fuehrende Leerzeichen bei "ins #uZL" verschwinden...)
+
+ins #uZL
+ins #uZD
+
+:iloop
+var #uZL
+  Ist es nur eine Kommentarzeile? Dann nicht auswerten!
+if "X  " jump next
+var #uZL(b" #u")
+if "" jump gleich
+
+wri " #u" #uZL(b" #u" 0,2) n
+Z+1
+var #uZL(b" #u")
+ins #uZL
+jump iloop
+
+:gleich
+var #uZL(b"=#u")
+if "" jump doll
+wri " #u" #uZL(b"=#u" 0,2) n
+Z+1
+var #uZL(b"=#u")
+ins #uZL
+jump iloop
+
+:doll
+var #uZD(b" $")
+if "" jump next
+wri " $" #uZD(b" $" e" ") n
+Z+1
+var #uZD(b" $")
+ins #uZD
+jump doll
+
+
+:next
+  naechste Zeile lesen
+var "X "
+get +iV
+  war noch eine Zeile da? dann Schleife
+if not cancel jump loop
+  ^^^^^^^^^^ Ende der Schleife
+
+close x
+
+  Variablen loeschen
+#uZL
+#uZD
+#uZZ
+
+  Kam irgendeine Variable vor? Dann ist Z>0
+
+if Z>0 jump weiter
+jump nix
+:weiter
+get env comspec
+ins #uwC
+
+  Datei uvar.txt sortieren
+var #uwC " /c " P "asort uvar.txt uvar.lst"
+cAll
+del uvar.txt
+
+  Sortierte Liste durcharbeiten, Duplikate raus
+open uvar.lst
+get #uZZ
+  fertige Liste zuerst in der Variablen #uZL speichern
+var n " u-VARIABLEN in " #uFN(T"\\") n " " #uZZ
+ins #uZL
+var "0"
+z=
+:list
+z+1
+get #uZY
+if can jump last
+var #uZY
+if =#uZZ jump list
+ins #uZZ
+var #uZL " (" z ")" n " " #uZY
+ins #uZL
+var "0"
+z=
+jump list
+:last
+var #uZL " (" z ")"
+ins #uZL
+close
+
+  Sonderservice: Liste anzeigen
+var #uZL
+sho IV
+
+  Datei nochmals zum Lesen oeffnen
+var #uFN
+open
+  erste Zeile lesen, nach #uZZ
+var "X"
+get +iV
+ins #uZZ
+  neue Datei zum Schreiben oeffnen
+var #uNN
+open x
+
+:floop
+  naechste Zeile -> iV
+var "X"
+get +iV
+if can jump flend
+if "X u-VARIABLEN in " jump flend
+wri #uZZ(1,0) n
+ins #uZZ
+jump floop
+:flend
+close
+wri #uZZ(1,0) n n
+wri #uZL n n
+close x
+
+#uZZ
+delete uvar.lst
+var "Es gibt jetzt eine neue Version der Datei, wobei am Ende die Liste "
+var +"der Variablen angeh„ngt ist. Die alte ist noch unver„ndert vorhanden."
+var +"Wollen Sie die alte Datei beseitigen? (Abbruch: nichts machen)"
+ansi
+yesno
+if no jump neudat
+if can jump exit
+
+var #uFN
+delete
+var #uNN " " #uFN
+rename
+if no jump rerr
+jump exit
+
+:neudat
+var "Die neue Datei heißt " #uNN ". Anzeigen?"
+yesno
+if yes jump show
+jump exit
+
+:nix
+var #uFN " enth„lt keine #u-Variablen!
+ansi
+mes
+jump exit
+
+:show
+var #uNN
+help
+
+:exit
+#uFN
+#uNN
+end
+
+:rerr
+ins $u
+var "Umbenennung " $u " gescheitert"
+end
+
+ u-VARIABLEN in uvar.flx
+ #uFN (8)
+ #uNN (6)
+ #uZL (18)
+ #uZY (3)
+ #uZZ (9)
+ #uwC (2)

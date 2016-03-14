@@ -1,0 +1,275 @@
+  A-OKONTO.FLX : OPAC-Kontoabfrage mit Verl. u. Pw-Aenderung
+  2008-09-25     Fuer Verlaengerung wird a-verl.flx aufgerufen
+                 Rueckkehr-Code:
+                 Wenn #urC besetzt, dann kommt der Aufruf aus a-verl.flx
+
+if #urC jump kto
+
+  Aktuelle Satznummer
+var i
+ins $ASN
+
+:npw
+var "@Nummer und Pa·wort (Wenn Sie noch keins haben, Geb.Datum: JJJMMTT)"
+ansi
+ask
+if "" end
+  wenn kein =, dann wurde kein Pw eingegeben
+if not %=% jump npw
+ins $np
+var (e"=")
+  Nummer in $USN
+ins $USN
+var $np (b"=")
+  Pw in $np
+ins $np
+
+
+:kto
+  Rueckkehr-Code loeschen
+#urC
+  Wenn keine Nummer, Schluss
+if not $USN jump delko
+var "|: " $USN "=?"
+f1nd
+if no mes sorry;end
+
+  Passwortabfrage, Pw steht in #9B$g, wenn nicht, #9B$d = Geb.Datum
+if #9B$g var #9B$g
+if not #9B$g var #9B$d
+  gespeichertes Passwort
+ins #ugP
+
+  eingegebenes Passwort
+if not #9B$g var $np
+if #9B$g var $np;crypt
+ins #ueP
+
+var #ueP 
+if not =#ugP mes falsch;end
+
+  Nummer des Lesersatzes sichern
+var i
+ins $b
+
+var #9B$a    // Mitgl.gueltigkeit (bei Verlaeng. wichtig)
+ins #uAg
+
+  Entleihungen eines Lesers ermitteln und als ViewListe aufbereiten
+clo v
+var $USN ".txt"
+open x
+var "i9Ausleihen von " #9B$n " (" #9B(1,0 e"") ") am " #dt(b" ") 
+ansi
+set
+wri "Alle Entleihungen verlÑngern" n n
+var "|; B" $USN "?"
+find
+ord a0
+if l1 jump nothing
+var m
+if "alc" erase off
+  ersten Ex.Satz holen
+first
+  Schleife
+:kloop
+  IdNr d. ExplSatzes
+var i
+ins $ei
+wri i "|"
+var #9DG
+  Vormerkung des Lesers
+if "V" jump kv
+  Warteregal
+if "W" jump kv
+var s ". - RÅckgabe: " #9DH$R
+:ka2
+  Zeile zwischenspeichern
+ins #ukl
+  Titelsatz dazu holen
+var "|9 " #9DF$$
+f1nd
+if no jump ohnetit  // Titelsatz nicht gef.
+  Wenn keine #20, dann Kurzzeile!
+var #20
+if "" var s
+var (0,36)
+ins $vs1
+wri $vs1 
+if #40 wri " / " #40(0,18 F" ")
+if #41 wri " / Hrsg.: " #41(0,18 F" ")
+  noch eine zweite Zeile, sie beginnt mit derselben Satznr.
+wri n $ei "|   "
+
+:ohnetit
+wri "  " #ukl(B"ausg.bis " b" " e"/Z" e". - R") 
+var #ukl
+if not %ckgabe:% wri n;jump nz
+var #ukl(b"ckgabe:") 
+ins #ukl
+wri ", RÅckgabe: " #ukl(6,2) "-" #ukl(4,2) "-" #ukl(0,4)
+wri n
+
+:nz
+  naechste Kontozeile
+next
+if yes jump kloop
+
+wri n "Pa·wort Ñndern" n
+
+close x
+  Erg.Menge der Exemplare wieder beseitigen! (Sammeln sich sonst an)
+close res
+
+  Kontoliste des Lesers anzeigen
+set i7Benutzer-Informationen
+set i8Zeile w‰hlen, Enter dr¸cken
+var $USN ".txt"
+View
+  Welche Zeile wurde gewaehlt?
+if "Pa" jump passw
+if "Alle" jump alle
+
+   oder eine Entleih-Zeile? (Darin kommt | vor)
+if not %|% jump delko
+set i7
+set i8
+set i9
+  Der betr. Satz ist jetzt geladen!
+var #9DG
+if "V" jump vorm
+if "W" jump warte
+
+if not #9DH jump schluss
+var "Leihfrist fÅr dieses Exemplar verlÑngern?"
+ansi
+yes
+if not yes jump schluss
+perf delko
+
+#urC a-okonto
+exec a-verl 0
+
+:schluss
+var "#" $ASN
+f1nd
+sho rec
+jump delko
+
+:kv
+if "W" var "Z Liegt zur Abholung bereit";jump ka2
+if #9DG$e var "Z Sie haben eine VORMERKUNG auf das Exemplar Nr. " #9DG$e;jump ka2
+var "Z Sie haben eine VORMERKUNG auf diesen Titel "
+jump ka2
+
+:nothing
+close x
+var "Keine Ausleihen, keine Belastungen fÅr " #9B$n
+ansi
+mes
+
+  Vorgang beenden
+:delko
+set i7
+set i8
+set i9
+close view
+var $USN ".txt"
+del
+return
+var ""
+ins $USN
+ins $ASN
+var m
+if "alc" erase off
+end
+
+:vorm
+yes Vormerkung aufheben?
+if yes erase
+jump kto
+
+:warte
+set i7
+set i8
+set i9
+yes Reservierung aufheben?
+if not yes jump kto
+  Nummer des Nutzers rausnehmen, Tag auf gestern setzen
+  (Die Ruecksetzung wird dann auf normalem Wege erledigt)
+var ""
+ins $u-#9DH
+Day -1
+var (0,8)
+ins $W-#9DH
+put
+jump kto
+
+
+:passw
+  2 Moeglichkeiten: Es gibt schon #9B$g oder nicht (dann #9B$d)
+                    aber $g ist codiert, $d nicht.
+set i9
+var "@Name und ALTES Pa·wort"
+ansi
+ask
+if not %=% end
+ins #uPw
+var #uPw(e"=")
+ins #uPW
+var #uPw(b"=")
+ins #uP1
+var #uPw(b"=")
+cry
+ins #uPw
+
+var "@Name und NEUES Pa·wort"
+ansi
+ask
+if not %=% end
+ins #uPn
+var #uPn(e"=")
+ins #uPN
+var #uPN
+if not =#uPW mes Sorry, Nummer nicht identisch;end
+var #uPn(b"=")
+if "" end
+cry
+ins #uPn
+
+var "#" $b
+f1nd
+var 
+
+var #9B$g
+ins #uPg
+if not #9B$g var #9B$d;ins #uPg
+
+var #uPg
+if =#uPw jump npset
+if =#uP1 jump npset
+mes Sorry, falsch
+end
+
+:npset
+var #uPn
+ins $g-#9B
+put
+#uPw
+#uPn
+#uP1
+#uPg
+mes erledigt
+var m
+if "alc" erase off
+end
+
+  Alle Entl. verlaengern
+:alle
+var "#" $b
+f1nd
+#urC a-okonto
+exec a-verl
+end
+
+

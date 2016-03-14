@@ -1,0 +1,59 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fscript\fprq2 Comic Sans MS;}{\f1\fswiss\fprq2 Verdana;}{\f2\fswiss\fprq2\fcharset0 Verdana;}{\f3\fmodern\fprq1 Courier New;}{\f4\fmodern\fprq1\fcharset0 Courier New;}{\f5\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;}
+\viewkind4\uc1\pard\qc\cf1\f0\fs32 Datenbank kopieren\cf0\f1\fs18 
+\par \pard\qr 
+\par \f2\fs22 --> `\cf2\ul\b Hinweise f\'fcr Systemverwalter\cf0\ulnone\b0 ` 
+\par \pard Diese Prozedur erstellt eine genaue Kopie der Datenbank, d.h. aller Dateien, die zu der momentan benutzten Datenbank geh\'f6ren. \f1 
+\par Sie geben einen Verzeichnisnamen \f2 f\'fcr die Kopie \f1 ein, alles andere macht das Programm. 
+\par Es gibt zwei Kopie-Typen: 
+\par 
+\par \pard{\pntext\f5\'B7\tab}{\*\pn\pnlvlblt\pnf5\pnindent360{\pntxtb\'B7}}\fi-360\li360\b `\cf2\ul Normalkopie:\cf0\ulnone ` \b0\f2 Sie erhalten in einem Ordner Ihrer Wahl eine Datenbank, die unabh\'e4ngig benutzt werden kann! (Dazu geh\'f6ren neben den Daten auch einige Parameterdateien u.a.) Also k\'f6nnen Sie die Kopie weitergeben an Interessenten, die diese Datenbank nutzen wollen. \f1 
+\par \b{\pntext\f5\'B7\tab}`\cf2\ul Sicherungskopie:\cf0\ulnone ` \b0\f2 Damit kann im Fall des Falles die Datenbank wiederhergestellt werden. Dann sollte der Kopie-Ordner aber auf einer anderen Platte liegen! Wenn z.B. die Datenbank auf Ihrem PC liegt, k\'f6nnten Sie ein Verzeichnis auf dem Fileserver w\'e4hlen, bzw. umgekehrt. Denn bei einer Datensicherung kommt es darauf an, da\'df man auch gegen den denkbaren Fall einer v\'f6lligen Zerst\'f6rung der Platte oder gar Abbrand des Serverraums gesichert ist.  \f1 
+\par \pard\f2 
+\par W\'e4hrend des Kopiervorgangs wird die Datenbank \b f\'fcr Schreibzugriffe gesperrt\b0 , damit die Kopie konsistent ist. (Wichtig bei Mehrplatzsystemen.) \f1 
+\par \fs20 
+\par \f2 F\'fcr den Typ "Sicherungskopie" gilt: \f1 
+\par Den \f2 Ordner\f1 , wo die Sicherungskopie liegt, merkt sich das System unter dem Namen \b\f3\fs22 DbBack\b0\f2\fs20  in der INI-Datei. Wenn dann der Zeitpunkt kommt, eine Restaurierung machen zu m\'fcssen, ist dieser Name sofort pr\'e4sent. Und wenn die n\'e4chste Sicherungskopie zu machen ist, brauchen Sie keinen Namen mehr einzugeben, sondern der alte wird vorgeschlagen. 
+\par \i Tip:\i0  F\'fcr \b erh\'f6hte Sicherheit\b0  k\'f6nnen Sie jedesmal einen neuen Ordnernamen w\'e4hlen, z.B. \f4 d:\\backup\\20110131\f2  usw., also mit dem Datum als Name. In diesen Ordner wird beim n\'e4chsten Mal die dann aktuelle LOG-Datei kopiert, mit einem _ vor dem Namen, also \f4 _cat.log\f2  statt cat.log. Damit wird es dann m\'f6glich, eine \'e4ltere Sicherungskopie heranzuziehen, wenn die letzte schon schadhaft war, und dann die angefallenen Logdateien eine nach der anderen einzuspeisen.\f1\fs18 
+\par \fs20 
+\par \cf1\f2 Achtung:\cf0  Vor dem Restaurieren nicht zuerst die Sicherungskopie-Datenbank reorganisieren lassen, denn dabei werden neue Satznummern vergeben und die stimmen dann nicht mehr mit denen der Sicherungskopie und deren LOG-Datei \'fcberein. 
+\par \cf1 Andererseits:\cf0  Wenn man reorganisiert hat ("Datenbank ganz neu aufbauen"), dann direkt danach eine Sicherungskopie und LOG-Datei l\'f6schen, denn die zu dem Zeitpunkt exisiterende LOG-Datei ist dann unbrauchbar, weil darin die Satznummern nicht mehr stimmen.\f1\fs18 
+\par 
+\par \b\f2\fs20 Notbehelf f\'fcr alle F\'e4lle\b0 
+\par Aber was tun, wenn a99 gar nicht mehr startet, die Datenbank also nicht mehr ge\'f6ffnet werden kann? Dann ist es ja auch nicht m\'f6glich, das ORG-Men\'fc aufzurufen und die Restaurierung anzusto\'dfen! Ist dann alles verloren? Keineswegs. Die Sicherungskopie ist auf alle F\'e4lle noch da, und wenn die LOG-Datei vorhanden ist, kann immer noch der Zustand vor dem Zusammenbruch restauriert werden. F\'fcr diesen Zweck legt die Backup-Routine eine eigene Prozedur an, und zwar in Form einer DOS-Stapeldatei. Diese liegt dann auf dem Datenverzeichnis, also direkt bei den Daten. Wenn man sie startet, erledigen die DOS-Programme die gesamte Arbeit, anschlie\'dfend kann a99 die Datenbank wieder \'f6ffnen. Diese Prozedur hei\'dft  \f4 xyzREST.BAT\f2 , wenn "\f4 xyz\f2 " der Name Ihrer Datenbank ist, also z.B. \f4 catrest.bat\f2 . Dann starten Sie die Restaurierung so:  \f4 xyzrest\f2  , einzugeben in einem DOS-Fenster direkt auf dem Datenverzeichnis oder im Kopie-Ordner. 
+\par \cf1 
+\par \cf0\b\f1\fs18 Wenn Sie mehr wissen wollen\b0 
+\par \f2 Wenn Sie den Modus "Sicherungskopie" w\'e4hlen, wird die LOG-Datei gel\'f6scht, also die Protokolldatei der Datenbank. Das ist notwendig, weil alle nachfolgenden \'c4nderungen dann in einer \i\f1 neuen\i0\f2  LOG-Datei festgehalten werden. Diese bildet dadurch den \i genauen Anschlu\'df\i0  an die Sicherungskopie. Wenn eine Restaurierung n\'f6tig wird, kann deshalb aus der Sicherungskopie und der LOG-Datei wieder exakt der Zustand vor dem Zusammenbruch hergestellt werden! Das erledigt die Prozedur `\cf2\ul\b "Datenbank restaurieren"\cf0\ulnone\b0 `, die Sie \'fcber das Reorganisieren-Men\'fc starten k\'f6nnen. \f1 
+\par \f2 Im Modus "Sicherungskopie" wird au\'dferdem die kopierte Datenbank gesperrt, damit dort nicht versehentlich hineingeschrieben wird. \f1 
+\par \f2 Eine "normale Kopie" ist dagegen eine Datenbank, die anschlie\'dfend unabh\'e4ngig und vollwertig als solche benutzt werden kann. \f1 
+\par \f2 Es gibt noch andere M\'f6glichkeiten, Datensicherung zu organisieren. Mehr dazu steht im `\cf2\ul\b\f1 Handbuch\cf0\ulnone\b0\f2 `, Kap. 0.7. Die Kopiermethode, wie sie hier realisiert ist, geht am schnellsten und bequemsten. Sie setzt aber voraus, da\'df man Zugriff auf eine Platte hat, wo gen\'fcgend Platz ist. \f1 
+\par 
+\par \f2 Ausgef\'fchrt wird die Prozedur von \f4 _backup.flx\f2  , der wiederum  \f4 _backup.bat\f2   startet  Darin wird auch die Datei  \f4\fs20 xyzREST.BAT\f2\fs18   erstellt.\f1 
+\par \cf1\b 
+\par \cf0\b0 
+\par \cf1\b Achtung Systemverwalter:\cf0\b0 
+\par \f2 Bei sehr gro\'dfen Datenbanken machen es Systemverwalter oft so, da\'df sie mit einem eigenen Sicherungssystem nachts die gesamte Platte pauschal auf Band sichern. Dann bleibt speziell f\'fcr \i allegro\i0  weiter nichts zu tun.\f1 
+\par Zu empfehlen ist\f2  aber\f1 : die \cf1 LOG\cf0 -Datei dabei \cf1 NICHT\cf0  mit zu kopieren\f2 , sondern im Gegenteil zu l\'f6schen!!\f1  \f2 Denn alles, was sie enth\'e4lt, ist in der Datenbank schon drin! Worauf es ankommt, ist die NACH dem Kopieren bei der weiteren Arbeit \i neu entstehende\i0  LOG-Aufzeichnung, denn die enth\'e4lt dann alles, was in der kopierten Datenbank noch \b nicht\b0  drin ist. 
+\par \b Kurz: Datenverzeichnis komplett kopieren, nur LOG-Datei nicht, sondern diese l\'f6schen. (\b0 Evtl. an einem anderen Ort archivieren, wenn man ungern etwas l\'f6scht.)\b 
+\par \b0\f1 
+\par Ist d\f2 ie\f1 s\f2  so\f1  nicht machbar (weil eben einfach\f2  ganz stur\i\f1  alles\i0\f2  kopiert wird) : Wenn eine solche LOG-Kopie zur\'fcckgeholt wird, dann \cf1\b\f1 unbedingt\cf0\b0\f2  daf\'fcr sorgen, da\'df die inzwischen bei der weiteren Arbeit entstandene, aktuelle LOG-Datei NICHT \'fcberschrieben wird! Denn die enth\'e4lt ja gerade die Daten, wie gesagt, die noch nicht in der Kopie waren!! \f1 
+\par 
+\par \b\f2 Eigener Aufruf der Wiederherstellungsroutine\b0\f1 
+\par \f2 Wer seine Sicherung selber organisiert, kann auch das Restaurieren in ein eigenes Skript (Batch oder Shellscript) einbauen: 
+\par 1. Zuerst die Sicherungskopie zur\'fcckholen, aber nicht die damit evtl. zusammen gesicherte LOG-Datei. 
+\par 2. So mu\'df dann der Befehl aussehen, wenn es sich um die Demo-Datenbank auf \f4 c:\\allegro\\demo2\f2  handelt: 
+\par (und auf dem Datenpfad liegt die aktuelle LOG-Datei, also  \f4 c:\\allegro\\demo2\\cat.log )\f2 
+\par 
+\par \f4    upd -fp -dc:\\allegro\\demo2 -bcat -F -uc:\\allegro\\demo2\\cat.log -ka 
+\par \f1 
+\par \f2 Zu starten w\'e4re dies auf dem Programmverzeichnis, standardm\'e4\'dfig \f4 c:\\allegro\f2 .\f1 
+\par \f2 Man erkennt leicht, wie man den Befehl f\'fcr eine eigene Datenbank modifizieren mu\'df.\f1 
+\par 
+\par ?Handbuch=h ac0-7 
+\par ?Normalkopie:=x var 'N'\\ins #uTX\\exec X _backup 
+\par ?Sicherungskopie:=x var 'Y'\\ins #uTX\\exec X _backup 
+\par ?"Datenbank restaurieren"=h org 
+\par \f2 ?Hinweise f\'fcr Systemverwalter=h =Achtung Systemverwalter \f1 
+\par 
+\par }
+ 

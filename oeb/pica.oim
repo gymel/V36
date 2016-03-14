@@ -1,0 +1,1243 @@
+      ***********************************************************
+                   Importparameter PICA3 --> MAB OEB
+      ***********************************************************
+      Angelegt              : 22.11.1998
+      Zuletzt durchgesehen  :  3.11.1999
+      ***********************************************************
+      Bem.:
+        --- Kombinieren mit Pauschalexport
+        --- Serien : wahlweise #4180 auswerten
+        --- Medientyp : TontrÑger werden nicht differenziert
+      ***********************************************************
+      énderungen :
+        --- Nichtsortierzeichen in Schlagwortketten
+        --- $-Verweise in Schlagwortkategorien
+      ***********************************************************
+
+re="SET: S"
+fm=1            ; Mehrfachfeldkennung ; wird korrekt hochgezÑhlt?
+
+$$              ; sog. Dollarverweisungen auflîsen
+S               ; Mehrfachblanks beseitigen
+
+_ 13 10 " "
+_ " "           ; Mehrzeilige Kategorien
+
+_ 13 10         ; Kategorieende durch 0 ersetzen
+_ 0
+
+_ " $ "
+_ " | "         ; temporÑr! weil $-Zeichen Sonderfunktion hat
+
+    _ 0 "51??  "    ; Sonderfall: RSWK-Ansetzungsketten
+    _ " / "         ; In ein Feld bringen!?
+
+_ 0 "70"        ; Exemplare behandeln :
+_ 0 "EX"        ; zuerst 70xx durch EXxx ersetzen
+
+    _ 0 "7"         ; Feldendezeichen vor den 7er und 8er Kategorien
+    _ "7"          ; wegnehmen, durch  ersetzen
+
+    _ 0 "8"
+    _ "8"          ; Problem : #7109 kommt mehrfach vor!
+
+_ 0 "480"
+_ "480"
+
+_ 0 "2080 ZDB"
+_ 0 "2110 B"
+
+_ "u. d. T."
+_ "u.d.T."
+
+_ "ÿ"
+_ "[beta]"
+
+      ***********************************************************
+                       Zeichenumwandlungstabelle
+      ***********************************************************
+
+y ˜ 256                     ; Zeichen weglassen
+
+      ***********************************************************
+                               Hauptteil
+      ***********************************************************
+
+     
+#000                        ; Ident.-nummer
+l 0
+C 0 "4004"                  ; Bandtitel vorhanden?
+qUnterident
+s "0100 "                   ; PPN vorhanden?
+w " PICA-"                  ; PrÑfix
+
+-Unterident
+#000                        ; Im Falle Bandaufnahme etc.
+s 0 "4004"                  ; Bandtitel vorhanden?
+l 0                         ; Kategorie leeren
+s 0 "4000 "
+w " PICA-"                  ; PrÑfix
+b "!"
+e "!"
+_ "X"
+_ "x"
+s 0 "4000 "
+i 35
+e 35
+w "+"
+s 0 "4004 "
+i 42
+e "*"
+e "@"
+w "="
+
+#574                    ; Medientyp
+s 0 "0500 Aa"           ; Druckschrift - Monografie
+l 0
+w " BM"                 ; 3-stellig
+
+#574                    ; Medientyp
+s 0 "0500 Ga"           ; HB
+l 0
+w " HB"                 ; 3-stellig
+
+#574                    ; Medientyp
+s 0 "0500 Sa"           ; CD-ROM - Monografie
+l 0
+w " CD-ROMM"               
+
+#574                    ; Medientyp
+s 0 "0500 Ka"           ; Karten - Monografie
+l 0
+w " LKM"                 
+
+#574                    ; Medientyp
+s 0 "2010 "             ; ISSN ?
+l 0
+w " ZSSB"               ; --> Zeitschrift
+
+#574                    ; Medientyp
+s 0 "1110 "             ; auswerten
+Kmt                     ; Speichern!
+c "z7"                  ; Zeitung ?
+(
+l 0
+w " ZTGB"
++EndeMT
+)
+l 0
+kumt
+c "z6"                  ; Zeitschrift ?
+(
+l 0
+w " ZSSB"
++EndeMT
+)
+l 0
+kumt
+c "mg"                  ; Musikalien ?
+(
+l 0
+w " DMM"
++EndeMT
+)
+l 0
+kumt
+c "ka"                  ; Landkarte ?
+(
+l 0
+w " LKM"
++EndeMT
+)
+l 0
+kumt
+c "v7"                  ; Video ?
+(
+l 0
+w " VIM"
++EndeMT
+)
+l 0
+kumt
+c "d8"                  ; Diskette ?
+(
+l 0
+w " DISKM"
++EndeMT
+)
+l 0
+kumt
+c "c2"                  ; CD-ROM ?
+(
+l 0
+w " CD-ROMM"
++EndeMT
+)
+l 0
+kumt
+c "fm"                  ; Film ?
+(
+l 0
+w " FIM"
++EndeMT
+)
+l 0
+kumt
+c "d4"                  ; Dia ?
+(
+l 0
+w " DIAM"
++EndeMT
+)
+l 0
+-EndeMT
+
+#315                    ; Bandtitel
+s 0 "4004"              ; Banddtitel?
+w " "
+c "@"                   ; Nur wenn '@' vorkommt!
+(
+b "*"
+b "*"
+i 64                    ; ignoriere @
+    _ "@"
+    _ ""
+N
+e " / "
+e " ;; "
++Titelerg
+)
+q                       ; Sonst nur so etwas wie "A - G" oder "Textband" ...
+
+#315                    ; Bandtitel - Sachtitel in Vorlageform ?!
+s 0 "4004 "             ; Bandtitel
+w " "                   ; 3-stellig
+b "*"
+b "*"
+= " ;;"
+qTitelerg
+= " / "
+qVerfVorl
+e " / "
+e " ;; "
+
+-Titelerg
+#315                    ; Bandtitel - SachtitelergÑnzung
+s 0 "4004 "             ; Banddtitel
+w " "
+b "*"
+b "*"
+b ";; "
+        +TitelOben
+
+-VerfVorl
+#359                    ; Vorlage Verfasser o. Kîrperschaft
+s 0 "4004 "             ; Banddtitel
+w " "                   ; 3-stellig
+b "*"
+b "*"
+b " / "
+e "!"
+
+    -TitelOben
+    #460                    ; Titel des Åbergeordneten Werkes PLUS ZÑhlung
+    s 0 "4000 "
+    w " "                   ; 3-stellig
+    b "!"
+    b "!"
+    i 64
+    _ "@"
+    _ ""
+    N                       ; Artikel kennzeichnen
+    s 0 "4004 "
+    i 42
+    e "*"
+    w "; "
+
+    #18                 ; keine Konkordanz?
+    s 0 "3481 "
+    i 64
+    _ "@"
+    _ ""
+
+    #19
+    s 0 "3480 "
+    i 64
+    _ "@"
+    _ ""
+
+#310                ; Ansetzungssachtitel
+s 0 "3220 "
+w " "               ; 3-stellig
+= "{"               ; Wenn es mit '{' anfaengt, uebergehen
+q
+e "{"
+x
+
+#310                ; Ansetzungssachtitel
+s 0 "3220 "
+w " "               ; 3-stellig
+b "{"
+e "}"
+
+#320                ; Hauptsachtitel in Vorlageform
+s 0 "4000 "
+w " "               ; 3-stellig
+C 0 "3220 "
+/
+qTitel
+i 64                ; ignoriere @
+N
+s 0 "4005 "
+x
+w ". "
+
+-Titel
+#320                ; Hauptsachtitel in Vorlageform
+s 0 "4000 "
+w " "               ; 3-stellig
+C 0 "4004 "         ; 4000 nicht verwerten, wenn 4004 existiert
+q
+(N
+= "@"               ; Nichtsortiermodus behandeln
+/
+(
+c "@"
+w "_"
+_ " @"
+_ "_ "
+)
+i 64                ; ignoriere @
+)N
+    _ " // "
+    _ "  "                 ; KîrperschaftsergÑnzung
+e " // "                    ; weglassen!
+e " / "
+e " = "
+e " ;; "
+e " : "
+                        ; [Sammlungsvermerk !?]
+#310                    ; Ansetzungssachtitel
+s 0 "3200 "
+w " "                   ; 3-stellig
+
+#304                    ; Einheitssachtitel
+s 0 "3210 "             ; EST
+w " "                   ; 3-stellig
+>N                      ; Unterprogramm
+
+#304                    ; Einheitssachtitel
+s 0 "3211 "             ; EST NE, allegro-ôB wie 304
+w " "                   ; 3-stellig
+>N
+
+#380                    ; Nebentitel
+s 0 "326? "
+w " "                   ; 3-stellig
+B ":"                   ; Beginne hinter :
+C " = $326"             ; Nicht, wenn es in 4000 vorkommt
+q
+>N
+m 1
+
+#350                    ; AbkÅrzungstitel --> öbergehungsverweise!?
+s 0 "3232 "
+w " "                   ; 3-stellig
+m " ; "
+
+#341                    ; Paralleltitel
+s 0 "4000 "
+w " "                   ; 3-stellig
+b " = "                 ; hinter ' = '
+    _ " // "
+    _ "  "
+e " // "                ; KîrperschaftsergÑnzung weglassen
+e " / "
+>N
+e " = "
+e " ;; "
+
+#341                    ; 2. Paralleltitel
+s 0 "4000 "
+w " "                   ; 3-stellig
+b " = "                 ; hinter ' = ' ... ' = '
+b " = "
+    _ " // "
+    _ "  "
+e " // "
+e " / "
+>N
+e " = "
+e " ;; "
+w " = "                 ; und wieder mit " = " trennen
+
+#335                    ; Zusatz zum Hauptsachtitel in Vorlageform
+s 0 "4000 "
+w " "                   ; 3-stellig
+b " : "
+e " / "
+e " = "
+
+    #37                     ; Sprachen des Textes
+    s0 "1500 /1"
+    _ "/?"
+    _ " "
+
+#359                ; Vorlageform aller Personen und Kîrperschaften
+s 0 "4000 "         ; $-Verweisung wird automatisch aufgelîst
+w " "               ; 3-stellig
+C 0 "4004 "         ; nicht wenn 4004 existiert
+qVerf
+b " / "
+e ";;"
+
+-Verf
+#200                ; 1. Verfasser
+s 0 "3000 "
+w " "               ; 3-stellig
+x
+(P                  ; * Unterprogramm f. Personen *******************
+Kpn                 ; Hilfsvariable #upn kopieren
+B "!"
+B "!"               ; !PPN!? --> den Teil dahinter nehmen
+_ 34                ; FÅrstenname endet mit "
+_ ""
+Knm
+l 0
+kunm
+B "@"
+e "*"
+e " ["              ; Funktionsbezeichnung geht verloren!
+e "!"
+e " / "
+kunm
+c "@"
+(
+= "@"               ; Name beginnt mit @
+/
+(                   ; Oder nicht? Dann umdrehen!
+e "@"
+e " / "
+_ "/"               ; PrÑfix Namenszusatz
+_ " "               ; Kein Nichtsortierzeichen!
+    % "#"
+    _ 170
+% "#"
+_ 32                ; durch Leerzeichen
+w ", "
+kunm
+l 0
+)
+l 0
+)
+l 0
+kunm
+c "*"               ; Lebensdaten?
+(
+B "*"
+B "*"               ; Lebensdaten Åbergehen
+    b "*"
+    w " ™<"         ; Nichtsortierzeichen !?
+    e "*"
+    W ">"
+)
+l 0
+kunm
+c "!"               ; Lemmanummer?
+(
+    b "!"           ; keine Verweisung!
+    e "!"
+    w " ™_"
+    W "_"
+)
+l 0
+     kupn                --**TD/sieht komisch aus, erstmal wech.**--
+     c "!"               ;  !...!? Teil davor als Verweisung anhÑngen
+     (
+     e "!"
+     b "@"
+     w " = "             ; Verweisung
+    kupn
+e "@"
+e "!"
+w ", "
+kupn
+)
+l 0
+)P                  ; * Unterprogramm *******************************
+    s "+3000+"
+    w " = "
+x
+>P
+
+#201                ; 2. Verfasser
+s 0 "300? "         ; 3000 auch?
+w " "               ; 3-stellig
+>P
+m1 #202             ; hochzÑhlen
+
+#204                ; sonstige beteiligte Personen mit Funktionsbez.
+s 0 "3010 "
+w " "               ; 3-stellig
+>P
+s 0 "3010 "
+b " ["
+w " ["
+e "@"
+e "!"
+
+#205
+s 0 "3011 "
+w " "               ; 3-stellig
+>P
+s 0 "3011 "
+b " ["
+w " ["
+e "@"
+e "!"
+
+#206
+s 0 "3012 "
+w " "               ; 3-stellig
+>P
+s 0 "3012 "
+b " ["
+w " ["
+e "@"
+e "!"
+
+#207
+s 0 "3013 "
+w " "               ; 3-stellig
+>P
+s 0 "3013 "
+b " ["
+w " ["
+e "@"
+e "!"
+
+#208
+s 0 "3014 "
+w " "               ; 3-stellig
+>P
+s 0 "3014 "
+b " ["
+w " ["
+e "@"
+e "!"
+
+#209
+s 0 "3015 "
+w " "               ; 3-stellig
+>P
+s 0 "3015 "
+b " ["
+w " ["
+e "@"
+e "!"
+
+#210
+s 0 "3016 "
+w " "               ; 3-stellig
+>P
+s 0 "3016 "
+b " ["
+w " ["
+e "@"
+e "!"
+
+#211
+s 0 "3017 "
+w " "               ; 3-stellig
+>P
+s 0 "3017 "
+b " ["
+w " ["
+e "@"
+e "!"
+
+#212
+s 0 "3018 "
+w " "               ; 3-stellig
+>P
+s 0 "3018 "
+b " ["
+w " ["
+e "@"
+e "!"
+
+#213
+s 0 "3019 "
+w " "               ; 3-stellig
+>P
+s 0 "3019 "
+b " ["
+w " ["
+e "@"
+e "!"
+
+#240                ; Urheber
+s 0 "310? "
+w " "               ; 3-stellig
+>N
+(K                  ; ** Unterprogramm K fÅr Kîrperschaften *****
+B "!"               ; PPN Åbergehen
+B "!"
+>N
+)K                  ; ** Ende UP ********************************
+s 0 "310? "
+c "!"
+(L
+    b "!"           ; NMN Verweise entfernt
+    e "!"
+    w "_"
+    W ""
+)L
+l 0
+m1                  ; wiederholen --> #241 etc.
+x
+
+#243                ; Kîrperschaft
+s 0 "312? "
+w " "               ; 3-stellig
+B "!"               ; PPN Åbergehen
+B "!"
+>N
+>K
+s 0 "312? "
+c "!"
+    >L
+l 0
+m 1                 ; wiederholen --> #244 etc. - öberlauf?
+x
+
+#403                ; Ausgabebezeichnung
+s 0 "4020 "
+w " "               ; 3-stellig
+.
+
+#403                ; Reprintvermerk auch in #403
+s 0 "4021 "
+w " "               ; 3-stellig
+.
+
+#426                ; Druckort -- und Drucker! Hier noch was tun!
+s 0 "4040 "
+w " "               ; 3-stellig
+
+#410                ; Ort
+s 0 "4030 "
+w " "               ; 3-stellig
+e " : "
+i 64                ; @ vorne wegnehmen
+.
+
+#412                ; Verlag
+s 0 "4030 "
+w " "               ; 3-stellig
+b " : "
+.
+
+#427                ; Drucker
+s 0 "4045 "
+w " "               ; 3-stellig
+
+#425                ; Erscheinungsjahr
+s 0 "1100 "
+w " "               ; 3-stellig
+e " "
+    _ " = "
+    _ " ("
+    _ " | "
+    _ " = "
+    c " ("
+    (
+    c " ="
+    _ " ="
+    _ ") ="
+    )
+    c " = "
+    /
+    (
+    c " ("
+    W ")"
+    )
+
+#433                ; Kollationsvermerk
+s 0 "4060 "
+w " "               ; 3-stellig
+% " S"
+_ " S."
+_ " pla"            ; 'plates' nicht durch 'S.lates' ersetzen
+_ " Pla"
+% " p"
+_ " p."
+_ " Pla"
+_ " pla"
+_ ".."
+_ "."
+
+#433                ; Illustrationsvermerk anhÑngen
+k433
+w " "
+s 0 "4061 "
+w " : "
+
+#433
+k433                ; Fortsetzung
+w " "
+s 0 "4062 "
+w " ; "
+
+#433
+k433                ; Fortsetzung
+w " "
+s 0 "4063 "
+w " & "
+
+#519                ; Hochschulschriftenvermerk
+s 0 "4201 "
+w " "               ; 3-stellig
+z "diss"            ; Dissertation?
+/
+c "Hab"             ; Habilitation?
+/
+qFussnote
+B "ugl.: "
+B ". - "
+i 32                ; ignoriere Leerzeichen
+i 64                ; ignoriere @
+_ "@"
+_ ""
+e ","
+e " i"              ; Freiburg i.
+e " a"              ; Frankfurt a.
+e " ("              ; MÅnster (Westf
+e "<"
+e "/"
+s 0 "4201 "
+c " 1"
+(
+b " 1"
+l3
+w ":1"
++Fussnote
+)
+l 0
+k425                    ; Jahresangabe
+l 4
+w ":"
+
+-Fussnote
+#519                    ; Hochschulschriftenvermerk
+s 0 "4204 "
+w " "                   ; 3-stellig
+c "@"
+b "@"
+B "ugl.?"
+B ". - "
+i 32
+e ", "
+e " i"                  ; Freiburg i.
+e " a"                  ; Frankfurt a.
+e " ("                  ; MÅnster (Westf
+e "<"
+e "/"
+s 0 "4204 "
+c " : "
+(
+b " : "
+l 4
+w ":"
++inhalt
+)
+l 0
+c ", 1"
+(
+b ", 1"
+l 3
+w ":1"
++inhalt
+)
+l 0
+k425                        ; Jahresangabe
+l 4
+w ":"
+
+-inhalt
+#519
+k519
+_ " :"
+_ ":"
+
+#501
+s 0 "4710 "
+w " "               ; 3-stellig
+x
+
+#501
+s 0 "4201 "
+w " "               ; 3-stellig
+x
+
+#190                ; Annotation
+s 0 "4222 "         ; MARC ?
+w " "               ; 3-stellig
+x
+
+#190                ; Annotation
+s 0 "4207 "         ; MARC ?
+w " "               ; 3-stellig
+x
+
+#195                ; Annotation
+s 0 "4207 "         ; MARC ?
+w " "               ; 3-stellig
+x
+
+#193                ; IK
+s 0 "5024 "         ; MARC ?
+w " "               ; 3-stellig
+x
+
+#519                ; Hochschulschriftenvermerk
+s 0 "4204 "
+w " "               ; 3-stellig
+x
+_ "@"
+_ ""
+
+#240                ; Kongre·? --> Urheber
+s 0 "316? "
+w " "               ; 3-stellig
+i 64
+_ "@"
+_ ""
+N
+c " ; "
+/
+_ " ("
+_ " ; ("
+_ ";,"
+_ ";"
+m 1                 ; wiederholen und hochzÑhlen
+
+#460                ; Gesamttitel Serie
+s 0 "417? "         ; kann mehrfach vorkommen !
+w " "               ; 3-stellig
+_ " | "
+_ " : "
+_ "#"
+_ ". "
+>N
+_ "-"
+_ " "               ; Bindestriche entfernen
+m 1                 ; wiederholen und hochzÑhlen
+
+                    ; Fremde Identifikationen
+#540                ; ISBN
+s 0 "200? "
+w " "               ; 3-stellig
+e "*"
+e " : "
+e " ("
+c "-"               ; Bindestriche? Dann keine mehr einsetzen
+/
+u6                  ; Bindestriche einsetzen!
+m " ; "             ; mehrfach!
+
+#550                ; ISSN
+s 0 "201? "
+w " "               ; 3-stellig
+e "*"
+
+#585                ; DB-Nummer
+s 0 "2065 "
+w " "               ; 3-stellig
+c "···"             ; ? --> dann nicht!
+q
+
+#586                ; BNB-Nummer
+s 0 "2030 "
+w " "
+
+#587                ; ZDB-Nummer
+s 0 "2110 "
+w " "
+e " <"
+        W "@@@@@@@"
+
+l 8
+c "@@@@@@"
+l 1
+c "@@@@@"
+l 2
+c "@@@@"
+l 3
+c "@@@"
+l 4
+c "@@"
+l 5
+c "@"
+l 6
+
+-330
+#160                ; Notation aus Fremddaten
+s 0 "6000 "
+w " "               ; 3-stellig
+m " ; "             ; mehrfach
+
+#160                ; Notation aus Fremddaten/ASB
+s 0 "5020 "
+w " "               ; 3-stellig
+m " ; "             ; mehrfach
+
+#161                ; Notation aus Fremddaten/SSD
+s 0 "5021 "
+w " "               ; 3-stellig
+m " ; "             ; mehrfach
+
+#162                ; Notation aus Fremddaten/SFB
+s 0 "5022 "
+w " "               ; 3-stellig
+m " ; "             ; mehrfach
+
+#163                ; Notation aus Fremddaten/KAB
+s 0 "5023 "
+w " "               ; 3-stellig
+m " ; "             ; mehrfach
+
+    ; *****************************************************
+    ; Dummy Abschnitt fÅr Unterprogramm S
+
+#990
+s 0 "9999 "
+q
+(S
+R 4 "$"
+/
+(
+i 124               ; ignoriere |
+R 1 "|"             ; Code vorhanden?
+(
+l 1
+w 31                ; schreibe 
+W ""                ; schreibe Codierung !!
+/                   ; nÑchste Zeilengruppe weglassen
+)
+(
+c "!"
+w "s"              ; Wenn es keinen Code gibt!
+l 0
+)
+
+kusw
+    e "510"             ; ?? Kategorieendezeichen kann fehlen!
+B "!"
+B "!"
+B "| "              ; Leerzeichen!
+B "#"
+B "#"
+)                   ; Kein Verweis aus Stammsatz-ID !
+)S
+    ; *****************************************************
+
+#100                ; 1. Schlagwortkette
+s 0 "5100 "         ; 5100 |s| !105749222!Spitzentechnologie
+w " "               ; 3-stellig
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw                 ; ODER 5100 !105749222!Spitzentechnologie
+>S
+s 0 "5101 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5102 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5103 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5104 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5105 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+
+    #330
+    k330
+    s "5108 "
+    w "P"                      ; Permut.
+
+#101                ; 2. Schlagwortkette
+s 0 "5110 "
+w " "               ; 3-stellig
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S                  ; Unterprogramm S
+s 0 "5111 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5112 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5113 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5114 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5115 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+
+    #331
+    k331
+    s 0 "5118 "
+    w "P"
+
+#103                ; 3. Schlagwortkette
+s 0 "5120 "
+w " "               ; 3-stellig
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5121 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5122 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5123 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5124 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5125 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+
+    #332
+    k332
+    s 0 "5128 "
+    w "P"
+
+#104                ; 4. Schlagwortkette
+s 0 "5130 "
+w " "               ; 3-stellig
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5131 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5132 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5133 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5134 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+s 0 "5135 "
+_ "^"               ; Ersetzung wg. Nichtsortierzeichen
+_ "_"
+Ksw
+>S
+
+    #333
+    k333
+    s 0 "5138 "
+    w "P"
+
+#999            ; Dummy fÅr Filter!
+j 0
+l 0
+C "005 Ty"
+qEndeNorm
+C "005 Tk"      ; Basisklassifikation
+qEndeNorm
+
+#000            ; Kîrperschaftsstammsatz
+j 0
+l 0
+C "005 Tb"
+(
+s "PPN: "
+l 9
+w " K-"
++EndeKId
+)
+q
+
+-EndeKId
+#800            ; Hauptansetzungsform
+s 0 "150 "
+w " "
+
+#802            ; GKD
+s 0 "020 "
+w " "
+
+#805            ; Kîrperschaftsdaten
+s 0 "300 "
+C "005 Tb"      ; nur bei Kîrperschaften!
+/
+q
+w " "
+
+#831            ; AbkÅrzung als Pseudonym
+s 0 "151 "
+w " "
+m 1             ; HochzÑhlen! - öberlauf?
+
+#810            ; weitere siehe Verweisungen
+s 0 "250 "
+w " "
+m 1             ; HochzÑhlen! - öberlauf?
+
+#830            ; Kommentar
+s 0 "900
+C "005 Tb"      ; nur bei Kîrperschaften
+/
+q
+w " "
+
+#000            ; Personenstammsatz
+j 0
+l 0
+C "005 Tp"
+(
+s "PPN: "
+l 9
+w " P-"
++EndePId
+)
+q
+
+-EndePId
+#900                ; Ansetzungsform
+s 0 "100 "
+w " "
+>P
+
+#904                ; wirklicher Name
+s 0 "410 "
+w " "
+>P
+
+#905                ; Lebensdaten
+s 0 "300 "
+C "005 Tp"          ; Nur bei Personen
+/
+q
+w " "
+
+#910                ; Verweisungen
+s 0 "200 "
+w " "
+>P
+m 1                 ; HochzÑhlen! - öberlauf?
+
+#930                ; Kommentar
+s 0 "900 "
+C "005 Tp"          ; Nur bei Personen
+/
+q
+w " "
+
+#931                ; Pseudonym
+s 0 "400 "
+w " "
+>P
+m 1                 ; HochzÑhlen! - öberlauf?
+
+#000                ; Schlagworte
+j 0
+l 0
+C "005 Ts"
+(
+s "PPN: "
+l 9
+w " S-"
++EndeSId
+)
+q
+
+-EndeSId
+#700                ; Ansetzungsform
+s 0 "800 "
+w " "
+B "|"
+B "| "
+
+#708                ; Quelle
+s 0 "951 "
+w " "
+
+#709                ; Kommentar
+s 0 "950 "
+w " "
+
+#710                ; Verweise
+s 0 "830 "
+w " "
+B "|"
+B "| "
+m 1                 ; HochzÑhlen! - öberlauf?
+
+-EndeNorm
+#999
+j 0
+l 0
+q
+
+            ; Datum der letzten Bearbeitung ENTFERNT
+            ; Erfassungsdatum ENTFERNT
+            ; Signaturen sind LOKALDATEN - ENTFERNT
+            ; Signaturen haben individuelles Format
+

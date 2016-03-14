@@ -1,0 +1,43 @@
+  WINSTART.FLX : Anwendung starten
+  2002-02-28  (Thomas Berger)
+   Datei bzw. Programm starten (als Unterprogramm oder Makro oder beides)
+  "Parameter" ist in #ucc zu sichern
+  Wenn Unterprogramm, dann diese Datei an den eigenen FLEX anhaengen!
+  Aufruf dann mit  "var <progname>\perf winstart"
+    Danach steht der call-Aufruf in der iV
+
+  Hinweis: Klappt auch, wenn eine URL uebergeben wird, die & enthaelt.
+  Start mit z.B.  x Dos <URL>  geht dann nicht.
+
+var #ucc
+
+:winstart
+   *** Neu 20070413, koc: Web-Adressen hinter http:// in Anfuehrungszeichen
+if %@% jump mail        // vom Benutzerdatensatz ueber E-Mail-Adresse Mail-Programm aufrufen  
+if not %~http://% jump ucc
+var #ucc(e"://") '://"' #ucc(b"://") '"'
+:ucc
+      *** Ende Ergaenzung
+ins #ucc
+
+get env COMSPEC
+if %cmd.exe% jump _winnt
+
+:_win9x
+var "start " #ucc
+jump _finish
+
+:_winnt
+var "cmd /c start " #ucc
+jump _finish
+
+:mail
+var "cmd /c start mailto:" #ucc   // ueber APR Unterprogramm 9
+
+:_finish
+  Wenn als UP gestartet:
+return
+  sonst: Start der Anwendung
+CAll
+
+end

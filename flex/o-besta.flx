@@ -1,0 +1,189 @@
+  o-besta.flx : Bestell-Statistik
+  2015-04-20  z.B. Ausgaben eines Kontingents, geordnet nach Auftragg oder Lieferant
+              oder Bestellungen eines Zeitraums nach Auftragg / Lieferant / Kontingent
+
+if g0 jump beginn
+var "Momentan keine Ergebnismenge vorhanden." n "Diese Funktion kann nur arbeiten, wenn zuerst eine" n "eine Ergebnismenge von Bestellungen gebildet wurde"
+mes
+end
+
+
+:beginn
+first
+if not #9DA var "Das sind keine Bestellungen!";mes;end  
+
+// alle $QVx loeschen
+perform $QVdel
+
+$sum=0
+
+// Whrgsliste in #uwH kopieren
+f1nd |; SYSW?
+var #9A$W
+ins #uwH
+
+select Ihre Wahl=A=Auftraggeber|j=Lieferant|a=Kontingent|c=Währung
+if cancel end
+if "" end
+ins $k
+
+
+  Gesamte ErgMenge verarbeiten (d.h. rechnen)
+first 
+:eloop
+#ubt
+  $q ist gezahlter Preis in EUR, wenn kein $QV, dann $p umrechnen:
+var #9DB$q
+if "" if #9DB$p perf berech
+Z=
+var Z2
+
+ins #ubt
+
+
+  den Var.namen erstellen in $vn
+var "#9DB$" $k
+var
+ins _-__
+  z.B. kein Lieferant angegeben, dann zzz
+if "" var "zzz"
+ins $vn
+
+eval $sum +#ubt
+ins $sum
+// Var. und #ubt addieren
+var "$QV" $vn " +#ubt"
+eval
+ins #ubt
+
+  und wieder in die Var. kopieren
+var "$QV" $vn "=" #ubt
+ins
+next
+if yes jump eloop
+
+
+var ""
+ins $x
+// die erste der grossen Var. nehmen (koennte z.B. $Rx abc sein)
+first $1
+ins $x
+sho IV
+// In $x steht jetzt  $Rx abc
+
+// Schleife zur Sammlung der $QV-Variablen
+:floop
+// naechste Var.
+next $1
+ins _ _ : _
+// Ende?
+if no jump flend
+ins $v
+var $v (e" : " 0,13)
+ins $v1
+var $v (b" : " 0,r8)
+ins $v2
+
+// Nur wenn Name mit $QV beginnt, dann an $x anhaengen
+var $v1
+if "$QV" var $x n $v1 $v2;ins $x
+// In $x stehen also die Var. mit Zeilentrennungszeichen
+//     denn  n = Codes 13 10
+jump floop
+
+:flend
+// Erste Zeile von $x wegnehmen, wenn sie NICHT mit $QV beginnt
+var $x
+if not "$QV" var $x (b"^M^J");ins $x
+// Jetzt stehen in $x genau alle $QV-Variablen: jeweils $QVxy wert
+// $x aufsteigend ordnen nach den Variablennamen:
+var $x
+sort a0
+ins $x
+
+var $x
+ins _$QV__
+// Liste anzeigen
+sho IV
+var $sum (0,r18)
+ins $sum
+var "------------------" n $sum n
+sho +IV
+
+end
+
+
+
+
+  Bestellbetrag #9DB$p umrechnen
+:berech
+  welche Whrg?
+var #9DB$c
+if "" var "EUR"
+  Bezeichnung mit ':'
+if "EUR" var "1";jump wkurs
+var +":"
+ins #uwh
+  Wert aus der WhrgsListe holen (Wechselkurs)
+var #uwH(b"#uwh" e":")
+:wkurs
+ins #ufk
+  und $p durch diesen Wert teilen
+eval #9DB$p /#ufk
+
+return
+
+
+// UP zum Loeschen aller mit $QV beginnenden Variablen
+:$QVdel
+var ""
+ins $qall
+first $1
+var (e" ")
+
+ins $qall
+// Schleife zur Sammlung der $QV-Variablen in $qall
+:qloop
+// naechste Var.
+next $1
+// Ende?
+if no jump qlend
+var (e" ")
+ins $vq
+
+// Nur wenn Name mit $QV beginnt, dann an $qall anhaengen
+if "$QV" var $qall "//" $vq;ins $qall
+// In $qall stehen also die Var., mit // getrennt
+jump qloop
+
+:qlend
+var $qall
+
+// Erste Zeile von $qall wegnehmen, wenn sie NICHT mit $QV beginnt
+var $qall
+if not "$QV" var $qall (b"//");if "" jump QVend;ins $qall
+if not $qall return
+// Jetzt stehen in $qall genau alle $QV-Variablen: jeweils $QVxy wert
+// Eine leere Zuweisung uf jede Variable ausfuehren, z.B. $QVabc=\ins
+var $qall (e"//")
+var +"="
+ins
+
+var $qall (b"//")
+if "" return
+ins $qall
+jump qlend 
+
+:QVend
+return
+
+
+
+:error
+mes Datei kont.apr nicht gefunden
+var $oi
+find
+show rec
+end
+
+

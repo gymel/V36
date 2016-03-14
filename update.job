@@ -1,0 +1,1349 @@
+// update.job : Emulation der Funktionen von UPDATE.EXE mit acon
+// 2008-06-25/2015-09-30
+// $HeadURL: https://svn.allegro-c.de/svn/download/prog/update.job $
+// Originalversion von Th. Berger 2011, modif. B. Eversberg 2012-01
+// beruht auf $Id: update.job 24123 2011-12-08 23:13:27Z ThB $
+// $HeadURL Orig.: https://svn.extra.gymel.com/repos/allegro/acxt/aconjob/trunk/update.job $
+
+// Begriffe: "Aufruf" statt "Kommandozeile"
+//           "Option" statt "Schalter" und "Kommandozeilenparameter"
+//           "Flags" sind Var., die nur durch Existenz oder Fehlen wirken
+
+// Kommentar ERWEITERUNG: Hier kann man eigene Dinge einbauen
+
+// -T1: einige Meldungen (war $VERBOSE)
+//$TEST1
+// -T2: viele Meldungen (war $CHECK)
+//$TEST2
+
+// Version dieses Jobs (1=Entw.Abt. Urjob, 2=Berger, 3=Ueberarbeitung Entw.Abt.)
+$VERSION=3
+
+// ab welcher acon-Version klappt's? (Pruefg. in optsget.inc)
+$OP.reqV=32.0
+
+///////////////////////////////////////////////////////////////////
+//
+// Anwendung -- Usage:
+// acon -jupdate.job -... (weitere Optionen wie fuer UPDATE, s. Handb. Kap. 9)
+// 
+// Optionen:
+// Intern - Diese wertet  acon.exe  selber aus und stehen dann
+//          im Job als Sondervariable zur Verfuegung: (d.h. $OP_b etc. unnoetig)
+// * -b  Datenbank --> var B  [wird bei Fehlen aus -d entnommen:]
+// * -d  Datenbankpfad\Datenbankname --> var D
+// * -P  Programmverzeichnis --> var P
+// * -k  Konfiguration --> var K und var K1
+// * -l  Language (default ger) --> var L
+// * -L  Logdatei --> var G
+// * -j  Jobdatei (Name dieser Skriptdatei) --> $OP_j
+//
+// Optionen: speziell fuer z.B. update.job:
+// Klassische. optsget.inc  wertet diese aus und macht aus -xabc  $OP_x abc
+// Notwendig sind nur zwei: -f und -u; bei -f gibt es 3 Varianten
+// * -fp    Funktion: Playback
+// * -fc    Funktion: Check (intern: $F.check belegt und $OP_f="c")
+// * -fmxy  Funktion: Merge
+// * -u     Updatedatei = Eingabedaten
+
+// Nicht alle folgenden stets notwendig: (im Verlauf als $OP_x verfuegbar)
+// * -e     Exportparameter ("/" | "=" | "+") Exportdatei (Logging, Glob. Manipulation)
+// * -F     Verzoegerung in Sekunden zwischen Speichervorgaengen, auch x/y, default -F1/1
+//          mit x, y Dezimalzahlen fuer Speicher- bzw. Nichtspeicher-Pause
+//              daraus wird $pause1 und $pause0
+// * -i     Name der Indexparameter, falls neue Datenbank zu erzeugen ist
+// * -I     Abweichende Indexparameterdatei
+// * -m     manuelle Unterbrechung (obsolet)
+// * -n     Dateinummer fuer Neusaetze, default 1
+// * -N     Modus (0/1/2) fuer Neusaetze
+// * -O     Bearbeiterkuerzel
+// * -R     Aufzeichnungsdatei fuer Konsolmeldungen (noch ungenutzt)
+// * -T     Test: Diagnostische Ausgabe
+// * -U     Vorbesetzung von Anwendervariablen #uxy (wiederholbar)
+// * -x     Protokolldateiname, default upro
+// * -y     Indexparameter (falls nicht default aus -b)
+// * -z     max. Datendateigroesse (falls nicht default lt. Faktor ii in Indexparam)
+// * -v     0|1  Gefundene Saetze anzeigen ja/nein (nur in srch.job)
+
+// * Ignoriert werden vorerst: -i, -m, -y, -z
+
+// Zusaetzlich eingefuehrt (redundant)
+// * --verbose   einige zusaetzliche Meldungen == -T1
+// * --check     Noch mehr Meldungen == -T2
+// * --quiet     Keine M. (ohne -T)
+// * --asif      Nur so tun als ob: Nichts speichern (auch --dry-run)
+//                (Man erhaelt die Meldungen, wie es im Realfall waere)
+// * --ANSI      Die einzulesende Datei hat ANSI-Codes, mache ASCII draus
+// * --UNICODE   ... desgl. Umcodierung der Daten von Unicode nach ASCII
+
+// Exitcodes (bei Beendung von acon) und andere Statuscodes
+// Siehe ganz am Ende
+
+
+/////////////////////////////
+// *** JOB update BEGINNT ***
+//
+// Namensraeume: (s. optsget.inc)
+// $OP_.  Werte der Optionen, belegt von :OPGET ($OP_d, ...)
+// $C.*   Counters (Zaehler)
+// $F.*   Flags
+
+// Steuerwerte:
+// $TEST2 - aktiviert diagnostische Meldungen, setzbar ueber --check im Aufruf.
+//          Impliziert  $TEST1
+// $TEST1 - Fortschrittsmeldungen, setzbar ueber --verbose oder -v(0|1) im Aufruf
+// $QUIET   - Ausgabe minimieren
+// $A99   - falls man den Job mit a99 fahren wollte (dann wuerden aber
+            noch andere Aenderungen noetig)
+
+ // Keine Umcodierung  DOS<->Windows
+switch coding 0
+ // Kein Limit fuer die Anzahl der Abarbeitungszeilen
+set Z 0
+
+//$A99=1
+
+ // Aufruf  cl  aufbereiten: daraus die Variablen $OP_x machen
+ // bewusst nicht beruecks.: -i -r -t
+ // Fuer update sollen folgende ausgewertet werden:
+ // (ERWEITERUNG: zusaetzliche eigene Opt.Zeichen einfuegen und dann
+ //                 dafuer die noetigen Routinen schreiben, z.B. unter :updPut)
+
+$OP.accept=-b -d -e -f -j -k -m -n -u -v -x -y -z -F -I -N -O -P -S -T -U -t
+
+// Defaults fuer -F  und  -x 
+// Verzoegerung bei Neusatzspeicherung
+$OP_F=1.0/0.1
+// Name der Protok.Datei
+$OP_x=upro
+
+// Optionen holen aus der Aufrufzeile
+perform OPGET   // in optsget.inc  
+// Jetzt ist z.B.  $OP_n = 20  wenn -n20 im Aufruf steht
+
+// ERWEITERUNG:
+// hier koennte man Aenderungen am einen oder andern $OP_x vornehmen
+
+// einige $OP_x noch bes. praeparieren in :OPTPR  (optsget.inc)
+perform OPTPR
+
+
+// ERWEITERUNG Hier Auswertung zusaetzlicher eigener Optionen einbauen
+//             (z.B. Wert von -M stuende jetzt in $OP_M) ...
+
+// Vorbereitung der update-Funktionsweise
+if not $QUIET Write "[INF] " m ": " $OP_j " v" $VERSION ", Datenbank " D B n
+if not $QUIET if $ASIF Write "[INF] " $ASIF ": nichts wird gespeichert!" n
+
+// Allerhand formale Pruefungen, aufgabenspezifisch
+perform checks
+
+// Nur fuer Statistik
+// Zaehler $C.* = counters  fuer Kontroll- und Bilanzmeldungen
+// * $C.tot  - total: Datensaetze insges. verarbeitet
+// * $C.wri  - written: Datensaetze geschrieben [noch nicht verwertet]
+// * $C.rpl  - replaced: Datensaetze aktualisiert (-fm1)
+// * $C.mrg  - merged: Datensaetze ineinandergemischt (-fm3, -fm4)
+// * $C.ign  - ignored: Datensaetze wg. -fm2 oder gesperrt oder nicht gefunden
+// * $C.err  -    davon wg. sonstiger Fehler
+// * $C.dbl  - double: Uneindeutige Primaerschluessel (sollte nicht sein)
+// * $C.del  - deleted: Datensaetze geloescht
+// * $C.new  - new: Datensaetze neu
+
+
+if not tbl jump begin
+Wri n "TBL gesperrt! Zweiter Versuch ..." n
+sleep 10000
+if not tbl jump begin
+Wri n "TBL gesperrt! Dritter und letzter Versuch ..." n
+sleep 10000
+if tbl Wri n "Abbruch wegen TBL-Sperre - erst fuer Freigabe sorgen!" n "dann neu starten" n;end
+
+:begin
+// Vorgeplaenkel erledigt, Arbeit kann beginnen
+// Name der Updatedatei steht in $OP_u
+
+if $TEST2 Write "[-T2] Opening update file " $OP_u n
+var $OP_u
+open
+if no jump ferr
+
+if $TEST1 Write "[INF] Eingangsdatei " $OP_u n
+write "[" #dts(b"/") "] Datei " $OP_u " wird verarbeitet" n
+
+// Flags fuer Dateitypvarianten praeventiv loeschen
+var ""
+ins $F.NRM
+   // .xLD, .LOG, .xLG (NORmalfall: Datendateien)
+ins $F.BIN
+   // .xLD, .LOG (BINaerdateien, Satznr. am Anfang)
+// ins $F.DEL  gleichwertig BIN, obsolet
+ins $F.LOG
+   // .LOG (LOGdatei, dann Neusaetze mit 8 vorn)
+ins $F.LCK
+   // .xLD (dann Prfg. auf Satzsperre noetig)
+ins $F.ADT
+   // .xDT Externdatei
+
+$ftype=xLG
+var $OP_u (-4,0 b".") "<"
+if $TEST2 ins $tempext
+if $TEST2 Write "Eigenschaften des Dateityps: " n "   " $tempext " => "
+if $TEST2 var $tempext
+
+
+if %~ld<% $ftype=xLD
+if %~lg<% $ftype=xLG
+if %~8d<% $ftype=xLD
+if %~dt<% $ftype=xDT
+if %~log<% $ftype=LOG
+if $TEST2 Write "type ." $ftype ": "
+
+// Flags fuer Eigenschaften der Dateivarianten
+var $ftype
+if "LOG" $F.NRM=1;$F.BIN=1;$F.LOG=1
+if "xLG" $F.NRM=1;
+if "xLD" $F.NRM=1;$F.BIN=1;$F.LCK=1
+if "xDT" $F.ADT=1;
+if $TEST2 if $F.BIN Write " .LOG/.xLD: Loeschtest" 
+if $TEST2 if $F.LOG Write " LOG"
+if $TEST2 if $F.LCK Write " LCK"
+if $TEST2 if $F.BIN Write " BIN"
+if $TEST2 if $F.NRM Write " NRM"
+if $TEST2 if $F.ADT Write " ADT"
+if $TEST2 Write n
+
+// $fileprop = Zs.fassung der properties
+var " ERR=*;"
+ins $fileprop
+if $F.NRM var " NRM=1;" $fileprop;ins $fileprop
+if $F.BIN var " DEL=9;" $fileprop;ins $fileprop
+if $F.LOG var " NEW=8;" $fileprop;ins $fileprop 
+if $F.LCK var " LCK=8;" $fileprop;ins $fileprop
+if $F.ADT var " NRM=35;" $fileprop;ins $fileprop
+
+// In $fileprop steht z.B. bei .ald:  NRM=1; ERR=*;
+
+if $TEST2 Write "Vorbereitete Tests: >" $fileprop "<" n
+
+// alle Zaehler auf 0
+$C.tot=0
+$C.rpl=0
+$C.mrg=0
+$C.ign=0
+$C.dbl=0
+$C.del=0
+$C.new=0
+$C.err=0
+$noExp=1
+
+var ""
+ins $pause
+
+///////////////
+// record loop: Satz einlesen, in der Datenbank suchen, veraendern, rueckspeichern, naechsten Satz lesen
+:rloop
+if $TEST2 Write n
+ // Teste auf Dateiende
+:rfet
+fetch c
+if "-1" jump fileEnd
+// es koennen ueberzaehlige 13 10 zw. Saetzen stehen; uebergehen
+if "13" fetch b;jump rfet
+if "10" fetch b;jump rfet
+
+  // erst nun pausieren, wo klar ist, dass noch was kommt...
+var $pause
+if >0 sleep
+
+   // lieber stets die Eingabedateinummer restaurieren
+var $OP_n
+set n
+
+ // Status des folgenden Satzes einlesen (Statusbyte 1 o.k., 8 gesperrt, 9 geloescht
+if $TEST1 write n "=== Satz einlesen ===" n
+
+// Satzstatusflags loeschen
+var ""
+ins $rec.DEL
+ins $rec.LCK
+ins $rec.NEW
+ins $rec.FNR
+
+ // Dateiformat hat Statusbyte und evtl. auch Satznummer:
+
+if not $F.NRM jump rfetch
+// Statusbyte einlesen (Nur .ALD, .LOG, .ALG)
+:fetb
+fetch b
+// falls hinter 13 10 faelschlich noch 0 kommt (ein oder mehrmals)
+//  denn es muss 1, 8 oder 9 kommen
+if "0" jump fetb
+if "-1" jump fileEnd
+
+ins $rec.status
+var "=" $rec.status ";"
+ins #ucc
+// #ucc =1;  oder =9;  oder  =8;
+
+// In $fileprop steht bei .ald:  NRM=1; ERR=*;
+var $fileprop (t"#ucc" T" ") "=" $rec.status
+// davon ist jetzt uebrig:  NRM, aber ERR=*, wenn keiner der 3 Typen
+ins $rec.status
+if $TEST1 write " - Status " $rec.status n
+
+var $rec.status
+if "ERR" jump filestructureerror
+if "DEL" $rec.DEL=1
+if "LCK" $rec.LCK=1
+if "NEW" $rec.NEW=1
+
+if not $F.BIN jump rfetch
+// Satznr einlesen (Neusaetze aus .log-Dateien: Dateinummer)
+fetch b4
+if cancel jump endfile
+ins $rec.nr
+if $TEST1 write " - Nummer " $rec.nr ", "
+
+// Satz incl. Satznr einlesen (je nach Typ .ald, .alg, .adt)
+:rfetch
+fetch rec
+if cancel jump endfile
+
+// Umcodierungen (Optionen --ANSI bzw. --UNI)
+if $F.ANSI asci
+if $F.UNIC xcode u
+
+//  ;# als Trennung zw. Feldern ersetzen durch Zeilenwechsel
+if $A99 ins _;#_^J#_
+
+// bei .ADT kann eine Textzeile vorangehen
+if $F.ADT var (b"#");ins $rec.dat;var "#" $rec.dat
+// Satzinhalt in $rec.dat lagern
+ins $rec.dat
+
+if $F.BIN jump process
+// nicht .ald oder .log, dann kann es #u1 geben
+// Anweisungen aus #u1 extrahieren 
+if not "#u1" jump process
+// Vorsicht, koennte #u11... sein
+if "#u11" jump process
+
+// abschneiden hinter dem 1. Feld. Steht @@@@@ drin oder ####N ?
+var (e"^J" e";")
+// Satz soll geloescht werden?
+if %@@@@@% $rec.DEL=1
+// Neusatz (fuer eine bestimmte Datei, Nummer steht hinter ####) 
+if %####% $rec.NEW=1
+ins _#_!_
+var (b"!!!!" e"!")
+// =N falls ####N, sonst leer
+ins $rec.FNR
+if $TEST1 if $rec.FNR write "[Dieser Satz soll in Datei " $rec.FNR "]" n
+
+:process
+// $rec.LCK nur gesetzt bei Typ .ADT oder .ALG
+if $rec.LCK Write n "Satz " $rec.nr " gesperrt (Assertion failed)!" n
+if $rec.LCK write "Satz " $rec.nr " ist gesperrt (Assertion failed)!" n
+
+ // Inkrementiere $C.tot
+eval $C.tot +1
+ins $C.tot
+
+// if $TEST2 write $C.tot ". Satz " : " n "====" n $rec.dat n "====" n
+
+
+switch object 2
+
+new
+
+var ""
+ins $datfehl
+// den aus Datei eingelesenen Datensatz ins obj 2 einordnen
+var $rec.dat
+ //if "#u1 " var (f"^J" b"^J")
+ // Zeilenwechsel wieder durch ;# ersetzen, wirkt als Feldtrennung bei ins
+if $A99 ins _^J#_;#_
+ // doppelte raus
+if $A99 ins _;#;#_;#_
+ // Leerzeile hinten weg
+var (F";#")
+ins
+if no ins $datfehl
+if $datfehl write "Datenfehler: " n $datfehl n n
+
+var ""
+// $status vereinfacht die nachfolgenden Meldungen
+if $rec.nr var " (" $rec.nr ")";ins $status
+ins $status
+if $rec.DEL var $status " (DEL)";ins $status
+if $rec.NEW var $status " (NEW)";ins $status
+
+Write $C.tot ". Satz  " $status ": " 
+write n "[" #dts(b"/") "] " $C.tot ". Satz eingelesen " $status ":" n
+
+if $TEST2 write "====" n kn "====" n
+
+if $F.playback jump log
+
+  ////////////////////////////////////////
+  // Update- und Check-Modus : -fc und -fm
+  ////////////////////////////////////////
+
+var p
+var (0,246 e"=" F" ")
+ins $primkey
+
+
+if $rec.NEW jump updAdd
+if $fm0 jump updAdd
+
+var $primkey
+if "" write "[INF] kein Primaerschluessel => Neusatz (" k1 ")" n;jump updAdd
+if %?% write "[INF] unexpandierter Primaerschluessel => Neusatz" n;jump updAdd
+
+//  $primkey = |iabc  zerlegen
+var $primkey
+var (0,2)
+//  $pk1 = |i
+ins $pk1 
+var $primkey
+var (2,0)
+//  $pk2 = abc
+ins $pk2
+
+  // Satz in Datenbank ermittelbar? Dann in object 1 einlesen
+switch object 1
+
+   //   Suchbefehl aus Primaerschluessel
+Write " >" $primkey "<"
+echo off
+// write "Gesucht: >" $pk1 " " $pk2 "=?<" n
+// Zuerst mit =? versuchen (V14-Ersetzungsschluessel)
+// Dabei Suchbegr. in ".." - falls AND oder sowas drin vorkommt
+var $pk1 ' "' $pk2 '=?"'
+find
+
+if ok jump found
+
+// write "Gesucht: >" $pk1 " " $pk2 "<" n
+// wenn nicht, dann normal, auch wieder mit ".."
+var $pk1 ' "' $pk2 '"'
+find
+
+if ok jump found
+
+// Den Satz gibt's noch nicht
+write "Status: Nichts gefunden " l n
+jump updAdd
+
+:found
+
+if g1 write "[WARN] Mehr als ein Treffer (" l "), der erste wird verarbeitet" n
+if g1 Write " / Mehrfachtreffer (" l ")"
+// Zaehler d. Mehrfachtreffer aktualisieren
+if g1 eval $C.dbl +1;ins $C.dbl
+
+// Falls gesperrt, dann nicht speichern, aber Protokoll (default: Datei upro)
+// (eigtl. hier unnoetig, aber das "put" wuerde sonst in den allermeisten
+// Faellen auch nicht klappen, jedoch Zeit brauchen... So wird das abgefangen
+// (Dass zwischen hier und "put" der Satz wieder frei wird, ist sehr unwahrscheinlich.
+// Aus dem Protokoll upro kann man die nicht verarb. Saetze dann herauskopieren und
+// nochmals einspeisen, nachdem man sie u.U. freigegeben hat.)
+
+if Lock jump wasLocked
+
+// Satz nochmals laden, diesmal mit Locking, um Sicherheitsluecke zu vermeiden
+var "#" i
+f1nd
+// check Lock status
+var sL
+if "-" jump lockProbl
+
+write $C.tot ". Satz = #" i " gefunden: >" p "<" n
+var jp (e" ")
+ins $jp
+if $TEST2 write "Vorhandener Satz " i " (Datei " j ", Offset " $jp ", Laenge " jf "): " n "====" n kn "====" n
+
+// "geloescht" duerfte gar nicht sein, weil Schl. dann nicht mehr da waere!
+if deleted write "[WARN] Satz " i " ist geloescht" n
+if deleted Write "[WARN] Satz " i " ist geloescht" n
+
+
+  /////////////////////////////
+  // Hauptteil Update-Modus -fm
+  /////////////////////////////
+
+if $fm2 jump updIgn
+
+if deleted jump recFree
+
+// Zuerst das Aend.Datum des Satzes festhalten
+// aber im ASIF-Modus nicht noetig
+if $ASIF jump recFree
+
+
+// Aenderungsdatum kopieren (kann sein, dass der Satz noch keins hat!)
+// (muss identisch zurueckgeliefert werden, sonst wird Satz nicht akzeptiert)
+var "#" ce " "
+if "# " var ""
+if not "" var "#" ce;var
+ins $stampCopy
+if not "" var "#" ce " " $stampCopy
+ins $stampCopy
+
+
+:recFree
+
+if $rec.DEL jump updDel
+
+if not $OP_e1 jump merge
+switch dow 2
+// neuer Satz ist in obj2, vorhandener in obj1
+switch obj 2
+write "=== neuer Satz ===" n
+var ""
+export
+switch obj 1
+write "=== vorhandener Satz ===" n
+var ""
+export
+switch dow 1
+var ""
+ins $noExp
+if $F.check jump checkHit
+
+:merge
+switch obj 1
+if $fm1 copy obj 2 1
+
+//if $fm4 copy obj 2>1
+
+// wegen der Funktionen  #nn _ und #nn~xyz  nicht copy 1>2
+if $fm4 var $rec.dat;ins
+
+if $fm3 copy obj 1>2
+if $fm3 copy obj 2 1
+
+
+if not $OP_e1 jump updPut
+
+// Glob.Manip. wird automatisch gemacht, wenn -e gegeben ist und #-# vorkommt
+jump updPut
+
+switch dow 2
+var ""
+ins $gmresult
+
+// Globale Manipulation ausloesen (nur wenn $OP_e1, d.h. -e...)
+export -#
+if not "" ins $gmresult
+switch dow 1
+if $gmresult write "Ergebnis der globalen Manipulation: >" $gmresult "<" n
+if $gmresult if $TEST1 Write "GM ergab >" $gmresult "<" n
+
+// Datensatz speichern
+:updPut
+
+// ERWEITERUNG
+// **** Hier weitere Aktionen einbauen, bevor der Satz
+//      gespeichert wird; z.B. Pruefungen auf bestimmte Inhalte
+//                        oder Aenderungen von Inhalten
+// Falls er nicht gespeichert werden soll:  jump noPut
+
+  // Aenderungsdatumsstempel ggfls. wiederherstellen
+if $stampCopy if $TEST2 write "Restauriere " $stampCopy n
+var $stampCopy
+if not "" ins
+
+if not $TEST2 jump showNo
+if $OP_e1 jump show
+if $fm1 jump showNo 
+:show
+write "Speichere:" n "====" n kn "====" n
+
+:showNo
+
+Write " ==> Satz #" i " aktualisiert" n 
+if $TEST2 Write "[-T2] Satz " i " wird gespeichert" n 
+if $ASIF var "[" $ASIF "]";jump noPut
+   // flush protocol
+if $TEST2 if $OP_x var "+" $OP_x;export file
+var ""
+
+
+put 
+echo on
+if ok jump putOK
+
+
+// es klappte nicht, z.B. weil Datum nicht uebereinstimmte (z.B. #99e)
+var + "//" Err
+ins $error
+// Zeitstempel stimmt nicht?
+if %Edit date% var "Satz " $rec.nr "/" i " speichern geht nicht, Zeitstempel stimmt nicht";jump updErr
+// TBL gesperrt?
+if %TBL gesperrt% var "Satz " $rec.nr "/" i " speichern geht nicht, " B ".tbl gesperrt";jump updErr
+// anderer Grund
+write "[" #dts(b"/") "] Kann Satz " $rec.nr "/" i " nicht speichern, weil: " $error n
+Write "[WARN] " $error n
+jump wasLocked
+eval $C.ign +1
+ins $C.ign
+
+// Inhalt des Satzes ausgeben in die Protokolldatei/Negativdatei
+write "Satz wird deshalb uebergangen:" n kn n
+jump rloop
+
+:noPut
+// Satz wurde nicht gespeichert, muss daher wieder freigegeben werden
+set unlock
+// gefundener Satz kann ersetzt werden
+:putOK
+// Meldung vom put-Befehl (aus abasew.cpp)
+ins $iV
+if not $QUIET if not "" Write ">" $iV "<" n
+write "[" #dts(b"/") "] Satz #" i " aktualisiert (Datei " j ", Laenge " jf ")" n
+
+  // Inkrementiere $C.rpl oder $C.mrg
+if not $fm1 jump incMrg
+eval $C.rpl +1
+ins $C.rpl
+
+jump putEnd
+
+:incMrg
+eval $C.mrg +1
+ins $C.mrg
+jump putEnd
+
+  // es soll geloescht werden
+:updDel
+if not $QUIET Write " / Loeschung"
+
+if $F.check jump checkDel
+
+Write " ==> - (" i ")" n 
+if $TEST2 Write "[-T2] Satz " i " wird geloescht" n 9
+if $ASIF var "[" $ASIF "]";jump eraseOK
+   // flush protocol
+if $TEST2 if $OP_x var "+" $OP_x;export file
+set unlock
+var ""
+erase
+if ok jump eraseOK
+var + "//" Err
+ins $error
+if not %TBL gesperrt% var "Konnte Satz " i " nicht loeschen: " $error;jump updErr
+write "[" #dts(b"/") "] Kann Satz nicht loeschen: " $error n
+Write "[WARN] " $error
+var $pause0
+z=
+if z<100 var 100
+ins $pause
+:eraseRetry
+var $pause
+if >0 sleep
+var ""
+erase
+if ok Write n;jump eraseOK
+var + "//" Err
+ins $error
+if not %TBL gesperrt% var "Konnte Satz " i " nicht loeschen: " $error;jump updErr
+Write "."
+jump eraseRetry
+
+// gefundener Satz kann geloescht werden
+:eraseOK
+ins $iV
+if not "" if not %deleted% Write ">" $iV "<" n
+var jp (e" ")
+ins $jp
+write "[" #dts(b"/") "] Satz " i " geloescht (Datei " j ", Offset " $jp ", Laenge " jf ")" n
+  // Inkrementiere $C.del
+eval $C.del +1
+ins $C.del
+
+jump putEnd
+
+  // Satz ohne / mit unexpandiertem Primaerschluessel
+  // es soll ein Neusatz sein
+:updAdd
+  // hier z.B. die Kombination -fm00 mit #u1 @@@@@ abzufangen
+if $rec.DEL jump updIgn
+
+if $QUIET jump quiet
+
+var $rec.FNR
+if "" var $OP_n
+ins $fnr
+Write " / Neusatz"
+if $primkey Write " (Prim.Schl.=" $primkey ")"
+Write " ==> +Datei " $fnr n 
+ 
+:quiet
+if $F.check jump checkNew
+  // sollen ueberhaupt Neusaetze genommen werden?
+if $newskip jump updIgn
+
+switch object 1
+// Wenn #u1, dann weg damit
+
+new
+copy obj 2 1
+
+var $rec.FNR
+if not "" set n
+if error var "Fehler beim Einstellen der Dateinummer" $rec.FNR;jump updErr
+
+if not $OP_e1 jump putNew
+
+// Glob.Manip. wird automatisch gemacht, wenn -e gegeben ist und #-# vorkommt
+jump putNew
+
+  // Globale Manipulation auch hier ausloesen
+switch dow 2
+var ""
+ins $gmresult
+// Abschnitt #-# in den Exp.Param ausfuehren
+export -#
+if not "" ins $gmresult
+switch dow 1
+if $gmresult write "Ergebnis der globalen Manipulation: >" $gmresult "<" n
+if $gmresult if $TEST1 Write "GM ergab >" $gmresult "<" n
+
+:putNew
+if $TEST2 write "[" u "] Speichere Neusatz in Datei " N n "====" n kn "====" n
+var ""
+if $ASIF var "[" $ASIF "]";jump newOK
+   // flush protocol
+if $TEST2 if $OP_x var "+" $OP_x;export file
+
+// Neusatz mit  #u1 ####N: #u1 weg
+var #u1
+if %###% var "";ins #u1
+
+put new
+if ok jump newOK
+var + "//" Err
+ins $error
+if not %TBL gesperrt% var "Konnte Neusatz nicht speichern: " $error;jump updErr
+write "[" #dts(b"/") "] Kann Neusatz nicht speichern: " $error n
+Write "[WARN] " $error
+var $pause0
+z=
+if z<100 var 100
+ins $pause
+:retrynew
+var $pause
+if >0 sleep
+var ""
+put new
+if ok Write n;jump newOK
+var + "//" Err
+ins $error
+if not %TBL gesperrt% var "Konnte Neusatz nicht speichern: " $error;jump updErr
+Write "."
+jump retrynew
+
+// Neuer Satz kann gesp. werden
+:newOK
+ins $iV
+
+if not $QUIET if not "" Write ">" $iV "<" n
+write "[" #dts(b"/") "] Neusatz gespeichert in Datei " N " (Laenge " jf ")" n
+  // Inkrementiere $C.new
+eval $C.new +1
+ins $C.new
+jump putEnd
+
+  // Satz ignorieren (Modus -fm01)
+:updIgn
+Write " ==> o (zu ersetzender/loeschender Satz nicht gefunden)" n
+jump ignored
+
+//  Speichern war nicht moeglich oder ratsam. Ausgabe in Protokoll/Negativdatei
+:updErr
+
+ins $errmsg
+write "[" #dts(b"/") "] ERROR: " $errmsg " - Skipping record" n
+// Volls. Satz ausgeben, so wie er gespeichert werden sollte
+write "====" n kn "====" n
+
+eval $C.err +1
+ins $C.err
+jump ignored
+
+// Satz soll nicht gespeichert werden, da er schon gesperrt war
+:wasLocked
+
+write "[WARN] Satz " i " ist gesperrt, wird uebergangen:" n
+Write "[WARN] Satz " i " ist gesperrt, wird uebergangen" n
+
+:skipped
+// der neue steht in obj 2
+set obj 2
+// komplett ausgeben in die Protokolldatei/Negativdatei
+wri n kn n n
+set obj 1
+
+eval $C.ign +1
+ins $C.ign
+jump rloop
+
+// Satz soll nicht gespeichert werden, da er nicht sperrbar ist
+:lockProbl
+
+write "[WARN] Satz " i " problematisch (LockStatus " sL ")" n
+Write "[WARN] Satz " i " problematisch, wird uebergangen (LockStatus " sL ")" n
+
+jump skipped
+
+
+  //////////////////
+  // Check-Modus -fc
+  //////////////////
+  
+:checkHit
+  // Ausgabe per Parameterdatei erfolgte wie bei -fm ...
+Write 9 "/ Satz " i " in Datenbank vorhanden" n
+eval $C.rpl +1
+ins $C.rpl
+
+set unlock
+jump putEnd
+
+:checkDel
+Write 9 "-"
+eval $C.del +1
+ins $C.del
+
+set unlock
+jump putEnd
+
+:checkNew
+Write 9 "+"
+  // Wirklich kein Export hier?
+eval $C.new +1
+ins $C.new
+jump putEnd
+
+  ////////////////////
+  // Playback-Modus -p : .log-Datei einspeisen
+  ////////////////////
+  
+  // Anhand Satznummer herbeischaffen
+:log
+  // Zunaechst schauen, ob es ein neuer Satz sein soll (#u1 ####... oder .LOG code 8)
+  // Dann ist die Satznummer die Dateinummer fuer einen Neusatz
+if $rec.NEW jump logn
+
+switch object 1
+write "Hole Satz " $rec.nr n
+
+var "#" $rec.nr
+find
+if cancel var "Satznummer " $rec.nr " zu gross";jump logErr
+if no var "Satznummer " $rec.nr " unbesetzt";jump logErr
+if deleted var "Satz " $rec.nr " geloescht";jump logErr
+
+if $rec.DEL jump logd
+
+:logu
+write "Aktualisiere Satz " $rec.nr n "===" n kn n "==="
+// In obj 2 ist der aus .LOG eingelesene Satz
+copy obj 2 1
+
+// Nun speichern, auch wenn er gesperrt sein sollte!
+if not $ASIF put unlock 
+if no var "Satz " $rec.nr "/" i " liess sich nicht speichern";jump logErr
+  // Inkrementiere $C.rpl
+eval $C.rpl +1
+ins $C.rpl
+write "Satz #" i " aktualisiert (Datei " j ", Laenge " jf ")" n
+jump putEnd
+
+:logd
+set unlock
+var ""
+if not $ASIF erase
+if no var "Loeschen von Satz " $rec.nr " gescheitert!";jump logErr
+var jp (e" ")
+ins $jp
+write "Satz " i " geloescht (Datei " j ", Offset " $jp ", Laenge " jf ")" n
+  // Inkrementiere $C.del
+eval $C.del +1
+ins $C.del
+jump putEnd
+
+
+:logn
+write "Neusatz fuer Datei " $rec.nr n
+
+var $rec.nr
+set n
+if error var "Fehler beim Einstellen der Dateinummer " $rec.nr;jump logErr
+copy obj 2 1
+switch obj 1
+
+if not $ASIF put new
+if error var "Konnte Neusatz nicht speichern";jump logErr
+var jp (e" ")
+ins $jp
+write "Neusatz " i " gespeichert (Datei " $rec.nr ", Offset " $jp ", Laenge " jf ")" n
+  // Inkrementiere $C.new
+eval $C.new +1
+ins $C.new
+jump rloop
+
+
+:logErr
+ins $errmsg
+write "ERROR: " $errmsg " - Skipping record" n
+Write "ERROR: " $errmsg " - Skipping record" n
+eval $C.err +1
+ins $C.err
+jump ignored
+
+
+:putEnd
+   // Protokoll (upro) schliessen und wieder oeffnen
+   // - sonst mindestens teilw. verloren bei Absturz
+if $TEST1 if $OP_x var "+" $OP_x;export file
+eval $C.wri +1
+ins $C.wri
+var $pause1
+ins $pause
+
+jump rloop
+
+:ignored
+set unlock
+  // Inkrementiere $C.ign
+eval $C.ign +1
+ins $C.ign
+var $pause0
+ins $pause
+jump rloop
+
+
+// Status Codes (read Errors)
+// 13 - Eingangsdatei abruptes Ende
+// 14 - Satzanfangsfehler (ill. Zeichen am Satzanfang)
+
+ // Dateiende erkannt beim Einlesen des naechsten Satzes (.LOG und .ALD)
+:endfile
+if $TEST2 Write n
+Write "Fehler bei der Bearbeitung von " $OP_u ". Datei endet abrupt" n
+z=13
+
+// Beenden mit Exitcode (steht in z)
+:Exit
+if $TEST2 Write "[Exit " z "]" n
+end
+
+// Dateiende oder falscher Code am Satzanfang bei .ALG, .ALD, .LOG
+:filestructureerror
+if $TEST2 Write n
+Write "Fehler bei der Bearbeitung von " $OP_u ": Zeichen " $rec.status " kein gueltiger Satzanfang" n
+z=14
+jump Exit
+
+:fileEnd
+if $noExp jump statistik
+var ""
+export - E
+write iV
+
+:statistik
+write n
+var $C.err (f"0")
+if not "" write $C.err " Saetze uebergangen wg. Fehler" n
+
+Write n
+write "ENDE" n
+
+Write $C.tot " Saetze verarbeitet" n
+write $C.tot " Saetze verarbeitet" n
+
+var $fm0 $fm2
+if "" Write $C.rpl " Saetze aktualisiert" n
+write $C.rpl " Saetze aktualisiert" n
+
+var $fm3 $fm4
+if not "" Write $C.mrg " Saetze gemischt" n
+write $C.mrg " Saetze gemischt" n
+
+var $C.err (f"0")
+if "" Write $C.ign " Saetze ignoriert/uebergangen" n
+var $C.err (f"0")
+if not "" Write $C.ign " Saetze ignoriert (" $C.err " Fehler!)" n
+write $C.ign " Saetze ignoriert" n
+
+var $F.check $fm0 $fm2
+if "" Write $C.del " Saetze entfernt" n
+write $C.del " Saetze entfernt" n
+
+Write $C.new " Saetze neu" n
+write $C.new " Saetze neu" n
+
+Write "Protokoll: siehe Datei  " $OP_x n
+
+// Status Codes (Erfolg)
+// 0  - Update o.k.
+// 10 - Kein Datensatz wurde geschrieben
+// 11 - Kein Datensatz wurde verarbeitet
+// 1  - Es gab Ignorierungen wg. Fehlerzustaenden
+
+z=0
+var $C.wri (f"0")
+if "" z=10
+var $C.tot (f"0")
+if "" z=11
+var $C.dbl (f"0")
+if not "" z=2
+var $C.err (f"0")
+if not "" z=1
+if $TEST2 Write "[Exit " z "]" newline
+end
+
+// Vorbereitende Checks, Dateioeffnungen etc., Ende bei :checksEnd
+:checks
+// 0. (Noch) nicht klappende Optionen
+
+if $OP_m if $TEST1 Write "[INF] Option -m  hat keine Wirkung (manuelle Unterbrechung)" n
+
+if $OP_R Write "[INF] Option -R derzeit nicht implementiert (Meldungsdatei)" n
+
+if $OP_y Write "[WARN] Option -y derzeit nicht implementiert (Indexdatei Name)" n
+
+if $OP_z Write "[WARN] Option -z derzeit nicht implementiert (Input file maximum size)" n
+
+if $TEST2 Write "[-T2] Checking $OP_x=" $OP_x n
+
+
+// -Iname: Andere Indexparam. name.api
+if not $OP_I jump opx
+if $TEST1 Write "[-T1] Lade Indexparameter " $OP_I n
+
+var $OP_I
+index p
+
+:opx
+var $OP_x
+var (e"^J")
+ins $OP_x
+if "" Write "[INF] Protokollierung abgeschaltet" n;jump OPcheckEnd
+var $OP_x
+export file
+  // damit geht write-output in diese Datei (Write geht auf die Konsole)
+if no jump lerr
+
+:OPcheckEnd
+  // initiales logging nachholen
+write "[" #dts(b"/") "] " m ": Verarbeitung beginnt, Datenbank " D B n
+if $ASIF write "[" #dts(b"/") "] " $ASIF ": nichts wird gespeichert!" n
+
+if $TEST2 Write "[-T2] Checking $OP_F=" $OP_F n
+var $OP_F e("^J")
+ins $OP_F
+var (e"/")
+if "" var "0"
+Z=
+Z * 1000
+var Z
+ins $pause1
+if $TEST1 Write "[INF] Pause after put/delete: " $pause1 "ms" n
+var $OP_F
+var (b"/")
+if "" var "0"
+Z=
+Z * 1000
+var Z
+ins $pause0
+if $TEST1 Write "[INF] Pause after ignore/fail: " $pause0 "ms" n
+
+
+if $TEST2 Write "[-T2] Checking $OP_u=" $OP_u n
+var $OP_u "|"
+if "|" var "Updatedatei (Option -u) nicht angegeben";jump cerr
+
+ // Option -f (Funktion) testen
+if $TEST2 Write "[-T2] Checking $OP_f=" $OP_f n
+var $OP_f
+if "" var " Kein Modus -f... angegeben";jump cerr
+// Es ist -p? Dann auf jeden Fall LOG-Playback
+if "p" jump mod-fp
+
+var $OP_u "|"
+// Was fuer ein Dateityp?
+if %~.log|% jump mod-fp
+if %~lg|% jump mod-fm
+if %~dt|% jump mod-fm
+var "Ungeeignete Datei in -u" $OP_u ":" n "An dieser Stelle nur Dateien vom Typ ." K1 "lg oder ." K1 "dt";jump cerr
+
+:mod-fm
+if $TEST2 Write "[MODUS function -f] Checking $OP_f=" $OP_f n
+var $OP_f
+if "m" jump mmerge
+if "c" $F.check=c;jump mod--asif
+var "Funktionsmodus -f" $OP_f " unbekannt";jump cerr
+
+// Was, wenn es den Satz schon in der Datenbank gibt?
+:mmerge
+if $TEST2 Write "[MODUS merge: x in -fmxy] Checking $OP_f " n
+var $OP_f "X"
+// Mischmodus setzen, damit man mit  if $fm1  etc. leichter pruefen kann
+if "m0" $fm0=1;jump moremerge
+if "m1" $fm1=1;jump newmode
+if "m2" $fm2=1;jump newmode
+if "m3" $fm3=1;jump newmode
+if "m4" $fm4=1;jump newmode
+if %mX% var "Modus -f" $OP_f " unvollstaendig, hinter m gehoert 0,1,2,3,4";jump cerr
+
+var "Modus -f" $OP_f " geht nicht, Wert hinter m unzulaessig"
+jump cerr
+
+// und was wird mit neuen Saetzen? Wert y in -fmxy
+:newmode
+if $TEST2 Write "[MODUS new: y in -fmxy] Checking $OP_f " n
+var $OP_f "|"
+var (2,0)
+if "0|" $newskip=1;jump moremerge
+if "1|" jump moremerge
+var "Modus -f" $OP_f " inkorrekt, zweite Ziffer hinter m muss 0 oder 1 sein";jump cerr
+
+:moremerge
+if $TEST2 Write "[-T2] Checking input file nr $OP_n=" $OP_n n
+var $OP_n
+if >0 if <256 jump setn
+
+// falsche Dateinummer oder keine
+Wri "[WARN] -n" $OP_n ": Korrekte Eingabedateinummer (Option -ni, i=1...255) wird benoetigt" n "Es wird -n1 angenommen" n
+var "1"
+ins $OP_n
+
+:setn
+ins $n
+set n
+
+Wri "Neue Saetze kommen in die Datei " B "_" N "." K1 "ld" n
+// Fehlerprfg geht nicht
+//if error var "Fehler bei Option -n" $n;jump cerr
+
+if $TEST2 Write "[-T2] Checking NewMode $OP_N=" $OP_N n
+var $OP_N
+if not "" set N
+if no var "Fehler beim Verarbeiten von -N";jump cerr
+if error var "Fehler beim Verarbeiten von -N";jump cerr
+
+if $TEST2 Write "[-T2] LogFile=" G n
+
+if $OP_L jump OP_L
+
+var D B ".log"
+ins $OP_L
+
+:OP_L
+// -L mit nichts dahinter? Achtung:  if "^J"  geht nicht (V31)
+var $OP_L (B"^J")
+if "" set Logging off
+if "" Write "[INF] Logging abgeschaltet!" n
+var $OP_L (B"^J")
+if not "" if $TEST1 Write "[INF] Logdatei " G n
+
+jump modeOK
+
+
+:mod--asif
+var $OP_f
+if $TEST2 Write "[CHECK] Weitere Optionen checken " n
+if $TEST1 Write "[MODUS] Als-ob-Modus -fc: Ohne Schreiben in die Datenbank" n
+write "[MODUS] Als-ob-modus -fc: Ohne Schreiben in die Datenbank" n
+// Wenn -fc, dann $ASIF belegen. Unterschied: -fc erfordert -e
+var "Test"
+ins $ASIF
+
+jump modeOK
+
+
+:mod-fp
+$F.playback=p
+if $TEST2 Write "[MODUS] Playback Modus -fp: Diverse Optionen werden ignoriert" n
+write "[MODUS] Playback modus -fp: Diverse Optionen werden ignoriert" n
+
+if $TEST2 Write "[playback] Logging und Zeitstempel werden deaktiviert" n
+write "[playback] Logging und Zeitstempel deaktiviert" n
+set Logging off
+set Timestamp off
+
+
+:modeOK
+ // Exp.param laden
+if $TEST2 Write "[-T2] Checking $OP_e1=>" $OP_e1 "<" n
+var $OP_e1
+if "" if not $F.check jump checksEnd
+if "" var "Option -e ist Pflicht im Modus -fc";jump cerr
+
+// Export muss 
+switch dow 2
+if $TEST2 Write "[-T2] Loading " $OP_e1 "." K1 "pr" n
+var $OP_e1
+exp p
+if no jump perr
+
+ // Hinw.: output kann auch per Umlenkung mit  >dateiname  erfolgen!
+var $OP_E1
+if "" if $TEST2 Write "[-T2] No OutputFile given, exporting to STDOUT" n;jump expopen
+if $TEST2 Write "[-T2] Opening " $OP_exm1 $OP_E1 " for write" n
+var $OP_exm1 $OP_E1
+  // Shortcuts fuer STDOUT
+if "/-" var ""
+if "+-" var ""
+export file
+if error jump xerr
+if no jump xerr
+:expopen
+
+switch dow 1
+if not $QUIET Write "[INF] Export: " $OP_e1 " => '" $OP_E1 "'" n
+write "Export: " $OP_e1 " => '" $OP_E1 "'" n
+
+if $OP_e2 var "Zweiter Export geht (noch) nicht";jump cerr
+
+:checksEnd
+return
+
+
+//////////////////
+// Fehlermeldungen
+
+:perr
+ins $errmsg
+Write "ERROR: " $errmsg " - Parameterdatei " $OP_e1 "." K1 "pr kann nicht geladen werden" n
+z=6
+jump Exit
+
+:xerr
+ins $errmsg
+Write "ERROR: " $errmsg " - Ausgabedatei kann nicht geoeffnet werden" n
+z=7
+jump Exit
+
+:lerr
+ins $errmsg
+Write "ERROR: " $errmsg " - Protokolldatei kann nicht geoeffnet werden" n
+z=8
+jump Exit
+
+:ferr
+ins $errmsg
+Write "ERROR: " $errmsg " - Updatedatei kann nicht geoeffnet werden" n
+z=21
+jump Exit
+
+  // Dies ist die typische Fehlerbedingung
+:cerr
+ins $errmsg
+Write "ERROR: " $errmsg n "Aufruf 'acon -jupdate --help' zeigt gueltige Optionen" n
+z=30
+jump Exit
+
+// Speichern nicht moeglich, TBL dauerhaft gesperrt?
+:tblTrouble
+Write "ERROR: TBL moeglicherweise dauerhaft gesperrt, s. Protokoll " $OP_x n
+write "ERROR: TBL moeglicherweise dauerhaft gesperrt" n n
+write "Abbruch bei diesem Satz; er konnte nicht mehr gespeichert werden:" n n kn n
+z=9
+jump Exit
+
+
+:HELP
+   // Hilfetext zusammenbasteln
+   // Rueckruf aus optsget.inc, weil aufgabespezifisch
+var "acon -jupdate.job -...  [Folgende Optionen sind wichtig:]" n n
+var +"-f    : Funktion und Modus, z.B. -fm41 oder -fm01" n
+var +"          (siehe Handbuch Kap. 9)" n
+var +"-b    : Datenbankname, z.B. -bcat" n
+var +"-d    : Datenpfad, z.B. -dc:\allegro\demo2" n
+var +"-u    : UpdateDatei, z.B. -udemo2\neudat.adt" n n
+var +"-n    : Dateinummer fuer neue Daten, z.B. -n10 fuer cat_10.ald  (Default -n1)" n
+var +"-k    : Konfigurationsdateiname, z.B. -kn  fuer n.cfg  (Default -ka)" n
+ins $help
+  // dieser Text wird dann ausgegeben (in optsget.inc)
+jump helpback
+
+include optsget.inc
+ // Darin:
+ // :OPGET - Aufbereitung der Optionen -> $OP_*
+ // :OPTPR  - Nachbereitung einiger Optionen
+
+// Status Codes
+// [Exitcodes] (wenn acon sich beendet):
+//  0 - Update o.k.
+//  1 - Es gab ignorierte wg. Fehlerzustaenden
+//  2 - Es gab doppelte Primaerschluessel
+// [5 - Suchbefehlsfehler [Startup]  src.job]
+//  6 - Ladefehler Parameterdatei [Startup]
+//  7 - kein Schreiben in Ausgabedatei [Startup]
+//  8 - kein Schreiben in diverse Protokolldateien [Startup]
+// 10 - Kein Datensatz wurde geschrieben
+// 11 - Kein Datensatz wurde verarbeitet
+// 11 - Keine Eingabedateien
+
+// [Initialisierung]
+// 21 - Keine Datenbank [nicht realisiert - acon bricht selber vorher ab]
+// 22 - Syntaxfehler im Suchbegriff
+
+// [Verarbeitungsprobleme] 
+// 13 - Eingangsdatei trunkiert
+// 14 - Falsches Steuerzeichen am Satzanfang
+
+// [Startup] 
+// 21 - Ladefehler Updatedatei
+
+// [Aufruf]
+// 30 - Inkonsistente Option
+// 37 - Falsche Programmversion
+// 38 - Unbekannte Option
+// 39 - unbekanntes Element in Komm.zeile
+//
+
+// [Fehlermeldungen]
+// (n/a) 5 - Suchbefehlsfehler
+//  6 - Ladefehler Parameterdatei
+//  7 - kein Schreiben in Ausgabedatei 
+//  8 - kein Schreiben in diverse Protokolldateien
+//  9 - Abbruch wg. TBL-Sperre
+// 21 - Ladefehler Updatedatei
+// 30 - Inkonsistente Aufrufoption
+
+
+
+// *******************************
+// Sonstige Angaben zu diesem Code [zum Original Berger]
+
+// Version: 0.6
+// 
+// Date: 2011-12-01
+//
+// Voraussetzungen: 
+// acon 2011-05-02 oder neuer
+//
+// Author:
+// Original: Thomas Berger <thb (at) gymel.com>
+// Uberarb.: B. Eversberg <b.eversberg (at) tu-bs.de>
+
+// Lizenz: 
+// GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 (cf. GPL.txt) oder neuer
+// oder
+// Artistic License v2.0 (cf. Artistic-2_0.txt)
+//
+//
+// Todo:
+// + Gestaltung der Ausgabedatei zeichenidentisch mit UPDATE.EXE?
+// + Behandlung von Endeabschnitten in den Parameterdateien wie bei UPDATE.EXE?
+// + Testsuite
+///////////////////////////////////////////////////////////////////
+
+

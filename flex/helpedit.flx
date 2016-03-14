@@ -1,0 +1,38 @@
+  HELPEDIT.FLX : Bearbeiten der datenbankspezifischen Hilfedatei
+  2000-06-20
+
+var m
+if ="alc" end
+
+get env comspec
+ins #uwC
+  Zuerst auf dem DbDir nachsehen:
+var D B "ger.rtf"
+fsize
+if no jump d2
+var #uwC " /c wordpad " D B "ger.rtf"
+
+call
+jump aktiv
+
+  Nicht vorhanden, dann ohne Sprachkennung pruefen
+:d2
+var D B ".rtf"
+fsize
+if no jump d3
+var #uwC " /c wordpad " D B ".rtf"
+
+call
+jump aktiv
+
+  Nicht vorhanden, dann anlegen
+:d3
+var P "demo2\\catger.rtf " D B "ger.rtf"
+fcopy
+mess Es wurde eine neue Hilfedatei angelegt. Diese wird jetzt zum Bearbeiten vorgelegt.
+var #uwC " /c start " D B "ger.rtf"
+call
+  Jetzt die Hilfedatei anzeigen
+:aktiv
+var B
+help

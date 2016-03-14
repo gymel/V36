@@ -1,0 +1,127 @@
+  FILECODE.FLX : ASCII-Datei zeilenweise lesen + schreiben, dabei Umcodierung
+  2007-05-23 : (abgeleitet von FILE.FLX)
+  Leerzeichen am Zeilenende verschwinden, am Anfang nicht!
+  Tip: Wenn man eine bestimmte Umcodierung moechte, dann eine Datei
+       abc.apt mit den betr. p-Befehlen dafuer anlegen und diese Datei
+       dann auswaehlen, wenn kommt "Waehlen Sie eine Codetabelle"
+  Nicht in alcarta:
+var m
+if "alc" end
+
+  Zuerst eine Datei auswaehlen lassen
+var "Sie wählen zuerst eine Datei aus, die umcodiert werden soll." n "Diese wird zeilenweise gelesen und in eine neue Datei geschrieben"
+mes
+fname Wählen Sie eine Datei:|*.*
+if no end
+  den gewaehlten Namen in #uFN speichern
+ins #uFN
+  Bestimmte Typen nicht zulassen
+var #uFN "zz"
+if %~.exezz% jump gehtnich
+if %~ldzz% jump gehtnich
+if %~tblzz% jump gehtnich
+if %~stlzz% jump gehtnich
+if %~reszz% jump gehtnich
+if %~logzz% jump gehtnich
+
+  gewaehlte Datei zum Lesen oeffnen (Name steht noch in iV)
+var #uFN
+open
+
+:neuname
+  Fragen, wie die neue Datei heissen soll
+ask Neuer Name für die Datei?
+if "" end
+  den eingegebenen neuen Namen in #uNF speichern
+ins #uNF
+fsize
+  existiert sie schon? Nein -> :start
+if no jump start
+noyes Datei existiert! Ueberschreiben?
+if not yes jump neuname
+  Name steht noch in iV
+del
+
+:start
+  Datei zum Schreiben (Exportieren) oeffnen (Name steht noch in iV)
+var #uNF
+open x
+    Parameter i-1.apr nehmen, man koennte auch andere nehmen,
+xport p i-1
+   denn es kommt nur auf die Tabelle an:
+View codetab
+if "" end
+if " " end
+if "Andere" jump andere
+var (e" :" F" ")
+
+export t
+if no jump andere
+jump goon
+
+:andere
+var "Wählen Sie eine Codetabelle|??*-??*." K1 "pt"
+fnam
+  Esc?
+if "" end
+mes
+  Diese Tabelle zu den Exp.Parametern laden
+export t
+if no jump tab-err
+
+:goon
+  ZeilenZaehler (iz = interner Zaehler) auf 1 setzen (falls gewuenscht)
+
+z = 1
+
+  erste Zeile lesen
+get
+
+  ^^^^^^^^^^^^^^^^^ Beginn der Schleife
+:loop
+  Umcodierung des iV-Inhalts mit der gewaehlten Tabelle (p-Befehle):
+xco xp
+  und umcodierte Zeile wegschreiben, dann neue Zeile
+wri
+wri n
+  Zaehler um 1 hochzaehlen
+z + 1
+  naechste Zeile lesen
+get
+  war noch eine Zeile da? dann Schleife
+if yes jump loop
+  Ende der Schleife
+  Exportdatei schliessen (indem eine neue namens "nul" geoeffnet wird)
+close x
+  internen Zaehler nach #uZZ kopieren:
+var z
+ins #uZZ
+  Meldung aufbereiten und in #uME speichern
+var #uFN " verarbeitet, Neue Datei " #uNF 13 10 #uZZ " Zeilen"
+ins #uME
+
+  EndeMeldung ausgeben (auch ins Schreibfeld)
+var #uNF
+  Groesse der neuen Datei
+fsize
+ins #uNZ
+var #uME ", " #uNZ " Bytes"
+mes
+show iv
+
+  Variablen loeschen
+#uNZ
+#uZZ
+#uME
+#uFN
+#uNF
+end
+
+:gehtnich
+mes Dieser Dateityp ist ungeeignet!
+end
+
+:tab-err
+var "Die gew„hlte Tabellendatei existiert nicht" n "Evtl. k”nnen Sie eine Kopie der entsprechenden Datei des A-Schemas machen, z.B. ad-aw.apt"
+ansi
+mes

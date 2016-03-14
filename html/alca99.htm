@@ -1,0 +1,4028 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+
+
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+
+
+  
+  
+  <title>allegro und alcarta : Kurzbeschreibung zum Hauptprogramm und Datenbank-Benutzung</title>
+  <style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Helvetica;
+	panose-1:2 11 6 4 2 2 2 2 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:536902279 -2147483648 8 0 511 0;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:536871559 0 0 0 415 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:Verdana;
+	mso-fareast-font-family:Verdana;
+	mso-bidi-font-family:"Times New Roman";}
+h1
+	{mso-style-next:Standard;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:18.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-outline-level:1;
+	font-size:12.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Verdana;
+	mso-font-kerning:0pt;
+	font-weight:normal;}
+h2
+	{mso-style-next:Standard;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:35.4pt;
+	margin-bottom:.0001pt;
+	text-indent:35.4pt;
+	mso-pagination:widow-orphan;
+	mso-outline-level:2;
+	layout-grid-mode:char;
+	font-size:8.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:"Courier New";
+	font-weight:bold;
+	mso-bidi-font-weight:normal;}
+h3
+	{mso-style-next:Standard;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	mso-outline-level:3;
+	font-size:14.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Verdana;
+	font-weight:bold;
+	mso-bidi-font-weight:normal;}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:center 8.0cm right 16.0cm;
+	font-size:10.0pt;
+	font-family:Verdana;
+	mso-fareast-font-family:Verdana;
+	mso-bidi-font-family:"Times New Roman";}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	tab-stops:center 8.0cm right 16.0cm;
+	font-size:10.0pt;
+	font-family:Verdana;
+	mso-fareast-font-family:Verdana;
+	mso-bidi-font-family:"Times New Roman";}
+p.MsoCaption, li.MsoCaption, div.MsoCaption
+	{mso-style-next:Standard;
+	margin-top:6.0pt;
+	margin-right:0cm;
+	margin-bottom:6.0pt;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:Verdana;
+	mso-fareast-font-family:Verdana;
+	mso-bidi-font-family:"Times New Roman";
+	font-weight:bold;}
+p.MsoBodyText, li.MsoBodyText, div.MsoBodyText
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Verdana;
+	mso-fareast-font-family:Verdana;
+	mso-bidi-font-family:Verdana;}
+p.MsoBodyTextIndent, li.MsoBodyTextIndent, div.MsoBodyTextIndent
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:18.0pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Verdana;
+	mso-fareast-font-family:Verdana;
+	mso-bidi-font-family:Verdana;}
+p.MsoBodyText2, li.MsoBodyText2, div.MsoBodyText2
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	mso-bidi-font-size:10.0pt;
+	font-family:Verdana;
+	mso-fareast-font-family:Verdana;
+	mso-bidi-font-family:"Times New Roman";}
+p.MsoBodyTextIndent2, li.MsoBodyTextIndent2, div.MsoBodyTextIndent2
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:21.3pt;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:Verdana;
+	mso-fareast-font-family:Verdana;
+	mso-bidi-font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+p
+	{mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:42.55pt 70.85pt 42.55pt 70.85pt;
+	mso-header-margin:36.0pt;
+	mso-footer-margin:36.0pt;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ @list l0
+	{mso-list-id:33384916;
+	mso-list-template-ids:1766886722;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l0:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l0:level3
+	{mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l0:level4
+	{mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l0:level5
+	{mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l0:level6
+	{mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l0:level7
+	{mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l0:level8
+	{mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l0:level9
+	{mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1
+	{mso-list-id:369381053;
+	mso-list-template-ids:-241245692;}
+@list l1:level1
+	{mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1:level3
+	{mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1:level4
+	{mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1:level5
+	{mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1:level6
+	{mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1:level7
+	{mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1:level8
+	{mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l1:level9
+	{mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2
+	{mso-list-id:395129902;
+	mso-list-template-ids:-309839848;}
+@list l2:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l2:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2:level3
+	{mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2:level4
+	{mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2:level5
+	{mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2:level6
+	{mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2:level7
+	{mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2:level8
+	{mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l2:level9
+	{mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l3
+	{mso-list-id:425152684;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1464625416 746463940 67567619 67567621 67567617 67567619 67567621 67567617 67567619 67567621;}
+@list l3:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0D7;
+	mso-level-tab-stop:54.0pt;
+	mso-level-number-position:left;
+	margin-left:54.0pt;
+	text-indent:-18.0pt;
+	font-family:Symbol;}
+@list l3:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	font-family:"Courier New";}
+@list l3:level3
+	{mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l3:level4
+	{mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l3:level5
+	{mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l3:level6
+	{mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l3:level7
+	{mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l3:level8
+	{mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l3:level9
+	{mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l4
+	{mso-list-id:624388792;
+	mso-list-template-ids:-691656016;}
+@list l4:level1
+	{mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l4:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l4:level3
+	{mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l4:level4
+	{mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l4:level5
+	{mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l4:level6
+	{mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l4:level7
+	{mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l4:level8
+	{mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l4:level9
+	{mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l5
+	{mso-list-id:642739723;
+	mso-list-template-ids:-742083686;}
+@list l5:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l5:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l5:level3
+	{mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l5:level4
+	{mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l5:level5
+	{mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l5:level6
+	{mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l5:level7
+	{mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l5:level8
+	{mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l5:level9
+	{mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l6
+	{mso-list-id:721097606;
+	mso-list-template-ids:1728974454;}
+@list l6:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l6:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l6:level3
+	{mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l6:level4
+	{mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l6:level5
+	{mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l6:level6
+	{mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l6:level7
+	{mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l6:level8
+	{mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l6:level9
+	{mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l7
+	{mso-list-id:788818540;
+	mso-list-template-ids:261269494;}
+@list l7:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l7:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l7:level3
+	{mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l7:level4
+	{mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l7:level5
+	{mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l7:level6
+	{mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l7:level7
+	{mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l7:level8
+	{mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l7:level9
+	{mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l8
+	{mso-list-id:1030647298;
+	mso-list-template-ids:153901028;}
+@list l8:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l8:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l8:level3
+	{mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l8:level4
+	{mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l8:level5
+	{mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l8:level6
+	{mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l8:level7
+	{mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l8:level8
+	{mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l8:level9
+	{mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l9
+	{mso-list-id:1321740021;
+	mso-list-template-ids:-1631057932;}
+@list l9:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l9:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l9:level3
+	{mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l9:level4
+	{mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l9:level5
+	{mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l9:level6
+	{mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l9:level7
+	{mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l9:level8
+	{mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l9:level9
+	{mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l10
+	{mso-list-id:1473868073;
+	mso-list-template-ids:695503596;}
+@list l10:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l10:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l10:level3
+	{mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l10:level4
+	{mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l10:level5
+	{mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l10:level6
+	{mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l10:level7
+	{mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l10:level8
+	{mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l10:level9
+	{mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l11
+	{mso-list-id:1918976296;
+	mso-list-template-ids:-1523291602;}
+@list l11:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l11:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l11:level3
+	{mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l11:level4
+	{mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l11:level5
+	{mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l11:level6
+	{mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l11:level7
+	{mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l11:level8
+	{mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l11:level9
+	{mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l12
+	{mso-list-id:2132674291;
+	mso-list-template-ids:-1659216200;}
+@list l12:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:36.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+@list l12:level2
+	{mso-level-tab-stop:72.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l12:level3
+	{mso-level-tab-stop:108.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l12:level4
+	{mso-level-tab-stop:144.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l12:level5
+	{mso-level-tab-stop:180.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l12:level6
+	{mso-level-tab-stop:216.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l12:level7
+	{mso-level-tab-stop:252.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l12:level8
+	{mso-level-tab-stop:288.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+@list l12:level9
+	{mso-level-tab-stop:324.0pt;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;}
+ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+  </style><!--[if !mso]>
+
+<style>
+
+v\:* {behavior:url(#default#VML);}
+
+o\:* {behavior:url(#default#VML);}
+
+w\:* {behavior:url(#default#VML);}
+
+.shape {behavior:url(#default#VML);}
+
+</style>
+
+<![endif]--><!--[if gte mso 9]><xml>
+
+ <o:DocumentProperties>
+
+  <o:Author>B. Eversberg</o:Author>
+
+  <o:LastAuthor>Bernhard Eversberg</o:LastAuthor>
+
+  <o:Revision>3</o:Revision>
+
+  <o:Company>UB Braunschweig</o:Company>
+
+ </o:DocumentProperties>
+
+</xml><![endif]--><!--[if gte mso 9]><xml>
+
+ <w:WordDocument>
+
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+
+ </w:WordDocument>
+
+</xml><![endif]--><!--[if gte mso 9]><xml>
+
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+
+ </w:LatentStyles>
+
+</xml><![endif]--><!--[if gte mso 10]>
+
+<style>
+
+ /* Style Definitions */
+
+ table.MsoNormalTable
+
+	{mso-style-name:"Normale Tabelle";
+
+	mso-tstyle-rowband-size:0;
+
+	mso-tstyle-colband-size:0;
+
+	mso-style-noshow:yes;
+
+	mso-style-parent:"";
+
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+
+	mso-para-margin:0cm;
+
+	mso-para-margin-bottom:.0001pt;
+
+	mso-pagination:widow-orphan;
+
+	font-size:10.0pt;
+
+	font-family:"Times New Roman";
+
+	mso-ansi-language:#0400;
+
+	mso-fareast-language:#0400;
+
+	mso-bidi-language:#0400;}
+
+</style>
+
+<![endif]--><!--[if gte mso 9]><xml>
+
+ <o:shapedefaults v:ext="edit" spidmax="5122"/>
+
+</xml><![endif]--><!--[if gte mso 9]><xml>
+
+ <o:shapelayout v:ext="edit">
+
+  <o:idmap v:ext="edit" data="1"/>
+
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+
+<body style="color: rgb(0, 0, 0);" alink="#ee0000" link="blue" vlink="blue">
+
+
+<div class="Section1">
+<p class="MsoNormal" style="text-align: center;" align="center"><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><o:p>&nbsp;</o:p></span></p>
+
+
+<div align="center">
+<t></t>
+<table class="MsoNormalTable" style="width: 100%;" border="0" cellpadding="0" width="100%">
+
+
+  <tbody>
+
+
+    <tr style="">
+
+
+      <td style="padding: 1.5pt;" valign="top">
+      
+      <p class="MsoNormal"><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><a href="http://www.allegro-c.de"><span style="text-decoration: none;"><img id="_x0000_i1034" src="a10.gif" alt="allegro Homepage" title="allegro Homepage" border="0" height="112" width="90"></span></a><o:p></o:p></span></p>
+
+
+      </td>
+
+
+      <td style="padding: 1.5pt;" valign="top">
+      
+      <p class="MsoNormal" style="text-align: center;" align="center"><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><o:p></o:p></span><b><i><span style="font-size: 18pt; color: rgb(204, 0, 0);"><big><span style="color: rgb(255, 0, 0);">allegro-C</span></big><br>
+
+
+      <span style="color: rgb(204, 0, 0);"></span></span></i></b><b style="color: rgb(204, 0, 0);"><i><span style="font-size: 18pt;"></span></i></b><b style="color: rgb(204, 0, 0);"><span style="font-size: 18pt;"></span></b><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"> <o:p></o:p></span></p>
+
+
+      
+      <p style="text-align: center; font-weight: bold;" align="center"><span style="font-size: 13.5pt; font-family: Verdana;">Anleitung zur
+Benutzung der Windows-Programme</span></p>
+
+
+      
+      <div style="text-align: center;"><span style="font-size: 13.5pt; font-family: Verdana;"><span style="color: rgb(51, 204, 0);">Gr&uuml;n </span>: Sofort ausprobieren &nbsp; <span style="color: rgb(204, 153, 51);">Braun</span> : FLEXe &nbsp; <span style="color: rgb(204, 51, 204);">Magenta</span> : C-Quelldateien &nbsp; <span style="color: rgb(255, 0, 0);">Rot</span> : Begriffe</span></div>
+
+      </td>
+
+
+      <td style="padding: 1.5pt;" valign="bottom">
+      
+      <p class="MsoNormal" style="text-align: right;" align="right"><span style="font-size: 12pt; font-family: Helvetica;">2014<span style=""></span>-04-08<o:p></o:p></span></p>
+
+
+      </td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+</div>
+
+
+<p class="MsoNormal" style="text-align: right;"><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><o:p>&nbsp;</o:p></span><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"> </span><span style="font-size: 12pt;"><a href="http://www.allegro-c.de/alca99/alca99g.doc">Derselbe Text als
+DOC-Datei</a></span></p>
+
+
+<br>
+
+
+<div style="text-align: right;"><span style="font-family: monospace;"><a href="#vql"><big>Vollst&auml;ndige Quellenliste</big></a><br>
+
+
+</span></div>
+
+
+<p class="MsoNormal"><b><i><span style="font-size: 12pt; color: rgb(204, 0, 0);">a99</span></i></b><span style="font-size: 12pt; color: rgb(204, 0, 0);"> </span><span style="font-size: 12pt;">ist
+das Programm, mit dem man an einer Datenbank arbeitet, also z.B. zum
+Katalogisieren. </span>(Ein Vorl&auml;ufer war das DOS-Programm PRESTO.)<span style="font-size: 12pt;">&nbsp;<br>
+
+
+</span></p>
+
+
+<p class="MsoNormal"><b><i><span style="font-size: 12pt; color: rgb(204, 0, 0);">alcarta</span></i></b><b><i><span style="font-size: 12pt;">&nbsp;</span></i></b><span style="font-size: 12pt;">ist
+das Online-Katalog-Programm des <b><i>allegro</i></b>-Systems f&uuml;r
+Windows (ab
+Win'XP). Es ist zugleich ein "Viewer" f&uuml;r <b><i>allegro</i></b>-Datenbanken
+und kann frei verbreitet werden, also z.B. indem man es auf CD mit einer Datenbank
+mitliefert.&nbsp;Es hat keine Schreibberechtigung und weniger Buttons und Men&uuml;punkte.</span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">Experten erfahren aus diesem Text auch, an welchen Stellen sie mit eigenen <a href="http://www.allegro-c.de/flex">FLEX</a>-Makros
+die Funktionsweise ver&auml;ndern und ausbauen k&ouml;nnen.&nbsp;FLEX ist
+die allegro-eigene Skript- und Makrosprache, in der u.a. alle
+Gesch&auml;ftsgangsfunktionen bis hin zur Zeitschriftenverwaltung
+programmiert sind. Auch f&uuml;r die <a href="http://www.allegro-c.de/doku/avanti/">Web-Anbindung</a> ist FLEX das
+wichtigste Arbeitsmittel.</span>
+</p>
+
+
+<b><i><span style="font-size: 12pt; color: rgb(204, 0, 0);"></span></i></b>
+<p class="MsoNormal"><br>
+
+
+</p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">Starten Sie nach der Installation die <i>allegro</i>
+DEMO, um alles genauer zu sehen und sofort auszuprobieren!&nbsp;<br>
+
+Wo die
+Programme
+und Dateien liegen? W&auml;hlen Sie im Men&uuml; "<span style="color: rgb(0, 153, 0);">Global</span>" den Punkt "<span style="color: rgb(0, 153, 0);">Datenbank-Information</span>".</span><span style="font-size: 12pt; font-family: &quot;Courier New&quot;;"><span class="GramE"></span></span><span style="font-size: 12pt;"><br>
+
+
+</span><i><span style="font-size: 12pt;">F&uuml;r
+Systemverwalter:</span></i><span style="font-size: 12pt;"> Man startet die Programme so:&nbsp; &nbsp;<small>(allegro.exe ist nur eine Kopie von a99.exe)</small></span><b><span style="font-size: 12pt; font-family: &quot;Courier New&quot;; color: rgb(0, 102, 0);"><br>
+
+
+</span></b></p>
+
+
+<div style="text-align: center;"><b style="color: rgb(0, 153, 0);"><span style="font-size: 12pt; font-family: &quot;Courier New&quot;;">allegro.exe
+<i>INI-Dateiname</i></span></b><b><span style="font-size: 12pt; font-family: &quot;Courier New&quot;;">&nbsp;</span></b><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;">&nbsp; </span><small><span style="font-family: verdana;"></span><span style="font-size: 12pt; font-family: verdana;">bzw. </span></small><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;">&nbsp; </span><b style="color: rgb(0, 153, 0);"><span style="font-size: 12pt; font-family: &quot;Courier New&quot;;">alcarta.exe
+<i>INI-Dateiname</i></span></b><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><o:p></o:p></span></div>
+
+
+<small><i style="font-family: verdana;"><span style="">Tip:</span></i><span style="font-family: verdana;">
+Man sieht es in der Desktop-Verkn&uuml;pfung f&uuml;r die
+Demo-Datenbank: dort steht
+unter "Eigenschaften / Ziel":</span></small><span style="font-size: 12pt;">
+</span>
+<div style="text-align: center;"><span style="font-size: 12pt; font-family: &quot;Courier New&quot;;">C:\allegro\allegro.exe
+C:\allegro\demo2\orda.ini</span><br>
+
+
+</div>
+
+
+<div style="text-align: center;"><span style="font-size: 12pt; font-family: &quot;Courier New&quot;;"></span></div>
+
+
+<p class="MsoNormal" style="margin-bottom: 12pt;"><span style="font-size: 12pt; font-family: &quot;Courier New&quot;;"></span><span style="">Eine <b>INI-Datei</b>
+ist eine Textdatei, in der alle Einstellungen f&uuml;r die Arbeit mit
+einer
+bestimmten Datenbank stehen. Als Vorlage und Dokumentation dient die
+Datei
+&nbsp;<span style="font-family: monospace; font-weight: bold;">a99.ini</span>. Geben Sie im Schreibfeld ein: &nbsp;<span style="color: rgb(0, 153, 0);">h a99.ini</span> <br>
+
+
+<br>
+
+
+Legen Sie sich eine <span style="font-weight: bold;">Verkn&uuml;pfung zur eigenen Datenbank</span> an, indem
+Sie dieses Muster kopieren und den Namen Ihrer eigenen INI-Datei
+einsetzen.</span><span style="font-size: 12pt;"><o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="margin-bottom: 12pt;"><i style=""><span style="font-size: 12pt;">Tip:</span></i><span style="font-size: 12pt;">
+Wenn Sie
+diese Einf&uuml;hrung hinter sich haben, k&ouml;nnen Sie zu jedem
+Einzelthema mehr
+erfahren aus den <span style="font-weight: bold;">Fortbildungsthemen</span> <i style="font-weight: bold;"><a href="http://www.allegro-c.de/fb/">10 Minuten, die sich lohnen</a></i>. Das sind 50 Lektionen; anfangen k&ouml;nnen Sie mit fast jeder davon.)</span></p>
+
+
+<p class="MsoNormal" style="margin-bottom: 12pt;">Beim ersten Durchgang durch diese Beschreibung k&ouml;nnen Sie sich auf <span style="color: rgb(255, 0, 0);">ROT</span> und <span style="color: rgb(0, 153, 0);">GR&Uuml;N</span> beschr&auml;nken:<br>
+
+
+<br>
+
+
+</p>
+
+
+<div style="text-align: center;"><b style="font-family: Verdana;"><span style="font-size: 18pt; color: rgb(204, 0, 0);">ROT</span></b><b><span style="font-size: 14pt; font-family: Verdana;"> : Wichtige <span style="font-style: italic;">Begriffe</span></span></b> &nbsp; ---&nbsp; &nbsp;<b style="color: rgb(0, 102, 0); font-family: Verdana;"><span style="font-size: 18pt;">GR&Uuml;N</span></b><b><span style="font-size: 14pt; font-family: Verdana;"> : Wichtige <span style="font-style: italic;">Funktionen </span></span></b><span style="font-size: 14pt; font-family: Verdana;"><span style="font-style: italic;">(sofort ausprobieren!)</span></span></div>
+
+
+<p class="MsoNormal" style="margin-bottom: 12pt;"><span style="font-size: 12pt;"></span><span style=""><o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="margin-bottom: 12pt;">Wer kein Interesse an der Programmierung hat, kann die Hinweise auf&nbsp;<b><span style="font-size: 14pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">FLEXe</span></b> und <big><span style="color: rgb(153, 51, 153); font-weight: bold;">Quellprogramme</span></big> ignorieren.<br>
+
+
+Hinweise auf die Quellprogramme sehen so aus:<span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);"> QUELLEN:&nbsp;</span><span style="color: rgb(153, 51, 153);"><span style="font-style: italic; font-family: Verdana;">dateinamen</span></span><br>
+
+
+<span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN</span></span> f&uuml;r den Umgang mit den Daten auf unterer Ebene: Klassenbibliothek (<span style="font-size: 12pt; font-family: monospace;"><span style="font-weight: bold; color: rgb(153, 51, 153);">ac15</span></span>) und Index-Kernfunktionen (<span style="font-size: 12pt; font-family: monospace;"><span style="font-weight: bold; color: rgb(153, 51, 153);">aindex</span></span>). Daf&uuml;r existiert eine <a href="http://www.allegro-c.de/os/os-start.htm">eigene Dokumentation</a>, in a99 wie auch in <a href="http://www.allegro-c.de/doku/acon.htm">acon</a> werden sie einfach nur mit eingebunden.<span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);"><span style="font-family: monospace;"></span></span></span>
+<b style="font-family: Verdana;"><span style="font-size: 18pt; color: rgb(204, 0, 0);"></span></b></p>
+
+
+<p class="MsoNormal" style="text-align: center;" align="center"><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><o:p>&nbsp;</o:p></span></p>
+
+
+<p class="MsoNormal" style="text-align: center;" align="center"><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;">&nbsp; </span><b><span style="font-size: 18pt; color: rgb(204, 0, 0);">Die Hauptfunktionen</span></b><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><o:p></o:p></span></p>
+
+
+<p style="margin-bottom: 12pt;"><b><span style="font-size: 14pt; font-family: Verdana;">1. Das Hauptfenster <br>
+
+
+</span></b><span style="font-size: 13.5pt; font-family: Verdana;">Hier
+ist das
+Programm <b><i>a99</i></b> zu sehen <small>(allegro.exe startet dieses Programm)</small>. Bei <b><i>alcarta</i></b> fehlen
+die
+unteren Reihen von Schaltfl&auml;chen, das Schreibfeld und die
+Schaltfl&auml;chen [Spei<u>c</u>hern]
+sowie der Men&uuml;punkt "L&ouml;schen". <small>(Die roten Namen sieht man in Wirklichkeit nicht, man sollte sie deshalb auswendig lernen. Sie sind wichtig.)<br>
+
+
+<br>
+
+
+</small></span></p>
+
+
+<table style="width: 1325px; height: 32px; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="2" cellspacing="2">
+
+
+  <tbody>
+
+
+    <tr>
+
+
+      <td><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><img style="border: 0px solid ; width: 506px; height: 409px;" alt="Altes Design" title="Altes Design" src="a9main.jpg"><br>
+
+
+      <span style="font-family: Verdana;">Das konventionelle, immer noch meistbenutzte Design (<span style="font-family: Courier New,Courier,monospace;">a99.exe</span>)<br>
+
+
+      <br>
+
+
+      </span></span><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN:</span></span><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><span style="font-family: Verdana;">&nbsp;</span></span><span style="font-size: 12pt; color: rgb(153, 51, 153);"><span style="font-weight: bold; font-family: monospace;">a99.cpp, a99.h, a99.rc</span></span> &nbsp; (letztere f&uuml;r das Layout)<br>
+
+
+      <i><span style="font-family: &quot;Times New Roman&quot;;"></span></i><span style="font-family: &quot;Times New Roman&quot;;"></span></td>
+
+
+      <td align="undefined" valign="undefined"><img style="width: 605px; height: 419px;" alt="Neues Design" title="Neues Design mit Men&uuml;-Buttonleiste" src="a99nd2.jpg"><br>
+
+
+      <span style="font-family: Verdana;">Das Design mit mehr Anzeigefl&auml;che und Men&uuml;-Buttonleiste &nbsp;(<span style="font-family: Courier New,Courier,monospace;">a99a.exe</span>)<br>
+
+
+      <br>
+
+
+      </span><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN:</span></span><span style="font-family: Verdana;">&nbsp;</span><big style="color: rgb(153, 51, 153);"><span style="font-weight: bold; font-family: monospace;">a99a.rc</span></big><span style="font-family: Verdana;">&nbsp;<small>statt</small> </span><big><span style="font-family: monospace;">a99.rc</span></big><span style="font-family: Verdana;"></span></td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<div style="margin-left: 80px;"><i><span style="font-family: &quot;Times New Roman&quot;;">Tip:</span></i><span style="font-family: &quot;Times New Roman&quot;;">
+Die Breite des Anzeigefeldes kann man mit&nbsp;
+<span style="color: rgb(204, 0, 0); font-weight: bold;">F11</span> &auml;ndern.</span></div>
+
+
+<span style="font-family: &quot;Times New Roman&quot;;"></span>
+<p style="text-align: center;" class="MsoNormal"><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"></span></p>
+
+
+<p class="MsoNormal">Die Bezeichnungen der Men&uuml;s und die
+Beschriftungen der Buttons sowie die (Fehler-)Meldungen des Programms
+stehen in der &auml;nderbarenDatei &nbsp; <span style="font-weight: bold; color: rgb(153, 51, 153); font-family: monospace;">uifeger</span> im Programmordner von a99, d.h. die Texte sind ohne Eingriff ins Programm anwenderseitig jederzeit &auml;nderbar.</p>
+
+
+<p class="MsoNormal">Zu jedem Element erscheint, wenn man den
+Mauszeiger draufsetzt, ein kleiner Hilfetext (sog. tooltip). Diese
+Texte stehen gleichfalls in der Datei &nbsp;<span style="font-weight: bold; color: rgb(153, 51, 153); font-family: monospace;">uifeger</span>.<span style="font-size: 12pt;"></span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;"><br>
+
+
+</span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">Die <a href="http://www.allegro-c.de/a99nd.htm">Alternative</a>
+mit gr&ouml;&szlig;erer Anzeigefl&auml;che (s.o. rechts) und
+Windows-&uuml;blicher Toolbar unter dem Men&uuml; gibt es seit V28.
+Dieses Programm wird als <span style="font-family: Courier New,Courier,monospace; font-weight: bold;">a99a.exe</span> geliefert.&nbsp;</span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN:</span> Nur die Ressourcendatei </span><big style="color: rgb(153, 51, 153);"><span style="font-weight: bold; font-family: monospace;">a99a.rc</span></big><span style="font-family: Verdana;"></span>
+<i><span style="font-family: &quot;Times New Roman&quot;;"></span></i><span style="font-size: 12pt;"> ist eine spezifische, entsprechend gibt es </span><big style="color: rgb(153, 51, 153);"><span style="font-weight: bold; font-family: monospace;">alcarta.rc</span></big><span style="font-family: Verdana;"></span>
+<i><span style="font-family: &quot;Times New Roman&quot;;"></span></i><span style="font-size: 12pt;">, alle anderen Quelldateien sind identisch.&nbsp;</span><span style="font-size: 12pt;"></span></p>
+
+
+<p style="margin-left: 80px;" class="MsoNormal"><span style="font-size: 12pt;">&nbsp;&nbsp;In einer Datei </span><span style="font-size: 12pt; color: rgb(153, 51, 153);"><span style="font-weight: bold; font-family: monospace;">&nbsp;program.h</span></span><span style="font-size: 12pt;"> stellt man ein, welches Programm kompiliert werden soll.&nbsp;</span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;"><br>
+
+
+In dem gro&szlig;en
+<span style="color: rgb(255, 0, 0);">Anzeigefeld</span> jeweils auf
+der rechten Seite sieht man normalerweise einen einzelnen Datensatz.</span>
+(<i>Tip:</i>
+Wie dieser Satz angezeigt wird, das regelt die Anzeige-Parameterdatei.
+Im Admin-Men&uuml; sieht man, wie diese&nbsp;Datei hei&szlig;t (Standard: d-wrtf.apr) und kann sie
+bearbeiten: <span style="font-family: monospace; color: rgb(0, 153, 0); font-weight: bold;">h adm</span><span style="color: rgb(0, 153, 0);"> </span>&nbsp;eingeben.)<big> <br>
+
+Im Anzeigefeld erscheinen aber nicht nur Daten, auch <span style="font-weight: bold;">Hilfetexte</span> und <span style="font-weight: bold;">Men&uuml;s</span>! </big><big style="color: rgb(153, 51, 153);"><span style="font-weight: bold; font-family: monospace;">QUELLEN zum Anzeigefeld: ariched.cpp, ariched.h</span></big><span style="font-family: Verdana;"></span>
+<i><span style="font-family: &quot;Times New Roman&quot;;"></span></i> </p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;"><br>
+
+
+Bei vielen Titeln
+erscheinen
+unter den Angaben zum Buch noch Links (blau und unterstrichen), die so
+aussehen
+wie die Links auf Internet-Seiten. Bei <b><i>allegro</i></b>
+hei&szlig;en solche
+Links nicht Hyperlinks sondern <b>Flips</b>. Darauf klickt man, um die
+zugeh&ouml;rigen Angaben aufzubl&auml;ttern oder den zugeh&ouml;rigen
+Vorgang auszul&ouml;sen (es
+kann auch ein Programmaufruf dahinterstecken). <i style="">Anders</i>
+als beim Internet: der Mauszeiger &auml;ndert hier beim
+Dr&uuml;berfahren nicht seine Form, es wird keine Hand draus! <small>(Leider nicht zu &auml;ndern.)</small></span> </p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">Wenn man sehen
+will, was
+eigentlich genau in in einem Datensatz steht: &uuml;ber den Button <b>An<u>z</u>eige</b>
+(oder <b style="color: rgb(0, 204, 204);">F5</b>) kommt die interne Anzeige der Datenfelder. Nochmals
+<span style="color: rgb(0, 153, 0);">F5</span> und es kommt wieder die Normalanzeige&nbsp;(die oben zu sehen ist).<br>
+
+
+</span></p>
+
+
+<p class="MsoNormal"><small><small><span style="font-size: 12pt;"><small><span style="font-style: italic;">Hinweis:</span>
+Mit der rechten Maustaste im Anzeigefeld ruft man ein Kontextmen&uuml;
+mit einigen interessanten Funktionen hervor, die man gut gebrauchen
+kann, wenn man eigene Hilfetexte schreibt. <br>
+
+
+</small></span></small></small><span style="font-size: 12pt;"></span><big style="color: rgb(153, 51, 153);"><span style="font-weight: bold; font-family: monospace;">QUELLEN: aedit.cpp, </span></big><small><small><span style="font-size: 12pt;"><small>Funktion</small></span></small></small><big style="color: rgb(153, 51, 153);"><span style="font-weight: bold; font-family: monospace;"> OnRButtonDown()</span></big><span style="font-size: 12pt;"><br>
+
+
+</span>
+</p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;"></span><small><small><span style="font-size: 12pt;"><small>Die Funktion "Eigenschaften"
+tut scheinbar nichts. Jedoch kann der versierte Anwender hier selber
+eine Funktion einbinden: einen FLEX namens </small>&nbsp;</span></small><span style="font-size: 12pt;"><b><span style="color: rgb(153, 102, 51);">onprop.flx</span></b></span></small><span style="font-size: 12pt;"><small>
+bereitstellen, der das Gew&uuml;nschte ausf&uuml;hrt. Die Funktion
+"Flip" macht aus einem markierten Wort einen Flip (mehr dazu: in a99
+&nbsp;<span style="color: rgb(0, 153, 0); font-family: monospace;">h flip</span> &nbsp;eingeben).</small></span><big style="color: rgb(153, 51, 153);"><span style="font-weight: bold; font-family: monospace;"></span></big><span style="font-size: 12pt;"><br>
+
+
+</span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;"></span></p>
+
+
+<p class="MsoNormal"><br>
+
+
+<span style="font-size: 12pt;">Das <span style="color: rgb(255, 0, 0);">Schreibfeld</span>, unter der
+Anzeige (fehlt in <i>alcarta</i>), dient zur
+Eingabe und Bearbeitung von Daten und Befehlen. Hilfe kommt&nbsp;mit &nbsp;<span style="color: rgb(0, 153, 0); font-weight: bold;">F1</span> (w&auml;hrend der Cursor
+im Schreibfeld
+ist). &nbsp;</span><big style="color: rgb(153, 51, 153);"><span style="font-weight: bold; font-family: monospace;">QUELLEN: aedit.cpp, aedit.h</span></big><span style="font-family: Verdana;"></span>
+<i><span style="font-family: &quot;Times New Roman&quot;;"></span></i></p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">Auch Men&uuml;s, Hilfetexte, ViewListen und FLEX-Skripte kann man hier direkt aufrufen:&nbsp;</span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">Geben Sie z.B. ein: &nbsp;<span style="font-family: Courier New,Courier,monospace; color: rgb(0, 153, 0);">h super</span><span style="color: rgb(0, 153, 0);">, </span><span style="font-family: Courier New,Courier,monospace; color: rgb(0, 153, 0);">h filelist</span><span style="color: rgb(0, 153, 0);">,&nbsp;</span><span style="font-family: Courier New,Courier,monospace; color: rgb(0, 153, 0);">v quick</span> oder &nbsp; <span style="font-family: Courier New,Courier,monospace; color: rgb(0, 153, 0);">X kalender</span>.<span style="font-style: italic;"></span></span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;"><span style="font-style: italic;">Sonderfunktion:</span>
+Wenn man ins Schreibfeld irgendeine URL eingibt, mit&nbsp; <span style="font-family: Courier New,Courier,monospace;">http://</span>&nbsp; beginnend, &ouml;ffnet
+sich das <a href="http://www.allegro-c.de/janas/">JanaS-Browserfenster</a> (ein ansonsten eigenst&auml;ndiges Programm) und zeigt die&nbsp;Webseite an!</span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;"></span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;"><span style="font-style: italic;">Tip: </span>Wenn man hier etwas eingibt, was keine Datenkategorie ist und
+kein
+g&uuml;ltiger Befehl, dann wird der FLEX&nbsp; <b><span style="color: rgb(153, 102, 51);">onerror.flx</span></b>&nbsp;
+ausgef&uuml;hrt. Systemverwalter k&ouml;nnen dies ausnutzen und darin
+eigene Funktionen unterbringen, die dann &uuml;ber das Schreibfeld
+bequem ausl&ouml;sbar werden.</span></p>
+
+
+<br>
+
+
+<p class="MsoNormal"></p>
+
+
+<p style="color: rgb(23, 147, 21);" class="MsoNormal"><span style="font-size: 12pt;"><span style="font-weight: bold;">Wie korrigiert man ein Datenfeld?</span></span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">
+Das geht so: Links in der Liste das Datenfeld ausw&auml;hlen -
+Enter -
+Bearbeiten (im Schreibfeld) - Enter (Hintergrund wird gelb). Hat man alles bearbeitet: <span style="color: rgb(0, 153, 0);">Button
+[Speichern] </span>dr&uuml;cken, <span style="font-style: italic;">gleichwertig</span> <span style="color: rgb(0, 153, 0);">Alt+s</span>.&nbsp;</span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">Wenn Sie eine <span style="font-weight: bold;">Formulareingabe</span>
+vorziehen: siehe
+dazu Punkt 18.</span></p>
+
+
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
+
+
+<p><b><span style="font-size: 24pt; font-family: Verdana;">2.</span></b>
+<img id="_x0000_i1035" src="a9ixbut.gif" alt="IndexButton" title="Index-Button" border="0" height="52" width="56"><b><span style="font-size: 18pt; font-family: Verdana;">(Alt+i)
+- </span></b><b style="color: rgb(23, 147, 21);"><i><span style="font-size: 24pt; font-family: Verdana;">Der
+Index</span></i></b>
+</p>
+
+
+<p class="MsoNormal">Hier wurde gerade der Index-Button oder &nbsp;<span style="font-family: monospace; font-weight: bold; color: rgb(0, 153, 0);">Alt+i</span>
+&nbsp;gedr&uuml;ckt und
+"shakespeare" aufgebl&auml;ttert:<br>
+
+
+<br>
+
+
+</p>
+
+
+<table style="width: 1335px; height: 32px; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="2" cellspacing="2">
+
+
+  <tbody>
+
+
+    <tr>
+
+
+      <td style="text-align: left;">
+      
+      <p style="text-indent: 35.4pt;"><img src="a9index.jpg" alt="Hauptfenster mit Indexfenster" style="border: 0px solid ; width: 580px; height: 449px;"> &nbsp;<i><span style="font-family: &quot;Times New Roman&quot;;"></span></i></p>
+
+
+      
+      <p style="text-indent: 35.4pt;"><i><span style="font-family: &quot;Times New Roman&quot;;">Tip:</span></i><span style="font-family: &quot;Times New Roman&quot;;">
+Die Breite des Indexfensters kann man mit der Maus &auml;ndern und mit
+      <span style="color: rgb(204, 0, 0); font-weight: bold;">F11</span>.</span></p>
+
+
+      </td>
+
+
+      <td align="undefined" valign="undefined">
+      
+      <p style="text-indent: 35.4pt;"><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN: <span style="font-family: monospace;"></span></span></span></p>
+
+
+      
+      <p style="text-indent: 35.4pt;"><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);"><span style="font-family: monospace;">winx.cpp, winx.h</span></span></span></p>
+
+
+      <i><span style="font-family: &quot;Times New Roman&quot;;"></span></i></td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<p style="text-align: center;" class="MsoNormal"> </p>
+
+
+<p class="MsoNormal" style="text-align: left;"><i><span style="font-family: &quot;Times New Roman&quot;;"></span></i><span style="font-family: &quot;Times New Roman&quot;;"></span><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><o:p></o:p></span></p>
+
+
+<p class="MsoNormal"><br>
+
+
+<span style="font-size: 12pt;">Eine Datenbank kann, zum Suchen und zum
+Bl&auml;ttern, bis zu 10 Register haben, f&uuml;r interne Zwecke gibt
+es noch ein elftes.</span>
+</p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">Man gibt also
+einfach ein, was
+man sucht: sobald man den ersten Buchstaben tippt, geht der Cursor von
+selber in das
+Eingabefeld, an dem "Beginn bei:" steht &ndash; da gibt man ein, wo
+der angezeigte Ausschnitt beginnen soll. Im Beispiel wurde gerade
+"goethe" eingegeben, aber noch nicht [Enter] gedr&uuml;ckt, sonst
+w&auml;re der
+Abschnitt unter "goethe" schon erschienen.</span> </p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">Die Buttons [1] bis
+[10]
+schalten direkt zwischen den verschiedenen <b>Registern</b> um, wobei
+immer zum
+gleichen Alphabetabschnitt gegangen wird; wenn man also z.B. im obigen
+Beispiel
+[4] dr&uuml;ckt oder <span style="color: rgb(0, 153, 0);">Alt+4</span>, wird zum Titelregister geschaltet, und zwar zu den
+Titeln, die mit
+"shakespeare" beginnen (es gilt dabei die Zeile, auf der der Balken
+steht).</span> <br>
+
+
+<br>
+
+
+Die DemoBank hat folgende Register: &nbsp;<span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN:&nbsp;<span style="font-family: monospace;">Indexparameter (Standard: cat.api)</span></span></span></p>
+
+
+<p class="MsoNormal" style="margin-left: 36pt; text-indent: -18pt;"><b><span style="font-size: 12pt;">1.&nbsp;<i>Namensregister </i></span></b><span style="font-size: 12pt;">(Namen von Personen)</span> </p>
+
+
+<p class="MsoNormal" style="margin-left: 36pt; text-indent: -18pt;"><b><span style="font-size: 12pt;">2.&nbsp;<i>K&ouml;rperschaftsnamen&nbsp;</i></span></b><span style="font-size: 12pt;">(Institutionen, Firmen, St&auml;dte,
+L&auml;nder, Staaten)</span>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 36pt; text-indent: -18pt;"><b><span style="font-size: 12pt;">3.&nbsp;<i>Wortregister&nbsp; </i></span></b><span style="font-size: 12pt;">(Titelw&ouml;rter und Schlagw&ouml;rter)</span>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 36pt; text-indent: -18pt;"><b><span style="font-size: 12pt;">4.&nbsp;<i>Titelregister</i> </span></b><span style="font-size: 12pt;">(Anf&auml;nge der Buchtitel)</span> </p>
+
+
+<p class="MsoNormal" style="margin-left: 36pt; text-indent: -18pt;"><b><span style="font-size: 12pt;">5.&nbsp;<i>Reihentitel </i></span></b><span style="font-size: 12pt;">(Titel von Zeitschriften und Serien)</span> </p>
+
+
+<p class="MsoNormal" style="margin-left: 36pt; text-indent: -18pt;"><b><span style="font-size: 12pt;">6.&nbsp;<i>Orte, Verlage, Erscheinungsjahre</i></span></b>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 36pt; text-indent: -18pt;"><b><span style="font-size: 12pt;">7.&nbsp;<i>Klassifikation&nbsp; </i></span></b><span style="font-size: 12pt;">(Dezimal-, Basis-, oder andere Klassifikation)</span>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 36pt; text-indent: -18pt;"><b><span style="font-size: 12pt;">8.&nbsp;<i>Signaturenregister </i></span></b><span style="font-size: 12pt;">(Regalstandorte der B&uuml;cher)</span> </p>
+
+
+<p class="MsoNormal" style="margin: 0cm 0cm 12pt 36pt; text-indent: -18pt;"><b><span style="font-size: 12pt;">9.&nbsp;<i>Nummernregister,
+vor allem ISBN</i> </span></b><span style="font-size: 12pt;">(Internationale
+Standard-Buch-Nummer)</span> </p>
+
+
+<p class="MsoNormal" style="margin-bottom: 12pt;">(<i>Tip:</i> Welche
+Register es
+gibt, welche Felder dort&nbsp;erscheinen und wie das alles aussieht, das
+regelt die
+Index-Parameterdatei. Bei der DemoBank hei&szlig;t sie <span style="font-family: &quot;Courier New&quot;;">cat.api</span>.
+Siehe Admin-Men&uuml;! Meistens gibt es zus&auml;tzlich mehrere
+Register mit symbolischen Namen, z.B. PER und TIT. Diese sind in der
+Auswahlliste dann oben zu finden.)</p>
+
+
+<p class="MsoBodyText"><b>Ergebnismenge durchbl&auml;ttern: </b>Man
+w&auml;hlt eine Zeile
+im Register aus und dr&uuml;ckt die Eingabetaste. Der zugeh&ouml;rige
+Datensatz erscheint
+in der Anzeige. Wenn mehr als eine Eintragung zu der Zeile geh&ouml;rt
+(siehe oben:
+73 Eintr&auml;ge unter "shakespeare, william"), sieht man die Kurzliste
+der Ergebnisse und kann darin bl&auml;ttern (mehr zu
+Ergebnis-Kurzlisten unten unter
+5.) <br>
+
+
+&nbsp; </p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">Mit den Tasten
+[Esc] oder
+[Alt]+i schlie&szlig;t man das Indexfenster.</span> </p>
+
+
+<p class="MsoNormal"><i>Tip: </i>Mit &nbsp;<span style="font-family: monospace; font-weight: bold; color: rgb(0, 153, 0);">[Alt]+j</span> &nbsp;kann man ein
+zus&auml;tzliches
+Indexfenster &ouml;ffnen (auch ==&gt; Men&uuml; "Finden / Index 2"). <br>
+
+
+&nbsp; </p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">Der Button [<span style="">?</span>] bringt spezifische Hilfe zu dem
+betreffenden Register. Mit Taste <span style="color: rgb(0, 153, 0); font-weight: bold;">F1</span>
+erh&auml;lt man dagegen
+allgemeine Hilfe zu den Registerfunktionen, z.B. zum Trunkieren.&nbsp;</span>
+</p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;"></span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">Das <i style="color: rgb(0, 102, 0); font-weight: bold;">Trunkieren</i>
+ist leicht: Man gibt entweder <span class="GramE">ein ?</span>
+hinter dem eingegebenen Wort, etwa "goethe?", oder man dr&uuml;ckt z.B.
+im
+Namensregister ein Komma, im Serienregister ein Semikolon, um an der
+betreffenden Stelle (Komma bzw. Semikolon) die Zeilen abzuschneiden.&nbsp;</span>
+<br>
+
+
+&nbsp; </p>
+
+
+<p class="MsoNormal" style="margin-bottom: 12pt;"><span style="font-size: 12pt;">Mit dem Button
+<span style="color: rgb(0, 102, 0);">[List]</span> wird der angezeigte Registerabschnitt in das Anzeigefeld
+kopiert,
+beginnend mit der Zeile des Balkens. Wozu? Nun, im Anzeigefeld kann man
+markieren und kopieren (z.B. zur &Uuml;bernahme in WORD mit Strg+a,
+Strg+c, Strg+v). Manchmal will man einen interessanten Abschnitt einfach mal als Text haben.</span>
+</p>
+
+
+<div align="right">
+<table class="MsoNormalTable" style="background: rgb(255, 255, 196) none repeat scroll 0% 50%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; width: 414pt;" border="1" cellpadding="0" width="552">
+
+
+  <tbody>
+
+
+    <tr style="">
+
+
+      <td style="padding: 1.5pt;" valign="top">
+      
+      <p class="MsoNormal" style="text-align: right;" align="right"><span style="font-weight: bold;">F&uuml;r Experten:</span></p>
+
+
+      
+      <p class="MsoNormal" style="text-align: right;" align="right">Nachfolgend
+ist jeweils angegeben, ob man den betr. Button oder die Funktion durch
+ein FLEX-Makro ver&auml;ndern kann. <br>
+
+
+Es ist dann in beiger Schrift der Name des FLEXes angegeben, z.B. <b><span style="font-size: 14pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">onfind.flx</span></b></p>
+
+
+      
+      <p class="MsoNormal" style="text-align: right;" align="right"><span style="font-size: 12pt;">Mehr zum Thema FLEX:&nbsp; </span><span style="font-size: 11pt; font-family: &quot;Courier New&quot;;">h flex </span><span style="font-size: 12pt;">eingeben</span><span style="font-size: 10pt;">
+      <br>
+
+
+(dann "FLEXe f&uuml;r Systemfunktionen") <o:p></o:p></span></p>
+
+
+      </td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+</div>
+
+
+<p class="MsoNormal"><b><span style="font-size: 14pt;">3. <img id="_x0000_i1036" src="a9find.gif" alt="Find-Button" title="Find-Button f&uuml;r kombinierte Suche" border="0" height="51" width="60">(<span style="color: rgb(0, 153, 0);">Alt+f</span>) Suchen mit logischen
+Kombinationen</span></b><i><span style="font-size: 12pt;"> </span></i><b><i><span style="font-size: 14pt;">&nbsp; &nbsp;</span></i></b><b><span style="font-size: 14pt;"> &nbsp; </span></b><b><span style="font-size: 14pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);"><small>[onfind.flx</small>&nbsp;</span></b><span style="font-size: 12pt;">&nbsp;<small>wird nicht mitgeliefert</small>]</span>
+</p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">Mit diesem Button
+&ouml;ffnet man
+ein Formular, in das man Suchbegriffe eingeben kann, die logisch
+verkn&uuml;pft
+werden sollen.</span> </p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">Mit [<u>v</u>orh.
+Suche] holt
+man die Angaben zur&uuml;ck, die bei der vorherigen Suche eingetragen
+wurden.&nbsp;</span>
+</p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">[<u>L</u>&ouml;schen]
+<span class="GramE">macht</span> alle Eingabefelder wieder frei
+f&uuml;r eine neue Suche.
+Mit dem Eingabfeld unten links kann man eine Suche innerhalb der
+momentanen
+Ergebnismenge veranlassen.</span>&nbsp;</p>
+
+
+<p class="MsoNormal"><i>Tip:</i> Die Namen der Register
+("Personennamen", "Titelw&ouml;rter",...) stehen in der
+Index-Parameterdatei. Im Demo- und Standardmodell ist das die
+Datei&nbsp;
+cat.api. Die Zeilen beginnen mit einem gro&szlig;en I. Die
+"Einschr&auml;nkungen" (Restriktionen) sind definiert in Zeilen, die
+mit R
+beginnen.<br>
+
+
+<i style="color: rgb(255, 0, 0);">Tip:</i> Mit&nbsp; <span style="color: red;"><span style="font-weight: bold; color: rgb(0, 153, 0);">F1</span>&nbsp;</span> erh&auml;lt man
+auch hier
+ausf&uuml;hrliche Hilfe.</p>
+
+
+<p class="MsoNormal"><o:p>&nbsp;</o:p><br>
+
+
+</p>
+
+
+<table style="width: 1335px; height: 32px; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="2" cellspacing="2">
+
+
+  <tbody>
+
+
+    <tr>
+
+
+      <td style="text-align: left;">
+      
+      <p class="MsoNormal"><span style="font-size: 14pt; font-family: &quot;Times New Roman&quot;;"><img src="a9find.jpg" border="0" height="299" width="642"></span></p>
+
+
+      
+      <p class="MsoNormal"><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);"><span style="font-family: monospace;"></span></span></span><span style="font-size: 14pt; font-family: &quot;Times New Roman&quot;;"></span></p>
+
+
+      </td>
+
+
+      <td align="undefined" valign="undefined"><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN: <br>
+
+
+      <span style="font-family: monospace;">wfind.cpp, wfind.h</span></span></span></td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<p style="text-align: center;" class="MsoNormal"> </p>
+
+
+<p class="MsoNormal" style="text-align: left;"><span style="font-size: 14pt; font-family: &quot;Times New Roman&quot;;"><small><span style="font-family: Verdana;">Gesucht
+wird stets in den alphabetischen Registern (s.o. 2. Index).
+Zus&auml;tzlich gibt es auch eine, allerdings langsamere,
+<span style="font-weight: bold;">Volltextsuche</span>, s. im&nbsp;Men&uuml; unter "<span style="color: rgb(0, 153, 0);">Finden</span>".</span></small></span></p>
+
+
+<p class="MsoNormal" style="text-align: left;"><span style="font-size: 14pt; font-family: &quot;Times New Roman&quot;;"><small><span style="font-family: Verdana;">Das
+Suchformular ist eigentlich aber nur eine bequeme Hilfe zum Erstellen
+von Suchbefehlen. Mit der direkten Eingabe von Befehlen in der
+Suchbefehlszeile hat man dazu noch mehr M&ouml;glichkeiten:</span></small><br>
+
+
+</span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 14pt;"><br>
+
+
+</span><b><span style="font-size: 13.5pt;"><br>
+
+
+</span></b><b><span style="font-size: 18pt;">4. Suchbefehlszeile : </span></b><span style="font-size: 13.5pt;">Expertensuche</span> </p>
+
+
+<h1><span style="font-size: 13.5pt;">Dieses Eingabefeld, am unteren
+Rand des Hauptfensters,
+erm&ouml;glicht die direkte Eingabe von Suchbefehlen, wenn man die
+Registernamen
+kennt.</span><span style=""> </span><span style="font-size: 10pt;"><br>
+
+
+<span style="font-style: italic; color: rgb(0, 153, 0); font-weight: bold;">Hei&szlig;er Tip:</span> Wenn es ein
+ALL-Register gibt, wie bei der Standard-Datenbank, kann man in dieses
+Feld auch einfach <span style="font-weight: bold;">beliebige W&ouml;rter eingeben</span>, einschl. Vornamen und
+Nachnamen, und das Programm macht dann damit eine kombinierte
+UND-Suche. Mehr noch: wenn das nichts ergibt, wird automatisch
+trunkiertes Suchen versucht.<br>
+
+
+(Auch
+hier: Hilfe mit F1) </span></h1>
+
+
+<h1><i><span style="font-size: 13.5pt;">Beispiel:</span></i>&nbsp;
+<br>
+
+
+</h1>
+
+
+<div>
+<p class="MsoNormal"><b><span style="font-size: 12pt;">&nbsp; &nbsp; &nbsp;Suchbefehl: <span style="font-family: Courier New,Courier,monospace;">per shakesp? and&nbsp;(tit drama? or tit tragedy or tit Trag&ouml;die)</span></span></b></p>
+
+
+</div>
+
+
+<div>
+<p class="MsoNormal"><span style="font-size: 12pt;"><br>
+
+
+</span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;"></span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">
+Die (symbolischen) Namen der Register erf&auml;hrt man &uuml;ber das Men&uuml; "<b>Global</b>
+/
+Datenbank-Information". F&uuml;r das Standardsystem hat man diese Liste:</span></p>
+
+
+</div>
+
+
+<p class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;;">ALL = Alle W&ouml;rter</span></b> </p>
+
+
+<b><span style="font-family: &quot;Courier New&quot;;"></span></b>
+<p class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;;">PER =
+Personennamen</span></b> </p>
+
+
+<p class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;;">TIT =
+Titelw&ouml;rter, Schlagw&ouml;rter</span></b> </p>
+
+
+<p class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;;">TAF =
+Titelanf&auml;nge</span></b> </p>
+
+
+<p class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;;">KET =
+K&ouml;rperschafts-Namen</span></b> </p>
+
+
+<p class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;;">KON =
+Kongre&szlig;-Ort,Jahr</span></b> </p>
+
+
+<p class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;;">SER =
+Serientitel
+; Nummer</span></b> </p>
+
+
+<p class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;;">VOJ =
+Verlag,
+Ort, Jahr</span></b> </p>
+
+
+<p class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;;">CLA =
+Klassifikation</span></b> </p>
+
+
+<p class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;;">SIG =
+Signatur</span></b>
+</p>
+
+
+<p class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;;">DIS =
+Dissertationen unter Ort,Jahr</span></b> </p>
+
+
+<p class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;;">FSC =
+Festschrift-Empf&auml;nger</span></b> </p>
+
+
+<p class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;;">WRK =
+Gesammelte
+Werke</span></b> </p>
+
+
+<p class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;;">PPN =
+IdNummern</span></b>
+</p>
+
+
+<p class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;;">ISB =
+ISBN</span></b> </p>
+
+
+<p class="MsoNormal" style="margin-bottom: 12pt;"><b><span style="font-family: &quot;Courier New&quot;;">ZDB = ZDB-Nummern</span></b></p>
+
+
+<div class="MsoNormal" style="text-align: center;" align="center"><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"></span><br>
+
+
+<div style="text-align: left;"><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN: <span style="font-family: monospace;">wfind.cpp, wfind.h &nbsp;(und &nbsp;onfnda99.flx)</span></span></span></div>
+
+
+</div>
+
+
+<p class="MsoNormal">
+<br>
+
+
+<b><span style="font-size: 18pt;">5. <span style="color: rgb(23, 147, 21);">Ergebnismengen</span> (<span style="color: rgb(0, 153, 0);">Alt+e</span>) </span></b><span style="font-size: 13.5pt;">(Auch Men&uuml; "Ansicht : Alle Erg.Mengen")<br>
+
+
+</span></p>
+
+
+<p class="MsoNormal"><span style="font-size: 14pt;"> </span></p>
+
+
+<h1><span style="font-size: 13.5pt;">Im Auswahlfeld erscheint dann
+die Liste
+der momentan noch vorhandenen Ergebnismengen; ganz oben immer die Lesezeichendatei (engl.
+Bookmarks), als
+zweites die Liste der automatisch vom Programm registrierten "Vorher
+angezeigten Daten" (engl. History List). Anschlie&szlig;end kommen die
+Ergebnislisten, die vom Nutzer w&auml;hrend der Sitzung erstellt wurden, und zwar bis zu 50 St&uuml;ck.</span></h1>
+
+
+<div style="margin-left: 17.25pt;">
+<p class="MsoNormal"><span style="font-size: 12pt;">Jede Liste kann mit
+der
+[Entf]-Taste beseitigt werden, noch wirkungsvoller ist aber zum
+Aufr&auml;umen der "Besen<span class="GramE">" </span>
+<img src="a9sweep.gif" border="0" height="51" width="82">, der alle
+Ergebnismengen auf einmal beseitigen kann.</span></p>
+
+
+</div>
+
+
+<div style="margin-left: 17.25pt;">
+<p class="MsoNormal" style="margin-bottom: 12pt;"><span style="font-size: 12pt;">Wenn
+man eine der Listen ausw&auml;hlt und [Enter] dr&uuml;ckt, wird sie als
+Kurz&uuml;bersicht
+angezeigt.&nbsp;</span></p>
+
+
+<p class="MsoNormal" style="margin-bottom: 12pt;"><span style="font-size: 12pt;">So sieht eine Ergebnismenge aus:<br>
+
+
+</span>(<i>Tip:</i> Wie die Kurzzeilen aussehen, das regelt
+ebenfalls
+die Index-Parameterdatei, im Abschnitt <span style="font-family: &quot;Courier New&quot;;">#-0</span>.
+Aber man kann eigene Kurzlisten gestalten mit dem View-Konzept: h view
+eingeben!)<br>
+
+
+<br>
+
+
+</p>
+
+
+<table style="width: 1335px; height: 32px; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="2" cellspacing="2">
+
+
+  <tbody>
+
+
+    <tr>
+
+
+      <td>
+      
+      <div style="margin-left: 17.25pt;">
+      
+      <div style="text-align: left;">
+      <br>
+
+
+      </div>
+
+
+      
+      <p style="text-align: left;" class="MsoNormal"><span style="font-size: 12pt;"><img src="a9brief.jpg" border="0" height="308" width="619"></span></p>
+
+
+      
+      <p style="text-align: left;" class="MsoNormal"><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);"><span style="font-family: monospace;"></span></span></span><span style="font-size: 12pt;"></span></p>
+
+
+      </div>
+
+
+      </td>
+
+
+      <td align="undefined" valign="undefined"><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN: <br>
+
+
+      <span style="font-family: monospace;">wkv.cpp, wkv.h&nbsp;</span></span></span></td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+</div>
+
+
+<p class="MsoNormal" style="margin-left: 17.25pt;"><o:p></o:p></p>
+
+
+<p class="MsoNormal" style="text-align: center;" align="center"><i><span style="font-family: &quot;Times New Roman&quot;;">Tip:</span></i><span style="font-family: &quot;Times New Roman&quot;;">
+Die Breite dieses Fensters kann man mit der Maus &auml;ndern und mit <span style="color: rgb(204, 0, 0);">F11</span>.<br>
+
+
+Ausf&uuml;hrliche Hilfe kommt auch hier mit <span style="color: rgb(204, 0, 0);">F1</span></span><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="margin-left: 17.25pt;"><span style="font-size: 12pt;">Dieses
+Fenster bietet folgende M&ouml;glichkeiten:</span> </p>
+
+
+<ul type="disc">
+
+
+  <li class="MsoNormal" style=""><b style="color: rgb(23, 147, 21);"><span style="font-size: 12pt;">Sortieren</span></b><span style="font-size: 12pt;"><o:p></o:p></span></li>
+
+
+</ul>
+
+
+<p class="MsoNormal" style="margin-left: 53.4pt; text-indent: -18pt;"><span style="font-size: 12pt;">&middot;</span><span style="font-size: 12pt;">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span><span style="font-size: 12pt;"></span>Mit den Buttons [<span style="font-weight: bold; color: rgb(0, 153, 0);">&lt;&lt;</span>] und
+[<span style="font-weight: bold; color: rgb(0, 153, 0);">&gt;&gt;</span>]
+verschiebt man den Sortierpunkt (dreieckige Marke) an die
+gew&uuml;nschte Stelle
+(damit das schnell geht: den Button nur einmal anklicken, dann Taste
+[Enter]
+dr&uuml;cken und festhalten). Setzen Sie die Marke z.B. auf das V von
+"Verf.", um&nbsp; nach den Verfassernamen zu sortieren.&nbsp;</span><span style="font-size: 12pt;"> <o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="margin-left: 53.4pt; text-indent: -18pt;"><span style="font-size: 12pt;">&middot;&nbsp;[<span style="color: rgb(0, 153, 0);">Sort</span>] bet&auml;tigen: Liste
+wird an der gew&auml;hlten
+Stelle sortiert.</span><span style="font-size: 12pt;">
+<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="margin-left: 53.4pt; text-indent: -18pt;"><span style="font-size: 12pt;">&middot;&nbsp;[<span style="color: rgb(0, 153, 0);">Auf/Ab</span>] um die Sortierrichtung
+umzukehren.</span><span style="font-size: 12pt;"> </span></p>
+
+
+<ul type="disc">
+
+
+  <li class="MsoNormal" style=""><span style="font-size: 12pt;">Liste <b>manuell
+bearbeiten</b>: mit Taste [Entf] einzelne Zeilen markieren (es
+erscheint die Markierung DEL), dann mit Button [ENTF] die markierten Zeilen
+wirklich beseitigen (die Datens&auml;tze selbst bleiben erhalten, sie
+werden nur aus der Ergebnisliste herausgenommen!)<o:p></o:p></span></li>
+
+
+</ul>
+
+
+<ul type="disc">
+
+
+  <li class="MsoNormal" style=""><span style="font-size: 12pt;">[<span style="color: rgb(0, 153, 0);">List</span>] <b style="color: rgb(0, 153, 0);">kopiert</b>
+die Kurzliste in das Anzeigefenster, und zwar ab der Zeile, auf der der
+Balken steht. Mit [Strg]+a [Strg+c] kann man diese Liste dann von da
+aus in die Zwischenablage kopieren, mit [Strg]+v ("Einf&uuml;gen") wird
+sie in ein Textprogramm &uuml;bernommen. Will man die Liste in
+ausf&uuml;hrlicher Form: Zuerst [Esc], dann<o:p></o:p></span></li>
+
+
+</ul>
+
+
+<ul type="disc">
+
+
+  <li class="MsoNormal" style=""><b><span style="font-size: 12pt;">Ansicht</span></b><span style="font-size: 12pt;"> <b>/</b> <b>Aktuelle Erg. menge in
+Druckform</b>.</span><span style=""> </span><span style="font-size: 12pt;">(Als Druckparameter dient p-w.apr. Andere
+kann man einstellen in der INI-Datei mit dem Befehl PrintParameter=...)
+Diese Men&uuml;funktion kopiert die Liste in einem Druckformat in das
+Anzeigefenster, von wo aus man sie mit dem</span><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;">&nbsp; <o:p></o:p></span></li>
+
+
+</ul>
+
+
+<ul type="disc">
+
+
+  <li class="MsoNormal" style=""><span style="font-size: 12pt;">Button <img id="_x0000_i1038" src="a9print.gif" alt="Anzeigefeld ausdrucken" title="Button zum Drucken des Anzeigefeldes" border="0" height="52" width="83">
+oder <span style="font-weight: bold; color: rgb(0, 153, 0);">[Alt]+(Punkt)</span> abdrucken kann. Das Drucken
+funktioniert auch, wenn die Kurzliste oder irgendein Text in der
+Anzeige steht. Es kommt dann ein Men&uuml;, auf dem der erste Punkt
+lautet: Das Anzeigefeld ausdrucken, so wie Sie es gerade sehen.</span><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN:&nbsp;<span style="font-family: monospace;">onprint.flx</span></span></span></li>
+
+
+</ul>
+
+
+<ul type="disc">
+
+
+  <li class="MsoNormal" style=""><span style="font-size: 12pt;">In
+einer langen Ergebnisliste bewegt man sich r&uuml;ckw&auml;rts und
+vorw&auml;rts mit [Zur&uuml;ck], [Weiter], [Anfang] und [Ende], auch
+die Bild-Tasten der Tastatur kann man dazu nehmen.&nbsp;</span><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;; color: rgb(0, 153, 0);"> <o:p></o:p></span></li>
+
+
+</ul>
+
+
+<ul type="disc">
+
+
+  <li class="MsoNormal" style=""><span style="font-size: 12pt;"><span style="color: rgb(0, 153, 0);">Schnellsprung:</span> Tippt
+man einen oder mehrere Buchstaben, springt der Balken von selbst auf
+die erste Zeile, die an der Sortierposition mit diesem (diesen)
+Buchstaben anf&auml;ngt. Die Buchstaben erscheinen im Feld&nbsp; <b style="color: rgb(0, 102, 0);">Nr<u>.</u>/Find</b>:</span><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><o:p></o:p></span></li>
+
+
+</ul>
+
+
+<ul type="disc">
+
+
+  <li class="MsoNormal" style=""><span style="font-size: 12pt;">Im
+Eingabefeld <b style="color: rgb(0, 153, 0);">#Nr<u>.</u>/Find</b> gibt man eine Zahl ein, wenn man in
+einer langen Liste an eine bestimmte Position springen will, oder aber
+eine Zeichenfolge, die in der gesuchten Zeile vorkommt. (Mit Alt+ dann
+zur n&auml;chsten solchen Zeile springen.)</span><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><o:p></o:p></span></li>
+
+
+</ul>
+
+
+<ul type="disc">
+
+
+  <li class="MsoNormal" style=""><span style="font-size: 12pt;">Wenn
+man das H&auml;kchen bei "Direkt" wegklickt, wird nicht mehr zu jeder
+Zeile sofort der Datensatz gezeigt. Das Rauf- und Runterfahren geht
+dann schneller. Erst bei [Enter] erscheint dann der Titelsatz.<o:p></o:p></span></li>
+
+
+</ul>
+
+
+<ul type="disc">
+
+
+  <li class="MsoNormal" style=""><span style="font-size: 12pt;">Der
+Button [<b><u>?</u></b>] ruft einen Hilfetext hervor. </span><span style="">(Datei: he_brger)</span><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><o:p></o:p></span></li>
+
+
+</ul>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;"><br>
+
+
+Was man oben sieht, ist die Ergebnismenge zu der Registerzeile
+"shakespeare, william *", das sind die Titel mit <span style="font-style: italic;">Shakespeare als Thema</span>
+(sieht man an dem Sternchen).</span> </p>
+
+
+<p class="MsoNormal"><span style="font-size: 14pt;"><br>
+
+
+<b>6. History List&nbsp;</b></span> </p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">W&auml;hrend einer
+Sitzung merkt
+sich das Programm, so &auml;hnlich wie ein Browser, alle
+Datens&auml;tze, die man
+aufgebl&auml;ttert hat. Auf Englisch wird so etwas "History List"
+genannt,
+hier hei&szlig;t es&nbsp; <b>Vorher angezeigte Daten</b>.&nbsp;</span>
+</p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">Mit den
+Schaltfl&auml;chen</span> <img id="_x0000_i1039" src="a9hleft.gif" alt="History List Back" border="0" height="43" width="84"><span style="font-size: 12pt;"> und&nbsp;</span><img id="_x0000_i1040" src="a9hright.gif" alt="History List Forward" border="0" height="43" width="78"><span style="font-size: 12pt;"> (unten links) bewegt
+man sich r&uuml;ckw&auml;rts und vorw&auml;rts in der Liste der vorher
+angezeigten Daten. Mit <b>Alt+CursorLinks</b>
+bzw. <b>Alt+CursorRechts</b> kann man diese Buttons auch per Tastatur
+ausl&ouml;sen.
+<br>
+
+
+(Mit dem Besen <img src="a9sweep.gif" border="0" height="51" width="82">
+kann man
+die History List auch beseitigen. </span><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN:&nbsp; <span style="font-family: monospace;">acleanup.cpp, acleanup.h</span></span></span><span style="font-size: 12pt;">)</span> </p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">Dasselbe gilt
+f&uuml;r <b>Hilfetexte</b>:
+Wenn statt Datensatz ein Hilfetext in der Anzeige steht, kommt man mit
+denselben Pfeiltasten zur&uuml;ck bzw. vorw&auml;rts zum vorigen bzw.
+n&auml;chsten Hilfetext.</span>
+</p>
+
+
+<p class="MsoNormal"><span style="font-size: 14pt;"><br>
+
+
+<b>7. [<span style="color: rgb(0, 153, 0);">Neues Lesez.</span>]&nbsp;</b></span><span style="font-size: 12pt;">(engl.
+"Add Bookmark") Mit dieser Schaltfl&auml;che wird der gerade angezeigte
+Datensatz zur Liste der Lesezeichen hinzugef&uuml;gt. Wenn es ein
+Hilfetext ist,
+kommt er in die Liste der Hilfetexte, die man sich merken will &ndash; es
+gibt
+dann die M&ouml;glichkeit, diesem Hilfetext eine eigene Bezeichnung zu
+geben. <br>
+
+
+<b></b>Die Lesezeichen bilden eine besondere
+Ergebnismenge,
+die man jederzeit auch &uuml;ber die Schaltfl&auml;che <b>[<u>L</u>esez.]</b>
+aufbl&auml;ttern
+kann: steht in dem Moment ein Datensatz in der Anzeige, kommt die Liste
+der
+gemerkten Datens&auml;tze, ist ein Hilfetext in der Anzeige, kommt die
+Liste der
+gemerkten Hilfetexte.</span> </p>
+
+
+<p class="MsoBodyTextIndent" style="margin-left: 0cm;"><b><span style="font-size: 14pt;">8. <span style="color: rgb(0, 102, 0);">R&uuml;ckw&auml;rts / Vorw&auml;rts in der
+Ergebnismenge</span> <img src="a9rleft.gif" border="0" height="39" width="54">
+/ </span></b><span style="font-size: 14pt;">
+<img src="a9rright.gif" border="0" height="39" width="54"></span></p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt;"><b><span style="font-size: 12pt;">(rechts
+unten; gleichwertig: <span style="color: rgb(0, 153, 0);">Alt+u</span> / <span style="color: rgb(0, 153, 0);">Alt+l</span>)</span></b> </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt;"><span style="font-size: 12pt;">Damit
+kann man, ohne die Ergebnis-Kurzliste erst wieder aufzubl&auml;ttern, den
+vorigen /
+n&auml;chsten Datensatz aus der momentanen Ergebnismenge abrufen.&nbsp;</span>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt;"><span style="font-size: 12pt;">Der
+Name der momentanen Ergebnis&shy;menge steht immer auf der langen
+Schaltfl&auml;che
+unten in der rechten H&auml;lfte; mit dieser Schaltfl&auml;che oder
+Alt+&uuml; erh&auml;lt man
+immer sofort die Kurzliste wieder angezeigt.<br>
+
+
+(Die Pfeile <span style="font-style: italic;">links</span> unten beziehen sich auf die <span style="font-style: italic;">vorher angeschauten
+Datens&auml;tze</span>, unabh&auml;ngig
+von den Ergebnismengen.)</span></p>
+
+
+<p class="MsoNormal"><br>
+
+
+<b><span style="font-size: 14pt;"></span></b></p>
+
+
+<div class="MsoNormal" style="text-align: center;" align="center"><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;">
+<hr align="center" size="1" width="100%"></span></div>
+
+
+<p class="MsoNormal" style="text-align: center;" align="center"><b><span style="font-size: 18pt; color: rgb(204, 0, 0);"><br>
+
+
+Die anderen Buttons</span></b><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><o:p></o:p></span></p>
+
+
+<small><i style="font-family: verdana;">Tip:</i><span style="font-family: verdana;"> Die Beschriftungen der Buttons (und
+auch die
+Men&uuml;zeilen, Fehlermeldungen etc.) kann man &auml;ndern! Sie stehen
+in der&nbsp;</span><span style="font-family: Verdana;">Datei</span></small> &nbsp;<span style="font-weight: bold; color: rgb(153, 51, 153); font-family: monospace;">uifsger</span>.<br>
+
+
+<span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN: &nbsp;<span style="font-family: monospace;">utility.cpp, Funktion uifread()</span></span></span><small><span style="font-family: verdana;">,
+&nbsp;<br>
+
+
+<span style="font-style: italic;">Tip:</span> In den CPP-Programmtexten kann man leicht die Stelle finden, wo
+eine bestimmte Meldung erzeugt wird; man nimmt deren Nummer, z.B. 485, und
+sucht nach &nbsp;</span><big><span style="font-family: monospace;">uif[485]</span></big><span style="font-family: verdana;">.</span></small><br>
+
+
+<span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);"><br>
+
+
+</span></span>
+<p class="MsoNormal"><b><span style="font-size: 14pt;">9. <span style="color: rgb(23, 147, 21);">Drucken</span></span></b><span style="font-size: 14pt;"> <img id="_x0000_i1041" src="a9print.gif" alt="Drucker" border="0" height="52" width="83"><b>&nbsp; &nbsp;
+&nbsp;
+</b></span><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLE:&nbsp;<span style="font-family: monospace;"></span></span></span><b><span style="font-size: 14pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">onprint.flx</span></b>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt;"><span style="font-size: 12pt;">Man
+erh&auml;lt ein Auswahlmen&uuml;. Was immer gerade im Anzeigefenster
+steht, kann mit
+dieser Schaltfl&auml;che sofort abgedruckt werden:</span> </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: 0cm;"><span style="font-family: Symbol;"><span style="">&times;<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><span style="font-size: 12pt;">der
+aktuelle
+Datensatz</span> </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: 0cm;"><span style="font-family: Symbol;"><span style="">&times;<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><span style="font-size: 12pt;">ein
+Hilfetext</span>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: 0cm;"><span style="font-family: Symbol;"><span style="">&times;<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><span style="font-size: 12pt;">die
+Kurzliste der
+momentanen Ergebnismenge</span> </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: 0cm;"><span style="font-family: Symbol;"><span style="">&times;<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><span style="font-size: 12pt;">die
+Liste der
+Ergebnisse in Vollform <br>
+
+
+<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>(Men&uuml;</span>
+<span style="">Ansicht / Aktuelle Erg.Menge in Druckform</span>)
+</p>
+
+
+<p class="MsoNormal"><b><span style="font-size: 14pt;"><br>
+
+
+10. <img id="_x0000_i1042" src="a9door.gif" alt="T&uuml;r zur Welt" border="0" height="52" width="84"><span style="">&nbsp;</span>T&uuml;r
+zur Welt </span></b><span style="font-size: 14pt;">(Aktivieren eines
+externen Programms) <b>&nbsp; &nbsp;
+&nbsp; </b></span><b><span style="font-size: 14pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">_door.flx</span></b>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt;"><span style="font-size: 12pt;">Diese
+Schaltfl&auml;che ist daf&uuml;r vorgesehen, ein externes Programm zu
+aktivieren. Der
+Systemverwalter kann hier jedes andere Programm anbinden. Ab V24
+startet hier
+normalerweise ein Zusatzprogramm namens <a href="http://www.biblio.tu-bs.de/allegro/janas/">JanaS.EXE</a>, das
+praktisch
+einen Web-Browser enth&auml;lt - JanaS <span class="GramE">ist</span>
+aber in der
+Lage, seinerseits wieder a99 zu aktivieren.</span> <span style="font-size: 9pt;">(Der
+Name leitet sich ab von "<b style="">Jan</b>us-<b style="">a</b>llegro-<b style="">S</b>ystem", weil es sich quasi um ein doppelgesichtiges
+Progamm
+handelt.)</span></p>
+
+
+<p class="MsoNormal"><b><span style="font-size: 14pt;"><br>
+
+
+11. <img id="_x0000_i1043" src="a9help.gif" alt="HelpButton" border="0" height="53" width="48"><span style="">&nbsp;</span>Hilfe zur Datenbank</span></b>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt;"><span style="font-size: 12pt;">Der
+Datenbank-Betreuer kann eigene Hilfetexte erstellen. Die Hauptseite (</span><span style="font-size: 12pt; font-family: &quot;Courier New&quot;;">&lt;datenbankname&gt;.rtf</span><span style="font-size: 12pt;">) erscheint dann beim Klick auf diese
+Schaltfl&auml;che. Bei der DemoBank ist das&nbsp; </span><span class="GramE"><span style="font-size: 12pt; font-family: &quot;Courier New&quot;;">cat.rtf</span><span style="font-size: 12pt;"> ,</span></span><span style="font-size: 12pt;">
+denn
+cat ist der Datenbankname.</span></p>
+
+
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
+
+
+<p class="MsoNormal"><b><span style="font-size: 12pt;"><br>
+
+
+Die folgenden Schaltfl&auml;chen bzw. Men&uuml;punkte hat nur <i>a99 </i></span></b><span style="font-size: 12pt;">. Die unterstrichenen Buchstaben sind jeweils
+mit Alt einzugeben,
+um die Funktion per Tastatur auszul&ouml;sen. <span style="color: rgb(204, 0, 0);">Geheimtip:</span>
+Das geht auch in <i>alcarta</i>, au&szlig;er Speichern und
+L&ouml;schen, nur sieht man die
+Buttons eben nicht!</span> </p>
+
+
+<p class="MsoNormal"><span style="font-size: 14pt;"><br>
+
+
+<b>12. [<u style="color: rgb(23, 147, 21);">S</u><span style="color: rgb(23, 147, 21);">peichern</span>] &nbsp; &nbsp;&nbsp; </b></span><b><span style="font-size: 14pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">onput.flx</span></b>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;">Ein bearbeiteter oder
+neuer
+Datensatz kann hiermit sofort abgespeichert werden. Wenn man ohne
+Speichern zum
+n&auml;chsten Satz &uuml;bergeht, merkt sich das Programm aber den
+ge&auml;nderten Datensatz
+im "Offline"-Speicher (siehe 20.). Am Ende der Sitzung fragt es dann,
+ob man die ge&auml;nderten und neuen S&auml;tze noch speichern will,
+d.h. es geht nichts
+verloren, wenn man zwischendurch das Speichern mal vergisst. </p>
+
+
+<p class="MsoNormal"><span style="font-size: 14pt;"><br>
+
+
+<b>13.</b> Im Men&uuml;:<b> [<span style="color: rgb(23, 147, 21);">L&ouml;schen</span>] </b></span><span style="font-size: 12pt;">Bei
+Offline-S&auml;tzen:</span><b><span style="font-size: 14pt;">[Deaktivieren]
+&nbsp;&nbsp; &nbsp; </span></b><b><span style="font-size: 14pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">onerase.flx</span></b>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;">Der gerade angezeigte
+Satz wird
+in der Datenbank gel&ouml;scht. Wenn es ein noch nicht gespeicherter
+neuer Satz ist,
+wird er ung&uuml;ltig gemacht, damit er am Ende nicht gespeichert wird,
+wenn das
+Programm alle noch nicht gespeicherten S&auml;tze sichert. </p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;">Nochmaliger Druck auf
+diese
+Funktion aktiviert den Satz wieder. Besser gesagt: Der Men&uuml;punkt
+&auml;ndert sich in
+"Aktivieren", wenn ein gel&ouml;schter bzw. ung&uuml;ltiger Satz
+gezeigt wird. </p>
+
+
+<p class="MsoNormal"><span style="font-size: 14pt;"><br>
+
+
+<b>14. [<u>J</u>ndex] </b></span><span style="font-size: 11pt;">(unsichtbarer Button)</span>
+</p>
+
+
+<p class="MsoBodyTextIndent2">Hiermit, also mit &nbsp;<span style="color: rgb(0, 153, 0); font-weight: bold;">Alt+j</span>, kann man ein zweites Indexfenster
+&ouml;ffnen.
+Dieses funktioniert unabh&auml;ngig vom ersten, aber ansonsten genauso.
+Man &ouml;ffnet
+und schlie&szlig;t die beiden Indexfenster am schnellsten mit [Alt+j]
+und [Alt+i].
+Auch dieses Fenster kann man mit <span style="font-weight: bold; color: rgb(0, 153, 0);">F11</span> breit machen.</p>
+
+
+<p class="MsoNormal"><span style="font-size: 14pt;"><br>
+
+
+<b>15. [<u>R</u>eserve]</b></span> </p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;">schaltet das
+Auswahlfeld zwischen
+dem Datensatz und dem <b style="">Hintergrundspeicher</b>
+hin und her. Der Hintergrundspeicher wird in Kursivschrift angezeigt,
+um Verwechslungen&nbsp;
+zu vermeiden.<br>
+
+
+<b>Wichtig:</b> Wenn man im Auswahlfeld pl&ouml;tzlich nicht mehr die
+Kategorien des
+Datensatzes sieht, sondern z.B. die Liste der Erg.Mengen, dann diesen Button dr&uuml;cken!</p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;">Mit [Alt+k]
+(kopieren) kann man
+Felder zwischen beiden Speichern kopieren. <span style="font-style: italic;">F&uuml;r Experten:</span> Im Hintergrundspeicher sieht
+man auch
+die Uservariablen (#u...). Diese k&ouml;nnen, anders als beim
+DOS-Programm, &uuml;ber das
+Schreibfeld ebenfalls ver&auml;ndert oder neu eingegeben werden. </p>
+
+
+<p class="MsoNormal"><span style="font-size: 14pt;"><br>
+
+
+<b>16. [Schema]</b> </span><span style="font-size: 12pt;">(unsichtbarer
+Button,
+Ausl&ouml;sung:&nbsp;<span style="color: rgb(0, 153, 0);"> Alt+y</span>) </span></p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;">zeigt im Listenfeld
+die <b style="">Liste der erlaubten Kategorienummern</b>.
+Nochmaliges Alt+y schaltet auf die Abfrageliste um, die man
+w&auml;hrend der Eingabe
+eines Datensatzes benutzen kann. Von hier wieder zum Datensatz:&nbsp;
+Alt+r
+(Button [<u>R</u>ecord] )</p>
+
+
+<p class="MsoNormal"><span style="font-size: 14pt;"><br>
+
+
+<b>17. [<span style="color: rgb(23, 147, 21);">Neusatz</span>] (oder <span style="color: rgb(23, 147, 21);">F9</span>) &nbsp;&nbsp; </b></span><b><span style="font-size: 14pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">oninput.flx</span></b>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;">Man hat die Wahl,
+eine Kopie des
+gerade angezeigten Satzes zu machen oder aber einen ganz neuen
+Datensatz einzugeben, mit
+oder ohne Formular. W&auml;hlt man "ohne Formular", erscheint
+links im Listenfeld die Abfrageliste - das ist etwas f&uuml;r die Kenner des alten DOS-Systems. Man w&auml;hlt den
+Satztyp aus und
+beginnt mit der Eingabe. Die meisten Anwender aktivieren aber die Schaltfl&auml;che
+[Form. <u>#</u>]
+und f&uuml;llen das geeigete Formular aus: </p>
+
+
+<p class="MsoNormal"><span style="font-size: 14pt;"><br>
+
+
+<b>18. [<span style="color: rgb(23, 147, 21);">Form. </span><u style="color: rgb(23, 147, 21);">#</u>] </b></span><b><span style="font-size: 12pt;">(oder
+<span style="color: rgb(23, 147, 21);">Alt+#</span>)</span></b><b><span style="font-size: 14pt;"> &nbsp;&nbsp; </span></b><b><span style="font-size: 14pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">onforms.flx</span></b>
+</p>
+
+
+<p class="MsoNormal" style="margin: 0cm 0cm 12pt 21.3pt;">Zum Bearbeiten des momentanen Satzes! (Zum Anlegen eines neuen Satzes siehe 17.) Wenn f&uuml;r
+die Datenbank eine Formulardatei angelegt wurde,
+erscheint das Formularfenster und darin einige Datenfelder des momentanen Datensatzes: (welches von mehreren Formularen man
+bekommt, das
+steuert das Makro <span style="font-family: monospace;">onforms.flx</span>)<br>
+
+
+<br>
+
+
+</p>
+
+
+<table style="width: 1369px; height: 32px; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="2" cellspacing="2">
+
+
+  <tbody>
+
+
+    <tr>
+
+
+      <td style="text-align: left;"><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><img src="a9form.jpg" border="0" height="390" width="512"></span><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);"><br>
+
+
+      </span></span><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);"><span style="font-family: monospace;"></span></span></span></td>
+
+
+      <td align="undefined" valign="undefined"><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN: <span style="font-family: monospace;">&nbsp;aform.cpp, aform.h</span></span></span>, <br>
+
+
+      <small><span style="font-family: Verdana;"><br>
+
+
+Eingabefelder (auch in anderen Fenstern):</span></small> &nbsp;<br>
+
+
+      <span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">&nbsp;&nbsp; <span style="font-family: monospace;">getl.cpp, getl.h<br>
+
+
+      </span></span></span><small><span style="font-family: Verdana;">ComboBox (auch in anderen Fenstern):</span></small> &nbsp;<br>
+
+
+      <span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">&nbsp;&nbsp; <span style="font-family: monospace;">acombo.cpp, acombo.h</span></span></span></td>
+
+
+    </tr>
+
+
+  
+  </tbody>
+</table>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;"><br>
+
+
+</span><small><small><span style="font-size: 13.5pt;"><small></small></span></small></small><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;"><small><small><span style="font-size: 13.5pt;"><small>Die
+oberste Zeile ist eine Combo-Box: darin kann man unter mehreren
+Formularen
+ausw&auml;hlen. Das jeweils gew&auml;hlte wird dann mit den Daten des
+aktuellen Satzes
+gef&uuml;llt. Mit [Enter] oder [TAB] geht der Cursor in das
+n&auml;chste Feld. </small><br>
+
+
+<small>
+Mit [<u>E</u>nde] wird das Formularfenster zugeklappt und alle Felder
+in den
+aktuellen Datensatz &uuml;bertragen. <br>
+
+
+Mit [?] kommt allgemeine Hilfe zum Formularfenster, mit <span style="color: rgb(153, 0, 0);">F1</span> ein Hilfetext zum Datenfeld,
+in dem der Cursor steht.</small></span></small></small><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"> </span><br>
+
+
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;"><br>
+
+
+[<u>C</u>opy] kopiert
+den Inhalt
+des Eingabefeldes aus dem aktuellen Datensatz ins Formular. Das braucht
+man
+nur, wenn w&auml;hrend des Schreibens der Inhalt des Feldes
+versehentlich zerst&ouml;rt
+wird. [<u>G</u>et] macht das gleiche, aber f&uuml;r alle Felder des
+Formulars auf
+einmal. </p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;">[<u>R</u>eserve]
+kopiert das
+entsprechende Feld aus dem Reservespeicher ins Formular. (Mehr zum
+Reservespeicher: h resrv&nbsp; eingeben.)</p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;">[<u>I</u>ndex]
+bl&auml;ttert das
+Register auf, und zwar kann in der Formulardatei eingestellt sein,
+welches
+Register f&uuml;r das jeweilige Eingabefeld zust&auml;ndig ist. Hat man
+im Feld schon
+etwas eingegeben, z.B. "goet" im Feld "Verf.Name", dann
+kommt das Register an genau diesem Punkt zum Vorschein. Der
+Systemverwalter
+kann einem Feld auch statt eines Registers eine ViewListe zuordnen. </p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;">Mit [+] und [-] kann
+man bei
+mehrfach belegten Feldern das n&auml;chste bzw. vorige erscheinen
+lassen! Wenn es
+kein n&auml;chstes gibt, kommt ein leeres, das man dann ausf&uuml;llen
+kann. </p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;">Jedes Formular hat
+bis zu 14
+Felder, 10 lange und 4 kurze. Da man mehrere Formulare hintereinander
+aufklappen
+kann und s&auml;mtliche Eingaben in denselben aktuellen Satz gehen,
+bedeuten diese
+Zahlen keine Einschr&auml;nkung, sondern erm&ouml;glichen, die
+Formulare zu gruppieren
+und &uuml;bersichtlich zu machen. </p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;"><span style="font-style: italic;">Tip:</span> Der Kenner hat die
+M&ouml;glichkeit,
+in jedem Eingabefeld auch andere Felder einzugeben: man setzt einfach
+die
+Kategorienummer mit # vorn vor den Text. Wenn man z.B. wei&szlig;: #71
+ist die Nummer
+f&uuml;r die Auflage, kann man in ein unbenutztes Feld eingeben: <span style="font-family: &quot;Courier New&quot;;">#71 2. Aufl<span class="GramE">.</span></span><br>
+
+
+<i>Tip:</i> Die Formulardatei hei&szlig;t normalerweise <span style="font-weight: bold; font-family: Courier New,Courier,monospace;">cat.frm</span>. Sofort
+editieren (auch neue Formulare anlegen)
+kann man sie &uuml;ber das Admin-Men&uuml;: h adm eingeben,
+"Formulardatei"
+w&auml;hlen. <span style="font-style: italic;"></span></p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;"><span style="font-style: italic;">Anm.: </span>Oft wird
+von "Eingabemasken" gesprochen. Warum, wissen wir nicht. Es ist ein Formular,
+ein anderer Name ist nicht n&ouml;tig.<br>
+
+
+</p>
+
+
+<p class="MsoNormal"><span style="font-size: 14pt;"><br>
+
+
+<b>19. [<u style="color: rgb(0, 102, 0);">W</u><span style="color: rgb(0, 102, 0);">echseln</span>] &nbsp;</b>oder<b> <span style="color: rgb(0, 153, 0);">Alt+w</span></b></span> </p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;">Dieser Button ist so
+etwas wie
+eine "Undo"-Funktion. Er schaltet den aktuellen Datensatz zur&uuml;ck
+zum
+Originalzustand - so wie er momentan in der Datenbank wirklich steht.
+Denn
+Ver&auml;nderungen, die man macht, werden nicht sofort gespeichert!
+Vielmehr bewahrt
+das Programm alle ver&auml;nderten S&auml;tze in einem Offline-Speicher
+auf. Erst am Ende
+der Sitzung werden dann die noch nicht gespeicherten S&auml;tze
+endg&uuml;ltig gespeichert
+- wenn man nicht vorher einen Satz mit [<u>S</u>peichern]
+ausdr&uuml;cklich
+abgespeichert oder mit [<u>W</u>echseln] doch wieder den
+Originalzustand
+eingeschaltet hat! <i>Tip:</i> Wenn man mehrfach hintereinander auf [<u>W</u>echseln]
+dr&uuml;ckt, kann man in schneller Folge den Originalsatz und den
+ver&auml;nderten sehen
+und so beide unmittelbar vergleichen. </p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt; background-color: rgb(255, 255, 153);">Ein ver&auml;nderter,
+aber <span style="font-weight: bold;">noch nicht
+gespeicherter</span> Satz erscheint &uuml;brigens mit <span style="font-weight: bold;">gelbem Hintergrund</span> -
+daran erkennt
+man sofort: man hat einen noch nicht gespeicherten Zustand vor sich.
+Speichert
+man einen Satz, dann tauschen dabei die alte und die neue Form die
+Pl&auml;tze, d.h.
+mit Alt+w sieht man wieder den alten Satz vor sich, nun aber auf gelbem
+Hintergrund. Dann nochmals [Speichern] dr&uuml;cken, und die alte Form
+ist wieder
+g&uuml;ltig! <i style="">Expertentip:</i> Im FLEX kann diese
+Funktion mit <span style="font-family: &quot;Courier New&quot;;">undo</span>
+ausgel&ouml;st
+werden.</p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;"><o:p>&nbsp;</o:p></p>
+
+
+<p class="MsoNormal"><b><span style="font-size: 14pt;">20. [<u style="color: rgb(0, 102, 0);">Q</u><span style="color: rgb(0, 102, 0);"> :
+Daten in
+Bearbeitung</span>]&nbsp;</span></b><span style="font-size: 14pt;"><b> &nbsp;</b>oder<b> <span style="color: rgb(0, 153, 0);">Alt+q</span></b></span> </p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;">Hiermit kann man sich
+jederzeit
+die im Verlauf der Sitzung "angefa&szlig;ten" S&auml;tze anschauen: man
+sieht
+dazu die Kurzzeilen. So findet man sofort jeden Datensatz wieder, den
+man vorher
+in Bearbeitung genommen, aber noch nicht abgespeichert hatte, weil
+andere
+Aktionen dazwischen kamen: es steht EDT vor der Kurzzeile, und vor
+gel&ouml;schten
+steht DEL. </p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;">Mit den beiden
+zugeh&ouml;rigen
+Buttons [<u>V</u>origer] und [<u>N</u>&auml;chst.] kann man auch
+r&uuml;ck- und vorw&auml;rts
+zwischen den vorher bearbeiteten S&auml;tzen bl&auml;ttern, ohne die
+Liste zu &ouml;ffnen.</p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;"><o:p>&nbsp;</o:p></p>
+
+
+<p class="MsoNormal"><b><span style="font-size: 14pt;">21.
+Flip-Buttons 1 - 8</span></b>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;">Die 8 Buttons unter
+dem
+Auswahlfeld, links neben dem Schreibfeld (bei a99a oben rechts neben dem
+Men&uuml;) k&ouml;nnen beliebig beschriftet und mit Funktionen belegt
+werden. Wenn
+z.B. der Button 1 mit Alt+1 ausgel&ouml;st werden soll, geht das nur,
+wenn auf ihm
+eine unterstrichene 1 steht! Das erreicht man durch Einsetzen von
+&amp;1 in den
+Text, der auf dem Button erscheinen soll. Zum Belegen der Buttons gibt
+es den
+FLEX-Befehl&nbsp; <span style="font-family: &quot;Courier New&quot;;">flip</span>.
+<span style="font-style: italic;">Hinweis:</span> In der
+FLEX-Datei&nbsp; <span style="font-family: Courier New,Courier,monospace;">_start.flx</span>&nbsp; sieht man die Standard-Belegung. Man
+kopiert sich
+diese Datei auf das eigene Datenverzeichnis und &auml;ndert die
+Belegung nach
+Wunsch. Es gibt &uuml;brigens auch die Buttons 9 und 10, sie sind nur
+unsichtbar und
+normalerweise unbelegt. Mit Alt+9 und Alt+0 werden sie aktiviert, wenn
+sie
+belegt sind. Bei der ausgelieferten Einstellung sind <span style="color: rgb(0, 153, 0); font-weight: bold;">Alt+4</span> (Quick) und <span style="font-weight: bold; color: rgb(0, 153, 0);">Alt+8</span> (DbInfo) besonders interessant - einfach mal probleren!</p>
+
+
+<p class="MsoNormal" style="margin-left: 21.3pt;"><o:p>&nbsp;</o:p></p>
+
+
+<p class="MsoNormal"><b><span style="font-size: 14pt;">22. <span style="color: rgb(0, 153, 0);">Alt+m</span>&nbsp; </span></b><small><small><span style="font-size: 10pt;">(unsichtbarer Button)</span></small></small> </p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">In
+drei Situationen anwendbar:</span><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><o:p></o:p></span></p>
+
+
+<ol start="1" type="1">
+
+
+  <li class="MsoNormal" style=""><i><span style="font-size: 12pt;">Hierarchischen Untersatz
+markieren:</span></i><span style="font-size: 12pt;"> Wenn gerade der
+Balken links auf der Kategorie #01 eines Untersatzes steht: dieser
+Untersatz wird markiert.<o:p></o:p></span></li>
+
+
+  <li class="MsoNormal" style=""><i><span style="font-size: 12pt;">Hierarchischen Untersatz
+verschieben:</span></i><span style="font-size: 12pt;"> Wenn der Balken <i>innerhalb</i>
+eines Untersatzes steht (also nicht auf seiner #01): der vorher
+markierte Untersatz wird hinter denjenigen verschoben, in dem sich der
+Balken befindet<o:p></o:p></span></li>
+
+
+  <li class="MsoNormal" style=""><i style="color: rgb(0, 102, 0); font-weight: bold;"><span style="font-size: 12pt;">Sonderzeichen
+einf&uuml;gen:</span></i><span style="font-size: 12pt;">
+Nur wenn die Schreibmarke
+gerade im Schreibfeld ist: Hilfsseite mit den Sonderzeichen wird
+angezeigt. Man setzt die Schreibmarke <span style="font-style: italic;">vor</span> dasjenige Zeichen, das man
+gerade braucht, dann nochmals <span style="color: rgb(0, 153, 0);">Alt+m</span> und das Zeichen wird ins
+Schreibfeld kopiert, wo gerade vorher die Schreibmarke stand.<o:p></o:p></span></li>
+
+
+</ol>
+
+
+<p class="MsoNormal" style="text-align: center;" align="center"><o:p>&nbsp;</o:p></p>
+
+
+<p class="MsoNormal"><b><span style="font-size: 14pt;">23.
+Funktionstasten [F2]
+... [F12] &nbsp;&nbsp;&nbsp; </span></b><b><span style="font-size: 12pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">onf2.flx
+... onf12.flx &nbsp;</span></b><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN: <span style="font-family: monospace;">&nbsp;a99.cpp (OnFunKey())</span></span></span> </p>
+
+
+<p class="MsoNormal" style="margin-bottom: 12pt;"><span style="font-size: 13.5pt;">Die Funktionstasten au&szlig;er F1 und F10
+k&ouml;nnen im Prinzip frei belegt werden, aber ein paar Vorbelegungen
+haben sich
+als sinnvoll erwiesen:&nbsp; </span><span style="font-size: 12pt;">(F1,
+F5 und F7 haben im DOS-Programm dieselben Funktionen!)</span><span style="font-size: 13.5pt;"><br>
+
+
+<span style="font-family: monospace; font-weight: bold;"><span style="color: rgb(51, 204, 0);">F1</span> :</span> <span style="color: rgb(0, 153, 0);">Kontextabh&auml;ngige Hilfe</span><br>
+
+
+<span style="font-family: monospace; font-weight: bold;">F2 :</span> Cursor in das Anzeigefeld setzen </span><span style="">(wenn er
+in der Auswahlliste steht)</span><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><br>
+
+
+</span><span style="font-size: 13.5pt;"><span style="color: rgb(0, 102, 0); font-weight: bold; font-family: monospace;">F5</span><span style="font-weight: bold; font-family: monospace;">
+:</span> Anzeige umschalten </span><span style="">(zwischen
+interner und externer Struktur)</span><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><br>
+
+
+</span><span style="font-size: 13.5pt;"><span style="font-family: monospace; font-weight: bold;">F6
+:</span> Indexfenster &ouml;ffnen/schlie&szlig;en<br>
+
+
+<span style="font-weight: bold; font-family: monospace; color: rgb(51, 204, 0);">F7</span><span style="font-weight: bold; font-family: monospace;"> :</span> Registereintr&auml;ge zum aktuellen Satz anzeigen &nbsp;</span><span style="">(auch wenn er noch nicht gespeichert ist)</span><span style="font-size: 13.5pt;"></span><small><small><span style="font-size: 12pt;"></span></small></small><br>
+
+
+<span style="font-size: 13.5pt;">
+<span style="font-family: monospace; font-weight: bold;"><span style="color: rgb(51, 204, 0);">F8</span> :</span> <span style="color: rgb(0, 153, 0);">Funktionen zum aktuellen Datensatz</span> </span><span style="">(wenn </span><b><span style="font-size: 12pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">onf8.flx</span></b><span style=""> fehlt: Hintergrundspeicher in die Anzeige kopieren
+(#u-Variablen))</span><span style="font-size: 13.5pt;"><br>
+
+
+<span style="font-weight: bold; color: rgb(0, 102, 0); font-family: monospace;">F10</span><span style="font-family: monospace;">:</span> Men&uuml; "Datei" wird aktiviert </span><small><span style="font-size: 12pt;">(oben links, danach
+Cursor runter oder Cursor rechts)</span></small><span style="font-size: 13.5pt;"><br>
+
+
+<span style="font-weight: bold; font-family: monospace;"><span style="color: rgb(51, 204, 0);">F11</span>:</span> Anzeigefeld breit/schmal schalten </span><span style="font-size: 12pt;">(gilt auch f&uuml;r Kurzlisten- und
+Indexfenster)</span><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><br>
+
+
+</span><span style="font-size: 13.5pt;"><span style="font-family: monospace; font-weight: bold;">F12:</span> Tastatur-Hilfe </span><span style="font-size: 12pt;">(Liste der
+Tastenfunktionen anzeigen) [Quelle: &nbsp;Datei &nbsp;<span style="font-family: monospace;">he_sp</span></span></p>
+
+
+<p class="MsoNormal" style="margin-bottom: 12pt;">Manche davon tun es in dem einen oder anderen Unterfenster nicht oder sind dort nicht sinnvoll.<span style="font-size: 12pt;"></span><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><o:p></o:p></span></p>
+
+
+<div class="MsoNormal" style="text-align: center;" align="center"><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;">
+<hr align="center" size="1" width="100%"></span></div>
+
+
+<p class="MsoNormal" style="text-align: center;" align="center"><span style="font-size: 18pt;"><br>
+
+
+<b><span style="color: rgb(204, 0, 0);">Das Men&uuml;</span></b></span>
+</p>
+
+
+<h3 style="text-align: center;" align="center"><i><span style="font-size: 11pt;">alcarta</span></i><span style="font-size: 11pt; font-weight: normal;"> hat nicht alle diese
+Men&uuml;punkte,
+sondern nur die mit * markierten<br>
+
+
+</span><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN: <span style="font-family: monospace;">&nbsp;a99.rc (MENU IDR_MENU1), a99.cpp,&nbsp;</span></span></span><span style="font-size: 11pt; font-weight: normal;">Abschnitt</span>&nbsp;<span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);"><span style="font-family: monospace;">BEGIN_MESSAGE_MAP...</span></span></span></h3>
+
+
+<div>
+<p class="MsoNormal"><b><u><span style="font-size: 14pt;">D</span></u></b><b><span style="font-size: 14pt;">atei&nbsp;</span></b></p>
+
+
+</div>
+
+
+<div style="margin-left: 21pt;">
+<p class="MsoNormal" style="text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Weitere Datenbank &ouml;ffnen&nbsp; </b>(Anschlie&szlig;end
+hat man ein weiteres alcarta- bzw. a99-Fenster) <span style="font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">_otherdb.flx</span></p>
+
+
+</div>
+
+
+<p class="MsoNormal" style="margin-left: 21pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Schlie&szlig;en
+</b>(nur
+die Datenbank, ohne das Programm zu beenden) </p>
+
+
+<p class="MsoNormal" style="margin-left: 21pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b style="color: rgb(0, 153, 0);">Alle
+bearb. Daten speichern</b> - alle w&auml;hrend der Sitzung bearbeiteten,
+aber noch
+nicht mit Buttopn [Speichern] gesicherten S&auml;tze werden gespeichert </p>
+
+
+<p class="MsoNormal" style="margin-left: 21pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Ergebnismenge
+-&gt; Datenbank </b>- Diejenigen S&auml;tze der aktuellen
+Ergebnismenge, die
+ver&auml;ndert wurden oder neu sind, werden gespeichert (bei glob. Ersetzungen) </p>
+
+
+<p class="MsoNormal" style="margin-left: 21pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Offline-Datei
+-&gt; Datenbank</b> - Wenn es Offline-Daten gibt, werden diese alle als
+neue
+Datens&auml;tze in die Datenbank &uuml;berf&uuml;hrt (Hilfe: h <span class="GramE">off )</span></p>
+
+
+<p class="MsoNormal" style="margin-left: 21pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+<span style="color: rgb(0, 102, 0);">Anzeige
+speichern als</span> &ndash;&nbsp; </b>Den Inhalt des Anzeigefensters kann man als
+Textdatei abspeichern! &nbsp; &nbsp; &nbsp;<b><span style="font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">ondfile.flx</span></b></p>
+
+
+<p class="MsoNormal" style="margin-left: 21pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Anzeige
+ausdrucken</b> - macht dasselbe wie der Drucker-Button </p>
+
+
+<p class="MsoNormal" style="margin-left: 21pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Seite
+einrichten </b>&ndash; um die R&auml;nder der Druckseite einzustellen </p>
+
+
+<p class="MsoNormal" style="margin-left: 21pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+DOS-Programm</b> - (nicht in Win'7/64bit) startet in einem Fenster das konventionelle Programm
+APAC,
+wobei dann als erstes derselbe Registerabschnitt erscheint wie in <b>a99/alcarta</b><b><span style="font-size: 14pt;">&nbsp; &nbsp; &nbsp; </span></b><b><span style="font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">_rs.flx&nbsp;
+/ _as.flx</span></b>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 21pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Externe
+Datei laden </b>- Es wird nachgesehen, ob es eine Datei EXTERN.DAT
+gibt. Wenn
+ja, wird sie wie eine Ergebnismenge pr&auml;sentiert. Sie kann aus
+einem anderen
+Programm heraus entstanden sein, z.B. einem Z39.50-Client. Solche
+Dateien
+m&uuml;ssen im allegro-Intern- oder -Externformat strukturiert sein
+(Handbuch Kap.
+0.2.2) </p>
+
+
+<p class="MsoNormal" style="margin-left: 21pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Weitere
+Offline-Datei laden</b> <b><span style="font-size: 14pt;">&nbsp;
+&nbsp; &nbsp; </span></b><b><span style="font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">onoffl.flx</span></b><br>
+
+
+In einer Windows-Dateiauswahlbox kann man nach Dateien des Typs .ALG
+und .ADT
+suchen. Die ausgew&auml;hlte Datei wird als Offline-Datei geladen und
+als
+Offline-Ergebnismenge gezeigt. Die S&auml;tze k&ouml;nnen bearbeitet
+und in die Datenbank
+gespeichert werden. </p>
+
+
+<p class="MsoNormal" style="margin-left: 21pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Normalposition &ndash; </b>Das Fenster wird auf seine normale Position und
+Gr&ouml;&szlig;e gesetzt (oben links) </p>
+
+
+<p class="MsoNormal" style="margin-left: 21pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Beenden</b>
+- Programm verlassen. Wenn noch ungespeicherte S&auml;tze vorliegen, wird man aufmerksam gemacht. </p>
+
+
+<p class="MsoNormal"><span style="font-size: 14pt;"><br>
+
+
+<b><u>B</u>earbeiten&nbsp;</b></span> </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Alles
+markieren</b> - Dasselbe wie [Alt]+a im Anzeigefenster:
+anschlie&szlig;end kann mit
+[Alt]+v der gesamte Anzeigebereich in die Zwischenablage kopiert
+werden. </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Extern
+</b>-
+Der aktuelle Datensatz wird in die Datei EXX.XXX geschrieben (Export
+mit E<span class="GramE">?W.APR</span>) und mit dem externen Editor
+(X-Editor, s. a99.ini)
+zum Bearbeiten vorgelegt. Bei R&uuml;ckkehr aus dem externen Editor
+wird gefragt, ob
+der externe Satz geladen werden soll; er ersetzt dann den aktuellen
+Satz im
+Arbeitsspeicher. </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Read&nbsp;
+</b>- Die Datei E.ADT wird geladen und in den aktuellen Satz
+eingemischt. Das
+ist eine Erfassungshilfe. <br>
+
+
+In E.ADT k&ouml;nnen beliebige Angaben im
+Externformat
+stehen. (Auch: Alt+&auml; ) </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Neuaufnahme
+</b>- Siehe Schaltfl&auml;che [Neusatz] </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Eingabe-Formulare</b>
+- siehe Schaltfl&auml;che [Form<span class="GramE">.<u>#</u></span>] </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Markieren/Verschieben
+</b>- nur bei hierarchischen S&auml;tzen anwendbar. Wenn der Cursor im
+Listenfeld
+auf einem Feld #01, #02 ... steht, wird dieses markiert. Wenn er <i>innerhalb</i>
+eines Untersatzes steht (also nicht auf dessen #01...) wird der vorher
+markierte Untersatz dahinter verschoben. Wenn er nicht verschoben,
+sondern
+kopiert werden soll, benutzt man den n&auml;chsten Befehl: </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Kopieren</b>
+- Nur bei hierarchischen S&auml;tzen: Wenn vorher ein Untersatz
+markiert wurde, wird
+dieser nun hinter denjenigen Untersatz kopiert, in dem gerade der
+Cursor steht.
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Satz
+freigeben </b><i>&ndash; </i>Nur wichtig, wenn ein Satz zum Schreiben
+gesperrt
+ist, was selten vorkommt. </p>
+
+
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
+
+
+<p class="MsoNormal"><b><u><span style="font-size: 14pt;">A</span></u></b><b><span style="font-size: 14pt;">nsicht&nbsp;</span></b> </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+<span style="color: rgb(0, 153, 0);">Aktueller Satz in Druckform</span> </b><i>- </i>F&uuml;r die Druckanzeige
+werden andere
+Parameter benutzt, wobei z.B. die f&uuml;r das Drucken nicht
+gew&uuml;nschten Flips
+entfallen, aber auch die gesamte Struktur anders aussehen kann als bei
+der
+OPAC-Anzeige. Welche Parameter? Das steht in der INI-Datei im
+Befehl&nbsp;
+PrintParameter=...</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+<span style="color: rgb(0, 153, 0);">Aktuelle
+Erg. Menge in Druckform</span> - </b>Die gesamte Ergebnismenge wird in der
+Druckform
+gezeigt.<span style="font-size: 12pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);"> &nbsp; <b>onviewrs.flx</b></span>. &nbsp;Darin kann die Schriftgr&ouml;&szlig;e eingestellt werden, das ist in der Datei kommentiert.
+<span style="font-size: 12pt; font-family: Symbol;"></span> </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span><span style="font-style: italic;">Tip:</span> Die Liste steht dann in einer Datei &nbsp;<span style="font-family: Courier New,Courier,monospace;">onviewrs.rtf</span>, die man auch mit WinWord einlesen kann.</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Kurzliste der Erg. Menge </b>-<b> </b>Macht dasselbe wie der Button
+[List] im
+Ergebnisfenster (siehe 5.). </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Internformat </b>- Der aktuelle Satz wird in kategorisierter Form
+gezeigt.
+Gleichwertig: F5 </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Index
+2 </b>-
+Ein zweites Indexfenster wird ge&ouml;ffnet. Es hat dieselben
+Funktionen wir das
+erste. <br>
+
+
+Mit [Alt]+i und [Alt]+j kann man jederzeit jedes der beiden
+Fenster
+&ouml;ffnen und wieder schlie&szlig;en&nbsp; </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Anzeigeparameter wechseln</b> - Bei a99 kann man in der
+Dateiauswahl-Box eine
+Datei des Typs D-*.cPR ausw&auml;hlen, die dann geladen und f&uuml;r
+die Anzeige benutzt
+wird. Bei <i>alcarta</i> wird die in der .INI-Datei eingestellte
+Anzeigeparameterdatei neu geladen und die Anzeige damit neu aufgebaut.
+Gedacht
+nur zum schnellen Testen der Anzeigeparameter. </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Alle
+Erg.mengen </b>- Gleichwertig ist Alt+e, siehe oben 5. <br>
+
+
+Man erh&auml;lt im
+Listenfenster die
+Liste der Ergebnismengen. Bei <b><i>alcarta</i></b> steht diese
+st&auml;ndig dort,
+es sei denn man benutzt Alt+r oder Alt+a </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Hintergrundspeicher
+/ Datensatz anzeigen</b> - gleichwertig ist Alt+r. Siehe [<u>R</u>eserve]
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Datensatz
+anzeigen &ndash; </b>Wenn links etwas anderes steht als die Felder des
+Datensatzes (auch: Alt+r) </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Views
+-&nbsp; </b>Ein Verfahren zum Erstellen von eigenen Sichten (f&uuml;r
+Ergebnismengen) </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Registereintr&auml;ge
+&ndash; </b>Die zum aktuellen Satz geh&ouml;rigen Eintr&auml;ge werden
+gezeigt - dasselbe wie &nbsp;<span style="color: rgb(0, 153, 0); font-weight: bold;">F7</span> </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Letzter
+Hilfetext / Datensatz &ndash; </b>Wenn man nochmal zur&uuml;ck will zu dem
+zuletzt
+angezeigten Hilfetext bzw. Datensatz.&nbsp;</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;">&nbsp; &nbsp; &nbsp;Will man nur den aktuellen Satz
+neu
+angezeigt bekommen: <b>F5</b> </p>
+
+
+<p class="MsoNormal"><o:p>&nbsp;</o:p></p>
+
+
+<p class="MsoNormal"><b><u><span style="font-size: 14pt;">F</span></u></b><b><span style="font-size: 14pt;">inden&nbsp;</span></b> </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Finde-Men&uuml; </b><i>- </i>Dasselbe, wie wenn man den
+Fernglas-Button bet&auml;tigt</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Index 1
+- </b>Dasselbe wie beim Index-Button</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Index 2 </b>-<b>
+</b>Dasselbe wie bei Alt+j : das zweite Indexfenster. </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>* <span style="color: rgb(0, 102, 0);">Volltextsuche</span> </b>-<b>&nbsp;</b>Man
+erh&auml;lt ein Men&uuml; und kann w&auml;hlen zwischen dem Durchsuchen der gesamten
+Datenbank bzw. der momentanen&nbsp;Ergebnismenge. Die Suchm&ouml;glichkeiten
+sind beschrieben in einem <a href="http://www.allegro-c.de/bluechyp/regex.htm">eigenen Text</a>.&nbsp; <b><span style="font-size: 14pt;">&nbsp;&nbsp; </span></b><b><span style="font-size: 12pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">fulltext.flx &nbsp;</span></b><span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN: <span style="font-family: monospace;">regex.cpp, regex.h, re_fail.cpp</span></span></span></p>
+
+
+<b><u><span style="font-size: 14pt;"><br>
+
+
+</span></u></b>
+<p class="MsoNormal"><b><u><span style="font-size: 14pt;">E</span></u></b><b><span style="font-size: 14pt;">xport</span></b> </p>
+
+
+<p class="MsoBodyText2">Exportieren kann man mehrere Dinge: </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-size: 12pt; font-family: Symbol;">&middot;</span><span style="font-size: 12pt;">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span><b><span style="font-size: 12pt; font-family: Symbol;"></span>* </b></span><b style="color: rgb(0, 153, 0);">Aktueller
+Satz</b><span style="font-size: 12pt;"> </span>&ndash; den, der gerade
+angezeigt wird<b><span style="font-size: 14pt;"> &nbsp;&nbsp; </span></b><b><span style="font-size: 12pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">onexprec.flx</span></b>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-size: 12pt; font-family: Symbol;">&middot;</span><span style="font-size: 12pt;">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span><b><span style="font-size: 12pt; font-family: Symbol;"></span>* </b></span><b style="color: rgb(0, 153, 0);">Aktuelle
+Ergebnismenge</b><span style="font-size: 12pt;"> </span>&ndash; deren Name
+auf dem l&auml;nglichen Button
+unten rechts steht<b><span style="font-size: 14pt;"> &nbsp;&nbsp; </span></b><b><span style="font-size: 12pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">onexpset.flx</span></b>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-size: 12pt; font-family: Symbol;">&middot;</span><span style="font-size: 12pt;">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span><b><span style="font-size: 12pt; font-family: Symbol;"></span>* </b></span><b>Kurzliste
+der Erg. Menge</b><b><span style="font-size: 12pt;"> &ndash;</span></b><span style="font-size: 11pt;"> <small>schreibt
+die Kurzzeilen aller S&auml;tze in die Ausgabedatei in eine Datei</small>&nbsp;</span><span style="font-size: 11pt; font-family: &quot;Courier New&quot;;">brief.rtf</span><span style="font-size: 11pt;"><small>, die man z.B. mit WinWord einlesen kann.</small></span>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-size: 12pt; font-family: Symbol;">&middot;</span><span style="font-size: 12pt;">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Ganze
+Datenbank</b><b><span style="font-size: 12pt;"> &ndash;&nbsp;</span></b>S&auml;mtliche
+S&auml;tze in die
+Exportdatei schreiben </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-size: 12pt; font-family: Symbol;">&middot;</span><span style="font-size: 12pt;">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Ganze
+Offline-Datei</b> </p>
+
+
+<p class="MsoNormal">Exportiert wird mit den Parametern E-W.APR in die
+Datei
+OUTPUT.DAT. Beides kann in der INI-Datei anders eingestellt, aber auch
+&uuml;ber zwei
+weitere Men&uuml;punkte jederzeit ge&auml;ndert werden: </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-size: 12pt; font-family: Symbol;">&middot;</span><span style="font-size: 12pt;">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span><b><span style="font-size: 12pt; font-family: Symbol;"></span>* </b></span><b>Andere
+Exportdatei</b><span style="font-size: 12pt;"> &ndash; Wenn in eine andere
+Datei statt OUTPUT.DAT
+geschrieben werden soll. &nbsp; </span><b><span style="font-size: 12pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">onxportf.flx</span></b>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-size: 12pt; font-family: Symbol;">&middot;</span><span style="font-size: 12pt;">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span><b><span style="font-size: 12pt; font-family: Symbol;"></span>* </b></span><b>Andere
+Exportparameter</b><span style="font-size: 12pt;"> &ndash; Wahl einer anderen
+Struktur der Ausgabedaten
+(Kap. 10) &nbsp; </span><b><span style="font-size: 12pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">onxportp.flx</span></b>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-size: 12pt; font-family: Symbol;">&middot;</span><span style="font-size: 12pt;">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span><b><span style="font-size: 12pt; font-family: Symbol;"></span>* </b></span><b>Exportdatei
+l&ouml;schen</b><b><span style="font-size: 12pt;"> &ndash;&nbsp;</span></b><span style="font-size: 12pt;">Damit
+kann man bequem die Ausgabedatei beseitigen</span> </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-size: 12pt; font-family: Symbol;">&middot;</span><span style="font-size: 12pt;">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span><b><span style="font-size: 12pt; font-family: Symbol;"></span>* </b></span><b style="color: rgb(0, 102, 0);">Komfort-Methoden</b><span style="font-size: 12pt;"> &ndash; Es kommt ein Men&uuml; (Textdatei </span><span style="font-size: 12pt; font-family: &quot;Courier New&quot;;">exprtger.rtf</span><span style="font-size: 12pt;">) aller zus&auml;tzlichen Exportfunktionen,
+z.B. zur
+Erstellung von <span style="color: rgb(0, 153, 0);">Tabellen</span> oder ViewListen. Dazu gibt es ausf&uuml;hrliche
+Hilfe.</span>
+</p>
+
+
+<p class="MsoNormal"><span style="font-size: 14pt;"><br>
+
+
+<b>E<u>x</u>tras (nur in <i>a99</i>)</b></span> </p>
+
+
+<p class="MsoNormal">Das Men&uuml; hat zwei Teile: "Offline-Datei" und
+"Datenbank (ONLINE)". Jeder Men&uuml;punkt liefert eine spezielle
+Ergebnismenge. Gedacht ist das Ganze zur Unterst&uuml;tzung der
+Bearbeitungsfunktionen.
+Normalerweise wird man meistens den l&auml;nglichen Button [<u>Q</u> -:
+Daten in
+Bearbeitung] mit Alt+q aktivieren, um die momentan in Arbeit
+befindlichen S&auml;tze
+zu sehen! Bei l&auml;ngeren Sitzungen sind aber diese detaillierten
+Funktionen von
+Interesse: </p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">[Offline-Datei] </span>(Dazu
+gibt es einen Hilfetext) </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Ung&uuml;ltige
+Offline-S&auml;tze</b> - die mit dem Button [Deaktivieren]
+ung&uuml;ltig gemacht wurden. </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Ge&auml;nderte
+Offline-S&auml;tze</b> </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Gesperrte
+S&auml;tze -&nbsp; </b>Nur wenn die Offline-Datei eine ALD-Datei ist
+(f&uuml;r Experten) </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>&Auml;nd
+in
+Erg.Mg. r&uuml;ckg&auml;ngig&nbsp; </b>- alle S&auml;tze der aktuellen
+Ergebnismenge, die
+w&auml;hrend der Sitzung ge&auml;ndert wurden (und noch nicht in die
+Datenbank
+abgespeichert), werden wieder auf den Originalzustand gesetzt. Mit
+[Wechseln]
+kann jeder wieder auf den &Auml;nderungs&shy;zustand gesetzt werden! </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Offline-&Auml;nderungen
+r&uuml;ckg&auml;ngig</b> - dasselbe, aber anstatt der Ergebnismenge
+werden alle S&auml;tze der
+Offline-Datei ber&uuml;cksichtigt </p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;">[Datenbank (ONLINE)]</span>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>IN
+ARBEIT
+befindl. S&auml;tze </b>- Als Ergebnismenge erh&auml;lt man alle
+Online-S&auml;tze, die in der
+laufenden Sitzung ver&auml;ndert, aber noch nicht abgespeichert wurden.
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Korrigiert+gespeichert</b>
+- als Ergebnismenge erscheinen alle S&auml;tze, die w&auml;hrend der
+Sitzung korrigiert
+und gespeichert wurden. Also keine neuen S&auml;tze, sondern nur
+solche, die vorher schon
+in der Datenbank standen. </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Gespeicherte
+S&auml;tze (neu+korr.) </b>- Alle w&auml;hrend der Sitzung
+gespeicherten S&auml;tze </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Neu,
+noch
+nicht gespeichert</b> - Alle Neuaufnahmen, die noch nicht in die
+Datenbank
+gespeichert wurden. </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Gesperrte
+S&auml;tze -&nbsp; </b>Man erh&auml;lt eine Ergebnismenge, die aus den
+momentan
+gesperrten S&auml;tzen besteht. Bei gro&szlig;en Datenbanken dauert das
+entsprechend lange
+</p>
+
+
+<p class="MsoNormal"><span style="font-size: 14pt;"><br>
+
+
+<b><u>G</u>lobal </b></span><span style="font-size: 11pt;">(nur <b><i>a99</i></b>,
+nur wenn es eine Ergebnismenge gibt, denn darauf wirken diese
+Funktionen)</span> <b> &nbsp;<span style="font-size: 14pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);"> onglobal.flx</span></b>
+</p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b><span style="color: rgb(0, 102, 0);">Globale
+Ersetzungen</span>&nbsp; </b><i>- </i>In jedem Satz der Ergebnismenge
+k&ouml;nnen bis zu
+drei Ersetzungen von Zeichenfolgen durch andere Zeichenfolgen
+ausgef&uuml;hrt
+werden. Es erscheint ein Untermen&uuml;, zu dem es auch einen Hilfetext
+gibt.&nbsp;<span style="font-size: 12pt;"><span style="font-weight: bold; color: rgb(153, 51, 153);">QUELLEN: <span style="font-family: monospace;">glob.cpp, glob.h</span></span></span> </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Globale
+Manipulation &ndash; </b>F&uuml;r Experten. Dazu sind besondere Kenntnisse notwendig
+(Exportsprache, siehe Handbuch) </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Globale
+L&ouml;schung &ndash; </b>L&ouml;scht alle S&auml;tze der momentanen
+Ergebnismenge </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b><span style="color: rgb(0, 102, 0);">Datenbank-Information</span> &ndash; </b>Liste aller wichtigen Dateinamen und momentanen Einstellungen </p>
+
+
+<p class="MsoNormal"><br>
+
+
+<span style="font-size: 14pt;">
+<b><u>O</u>ption</b></span> </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+<span style="color: rgb(0, 153, 0);">Datenfont</span> </b>Die Schriftart der Ergebnisliste und des Eingabefeldes
+kann hier
+ver&auml;ndert werden.&nbsp; <i>Empfehlung:</i> <span style="color: rgb(51, 204, 0);">allegroLucidaConsole</span>, <span style="color: rgb(0, 153, 0);">allegroLetterGothic</span> oder zur
+Not Courier. </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Teilfeld-Hilfe
+</b>- normalerweise aktiviert, kann deaktiviert werden. Wenn
+deaktiviert, wird
+das Hilfsfenster f&uuml;r die Teilfeld-Bearbeitung nicht benutzt. Wer
+mit den
+Teilfeldern vertraut ist, wird oft auf das Hilfsfenster verzichten
+wollen, um
+schneller bearbeiten zu k&ouml;nnen. </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>Farbwechsel</b>
+- Wenn deaktiviert, wechselt die Farbe im Anzeigefenster nicht. Wenn
+aktiviert,
+wechselt sie auf Hellgelb, wenn ein ver&auml;nderter, noch nicht wieder
+gespeicherter Satz gezeigt wird, und auf hellroetlich, wenn ein
+gel&ouml;schter zur
+Anzeige kommt. </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Ergeb.
+aufbewahren</b> - Wenn aktiviert: Beim Verlassen des Programms werden
+alle
+Lesezeichen, die Liste der vorher angezeigten Daten und die
+Ergebnismengen
+gesichert, damit dann bei erneutem Start diese Ergebnisse sofort wieder
+zur
+Verf&uuml;gung stehen. Beim Start ist dieser Punkt nicht aktiviert,
+wenn man ihn
+aber einmal aktiviert hat, bleibt er es. </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Eingabeschrift +/-&nbsp; </b>und<b>&nbsp; Anzeigeschrift +/- : </b>Hiermit
+&auml;ndert man die Schriftgr&ouml;&szlig;e im linken Auswahlfeld sowie
+Schreibfeld bzw. im
+gro&szlig;en Anzeigefeld. </p>
+
+
+<p class="MsoNormal" style="margin-left: 18pt; text-indent: -18pt;"><span style="font-family: Symbol;">&middot;</span><span style="">&nbsp;<span style="font-size-adjust: none; font-stretch: normal;"></span></span><b>*
+Anzeige
+breit/schmal -&nbsp; </b>Das Anzeigefeld kann auf die ganze Breite des
+Fensters
+vergr&ouml;&szlig;ert <span class="GramE">werden</span>, wenn man z.B.
+einen Hilfetext
+besser &uuml;berblicken will. Ausl&ouml;sung auch mit <b style="color: rgb(0, 153, 0);">F11</b>. </p>
+
+
+<p class="MsoNormal"><span style="font-size: 12pt;"><br>
+
+
+<b>Eigener Men&uuml;punkt&nbsp;</b></span>(zwischen "Option" Und "L&ouml;schen" kann hier vom
+Systemverwalter
+eingerichtet werden: Befehle&nbsp; <span style="font-family: &quot;Courier New&quot;; font-weight: bold;">MyMenu/MyFLEX</span>&nbsp;
+in der INI-Datei, Doku s. a99.ini) <br>
+
+
+&nbsp;&nbsp;&nbsp; Bei der Demo-Datenbank steht hier "Erwerbung". </p>
+
+
+<p class="MsoNormal"><b><span style="font-size: 12pt;"><br>
+
+<span style="color: rgb(0, 153, 0);">
+L</span><u style="color: rgb(0, 153, 0);">&ouml;</u><span style="color: rgb(0, 153, 0);">schen</span> / Deaktivieren&nbsp;</span></b><span style="font-size: 12pt;">(Nur
+<b><i>a99</i></b>)</span><b><span style="font-size: 14pt;">
+&nbsp;&nbsp; </span></b><b><span style="font-size: 14pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">onerase.flx</span></b>
+</p>
+
+
+<p class="MsoBodyText2">Zum L&ouml;schen des aktuellen Datensatzes bzw.
+Ung&uuml;ltigmachen
+eines neu eingegebenen, aber noch nicht gespeicherten Satzes. </p>
+
+
+<p class="MsoNormal"><b style="color: rgb(0, 102, 0);"><span style="font-size: 12pt;"><br>
+
+
+</span></b><b style="color: rgb(0, 102, 0);"><span style="font-size: 14pt;">F&uuml;ll<u>h</u>orn</span></b><b><span style="font-size: 14pt;"> &nbsp;&nbsp; </span></b><b><span style="font-size: 12pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">onhlpa99.flx
+</span></b><span style="font-size: 12pt; font-family: &quot;Courier New&quot;; color: black;">(a99)</span><b><span style="font-size: 12pt; font-family: &quot;Courier New&quot;; color: rgb(153, 102, 51);">/
+onhlpalc.flx
+</span></b><span style="font-size: 12pt; font-family: &quot;Courier New&quot;; color: black;">(alcarta)</span><span style="font-size: 12pt;"> </span></p>
+
+
+<p class="MsoNormal">Dieser eigenwillige, aber <b style="">extrem
+wichtige</b> Punkt bringt ein gro&szlig;es Men&uuml; hervor (deshalb
+hei&szlig;t
+er so), das voll ist mit zus&auml;tzlichen Funktionen und Hilfetexten,
+bis hin zum Einschalten
+der Ausleihfunktion und dem Bestellmen&uuml; (ORDA). Vielleicht wird
+dies zu Ihrem
+Hauptmen&uuml;, wenn Sie sich erst einmal damit bekannt
+machen.&nbsp;Aber der
+Systemverwalter kann hier einen anderen Hilfetext hinterlegen und den
+Punkt
+auch anders nennen! <span style="color: rgb(204, 0, 0);">Wenn Sie mal
+verzweifelt nach
+etwas suchen</span>, ist dieser Men&uuml;punkt ein guter Einstieg, und
+besonders
+darauf der Punkt "<span style="color: rgb(0, 153, 0);">Hilfethemen A-Z</span>"<span style="font-weight: bold;"> </span>(die sog. Quick-Liste)<b><span style="font-size: 14pt;"><br>
+
+
+?</span></b> </p>
+
+
+<p class="MsoHeader">Das Fragezeichen bringt dagegen,
+unver&auml;nderbar, <i>immer</i>
+das F&uuml;llhorn-Men&uuml; hervor, denn dieses ist ja auch der Start
+des Hilfesystems.&nbsp;</p>
+
+
+<p class="MsoHeader"><span style="font-style: italic;">Tip: </span>Das F&uuml;llhorn-Men&uuml; ist &uuml;brigens auch nichts anderes als eine Hilfedatei, sie hei&szlig;t <span style="font-weight: bold;">doku.rtf</span>. Pfiffige Systemverwalter k&ouml;nnen es also &auml;ndern ... </p>
+
+
+<div class="MsoNormal" style="text-align: center;" align="center"><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;">
+<hr align="center" size="1" width="100%">&nbsp;</span></div>
+
+
+<p class="MsoHeader"><o:p>&nbsp;</o:p></p>
+
+
+<p class="MsoNormal"><b><span style="font-size: 12pt; color: rgb(204, 0, 0);">Statusfelder</span></b>
+</p>
+
+
+<p class="MsoNormal">Au&szlig;er den oben beschriebenen Elementen gibt
+es noch ganz
+unten links und rechts f&uuml;nf kleine Status-Anzeigefelder: Darin
+erscheint (von
+links nach rechts): </p>
+
+
+<ol style="margin-top: 0cm;" start="1" type="1">
+
+
+  <li class="MsoNormal" style=""><b>DEL </b>wenn ein gel&ouml;schter /
+deaktivierter Satz angezeigt wird</li>
+
+
+  <li class="MsoNormal" style=""><b>EDT</b> wenn der Satz in der
+aktuellen Sitzung ge&auml;ndert wurde (dann ist der Button [<u>W</u>echseln]
+aktiv)</li>
+
+
+  <li class="MsoNormal" style=""><b>ONL</b> wenn der Satz ein
+Datenbanksatz ist (Online-Satz)<br>
+
+
+    <b>Offline</b> wenn der Satz zur Offline-Datei geh&ouml;rt (Befehl
+Offline=... in der INI-Datei) <br>
+
+
+    <b>NEU</b> wenn er als Neusatz angelegt, aber noch nicht
+gespeichert wurde </li>
+
+
+  <li class="MsoNormal" style="">Rechts: Die interne Satznummer, die
+Datenbank-Dateinummer und die L&auml;nge des Satzes.</li>
+
+
+</ol>
+
+
+<p class="MsoNormal" style="margin-left: 36pt;"><span style="">Wenn es
+ein Offline-Satz ist: <b>off</b> + laufende Nummer
+des Satzes in der Offline-Datei</span><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"> <o:p></o:p></span></p>
+
+
+<ol style="margin-top: 0cm;" start="5" type="1">
+
+
+  <li class="MsoNormal" style="">Ganz rechts zwei Zahlen: Die laufende Nummer des
+Satzes in der Ergebnismenge / Gr&ouml;&szlig;e der Erg.menge</li>
+
+
+</ol>
+
+
+<br>
+
+
+<hr style="width: 100%; height: 2px;"><br>
+
+
+<div style="text-align: center;"><big style="color: rgb(255, 102, 102);"><big><big style="font-family: Courier New,Courier,monospace;"><big><span style="font-size: 12pt;"><span style="font-weight: bold;">NUR F&Uuml;R PROGRAMMIERER</span></span></big></big></big></big><br>
+
+
+</div>
+
+
+<br>
+
+
+<span style="font-family: monospace;"><a name="vql"></a><br>
+
+
+<br>
+
+
+Vollst&auml;ndige Quellenliste f&uuml;r a99 / a99a / a99d / alcarta &nbsp;(Genaueres s. <a href="a99src.htm">a99src.htm</a>)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">=========================================================</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">Quellcodes fuer die Erstellung der .exe's unter Windows/VisualStudio</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">Achtung: NUR die .rc-Datei und program.h sind fuer a99/alcarta/a99a/a99d different</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; Projektdateien</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">a99.dsw&nbsp; /&nbsp; alcarta.dsw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; allg. Projektdatei</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">a99.dsp&nbsp; /&nbsp; alcarta.dsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eine Art make-Datei f. VisualStudio</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; *** spezifische Dateien</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; hierin steht, ob es a99, a99a, a99d oder alcarta werden soll</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">program.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;"></span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">a99.rc / a99a.rc / alcarta.rc</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; Konfigurierung der Oberflaechenobjekte ("resources")</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; *** Nur diese Dateien sind spezifisch f. a99 bzw. a99a&nbsp; bzw.&nbsp; alcarta,</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; alle anderen Dateien sind gleich</span><br style="font-family: monospace;">
+
+
+<br>
+
+
+<span style="font-family: monospace;"><br>
+
+
+resource.h</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; #defines f.d. Oberfl.Objekte (Zuordnung von Nummern zu den symb. Namen aus der .rc)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;</span><span style="font-family: monospace;">&nbsp; alcarta und a99a verwenden dieselbe Datei, aber jeweils nicht alle Nummern daraus</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">Grundlagen</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">----------</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; Diese zwei werden als Libraries eingebunden (genauso in acon)</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">ac15&nbsp;&nbsp; : Klassenbibliothek (KONFIG, RECORD, EXET, INDEX, ABASE)</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">aindex : Index-Kernfunktionen (Erstellung und Zugriff)</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">Das eigentliche Programm : Basiert auf Windows Foundation Classes (WFC)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">========================</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; Win-Standard f. "vorkompilierte Headerdatei"&nbsp; *.pch</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">stdafx.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">stdafx.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; WINDOWS oder UNIX, nur fuer rpnfind.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">platform.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp; Anwendungs-Rahmenklasse f.d. Dialoganwendung (kein Eingriff noetig)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">ca99.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">ca99.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; Hauptprogramm: darin FLEX-Interpreter, Oeffnen der Unterfenster u.a.</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; --------------------------------------------------------------------</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; Es handelt sich um eine Dialog-Anwendung (Klasse CDialog)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; nicht um eine Dokument-Anwendung! (Kl. CDocument)</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">a99.cpp&nbsp;&nbsp;&nbsp;&nbsp; enth. FLEX-Interpreter: Funktion FLEXecute()</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; und die Abarbeitung aller Menu- und Button-Funktionen</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Unterfenster haben eigene Quellmodule, s.u.</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">a99.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; Hauptelemente (jeweils CDialog-Fenster, aus a99.cpp geoeffnet)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; -------------</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; A. Die zwei wichtigsten, unverzichtbaren:</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; -----------------------------------------</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; A.1. Window f. Index</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">winx.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">winx.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; A.2. Window f. Kurz- u. ViewListe:</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; d.h. Ergebnismengen- und ViewListenfenster</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">wkv.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">wkv.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; B. Sechs andere</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; ---------------</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;"></span><span style="font-family: monospace;"><br>
+
+
+&nbsp;&nbsp; B.1. FernglasFormular f. find-Funktion</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">wfind.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">wfind.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;"></span><span style="font-family: monospace;">&nbsp;&nbsp; B.2. FormularKlasse (CDialog, FLEX:&nbsp; form ...)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">aform.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">aform.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; B.3. Dialog f. Globale Ersetzungen</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">glob.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">glob.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;"></span><span style="font-family: monospace;">&nbsp;&nbsp; B.4. Aresqa-Fenster (oft f. laengere Auswahlen oder Menues genutzt)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">aresqa.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">aresqa.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;"></span><span style="font-family: monospace;">&nbsp;&nbsp; B.5. Subfield Dialog&nbsp; (CDialog, Teilfeld-Editor. Wohl selten genutzt!)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">subfield.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">subfield.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; B.6 Besen (CDialog)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">acleanup.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">acleanup.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; C. Unterelemente mit eigenen Fenstern sowie abgeleitete Klassen</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; ---------------------------------------------------------------</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; Die Erweiterung der Basisklassen, z.B. CButton, ist jeweils wegen</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; der Gr&ouml;&szlig;en&auml;nderung n&ouml;tig, auch wegen der Funktionstasten (F5, F7)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; z.T. auch wegen anderer Zusatzfunktionen</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; C.1 Eigene Button-Klasse (von CButton abgeleitet)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">abutton.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">abutton.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; C.2 Einzeiliges EingabeFeld (CDialog, FLEX:&nbsp; ask ...)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">getl.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">getl.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; C.3 Einzeiliges EingabeFeld f. Passwort (CDialog, FLEX:&nbsp; ask @...)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">getp.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">getp.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; C.4 Klasse f.mehrzeiliges Editfeld (von CEdit)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">aedit.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">aedit.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; C.5 eigene RichEditKlasse (von CRichEditCtrl, Anzeigefeld)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sonderfkt.: Phrasen, Flips, rechte Maustaste</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">ariched.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">ariched.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; C.6 Eigene ComboBoxKlasse (von CComboBox abgeleitet)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; f. Eingabefelder mit Auswahl der vorherigen Eingaben, z.B. Suchbefehle</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">acombo.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">acombo.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; C.7 eigene SelectBoxKlasse (CDialog, FLEX:&nbsp; select ...)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">selbox.h</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">selbox.cpp</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; C.8 eigene ListBoxKlasse (von CListBox, f. Erg.Menge und ViewListe)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">alistbox.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">alistbox.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; C.9 MessageBox mit Timer (CDialog, FLEX:&nbsp; Mes ...)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">msg.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">msg.h</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; C.10 eigene ProgressCtrl-Klasse (von CProgressCtrl, Forschritts-Balken)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">aprogr.h</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">aprogr.cpp</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; Sonstige wichtige Prozeduren</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; ----------------------------</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; Nachschauen, ob Db. auf dem angeford. Verz. existiert</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">lookford.cpp</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; Komplexen Suchbefehl parsen (in RP-Notation wandeln)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">parser.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">parser.hpp</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; Komplexen Suchbefehl ausfuehren (nachdem vom parser erstellt)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; nutzt index.cpp (in ac15)</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">rpnfind.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">rpnfind.hpp</span><br style="font-family: monospace;">
+
+
+<br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">&nbsp;&nbsp; RegEx-Klasse f.d. Suchen im iV-Text</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">regex.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">re_fail.cpp</span><br style="font-family: monospace;">
+
+
+<span style="font-family: monospace;">regex.h (f. FLEX&nbsp; srx ...)</span><br style="font-family: monospace;">
+
+
+<br>
+
+
+<br>
+
+
+<br>
+
+
+<p class="MsoNormal" style="margin-left: 36pt;"><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;"><o:p>&nbsp;</o:p></span></p>
+
+
+<div class="MsoNormal" style="text-align: center;" align="center"><span style="font-size: 12pt; font-family: &quot;Times New Roman&quot;;">
+<hr align="center" size="1" width="100%"></span></div>
+
+
+<p class="MsoNormal" style="margin-left: 36pt; text-align: right;" align="right"><span style="font-size: 12pt;">1999-06-30 /
+2014-04-08<o:p></o:p></span></p>
+
+
+<p class="MsoNormal" style="margin-left: 36pt; text-align: right;" align="right"><span style="font-size: 8pt;"><a href="mailto:b.eversberg@tu-bs.de">Bernhard Eversberg</a></span><span style="font-size: 8pt; font-family: &quot;Times New Roman&quot;;"><o:p></o:p></span></p>
+
+
+</div>
+
+
+</body>
+</html>

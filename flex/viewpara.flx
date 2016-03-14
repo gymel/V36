@@ -1,0 +1,219 @@
+  VIEWPARA.FLX : Verarbeitung eines ausgefuellten VIEW.RTF-Formulars
+  2000-08-15     zu einer View-Parameterdatei vvv.apr
+  Achtung wenn nicht A.CFG: view1.xpt und view2.xpt muessen existieren.
+          Tip: Kopien von view1.apt und view2.apt machen
+               ebenfalls von viewgrup.apr
+
+get env comspec
+ins #uwC
+
+  Text im Anzeigefeld ausgeben in viewf.txt (ASCII!) UND viewf.rtf
+file viewf.txt
+file viewf.rtf
+  Datei viewf.txt sofort zum Lesen oeffnen
+:start
+open viewf.txt
+
+:head
+  Variable #uuu etc. loeschen
+var ""
+ins #uuu
+ins #uvY
+ins #uvK
+  aktuelle Exp.param und Exp.datei sichern
+var e
+ins #uwe
+
+  Aufforderung zur Eingabe von Name und Ueberschrift f.d. Param.
+ask Name / Kurzkommentar für diese ViP (1. Zeile der Parameterdatei)=test / TestListe
+if cancel end
+if "" var "test / TestListe"
+ins #uvt 
+var #uvt(e" /")
+ins #uvo
+var "v-" #uvo(B"v-")
+ins #uvo
+var #uvo "." K1 "pr"
+ins #uvs
+  Ausgabedatei ist v-test.cpr
+  var "vvv." K1 "pr"
+  Alternative: auf dem Arb.Verz.
+  var W "\\vvv." K1 "pr"
+open x
+
+  Vorspann der Parameterdatei schreiben (view1.apt als Kopfteil)
+wri "  " #uvt(B"/ ") n 
+
+var "view1." K1 "pt"
+wri F
+  erste Zeile aus viewf.txt einlesen
+get
+:loop
+if "#" jump ccc
+get 
+if yes jump loop
+jump dateiende
+
+  Zeile mit '#' gefunden: 
+:ccc
+spaces
+  Zeile in #uuu lagern
+ins #uuu 
+
+if %"_"% jump summ
+if %P":"% wri "#nr p'j!' e'!' =vY" n
+wri #uuu
+jump nosumm
+:summ
+wri #uuu n
+wri "#nr p'j!' e'!' =vM"
+:nosumm
+wri n
+  naechste Zeile lesen
+get
+  es gab noch eine:
+if yes jump loop
+  keine mehr
+:dateiende
+if #uuu jump param
+  Es gab keine mit '#' anfangende Zeile (dann #uuu leer):
+mess Keine geeigneten Befehlszeilen gefunden!
+end
+
+:param
+var "view2." K1 "pt"
+wri F
+  Parameterdatei ist jetzt fertig, schliessen!
+close x
+  .vw-Datei schliessen, wenn noch offen
+close view
+
+  Name der aktuellen Erg.Menge -> #uvU
+var U
+ins #uvU
+  Parameterdatei zur Erstellung des FLEX
+var #uvo
+xport p 
+
+  den eigentlichen Namen herausschaelen und in #uvs kopieren
+  var #uvs(e".")
+  ins #uvs
+  Name der Datei = Name der Erg.Menge (Nummer = q) 
+ var B "_" q 
+  Alternative: Anlage auf Verzeichnis TEMP
+
+var "vvv"
+ins #uvw
+  Diesen Namen als Outputdatei verwenden
+open x 
+
+   aktuelle Erg.Menge exportieren, Datei schliessen
+var ""
+ins #uvx
+if empty jump full
+
+down set
+:ready
+close x
+
+  Sortierbefehl zusammenstellen (dabei Sortierkopf #u1 beseitigen)
+  asort name name.vw -u3
+var #uvY
+  Gruppierung gewuenscht? (j in #uvw)
+if "j" jump grp
+if #uvM jump grp
+var #uwC " /c " P "asort " #uvw " " #uvw ".vw -u3"
+  (Option -u3 beseitigt #u1 etc.)
+jump sort
+:grp
+var #uwC " /c " P "asort " #uvw " " #uvw "." K1 "lg -u1"
+:sort
+  Sortieren ausfuehren
+cAll
+
+var #uvY
+if "j" jump grupp
+if #uvM jump grupp
+jump anzeigen
+:grupp
+var #uwC " /c " P "srch -f6 -P" P " -d" #uvw "." K1 "lg -eviewgrup/" #uvw ".vw -v0 -m0 -k" K " -b" D B
+ins #uUU
+cAll
+var #uvw "." K1 "lg"
+delete
+
+:anzeigen
+  unsortierte Datei  name  wieder loeschen
+var #uvw 
+delete 
+
+var #uvw ".vw"
+            Sortierte Datei anzeigen
+View
+
+
+:vdat
+close view
+ask Erg.Menge als ViewListe aufbewahren? Dann einen Namen eingeben:
+if "" jump ende
+ins #uvn
+ins #uv9
+
+var "vvv.vw " #uvn(e".") ".vw"
+rename 
+if no jump rerr
+var #uvn(e".") ".vw"
+
+  wieder oeffnen
+view
+
+
+jump ende
+
+
+:ende
+  aktuelle exp.param wiederherstellen
+var #uwe
+xport p
+  HilfsVariablen loeschen
+#uvs
+#uvu
+#uvz
+#uvx
+#uvw
+#uva
+#uwe
+#uwE
+#uvt
+#uvx
+
+  Diese koennten nochmals gebraucht werden, daher nicht loeschen
+ ins #uvA
+ ins #uvB
+ ins #uvC
+ ins #uvD
+ ins #uvE
+ ins #uvF
+ ins #uvG
+ ins #uvH
+ ins #uvI
+ ins #uvJ
+ ins #uvZ
+ ins #uvo
+show rec
+var "   Mit  Strg+o  erscheint ViewListe wieder, Menue mit Strg+w!"
+sho iv
+h view
+end
+
+:full
+noyes Keine Erg.Menge. Ganze Datenbank als View?
+if not yes jump ende
+if yes dow database
+jump ready
+
+:rerr
+ins $r
+var "Umbenennung " $r " hat nicht geklappt"
+mes
+

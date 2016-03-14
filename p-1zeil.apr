@@ -1,0 +1,54 @@
+  P-1ZEIL.APR : Einzeilige Ausgabe einer KurzÅbersicht
+  940603  FÅr Listenproduktion nach Sortierung
+pn="1zeiliger Listendruck"
+
+   Voraussetzung: #u1 enthÑlt den Sortierkopf
+                  #u2 den Druckkopf
+                  beide kînnen mehrteilig sein; Trennung der Teile durch ''
+  -----------------------------------------------
+zl=80
+zm=60    0 wenn fortlaufende Ausgabe gewÅnscht
+z1=0     keine Unterbrechung am Seitenende
+ff=2
+  ------------------------------------------------
+
+#hi +I e0 #zz 0
+
+#u1 +A e"" =sw,0
+#t{ "---" }
+#+B
+
+#-A
+#u2 e"" U e16
+
+#-B
+
+#20 +#76 U E47 { &19 }
+#8n U E47 { &19 }
+
+#-C
+#76 x"*1" e"." s4,. { &66 }
+
+#90 e"" e" = " e9 { &72 }      9 Stellen!
+
+#+#
+
+#-I           BandauffÅhrungen
+#t{ &19 }
+#hi1 e16 c"enth" dbd abd
+#20 +D e30 "  " Abd
+#19 +D e30 "  " Abd
+#77 e30 "  " Abd
+#-D
+#ubd e47
+#+C
+
+K    Kopfabschnitt
+#p2 p"- " P" -" R    Seitenzahl rechtsb.
+#ukk R #zz 0
+#t{ C }
+
+p ™ 1      Nichtsortierzeichen weglassen
+
+tPRINTER
+

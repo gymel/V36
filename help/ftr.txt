@@ -1,0 +1,112 @@
+
+
+
+Die Volltextsuche mit "Regul„ren Ausdrcken"
+
+Beim Suchen im Text der Datens„tze kommt es oft vor, daá man die genaue Schreibweise nicht weiá. Man sucht etwa den Namen Meyer, aber er k”nnte auch Meier, Maier oder Mayer geschrieben sein, das zweite e k”nnte sogar fehlen. Die Methode der sog. Regul„ren Ausdrcke erlaubt es dann, z.B. das Suchwort so einzugeben:
+m[ae][iy}e*r
+und dann findet man alle Schreibweisen auf einmal!
+
+Hier die Regeln fr Regul„re Ausdrcke:
+---------------------------------------
+
+Ein Ausdruck dieser Art muá bei der Anwendung in #u!! stehen, der
+zu durchsuchende Text in der internen Variablen.
+Die Punkte 2 und 3 sind allegro-spezifisch modifiziert, 1 gibt es
+im g„ngigen Standard nicht!
+
+ 1. Unterstrich an erster Position: Exaktheit
+    _abc  oder  abc
+    Exakte bzw. umcodierte Suche
+    Setzt man einen _ vor den Suchbegriff, wird dieser exakt gesucht,
+    d.h. mit Eingabe von  _Müll  findet man nur Müll, nicht Muell oder
+    muell oder müll.
+    Ohne _ wird der Datentext umcodiert, der Suchbegriff aber
+    nicht! Man muá also  muell  eingeben, um Müll, Muell und
+    muell und müll mit einer einzigen Suche zu finden.
+    Man wird meistens umcodiert suchen wollen, deshalb fordert diese
+    Variante kein Steuerzeichen. Wichtig: Dann nur Kleinbuchstaben
+    ohne Akzente eingeben, Umlaute aufgel”st, ss statt ß!
+    (Der _ hat nur in der ersten Position diese Wirkung.)
+    Zur Umcodierung werden die p- oder q-Befehle in den Indexparametern
+    verwendet, es wird aber noch weitere Alternativen geben. Mehr dazu
+    am Ende: Befehl  set xm
+    Hinweis: SRCH.EXE arbeitete mit einer Tabelle namens s1.asp.
+
+ 2. Zirkonflex auf erster Position: Feldanfang
+    ^abc  findet  abc  nur, wenn es an einem Feldanfang steht.
+    Dabei gilt der Anfang des Feldtextes, ohne die Kategorienummer.
+    Also:  _^Shakesp  findet  #40 Shakespeare und #31 Shakespeare
+    Wenn der zu durchsuchende Text (der iV-Inhalt) nicht mit '#'
+    beginnt, gilt das erste Zeichen als Textanfang.
+
+ 3. Dollar an letzter Position: Feldende
+    abc$  findet  abc  nur, wenn es am Ende eines Feldes steht.
+    Wenn der zu durchsuchende Text (der iV-Inhalt) nicht mit '#'
+    beginnt, gilt nur das Ende des gesamten Textes.
+
+ 4. Punkt ist Joker (engl. "wildcard")
+    AB.D  findet jedes ABxD, mit beliebigem Zeichen x
+    Mehrere Punkte innerhalb eines Suchbegriffs m”glich, jeder Punkt
+    steht dann fr genau ein Zeichen.
+
+ 5. Stern: Mehrfachvorkommnis
+    ABc*D  findet ABD, ABcD, ABccD, ABcccD ... (d.h. c darf fehlen)
+
+ 6. Punkt-Stern: Binnentrunkierung (Kombination aus 4 und 5)
+    AB.*CD  findet  ABxyzCD  mit beliebiger Folge xyz, aber im selben
+       Datenfeld, nicht irgendwo weiter hinten im Datensatz!
+       Das entspricht  AB,CD  im Programm SRCH
+
+ 7. Plus: wie Stern, aber mindestens ein Vorkommnis
+    ABx+D  findet ABxD, ABxxD, ...  (d.h. mind. ein x muá vorkommen)
+
+ 8. Eckige Klammern: Variantensuche
+    AB[pq]Z   findet  ABpZ und ABqZ
+    AB[c-f]Z  findet  ABcZ, ABdZ, ABez, ABfZ
+    Die Angabe [c-f] deutet also an, daá eines der Zeichen im
+    Bereich c-f an der Stelle vorkommen muá.
+    [^c-f] bedeutet Negation, d.h. Zeichen c-f sollen an der Stelle
+    nicht auftreten
+    Eine Angabe [c-fp-y] verlangt, daá ein Zeichen aus dem Bereich
+    c-f oder p-y vorkommt.
+
+ 9. Kombinationen [...]* und  [...]+
+    * und + k”nnen auch hinter ] auftreten und beziehen sich dann auf
+    die in [...] angegebenen Zeichen, d.h.
+    AB[c-f]*XY  findet z.B.  ABXY, ABcXY, ABdXY, ABceXY, ABcdcdfXY, etc
+    AB[c-f]+XY  findet aber ABXY nicht, nur die anderen wie bei *
+    Beispiele: ele[ck]tri  findet electri und elektri
+              theat[er]+  findet Theater und theatre
+              i[sz]abel+a findet Isabella, Izabella und Izabela
+
+10. Steuerzeichen suchen
+    AB\xCD   findet ABxCD
+    Das Zeichen x soll vorkommen. Man setzt \ vor solche Zeichen,
+    die sonst eine Steuerfunktion haben, also [ ] + * $ ^ _
+
+11. \< : Wortanfang suchen
+    \<abc   findet abc, aber nur wenn es an einem Wortanfang steht.
+    Ein "Wort" beginnt mit Buchstabe oder Ziffer, d.h. es geht
+    irgendein anderes Zeichen oder kein Zeichen voran, z.B. auch -
+
+12. \> : Wortende suchen
+    abc\>   findet abc, aber nur wenn es an einem Wortende steht.
+    Hinter c soll also im Text ein Sonderzeichen oder nichts folgen.
+    10 und 11 sind kombinierbar, damit ist exakte Wortsuche m”glich.
+
+13. \(...\) : Wiederholung eines Ausdrucks
+    \(AB\)xyz\1   findet ABxyzAB
+    \(AB\).*\1    findet AB...AB
+                  mit beliebiger Zeichenfolge zwischen den beiden AB.
+    Es k”nnen weitere Ausdrcke \(...\) auftreten, die danach mit \2,
+    \3 etc. im selben Gesamtausdruck wiederholt werden k”nnen.
+
+14. Sonderwerte
+    Mit \w innerhalb jedes reg.Ausdr. kann man Positionen markieren, an
+    denen ein Buchstabe vorkommen soll:
+    \w  sucht nach einem beliebigen Buchstaben oder Unterstrich
+        #90.*[123]\w     bedeutet:
+        Kommt in #90 eine Ziffer 1,2 oder 3 und dann ein Buchstabe vor?
+    \s  sucht nach einem blank (Spatium)
+

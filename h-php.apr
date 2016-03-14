@@ -1,0 +1,129 @@
+  H-PHP.APR  : Sonder-Routinen fuer PHPac, Funktioniert fuer jede Konfiguration!!
+  2001-10-24 / 2008-09-02 : KEIN ANPASSUNGSBEDARF, falls andere CFG
+
+pn="PHPAC extra functions"
+
+zl=0       Zeilenlaenge 
+
+zi=1        1 Leerzeichen Einrueckung
+fl=0        kein Kartendruck
+
+fm=0        Modus: keine Einzelausgabe fuer hierarch. Untersaetze
+zm=0        kein Seitenumbruch
+zb=" "      moegliche Stellen fuer Zeilenbruch: nur Spatium
+as=""
+ab=""
+ae=""
+ze="" 
+
+i4=1
+dx=1
+
+tad-utf    es soll UTF-8 rauskommen
+            aktivieren, wenn intern ASCII und Anzeige UTF-8 sein soll
+
+  p .31 47   Teilfeldzeichen -> /
+p .34 "&quot;"
+p / "&#x2f;"
+p .60 "&lt;"
+ p & "&amp;"
+
+
+p  255   neue Zeile bei Absatzzeichen. Andere Moeglichkeiten:
+ p  1     ausblenden, oder
+ p  182   normal anzeigen
+ 
+
+ab=""
+as=""
+ae=""
+
+   ------------- RuckZuck -----------------
+          4 Sprungbefehle. Muessen ganz oben stehen
+            Fuer diverse Sonderfunktionen
+     Im avanti-Job werden die Variablen #utZ etc. gesetzt, 
+       dann Befehl "export" zum Ausfuehren dieser Datei 
+     hier ist der Sprungverteiler dafuer:
+       wenn also z.B. #uII besetzt ist, geht es zur Marke #-:
+
+#utY +~ e0         Text fuer input-Textfeld in HTML
+#utZ +' e0         Text fuer input-Zeile in HTML
+#ukt +_ e0      Kurzzeile aufbereiten (obsolet)
+#utX +A e0      Registerueberschrift aufbereiten
+#+#
+
+#-A
+!utX e""
+#utX dtX e0
+
+#+#
+
+#-'   Text fuer input-Zeile in HTML ausgeben (aus EDREC.PHP)
+       #utZ enthaelt eine Kategorienummer. 
+         Ausgegeben wird dann der Inhalt der betr. Kategorie.
+         z.B.  #utZ 20  -->  #20 wird ausgegeben
+#bze=" "
+   Sonderzeichen, falls diese nicht korrekt rauskommen
+ #bp .170 "¬"    Nichtsortierzeichen
+ #bp .31 "▼"   .226 150 188     Teifeld-Dreieck
+
+#bp .20 "¶"    kein Zeilenumbruch bei Code 20 = Strg+t
+
+#utZ +#uZZ e"[[]" e" " c"__" e"_" w p"(" c"^(:" f"(" e""
+#utZ ,",_,$," w   wenn - vorkommt, durch $ ersetzen
+                   Mit w wird dann der Inhalt des Feldes genommen 
+                   z.B.:  #utZ 90-u  --> Inhalt von #90, Unterfeld u
+#uZZ
+#utZ dtZ e0   variable wieder loeschen
+#+#
+
+#-~   Text fuer Textfeld in HTML ausgeben
+       #utY enthaelt eine Kategorienummer! 
+         Ausgegeben wird dann der Inhalt der betr. Kategorie.
+         z.B.  #utY 98  -->  #98 wird ausgegeben
+#bze=" "
+
+#bp .170 "¬"    Nichtsortierzeichen
+
+#bp .20 .13 10     Zeilenumbruch bei Code 20 = Strg+t
+
+  Feldnummer nehmen, mit w den Inhalt des Feldes holen!
+  In #utY kann stehen  #utY98 [9,20]  oder  #utY40
+        fuer Feld #98 bzw. #40
+
+#utY +#uZZ e"[[]" e" " c"__" e"_" w e""
+#utY e"[[]" e" " ,",_,$," w p"(" c"^(:" f"("
+#uZZ
+#utY dtY e0   variable wieder loeschen
+
+#+#
+
+
+  Sonderabschnitt fuer RuckZuck-Funktionen (Aenderung nur durch Experten)
+  ----------------------------------------
+
+
+  Eine Kurzzeile vorbereiten (steht in #ukt)
+  Wird nicht gebraucht, wenn  p-brief.xpr  eingesetzt wird!
+#-_
+#ukt e0
+#hi +- e0
+   < durch &lt; ersetzen
+#ukt ,"_<_&lt;_" =kt
+#+#
+  ----------- Ende RuckZuck ---------------
+
+
+q # "%23" 
+q < "%3C" 
+  Diese werden nur gebraucht, damit die Ueberschriften und die
+  Select-Zeilen richtig rauskommen:
+
+q .129 "ü"   ue
+q .132 "ä"   ae
+q .148 "ö"   oe
+q .142 "Ä"   Ae
+q .153 "Ö"   Oe
+q .154 "Ü"   Ue
+q .225 "ß"   ss
+

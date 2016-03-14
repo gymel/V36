@@ -1,0 +1,90 @@
+  E-UNIHTM.APR : Ausgabe als UTF-8-Datei mit Kategorie-Nummern
+  2004-01-27 / 2009-06-23 : Version mit Ergzg f. HTML
+  Alle Felder in der internen Reihenfolge ausgeben 
+  bzw. einzelne Felder per FLEX-befehl "write", dann vorher  exp wX
+
+pn="Ausgabe UTF-8"
+
+  Gibt Daten in UTF-8 aus, jede Kategorie mit Nummer
+  auf neuer Zeile.
+  ACHTUNG: zwei Kommentare mit $$$$ weisen auf Aenderungsbedarf hin
+
+  --------- Konstanten --------------------------------------------
+
+zl=0 	    Zeilenlaenge
+zi=0	    4 Zeichen Einrueckung bei Folgezeilen
+zm=0        kein Seitenumbruch (fortlaufende Ausgabe)
+ae=""       kein Zeilenvorschub am Aufnahme-Ende
+fl=0        Listenstruktur (keine Karten)
+
+  $$$$ ACHTUNG: diese Werte, falls intern ASCII
+  Akzentzeichen, aktivieren, wenn sie nicht in Indexparam. stehen
+pa=181 182 183 184 189 190 198 199 207 208 209 210 211 212 219 222 223 232 
+
+  bzw. diese, wenn Windows-Code (ANSI):
+  pa=180 145 136 149 168 166 227 179 186 175 215 171 184 191 161 173 247 150
+  -----------------------------------------------------------------
+  oder kein solcher Befehl, wenn intern UTF-8
+
+  ********* Kategorieliste ****************************************
+  Wenn #u1 besetzt ist, dann -> #-X
+#u1 +X e0
+
+#da       Akzente verschieben hinter die Buchstaben
+#bks=0
+##        saemtliche Kategorien ausgeben in interner Reihenfolge
+     $$$$ ACHTUNG: 5 oder 6, wenn 3- oder 4-stelliges Schema
+#bks=4
+#+#
+
+        falls nicht alle gebraucht oder gewuenscht werden:
+        Weglassungen: Kategorienummern mit / hier anfuegen, z.B.
+  /89   dann wird #89 weggelassen
+  /9..  dann wird die ganze Gruppe #9 weggelassen
+        oder: hier eine Liste der auszugebenden Kategorien eintragen (statt ##)
+        z.B.
+
+
+  Dieser Abschnitt ist f. FLEX-Befehl  exp wX ; exp ; exp w0
+  (dann aber im FLEX unbedingt auch    exp a   vor solchen Befehlen, um ´a in a´ zu wandeln!
+#-A
+#-X
+#hi +- e0      sonst Aerger mit hierarch. Saetzen!
+
+#u1 
+#+#
+
+#-Y
+#hi +- e0      sonst Aerger mit hierarch. Saetzen!
+
+#u1 B"ª "
+#+#
+
+  *******************************************************************
+
+ Code-Umwandlungen
+
+  Folgende Zeile deaktivieren, wenn intern UTF-8 !
+tad-utf   ad-utf.apt laden.
+    Hilfscode 28 wird Dreieck (kommt vor wenn Space hinter  ) (OBSOLET)
+ p .028 "â–¼"   BLACK DOWN-POINTING SMALL TRIANGLE  TeilfeldDreieck
+
+
+   Fuer HTML-Ausgabe noetig:
+p .020 "<br>"    Absatz-Endezeichen, falls es als solches wirken soll
+p < "&lt;"
+ p > "&gt;"   nicht noetig!
+p & "&amp;"
+p .34 "&quot;"     Sonst ' und " in input-Feldern nicht gleichzeitig moeglich
+
+  Steuerzeichen, die nicht rauskommen sollen
+
+p .1 1
+p .2 1
+p .3 1
+p .4 1
+p .5 1
+p .6 1
+p .7 1
+p .29 1
+

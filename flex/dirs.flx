@@ -1,0 +1,363 @@
+  DIRS.FLX :  Zeige Dateien gewuenschten Typs,
+  2005-02-17  und zwar auch auf den Unterverzeichnissen
+
+if "lll" jump dlist   // Aufruf geschah mit   dirs lll: selbe Liste nochmals zeigen
+
+  Anzugeben ist ein Namensmuster in #upN
+  z.B.  c:\allegro\*.ap? : alle Export- und Indexparameter auf
+        dem Progr.Verz und seinen Unterverzeichnissen.
+  Wenn ohne Pfad, dann relativ zum Arbeitsverzeichnis
+  Wenn #upN schon belegt, wird es als Pfadname genommen
+var #upN
+if "" ask Pfadname?  ;   if "" end
+ins #upN
+
+var #upN(1,0)
+  / oder \ als Trenner moeglich
+
+if not ":\\" if not ":/" jump dli
+if ":\\" var #upN(b"\\" b"\\");if not "" jump dli
+if ":/" var #upN(b"/" b"/");if not "" jump dli
+
+  Root-Verz oder direktes Unterverz.!
+yes Hmm, das kann ein Weilchen dauern! Trotzdem?
+if not yes end
+
+:dli
+  Dir-Daten in lll schreiben ( /s bewirkt Anzeige von Unterverz.)
+var 'dir /s "' #upN(f'"' F'"') '" >lll'
+dos
+
+  lll.lst als aresqa-geeignete Liste aufbereiten
+#upE-
+open x lll.lst
+open lll
+
+  zeilenweise bearbeiten
+:loop
+get
+if can jump ende
+if "    " jump loop
+ins #upL
+var #upL
+  ist diese Zeile ein Verzeichnisname? (enthaelt \ )
+if %\\% jump dl
+var #upL
+if " " jump loop
+if %: % jump loop
+var #upL
+if "" jump loop
+
+  Kompletten Dateinamen zusammensetzen
+  (wegen moeglicher Leerz. im Dateinamen etwas trickreich)
+var #upD "\\" #upL(b" " f" " b" " f" " b" " f" ")
+ins #upZ
+
+wri #upZ(0,30) #upZ(30,0) "  " 9 "(" #upL(t" " e"  ") ") " #upL(b" " f" " b" " f" " e" ") n
+jump loop
+
+   Zwischenueberschrift: Verzeichnisname
+:dl
+var #upL(b" " b" ")
+ins #upD
+wri #upE "----------------  " #upD n
+#upE+
+jump loop
+
+:ende
+close x
+close
+del lll
+
+  Aresqa-Fenster zeigen
+:start
+:dlist
+var #upN
+set a
+Ar lll.lst
+if "" end
+if "--" jump verz
+if ".--" jump verz
+if "+--" jump verz
+if %\\.% jump up2
+ins #udN
+var #udN(t" " t" ")
+ins #udN
+
+var "Datei: " #udN
+set a
+var "1. Datei anzeigen" n "2. Datei löschen" n "3. Datei kopieren" n "4. Datei umbenennen" n "5. Ende"
+Aresqa
+if "" jump dlist
+if "1. " jump display
+if "2. " jump loeschen
+if "3. " jump coppy
+if "4. " jump name
+if "5. " end
+
+:display
+  Dateinamen untersuchen
+var #udN "!"
+  ein paar Typen ausschliessen:
+  (einige koennte man anders behandeln, noch ausbaufaehig!)
+if %~.exe!% jump gehtnich
+if %~.dll!% jump gehtnich
+if %~.com!% jump gehtnich
+if %~dx!% jump gehtnich
+if %~ld!% jump ald
+if %~1d!% jump gehtnich
+if %~8d!% jump gehtnich
+if %~lg!% jump gehtnich
+if %~1g!% jump gehtnich
+if %~8g!% jump gehtnich
+if %~stl!% jump gehtnich
+if %~tbl!% jump gehtnich
+if %~res!% jump gehtnich
+if %~log!% jump gehtnich
+if %~rtf!% jump help
+if %~htm!% jump janas
+if %~xls!% jump dos
+if %~ppt!% jump dos
+if %~doc!% jump dos
+if %~pdf!% jump dos
+if %~ico!% jump gehtnich
+if %~jpg!% jump dos
+if %~gif!% jump dos
+if %~png!% jump dos
+if %~lzh!% jump gehtnich
+if %~zip!% jump gehtnich
+if %~._% jump gehtnich
+if %~pr!% jump param
+if %~.vw!% jump vw
+
+:anzeig
+  sonst Datei anzeigen, MIT Schreibberechtigg. (falls access>4 !)
+var "Anzeige und Bearbeitung im Anzeigefeld?" n "Nein: mit aresqa"
+yes
+if can jump dlist
+if yes jump thelp
+:arv
+var #udN
+fsize
+if >250000 yes Das wird dauern, Datei recht gross.; if no jump dlist
+var "*" #udN
+aresqa
+  Gibt es die Datei  aresqa.lst? Dann wurde bearbeitet
+fsize aresqa.lst
+if no jump weiter
+yes Es wurde etwas bearbeitet. Original durch neue Version ersetzen?
+if not yes jump weiter
+var "aresqa.lst " #udN
+fcopy
+:weiter
+jump start
+end
+
+:vw
+yes Mit aresqa anzeigen? (Nein: als ViewListe zeigen)
+if can jump dlist
+if yes jump arv
+var #udN
+View
+jump dlist
+
+:dir
+var #udN(b"DIR>" T" " f" ")
+if "." jump up1
+var #udZ(F"\\") "\\" #udN(b"DIR>" T" " f" ")
+jump start
+
+:up1
+var #udZ(t"\\") "\\"
+jump start
+
+:up2
+ins #upN
+mes
+var #upN(e"\\." t"\\") "\\*"
+ins #upN
+mes
+exec dir
+jump dli
+
+:sort
+var ""
+if not #ufo var "n"
+if #ufo #ufo
+ins #ufo
+jump dlist
+
+:gehtnich
+var "Datei: " #udN n "Dateien dieses Typs k”nnen nicht angezeigt werden"
+ansi
+mes
+jump start
+
+:lgehtnich
+var "Datei: " #udN n "Dateien dieses Typs k”nnen nicht gel”scht werden"
+ansi
+mes
+jump start
+
+:janas
+var "file:///" #udN
+janas
+end
+
+:help
+var #udN
+help
+jump start
+
+:dos
+var #udN
+dos
+jump start
+
+:thelp
+var #udN
+help
+end
+
+:param
+var "Datei " #udN n "Im Anzeigefeld zeigen und bearb." n "Nein: mit Editor " x " bearbeiten? " n "Abbruch: nichts"
+ansi
+yes
+if no jump xedit
+if yes jump thelp
+jump start
+
+:xedit
+get env comspec
+ins #uwC
+  Editorbefehl zusammensetzen (x ist der Name des externen Editors)
+  (in der FLEX-Variablen  x  steht der Name des externen Editors)
+var #uwC " /c " x " " #udN
+
+call
+jump weiter
+
+:loeschen
+var #udN "!"
+  ein paar Typen ausschliessen:
+if %~.exe!% jump lgehtnich
+if %~.dll!% jump lgehtnich
+if %~.com!% jump lgehtnich
+if %~dx!% jump lgehtnich
+if %~ld!% jump lgehtnich
+if %~stl!% jump lgehtnich
+if %~tbl!% jump lgehtnich
+if %~res!% jump lgehtnich
+yesno Wirklich
+if not yes jump start
+var #udN
+delete
+jump dli
+end
+
+:coppy
+var "Name fr die Kopie von " #udN
+ansi
+ask
+ins #unN
+var #udN " " #unN
+fcopy
+jump dlist
+
+:name
+var "Neuer Name fr " #udN "=" #udN(t"\\") "\\"
+ansi
+ask
+ins #unN
+var #udN " " #unN
+rename
+if no jump rerr
+jump dlist
+
+:ald
+var "~" D
+ins #udD
+var #udN(t"\\") "\\"
+  Liegt ALD-Datei auf Datenverz?
+if not =#udD jump gehtnich
+
+var #udN(b"_" e".")
+ins #udS
+var #udN
+open
+if no end
+  Hilfsdatei fuer Liste der Satznummern anlegen
+var "file-" #udS ".set"
+open x
+  Ueberschrift rein
+wri "Datei " B "_" #udS "." K1 "LD" n
+
+var "Die Satznummern werden ermittelt, Abbruch mit Esc möglich"
+ansi
+sho iV
+  Satznummern reinschreiben
+:sloop
+keychk
+if yes jump break
+  erstes Byte holen
+fet b
+  nichts mehr: ende
+if ="-1" jump dateiende
+
+ 9 heisst "geloescht", Satz nicht mitnehmen
+if ="9" if not #uvL jump nchst
+if not ="9" if #uvL jump nchst
+
+  Satznummer ausrechnen (Bytes 1 - 4)
+fet b4
+ins #unZ
+  Satznummer in die Hilfsdatei schreiben
+wri #unZ n
+
+:nchst
+   zur Sicherheit naechste 4 Bytes lesen
+fet 4
+  dann Lesen bis zum Code 10 (= Satzende!)
+fet ^J
+  -> Schleife
+jump sloop
+
+  Ende erreicht
+:dateiende
+  Dateien schliessen
+close x
+close
+var "file-" #udS ".set"
+  Liste der Satznummern als ext. Erg.menge einlesen
+read set
+  Viewliste schliessen und loeschen
+
+  Abbruch: ViewListe schliessen und loeschen
+clo v
+del xxx.xxx
+  Ueberschrift ruecksetzen
+set i8
+  und Hilfsdateien loeschen
+var "file-" #udS ".set"
+del
+  Variablen loeschen
+#upN
+#uvD
+#udS
+#uvL
+  Erg.Menge zeigen (FLEX endet dann)
+sho list
+end
+
+:verz
+ins #uvZ
+var "X dir " #uvZ(f"-+ ") "\\*"
+exec
+end
+
+:rerr
+ins $u
+var "Umbenennung " $u " hat nicht geklappt"
+mes
+
+

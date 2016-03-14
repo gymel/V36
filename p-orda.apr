@@ -1,0 +1,366 @@
+  P-ORDA.APR : Druckparameterdatei (Bestellschein VOL) fuer ORDA/ORDER/a99
+  2000-01-19 / 2012-04-24   Einsatz zusammen mit  o-bdruck.flx
+  ACHTUNG
+  An einigen Stellen sind die lokalen Angaben der Bibliothek einzusetzen! 
+    Die Stellen sind mit  XXX  markiert, die Zeilen mit ###
+
+pn="ORDER Bestelldruck"
+
+  Gebraucht wird ein Textbaustein, d.i. ein Systemsatz des Typs  #9A X,
+  zu finden im Reg. 11 unter SYSXDEU.BESTEL
+  ORDER-Menü:  "Textbausteine bearbeiten"
+  Die Elemente in #9A sind:
+    $A "Überschrift"   z.B.  BESTELLUNG
+    $B "Best.Nr."            Bestellnr.
+    $C "AuftrGeber"          Fachref.:
+    $G "Exemplare:"
+    $O "Einzelpreis:"
+    $L "Liefermodus:"        eilig
+    $S "Bestelltext:"        Die ...-Bibl. bestellt:
+    $W "Zusatztext:"   z.B. "Lieferung mit Einzelrechnung"
+
+    Achtung: Diese Methodik wird nicht konsequent angewendet, es gibt
+    etliche Textelemente, die hier in dieser Datei explizit stehen.
+    Der Vorteil der Textbaustein-Systemsaetze ist, dass man fuer jede
+    Sprache einen anderen haben kann.
+
+
+  Grundparameter (z.T. auch in d-rtf.apt gesetzt, s. dort)
+zl=0   Keine feste Zeilenlaenge (Umbruch in Word)
+zm=0   Keine feste Zeilenzahl je Seite
+
+fl=0   Keine feste Zeilenanzahl je Formular
+
+am=0   ohne Belang
+
+i4=1   V14-Ersetzungen: _nummer durch Klartext ersetzen
+
+  Textelemente (Zwischenteile)
+1=#1 C
+2="   "
+3=#5
+4=#7
+5="; "
+6=#6
+7=" - "
+8="." p1
+9=C 
+
+10="\par " 10
+
+98=10 10 
+99=C 
+
+  Variablen:
+  #ulC : Lieferantencode, zugl. Flag (dass es einen Code gibt)
+  #ulA : Lieferantencode der aktuellen Bestellung
+  #ulG : Wenn besetzt, dann bei Lieferantenwechsel erst Fusstext
+           (beim ersten Bestellsatz noch nicht gesetzt)
+  #ulS : Wenn gesetzt (in o-bdruck.flx), dann nur Fusstext
+         Abschluss der letzten Bestellung!
+  #ulZ : Wenn gesetzt, dann Einzelbestell., d.h. keine Numerierung
+
+#ulS >F e0
+#ulS +# dlS e0
+
+#9DA +i e0    es *ist* ein Bestellsatz
+
+#+-   keine Ausgabe, wenn kein Bestellsatz vorliegt
+
+
+#-i
+
+    Hat der Lieferant gewechselt? (Bei der vorigen Bestellung war's ein anderer)
+     Dann erst Fusstext+Briefkopf, Lieferantencode in #ulA merken
+
+#9DB +J j =lA e0
+#9DB +J J =lA e0
+#+B    sonst gleich die eigentl. Bestellung
+
+   war vorher zuletzt anderer Lieferant: erst mal den Fusstext
+   (d.h. es sind schon andere Bestellungen verarbeitet, sonst #ulG nicht besetzt)
+#-J
+
+#ulG >F e0
+
+#ulA 0 =lG e0    
+
+
+  Numerierung: Zaehler f. Bestellungen des Lieferanten auf 1 setzen
+#nr p"1!" e"!" =nr
+
+  Kopiere das Textbausteinanhaengsel in #uxy. Welches Anhaengsel
+  genommen wird, haengt vom Status des Datensatzes ab 
+  (Indikatorpruefung: auf Pos. 4 steht 3,4,5,6)
+#9DB i4,3 dxy p".BESTEL" e7 axy
+#9DB i4,5 dxy p".STORNO" e7 axy
+#9DB i4,4 dxy p".REKLAM" e7 axy
+  Stelle den Lieferantencode in der Var. #ulC zur Verfuegung
+
+#9DB +#9DX j p"SYSL" =lC   nach #-X  wenn ungleich
+#ulC dlC e0
+#9DB +#uxy J e0
+#-X    ###
+       #+B   nach -B wenn gleich
+  Lade den Lieferantendatensatz. Er ist im Index 11 zu finden
+  Wenn er vorhanden ist, springe nach Marke -A, sonst mach weiter
+#9DX
+#ulC +A |112
+
+  Fuer Lieferant-Direkteingabe wird DEU.BESTEL als Text genommen
+#uxy p"SYSXDEU" dxy axy
+#uxy +C |112   Suche Textbaustein im Register 11
+#9A dyy b"x" ayy            Loesche #uyy, At = alles hinter x,
+ kopiere AT nach #uyy
+#<
+
+  Hier beginnt die eigentliche Bestellung
+#-B
+
+#t1
+  Wenn #ulZ, dann keine Numerierung (Einzelbestell.)
+#ulZ +k e0
+  Numerierung innerhalb des Lieferanten
+#unr e"." P". "
+#unr x"+1" =nr    hochzaehlen
+
+#-k
+#t99
+  Gib die Bestellnummer aus, steht in #9DA ganz vorne
+  Das Wort "Bestellnr.:" ist in #uyy$B:
+#uyy B
+#9DA e""
+
+  Falls Rekl., dann hinter der Bestellnummer:
+#9DB i4,4 P{ " \i [Reklamation!]\i0 "} e0
+
+
+#9DA dab T aab
+!uab +Q y2 |92    Lade Titelsatz ueber Reg. 9
+
+  vom Titelsatz hierher zurueck
+#-W
+
+#t{ t10 }
+
+ Falls noch Elemente, dann nach diesem Muster:
+
+ #uyy C              Text aus Bausteinsatz
+ #9DA V b"(" e")"    Element aus Bestellsatz
+
+#t{ t10 }
+
+#uyy G    Exemplare
+#9DB +#9Dx n P"   "
+#t{ " 1   " }    falls $n nicht belegt
+#9Dx
+
+   auch Anzahl der Stuecke ausgeben? Dann aktivieren
+ #9DB +#9DX v x"==1" e0
+ #uyy H    Stuecke
+ #9DB v P"   "
+ #9DX
+
+#uyy O     Einzelpreis:
+#9DB p
+#9DB c p"  "
+#t{ t98 t10 }    #### t98
+
+  Auch Kontingent mit ausgeben? Dann aktivieren:
+ #uyy I     Kontingent
+ #9DB daf a p"SYSK" aaf
+ #uaf +S |112         Laden Kontingentsatz   (Index 11)
+  von dort kommt man hierher zurueck:
+
+#-T
+ #t{ t10 }
+ #uyy j
+
+  Bestellweg?
+ #9DB +a b"ws" e0
+ #9DB +b b"we" e0
+ #9DB +c b"wt" e0
+ #9DB +d b"wf" e0
+#+P
+#-a
+#uyy +P K
+#-b
+#uyy +P L
+#-c
+#uyy +P M
+#-d
+#uyy +P N
+#-P
+#9DB i4,4 p{ t10 "Reklamationsgrund: " t99 } u 
+#t{ "\par \par " }
+#t98
+#+#
+
+#(F
+  Fusstext: 
+   #uyy S ### lieber als Text hier, nicht aus dem Baustein
+  #9DB +X i4,4 e0
+
+  XXX Hier lokale Angaben einsetzen!
+
+#t{ t10 t10 "Auftragsausführung bis spätestens: sofort " }    ###
+#t{ t10 "Anlieferungsstelle: Bibliothek des Kammergerichts " t10 }    ###
+#t{ t10 "Es gelten die zusätzlichen Vertragsbedingungen für die Ausführung " }
+#t{ t10 "von Leistungen -ausgenommen Bauleistungen-(VOL) in der jeweils " }
+#t{ t10 "geltenden Fassung." }
+#t{ t10 "Zahl der Ausfertigungen: 1"  t10 }
+#t{ t10 t10 "Im Auftrag  " t10 t10 } 
+
+#t99
+
+  Textelement $W aus SYSX... : Lieferung bitte mit Einzelrechn...
+#uyy W p{ t10 "\fs18 " } P{ "\fs24 " t10 }  nicht bei Status 4:
+
+#t98
+
+#-x   ###
+  Wirkt sich nur in Word aus, nicht in a99
+#t{ t10 "\page " }
+
+#9DB +# |10
+#)F
+#+#
+
+#-Q
+#t{ t10 } 
+   
+  XXX Die gewuenschten Titelelemente
+
+#09 +e c"+" e0
+#+f
+
+#-e    ### nachgeladener Titel
+
+#09 e"+" y0 |90
+#40 C e";" F" " P": "
+#20 U C 0 #69 9 #zz 8
+#71 " " 0 #75 0 #77 8 #zz 0
+#74 +#75 C #75 0 #76 2 #77 8 #zz 0
+#75 ": " #76 2 #77 8 #zz 0
+#76 " " 0 #77 8 #zz 09
+#<
+
+#-f    ### normaler Titel
+
+#t{ t10 }
+#t{ t10 }
+#40 P": "     
+#60 P": "     
+#20 U         
+#41 p" / "    
+#42 p" / "     
+#43 p" / "    
+#44 p" / "    
+#71 p".- "     Aufl. dazu
+#t1
+#74 P": "
+#75 0 #76 7 #zz 1
+#76 0 #zz 8
+#87 p"ISBN:  " 0 #zz 0
+  Titelsatz wieder wegnehmen, Bestellsatz ist dann wieder da
+#<
+#9DB3 +W C p10 "Bem.: " 
+#9DB3 T p10 "Bem.: " 
+#+W
+
+#-S
+#9A K           Kontingentbezeichnung
+#<+T
+
+  ** Lieferantensatz ist geladen
+  ****** daraus Extraktion der Sprachkennung
+#-A
+#9A 0 =ol e0   kopieren nach #uol
+#nr p"SYSXDEU!" e"!" =xy   Default f. Sprache
+#9A p p"SYSX" =xy           Extrahiere die Sprache (Teilfeld p), stelle 
+ Kennung fuer Systemdatensatz Textbaustein
+ davor, kopiere alles in #uxy
+
+#uxy +C |112 Suche Textbaustein im Register 11, wenn gefunden
+ mach bei Marke -C weiter
+
+#-D                      Sprungmarke
+
+#<+B        Zurueckschalten zum Bestellsatz, weitermachen bei Marke -B
+
+  ****** Extraktion des Textbausteines
+#-C
+#9A dyy b"x" ayy            Loesche #uyy, At = alles nach x,
+  kopiere AT nach #uyy
+#<      Schalte zum Lieferantendatensatz zurueck und
+
+#-R
+#t{ t10 }
+  #t{ #5 }   Einrueck. ab naechster Zeile
+
+  #t{ t99 "Die Bibliothek der ...  [Aenderung in P-ORDA.APR] " t98 } 
+
+                                   ########
+ 
+  XXX  Briefbeginn: Ort und Datum oben rechts
+
+#t{ "10781 Berlin, " t99} 
+#dts b6 e2 f"0"
+#dts b4 e2 f"0" p"."
+#dts e4 f"0" p"."
+
+  Zeile rechtsb. machen, dann neue Zeile und auf links umschalten
+#t{t98 '  \qr' t10 '\par\ql '}   ###
+
+
+   #udt x Day 0\var (b", ") \mes
+
+
+   #uyy S b": " p99 P98
+ 
+  XXX Hier lokale Angaben einsetzen
+
+#t{ t10 "Auftraggebende Dienststelle" p99 t10 }          ###
+#t{ "Die Präsidentin des" t10 }       ###
+#t{ "Kammergerichts" t10 }            ###
+#t{ "Elßholzstraße 30-33" t10 }       ###
+#t{ "10781 Berlin" t10  }          ###
+#t{ t10 "Tel.: 9015-2416" t10 t10 }       ###
+#t98
+#t{ t10 "Lieferant:" p99 t10 }        ###
+
+
+ #uyy R
+#9DB +#uol J     Lieferant (J ist Stammsatznr.)
+#9DB j e0          Lieferant aus dem Bestellsatz, wenn kein Stammsatz
+#uol n           Name
+#uol a p10       Anschrift
+#uol l p", "     Land
+#t98
+
+  XXX Hier lokale Angaben einsetzen
+
+#t{ t10 t10 "Bestellschein für Leistungen (VOL) " t10 }   ###
+#t{ t10 "Hj: 2012     Kapitel: 0614      Titel:  51120 " t10 }    ###
+#t{ t10 "\f2 \fs22 Das Land Berlin, vertreten durch die auftraggebende Dienststelle, " }    ###  
+#t{ t10 "erteilt Ihnen folgenden Auftrag zu den nachstehenden Bedingungen: " t10 t10 }
+#t{ " \f2\fs24 "}     ####   
+#</ 
+
+#+B     Bestelldaten ausgeben
+
+p ª 1
+
+
+  tPRINTER
+
+tad-aw
+td-rtf
+
+p .20 "\par "
+
+  zl=120
+
+
+q A/Z a
+

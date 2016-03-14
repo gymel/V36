@@ -1,0 +1,93 @@
+
+Verlautbarung 192 der Entw.Abt.                          2006-05-26
+-------------------------------
+
+V26.5 : Neues Gesamtpaket ist bereitgestellt.
+
+Hilfetexte ueberarbeitet
+------------------------
+Nach der Ueberarbeitung des Handbuchs wurden auch die korrespon-
+dierenden Hilfetexte entsprechend aktualisiert. In erster Linie
+die Online-Handbuchtexte (Dateien ac*.rtf), aber die waren ohnehin
+schon immer zwischendurch aktualisiert worden! Auch die sonstigen
+Texte wiesen viele, meist kleinere, aktualisierungswuerdige Details
+auf, die in einem Rundumschlag jetzt abgehakt wurden.
+Nicht nachvollzogen wurde die Umstellung der Grundschrift auf
+Garamond, die beim Handbuch gemacht wurde. Als Bildschirmschrift
+wirkt sie etwas kleiner und deshalb womoeglich doch etwas weniger
+gut lesbar. Auch die FLEX-Doku bleibt bei Times Roman.
+Die Texte sind zusätzlich als separate Pakete:
+   help.lzh, flexhelp.lzh und handbuch.lzh
+verfuegbar unter
+   http://ftp.allegro-c.de/aktuelle-version/
+Sie müssen alle auf das HELP-Verzeichnis. Man MUSS also nicht
+unbedingt das GP herunterladen.
+
+
+JanaS : Kleine Verbesserung
+---------------------------
+Die bisher schon vorhandene Funktion der Einbettung eines FLEX-
+Aufrufs in eine HTML-Seite: <a href="flex:X name">...</a>
+wurde dahingehend verbessert, dass man hinter den Namen noch das
+Zeichen @ setzen kann. Ja und? Dann kommt a99 nicht in den Vordergrund,
+es wird nur den FLEX ausfuehren, JanaS bleibt sichtbar. Ja und?
+Am Ende des FLEXes kann ein neuerlicher janas-Befehl stehen, der
+dann zur Folge hat, dass im JanaS-Fenster ploetzlich ein neuer
+Inhalt auftaucht - ohne dass man von der a99-Aktivitaet was merkt!
+AHAA! Dann koennte also a99 flugs eine neue HTML-Seite basteln und 
+JanaS zeigt die an, ohne zwischenzeitlich zu verschwinden? Das ist
+genau der Punkt!
+Aber wie kriegt man Information rueber aus der HTML-Seite, also von
+JanaS aus, ins a99, damit da z.B. eine gezielte Aktion gemacht werden
+kann? Denn fuer echte Interaktion muss das ja moeglich sein.
+Dazu nutzt man die Formulartechnik, die es ja schon gab. 
+Die Beschreibung wurde etwas ueberarbeitet, damit diese Dinge
+klarer werden, besonders der neue Dreh mit dem @:
+  http://www.allegro-c.de/janas/
+Es gibt zu dem Thema heute noch einen gesonderten Beitrag.
+Das neue JanaS ist auch separat zu haben:
+   http://ftp.allegro-c.de/aktuelle-version/janas.lzh
+
+
+Umcodierungen
+-------------
+Die FLEX-Befehle ansi und ascii nutzen, so stand es bisher in der
+Dokumentation, die o-Befehle, die in die Indexparameter eingebunden
+sind. Dies wurde jedoch vor einer Weile geaendert: jetzt sind es
+diejenigen o-Befehle, die in den Anzeigeparametern stecken!
+Bei den Standard-A-Parametern macht das keinen Unterschied. Aber
+wenn man intern mit Windows-Codes arbeiten will oder gar Unicode,
+dann wird es komplizierter. Denn die o-Befehle der Indexparameter
+sind zu allererst dazu da, die gespeicherten Daten im Windows-
+Programm so zu zeigen, dass sie richtig aussehen, und NICHT dazu,
+wirklich ASCII in ANSI und zurueck zu wandeln. Wenn also die
+gespeicherten Daten schon fast ANSI sind, dann brauchen die Index-
+parameter nicht so viel zu tun, um daraus wirkliches ANSI zu
+machen! D.h. die o-Befehle in den Indexparametern sind sehr
+wenige.
+Die nach wie vor wichtige Aufgabe, ASCII in ANSO und zurueck zu
+wandeln, uebernehmen daher plausiblerweise diejenigen o-Befehle,
+die in den Anzeigeparametern stecken.
+
+Im Falle N.CFG bedeutet das folgendes:
+Die Indexparameter brauchen nur diese 4 o-Werte:
+o .015 160    Code 15 (wird fuer Kalenderfunktion gebraucht)
+o .020 182    Absatzzeichen
+o .021 167    Paragraph
+o .031 178    Subfield Code = AltGr+2 (Dreieck Spitze unten)
+o .250 183    Punkt in der Mitte       0 183       B7
+Denn diese Zeichen koennen aus anderen Gruenden nicht anders
+codiert werden und sind daher wandlungsbeduerftig.
+In die Anzeigeparametern, DISP-WIN.NPR, ist dagegen eine
+Tabelle  oasci.npt  eingebunden. Und die enthaelt nichts anderes
+als die o.apt - klar,  sie soll ja dasselbe machen wie jene.
+
+
+Suchbefehle
+-----------
+Etwas ergaenzt wurde die Doku zu den Suchbefehlen, die man im Feld
+"Suchbefehl" von a99/alcarta eingeben kann. Es handelt sich um die
+Datei  commdger.rtf, die man bei Druck auf F1 erhaelt, wenn der
+Focus im Feld "Suchbefehl" ist. Die Punkte 7-9 darin sind neu.
+Die Funktionen nicht, aber sie waren bisher relativ unbekannt.
+

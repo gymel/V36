@@ -1,0 +1,208 @@
+  XMLEXP.FLX : Ergebnismenge oder aktuellen Satz als XML-Datei ausgeben
+  2004-04-14   Modifikationen nach Bedarf!
+  2010-03-26   V14-Aufloesung wahlweise ein/aus
+  Start mit Vorbesetzung moeglich: #uxG=1/e/y, #uxM=0/1/2/3
+
+#uxM
+#uxV
+  Gesamte Datenbank gewuenscht?
+:start
+if not #uxG jump selm
+
+  Was soll ausgeg. werden?
+var #uxG
+if "y" jump eins
+if "1" jump eins
+#uxMe
+jump eins
+  Fragen, wenn #uxG nicht gesetzt war
+:selm
+sel Was soll ausgegeben werden?=1=Aktueller Datensatz|e=Aktuelle Ergebnismenge|y=Ganze Datenbank
+if can jump xend
+if "" jump xend
+ins #uxG
+if "e" #uxMe
+
+  Exportparameter sichern
+:eins
+var e
+ins #uvE
+  Param. p-xml laden (wenn nicht gefunden: p-xml.apr kopieren)
+xport p p-xml
+if no jump perr
+
+:begin
+  Ausgabedatei soll xml.xml heissen, auf TEMP-Verz.
+var M "alg.xml"
+
+  wahlweise auf Startverz., dann diese Zeile:
+ var "alg.xml"
+open x
+if no jump ferror
+  Modus schon gesetzt?
+if #uyM jump weiter
+
+  sonst fragen
+sel Form des XML-Exports=0=<label>...</label>|1=<feld nr="num">...|2=<feld lb="label">...|3=<feld nr="num" lb="label">
+if can jump pend
+if "" jump pend
+ins #uyM
+
+:weiter
+if #uxV jump WEITER
+if not v14 jump weiter
+yes Stammsatznummern ersetzen durch Text (V14)?
+if yes #uxV 1
+
+
+:WEITER
+var #uxG
+  wenn y in #uxG, dann ganze Datenbank
+if "y" jump gdb
+
+  Wenn "e" :  Ersten Satz der Erg.Menge holen
+if g0 first
+
+  Start-TAG
+wri "<allegro>" n
+:schleife
+// V14 aufloesen?
+if #uxV exp Ref
+  Unicode-Umcodierung abschalten
+exp w0
+  Start-Tag fuer den Satz (auf Wunsch aendern)
+wri '<record inr="' i '">' 13 10
+  Unicode-Umcodierung anschalten
+exp wX
+  Akzentvertauschung ausfuehren
+exp a
+  Satz als XML ausgeben im gewuenschten Modus
+var #uyM
+if "0" xml
+if "1" xml 1
+if "2" xml 2
+if "3" xml 3
+
+  Unicode-Umcodierung wieder abschalten
+exp w0
+  Ende-Tag fuer den Datensatz + 2 Leerzeilen
+wri "</record>" 13 10 13 10
+  Erg.Menge war nicht gewuenscht
+if not #uxM jump expar
+keychk
+if yes jump expar
+  Naechster Satz
+next
+if yes jump schleife
+
+  Wenn's keinen mehr gab:
+:expar
+  Abschluss-Tag
+wri n "</allegro>"
+
+var "Erledigt! Datei hei·t" 13 10
+var +M "alg.xml"
+ansi
+mes
+#uxM
+var #uxG
+if not "1" jump pend
+
+open x nul
+var #uyM
+if "0" xml
+if "1" xml 1
+if "2" xml 2
+if "3" xml 3
+ansi
+sho IV
+close x
+
+:pend
+  Exportparameter zurueckholen
+var #uvE
+xport p
+close x
+
+:xend
+#uxG
+#uyM
+#uvE
+end
+
+  Parameter existieren fuer aktuelle CFG noch nicht
+  Parameterdatei p-xml.apr und d-utf8.apt kopieren
+:perr
+var P "p-xml.apr " P "p-xml." K1 "pr"
+fcopy
+var P "d-utf8.apt " P "d-utf8." K1 "pt"
+fcopy
+xport p p-xml
+if not no jump begin
+
+  Es hat nicht geklappt
+var "Parameter p-xml." K1 "pr nicht gefunden" 13 10
+var +"Machen Sie sich eine Kopie von p-xml.apr!"
+end
+
+:ferror
+mes Ausgabedatei  alg.xml  kann nicht geoeffnet werden
+end
+
+  Ganze Datenbank soll verarb. werden
+:gdb
+#uxG
+var "Gesamte Datenbank mit Modus " #uyM " in " M "alg.xml exportieren?"
+yes
+if can end
+if not yes jump selm
+
+  Satz 1 der Datenbank holen
+first #
+var "Abbruch mit Esc mîglich"
+ansi
+sho IV
+if del jump nxt
+  Start-TAG
+wri "<allegro>" n
+  Schleife
+:gdbloop
+  Unicode-Umcodierung abschalten
+exp w0
+  Start-Tag fuer den Satz (auf Wunsch aendern)
+wri '<record inr="' i '">' 13 10
+  Unicode-Umcodierung anschalten
+exp wX
+  Akzentvertauschung ausfuehren
+exp a
+  Satz als XML ausgeben
+var #uyM
+if "0" xml
+if "1" xml 1
+if "2" xml 2
+if "3" xml 3
+  Unicode-Umcodierung wieder abschalten
+exp w0
+  Ende-Tag fuer den Datensatz
+wri "</record>" 13 10 13 10
+  Naechster Satz
+:nxt
+  Taste gedrÅckt? Wenn Esc, dann Aussprung
+keychk
+if yes jump expar
+  naechsten Satz (interne Nummernfolge)
+next #
+  Datei zu Ende
+if can  jump expar
+  ungueltiger Satz
+if del jump nxt
+  gueltiger Satz
+if yes jump gdbloop
+
+
+ u-VARIABLEN in xmlexp.flx
+ #uvE (3)  Exp.Param Name
+ #uxG (7)  Anwendung auf: 1 / e / y (Aufruf-Argument)
+ #uxM (5)  Modus 0 / 1 / 2 / 3 (Aufruf-Argument)
+ #uyM (7)  gewaehlter Modus
+

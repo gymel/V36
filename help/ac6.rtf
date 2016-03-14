@@ -1,0 +1,443 @@
+{\rtf1\ansi\ansicpg1253\deff0\deflang1031{\fonttbl{\f0\fscript\fprq2 Comic Sans MS;}{\f1\fscript\fprq2\fcharset0 Comic Sans MS;}{\f2\froman\fprq2 Times New Roman;}{\f3\fmodern\fprq1 Courier New;}{\f4\fmodern\fprq1\fcharset0 Courier New;}{\f5\froman\fprq2\fcharset0 Garamond;}{\f6\froman\fprq2 Garamond;}{\f7\froman\fprq2\fcharset0 Times New Roman;}{\f8\fnil\fprq2\fcharset2 Wingdings;}{\f9\fswiss\fprq2 Arial;}{\f10\froman\fprq2\fcharset0 allegro New Roman;}{\f11\fmodern\fprq1\fcharset0 Courier;}{\f12\fmodern\fprq1 Courier;}{\f13\froman\fprq2\fcharset2 Symbol;}{\f14\froman\fcharset0 Times New Roman;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;\red0\green128\blue0;}
+\viewkind4\uc1\pard\qc\cf1\b\i\f0\fs28 allegro S\i0 ystemhandbuch V\f1 32\cf0\f2\fs48 
+\par \pard\fi-658\li658\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0\fs24   \fs20 
+\par \b\fs48 6\tab Export\b0\fs20 
+\par \pard\fi-658\li658\qr\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 Exportfunktionen in \b\i a99\b0\i0  : \b\f3\fs24 `\cf2\ul\f4 h exprt\cf0\ulnone\f3 `\b0\f2\fs20 
+\par \pard\fi-658\li658\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs36 6.0\tab Aufgabenstellung und Konzept\b0\fs20 
+\par \i\f5 
+\par Hinweis:\i0  Ab V27.2 gibt es eine `\cf2\ul\b Volltextsuche per FLEX\cf0\ulnone\b0 ` mit der M\'f6glichkeit, "regul\'e4re Ausdr\'fccke" einzusetzen. Dadurch wird das in diesem Kapitel beschriebene DOS-Programm SRCH.EXE abgel\'f6st, ferner wird das Sortierpogramm `\cf2\ul\b asort.exe\cf0\ulnone\b0 ` auf ein Windows-Konsolprogramm umgestellt. Auf Batchdateien kann man damit ab V27.2 verzichten, aber man kann sie weiter einsetzen, auch uner Win'7/64, wenn man bew\'e4hrte Verfahren damit organisiert hat.\f6 
+\par 
+\par \pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f2\fs24 Export\b0\f7  bedeutet:  Daten in eine Datei oder auf ein Ger\'e4t ausgeben. Fast immer m\'fcssen dabei die Daten in irgendeiner Form ver\'e4ndert, man sagt auch \b\f2 formatiert\b0\f7  werden, damit z.B. ein anderes Programm damit arbeiten kann oder damit \'fcberhaupt ein lesbarer Abdruck zustandekommt, denn in einer Datei sind die Daten computergerecht, nicht menschengerecht aufgezeichnet. Exportergebnisse m\'fcssen, je nach Verwendungszweck, den unterschiedlichsten Anforderungen gen\'fcgen. Deshalb sollte ein Exportprogramm kein starres, festgelegtes Programm mit einem abgegrenzten Repertoire sein, sondern der Datenbankanwender braucht M\'f6glichkeiten, selbst zu definieren, wie das Programm i\f2 n einem konkreten Fall Daten formatieren soll. 
+\par \b\i\f7\fs20 Hei\'dfer Tip: \f2 
+\par \b0\i0 Die Windows-Programme \b\i a99/alcarta \b0\i0\f7 verf\'fcgen \'fcber eine Methode, Daten in Tabellenform auszugeben, die man anschlie\'dfend sofort mit Office-Programmen nutzen kann. Auch diese Methode findet man auf dem Exportmen\'fc. \f2 
+\par \i Sofortzugriff:\i0  geben Sie im Schreibfeld den Befehl   \b\f3 h table\b0\f2   ein. 
+\par 
+\par Das \b\i allegro\b0\i0 -System hat jedoch kein eigenes Export\b programm\b0\f7 , das nur f\'fcr diese Aufgabe da w\'e4re, sondern es gibt eine Export\b\f2 funktion\b0\f7 , die in alle Programme (au\'dfer ASORT) eingebaut ist, auch in die der "neuen Generation", \b\i\f2 avanti\b0\i0 , \b\i alcarta\b0\i0\f7  etc. Alle Programme k\'f6nnen also, zus\'e4tzlich zu ihren sonstigen Aufgaben, \b\f2 auch\b0  Daten exportieren. Unter den Begriff \b Export\b0  fallen bei \b\i allegro\b0\i0\f7  auch solche Funktionen wie Bildschirmanzeige, Druckausgabe, und sogar die Generierung von Registereintr\'e4gen f\'fcr den Index. Das hei\'dft: die genannten Programme nutzen die Exportfunktion auch f\'fcr einige andere Zwecke. Die Vorschrift f\'fcr die Programme, in welcher Form genau die Daten auszugeben sind, wird in jedem Fall mit Hilfe einer eigenen Sprache geschrieben, der \b\f2 `\cf2\ul Exportsprache\cf0\ulnone `\b0 . Die Vorschrift wird gespeichert in einer \b Export-Parameterdatei\b0  (Typ .\i c\i0\f7 PR). Wer sich diese Sprache aneignet, kann Daten f\'fcr unterschiedlichste Zwecke beliebig manipulieren, kann mit derselben Sprache aber auch die Bildschirmanzeige und die Registergestaltung programmieren. In Kap. 10 ist diese Exportsprache dokumentiert. Die Exportfunktion \'fcbernimmt somit auch solche Aufgaben, f\'fcr die es bei anderen Datenbanksystemen einen sog. "Reportgenerator" gibt. So etwas hat \b\i\f2 allegro\b0\i0\f7  nicht. Es gibt aber die DOS-Pakete QUEX und QUANT, mit denen bestimmte Typen von Exporten in einem Dialog erstellt werden k\'f6nnen (\f3 -\f8\'d8\f2  6.3/4). 
+\par 
+\par Die Exportfunktion im Sinne der \b formatierten Ausgabe\b0  von Daten wird vor allem vom Programm 4, dem VolltextSuchprogramm SRCH miterledigt: dieses leistet \b Selektion und Export\b0\f7  in einem Durchgang, und zwar bis zu vier Exportvorg\'e4nge in unterschiedlicher Form gleichzeitig. \f2 
+\par \pard\fi-2353\li2353\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 Wenn man den Befehl\b\f3\tab srch -f6\b0\f2  
+\par \pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 eingibt, startet man de facto einen Exportvorgang, denn die Option\b\f3   -f6\b0\f7   bewirkt, da\'df keine echte Suche stattfindet, sondern \b\f2 jeder\b0  Datensatz als "Treffer" behandelt wird. Hinter "\b F\b0 unktionen / \b 6\b0 " vom \b\i CockPit\b0\i0\f7  verbirgt sich nichts anderes als dieser Befehl. Man erh\'e4lt die Liste der Export-Parameterdateien zur Auswahl. \f2 
+\par Insbesondere kann man Ergebnisse als Grunddatei (Typ .\i c\i0\f7 LG) ausgeben lassen (dazu w\'e4hlt man\f3  I-1.APR)\f7  und anschlie\'dfend mit ASORT sortieren und/oder mit INDEX oder UPDATE in eine andere Datenbank \'fcberf\'fchren. W\'e4hlt man zum Exportieren die\f3  E-W.APR, \f2 kann man die entstandene Datei dem\f3  \b\i\f2 avanti\b0\i0 -Server oder auch \b\i a99\b0\i0\f7  zum Einmischen in eine andere Datenbank \'fcbergeben. Das ist eine ganz neue Methode, die noch sehr wichtig werden wird. \f2 
+\par Eine \b Produktion\b0\f7  findet statt, wenn aus einer gr\'f6\'dferen Datenmenge, im allgemeinen mehreren Dateien,  automatisch ein neues Produkt erstellt wird. Das kann eine Liste, ein Stapel Karteikarten, aber auch eine neue Datei sein, die man u.U. mit anderen Programmen weiterverwenden oder -bearbeiten will. \f2 
+\par \f7 Alle Produktionsauftr\'e4ge folgen demselben Schema:  Nimm das vorhandene Datenmaterial (\b\i\f2 allegro\b0\i0 -Dateien der Typen .\i c\i0 LG und .\i c\i0 LD) und verarbeite dieses nach bestimmten Vorschriften (= Parameterdatei) zu einer Ausgabe (= Datei oder Druck). 
+\par Ein Beispiel ist die Ausgabe einer Datei in Form einer Liste mit Zeilen- und Seitenumbruch. Dazu eignet sich die  Parameterdatei\f3  P-NORMAL.APR. 
+\par \f7 Ein zweites Beispiel w\'e4re die Ausgabe von Daten als sog. ASCII-Datei, mit allen Kategorienummern und darin vorhandenen Angaben, um diese Daten mit einem anderen System auswerten zu k\'f6nnen. Dazu gibt es die Standard-Parameterdatei\f3  \f2 namens\f3  E-1.APR. \f7 Diese ist sogar unabh\'e4ngig vom Kategoriesystem. Wenn man Sie z.B. auf\f3  E-1.PPR \f7 kopiert, ist sie sofort f\'fcr\f3  P.CFG \f2 verwendbar. 
+\par 
+\par \pard\fi-658\li658\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs36 6.1\tab Sortierte Listen produzieren\b0\fs20 
+\par \pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b 
+\par \pard\qr\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0\i Funktionen in \b a99 \b0  : \b\i0\f3 h exprt\b0\f2 
+\par \pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 Hinweis: \b0 In a99 ist es oft recht einfach: Man kann zuerst die Kurzliste nach einem der dort verf\'fcgbaren Kriterien (Titel, Person, Jahr, Signatur) sortieren lassen, danach die Erg.Menge in gew\'fcnschter Weise exportieren. Diese M\'f6glichkeit fehlt im DOS-System.\b\f2 
+\par 
+\par Vorbemerkungen\b0 
+\par \f7 Wer sofort wissen will, was man im Normalfall tut, kann gleich zu 6.2 bis 6.3 weiterbl\'e4ttern. Hier folgt zuerst etwas Theorie. Das folgende gilt sinngem\'e4\'df f\'fcr jede Konfiguration. Die geeigneten Parameterdateien werden jedoch nur f\'fcr die Konfiguration A.CFG mitgeliefert. F\'fcr andere w\'e4ren sie vom Anwender zu erstellen. \f2 
+\par Windows-Verfahren: Hier wird beschrieben, wie man im DOS-System arbeitet. Es gibt dieselbe Methodik auch im Windows-System, und dazu ein `\cf2\ul\b\f7 eigenes Men\'fc\cf0\ulnone\b0\f2 `. 
+\par Wenn eine \b\i allegro\b0\i0\f7 -Datei sortierbar sein soll, mu\'df das Sortierkriterium, z.B. der Verfassername, das Schlagwort, die Signatur etc., zun\'e4chst an den Anfang jedes Datensatzes gestellt werden. Die S\'e4tze m\'fcssen dabei ansonsten in ihrer Struktur unver\'e4ndert bleiben. Nur: aus .ALD-Dateien werden .ALG-Dateien gemacht, denn das Programm \b\f2 ASORT kann nur Grunddateien sortieren\b0\f7 ! F\'fcr diesen Vorgang k\'f6nnen als Muster die Parameterdateien \b\f2 S-*.APR\b0\f7  dienen, die f\'fcr eine Anzahl unterschiedlicher Sortierfolgen mitgeliefert werden. In diesen Dateien k\'f6nnen Sie Ver\'e4nderungen vornehmen, z.B. andere Sortierfelder festlegen und/oder eine andere Sortieraufbereitung programmieren. Nach dem Sortieren mu\'df dann ein weiterer Produktionslauf stattfinden, z.B. mit einer der Parameterdateien P-*.APR, um das endg\'fcltige Produkt zu erstellen. \f2 
+\par \pard\tx548\tx1095\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f7 Drei Vorg\'e4nge m\'fcssen folglich hintereinander ablaufen, wenn eine sortierte Liste entstehen soll: \f2 
+\par 
+\par \pard\fi-1386\li1386\tx453\tx740\tx983\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b Selektieren\b0  : \tab\f7 Auswahl der zu druckenden Titel und Vorbereitung als sortierf\'e4hige Datei \f2 
+\par \pard\fi-452\li452\tx453\tx740\tx983\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f7 Dazu gibt es zwei M\'f6glichkeiten: \f2 
+\par \pard\fi-452\li452\tx453\tx9923\tab a) Bildung einer Ergebnismenge im Schnellzugriff und Export mit F4 \f7     \f2 (Prog. PRESTO, \f3 -\f8\'d8\f2  Kap.1.5) 
+\par \tab b) Heraussuchen und Exportieren mit Hilfe der Volltextsuch\f7      \f2 (Programm SRCH, \f3 -\f8\'d8\f2  Kap.4) 
+\par \pard\fi-452\li452\tx453\tx740\tx983\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f7 In beiden F\'e4llen entsteht eine noch ungeordnete Datei, die aber schon \b sortierf\'e4hig\b0\f2  ist. 
+\par \tab\f7 Und das hei\'dft: die Datens\'e4tze haben noch die kategorisierte Form, aber der gew\'fcnschte Sortierbegriff (z.B. Sachgruppe+Name+Erscheinungsjahr, ...) ist in Kategorie\f3  #u1 \f2 an den Anfang gesetzt.\f3 
+\par \f2\tab\f7 Das selektierende Programm (PRESTO oder SRCH) mu\'df aber vorher wissen: \f2 
+\par \pard\fi-738\li738\tx453\tx740\tx9088\tx9514\b\tab 1.\b0\tab welche \b Sortierfolge\b0\f7  gew\'fcnscht wird,\f2\tab SORT.APR 
+\par \pard\fi-738\li738\tx453\tx740\tx9088\b\tab 2.\b0\tab ob alle \b Datenelemente\b0\f7  f\'fcr die Liste gebraucht werden oder nur eine Auswahl\f2\tab SELECT.APT 
+\par \pard\fi-452\li452\tx453\tx740\tx983\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f7 Die n\'f6tigen Anweisungen entnimmt das Programm aus den rechts angegebenen Parameterdateien. \f2 
+\par \pard\tx453\tx740\tx983\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b Sortieren\b0  :\tab\f7 das Programm ASORT ordnet die entstandene sortierf\'e4hige Datei. Hierbei bleibt die interne Struktur \f2 
+\par \pard\fi-452\li452\tx453\tx740\tx983\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f7 der Daten unver\'e4ndert (Typ .ALG), d.h. die Datei ist noch nicht \b druckf\'e4hig\b0\f2 . Deshalb: 
+\par \pard\tx453\tx740\tx983\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1386\li1386\tx453\tx740\tx983\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b Formatieren\b0  :\tab\f7 Produktion der druckf\'e4higen Form und sofortige Ausgabe auf dem Drucker. \f2 
+\par \pard\fi-452\li452\tx453\tx740\tx983\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Oder in eine Datei, die dann evtl. noch mit einem Textprogramm nachbearbeitet werden kann. 
+\par \tab\f7 Diesen Schritt f\'fchrt \b\f2 immer\b0\f7  das Programm SRCH aus, und es mu\'df dazu zwei Dinge wissen: \f2 
+\par \pard\fi-738\li738\tx453\tx740\tx9088\tx9514\b\tab 3.\b0\tab welche \b Druckgestaltung\b0\f7  gew\'fcnscht wird\f2\tab PRINT.APR 
+\par \pard\fi-738\li738\tx453\tx740\tx9088\b\tab 4.\b0\tab welcher \b Drucker\b0  benutzt werden soll. \tab PRINTER.APT 
+\par \pard\fi-452\li452\tx453\tx740\tx983\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Die Anweisungen dazu findet das Programm in den rechts angegebenen Parameterdateien. 
+\par \pard\tx453\tx740\tx983\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f7 Ein grundlegend wichtiger Gedanke f\'fcr die \b\f2 Rationalisierung\b0\f7  der Produktion ist nun dieser: Wenn man f\'fcr jede der Teilaufgaben 1. bis 4. eine Anzahl von Parameterdateien hat, die jeweils ihre Teilaufgabe in sinnvoller Weise l\'f6sen, kann man je eine aus jeder Gruppe ausw\'e4hlen und dadurch beliebige Kombinationen zusammenstellen. Dadurch gewinnt man erheblich mehr Flexibilit\'e4t, als wenn man alle Einstellungen f\'fcr eine sortierte Liste in nur einer Parameterdatei unterbringen m\'fc\'dfte. \f2 
+\par \f7 Nur zwei Batchdateien werden f\'fcr die Listenproduktionen ben\'f6tigt: \b\f2 PR-LIST.BAT\b0\f7  startet PRESTO und erm\'f6glicht den Export von Ergebnismengen, \b\f2 SR-LIST.BAT\b0  startet SRCH und erzeugt die Liste mittels Volltextsuche. 
+\par \f7 Im wesentlichen enthalten diese Batchdateien die folgenden drei Anweisungen f\'fcr die drei Vorg\'e4nge: (die n\'f6tigen Angaben zur Datenbank hat \b\i\f2 CockPit\b0\i0  vorher mit SET-Befehlen im Environment untergebracht!) 
+\par \f3 
+\par \lang1040 presto \b -e SORT\b0 /uuu.alg ...       \lang1031\i\f9 bzw.\i0\f3        srch \b -e SORT\b0 /uuu.alg -f4 -m0 -v0 ... 
+\par asort uuu.alg sss.alg 
+\par srch -dsss -m0 \b -e PRINT\b0 /liste -f6 -v0 -b%%-D%%\\%%-B%% 
+\par \f2 
+\par \pard\tx165\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274 Beide Batchdateien machen also im Prinzip dasselbe: 
+\par \b 
+\par \pard\fi-4921\li4921\tx3692\tx4260\tx5670\tx9413\cf3\f3\fs24 Programm\tab Datenbank\f4    \f3 Parameter 
+\par \pard\tx165\tx740\tx1386\tx2098\tx2828\tx3692\tx4402\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274\cf0\fs20\tab\tab\tab\tab\tab\tab\tab | 
+\par \pard\tx165\tx740\tx1386\tx2098\tx2556\tx3557\tx4402\tx4925\tx5812\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274 PR-LIST.BAT\b0  startet\b\tab PRESTO\tab\tab |\tab SORT.APR  \b0 mit\b 
+\par \pard\tx165\tx740\tx1386\tx2098\tx2556\tx3557\tx3976\tx4287\tx4925\tx5812\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274\f4\tab\tab\tab\tab\tab\tab\tab\tab  |\tab\f3 SELECT.APT 
+\par \pard\tx165\tx740\tx1386\tx2098\tx2556\tx3557\tx4287\tx4925\tx5812\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274 SR-LIST.BAT\b0  startet\b\tab SRCH -f4\tab\tab\f4  \f3 | 
+\par \pard\tx165\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab\tab\tab\tab\tab\b0\f10\fs24\'b2\b\f3\fs20 
+\par \pard\fi-4970\li4970\tx3834\tx5812\f4\tab\f3 UUU.ALG\fs19\tab\b0 (unsortierte\f4  \f3 Zwischendatei)\b\fs20 
+\par \pard\tx165\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab\tab\tab\tab\tab\f4  \f3 | 
+\par \pard\fi-2824\li2824\tx165\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274 ASORT\tab\tab\tab\tab\tab\tab\tab\f4  \f3 | 
+\par \pard\tx165\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab\tab\tab\tab\tab\b0\f10\fs24\'b2\b\f3\fs20 
+\par \pard\fi-4970\li4970\tx3834\tx5387\tab SSS.ALG\fs19\tab\b0 (sortierte\f4  \f3 Zwischendatei)\b\fs20 
+\par \pard\tx165\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab\tab\tab\tab\tab | 
+\par \pard\fi-4921\li4921\tx4287\tx5812\tx9413\fs24 SRCH -f6\tab |\tab PRINT.APR  \b0 mit 
+\par \f4\tab\b |\f3   \tab PRINTER.APT 
+\par \pard\tx165\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274\fs20\tab\tab\tab\tab\tab\tab\tab\b0\f10\fs24\'b2\b\f3\fs20 
+\par \pard\fi-5563\li5563\tx3976\f4\tab\f3 LISTE\f4\fs19    \f3 (Zieldatei)\fs20 
+\par \pard\tx165\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274\b0\f2 
+\par \f7 F\'fcr jede der oben genannten vier Aufgaben 1. - 4. werden einige Parameterdateien mitgeliefert. \b\i\f2 CockPit\b0\i0\f7  erm\'f6glicht die Auswahl unter diesen Dateien (im Men\'fc \b\f2 Routinen / Volltextsuche\b0  oder \b Optionen\b0\f7 ) und kopiert die gew\'e4hlte jeweils um auf den Namen SORT.APR usw., wie oben angegeben. So wird erreicht, da\'df man mit den zwei Batchdateien auskommt und nicht f\'fcr jede Art von Listenproduktion eine eigene machen mu\'df. Die Produktion selbst wird \'fcber das Men\'fc \b\f2 Routinen\b0\f7  gestartet: der Men\'fcpunkt \b\f2 exportieren\b0\f7  enth\'e4lt die n\'f6tigen Unterfunktionen (s.u.). \f2 
+\par Die 4 Arten von Parameterdateien haben festgelegte Namensformen: (an der Stelle des '*' steht der individuelle Name der jeweiligen Parameterdatei. Zu den Exporttypen siehe \f3 -\f8\'d8\f2  Kap.10.0): 
+\par \pard\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-2097\li2097\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274\b 1.\tab\f3 S-*.APR\b0\f2\tab Diese Parameterdateien (Exporttyp SORT) erledigen die Aufbereitung der Sortierkriterien. Sie produzieren eine Kategorie\b\f3  #u1\b0\f7 , die im Exportsatz am Anfang steht und und die den sortierf\'e4higen Text enth\'e4lt. Dahinter kommt eine Kategorie\b\f3  #u2\b0\f7 , die denselben Inhalt hat, jedoch in Originalform. #u2 kann dann am Ende f\'fcr den Druck benutzt werden (siehe 3.). Eine Datei dieser Gruppe ist z.B. S-PJ.APR; sie erzeugt Sortierk\'f6pfe zur Ordnung nach \b\f2 P\b0 erson und \b J\b0 ahr. 
+\par \pard\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-2097\li2097\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274\b 2.\tab\f3 S-*.APT\b0\f2\tab\f7 Diese Dateien enthalten die Anweisungen f\'fcr den von der Sortierung unabh\'e4ngigen Hauptteil der Aufnahme. In dieser Gruppe befinden sich die Dateien S-KURZ.APT, S-MITTEL.APT, S-LANG.APT und S-VOLL.APT. Die Namen lassen schon erkennen, da\'df die Datens\'e4tze dadurch in unterschiedlicher Vollst\'e4ndigkeit ausgegeben werden. \f2 
+\par \pard\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par Je eine Datei aus diesen beiden Gruppen wird vom \b\i CockPit\b0\i0\f7  umkopiert auf den Namen SORT.APR bzw. SELECT.APT, und die zweite wird von der ersten nachgeladen (mit dem Befehl tSELECT ). Auf diese Weise ist erreicht, da\'df jede Sortierform mit jeder Stufe der Vollst\'e4ndigkeit kombiniert werden kann. Produkt dieser Kombination ist in jedem Fall eine Datei UUU.ALG, die die selektierten Aufnahmen mit den gew\'fcnschten Sortierk\'f6pfen und der gew\'fcnschten Auswahl von Kategorien enth\'e4lt. ASORT erledigt die Sortierung und liefert die Datei SSS.ALG. Diese nimmt SRCH sich vor und\f2  bearbeitet sie mit einer Kombination der Typen 3 und 4: 
+\par 
+\par \pard\fi-2097\li2097\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274\b 3.\tab\f3 P-*.APR\b0\f2\tab\f7 Diese Dateien (Exporttyp PRINT)  steuern das Aussehen der gedruckten Liste, also deren Anordnung, Interpunktion und Zeilenumbruch. Die Kopfelemente, die einer Aufnahme vorangehen, werden dabei jeweils aus der Kategorie #u2 entnommen (siehe oben)! Daher brauchen diese Dateien nicht zu "wissen", ob sie nun eine nach Namen, Sachgruppen, Signaturen oder sonstwie geordnete Liste ausdrucken. Der Sortierbegriff in druckf\'e4higer Form steht in jedem Fall in #u2. Wenn es mehr als eine Ordnungsgruppe gibt (S-VJ.APR\f2  erzeugt z.B. zwei: Name und Jahr), dann sind sie durch\f4  "\'b6" (<Strg>+t) \f7 getrennt, so da\'df sie mit den Befehlen b"\'b6" und e"\'b6" separiert werden k\'f6nnen.\f3  
+\par \pard\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274\f2 
+\par \pard\fi-2096\li2096\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab\f7 Die Druckaufbereitung erfordert, wenn man mit Stamms\'e4tzen und mit selbst\'e4ndiger Speicherung von Banddaten arbeitet, das Nachladen aus der Datenbank. Auch deshalb ist dieser Teil der komplizierteste der gesamten Aufgabe. Aufs\'e4tze aus Zeitschriften und Sammelb\'e4nden, hierarchisch gestufte Teile mehrb\'e4ndiger Werke, Serienst\'fccke - alles dies mu\'df korrekt ausgedruckt werden. \f2 
+\par \tab\tab\tab\f7 Ferner drucken diese Parameterdateien kurze wie lange Aufnahmen gleicherma\'dfen aus. F\'fcr unterschiedlich ausf\'fchrliche Listen werden also an dieser Stelle nicht verschiedene Parameterdateien ben\'f6tigt: schon bei der Selektion werden ja die nicht gew\'fcnschten Kategorien weggelassen. \f2 
+\par \tab\tab\tab\f7 Mitgeliefert werden unter anderen: P-NORMAL.APR, P-EINZEL, P-WORDP, P-1ZEIL und P-2ZEIL. Was machen sie? Die erste ersetzt einen sich wiederholenden Kopf durch "---", die zweite druckt jeden einzelnen Kopf jedesmal aus, die dritte liefert eine WordPerfect-Rohdatei (sie enth\'e4lt Kommentare zu ihrer Benutzung, bitte lesen). P-1ZEIL und P-2ZEIL schlie\'dflich stellen Listen her, die spaltenf\'f6rmig angeordnet sind, mit 1 bzw. 2 Zeilen je Titel. \f2 
+\par \pard\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-2097\li2097\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274\b 4.\tab\f3 P-*.APT\b0\f2\tab\f7 Das sind die Druckertreiber. Sie enthalten die Codes f\'fcr die verschiedenen Schriftattribute (Zwischenteile 79-99) sowie, falls n\'f6tig, p- und q-Befehle zur Umcodierung von Zeichen. Sie k\'f6nnen auch Angaben f\'fcr Zeilenl\'e4ngen, Satzende, Druckerinitialisierung etc. enthalten, die dann die Standardangaben in P-*.APR ersetzen. Bis Version 11.2 wurden solche Parameterdateien unter einer anderen Namensform geliefert: _*.APT. Diese wurde aufgegeben. Der aktuelle Druckertreiber wird von PRINT.APR aus mit dem Befehl\f3  tPRINTER \f2 geladen. Dieser Befehl steht jeweils am Ende der Datei\f3  P-*.APR. 
+\par \pard\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274\f2 
+\par \f7 Alle vier Gruppen sind vom Nutzer beliebig erweiterbar. H\'e4lt man sich an die angegebene Namensform (S-* bzw. P-*), wird \b\i\f2 CockPit\b0\i0  jede neu geschaffene Datei bei der Auswahl mit anbieten. 
+\par 
+\par \pard\fi-658\li658\tx740\tx1386\tx2098\tx2828\tx3557\tx4287\tx4925\tx5564\tx6293\tx7114\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\fs36 6.2\tab Und so produziert man eine sortierte Liste\b0\fs20 
+\par \pard\fi-658\li658\qr\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx9088\tx10274\i Windows: \b\i0\f3 h exprt 
+\par \pard\fi-658\li658\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0\i\f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i0\f7 Die Windows-Programme stellen zur Produktion sortierter Listen mehrere Methoden bereit. Darunter ist eine, genannt "Registerausschnitt", mit der man die Liste unmittelbar in der Reihenfolge eines Registers erstellen lassen kann. Alle Methoden sind sofort zug\'e4nglich auf dem Exportmen\'fc: geben Sie ein \b\f3 h exprt\b0\f2 
+\par \f7 Die hier beschriebene Methode wurde unter DOS entwickelt, ist auf dem Windows-Exportmen\'fc aber gleichfalls noch benutzbar. \f2 
+\par \pard\fi-658\li658\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f7 (Unter Win'7/64 kann man das \i CockPit\i0  nicht mehr verwenden!)\f2 
+\par \pard\fi-456\li456\tx456\tx9923\b\fs24 1.\tab Einstellungen vornehmen\f11                 \f1\'b5\f12 r v 1-4\b0\f2\fs20 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\i\tab CockPit\b0\i0\f7 -Men\'fc\b\f3  Routinen / Volltextsuche + Listen\b0\f2  ansteuern, dann nacheinander die Punkte 1`-`4 unter\b\f3  Export-Optionen\b0\f7  anw\'e4hlen: \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-3073\li3073\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\tab 1  Sortierung\b0\f2  : \tab\tab Auswahl zwischen unterschiedlichen Ordnungsverfahren, z.B.\f3  S-PT.APR 
+\par \b\tab\f4 2  Vollst\'e4ndigkeit\b0\f2  : \tab Auswahl zwischen Kurz, Mittel, Lang und Voll, z.B.\f3  S-KURZ.APT 
+\par \b\tab 3  Listengestaltung\b0\f2  :\tab Wahl des Ausgabeformats, z.B.\f3  P-EINZEL.APR 
+\par \b\tab 4  Drucker\b0\f2  : \tab\tab\tab Wahl des "Druckertreibers", z.B.\f3  P-DSKJET.APT 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f2 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f7 Wenn man einen dieser Punkte anw\'e4hlt, erscheint jeweils die Liste der verf\'fcgbaren Parameterdateien. Wenn man eine davon mit <Enter> ausw\'e4hlt, sieht man deren Kopfzeilen, die einen erkl\'e4renden Text enthalten. \f2 
+\par \tab\f7 An dieser Stelle kann man die auszuw\'e4hlende Parameterdatei auch vorher noch betrachten, bearbeiten, oder eine neue Version davon anlegen. Man beantwortet dann die Frage "\f3 ist das die richtige?" \f7 mit 'v' (f\'fcr \b\f2 v\b0\f7 ielleicht) und bekommt die M\'f6glichkeit zu den genannten Aktionen.\f3 
+\par \b\i\f2\tab CockPit\b0\i0\f7  kopiert die gew\'e4hlte Datei auf den jeweiligen Namen (SORT.APR usw.). Dadurch bleiben diese Einstellungen \'fcber die aktuelle Sitzung hinaus erhalten. Man braucht also nur dann wieder dieses Men\'fc aufzusuchen, wenn eine der Einstellungen zu \'e4ndern ist. Damit sind dann die oben unter 1. - 4. erw\'e4hnten Fragen beantwortet. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par \pard\fi-456\li456\tx456\tx9923\b 2.\tab Vorgang starten\f7                                      \f1\fs24\'b5\f12 r e\b0\f2\fs20 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f7 Men\'fc\b\f3  Routinen\b0\f2 , Punkt\b\f3  Volltextsuche/Listen\b0\f7  ansteuern. Man sieht f\'fcnf Unterpunkte, die ersten zwei starten die Produktion: (das Programm zeigt dann zur Kontrolle noch einmal die aktuellen Einstellungen an) \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-956\li956\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\tab 1 \tab Selektieren per Schnellzugriff\b0\f7  : die Datenbank wird zur Benutzung ge\'f6ffnet wie sonst auch. Man stellt beliebige Ergebnismengen zusammen und exportiert sie mit \b\f2 F4\b0\f7 . Soll etwa eine Neuerwerbungsliste entstehen, wird man die Ergebnismenge \'fcber Register 9 (Erfassungsdatum oder Zugangsnummer) zusammenstellen. Sobald man mit F8 die Datenbank verl\'e4\'dft, laufen die anderen Vorg\'e4nge automatisch ab. Es entsteht eine Datei namens LISTE, die das Endprodukt enth\'e4lt, zum Abschlu\'df bekommt man sie zu sehen. Mit Men\'fcpunkt 4 bzw. 5 kann man sie auch sp\'e4ter noch betrachten bzw. drucken (siehe unten). \f2 
+\par \i\tab\tab Anm.:\i0  Aufgerufen wird die Stapeldatei PR-LIST.BAT. 
+\par \b\f3\tab 2 \tab Selektieren per Volltextsuche\b0\f2  : das Programm SRCH wird aufgerufen. 
+\par \tab\tab Es fragt nach einem Suchbegriff (\f3 -\f8\'d8\f7  Kap.4.3), sucht die gesamte Datenbank als Volltext danach ab, exportiert die gefundenen S\'e4tze in derselben Art wie PRESTO. Danach l\'e4uft alles genauso ab wie unter 1, d.h. das Ergebnis ist ebenfalls eine Datei mit Namen LISTE. \f2 
+\par \i\tab\tab Anm.:\i0  Aufgerufen wird die Stapeldatei SR-LIST.BAT. 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Die anderen Punkte unter "Volltextsuche/Listen" sind diese: 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-956\li956\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\tab 3 \tab nur Volltextsuche\b0\f2  : SRCH wird gestartet und fragt nach einem Suchbegriff (\f3 -\f8\'d8\f2  Kap.4). Es wird aber nichts exportiert und keine Liste erstellt. Diese Funktion ist nur eine \b Hilfe,\b0\f7  um schnell eine Volltextsuche in der Datenbank durchzuf\'fchren, die Ergebnisse aber nur am Bildschirm zu betrachten. \f2 
+\par \b\f3\tab 4 \tab Produzierte Liste betrachten\b0\f2  : am Bildschirm wird die vorher erstellte Datei LISTE angezeigt. Mit den Cursortasten und <Bild\f10\'bd\f13\'ad\f2 > und <Bild\f13\'af\f7 > kann man darin bl\'e4ttern. \f2 
+\par \b\f3\tab 5 \tab Produzierte Liste drucken\b0\f7  : Die Datei LISTE wird an den Drucker \'fcbergeben. \f2 
+\par \b\tab\tab Achtung:\b0  Wenn man vorhat, diese Funktion zu nutzen, gibt man vor dem Start des \b\i CockPit\b0\i0  (also vor dem Startbefehl\b\f3  cp\b0\f2 ) den MS-DOS-Befehl\b\f3  print\b0\f7  , denn sonst k\'f6nnte das Drucken schiefgehen. Der Grund ist, da\'df der PRINT-Befehl von MS-DOS einen sog. "residenten" Teil hat, der geladen sein mu\'df, bevor ein Anwendungsprogramm drucken kann. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\fs28 Wenn man aber nicht mit A.CFG arbeitet?\b0\fs20 
+\par 
+\par \f7 Dann mu\'df ein vergleichbares Arrangement (f\'fcr eine Konfiguration c.CFG) erst geschaffen werden: \f2 
+\par 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab\f7 Parameterdateien f\'fcr Sortieraufbereitung und Kategorieauswahl (Typen 1. und 2.) anlegen, wobei die mitgelieferten als Muster dienen k\'f6nnen. Die Namensformen\f3  S-*.cPR \f2 und\f3  S-*.cPT \f2 sind verbindlich.\f3 
+\par \f2  \bullet\tab\f7 Zun\'e4chst eine vorhandene Druckparameterdatei auf P-NORMAL.cPR umkopieren. Die Kopfbehandlung (Auswertung der Kategorie #u2) analog zu dem Muster P-NORMAL.APR anpassen. \f2 
+\par  \bullet\tab\f7 Die eigenen Druckertreiber auf die Namensform P-*.cPT bringen. Die mitgelieferten P-*.APT k\'f6nnen ohne weiteres in .cPT umbenannt werden, denn sie sind unabh\'e4ngig vom Kategoriesystem. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f7 Damit sollte die Sache in den Grundz\'fcgen funktionieren und l\'e4\'dft sich dann beliebig erweitern und verfeinern. Die Batch-Dateien PR-LIST.BAT und SR-LIST.BAT sind unver\'e4ndert verwendbar. In der Regel wird es ein Haufen Arbeit sein, die Parameterdateien in diesem Sinne einzurichten, aber es lohnt sich! \f2 
+\par \f7 Die Anwender anderer Konfigurationen haben in der Regel bereits eigene Batchsysteme f\'fcr die Produktion von Listen aller Art. Diese sind unver\'e4ndert weiter benutzbar. Die hier vorgestellte Methodik mag jedoch eine Anregung sein, neue Entwicklungen in \'e4hnlicher Weise zu systematisieren. \f2 
+\par 
+\par \pard\fi-658\li658\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs36 6.3 \tab QUEX : Listenproduktion ganz einfach\b0\f7\fs20   [nicht mehr ab Win'7]\f2 
+\par \pard\qr\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\i a99\b0\i0  : \b\f3\fs24 h exprt\b0\f2\fs20 , "\f7 Tabellen erstellen\f2 " 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f7 QUEX (= QUick and Easy eXport) ist eine stark vereinfachte Exportmethode, die ohne Parametrierung auskommt. F\'fcr schnelle ad-hoc Listen ohne Anspruch auf Perfektion oder spezielle Finessen braucht man nicht zu parametrieren, besonders wenn ohnehin eine Nachbearbeitung mittels WORD, dBase o.a. vorgesehen ist. \f2 
+\par \fs18 
+\par \b Was leistet QUEX?\b0 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\bullet\tab\f7 Die Methode ist weitestgehend unabh\'e4ngig vom Kategoriesystem, d.h. sie funktioniert f\'fcr jede Konfiguration, ohne da\'df man an den Parameterdateien etwas \'e4ndern mu\'df. \f2 
+\par \bullet\tab\f7 Dialoggef\'fchrte Erstellung einfacher sortierter Exportdateien ohne jede Parametrierung, wobei besonders die Eignung der Datei f\'fcr die \'dcbernahme durch andere Software im Vordergrund steht. (Wenn man etwa Daten an eine zeitgen\'f6ssische Textsoftware \'fcbergibt, hat man heute enorme M\'f6glichkeiten der Umstrukturierung mittels Makros, daher mu\'df nicht immer schon eine diffizile Struktur durch "allegro" geliefert werden.) \f2 
+\par \bullet\tab\f7 Wahl einer Kategorie f\'fcr die Sortierung, mit Alternativen f\'fcr den Fall, da\'df die Kategorie nicht besetzt ist. \f2 
+\par \bullet\tab\f7 F\'fcr den Export vorgebbar sind u.a.: die Sortierweise (z.B. auch numerisch), die Zeilenl\'e4nge sowie Zeichenkombinationen f\'fcr den Satzanfang, die Feldtrennung und das Satzende, ferner Pr\'e4- und Postfixe f\'fcr jedes auszugebende Feld. \f2 
+\par \bullet\tab\f7 Hohe Geschwindigkeit und geringer Platzbedarf, damit das Verfahren auch f\'fcr gro\'dfe Eportmengen anwendbar ist. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 In die \b\i CockPit\b0\i0 -Vorgabendatei CP.OPT ist folgende Zeile unter "Eigene Routinen" eingebaut: 
+\par \f3\fs20 R QUick & Easy eXport, QUEX.BAT, Einfache Listen und Dateiausgabe\f2 
+\par \fs18 damit man mit einem Knopfdruck starten kann. QUEX.BAT kann man auch von Hand starten, dann teilt es mit, welche Environment-Variablen man vorher setzen soll. 
+\par \b Ergebnis:\b0\f7  Heraus kommt am Ende eine alphabetisch geordnete Datei namens LISTE mit den selektierten Datens\'e4tzen. \f2 
+\par \f7 Es folgt eine knappe \'dcbersicht des Ablaufs. (Vollst\'e4ndige Beschreibung: siehe Datei QUEX.TXT) \f2 
+\par \f7 Zuerst mu\'df man eine Reihe von Fragen beantworten: (Fragen erscheinen gr\'fcn, Antworten gelb) \f2 
+\par 
+\par \b\f3\fs20 0. Wollen Sie\b0 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab 1 : Alles mit der Hand eingeben? 
+\par \pard\fi-456\li456\tx456\tx6532\tab\f4 2 : Fr\'fchere Einstellungen \'fcbernehmen?\f2\tab\f7 (Das geht nat\'fcrlich beim ersten Mal noch nicht) \f2 
+\par \pard\fi-454\li454\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs18\tab\f7 Wenn man '1' w\'e4hlt, geht es mit 1. weiter, bei '2' kann man gespeicherte Einstellungen fr\'fcherer QUEX-Produktionen erneut aktivieren. Routineproduktionen lassen sich damit weitestgehend automatisieren. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\fs20 1. Nach welcher Kategorie soll sortiert werden?\b0 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   \tab (Geben Sie eine oder mehrere Kategorien an, getrennt durch Kommas:  
+\par  \tab z.B.    40,60,20 
+\par  \fs16\tab (Das bedeutet: wenn #40 nicht belegt, wird #60 zum Sortieren genommen, usw.)\fs20 
+\par \pard\fi-454\li454\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f2\fs18\tab Wenn der Sortierbegriff ein Teilfeld ist: z.B. 245$a eingeben, dann wird Teilfeld\f3\fs20  ?a\f2  von #245 genommen. 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 2. Wenn keine der Sortierkategorien vorkommt, was dann?\b0 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \tab 0 : Satz nicht ausgeben 
+\par \tab a : Satz am Anfang der Liste plazieren 
+\par \pard\fi-454\li454\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \tab e : Satz an das Ende der Liste setzen 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b 3. Sortiermodus:\b0 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   \tab\f4 1 = Normal (Umlaute aufl\'f6sen, Nichtsortierw\'f6rter beseitigen) \f3 
+\par  \tab\lang1040 2 = Pica-Namensmodus (Vorname@Nachname) 
+\par  \tab\lang1031 8 = Numerisch sortieren 
+\par  \tab\f4 9 = Keine Umcodierung - unver\'e4ndert sortieren \f3 
+\par \f2\fs18\tab\f7 Hier k\'f6nnen unterschiedliche Sortiermethoden eingestellt werden. Je nach Wahl wird die Sortierkategorie dann entsprechend manipuliert. Beim numerischen Sortieren werden auch Negativzahlen korrekt behandelt! \f2 
+\par \pard\fi-454\li454\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f7 F\'fcr Sortiermodus 1 oder 2 wird die Tabelle S.APT benutzt. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\fs20 4. Welches Zeichen ist das Trenn- oder Endezeichen des Sortierfeldes?    \b0 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \tab\f4 ( ;  \'b6  - / . , ( * ' : =  oder  b=Leerzeichen, $=Teilfeldzeichen ) \f3 
+\par   \tab (Wenn Eingabe nicht klappt, Eingabe mit t davor, z.B. t; ) 
+\par \f2\fs18  \tab Mit Hilfe des Trennzeichens wird die Sortierkategorie zerteilt. 
+\par 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\fs20 5. Welche Teile des Sortierfeldes sind auszuwerten:\b0 
+\par \pard\fi-2353\li2353\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   \tab\f4 W\'e4hlen Sie: \f3\tab 1 = nur der Anfangsteil  (Ende beim Trennzeichen) 
+\par \pard\fi-2352\li2352\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274     \tab\tab\tab\tab\tab 2 = jeder Teil    (auch Teile zwischen den Trennzeichen) 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f2\fs18\tab\f7 Wenn man 2 w\'e4hlt, k\'f6nnen nat\'fcrlich mehrere Ausgabes\'e4tze je Datensatz entstehen. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f4\fs20 6. Wieviele Ausgabes\'e4tze maximal je Datensatz?\b0\f3 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   \tab\f4 (Geben Sie eine positive Zahl ein, oder 0 f\'fcr unbegrenzt) \f3 
+\par   \tab\f4 (wenn Sie [Enter] dr\'fccken, wird 1 angenommen) \f3 
+\par \f2\fs18\tab\f7 Hier kann man ein Maximum setzen, wenn durch die Mehrfacheintr\'e4ge zu viele Ausgabes\'e4tze entstehen k\'f6nnten. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f3\fs20 7. Welche Art der Ausgabe-Aufbereitung ?\b0 
+\par \pard\fi-456\li456\tx456\tx7100\tab 1 = nach Art von dBase (comma-delimited)\i\tab (Dann weiter bei --> 8a)\i0 
+\par  \tab 9 = nach eigenen Vorgaben \i\tab (Dann weiter bei --> 8b)\i0\f2 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs18\tab Wenn man mit 1 antwortet, wird die Datei quexdb.apt auf export.apt kopiert und es geht bei 8a weiter. 
+\par \tab\f7 Wenn man hier 9 eingibt, mu\'df man noch einige Fragen beantworten \f3 -\f2 > 8b: 
+\par  \tab\f7 (An dieser Stelle k\'f6nnen \i\f2 Allegrologen\i0  Erweiterungen mit eigenen quexXY.apt-Dateien anbringen, um bestimmte Aufbereitungen vorzuprogrammieren und diese hier zur Auswahl anzubieten) 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f4\fs20 8a. Welche Kategorien sollen exportiert werden, au\'dfer der Sortierkategorie?\b0\f3 
+\par \pard\fi-956\li956\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274    \tab (Geben Sie eine oder mehrere Kategorien an, getrennt durch Kommas: 
+\par \pard\fi-1244\li1244\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274     \tab\tab z.B.    20,74,75,76,77,90 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f2\fs18   \tab\f7 Es kann leider nicht eine Gruppe von Kategorien hier mit einer einzigen Angabe wie z.B. "#40." zusammengefa\'dft werden. Teilfelder k\'f6nnen aber vorgegeben werden:  100$a,260$c  usw. \f2 
+\par \pard\fi-456\li456\tx456\tx7100\tab\f7 Daraus wird zun\'e4chst  %%C9%%  gemacht und sp\'e4ter verwendet (s.15.)\f2\tab\f3 --\f2 > Weiter geht es bei 10. 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Man beachte: die ersten zwei werden mit zum Sortieren herangezogen, wenn der Sortierbegriff nicht eindeutig ist. 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f3\fs20 8b. Wiederholungszeichen:\b0 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab [Enter], wenn Sortierbegriff jedesmal mit auszugeben ist 
+\par  \tab 0      , wenn der Sortierbegriff nicht mit auszugeben ist 
+\par \f2\tab Sonst geben Sie hier die Zeichen ein, z.B. **** oder ---, die gesetzt 
+\par \tab werden sollen, wenn der Sortierbegriff sich wiederholt 
+\par \tab (Leerzeichen gehen nicht: statt dessen den Unterstrich _ benutzen, wird dann automatisch durch Leerzeichen ersetzt)\f3 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f2\fs18 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f7 Danach sind f\'fcr jedes auszugebende Feld (n = 1..19) folgende Fragen zu beantworten: (Die erste Kategorie ist beim Druck die zweite, denn zuerst kommt die Sortierkategorie, intern #u2. Es sei denn, man hat 8b mit 0 beantwortet) \f2 
+\par \f3\fs20\tab\bullet  \b Die 1. Kategorie bitte: \b0\f2 
+\par \pard\fi-956\li956\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs18   \tab\tab Man gibt die Nummer ein, z.B.  20 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\fs20   \tab\bullet  \b Welches Textelement soll VOR diese Kategorie? (C = Neue Zeile)\b0 
+\par \pard\fi-956\li956\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab 0=keins     1='. '       2=', '       3='; '      4=C 
+\par    \tab\tab 5=' : '     6=C C        7=' = '      8='. - '    9=' / ' 
+\par   \tab\tab 10=' ('     11=')'       12=' ['      13=']'      14='   ' 
+\par \tab\tab Geben Sie nur die Nummer ein! 
+\par \f2\fs18  \tab\tab\f7 Man gibt z.B. 8, wenn Nummer 8 gew\'fcnscht ist \f2 
+\par   \tab\tab\f7 (Diese Liste von Zwischenteilen ist \'e4nder- und erweiterbar: sie steht in QUEX2.BAT, QUEX3.BAT und Q-EXPORT.APT. An allen drei Stellen mu\'df man dieselben Werte eintragen.) \f2 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\fs20   \tab\bullet  \b Das Textelement soll erscheinen:\b0 
+\par \pard\fi-956\li956\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab 1 = In jedem Fall     2 = Nur wenn die Kategorie belegt ist 
+\par \f2\fs18\tab\tab\f7 Wenn Nachverarbeitung durch Text- oder Datenbanksoftware vorgesehen ist, wird hier meistens 1 die richtige Antwort sein. Man mu\'df dann \'fcberlegen, wie man hinterher mit leeren Feldern umgeht. \f2 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\fs20\tab\bullet  \b ... und welches soll dahinter?\b0 
+\par \pard\fi-956\li956\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab (Nummer eingeben, [Enter] wenn nichts) 
+\par \f2\fs18    \tab\tab Wenn die Kategorie belegt ist, wird sie mit diesem Element beendet. 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f3\fs20  9. Die 2. Kategorie bitte: (Ende: x)\b0 
+\par \f2\fs18      ... 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f7 Es wiederholen sich die vier Fragen unter 8b. bis zu 19mal, d.h. man kann bis zu 20 Kategorien vorgeben, jeweils mit eigenen Pr\'e4- und Postfixen. Eingabe von 'x' statt einer Kategorienummer beendet die Schleife. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f4\fs20 10. Zeilenl\'e4nge? (0 = ohne Umbruch)\b0\f2 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs18\tab\f7 Will man den Zeilenumbruch einem Textsystem \'fcberlassen, gibt man hier 0 ein, ansonsten eine Zahl, die f\'fcr den benutzten Drucker und die eingesetzte Schriftart brauchbar ist, z.B. 72. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f3\fs20 11. Satz-Anfangszeichen? (in "..." , oder C = Neue Zeile)\b0\f2 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs18\tab\f7 Am Anfang eines Satzes braucht man in der Regel kein Steuerzeichen, jedoch kann man hier etwas einsetzen. Wenn man C eingibt, erh\'e4lt man eine Leerzeile zwischen zwei Datens\'e4tzen. Drucker-Escape-Sequenzen k\'f6nnen hier zus\'e4tzlich als Folge von Dezimalzahlen eingegeben werden, z.B.\b\f3\fs20   27 40 115 49 54 72 C\b0\f7\fs18   (ohne Anf\'fchrungszeichen!). \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \b\f3\fs20 12. Satz-Endzeichen? (in "..." , oder C = Neue Zeile)\b0\f2 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs18\tab\f7 Und am Ende des Satzes k\'f6nnte ebenfalls eine beliebige Kombination verlangt werden. \f2 
+\par \tab\f7 Das Normale ist, hier C einzugeben (nicht "C"), um eine neue Zeile am Ende des Satzes zu erzeugen, oder C C, wenn es zwei sein sollen. Jedoch ist auch jede andere Kombination m\'f6glich, etwa  " ENDE" C , um das Wort " ENDE" an den Schlu\'df jedes Ausgabesatzes zu setzen, und dann einen Zeilenvorschub ausl\'f6sen. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \i\f7 Hintergrund f\'fcr Allegrologen: \i0 Die Datei Q-EXPORT.APT mu\'df vorhanden sein. Sie wird kopiert auf EXPORT.cPT, die dann automatisch erg\'e4nzt wird: die Antworten auf 8. bis 12. werden an die Datei EXPORT.cPT angeh\'e4ngt, diese wird per  "\f3\fs20 tEXPORT\f2 "  in P-QUEX.cPR eingebunden. Die Antwort auf Frage 8a. wird dagegen als\f3  -Uc9%%C9%%\f2  an das Programm\f3  srch\f7  \'fcbergeben (s. 15). So kommt man auch bei der Dateiausgabe ohne Eingriff in die Parameterdatei aus. \f2 
+\par \fs18 Jetzt kommt eine Kontroll-Anzeige, wo man nochmals die wichtigsten Einstellungen sieht. Wenn irgendwas nicht stimmt, antwortet man mit 'n', und es geht wieder von vorn bei 1. los. 
+\par Wenn man aber 'j' sagt: 
+\par \b\f3\fs20 13. Wie wollen Sie die Daten herausziehen?\b0 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \tab 1 : mit Volltextsuche 
+\par  \tab 2 : als Ergebnismenge (Export mit F4) 
+\par \f2\fs18\tab\f7 Bei '1' wird SRCH aufgerufen, dann mu\'df man einen Volltext-Suchbegriff eingeben, \f2 
+\par \tab\f7 bei '2' wird PRESTO aufgerufen, dann mu\'df man eine Ergebnismenge bilden und sie per F4 exportieren. \f2 
+\par \i\tab Hintergrund: \i0 Beim Aufruf wird\f3\fs20   -Uc1%%C1%% -Uc2%%C2%%\f2   mitgegeben, d.h. es entstehen die Anwendervariablen\f3  #uc1\f2  und\f3  #uc2\f2 , diese werden in S-QUEX.APR verwertet. 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs18 14.\b0\f7   Es entsteht die Datei QX.cLG, mit  ASORT  wird sie sortiert. Das Ergebnis ist dann QUEX.cLG; QX.cLG wird gel\'f6scht. \f2 
+\par \b 15.\b0   SRCH verarbeitet QUEX.cLG zu der Ergebnisdatei  LISTE. 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Dabei wird mit\f3\fs20   -Uc9%%C9%%\f7   die Liste der auszugebenden Kategorien dem Programm \'fcbergeben. Zur Aufbereitung wird EXPORT.cPT herangezogen, das oben unter Punkt 4 bis 8 erzeugt wurde. (Wenn man bei 7. mit 1 geantwortet hat, ist EXPORT.cPT eine Kopie von QUEXDB.APT). \f2 
+\par \fs18\tab Zur Umcodierung der Ausgabe wird PRINTER.cPT herangezogen, d.h. man sollte vorher per CockPit oder von Hand die geeignete Druckertreiberdatei auf PRINTER.APT kopieren (bzw. z.B. PRINTER.PPT, wenn P.CFG benutzt wird) 
+\par \tab\f7 QUEX.cLG wird am Ende gel\'f6scht. \f2 
+\par \i\tab Hintergrund: \i0\f7 Das Verfahren ist auch bei gr\'f6\'dferen Datenmengen effizient, weil die Sortierdatei relativ klein ist, denn die Datens\'e4tze selbst werden erst im letzten Schritt (15.) nachgeladen. V14-Ersetzungen werden ausgef\'fchrt. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f7 Schematischer Ablauf von QUEX.BAT: (f\'fcr Konfiguration A) \f2 
+\par 
+\par \f3\fs20 Abfragen    Export mit           asort            Export mit 
+\par  vom        ------------> QX.ALG -----> QUEX.ALG  -----------> LISTE 
+\par Anwender    S-QUEX.APR                            P-QUEX.APR  
+\par             (srch/presto)                          (srch) 
+\par \f2 
+\par \pard\fi-658\li658\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\fs36 6.4\tab\tab\f7 QUANT f\'fcr Statistiken\b0\fs20    [nicht mehr ab Win'7]\f2 
+\par \pard\fi-658\li658\qr\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f7 Z\'e4hlungen mit \b\i\f2 a99\b0\i0  : \b\f3\fs24 h ct\b0\f2\fs20 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f7 Neben dem Aufgabenbereich der rechnerischen Auswertungen (Exporttyp R) gibt es die H\'e4ufigkeits-Auswertungen von Kategorieinhalten. Nur um diese soll es hier gehen. Daf\'fcr gibt es QUANT, die universelle QUANTitative Auswertungsmethodik. Wie mit QUEX kann man auch mit QUANT sofort arbeiten, weil es in einem Dialog abl\'e4uft. \f2 
+\par 
+\par \b Was leistet QUANT?\b0 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\bullet\tab\f7 Auch diese Methode ist unabh\'e4ngig vom Kategoriesystem, d.h. funktioniert ohne weitere Vorbereitung mit jeder Datenbank. V14-Ersetzungen werden automatisch ausgef\'fchrt. \f2 
+\par \fs18\bullet\tab\f7 Beliebige Kategorien sind auswertbar, auch mehrere verschiedene in einem Durchlauf; au\'dferdem: \f2 
+\par \bullet\tab\f7 Mehrfachbesetzungen innerhalb einer Kategorie k\'f6nnen zerlegt werden, um alle Eintr\'e4ge zu z\'e4hlen, \f2 
+\par \bullet\tab\f7 oder es wird wahlweise nur der Anfangs- oder Endteil einer Kategorie ber\'fccksichtigt werden, bis zu oder ab einem bestimmten Trennzeichen. \f2 
+\par \bullet\tab\f7 Es gibt mehrere Sortierweisen zur Wahl, u.a. auch numerisches Sortieren (f\'fcr Felder, die Zahlen enthalten) \f2 
+\par \bullet\tab\f7 Schwellenwerte sind vorgebbar ("nur F\'e4lle mit mindestens M oder h\'f6chstens N Eintr\'e4gen sollen in der Liste stehen"), wenn man nur die ganz gro\'dfen oder die ganz kleinen Werte sehen will. \f2 
+\par \bullet\tab\f7 Als Ergebnis entsteht eine nach H\'e4ufigkeit geordnete Liste, wahlweise auf- oder absteigend. \f2 
+\par \bullet\tab Als Sonderleistungen gibt es statistische Auflistungen der vorkommenden Kategorienummern bzw. Teilfeldkennungen. 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 In die \b\i CockPit\b0\i0 -Vorgabendatei CP.OPT ist folgende Zeile unter "Eigene Routinen" eingebaut: 
+\par \f4\fs20 R Quantitative Auswertung, QUANT.BAT, H\'e4ufigkeitslisten von Kategorieinhalten\f2 
+\par \fs18 
+\par \b\f3 QUANT.BAT\b0\f2  kann man auch von Hand starten, dann teilt es mit, welche Environment-Variablen man vorher setzen soll. 
+\par \b 
+\par Ergebnis:\b0\f7  eine Datei QUANT bzw. QUANTS mit den ausgewerteten Daten, alphabetisch bzw. nach Gr\'f6\'dfe geordnet. \f2 
+\par 
+\par \f7 Es folgt eine knappe \'dcbersicht des Ablaufs. (Vollst\'e4ndige Beschreibung: siehe Datei QUANT.TXT). \f2 
+\par Zuerst sind verschiedene Fragen zu beantworten: 
+\par \f7 (Die Fragen erscheinen immer in gr\'fcn, die Antworten in gelb) \f2 
+\par 
+\par \b\f3\fs20 0. Wollen Sie\b0 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab 1 : Alles mit der Hand eingeben? 
+\par \tab\f4 2 : Fr\'fchere Einstellungen \'fcbernehmen? \f3 
+\par \tab 3 : Sonderfunktion: statistische Belegung der Kategorien 
+\par \tab 4 : Sonderfunktion: statistische Belegung der Teilfelder 
+\par \tab x : Vorgang beenden\f2 
+\par \fs18\tab\f7 Wenn man '1' w\'e4hlt, geht es mit 1. weiter, bei '2' kann man gespeicherte Einstellungen fr\'fcherer QUANT-Produktionen erneut ausf\'fchren lassen. Routineproduktionen lassen sich damit weitestgehend automatisieren. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f3\fs20 1. Welche Kategorien sollen ausgewertet werden?\b0 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab (Geben Sie eine oder mehrere Kategorien an, getrennt durch Kommas:)\f2 
+\par \fs18\tab Man gibt eine oder mehrere Kategorienummern, getrennt durch Komma, also z.B. (bei A.CFG)  
+\par \tab #40,#402,#403   
+\par \tab\f7 wenn man die Verfasser (bis zum dritten) auswerten will. Es kann hier leider nicht eine Gruppe von Kategorien mit einer einzigen Angabe wie etwa "#40." oder "#40?" zusammengefa\'dft werden. (Das Zeichen '#' kann  entfallen, also auch 40,402,403 ist m\'f6glich.) Die Eingabe wird in %%C1%% gespeichert. \f2 
+\par \tab\f7 Will man Teilfelder auswerten, f\'fcgt man z.B. $c f\'fcr Teilfeld c an die Kategorienummer an:   #260$c \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\tx7952\b\f3\fs20 2. Minimalwert?\b0\f2  \tab Daraus wird %%MIN%% 
+\par \f3    \b Maximalwert?\b0\f2  \tab Daraus wird %%MAX%% 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs18\tab\f7 Diese zwei Fragen k\'f6nnen mit [Enter] \'fcbergangen werden, dann gelten die Werte 0 bzw. 1000000, d.h. keine Schwellen. Es mu\'df MIN < MAX sein, sonst kommt nichts heraus. Die Fragen beziehen sich darauf, wie h\'e4ufig ein Feldinhalt vorkommt, nicht auf den Inhalt selbst - wenn die Felder Zahlen enthalten, k\'f6nnte man das verwechseln! \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\fs20 3. Sind Stammsatz-Ersetzungen notwendig \b0 (Methode V14)?  j/n 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab (Wenn nicht, geht es bis zu 50%% schneller! ) 
+\par \tab (Wenn Sie nicht sicher sind: Antwort j) 
+\par \f2\fs18\tab\f7 Antwort 'j' ist nur dann zu geben, wenn die auszuwertenden Kategorien Stammsatznummern enthalten k\'f6nnen (z.B. Namen oder Schlagw\'f6rter), die mit V14-Methode ersetzt werden m\'fcssen. Das braucht etwas mehr Zeit, deshalb ist 'n' zu empfehlen, wenn es nicht der Fall ist.  Die Antwort wird in %%C6%% hinterlegt. \f2 
+\par \i\tab Hintergrund: \i0 Bei Antwort 'n' wird S.APT, bei 'j' wird Q4.APT umkopiert auf QUANT.cPT (wobei\f3\fs20  c = %%-K1%%\f2  ist). Der Unterschied ist nur der Befehl\f3  i4=1\f2 , der nur in Q4.APT vorkommt. 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 4. Welches Zeichen ist das Trennzeichen?\b0 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4 M\'f6glichkeiten: eines der Zeichen \'b6 ; - / . , ( * ' : $ =   \f3 
+\par \pard\fi-1244\li1244\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab oder  b = Leerzeichen 
+\par \tab\tab\tab oder  x = keine Trennung 
+\par \pard\fi-956\li956\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab (Wenn Eingabe nicht klappt, t davorsetzen, z.B. t; )\f2 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs18\tab\f7 Eines der dreizehn Zeichen   \'b6 ; b - / . , ( * ' : $ =  kann man eingeben. Wenn ein anderes gew\'fcnscht wird, mu\'df man in\f3\fs20  C-FI.APR\f2  eingreifen. Die Stellen sind kommentiert. 
+\par \fs18\tab '$' ersetzt das Teilfeldzeichen '?', weil man dieses nicht eingeben kann. 
+\par \tab Wenn die Eingabe nicht funktioniert: ein 't' davorsetzen. 
+\par \tab\f7 Am gew\'e4hlten Zeichen werden die Kategorien zerlegt. Nur \b\f2 ein\b0\f7  Zeichen ist m\'f6glich, das f\'fcr alle Kategorien benutzt wird. Daraus wird die Variable  %%C2%%  gemacht. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1736\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\fs20 5. Auswertungsmodus:\b0 
+\par \pard\fi-1910\li1910\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4 W\'e4hlen Sie:\f3\tab 1 = nur den Anfangsteil auswerten (Ende beim Trennzeichen) 
+\par \pard\fi-1909\li1909\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab\tab\tab 2 = jeden Teil auswerten (auch Teile zwischen den Trennzeichen) 
+\par \tab\tab\tab\tab\tab 3 = nur Teil hinter dem Trennzeichen 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f2\fs18\tab\f7 Dies l\'e4\'dft sich nur mit 1, 2, 3 beantworten, was in %%C3%% gespeichert wird. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\fs20 6. Sortiermodus:\b0 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4 1 = Normal (Umlaute aufl\'f6sen, Nichtsortierw\'f6rter beseitigen) \f3 
+\par \tab\lang1040 2 = Pica-Namensmodus (Vorname@Nachname) 
+\par \tab\lang1031 8 = Numerisch sortieren 
+\par \tab\f4 9 = Keine Umcodierung - unver\'e4ndert sortieren \f3 
+\par \f2\fs18\tab\f7 Man gibt eine der m\'f6glichen Ziffern; sie wird in %%C5%% gespeichert. Bei 1 oder 2 wird QUANT.APT als Sortiertabelle benutzt. Bei 8 werden auch negative und Dezimalzahlen korrekt sortiert. \f2 
+\par \tab\f7 Sonderservice: Wenn man 8 w\'e4hlt, wird am Ende zus\'e4tzlich die Gesamtsumme und der Durchschnittswert ausgegeben. (das ist in COUNT2.APR eingebaut). \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 Jetzt kommt eine Kontroll-Anzeige, wo man nochmal sieht, was jetzt als Vorgabe benutzt wird. Wenn irgendwas nicht stimmt, antwortet man mit 'n', und es geht von neuem bei 1. los. 
+\par Wenn man 'j' gesagt hat: 
+\par \b\f3\fs20 7. Sollen diese Einstellungen aufbewahrt werden? \b0 j/n\f2 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs18\tab\f7 Wenn man 'j' antwortet, mu\'df man einen Namen xyz eingeben (bis zu 6 Zeichen). \f2 
+\par \tab\f7 Es wird dann eine Datei C-xyz.BAT erstellt. Darin stehen die Einstellungen als SET-Befehle. Sp\'e4ter kann man sie erneut benutzen (siehe oben 0.) \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\fs20 8. Wie soll die Auswertung erfolgen?\b0 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \tab 1 : mit Volltextsuche  
+\par  \tab 2 : als Ergebnismenge (Export mit F4) 
+\par \f2\fs18\tab\f7 Bei '1' wird SRCH aufgerufen, dann mu\'df man einen Volltext-Suchbegeiff eingeben, bei '2' wird PRESTO aufgerufen, dann mu\'df man eine Ergebnismenge bilden und sie per F4 exportieren. Wenn man hintereinander mehrere Ergebnismengen exportiert, braucht man keine Duplikate zu bef\'fcrchten. \f2 
+\par \i\tab Hintergrund: \i0 Beim Aufruf wird\f3\fs20   -Uc1%%C1%% -Uc2%%C2%% -Uc3%%C3%% -Uc5%%C5%%\f2  mitgegeben, d.h. es entstehen die Anwendervariablen\f3  #uc1, #uc2 , #uc3, #uc5\f2 .  Diese werden in C-FI.APR verwertet. 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs18 9.\b0  Es entsteht die Zwischendatei QUANT, mit  ASORT  wird sie sortiert. 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f7 Das Ergebnis ist dann QUANT.ALG, und QUANT wird gel\'f6scht. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b 10.\b0  SRCH verarbeitet QUANT.ALG zu der Ergebnisliste  QUANT. 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f7 Verwendet wird dazu immer COUNT2.APR. Darin werden Duplikate eliminiert (#u1 enth\'e4lt zus\'e4tzlich die Satznummer, sonst ginge das nicht!) Dabei werden mit  -Umi%%min%% -Umx%%max%%   die Schwellenwerte dem  Programm \'fcbergeben. \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f3\fs20 11. Nach Anzahl sortieren?\b0 
+\par \pard\fi-956\li956\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab a = aufsteigend 
+\par   \tab\tab b = absteigend 
+\par   \tab\tab u = unsortierte Liste nochmals anzeigen 
+\par   \tab\tab x = Ende 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f2\fs18 
+\par \pard\fi-456\li456\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f7 Antwort 'a' oder 'b' bewirkt, da\'df die Datei  QUANT  nach H\'e4ufigkeit sortiert wird. Die Anordnung ist so, da\'df dann eine auf-/absteigend nach Zahlen sortierte Liste QUANTS entsteht, w\'e4hrend QUANT alphabetisch geordnet ist. Die nach Zahlen sortierte Liste wird dann auch noch angezeigt, und die Frage 11. wird wiederholt, damit man evtl. nochmals andersrum sortieren kann. (Es kommt zum absteigenden Sortieren MSDOS-SORT zum Einsatz) \f2 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 12. QUANT und QUANTS sind ASCII-Textdateien, die man beliebig weiterverwerten kann. 
+\par 
+\par \b Schematischer Ablauf von QUANT.BAT :\b0 
+\par 
+\par \f3\fs20 Abfragen      Export mit          asort            Export mit 
+\par   \lang1036 vom        -------------> QUANT -----> QUANT.ALG ---------> QUANT 
+\par \lang1031 Benutzer      C-FI.APR                             COUNT2.APR 
+\par               (srch/presto)                        (srch) 
+\par                                asort 
+\par \f2 wahlweise dann noch\f3         QUANT ---------> QUANTS 
+\par                              oder sort 
+\par \f2\fs18 
+\par \pard\fi-658\li658\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\fs36 6.5  EXPEX : Exportieren lernen mit MARC\b0\fs20 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par Die \b Exportsprache\b0\f7  ist eine tragende S\'e4ule des \b\i\f2 allegro\b0\i0\f7 -Systems und begr\'fcndet seine Flexibilit\'e4t und Offenheit f\'fcr alle Formate. Bildschirmanzeigen, Karten, Listen, Ausgabedateien, Indexregister werden alle damit programmiert. M\'e4chtige und vielseitige Werkzeuge sind jedoch nicht leicht zu beherrschen, und so kann man leider nicht von einem Tag zum n\'e4chsten \b\i\f2 Allegrologe\b0\i0\f7  werden. Gro\'dfe Verdienste um die Verbreitung von Kenntnissen der Exportsprache hat sich Heinrich Allers mit seinem Lehrbuch erworben. Es bietet zu jedem einzelnen Befehl eine ausf\'fchrliche Lektion mit jeweils genau passenden Beispielen. Dieses Lernsystem, organisiert mittels \b\i\f2 CockPit\b0\i0\f7 , kann durchaus auch neben dem Handbuch als Referenz der Exportsprache dienen. Nicht jeder Befehl ist jedoch gleich wichtig, und so f\'fchlt sich mancher am Anfang erschlagen von der F\'fclle des Materials. Wo soll man beginnen, was ist nicht so wichtig, was wird unbedingt gebraucht? \f2 
+\par \f7 Das Lernpaket EXPEX hat zum Ziel, interaktiv von einfachsten Ans\'e4tzen bis zu einer recht anspruchsvollen Parameterdatei in die Programmierung einer Bildschirmanzeige einzuf\'fchren. Man lernt dabei eine Reihe von wichtigen Befehlen, man lernt aber auch gleich das Testen mit der Expressmethode der "Merseburger Testschleife" (Handbuch S.204), denn wer produktiv sein will, mu\'df schnell arbeiten k\'f6nnen. \f2 
+\par EXPEX wurde in Zusammenarbeit mit David Helliwell von der Bodleian Library in Oxford entwickelt. Deshalb sind die Kommentare in den Dateien in Englisch, und es wird mit einem vereinfachten MARC-Format gearbeitet. Das mag als Nachteil gesehen werden, andererseits wird neuerdings sehr viel von internationaler Vereinheitlichung geredet und von einer notwendigen Orientierung an internationalen Standards, sprich MARC und den Anglo-American Cataloguing Rules (AACR). Damit kennt sich noch nicht jeder aus. So kann EXPEX nebenbei auch ein wenig helfen, das Einarbeiten in diese Standards zu erleichtern. 
+\par \f7 Wie arbeitet man mit EXPEX? Es erkl\'e4rt sich weitgehend selbst, daher k\'f6nnen wir uns hier kurz fassen. Nach der V15-Installation hat man ein Unterverzeichnis EXPEX, auf dem alle Dateien liegen. \f2 
+\par \i Start:\i0  entweder mit der Hand, indem man von C:\\ALLEGRO aus den Befehl\b\f3   expex\\expex\b0\f2  gibt, oder man baut sich in die Vorgabendatei CP.OPT diese Zeile ein (bei den "Eigenen Routinen"): 
+\par \f3 R Export-Experimente, EXPEX\\EXPEX.BAT, Interaktiver Einstieg in die Exportsprache 
+\par \f2 dann braucht man nur im \b\i CockPit\b0\i0\f7  diesen Men\'fcpunkt anzuw\'e4hlen. Alles weitere erkl\'e4ren Ihnen dann die Men\'fctexte und die Kommentare in den Dateien. Wenn man EXPEX nicht ben\'f6tigt oder alles verstanden hat, braucht man nur das Unterverzeichnis EXPEX zu l\'f6schen, und das Ganze ist spurlos beseitigt, kein Ballast bleibt zurueck. \f2 
+\par \f7 Wenn man anschlie\'dfend auf den Geschmack gekommen ist, kann man sich sukzessive mit dem Lehrbuch weitere Feinheiten aneignen. Wenn man noch mehr \'fcber MARC wissen will, greift man zur Konfiguration $U.CFG und den Dateien MARC.UPI und D-1.UPR, um damit eine "richtige" MARC-Datenbank aufzubauen, oder man holt sich die Beispieldatenbank, die unter FORMINT.EXE auf dem Verzeichnis FORMATE des FTP-Servers liegt. Sie enth\'e4lt die offiziellen Testdaten der LC mit allen verschiedenen Satztypen, die im Zuge der "for\f2 mat integration" geschaffen wurden. 
+\par 
+\par \pard\fi-658\li658\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\tx456\tx957\tx1245\tx1386\tx1911\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs36 6.6\tab\tab Listen mit geordneten Registern\b0\fs20 
+\par 
+\par \f7 Komplizierter wird es, wenn nicht nur eine sortierte Liste, sondern dazu auch noch ein alphabetisches Register zu erstellen ist. Das Prinzip: man l\'e4\'dft bei der Druckaufbereitung gleichzeitig einen weiteren Export ablaufen, und zwar vom Typ ALPHA (Prototyp A-0.APR, \f3 -\f8\'d8\f7  10.0). Wenn z.B. mit dem oben beschriebenen Verfahren ein alphabetischer Verfasserkatalog produziert wird, kann bei der Druckformatierung zugleich ein Export mitlaufen, bei dem eine sortierf\'e4hige Schlagwortdatei herauskommt, und wobei die Seitenzahl des Katalogs (Export-Sonderkategorie #pa, \f3 -\f8\'d8\f7  10.2.6.2) mit ausgegeben wird. Anschlie\'dfend kann diese Schlagwortdatei sortiert und in einem weiteren Exportlauf in Form eines Registers ausgegeben werden; dabei k\'f6nnen die Seitenzahlen des Hauptteils dann erscheinen. \f2 
+\par \f7 Alternativ k\'f6nnte man w\'e4hrend Schritt 3. statt der Seitenzahlen eine laufende Nummer produzieren und in die Schlagwortliste \'fcbernehmen (Sonderkategorie #nr) und diese dann im Schlagwortregister mit ausdrucken. \f2 
+\par \f7 Es gibt f\'fcr die Erstellung von Listen mit Registern noch keine Einstellm\'f6glichkeiten per \b\i\f2 CockPit\b0\i0\f7 . Man mu\'df also vorerst "nach alter Art" Batchdateien machen, die den gesamten Ablauf enthalten. \f2 
+\par 
+\par Hier eine Batchdatei (ALPHA.BAT, wird mitgeliefert), die den Ablauf illustriert: 
+\par 
+\par \f3 echo off 
+\par rem  1.Schritt: \b\f4 Export mit SORT.APR in sortierf\'e4higer Form\b0\f3 
+\par \f4 rem             (SORT.APR \'e4ndern, wenn andere Sortierung gew\'fcnscht) \f3 
+\par rem             srch durch presto ersetzen, wenn Anwendung auf Ergebnismengen 
+\par srch -f6 -e sort/hhh1.alg -m0 -v0 
+\par rem  2.Schritt: \b Sortieren\b0 
+\par asort hhh1.alg hhh2.alg 
+\par del hhh1.alg 
+\par rem  3. Schritt: \b a) Druckformatierung, und parallel dazu\b0 
+\par rem              \b\f4 b) sortierf\'e4higes Registerdatei\b0\f3 
+\par \f4 rem     (PRINT.APR und ALPHA.APR \'e4ndern, wenn lfd.Nr. statt Seitenzahl gew\'fcnscht) \f3 
+\par srch -f6 -d hhh2.alg -e PRINT/liste -e ALPHA/hhh -m0 -b%%-D%%\\%%-B%% -v0 
+\par 
+\par rem  der Rest bleibt gleich (bei Seitenahl bzw. Nummern): 
+\par \f4 rem     und kann auch f\'fcr andere Konfigurationen \'fcbernommen werden! \f3 
+\par del hhh2.alg 
+\par rem  4.Schritt: \b Sortieren der Registerdatei\b0 
+\par asort hhh hhh.alg 
+\par del hhh 
+\par rem  5.Schritt: \b\f4 Zusammenfassen der identischen Eintr\'e4ge\b0\f3  (Export mit ALPHA2.APR) 
+\par srch -f6 -d hhh -e alpha2/rng.alg -m0 -v0 
+\par del hhh.alg 
+\par rem  6.Schritt: \b Druckformatierung als Register mit Seitenumbruch\b0  (ALPHA3.APR) 
+\par srch -f6 -d rng -e alpha3/REG.TXT -m0 -v0 
+\par del rng.alg 
+\par echo LISTE = alphabetisches Verzeichnis 
+\par echo REG.TXT   = Register 
+\par \f2 
+\par \f7 Die Dateien ALPHA2.APR und ALPHA3.APR sind von der Art des Registers unabh\'e4ngig. Will man also andere Register, z.B. ein Schlagwortregister, produzieren, w\'e4re nur A-0.APR zu modifizieren. ALPHA2 und ALPHA3 sind sogar vom Kategoriesystem unabh\'e4ngig, d.h. nach Umbenennung sofort f\'fcr andere Konfigurationen nutzbar. \f2 
+\par 
+\par Eine andere Art Register, ein \b\f7 H\'e4ufigkeitsregister\b0 , ist mit der dialoggef\'fchrten Methode QUANT erstellbar: z.B. ein Register, das alle vorkommenden Namen oder Schlagw\'f6rter enth\'e4lt und wie oft sie vorkommen. Dieser Registertyp wird in Abschnitt 6.4 behandelt. \f2 
+\par \pard\f14  
+\par ?eigenes Men\'fc=h sortlist 
+\par ?Exportsprache=h ac10 
+\par ?h exprt=h exprt 
+\par ?asort.exe=h ac8 
+\par 
+\par }
+ 

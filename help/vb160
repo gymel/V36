@@ -1,0 +1,134 @@
+
+Verlautbarung 160 der Entw.Abt.                          2002-08-13
+-------------------------------
+                                       Bereitgelegt:
+                                       a99a.lzh, a99.lzh, alcarta.lzh
+                                       Gesamtpaket inst-all.exe
+V22.2 festgeschrieben
+---------------------
+
+Dank zunaechst einmal an alle, die in den letzten Wochen wieder
+unermuedlich getestet und Unstimmig- sowie Unerquicklichkeiten
+gemeldet und Verbesserungsvorschlaege eingereicht haben, allen
+voran mal wieder Thomas Berger, der jetzt schon ganz dicht ans
+Silberne Doppelkreuz herangekommen ist.
+
+Unter den vielen Kleinigkeiten (s.u.) ragt nur eine Verbesserung
+im FLEX-Bereich besonders heraus:
+
+Die Rechenbefehle wurden robuster, vielseitiger und leichter
+anwendbar gemacht und durch if-Vergleichsbefehle ergaenzt.
+(die alte Form bleibt aber gueltig! Dabei muss X statt * stehen)
+Vor allem gibt es aber jetzt ZWEI interne Zahlenvariablen.
+
+So sehen die Befehle jetzt aus:
+
+Z = N   N  bzw. iV in Zahl umwandeln (andere Zeichen fallen
+                   dabei weg) und in iZ speichern
+Z + N   N  bzw. iV in Zahl umwandeln und zu iZ addieren, bzw.
+Z - N   iZ-N  bzw. iZ - iV bilden, bzw.
+
+Z * N   iZ*N  bzw. iZ * iV das Produkt aus beiden, bzw.
+Z / N   iZ/N  bzw. iZ / iV  ausrechnen, bzw.
+
+z % N   iz%N  bzw. iz % iV  (Divisionsrest) ausrechnen.
+
+Die Leerzeichen links und rechts von den Operatorzeichen
+koennen entfallen, es koennen jedoch auch mehrere sein.
+Wenn N fehlt, wird jeweils der Inhalt der iV genommen.
+
+Neben der internen Zahl gibt es jetzt auch den "internen Z„hler".
+Dafuer setzt man nur z statt Z, alles andere ist gleich, ausser:
+Der "int. Zaehler" iz ist im Gegensatz zur iZ eine GANZE Zahl, und bei
+der Division wird das Ergebnis ganzzahlig abgerundet. Den
+Divisionsrest gibt es nur bei iz. (Z.B. ist  5%3 = 2)
+
+Mit   var z   kann man den Wert des Zaehlers in eine Ausgabe
+einsetzen, die iZ  dagegen mit  var Z.
+NEU ist auch: mit
+
+if z>n command    bzw.   if Z>n command
+if z=n command           if Z=n command
+if z<n command           if Z<n command
+
+kann man die Werte von Zaehler und Zahl abpruefen, das muss nun
+nicht mehr mit Sequenzen von "var" und "if >..." geschehen.
+Bei VERGLEICHEN werden, anders als beim RECHNEN, alle Zahlen 
+als DEZIMALzahlen gewertet!
+
+Beispiel 1:
+-----------
+... wie man jetzt eine Schleife mit Hilfe des
+Zaehlers konstruieren kann (z von 0 bis 99):
+
+z=0
+:loop
+...   Befehle
+z+1
+if z<100 jump loop
+
+Mit Z statt z geht's ganz genauso, nun aber kann man Z innerhalb
+der Schleife fuer Berechnungen nutzen.
+
+
+Beispiel 2:  Wie man einen DM-Betrag, der in #uxy steht, in
+-----------  Euro umrechnen kann:
+
+var #uxy
+Z =
+Z / 1.95883
+var Z
+ins #uxy
+
+Beschrieben ist alles in  xiz.rtf.
+Die FLEXe dollar.flx und euro.flx wurden umgestellt, die alten tun es
+es aber auch noch!
+Auch in anderen FLEXen wurden die alten Befehlsformen durch 
+die neuen ersetzt. Sie brauchen Ihre eigenen FLEXe mit alten Formen 
+jedoch nicht zu ueberarbeiten!
+
+Uebrigens:
+Befehle wie  if z<=100 braucht man nicht! Man schreibt entweder
+if z<101  oder  if z not >100
+
+Das Ziel war im uebrigen NICHT, wissenschaftliche Berechnungen in 
+FLEX zu ermoeglichen! Es geht um einfache Vorgaenge wie Summierungen, 
+Grundrechenarten, Vergleiche, Schleifen - ganz simpel, mehr nicht.
+
+
+Kleinigkeiten
+-------------
+
+1. Alt+> und Alt+<  blaettern jetzt in den Hilfetexten, wenn zu
+   dem Zeitpunkt ein Hilfetext in der Anzeige ist.
+   Sonst, wie bisher, in der Folge der internen Satznummern.
+   So kann man jetzt die fuer Hilfetexte so wichtigen Forward-
+   und Back-Buttons auch per Tastatur ausloesen.
+
+2. Wenn in der INI steht: SaveResults=2, dann wirkte der Menue-
+   punkt "Ergeb.aufbewahren" nicht. Jetzt tut er's.
+
+3. Das Zeichen ` (Accent grave, ASCII 96) konnte bisher nicht
+   als solches in Hilfetexten sichtbar gemacht werden, weil er
+   als Flip-Steuerzeichen wirkt und dann unsichtbar wird.
+   Jetzt geht's: wenn ` als Zeichen erscheinen soll, `` schreiben.
+   Mehrere Hilfetexte wurden in dem Punkt bereinigt.
+
+4. Es konnte passieren, dass ein Flip-Button nach Betaetigung den
+   Fokus behielt (erkennbar an einem gestrichelten Rahmen auf dem
+   Button). Das konnte Irritation ausloesen und wurde ausgemerzt.
+
+5. Datenuebernahme im Formular aus einer damit verknuepften
+   ViewListe konnte in sehr seltenen Faellen fehlerhaft sein
+   (Esc-Zeichen in der View-Zeile). Behoben.
+
+6. Bei Absturz waren hinterher die aufbewahrten Erg.Mengen
+   nicht mehr da. Behoben.
+
+7. Beim Befehl update mit Modus u41 oder u40 wird jetzt die Form
+    #nnn ~TEXT   (in den Datensaetzen der einzumischenden Datei)
+   so verarbeitet, dass die #nnn als zusaetzliches Mehrfachfeld
+   eingefuegt wird. Bisher ersetzte sie schlicht die #nnn
+
+8. Ueberfluessig geworden ist die Datei  _quick.flx  auf FLEX.
+

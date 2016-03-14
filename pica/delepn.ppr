@@ -1,0 +1,42 @@
+ Dateiname:        PICA\DELEPN.PPR
+ Inhalt:           Export-Parameter-Datei zur Erzeugung einer Liste der
+                   EPNs zu l”schender Exemplars„tze aus der mit PPNELN.PPR
+                   bzw. PPNELNDA.PPR erzeugten Titel-Bibliotheks-Liste
+ letzte nderung:  23.10.95 (S. Busemann)
+
+
+   ----- Konstanten -------------------------------------------------------
+
+pn="EPN-Liste der zu l”schenden Exemplars„tze"
+
+zl=0               kein Zeilenumbruch
+zm=0               kein Seitenumbruch
+ks=1               Beginn beim ersten Zeichen hinter #
+fl=0               keine Formularaufteilung
+ke=""              Kategorie-Ende-Zeichen
+
+
+   ----- Zwischenteil-Definitionen ----------------------------------------
+
+1=9
+2=0 C
+
+
+   ----- Kategorieliste ---------------------------------------------------
+
+#0100 +a b5 P"-" |116        ersten Exemplarsatz ohne Selektionsschlssel
+#+b                          nachladen
+
+#-a
+#7800 p1 P2                  EPN als Prim„rschlssel ausgeben
+#0100 +a b5 P"-" |117        n„chsten Exemplarsatz ohne Selektionsschlssel
+                             nachladen
+#-b
+#0100 +c b5 P"/" |116        ersten Exemplarsatz mit Selektionsschlssel
+#+#                          nachladen
+
+#-c
+#7800 p1 P2                  EPN als Prim„rschlssel ausgeben
+#0100 +c b5 P"/" |117        n„chsten Exemplarsatz mit Selektionsschlssel
+#+#                          nachladen
+

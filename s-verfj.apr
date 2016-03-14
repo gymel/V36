@@ -1,0 +1,129 @@
+  S-VERFJ.APR : Sortieren nach Verfasser / Jahr  (#40 / #76), mit Nachladung
+  1995-11-01  ho allegro-W3-OPAC
+
+  Ausgangspunkt: Saetze mit #00 <Satznummer> (aus QRIX entstanden)
+pn="Sortierformat #40 / #76 mit Nachladung"
+
+  Bei selbst„ndig gespeicherten Unteraufnahmen wird davon ausgegangen,
+  dass in #00 die Satznummer der Hauptaufnahme steht und die Bandnummer
+  mit '+' angeh„ngt ist. Nur dann funktioniert das Verfahren
+
+  Der Sortierbegriff wird so zusammengesetzt:
+  1. #40 , wenn es nicht vorkommt: bergeordnete Aufnahme laden und
+           #40 daraus entnehmen, wenn es dort auch nicht vorkommt:
+     #20   ebenfalls zuerst in der Ausgangsaufnahme suchen, wenn es
+           nicht vorkommt, gleichfalls aus der nachgeladenen Aufn.
+  2. #76   genauso verfahren
+
+  die folgenden Angaben mssen so bleiben
+  damit die fr die Weiterverarbeitung n”tige .ALG-Form entsteht
+  --------------------------------------------------------------
+zl=0        ... Zeilenl„nge unbegrenzt
+ks=1        ... Beginn beim ersten Zeichen hinter #
+ke=0        ... Kategorie-Ende = 0
+as=""       ... Aufnahme-Start: wird unten als Pr„fix gemacht
+ae=13 10    ... Aufn.Ende: CR LF
+
+ts          ... l„dt die Zeichenumwandlungstabelle S.APT fr das Sortieren
+
+am=1        ... nur 1 Ausgabesatz soll produziert werden
+
+dx=1
+ ---------------------------------------------------------------
+
+  ***************************************************
+  hier geht die Verarbeitung los, da keine ak-Befehle
+  ***************************************************
+
+#hi +# e0 #zz 0
+#nr dkk e0 #zz 0      #ukk l”schen
+
+
+#-a
+  ******************************************
+  Beginn der Verarbeitung von Hauptaufnahmen
+  ******************************************
+
+#00 +N c"+" e0 #zz 0    selbst„ndig gespeicherte Bandaufnahmen werden
+#09 +N c"+" e0 #zz 0
+                        bei #-N abgearbeitet
+
+        Der Sortierbegriff wird zusammengesetzt und als #u1 ausgegeben
+        (Verfasser  Jahr ...)
+        zugleich werden dieselben Elemente ohne Umcodierung in der
+        Variablen #ukk zusammengestellt, die dann unten als #u2
+        ausgegeben wird
+        Die Zeilen mit *** nimmt man weg, wenn die Teile im Druckkopf nicht
+              gewnscht sind
+#40 u e"; " b3 akk #zz 0
+!40 +#21 u e"; " b3 p{ 1 "u1 " } #zz 0   #40 oder #20 als Sortierfeld, Ende bei "; "
+#20 e" : " u b3 Akk #zz 0                 ***
+!20 +#76 e" : " u b3 p{ 1 "u1 " } #zz 0
+#21 b3 p"   " Akk #zz 0                  ***
+!21 +s b3 p"   " #zz 0      Sammlung vor anderen Werken!
+#76 b3 x"*1" e"." s4,. p"" Akk #zz 0               ***
+#76 +s b3 x"*1" e"." s4,. p"" #zz 0   zweites Element: Jahr
+      b3 heisst: Beginn beim 4. Zeichen (3+ks)
+
+#76 +s b3 x"*1" e"." s4,. p"" Akk #zz 0           ***
+#76 +s b3 x"*1" e"." s4,. p"" #zz 0   Jahr des ersten Bandes nehmen, wenn hierarchisch
+
+#t{ "   " }   wenn berhaupt kein Jahr
+
+#-s
+#t{ 0 }     als Abschluss des Sortierfeldes
+
+
+#ukk b3 p"u2 "     Druckfeld, Inhalt von #ukk wird als #u2 ausgegeben
+#+e
+
+#-b            Sprungmarke b: bei untergeordneten S„tzen
+#t { h0 }
+#-e
+            Jetzt wird der Hauptteil des Datensatzes ausgegeben:
+##
+
+   hierarchische Untersaetze:
+#<dS     zum ersten Untersatz schalten. Wenn dieser existiert ->  #-S
+#+#       sonst schluss
+
+#-S
+#t{ h0 }  Hierarchie-Steuerzeichen
+##        Untersatz ausgeben
+#<dS     zum naechsten Untersatz, wenn noch einer da ist, -> #-S
+
+#+#       sonst schluss
+
+
+#-N     Nachladung bei untergeordneten S„tzen
+        (das wird natrlich kompliziert)
+    kommt #40 vor?, dann keine Nachladung n”tig
+#t{ 1 }
+#40 u e"; " b3 akk #zz 0   Kopfkategorie (#40) als Sortierfeld, Ende bei "; "
+!40 +J u e"; " b3 p"u1 " #zz 0
+
+
+#09 +#40 b3 e"+" |90 #zz 0     Hauptsatz laden
+#00 b3 e"+" |90 #zz 0     Hauptsatz laden
+#40 u e"; " b3 akk #zz 0   jetzt wird #40 aus dem Hauptsatz genommen!
+!40 +K u e"; " b3 p"u1 " #zz 0
+#<     zurck zur Ausgangsaufnahme
+#20 e" : " u b3 akk #zz 0    dort #20 entnehmen als Ersatz fr #40
+!20 +L e" : " u b3 p"u1 " #zz 0
+#<^    wenn #20 auch nicht vorkommt, dann wiedeer zur nachgeladenen
+      Aufnahme hochschalten
+!20 e" : " u b3 akk #zz 0     dort muss #20 existieren
+#20 e" : " u b3 p"u1 " #zz 0
+#-K
+#<
+#-L                    wenn das zweite Sortierelement nicht #76 sein soll,
+                       dann hier eingreifen:
+#76 b3 x"*1" e"." s4,. p"" Akk #zz 0
+#76 +j b3 x"*1" e"." s4,. p"" #zz 0
+#<^
+#-J
+#76 b3 x"*1" e"." s4,. p"" Akk #zz 0
+#76 b3 x"*1" e"." s4,. p"" #zz 0
+#-j
+#</
+#+s

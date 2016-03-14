@@ -1,0 +1,174 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss\fcharset0 Arial;}{\f1\fmodern\fprq1\fcharset0 Courier New;}{\f2\fswiss\fprq2\fcharset0 Arial;}{\f3\froman\fprq2\fcharset0 Times New Roman;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;\red0\green0\blue0;}
+\viewkind4\uc1\pard\qc\cf1\b\f0\fs32 Umcodierung\cf0\b0\fs20 
+\par \pard 
+\par \b Was ist das?\b0 
+\par Codierung ist das Ersetzen von Zeichen oder Zeichenfolgen durch andere. Als Spezialfall kann ein Zeichen oder eine Zeichenfolge auch beseitigt werden (d.h. durch \i nichts\i0  ersetzt). 
+\par 
+\par \b Wo, wann und warum mu\'df das sein?\b0 
+\par Weil die verschiedenen Umgebungen (DOS, Win, UNIX, Web) je nach Anwendung und Funktion unterschiedliche Codierungen brauchen. Die Welt ist in diesem Punkt nicht homogen, also mu\'df ein Datensatz oder Text an unterschiedlichen Punkten der Welt unterschiedlich codiert sein, um verstanden oder korrekt verarbeitet oder angezeigt werden zu k\'f6nnen. Doch auch wenn man \'fcberall einen und denselben Standard h\'e4tte, z.B. Unicode, man k\'e4me trotzdem nicht ganz ohne Umcodierung aus: z.B. beim Indexieren und Suchen mu\'df immer etwas derartiges stattfinden, die Beispiele im folgenden Text weisen darauf hin. 
+\par 
+\par Zur Umwandlung von Textdateien kann man einen FLEX namens `\cf2\ul\f1 filecode\cf0\ulnone\f0 ` verwenden. Dieser bietet eine Anzahl von `\cf2\ul\b Codetabellen zur Auswahl\cf0\ulnone\b0 `. 
+\par 
+\par \b Wie macht \i allegro\i0  das?\b0 
+\par Je nach Aufgabe gibt es unterschiedliche Methoden, aber das einfache Grundprinzip ist die Tabelle oder Liste. 
+\par Eine Umcodierung hat immer zwei Seiten, die wir \i Quelle\i0  und \i Ziel\i0  nennen. 
+\par \i Quelle\i0  kann z.B. die Datenbank sein, genauer gesagt die darin gespeicherten Daten. 
+\par \i Ziel\i0  kann eine Liste oder Tabelle sein, eine Anzeige im a99-Anzeigefeld oder im DOS-Anzeigebildschirm oder im Web-OPAC, es kann auch der Index der Datenbank sein: dort soll ja z.B. nicht A, sondern a stehen, und nicht \'e4, sondern ae - auch das f\'e4llt alles unter Umcodierung. 
+\par Quelle kann aber auch eine Fremddatei sein und Ziel die eigene Datenbank (Programm IMPORT.EXE f\'fcr das Konvertieren von Fremddaten, oder \f1 dnb.flx\f0  bzw. \f1 zc.flx\f0 ). 
+\par 
+\par \i Anm.:\i0  Statt "Datenbank" kann es hier immer auch "Grunddatei" oder "Externdatei" hei\'dfen, also eine kompatible Datei, die man direkt in die eigene Datenbank einmischen k\'f6nnte (Typ .ALG bzw. .ADT). 
+\par 
+\par Im einfachsten Fall wird jedem Zeichencode genau ein anderer zugeordnet. 
+\par Darstellen kann man das am leichtesten, und das ist die Grundidee, durch eine \b Liste:\b0 
+\par 
+\par \f1 1 \i z1\i0 
+\par 2 \i z2\i0 
+\par 3 \i z3\i0 
+\par 4 \i z4\i0 
+\par 5 \i z5\i0 
+\par ... 
+\par 255 \i z255\i0 
+\par \f0 
+\par wobei \f1 1,2,3,...,255\f0  die Codes der Quelldaten sind, \i\f1 z1,z2,...,z255\i0\f0   die der Zieldaten. In WIrklichkeit steht da kein Buchstabe z, der soll hier nur besagen, da\'df es ein variabler Wert ist. Beispiele kommen gleich. 
+\par Es gilt dabei immer die Annahme: wenn i = zi, also i unver\'e4ndert bleibt, dann kann die Zeile in der Liste entfallen. 
+\par Anders gesagt: die Liste mu\'df nur denjenigen Codes etwas zuordnen, die im Zielbereich anders codiert sein sollen. Wenn man z.B. die Zeile 
+\par \f1 32 \i z32\f0 
+\par \i0 wegl\'e4\'dft, bedeutet das also: Code 32 wird nicht ge\'e4ndert. 
+\par 
+\par Derartige Listen m\'fcssen aber immer eingebaut sein in die jeweilige Anwendung, und es gibt Listen f\'fcr unterschiedliche Zwecke. Deshalb sehen sie nicht ganz so einfach aus wie oben gezeigt, es steht vielmehr immer ein Befehlsbuchstabe voran. Das sieht z.B. in den \b Exportparametern\b0  so aus: 
+\par 
+\par \f1 ... 
+\par p a A 
+\par p b B 
+\par ... 
+\par p \'e4 "Ae" 
+\par \f0 
+\par Dadurch w\'fcrde dem a ein A zugeordnet, dem b ein B, dem \'e4 die Kombination Ae. Soll mehr als ein Zeichen zugeordnet werden, mu\'df man Anf\'fchrungszeichen setzen. 
+\par Es m\'fcssen hier also nicht die Zahlencodes stehen, sondern druckbare Zeichen k\'f6nnen in der Liste als solche angegeben sein. 
+\par Gleichwertig w\'e4re aber (der Punkt sagt, da\'df eine Zahl folgt): 
+\par 
+\par \f1 p .97 65 
+\par p .98 B 
+\par p .132 "Ae" 
+\par \f0 
+\par Beim Export braucht man gelegentlich nicht eine, sondern zwei Tabellen, deshalb kann man mit \b q\b0  statt \b p\b0  demselben Zeichen noch einen zweiten Wert zuordnen. Quelle sind beim Export immer die allegro-Daten oder Nutzereingaben, Ziel sind beliebige Ausgabeprodukte bis hin zur Indexdatei der Datenbank. Beispiele, in denen beides vorkommt, sind \f1 i.apt\f0  f\'fcr die Indexierung mit den Standardparametern (\f1 CAT.API\f0 ) und \f1 itab.npt\f0  f\'fcr die Indexierung mit den Neutralformat-Parametern (\f1 BANK.NPI\f0 ). 
+\par 
+\par Wie das genau zusammenh\'e4ngt und welche M\'f6glichkeiten es sonst noch gibt, das steht in Kap. 10.2.4.1/.2 (S.182ff) 
+\par 
+\par Bei den Export- und Indexparametern \i kann\i0  man die Codierungslisten auslagern in Tabellendateien des Typs .cPT, also z.B. \f1 i.apt\f0  und \f1 itab.npt\f0 . Eingebunden in die Parameterdatei werden sie dann mit dem t-Befehl: \f1 ti\f0  bzw. \f1 titab\f0 , d.h. eine Zeile wie 
+\par \f1 titab\f0  
+\par sagt soviel wie "\f1 include itab.apt\f0 "  (nur da\'df man es in dieser Form eben nicht hinschreiben kann). 
+\par 
+\par Beim \b Import\b0  dagegen gibt es nur \b eine\b0  Umwandlungsliste, deren Zeilen mit y beginnen: 
+\par 
+\par \f1 y A a 
+\par y B b 
+\par \f0 ... 
+\par Quelle sind die Fremddaten, Ziel sind allegro-Daten in Form einer Grunddatei. 
+\par Wie das genau zusammenh\'e4ngt und welche M\'f6glichkeiten es sonst noch gibt, das steht in Kap. `\cf2\ul\b Kap.11.2.2\cf0\ulnone\b0 ` (S. 258). IMPORT hat keinen include-Befehl, die Befehle m\'fcssen daher mit in der Importparameterdatei stehen. 
+\par Ab V27.2 k\'f6nnen solche Befehle auch in einem FLEX stehen und mit \f1 `\cf2\ul\b xcode y\cf0\ulnone\b0 `\f0  auf den Text der internen Variablen angewendet werden. 
+\par \i Hinweis:\i0  IMPORT kann daneben im selben Durchlauf eine Export-Parameterdatei verwenden, die beliebige p- und q-Befehle enthalten kann! Manchmal mu\'df man zwei Umcodierungen geschickt kombinieren - eine Folge des Erfindungsreichtums der Programmierer, die sich Datencodierungen ausdenken. 
+\par 
+\par Die Befehle p, q und y wirken jeweils nur in eine Richtung, von der Quelle zum Ziel. Anders ist das bei den o-Befehlen: 
+\par 
+\par \b Hin und zur\'fcck zwischen den Welten\b0 
+\par Es gibt eine Methodik, die in beiden Richtungen wirken kann - anders gesagt: Ziel und Quelle k\'f6nnen die Rollen tauschen. 
+\par Wenn bei zuerst Hin- und dann R\'fcckwandlung wieder dasselbe rauskommen soll wie vorher, mu\'df die Liste ein-eindeutig sein: sie darf nicht zwei Codes denselben Zielcode zuordnen, sondern zwei Quellcodes m\'fcssen zwei unterschiedliche Zielcodes zugeordnet bekommen. Die wichtigste Liste von o-Befehlen steht in der Datei \b o.apt\b0  (darin Kommentar), sie vermittelt zwischen den DOS- und Windows-Versionen des OstWest-Zeichensatzes. 
+\par Der Anwendungsbereich dieser Methode ist vor allem der Wechsel zwischen internen und externen Daten in den Windows- und Web-Anwendungen. Denn intern haben die Datenbanken noch weitgehend, weil alles kompatibel sein soll, DOS-Codes. (Nur der neue Standard "Neutralformat" arbeitet von vornherein im Windows-Code. 
+\par  
+\par Extern, im Windows-Fenster oder im Web-Formular, m\'fcssen aber die Zeichen im ANSI-Code (ISO 8859) aufscheinen, bei R\'fcckgabe zum Speichern mu\'df wieder DOS-Code draus werden. Die Umwandlung in beiden Richtungen leisten die o-Befehle: 
+\par 
+\par \f1 o .132 228    \'e4 
+\par ... 
+\par o .142 196    \'c4 
+\par \f0 
+\par Hiermit wird das DOS-\'e4 (132) dem Windows-\'e4 (228) zugeordnet und zugleich umgekehrt. Die FLEX-Befehle \f1 asci\f0  und \f1 ansi\f0  kann man nutzen, um diese Tabellen gezielt anzuwenden, ansonsten wirken sie an vielen Stellen automatisch, z.B. beim Anzeigen von Hilfetexten, die in DOS-Code erstellt wurden. 
+\par o-Befehle k\'f6nnen in die Indexparameter und in die Anzeigeparameter eingebaut werden. Sie wirken sich dann so aus: 
+\par \i Anzeigeparameter:\i0  Umcodierung ASCII<->ANSI: vor allem automatisch f\'fcr Viewlisten und DOS-ASCII-Dateien. Anwendung im FLEX mit den Befehlen \f1 `\cf2\ul\b ansi / ascii\cf0\ulnone\b0 `\f0 . 
+\par \tab Daf\'fcr am besten eine Kopie der o.apt benutzen und in die Anzeigeparameter einbinden. 
+\par \i Indexparameter:\i0  Umcodierung der eigenen Interncodes in ANSI zwecks Anzeige im Index- und Kurzlistenfenster und Schreibfeld. 
+\par \tab Wer nicht mit A.CFG arbeitet, mu\'df eine eigene o-Tabelle anlegen und in seine Index- und Anzeigeparameter einbinden. 
+\par 
+\par Die p-, q- und o-Zeilen m\'fcssen \'fcbrigens nicht sortiert sein. Wenn allerdings ein Wert zweimal auftritt, gilt nur der letzte: 
+\par 
+\par \f1 p \'e4 "Ae" 
+\par ... 
+\par p \'e4 "ae" 
+\par \f0 
+\par w\'fcrde dem \'e4 das "ae" zuordnen! 
+\par \i Vorsicht:\i0  die Syntax und die M\'f6glichkeiten sind wegen unterschiedlicher Randbedingungen bei p/q und o bzw. y nicht genau gleich. Diese "Randbedingungen" betreffen z.T. die internen Strukturen, mit denen  die Listen im Programm gespeichert und gehandhabt werden, und diese Dinge kann der Anwender nicht intuitiv einsehen, da liegt ein gewisses Problem. EIne Grundregel ist aber: Eine Tabellenzeile darf nicht mit Leerzeichen beginnen, und zwischen den Teilen eines Tabellenbefehls mu\'df immer genau ein Leerzeichen stehen. Sobald zwei Leerzeichen oder mehr aufeinander folgen, gilt der Rest der Zeile als Kommentar, sowie auch jede mit Leerzeichen beginnende Zeile insgesamt keine Wirkung hat. Die in den o-Zeilen oben zu sehenden Buchstaben \'e4 und \'c4 haben also keine Funktion, sondern stehen da zur zur Verdeutlichung. 
+\par 
+\par Die o-Befehle (s. 10.2.4.5, S.185) haben keine Wirkung in den DOS-Programmen, nur in a99/alcarta und acon. 
+\par \i Hinweis:\i0  Wenn man in a99/alcarta oder acon merkw\'fcrdige Probleme hat, bei denen anscheinend Zeichen vom Programm mutwillig ge\'e4ndert werden, kann o.apt dahinterstecken. Wenn die eigene Datenbank nicht mit DOS-Code arbeitet, ist die Original-o.apt nicht sinnvoll. Deshalb die Empfehlung: auf das eigene Datenverzeichnis eine leere Datei mit dem Namen o.apt legen und schauen, ob's dann klappt. Wenn nicht, ist o.apt nicht dran schuld. 
+\par 
+\par \b Indexcodes\b0 
+\par In Indexparametern kann eine weitere Liste auftreten, deren Zeilen mit \b\f1 i\b0\f0  beginnen: die Indexcodes (10.2.4.5, S. 185). Diese Befehle ver\'e4ndern aber keine Zeichen, sie ordnen ihnen nur einen anderen Sortierwert zu. Das kann n\'f6tig sein, wenn die Reihenfolge der Zeichen im Index eine andere sein soll als die der Codewerte. Z.B. k\'f6nnte man das t\'fcrkische i ohne Punkt zwischen i und j einordnen wollen; es w\'fcrde sonst weit hinter z landen. 
+\par 
+\par \b Unicode\b0 
+\par In Windows- und Web-Umgebungen werden u.U. noch weitere Listen gebraucht. Mehr dazu in dem Text zu Unicode  (\b\f1 h unicode\b0\f0   eingeben). 
+\par Es geht dabei nicht um Ersetzung von Einzelzeichen, sondern von ganz bestimmten 2- und 3-Byte-Kombinationen: 
+\par 
+\par \b P- und Q-Befehle\b0 
+\par Die Befehlszeilen beginnen mit P und Q und sind \b nur \b0 dann vonn\'f6ten, wenn man \b intern\b0  in der Datenbank UTF-8-Codierungen verwendet. Diese bestehen aus je 2 oder 3 Codes oberhalb 128. Solchen Zeichenkombinationen kann man andere Werte (einzelne oder mehrere Zeichen) zuordnen, was vor allem f\'fcr die Indexierung wichtig ist, aber auch bei Exporten n\'f6tig werden kann. 
+\par Beispiele sieht man in der mitgelieferten Datei  \f1 iu.apt\f0  (darin Kommentar), etwa diese: 
+\par \f1 P 195 132 AE   [00C4] -- &#196 
+\par P 195 133 A    [00C5] -- &#197 
+\par \f0 Eine Liste der UTF-Codierungen mit den Unicode-Namen findet man in \f1 ucodes.apt\f0 
+\par Die P/Q-Befehle haben Priorit\'e4t vor den p/q-Befehlen, d.h. sie werden beim Abarbeiten einer Exportzeile zuerst ausgef\'fchrt. 
+\par Mehr dazu in der `\cf2\ul\b Unicode-Dokumentation\cf0\ulnone\b0 `. Als Referenzliste findet man dort die "Amtliche Tabelle", in der alle Codes des OstWest-Codes mit allen Werten zusammengestellt sind. 
+\par 
+\par \b u-Befehle\b0 
+\par Diese machen etwas \'c4hnliches wie die P/Q-Befehle: sie ordnen aber einer UTF-Sequenz einen ASCII- oder ANSI-Code zu, also einen einzelnen Code. Sie wirken nur an der Stelle, wo man dem Programm \b acon\b0  oder \b a99\b0  Daten mit dem FLEX-Befehl \f1 insert\f0  \'fcbergibt. Wenn dies UTF-Daten sind, werden daraus intern ASCII- oder ANSI-Daten. Diese Befehle kommen also zum Einsatz, wenn man eben intern \b keine\b0  UTF-Codes hat, sondern ASCII oder ANSI. 
+\par Beispiele sieht man in der "gro\'dfen" Version der Demodatenbank-Indexparameterdatei \f1 cat.api\f0 , Grundlage ist ebenfalls die Liste in \f1 ucodes.apt\f0 
+\par 
+\par \b Sonderfall: Volltextsuche\b0 
+\par NUR das Konsolprogramm SRCH.EXE und seine UNIX-Version \f1 srch\f0  machen Gebrauch von einer Liste, die in der Datei \f1 `\cf2\ul\b s1.asp\cf0\ulnone\b0 `\f0  steht. 
+\par Beschreibung; Kap. 4, S.119  (\f1 h ac4\f0   eingeben). Gesucht wird sie auf dem Startverzeichnis, bei Mi\'dferfolg auf dem Programmverzeichnis. 
+\par Diese Liste hat vorn kein Befehlszeichen! Typische Eintr\'e4ge sind diese: 
+\par 
+\par \f1 A/Z a     gross -> klein, A->a, B->b, ... 
+\par \'c7 c 
+\par \'fc ue 
+\par \'e9 e 
+\par \'e2 a 
+\par \'e4 ae 
+\par \'e0 a 
+\par 
+\par \f2 Diese Liste erm\'f6glicht das Finden von M\'fcller, Mueller, M\'dcLLER und MUELLER mit einem und demselben Suchwort, n\'e4mlich "mueller". Wenn der Nutzer z.B. M\'fcller eintippt, wird nichts gefunden! Nicht die Nutzereingabe wird umcodiert, sondern nur die Daten, und sie werden dann nach Umcodierung verglichen mit der unver\'e4nderten Nutzereingabe - das ist alles. 
+\par \i Hinweis:\i0  Die Volltextsuche per FLEX (Export-Komfortmen\'fc) arbeitet nicht mit dieser Datei! Sie benutzt vielmehr die p-Befehle der Indexparameter, um sowohl die Nutzereingabe als auch die Daten umzucodieren, bevor es sie vergleicht. Warum arbeitet SRCH nicht so? Weil es auch ALG-Dateien durchsuchen k\'f6nnen mu\'df, wenn gar keine Indexparameter vorhanden sind. SRCH stammt aus einer Zeit, als es noch keinen Index gab... Mit dem FLEX-Befehl \f1 `\cf2\ul\b srx\cf0\ulnone\b0 `\f2  wird ab V27.1 erm\'f6glicht, die Volltextsuche per FLEX auf neue Art zu erledigen, wobei die M\'f6glichkeiten der Umcodierung noch umfangreicher sind. Seit V32 gibt es einen 32bit-Ersatz f\'fcr SRCH.EXE namens \f1 srch.exe\f2 , und dieses Programm beherrscht ebenfalls die \f1 srx\f2 -Technik der sog. "regul\'e4ren Ausdr\'fccke". 
+\par 
+\par \b FLEX-Umcodierung\b0 
+\par Es gibt ab V27.2 einen FLEX-Befehl\cf3\f3\fs22   `\cf2\ul\b\f1 xcode\cf3\ulnone\b0\f3 `\cf0\f2\fs20  mit dem man die Tabellen in den Parameterdateien jederzeit gezielt auf den Inhalt der internen Variablen anwenden kann. So z.B. wird mit  \f1 xcode u\f2   die Wandlung von Unicode UTF-8 in den Interncode ausgel\'f6st.\cf3\f3\fs22 
+\par \cf0\f0\fs20 Als Werkzeug wird bereitgestellt der FLEX \b\f1 `\cf2\ul filecode.flx\cf0\ulnone `\b0\f0 , mit dem man Textdateien umcodieren kann. Darin kann man die Anwendung des besagten Befehls beispielhaft sehen. 
+\par 
+\par 
+\par \b Holzhammermethode: Globale Ersetzung 
+\par \b0 Wenn es nicht um Einzelzeichen geht, die zu ersetzen sind, gibt es manchmal keine andere Wahl als die globale Ersetzung, die bei Import wie Export wahlweise auf einen ganzen Datensatz oder auf bestimmte Felder anwendbar ist. Mehr dazu: Export: 10.2.4.6, S. 186 bzw. Import: 11.2.2, S. 258. 
+\par Generell ist die globale Ersetzung weniger effizient, also langsamer. Dadurch Einzelzeichen ersetzen zu wollen ist eine schlechte Idee, man sollte die Methode auf Zeichen\i folgen\i0  begrenzen. Aber auch daf\'fcr gibt es inzwischen eine bessere L\'f6sung: 
+\par 
+\par \b\f2 Sequenzen\b0 
+\par Ein besonderer Fall der Ersetzung von Zeichenfolgen liegt vor, wenn so etwas wie \f1 &auml;\f2  in den eigenen Daten vorkommen kann und beim Export ein \'e4 (Code 132 oder 228) erscheinen soll. Dazu wurde die Methodik der `\cf2\ul\b Sequenzen-Ersetzung\cf0\ulnone\b0 ` geschaffen, die ebenfalls im `\cf2\ul\b Unicode-Papier\cf0\ulnone\b0 ` beschrieben ist. Sie arbeitet mit Hilfsdatens\'e4tzen, die mit in der Datenbank gespeichert werden und bestimmte Indexeintr\'e4ge erzeugen, z.B. Eintr\'e4ge wie 
+\par \f1 &auml;\'e4 
+\par &Auml;\'c4 
+\par \f2 Spezialbefehle in den Index- oder Exportparametern bewirken dann, da\'df die Sequenzen ersetzt werden durch das, was im Index dahinter steht. Man mu\'df in die Parameter diese zwei nichtintuitiven Befehle schreiben: 
+\par \f1 ib=59 
+\par p & 9\f2 
+\par Es kann beliebig viele solche Sequenzen geben, trotzdem ist diese Methodik erheblich schneller als globale Ersetzung. Auch das 32bit srch.exe beherrscht diese Methode, wenn es Zugriff auf eine Datenbank hat (mittels Option -b), in der solche Sequenzen definiert und indexiert sind. 
+\par 
+\par  
+\par ?Unicode-Dokumentation=h unicode 
+\par ?xcode=h xxcode 
+\par ?Unicode-Papier=h unicode 
+\par ?srx=h xsrx 
+\par ?Sequenzen-Ersetzung=h vb164 
+\par ?xcode y=h xxcode=xcode y 
+\par ?ansi / ascii=h xansi 
+\par ?s1.asp=h s1.asp 
+\par ?filecode.flx=h filecode.flx 
+\par ?filecode=X filecode 
+\par ?Codetabellen zur Auswahl=x View codetab 
+\par ?Kap.11.2.2=h ac11-1=11.2.2  Globale 
+\par 
+\par }
+ 

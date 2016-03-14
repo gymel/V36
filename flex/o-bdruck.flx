@@ -1,0 +1,142 @@
+  O-BDRUCK.FLX : Bestellungsdruck
+  2001-03-22/2012-04-25  Aktuelle Erg.Menge muss aus Bestellsaetzen bestehen
+
+
+var ""
+ins #ulZ   // Flag
+var "Jede Bestellung einzeln? Nein: Je Lieferant eine Liste"
+yesno
+if cancel end
+  Flag setzen
+if yes #ulZ 1
+
+
+if not #9DB if empty jump noOrd
+
+  Datei BESTELL.RTF schreiben
+if not $Best $Best=bestell.rtf
+
+var $Best
+delete
+
+var e
+ins #uvE
+exp p p-orda
+if no jump error
+
+var ""
+  Flag loeschen (dann kommt Ueberschrift!)
+#ulL
+  und noch 3 Flags
+#ulA
+#ulG
+#ulS
+
+
+// frueher: open x bestell.rtf
+var $Best
+open x
+if no jump ferr
+  RTF-Kopf rein
+write Flisthead.rtf
+
+if #9DB yesno aktuelle Bestellung? (Nein=Ergebnismenge)
+if #9DB if can jump schluss
+if #9DB if yes jump aktuell
+  Erg.Menge ausgeben
+if l1 mes Keine Ergebnismenge. Bilden Sie eine aus Bestellsaetzen!;jump schluss
+
+first
+if not #9DB mes Das sind keine Bestellungen. Bilden Sie eine Erg.Menge aus Bestellsaetzen!;jump schluss
+
+wri " \\f2 \\fs24 "  n
+
+  Entweder ganze Erg.Menge auf einmal:
+if #ulZ jump einzel
+
+
+exp set
+
+jump bend
+
+  oder jede Bestellung einzeln:
+
+  *** Beginn
+:einzel
+first
+:bloop
+
+exp
+
+var ""
+ins #ulA
+
+next
+if yes jump bloop 
+  *** Ende
+
+  noch den Fusstext:
+:bend
+
+#ulS1
+  Wenn #ulS besetzt, dann macht exp nur den Fusstext
+exp
+
+jump exit
+
+  Nur aktuelle Bestellung (nicht Erg.Menge)
+:aktuell
+wri " \\f2 \\fs24 "  n
+var ""
+ins #ulA
+if not #9DB jump ak9
+exp
+#ulS1
+exp
+jump exit
+end
+
+:ak9
+if #9DB jump exit
+disp
+sho rec
+
+mes Das ist kein Bestellsatz
+jump schluss
+
+:exit
+write " } } } }" n
+
+close x
+#ulS
+var #uvE
+xport p
+  Liste in die Anzeige holen
+var $Best
+fsize
+  fsize bestell.rtf
+if <160 end
+var $Best
+help
+  help bestell.rtf
+
+var "Tip: Die Textdatei  bestell.rtf  mit Word einlesen!" n "Oder: mit  Strg+a Strg+c  den Text aus der Anzeige herauskopieren" n " und dann in Word mit Strg+v  einfügen"
+sho iV
+end
+
+:error
+mes Parameter p-orda nicht vorhanden!
+end
+
+:noOrd
+mes Keine Bestellung geladen bzw. keine Ergebnismenge
+end
+
+:schluss
+close x
+end
+
+:ferr
+var "Datei " W "\\bestell.rtf kann nicht geöffnet werden!"
+mes
+

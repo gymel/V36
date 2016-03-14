@@ -1,0 +1,170 @@
+  A-NEWUSR.FLX : Neuen Lesersatz anlegen
+  2006-02-07
+  Aufruf mit Leserkl. moeglich: z.B.  X a-newusr 5
+
+ins $cl
+var i
+ins #uaI
+new 0
+:eingabe
+  #00 - : Es soll keine IdNummer vergeben werden
+#00 -
+  0 = frei, #uaN ist u.U. noch aus alf.flx vorhanden
+var "0" #uaN
+
+ins #9B 
+  Aufn.Datum
+var #dts(0,8)
+ins $A-#9B
+  Klasse aus $cl vorgeben
+var $cl
+ins $k-#9B
+disp
+
+:eingabe
+  Formular
+form Benutzer
+if cancel jump exit
+
+if not #9B$n mes Name fehlt! (Vielleicht fehlt das Formular [Benutzer] in cat.frm!);jump eingabe
+form Benutzer/Leser 2
+  Leserklasse?
+var #9B$k
+  wenn keine, dann 1
+if "" var '1'
+ins $k-#9B
+
+  Pruefen, ob es diese Klasse x gibt
+  muesste dann unter |; SYSCx stehen
+var "1 |; SYSC" #9B$k
+qrix
+var (b"SYSC")
+ins #ubK
+var #9B$k
+  identisch mit der eingegebenen Ziffer?
+if =#ubK jump kg
+var "Klasse " #9B$k " gibt es nicht"
+mes
+  Sonst Auswahlliste zeigen (View 0 : zeigt nicht die Datensaetze...)
+View 0 a-clas.vw
+if "" end
+var (e"|")
+ins $k-#9B
+
+:kg
+  Gueltigkeit schon eingetragen? dann speichern
+if #9B$a jump speich
+
+  Sonst Guelt. aus Klassensatz entnehmen
+  Daten zwischenlagern
+var #00
+ins #uaO
+var #9B
+ins #uaA
+
+  LeserklassenDaten aus #uaA nehmen (aus $Aclas)
+var #uaA$k
+if ="" var "1"
+ins #uaL
+var "///C" #uaL
+ins #uaL
+var $Aclas (b"#uaL" e"///")
+if ="" jump erro
+ins #uaK
+  Anmeldegebuehr
+var #uaK$a
+  zwischenlagern
+ins #uaP
+  Gueltigkeit entnehmen
+  da steht z.B. @2 = 2 Jahre, *40 = 40 Tage, oder JJJJMMTT
+var #uaK$A
+  und zwischenlagern
+ins #uaX
+  Gueltigkeit: entweder
+  Datum  JJJJMMTT
+  @ziffer   Jahre
+  *tage
+
+
+if "*" jump tage
+if not "@" jump newusr
+  z.B. @2 : 2 Jahre, auf aktuelles Jahr draufrechnen
+var #uaX(1,0)
+z=
+var #dts(0,4)
+z+
+var z #dts(4,4)
+ins #uaX
+jump newusr
+:tage
+var (1,0)
+Day
+var (0,8)
+ins #uaX
+
+:newusr
+  Wieder Neusatz anlegen, Daten hervorholen aus #uaA
+var #uaO
+ins #00
+var #uaA "a" #uaX
+ins #9B
+sho rec
+
+:speich
+  Erst noch Guelt.Datum pruefen (unvollkommen!)
+#uaD   0
+
+disp
+var #9B$a
+Day
+  Falls Sonntag oder Samstag, 1 bzw. 2 Tage drauf
+
+if %= So% #uaD   1
+if %= Sa% #uaD   2
+var #9B$a "+" #uaD
+Day
+
+var (e"/")
+ins $a-#9B
+disp
+
+  anzeigen und speichern
+sho rec
+dis
+yes Speichern? (Abbrechen: Eingaben verwerfen)
+if no mes Satz noch bearbeiten und dann speichern;end
+if can jump exit
+put
+#uaN
+var "NutzerIn " #9B$n " ist eingetragen. GebÅhr: " #uaP " EUR"
+ansi
+mes
+end
+
+:erro
+var "Leserklasse " #9B$k " gibt es nicht!"
+mes
+var #uaO
+ins #00
+var #uaA
+ins #9B
+end
+ jump eingabe
+
+:exit
+#uaN
+  den nichtgespeicherten Satz wieder beseitigen
+erase
+var "#" #uaI
+find
+sho rec
+h alf
+end
+
+ u-VARIABLEN in a-newusr.flx
+ #uaA (4)  Inh. von #9B (Lesersatz)
+ #uaI (2)  int. Nr. aktueller Satz
+ #uaO (3)  #00 des Lesersatzes
+ #uaP (2)  Anmeldegebuehr und
+ #uaX (4)  Gueltigkeit  aus Klassensatz
+

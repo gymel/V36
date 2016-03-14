@@ -1,0 +1,123 @@
+  _RESTORE.FLX : ZurueckKopieren einer Datenbank mit allen Dateien
+  2001-01-19
+  Danach muss noch die LOG-Datei eingespielt werden
+
+var m
+if ="alc" end
+
+help restr
+:start
+if usr jump use
+var "Wo liegt die Kopie? Geben Sie einen Pfadnamen ein:=" C
+ask
+  Nichts oder Esc eingegeben
+if cancel end
+if "" jump browse
+  ist ein : drin?
+if %:% jump anfang
+  Nein, d.h. kein Laufwerk angegeben
+jump nodrive
+
+:anfang
+  Eingabe speichern in #u|Z
+ins #u|Z
+   den \ am Ende beseitigen (falls da einer ist)
+var #u|Z(F"\\")
+ins #u|Z
+   der eingegebene PfadName steht jetzt in iV
+
+   Checken, ob dort ueberhaupt eine Kopie liegt!
+var #u|Z "\\" B "." K1 "dx"
+fsize
+  Nein. Dann ist es wohl nicht das richtige Verzeichnis
+if no jump nexist
+  Ja, gefunden:
+  Checken, ob es das Datenverz. selbst ist.
+var "~" #u|Z
+ins #u|F
+var D
+ins #u|D
+var #u|D(F"\\")
+  Vergleich der beiden PfadNamen, wenn gleich: Fehler
+if =#u|F jump samepath
+
+  Jetzt kanns losgehen
+:do
+var "Restaurierung der Datenbank " D B " kann beginnen," n
+var +"Sicherheitskopie wird von " #u|Z " geholt" n
+var +"Bitte best„tigen"
+ansi
+yesno
+if no jump start
+if canc end
+
+  Erst TBL sperren: waehrend des Kopierens keine Schreibaktion zulassen
+set tbl lock
+  Bei :exit wird wieder freigegeben
+  Aufruf des Programms _RESTORE.BAT zusammenbauen
+var D
+ins #u|D
+get env comspec
+ins #u|C
+var #u|C " /c " P "_restore.bat " #u|D(F"\\") " " B " " #u|Z "\\ " K " " K1 " " P " " a " " V
+  a99 jetzt stoppen,_restore.bat starten
+STOP
+  denn a99 muss beendet werden! Es wird aus _RESTORE.BAT wieder gestartet
+end
+
+:samepath
+var "Das ist ja dasselbe Verzeichnis, wo die Datenbank liegt," n
+var +"das geht natrlich nicht!" n "Die KOPIE kann nur auf einem ANDEREN Verzeichnis liegen" n
+var +"und dieses andere Verzeichnis mssen Sie angeben:"
+ansi
+mess
+jump start
+
+:nexist
+var "Verzeichnis " #u|Z " enth„lt keine Kopie" n "Das war entweder ein Irrtum" n "Oder die Kopie muss zuerst von einem anderen Medium dorthin gebracht werden." n
+var +"Ist letzteres der Fall, dann erledigen Sie das jetzt, bevor Sie hier weitermachen!" n
+var +"Im Zweifel lesen Sie zuerst den Text im Anzeigefeld" n n
+var +"[Ja] = Irrtum, neuer Versuch   [Nein] = Ende"
+ansi
+yesno
+if yes jump start
+end
+
+
+:nodrive
+var "Es fehlt die Angabe des Laufwerks. Ein Pfadname muss so aussehen:" n
+var +"X:\\abc\\def...\\xyz" n
+var +"Fr X muss der Laufwerksbuchstabe eingesetzt werden," n
+var +"abc usw. muss ein Verzeichnisname sein" n n
+var +"Neuer Versuch?"
+ansi
+yesno
+if yes jump start
+  Nein, Ende, TBL wieder freigeben
+set tbl free
+var ""
+ins #u|D
+ins #u|F
+ins #u|Z
+end
+
+
+:browse
+  Verzeichnis auswaehlen, wenn kein Name eingegeben wurde
+
+var "TBL-Datei auf dem Kopie-Verzeichnis w„hlen|\\" B ".tbl"
+ansi
+fnam
+if "" end
+
+ins #u|Z
+var #u|Z(t"\\")
+
+jump anfang
+
+:use
+var "Datenbank ist in Benutzung, RESTORE kann nicht stattfinden" n
+var +"Zuerst mssen alle Nutzer die Datenbank verlassen"
+ansi
+mes
+end

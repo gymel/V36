@@ -1,0 +1,200 @@
+
+Schnell mal eben eine neue Datenbank anlegen!
+---------------------------------------------
+
+Im Prinzip mit "allegro" machbar, aber was man alles bedenken, beachten und
+vor allem wissen muss - daran duerfte es bis heute in der Praxis meistens
+scheitern. Zwar sind die Faehigkeiten des Systems auch fuer nichtbiblio-
+thekarische Zwecke attraktiv, aber die Huerde war hoch, die man nehmen
+musste, um diese Faehigkeiten effektiv zum Einsatz zu bringen. Man musste
+eine Konfiguration mit allem Drum und Dran erstellen, dann die Indexparameter,
+dann die Anzeigeparameter. Dann testen ... und bis das alles stimmte ...
+auch wenn man "eigentlich nur was ganz Einfaches" machen wollte.
+
+Sie lesen richtig: die Huerde WAR hoch - sie wurde weggeraeumt. Jedenfalls
+fuer die Faelle, wo man was relativ Einfaches machen will.
+Die laufenden Bemuehungen um Vereinfachungen (im Umfeld des Projekts
+"avanti") haben bisher die Pakete COFI und QUEX hervorgebracht, mit
+denen das Erstellen von statistischen Auswertungen und sortierten
+Listen fÅr viele Anwendungen stark vereinfacht wird, weil keine
+Parametrierung dabei anfaellt. 
+
+Jetzt kommt ein Paket hinzu, welches das Erstellen einer neuen Datenbank
+zu einer sehr leichten Uebung werden laesst, die keine Kenntnisse der
+Konfigu- und Parametrierung mehr voraussetzt.
+
+Das neue Paket heisst PRONTO. Im Italienischen bedeutet das "fertig".
+In der Tat wird mit Fertigteilen gearbeitet. Es wurde ein Bausatz
+entwickelt, aus dem die notwendigen Dateien: .CFG, .cPI, .cPR zusammen-
+gesteckt werden. Das Zusammenstecken passiert sogar automatisch, d.h.
+man muss die Teile selbst gar nicht in die Hand nehmen. Was zu tun
+bleibt, ist nur ein absolutes Minimum: man muss in einem Dialog die
+Datenfelder festlegen, aus denen die Saetze hinterher bestehen sollen,
+und fuer jedes Feld einige Eigenschaften. Dazu unten mehr. 
+
+
+****  Fuer den eiligen Leser  *****************************************
+
+Wer sich mit der Theorie nicht lange aufhalten will, braucht nur dieses
+zu wissen: (und kann sofort ein konkretes Projekt beginnen)
+
+PRONTO.BAT  steuert den gesamten Ablauf
+            Start vom CockPit oder per Hand, das ist egal.
+
+Es werden zuerst 2 Dinge abgefragt:
+
+1. Name der Datenbank (bis zu 4 Zeichen)    z.B.     BANK
+   (wird zugleich als Name des Verzeichnisses benutzt!)
+
+2. Kennbuchstabe fuer die Konfiguration,    z.B.     K
+   (vorher wird gezeigt, welche es schon gibt)
+
+Dann kommt eine Prozedur, die bis zu 20mal ablaeuft:
+Dabei muss man die Namen der gewuenschten Datenfelder eingeben und jeweils
+deren Eigenschaften. Jeweils 8 Angaben werden hintereinander abgefragt.
+
+Die Kategorienummern muss man sich nicht selbst ausdenken: Das Programm
+erteilt selbst die Nummern #10, #15, ..., #95. Die #00, #01 und #99
+gibt es automatisch, in #00 werden automatisch IdNummern eingetragen,
+#99a und #99b werden fuer Aufnahme- bzw. Bearbeitungsdatum genommen. 
+Natuerlich kann man die Nummern spaeter aendern und ergaenzen.
+
+Das Programm erstellt  K.CFG, BANK.KPI und D-1.KPR.
+Sie koennen dann sofort mit der Eingabe beginnen, oder vorher noch 
+diese Dateien verbessern.
+Auf die neue Datenbank koennen Sie jederzeit auch die Methoden COFI
+und QUEX anwenden, d.h. man kommt ohne jede Parametrierung jetzt
+von den Anfaengen bis zu recht diffizilen Produkten.
+
+Die anderen Dateien brauchen Sie nur zu kennen, wenn Sie daran etwas
+modifizieren wollen. In diesem Fall: siehe unten.
+
+****  Ende fuer eilige Leser  *****************************************
+
+
+Sonstige Dateien
+----------------
+
+(Alle Namen fangen mit PRONTO an, damit man sie leicht alle zusammen 
+kopieren oder loeschen kann.)
+
+PRONTO2.BAT   wird mehrfach automatisch aufgerufen. Darin erfolgen die
+              Abfragen zur Definition eines Datenfeldes.
+
+PRONTO.CF1    Anfangsteil der CFG mit den Befehlen, die am Anfang
+              stehen muessen
+ 
+PRONTO.CF4    Endstueck der CFG mit Defaultwerten fuer alle Einstellungen,
+              die nicht abgefragt wurden.
+
+              PRONTO.BAT erstellt PRONTO.CF2 (Feldliste) und PRONTO.CF3
+              (Abfrageliste) und kopiert die vier Dateien dann hintereinander.
+
+PRONTO.IX1    Indexparameter: Anfangsteil
+PRONTO.IX3                    Endstueck
+
+              PRONTO.BAT erstellt PRONTO.IX2 und steckt die drei Teile zu
+              einer kompletten Indexparameterdatei zusammen.
+              Als Fertigteile genutzt werden ausserdem I.APT und SWL1.APT.
+
+PRONTO.DI1    Anzeigeparameter: Anfangsteil
+PRONTO.DI2                      Endstueck
+
+              PRONTO.BAT erstellt PRONTO.DI2 und steckt die drei Teile zu
+              einer kompletten D-1.cPR zusammen.
+
+Fuer jedes Datenfeld werden diese Angaben abgefragt:
+(Das macht die Stapeldatei PRONTO2.BAT)
+
+   Frage:                                                        Default:
+   ----------------------------------------------------------------------
+   Kurzbezeichnung fuer Kategorieliste (nur f. interne Zwecke)
+   Langbezeichnung fuer Abfrage und Anzeige
+   Pruefbuchstabe (c:Artikel, d:Person, e:Jahr)                  a
+   Pflichtfeld ("!..." in Abfrage)                               j
+   Mehrfachabfrage gewuenscht                                    n
+   Ziffer fuer Register / 0: nicht indexieren                    0
+   Trennzeichen (z.B. ; oder /, b = Blank, n = keine Trennung)   ;
+   Anzeige gewuenscht? j/n                                       j
+
+Man kann nicht zu einem schon abgeschlossenen Feld zurueck, aber wenn
+die 8 Fragen beantwortet sind, kann man noch korrigieren.
+
+Es empfielt sich, die Liste der Elemente vorher zusammenzustellen, damit
+man nicht unnoetig ins Schleudern kommt oder die Uebersicht verliert, weil
+nicht alles gleichzeitig angezeigt wird.
+Die Kurzanzeige wird aus den ersten 4 Feldern zusammengebastelt, das
+wird man evtl. beruecksichtigen wollen!
+
+Standardmaessig ist jede Kategorie beliebig wiederholbar, auch wenn keine
+Mehrfachabfrage eingstellt wird, und jeweils bis zu 2000 Zeichen lang. 
+Innerhalb der Kategorien kann  als Absatzende eingegeben werden; 
+fuer den Index wird der Text generell an dieser Stelle abgeschnitten.
+
+ ---------------------------------------------------------------------
+
+Natuerlich gibt es Grenzen. Das ganze Spektrum der Finessen, die es bei
+Index- und Anzeigeparametern gibt, wird nicht annaehernd ausgeschoepft.
+Auch ist die Erstellung der CFG auf 20 Kategorien begrenzt. 
+Aber man muss sehen: es entstehen ganz normale Dateien, die man sofort oder
+spaeter nachbessern kann, wenn man will. Dann natuerlich sind wieder die
+bewussten Kenntnisse gefragt, aber zunaechst mal hat man alle wesentlichen
+Elemente beisammen, d.h. die Anfangsphase eines neuen Projekts wird spuerbar
+verkuerzt, man ist viel schneller drin in der Materie.
+Voellig klar ist, dass man die Komplexitaet der Standardparameter mit
+derartigen Praktiken niemals erreichen kann. Wie gesagt: es geht um Einfach-
+Projekte, fuer die sich "allegro" im Prinzip eignet, die aber bislang
+am Aufwand scheiterten.
+
+Wenn Fremddaten vorliegen, die in eine neu geschaffene "allegro"-Datenbank
+zu uebertragen sind, muss man natuerlich importieren. Das leistet PRONTO
+nicht. Die Bandbreite der Fremdformate ist viel zu gross. 
+Empfehlung (wenn man die Importsprache nicht beherrscht): zuerst die
+Daten mit Textmakros oder wie auch immer in eine Form bringen, die so
+aussieht :
+
+#00 IdNr
+#nn xxxx
+#nn xxxxx ccccc dddddd ffffffff ggggggggggg ttttttttt zhhhhhh ddddddd
+    dddddd wwwwwww eee rrrrrrrr
+#nn ffffffff
+#nn eeeeee
+                               ... eine Leerzeile zwischen 2 Saetzen
+#00 IdNr
+#...
+
+wobei #nn die korrekten Kategorienummern sind, wie sie in der CFG definiert
+sind. (Man muss sich nach der PRONTO-Prozedur die CFG ansehen, das das
+Programm die Kategorienummern selber festlegt.)
+Lange Kategorien koennen, aber muessen nicht, beliebig umgebrochen sein,
+so dass Fortsetzungszeilen immer mit vier Leerzeichen anfangen.
+Auf eine solche Datei kann man das Importprogramm loslassen und dafuer
+die Standardparameter  kat.aim  verwenden! (Kopie kat.kim machen, wenn
+man mit K.CFG arbeitet.) Die entstehende Grunddatei indexiert man in die
+neue Datenbank hinein (Handbuch Kap. 7).
+(Wenn der Umbruch anders aussieht, z.B. nur 1 Leerzeichen am Anfang der
+Fortsetzungszeile, muss man kat.aim anpassen.)
+
+Auch PRONTO ist wieder ohne Verwendung besonderer Tools geschrieben, nur
+die MS-DOS-Batchsprache und ACREPLY.COM kommen zum Einsatz. Warum so
+primitiv? Das hat 2 Gruende:
+
+1. Es soll sofort und ohne irgendwelche Zusaetze auf allen Rechnern
+   laufen koennen, wo eine "allegro"-Datenbank benutzt wird.
+
+2. Es ist hiermit zunaechst mal auf einfachster Grundlage ein logisches
+   Grundgeruest geschaffen worden, das kuenftig im Zuge der "avanti"-Ent-
+   wicklung als Modell dienen kann. Etliche Verfeinerungen koennen dann
+   hinzukommen, aber zunaechst brauchen wir den Kern der Sache, und so
+   ist dieser schon jetzt auf breiter Basis nutzbar.
+
+Aber wer mit Tools wie Perl oder 4DOS umgehen kann, der/die kann sich 
+natuerlich die Dateien PRONTO.BAT und PRONTO2.BAT vornehmen und was
+viel besseres draus machen.
+
+Es soll zur Jahresmitte eine Update-Diskette geben, zusammen mit "news" 42.
+Darauf wird man die neuen Pakete vorfinden, nebst bereinigten .EXE files.
+Die "news" werden nochmals die neuen Methoden beschreiben.
+
+MfG  B.E.
+

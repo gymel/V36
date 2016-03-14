@@ -1,0 +1,157 @@
+  AQ.FLX : Datei mit aresqa bearbeiten, auf Wunsch neu speichern
+  2005-01-17 : Aufruf:  X aq dateiname
+               Wenn die Datei nicht existiert, wird sie neu angelegt
+               (aresqa-Fenster leer, Eigabe mit [Add]-Button)
+
+  Name steht in iV, -> #ufX
+ins #ufX
+delete aresqa.lst
+   Blank im Namen nicht erlauben
+var #ufX(e" ")
+ins #ufX
+if "" jump ganzneu
+if "?0" jump dos
+if "?1" jump win
+if "*" jump edit
+fsize
+  Datei gibts nicht, ProgDir davorsetzen:
+if no var P #ufX;ins #ufX;fsize;if no jump neu
+if >200000 jump big
+var "Datei " #ufX
+set a
+var "*" #ufX
+:edit
+aresqa
+
+  Gibt es die Datei  aresqa.lst? Dann ist das die bearbeitete Datei
+fsize aresqa.lst
+if no jump ende
+  Nutzer soll entscheiden
+var "Die Datei  " #ufX "  wurde ver„ndert." n
+var +"Das Original ist aber noch vorhanden!" n
+var +"Original l”schen und durch neue Version ersetzen?" n
+var +"Nein = anderen Namen w„hlen"
+ansi
+yesno
+if can end
+if no jump newname
+  Ja: alte Version ueberschreiben
+:rename
+var "aresqa.lst " #ufX
+fcopy
+var "aresqa.lst"
+delete
+var ""
+#ufX
+end
+
+:nof
+var "Keine Bearbeitung erfolgt / Keine neue Datei angelegt" n
+var +"Die Liste ist aber noch vorhanden unter dem Namen aresqa.lst" n
+var +"Sie k”nnen  a aresqa.lst  eingeben, um sie zurckzuholen!"
+ansi
+sho iV
+end
+
+:neu
+var "Die Datei " #ufX " gibt es noch nicht." n
+var +"Es kommt jetzt ein leeres aresqa-Fenster" n
+var +"Mit Alt+a k”nnen Sie Zeilen eingeben" n
+var +"Wenn Sie die Daten dann speichern, haben Sie hinterher" n
+var +"eine neue Datei mit dem Namen " #ufX
+ansi
+mes
+var "Neue Datei: " #ufX
+set a
+var "*" #ufX
+:ganzneu
+aresqa
+  Gibt es die Datei  aresqa.lst? Dann wurde bearbeitet
+fsize aresqa.lst
+if no end
+if not #ufX jump name
+
+:rename
+var #ufX
+fsize
+if no jump move
+var "Datei existiert schon! šberschreiben?"
+yes
+if yes jump move
+jump name
+:move
+var #ufX
+delete
+var "aresqa.lst " #ufX
+rename
+if no jump rerr
+
+var #ufX
+help
+var "Im Anzeigefeld sehen Sie die neue Datei  " #ufX "." n
+var +"Sie k”nnen diese nun auch dort weiter bearbeiten!" n
+var +"oder jederzeit eingeben  a " #ufX n
+var +"und die Datei weiter im aresqa-Fenster bearbeiten"
+ansi
+mes
+:ende
+var ""
+#ufX
+end
+
+:name
+var "Wie soll sie heiáen, die neue Datei?"
+ansi
+ask
+if "" jump nof
+if %.% jump ne
+  Name hat keinen . , dann .lst anhaengen
+ins #ufX
+var #ufX ".lst"
+:ne
+ins #ufX
+jump rename
+
+:dos
+var #ufX(2,0)
+ins #ufX
+var "?0" #ufX
+jump edit
+
+:win
+var #ufX(2,0)
+ins #ufX
+var "?1" #ufX
+jump edit
+
+:newname
+ask Neuer Name?
+ins #ufY
+fsize
+if no var #ufY;ins #ufX;jump rename
+var "Diese Datei gibt es schon. šberschreiben?"
+ansi
+yes
+if can end
+if no jump newname
+var #ufY
+ins #ufX
+jump rename
+
+:big
+ins #uqS
+var "Datei " #ufX " mit " #uqS " Bytes zu groá fuer aresqa!"
+var +n "Als Hilfetext anzeigen?"
+ansi
+yes
+if not yes end
+var #ufX
+help
+end
+
+:rerr
+ins $u
+var "Umbenennung " $u " hat nicht geklappt
+mes
+end
+

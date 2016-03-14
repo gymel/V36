@@ -1,0 +1,131 @@
+  P-NORMAL.APR : Druckformat normal, ISBD, bei Namenswiederholung "--- "
+  950703         Name fett, Einrckung der 2. Zeile, bis zu 3 Ordnungsbl”cke
+                 TEXTR.APT wird gebraucht!!
+
+pn="Listendruck mit Nachladung, --- "
+
+  #u1 und #u2 werden so angeliefert:
+
+  #u1 aaabbbccc #u2 AAABBBCCC
+
+  Struktur bei Wiederholung der Ordnungsgruppen:
+  AAA  BBB  CCC
+  ---  ---  DDD
+  ---  EEE  FFF
+  ---  ---  ---
+  ---  ---  GGG
+  ---  HHH  GGG
+  III  HHH  GGG
+
+  Mit Nachladung:
+  1. B„nde von mehrbd. Werken (hierarchisch)
+  2. Stamms„tze von Zeitschriften fr Aufsatzdaten (#70)
+         ber Krzel, ISSN, oder CODEN (Index 5, Abschnitt _ )
+  3. Aufs„tze aus Sammelb„nden (#84) ber  Id.Nr.
+  4. Serientitel (#85) ebenfalls ber Krzel per Index 5
+
+i4=1   V14
+
+zl=75       Zeilenl„nge (nach Bedarf zu krzen)
+zi=5        Einrckung der Folgezeilen : 5 Zeichen
+zm=55       58 Zeilen je Seite
+ff=2        damit Kopf-/Fuáabschnitt bearbeitet wird
+ae=""       Aufnahme-Ende: hier keine Vorgabe
+z1=8        Trennung einer Aufn. erst, wenn sie mehr als 8 Zeilen hat
+z2=2        2 Zeilen Toleranz am Seitenende
+dx=1
+  il=72       Schlssell„nge des Index, wichtig fr das Nachladen
+            (diese Angabe darf gr”sser, aber nicht kleiner sein als die
+            tats„chliche L„nge)
+
+  diese Angaben werden durch den Druckertreiber ge„ndert,
+  wenn er andere Werte enth„lt.
+
+
+  Kopfbefehle werden nicht gebraucht. Es f„ngt immer bei #-@ an
+
+
+  ********* ZWISCHENTEILE  1 - 78  *************
+1=". "      Interpunktion
+2=", "
+3="; "
+4=C
+5=" : "
+
+7=" = "
+8=". - "
+9=" / "
+
+10=C "("   gedacht fr Serientitel (neue Zeile, Klammer auf)
+
+ 10=". - ("    dieses nehmen, wenn er nicht auf neuer Zeile stehen soll
+
+11=")"
+
+13=C "   "   fr #74 (Ersch.Ort) gedacht,
+ 13=". - "   dieses nehmen, wenn er keine neue Zeile haben soll
+
+     Funktionsbezeichnungen
+16=" [Hrsg.]"
+17=" [Mitarb.]"
+18=" [Bearb.]"
+19=" [Begr.]"
+20=" [Samml.]"
+21=" [Texter]"
+22=" [šbers.]"
+23=" [Illustr.]"
+24=" [Komment.]"
+25=" [Kompon.]"
+26=" [Pr„ses]"
+27=" [Resp.]"
+28=" [Vorw.]"
+
+30=C "Kongr.: "
+
+50="--- "   Pr„fix fr sich wiederholende K”pfe
+
+60=#250     Einrckung auf momentaner Position festsetzen
+
+
+
+
+    ******  Hauptteil : Konstr. der "Einheitskarte" ****
+    ** Durchlauf ab hier fr Hauptsatz und Unters„tze **
+       flag #utt ist "1", w„hrend eine Nachladung bearb wird, sonst "2"
+
+#+@
+
+#-A
+#nr dk2 dk3 e0    #uk2 und #uk3 l”schen
+#+C
+
+#-B
+#nr dk3 e0
+#+D
+
+
+#-@
+#hi +g e0      denn fr B„nde eines normalen mehrb„ndigen Werkes
+               soll das Folgende nicht gemacht werden
+#00 =id+- e0      wenn gleich, keine Wiederholung Benutzung von #uid als
+                                                  Zwischenspeicher
+#t99    FETT ein
+#u2 +A { C &0 } e"" =k1,50   wenn gleicher Kopf wie vorher: "--- " statt dessen
+                     wenn ungleich: bei #-A #uk2 und #uk3 l”schen
+#-C
+   aktivieren, wenn 2. Kopfteil ausgegeben werden soll:
+ #u2 +B b"" e"" =k2,50 p"  "     wenn 2. Kopfteil gleich: -> #-B
+#-D
+   aktivieren, wenn 3. Kopfteil ausgegeben werden soll:
+ #u2 b"" b"" e"" =k3,50 p"  "     wenn 3. Kopfteil gleich: ---
+
+#t98    fett aus
+         Bei hierarchischen S„tzen beginnt die Bearbeitung der
+         Unters„tze jeweils automatisch hier, bei der ersten #-Zeile,
+         deshalb gibt es hier einen Sprungbefehl:
+
+
+tTEXT       TEXT.APT : Hauptteil
+
+tPRINTER    Druckertreiber; enth„lt Zwischenteile 79-99 etc.
+

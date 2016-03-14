@@ -1,0 +1,146 @@
+  JAX.FLX : JanaS-Auftrag ausfuehren und JanaS wieder aktivieren
+  2006 Himmelfahrt    Gedacht als Demo-Beispiel!
+                      Wird gestartet aus  jax.htm  heraus
+
+  Die #u-Variablen werden aus einem HTML-Formular uebergeben
+          wie es z.B. in  jax.htm   zu sehen ist
+  #uJI : Auftragswort
+  #uJr : Registernummer
+  #uJs : Startpunkt im Register, bzw. Find-Befehl
+
+  Funktion:
+  * JanaS erstellt aus  jax.htm  einen FLEX  j<id>.flx
+      <id> = Prozess-Id von a99
+  * Darin werden die #u-Variablen gesetzt, dann startet
+  * jax.flx  und fuehrt den Auftrag #uJI aus, produziert
+  * feedback.htm und aktiviert wieder JanaS, damit es dies anzeigt
+
+  Ausserdem koennen Datenfelder uebergeben werden! Beispiele in htmform.flx
+  Diese sind dann automatisch schon im Datensatz vorhanden, wenn dieser
+  FLEX anlaeuft. Das macht der von JanaS erstellte FLEX j<id>.flx, der
+                 zuerst die Felder belegt, dann jax.flx aufruft
+
+  Prinzip: Fuer jeden Auftrag wird eine HTM-Seite feedback.htm erstellt,
+           die dann an JanaS gegeben wird (siehe :feedback)
+           Dadurch wird a99 zwischendurch gar nicht sichtbar
+
+  Was ist der Auftrag? (s. jax.htm:  Auftrag: <select name="uJI"> )
+var #uJI
+
+if "~find" jump find
+if "~f" janas doku.htm;end
+if "~eigensch" jump eig
+if "~dat" jump dat
+if "~index" jump index
+if "~speich" jump speich
+if "~janas" janas janas.htm;end
+  Sonst: nichts
+end
+
+  Registerabschnitt zeigen
+:index
+perfo head
+wri "<pre>" n
+var "|" #uJr " " #uJs
+xcode u
+  Registerabschnitt in die iV holen:
+qrix
+  Gewisse Zeichen muss man aendern:
+ins _<_&lt;_
+ins __^M^J_
+ins #uJq
+wri "   " #uJq n "</pre>" n
+jump feedback
+
+  Eigenschaften zeigen
+:eig
+perf head
+wri "<pre>" n
+wri "Datenbank: " B n
+wri "Ordner:    " D n
+wri "Umfang:    " t " S&auml;tze" n
+wri "Konfig:    " K ".cfg" n
+wri "</pre>"
+jump feedback
+
+  Datensatz zeigen, Nummer in #uJs
+:dat
+ perf head
+ var "#" #uJs
+ find
+wri "<h2>Datensatz " i "</h2>" n
+
+// xport p d-khtm
+// wri "<table>"
+// dow
+// wri "</table>"
+  Hier wird  htmform.flx  gestartet
+ wri '<p/><a href="flex:X htmform@">Bearbeiten</a>'
+
+jump feedback
+
+  Find-Bef. ausf. und Erg.Liste zeigen
+:find
+perf head
+var #uJs
+  Es ist Unicode! -> ASCI (u-Befehle in den Indexparametern)
+xcode u
+find
+if l1 wri "Sorry, nothing" n;jump feedback
+wri "<h2>Ergebnisse zu " #uJc "</h2>" n
+xport p p-brief
+first
+:eloop
+dow
+wri "<br>" n
+next
+if yes jump eloop
+
+jump feedback
+
+  Datensatz speichern (Aufruf kommt aus htmform,flx, genauer gesagt:
+   aus der damit erzeugten HTML-Datei mit Formular
+   Die im Formular definierten input-Namen wurden schon uebernommen,
+   deshalb genuegt hier ein "put":
+:speich
+put
+  Rueckgabemeldung erstellen
+perfo head
+wri "<h2>Korrigierter Datensatz " i "</h2>" n
+xport p d-khtm
+wri "<table>"
+dow
+wri "</table>"
+  Noch anbieten, zu a99 zurueckzukehren
+wri '<a href="flex:x activate">Zur&uuml;ck</a>'
+#uJIGespeicherter Satz
+jump feedback
+
+
+  Unterprog. Datei oeffnen und Dateikopf produzieren
+:head
+  Datei soll feedback.htm heissen und auf TEMP-Verz. liegen
+var M "feedback.htm"
+open x
+wri "<html><head><title>" #uJI "</title>
+wri '<meta http-equiv="content-type" content="text/html; charset=UTF-8">' n
+wri "</head><body>" n
+return
+
+  Ruecksprung: Datei beenden, als fertige HTM-Seite an JanaS geben
+:feedback
+ wri '<p/><a href="javascript:history.back()">Zur&uuml;ck</a>'
+ wri n "</body></html>" n
+close x
+  Variablen weg
+#uJI
+#uJr
+#uJs
+#uJq
+var "file:///" M "feedback.htm"
+
+ins _\\_/_
+janas
+end
+
+

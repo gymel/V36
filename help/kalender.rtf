@@ -1,0 +1,122 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss\fcharset0 Arial;}{\f1\fmodern\fprq1\fcharset0 Courier New;}{\f2\fswiss\fcharset0 Verdana;}{\f3\froman\fprq2\fcharset0 Bookman Old Style;}{\f4\fswiss\fcharset0 MS Sans Serif;}{\f5\fswiss\fprq2\fcharset0 Arial;}{\f6\fswiss\fprq2\fcharset0 Verdana;}{\f7\fswiss\fprq2\fcharset0 Tahoma;}{\f8\fmodern allegro Lucida Console;}}
+{\colortbl ;\red0\green0\blue0;\red255\green0\blue0;\red0\green0\blue255;\red0\green128\blue0;\red128\green144\blue192;\red255\green255\blue255;\red192\green0\blue0;\red96\green96\blue96;}
+\viewkind4\uc1\pard\qc\tx3408\cf1\b\i\f0\fs28 
+\par \cf2 allegro\i0 -Kalender 
+\par \cf1\b0\fs24 Kalenderbl\'e4tter f\'fcr die Jahre 1601 bis 2399\cf3\b 
+\par \pard\tx3408 
+\par \cf1\b0\fs20 Ab Mai 2005 (V25.5) gibt es die Kalenderfunktion. Sie produziert einen Monatskalender, der konventionell aussieht,  aber einige zus\'e4tzliche Funktionen bietet. Es gibt nicht nur die offensichtlichen Flips, die man an der blauen Farbe und Unterstreichung erkennt, sondern jedes einzelne Datum kann man anklicken. Dann wird der FLEX  \b\f1 term.flx\b0\f0   gestartet. Diesem wird die Nummer des Tages als interne Variable mitgegeben, und in der Variablen \b\f1 #uU1\b0\f0  steht Jahr und Monat. In dem unten zu sehenden Beispiel hat man also  \b\f1 #uU1 200506\b0\f0 . Der Systemverwalter kann sich damit einen beliebigen FLEX namens \b\f1 term.flx\b0\f0  f\'fcr eigene Zwecke schreiben. Der mitgelieferte \b\f1 term.flx\b0\f0  ist f\'fcr die DEMO-Bank geeignet, er startet die Eingabe eines Termins f\'fcr die Terminverwaltung `\cf3\ul MemoFLEX\cf1\ulnone ` (V23). Eine Anwendung der Kalenderfunktion ist schon eingebaut in den neuen FLEX \b\f1 `\cf3\ul nel.flx\cf1\ulnone `\b0\f0  , der einem die bequeme Bildung einer Ergebnismenge f\'fcr die Neuerwerbungsliste erm\'f6glicht. Dabei wird ein spezieller term.flx gebildet. 
+\par Der Kalender des laufenden Monats wird abgerufen mit dem Befehl  \b\f1 `\cf3\ul X kalender\cf1\ulnone `\b0\f0 . Dieser ist auch im F\'fcllhorn zu finden (Mitte rechts). Gezielt kann man auch einen Kalender f\'fcr einen bestimmten Monat abrufen. Will man z.B. den Kalender des Monats Oktober im Jahre 2045 sehen, gibt man ein:   \b\f1 `\cf3\ul X kalender 204510\cf1\ulnone `\b0\f0 . Das funktioniert f\'fcr den Zeitraum \b 1601 bis 2399\b0 . 
+\par F\'fcr die Errechnung der beweglichen Feiertage wird \'fcbrigens der Gau\'dfsche Oster-Algorithmus angewendet. Dieser wird auch separat in der Datei  \f1 `\cf3\ul\b gauss.flx\cf1\ulnone\b0 `\f0   mitgeliefert. Darin ist kommentiert, wie man den Algorithmus als Unterprogramm in eigene FLEXe einbauen kann. 
+\par \cf3\b\fs24 
+\par 
+\par \pard\qc\tx3408\cf2 Beispiel\cf4 
+\par \pard\tx3408\cf1\b0\fs20 Wenn man am 25. Mai 2005 diesen Befehl eingibt:  \b\f1 X kalender\b0\f0 , erh\'e4lt man das folgende Bild: 
+\par (Die Flips \b <<<\b0  bzw. \b >>>\b0  schalten einen Monat zur\'fcck bzw. weiter):\cf3\b\fs24 
+\par \pard\qc\tx3408 
+\par \cf5\f2\fs20  JAN  FEB  MRZ  APR  MAI  JUN  JUL  AUG  SEP  OKT  NOV  DEZ   \cf0\b0 
+\par \pard\qc\tx852\tx1704\tx2556\tx3408\tx4260\tx5112\tx5964\fs32    \cf6 --\cf5 -Jahr\cf0        \cf5 <<<\cf6 <<\cf0        \cf5 >>>\cf6 >>\cf0     \cf5 Jahr+\cf6 ++ \fs20 
+\par \pard\qc\tx792\tx1654\tx2516\tx3379\tx4240\tx5102\tx5964\cf5\b  Feiertage des Jahres      Anderes Jahr      Druckversion\b0  \cf0 
+\par 
+\par \pard\qc\cf7\i\f3\fs48 Mai  2005\cf0\i0\f2\fs20 
+\par \pard 
+\par \pard\li300\ri150\tx1420\tx2282\tx3144\tx4006\tx4868\tx5730\tx6592\cf8\i\f3\fs18 Woche\b\fs40\tab Mo\tab Di\tab Mi\tab Do\tab Fr\tab Sa\tab So\cf0\b0\i0 
+\par \pard\li300\ri150\tx1300\tx2162\tx3024\tx3886\tx4748\tx5610\tx6472\i\fs22 17 \i0\fs40\tab\tab\tab\tab\tab\tab\tab\cf2   1\cf6\fs10 a \cf0\fs40 
+\par \i\fs22 18 \i0\fs40\tab   2\cf6\fs10 b \cf0\fs40\tab   3\cf6\fs10 c \cf0\fs40\tab   4\cf6\fs10 d \cf0\fs40\tab   \cf2 5\cf6\fs10 e \cf0\fs40\tab   6\cf6\fs10 f \cf0\fs40\tab   7\cf6\fs10 g \cf2\fs40\tab   8\cf6\fs10 h \cf0\fs40 
+\par \i\fs22 19 \i0\fs40\tab   9\cf6\fs10 i \cf0\fs40\tab  10\cf6\fs10 j \cf0\fs40\tab  11\cf6\fs10 k \cf0\fs40\tab  12\cf6\fs10 l \cf0\fs40\tab  13\cf6\fs10 m \cf0\fs40\tab  14\cf6\fs10 n \cf2\fs40\tab  15\cf6\fs10 o \cf0\fs40 
+\par \i\fs22 20 \i0\fs40\tab  \cf2 16\cf6\fs10 p \cf0\fs40\tab  17\cf6\fs10 q \cf0\fs40\tab  18\cf6\fs10 r \cf0\fs40\tab  19\cf6\fs10 s \cf0\fs40\tab  20\cf6\fs10 t \cf0\fs40\tab  21\cf6\fs10 u \cf2\fs40\tab  22\cf6\fs10 v \cf0\fs40 
+\par \i\fs22 21 \i0\fs40\tab  23\cf6\fs10 w \cf0\fs40\tab  24\cf6\fs10 x \cf0\fs40\tab  \ul 25\cf6\fs10 y \cf0\ulnone\fs40\tab  \cf2 26\cf6\fs10 z \cf0\fs40\tab  27\cf6\fs10 A \cf0\fs40\tab  28\cf6\fs10 B \cf2\fs40\tab  29\cf6\fs10 C \cf0\fs40 
+\par \i\fs22 22 \i0\fs40\tab  30\cf6\fs10 D \cf0\fs40\tab  31\cf6\fs10 E \cf0\fs20 
+\par 
+\par 1. Tag der Arbeit * 5. Himmelfahrt * 15. Pfingstsonntag * 16. Pfingstmontag * 
+\par 26. Fronleichnam (kath. Bundesl.) 
+\par 
+\par Heute ist der 145. Tag des Jahres. 
+\par In 214 Tagen ist der 25.12. 
+\par 
+\par \pard\qr\f2 Termin notieren: auf die Tageszahl klicken. 
+\par \f3\fs18 Alle Angaben ohne Gew\'e4hr.\fs17 
+\par \fs24\'a9 \i allegro-C\i0  2005\fs17 
+\par \pard\li200\ri150\f4\fs22 
+\par \pard\qr\f3\fs17  
+\par 
+\par \pard\li48\ri144\f5\fs18 Ein Klick auf  \cf5\b\f2\fs20 Feiertage des Jahres\cf0\b0\f5\fs18   bringt dann die folgende \'dcbersicht hervor: 
+\par (Die "Druckversion" enth\'e4lt, hier wie oben, dasselbe, aber ohne die Flips. Die Druckversion eignet sich besser f\'fcr Copy+Paste, um das Kalenderblatt oder die Feiertagsliste in eigene Texte zu \'fcbernehmen.) 
+\par Wenn man hier auf "Aschermittwoch" usw. klickt, erh\'e4lt man den Kalender des betreffenden Monats, in diesem Fall also den vom Februar 2005. 
+\par 
+\par \pard\qc\cf4\b\f6\fs40 Feiertage im Jahre \f7\fs48  \b0\fs20 
+\par \cf0\b\f6   \cf3 2004\cf0\b0            \cf2\b\i\fs40 2005\cf0\b0\i0\fs20          \cf3\b 2006\cf0\b0   
+\par \pard\qc\tx3408  \cf5\b JAN\b0   \b FEB\b0   \b MRZ\b0   \b APR\b0   \b MAI\b0   \b JUN\b0   \b JUL\b0   \b AUG\b0   \b SEP\b0   \b OKT\b0   \b NOV\b0   \b DEZ\cf0\b0    
+\par \pard\qc 
+\par  \cf5\b Kalender dieses Monats\cf0\b0      \cf5\b Anderes Jahr\cf0\b0      \cf5\b Druckversion\cf0\b0   
+\par \pard\qr  
+\par \pard\li200\ri150\tx3408 Das Jahr 2005 ist ein  \tab\cf4\b Normaljahr\cf0\b0 
+\par \pard\li200\ri150 
+\par \pard\li200\ri150\tx3408 Neujahr ist an einem \tab\cf4\b Sa\cf0\b0 
+\par \pard\li200\ri150\tx3124   
+\par \b Bewegliche Feiertage\b0  
+\par Im Jahre 2005 ist 
+\par \pard\tx852\tx3408\tab  \cf3\ul\b Aschermittwoch\cf0\ulnone\b0    \tab\cf4\b 9. Feb\cf0\b0 
+\par \tab  \cf3\ul\b Ostersonntag\cf0\ulnone\b0    \tab\cf4\b 27. Mrz\cf0\b0     
+\par \tab  \cf3\ul\b Himmelfahrt\cf0\ulnone\b0   \tab\cf4\b 5. Mai \cf0\b0 
+\par \tab  \cf3\ul\b Pfingsten\cf0\ulnone\b0   \tab\cf4\b 15. Mai\cf0\b0   
+\par \tab  \cf3\ul\b Fronleichnam\cf0\ulnone\b0   \tab\cf4\b 26. Mai\cf0\b0   
+\par \tab  \cf3\ul\b Bu\'df- und Bettag\cf0\ulnone\b0   \tab\cf4\b 16. Nov\cf0\b0   
+\par 
+\par \pard\li200\ri150\tx3408 Die  \cf3\ul\b Adventssonntage\cf0\ulnone\b0   sind  \tab\cf4\b 27. Nov / 4. Dez / 11. Dez / 18. Dez 
+\par \pard\li200\ri150\cf0\b0 
+\par \b Wochentage der unbeweglichen Feiertage\b0 
+\par \pard\li200\ri150\tx3408  \cf3\ul\b Heiligabend und Silvester\cf0\ulnone\b0  \tab\cf4\b Sa\cf0\b0  
+\par \pard\li200\ri150 
+\par \pard\li200\ri150\tx3408 Der \cf3\ul\b Erste April\cf0\ulnone\b0  \tab\cf4\b Fr\cf0\b0  
+\par Der \cf3\ul\b Erste Mai\cf0\ulnone\b0  \tab\cf4\b So\cf0\b0  
+\par \pard\li200\ri150 
+\par Die folgenden Feiertage sind alle an einem  \cf4\b Mo\cf0\b0 
+\par  Augsburger  \cf3\ul\b Friedensfest\cf0\ulnone\b0   (8.8.) 
+\par  Mari\'e4 Himmelfahrt (15.8.) 
+\par  \cf3\ul\b Tag der Deutschen Einheit\cf0\ulnone\b0   (3.10.) 
+\par  Reformation (31.10.) 
+\par 
+\par \i Sonderservice:\tab\i0  \f5 `\cf3\ul\b\f6 Osterdatum\cf0\ulnone\b0\f5 `\f6   ausrechnen mit dem Gau\'df-Algorithmus (gauss.flx)\i 
+\par \tab\tab\i0\tab   Alle Ostertermine  \f5 `\cf3\ul\b\f6 1700-2199\cf0\ulnone\b0\f5 `\f6  . 
+\par \tab\tab\tab   Feststellung, ob ein Jahr  \f5 `\cf3\ul\b\f6 Schaltjahr\cf0\ulnone\b0\f5 `\f6   ist 
+\par \tab\tab\tab  \f5 `\cf3\ul\b\f6 Wochentag\cf0\ulnone\b0\f5 `\f6   eines bestimmten Datums 1601-2399 
+\par \f4\fs22 
+\par \i\f5 Hinweise:\i0   
+\par Einen kostenlosen, vollst\'e4ndigen Service zur Berechnung aller katholisch-kirchlichen Fest-, Feier- und Gedenktage zu jedem gew\'e4hlten Jahr bieten die  \fs20 `\cf3\ul\b\fs22 Salesianer\cf0\ulnone\b0\fs20 `\fs22  . 
+\par Eine Tabelle aller Feiertage von  \fs20 `\cf3\ul\b\fs22 1700 bis 2199\cf0\ulnone\b0\fs20  `\fs22   findet man am Lehrstuhl f\'fcr Liturgiewissenschaft in Bamberg. Dort ist auch die Formel zur Berechnung des Osterdatums zu finden. 
+\par Umfangreiche Darstellung aller Kalenderfragen:  \fs20 `\cf3\ul\b\fs22 http://www.ortelius.de/kalender/\cf0\ulnone\b0\fs20 `\fs22   Dort auch ein "Oster-Rechner" mit Liste aller kirchlichen Feiertage eines gew\'e4hlten Jahres ab 1583 sowie ein allgemeiner Kalender-Rechner. 
+\par Alle Angaben ohne Gew\'e4hr. 
+\par \f3\fs24 
+\par \f5\fs20 Experten fragen: Wie funktioniert das? 
+\par Der FLEX \f1 kalender.flx\f5  produziert eine RTF-Datei namens \f1 kblatt.rtf\f5  auf dem TEMP-Verzeichnis (wegen der Schreibberechtigung). Es wird keine weitere Hilfsdatei daf\'fcr ben\'f6tigt, d.h. der FLEX stellt die gesamte Datei selber her. 
+\par Zur Berechnung der beweglichen Feiertage ist der Gau\'df-Algorithmus f\'fcr das Osterdatum eingebaut. \f3\fs24 
+\par \f5\fs20 
+\par Der wichtigste FLEX-Befehl ist  `\cf3\ul\b Day\cf0\ulnone\b0 `. Dieser rechnet ein gegebenes Datum der Form \f1 JJJJMMTT\f5  um in die Form \f1 JJJJMMTT/00:00:00 WT, TT. MN JJJJ\f5 , wobei \f1 WT\f5  der Name des Wochentags ist (Mo, Di, ...) und \f1 MN\f5  der Name des Monats (Jan, Feb, ...). Das funktioniert f\'fcr die Jahre 1901-2099! \cf1\f0  Das Problem mit dem Jahr 2038 wird intern umgangen: 
+\par 
+\par \i Problem:\i0  Ausrechnung eines Wochentags funktioniert im Windows-Programmiersystem wie unter UNIX nur f\'fcr Jahre zwischen 1970 und 2038. 
+\par 
+\par \i L\'f6sung:\i0  Jahreszahl vor der Berechnung auf ein anderes Jahr \'e4ndern, das mit demselben Wochentag beginnt, das aber gleichfalls ein Schaltjahr bzw. kein Schaltjahr ist. Wie findet man leicht ein solches Jahr? 
+\par Zuverl\'e4ssig ist das dann der Fall, wenn man von der Jahreszahl die Zahl 28 subtrahiert oder zu ihr addiert, ggfls. ein Vielfaches von 28, so da\'df die Jahreszahl dann im Bereich 1970-2038 liegt. Dann den Wochentag ausrechnen und auf die Jahreszahl den vorher subtrahierten Betrag wieder addieren bzw. umgekehrt. Dies funktioniert allerdings nur im Zeitraum 1901 bis 2099, weil die Jahre 1900 und 2100 keine Schaltjahre sind (ergibt sich aus der Gregorianischen Kalenderreform von 1582). Damit haben wir 200 Jahre statt nur 68, in denen wir die Wochentage berechnen k\'f6nnen. 
+\par Man sieht leicht ein, wie sich die Zahl 28 ergibt: Nimmt man ein beliebiges Jahr im genannten Zeitraum, so ist nach 4 Jahren der 1. Januar um 5 Wochentage vorger\'fcckt, weil mit Sicherheit genau ein 29. Februar dazwischen war. 
+\par Nach 7mal 4 Jahren, also 28 Jahren (aber nur im genannten Zeitraum!), ist der 1. Januar um 35 Wochentage vorger\'fcckt, also um genau 5 Wochen, d.h. der 1. Januar hat zuverl\'e4ssig wieder denselben Wochentag und das Jahr ist wieder ein Schaltjahr bzw. kein Schaltjahr. Man hat daher zwischen 1900 und 2100 alle 28 Jahre genau dieselbe Anordnung der Wochentage. 
+\par 
+\par \b Ab V29.2\b0  gibt es ein neues FLEX-Unterprogramm \f1 :Day\f0  (eingepackt in \f1 day.inc\f0 ), mit dem man die Jahre \b 1601 bis 2399\b0  im Griff hat. Es wurde statt der Funktion Day in die KalenderFLEXe eingebaut. 
+\par 
+\par \cf0\f5 
+\par \f8\fs24 
+\par ?MemoFLEX=h memo 
+\par ?Day=h xdate 
+\par ?Osterdatum=X gauss 
+\par ?1700-2199=X ostertag 
+\par ?Schaltjahr=X leapyear 
+\par ?Salesianer=x janas http://www.salesianer.de/util/liturkal.html 
+\par ?Wochentag=X weekday 
+\par ?1700 bis 2199 =x janas http://www.uni-bamberg.de/ktheo/liturgie/@fkal.html 
+\par ?http://www.ortelius.de/kalender/=x jan http://www.ortelius.de/kalender/ 
+\par ?gauss.flx=X gauss 
+\par ?X kalender 204510=X kalender 204510 
+\par ?X kalender=X kalender 
+\par ?nel.flx=h nel.flx 
+\par 
+\par }
+ 

@@ -1,0 +1,91 @@
+
+Verlautbarung 247 der Entw.Abt.                              2012-06-13
+-------------------------------
+
+
+V32.5 ist da
+============
+
+
+a99 blieb beim Start haengen
+----------------------------
+... wenn keine "Signaldatei" (Typ .sgf) existierte.
+Das ist gerichtet. Die Datei (Standard  cat.sgf) signalisiert, ob
+Totalsperre besteht oder nicht. Und ist sie nicht da, dann soll
+natuerlich keine bestehen.
+
+
+acon: update.job leicht verbessert
+----------------------------------
+Hinsichtlich der Locking-Prozeduren u.a. gab es noch geringen 
+Nachbesserungsbedarf, der erledigt wurde.
+
+
+import.exe (32bit)
+------------------
+
+Import V32.4 hatte das Fehlverhalten, dass die Standard-
+Kategoriewiederholung aus der .CFG nicht immer klappte.
+(Wenn ein zur Wiederholung vorgesehener Paragraph mit einer
+Kategorieangabe  #nn~  begonnen wurde.)
+Das wurde gerichtet.
+Es gab gelegentlich immer noch den Code 156 (Pfundzeichen) als 
+Mehrfach-Steuerzeichen. Dies wurde nun im Zs.hang mit der GND-Wandlung 
+ausgemerzt.
+Wer das in irgendwelchen Importparametern hat, muss dafuer ~ einsetzen.
+In unseren Standardparametern tritt es nicht auf.
+
+
+Die mit  y x 256  bewirkte Ausblendung unerwuenschter Zeichen
+(etwa die eigentlich recht praktischen Linefeeds in MARC21-Daten der
+DNB am Ende jedes Satzes. Diese sind jedoch "illegal" und sollen 
+bald wieder entfallen!) erfolgt nun *vor* der Laengenberechnung des
+einzulesenden Satzes. Sonst ging das naemlich schief und man
+erhielt keinen einzigen brauchbaren Satz.
+
+Hinweis zum Risiko mehrfacher Umcodierung bei der Nutzung von k/K-
+Befehlen in der Importsprache:
+Wenn ein Import-Paragraph (beginnend mit einer #-Zeile und endend
+vor der naechsten solchen Zeile) abgearbeitet ist, wird der dann
+bestehende Arbeitstext in das mit # angegebene Feld des entstehenden
+Datensatzes eingeordnet. Vorher aber wird der Arbeitstext noch einer
+Umcodierung unterzogen, und zwar der Anwendung der u-Befehle in den
+geladenen Exportparametern.
+Gefahr von Verfaelschungen besteht, wenn ein Feld anschliessend
+mit einem  k-Befehl  aus dem aktuellen Satz herausgeholt und zur
+Anfertigung eines weiteren Feldes herangezogen wird: Dann kann eine
+neuerliche Umcodierung falsche Zeichen aus den richigen erzeugen.
+Abhilfe: Positionierungsbefehl  k  nur auf #u-Variablen anwenden,
+wenn es u-Befehle gibt. Das bedeutet, dass man sich solcherlei
+Inhalte vorher nicht als normale Datenfelder anlegt, sondern mit
+K-Befehl in #u-Variablen kopiert. Dabei passiert die Umcodierung 
+naemlich nicht.
+
+
+DNB-Daten per FLEX holen : dnb.flx
+----------------------------------
+Nur als Behelf, solange es keine bessere Methodik gibt, wurde ein
+FLEX erstellt, um via ISBN oder auch beliebiger Suchwoerter (incl.
+Namen) DNB-Daten heranzuholen. Das geschieht via  portal.dnb.de.
+Einfach mal probieren und in a99 eingeben:
+
+   X dnb
+
+Dann eine ISBN eingeben oder beliebige Suchwoerter, am besten
+moeglichst spezifisch, damit keine allzugrosse Erg.Menge entsteht.
+Wie es weitergeht, sieht man dann schon.
+
+Die Methode setzt voraus, was man nicht voraussetzen kann: dass
+die DNB die Praesentation der Daten ueber dieses Portal nicht
+aendert. Das kann theoretisch jeden Tag passieren! Die Aenderung
+wirkt sich evtl. gar nicht aus, je nachdem, aber sie kann sich
+auch so auswirken, dass der FLEX nicht mehr klappt. Wie gesagt,
+ein Behelf, und wohl eher fuer die schnelle Erstellung von 
+Bestelltitelsaetzen geeignet. Vor allem, wenn es sich um ganz
+neue Buecher handelt, die per Z39 noch nicht zu kriegen sind.
+
+Der Zugriff auf DNB-Daten kann sich u.U. schon bald nach dem
+1.7.2012 aendern, wenn die ganz normalen Titeldaten weitgehend
+auch zum kompletten Download freigegeben werden. Dann wird
+vieles moeglich.
+

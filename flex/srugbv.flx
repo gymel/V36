@@ -1,0 +1,582 @@
+// SRUGBV.FLX : Daten von GBV holen via SRU
+// 2013-10-28
+//  Aufruf zum Testen mit  X srugbv dateiname
+
+// normalerweise wird erst ISBN abgefragt
+
+// Testmodus: Wenn gestartet mit  X srugbv xyz, dann wird Datei xyz gelesen und direkt verarb.
+//  X srugbv $   wiederholt den Vorgang mit den noch vorhandenen Daten in iV2
+
+ins $xyz
+// Keine automatischen Umcodierungen
+set c0
+set U0
+
+var ""
+ins $SC
+
+var $xyz
+  Aufruf mit X srugbv $  =  dasselbe nochmal
+if "$" var $;new 0;jump anfang
+
+if $xyz jump datei
+
+
+
+:eingabe
+z=0
+ask ISBN oder Stichwörter eingeben=#uiS
+if "" end
+asci
+ins #uiS
+
+  Umcodierung von #uiS (= Eingabe) mit Hilfe der Indexparameter
+  und zwar mit p oder q, je nachdem, bei welchem Kleinbuchstaben rauskommen
+  
+var "Ä"
+asci
+xco iq
+
+  iq ergibt nicht "ae"? dann eben ip :
+
+if not "ae" var #uiS;xco ip;jump b
+var #uiS
+xco iq
+  Umcodierte Eingabe fertig
+:b
+ins #uiS
+
+new 0
+
+#usr 1
+
+// Befehl zusammenbauen, Format "turbomarc", isbn hinten anhaengen
+
+var #uiS(f"0123456789-xX")
+ins _ _%20_
+if not "" ins #uiS
+
+:getdata
+
+if not "" var "http://sru.gbv.de/gvk?version=1.1&operation=searchRetrieve&maximumRecords=10&recordSchema=turbomarc&startRecord=" #usr "&query=pica.all%3D" #uiS
+if "" var "http://sru.gbv.de/gvk?version=1.1&operation=searchRetrieve&maximumRecords=10&recordSchema=turbomarc&startRecord=" #usr "&query=pica.isb%3D" #uiS
+// und absenden, d.h. die Daten vom GBV abholen. Stehen dann in der iV
+get I
+jump anfang
+
+  Testmodus: Datei $xyz einlesen statt Daten abrufen
+:datei
+var "F" $xyz
+
+// Datei xyz in iV einlesen:
+var
+if "" var "Datei " $xyz " nicht gefunden";mes;end
+// umcodieren per u-Tabelle
+
+// leeren Neusatz anlegen, aber nicht anzeigen
+new 0
+
+// In der iV stehen die Rohdaten vom portal bzw. aus der Datei
+
+:anfang
+// Fremdsatz ist XML, aufbereiten f. ASCII
+// utf-8 -> ASCII
+xcode u
+// Akzentvertauschung im iV-Text
+exp Ai
+// HTM-Codes
+ins _&gt;_>_
+ins _&lt;_<_
+ins _&amp;_&_
+
+// und in $GA ablegen
+ins $GA
+var (e"</zs:numberOfRecords>" b"zs:numberOfRecords>")
+ins $nr
+if =0 yes kein Ergebnis, neuer Versuch?;if not yes end;jump eingabe
+// nur einer?
+if =1 jump ein
+
+  Den wirklich benoetigten Teil nach $Gb
+var $GA
+var (b"recordData>")
+ins $Gb
+
+var $GA (e"</zs:recordPosition>" b"recordPosition>")
+
+  Das ist der erste Zaehler dieser Teilmenge (am ENDE des Satzes!)
+ins $Rp
+
+var ""
+ins $GA
+
+var "Es sind " $nr " Datensaetze, beginnend mit Pos. " $Rp
+sho iv
+var "Liste: " 
+ins $list
+
+  Kurzliste anfertigen
+
+:rloop
+var $Gb
+// nur der Anfang bis <d900 oder <d954 wird gebraucht
+var (e"/zs:recordData")
+
+ var (e"<d900" e"<d954")
+ins $gb
+  Var. $R1, $R2, ... belegen, $Rp ist der Zaehler, $gp der Text
+var "$R" $Rp " " $gb
+ins
+
+
+var (e"</d245" b"<d245" x"sa")
+ins $t
+var $gb
+var (e"</d100" b"<d100" x"sa")
+ins $a
+
+var $gb
+var (e"</d260" b"<d260" b"<sc>" e"</sc")
+ins $y
+
+var $list n $Rp ": " $t " / " $a ". " $y
+ins $list
+
+eval $Rp +1
+
+ins $Rp
+
+  $Gb verkuerzen: zum naechsten Satz fortschreiten
+var $Gb (b"<zs:recordData")
+ins $Gb
+if $Gb jump rloop
+
+
+  Kurzliste zeigen zwecks Auswahl
+:list
+
+var $list n "Mehr (insges. " $nr ")"
+
+ansi
+Aresqa
+if not "" jump choice
+yes Ende?
+if yes end
+jump list
+
+
+  Auswahl erfolgt, ist es Zeile "Mehr"?
+:choice
+if "Mehr" eval #usr +10;ins #usr;jump getdata
+
+  Nummer der Zeile
+var (e":")
+ins $nz
+
+
+
+var "$R" $nz
+var
+xco u
+ins $gv
+jump hauptteil
+
+
+:ein
+var $GA
+  Aus $GA den auszuwertenden Abschnitt herausholen
+
+var (e"</zs:recordData>")
+var (b"<zs:recordData>")
+xco u
+ins $gv
+
+
+// Dieser Teil ist fuer .job und .flx gleich:
+// ***** Hauptteil: Felder extrahieren
+:hauptteil
+var $gv
+// zum Test aktivieren:
+  sho IV
+  end
+
+var $gv
+var (x'd100' b"<sa>" e"</")
+ins #40
+
+
+// Titel: Interpunktion am Ende uneinheitlich, beseitigen!
+var $gv
+var (x'd245' b"<sa>" e"</" F":/ ")
+ins $ti
+
+var $gv
+var (x'd245' b"<sb>" e"</" F"/ ")
+ins $tu
+
+// <sn> und <sp> nur bei mehrbd.Werken
+var $gv
+var (x'd245' b"<sn>" e"</" F"/ ")
+ins $tn
+
+var $gv
+var (x'd245' b"<sp>" e"</" F"/ ")
+ins $tp
+
+// mehrbd? Dann :part
+if $tp perf part
+if not $tp if $tn perf part
+
+var $tg
+ins #84
+
+
+var $ti " : " $tu
+var (F" :")
+ins #20
+// Artikel am Anfang markieren
+if ARtic ins #20
+
+var $gv
+var (x'd245' b"<sc>" e"</")
+ins #39
+
+var $gv
+var (x'd040' b"<sb>" e"</" F":, ")
+ins _ger_de_
+ins _eng_en_
+ins #37
+
+var $gv
+var (x'd250' b"<sa>" e"</" F":, ")
+ins #71
+
+var $gv
+var (x'd260' b"<sa>" e"</" F":, ")
+ins #74
+
+var $gv
+var (x'd260' b"<sb>" e"</" F", ")
+ins #75
+
+var $gv
+var (x'd260' b"<sc>" e"</")
+ins #76
+
+if #76 jump 77
+
+var $gv
+var (x"c008" e"</" b"s" 0,4)
+ins #76
+
+:77
+var $gv
+var (x'd300' b"<sa>" e"</" F":/ ")
+ins $ti
+
+var $gv
+var (x'd300' b"<sb>" e"</" F"/ ")
+ins $tu
+
+var $ti " : " $tu
+var (F" :")
+ins #77
+
+
+
+var $gv
+var (x'd246' b"<sa>" e"</" F":/ ")
+
+ins #23
+if Artic ins #23
+
+
+// Nun noch die URL
+var ""
+ins $tu
+
+var $gv
+var (x'd856' e"^T^T" x"su")
+ins $ti
+var $gv
+var (x'd856' e"^T^T" x"sy")
+if "" var $gv;var (x'd856' e"^T^T" x"s3")
+ins $tu
+
+if $tu var $ti $SC "t" $tu
+if not $tu var $ti
+
+ins #8e
+
+
+var $gv
+var (x'd111' e"^T^T" x"sa")
+ins #83
+
+var $gv
+var (x'd111' e"^T^T" x"sd" f"(")
+ins $sd
+
+var $gv
+var (x'd111' e"^T^T" x"sc" F")")
+ins $sc
+
+if $sc var #83 " (" $sc ")";ins #83
+if $sd var #83 " : " $sd;ins #83
+
+
+var $gv
+var (x'd711' e"^T^T" x"sa")
+ins $sa
+var $gv
+var (x'd711' e"^T^T" x"sd" f"(")
+ins $sd
+var $gv
+var (x'd711' e"^T^T" x"sc" F")")
+ins $sc
+
+if not $sa jump 883
+
+if $sc var $sa " (" $sc ")";ins $sa
+if $sd var $sa " : " $sd ;ins $sa
+if $sa var $sa;ins #83~
+
+
+:883
+
+var $gv
+var (x'd800' e"^T^T" x"st")
+
+ins $gt
+
+var $gv
+var (x'd800' e"^T^T" x"sa") 
+ins $ga
+
+if $ga var $gt " / " $ga;ins $gt
+
+var $gv
+var (x'd800' e"^T^T" x"sv")
+ins $v
+
+if $v var $gt " ; " $v;ins #85
+if not $v var $gt;ins #85
+
+if #85 jump 502
+
+// Serientitel aus 490
+var $gv
+var (x'd490' e"^T^T" x"sa")
+ins #85
+if Artic ins #85
+
+var $gv
+var (x'd490' e"^T^T" x"sv")
+ins $v
+
+if $v var #85 " ; " $v;ins #85
+
+:502
+var $gv
+sho IV
+var (x'd502' x"sa")
+ins #818
+
+if #818 var #818(b"--");ins _, _:_;ins #819
+
+
+
+  773 -> #84
+var $gv
+var (x'd773' e"^T^T")
+if "" jump 800
+ins $i
+var $i (x"st")
+ins $t
+var $i (x"sg")
+ins $v
+if $t if $v var $t " . - " $v;ins #84;jump isbn
+
+var $gv
+var (x'd773' e"^T^T")
+ins $i
+var $i (x"sw" B")")
+ins $n
+var $i (x"sq")
+ins #uvL
+
+if $n var $n "+" #uvL(e".") "=" #uvL;ins #09;#uvL;jump isbn
+
+:800
+var $gv
+var (x'd800' e"^T^T")
+ins $i
+var $i (x"sw" B")")
+ins $n
+var $i (x"sv")
+ins $v
+eval
+ins #uvL
+
+if $n var $n "+" #uvL(e".") "=" $v;ins #09;#uvL
+
+
+
+
+:isbn
+// ISBN mit 978
+var $gv
+var (b"<sa>978" e"<" e" ")
+ins $i
+
+if $i var "978" $i
+hyph
+ins #87
+
+if #87 jump 89P
+
+var $gv
+var (x'd020' b"<sa>" e"</" F":, ")
+hyph
+ins #87
+
+// GBV PPN
+:89P
+var $gv
+var (b"c001>" e"<")
+ins #89P
+
+ins _X_x_
+ins #00
+
+var ""
+ins $ka
+ins $kg
+ins $kb
+
+// Krp. als HE
+var $gv
+var (x'd110' e"^T^T" x"sa")
+ins $ka
+var $gv
+var (x'd110' e"^T^T" x"sg")
+ins $kg
+var $gv
+var (x'd110' e"^T^T" x"sb")
+ins $kb
+if $kg var " <" $kg ">";ins $kg
+if $kb var " / " $kb;ins $kb
+var $ka $kg $kb
+ins #61
+
+
+// weitere Krp.
+var $gv
+var (x'd710' e"^T^T" x"sa")
+ins $ka
+var $gv
+var (x'd710' e"^T^T" x"sg")
+ins $kg
+var $gv
+var (x'd710' e"^T^T" x"sb")
+ins $kb
+if $kg var " <" $kg ">";ins $kg
+if $kb var " / " $kb;ins $kb
+var $ka $kg $kb
+ins #61~
+
+// bis zu 5 weitere Personen, erste als #41, weitere als #42
+
+var $gv
+var (b'd700')
+var (b"<sa>" e"</")
+ins #41
+
+var $gv
+var (b'<d700' b'<d700')
+var (b"<sa>" e"</")
+ins #42
+
+var $gv
+var (b'<d700' b'<d700' b'<d700')
+var (b"<sa>" e"</")
+ins #42a
+
+var $gv
+var (b'<d700' b'<d700' b'<d700' b'<d700')
+var (b"<sa>" e"</")
+ins #42b
+
+var $gv
+var (b'<d700' b'<d700' b'<d700' b'<d700' b'<d700')
+var (b"<sa>" e"</")
+ins #42c
+
+// Schlagwoerter. Da waere noch viel mehr zu tun!
+// hier nur die 2 ersten d650 mit i2="7"  (gnd)
+
+var $gv
+var (b'<d650 i1=" " i2="7"' e"<d")
+var (b"<sa>" e"</")
+ins $s1
+var $gv
+var (b'<d650 i1=" " i2="7"' e"<d")
+var (b"<s9>" B":" e"</")
+ins $g1
+
+var $gv
+var (b'<d650 i1=" " i2="7"' b'<d650 i1=" " i2="7"' e"<d")
+var (b"<sa>" e"</")
+ins $s2
+var $gv
+var (b'<d650 i1=" " i2="7"' b'<d650 i1=" " i2="7"' e"<d")
+var (b"<s9>" B":" e"</")
+ins $g2
+
+var $s1
+if $g1 var $s1 ". " $g1
+ins #31
+
+var $s2
+if $g2 var $s2 ". " $g2
+ins #312
+
+
+  Pers.SW, mehrere!
+var $gv
+var (b'<d600' t"</d600" x"sa")
+  Trennung ist 20 20, ersetzen durch "; "
+ins _^T^T_; _
+ins #31p
+
+// ***** Ende Hauptteil
+
+
+// Sonderservice: Bestandssigel in $Be
+var $gv
+var (x'd900' x'sb')
+ins $Be
+
+:Display
+// Satz ist fertig, anzeigen
+sho rec
+disp
+
+
+
+// falls gewuenscht: gleich das geeignete Formular aufmachen
+// exec onforms
+
+end
+
+
+:part
+
+var $ti " ; " $tn
+if #40 var $ti " / " #40 " ; " $tn
+ins $tg
+
+ var $tp
+ ins $ti
+
+return

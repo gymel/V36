@@ -1,0 +1,380 @@
+  OAI.FLX : OAI-Funktionen
+  2008-11-27   Aufruf:  X oai befehl
+
+  Variablen:  $Serv  : Basis-URL des Servers
+              $Meta  : Metadatenformat
+              $Set   : Ausgewaehltes Set
+              $Recn  : Id eines ausgewaehlten Satzes
+
+  OAI Liste --> http://www.openarchives.org/Register/BrowseSites
+
+ins $bef
+
+var $bef (e" ")
+
+if "~serv" perf servwahl;jump swahl
+
+if not $Serv perf servwahl;help oai
+
+if not $Meta $Meta oai_dc;help oai
+
+  welches Befehlswort ist's?
+var $bef (e" ")
+if "~lists" jump ls   //  ListSets
+if "~iden"  jump id   //  Identify
+if "~listm" jump lm   //  ListMetadataFormats
+if "~listi" jump li   //  ListIdentifiers
+if "~awl"  jump awl   //  show id list again
+if "~listr" jump lr   //  ListRecords
+if "~getr"  jump gr   //  GetRecord
+if "~resu"  jump re   //  resump (use current resumption token)
+end
+
+
+:ls  //ListSets
+
+var "ListSets"
+ins $cmd
+
+perf getdata
+  Dabei entsteht oai.xml
+
+  In dieser Datei stehen Abschnitte, die so aussehen:
+    <set>
+      <setSpec>ddc:000</setSpec>
+      <setName>Allgemeines, Wissenschaft</setName>
+    </set>
+  Gebraucht werden setSpec und setName
+del oai-ls.xml
+ren oai.xml oai-ls.xml
+open oai-ls.xml
+if no mes hat nicht geklappt - keine Datei oai-ls.xml;end
+open x oai-ls.txt
+
+  probeweise mal die ersten 2000 Zeichen lesen
+#ust
+var ""
+ins $Set
+fet 2000
+if %noSetHierarchy% mes Keine Sets;jump swahl
+  Konnt </set> vor oder </set ...>? Flag #ust setzen
+if %</set % #ust 1
+
+  zurueck zum Anfang der Datei
+var "0"
+fet m
+
+  Lesen bis zum Tag <ListSets>
+var "<ListSets"
+fetch e
+if can mes Keine Sets in oai.xml gefunden;end
+
+set obj 2
+  Die <set>-Abschnitte abarbeiten
+:sloop
+if #ust var "/set "
+if not #ust var "/set>"
+fetch e
+if cancel jump esets
+  // solche Fehler gibt's, dass nach </ListSets noch was kommt:
+if %/ListSets% jump esets
+ins _^M__
+ins _^J__
+if not %setSpec% jump esets
+
+set U1
+ins #19
+set U0
+wri #19(x"setSpec") "=" #19(x"setName") n
+jump sloop
+
+:esets
+close
+set obj 1
+close x
+  Auswahl
+Aresqa oai-ls.txt
+if "" end
+  gewaehltes Set speichern
+ins $Set
+help oai
+jump lr
+
+:nop
+var $Burl "?" $cmd " Konnte nicht geoeffnet werden"
+mes
+end
+
+:id  // Identify
+var "Identify"
+ins $cmd
+perf getdata
+del oai-id.xml
+ren oai.xml oai-id.xml
+var Foai-id.xml
+var (x"protocolVersion")
+ins $p
+var Foai-id.xml
+var (x"earliestDatestamp")
+ins $d
+var "Protokollversion: " $p n "Beginn der Daten: " $d
+mes
+
+exec xml-rtf oai-id.xml
+end
+
+:lm  // ListMetadataFormats
+var "ListMetadataFormats"
+ins $cmd
+perf getdata
+del oai-lm.xml
+ren oai.xml oai-lm.xml
+open oai-lm.xml
+if no mes hat nicht geklappt - keine Formate;end
+open x oai-lm.txt
+fet 2000
+if %~404 not found% mes Keine Formate;end
+var "0"
+fet m
+
+:mloop
+var "/metadataFormat"
+fet e
+if "" jump mende
+var (x"metadataPrefix")
+ins _^T^T_^M^J_
+wri
+wri n
+jump mloop
+:mende
+close x
+close
+Are oai-lm.txt
+if "" end
+ins $Meta
+help oai
+end
+
+
+:li  // ListIdentifiers
+var "ListIdentifiers"
+ins $cmd
+ask Date (JJJJ-MM-DD)?
+if "" jump schluss
+ins $from
+var $cmd "&from=" $from "&metadataPrefix=" $Meta
+ins $cmd
+perf getdata
+del oai-li.xml
+ren oai.xml oai-li.xml
+help oai-li.xml
+
+open oai-li.xml
+if no mes hat nicht geklappt - keine Daten;end
+open x oai-li.txt
+:lloop
+var "/header"
+fet e
+if "" jump lende
+ins _^M__
+ins _^J__
+ins $idf
+var (x"identifier" e";;;")
+wri
+wri " : "
+var $idf (x"datestamp")
+wri
+wri " ("
+var $idf (x"setSpec" B":" e";;;")
+wri
+wri ")" n
+jump lloop
+:lende
+close x
+close
+
+:awl
+Are oai-li.txt
+if "" end
+
+ins $Recn
+yes Satz anzeigen?
+if not yes end
+
+:gr  // GetRecord
+var "GetRecord"
+ins $cmd
+var $Recn (e" : ")
+ins #uid
+ask identifier=#uid
+if "" jump schluss
+ins $Recn
+#uid
+var $cmd "&identifier=" $Recn "&metadataPrefix=" $Meta
+ins $cmd
+perf getdata
+del oai-gr.xml
+ren oai.xml oai-gr.xml
+exec xml-rtf oai-gr.xml
+end
+
+
+  OAI-Befehl absetzen, Ergebnisse einlesen (aiaqs-Technik)
+                       und in Datei oai.xml speichern
+:getdata
+open x oai.xml
+  URL zusammensetzen und als Datei oeffnen
+var $Burl
+  Kommt schon ein ? drin vor? Dann verb mit & anhaengen
+if %?% jump g1
+  sonst mit ?
+var $Burl "?verb=" $cmd
+jump g2
+:g1
+var $Burl "&verb=" $cmd
+  Kontrollanzeige im Schreibfeld
+:g2
+sho iv
+open
+if no jump nop
+get
+:gloop
+wri
+wri n
+var ""
+get
+if not no jump gloop
+close
+close x
+ help oai.xml
+open oai.xml
+fet 5000
+if %404:% mes Daten nicht verfuegbar;end
+close
+return
+
+
+  BasisURL abfragen
+:askBurl
+var "Basis-URL=" $Burl
+ask
+if "" jump schluss
+return
+
+:schluss
+mes OK, Ende
+end
+
+:servwahl
+  Liste der Server und Basis-URLs zur Auswahl zeigen
+var "*" P "help\\oai-serv.txt"
+Aresqa
+if "" end
+
+ins $serv
+var $serv (t" : ")
+asci
+ins $Serv
+var ""
+ins $ResT
+var $serv
+  URL steht hinter dem letzten :
+var (T" : " f" " F" " B"http://" B"https://")
+
+ins $Burl
+
+var "http://" $Burl
+
+ins $Burl
+return
+
+  Set-Name steht in $Set  (spec=name)
+:lr  // ListRecords
+var ""
+ins $set
+if not $Set jump datum
+var "Daten aus Set " $Set "? (Nein=alle)"
+yes
+if can end
+if no jump datum
+var $Set (e"=")
+ins $set
+var "&set=" $set
+ins $set
+:datum
+ask Ab welchem Datum? (JJJJ-MM-TT)=#udA
+if "" end
+ins $dat
+ins #udA
+ask Bis zu welchem Datum? (JJJJ-MM-TT)=#udB
+ins $unt
+ins #udB
+
+var "ListRecords" $set "&metadataPrefix=" $Meta "&from=" $dat
+if $unt var +"&until=" $unt
+ins $cmd
+
+perf getdata
+del oai-lr.xml
+ren oai.xml oai-lr.xml
+help oai-lr.xml
+  wenn kein Erg.: <error code="noRecordsMatch">
+var "noRecordsMatch"
+perf match
+if "1" mes Nichts gefunden;#udA;jump datum
+yes Daten umwandeln?
+if yes exec oai-dc
+end
+
+  im Anzeigebereich den Inhalt der iV suchen
+:match
+ins #umt
+var z1
+:cloop
+var (b"#umt")
+if not "" var "1";return
+var z2
+if no var "0";return
+jump cloop
+
+:swahl
+help oai
+end
+
+:re
+var "ListRecords&resumptionToken=" $ResT "&metadataPrefix=" $Meta
+ins $cmd
+sho iv
+perf getdata
+var "oai.xml"
+fsize
+if <20 help oai.xml;mes Keine Daten empfangen!;end
+open oai.xml
+fet 3000
+if %nknown or expir% mes Klappt nicht;close;end
+if %badArgument% jump bar
+close
+end
+  badArgument: nochmal versuchen ohne metadataPrefix
+:bar
+close
+var "ListRecords&resumptionToken=" $ResT
+ins $cmd
+sho iv
+perf getdata
+var "oai.xml"
+fsize
+if <20 help oai.xml;mes Keine Daten empfangen!;end
+open oai.xml
+fet 3000
+if %nknown or expir% mes Klappt nicht;close;end
+if %badArgument% mes Klappt nicht (badArgument);close;end
+close
+del oai-lr.xml
+ren oai.xml oai-lr.xml
+
+yes Daten umwandeln?
+if yes exec oai-dc
+exec xml-rtf oai-lr.xml
+end
+

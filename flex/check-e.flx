@@ -1,0 +1,78 @@
+  CHECK-E.FLX : Leersaetze checken
+  2002-05-22  : Stimmen die Eintraege unter // im Reg. 1?
+
+  Gibt es Leersaetze? Wenn nicht, dann :leer
+find |1 _//?
+if empty jump leer
+
+  Datei anlegen
+open x protok.lst
+  Funktion 3 einstellen
+qrix f 3
+var "|1 //00000@/0"
+  Abschnitt //00000 bis /0 aus Reg.1 in Datei schreiben
+Qrix
+  Datei schliessen.
+close x
+
+  und zum lesen wieder oeffnen
+open protok.lst
+  Existiert nicht?
+if no jump exit
+  Protokolldatei zum Schreiben oeffnen
+open x protok.txt
+  Ueberschrift reinschreiben
+wri "Falsche Eintraege:" n
+wri "(Wenn hier Zeilen mit Nummern erscheinen, dann erneuern Sie den Index!" n
+wri " Solche Fehler sind sehr selten!)" n n "interne Nummer | //Bytes" n n
+
+z=0
+  Schleife
+:loop
+get
+  Nichts mehr? -> :exit
+if can jump exit
+  Zeile in #ucI kopieren
+ins #ucI
+  Esc gedrueckt?
+keycheck
+if yes jump exit
+
+  Satz holen
+var "#" #ucI(e"|")
+find
+
+  Laenge in #ucL
+var #ucI(b"//" f"0")
+ins #ucL
+
+  Laenge in der Datei (incl. Fuellzeichen)
+var jf
+
+  Diese muss gleich der Zahl hinter // sein, sonst -> :ungl
+if not =#ucL jump ungl
+  weiter mit der Schleife
+jump loop
+
+  Eine Ungleichheit gefunden
+:ungl
+  Zeile in die Ausgabedatei schreiben
+wri #ucI(e"|") " : //" #ucI(b"//") n
+z+1
+jump loop
+
+:exit
+  Ausgabedatei schliessen
+wri n "------------------------" n z " Fehler" n
+close x
+  und anzeigen
+help protok.txt
+#ucI
+#ucL
+end
+
+:leer
+var "Es gibt keine Leers„tze!"
+ansi
+mes
+

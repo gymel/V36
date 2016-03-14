@@ -1,0 +1,368 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fscript\fprq2 Comic Sans MS;}{\f1\fscript\fprq2\fcharset0 Comic Sans MS;}{\f2\froman\fprq2 allegro New Roman;}{\f3\fswiss\fprq2 ARIAL;}{\f4\fswiss\fprq2\fcharset0 ARIAL;}{\f5\froman\fprq2 Times New Roman;}{\f6\froman\fprq2\fcharset0 allegro New Roman;}{\f7\fmodern\fprq1\fcharset0 Courier New;}{\f8\fswiss\fprq2\fcharset0 Verdana;}{\f9\fswiss\fcharset0 ARIAL;}{\f10\fswiss ARIAL;}{\f11\fswiss\fprq2\fcharset0 Arial;}}
+{\colortbl ;\red0\green200\blue0;\red0\green176\blue0;\red255\green0\blue0;\red0\green0\blue255;\red0\green0\blue0;\red0\green128\blue128;}
+\viewkind4\uc1\pard\qc\tx3969\f0\fs24 
+\par \cf1\b\i\f1\fs26 aLF : Ausleihe\i0\f0  \cf0\f2\fs22 
+\par \pard\qr\b0\f3\fs20 %=x var #20(e':')`ins #uV1%`\cf2\ul\b\f4 Kurzfassung\cf0\ulnone\b0\f3 `\cf3\f5  \cf0 
+\par \pard\qc\tx3692\f6 %=x #ua!`if not #ua? #ua!Initialisierung%\cf3\f7 `\ul\b\f8 %#ua!\ulnone\b0\f7 `\cf0\f2 
+\par \pard\qr\f3 %=x var #20(e':')`ins #uV1%`\cf2\ul\b\f4 Konzept\cf0\ulnone\b0\f3 `\f4  -- \f3 `\cf2\ul\b\f4 Dokumentation\cf0\ulnone\b0\f3 `\cf3\f5  
+\par \cf0\f3 `\cf2\ul\b\f4 Liste der Dateien\cf0\ulnone\b0\f3 `\f5 
+\par \pard\tx3969\cf3\b\i\f4 Initialisierung\i0 ?\b0 
+\par \cf0\f3 Bevor man mit den Ausleihfunktionen beginnt, \f4 werden\f3  hiermit ein paar hilfreiche Einstellungen \f4 ge\f3 mach\f4 t\f3 . 
+\par Dahinter steckt der FLEX \b\f7 a-init.flx\b0\f4 , und dadurch werden z.B. die Kalenders\'e4tze geladen. Einige wichtige Einstellungen werden aus der Datei \b ALF.INC\b0  geladen, z.B. die Namen von Hilfsdateien f\'fcr das Mahnen und bestimmte Fristeinstellungen. 
+\par 
+\par Die Buttons 1-4 und 8 werden anders besetzt. Mit \b Alt+1\b0 , \b Alt+2 \b0 und \b Alt+3\b0  hat man jederzeit alle wichtigen Funktionen: 
+\par \cf3\b [1]\cf0\b0  : \b Ausleihe\b0  ( \b\f7 X alf\b0\f4  ) : Eingabe (Scannen) von Leser- und Buchbarcodes 
+\par \pard\fi-426\li426\tx3969\cf3\b [2]\cf0\b0  : \b a-Men\'fc\b0   ( \b\f7 h alf\b0\f4  ) : Das normale aLF-Men\'fc. Nicht alle Funktionen stehen darauf! Manche sind nur in bestimmten Situationen sinnvoll. Daf\'fcr gibt es \b Alt+3\b0 : 
+\par \cf3\b [3]\cf0\b0  : \b a-Funktion\b0  : Auswahlliste von  Funktionen, die jeweils mit dem aktellen Satz m\'f6glich sind. Dies h\'e4ngt davon ab, was f\'fcr ein Satztyp es ist. 
+\par \tab Dahinter steckt der FLEX  \b\f7 a-func.flx\b0\f4 . Also: Nach dem Initialisieren kann man immer mit \b Alt+3\b0  alle in der Situation sinnvollen Funktionen abrufen, z.B. das Benutzerkonto und die Belastungen, wenn gerade ein Lesersatz geladen ist. 
+\par \cf3\b [4]\cf0\b0  : \b Bearb.\b0  - Nur zur Bearbeitung von \b Systems\'e4tzen\b0  (FLEX \b\f7 cfga.flx\b0\f4  ) , z.B. Medientyps\'e4tzen oder Leserklassens\'e4tzen! 
+\par \pard\li426\tx3969 Der aktuelle Satz wird damit so dargestellt, da\'df man alle Einzelheiten (Teilfelder) \b im Anzeigefeld\b0  bearbeiten kann. (Formulare w\'e4ren weniger praktisch in diesen F\'e4llen) 
+\par \pard\tx3969\cf3\b [8]\cf0\b0  : \b Speich.\b0  - Zum Speichern eines so bearbeiteten Systemsatzes (FLEX \b\f7 cfgb.flx\b0\f4  ) 
+\par \pard\li426\tx3969\i Also:\i0  nach der Bearbeitung im Anzeigefeld Daten mit Alt+8 speichern. 
+\par 
+\par \pard\tx3969 Tip: Wenn gleich beim Start automatisch initialisiert werden soll, dann den eigenen  \f7 _start.flx\f4   am Ende erg\'e4nzen um den Befehl: 
+\par \f7 exec X a-init\f4 
+\par \pard\qr\tx3969 `\cf4\ul\b Selbstbedienung\cf0\ulnone\b0 ` 
+\par \pard\tx3969\b Funktionen des aLF-Men\'fcs\b0   (Alt+2) 
+\par 
+\par \pard\tx3692\f2 `\cf4\ul\b\f4 Ausleihe\cf0\ulnone\b0\f3 `  \f4  (auch\f3  \b\f4 Alt+1\b0  , dahinter steckt alf.flx)\f3 
+\par \f4 Normalerweise erscheint ein Nutzer mit einem oder mehreren B\'fcchern o.a., die er ausleihen will. 
+\par Zuerst wird zur Eingabe des Nutzer-Barcodes aufgefordert. Ist dieser g\'fcltig (d.h. gibt es dazu einen Leserdatensatz), erscheint ein Formular zur Eingabe von bis zu 10 Medien-Barcodes. Will der betr. Leser mehr als 10 St\'fccke ausleihen, scannt man zuerst die ersten 10, dann [Ende] dr\'fccken: alle 10 St\'fccke werden verbucht, und das leere Formular erscheint neu. Das R\'fcckgabedatum und das erste Mahndatum werden bei jedem St\'fcck automatisch ausgerechnet, Berechtigung und Ausleihbarkeit gepr\'fcft etc.\cf5\f3\fs18   
+\par \f4 Hier findet auch die \b Registrierung neuer Leser\b0  statt! Wenn ein Leserbarcode eingescannt wird, der noch nicht registriert ist, \'f6ffnet sich das Anmeldungs-Formular.\f3 
+\par \pard\tx3969\cf0\f4\fs20 
+\par \f3 `\cf4\ul\b\f4 R\'fcckbuchung\cf0\ulnone\b0\f3 `\f4   (auch\f3  \b\f4 Alt+6\b0 , a-chkin.flx) 
+\par \pard\tx3692 Hierbei erscheint nur eine Eingabezeile, in die jeweils ein Barcode eines zur\'fcckgegebenen Mediums einzugeben oder zu scannen ist. Dieses wird dann sofort zur\'fcckgebucht, und wenn dabei ein Problem oder Sonderfall auftritt, kommt sofort eine entsprechende Meldung, auf die man entsprechend reagieren kann. Insbesondere wird gepr\'fcft, ob der R\'fcckgabetermin \'fcberschritten ist oder eine Vormerkung vorliegt.  Der Leserausweis wird nicht gebraucht. 
+\par Quittungsdruck gew\'fcnscht? Dann  \f7 #uqQ\f4   in \f7 a-init.flx\f4  aktivieren (ist dort kommentiert). 
+\par \pard\tx3969\fs18 
+\par \f2\fs20 `\cf4\ul\b\f4 Neues Exemplar\cf0\ulnone\b0\f3 `\f4   (a-exemp.flx) 
+\par \f3\fs18 (zu \cf1 %1\cf5 )\cf0\f4\fs20 
+\par \pard\tx3692 Diese Funktion braucht man, um zu einem Titelsatz einen weiteren Exemplarsatz anzulegen. Das kann jederzeit im laufenden Betrieb geschehen. \i Tip:\i0  \'dcber [Neusatz] kann man auch im laufenden Betrieb einen provisorischen Titelsatz einbringen, Typ "Simpler Satz", wenn ein Buch (z.B. Altbestand) auszuleihen ist, das noch gar nicht in der Datenbank ist. 
+\par \f2 
+\par `\cf4\ul\b\f4 Leser-Register\cf0\ulnone\b0\f3  \f4 ` 
+\par Hier bekommt man Einblick in das Register 10, in dem sich die Lesernamen und -Barcodes befinden (zusammen mit anderen Angaben). Wenn man den Barcode parat hat, findet man den Lesersatz aber am schnellsten \'fcber die Funktion "Leser suchen": 
+\par 
+\par \pard\tx3969\cf5\f2 `\cf4\ul\b\f4 Leser suchen\cf5\ulnone\b0\f3  ` 
+\par \f4 Man wird zur Eingabe des Barcodes aufgefordert, der Satz erscheint dann unmittelbar und dazu die Auswahl der aLF-Funktionen. 
+\par Mit \b Alt+3\b0  kommt die Auswahl aller zus\'e4tzlich m\'f6glichen Funktionen zum Lesersatz. 
+\par \pard\tx3692\cf0  
+\par \f2 `\cf4\ul\b\f4 Leserklassen\cf0\ulnone\b0 `\f3  \f4  \f3 
+\par \pard\tx3969\f4 Zur Sichtung der Stamms\'e4tze f\'fcr die Leserklassen zwecks evtl. Bearbeitung (mit \b Alt+4\b0  / \b Alt+8\b0 ). 
+\par \f2 `\cf4\ul\b\f4 Neue Klasse\cf0\ulnone\b0 ` 
+\par Einen neuen solchen Stammsatz anlegen f\'fcr eine weitere Leserklasse. Je mehr Leserklassen man hat, umso mehr Medientyps\'e4tze (f\'fcr die spezifischen Bedingungen) mu\'df man aber anlegen, wenn es differenzierte Bedingungen f\'fcr einzelne Medien geben soll, sonst werden beim Ausleihen die Bedingungen aus dem Leserklassensatz entnommen. 
+\par 
+\par \cf5\f2 `\cf4\ul\b\f3 Neue Leser\cf5\ulnone\b0 ` \f4   [im Normalmen\'fc nicht meh drin]\f3 
+\par \pard\tx3692\f4 Das Erfassungsformular [Benutzer/Leser] erscheint, damit man einen neuen Leser eintragen kann.  
+\par \i Tip:\i0  Im Feld "Klasse" kann man Alt+i  dr\'fccken und dann aus einer Liste die Klasse w\'e4hlen. (Dahinter steckt die Datei  \f7 a-clas.vw\f4 , die man bearbeiten kann). 
+\par In diese Funktion gelangt man auch, wenn in der Ausleihfunktion ein Leserbarcode eingescannt wird, der noch nicht registriert ist. 
+\par 
+\par \pard\tx3969\cf0\f2 `\cf4\ul\b\f4 Kalenderdaten\cf0\ulnone\b0  ` \cf5 / \f2 `\cf4\ul\b\f4 Aktuelles Jahr\cf5\ulnone\b0\f3  `\cf0\f4  \cf5\f9   
+\par \pard\tx3692\cf0\f4 Sichtung der vorhandenen Kalenders\'e4tze. Man braucht solche S\'e4tze f\'fcr das laufende sowie das n\'e4chste und das \'fcbern\'e4chste Jahr, damit auch sehr lange Leihfristen m\'f6glich sind. 
+\par Ein Kalendersatz hat 365 Ziffern (in Schaltjahren 366). Eine 1 steht f\'fcr "offen", eine 0 f\'fcr "geschlossen". Die erste Ziffer ist f\'fcr den Neujahrstag, die letzte f\'fcr Silvester - ganz einfach. Dazwischen stehen die Monatsnamen und gliedern dadurch die lange Folge der Ziffern. Vor jedem Sonntag steht ein %. Die Buchstaben und % haben jedoch keine Funktion f\'fcr das Programm, es verwendet nur die Ziffern. Einen vorhandenen Kalendersatz kann man sich so zeigen lassen, da\'df man alle Tage als Liste sehen kann und dann markieren als \'d6ffnungs- oder Schlie\'dfungstag, wie nachfolgend beschrieben:  (Alt+3 startet die Bearbeitung!) 
+\par Mit "Aktuelles Jahr" kommt sofort das laufende Jahr in der zur Bearbeitung geeigneten Form, damit man schnell mal eben einen \'d6ffnungs- oder Schlie\'dfungstag \'e4ndern kann.  
+\par \pard\tx3969 Der \cf5\f2 `\cf4\ul\b\f4 Feiertagskalender\cf5\ulnone\b0\f3  `\f4  \cf0 ist eine Sonderfunktion, mit der man f\'fcr jedes gew\'fcnschte Jahr eine \'dcbersicht der gesetzlichen und kirchlichen Feiertage bekommt. Wichtig, wenn man einen neuen Kalendersatz erstellen will, weil man dabei die Schlie\'dfungstage markieren mu\'df. 
+\par \pard\tx3692 
+\par \pard\tx3969\cf5\f2 `\cf4\ul\b\f4 Neuen Kalenderdatensatz\cf5\ulnone\b0\f3 ` 
+\par \cf0\f4 Hiermit kann man einen derartigen Hilfsdatensatz neu anlegen. Nach Eingabe einer Jahreszahl erh\'e4lt man zuerst eine Liste der Tage im Anzeigefeld, wobei wahlweise die Samstage schon als offen (1) oder geschlossen (0) angegeben sind. Man markiert die sonstigen Schlie\'dfungstage mit 0 und dr\'fcckt dann  Alt+9, woraufhin die Liste in einen Datensatz umgewandelt wird. 
+\par \i Tip:\i0  Zuerst den Feiertagskalender aufrufen und daraus die betr. Tage notieren. 
+\par Jedes Jahr mu\'df ein neuer Kalendersatz angelegt werden, und zwar nicht f\'fcr das laufende, sondern f\'fcr das \'fcbern\'e4chste. Denn das Programm braucht je einen Kalendersatz f\'fcr das laufende, n\'e4chste und \'fcbern\'e4chste Jahr. Nach einem Neujahrstag w\'fcrde also pl\'f6tzlich eine Fehlermeldung erscheinen, h\'e4tte man nicht vorher schon einen Kalendersatz f\'fcr das \'fcber-\'fcbern\'e4chste Jahr angelegt. 
+\par \pard\tx3692 
+\par \f3 `\cf4\ul\b\f4 Barcode-Register\cf0\ulnone\b0\f3 ` 
+\par \pard\tx3969\f4 Bl\'e4ttern im Register der Exemplar-Barcodes. Wenn man dort einen vorliegenden Barcode einscannt, kann man auf dem Wege auch schnell den Exemplarsatz finden. 
+\par 
+\par \pard\tx3692\f2 `\cf4\ul\b\f4 MedientypS\'e4tze\cf0\ulnone\b0 ` \f3 
+\par \f4 Diese S\'e4tze legen die Ausleih-Eigenschaften eines Medientyps, z.B. Buch, in Verbindung mit einer Leserklasse fest. Jeder Leserklasse kann also eigene Bedingungen, vor allem Fristen, bez\'fcglich jedes Medientyps haben. 
+\par Wenn zu einer Kombination Leser+Medientyp kein solcher Satz existiert, werden die Bedingungen aus dem Satz der Leserklasse entnommen. Hat man \b m\b0  Medientypen und\b  k\b0  Leserklassen, sind folglich bis zu \b m*k\b0  MedientypS\'e4tze m\'f6glich! Diese anzulegen, kann also in Arbeit ausarten. 
+\par \i Tip:\i0  Wenn man beginnt, kann man auch zuerst mal auf Medientyp- und Medientyp-Stamms\'e4tze ganz verzichten und sich mit Lederklassen begn\'fcgen, in die man pauschal geltende Bedingungen hineinschreibt.\f3 
+\par \f2 `\cf4\ul\b\f4 Neuer Typsatz\cf0\ulnone\b0 `\f3  
+\par \f4 Einen neuen solchen Satz anlegen, f\'fcr eine noch nicht ber\'fccksichtigte Kombination Leserklasse + Medientyp\f3 
+\par 
+\par `\cf4\ul\b\f4 MedientypStamms\'e4tze\cf0\ulnone\b0\f3 ` 
+\par \f4 Solche S\'e4tze beschreiben die Eigenschaften je eines Medientyps, z.B. Buch, CD-ROM. Jeder Medientyp hat einen Code, der in den MedientypS\'e4tzen verkn\'fcpft wird mit jeweils einer Leserklasse. \f3 
+\par \pard\tx3969\f2 `\cf4\ul\b\f4 Neuer Satz\cf0\ulnone\b0  `\f3  \f4 
+\par \pard\tx3692 Neuen solchen Satz anlegen, f\'fcr einen noch nicht definierten Medientyp\f3 
+\par \pard\tx3969\f4 
+\par \f2 `\cf4\ul\b\f4 Trennung\cf0\ulnone\b0 ` 
+\par Hiermit kann man hierarchische S\'e4tze (von mehrb\'e4ndigen Werken) auftrennen lassen in verkn\'fcpfte Haupt- und Unters\'e4tze. 
+\par 
+\par \f2 `\cf4\ul\b\f4 Exemplars\'e4tze anlegen\cf0\ulnone\b0 ` 
+\par ALFA braucht keine Exemplars\'e4tze, sondern nur imTitelsatz je ein Feld #90 f\'fcr jedes Exemplar. 
+\par aLF dagegen verlangt getrennt gespeicherte Exemplars\'e4tze mit einem Feld #9DF, in dem die Titel-IdNr steht, und einem Feld #9DG; in dem die Angaben zum Exemplar stehen, u.a. die Barcode-Nummer. 
+\par Diese Funktion macht aus jedem Feld #90 einen solchen Exemplarsatz. Je nach Datenbankgr\'f6\'dfe dauert dies eine Weile, aber es ist eine einmalige (und nicht umkehrbare!) Aktion. Zwar kann es im laufenden Betrieb geschehen, ratsam ist aber ein Test: Kopieren Sie die Datenbank woandershin und probieren Sie dann mit der Kopie, was dabei herauskommt. 
+\par Die #90er-Felder bleiben erhalten, es wird nur jeweils ein Unterfeld $e f\'fcr die Exemplarnummer erg\'e4nzt. Daran erkennt das Programm auch, da\'df f\'fcr diese #90 schon ein Exemplarsatz angelegt ist! 
+\par 
+\par \f2 `\cf4\ul\b\f4 Mahnungen registrieren\cf0\ulnone\b0  ` 
+\par Wenn Mahngeb\'fchren statt Verzugsgeb\'fchren erhoben werden sollen, mu\'df man regelm\'e4\'dfig das \'fcberf\'e4llige Leihgut ermitteln und registrieren. Das bedeutet: jedes \'fcberf\'e4llige Exemplar mu\'df gefunden und es mu\'df ein Geb\'fchrensatz daf\'fcr angelegt werden. Nichts anderes tut diese Funktion. 
+\par Die Geb\'fchrens\'e4tze kann man hinterher im Register 11 unter GD<aktuelles Datum> finden. 
+\par Hinweis: In a-init.flx stehen Standardwerte f\'fcr die Behandlung des Verzugs. Durch Setzung von \b\f7 $Avgeb 0\b0\f4  kann man erreichen, da\'df keine Verzugsgeb\'fchren berechnet werden. 
+\par Die Registrierfunktion wird von dem FLEX  \f7 a-mahnrg.flx\f4   ausgef\'fchrt. 
+\par 
+\par \cf5\f2 `\cf4\ul\b\f9 Mahnexport\cf5\ulnone\b0\f3 `\cf0\f4  
+\par Nach dem Registrieren der Mahnungen m\'fcssen die Geb\'fchrens\'e4tze so verarbeitet werden, da\'df Mahnbriefe herauskommen. Das ist die Aufgabe dieser Funktion. Als Standard werden dabei die Exportparameter e-alf.apr benutzt, wobei eine RTF-Datei herauskommt. Diese kann mit Word eingelesen und damit dann ausgedruckt werden. 
+\par Notwendig sind die Dateien \f7 a-mahnex.flx\f4  (die Prozedur), \f7 e-walf.apr\f4  (Exportparameter),  \f7 mahnkopf.rtf\f4  (Briefkopf, darin Name und Adresse der Bibliothek) und \f7 mahnfuss.rtf\f4  . In den beiden RTF-Dateien kann die Gestaltung des Mahnschreibens angepa\'dft werden. Au\'dferdem kann man die Namen der Dateien in  ALF.INC auch anders setzen. (ALF.INC wird beim aLF-Initialisieren in a-init.flx gelesen und belegt einige Variablen.) 
+\par Genauer beschrieben ist das Mahnwesen in der Dokumentation: 
+\par    \f7 `\cf4\ul\b http://www.allegro-c.de/alf/alfdoc.htm\cf0\ulnone\b0 `\f4  
+\par 
+\par \pard\tx3692\cf5\f2 `\cf4\ul\b\f9 Geb\'fchrens\'e4tze zeigen\cf5\ulnone\b0\f3 `\f4   
+\par \'dcber Register 11 wird die Erg.Menge der Geb\'fchrens\'e4tze gebildet und nach Lesernummer geordnet gezeigt. 
+\par 
+\par \f2 `\cf4\ul\b\f9 Summe\cf5\ulnone\b0\f3 ` 
+\par \f4 Rechnet schnell aus, wie hoch die Gesamtsumme der ausstehenden Geb\'fchren ist sowie die Summe der gestundeten Geb\'fchren.\f3 
+\par 
+\par \f2 `\cf4\ul\b\f9 Statistik\cf5\ulnone\b0\f3 `\f4  
+\par Zeigt die Liste der Statistikdateien zur Auswahl an (a-stat.flx). Man setzt ein + vor diejenigen Dateinamen, die ausgewertet werden sollen. Dann startet man die Auswertung mit  Alt+9 (a-stat.flx mit #ulW gesetzt). Am Ende sieht man zwei Listen: die Anzahl der Ausleihen nach Leserklasse/Medientyp sowie nach Medientyp. Ob \'fcberhaupt Statistikdaten aufgezeichnet werden, wird durch eine Einstellung in der Datei \b ALF.INC\b0  geregelt. 
+\par Mehr zum Konzept der Statistik steht in der `\cf4\ul\b Statistik-Dokumentation.\cf5\ulnone\b0 ` 
+\par 
+\par \f2 `\cf4\ul\b\f9 F\'fcr diese Sitzung\cf5\ulnone\b0\f3 `\f10\fs18 
+\par \pard\tx3969\f9\fs20 Nur die Statistikdaten der momentanen Sitzung werden ausgewertet. 
+\par \cf0\f4 
+\par \pard\tx3692\cf5\f2 `\cf4\ul\b\f9 Aktuelle STK-Datei\cf5\ulnone\b0\f3 `\f10\fs18 
+\par \pard\tx3969\f9\fs20 Die Statistikdatei der momentanen Sitzung wird als solche angezeigt. Eine Auswertung findet hierbei nicht statt, man braucht dies allenfalls f\'fcr Testzwecke. 
+\par \cf0\f4 
+\par \cf5\f9 `\cf4\ul\b Warteregal\cf5\ulnone\b0 ` 
+\par Welche Exemplare schmoren momentan auf dem Warteregal? Zu finden im Reg. 10 unter Wr\i datum. \i0 
+\par \i Tip:\i0  Die wartenden B\'fccher eines einzelnen Lesers erh\'e4lt man vom Alt+3-Men\'fc, wenn der betr. Lesersatz in der Anzeige ist. 
+\par 
+\par `\cf4\ul\b Vormerkungen\cf5\ulnone\b0 ` 
+\par Was ist momentan alles vorgemerkt? Zu finden im Reg. 10 unter Vm\i datum. \i0 
+\par \i Tip:\i0  Die Vormerkungen eines einzelnen Lesers erh\'e4lt man vom Alt+3-Men\'fc, wenn der betr. Lesersatz in der Anzeige ist. 
+\par 
+\par `\cf4\ul\b Notbetrieb\cf5\ulnone\b0 ` 
+\par Eine Beschreibung, was man tun kann, wenn nichts mehr geht... 
+\par \cf0\f4 
+\par \cf5\f9 `\cf4\ul\b Systemdatei f\'fcr Web erneuern\cf5\ulnone\b0 `  [\b Achtung Systemverwalter\b0 : Immer am Jahresanfang durchf\'fchren]
+\par Eine Hilfsdatei  \f7 alfsys.dat\f9   wird erzeugt, mit der die Online-Verl\'e4ngerung und andere Selbstbedienungsfunktionen im Web-OPAC unterst\'fctzt werden. Diese Funktionen gibt es ab V29. Im Browser startet man sie mit der Datei  \f7 a-okonto.htm\f9 .  Sie fordert zur Identifizierung mit Nutzernummer und Pa\'dfwort auf und aktiviert dann das Skript  \f7 a-okonto.php\f9 . 
+\par Die Datei  \f7 alfsys.dat\f9   enth\'e4lt alle zum Verl\'e4ngern n\'f6tigen Systems\'e4tze, darunter auch die Kalenders\'e4tze. Deshalb mu\'df man diese Datei zum Jahresbeginn jeweils erneuern, nachdem man einen neuen Kalendersatz f\'fcr das nachfolgende Jahr angelegt hat.
+\par \cf0\f4 
+\par \pard\qc\tx3969 **************************** 
+\par \pard\tx3969 
+\par \b\fs28 Nutzerkonto / Verl\'e4ngerung / Vormerkung in Selbstbedienung \fs20 
+\par 
+\par \b0 Diese Angebote kann man sowohl mittels \b\i alcarta\b0\i0  im lokalen Netz machen als auch mit PHPAC im Webkatalog. 
+\par \b 
+\par \cf6\fs24 alcarta\cf0\b0\fs20 
+\par 
+\par Ein FLEX namens  \f7 a-okonto.flx\f4   ist daf\'fcr gedacht, da\'df der Opac-Nutzer in \i alcarta\i0  folgende Funktionen selber ausf\'fchren kann: 
+\par 
+\par \f8 1. Konto abfragen (Entleihungen auflisten) 
+\par 2. Alle Entleihungen verl\'e4ngern 
+\par 3. Einzelne Entleihungen verl\'e4ngern 
+\par 4. Vormerkungen zur\'fcckziehen 
+\par 5. Reservierungen (Warteregal) aufheben 
+\par 6. Pa\'dfwort \'e4ndern 
+\par \f4 
+\par \b Einbindung:\b0  
+\par In die f\'fcr den OPAC zust\'e4ndige INI-Datei dies einbauen: 
+\par 
+\par \f7 MyMenu=Benutzer-Info 
+\par MyFLEX=X a-okonto 
+\par access=2\f4            (sonst nicht genug Rechte) 
+\par \f7 StartFLEX=_start;a-init\f4\tab (bzw. etwas Eigenes statt \f7 _start.flx\f4 ) 
+\par 
+\par Damit erscheint dann oben rechts neben "Option" der Men\'fcpunkt "Benutzer-Info". Bei Bet\'e4tigung fragt der FLEX dann zuerst den Namen und das Pa\'dfwort ab. Ist der Lesersatz vorhanden und stimmt das Pa\'dfwort, geht es weiter und es wird das Konto zusammengestellt und angezeigt. Alles weitere sieht der Leser dann dort. 
+\par Erforderliche Dateien: 
+\par \pard\tx1704\tx3969\f7 
+\par a-okonto.flx\f4  \tab (funktioniert auch in a99!) 
+\par \f7 a-init.flx\f4  \tab notwendige Voreinstellungen 
+\par \f7 a-verl.flx \tab\f11 f\'fchrt die Verl\'e4ngerun(en) aus\f7 
+\par alf.rtf\f4            \tab (Hauptmen\'fc; darin neue Funktion "Verfallene Reservierungen") 
+\par \pard\tx3969 
+\par F\'fcr die Verl\'e4ngerungen wird der FLEX  \f7 a-verl.flx\f4   benutzt, der zu dem Zweck noch ein wenig modifiziert wurde. Insbes. soll der OPAC-Nutzer sich nicht selber eine Ausnahmefrist gew\'e4hren d\'fcrfen, und bei Vorliegen von Vormerkungen bzw. bei ausstehenden Geb\'fchren und Ablauf der Mitgliedschaft soll er/sie nicht verl\'e4ngern d\'fcrfen. 
+\par 
+\par \b Zum Pa\'dfwort\b0  
+\par Normalerweise hat der Leser noch kein Pa\'dfwort. Es wird dann ersatzweise (wie bei Pica) sein Geburtsdatum genommen, in der Form  
+\par \f7 JJJJMMTT\f4      (es steht in \f7 #9B$d\f4 ). 
+\par Hat sich der Leser mit Funktion 6 ein Pa\'dfwort verpa\'dft, steht dieses codiert in \f7 #9B$g\f4 . Das ist sicherer als das Geburtsdatum, weil der Unbefugte im Datensatz eben nur das codierte Wort sieht - damit ist nichts anzufangen. Wenn aber der Nutzer mal sein Pa\'dfwort vergi\'dft, mu\'df er kommen und es vom Personal l\'f6schen lassen - danach gilt wieder das Geburtsdatum und er kann sich ein neues Pa\'dfwort ausdenken. Dahinter steckt der Abschnitt  \f7 :passw\f4   in \f7 a-okonto.flx\f4 . 
+\par 
+\par \b Zum Aufheben der Reservierungen \b0 
+\par Zu den Benutzer-Informationen geh\'f6rt auch die Anzeige derjenigen Titel, die im Warteregal bereitstehen. Der Leser kann entscheiden, einen Titel nicht abzuholen. Dahinter steckt dann ein Exemplarsatz, der in #9DG den Status W hat. Der wird dabei noch nicht ge\'e4ndert, sondern das Datum in #9DH$W wird auf gestern gesetzt. Das Personal mu\'df diese Exemplare abarbeiten, um zu sehen, ob auf ein solches schon wieder eine Vormerkung vorliegt. Um die verfallenen Reservierungen (Datum in $W kleiner als heute) zusammenzufassen, gibt es im aLF-Hauptmen\'fc den neuen Punkt "Verfallene Reserv." (rechts unter "Mahnexport"). 
+\par 
+\par 
+\par \b\f11 Vormerkung\b0\f4 
+\par Das Vormerken soll direkt von der Titelanzeige ausgehen! Diese mu\'df deshalb erweitert werden um die Anzeige der Exemplare und ihres Ausleihzustands. 
+\par Dazu ist die Parameterdatei  \f7 d-krtf.apr\f4   mit  \f7 d-k.apt\f4   n\'f6tig, in die das Anzeigen der Exemplardaten eingebaut wurde sowie das Anzeigen eines Flips \cf4\ul Vormerken\cf0\ulnone , wenn alle Exemplare verliehen sind. 
+\par Die Arbeit erledigt der FLEX  \b\f7 a-ovorm.flx\b0\f4 . 
+\par Weitere Bemerkungen zu den Einzelheiten des Vormerkens `\cf4\ul siehe unten\cf0\ulnone `. 
+\par 
+\par 
+\par \cf6\b\fs24 Web-OPAC (PHPAC)\cf0\b0\fs20 
+\par Dies ist mit kleineren AJAX-Funktionen realisiert. Die JavaScript-Funktionen sind mit in  \b\f7 av_func.js\b0\f4   enthalten. 
+\par 
+\par \b Konto\b0  
+\par \f11 Vorgang:\f7  a-okonto.htm -> a-okonto.php -> a-okonto.job\f4 
+\par Bei den einzelnen Entleihungen wird jeweils das \ul Verl\'e4ngern\ulnone  angeboten, bei den Vormerkungen und Reservierungen das \ul Zur\'fccknehmen\ulnone  bzw. \ul Verzichten\ulnone . 
+\par Auf dem Konto-Men\'fc gibt es au\'dferdem \ul Gesamtverl\'e4ngerung\ulnone  und \ul Pa\'dfwort\'e4nderung\ulnone . 
+\par 
+\par \b Pa\'dfwort\'e4nderung\b0 
+\par \f11 Vorgang:\f7  \f4 a-onpw.php -> a-onpw.job 
+\par 
+\par \b Verl\'e4ngerungen\b0 
+\par Einzel- und Gesamtverl\'e4ngerung m\'f6glich 
+\par Vorbereitung: 
+\par 
+\par    In a99       \b\f7 X a-oinit\b0\f4 
+\par                 -->  Erzeugt eine Datei  \f7 alfsys.dat\f4   mit allen Systemdaten 
+\par                             auf dem DbDir, f\'fcr \f7 a-overl.job\f4  (s.u.) 
+\par                             u.a. Kalenderdaten, Leserklassen, Materialtypen 
+\par    Dies mu\'df wiederholt werden, wenn an den Systemdaten etwas ge\'e4ndert 
+\par    wird, sp\'e4testens zum Beginn jedes neuen Jahres! Sinn ist, da\'df avanti 
+\par    nicht bei jedem kleinen Vorgang sich die Systemdatens\'e4tze erst 
+\par    selber laden mu\'df (a99 braucht das nur bei Sitzungsbeginn zu tun) 
+\par 
+\par Alle nachfolgend genannten Dateien m\'fcssen bei den PHP-Skripten der 
+\par betreffenden Datenbank liegen. 
+\par 
+\par \b Arbeitsweise der Kontofunktion\b0 
+\par 
+\par \b\f7 a-okonto.htm\b0\f4      Start der Funktion, beliebig einzubinden in die Implementierung 
+\par       Enth\'e4lt JavaScript fuer AJAX-Funktion und \f7 <div>...</div>\f4 , in das 
+\par       hinein die AJAX-Ergebnisse geschrieben werden:  \f7 receivE()\f4 
+\par       Tip: Link zu  \f7 a-okonto.htm\f4   in die OPAC-Startseite einbauen 
+\par       Diese Seite bleibt die ganze Zeit stehen, sie wird per AJAX-Methodik 
+\par       durch Ergebnisse der Aktionen ver\'e4ndert. 
+\par 
+\par    Eingabe von Lesernummer und -pa\'dfwort startet dann \f7 a-okonto.php\f4 : 
+\par 
+\par \b\f7 a-okonto.php\b0\f4 
+\par       Nimmt die Eingaben entgegen und reicht sie weiter an \i avanti\i0 , und zwar an 
+\par 
+\par \b\f7 a-okonto.job\b0\f4     [s. Beispielbild] 
+\par       Dieser liefert die Kontodaten, fertig als HTM-Tabelle aufbereitet 
+\par       Jede Kontozeile hat ein <div>... fuer das Ergebnis einer Aktion. 
+\par       Au\'dferdem zwei Funktionen: 
+\par         \ul Alle Entleihungen verl\'e4ngern\ulnone  / \ul Pa\'dfwort \'e4ndern\ulnone 
+\par       Parameter: \b\f7 utf.apr\b0\f4   nur zur Ausgabe von Daten in UTF-8 
+\par                  (Diese Datei mu\'df auf das DbDir oder ProgDir) 
+\par 
+\par    In der Kontotabelle gibt es drei Arten von Angaben, je nach 
+\par    Status des betr. Exemplars: 
+\par    
+\par      \b Verl\'e4ngern\b0  :           Aktion v 
+\par          Die komplizerteste Aktion wegen der Fristberechnung u.a. 
+\par          Wirkungsweise entspricht der des aLF-FLEXes  a-verl.flx 
+\par          Mehr zu den Einzelheiten siehe unten. 
+\par 
+\par      \b Vormerkung freigeben\b0  :    Aktion a 
+\par          Der Vormerksatz wird einfach gel\'f6scht 
+\par 
+\par      \b Verzicht auf Abholung\b0 :     Aktion w 
+\par          Dann wird Datum $W in #9DH auf gestern gesetzt 
+\par               und #9DH$u mit Pr\'e4fix @z versehen, 
+\par               damit der Satz im Konto des Lesers nicht mehr auftaucht 
+\par               aber noch erkennbar bleibt, wer reserviert hatte 
+\par    Damit und mit der Satznummer wird dann per AJAX aufgerufen: 
+\par 
+\par \b\f7 a-overl.php\b0\f4 
+\par       \'dcbernimmt die Daten (Satznummer #urN und Aktionscode #urA) 
+\par       und startet den avanti-Job: 
+\par \b\f7 a-overl.job\b0\f4 
+\par       Liest die Systemdaten  alfsys.dat  (s.o.) 
+\par       F\'fchrt die Aktion durch 
+\par       Ausgabe geht zur\'fcck zu a-okonto.htm und wird in die betr. Zeile 
+\par          eingetragen (per JavaScript: \f7 receivE()\f4  ) 
+\par 
+\par 
+\par \b Vormerkungen\b0 
+\par Dazu sind die Parameter  \f7 d-khtm.apr\f4  und  \f7 d-k.apt\f4   n\'f6tig. Sie zeigen unter den Titelangaben 
+\par jeweils die Exemplare mit ihrem Ausleihzustand. Wenn kein verleihbares Exemplar mehr da ist, 
+\par wird der Link  "Vormerken" unter der Exemplarliste gezeigt. 
+\par 
+\par 1. Ausgel\'f6st wird dann 
+\par \b\f7    vorm\b0 (\i titelID\i0 )\f4   in  \f7 av_func.js\f4 
+\par 
+\par 2. Wirkung: In  \f7 grex.php\f4   und  \f7 grec.php\f4   (Anzeige eines Datensatzes) ist eine 
+\par    verborgene Box \f7  vbox\f4   unten rechts eingebaut. Die Funktion \f7 vorm(...)\f4 
+\par    schreibt ein kleines Formular in die Box und macht sie sichtbar. 
+\par 
+\par 3. In  \f7 av_ini.php\f4   ist die CSS-Deklaration f\'fcr  \f7 vbox\f4   (Position etc.) 
+\par 
+\par 4. In  \f7 av_func.js\f4   sind AJAX-Funktionen f\'fcr das Bedienen dieser Box 
+\par     \f7 vm()\f4  nimmt bei "Senden" die Nutzereingaben und startet  \f7 a-ovorm.php\f4 
+\par 
+\par 5. \f7 a-ovorm.php\f4  --> \f7 a-ovorm.job\f4   f\'fchren das Vormerken aus, der Output geht 
+\par     zur\'fcck an das Browserfenster des Lesers. Dort: 
+\par 
+\par 6. \f7 receivV()\f4  im JavaScript schreibt das Erg. in ein vorher leeres \f7 <div>\f4 
+\par     in der  \f7 vbox\f4 . 
+\par 
+\par 
+\par \cf6\b\fs24 Hinweise\cf0\b0\fs20  (g\'fcltig f\'fcr beide Verfahren) 
+\par 
+\par \b Zur Verl\'e4ngerung\b0 
+\par 
+\par --  Die Fristberechnung und die Bedingungspr\'fcfungen entsprechen genau 
+\par         der Verfahrensweise im Normalbetrieb von \b\i aLF\b0\i0 , insbes.: 
+\par --  Die Frist wird immer vom aktuellen Tag aus gerechnet, also nicht 
+\par         auf die bei Ausleihe gesetzte Frist aufaddiert, d.h. es ist 
+\par         zwecklos, schon gleich nach Ausleihe verl\'e4ngern zu wollen. Aber 
+\par --  Falls die Verl\'e4ngerung eine k\'fcrzere Frist als die schon gew\'e4hrte 
+\par         erg\'e4be, wird sie nicht ausgef\'fchrt. Darauf wird hingewiesen. 
+\par --  Mehrfachausl\'f6sung am selben Tag wird verhindert, obwohl jedesmal 
+\par         derselbe Termin herausk\'e4me - es w\'e4ren aber doch unn\'f6tige 
+\par         Datenzugriffe. Es erfolgt kein Hinweis - der Leser sieht ja, 
+\par         da\'df sich nichts \'e4ndert und kann sich sein Teil denken. 
+\par --  Bei Vorliegen von Geb\'fchrenforderungen und bei abgelaufener 
+\par         Mitgliedschaft wird das Verl\'e4ngerbegehren abgewiesen. 
+\par 
+\par Man \i k\'f6nnte\i0  zwar fordern, da\'df die Kontoliste schon gleich auswiese, 
+\par welche Entleihungen \'fcberhaupt verl\'e4ngerbar w\'e4ren und mit welchem R\'fcck- 
+\par gabedatum. Das jedoch w\'e4re erheblich aufwendiger und mit viel mehr 
+\par Datenzugriffen verbunden. Oftmals wird der Nutzer ja nur schnell mal 
+\par eben schauen wollen, was er denn momentan so alles hat. 
+\par 
+\par 
+\par \b Zur Vormerkung\b0 
+\par Es werden bewu\'dft nur Titelvormerkungen gemacht, keine auf Exemplare! 
+\par Wenn jemand ausnahmsweise ein ganz bestimmtes Exemplar vormerken will, 
+\par kann er das vom Personal machen lassen (mit \b\i aLF\b0\i0  ist es ja m\'f6glich). 
+\par 
+\par Pr\'e4senzexemplare und vermi\'dfte werden nicht ber\'fccksichtigt, nur solche, 
+\par die ausgeliehen sind oder reserviert (Warteregal); 
+\par Ein Leser kann nicht mehrfach denselben Titel vormerken, er kann auch keine Vormerkung 
+\par auf einen Titel plazieren, von dem er bereits ein Exemplar ausgeliehen hat. 
+\par 
+\par 
+\par ?Ausleihe=X alf 
+\par ?Initialisierung=X a-init 
+\par ?R\'fcckbuchung=X a-chkin 
+\par ?Leser-Register =x ind |: a 
+\par ?Leserklassen=x #uaSC`exec a-clas 
+\par ?Kalenderdaten =x ind |; SYSR 
+\par ?Aktuelles Jahr =x var "|; SYSR" #dts(0,4)`find`if no end`sho rec`dis`exec a-func 
+\par ?Barcode-Register=x ind |: E 
+\par ?MedientypS\'e4tze=x #uaSD`exec a-clas 
+\par ?MedientypStamms\'e4tze=x #uaSE`exec a-clas 
+\par ?Neues Exemplar=X a-exemp 
+\par ?Feiertagskalender =X holidays 0 
+\par ?Kurzfassung=h alf 
+\par ?Neuen Kalenderdatensatz=x #uaK`exec a-kalend 
+\par ?Neue Leser=x new`form Benutzer`if can erase`if not can Put 
+\par ?Leser suchen =x var "|: B"`ask +Barcode?`find`if l1 end`sho rec`disp`exec a-func 
+\par ?Trennung=X a-trenn 
+\par ?Neuen Kalendersatz=x #uaK`exec a-kalend 
+\par ?Exemplars\'e4tze anlegen=X a-ex 
+\par ?Mahnungen registrieren =X a-mahnrg 
+\par ?Mahnexport=X a-mahnex 
+\par ?Dokumentation=x janas http://www.allegro-c.de/alf/alfdoc.htm 
+\par ?Statistik=X a-stat 
+\par ?Summe=X a-gebhr 
+\par ?F\'fcr diese Sitzung=x #ulW2`exec a-stat 
+\par ?Aktuelle STK-Datei=X a-stat 0 
+\par ?Geb\'fchrens\'e4tze zeigen=x find |; GD?`ord a0`sho list 
+\par ?Statistik-Dokumentation.=h alfstat 
+\par ?Neue Klasse=x new`sho rec`help lklass 
+\par ?Neuer Typsatz=x new`sho rec`help mtyp 
+\par ?Neuer Satz =x new`sho rec`help mtypst 
+\par ?http://www.allegro-c.de/alf/alfdoc.htm=x janas http://www.allegro-c.de/alf/alfdoc.htm 
+\par ?Warteregal=x Find |: Wr?`ord a10`sho list 
+\par ?Vormerkungen=x find |: Vm?`ord a10`sho list 
+\par ?Notbetrieb=h alf-gau.txt 
+\par ?Liste der Dateien=h aoz.txt 
+\par ?Systemdatei f\'fcr Web erneuern=X a-oinit 
+\par ?Konzept=h alf-e 
+\par ?siehe unten=h =Hinweise 
+\par ?Selbstbedienung=h =Nutzerkonto / V 
+\par  
+\par 
+\par 
+\par }
+ 

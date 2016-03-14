@@ -1,0 +1,148 @@
+
+Verlautbarung 186 der Entw.Abt.                          2005-07-16
+-------------------------------
+
+V25.8
+=====
+
+Groessere Neuerungen gibt es nicht. Normalanwender, die V25.5 haben,
+brauchen vorerst nichts zu tun. Wer aber V25.5 noch nicht hat, sollte
+sich umgehend V25.8 holen!
+   http://ftp.allegro-c.de/aktuelle-version/inst-all.exe
+
+1. Korrektur des Defaults beim Umfang des Hintergrundspeichers:
+   der Default fuer mb war mit 24.000 unnoetig hoch; jetzt 600.
+   Fuer mB wird dagegen jetzt 36.000 angenommen, vorher 24.000.
+
+2. Button [+] im View- bzw. Erg.Fenster ging nicht, wenn das naechste
+   Vorkommnis in der naechsten Zeile ist.
+
+3. Meldung wegen fehlender .FRM-Datei kam bei alcarta, obwohl das
+   unnoetig ist.
+
+4. Globale Ersetzung: Die Eintragung unter "im Feld" war nicht
+   loeschbar! Hatte man einmal dort etwas eingetragen, konnte
+   man es nur durch Ausstieg und Start einer neuen Sitzung wieder
+   loswerden.
+
+5. Umstellung des Datenfonts (Menue "Option") per FLEX:
+
+   set D<DataFont>=<CharSet>
+      Schrift und Zeichensatz im Auswahlfeld werden umgeschaltet,
+      zugleich gilt diese Einstellung fuer das Schreibfeld und fuer die
+      Index- und Kurzlistenfenster.
+      Fuer DataFont kann man jeden erlaubten Fontnamen einsetzen, z.B.
+      "allegro Lucida Console" oder "Courier New", fuer CharSet einen
+      Zahlenwert fuer den Zeichensatz  [siehe dazu  xset.rtf ]
+
+6. FLEX:
+   first # und last # liefern zwar die Bedingung NO, wenn die erste
+   bzw. letzte Satznummer unbesetzt sind.
+   Aber anschliessendes  next #  bzw.  prev #  klappen nicht, weil die
+   interne Satznummer auf der des zuletzt geladenen Satzes bleibt.
+   next # und prev # liefern NO, wenn die naechste Nummer unbesetzt
+   ist, schalten dann aber ebenfalls nicht korrekt weiter.
+   Fazit: die bisherigen FLEXe tun es nicht, wenn darin einer dieser
+   Befehle vorkommt UND es unbesetzte Nummern gibt.
+   (Zum Glueck ist dies sehr selten. Es kommt nur nach Entl¸ftung oder
+    "nummerntreuer" Erneuerung vor. Kaum jemand macht so etwas.)
+   Jetzt:  first #  bzw.  last #  liefert den ersten bzw. letzten
+   tatsaechlich besetzten Satz;  next #  bzw.  prev #  liefern den
+   naechsten bzw. vorigen existierenden Satz.
+   Die Bedingung geht trotzdem auf NO. Man braucht sie aber nicht
+   zu beachten!
+   Bei  find #n  dagegen MUSS man darauf achten, denn dann bleibt
+   der zuletzt aktive Satz geladen.
+   Die (wenigen) Standard-FLEXe, in denen diese Besonderheiten von
+   Belang sind, z.B.  summe.flx, wurden bereinigt und auch unter der
+   Bedingung getestet, dass es unbesetzte Nummern gibt und dass die
+   erste bzw. letzte Nummer unbesetzt ist.
+   Die FLEX-Doku wurde aktualisiert.
+
+7. Die beim Anlegen einer Sicherungskopie fuer das Restaurieren
+   angelegte Datei  <dbn>REST.BAT  wird nun nicht nur auf das
+   Datenverzeichnis geschrieben, sondern auch auf das
+   Sicherungsverzeichnis. Hier wie dort kann man sie starten,
+   um die Datenbank nach einem Crash zu restaurieren. [Koennte ja
+   extremstenfalls sein, dass das ganze Datenverzeichnis hopps
+   gegangen ist, aber hoffentlich mit Ausnahme der aktuellen
+   LOG-Datei ...]
+
+8. Ein neuer FLEX, a-trenn.flx, wird bereitgestellt. Er trennt einen
+   hierarchischen Datensatz in Hauptsatz plus verknuepfte Untersaetze.
+   Benutzt wird TRENN.APR, die man sich allerdings erst anfertigen
+   muss, wenn man x.CFG statt A.CFG verwendet. Diese Parameter
+   wurden noch geringfuegig verbessert.
+   Der FLEX kann wahlweise den aktuellen Satz,
+   die aktuelle Erg.Menge oder die Gesamtbank behandeln.
+   Tip: a-trenn.flx  kann als Strickmuster dienen, wenn man eine
+        Funktion programmieren will, die wahlweise auf den aktuellen
+        Satz, die aktuelle Erg.Menge oder die Gesamtbank angewendet
+        werden kann.
+
+9. Die Schrift "allegro Lucida Console" ist jetzt auch mit im GP, und
+   sie ist in helphead.rtf statt Letter Gothic eingetragen, um eine
+   besser lesbare Anzeige von ASCII-Texten zu erreichen.
+
+10. allegro.exe setzt nicht mehr  c:\allegro  als default.
+
+11. INDEX.EXE konnte im "2nd run" abstuerzen, wenn man sehr lange
+    Schluessel + Ersetzungsschluessel hat, falls dann der sich ergebende
+    Gesamtschluessel laenger als 256 Byte wurde. Das wurde behoben.
+    (Der sog. "2nd run" wird von INDEX durchgefuehrt, aber von QRIX
+     veranlasst. Dabei wird nachgesehen, ob es noch Registereintraege
+     gibt, die mit _ beginnen und also im Normaldurchlauf -@2 nicht
+     ersetzt wurden. INDEX wird dabei mit -fa1 gestartet, der genaue
+     Aufruf ist jeweils in PROTOQ nachzulesen.)
+
+12. ALFA: Die Anzeige des Entleihers erfolgt nur noch dann, wenn
+    #uAU2  gesetzt ist
+    In  _start.flx  wird darauf hingewiesen, in alfa.rtf wird es
+    erklaert, in quick.vw unter ALFA sind Funktionen zum Ein- und
+    Ausschalten.
+
+13. Auch das aresqa-Fenster kann man nun mit F11 maximieren bzw.
+    wieder normalisieren.
+
+14. In Hilfetexte kann man nun auch $-Variablen einbetten. Statt 293,
+    was es schon lange gibt, schreibt man in der RTF-Datei %$Name , um
+    den Inhalt der Variablen $Name an der betr. Stelle aufscheinen zu
+    lassen.
+    Freie Variable koennen ansonsten an zwei Stellen NICHT statt
+    #u-Variablen stehen:
+    1. if $name ...  geht nicht
+    2. var $name(<manipulation>) geht nicht
+    Die Hilfetexte sind aktualisiert (xfreevar.rtf)
+
+15. Verbesserung des d-Befehls
+    Im Schreibfeld kann man ab V25.1  d  eingeben, dann kommt eine
+    Auswahlliste der Dateien auf dem Datenverzeichnis. Dies wurde
+    geaendert: es wird jetzt  dos.flx  gestartet. Nochmal d und 
+    Enter schaltet dann das Datenverzeichnis ein.
+    Weitere Direkt-Moeglichkeiten:
+    d d    Datenberzeichnis
+    d a    Arbeitsverz. (StartVerz.)
+    d p    ProgDir
+    d h    ProgDir\HELP
+    d t    TEMP-Verz.
+    d j    ProgDir\HTML
+    d f    ProgDir\FLEX
+    Ferner:  
+    d <dateityp> : Liste der Dateien des betr. Typs, z.B.
+    d *.ap?    alle Parameterdateien
+    d c:/kataloge/opac/*.?ld    alle .?LD-Dateien auf dem Verz.
+    Und zwar werden nicht nur die Dateien auf dem angegebenen Verz., 
+    sondern alle desselben Typs auf den Unterverzeichnissen gezeigt.
+    FÅr die ausgewaehlte Datei werden dann geeignete Aktionen
+    angeboten.
+    Dieselbe Funktionsweise ist jetzt auch in dos.flx eingebaut, wo man
+    bisher eine Windows-Dateiauswahl bekam. Diese bietet fuer manchen
+    Geschmack nicht die richtigen Funktionen, vor allem erlaubt sie das
+    undifferenzierte Loeschen von Dateien mit simplem Druck auf [Entf].
+    Geben Sie also zum Probieren einfach mal  d  ein.
+
+16. Obsolete Dateien (aus GP rausgenommen)
+    bf.bat und marcbf.aim
+    alfa.exe
+
+

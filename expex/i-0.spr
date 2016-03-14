@@ -1,0 +1,46 @@
+  INTERNAL format prototype : export of data in internal format
+  as they are stored in the database
+  I-0.SPR        960123
+
+pn="INTERNAL Prototype"
+
+
+  ------------- Constants -------------------------------------
+
+zl=0        no line breaking (internal format has no line arrangement)
+
+ks=1        exported text begins on position 1 of each field
+              (the '#' is not written at the beginning of each field)
+
+ke=0        Field end control code = ASCII 0
+
+as=h0       record start  : hierarchy code + 0. This means:
+                    Main record          : Code 01
+                    Subrecord level 1    :      02  ...
+ae=13 10    record end   : Carriage Return / Line Feed
+
+dx=1        just for testing, to get control characters displayed
+            on the screen. Otherwise of no effect for export
+  -----------------------------------------------------------------
+
+  ************* Field list ************************************
+
+
+       Activate next line if complete download wanted:
+ ##    Global export command
+
+   --------------------------------------------------
+       OR activate the following lines or similar ones
+       (write your own list of fields you want exported)
+
+ /71.  example: to exclude #71X from the global export
+
+#001        Hierarchy fields (if there are subrecords)
+
+#050             call no
+#100             main entry field for personal author
+#240             uniform title
+#245             Title field
+#260             imprint
+#700 ++          added entries for persons
+  ****************************************************************************

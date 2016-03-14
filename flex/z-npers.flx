@@ -1,0 +1,80 @@
+  Z-NPERS.FLX : Neuen Mitarbeitersatz anlegen
+  2007-06-18
+
+var i
+ins $Inn
+new 0
+:eingabe
+  Es soll keine IdNummer vergeben werden:
+#00 -
+  Status 0=nicht gesperrt
+#9B 0
+var "5"
+ins $k-#9B
+var #dts(0,8)
+ins $A-#9B
+form Benutzer
+  Abbruch?
+if can jump exit
+if not #9B$n jump noname
+  Gruppe auf 5 setzen = Mitarb.
+var "5"
+ins $k-#9B
+
+  anzeigen und speichern
+sho rec
+disp
+yes Speichern?
+if no end
+if cancel jump exit
+put
+
+  Liste der Mitarb. erneuern, in $Mita ablegen
+set obj 2
+  Erg.Menge der Mitarb = Nutzerklasse 5, Reg. 10 A5 ...
+find |: A5?
+  Daraus eine Datei machen: kuerzel - Name 13 10 kuerzel - name
+var ""
+ins $Mita
+
+first
+:mli
+var #9B$$
+var (1,0)
+  wenn es ein Kuerzel gibt, dann dieses!
+if #9B$i var #9B$i
+ins #umn
+  Code - Name
+var $Mita n #umn " - " #9B$n
+ins $Mita
+next
+if yes jump mli
+  Erg.menge weg
+close res
+set obj 1
+
+
+var "Mitarb. " #9B$n " ist eingetragen.
+ansi
+mes
+end
+
+:exit
+disp
+erase
+var "#" $Inn
+f1nd
+disp
+sho rec
+h zabom
+end
+
+:noname
+yes Name fehlt! Noch eingeben?
+if yes jump eingabe
+jump exit
+
+ u-VARIABLEN in z-npers.flx
+ $Inn (2)  int. Nr. aktueller Satz
+
+

@@ -1,0 +1,247 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\froman\fprq2 Garamond;}{\f2\froman\fprq2\fcharset0 Garamond;}{\f3\froman\fprq2\fcharset0 Times New Roman;}{\f4\fmodern\fprq1 Courier New;}{\f5\froman\fprq2\fcharset2 Symbol;}{\f6\fnil\fprq2\fcharset2 Wingdings;}{\f7\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red0\green0\blue255;\red255\green0\blue0;}
+\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs20 
+\par  `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` 
+\par \pard 
+\par \pard\fi-658\li658\tx422\tx914\tx1634\tx2354\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1\fs36 10.2.7\tab\f2 Export: \f1 Flips : Querverbindungen, Grafikanbindung etc.\b0\f0\fs20 
+\par \pard\tx422\tx914\tx1634\tx2354\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f3 Die nachfolgende Beschreibung ist nur verst\'e4ndlich, wenn man sich in der Export-Parametrierung schon gut auskennt. F\'fcr den "Endbenutzer" ist nicht viel zu sagen: Was ein "Flip" ist und was er bewirkt, das wird aus einer Anzeige sofort erkennbar und plausibel. Hier geht es darum, wie man Flips einrichtet. Zun\'e4chst f\'fcr die DOS-Programme, dann f\'fcr `\cf1\ul\b\f0 a99/alcarta\cf0\ulnone\b0 `. 
+\par \f3 Version 14b erhielt zus\'e4tzliche Funktionen, die unter dem Namen "Flip" zusammengefa\'dft wurden. \b\f0 Flips\b0\f3  sind Umschaltungen auf andere S\'e4tze oder Registerstellen, die durch Knopfdruck ausgel\'f6st werden k\'f6nnen. Zus\'e4tze in den Anzeigeparametern (Datei D-1.cPR) erm\'f6glichen es, dem OPAC-Benutzer solche Schaltkn\'f6pfe anzubieten, und zwar abh\'e4ngig vom Inhalt des angezeigten Satzes, also sehr individuell. Es gibt zwei Methoden zum Flippen.\f0 
+\par 
+\par \f3 Besonders bei der Gestaltung von OPACs, aber auch sonst, wird man mit Aufgaben konfrontiert, die noch mehr Querverbindungen zwischen Datens\'e4tzen verlangen, als es die bisherigen Methoden schon erm\'f6glichen. Seit V11.2 schon kann man bei der Anzeige eines Datensatzes deutliche Hinweise auf andere Datens\'e4tze erscheinen lassen oder diese nachladen und gleich mit anzeigen. Das letztere f\'fchrt manchmal zu weit (komplizierte, \'fcberfrachtete Anzeige), das erstere ist zu wenig direkt und verlangt vom Benutzer, ein\f0  anderes Register aufzuschlagen und dort einen bestimmten Begriff mit der Hand einzugeben. Seit \lang1033\b\i V14b\lang1031\b0\i0\f3  kann man folgendes tun: man l\'e4\'dft an beliebigen Stellen innerhalb der Anzeige sog. \b\i\f0 Flips\b0\i0  erscheinen, z.B. so: (die eckigen Klammern haben als solche keine Funktion!) 
+\par \pard\qc\lang1033\f4 [\b 1\b0 ]\lang1031\f0   \i Hinweis1\lang1033\i0\f4            [\b 2\b0 ]\lang1031\f0   \i Hinweis2\lang1033\i0\f4        [\b c\b0 ]\lang1031\f0   \i Hinweis3\i0    ... 
+\par \pard\tx422\tx914\tx1634\tx2354\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3 Den Ziffern kann man eine auff\'e4llige Farbe geben, damit sie optisch hervorstechen (nur unter DOS allerdings). \f0 
+\par Eine typische Zeile in den Anzeigeparametern, um so etwas zu erzeugen, sieht z.B. so aus: 
+\par \lang1033\f4 #31 p\{ C "[" t71 "1" t76 "] Werke zum Thema: " \}       FLIP 1 anzeigen\lang1031\f0  
+\par \f3 Dieses mu\'df innerhalb der Anzeigeparameter an einer geeigneten Stelle stehen, am besten unterhalb oder oberhalb des gesamten Datensatzes. Damit \'fcberhaupt etwas passiert, mu\'df es eine Anwendervariable namens\lang1033\f4  #uZ1\lang1031\f3  geben, in der steht, was bei Druck auf '1' tats\'e4chlich passieren soll. Folgende Zeile w\'fcrde diese Anwendervariable erzeugen:\f0 
+\par \lang1033\f4 #31 p"?|3" dZ1 aZ1\lang1031\f3       FLIP 1 generieren, d.h. #uZ1 mit "?|3<Inhalt von #31>" f\'fcllen\f0 
+\par \f3 Diese Zeile steht am besten \'fcber oder unter der oben gezeigten Zeile. Wird dann die Ziffer 1 gedr\'fcckt, \i\f0 flippt\i0\f3  das Programm zum ersten betreffenden Datensatz, d.h. holt ihn sofort auf den Schirm, schaltet aber auch das betreffende Register an die bewu\'dfte Stelle, so da\'df man (nach Druck auf <Enter>) dort auch gleich bl\'e4ttern kann. Der neue Datensatz kann seinerseits weitere \i\f0 Flips\i0\f3  pr\'e4sentieren, die zu wieder anderen S\'e4tzen hinf\'fchren. Mit <Bild\f5\'ad\f3 > kann gleich wieder zum jeweiligen Ausgangssatz zur\'fcckgeschaltet werden, nat\'fcrlich mehrfach hintereinander. Man ist versucht, das Schlagwort "Hypertext" zu bem\'fchen, wobei aber an existierenden Daten noch nicht einmal irgend etwas erg\'e4nzt oder ver\'e4ndert werden mu\'df. F\'fcr ge\'fcbte Parametrierer wird die Methode sehr leicht anzuwenden sein: man mu\'df nur die hinter den \i\f0 Flips\i0\f3  steckenden Registereintr\'e4ge innerhalb der Anzeigeparameter pr\'e4parieren und in bestimmte Anwendervariablen speichern, und zwar\lang1033\f4  #uZ1 ... #uZ9\lang1031\f3  f\'fcr die Ziffern 1 bis 9 (ein gro\'dfes 'Z'!). \f0 
+\par Wenn z.B.\lang1033\f4  #uZ4\lang1031\f0  den Inhalt\lang1033\f4  ?|1Shakespeare,`William\lang1031\f0  hat, wird beim Druck auf Ziffer '4' zum Register 1 auf\lang1033\f4  shakespeare,`william\lang1031\f3  geschaltet. Ohne das '?' kommt der erste Datensatz zur Anzeige, der zu dem Registereintrag geh\'f6rt. Wenn au\'dferdem am Anfang von #uZ4 noch das Pr\'e4fix "\lang1033\f4 <0\lang1031\f3 " steht, wird auf die andere Datenbank umgeschaltet, falls eine aktiviert wurde. Man bemerkt: hinter Flip [4] steckt also nicht notwendig das Register 4! (Statt Ziffern sind auch alle Buchstaben m\'f6glich, hinter denen kein Befehl steckt.) Die pr\'e4parierten Registereintr\'e4ge m\'fcssen auch nicht exakt der Registerform entsprechen, denn es wird die Umcodierung angewendet, die innerhalb der Indexparameter programmiert ist (Sprungmarken #-1 bis #-9). Klipp und klar: \i\f0 wenn\i0  in\lang1033\f4  #uZ4\lang1031\f0  etwas steht, wird bei Druck auf '4' geflippt, egal was auf dem Schirm steht! Umgekehrt: wenn ein Hinweis [4] in der Anzeige steht, aber\lang1033\f4  #uZ4\lang1031\f0  nicht besetzt ist, passiert bei Druck auf '4' nichts. Also: aufpassen beim Parametrieren. 
+\par \f3 Zum Beispiel k\'f6nnte man \i\f0 Flips\i0\f3  f\'fcr die Schlagw\'f6rter oder Systemstellen machen, die bei einem Titel angegeben sind. Der Benutzer kann dann zu der jeweiligen Registerstelle \i\f0 flippen\i0\f3 , wo diese Schlagw\'f6rter etc. stehen, ohne mit der Hand umschalten und eine neue Eingabe machen zu m\'fcssen. (Beispieldatei auf Diskette:\lang1033\f4  D-FLIP.APR\lang1031\f0 .) 
+\par Dieses neue "feature" ist auch in \lang1033\b\i allegro-X\lang1031\b0\i0\f3  enthalten. Die Grafikversionen von PRESTO und APAC (die Programme PRESTOG.EXE und APACG.EXE) erm\'f6glichen es ferner, hinter einem Flip einen Programmaufruf zu verbergen. \lang1033 Etwas \'c4hnliches ist in die Windows-Programme eingebaut: mit der `\cf1\ul\b\f0 FLEX-Technik\cf0\ulnone\b0\f3 ` k\'f6nnen beliebige externe Programme gestartet werden.\f4  \lang1031\f0 
+\par 
+\par \f3 Die erste Methode, Flips zu programmieren, setzt voraus, da\'df man u.U. viele Anwendervariablen zu \'fcberwachen hat. Wenn die Zahl der Flips von Datensatz zu Datensatz stark schwankt, oder wenn man sich z.B. aufgrund der Datenstruktur einen Automatismus \'fcberlegen kann, der alle ben\'f6tigten Flips in einer Schleife programmieren kann, geht man am besten einen anderen Weg. Dieser eignet sich auch, um Grafik, Sound und andere elektronische Objekte mit einer Datenbank zu verbinden. Ganz allgemein: man kann extern\f0 e Programme starten. 
+\par 
+\par \b Zweite Methode\b0 
+\par \f3 Man ben\'f6tigt hierzu nur \b\f0 eine\b0  Anwendervariable, in der die Flips nach folgendem Muster aneinandergereiht sind: 
+\par 
+\par \lang1033\f4 #ufv <tr>1FLIP1<tr>2FLIP2<tr>3FL...\lang1031\f0 
+\par 
+\par Die Flipvariable braucht nicht\lang1033\f4  #ufv\lang1031\f3  zu hei\'dfen! Jeder Flipeintrag beginnt mit einem Trennzeichen und dahinter einem Kennbuchstaben oder -ziffer. Der Kennbuchstabe ist auch beliebig. Als Trennzeichen schlagen wir das Teilfeldtrennzeichen '?' vor, die Parametrierung, welche bei dieser Methode notwendig ist, vereinfacht sich dadurch.\f0 
+\par \f3 Man ben\'f6tigt einen Abschnitt\b\f4  #-`\b0\f0  in der \b Anzeige\b0 parameterdatei (\b\f4 `\b0\f3  = ASCII 96) ; dort mu\'df die Auswertung der Tasten erfolgen. Diese Sprungmarke ist fest f\'fcr diesen Flipmechanismus reserviert. Man braucht hier keine ak-Zeile, denn der Abschnitt wird nur programmintern angesprungen (\'e4hnlich wie\b\f4  #--\b0\f0 ). Zu dem Zeitpunkt stehen automatisch in der Sonderkategorie #u1 die Taste und die Nummer der gerade aktiven Datenbank, z.B.: 
+\par \lang1033\f4 #u1 30\lang1031\f0 
+\par \f3 D.h. Taste [3] wurde gedr\'fcckt und aktiv ist Datenbank Nr. 0. Die Datenbanken sind von 0 bis 2 durchnumeriert, wobei die erste Datenbank die Nummer 0 hat.\f0 
+\par \f3 In diesem Abschnitt wertet man die Taste (und bei Bedarf auch die Datenbanknummer) aus. Man extrahiert aus obiger Anwendervariable den Flip-Befehl, der zu dieser Taste geh\'f6rt. Dieser Befehl ist das Ergebnis dieses Abschnittes. Das Programm wertet dann das Ergebnis (d.h. den Arbeitstext) aus und reagiert entsprechend.\f0 
+\par 
+\par \i Ein Beispiel:\i0 
+\par \f3 In dem Teil f\'fcr die Anzeige eines Titels findet man diese Befehle (an der Stelle, wo die Flips im Anzeigetext erzeugt werden sollen):\f0 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\f4 ... 
+\par \pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f0\tab Erzeugen der Flip-Anwendervariablen (hier ist es #utz):\lang1033\f4 
+\par \pard\fi-2731\li2731\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #31s p"?c?|3" Atz\lang1031\f0\tab\tab Umschalten auf Reg. 3 Sachschlagwort\lang1033\f4 
+\par #31p p"?p?|3" Atz\lang1031\f0\tab\tab Umschalten auf Reg. 3 Personenschlagwort\lang1033\f4 
+\par #8e p"?t~view " Atz\lang1031\f0\tab\tab Anzeige einer zugeordneten Textdatei (Name in #8e). Hier wird ein Befehl 
+\par \pard\fi-913\li913\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab  zusammengesetzt:\lang1033\f4  In #8e \f0 steht der Name eines Textes, der angezeigt werden soll, \f4 "view"\f0  ist der Name des Anzeigeprogramms\f4 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 ... 
+\par \pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f0\tab Erzeugen des Hinweises in der Anzeige:\lang1033\f4 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #31s \{ "   [" t71 "1" t76 "] mehr zu: " \} 
+\par #31p \{ "   [" t71 "2" t76 "] mehr zu: " \} 
+\par #8e \{ "   [" t71 "t" t76 "] Text zu: " \} 
+\par ...\lang1031\f0 
+\par \pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Auswertung der Tasten: 
+\par \tab Das Programm springt automatisch zur Sprungmarke\lang1033\f4  #-`\lang1031\f3 , wenn auf dem Anzeigebildschirm eine nicht definierte Buchstaben- oder Zifferntaste gedr\'fcckt wird. Wenn z.B. Taste [2] gedr\'fcckt wurde, entsteht daraus\lang1033\f4   #u1`20\lang1031\f3  (s.o.). Programmieren Sie hier einen Sprungverteiler. (Dieser Abschnitt mu\'df an einer Stelle stehen, die beim normalen Durchlauf nicht erreicht wird.) Das Schema sieht so aus:\f0 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \lang1033\f4 #-`\lang1031\f3                       Welche Taste wurde gedr\'fcckt 1,2 oder 3?\lang1033\f4 
+\par #u1 +c i4,1 e0 #zz 0\lang1031\f0      Taste steht auf erster Stelle im Kategorietext, deshalb\lang1033\f4  i4! 
+\par #u1 +p i4,2 e0 #zz 0\lang1031\f3      bei mehr als zweistelligem Schema mu\'df der i-Befehl\lang1033\f4 
+\par #u1 +t i4,3 e0 #zz 0\lang1031\f3      angepa\'dft werden: z.B. i5,1 im dreistelligen Schema\lang1033\f4 
+\par #u1 e0 #zz 0\lang1031\f3              Alle anderen Tasten d\'fcrfen hier keine Reaktion ausl\'f6sen\lang1033\f4 
+\par #+# 
+\par \pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f0\tab Extraktion des entsprechenden Flipbefehls aus\lang1033\f4  #utz\lang1031\f0 : (hier zeigt sich der Vorteil von '?' als Trennzeichen!) 
+\par \tab\f3 Es entsteht als Ergebnis praktisch der Befehl f\'fcr das Kernprogramm, wohin es flippen soll:\f0 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\f4 #-c 
+\par #utz ?c\lang1031\f0                   Ergebnis: Arbeitstext ist jetzt der Flipbefehl von\lang1033\f4  #31s 
+\par #+#\lang1031\f3                       R\'fcckkehr zum Kernprogramm, dort wird der Sprung ausgef\'fchrt\lang1033\f4 
+\par #-p 
+\par #utz ?p 
+\par #+# 
+\par #-t 
+\par #utz ?t\lang1031\f3                   Teilfeld ?t enth\'e4lt den Programmaufruf zum Anzeigen einer Textdatei\lang1033\f4 
+\par #+#\lang1031\f0 
+\par \f3 Wenn das erste Zeichen des Flips die Tilde '~' ist, wird der Flipbefehl als DOS-Befehl aufgefa\'dft und dem Betriebssystem zur Ausf\'fchrung \'fcbergeben. Beispiel siehe oben\lang1033\f4   #8e p"?t~view " Atz\lang1031\f0 . Wenn in #8e also ein \i dateiname\i0  steht, wird hieraus der DOS-Befehl\lang1033\f4   view \lang1031\i\f0 dateiname\i0\f3 . Dieser Mechanismus funktioniert bis V14c nur in den grafikf\'e4higen Versionen der Programme, PRESTOG.EXE, APACG.EXE etc. Wenn man aus dem aufgerufenen Programm zur\'fcckkehrt, erscheint wieder der Anzeigebildschirm, wo man die bewu\'dfte Taste gedr\'fcckt hatte.\f0 
+\par \pard\f3 "Flipf\'e4hige" Tasten (Zeichen ohne sonstige Funktion im Anzeigebildschirm) sind die folgenden:\f0 
+\par 
+\par \b\f4 0 - 9  a c e f g i k l m n o q t w y z  A G K M N O P Q S T U V W X Y Z 
+\par \f0\fs24 
+\par 
+\par \cf2 Flips in \i a99\i0  und \i alcarta\cf0\i0 
+\par \b0\fs20 
+\par Mit \b\i alcarta/a99\b0\i0  kann man alle Flips nach einem einheitlichen Schema anlegen. Der Abschnitt \f4 #-``\f3  wird dadurch \'fcberfl\'fcssig. Beispiele sieht man in der Datei D-WRTF.APR f\'fcr die Anzeige in \b\i\f0 a99\b0\i0  und \b\i alcarta\b0\i0 . 
+\par \f3 Jeder Flip ben\'f6tigt 3 Dinge:\f0 
+\par 1. Was man sieht (erscheint z.B. wie ein Netscape-Link, blau und unterstrichen) 
+\par 2. Die #uY-Variable verbindet 1. mit 3.: 
+\par \f3 3. Die #uZ-Variable: enth\'e4lt den eigentlichen Flip-Befehl  oder die FLEX-Befehlskette (siehe FLEXGER.RTF)\f0 
+\par \f3 Diese Variablen m\'fcssen nicht ihrem Zweck fest zugeordnet werden wie beim DOS-Verfahren.\f0 
+\par \i Beispiel:\i0\f3  Inhalt von #31s (Sachschlagwort) soll in Flips aufgel\'f6st werden. Es k\'f6nnen beliebig viele Schlagw\'f6rter darin stecken, getrennt durch "; ". Der Flip soll jeweils auf die Registerstelle springen, wo das Schlagwort steht.\f0 
+\par Das geht nach diesem Rezept: 
+\par 
+\par    Empfohlene Standard-Zwischenteile: 
+\par \f4 69=160 t74 t97\f0        \tab Code 160, blau, Unterstreichung ein 
+\par \f4 68=t96 t76 160\f0        \tab Unterstreichung aus, schwarz, Code 160 
+\par .... 
+\par \f4 #nr dY~ dZ~ \f0    \tab alle Flips beseitigen (irgendwo am Anfang der Parameter) 
+\par ....... 
+\par \f4 #31s =sw e0\f0       \tab Kopiere #31s nach #usw 
+\par 
+\par \f4 #-S\f0      Beginn der Schleife 
+\par \f4 #usw e";" F" " p"?|3" =Z~\f0        \tab\f3 n\'e4chste #uZi pr\'e4parieren\f0 
+\par \f4 #usw e";" F" " y1 =Y~\f0            \tab\f3 zugeh\'f6rige #uYi (y1 wegen Sonderzeichen!)\f0 
+\par \f4 #usw C e";" F" " p69 P68\f0         \tab Text ausgeben mit Begrenzern und Attributen 
+\par \f4 #usw +S b";" f" " =sw \f0           \tab\f3 vorderen Teil abschneiden, zur\'fcck nach #-S\f0 
+\par 
+\par \f3 Es entstehen dann #uZ0, #uZ1, ... und #uY0, #uY1, ... Diese geh\'f6ren paarweise zusammen.\f0 
+\par \f3 Code 160 ist ein unsichtbares ANSI-Zeichen und dient als Begrenzungszeichen. Statt dessen kann man auch die eckigen Klammern verwenden. Die Zwischenteile haben standardm\'e4\'dfig die Bedeutung (in d-rtf.apt):\f0 
+\par 
+\par 74 = blau,  \tab\tab 76 = normal (schwarz) 
+\par 97 = Unterstreichen ein, \tab 96 = Unterstreichen aus 
+\par 
+\par \f3 Die Schlagw\'f6rter erscheinen also untereinander, blau unterstrichen, und die Begrenzungszeichen erm\'f6glichen, da\'df das Programm bei Mausklick die Zeichenkette exakt vom Bildschirm entnehmen und mit den #uY-Variablen vergleichen kann. Die zugeh\'f6rige #uZ-Variable wird dann als Befehl ausgef\'fchrt.\f0 
+\par \f3 Folgende Befehle k\'f6nnen in einer Z-Variable stecken: (Genau auf die Leerzeichen achten!)\f0 
+\par 
+\par \f4 f per name...\f0      \tab avanti-Findbefehl 
+\par \f4 f #nnn\f0            \tab\tab lade Satz nnn (interne Nummer) 
+\par 
+\par \f4 j xabc\f0            \tab\tab Springe zu Label #-x in den Anzeigeparametern, in #u1 steht dann abc 
+\par \f4 h name \f0           \tab\tab Lade Hilfedatei nameGER.RTF 
+\par \f4 ?|iabc\f0            \tab\tab Springe in Register i an die Stelle abc 
+\par \f4 ~prog\f0             \tab\tab Starte das externe Programm prog 
+\par \f3             (es kann f\'fcr prog ein vollst\'e4ndiger Programmaufruf stehen, auch der Name einer Batchdatei, z.B.  cp.bat  f\'fcer das CockPit)\f0 
+\par 
+\par \f4 x \i flextext\i0\f0        \tab Hinter x kann eine ganze Befehlskette folgen. Dieses Konzept nennt sich FLEX und wird 
+\par \f4 X \i Dateiname\i0\f0   \tab\tab genauer in FLEXGER.RTF dokumentiert. (Befehl "h flex" geben im Schreibfeld von a99) 
+\par \pard\li1440 Bei 'X' wird die Befehlskette aus einer Datei des Typs .FLX entnommen. 
+\par \pard 
+\par \f3 Wenn ein Flip nicht funktioniert: mit Alt+r in den Reservespeicher schauen, dort sieht man, was in #uYi und #uZi wirklich steht. Insbesondere mu\'df der Inhalt von #uYi exakt mit dem Fliptext in der Anzeige \'fcbereinstimmen.\f0 
+\par 
+\par \f3 Start von Flips ohne Hyperlink: Die Flips unter #uX0 bis #uX9 k\'f6nnen mit der Alt-Taste ausgel\'f6st werden: man dr\'fcckt Alt+5, um #uX5 auszuf\'fchren. (Wenn #uXi nicht existiert, wird #uZi genommen.) Das ist nat\'fcrlich eher etwas f\'fcr Eingeweihte, aber diese k\'f6nnen sich dann durch Direkteingabe eines Flip-Befehls (besonders mit den FLEX-Erweiterungen) das Leben u.U. sehr erleichtern...\f0 
+\par \pard\fi-658\li658\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1\fs28 
+\par 10.2.8\tab\f2 Programmierte Validierungen (Eingabepr\'fcfung)\b0\f0\fs20 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f3 Es gibt eine seit langer Zeit festgelegte Liste von Pr\'fcfmethoden f\'fcr die Dateneingabe. In der Konfigurationsdatei (z.B. $A.CFG) kann man festlegen, ob und welche Pr\'fcfung(en) auf eine eingegebene Kategorie angewendet werden sollen (Anhang A.1.2). In der $A.CFG ist z.B. festgelegt, da\'df bei der Eingabe eines Titels (#20, #22, #23 oder #24) die Pr\'fcfung \b\f0 c\b0\f3  (d.h. "ist das erste Wort ein Artikel?") durchzuf\'fchren ist, bei Eingabe von #87 dagegen soll die Pr\'fcfziffer der ISBN kontrolliert werden - das w\'e4re Pr\'fcfung \b\f0 g\b0\f3 . Die gew\'fcnschte Pr\'fcfung wird jeweils sofort, also gleich nach dem Druck auf die <Enter>-Taste, durchgef\'fchrt (und nicht erst beim Abspeichern des Satzes). \f0 
+\par \f3 Mit Version 13 kam die Verbesserung, da\'df Pr\'fcfungen auch auf Teilfelder bezogen werden k\'f6nnen. Beispielsweise steht in der Konfiguration $U.CFG f\'fcr das USMARC-Format die Zeile\f0 
+\par \lang1033\f4 #245"Title"?M?Aabchnp?Rnp?I01?J0123456789?Cac\lang1031\f0 
+\par und hier besagt die Angabe\lang1033\f4  ?Cac\lang1031\f3 , da\'df in der Kategorie\lang1033\f4  #245\lang1031\f3  das Teilfeld ?a (das ist der Hauptsachtitel) der Pr\'fcfung \b\f0 c\b0\f3 , also der Artikelpr\'fcfung, zu unterziehen ist. \f0 
+\par     Mit der Ausbreitung von \b\i allegro\b0\i0\f3 -Anwendungen auf immer mehr Bereiche und immer \'f6fter auch nicht-bibliothekarische Anwendungen entstanden neue und diffizilere W\'fcnsche f\'fcr Spezialpr\'fcfungen, auch "Validierungen" genannt. Die meisten fallen wohl in eine der vier folgenden Gruppen:\f0 
+\par \pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 1.\b\tab Logische Kopplung:\b0\f3  Wenn Kategorie #abc besetzt ist, mu\'df auch #xyz besetzt werden. Oder umgekehrt: wenn #abc besetzt ist, darf #xyz nicht besetzt sein. Oder: ein bestimmter Bearbeiter darf  #xyz nicht eingeben.\f0 
+\par 2.\b\tab Numerische Validierung:\b0\f3  Der Inhalt von #abc mu\'df eine Zahl sein und in einem vorgegebenen Bereich liegen. Oder: die Zahl in #abc mu\'df in einem formal bestimmbaren Verh\'e4ltnis zum Wert in #xyz stehen.\f0 
+\par 3.\b\tab Index-Validierung:\b0\f3  Der Inhalt von #xyz mu\'df im Index i vorkommen. Oder: der Inhalt von #xyz darf im Index i noch nicht vorkommen (Sicherung der Eindeutigkeit).\f0 
+\par 4.\b\tab Formale Validierung\b0 , evtl. mit \b automatischer Korrektur:\b0\f3  Die Kategorie #xyz mu\'df ein bestimmtes Zeichen (oder eine Kombination) enthalten, mu\'df mit einem bestimmten Zeichen beginnen oder enden, oder ein bestimmtes Zeichen (oder eine Kombination) darf nicht (am Anfang oder Ende oder \'fcberhaupt) vorkommen - wenn es vorkommt, ist es durch ein anderes zu ersetzen oder zu beseitigen. \f0 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3 Die Untersuchung konkreter Beispiele solcher W\'fcnsche ergab, da\'df nur die Exportsprache das geeignete Mittel zur Realisierung sein konnte, wenn das gesamte Spektrum abgedeckt werden sollte. Der Anwender h\'e4tte also seine Pr\'fcfroutinen in der Exportsprache zu schreiben. Aber wo? In der Konfigurationsdatei? Das w\'e4re aus programminternen Gr\'fcnden nicht m\'f6glich gewesen. Wegen der sehr wichtigen Anforderungen vom Typ 3 kam nur die Index-Parameterdatei als Ort f\'fcr die Pr\'fcfroutinen in Betracht. Wenn n\'e4mlich eine Eingabe am Index abzupr\'fcfen ist, mu\'df dazu oftmals erst eine Umcodierung (gro\'df->klein, Umlaufaufl\'f6sung etc.) erfolgen, und die dazu n\'f6tigen Angaben stehen in der Index-Parameterdatei. Diese ist nun allerdings schon reichlich mit Aufgaben befrachtet. Insbesondere war es eine Bef\'fcrchtung, da\'df man endg\'fcltig nicht mehr mit den sowieso knappen Sprungmarken auskommen w\'fcrde, wenn nun noch neue Teile hinzuk\'e4men. Dieses Detailproblem konnte jedoch, wie gleich gezeigt wird, entsch\'e4rft werden.\f0 
+\par     Wirksam werden die Validierungen in den Programmen PRESTO, \i aLFA\i0  und MENUED und auch \b\i a99\b0\i0 , wenn man Daten eingibt oder korrigiert. 
+\par 
+\par \b So programmiert man eigene Validierungen\b0 
+\par \f3 Grunds\'e4tzlich mu\'df dazu in der Indexparameterdatei ein \b\f0 Hilfsabschnitt\b0\f3  angelegt werden . Dieser Abschnitt mu\'df ganz am Ende stehen, genauer: hinter der letzten Zeile der Kategorieliste. (D.h., dieser Abschnitt ist so etwas \'e4hnliches wie der Kopf- oder Fu\'dfabschnitt beim Listendruck, \f4 -\f6\'d8\f0  10.2.6.5.3, die bei den Indexparametern keinen Sinn machen.) Der Hilfsabschnitt beginnt mit einem\b\f4   H\b0\f3   auf einer eigenen Zeile. Darunter kommt dann eine Kategorieliste, die alles enthalten kann, was die Exportsprache erm\'f6glicht - nur sinnvoll mu\'df es sein, und was das hei\'dft, wird gleich klarer.\f0 
+\par \i Sehr wichtig:\i0\f3  Innerhalb des Hilfsabschnitts sind die Sprungmarken unabh\'e4ngig von denen des Hauptteils, d.h. Sprungbefehle im Hauptteil finden nur innerhalb des Hauptteils, und Spr\'fcnge im Hilfsabschnitt finden nur innerhalb des Hilfsabschnitts statt. Das war bis V13 mit den Kopf- und Fu\'dfabschnitten nicht der Fall und konnte zu Fehlern f\'fchren. Diese \'e4rgerlichen Probleme sind f\'fcr V14 zugleich auch behoben.\f0 
+\par Der Hilfsabschnitt hat folgende Funktion: 
+\par \pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\'b7\f0\tab\f3 Wenn eine Kategorie eingegeben wird (per Abfrageliste oder in der freien Eingabe), wird sofort nach Druck auf <Enter> der Hilfsabschnitt ausgef\'fchrt. \f0 
+\par \f3\'b7\f0\tab Die Variable\b\f4  #u1\b0\f3  enth\'e4lt dann immer die gerade eingegebene Kategorie. \f0 
+\par \f3\'b7\f0\tab\f3 Wenn ein Ausgabetext produziert wird, dann wird dieser anschlie\'dfend als Meldung auf der untersten Zeile ausgegeben, und zwar in der Farbe der Fehlermeldungen (\f4 -\f6\'d8\f3  Anhang A.3). Der Eingabetext wird in jedem Fall akzeptiert, die Meldung soll den Benutzer nur auf Probleme aufmerksam machen. Er wird im eigenen Interesse im Bedarfsfall auf die Meldung reagieren. Allerdings kann mit dem Manipulationsbefehl M die Kategorie sofort wieder gel\'f6scht werden.\f0 
+\par \f3\'b7\f0\tab Der Hilfsabschnitt wird aber noch bei anderen Gelegenheiten aufgerufen. Dann steht ein Wert in der Variablen #u2, damit man erkennen kann, welche Situation vorliegt: 
+\par \pard\fi-1633\li1633\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\f4\tab #u2 e\lang1031\f0\tab Abfrageliste wurde beendet (letzte Frage beantwortet) 
+\par \lang1033\f4\tab #u2 s/N\lang1031\f0\tab\f3 Vor dem Speichern (es wurde F10 gedr\'fcckt) / nach Zeitstempel und Nummernvergabe\f0 
+\par \lang1033\f4\tab #u2 E/C/I\lang1031\f0\tab\f3 Es wurde soeben 'E' bzw. 'C' bzw. 'I' gedr\'fcckt \f0 
+\par \lang1033\f4\tab #u2 0/1/2/3\lang1031\f0\tab Die eingegebene Kategorie steht in #u1 (z.B.\lang1033\f4  #u1 40 Name, Vorname\lang1031\f0 ) 
+\par \tab\tab\tab und die Eingabe stammt aus der Abfrageliste (0) bzw. der Direkteingabe (1) bzw. aus der #b-Eingabe (2). Wert 3 tritt \i nach\i0  dem Einordnen einer Kategorie auf. 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3 Im Hilfsabschnitt mu\'df in der Regel zuerst gepr\'fcft werden, was f\'fcr eine Kategorie denn nun gerade eingegeben wurde, denn die Pr\'fcfroutine beginnt, wie gesagt, jedesmal am Anfang des Hilfsabschnitts.\f0 
+\par Folgende Einzelheiten sind noch zu beachten: 
+\par \b\f3 F\'e4lle 0,1,2\b0\f0 
+\par \pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f3 Die Kategorie ist zu diesem Zeitpunkt noch nicht im Aufnahmespeicher. Wenn sie dort mit einer Ver\'e4nderung landen soll, mu\'df man im Hilfsabschnitt einen output produzieren; dieser wird dann als Kategorie \'fcbernommen, anstelle der Eingabe. Der output mu\'df die Kategorienummer mit enthalten! Also kann man auch eine andere Kategorienummer einsetzen, wenn das so gew\'fcnscht wird.\f0 
+\par \i\tab Achtung:\i0\f3  mit extrem langen Kategorien kann man das nicht machen; die Grenze f\'fcr den output ist 300 Zeichen.\f0 
+\par \tab\f3 Wenn man keinen output produziert, oder kein Hilfsabschnitt vorhanden ist, wird die Kategorie unver\'e4ndert \'fcbernommen (auch wenn sie sehr lang ist). Statt einen output zu produzieren, kann man eine Kategorienummer vor den Text von #u1 setzen und diese Kategorie dann mit M einordnen lassen. Das geht bei beliebiger L\'e4nge.\f0 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b Fall e\b0 
+\par \pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f3 ist geeignet, um fehlende Kategorien gleich am Ende der Abfrage zu entdecken. Z.B. kann man eine fehlende Kategorie dann mit einer Standardangabe belegen. Oder mit "????", das wird dann gleich anschlie\'dfend sichtbar, da ja der Satz nach Schlu\'df der Abfrageliste in Kategorieform angezeigt wird. Wenn die Abfrage mit 'x' verlassen wird, greift dieser Fall nicht! Wichtiger ist sicher auch deshalb der Fall 's'.\f0 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 F\'e4lle e, s und E\b0\f0 
+\par \pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \tab\f3 Wenn man in diesen F\'e4llen einen output produziert, wird er als Fehlermeldung angezeigt. Im Falle  s  wird das Speichern nicht ausgef\'fchrt, denn man wird einen Fehler noch korrigieren werden sollen, bevor man speichert. Hier k\'f6nnen also fehlende Kategorien oder Teilfelder angemahnt werden. Nat\'fcrlich kann man f\'fcr die beiden F\'e4lle e und s denselben Abschnitt abarbeiten lassen.\f0 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 F\'e4lle E und C\b0\f0 
+\par \pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f3 sind geeignet, um vor dem Bearbeiten schon gewisse Ver\'e4nderungen an einzelnen Kategorien vorzunehmen, die man im Abschnitt s auch wieder r\'fcckg\'e4ngig machen kann. Z.B. kann man ein bestimmtes Teilfeld aus einer Kategorie in eine andere (Hilfs-)katagorie schreiben lassen. Diese l\'e4\'dft sich dann leichter bearbeiten. Hinterher (Fall s) h\'e4ngt man diese Kategorie eieder als Teilfeld an die Ausgangskategorie und beseitigt die Hilfskategorie.\f0 
+\par \tab\f3 Oder: man "hinterlegt" eine Kategorie, die nicht ver\'e4ndert werden soll, als Kopie in einer Anwendervariablen und sortiert sie hinterher vor dem Speichern (Fall s) wieder ein\f0 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3 Mit konkreten Beispielen zu den vier Typen von Pr\'fcfungen wird nun gezeigt, wie man Validierungen programmieren kann. Das recht komplizierte Beispiel zum Typ 2 stammt aus der Musik-Parametrierung (s.S. 5).\f0 
+\par \pard\fi-1633\li1633\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b Beisp. zu 1:\b0\tab\f3 Die Kategorien #40 und #60 d\'fcrfen nicht gleichzeitig besetzt sein. \f0 
+\par \b Beisp. zu 2:\b0\tab\f3 Kategorie #77z soll die Gesamt-Spielzeit eines Musikst\'fccks enthalten. Die einzelnen Teile (S\'e4tze) des St\'fccks sind in der Kategorie #81m erfa\'dft, und zwar in der Form\f0 
+\par \lang1033\f4\fs18\tab\tab\tab\f7 #81m1: Satzbezeichn.1 MM:SS\'b62: Satzbez.2 MM:SS\'b6...\'b6Satzbez.N MM:SS\lang1031\f0 . 
+\par \fs20\tab\tab\tab Daher soll das Programm den Inhalt von #77z aus der Summe der Spielzeiten der einzelnen Teile in #81m errechnen und dann die #77z automatisch erzeugen (!) 
+\par \b Beisp. zu 3:\b0\tab\f3 Wenn die Kategorie (egal welche) ein Stammsatz-K\'fcrzel (oder eine Identnummer) enth\'e4lt statt eines Klartextes, soll das Programm pr\'fcfen, ob dies ein g\'fcltiges K\'fcrzel ist, d.h. ob es im Index 9 zu finden ist.\f0 
+\par \tab\tab\tab\f3 Wenn umgekehrt ein neuer Stammsatz eingegeben wird, soll das Programm pr\'fcfen, ob das neue K\'fcrzel in #00 noch nicht im Register 9 vorkommt. Dort sind die K\'fcrzel mit nachfolgenden '=' eingetragen.\f0 
+\par \tab\tab\tab In diesem Fall soll die Annahme verweigert, d.h. die Kategorie #00 nicht abgespeichert werden. 
+\par \tab\tab\tab\f3 Au\'dferdem soll das Programm noch pr\'fcfen, ob die ISBN #87 im Register 9 schon vorkommt. Dort stehen die ISBNs ohne Pr\'fcfziffer und mit einem 'i' vorweg! Und der Titel in #20 soll im Register 4 gesucht werden: Wenn er vorkommt, Kontrollmeldung ausgeben.\f0 
+\par \b Beisp. zu 4:\b0\tab Kategorie #95c soll eine Zahl enthalten, und zwar mit Dezimalpunkt statt Komma, keine weiteren alphanumerischen Zeichen. Wenn es eine ganze Zahl ist, soll kein Punkt dahinter stehen. Die Zahl soll  ferner positiv sein. 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3 Es folgt der Hilfsabschnitt, der alle diese Pr\'fcfungen durchf\'fchrt:\f0 
+\par \pard\fi-420\li420\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\f4 H\lang1031\f0\tab\f3 Hier f\'e4ngt der Hilfsabschnitt an\lang1033\f4 . \lang1031\f3 Zuerst eine Verteilerliste f\'fcr die zu pr\'fcfenden Kategorien.\lang1033\f4 
+\par \pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f0\tab Die Angabe \b e0\b0\f3  ist n\'f6tig, damit diese Zeilen keine Ausgabe produzieren:\f0 
+\par \tab (Jede produzierte Ausgabe erscheint unten auf der letzten Zeile!)\lang1033\f4 
+\par \pard\fi-2353\li2353\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #u2 +- c"s" e0 \lang1031\f0\tab\f3 F10 gedr\'fcckt? Dann hier nichts machen. Sonst Eingabe pr\'fcfen:\lang1033\f4 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #u1 +4 i1,4 i2,0 i3,  e0\lang1031\f0    ist es #40 ?  Dann #-4\lang1033\f4 
+\par #u1 +6 i1,6 i2,0 i3,  e0\lang1031\f0    ist es #60 ?  Dann #-6\lang1033\f4 
+\par #u1 +8 i1,8 i2,1 i3,m e0\lang1031\f0    ist es #81m?  Dann #-8\lang1033\f4 
+\par #u1 +0 i4,_ e0\lang1031\f0              Erstes Textzeichen ist '_'? Dann #-0\lang1033\f4 
+\par #u1 +A i1,8 i2,7 e0\lang1031\f0         ist es #87?  Dann #-A\lang1033\f4 
+\par #u1 +B i1,2 i2,0 e0\lang1031\f0         ist es #20?  Dann #-B\lang1033\f4 
+\par #u1 +C i1,9 i2,0 e0\lang1031\f0         ist es #90?  Dann #-C\lang1033\f4 
+\par #u1 +D i1,9 i2,5 i3,c e0\lang1031\f0    ist es #95c? Dann #-D\lang1033\f4 
+\par #u1 +K i1,0 i2,0 e0\lang1031\f0         ist es #00?  Dann #-K\lang1033\f4 
+\par #+#\lang1031\f0                         andere Kategorie? Dann nichts machen.\lang1033\f4 
+\par #-4 
+\par \pard\fi-1633\li1633\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #60 +Z e0\lang1031\f0\tab #40 wurde gerade eingegeben. Ist #60 besetzt? Dann #-Z\lang1033\f4 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #+#\lang1031\f0 
+\par \f4\fs18 #-6 
+\par \pard\fi-1633\li1633\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #40 +Z e0\tab #60 wurde gerade eingegeben. Ist #40 besetzt? Dann #-Z 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #+# 
+\par #-Z 
+\par #t\{ "#40 und #60 sind zugleich besetzt, das darf nicht sein!" \} 
+\par #+# 
+\par #-8 
+\par \pard\fi-1633\li1633\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #u1 dsb dzt asb\tab\f7 Hilfsvariable #uzt l\'f6schen, #usb mit Inhalt von #u1 f\'fcllen\f4 
+\par \pard\fi-2353\li2353\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #-Y\tab\tab\tab\tab d.h. der Inhalt von #u1 steht jetzt in #usb 
+\par \pard\fi-4267\li4267\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f7 #usb e"\'b6" T" " c":" e":" x"*60" x"+zt" =zt\f4\tab Minuten -> Sekunden, auf #uzt addieren 
+\par \pard\fi-3792\li3792\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f7 #usb e"\'b6" T":" x"+zt" =zt\f4\tab\tab\tab\tab Sekunden dazurechnen 
+\par \pard\fi-2731\li2731\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f7 #usb +Y b"\'b6" =sb \f4\tab\f7 Schleife: n\'e4chste Satzangabe f\'e4ngt hinter \'b6 an. Kein \'b6 mehr? Dann\f4 
+\par \pard\fi-2353\li2353\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #uzt x"/60" e"." r2 dgt agt\tab   \f0 Sekunden->Minuten, in #ugt ablegen 
+\par \pard\fi-2731\li2731\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f4 #uzt x"%%60" e"." r2 p":" Agt\tab  \f3 Rest-Sekunden mit ':' anh\'e4ngen. #ugt enth\'e4lt nun das Ergebnis.\f4 
+\par \pard\fi-2918\li2918\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #ugt p"#77z" M\tab\tab\tab\tab   \f3 Ergebnis aus #ugt in #77z \'fcberf\'fchren \f4 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #+# 
+\par #-0 
+\par \pard\fi-3793\li3793\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #u1 +# y0 b"_" e"[ ,;:]" P"=" |98\tab\f7 Eingegebenes K\'fcrzel in Register 9 suchen\f4 
+\par \f7 #t\{ "K\'fcrzel kommt noch nicht vor" \}\f4\tab meldung, wenn nicht gefunden 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #+# 
+\par #-A    #87 
+\par \pard\fi-3072\li3072\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 !u1 +a e11 p"i" |98\tab\tab\tab\tab kommt ISBN schon im Register 9 vor? 
+\par #+#        \tab\tab\tab\tab\tab nein, dann nichts machen 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #-a 
+\par \pard\fi-3793\li3793\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #t\{ "ISBN ist bereits vorhanden!" 7 \} \tab die 7 loest den Piepston aus 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #+# 
+\par #-B 
+\par \pard\fi-2918\li2918\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 !u1 +b e" : " u y2 |48 \tab\tab\tab Kommt der Titel schon im Reg. 4 vor? 
+\par #+#             \tab\tab\tab\tab Wenn nein, dann nichts. 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #-b 
+\par #t\{ "Dieser Titel kam schon mal vor" \} 
+\par #+# 
+\par \pard\fi-913\li913\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #-D\tab\tab Zahl isolieren, Nullen und Punkt hinten abschneiden, in #95c einsetzen 
+\par \pard\fi-2731\li2731\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #u1 x"*1" F"0." p"#95c" M\tab (mit x"*1" entsteht die reine Zahl! Sie hat immer einen Punkt.) 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #95c +# x">0" e0 
+\par \f7 #t\{ "Unzul\'e4ssiger Zahlenwert!" \}\f4 
+\par #+# 
+\par \pard\fi-3072\li3072\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #-K \tab\tab\tab\tab\tab\tab\f7 K\'fcrzel schon vergeben?\f4 
+\par \pard\fi-2918\li2918\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 !u1 +k P"=" |98 e0\tab\tab\tab\f7 Es m\'fc\'dfte mit '=' dahinter in Register 9 stehen\f4 
+\par \pard\fi-1633\li1633\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #+#\tab\tab trifft nicht zu, Ende 
+\par \pard\fi-913\li913\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #-k\tab\tab trifft zu: 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f7 #t\{ "Dieses K\'fcrzel existiert schon! " 7 \}\f4 
+\par \pard\fi-2731\li2731\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #u1 y0 p"#00 " e4 M \tab\tab\f7 #00 gleich wieder l\'f6schen! (M-Befehl mit leerer #00 ausf\'fchren)\f4 
+\par \pard\tx422\tx914\tx1634\tx2354\tx2732\tx2919\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs20 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` 
+\par \pard 
+\par ?Vorangehender Teil=h ac10-10 
+\par ?Fortsetzung=h ac10-12 
+\par ?FLEX-Technik=h flex 
+\par ?a99/alcarta=h =Flips in a99 und alcarta 
+\par 
+\par }
+ 

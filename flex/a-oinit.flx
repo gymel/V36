@@ -1,0 +1,109 @@
+  A-OINIT.FLX : Web-OPAC-Systemdatei vorbereiten
+  2008-10-14    Datei alfsys.dat erstellen
+  Wird gebraucht f. Online-Verlaengerung etc. per Browser
+  damit dann nicht jedesmal die Systemsaetze geladen werden muessen
+  (Minimierung der Datenbank-Zugriffe)
+
+  Die Datei wird auf DbDir angelegt
+var D "alfsys.dat"
+open x
+
+var ""
+ins $ada
+
+  Medientypdaten
+find |; SYSD?
+if l1 jump noty
+first
+:mtloop
+var $ada "///" #9A
+ins $ada
+next
+if yes jump mtloop
+wri "#umt " $ada
+
+var ""
+ins $ada
+
+  Leserklassendaten
+find |; SYSC?
+if l1 jump nocl
+first
+:lcloop
+var $ada "///" #9A
+ins $ada
+next
+if yes jump lcloop
+var $ada (f"/")
+ins $ada
+wri n ";#ulc" $ada n
+
+
+  Medientypstammsaetze
+find |; SYSE?
+if l1 jump nomc
+first
+var ""
+ins $Amtsz
+ins $Amcod
+:mcloop
+var $Amtsz "///" #9A
+ins $Amtsz
+var $Amcod "///" #9A$C "=" #9A(1,1)
+ins $Amcod
+next
+if yes jump mcloop
+wri ";#ums" $Amtsz n
+wri ";#umc" $Amcod n
+
+  Kalenderdaten
+var #dts(0,4)
+z=
+z-1
+var z
+ins #uc1
+z+1
+var z
+ins #uc2
+z+1
+var z
+ins #uc3
+
+var "|; SYSR" #uc1 
+f1nd
+wri ";#uzx " #9A(6,0)
+var "|; SYSR" #uc2 
+f1nd
+wri n ";#uzy " #9A(6,0)
+var "|; SYSR" #uc3
+f1nd
+if no jump noca
+wri n ";#uzz " #9A(6,0) n
+close x
+var "Datei alfsys.dat ist auf " D " erstellt"
+mes
+end
+
+:noty
+mes Keine Medientypdaten!
+end
+
+:nocl
+mes Keine Leserklassendaten!
+end
+
+:nomc
+mes Keine Medientypstammdaten!
+end
+
+:noca
+mes Kalenderdaten fehlen!
+end
+
+// in a-overl :
+// $Amtyp -> #umt  Medientypsaetze
+// $Aclas -> #ucl  Leserklassensaetze
+// $Amtsz -> #ums  Medientypstammsaetze
+// $Amcod -> #umc  Codes der Medientypen
+
+

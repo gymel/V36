@@ -1,0 +1,103 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fscript\fprq2\fcharset0 Comic Sans MS;}{\f1\fscript\fprq2 Comic Sans MS;}{\f2\froman Times New Roman;}{\f3\fswiss\fprq2\fcharset0 Verdana;}}
+{\colortbl ;\red255\green0\blue0;\red0\green176\blue0;\red0\green0\blue255;\red0\green0\blue0;\red0\green160\blue0;\red128\green0\blue0;\red128\green0\blue128;}
+\viewkind4\uc1\pard\qc\tx852\f0\fs24   \cf1\b\i\fs20  \f1 
+\par \fs36 Views : \f0\fs32 N\f1 eue Sicht der Dinge\cf0\b0\i0\f2\fs20 
+\par \pard\qr\f3 `\cf2\ul\b Kurzfassung\cf0\ulnone\b0 `\f2  
+\par \pard\f3\fs18 Auf der langen Schaltfl\'e4che unten neben dem Drucker sehen Sie den Namen Ihrer \b\i aktuellen Ergebnismenge\b0\i0 . 
+\par (Wenn da "Keine Ergebnismenge" steht, ist dieses Men\'fc momentan nicht sinnvoll!) 
+\par Sie wollen diese Ergebnismenge in \b anderer Form\b0  und \b anderer Reihenfolge\b0  betrachten, d.h. anders als die normale Kurzanzeige? Daf\'fcr gibt es das \b View\b0 -Konzept. Damit k\'f6nnen Sie selber bestimmen, in welcher Struktur die Ergebnismenge angezeigt werden soll, d.h. welche Datenfelder in welcher Reihenfolge zu sehen sein sollen, und auch, ob dabei \b gruppiert\b0  und/oder \b summiert\b0  werden soll.  \i Alle\i0  Datenfelder k\'f6nnen benutzt werden, um die Ergebnismenge nach Wunsch als \b ViewListe\b0  anzeigen zu lassen. Intern entsteht dabei immer eine \cf1\b ViP\cf0  = View-Parameterdatei. \b0 Anschlie\'dfend kann man diese immer wieder anwenden, um Ergebnismengen in derselben Weise zu behandeln. Man kann sich sogar eine ViewListe der gesamten Datenbank machen lassen, siehe unten.\fs24 
+\par 
+\par Zwei Dinge darf man nicht verwechseln:\fs16  
+\par  \fs20 
+\par \pard\tx284\tx4118\tx4260\b\fs24\tab\cf2 ViewParameterdatei = ViP\cf0\fs20   \b0  \tab\cf2\b\fs24 ViewListe\cf0\fs20  \b0  (`\cf3\ul\b Mehr dazu\cf0\ulnone\b0 `) 
+\par \tab Eine ViP ist eine \b\i Vorschrift\b0 ,\i0  \tab Das ist eine Ergebnismenge, 
+\par \tab nach der ViewListen \tab fertig in der gew\'fcnschten Form, 
+\par \tab erstellt werden k\'f6nnen\tab wie in einer ViP beschrieben 
+\par \tab (Datei vom Typ v-*.apr)\tab (Datei vom Typ *.vw ) 
+\par \pard\qr\cf4`\cf5\ul\b Hintergrundwissen\cf4\ulnone\b0 `\cf0\f2 
+\par \pard\cf6\b\f3\fs22 Folgende Funktionen stehen zur Wahl:\cf0\b0\f2\fs20 
+\par 
+\par \pard\qc\cf7\b\f3\fs22 Schon vorhandene ViP anwenden\cf0\f2\fs24 
+\par \pard\b0\fs20 
+\par \f3 Diese Funktionen braucht man, um eine Ergebnismenge, oder auch die ganze Datenbank, sofort in eine ViewListe zu verwandeln. Die zwei ersten Funktionen sind f\'fcr schnelle Standardproduktionen (nur 1 Mausklick), die dritte Funktion gibt eine Auswahl aller vorhandenen ViPs. 
+\par 
+\par `\cf3\ul\b Standard-ViP 1\cf0\ulnone\b0 `: Verfasser: Titel  (Jahr) = Signatur 
+\par \pard\li710 Als Beispiel f\'fcr einen einfachen View (Parameter: v-stand1.apr) 
+\par \tab Vollautomatisch: Die Standard-ViP wird sofort auf die aktuelle Erg.Menge angewendet, dann die erstellte ViewListe angezeigt. 
+\par \i F\'fcr Kenner:\i0  In `\cf3\ul VIEW1.FLX\cf0\ulnone ` den Namen der Parameter \'e4ndern, eingestellt ist v-stand1.apr.  Man kann sich nach diesem Muster weitere Parameter- und FLX-Dateien f\'fcr andere Views anlegen. 
+\par \pard 
+\par `\cf3\ul\b Standard-ViP 2\cf0\ulnone\b0 `: Jahrgang / Verfasser: Titel  Seitenzahl 
+\par \pard\li710 Als Beispiel f\'fcr einen View mit \i Gruppierung\i0  und \i Summierung\i0   (Parameter: v-stand2.apr) 
+\par \tab Vollautomatisch: Die Standard-ViP wird sofort auf die aktuelle Erg.Menge angewendet, dann die erstellte ViewListe angezeigt. 
+\par \i F\'fcr Kenner:\i0  In `\cf3\ul VIEW2.FLX\cf0\ulnone ` den Namen der Parameter \'e4ndern, eingestellt ist v-stand2.apr.  Man kann sich nach diesem Muster weitere Parameter- und FLX-Dateien f\'fcr andere Views anlegen. 
+\par \pard 
+\par \pard\fi-710\li710 `\cf3\ul\b Andere ViP\cf0\ulnone\b0 `: Eine vorher erstellte ViP w\'e4hlen und auf die aktuelle Ergebnismenge anwenden. 
+\par \pard\li710 Die Parameterdateien, deren Namen mit \b v-\b0  beginnen, werden gezeigt; man w\'e4hlt eine aus, dann "Start", der Rest geht automatisch. Anschlie\'dfend sieht man die aktuelle Erg.menge in der gew\'e4hlten Struktur. Die ausgew\'e4hlte ViP kann wahlweise auch bearbeitet werden. [Hinter diesen Vorg\'e4ngen steckt  VIEW0.FLX] 
+\par Nur hier hat man die Wahl, auch die \b gesamte Datenbank\b0  in eine ViewListe zu verwandeln. W\'e4hlt man aber v-stand1.apr oder v-stand2.apr, werden daf\'fcr die Standardparameter eingesetzt! Bei gro\'dfen Datenbanken braucht das einige Zeit und einigen Plattenraum ... Aber keine Sorge, mit Druck auf 'x' kann man den laufenden Vorgang abbrechen! 
+\par \pard 
+\par \pard\qc\cf7\b\fs24 Neue ViP anlegen\cf0 
+\par \pard\b0\fs20 Wenn die Standards und sonstigen vorhandenen ViPs nicht ausreichen, ist eine neue Vorschrift, eine neue ViP also, zusammenzustellen. Daf\'fcr gibt es zwei M\'f6glichkeiten. Die erste kommt ohne besondere Kenntnisse aus (nur die Kategorienummern der gew\'fcnschten Datenfelder werden gebraucht!), die zweite ist f\'fcr Anwender gedacht, die sich ein wenig mit der Parametrierung auskennen. 
+\par 
+\par \pard\fi-710\li710 `\cf3\ul\b Mit Formular\cf0\ulnone\b0 `: Bis zu 5 Datenfelder ausw\'e4hlen und anordnen. Bei jedem Feld kann man die L\'e4nge angeben, aber auch Manipulationsbefehle f\'fcr den Feldinhalt. 
+\par \pard\li710 Zus\'e4tzlich kann ein "Feld Z" eingegeben werden, welches dann als Zahl interpretiert wird und hinterher in der Liste aufsummiert wird. 
+\par Das erste Feld kann auf Wunsch dazu dienen, eine "Gruppierung" durchzuf\'fchren, d.h. in der ViewListe Abschnitte zu bilden. Dann werden, falls Feld Z belegt ist, auch Zwischensummen f\'fcr die Abschnitte ausgerechnet. 
+\par Die so erstellte neue Struktur wird sofort auf die aktuelle Ergebnismenge angewendet. Wahlweise kann man die Struktur als ViP (also als Parameterdatei) speichern lassen und dann sp\'e4ter immer wieder verwenden (unter "Andere ViP", siehe oben).  [VIEWFORM.FLX] 
+\par \pard 
+\par `\cf3\ul\b Mit Parametern\cf0\ulnone\b0 `: Methode f\'fcr Fortgeschrittene 
+\par \pard\li710 Hierbei braucht man ein paar Kenntnisse der Exportsprache (Manipulationsbefehle etc.), daf\'fcr hat man viel mehr M\'f6glichkeiten. Man schreibt praktisch den entscheidenden Abschnitt der Parameterdatei selber im Klartext.  Auch hier wird die neue ViP sofort auf die aktuelle Ergebnismenge angewendet und kann zur sp\'e4teren Verwendung gespeichert werden. Weitere Hinweise gibt der Text, der erscheint, wenn Sie diesen Men\'fcpunkt w\'e4hlen.  [VIEWPARA.FLX]
+\par \pard 
+\par \i F\'fcr Kenner:\i0  Jede ViP, die man mit diesen Verfahren erstellt hat, kann man beliebig modifizieren! Es handelt sich um ganz normale Exportparameter; die Kommentare darin weisen auf die wichtigen Details hin. 
+\par \f2 
+\par \pard\qc\cf7\b\f3\fs24 ViewListen benutzen\cf0 
+\par \pard\b0\fs20 Wenn man bereits ViewListen erstellt hatte und diesen zur Aufbewahrung individuelle Namen gegeben hat, kann man jederzeit sp\'e4ter auf diese Listen zur\'fcckgreifen. Zun\'e4chst nat\'fcrlich auf die Liste, die man zuletzt produziert hatte: 
+\par 
+\par `\cf4\b Letzte ViewListe\cf0\b0 ` \cf1\b %#uv9\cf0\b0\f2 
+\par \tab\f3 Hier sieht man in roter Schrift, welche ViewListe man zuletzt ge\'f6ffnet hatte. 
+\par `\cf3\ul\b Aktuelle Liste neu anzeigen\cf0\ulnone\b0 `
+\par \pard\li710 Wenn ein Dateiname (in rot) zu sehen ist, soll diese ViewListe erneut angezeigt werden. Dasselbe kann man mit dem Befehl \b v\b0  erreichen, einzugeben im Schreibfeld. 
+\par Wenn man  \b v 1 \b0  eingibt, kann man in der ViewListe sogar Bearbeitungen vornehmen: die mit Enter ausgew\'e4hlte Zeile erscheint dann in einem Bearbeitungsfeld. 
+\par \pard `\cf3\ul\b exportieren\cf0\ulnone\b0 `
+\par \pard\li710\tab Die Datens\'e4tze werden in der Reihenfolge des Views exportiert, und zwar kann man noch w\'e4hlen, mit welchen Export-Parametern und in welche Datei die Daten geschrieben werden sollen. Wenn die ViewListe f\'fcr die gesamte Datenbank erstellt worden war, erh\'e4lt man also auch als Export s\'e4mtliche Daten. 
+\par In den Exportparametern hat man die jeweilige View-Zeile als \b #uzV\b0  verf\'fcgbar. [VIEWEXP.FLX] 
+\par \pard\fi-710\li710 
+\par `\cf3\ul\b als Tabelle ausgeben\cf0\ulnone\b0 ` 
+\par \pard\li710 die ViewListe als Texttabelle ausgeben, Feldtrennung durch ';', ANSI-Codes. Die Tabellenstruktur ergibt sich daraus, welche Felder man zuvor (unter "Neue ViP anlegen") ausgew\'e4hlt hatte. 
+\par Anschlie\'dfend in andere Programme \'fcbernehmbar. Z.B. in WinWord-Text einf\'fcgen und in Tabelle umwandeln  [VIEWTAB.FLX] 
+\par \i Kenner\i0  k\'f6nnen in die ViP eingreifen und dort den Abschnitt modifizieren (unter der Sprungmarke #-Q), in dem die Tabellenzeilen ausgegeben werden. Dadurch kann ein Export pr\'e4zise bis in alle Details der Feldinhalte strukturiert werden. 
+\par Wenn es nur um Tabellen geht, gibt es daf\'fcr eine `\cf3\ul\b einfachere Methode\cf0\ulnone\b0 `. 
+\par \pard 
+\par `\cf3\ul\b Vorhandene ViewListen\cf0\ulnone\b0 ` 
+\par \pard\li710 Noch vorhandene ViewListen (Alle Dateien vom Typ \b .vw\b0  ) sichten, l\'f6schen, umbenennen 
+\par oder `\cf3\ul\fs18 suchen\cf0\ulnone\fs20 `, ob es noch welche gibt. 
+\par   [VIEWOLD.FLX] 
+\par \pard 
+\par \b\i Wichtige Voraussetzung:\b0\i0  gebraucht wird das Sortierprogramm \b ASORT.EXE\b0 , und zwar eine Version ab 7.8.2000. 
+\par 
+\par \i Hinweis: \i0 Sortierte Listen k\'f6nnen auch noch immer mit dem `\cf3\b\i CockPit\cf0\b0\i0 ` des Classico-Systems erstellt werden! Zumindest diejenigen, die daran gew\'f6hnt sind, brauchen nicht darauf zu verzichten. 
+\par 
+\par Genau beschrieben sind alle Aspekte der View-Technik in der `\cf3\ul\b Ausgabe 58 der allegro news\cf0\ulnone\b0 `. 
+\par \f2 
+\par ?Standard-ViP 1=X view1.flx 
+\par ?Standard-ViP 2=X view2.flx 
+\par ?Mit Formular=X viewform.flx 
+\par ?Mit Parametern=x var "Start"`ins #uYa`var "X viewpara.flx"`ins #uZa`h viewpara 
+\par ?Andere ViP=X view0.flx 
+\par ?VIEW1.FLX=x h view1.flx 
+\par ?Vorhandene ViewListen=x var "*.vw"\\ins #uwz\\exec X param.flx
+\par ?Aktuelle Liste neu anzeigen=x View again 
+\par ?exportieren=X viewexp.flx 
+\par ?xxx=^wx h view 
+\par ?xxx=^ox View again 
+\par ?Kurzfassung=h view 
+\par ?CockPit=X cockpit.flx 
+\par ?als Tabelle ausgeben=X viewtab.flx 
+\par ?suchen=X viewold.flx 
+\par ?einfachere Methode=h table 
+\par ?Mehr dazu=h viewlist 
+\par ?Ausgabe 58 der allegro news=x jan view.htm
+\par ?Hintergrundwissen=x jan view.htm
+\par 
+\par  
+\par 
+\par }
+ 

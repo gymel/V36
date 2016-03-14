@@ -1,0 +1,45 @@
+  DOS-CMD.FLX : ein DOS-Fenster aufmachen und einen bestimmten 
+  2002-02-04      Befehl demonstrieren
+
+  Wird gestartet aus dos-cmd.rtf heraus. Dabei wird in #udC eine
+  Angabe uebergeben, die hier ausgewertet wird:
+
+open x dos-cmd.bat
+wri "echo off" n "cls" n 
+if #udC var #udC
+if "c" jump cd
+if "d" jump dir
+if "k" jump copy
+if "r" jump ren
+
+clo x
+delete dos-cmd.bat
+end
+
+:cd
+wri "echo Befehl cd" n "echo Geben Sie ein:  cd /?" n
+wri "echo Dann erfahren Sie, wie man diesen Befehl benutzt" n
+jump comd
+
+:dir
+wri "echo Befehl dir" n "echo Geben Sie ein:  dir" n
+jump comd
+
+
+:copy
+wri "echo Befehl copy" n "echo Geben Sie ein:  copy /?" n
+jump comd
+
+
+:ren
+wri "echo Befehl ren" n "echo Geben Sie ein:  ren /?" n
+jump comd
+
+
+:comd
+close x
+get env comspec
+ins #uwC
+var #uwC " /k dos-cmd.bat"
+call
+end

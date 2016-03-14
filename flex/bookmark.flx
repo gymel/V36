@@ -1,0 +1,42 @@
+  BOOKMARK.FLX : Lesezeichen fuer Hilfetexte als ViewListe
+  2003-07-09     Angezeigt wird die Datei mit  showbm.flx
+            d.h. im Bedarfsfall beides modifizieren!
+
+   Anlage der Datei, z.B. CAT.BKM, auf dem TEMP-Verz.
+var M B ".bkm"
+open 
+if no jump bmf
+var "+" M B ".bkm"
+open x 
+
+:newbm
+  Erste Zeile des Textes holen
+var z1
+  wenn sie leer ist, die naechste
+if "" var z2
+  Diese Zeile wird dann als Titel vorgegeben
+ins #uz1
+var "Ihr Titel fÅr diesen Text? (bis zu 80 Zeichen)=" #uz1(f"† " F"†")
+ansi
+ask
+if "" end
+asci
+ins #uvH
+  Viewzeile schreiben (zn = vorher angeklickte Zeile)
+wri "h " X "#" zn "|" #uvH(0,80) n
+close x
+end
+
+:bmf
+   Datei noch nicht vorhanden, anlegen
+var M B ".bkm"
+open x 
+if no jump exit
+wri "Hilfetexte-Lesezeichen des Nutzers " #op n
+wri "----------------------------------------" n
+jump newbm
+:exit
+var "Datei " M "bookmark.vw existiert nicht und kann nicht angelegt werden"
+mes
+
+

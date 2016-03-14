@@ -1,0 +1,39 @@
+  FETCHFIL.FLX : Datei aus dem Internet holen und lokal speichern
+  2008-04-25     Funktioniert mit jedem Dateityp, auch .JPG oder .PDF.
+  Start mit Angabe einer URL, dann wird diese als Datei gelesen
+  sonst wird eine abgefragt.
+
+if not "" jump begin
+
+ask Geben Sie die URL einer Datei im Internet ein
+if "" end
+
+:begin
+ins $url
+
+  Lokale Datei mit demselben Namen oeffnen (nur der Name hinter dem letzten / )
+var $url (T"/")
+open x
+
+  Die Internetdatei zum Lesen oeffnen
+var $url
+open
+  Schleife fuer blockweises Lesen
+:loop
+  jeweils 2000 Bytes holen, dabei Steuerzeichen escapen,
+  z.B.  ^@ statt Code 00, ^A ^B  statt  01 02 usw., ^~ statt ^
+fet 2000
+  nichts mehr gekommen?
+if cancel jump ende
+  den Block gleich wieder rausschreiben (Steuerzeichen zurueckwandeln)
+write ^
+  und sofort naechster Block
+jump loop
+
+:ende
+close x
+close
+
+var "Datei " $url (T"/") " liegt auf " W " bereit"
+mes
+

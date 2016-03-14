@@ -1,0 +1,131 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss\fprq2\fcharset0 Verdana;}{\f1\fswiss\fprq2 Arial;}{\f2\fswiss\fprq2\fcharset0 Arial;}{\f3\fmodern\fprq1\fcharset0 Courier New;}{\f4\fmodern\fprq1 Courier New;}}
+{\colortbl ;\red0\green0\blue0;\red255\green0\blue0;\red0\green128\blue0;\red0\green0\blue255;}
+\viewkind4\uc1\pard\fi-1704\li1704\qc\cf1\i\f0\fs22 
+\par \pard\qc\cf2\b\f1\fs36 allegro-C\i0\f0\fs24 
+\par \pard\qc\tx6106\cf1 
+\par \cf3\fs36 acon\cf1\b0\fs16 
+\par  
+\par \pard\ri-1\qc\cf4\b\fs22 
+\par \cf1\i\f2\fs28 al\f1 legro\f2  \i0 Konsolprogramm \b0 (ab V28.6)
+\par 
+\par \f0\fs24 (see also: `\cf4\ul Tutorial in English\cf1\ulnone `)\b\f1\fs28 
+\par \pard\ri-1\b0\f0\fs16 
+\par \i\fs22 
+\par \cf0\b\i0\f3\fs20 acon ist 
+\par 1.\b0\f0   ein Kommandozeilenprogramm f\'fcr das Arbeiten mit allegro-Datenbanken\b\f3 
+\par 2.\b0\f0   ein unentbehrlicher Bestandteil jeder Web-Schnittstelle. 
+\par 
+\par Vordergr\'fcndig kann das Programm \b acon.exe\b0  (UNIX: \b acon\b0 ) drei `\cf4\ul\b\'e4ltere Programme\cf0\ulnone\b0 ` ersetzen: 
+\par 
+\par \pard\fi-1704\li1704\ri-1\f3 SRCH.EXE  \f0 :  Volltextsuche in einer Datenbank oder Grunddatei und/oder Export in beliebigem Format 
+\par \f3 
+\par UPD.EXE   : \f0 Einmischen von Daten in eine Datenbank (fr\'fcher UPDATE.EXE) 
+\par  
+\par \f3 avanti-cl.exe \f0 bzw. unter UNIX  \f3 avanti-cl\f0  : Programm zum Ausf\'fchren von Job-Dateien (bis 2007) 
+\par \pard\ri-1 
+\par Die beiden Programme SRCH und UPD sind viel \'e4lter, sie geh\'f6ren noch zum DOS-System und sind 16bit-Programme.
+\par \f3 acon\f0  arbeitet genauso mit \f3 avanti\f0  zusammen wie vorher \f3 avanti-cl\f0 , aber als Ersatz f\'fcr SRCH und UPD wird der Server \f3 avanti\f0  nicht gebraucht, nur \f3 acon\f0 ! Mit seinen 32bit ist es auch unter Windows '7/64bit lauff\'e4hig. 
+\par \i Aber:\i0  Mit V32 erschien ein neues 32bit-SRCH-Programm als Ersatz f\'fcr das alte 16bit-Programm. Sein Vorteil ist die h\'f6here Geschwindigkeit. 
+\par 
+\par \f3 acon\f0  hat keine Benutzeroberfl\'e4che - das ist typisch f\'fcr ein Konsolprogramm: es stellt keine Fragen und pr\'e4sentiert keine Men\'fcs oder dergleichen. So ein Programm nimmt Auftr\'e4ge entgegen, f\'fchrt sie vollautomatisch aus und beendet seine Arbeit, ohne da\'df jemand eine Taste dr\'fccken oder sonstwie eingreifen mu\'df. Die Auftr\'e4ge hei\'dfen in diesem Fall \b Jobs\b0  und sind zu schreiben in der \i avanti\i0 -Variante der `\cf4\ul\b FLEX-Sprache\cf0\ulnone\b0 `. In dieser Skriptsprache sind seit V28.5 auch die Voraussetzungen gegeben, alle Funktionen zu realisieren, f\'fcr die man bisher die Programme SRCH und UPD  (fr\'fcher UPDATE) gebraucht hat. Diese alten Programme nehmen ebenfalls Auftr\'e4ge entgegen und f\'fchren sie aus, aber auf andere Art: man \'fcbergibt ihnen beim Aufruf eine Anzahl von \i Optionen\i0 , aus denen sie dann entnehmen, was zu tun ist. Die folgenden zwei Beispiele zeigen, wie die DOS-Programme SRCH und UPD durch \f3 acon\f0  ersetzt werden k\'f6nnen. Diese Beispiele sind nun aber nur Spezialf\'e4lle einer viel m\'e4chtigeren Methodik, mit der das Programm \f3 acon\f0  Manipulationen aller erdenklichen Art mit den Mitteln der FLEX-Sprache durchf\'fchren kann. 
+\par 
+\par 
+\par Ein \b Aufruf\b0  von  \f3 acon\f0   hat immer diese Form: 
+\par 
+\par \f3 acon <\i\f0 jobdateiname \i0  [\i Optionen\i0 ] 
+\par 
+\par Ab V30 kann man auch schreiben: 
+\par 
+\par \f3 acon -j\i\f0 jobdateiname \i0 [\i Optionen\i0 ] 
+\par 
+\par Zuerst als \cf2\i Beispiel 0\cf0\i0  der minimale Job: das "Hallo Welt"-Progr\'e4mmchen. 
+\par Dazu macht man sich auf \f3 c:\\allegro\f0  eine Jobdatei namens \f3 welt.job\f0  und schreibt hinein 
+\par \f3 write "Hallo Welt"\f0  
+\par Dann gibt man (im DOS-Fenster) diesen Befehl 
+\par    \b\f3 acon <welt.job\b0\f0     \i oder\i0     \b\f3 acon -jwelt\b0\f0 
+\par Der Dateityp \f3 .job\f0  wird empfohlen, ist aber nicht zwingend, es geht auch ganz ohne. Kenner erkennen: das Programm liest seinen Auftrag aus der Standard-Eingabe. (Daher kann man es theoretisch auch ohne Job aufrufen, den Job dann manuell Zeile f\'fcr Zeile eintippen und mit  Strg+D Enter (UNIX) bzw. mit Strg+Z Enter (Windows) abschlie\'dfen.) 
+\par 
+\par 
+\par \cf2\i Beispiel 1: Administration\cf0 
+\par \i0 Ab V34 wird ein Job namens  al.job  mitgeliefert, mit dem man viele administrative und andere Aufgaben an einer Datenbank erledigen kann. 
+\par \i Sehr wichtig:\i0  Dieser Job l\'e4uft auch unter UNIX/Linux, wo es kein a99 gibt! 
+\par Aufruf, z.B. f\'fcr die DemoBank: 
+\par \f3    acon -jal -ddemo2 -bcat -ka\f0 
+\par 
+\par \cf2\i Beispiel 2: Update (Daten aus einer Datei einspeisen)\cf0 
+\par \i0 F\'fcr diese spezielle und sehr komplexe Aufgabe wird  \f3 update.job\f0   mitgeliefert. So geht man damit um: 
+\par 
+\par Konventioneller DOS-Aufruf: 
+\par \f3    upd -uxyz.alg -bcat -dc:\\allegro\\demo2 -ka -fm41 -n7 \f0 
+\par 
+\par was so zu lesen ist: "Hallo Programm UPD.EXE, nimm die Datei \f3 xyz.alg\f0  und speichere die S\'e4tze in die Datenbank \f3 cat\f0 , die auf \f3 c:\\allegro\\demo2\f0  liegt und dem Schema a.cfg folgt. Mittels Prim\'e4rschl\'fcssel soll dabei zun\'e4chst gepr\'fcft werden, ob ein Satz bereits in der Datenbank vorhanden ist. Solche vorhandenen S\'e4tze sollen (das besagt die Option \f3 -fm41\f0 ) durch die neueren \'fcberschrieben werden, wobei diejenigen Felder der alten S\'e4tze erhalten bleiben sollen, die im neuen Satz nicht vorkommen; ganz neue S\'e4tze (d.h. Prim\'e4rschl\'fcssel kommt noch nicht vor) sollen als neue S\'e4tze in die Datei 7 gespeichert werden (also \f3 cat_7.ald\f0 )." 
+\par Mehr zur Bedeutung der Optionen findet man im `\cf4\ul\b Kap. 12\cf0\ulnone\b0 ` des Handbuchs. 
+\par Genau dasselbe kann nun  acon  ausf\'fchren, wozu man eine Jobdatei namens \f3 `\cf4\ul\b update.job\cf0\ulnone\b0 `\f0  heranzieht. 
+\par Dieser Job nimmt automatisch noch eine Hilfsdatei namens  \f3 optsget.inc\f0   hinzu, die nur die Aufgabe hat, gleich nach dem Start erst einmal die Optionen auszuwerten. 
+\par Der Aufruf lautet dann, leicht ver\'e4ndert, so: 
+\par \f3 
+\par \b    acon -j update.job \b0 -uxyz.alg -bcat -dc:\\allegro\\demo2 -ka -fm41 -n7 \f0 
+\par 
+\par \i Achtung:\i0  \f3 -b\f0  statt \f3 -d\f0  m\'f6glich! Es gab hier beim alten UPD.EXE oft Verwechslungen. 
+\par M\'f6glich ist / statt \\ und man kann -b und -d auch separat angeben. Gleichwertig sind also z.B. 
+\par \f3 -dc:\\allegro\\demo2\\cat  \f0 und\f3   -bc:\\allegro\\demo2\\cat  \f0 und\f3   -dc:\\allegro/demo2 -bcat\f0 
+\par 
+\par Der update.job produziert nebenbei eine Protokolldatei namens  upro, in der am Ende ausf\'fchrlich nachzulesen ist, was sich abgespielt hat. 
+\par 
+\par \i Hinweis:\i0  Der \'e4ltere Aufruf unter "Beispiel 2" klappt ab V32.6 auch wieder, denn nun ist upd.exe ein kleines Hilfsprogramm, das nichts anderes tut als acon mit  \b\f3 -j update.job\b0\f0   zu starten, wie oben zu sehen. Kenner finden im  \b\f3 update.job\b0\f0   viele Hinweise auf besondere M\'f6glichkeiten gegen\'fcber dem alten DOS-Programm. Insbes. kann es auch Externformat-Dateien (.adt) verarbeiten. 
+\par Ambitionierte Systemverwalter k\'f6nnen das Skript  \f3 update.job\f0   f\'fcr eigene Zwecke abwandeln, um diffizile Prozeduren der Datenmanipulation zu programmieren. Dies ist wohl der gr\'f6\'dfte Vorteil der neuen Arbeitsweise im Vergleich zum alten Programm  \f3 upd.exe\f0 , welches komplett in C geschrieben war und deshalb allenfalls einem C-Programmierer \'c4nderungen erm\'f6glicht h\'e4tte. 
+\par 
+\par 
+\par \b Optionen beim Aufruf von acon\b0 
+\par Zuerst: Die Reihenfolge der Optionen ist v\'f6llig beliebig. 
+\par Das Programm acon selber wertet nur vier Optionen aus! Und zwar sind dies (analog zu den DOS-Programmen) 
+\par 
+\par -k\tab Konfiguration (z.B. \f3 -kn\f0  ), wobei als Default  \f3 -ka\f0   angenommen wird 
+\par           Ein Dateiname ohne Typ, mit oder ohne Pfad
+\par -b       Name der Indexparameter, mit oder ohne Pfad, z.B.  -b cat
+\par -d\tab Datenbank-Pfad,  z.B.  \f3 -dc:\\allegro\\demo2\f0   bzw.  -d/var/daten/katalog (Linux)
+\par -L\tab Pfad und Name der LOG-Datei (selten); Default -Lcat.log, wenn cat der DbName ist 
+\par -P\tab Programmverzeichnis (wo Parameter, uif, cfg ... zu suchen sind) 
+\par 
+\par Alle anderen Optionen m\'fcssen in dem Job, d.h. mit FLEX-Befehlen, ausge- und verwertet werden. In den Beispielen \b srch.job\b0  und \b update.job\b0  kann man sehen, wie das gemacht wird. Dazu braucht man die neue Sondervariable \b\f3 cl (command line)\b0\f0 , die den kompletten Aufruf enth\'e4lt, d.h. im Beispiel 2 h\'e4tte man mit  \b\f3 var cl\b0\f0   die Zeichenfolge 
+\par \f3 acon -fm41 -ka -uxyz.alg -bc:\\allegro\\demo2\\cat -n7\f0 
+\par und mit  
+\par 
+\par \f3 var cl 
+\par var (b" -u" f" " e" ")\f0 
+\par 
+\par holt man sich den Inhalt der Option \f3 -u\f0  heraus, wobei sogar hinter dem \f3 -u\f0  noch ein Spatium stehen darf. 
+\par 
+\par \b Besonderheiten\b0 
+\par avanti-Jobs haben typischerweise als letzte Zeile die sog. `\cf4\ul\b Datenbankanwahl\cf0\ulnone\b0 `: 
+\par \cf1\f4\fs24 @ DB=avdemo ID=admin/MASTER\cf0\f0\fs20 
+\par Damit sucht avanti in der Datei  \f3 avanti.con\f0   (auch  \f3 .conf\f0   ist noch m\'f6glich) nach einer Eintragung [\cf1\f4\fs24 avdemo\f3 ]\cf0\f0\fs20 , um dort den Namen und Speicherort der Datenbank zu finden, sowie die Kennung \cf1\f4\fs24 admin\cf0\f0\fs20  auszuwerten, um ihre Berechtigungsstufe festzustellen. Eine solche Zeile brauchen acon-Jobs nicht, wenn sie mit den geeigneten Optionen -b und -d gestartet werden. Sonst jedoch funktioniert die Datenbankanwahl ebenfalls, d.h. man kann alternativ eine solche Zeile an den Job anh\'e4ngen. 
+\par Eine mit & beginnende Zeile am Anfang der Jobdatei braucht \f3 acon\f0  gleichfalls nicht. Darin kann ein Verzeichnis angegeben werden, auf dem Parameter-, CFG- oder uif-Dateien zu suchen sind. Wenn man \f3 acon\f0  nicht auf dem Programmverzeichnis startet, ist das jedoch evtl. wichtig. 
+\par Gebraucht wird nur noch die (aktualisierte) \b\f3 uifsger\b0\f0 , nicht mehr zus\'e4tzlich \f3 uif0ger\f0 . 
+\par 
+\par \b Ort f\'fcr die Installation\b0 
+\par \i Windows:\i0  Ab V28.6 kann man auf der Windows-Plattform die avanti-Programme, statt wie bisher auf \f3\\programme\\avanti\\bin\f0  nunmehr auf dem regul\'e4ren Programmverzeichnis (\f3 c:\\allegro\f0  im Normalfall) ablegen und starten. 
+\par Ein paralleles Verzeichnis \f3 ..\\etc\f0  , vorher n\'f6tig f\'fcr  \f3 avanti.conf\f0 , entf\'e4llt. 
+\par Der Einfachheit halber sind  \f3 avanti.exe\f0   und  \f3 acon.exe\f0   ab V28.6 gleich mit im Gesamtpaket und liegen nach dem Installieren auf dem ProgDir. 
+\par 
+\par \i UNIX/Linux:\i0  Die vier noch n\'f6tigen Dateien kann man legen, wohin man will, aber alle zusammen auf dasselbe Verzeichnis: 
+\par \f3 avanti      \f0  Der Server, der \'fcber TCP/IP die Jobs annimmt und Ergebnisse liefert 
+\par \f3 acon        \f0  Das Konsolprogramm; f\'fchrt auch die Jobs f\'fcr den Server aus 
+\par \f3 avanti.con  \f0  Datei mit den Angaben zu den eigenen Datenbanken (fr\'fcher: avanti.conf) 
+\par \f3 uifsger     \f0  Meldungstexte 
+\par 
+\par \i Empfehlung:\i0  Das Verzeichnis einem User schenken, der ansonsten keine Rechte hat au\'dfer Zugriffsrechten auf die Datenbanken. Den Server dann unter dem Namen dieses Users starten mit dem Befehl   \b\f3 ./avanti &\b0\f0  . Wenn bei irgendwelchen Jobs Dateien auf anderen Verzeichnissen zu lesen und/oder schreiben sind, mu\'df der User dazu ebenfalls die Rechte haben. 
+\par 
+\par 
+\par 
+\par ?Kap. 12=h ac12 
+\par ?FLEX-Sprache=h flex 
+\par ?Datenbankanwahl=h xavanti 
+\par ?\'e4ltere Programme=h ac0-4 
+\par ?srch.job=h srch.job 
+\par ?update.job=h update.job
+\par ?Tutorial in English=~start http://www.allegro-c.de/doku/aconflex.htm
+\par 
+\par 
+\par }
+ 

@@ -1,0 +1,91 @@
+  O-VONBIS.FLX : Bestellungen eines Zeitraums VON ... BIS ... heraussuchen (ORDER)
+  2011-05-15 ($$ha)
+  Auf der Grundlage von o-zeit.flx erstellt
+  --------------------------------------------------------------------
+
+   // Bei Datumsabfragen und -manipulationen benutzte Anwendervariablen:
+   // #ux1: Tatsächlich eingegebenes Anfangs-Datum (z.B. 20.4.2011)
+   // #uzr: das, was aus #ux1 im UP up-x4x5 gemacht wird (20110420)
+   // #ux2   // Signalvariable, ob UP Fehler in Eingabesyntax feststellt (leer oder "falsch")
+   // #ux3: Tatsächlich eingegebenes End-Datum (z.B. 15.5.2011)
+   // #uzs: das, was aus #ux3 im UP up-x4x5 gemacht wird (20110515)
+   // #ux4: Übergabe an UP up-x4x5 (Variable #ux1=Anfang oder #ux3=Ende)
+   // #ux5: Das, was UP up-x4x5 zurückgibt (also 20110420 oder 20110515)
+  Frage nach dem Anfangs-Datum
+:datuma-ein
+ask Bestellungen ab wann? (Datum in der Form 20.4.2011 oder 9.11.2011 eingeben)=#ux1
+if cancel end
+ins #ux1
+var ""\ins #ux2
+var #ux1\ins #ux4
+perf up-x4x5    // Datumseingabe --> Belegung von #uzr
+var #ux2\if "falsch" jump datuma-ein
+var #ux5\ins #uzr
+:datume-ein
+ask Bestellungen bis wann? (Datum in der Form 20.4.2011 oder 9.11.2011 eingeben)=#ux3
+if cancel end
+ins #ux3
+var ""\ins #ux2
+var #ux3\ins #ux4
+perf up-x4x5    // Datumseingabe --> Belegung von #uzs
+var #ux2\if "falsch" jump datume-ein
+var #ux5\ins #uzs
+
+var #uzr\if not >#uzs jump datum-ok
+var "Das Anfangsdatum darf nicht hinter das Enddatum fallen!" n
+var +"Bitte erneute Eingaben!"
+mes\jump datuma-ein
+:datum-ok
+
+
+  Find-Befehl zusammenstellen  |; s 3 ? and bdt =datum
+  Falls Zeitraum AB dem gewaehlten Datum:
+var "|; s 3 ? and bdt >=" #uzr " and bdt <=" #uzs
+
+  Suche ausfuehren
+find
+  was gefunden?
+if empty jump nix
+var U
+ins #uo!
+var "RBestellungen " #uo!(b": ")
+set
+#uo!
+
+if l2 jump nureine
+  ja, dann ordnen
+order a0
+  und zeigen
+show list
+jump ende
+:nix
+message Keine Bestellung in dem Zeitraum
+end
+:nureine
+sho rec
+disp
+mes Da gibt's nur diese eine
+jump ende
+
+:up-x4x5   // UP Berechnung von #ux5 aus #ux4
+var #ux4 "X"\ins #ux4
+var #ux4(b"." b"." b".")
+if "" jump up-x4x5-1
+var #ux4(F"X")\ins #ux4
+:up-x4x5-2
+var "falsch"\ins #ux2
+var "Die Eingabe des Datums erfolgte nicht in der richtigen Form!" n
+var +"Bitte korrigieren Sie die Eingabe!"
+mes\return
+:up-x4x5-1
+var #ux4(F"X")\ins #ux4
+var #ux4(b"." b".")
+if "" jump up-x4x5-2
+   // Tag.Monat.Jahr wurde eingegeben:
+var #ux4(e".")\var (r2,0)\ins #utt
+var #ux4(b"." e".")\var (r2,0)\ins #umm
+var #ux4(b"." b".")\var (r4,0)\ins #ujj
+var #ujj #umm #utt\ins #ux5
+return   // Ende des UP up-x4x5
+
+:ende

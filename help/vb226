@@ -1,0 +1,258 @@
+
+Verlautbarung 226 der Entw.Abt.                              2010-02-17
+-------------------------------
+Zugleich "Himmelfahrts-/Aschermittwochskommando" 2010. Die sonst zu 
+dieser Gelegenheit ueblichen Bemerkungen zu den Hintergedanken 
+unterbleiben. Was gewuenscht wird, sind die nuechternen Fakten, das
+wissen und verstehen wir, und hier kommen sie:
+                                  (Bereitstellung aller Dateien im SVN)
+
+acon-Verbesserungen
+===================
+
+1. Statt  acon <srch.job  ist jetzt  acon -j srch  moeglich
+   (Verbesserung in acon.exe selbst, nicht im Job)
+   Der Typ .job muss nicht angegeben werden, er wird angehaengt,
+   falls der Name keinen . enthält. D.h., der Typ .job ist nicht
+   verbindlich!
+
+2. Die Auswertung der Optionen -d und -b ist verbessert, so dass
+   jetzt die bisher ueblichen Aufrufe von SRCH und UPDATE in
+   gleicher Weise funktionieren: acon findet aus -b sowohl wie aus
+   -d heraus, um welche Datenbank es gehen soll, die zum
+   Nachladen bzw. Einspeisen gebraucht wird.
+   ABER: Der Datenbankname muss angegeben sein, entweder 
+        -dc:\allegro\demo2\cat  oder dasselbe mit -b
+   oder
+        -ddemo2 -bcat
+   oder die betr. Angaben als Environment-Variable -D und -B
+   ALSO: Eine per CockPit produzierte ccc.bat genuegt nicht ganz,
+   denn dabei wird eben gerade der Datenbankname nicht eingebaut;
+   UPDATE.EXE findet ihn selber oder zeigt eine Auswahl.
+   Siehe dazu auch unten:  get env ...
+
+3. update.job kennt jetzt auch  -N und -F und -e .
+   Ferner kann es mit der Tilde ~ umgehen, wie im Handbuch beschrieben,
+   um Mehrfachfelder anzufuegen. Sie darf aber sowohl auf der ersten
+   Text- wie auf der Mehrfachposition stehen. Dazu nötig war die
+   Umstellung von "read" auf "fetch rec", s. unten.
+
+4. Die Kennzeichnung  #u1 @@@@@  am Satzanfang wird als Loeschbefehl
+   erkannt und ausgefuehrt.
+
+5. Beginnt der Satz mit #u1 #####N, wird er als Neusatz eingespeist,
+   und zwar in Datei N. Fehlt N, dann 1.
+   Beginnt er aber mit #u1 ####?N (4x #), dann wird er nur als Neusatz
+   gespeichert (in Datei N), wenn sein Primaerschluessel nicht 
+   gefunden wird, sonst ersetzt er den betr. Satz. (Gezielte,
+   individuelle Zuordnung eines Satzes zu einer Datei.)
+
+6. Wenn beim Aufruf die Option -fm.. weggelassen wird, dann gilt
+   -fm41  als default
+
+7. Option -eparam/datei  ist jetzt auch moeglich, um nebenbei einen
+   Export der eingespeisten Datensaetze durchzufuehren. Der Export
+   erfolgt jeweils nach dem Speichern, damit der Satz dann auch die
+   vergebene IdNummer sowie die Datumsfelder enthaelt.
+
+7a Globale Manipulationen: Wenn man Parameterdateien hat, die man zur
+   Manipulation von Datensaetzen geschrieben hat, kann man sie auch
+   hier noch einsetzen. Um den Manipulationsabschnitt auszufuehren,
+   muss man im Job an geeigneter Stelle den Befehl  exp -# geben (s.u.)
+
+8. update.job  kann jetzt auch .LOG und .ALD einlesen. Das geht so:
+   Bei "fetch record" hat man anschliessend in der "internen Nummer"
+   (var z) die interne Satznummer. Aber: Ist es ein geloeschter Satz,
+   beginnt er mit #u1 @@@@@, ist es ein neuer Satz (bei .LOG), beginnt
+   er mit  #u1 #####N, wobei N die Dateinummer ist. acon fuegt diese 
+   Felder beim Einlesen mit  fetch rec  selber hinzu. So funktioniert
+   dann das weitere Procedere genau wie bei den anderen Dateitypen, es
+   braucht aber nicht per Primaerschluessel der zugehoerige Satz in der
+   Datenbank gesucht zu werden, sondern das geht mit der Satznummer, 
+   wie eben beim klassischen Update zwecks "restore" ueblich, wo es
+   ja darum geht, exakt den Zustand vor einem Zusammenbruch zu 
+   restaurieren.
+   Das Programm merkt beim Befehl "open" selber, um was fuer einen
+   Dateityp es sich handelt. Die Option "-f" ist beim Typ .LOG dann
+   nicht wichtig - sie wird gar nicht beachtet.
+
+9. Will man den Prozess des Einspeisens der LOG-Datei korrekt fahren,
+   sind noch zwei Voraussetzungen zu erfuellen:
+   1. Logging abschalten - am Ende haette sie sich sonst verdoppelt
+      Dazu gibt es den neuen Befehl  set Log off
+   2. Timestamp abschalten - sonst wuerden  #99e + #99n  verfaelscht.
+      Dazu gibt es den neuen Befehl  set Timestamp off
+
+acon selbst, das ist wichtig, wertet nur die Optionen -d und -b aus.
+Die anderen liest der Job  srch.job  bzw. update.job  und verwendet
+sie entsprechend. Die Befehlszeile, mit der acon gestartet wird, 
+bekommt der Job als Ganzes in der Sondervariablen  cl  ueberreicht
+(cl = command line). Die Jobs beginnen deshalb mit
+
+var cl
+ins #ucl
+
+und danach werden die einzelnen Optionen aus #ucl herausgeloest und
+ausgewertet: z.B.  var cl (b" -b" f" " e" ") ... 
+Der groesste Vorteil der neuen Loesung gegenueber den aelteren, mono-
+lithischen Programmen ist die Flexibilitaet: In den Jobs srch.job
+und update.job hat man etliche Punkte (die Kommentare sind mit ***
+gekennzeichnet), wo man eigene, zusaetzliche Befehle einbauen kann,
+um das Geschehen zu beeinflussen. Im Falle "update" sind das sehr viele
+Stellen, vor allem fuer die Manipulation von Daten.
+Beide Jobs kommen auch, um das nicht unerwaehnt zu lassen, mit den
+hierarchischen Saetzen alter Art klar.
+
+ABER
+----
+Es bleibt ein Unterschied bestehen: Die alten Programme haben einige
+Interaktivität; sie fragen Dinge vom Nutzer ab, die beim Aufruf nicht
+angegeben wurden: Dateinamen, Export-Parameter, Suchbegriff u.a.
+Solche Eigenheiten sind jedoch gegen das Konzept des "Konsolprogramms"
+und wurzeln in der Kommando-Oberflächlichkeit des alten DOS. So etwas
+wird man nicht perpetuieren wollen! Konsolprogramme sollen nicht mit 
+dem Nutzer interagieren und taten es in der UNIX-Welt auch fast nie:
+sie kriegen einen vollständig formulierten Auftrag und erledigen den,
+ohne daß jemand dabeisitzen und noch Fragen beantworten muß.
+Abhilfe, wenn man nicht jeden Auftrag fertig und komplett vorformuliert
+bereitlegen kann:
+Einige FLEXe machen es längst vor, wie man die für eine Aktion
+nötigen Angaben zunächst in a99 zusammenstellen kann, um dann
+einen Batch damit zurechtzubasteln. So ist es etwa beim Org-Menü
+(produziert org.bat) und auf dem Export-Menü mit den "Sortierten
+Listen" (dabei entsteht ccc.bat)!
+Das ist mit acon ganz genauso möglich: man setzt
+nur statt "srch ..." und "update ..." jeweils ein: "acon -j srch ..."
+bzw. "acon -j update ..."
+
+
+srch.job
+--------
+wurde verbessert. Auch V14-Verknuepfungen werden jetzt korrekt
+aufgeloest. Wie bei  SRCH.EXE  wird der Klartext durchsucht, aber
+die Ausgabe erfolgt gemaess den gewaehlten Parametern mit oder
+ohne Aufloesung. 
+
+Ferner: Handelt es sich um eine .ALD-Datei, werden geloeschte
+Saetze (die mit "fetch rec" sehr wohl eingelesen werden!) nicht
+verarbeitet - so macht das SRCH.EXE ja eben auch.
+
+Ferner kann  srch.job  jetzt auch mit zwei Optionen -e umgehen.
+
+
+Weitere Verbesserungen
+----------------------
+"Write" statt "write" schreibt in "stderr", der Output kommt also
+dann normalerweise auf der Konsole raus, waehrend "write" evtl. in
+eine Exportdatei schreibt.
+
+
+export -x
+---------
+fuehrt in den Exportparametern den Abschnitt #-x aus, wobei x auch
+das Zeichen # sein kann, s.o. unter 7. Wenn dort eine Datenausgabe
+passiert, landet sie in der internen Variablen, und zwar wird sie
+hinten angehaengt. Also vorher mit  var ""  leeren, wenn das nicht
+erwuenscht ist!
+
+fetch record  (s.o. 8.)
+------------
+Dient als besserer Ersatz fuer "read"; Grund dafuer waren die mit
+"read" nicht klappenden Mehrfachfeld-Hinzufuegungen mit der Tilde
+als Steuerzeichen (s. Vb.225).
+Damit wird, wie schon berichtet, aus der geoeffneten Datei ein
+Datensatz in die iV geholt. acon weiss selber, ob es sich um eine
+Datei des Typs .ADT, .ALG, .ALD (!) oder .LOG handelt und macht das
+dann entsprechend richtig. Feldtrennung ist ";#" .
+Man schreibt am besten (Es gilt "cancel", wenn Datei zu Ende)
+
+new   // aktuellen Satz leeren
+fetch record
+if cancel jump ...
+insert   // Denn sonst steht der Satz nur in der iV!
+
+um den gesamten naechsten Satz in die iV einzulesen und dann in den 
+aktuellen Datensatz einzukopieren (dabei wird ;# als Feldgrenze 
+erkannt).
+Ferner gilt: Wurde der Satz aus einer .ALD- oder .LOG-Datei eingelesen,
+ist die "interne Zahl" gleich der Satznummer, d.h. mit 
+
+var z
+ins $recnr
+
+kann man sie schnell beiseitebringen.
+Wie schon oben unter 8. gesagt: Geloeschte Saetze kriegen ein Feld
+#u1 @@@@@, neue (nur bei .LOG) ein #u1 #####N (N=Dateinummer).
+Gesperrte (in .ALD) sind nicht erkennbar, das ist aber egal.
+
+get env name  und  get pid
+--------------------------
+acon kann sich jetzt auch Eintraege aus dem Environment holen.
+SRCH und UPDATE werden ja oft teilweise ueber das Environment mit
+Angaben versorgt, wie -D und -B und -K1 etc. Mit
+get env -D
+holt man sich dann also den Datenpfad.
+Mit  if "" ...  prueft man danach, ob die Var. existiert.
+Auch seinen "process identifier" pid kann sich acon jetzt besorgen.
+
+Per saldo wird nach unserer Einschaetzung nun  update.job  einen
+funktional vollwertigen Ersatz für UPDATE.EXE bieten koennen, srch.job
+ist sehr wahrscheinlich noch nicht allen Situationen gewachsen, in
+denen bisher SRCH.EXE eingesetzt wurde, s. dazu oben die Hinweise
+unter ABER.
+Ganz klar: Schoener waere eine nicht nur funktionale, sondern auch
+formale Gleichwertigkeit, was Berger salopp "Drop-In-Replacement"
+nennt. Mit einem Wort und einer Forderung allein ist freilich
+nichts gewonnen. Im Sinne von OpenSource koennte nun aber jeder
+ein Hilfsprogramm namens update.exe bzw. srch.exe schreiben, das dann
+einen korrekten Aufruf von acon produzierte. Das waere dann, wie
+Berger selber schon bemerkte, aequivalent. (Ach so, nein, update.exe
+geht ja nicht, aber upd.exe taete es notgedrungen auch.)
+
+Wir wollen nach und nach an allen Stellen. wo unsere Standard-Skripte
+(Batchdateien und FLEXe) einen SRCH-Aufruf enthalten, diesen ersetzen
+durch acon + srch.job, und entsprechend für UPDATE.
+Beispiel: Wenn man in einer .BAT-Datei dieses hat:
+
+update -fm41 -dc:\daten\katalog -udatei.plg -m0 -n5 -kp
+
+schreibt man dies so um (falls p.cfg und pica.ppi)
+
+acon -j update -fm41 -dc:\daten\katalog\pica -udatei.plg -n5 -kp
+--------                               -----
+Die zu ergaenzenden Teile sind unterstrichen.
+CockPit kann man in diesem Zs.hang vergessen, es ist ja 16bit und
+kann deshalb unter Win'7 nicht arbeiten; es wird auch ganz sicher 
+nicht umgeschrieben.
+
+Und noch zwei Verbesserungen bei acon:
+
+spaces
+------ 
+Geht jetzt auch. (Herausnahme aller Mehrfach-Spatien aus dem iV-Text,
+jedoch nicht innerhalb "..." und '...')
+
+
+family   (wie bei a99)
+------ 
+Zum aktuellen Satz die Ergebnismenge bilden, die aus den per Primaer-
+schluessel verknuepften Saetzen besteht. Diese Erg.Menge ist dann in
+der Reihenfolge der Primaerschl. geordnet.
+
+Die Befehle "switch fam" und "switch res" dagegen wechseln zwischen 
+der aktuellen Erg.Menge und der family-Menge, wobei letztere dann
+jeweils neu gebildet wird, sobald der aktuelle Satz ein anderer ist.
+Das gibt es nur bei avanti.
+
+Nebenbei: In a99 funktionierte der Befehl "fam" nicht immer, das wurde
+jetzt behoben. (Es hing ab vom momentanen iV-Inhalt...)
+
+
+FLEX-Kurzdoku
+-------------
+Die sog. Kurzdokumenation zu FLEX (flexk.rtf) wurde aktualisiert, jetzt
+sind auch die aktuell fuer avanti geltenden Befehle alle drin.
+Diese Datei ist geeignet, sie in WinWord einzulesen (27 Seiten) und
+auszudrucken, wenn man eine Kurzreferenz auf Papier will.
+
+

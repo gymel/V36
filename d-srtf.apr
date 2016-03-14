@@ -1,0 +1,92 @@
+  D-SRTF.APR : RTF Tabellarische Anzeige eines Datensatzes, MUSTER
+  2002-02-15
+  Struktur kann fuer andere Konfigurationen uebernommen werden.
+  Simples Modell! Hierarchische Saetze beruecksichtigt
+  Wenn auch verknuepfte Saetze vorkommen:  Komplexes Modell = D-KRTF.APR
+pn="Simpel TabellenExport RTF"
+
+  *********** Grundparameter, nicht ohne Grund aendern: ***************
+td-rtf   RTF-Steuerbefehle
+tad-aw   ASCII->ANSI Codetabelle
+
+zl=110   Zeilenlaenge, nicht besonders wichtig!
+         denn es wird kein Zeilenvorschub gemacht:
+ze=" "
+zb=" -"   Umbruch bei Leerz. und Bindestrich
+zm=0      keine Seitenschaltung
+dx=1      Umcodierung einschalten
+
+i4=1    V14-Ersetzungen ausfuehren
+
+   *****************
+
+   **** Zwischenteile (Textkonstanten) *************
+   Hier evtl. Gestaltung der Tabelle modifizieren:
+
+4="\par "
+
+  Tabellen-Parameter                  erste Spalte:
+18="\pard\uc1\tx2272\li1800\fi-1800\f4\fs18 "       breit
+19="\pard\uc1\tx2272\li1800\fi-1800\f4\fs18 "         schmal
+    \f6 = Schrift 6 = Verdana.  \f0 einstellen, wenn Sonderzeichen noetig!
+
+
+13="\par "
+20="\par \i "     Neue Tabellenzeile
+21="\i0 \tab "      zwischen zwei Tab.Spalten
+22=""              Ende der Tab.Zeile (bei RTF nichts)
+23=t20 t21
+
+    nur bei HTML:
+  29="<pre>"
+  28="</pre>"
+
+
+p ª 1     Nichtsortierzeichen ausblenden
+      RTF-Steuerzeichen mit \ maskieren:
+p { "\{"
+p } "\}"
+p \ "\\"
+      Absatzende
+p  "\par \tab "
+
+td-s     d-s.apt laden
+
+
+        Unterprogramme  fuer RTF
+   Abschnitt fuer die Kategorie-Anzeige
+#-(
+
+#t18
+#nr =aF e0
+
+#t29
+#t{ t4 }
+#nr p"x" e2 =dm
+
+#t{ s0 }       oder 5 statt 4 wenn 3stelliges Schema!
+
+#u01
+#-)
+#u02 +) p4
+ ##                oder
+ #L            alternativ: Anzeige mit Labels aus der CFG
+#t{ t4 }
+#t28
+#+#
+
+
+
+#(U
+#t{ t20 "URL: " t21 }
+#cc +#nr i5,: e0
+#cc e$ p"~start " =Z~
+#cc B"\31?" =Y~
+#cc B"\31?" p69 P68
+#)U
+#nr e0    (nur Sprungmarke!)
+#cc e$ p"X _access!" e"!" =Z~
+#cc B"\31?" =Y~
+#cc B"\31?" p69 P68
+#)U
+

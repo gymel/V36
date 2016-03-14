@@ -1,0 +1,242 @@
+  DBIII.AIM : dBASE ASCII-file -> NMN  Beispiel  IfaS-Institut Kîln
+  961014
+  
+  
+
+  so sieht ein Datensatz aus: (aber ohne Zeilentrennung, 13 10 am Satzende)
+ 
+ 313 134@113@fi@Eco, Umberto@@@Semiotik - Entwurf einer Theorie der Zeichen
+ (A Theory of Semiotics, dt.)@MÅnchen@Fink@1987@(Supplemente ; 5)@10205/88@
+ Deskriptor@@,,F,F,@11@Kommentar@
+ 45 361@38@@Hood, Christopher (Hg)@Schuppert, Gunnar Folke (Hg)@@VerselbstÑ
+ ndigte Verwaltungseinheiten in Westeuropa : d. ErfÅllung îffentl. Aufgaben 
+ durch Para-Government Organizations (PGOs)@Baden-Baden@Nomos Verl.-Ges.@19
+ 88@@11638@@@,,F,F,@11@@
+
+ Hilfsprogramm DB2DELIM.EXE:
+ Aus dBase-Dateien des Typs .DBF kann man Textdateien erstellen, wobei die
+ Felder direkt aufeinander folgen, getrennt durch ein waehlbares Zeichen
+ (das sonst nicht vorkommen darf), Satzende = 13 10
+ Wenn z.B.  YXZ.DBF die Datenbankdatei ist, gibt man den Befehl
+ db2delim xyz 64
+ Dann kommt die oben sichtbare Struktur heraus (ASCII 64 = '@')
+
+re=13 10
+
+fe="@"        @ ist Feldendezeichen
+fx=17         Es sind 17 Felder je Satz, begrenzt durch @
+
+
+   Hier sehen Sie, was man z.B. alles mit dBASE-Datenfeldern machen kann.
+   Vergleichen Sie die Befehle mit dem oben abgedruckten Beispieldatensatz.
+   Ihre eigenen Daten kînnen natÅrlich vîllig anders aussehen!!!
+
+#20   Sachtitel
+f 6   steht in Feld 6
+N     Artikel am Anfang markieren
+
+#32
+f 12
+
+#40
+f 3
+c ","   wenn das Feld ein Komma enthÑlt, 
+/       dann Åbergehe die folgende Zeile
+qkoe1   sonst, wenn also kein Komma, brich hier ab und gehe zu -koe1
+c "(H"    wenn es "(H" enthÑlt, gehe zu -hg1  (s.o. zweites Beispiel)
+qhg1
+c "(e"
+qhg1
+c "(M"
+qmit1
+c "(B"
+qbea1
+c "(F"
+qfs1
++autor2
+
+-hg1
+#41
+f 3
+e "("
++autor2
+
+-mit1
+#42
+f 3
+e "("
++autor2
+
+-bea1
+#43
+f 3
+e "("
++autor2
+
+-fs1
+#59
+f 3
+e "("
++autor2
+
+-koe1
+#60
+f 3
+e "("
++autor2
+
+-autor2
+#402
+f 4
+c ","
+/
+qkoe2
+c "(H"
+qhg2
+c "(e"
+qhg2
+c "(M"
+qmit2
+c "(B"
+qbea2
+c "(F"
+qfs2
++autor3
+
+-hg2
+#412
+f 4
+e "("
++autor3
+
+-mit2
+#422
+f 4
+e "("
++autor3
+
+-bea2
+#432
+f 4
+e "("
++autor3
+
+-fs2
+#59
+f 4
+e "("
++autor3
+
+-koe2
+#602
+f 4
+e "("
++autor3
+
+-autor3
+#403
+f 5 
+c ","
+/
+qkoe3
+c "(H"
+qhg3
+c "(e"
+qhg3
+c "(Mi"
+qmit3
+c "(Be"
+qbea3
+c "(F"
+qfs3
++ort
+
+-hg3
+#413
+f 5
+e "("
++ort
+
+-mit3
+#423
+f 5
+e "("
++ort
+
+-bea3
+#433
+f 5
+e "("
++ort
+
+-fs3
+#59
+f 5
+e "("
++ort
+
+-koe3
+#603
+f 5
+e "("
++ort
+
+-ort
+#74        Ort 
+f 7
+
+#75        Verlag
+f 8
+.
+
+#76        Jahr
+f 9
+
+#81        Kommentar
+f 16
+
+#85     Reihe
+f 10
+% 040   ersetze "(" durch " "
+_ 032
+% 041   und ")" durch " "
+_ 032  
+i 032   ignoriere fÅhrende Leerzeichen
+
+#90    Signatur
+f 0
+
+#902   Quer
+f 1
+
+#91     Inven
+f 11 
+
+#95    Status
+f 2
+% "fi"
+_ "Fi"
+
+#96    Ausleiher
+f 13
+f 14
+R 10 084
+w " (ext.)"
+R 10 074
+w " (ext.)"
+R 10 089
+w " (ext.)"
+e ",1"
+R 1 ","
+qwann
+
+-wann
+#97       wann
+f 14
+b 044
+e 044
+c "198"
+/
+qend
+
+-end

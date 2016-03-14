@@ -1,0 +1,418 @@
+  HOLIDAYS.FLX : Feiertage des aktuellen Jahres
+  2005-02-28   mit Ostertermin nach dem Gauss-Algorithmus
+
+  Aufruf mit  holidays 0 : aktuelles Jahr nehmen
+                       +/- : voriges, naechstes
+                       nnnn: Jahr nnnn
+
+if "?" jump frage
+if ="0" jump thisyear
+if "" jump thisyear
+if >"1700" if <"2199" jump rech
+  Gibt es #uOj? Wenn nicht, dann Frage
+if not #uOj jump frage
+  Wenn ja, war der Aufruf  holidays +/- ?
+if ="+" jump nchst
+if ="-" jump vorig
+  Nein, dann Frage
+jump frage
+
+:nchst
+
+var #uOj
+z=
+z+1
+var z
+ins #uOj
+
+jump rech
+
+:vorig
+var #uOj
+z=
+z-1
+var z
+ins #uOj
+jump rech
+
+:thisyear
+var #dts(0,4)
+jump rech
+
+:frage
+ask Jahr?
+if "" end
+if <1701 mes Es geht erst ab 1701!;jump frage
+if >2199 mes Es geht nur bis 2199!;jump frage
+
+  Jahr steht jetzt in der iV
+:rech
+
+  UP aufrufen
+perf gauss
+
+  Jahr steht in #u|t
+var #u|t
+
+if "0" jump error
+
+  aber jetzt erst die Flip-Variablen beseitigen
+var ""
+#uY~
+#uZ~
+$bT
+
+var #uOj
+
+  V0 = Jahr
+ins #uV0
+  Flips fuer voriges und naechstes Jahr einrichten
+z=
+z-1
+var z
+ins #uO1
+ins #uY1
+var "X holidays --"
+ins #uZ1
+z+2
+var z
+ins #uO2
+ins #uY2
+var #uV0 "0102"
+perf Day
+ins $bt
+
+if %Fr% var $bT "2.1.";ins $bT
+
+var "X holidays ++"
+ins #uZ2
+
+
+var #uOj #u|m(0,r2) #u|t(0,r2) "+0"
+ins _ _0_
+
+  va = osterdatum
+ins #uV4
+
+perf Day
+
+ins #u|d
+
+var #u|d(0,8) "-46"  // Aschermittwoch
+perf Day
+var (b"=" b", " t" ")
+ins #uV3
+
+var "Aschermittwoch: " #uV3
+
+var #u|d(0,8) "+49"
+perf Day
+ins #u|p
+if %=% var #u|d(b"=" b", " t" ");ins #uV4
+
+var #uOj "0501+0"  // 1. Mai
+perf Day
+var (b" = " e",")
+perf wt
+ins #uO5
+if %Do% var $bT ", 2.5.";ins $bT
+if %Di% var $bT ", 30.4.";ins $bT
+
+var #u|d(0,8) "+39"  // Himmelfahrt
+perf Day
+ins #u|h
+
+ var #u|t "." #u|m
+var #u|p(b"=" b", " t" ")
+ins #uV6
+var #u|h(b"=" b", " t" ")
+ins #uV5
+
+var #u|h(0,8) "+1"  // Himelfahrtsfreitag
+Day
+ins $bt
+var $bt (4,4)
+ins #u|h
+var $bT ", " #u|h(2,2 f"0") "." #u|h(0,2 f"0")
+ins $bT
+
+var #u|p(0,8) "+11"  // Fronleichnam = Pfingsten+11
+perf Day
+var (b"=" b", " t" ")
+ins #uO7
+
+var #u|p(0,8) "+12"  // Fronleichnamsfreitag
+Day
+ins $bt
+var $bt (4,4)
+ins #u|h
+var $bT ", [" #u|h(2,2 f"0") "." #u|h(0,2 f"0") "]"
+ins $bT
+
+var #uOj "1003+0"  // 3. Okt.
+perf Day
+var (b" = " e",")
+perf wt
+ins #uO3
+if %Do% var $bT ", 4.10.";ins $bT
+if %Di% var $bT ", 2.10.";ins $bT
+
+
+var #uOj "1224+0"
+perf Day
+ins #u|w
+var #u|w(b"=" e",")
+
+  Wochentag bestimmen (Sonntag, Montag, ...)
+perf wt
+
+ins #uV9
+
+if %Di% var $bT ", 23.12.";ins $bT 
+
+var #uV0 "1227"
+Day
+if %Fr% var $bT ", 27.12.";ins $bT
+
+var #uV0 "1231"
+Day
+if %Mo% var $bT ", 31.12.";ins $bT
+
+var #u|w(e"/")
+ins #u|w
+var #uV9
+if "Sonnt" var #u|w "-21"
+if "Mo" var #u|w "-22"
+if "Di" var #u|w "-23"
+if "Mi" var #u|w "-24"
+if "Do" var #u|w "-25"
+if "Fr" var #u|w "-26"
+if "Sonna" var #u|w "-27"
+perf Day
+
+ins #u|1
+var #u|1(0,8) "-11"
+
+perf Day
+var (b", " t" ")
+ins #uO6
+
+var #u|1(b" = " b", " t" ")
+ins #uV8
+var #u|1(e"/") "+7"
+
+perf Day
+ins #u|2
+var #uV8 " / " #u|2(b" = " b", " t" ")
+ins #uV8
+var #u|2(e"/") "+7"
+perf Day
+ins #u|3
+var #uV8 " / " #u|3(b" = " b", " t" ")
+ins #uV8
+var #u|3(e"/") "+7"
+perf Day
+ins #u|4
+var #uV8 " / " #u|4(b" = " b", " t" ")
+ins #uV8
+
+var #uOj "0106+0"  // 6. Jan
+perf Day
+var (b" = " e",")
+perf wt
+ins #uO8
+
+var #uOj "0401+0"  // 1. April
+perf Day
+var (b" = " e",")
+perf wt
+ins #uO4
+
+
+
+ var #uOj "1031+0"  // 31. Okt. Reformation
+  // unnoetig, denn Wochentag ist derselbe wie 3.10.
+ Day
+ var (b" = " e",")
+ ins #uOr
+
+var #uOj "0101+0"  // Neujahr
+perf Day
+var (b" = " e",")
+perf wt
+ins #uV2
+if =#uV9 var "kein Schaltjahr"
+if not "kein" var "Schaltjahr"
+ins #uV1
+#u|~
+var $bT (f", ")
+ins #u|b
+h holidays
+act 1
+end
+:error
+var "Sorry, für das Jahr " #uOj " kann Ostern nicht berechnet werden." n
+var +"Es geht nur für die Jahre 1700 bis 2199."
+end
+
+
+  Unterprogramm: erzeugt #u|t (Tag), #u|m (Monat) und #uOj (Jahr)
+  Aufruf erfolgt so, dass Jahreszahl in der iV steht
+  Hilfsvariable: #uEX, werden alle wieder geloescht
+:gauss
+ins #uOj
+if <1700 jump E0
+if >2199 jump E0
+if "17" var "23";ins #uEM;var "3";ins #uEN;jump Eb
+if "18" var "23";ins #uEM;var "4";ins #uEN;jump Eb
+if "19" var "24";ins #uEM;var "5";ins #uEN;jump Eb
+if "20" var "24";ins #uEM;var "5";ins #uEN;jump Eb
+if "21" var "24";ins #uEM;var "6";ins #uEN;jump Eb
+  ungueltige Eingabe
+:E0\var "0"\ins #u|t\ins #u|m\return
+
+:Eb
+var #uOj
+z=
+z%19
+var z
+ins #uEA
+
+var #uOj
+z=
+z%4
+var z
+ins #uEB
+
+var #uOj
+z=
+z%7
+var z
+ins #uEC
+
+var #uEA
+z=
+z*19
+var #uEM
+z+
+z%30
+var z
+ins #uED
+
+var #uEB
+z=
+z*2
+var #uEC
+Z=
+Z*4
+var Z
+z+
+var #uED
+Z=
+Z*6
+var Z
+z+
+var #uEN
+z+
+z%7
+var z
+ins #uEE
+
+var "3"
+ins #u|m
+
+var "22"
+z=
+var #uED
+z+
+var #uEE
+z+
+var z
+ins #u|t
+
+var #u|t
+if <32 jump Ende
+
+z=
+z-31
+var z
+ins #u|t
+var "4"
+ins #u|m
+
+var #u|t
+if ="26" var "19"; ins #u|t
+var #u|t
+if not ="25" jump Ende
+var #uED
+if not ="28" jump Ende
+var #uEA
+if not >"10" jump Ende
+var "18"
+ins #u|t
+
+
+:Ende
+#uE~
+
+return
+
+:wt
+
+if %Mi% var "Mittwoch"
+if %Di% var "Dienstag"
+if %Do% var "Donnerstag"
+if %So% var "Sonntag"
+if %Sa% var "Sonnabend"
+if %Mo% var "Montag"
+if %Fr% var "Freitag"
+return
+
+include day.inc
+
+ u-VARIABLEN in holidays.flx
+ #uEA (3)
+ #uEB (2)
+ #uEC (2)
+ #uED (4)
+ #uEE (2)
+ #uEM (6)
+ #uEN (6)
+ #uE~ (1)
+ #uO1 (1)
+ #uO2 (1)   Wo.Tag 1.1.
+ #uO3 (1)   Wo.Tag d. 3.10.
+ #uO4 (1)
+ #uO5 (1)   Wo.Tag d. 1.5.
+ #uO6 (1)
+ #uO7 (1)   Datum Fronleichnam
+ #uOj (17)
+   eingebettet in holidays.rtf: (als %0 - %9 )
+ #uV0 (1)
+ #uV1 (1)
+ #uV2 (1)
+ #uV3 (2)
+ #uV4 (2)
+ #uV5 (1)   Datum Himmelfahrt
+ #uV6 (1)
+ #uV8 (7)
+ #uV9 (3)   Wo.Tag 24.12. und 31.12.
+
+ #uY1 (1)
+ #uY2 (1)
+ #uY~ (1)
+ #uZ1 (1)
+ #uZ2 (1)
+ #uZ~ (1)
+  Nur in :gauss
+ #u|1 (4)
+ #u|2 (3)
+ #u|3 (3)
+ #u|4 (2)
+ #u|d (5)
+ #u|h (2)
+ #u|m (4)
+ #u|p (3)
+ #u|t (10)
+ #u|w (9)
+ #u|~ (1)

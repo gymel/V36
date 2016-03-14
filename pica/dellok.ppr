@@ -1,0 +1,59 @@
+ Dateiname:        PICA\DELLOK.PPR
+ Inhalt:           Export-Parameter-Datei zur Erzeugung einer Liste der
+                   aufgrund der DEL-Datei in der allegro-Pica3-Datenbank zu
+                   lîschenden Lokal- und ExemplarsÑtze
+ letzte énderung:  13.11.96 (S. Busemann)
+
+
+   ----- Konstanten -------------------------------------------------------
+
+pn="Liste der aufgrund der DEL-Datei zu lîschenden Lokal- und ExemplarsÑtze"
+
+zl=0               kein Zeilenumbruch
+zm=0               kein Seitenumbruch
+ks=1               Beginn beim ersten Zeichen hinter #
+fl=0               keine Formularaufteilung
+ke=""              Kategorie-Ende-Zeichen
+
+
+   ----- Zwischenteil-Definitionen ----------------------------------------
+
+1=9
+2=0 C
+3=0
+
+
+   ----- Kategorieliste ---------------------------------------------------
+
+#0000 +x b5 |102             Titelsatz Åber Register 10 nachladen, um die
+#+#                          neunstellige PPN zu erhalten
+
+#-x
+#0100 dpe b5 Ape             LokalsatzschlÅssel zusammensetzen
+#uln b5 p"-" Ape
+#upe +y b5 |110              und Lokalsatz Åber Register 11 nachladen
+#+z
+
+#-y
+#9D00F p1 P3                 Lokalsatz-PrimÑrschlÅssel ausgeben
+#9D00L P2
+#<                           zurÅckschalten zum Titelsatz
+
+#-z
+#upe +a b5 P"-" |116         ersten Exemplarsatz ohne SelektionsschlÅssel
+#+b                          nachladen
+
+#-a
+#7800 p1 P2                  EPN als PrimÑrschlÅssel ausgeben
+#upe +a b5 P"-" |117         nÑchsten Exemplarsatz ohne SelektionsschlÅssel
+                             nachladen
+
+#-b
+#upe +c b5 P"/" |116         ersten Exemplarsatz mit SelektionsschlÅssel
+#+#                          nachladen
+
+#-c
+#7800 p1 P2                  EPN als PrimÑrschlÅssel ausgeben
+#upe +c b5 P"/" |117         nÑchsten Exemplarsatz mit SelektionsschlÅssel
+#+#                          nachladen
+

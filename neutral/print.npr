@@ -1,0 +1,134 @@
+  PRINT.NPR : Parameter fuer Druckausgabe, N-Format
+  2006-04-12
+
+  Wichtig: Zeilen mit Leerzeichen am Anfang bewirken nichts
+    zwei oder mehr Leerzeichen in einer Zeile bedeuten: Rest ist Kommentar.
+
+  --- Grundeinstellungen ---
+zl=0     Zeilenlaenge beliebig!
+zi=0        keine Einrueckung von Folgezeilen
+fl=0     kein Kartenformat
+fm=0
+ze=" "
+  ---------------------------
+i4=1    V14-Ersetzungen vornehmen
+
+  Zwischenteile (\par = Zeilenvorschub in RTF)
+4="\par "
+22="\par "
+
+  Das Programm arbeitet die nachfolgende Liste bei hierarchischen Saetzen
+  auch fuer jeden Untersatz ab (#hi ist dann besetzt mit der Bandnummer)
+  Verknuepfte Untersaetze werden jedoch nicht vervollständigt.
+
+#hi p{ t4 t66 } P{ t98 t4 }
+
+#200 +#100 66 P{ t98 ": " t4 }
+#20c 66 P{ t98 ": " t4 }
+#100 B"Y" e" : " 66 P98
+#100 B"Y" b" : " p" : "
+#185 +#120 " / "
+#200 p" / "
+#20c p" / "
+#25s p{ t4 t73 "Solisten: " t105 }
+#120 p{ t4 t73 "Orig.: " t105 }
+#21e. ++ p{ t4 t73 "Hrsg.: " t105 } m"; "
+#210. ++ p{ t4 t73 "Beteiligt: " t105 } m"; "
+#300 p{ t4 t73 "Verantw.: " t105 }
+#310. ++ p{ t4 t73 "Beteiligt: " t105 } m"; "
+#750. ++ ,"_p_: _" ,"_t_, _" p{ t4 t73 "Veranstalt.:   " t105 } m{ "\par ...             " }
+#040 p{ t4 t73 "Jahr:   " t105 }
+#855 ". - "
+#25c p{ t4 t73 "Dirig.:   " t105 }
+#35e p{ t4 t73 "Orch.:   " t105 }
+#860 +#810 f": " p{ t4 t73 "Ersch.:   " t105 }
+#360 P{ t4 t73 "Verlag:   " t105 } e0
+#360 $p P" : "
+#360 $$
+#810 p{ t4 t73 "Umfang:   " t105 }
+#08i p{ t4 t73 "ISBN:   " t105 }
+#08s p{ t4 t73 "ISSN:   " t105 }
+#880. 4
+
+  und noch die Stammsaetze erledigen:
+#n10 >N e0
+#t4
+#+#
+
+   Abschnitt fuer die Kategorie-Anzeige
+  (falls man diese Param. zur Anzeige in a99 benutzt)
+#-(
+
+#bp & &
+#bp # #
+#bi4=0
+#t18
+#nr =aF e0
+#000 |9
+#t29
+#t4
+#t4
+#nr p"x" e2 =dm
+
+#t{ s0 }       oder 5 statt 4 wenn 3stelliges Schema!
+
+#u01
+#-)
+#u02 +) p4
+ ##                oder
+ #L            alternativ: Anzeige mit Labels aus der CFG
+#t{ t4 }
+#t28
+#bp .35 8
+#bi4=1
+#</
+#+#
+
+     Unterprogramm f. Stammsaetze
+#(N
+#n10 i5,p { t23 t79 } p"Personenstammsatz!" e"!" P{ t111 t22 }
+#n10 i5,b { t23 t79 } p"Körperschaftsstammsatz!" e"!" P{ t111 t22 }
+#n10 i5,c { t23 t79 } p"Sachgruppencode!" e"!" P{ t111 t22 }
+#n10 i5,a { t23 t79 } p"GeoCode!" e"!" P{ t111 t22 }
+#n10 i5,A { t23 t79 } p"Aufstell-Systematik!" e"!" P{ t111 t22 }
+#n10 i5,l { t23 t79 } p"Sprachencode!" e"!" P{ t111 t22 }
+#n10 i5,s { t23 t79 } p"Sachschlagwort!" e"!" P{ t111 t22 }
+#n10 i5,g { t23 t79 } p"Geoschlagwort!" e"!" P{ t111 t22 }
+#n10 i5,f { t23 t79 } p"Formcode/-schlagwort!" e"!" P{ t111 t22 }
+#n10 i5,h { t23 t79 } p"Zeitschlagwort!" e"!" P{ t111 t22 }
+#n10 i5,t { t23 t79 } p"Thesaurusbegriff!" e"!" P{ t111 t22 }
+#n10 i5,d { t23 t79 } p"DDC-Zahl!" e"!" P{ t111 t22 }
+#n10 i5,k { t23 t79 } p"Basisklassifikation!" e"!" P{ t111 t22 }
+#n10 i5,u { t23 t79 } p"UDK-Zahl!" e"!" P{ t111 t22 }
+#n10 i5,w { t23 t79 } p"Werk-Stammsatz!" e"!" P{ t111 t22 }
+#n30 $$ { t20 "Amtl. Form:  " t21 t66 } P{ t98 t22 }
+#n35 $$ { t20 "Bedeutung:   " t21 } P22
+#n50 { t20 "                  " t21 } P22
+#n30 $w { t20 "OpusNr:  " t21 } P22
+#n40 { t20 "auch:       " t21 } P22
+#n4p { t20 "Pseudonyme: " t21 } P22
+#n80 { t20 "Anm.:       " t21 } P22
+#n20 { t20 "Code:       " t21 } P22
+#n31d { t20 "Dewey:       " t21 } P22
+#n31l { t20 "LC Class:    " t21 } P22
+#n31b { t20 "Basisklass.: " t21 } P22
+
+#t{ t20 t21 t22 }    leere Tabellenzeile
+#)N
+
+
+
+
+td-rtf    fuer Ausgabe mit RTF-Formatierung  d-rtf.npt
+tdtab     ASCII->ASCII-Zeichentabelle  dtab.npt
+
+p .20 "\par "    Absatzendezeichen (Strg+t) weglassen
+
+p .31 0     Teilfeld-Steuerzeichen (Code 31 = Dreieck)
+q .31 0     als Endezeichen behandeln
+p | "; "
+
+  Dies wird gebraucht fuer korrekte Behandlung der Flips:
+toasci   o-Tabelle ASCII <-> ANSI
+
+

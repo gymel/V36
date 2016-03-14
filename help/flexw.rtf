@@ -1,0 +1,121 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\froman\fprq2 Times New Roman;}{\f2\fscript\fprq2 Comic Sans MS;}{\f3\fswiss\fprq2\fcharset0 Arial;}{\f4\fswiss\fprq2 Arial;}{\f5\fswiss\fcharset0 MS Sans Serif;}{\f6\fmodern\fprq1 Courier New;}{\f7\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue0;\red0\green0\blue255;\red255\green0\blue128;}
+\viewkind4\uc1\pard\qc\f0\fs24         \f1   \f0                               \f2 
+\par \cf1\b\fs26 FLEX : Die wichtigsten Befehle 
+\par \cf2\b0\f0\fs22 `\cf3\ul\f3\fs26 Weitere Beispiel\f4 e\cf2\ulnone\f0\fs22 `\f5   --  \f0 `\cf3\ul\f4\fs26 Gesamte Befehlsliste\cf2\ulnone\f0\fs22 `\f5   \b\f1\fs28 
+\par \pard\b0\fs18 
+\par \f5\fs22 %=#uX9x var "x " zc\\if ="x  " end\\sho iv\\exec% Die Beispiele in diesem Text k\'f6nnen Sie alle \b\f0 sofort ausprobieren\b0 : 
+\par %=x set db% Schreibmarke in \f5 eine\f0  Befehlszeile setzen, \cf4\b Alt+9\cf2\b0\f5  dr\'fccken.  (Gleichzeitig Alt-Taste und die Ziffer 9 - nicht die Taste F9!) \f0 
+\par Sie \i\f5 k\'f6nnten\i0\f0   die Zeile auch in das Schreibfeld kopieren, mit "\f6 x \f5 " davor, und Enter dr\'fccken!  Um dies zu ersparen, wurde ein besonderer FLEX in diesen Text eingebettet, und der wird mit Alt+9 ausgel\'f6st. \f0 
+\par 
+\par \i\f5\tab\f0 ALSO  :\i0  \f5  Zeile anklicken, z.B. die unter 1., dann \f0  \cf4\b Alt+9\cf2\b0\f5   tippen: das l\'f6st den FLEX aus  - die gew\'e4hlte Zeile wird dann kopiert und ausgef\'fchrt. \f0 
+\par \f5 
+\par \tab\i ACHTUNG:\i0    \f0 Weiter unten kommt eine `\cf3\ul\b genauere Beschreibung\cf2\ulnone\b0 ` dieser Beispiele. 
+\par 
+\par  In  \cf1\b\f6 rot\cf2\b0\f0  sieht man die eigentlichen Befehle. Der Backslash ist das Trennzeichen zwischen den Befehlen\f5 , wenn man sie auf einer Zeile hintereinander eingibt.\f0 
+\par 
+\par    1. Eine Meldung anzeigen (Befehl \f6 message\f0 , kurz  \b\f6 mes\b0  \f5 - der darauf folgende Text wird angezeigt \f0 ) 
+\par \cf1\b\f6 mes \cf2 Dieser Text erscheint in einer Meldungs-Box 
+\par \b0\f0 
+\par    2. Dieselbe Meldung zuerst mit Befehl   \b\f6 var \b0\f0  als interne Variable erzeugen, diese dann anzeigen 
+\par \cf1\b\f6 var \cf2 "Dieser Text erscheint in einer Meldungs-Box"\\\cf1 mes\cf2 
+\par \i\f5 Sehr wichtig:\b0\i0   Dieser Mechanismus gilt f\'fcr die meisten Befehle: wenn hinter dem Befehlswort (also hier \f7 mes\f5 ) nichts steht, wird als Ersatz 
+\par der Inhalt der internen Variablen genommen. Und dieser wird meistens, wie hier, vorher mit  \cf1\b\f6 var\cf2\b0\f5   erzeugt!\f0 
+\par 
+\par \f5    3. Eine Meldung erzeugen, die auch Elemente des momentanen Datensatzes enth\'e4lt: \f0 
+\par \cf1\b\f6 var \cf2 "Der Titel ist: " \cf1 #20 n\cf2  "Das Buch erschien " \cf1 #76\cf2\\\cf1 mes\cf2 
+\par \b0\f0  
+\par    4. Eine Meldung mit `\cf3\ul\b internen Variablen\cf2\ulnone\b0 ` erzeugen: \cf1\b\f6 D\cf2\b0\f0  ist das Datenverzeichnis, \cf1\b\f6 t\b0\f0  \cf2\f5 die Anzahl Datens\'e4tze \f0 
+\par \cf1\b\f6 var \cf2 "Die Datenbank liegt auf " \cf1 D\cf2  " und hat " \cf1 t\cf2  " Saetze"\\\cf1 mes\cf2 
+\par \b0\f0   
+\par    5. Den Nutzer mit Befehl \f6  \b ask\b0  \f0  zu einer Eingabe auffordern und die Eingabe (sie steht dann in der internen Variablen!) als Meldung anzeigen 
+\par \cf1\b\f6 ask \cf2 Bitte Eingabe\\\cf1 mes\cf2 
+\par \b0\f0 
+\par    6. Dasselbe, aber Fehlermeldung, wenn nichts eingegeben wurde 
+\par \cf1\b\f6 ask \cf2 Bitte Eingabe\\\cf1 if "" mes\cf2  Keine Eingabe\\\cf1 if not ""\cf2  \cf1 mes\cf2 
+\par \b0\f0 
+\par    7. Die Nutzereingabe in eine Hintergrundvariable kopieren, diese dann anzeigen 
+\par \cf1\b\f6 ask \cf2 Bitte Eingabe\\\cf1 ins\cf2  #uva\\\cf1 var\cf2  "Eingegeben wurde " #uva\\\cf1 mes \cf2 
+\par \b0\f0 
+\par    8. Eine Ja/Nein-Frage stellen (Befehl \f6  \b yesno\b0\f0  ) und die Reaktion des Nutzers auswerten 
+\par \cf1\b\f6 yesno \cf2 Haben Sie was gelernt?\\\cf1 if no\cf2  \cf1 mes\cf2  Schade\\\cf1 if yes\cf2  \cf1 mes\cf2  Gut, dann machen Sie weiter\cf1  \cf2 
+\par \b0\f0 
+\par \f5    9. Pr\'fcfen, ob ein eingegebener Wert kleiner als der in #uwx ist \f0 
+\par \cf1\b\f6 ask \cf2 Geben Sie eine Zahl ein\\\cf1 Z=\cf2\\\cf1 var\cf2  #uwx\\\cf1 Z-\cf2\\\cf1 var Z\cf2\\\cf1 if Z<0 mes\cf2  OK, ist kleiner\\\cf1 if not #uwx mes\cf2  #uwx fehlt!\cf1  \cf2 
+\par \b0\f0 
+\par \f5   10. Eine Datei anzeigen, hier soll es die Datei  \f7 quick.vw\f5   sein, und die vom Nutzer ausgew\'e4hlte Zeile verwerten \f0 
+\par \cf1\b\f6 Aresqa \cf2 help/quick.vw\\\cf1 ins \cf2 #uaz\\\cf1 var "\cf2 Ihre Wahl ist " #uaz\\\cf1 mes \cf2 
+\par \b0\f0 
+\par 
+\par 
+\par \cf4\b Genaue Beschreibung der Beispiele\cf2\b0  
+\par \f5 Auch hier k\'f6nnen Sie die Zeilen mit Alt+9 ausl\'f6sen! \f0 
+\par 
+\par    1. Eine Meldung anzeigen 
+\par \cf1\b\f6 mes \cf2 Dieser Text erscheint in einer Meldungs-Box 
+\par \b0\f0 
+\par \f5 Hinter dem Befehlswort "message" (verk\'fcrzbar bis auf 3 Buchstaben, also "mes"), kann man einen beliebigen Meldungstext angeben. Dieser Text wird dann in einer Message-Box gezeigt, die nach Druck auf [OK] oder die Enter-Taste wieder verschwindet. Was aber macht "mes", wenn kein Text dahinter steht? \f0 
+\par 
+\par    2. Dieselbe Meldung zuerst mit   \b\f6 var \b0\f0  als interne Variable\f5  ( iV )\f0  erzeugen, diese dann anzeigen\f5 . Denn wenn hinter  \b\f7 mes\b0\f5  nichts steht, wird der Inhalt der iV angezeigt.\f0 
+\par \cf1\b\f6 var \cf2 "Dieser Text erscheint in einer Meldungs-Box"\\\cf1 mes\cf2 
+\par \b0\f0 
+\par \f5 Der Sinn des Befehls  \b\f7 variable\b0\f5  (verk\'fcrzbar bis auf  \b\f7 var\b0\f5 ) ist es, eine \b Zeichenkette zusammenzustellen\b0 , mit der anschlie\'dfend vieles gemacht werden kann. Sie steht dann in einer "internen Variablen", kurz iV genannt. Das Einfachste ist, diese iV-Zeichenkette dann anzeigen zu lassen. Der Befehl  \b\f7 mes\b0 sage\f5   ohne etwas dahinter macht genau das: anzeigen, was in der Variablen iV steht. \f0 
+\par 
+\par \f5    3. Eine Meldung erzeugen, die auch Elemente des momentanen Datensatzes enth\'e4lt: \f0 
+\par \cf1\b\f6 var \cf2 "Der Titel ist: " \cf1 #20 n\cf2  "Das Buch erschien " \cf1 #76\cf2\\\cf1 mes\cf2 
+\par \b0\f0 
+\par Jedes Datenfeld kann in eine FLEX-Ausgabe einbezogen werden, indem man im \b\f6 var\b0\f5 -Befehl einfach die Kategorienummer angibt, hier #20 und #76. Merke: Text mu\'df zwischen Anf\'fchrungszeichen, die Kategorienummern aber nicht! Beides kann sich, wie man sieht, abwechseln. Soll es \'fcbersichtlich bleiben, schreibt man mehrere solche Befehle untereinander. Eine neue Zeile wird durch das \cf1\b\f6 n\cf2\b0\f5  hinter der #20 ausgel\'f6st. \f0 
+\par 
+\par    4. Eine Meldung mit internen Variablen erzeugen 
+\par \cf1\b\f6 var \cf2 "Datenbank liegt auf " \cf1 D\cf2  " und hat " \cf1 t\cf2  " Saetze"\\\cf1 mes\cf2 
+\par \b0\f0   
+\par \f5 Es gibt eine gro\'dfe Zahl von `\cf3\ul\b\f0 internen Variablen\cf2\ulnone\b0 ` mit festgelegten Bedeutungen, die man in einem \b\f6 var\b0\f0 -Befehl verwenden kann. Die interne Variable \cf1\b\f6 D\cf2\b0\f5  enth\'e4lt den Pfadnamen (auch "Ordner" oder "Verzeichnis" genannt) wo sich die Datenbank befindet, die Variable \cf1\b\f6 t\b0\f0  \cf2\f5 enth\'e4lt die momentane Gesamtzahl von Datens\'e4tzen. \f0 
+\par \i\f5 Merke:\i0  Alles, was hinter \b\f7 var\b0\f5  zwischen Anf\'fchrungszeichen steht, wird unver\'e4ndert als Text \'fcbernommen. Was au\'dferhalb von Anf\'fchrungszeichen steht, in diesem Fall also D und t, wird als interne Variable interpretiert und in den Text eingesetzt. Insgesamt entsteht so ein zusammengesetzter Text, der aktuelle Angaben enthalten kann. Dadurch wird der Befehl \b\f7 var\b0\f5  enorm FLEXibel.\f0 
+\par 
+\par    5. Den Nutzer zu einer Eingabe auffordern, die Eingabe (sie steht in der internen Variablen!) dann als Meldung anzeigen 
+\par \cf1\b\f6 ask \cf2 Bitte Eingabe\\\cf1 mes\cf2 
+\par \b0\f0 
+\par \f5 Aus einem FLEX heraus kann man dem Nutzer Fragen stellen. Der einfachste Befehl dazu ist "ask". Die hinter "ask" stehende Zeichenkette (bzw., wenn da keine steht, der Inhalt der iV !) wird \'fcber einer Eingabezeile angezeigt. Der FLEX wartet dann, bis der Nutzer "Enter" oder "Esc" tippt. War es Enter, wird die eingegebene Zeichenkette in der iV stehen. Mit "mes" wird deren Inhalt angezeigt, wie beim Beispiel 3. \f0 
+\par 
+\par    6. Dasselbe, aber Fehlermeldung, wenn nichts eingegeben wurde 
+\par \cf1\b\f6 ask \cf2 Bitte Eingabe\\\cf1 if "" mes\cf2  Keine Eingabe\\\cf1 if not ""\cf2  \cf1 mes\cf2 
+\par \b0\f0 
+\par \f5 Hier wird nach der Eingebe gepr\'fcft, ob wirklich etwas eingegeben wurde! Die Formulierung  \cf1\b\f6 if "" \cf2\b0\f5  pr\'fcft, ob die iV nichts enth\'e4lt (Nichts = leere Zeichenkette, dargestellt durch "", also zwei Anf\'fchrungszeichen ohne etwas dazwischen). Stimmt dies, wird der nachfolgende Befehl ausgef\'fchrt, also die Meldung "Keine Eingabe" angezeigt. Der n\'e4chste Befehl, \cf1\b\f6 if not ""\cf2  \b0\f0  macht das Umgekehrte: Das Wort "not" dreht die Logik um, der nachfolgende Befehl "mes" gibt die eingegebene Zeichenkette aus, wie im Beispiel 4. 
+\par 
+\par    7. Die Nutzereingabe in eine Hintergrundvariable kopieren, diese anzeigen 
+\par \cf1\b\f6 ask \cf2 Bitte Eingabe\\\cf1 ins\cf2  #uva\\\cf1 var\cf2  "Eingegeben wurde " #uva\\\cf1 mes \cf2 
+\par \b0\f0  
+\par \f5 In diesem Fall wird das, was der Nutzer eingegeben hat, zuerst in eine Variable #uva kopiert. Dann wird in einem "var"-Befehl der Text "Eingegeben wurde " mit dem Inhalt dieser Variablen zu einer Zeichenkette zusammengesetzt. \b\f7 mes\b0\f5  zeigt diese dann wieder an. Die Variablen vom Typ #uxy (mit zwei beliebigen Zeichen x und y, und vorn immer #u) kann man freiz\'fcgig \'fcberall in einem FLEX verwenden, d.h. in \b\f7 var\b0\f5 -Befehle einbauen und durch "ins"-Befehle mit Inhalten f\'fcllen. Dieselben Variablen k\'f6nnen in den Index- oder Exportparametern auftreten, daher kann es Wechselwirkungen oder Nebenwirkungen geben. Empfohlen wird, um das zu vermeiden, da\'df man die Zeichen xy nicht ganz beliebig w\'e4hlt, sondern das einer der beiden ein Gro\'dfbuchstabe ist. In den Parameterdateien werden n\'e4mlich fast immer ausschlie\'dflich Kleinbuchstaben verwendet. \f0 
+\par 
+\par    8. Eine Ja/Nein-Frage stellen und die Reaktion des Nutzers auswerten 
+\par \cf1\b\f6 yesno \cf2 Haben Sie was gelernt?\\\cf1 if no\cf2  \cf1 mes\cf2  Schade\\\cf1 if yes\cf2  \cf1 mes\cf2  Gut, dann machen Sie weiter\cf1  \cf2 
+\par \b0\f0 
+\par \f5 Der Befehl "yesno" mit nachfolgendem Text zeigt diesen Text in einer JA-NEIN-Box an und wartet auf Eingabe von j, n oder Esc (bzw. Druck auf die entsprechenden Buttons. Mit Hilfe des if-Befehls kann man danach pr\'fcfen, welche dieser Reaktionen es war: "if no" gilt, wenn "n" geantwortet, "if yes" gilt, wenn "j" gedr\'fcckt wurde, und "if cancel" gilt, wenn Esc bet\'e4tigt wurde. Die "yesno"-Frage bietet also tats\'e4chlich drei M\'f6glichkeiten der Reaktion. 
+\par \i Hinweis:\i0   ab V25 kann man mehrere Befehle hinter einen if-Befehl setzen, diese m\'fcssen dann durch Semikolon getrennt sein.\f0 
+\par 
+\par \f5    9. Pr\'fcfen, ob ein eingegebener Wert kleiner als der in #uwx ist \f0 
+\par \cf1\b\f6 ask \cf2 Geben Sie eine Zahl ein\\\cf1 Z=\cf2\\\cf1 var\cf2  #uwx\\\cf1 Z-\cf2\\\cf1 var Z\cf2\\\cf1 if Z<0 mes\cf2  OK, ist kleiner\\\cf1 if not #uwx mes\cf2  #uwx fehlt!\cf1  \cf2 
+\par \b0\f0 
+\par Die eingegebene Zahl wird zuerst in die `\cf3\ul\b interne Zahl\cf2\ulnone\b0\f5 ` Z kopiert, dann wird der Wert von #uwx davon subtrahiert. War die eingegebene Zahl Z kleiner als die in #uwx, dann mu\'df die Differenz kleiner als Null sein. Diese Arbeitsweise ist n\'f6tig, weil man nicht direkt so etwas wie  \f6 if Z<#uwx\f0   schreiben kann, sondern hinter \f6 if Z< \f5  mu\'df eine richtige Zahl  stehen. \f0 
+\par 
+\par \f5   10. Eine Datei anzeigen und die vom Nutzer ausgew\'e4hlte Zeile verwerten. Als Beispiel soll es die Datei \f7 quick.vw\f5  sein: \f0 
+\par \cf1\b\f6 Aresqa \cf2 help/quick.vw\\\cf1 ins \cf2 #uaz\\\cf1 var "\cf2 Ihre Wahl ist " #uaz\\\cf1 mes \cf2 
+\par \b0\f0 
+\par \f5 Die Datei \f7 quick.vw,\f5  auf dem Hilfeverzeichnis liegend, wird im aresqa-Fenster gezeigt. Das gro\'dfe A hat zur Folge, da\'df die Datei nicht bearbeitet werden kann! Mit Enter wird dann das Fenster geschlossen und die zuletzt markierte Zeile landet in der iV, wird dann in #uaz kopiert und diese mit dem Hinweis "Ihre Wahl ist " angezeigt. \f0 
+\par 
+\par \i Anmerkungen\i0 
+\par \f5 Die meisten FLEXe werden un\'fcbersichtlich, wenn sie in einer einzelnen Zeile dargestellt werden. Man hat daher die M\'f6glichkeit, den FLEX-Text in eine Datei zu schreiben, wobei dann jeder Befehl eine eigene Zeile hat. So wird es viel besser \'fcberschaubar. Hat man eine Datei xyz.flx angelegt, kann die mit eingabe von X xyz aktiviert werden, d.h. der darin stehende FLEX wird dann ausgef\'fchrt. Der Aufruf einer FLEX-Datei kann eingebaut sein in einen Hilfetext, er kan aber auch hinter einem der Flip-Buttons, li\f0 nks unter diesem Textfeld, versteckt werden. Wie das alles gemacht wird, steht in der Anleitung `\cf3\ul\b So erstellt man FLEXe\cf2\ulnone\b0 `. 
+\par Hier wurden nur ganz wenige, sehr wichtige Befehle gezeigt. Es gibt eine `\cf3\ul\b Liste aller Befehle\cf2\ulnone\b0\f5 `, in der Sie jeden einzelnen anklicken k\'f6nnen, um genau zu erfahren, wof\'fcr er gut ist. \f0 
+\par 
+\par 
+\par \f5 
+\par ?internen Variablen=h xcstring=Interner Sondervariablen  
+\par ?So erstellt man FLEXe=h flex=So erstellt man FLEXe 
+\par ?Liste aller Befehle=h xa 
+\par ?Gesamte Befehlsliste=h xa 
+\par ?genauere Beschreibung=h =Genaue Beschreibung 
+\par ?interne Zahl=h xiz 
+\par ?Weitere Beispiele=h mbtest 
+\par \f0 
+\par }
+ 

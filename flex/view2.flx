@@ -1,0 +1,151 @@
+  VIEW2.FLX : Erstellung eines View aus der aktuellen Erg.Menge
+  2000-07-17    mit fest eingestellten Parametern, MIT Gruppierung+Summierung
+  
+  Diesen FLEX kann man kopieren und braucht nur den Namen zu aendern
+  (siehe unten xxxxxx) um ihn fuer andere Parameter einzusetzen.
+  Dann Einbau in RTF-Hilfetext nach Muster VIEW.RTF
+
+get env comspec
+ins #uwC
+
+#uvU
+if empty jump nix
+
+  Name der aktuellen Erg.Menge -> #uvU
+var U
+ins #uvU
+:nix
+  aktuelle Exp.param. und -datei sichern
+var e
+ins #uve
+var E
+ins #uvf
+  Parameterdatei zur Erstellung des View (ViP)
+     xxxxxxxx     hier anderen Namen einsetzen
+var "v-stand2"
+
+ins #uvo
+
+  diese Parameter laden
+xport p 
+if no jump error
+var "Standard-View 1"
+ins #uvt
+
+var M "vvv"
+ins #uvw
+  Diesen Namen als Outputdatei verwenden
+xport f 
+
+   aktuelle Erg.Menge exportieren, Datei schliessen
+var ""
+ins #uvx
+if empty jump full
+
+down set
+:ready
+xport f nul
+  .vw-Datei schliessen, wenn noch offen
+close view
+var #uvY
+  Gruppierung/Summierung gewuenscht? (j in #uvY bzw. #uvM besetzt)
+if "j" jump grp
+if #uvM jump grp
+  Sortierbefehl zusammenstellen (dabei Sortierkopf #u1 beseitigen)
+  asort name name.vw -u3
+var #uwC " /c " P "asort " #uvw " " #uvw ".vw -u3"
+  (Option -u3 beseitigt #u1 etc.)
+jump sort
+:grp
+var #uwC " /c " P "asort " #uvw " " #uvw "." K1 "lg -u1"
+
+:sort
+  Sortieren ausfuehren
+
+cAll
+var #uvY
+if "j" jump grupp
+if #uvM jump grupp
+jump anzeigen
+  Wenn Gruppierung/Summierung, dann noch Export mit viewgrup.apr:
+:grupp
+  vw.bat = Prozedur zum Erstellen der ViewListe
+open x vw.bat
+wri "set -P=" P n
+wri "set -K=" K n
+wri "set -K1=" K1 n
+wri P "srch -f6 -d" #uvw " -eviewgrup/" #uvw ".vw -v0 -m0 -b" D B n
+close x
+var #uwC " /c vw.bat"
+
+cAll
+var #uvw "." K1 "lg"
+  delete
+  unsortierte Datei  name  wieder loeschen
+var #uvw 
+  delete 
+
+:anzeigen
+var #uvw ".vw"
+   Fertig sortierte ViewListe anzeigen
+set v1
+View
+if no mes ViewListe existiert nicht
+activate
+ask Erg.Menge als View aufbewahren? Dann einen Namen eingeben:
+if "" var "vvv"
+ins #uvn
+ins #uv9
+if "vvv" jump ende
+view 000
+var M "vvv.vw " M #uvn(e".") ".vw"
+rename 
+if no jump rerr
+
+var M #uvn(e".") ".vw"
+
+  wieder oeffnen
+set v1
+view
+
+:ende
+  aktuelle exp.param wiederherstellen
+var #uve
+xport p
+var #uvf
+xport f
+  HilfsVariablen loeschen
+var ""
+ins #uva
+ins #uve
+ins #uvf
+ins #uvm
+ins #uvM
+ins #uvt
+ins #uvu
+ins #uvx
+ins #uvz
+help view
+var "Mit  Strg+o  erscheint ViewListe wieder, Menue mit Strg+w!"
+sho iv
+
+end
+
+:error
+var "Die Datei V-STAND2." K1 "PR existiert nicht!"
+mess
+end
+
+:full
+var "Keine Ergebnismenge. Ganze Datenbank als View?" 13 10 "Nein = Zuerst Ergebnismenge machen, dann View-MenÅ wieder starten"
+ansi
+noyes
+if not yes end
+if yes dow database
+jump ready
+
+:rerr
+ins $u
+var "Umbenennung " $u " hat nicht geklappt"
+mes
+

@@ -1,0 +1,123 @@
+
+Verlautbarung 191 der Entw.Abt.                          2006-04-26
+-------------------------------
+
+Absicherungen
+-------------
+1. Suchbefehle mit unpaarigen Anfuehrungszeichen konnten Abstuerze
+ausloesen, z.B.  per "shakesp?
+2. Erfolglose Suchbefehle sollen automatisch das jeweilige Register
+an der betreffenden Stelle aufblaettern. Das gelang nicht unter
+allen Umstaenden.
+Beide Misshelligkeiten wurden ausgemerzt. Was grundsaetzlich nicht
+funktionieren KANN ist ein Befehl wie
+   per "shakesp? and tit "drama?"
+Dies passiert nur bei manuellen Befehlen, denn das Fernglasmenue
+produziert immer korrekt paarige Anfuehrungszeichen.
+
+ViewListen: Kleine Verbesserung
+-------------------------------
+Enthaelt eine Viewlistenzeile einen | und beginnt sie mit einer Zahl,
+wird diese Zahl als interne Satznummer gewertet und der zugehoerige
+Satz angezeigt. Das ist nicht immer erwuenscht, zumal dann, wenn die
+ViewListe als Erfassungshilfe gedacht ist und der Teil vor dem |
+gar keine Satznummer, sondern z.B. eine Codezahl ist.
+Dieses Verhalten wurde so veraendert, dass jetzt beim Aufruf aus
+Formularen die Satzanzeige unterbleibt, und dass man durch ein
+vorgesetztes Spatium sogar die Anzeige generell unterbinden kann.
+
+N-Paket
+-------
+Es lohnt ein Blick auf die weiter ausgebaute Startseite:
+   http://www.allegro-c.de/neutral/
+und dann auf die Beispiele. Da sieht man die Verwendung der
+wichtigsten Kategorienummern, und das macht einen viel schneller
+damit vertraut als das Studium der vollstaendigen Liste. 
+Wer sich das Paket installiert, kann in der DemoBank dann 100
+Beispieldatensaetze aller Typen untersuchen: Im Register 9
+mal zz eingeben, dann sieht man eine Uebersicht. Auf der Startseite
+(h bank) sieht man ferner einige hilfreiche Flips.
+
+
+Neutralpaket: Hilfe zu den Datenfeldern
+---------------------------------------
+Die N.CFG war von vornherein strukturiert angelegt gewesen, so dass
+daraus zum einen die Dokumentation in HTM-Form abgeleitet werden
+konnte, zum andern aber auch die H-Dateien fuer jedes einzelne
+Feld. Diese wurden jetzt noch ausgebaut. Sowohl bei der Bearbeitung
+eines Feldes im Schreibfeld als auch in den Formularen kann man
+jederzeit F1 druecken und erhaelt den passenden Hilfetext.
+Oder: man will eben mal was zu #830 wissen, dann tippt man nur
+#830 und F1
+[Uns ist klar: Man haette von vornherein alles mit XML strukturieren
+sollen und dann die Derivate incl. CFG mittels XSLT generieren, jajaja.
+Nur fertig waer's dann noch nicht.]
+
+
+Neutralpaket: Import
+--------------------
+Man kann auf der Import-Startseite  (h fremd)  den Menuepunkt
+"Importe nach alter Art" nutzen! Dafuer wurden nicht etwa neue
+Parameterdateien geschrieben, sondern es werden jeweils die
+Importparameter fuer A.CFG genommen, der Export dann aber mit
+i-neut.apr durchgefuehrt. Eingebaut ist dies in  fremd.bat,
+welcher aus  fremd.rtf  heraus gestartet wird.
+
+
+Neutralpaket: ViewListen
+------------------------
+Das weiter angereicherte N-Paket enthaelt jetzt 12 Viewlisten, die
+zur Unterstuetzung der Erfassung und zur Normierung diverser
+Codes dienen sollen. Deshalb sind die Listen auch schon an die
+Formulare angebunden. Man teste insbes. das Formular [Codes].
+In jedem der Felder kann man mit Alt+i die betr. Liste nutzen.
+
+Mit  h vlists  erhaelt man die folgende Uebersicht, wobei man die
+Namen jeweils anklicken und die Listen sofort sehen kann. Vielleicht
+sind diese ViewListen ein zusaetzlicher Anreiz, sich das N-Paket zu
+besorgen: Nirgends findet man eine solche Zusammenstellung.
+
+ aspect.vw     Sachliche Aspekte; Ergaenzung zur Sachgruppe 
+	z.B. -RE : Rechtlicher Aspekt, -PL Politischer Aspekt 
+
+ charact.vw    Objektart hinsichtlich analog / digital 
+	z.B. a = analog (Buch), b = Digital (e-Book) 
+
+ material.vw   Materialcode (GMD, "Allgem. Materialbenennung")
+	Verwendung an der 4. Position von #830, um dieses Feld
+	mehrfach verwenden zu k”nnen und dadurch die einzelnen
+	Felder zu unterscheiden.
+
+ dctype.vw     Dublin Core resource types : Medientyp von Objekten 
+	z.B. X = Text,  I = Bild, D = Datenmaterial, S = Sound 
+        Ergaenzend siehe Doku zum Feld 830 (h h830 eingeben)
+
+ dewey.vw      3stellige Dewey-Klassen 
+	z.B. 510 Mathematik, 330 Wirtschaft 
+
+ formcode.vw   Dokumenttyp (inhaltlicher Typ) 
+	z.B. 015 Zeitschrift, 070 Adressbuch, 200 Datenbank 
+
+ geo.vw        GeoCode (Geographic Area Code der LC) 
+	z.B. e-gx = Deutschland, n-mx = Mexiko 
+
+ normtyp.vw    Normsatztyp 
+	z.B. p = Personenstammsatz., d = DDC-Zahl 
+
+ pubtype.vw    Veroeffentlichungsart 
+	z.B. m = Mehrteilig, l = Loseblatt, a = Artikel (unselbst.) 
+
+ relat.vw      Relator Codes : Funktionsbezeichnungen f. Personen 
+	z.B. edt = Editor, ill = Illustrator 
+
+ script.vw     Schrift des Dokuments 
+	z.B. b = Lateinsch, c = Kyrillisch, h = Hebraeisch 
+
+ sg.vw         Sachgruppen (Grobklassifikation) mit Dewey-Konkordanz 
+	z.B. AR = Architektur, BLK = Botanik, MK = Musik 
+
+ spr.vw        Sprachcodes nach ISO639/2 
+	z.B. ger = Deutsch, ara = Arabisch 
+	
+
+

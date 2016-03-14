@@ -1,0 +1,210 @@
+  SORTLIST.FLX : Listenproduktion wie bei CockPit (s. Kap. 6)
+  2002-03-21
+
+var m
+if "alc" end
+
+if not empty jump expe
+
+var "Export" n "Ganze Datenbank als sortierte Liste?"
+yesno
+if canc end
+if no jump error
+
+:expe
+  Exp.Parameter sichern
+var e
+ins #uve
+  Par. f. Sortiervorbereitung waehlen
+:sortp
+var "sort." K1 "pr"
+open
+if no jump psort
+var "Parameter fÅr die Sortier-Vorbereitung" n
+var +"(d.h. in welcher Weise soll die Liste geordnet sein?)" n n
+get +
+var +n
+get +
+ins #uvS
+close
+var #uvS n n "Korrekt?"
+ans
+yesno
+if no jump psort
+if can end
+
+:vollp
+var "select." K1 "pt"
+open
+if no jump pvoll
+var "Parameter fÅr die VollstÑndigkeit der DatensÑtze" n
+var +"(normalerweise zu empfehlen: S-VOLL.APT)" n n
+get +
+var +n
+get +
+ins #uvV
+close
+var #uvV n n "Korrekt?"
+ans
+yesno
+if no jump pvoll
+if can end
+
+:printp
+var "print." K1 "pr"
+open
+if no jump pprint
+var "Parameter fÅr die Listengestaltung (das Aussehen der Liste)" n n
+get +
+var +n
+get +
+ins #uvP
+close
+var #uvP n n "Korrekt?"
+ans
+yesno
+if no jump pprint
+if can end
+
+
+:printerp
+var "printer." K1 "pt"
+open
+if no jump pprinter
+var "Druckertreiber (fÅr Word: P-RTF.APT)" n n
+get +
+var +n
+get +
+ins #uvW
+close
+var #uvW n n "Korrekt?"
+ans
+yesno
+if no jump pprinter
+if can end
+
+
+  jetzt sind alle Dateien ausgewÑhlt
+
+if not empty first
+
+xport p sort
+var "uuu." K1 "lg"
+open x
+if not empty dow set;jump close
+yes Gesamte Datenbank?
+if no var #uve;xport p;end
+
+dow database
+
+:close
+close x
+
+  CCC.BAT einrichten
+open x ccc.bat
+wri "@echo off" n
+
+wri "set -P=" P n
+wri "set -B=" B n
+wri "set -D=" D n
+wri "set -K=" K n
+wri "set -K1=" K1 n
+//   a99-list.bat  macht Sortierung und Print-Export
+wri Fa99-list.bat
+close x
+  Export-Param restaurieren
+var #uve
+xport p
+get env comspec
+ins #uwC
+  und CCC.BAT starten
+var #uwC " /c ccc.bat"
+call
+mes Verarbeitung fertig!
+var "liste"
+fsize
+if no jump experr
+
+var "Die Datei hei·t " W "\\LISTE" n
+var +n "Wenn es eine RTF-Datei ist, soll sie in liste.rtf umbenannt werden?"
+ansi
+yes
+if not yes end
+  liste.rtf vorher loeschen, sonst geht rename nicht
+var W "\\liste.rtf"
+del
+var W "\\liste " W "\\liste.rtf"
+rename
+if no jump rerr
+
+var W "\\liste.rtf kann mit Word eingelesen werden!"
+mes
+end
+
+  Unterprogramme zur Auswahl der Par.-Dateien
+
+:psort
+var "Parameter fÅr Sortiervorbereitung|" P "s-*." K1 "pr"
+ansi
+fnam
+if no end
+ins #uvS
+  kopieren auf sort.apr
+var #uvS " sort." K1 "pr"
+fcopy
+
+jump sortp
+
+:pvoll
+var "Parameter fÅr VollstÑndigkeit der SÑtze|" P "s-*." K1 "pt"
+ansi
+fnam
+if no end
+ins #uvS
+  kopieren auf select.apt
+var #uvS " select." K1 "pt"
+fcopy
+jump vollp
+
+:pprint
+var "Parameter fÅr Druckaufbereitung|" P "p-*." K1 "pr"
+ansi
+fnam
+if no end
+ins #uvS
+  kopieren auf print.apr
+var #uvS " print." K1 "pr"
+fcopy
+jump printp
+
+:pprinter
+var "Druckertreiber-Tabelle|" P "p-*." K1 "pt"
+ansi
+fnam
+if no end
+ins #uvS
+  kopieren auf printer.apt
+var #uvS " printer." K1 "pt"
+fcopy
+jump printerp
+
+:error
+var "Dann machen Sie zuerst eine Ergebnismenge!" n
+var +"Entweder mit Registersuche oder mit Find-Befehl" n
+var +"Danach kehren Sie zu dieser Funktion zurÅck."
+ansi
+mes
+index |1 a
+end
+
+:experr
+var "Die Datei  " W "\\LISTE  konnte nicht erstellt werden. Schreibberechtigung?" n
+ansi
+mes
+end
+
+:rerr
+ins $u
+var "Umbenennung " $u " hat nicht geklappt"
+end
+

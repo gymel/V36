@@ -1,0 +1,47 @@
+  XML-TXT.FLX : XML-Datei mit Zeilenstruktur versehen
+  2008-12-09  : aber Zeilenwechsel NUR vor < (nicht vor </ )
+
+  Aufruf:   X xml-txt dateiname
+  Ergebnis:   Datei xmldata.xml (!) bereinigte, uebersichtlichere Datei
+
+  Dateiname steht in iV, oeffnen
+open
+if no mes Die Datei gibt's nicht;end
+
+  Datei zum Schreiben oeffnen
+open x xmldata.xml
+
+  Schleife verarbeitet die Datei zeichenweise
+:LOOP
+  naechstes Zeichen holen
+fetch 1
+  Dateiende? -> :dende
+if cancel jump dende
+  Ist es < oder > ? Dann Sonderbehandlung
+if "^" jump LOOP
+if "<" perf k;jump LOOP
+  normal: Zeichen einfach wieder rausschreiben
+wri ^
+jump LOOP
+
+:dende
+close
+  Abschluss der rtf-Datei
+wri "}}}"
+close x
+  und anzeigen
+help xmldata.xml
+end
+
+:k   // UPro fuer Zeichen <
+  welches Zeichen kommt hinter < ?
+$q 1
+fetch c
+  Falls nicht </, dann auch neue Zeile
+if not ="47" wri n "<";return
+  sonst nur <
+wri "<"
+return
+
+
+

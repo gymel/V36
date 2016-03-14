@@ -1,0 +1,219 @@
+
+Verlautbarung 273 der Entw.Abt.                              2015-10-08
+-------------------------------
+
+V35.9 ist da
+------------
+
+allegro CrashCourse fuer Einsteiger und Aussenstehende.
+-------------------
+Mit
+  http://www.allegro-c.de/doku/cc/cc.htm  
+ruft man einen neuen Text ab, der ganz kompakt und anhand der
+wichtigsten Dateien erklaert, aus was eine allegro-Datenbank besteht
+und wie man schnellstmoeglich eine solche oeffnen kann und sich darin 
+umschauen, auch wenn man keine Ahnung davon hat.
+
+Ratschlag: Eigene catger.rtf anlegen
+------------------------------------
+Die im HELP-Ordner liegende catger.rtf kommt, wenn man auf das dicke
+Fragezeichen klickt UND die eigene Datenbank  cat  heisst UND 
+im eigenen DbDir keine gleichnamige Datei ist.
+Sie enthaelt Funktionen, die man sicher nicht dem OPAC-Nutzer
+anbieten will. Daher: Eigene gleichnamige Datei ins eigene DbDir
+stellen, mit eigenen, fuer den OPAC-Nutzer sinnvollen Angaben.
+Zur Not nehmen Sie die vorhandene Datei  catger.rtf, kopieren sie ins
+eigene DbDir und nehmen raus, was nicht angeboten werden soll.
+Dasselbe mit cateng.rtf, wenn Englisch angeboten werden soll.
+[Bearbeitung mit WinWord ist moeglich.  h help  gibt bessere Hinweise.]
+
+
+Kennen Sie schon a99a?
+----------------------
+Wir weisen auf diese schon laengst nicht mehr neue Variante von a99
+nochmals hin, weil sie kaum bekannt ist. Admins meckern snobistisch 
+ueber a99, weil es so ueberfrachtet ist mit lauter fetten Buttons und
+anderem Krimskram, der optisch nicht den Sehgewohnheiten entspricht.
+a99a kann dasselbe wie a99, sieht aber mehr wie ein "richtiges" 
+Windows-Programm aus, mit schlanker Buttonleiste unter dem Menue, und
+bietet mehr Platz fuer die eigentlichen Daten.
+So startet man a99a:
+a) Direkt aus a99:  Alt+4 .. a99a   oder   v quick .. a99a
+   ODER unter Umgehung von a99:
+b) Indem man im Programmaufruf (unter dem Icon) a99 ersetzt durch a99a
+c) oder bei manuellem Direktaufruf eben a99a statt a99.
+
+
+SolrPower aktualisiert (a99/alcarta)
+----------------------
+   http://www.allegro-c.de/doku/solr.htm
+Die schon angejahrte Doku zur Nutzung der Suchmaschine Solr von
+Apache wurde aktualisiert. Nun kann man die Solr-Version 5.3 nutzen. 
+Die zugehoerigen Parameter und FLEXe wurden auch aktualisiert:
+e-solr.apr, allsolr.flx, expsolr.flx, asksolr.flx
+
+
+"Anzeigeparameter wechseln" (a99)
+---------------------------
+Angefragt wurde, ob denn nicht die Auswahlliste unter dieser Funktion
+sich auch auf die Dateien des Typs d-*.@pr erstrecken koenne, statt nur
+auf d-*.apr (bzw. der entsprechende CFG-Buchstabe statt a).
+Das erwies sich als machbar und wurde gemacht.
+Die gleiche Verbesserung wurde auch in "Andere Exportparameter"
+unter "Export" eingebaut.
+
+
+Import: Problem bei Option -s
+-----------------------------
+Die Option -s soll bei Import ermoeglichen, bestimmte Saetze anhand
+eines Suchkriteriums (d.h. einer im Satz vorkommenden Zeichenfolge)
+von der Umwandlung auszuschliessen. Das klappte nur bei Zeichen mit
+Code unter 126. Korrigiert. Dank an Berger fuer's Aufspueren des 
+Problems sowie der Loesung.
+
+
+Neue Datenbank anlegen (a99)
+----------------------
+Die Hilfsfunktion "Neue Datenbank anlegen" versagte bei MAB, MARC
+und Pica. Es fehlte nur eine Zeile in _newdb.flx. Repariert.
+Dank an Fischer fuer's Aufspueren des Problems sowie der Loesung.
+
+
+CFG: Befehl mB, Default manchmal zu knapp
+-----------------------------------------
+Der Reservespeicher (#u-Variablen) ist auf 12.000 Byte eingestellt,
+wenn man in der CFG keinen Befehl mB hat. Schreiben Sie rein
+
+mB12000
+
+dann machen acon und a99 daraus sogar 112000.
+Das ist eigentlich eine Skurrilitaet. Wichtig nur, wenn man sehr
+lange #u-Variablen braucht.
+
+
+INDEX: protok kommt jetzt ins DbDir
+-----------------------------------
+Die PROTOK-Datei des Programms INDEX kam bisher ins WorkDir zu 
+liegen, jetzt kommt sie ins DbDir. (Option -x gibt's hier nicht.)
+Damit koennen nun mehrere INDEX-Laeufe gleichzeitig stattfinden,
+die zugehoerigen Protokolle kommen sich nicht in die Quere, und
+aufeinanderfolgende INDEX-Laeufe mit verschiedenen DbDir zerstoeren
+nicht jeweils das vorher erzeugte PROTOK wird nicht ueberschrieben.
+Eine Option -x wie fuer QRIX hat sich nicht so schnell realisieren
+lassen. Es ist aber so, dass PROTOK wenig ergiebig ist fuer eine
+evtl. (in seltenen Faellen) mal noetigen Problemanalyse, die Muehe
+wuerde daher nicht recht lohnen.
+
+
+FLEX: ftime fuer acon?
+----------------------
+Den Zeitstempel einer Datei kann man mit acon nicht so leicht
+ermitteln wie mit a99. Das hat interne Gruende. Es wurden aber
+Abhilfen ausgearbeitet, die jetzt in  h xftime  dokumentiert sind.
+Eingebaut und zum direkten Ausprobieren findet man sie in al.job
+zum Ermitteln der Zeitangabe der Logdatei.
+
+
+acon: Jetzt auch  open x / close x
+----------------------------------
+Jetzt gehen auch in acon die Befehle  open x  und  close x  zum 
+Oeffnen bzw. Schliessen einer Exportdatei.
+[Bisher ging das nur implizit mit  open f name  bzw. mit
+open f stdout  statt  close x.] 
+
+
+asort : Nun auch .adt-Dateien
+-----------------------------
+Ein langgehegtes Vorhaben konnte zum guten Schluss noch umgesetzt
+werden: asort kann nun auch .adt-Dateien sortieren. Man braucht nur
+an den Aufruf noch  -x  anzuhaengen:
+
+  asort in.adt out.adt -x
+
+
+Abfrageliste kann weg!?
+-----------------------
+Wer PRESTO nicht mehr nutzt UND in a99 nie mit Strg+y Strg+y die
+"Abfrageliste" einschaltet, kann die antiquierte Abfrageliste aus
+seiner CFg rausnehmen. Das sind die Zeilen, die normalerweise ganz
+am Ende der CFG stehen und in der $a.cfg so beginnen:
+
+    Typabfrage fuer Normsaetze: (bei s kommt dann noch eine Typabfrage)
+
+Auch die letzte Zeile
+x  ENDE der CFG
+kann weg, falls nicht darunter noch Kommentare folgen.
+Bei der $a.cfg bringt die Herausnahme ca. eine Sekunde Gewinn beim
+Start. 
+
+
+********************************************************************
+
+HANS-Anwendertreffen - Quasi fuer's Protokoll:
+--------------------
+
+Am 8.9.15 fand in Goettingen die HANS-Anwendertagung statt.
+Zu den HANS-Themen im eigentlichen Sinne ist hier nichts zu berichten.
+Hier nur in Stichworten mein Beitrag aus Sicht der Entwicklung zu
+allegro als Software-Plattform:
+
+
+1. Stand der Dinge
+------------------
+   Zur Jahreswende 15/16: V35.F (F wie Final oder Festgeschrieben)
+   Letzte groessere Neuerung war HFM (V34.3, 2014)
+   Ab Jan. 2016 gibt es keine Notwendigkeit, noch eine andere als V35.F
+   einzusetzen! Lauffaehig bis mindestens 2022 (Microsoft: Win'10 ist 
+   letztes Windows)
+   a35: Browserbasierte Anwendung, kann a99 ersetzen, plattformunab-
+   haengig, auch auf Apple, Smartphone oder Tablet nutzbar. Wird weiter
+   ausgebaut.
+
+
+2. Zukunft
+----------
+   UB Braunschweig: weiter betrieben werden auf eigenem Server
+                    Homepage, Mail, FTP, SVN. URL bleibt.
+   UB aber ab 2016 nicht mehr zustaendig fuer Entwicklung!
+   Community: Anwendungsfragen aller Art, z.B. Parameter, FLEXe
+   Supporter: Auf Honorarbasis Praktische Hilfe, ggfls. vor Ort,
+              Lokale Anpassungen, Schulung
+   Eversberg: Programmkorrekturen an V35F (C, C++) und a35
+              Weitere Verbesserungen, soweit Handlungsbedarf.
+              [Bedarf fuer neue Funktionen und Features besteht zur Zeit
+               nicht]
+   allegro-Mailforum laeuft unveraendert weiter als Info-Medium.
+   OpenSource ermoeglicht grundsaetzlich dezentrale Entwicklung.
+      Zwei Ebenen: A. Quellprogramme,
+                   B. FLEXe und Parameter etc.
+      Produkte koennen, rechtlich gesehen, auch vermarktet werden,
+      sofern "allegro" erwaehnt wird (Apache-Lizenz).
+
+
+3. Alternativen zu allegro
+--------------------------
+a) Aufgabentrennung:
+     entw.  Solr-Index statt allegro-Index oder zusaetzlich (SolrPower)
+              Aktualisierung der Solr-Anbindung wird vorbereitet.
+     oder   Solr + VuFind : Discovery System statt OPAC, daneben
+              allegro nur noch fuer interne Funktionen (Erwerbung, ...)
+
+b) Wechsel zu anderer Software:
+       Nicht dringlich, sondern
+       Abwarten, was bei den Projekten RDA + BIBFRAME rauskommt
+         sehr wahrscheinlich kommt da ganz neue Software (weil alle
+         gegenwaertigen Systeme schon zumindest teilweise veraltet sind)
+         Erst dann migrieren - sonst wuerden zwei Migrationen faellig.
+
+c) Verbundbeitritt - lokale Kompetenz ganz abgeben
+      entw.  Lokalsystem komplett gehostet,
+      oder   Lokal nur noch Verwaltungsfunktionen: Projekt Kuali OLE
+             Bibliographische Datenbasis evtl. Cloud-basiert
+
+Eindringlicher Appell, V35.F zu installieren, um den Support zu 
+erleichtern, und damit man auf Windows 10 arbeitsfaehig bleibt fuer ca.
+10 Jahre oder mehr.
+Auszuschliessen ist nicht, dass es spaeter, je nach Bedarfslage, eine
+V36 geben koennte, aus neuer Quelle, zu noch unbekannten Bedingungen. 
+Moeglich bleiben, s.o., auch andere Produkte auf derselben Quellbasis.
+

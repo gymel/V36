@@ -1,0 +1,146 @@
+
+Verlautbarung 181 der Entw.Abt.                          2005-01-25
+-------------------------------
+
+V25-Auftakt
+===========
+
+aresqa : RDBS-Tabellen und ein ganz neues Werkzeug
+==================================================
+
+Ab sofort sieht V24 leider alt aus ...
+Im Spaetdezember 2004 schon angekuendigt, jetzt freigegeben: aresqa!
+Dazu gehoert, wie vorige Woche schon geheimnistuerisch angedeutet, ein
+voellig neues Werkzeug: ein Fenster fuer die Anzeige UND Bearbeitung
+aller ASCII- und ANSI-Textdateien. Dieses Fenster oeffnet man mit dem
+neuen FLEX-Befehl "aresqa". Es ist nuetzlich fuer JEDEN Anwender, nicht
+nur fuer die Sympathisanten des Relationentums. Es ist, anders als z.B.
+das ViewListen-Fenster, frei verstellbar in der Groesse! Und beim
+Bearbeiten hat es Undo und Redo-Funktionen sowie Suchen+Ersetzen.
+Das sind aber nur drei der interesstantesten Eigenschaften.
+Die Einzelheiten koennen wir uns hier sparen, es ist alles beschrieben in
+   http://www.allegro-c.de/aresqa.htm
+Wer gezielt und schnellstmoeglich nur das neue Fenster sehen und testen
+will, geht sofort hierhin:
+   http://www.allegro-c.de/aresqa.htm#bild
+
+Das neue Gesamtpaket liegt bereit:
+
+   http://ftp.allegro-c.de/ac25/inst-all.lzh
+
+Hinweise, wenn Sie GANZ SCHNELL Eindruecke sammeln wollen:
+
+Geben Sie probeweise mal im Schreibfeld ein:
+
+a uifeger
+  Es erscheint die Datei UIFEGER in einer aresqa-Liste
+  Dahinter steckt aq.flx, gestartet von onerror.flx
+
+d p   oder   d d   oder   d h   oder   d v
+  Es erscheint die Liste der Dateien auf dem Programmverz., auf
+  dem Datenverzeichnis bzw. auf dem Hilfeverzeichnis.
+  Dahinter steckt  dir.flx, gestartet von onerror.flx
+Das sind nur zwei erste Beispiele fuer die Bandbreite der Moeglichkeiten.
+Geben Sie
+h aq
+Darin sind einige Flips fuer interessante Funktionen, die mit aresqa
+realisiert sind, und die Sie fuer eigene Zwecke heranziehen koennen.
+
+Der Hilfetext  xaresqa.rtf (Teil der FLEX-Hilfe) verraet noch mehr. So
+kann das aresqa-Fenster auch als Alternative zu dem Befehl "select"
+dienen! Beispiel: statt
+
+select prompt=antw1|antw2|antw3|...
+if "" jump ende
+it "antw1" ...
+
+kann man nun schreiben
+var "prompt" n "antw" n "antw2" n "antw3" ...
+Aresqa
+if "" jump ende
+if "prom" jump ende
+if "antw1" ...
+if "antw2" ...
+
+Die eigentlichen aresqa-Funktionen sind auf dem Tabellenmenue
+zu finden:
+h table
+eingeben, dann sehen Sie es!
+
+Aber es gibt auch noch ein paar
+Kleinere Verbesserungen
+-----------------------
+
+ask-Eingabefeld vergroessert
+----------------------------
+Es gibt viele Gelegenheiten, wo das ask-Eingabefeld viel zu klein
+war. Obwohl es durchaus recht lange Inhalte aufnehmen kann, aber
+das Scrollen ist dann doch wenig anwenderfreundlich.
+Jetzt ist das Feld viel groesser und mehrzeilig. Ausserdem: wenn
+man es verschiebt, erscheint es beim naechsten Mal (innerhalb einer
+Sitzung) wieder an derselben Stelle. Tip: man kann es nach unten
+sogar noch ein paar Zeilen verlaengern!
+
+"Weitere Datenbank oeffnen"
+---------------------------
+Der FLEX hinter diesem Menuepunkt heisst _onerror.flx
+Er wurde verbessert: Wenn man nach einer Indexdatei sucht, wird
+eine INI-Datei erstellt und es wird auch auf diese hingewiesen,
+und man erfaehrt, wie man sie in eine Verknuepfung einbauen kann,
+um die gewaehlte Datenbank kuenftig per Icon oeffnen zu koennen.
+
+FLEX: Anfangswert der iV
+------------------------
+Bisher ist der iV-Inhalt am Beginn eines FLEXes undefiniert. Jetzt ist es so:
+Bei Aufruf einer FLEX-Datei mit  X name  (im Schreibfeld) oder mit
+exec X name (aus einem anderen FLEX heraus) kann man hinter den Dateinamen
+jetzt noch eine beliebige Zeichenfolge setzen, Diese steht dann in der iV,
+wenn die Abarbeitung des FLEXes beginnt. Sonst ist die iV leer.
+
+if =#uyx : korrigiert
+---------------------
+Wenn in #uxy etwas wie "~abc" steht, klappte der Vergleich nicht
+immer korrekt. Jetzt geht es.
+
+Teilfeld $
+----------
+Wenn in einem var oder write-Befehl ein Teilfeld x einer Kategorie #nnn
+auszugeben ist, kann man ja schreiben  var #nnn$x
+Was aber, wenn der Anfangsteil gebraucht wird, der VOR dem ersten
+Teilfeld steht? So etwas kommt ja vor. Beim Einfuegen hat man diese
+Moeglichkeit schon lange:
+   var "abc"
+   ins $$-#nnn
+fuegt "abc" an den Anfang des Feldtextes, vor das erste Teilfeldzeichen,
+und wenn da schon was steht, wird es ersetzt.
+Nun geht das plausible Gegenstueck:  var #nnn$$
+Was nebenbei bedeutet, dass es kein Teilfeld mit dem $-Zeichen als
+Code geben kann. Das wird zu verschmerzen sein.
+Dasselbe gilt nun in den Exportparametern: Man schreibt
+#90 $$
+um den Anfangsteil der Kategorie #90 zu erhalten. Statt des ersten
+$ kann da auch das Dreieck stehen, das zweite muss aber $ sein.
+(Schon seit 14.2.96 ist das $ statt Dreieck erlaubt, auch wenn
+das wirkliche Teilfeldzeichen das Dreieck ist! Dadurch kann man
+Parameter neutral gestalten.)
+In a99/alcarta ist das nun eingebaut, die Linux/UNIX-Programme und
+avanti werden noch folgen. Das Gesamtpaket V25.1 (25.1.2005) ist in
+der Hinsicht schon komplettiert.
+Natuerlich kann man in den Parametern schon lange schreiben
+#90 e"$"   (hier aber Dreieck statt $ !)
+aber die Tabellenmethodik musste in diesem Punkt komplettiert
+werden, daher wurde dies noch eingefuehrt.
+
+Anzeigetext speichern
+---------------------
+Wenn ein RTF-Text angezeigt ist, aber der Aufruf ohne .rtf gemacht wurde
+(weisser Hintergrund), dann wurde bei Alt+s das Speichern dennoch MIT
+.RTF durchgefuehrt. Bei Hilfetexten gingen dadurch die Flips verloren.
+Jetzt passiert das nicht mehr: Es wird dann ohne .RTF gespeichert.
+Ausserdem konnte es passieren, dass der automatisch vorgegebene Name
+nicht stimmte. Das wurde ebenfalls behoben.
+
+Systemhandbuch Kap. 6
+... ist jetzt mit in der Online-Version. Damit sind nun alle
+fuer den Online-Gebrauch nuetzlichen Kapitel als RTF vorhanden.
+

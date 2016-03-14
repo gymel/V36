@@ -1,0 +1,509 @@
+
+
+Verlautbarung 260 der Entw.Abt.                              2014-07-09
+-------------------------------
+
+V34.3 ist da
+------------
+
+HFM (Hochfrequente Mehrfachfelder)
+==================================
+[Rohentwurf erstmals vorgestellt am 23.6., nach Diskussion im Forum
+ verfeinert und umgesetzt.]
+
+Worum geht's?
+-------------
+Bisher konnte man Felder mehrfach besetzen, indem man an die Kategorie-
+nummer ein Zeichen anhing, und zwar eine Ziffer, einen Buchstaben, und
+auch fast alle Sonderzeichen waren moeglich. Fuer beispielsweise ein
+Feld #64 konnte man haben:  #641, #642, ... , #64A, #64a, #64ae usw.
+Jedoch konnte man nicht zweimal oder oefter die #641 usw. verwenden,
+sondern jede nur einmal. Damit waren maximal ca. 220 Belegungen zu 
+erreichen. Nicht wenig, aber nicht fuer alle Anwender genug! Hinzu kam
+nun, dass die Sonderzeichen oberhalb ASCII 127 hinter der Kategorie-
+nummer mit der internen Verwendung von Unicode nicht vereinbar waren. 
+Deshalb musste und ist etwas geschehen:
+
+Neu *hinzu* kommt folgende ganz einfache Moeglichkeit: 
+An die Kategorienummer wird mit . eine Zahl gehaengt, dann ein 
+Leerzeichen und dann der Inhalt, z.B.
+  #64.1 Inhalt 1
+  #64.2 Inhalt 2
+  ...
+  #64.300 Inhalt 300   usw.
+und sogar 4- und 5-stellige Zahlen sind moeglich. Die Zahlen brauchen
+nicht lueckenlos aufsteigend zu sein. 
+Entfallen hiermit  #641, #642 usw?? Keineswegs! Die koennen so bleiben,
+man muss nichts daran aendern, wenn man nicht ausdruecklich so will. 
+Oben steht ja: die neue Moeglichkeit *kommt hinzu* - nichts wird 
+ungueltig.
+
+Aber mehr zu den Einzelheiten weiter unten, zuerst noch ein paar 
+
+Vorbemerkungen
+--------------
+
+ACHTUNG: Wer keine Probleme mit Mehrfachfeldern hat, braucht nichts
+zu tun und diesen Beitrag nicht zu lesen! Das trifft zu fuer alle
+Standard-Anwender, denn normale Katalogdaten sind voellig unkritisch.
+Solche Anwender koennen auch die naechsten Versionen (V34.4 und
+spaeter) unbekuemmert installieren und einfach weiterarbeiten.
+Insbes. Anwender der Standardparameter mit $a.cfg brauchen nichts
+zu aendern oder zu beachten: Version installieren und fertig - mit den
+eigenen Daten passiert dabei nichts.
+
+
+  http://www.allegro-c.de/aktuelle-version/a99hfm.zip
+
+
+Das hier beschriebene gilt ab V34.3 fuer alle Programme, auch fuer die
+Quadriga-Programme (atools) und PRESTO. Was zu den FLEX-Befehlen
+gesagt wird, betrifft nur a99, alcarta und acon.
+
+Ein universeller FLEX  hfmu.flx  wurde geschrieben, mit dem man
+vorhandene Daten, mit individuellen Modifikationen, umwandeln kann.
+(Der FLEX enthaelt ausreichend Kommentar.) Mehr siehe unten.
+
+Es kommt dann evtl. noch auf die Parameter an, ob und wie fuer
+einzelne Feldern fuer Anzeige, Index oder Exporte etwas zu aendern ist.
+Man braucht aber den FLEX *nur*, wenn man konsequent alle oder einige
+bestimmte Datenfelder nur noch mit der neuen Methode mehrfach besetzen
+will. Ist dies nicht die Absicht, kann man bestehende Daten durchaus
+einfach so lassen und HFM erst mal nur bei neuen Daten anwenden.
+
+
+Die HFM-Technik im Detail
+-------------------------
+
+ALLGEMEINES
+
+o  Die bisher moeglichen Mehrfachfeld-Kennungen bleiben voll erhalten
+   und funktionsfaehig, d.h. bestehende Daten muessen nicht veraendert 
+   werden. Wenn man die internen Daten aber auf UTF-8 umstellen will,
+   werden z.B. die Umlaute und andere Sonderzeichen unmoeglich als
+   Mehrfach-Kennungen, d.h.  #31ae  etc. gehen nicht mehr. 
+
+o  Bestehende Anwendungen arbeiten mit den neuen Programmen unveraendert
+   weiter, es sind also keine aenderungen noetig in Parametern, FLEXen 
+   und Jobs, wenn man HFM nicht nutzt. Und *wenn* man es nutzt, werden
+   die aenderungen sich sehr in Grenzen halten.
+
+o  Neu hinzu kommt eine mehrstellige Mehrfachkennung aus Ziffern, die
+   wie folgt aussieht und auch in Altanwendungen ohne neue Vorkehrungen
+   sofort anwendbar ist, und zwar bei jeder CFG ohne aenderung (!):
+           #nn.zzz   (z.B. $a.cfg, also etwa  #33.1, #33.2, .. #33.325)
+     bzw.  #nnn.zzz  (z.B. $n.cfg, $u.cfg)
+     bzw.  #nnnn.zzz (z.B. $p.cfg)
+   mit beliebigen Ziffern z, und zwar koennen es auch mehr als 3 sein.
+   (Max. 5 werden empfohlen; mehr sind moeglich - aber sinnvoll?)
+   Nur Ziffern, also auch keine Dezimalzahlen! Die erste Nichtziffer
+   ist dann das erste Zeichen des Feldinhalts.
+   Dafuer wird der neue Terminus  "HFM-Feld"  eingefuehrt.
+
+o  Die Zahlen muessen nicht lueckenlos aufeinander folgen.
+   Daher koennte man Nummern auch mit einer Semantik ausstatten, obzwar
+   namhafte Experten aus datentheoretischer Sicht davon abraten. Es ist
+   aber stets alleinige Sache der Parameter, mit den Daten etwas
+   Sinnvolles anzustellen, von daher steht nichts entgegen. [Gemeint
+   sind Faelle wie #31 im A-Schema, wo es Mehrfachfelder mit unter-
+   schiedlicher Bedeutung (= Semantik) gibt, z.B. #31p, #31k, #31s.
+
+o  aeltere Programme koennen damit nicht umgehen, sie lassen beim 
+   Einlesen eines derartigen Satzes nur das letzte der  #nnn.zzz-Felder
+   uebrig! D.h. viele Daten der neuen Art wuerden dann verschwinden!
+   Ergo: Nach Einfuehrung der HFM-Technik in eigene Daten keinesfalls 
+   mehr Programme von V34.2 oder noch aeltere benutzen!
+
+o  Zu empfehlen ist, stets mit  .1  oder einer anderen festgelegten
+   Zahl zu beginnen und dann in fester Schrittweite weiterzuzaehlen, 
+   wenn man die HFM-Methode anwendet. Der Vorteil: sowohl im FLEX
+   (if #nnn.1 ...) als auch in den Parametern  (#nnn.1 +X ...) kann
+   man leicht feststellen, ob es HFM-Felder zu #nnn gibt.
+   Die feste Schrittweite hat den Vorteil, leicht entscheiden zu
+   koennen, ob es mehr als N Mehrfachfelder zu #nnn gibt. Z.B. mit
+   Schrittweite 1 im FLEX der Test, ob es mehr als 20 sind:  
+   if #nnn.21 ...   und in den Parametern einfach  #nnn.21 +X e0 
+   Ferner kan man mit Volltextsuche nach  #nnn.101  die Erg.Menge
+   aller Saetze mit mehr als 100 HFM-Feldern zu #nnn bilden.
+
+o  Wenn dem Punkt keine Ziffer folgt, wird er als normale Mehrfach-
+   kennung behandelt - wie bisher! D.h. auch wo ein Punkt schon 
+   in den Daten verwendet wurde, aendert sich nichts. 
+   AUSNAHME: Wenn dem Punkt in einem Altsatz eine Ziffer folgt! Dann
+   wird das Altfeld wie ein neues behandelt: #76.2010/11  wuerde nicht
+   mit  var #76. erkannt, sondern nur mit  var #76.2010, und das
+   Ergebnis waere "11" (d.h. das Zeichen hinter der Zahl verschwaende!)
+
+o  SEHR WICHTIG:
+   Die neuen Kennungen werden im Datensatz *hinter* die bestehenden 
+   (mit Ziffern und Buchstaben) eingeordnet, also #nnn.1 unter #nnnz, 
+   und zwar nach ihrem Zahlenwert, d.h. .10 folgt auf .9
+   Es wird, m.a.W., NICHT ziffernweise geordnet (.9 hinter .10)!
+
+o  zzz kann eine Zahl mit fuehrenden Nullen sein und wird dann auch
+   so gespeichert. Geordnet wird zwar immer nach dem Zahlenwert, aber
+   der Zugriff auf das Feld geht nur mit der eingegebenen Form, also
+   mit den fuehrenden Nullen, z.B. mit
+     var #nnn.001 (falls so gespeichert)  statt   var #nnn.1
+   und ebenso ist es in den Exportparametern. Jedoch:
+
+o  Wenn ein Feld mit .001 gespeichert ist und spaeter neu eingegeben
+   wird mit  .0001 oder .1, dann kommt es an dieselbe Stelle und das
+   vorher dort stehende Feld mit .001 wird dadurch ersetzt. Eine
+   Abfolge  .001, .01, .1  kann es also nicht geben!
+   Der Punkt ist, m.a.W., nicht als Dezimalpunkt zu verstehen.
+
+CFG
+
+o  Wenn in der CFG bei der betr. Felddefinition eine Angabe $M steht,
+   womit die zulaessigen Mehrfachkennungen eingeschraenkt werden, dann
+   muss auch der Punkt hinter dem $M genannt sein, wenn er bei dem Feld
+   verwendbar sein soll. (Versteht sich eigentlich von selbst)
+   Ohne $M ist jede Mehrfachkennung moeglich, also auch der Punkt,
+   aber mit  $M.  ist *nur* er moeglich, keine Ziffern und Buchstaben. 
+
+EINGABE
+   
+o  Nur bei der *Eingabe* gilt:
+   Hinter .zzz kann ein, muss aber kein Spatium stehen. Nur wenn der
+   Inhalt des Feldes mit Ziffer beginnt, dann muss hinter .zzz ein
+   Spatium stehen, das versteht sich von selbst. Ansonsten wird,
+   wenn es fehlt, das Spatium automatisch ergaenzt, d.h. *gespeichert*
+   wird in jedem Fall *mit* Spatium, und zwar *stets* mit nur *einem*.
+
+o  Und ganz wie bei "normalen" Feldern:
+   Bei Eingabe von  #nnn.zzz  ohne Text wird das betr. Feld beseitigt;
+   ebenso im FLEX mit  var ""\ins #nnn.zzz
+
+o  Anhaengen eines neuen HFM-Felds ans Ende der schon vorhandenen:
+   Wenn  #nnn~ xyz  eingegeben wird (direkt oder per insert im FLEX)
+   wird die letzte #nnn.zzz gesucht und auf die Zahl dann 1 
+   aufaddiert, um die nachfolgende HFM-Nummer zu bilden.
+   Wenn keine #nnn mit . und Zahl vorkommt, wird auf die alte Weise
+   ein neues #nnn-Feld ergaenzt (also z.B. #403, wenn #402 vorkommt)
+
+o  Um mit einem Befehl gleich zwei oder mehr HFM-Felder anzuhaengen,
+   trennt man sie mit einem Zeilenvorschub:
+     var "#nnn~ Text1" n "#nnn~ Text2" n ...
+     insert
+   Fuer acon gilt aber (Grund: Sicherheit gegen "code injection")
+   die Schreibweise
+     var "#nnn~ Text1;#nnn~ Text2;#..."
+     insert
+   (Das war schon lange so und klappt auch mit HFM-Feldern)
+
+FLEX
+
+o  Mit  var #nnn.zzz  ergibt sich stets der hinter .zzz stehende 
+   Inhalt, ohne das Spatium.
+
+o  Auch  var "abc"\ins #nnn.zzz  ergibt stets  #nnn.zzz abc,
+   also mit Spatium vor dem Inhalt.
+
+o  Mit  var #nnn~  erhaelt man in FLEX das letzte der Mehrfachfelder
+   des Feldes #nnn - wie schon bisher; mit  var _#nnn~  dasselbe incl.
+   Nummer, aber ohne #. [So kann man im Falle . die letzte vorhandene
+   Nummer rauskriegen]
+   Mit  var #n~~  kommt das letzte aller mit Ziffer n beginnenden
+   Felder. (Wohl nicht so oft sinnvoll.)
+
+o  Mit  ins #nnn~  wird der iV-Inhalt in das naechste unbesetzte Feld
+   #nnnx gesetzt. Es gibt drei moegliche Faelle:
+   -- In CFG steht #nnn$Mxyz : Der naechste unbesetzte Wert aus $M
+   Wenn die Angabe $M bei #nnn nicht gesetzt ist:
+   -- In CFG steht  M. : Dann das naechste .-Feld, und .1, wenn es
+        noch kein solches gibt, aber ein #nnn schon vorhanden ist,
+        sonst einfach nur #nnn - wie schon immer
+        [Bisher wird wohl niemand die Setzung  M.  gehabt haben]
+   -- Beides nicht: Wenn z.B. M2 in CFG steht, dann #nnnx mit dem
+        naechsten unbesetzten Wert x, mit 2 beginnend, also zuerst
+        #nnn2, dann #nnn3, ...
+        (Default ist aber Ma, d.h. es beginnt dann mit #nnna)
+        Felder mit .zzz sind dann gleichwohl moeglich, nur entstehen sie
+        nicht von selbst mit  ins #nnn~ .
+
+   Dasselbe gilt fuer das Programm "import", nur dass es da keinen
+   Befehl "insert #nnn" gibt. Entsprechendes passiert aber, wenn man
+   in den Importparametern einen Abschnitt mit
+   #nnn~
+   beginnt! [Mehr siehe Fussnote am Ende]
+
+o  U.U. moechte man mal das erste HFM-Feld von #nnn haben. Aber mit
+   "var #nnn."  kriegt man das erste aller #nnn-Felder, nicht das erste
+   mit einem Punkt. Dafuer gibt es keinen einfachen Befehl. Es sei denn
+   man hat stets  .1  als erstes HFM-Feld, was aber nicht zwingend ist. 
+   Die erste Nummer bei #77 findet man ersatzweise mit diesem Rezept:
+     var kr
+     var (b"77." e" ")
+     ins $n1
+     var "_#77." $n1
+     var
+   In der iV steht dann z.B. 77.8 text, wenn .8 das erste HFM-Feld ist.
+
+o  Der FLEX-Befehl  var kr  bzw.  var kn  wirft auch die .-Felder
+   alle mit aus. [Was auch sonst?]
+
+o  In FLEX geht AUCH:  if #nnn.zzz ...
+   Dabei ergibt sich die erwartete Reaktion.
+   Man kann also durchaus schreiben
+   if not #77.123 mes #77.123 ist nicht besetzt
+   und die Meldung kommt dann und nur dann, wenn #77.123 fehlt.
+
+o  Achtung: mit  if #nnn.  kann man nur testen, ob es *irgendein* Feld
+   #nnn  gibt, aber nicht, ob es welche mit einem Punkt gibt! Das geht
+   nur so:  var _#nnn~\if ="nnn." ...
+   Denn damit laesst man sich das letzte der #nnn-Felder incl. Nummer
+   geben und prueft, ob es mit "nnn." beginnt (Denn die .-Felder sind 
+   immer am Ende)
+
+EXPORTPARAMETER (incl. INDEX)
+
+o  In Exportparametern:  #nnn~  ergibt das letzte der Felder mit #nnn
+   Wenn es zu #nnn Felder mit .zzz gibt, ist #nnn~  das letzte solche
+   Feld - dahinter koennen naemlich keine anderen mehr kommen.
+   Spezialfall:
+   Will man gezielt das letzte Feld NUR dann, wenn es eins mit . ist,
+   dann  #nnn.00 (#nnn.00 kann nicht vorkommen, nur #nnn.0)
+   Das liefert den Textinhalt des Feldes! Will man auch die Nummer,
+   dann  
+   #bks=0
+   #nnn.00
+   #bks=k    (k = Wert  k  aus der CFG bzw. Wert von ks= in den Param.)  
+
+o  In Indexparametern wird unveraendert  ak=nnn."xyz"+B  geschrieben,
+   um alle Einzelfelder abzuarbeiten, einschl. der neuen mit .zzz
+   Was NICHT geht, ist z.B.  ak=nnn.1+X  oder  ak=nnn.123+X, also
+   die Angabe einer einzelnen, speziellen HFM-Nummer im ak-Befehl.
+   Waere ess wirklich gewuenscht, gezielt #nnn.123 zu indexieren,
+   koennte man nur schreiben:
+   ak=nnn.123+X
+   ...
+   #-X
+   #ch i5,1 i6,2 i7,3 ...
+
+o  Ein HFM-Feld kann ganz normal exportiert werden:
+   #nnn.zzz ...(Manip.Befehle)
+   ACHTUNG: Manip.Bef. nur moeglich, wenn zzz hoechstens 3stellig.
+   Dies wird nur in begruendeten Einzelfaellen noetig sein, weil es 
+   sich ihrer Natur nach dabei eben um Mehrfachfelder handelt, die man
+   im Normalfall *alle* exportieren will, nicht einzeln, und zwar mit
+   der ueblichen Methode:
+
+o  Mit  #nnn. ++ ...  erreicht man, wie bekannt, eine schleifenfoermige
+   Abarbeitung aller Mehrfachfelder von #nnn, incl. der HFM-Felder.
+
+o  Mit ## erhaelt man bei der Einstellung ks=4 (bzw. dem Wert k aus der 
+   CFG, also z.B. 5, wenn man k5 dort hat) die Liste der Feldinhalte 
+   ohne die Feldnummern; die ausgegebenen Inhalte der HFM-Felder 
+   beginnen also in dem Fall nicht an der Position ks, denn der
+   Textbeginn richtet sich ja dann nach der Laenge der Zahl .zzz
+   Mit jedem anderen Wert von ks werden aber auch die HFM-Felder ab
+   der betr. Position ausgegeben - wobei wohl nur ks=0 und ks=1
+   wirklich mal sinnvoll sein koennen, also Ausgabe mit Kategorienummer
+   incl. bzw. ohne das '#' am Anfang.
+
+
+FORMULARE (a99)
+
+o HFM-Felder koennen auch in Formularen auftreten:
+
+  [Test]
+  #77.1 "Eins"
+  #77.1000 "Tausend"
+  #77.10 "Zehn"
+  #77.100 "Hundert"
+  #77.2 "Zwei"
+
+  Im Datensatz erscheinen die eingegeben Felder in der Reihenfolge 
+  #77.1  #77.2  #77.10  #77.100  #77.1000
+  wie man es erwarten sollte (und nicht die .2 hinter der .1000).
+
+
+ANSONSTEN
+
+o  Fuer den Hintergrundspeicher gilt die Neuerung nicht!
+   Dort entstehen drei Mehrfachfelder mit . / 0, die sich zyklisch
+   verschieben. (Das entspricht bisheriger Funktionsweise und ist
+   vermutlich weder besonders nuetzlich noch ueberhaupt bekannt.)
+
+o  Fuer die #u-Variablen gibt es keine aenderung, d.h. man kann nicht
+   #uxy.1 und #uxy.123 usw. verwenden. Das macht wohl kaum etwas
+   denn es sind ja nur temporaere Variablen, und in FLEXen verwendet
+   man eh lieber $- oder &-Variablen, die anderen Gesetzen folgen.
+
+ACHTUNG!
+Hat man einmal das neue Verfahren eingefuehrt und gibt es Datensaetze
+mit HFM-Feldern, werden damit aeltere Programme nicht korrekt arbeiten.
+Und zwar, wenn man z.B. mit einem aelteren SRCH.EXE eine Ergebnismenge
+macht, bleibt nur das letzte von mehreren #nnn.zzz dann uebrig.
+
+
+Umwandlung von Altdaten
+-----------------------
+
+WICHTIG: Standard-Anwender des Formate $a.cfg brauchen nichts zu tun,
+sondern koennen das nachfolgende ignorieren!
+
+Wer Mehrfachfelder in grosser Zahl hat und eine bessere Methode zu
+deren Handhabung wuenscht, kann mit V34.3 leicht seine problematischen
+Daten in die neue HFM-Form bringen.
+
+Wichtig, wenn man auf interne UTF-8-Codierung umsteigen will:
+Unverzichtbar wird die HFM-Umwandlung kuenftig sein, wenn man z.B.
+Mehrfachfelder mit Umlauten und anderen Sonderzeichen an der
+Mehrfachposition hat, also z.B.  #31ae  oder  #40‚, denn mit denen
+gibt's unter UTF-8 aerger. [Das war mit ein Grund, die HFM-Methode
+zu entwickeln.]
+
+Umwandlung empfiehlt sich also NUR, wenn es wirklich sein muss und man
+sich im Klaren ist ueber das Warum und Wozu und den Nutzen. 
+(Das ist nicht als indirekte  Warnung vor HFM zu verstehen, sondern 
+als Hinweis an Standard-Anwender, denen man solche Dinge nach unserer
+Erfahrung durchaus nicht oft und nicht klar genug sagen kann, sonst
+bleibt ein Rest von Verunsicherung.)
+
+Wir haben einen FLEX geschrieben namens  hfmu.flx, der vorhandene
+Daten in variabler Weise umwandeln kann.
+Diesen soll man aber keinesfalls unbesehen anwenden!
+Darin sind folgende Modifikationen moeglich (alles intern dokumentiert):
+
+  1. *** Fuer Gesamtdurchlauf: die mit *** markierten Zeilen aktivieren
+     Sonst wird nur der aktuelle Satz umgewandelt. Das ist sinnvoll, um
+     erst einmal die Sache mit verschiedenen Datensaetzen zu testen.
+
+  2. Wahlweise kann man die umgewandelten Saetze gleich wieder
+     speichern lassen oder aber in eine Grunddatei exportieren, dies
+     dann wahlweise in unveraenderter Codierung oder aber gleich in
+     UTF-8 umcodiert.
+
+  3. ACHTUNG: Wenn bestimmte Mehrfachfelder eine Semantik haben!
+           Dann diese unter  :except  eintragen, s.u.
+           ODER nur bestimmte Felder wandeln lassen.
+     M.a.W.: Es ist nicht noetig, *alle* Mehrfachfelder in die neue
+     Form zu wandeln; die gewohnte Semantik kann beibehalten werden.
+
+  4. Falls 3- bzw. 4stelliges Schema: (t3 bzw. t4 in der CFG)
+     dann im gesamten FLEX folgendes tun:
+           (0,3) ersetzen durch (0,4) bzw. (0,5)
+           (4,0) ersetzen durch (5,0) bzw. (6,0)
+           (3,1) ersetzen durch (4,1) bzw. (5,1)
+
+  5. Wenn schon HFM-Felder vorhanden sind, klappt's auch!
+     (Nur die Nummern bleiben u.U. nicht erhalten,
+      und aus  #nnn.1 TEXT  wird  #nnn  TEXT, falls #nnn unbesetzt)
+     Wenn nicht erwuenscht, dann unter :except ausblenden lassen
+
+ACHTUNG: Wichtige Vorbereitung!
+
+Oben unter "CFG" wurde darauf hingewiesen: 
+   "Wenn in der CFG bei der betr. Felddefinition eine Angabe $M steht,
+    ... dann muss auch der Punkt hinter dem $M genannt sein, wenn er 
+    bei dem Feld verwendbar sein soll. 
+Siehe dazu Punkt 3. oben: Man muss zuerst pruefen, ob man Felder mit $M
+in der CFG hat (statt $ steht evtl. der Code 31 (Dreieck)). 
+Entweder das Feld dann unter :except eintragen,
+Oder hinter $M den Punkt einfuegen, wenn sie umgewandelt werden
+    duerfen, d.h. die Mehrfachfelder keine Sonderbedeutung haben.
+
+Man startet die Umwandlung mit  X hfmu
+nachdem man die geeigneten Modifikationen gemacht hat!
+
+Aber bleiben Sie entspannt. Zunaechst einmal kann man wie folgt
+testen, ohne dass schon irgendwas passiert.
+
+Voraussetzung: man hat das aktuelle, schon HFM-faehige a99.
+Hier ist es: (Datum 1.7., 10:19)
+  http://www.allegro-c.de/aktuelle-version/a99hfm.zip
+Mit den vorhandenen Daten funktioniert das darin befindliche
+a99hfm.exe voellig unveraendert.
+[In V34.3 wird es wieder a99.exe heissen]
+
+Und so holt man sich den FLEX zum Ausprobieren:
+
+  X getfile hfmu.flx
+
+Wenn man ohne aenderungen  X hfmu  gibt, wird nur der aktuelle
+Satz gewandelt und gezeigt, aber nicht gespeichert.
+Damit kann man sich also zuerst einfach mal anschauen, was
+der FLEX aus den eigenen Daten macht. In der Anzeige und mit
+F7 sieht man auch sofort, ob alles noch klappt oder was eben
+nicht mehr klappt. Und dann evtl. Modifikationen machen, s.o.
+
+Dann sucht man sich mal interessante Datensaetze und gibt  X hfmu
+Mit Alt+w schaltet man - wie ueblich - zwischen dem Original
+und dem veraenderten Satz vor und zurueck, um sofort die aenderungen
+genau zu sehen.
+Vor dem naechsten Beispiel am besten mit Alt+w das Original wieder
+einstellen, damit die veraenderte Fassung noch nicht gespeichert wird.
+
+Soll, nach erfolgreichen Tests, die gesamte Datenbank verarbeitet
+werden, dann in  hfmu.flx  die mit *** markierten Zeilen aktivieren,
+danach ein letztes mal:  X hfmu  und alles wird gewandelt. Das kann
+aber dauern!
+
+Natuerlich kann man auch den  put-Befehl  deaktiviert lassen, dann
+nach dem Durchlauf sich die geaenderten Saetze alle anschauen und
+mit Alt+w vergleichen mit dem Original. Wenn unzufrieden:
+
+  x erase off
+
+und nichts wird gespeichert.
+Man wird tunlichst zuerst gruendlich untersuchen, ob die geaenderten
+Saetze genau dieselben Schluessel produzieren, bevor man einen
+Gesamtdurchlauf mit aktiviertem put-Befehl macht.
+
+ODER: "exp" statt "put nehmen und ganz oben die Befehle
+exp p i-1
+exp f neudat.alg
+
+Dann wird in der Datenbank gar nichts veraendert, sondern die umgewan-
+delten Saetze in die Datei  neudat.alg  geschrieben. Genauer gesagt:
+alle Saetze, ub veraendert oder nicht. Und "neudat.alg" kann man in ein
+anderes Verzeichnis tun, doer indexieren und sich dann das gesamte
+Produkt anschauen.
+Tip: Wenn neben der HFM-Wandlung auch noch andere Znderungen zu
+machen sind, z.B. Zeichencodierungen (Unterfeld-Steuercode, Nicht-
+sortierzeichen, ...), so kann man diese mit in die  i-1.apr  einbauen
+um das im selben Durchlauf zu erledigen. In den Indexparametern fuer
+die anschliessende Neuindexierung sind diese Sachen natuerlich auch
+zu beruecksichtigen!
+
+
+Wir haben die Umwandlung schon getestet mit der Spezialkonfiguration
+eines Anwenders, der sehr viele Mehrfachfelder hat, mit einem
+3stelligen Schema. Der FLEX schafft gut 100 Saetze je Sekunde,
+wenn auch noch ohne Speicherung. Die ist jedoch auch nicht sehr 
+zeitkritisch, wenn keine Schluesselaenderungen resultieren!
+
+
+-----------------------------------------------------------------------
+
+Fussnote zum Import von Mehrfachfeldern als HFM-Felder      [2014-10-14]
+
+Sagen wir, die Fremdsaetze sind durch 13 10 13 10 getrennt, die
+einzelnen Felder durch 13 10.
+Die mit "#28y" beginnenden Felder sollen in #9a.x ueberfuehrt werden,
+beginnend mit x=100, also  #9a.100
+
+
+re=13 10 13 10
+
+_ 13 10
+_ 0
+
+...
+
+#9a.100
+s "#28?"
+x
+
+-hfm
+#9a~
+s "#28?"
+x
++hfm
+ 
+
+Die Zeile mit dem  x  macht das jeweilige Feld im Fremdsatz
+ungueltig, sonst kaeme es zu einer Endlosschleife.
+

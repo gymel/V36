@@ -1,0 +1,256 @@
+
+
+Verlautbarung 264 der Entw.Abt.                              2014-11-05
+-------------------------------
+
+V34.7 ist da
+------------
+
+Wie nicht anders zu erwarten, gab es Nachbesserungsbedarf an einigen
+Stellen. Wer sich von den folgenden Punkten nicht direkt angesprochen
+fuehlt, braucht aber nicht spornstreichs upzudaten, sondern kann auch
+die naechste Version abwarten, die V34.8, die fuer dieses Jahr den
+Schluss- und Hoehepunkt darstellen soll. Deren Installation wird
+zu empfehlen sein.
+
+
+Nachbesserung der HFM-Methodik
+------------------------------
+ak=nn."xyz"+L   wird jetzt korrekt verarbeitet: Auch die HFM-Felder
+werden mittels "xyz" zerlegt und die Bestandteile korrekt unter der
+Sprungmarke #-L fuer den Index verarbeitet. Die Anzahl der Ziffern
+hinter dem . ist dabei unerheblich!
+
+
+getfile-Angebot ausgeweitet
+---------------------------
+Wenn Sie nicht sofort  V34.7 installieren, dann holen Sie sich 
+wenigstens den erweiterten  getfile.flx  mit dem Befehl:
+
+  X getfile getfile.flx
+
+in a99. Dieses Angebot umfasst jetzt alle Dateien der Typen .flx,
+.job, .rtf, .txt, .htm, .cfg und .?p?, die sich im Gesamtpaket
+befinden. Jede dieser Dateien koennen Sie damit inskuenftig mit dem
+Befehl  X getfile ...  lokal aktualisieren. Sie gelangt dann auch
+automatisch in das richtige Verzeichnis und ueberschreibt dort die
+bei Ihnen vorhandene aeltere!
+Ausprobieren koennen Sie's erst einmal mit dem neuen, bei Ihnen
+noch fehlenden  find.job:  X getfile find.job  (s. weiter unten)
+Er landet in Ihrem ProgDir und wird gestartet mit  acon -jfind, und
+mit  acon -jfind -help  liefert er Hilfe zu seiner Nutzung.
+
+
+Hinweis zum MARC-Import
+-----------------------
+Sonderservice "Nicht umgewandelte Felder" (Handb. Kap.11.2.3.2, S.265)
+Wenn man diese Felder als HFM-Mehrfachfelder importieren will, setzt
+man folgende Zeilen an das Ende der Importparameter:
+(statt #94 darf's auch ein anderes Feld sein)
+
+
+#94.0
+D "???"
+
+#94~
+D "???"
+m
+
+und in die EXPORT-Parameter (zumeist i-1.apr) setzt man eine neue
+Zeile ueber den Pauschalbefehl ##:
+(damit wird die ueberfluessige #94.0 wieder entfernt; sie enthaelt
+dasselbe wie die #94.1)
+
+#dt p"#94.0 " e6 M #zz 0
+##
+
+
+
+Verbesserung bei Indexanzeige unter Last
+----------------------------------------
+Waehrend ein Update laeuft oder eine Speicherung groesserer Datensatz-
+mengen nach z.B. globaler Ersetzung oder am Sitzungsende, kann es auf
+anderen Arbeitsplaetzen ploetzliche Abbrueche der Indexanzeige geben.
+Es ist grundsaetzlich sehr schwierig, hier ohne gravierende Leistungs-
+einbussen eine echte Verbesserung zu erreichen, aber der Versuch wurde
+gemacht. Falls nun in stark belasteten oder leistungsschwachen Netzen
+die Registeranzeige allzu langsam erfolgt, muessen wir wohl noch eine
+Umschaltung einbauen zur Wahl zwischen dem alten und dem neuen Modus.
+Eingebaut ist die Veraenderung in a99, a99a, alcarta und acon, nicht
+in PRESTO und APAC.
+
+
+
+Neuer Job fuer acon: find.job
+----------------------------
+Kollege Fischer (Goettingen) gab den Anstoss und erstellte die erste
+version eines find.job, mit dem man eine Ergebnismenge per find-Befehl
+bilden und diese dann exportieren kann. Bei sehr grossen Datenbanken
+geht dies erheblich schneller als die Volltextsuche mit srch.exe.
+Man startet den Job so, am Beispiel der DemoDatenbank, wenn man z.B.
+alle shakespeare-Titel in einer Datei output.alg haben will:
+
+  acon -jfind.job -bdemo2\cat -ka -ei-1=output.alg -sper shakespeare?
+
+Wenn es nicht die Parameter i-1.apr sind, dann waehlt man einen
+entsprechend geeigneten Dateityp statt .alg. Z.B. erstellt  e-1.apr
+eine Externdatei (Typ .adt), e-w.apr ebenfalls, aber mit Windows-Codes,
+und marctxt.apr eine MARC-Textdatei (.mrk), die zur Weiterverarbeitung
+mit VuFind geeignet ist:
+
+
+al.job verbessert
+-----------------
+Der Admin-Job  al.job  (s. Vb.261) wurde weiter verbessert.
+Er startet auch, wenn die .tbl fehlt oder die .adx und gibt dann die
+Empfehlung, ueber die Funktion  a 2  bzw  a 1  die betr. Datei zu
+regenerieren. Es wird dann ein geeigneter org.bat erstellt, den man
+nur noch zu starten braucht - und/oder man schaut sich den mal an,
+um zu sehen, wie sowas auszusehen hat im betr. Fall.
+Einfach schnell mal ausprobieren:  al  eingeben in  c:\allegro
+dann wird die DemoBank in demo2 benutzt, da kann nichts kaputtgehen.
+
+Der Job ist an der Oberflaeche von entwaffnender Schlichtheit. Dadurch
+ist er erstens auch unter UNIX lauffaehig und zweitens geeignet, viele
+FLEX-Job-Funktionen und -Verfahren zu illustrieren, d.h. was draus zu
+lernen. Einfach mal reinschauen, alles ist ausfuehrlich kommentiert.
+Man findet leicht die Stellen, wo bestimmte Sachen ablaufen, die man
+an der Oberflaeche sieht.
+Die UNIX-Vertraeglichkeit erfordert hier und da eine differenzierte
+Vorgehensweise, besonders bei den Admin-Funktionen. 
+
+
+Daten in echtes MARC21 exportieren
+----------------------------------
+
+Mit Version 6.0 hat das beliebte, kostenfreie Programm  MARCEDIT ein
+Konsolprogramm  cmarcedit.exe  hinzubekommen. Damit kann man nun den
+Prozess der Produktion echter MARC-Daten automatisieren, wie man sie
+vor allem fuer VuFind benoetigt.
+
+Zuerst installiert man sich  MARCEDIT 6.0, hier zu finden:
+   http://marcedit.reeset.net
+und traegt seine Pfadadresse in die Umgebungsvariable PATH ein.
+Alternativ kopiert man die benoetigten vier Dateien des Pakets
+nach c:\allegro oder wo immer man sie braucht. Es handelt sich um:
+
+  cmarcedit.exe
+  marc82utf8.dll
+  mengine60.DLL
+  marcvalidator
+
+Und so geht's dann vor sich:
+
+1. Gesamtexport mit  marctxt.apr  in eine Textdatei  daten.mrk
+   (Nur die Titeldaten, keine Norm- und Verwaltungsdaten, also z.B.
+    mit  srch -ddemo2\cat_*.ald -s#20 -emarctxt=daten.alg)
+
+2. Umwandlung der Textdatei mit  cmarcedit  in eine echte .mrc-Datei:
+
+     cmarcedit -make -utf8 -s daten.mrk -d daten.mrc
+
+(Die Spatien hinter -d und -s muessen sein, sonst klappt's nicht.)
+
+Aus der .mrc-Datei kann man einen VuFind-Index machen, wie es in der
+Doku beschrieben ist:
+
+  http://www.allegro-c.de/vufind2/Installation.htm
+
+Wichtiger Spezialfall: die LOG-Datei! Hat man einmal VuFind am Laufen,
+dann ist die Aktualisierung leicht: LOG-Datei mit dem Hilfsprogramm
+log2alg.exe  in eine Grunddatei  log.alg  umwandeln und diese dann
+mit demselben Verfahren in den VuFind-Index einspeisen:
+
+    cat.log -> (log2alg)   -> log.alg
+    log.alg -> (srch)      -> log.mrk
+    log.mrk -> (cmarcedit) -> log.mrc
+    log.mrc -> (import-marc) -> VuFind-Index
+
+Hinweis: Mit dem Befehl
+  cmarcedit -help | more
+erscheint eine Kurzbeschreibung.
+
+
+Export
+------
+In  i-pica.apr  stand eine lokale Ersetzung, die nach den aenderungen
+von vb256 (12/2013) nicht mehr ging:  ,"_$g_ -- _"
+Damit wurde nun jedes 'g' in #31s durch ' -- ' ersetzt.
+Allerdings ging das auch vorher nicht, sondern hatte gar keine Wirkung.
+Nunmehr koennte man schreiben   ,"_$$g_ -- _", aber die Ersetzung wurde
+verlagert in  pica.aim, denn warum sollte sie erst im Export
+geschehen?
+
+
+Kleinere Verbesserungen
+-----------------------
+
+uebersicht der Programme
+-----------------------
+Mit  h programs  kommt die aktualisierte, kommentierte Liste der
+Programme mit Hinweisen auf deren Dokumentationen.
+
+first #, next #, ...
+--------------------
+Diese Befehle funktionierten z.T. nicht ganz so wie erwartet, und in
+acon nicht ganz so wie in a99. Jetzt tun sie es, bes. hinsichtlich
+unbesetzter Nummern am Anfang und Ende der Nummernfolge.
+Die Doku wurde praezisiert.
+Ein Sonderfall ist der Befehl  find #0:
+-- In a99 holt er den letzten Datensatz. Ist die letzte interne Nummer
+   unbesetzt, bleibt der aktuelle Satz unberuehrt
+-- In avanti hat der Befehl keine sinnvolle wirkung und ist deshalb
+   zu vermeiden. Denn  find #N  haengt nur die Nummer N an die aktuelle
+   Erg.Menge an, ohne den Satz zu laden oder zu checken; nur wenn N
+   groesser als die letzte Nummer ist, passiert nichts.
+Zu empfehlen ist daher  last #  statt  find #0.
+Ein Sonderfall ist auch  find #n1,n2,n3,...
+Mehr dazu in   h xfind
+
+var i
+-----
+lieferte in einigen Situationen 0 statt der Satznummer, z.B. nach einer
+Sequenz  new 0 ... put
+aber auch nach first #, next #, ...
+Das wurde behoben.
+
+"pipe" unter Linux
+------------------
+Der Befehl  pipe  ging nicht unter Linux. Behoben.
+(Anwendungsbeispiel in  al.job  unter :look)
+
+if %~abc%
+---------
+Darunter steht (in h xif) der Satz:
+Ist ~ gesetzt, findet der Vergleich ohne Ruecksicht auf Gross/klein statt
+Ergaenzt wurde:
+    jedoch klappt das nur mit Grundbuchstaben, nicht mit Umlauten etc.
+
+
+Mehr Hilfe
+----------
+Die Programme  srch, import, index und qrix  geben jetzt, wenn ohne
+Angabe von Optionen gestartet, einen kurzen Hilfetext aus, der knapp
+die Syntax des Aufrufs anzeigt. Diese Hilfe soll noch ausfuehrlicher
+gestaltet werden. So etwas wird ja laengst von ordentlichen Konsol-
+programmen erwartet ...
+
+Externes Editieren mit Alt+t
+----------------------------
+Normalerweise macht der FLEX  onextern.flx  die Arbeit, wenn mit Alt+t
+das externe Editieren ausgeloest wird. Darin wird e-w.apr zum Ausgeben
+des Satzes in die Textdatei verwendet. Es ist dann noetig, zum Wieder-
+einlesen den Modus  set c=1  zu setzen, das aber fehlte. Die Umlaute
+etc. kamen dann falsch zurueck. Behoben.
+
+
+Hilfsprog. f. DOS
+-----------------
+In einigen FLEXen stand noch der unter 64bit nicht mehr funktionable
+Befehl
+ ansi.com
+drin. Wurde eliminiert. Das Programm  ansi.com  ist zwar jetzt wieder,
+weil ausdruecklich gewuenscht, mit im Gesamtpaket, nutzbar jedoch nur in
+der DOS-Box.
+
+

@@ -1,0 +1,584 @@
+  A-VERL : Verlaengerungen durchfuehren
+  2005-04-21 (Aufruf aus a-func.flx von mehreren Stellen)
+    Wenn Aufruf mit  0  dann nur den momentanen Expl.Satz
+         sonst Erg.Menge von Expl.Saetzen, gebildet in a-func.flx
+    Wenn #uaf besetzt, dann Ausnahmefrist
+    #uAg : Datum Ende der Mitgl.schaft des Lesers (alf.flx)
+    Wenn #urC besetzt, dann Aufruf aus anderem Vorgang, z.B. a-okonto.flx
+         dahin anschliessend Rueckkehr!
+
+  Uebergabewert in #uaE
+ins #uaE
+
+var ""
+ins #uvG
+
+var i    // Nr. des ExplSatzes in $expl sichern
+ins $expl
+
+if not #9DH$u jump 9B
+  Aktueller Satz ist Expl.Satz, erst Leser suchen
+var "|: " #9DH$u "=?"
+
+f1nd
+
+:9B
+if #9B jump lok
+
+var "Unter der Nummer "  #9DH$u " ist kein Leser angemeldet"
+mes
+end
+
+  Lesersatz ist geladen, alles ok? Gibt es Gebuehren?
+
+:lok
+var #9B$a    // gueltigkeit
+ins #uAg     // merken
+z=
+  aktuelles Datum subtrah.
+var #dts(0,8)
+z-
+   Mitgl. noch nicht zu Ende? dann alles klar
+if z>0 jump mgok
+
+if not #urC jump ma
+var "Ihre Mitgliedschaft ist abgelaufen - bitte erst erneuern!
+mes
+jump vlgende
+
+:ma
+var "Mitgliedschaft ist abgelaufen! Leihfrist trotzdem verlÑngern?"
+ansi
+yes
+if not yes end
+  Wenn ja, dann aber nur 5 Tage
+Wday 5
+var (0,8)
+ins #uAg
+
+  nun also verlaengern um #uAg Tage
+:mgok
+var #9B$$(1,0)
+ins #u9B
+
+  Ist was im Warteregal? Dann hinweisen
+var "1 |; B" #u9B " W?"
+qrix  
+   z.B.  2 Bae001 W
+ins $ai
+eval
+ins $aw
+var $ai (b" B" e" ")
+  Nummer vergl. mit #u9B, wenn ungl. dann $aw=0
+if not =#u9B $aw=0
+if >0 var "Es liegen " $aw " Vormerkungen bereit";mes
+
+
+   Gibt es Forderungen? 
+var "|; GB" #u9B
+set obj 2
+f1nd
+if no set obj 1;jump ausf
+set obj 1
+
+if not #urC jump fo
+var "Es sind noch GebÅhren zu zahlen - bitte erst erledigen!
+ansi
+mes
+jump vlgende
+
+:fo
+var "Es gibt Forderungen, trotzdem verlÑngern?" 
+ansi
+noyes
+if no end
+if cancel end
+
+:ausf
+  Expl.Satz zurueckholen
+var "#" $expl
+f1nd
+  was war der Uebergabewert?
+var #uaE
+  Nur momentanes Expl.? 
+if not "0" jump verla
+  ja
+perf exvl
+#uaf
+
+:vlgende
+  wenn #urC besetzt (Name eines FLEXes), dann Rueckkehr
+if #urC var #urC;exec
+end
+
+:verla
+  Nein, alle.
+  Alle Entleihungen des Lesers suchen
+
+if #u9B var "|; B" #u9B " ?"
+find
+  Liegt eine Erg.Menge vor? Nein - nichts zu machen
+if l1 end
+  sonst aufsteigend nach Datum ordnen
+ord a0
+
+first
+  und alle abarbeiten
+:loop
+  ohne Ausleihkategorie?
+if not #9DH jump nxt
+  ist es ein Vormerksatz (desselben Nutzers)? nix mit machen
+var #9DG
+if "V" jump nxt
+  ist es ein Buch in der Warteliste (desselben Nutzers)? nix mit machen
+var #9DG
+if "W" jump nxt 
+
+  sonst verlaengern
+perf exvl
+:nxt
+next
+if yes jump loop
+var "Erledigt, " l " Exemplare abgearbeitet"
+mes
+
+  Wenn aus a-okonto aufgerufen:
+if #urC var #urC;exec
+
+  zurÅck zum Ausleiher!
+var "|: B" #9DH$u 
+        und bei Pica:
+    var "|; B" #9D00H$u 
+f1nd 
+disp
+sho rec
+  Ausn.Frist wieder loeschen
+#uaf
+end
+
+  Unterprogramm
+  Exemplarverlaengerung (Explsatz bereits geladen)
+:exvl
+var i    // Nr. des ExplSatzes in $expl sichern
+ins $expl
+
+var #9DG
+  Buch schon im Wartezustand
+if "W" jump novl
+
+var #9DH$C   // Leserklasse d. Entl., z.B. 1
+ins #uAE
+var #9DG$m   // Medientypcode (Buchstaben, z.B. BM)
+ins #uAM
+
+var #9DG$v
+if "p" yesno Praesenz-Ex.! Trotzdem?;if not yes return
+
+  Zuerst pruefen: gibt es eine Vormerkung?
+var #9DF$$
+if #9DG$L var +"'" #9DG$L
+ins $v1
+var +":E" #9DG$e(0,r3)
+ins _ _0_
+ins $v2
+ins #uaW
+
+  Suchschluessel ExplVm erstellen, dann nachsehen
+var "|: " #uaW " V?"
+f1nd
+if no jump vl2
+  was gefunden? Dann steht V in #9DG am Anfang
+var #9DG
+if not "V" jump vl2
+dis
+sho rec
+
+if not #urC jump vo
+var "Sorry, zu diesem Exemplar gibt es eine Vormerkung." n "Deshalb keine VerlÑngerung mîglich."
+ansi
+mes
+jump getb
+
+:vo
+var "Es gibt Vormerkung(en) zu diesem Exemplar. Trotzdem verl.?"
+yes
+if not yes jump getb
+var "#" $expl
+f1nd
+
+  Es gibt keine Vormerkung zum Expl.
+:vl2
+  Aber vielleicht zum Titelsatz?
+var "|: " #9DF$$ " V?"
+f1nd
+if no jump vl3
+  was gefunden? Dann steht V in #9DG am Anfang
+var #9DG
+if not "V" jump vl3
+dis
+sho rec
+
+if not #urC jump vt
+var "Sorry, zu diesem Titel gibt es eine Vormerkung." n "Deshalb keine VerlÑngerung mîglich."
+ansi
+mes
+jump getb
+
+:vt
+mes Geht nicht, es gibt Vormerkung(en) zum Titel
+:getb
+  ExplSatz zurueckholen
+var "#" $expl
+f1nd
+sho rec
+dis
+return    // von :exvl
+end
+
+  Verlg. geht nicht weil im Warteregal
+:novl
+var "Geht nicht, " #9DG$a " ist im Warteregal"
+return    // von :exvl   
+
+  Keine Vorm., also Verlaeng. ausfuehren
+:vl3
+
+  aber erst einige Daten besorgen
+  in $Amtyp sind die ganzen Medientypdaten, mit /// getrennt
+var #uAM "B" #uAE   // medTypBLeserklasse, z.B. CD-UB1
+ins #uAS
+  zugehoerigen Abschnitt in #uAY suchen
+var $Amtyp (b"#uAS" e"///")  // Abschnitt mit den Bedingungen des Typs
+ins #uAY
+
+if ="" jump lklass
+  Wenn es einen gibt, Freq und Frist etc entnehmen
+  Darin enthaelt $u die Angaben kulanz/intervall/gebhr
+if #uAY$u var #uAY$u(e"/") "/" #uAY$u(b"/" e"/") "/" #uAY$u(T"/");ins #uAG
+if not #uAY$u var $Aklnz "/" $Aintvl "/" $Avgeb;ins #uAG
+
+var #uAY$Y
+ins #uvF
+  L.Frist nehmen, falls #uvG noch nicht gesetzt (Expl.Leihfrist)
+var #uAY$E
+if not #uvG ins #uvG
+
+  Frist nehmen, die beim Ausleihtyp steht, wenn keine: 20
+var "" #uaT
+ins #uaT
+var #uAY(b"#uaT" e"")
+if "" var "20"
+ins #uaF
+var #uAY$N
+   erste Mahnfrist des Medientyps
+ins #umF
+
+
+jump gex
+
+  Leserklassensatz holen, weil kein Medientyp
+:lklass
+  var #umL    // Mahnfrist d. Leserkl (aus alf.flx #9A$N)
+  ins #umF    // ist aber in diesem Fall nicht da!
+              sondern erst mal laden:
+
+  Klassendaten aus $Aclas nehmen
+var "///C" #9DH$C
+ins #uaL
+var $Aclas (b"#uaL" e"///")
+
+if ="" #umF 1;jump gex
+ins #uaK
+var #uaK$u
+// kulanz/intervall/gebhr
+ins #uAG
+//  und Freq + Frist daraus entnehmen
+var #uaK$Y
+if ="" var "2"
+
+ins #uvF   // verl.Frequenz max
+
+  Hier $E, wenn es die Frist $E sein soll
+var #uaK$L  // VerlFrist
+if not "" if not #uvG ins #uvG
+  1. Mahnfrist
+var #uaK$N
+if not "" ins #umF
+
+:gex
+  Verl.Zaehler hochsetzen
+var #9DH$Z
+z=
+z+1
+var z
+  Maximum ueberschritten?
+if >#uvF jump vermax
+  Wenn bestaetigt, kommt es hierher zurueck
+  OK, Verl. ausfuehren
+:verdo
+  neuen Verl.Zaehler
+var z
+ins $Z-#9DH
+
+  Verzug pruefen, hinweisen, Verlg. evtl. nicht ausf.
+var #dts(0,8) "-" #9DH$R
+Day
+ins #uvz
+if >0 jump verzug
+
+  Ueberschreitung in Oeffnungstagen jetzt in Z und #uvz
+:frech
+  Frequenz und Frist loeschen
+ #uvF
+ #uvG
+  Ausleihtyp entnehmen: $v k,a,p, a ist default
+var #9DG$v
+  Ersetzen durch die Kennbuchstaben im MedienTypsatz
+if "" var "a"
+if "a" var "L"   // normal
+if "k" var "K"   // Kurz
+if "p" var "0"   // praesent
+ins #uaT
+
+  L.Frist loeschen
+ #uvG
+var #9DG$f
+  ist eine Expl.Leihfrist gesetzt? Hat Vorrang
+if not "" ins #uvG
+
+ #uAG kulanz/interv/gbhr
+ Z = Verzugstage
+  ExplSatz zurueckholen
+var "#" $expl
+f1nd
+var #9DH$D
+ins #udD
+  Datum in #9DH$D = aktuelles Datum? Dann nicht verl.
+var #dts(0,8)
+if =#udD var "erst heute ausgeliehen!";sho iv;return    // von :exvl
+
+  Aktuelles Datum in $D setzen (Ausleihdatum)
+var #dts(0,8)
+ins $D-#9DH
+sho rec
+disp
+    10 Tage nehmen, wenn #uvG nicht gesetzt
+if not #uvG #uvG 10
+   #uvG = LeihFrist
+
+  Ausnahmefrist gewuenscht? Dann #uaf besetzt
+if not #uaf jump fr1
+ask Ausnahmefrist?=#uaf
+if not "" if not cancel ins #uvG
+    Ausn.Frist f. den naechsten aber wieder loeschen
+  #uaf    // nein, alle Expl des lesers mit Ausn. Frist
+
+:fr1
+  Rueckgabetag ausrechnen
+var "+" #uvG
+Wday
+var (0,8)
+
+  wenn Mitgl.schaft vorher endet, dann dieses Datum
+if >#uAg var #uAg
+ins #uaR
+ins $R-#9DH
+if #urC jump mst
+
+  Neuen Rueckgabetermin anzeigen, kann evtl. geaendert werden
+  Drei Zeilen wegnehmen, wenn nicht gewuenscht:
+var "RÅckgabe am=" #uaR
+ansi
+ask
+  Wenn fuer dieses Ex. nicht gewuenscht, dann Aenderung rueckg.
+if cancel undo;return
+if "" undo;return    // von :exvl
+
+ins $R-#9DH
+
+:mst
+  Mahnstufe wieder auf 0 setzen
+$n-#9DH 0
+
+  erste Mahnfrist auf RckgTage draufaddieren
+var #uvG
+z=
+  z=RckGabeFrist
+  +Mahnfrist
+var #umF
+z+
+  Summe der Tage als Werktage auf den aktuellen Tag addieren
+var "+" z
+  das ergibt das MahnDatum
+Wday
+var (0,8)
+  if >#uAg eval #uAg +5
+if >#uAg var #uAg "-" #dts(0,8);Day;ins $u;eval $u +5;ins $u;var #dts(0,8) "+" $u;Wday
+var (0,8)
+ins $M-#9DH
+
+sho rec
+put
+
+  Protokolldatei f. Statistik
+var $Astk
+if "" jump mldg   // Name nicht angelegt - nichts schreiben
+var "+" $Astk
+open x
+var #9DG$m        // Med.Typ u.U. nicht immer besetzt
+if "" var "ZZZ"
+ins #uMT
+     aDatum:Leserkl;Medtyp/Signatur
+wri "v" #dts(0,8) ":" #9DH$C ";" #uMT "/" #9DG$s n
+close x
+
+:mldg
+sho rec
+disp
+
+return    // von :exvl
+
+
+:vermax
+if not #urC jump mx
+var "Exemplar bereits " z " Mal verlÑngert, mehr geht nicht! Bitte RÅckgabe"
+ansi
+mes
+return    // von :exvl
+
+:mx
+var "Maximum VerlÑngerungen ist " #uvF ", verlangt wird die " z ". VerlÑngerung" n
+var +"GewÑhren?"
+ansi
+yesno
+if yes jump verdo
+return    // von :exvl
+
+:verzug
+sho rec
+disp
+
+//  Anzahl Oeffnungstage ausrechnen
+z=1
+
+:vlo
+var z
+if >365 jump long
+ var #dts(0,8) "-" z
+var "-" z
+WDay
+ins #uaV
+var #uaV "-" #9DH$R
+Day
+if >0 z+1;jump vlo
+// Differenz 0, d.h. Tag erreicht, z ist Anzahl
+
+:long
+var z
+ins $days
+Z=
+
+// Falls man Verlg. ausblenden will, wenn ueberzogen:
+  var Z " Tage Verzug!"
+  var +n "Verl. nicht mîglich, Zuerst bitte RÅckgabe."
+  ansi
+  mes
+  return
+var Z
+ins #uvz
+
+var #uAG(b"/" e"/")
+
+if "0" return frech  // Keine Gebuehr (Intervall=0)
+  Z ist immer noch die Anzahl Verzugstage
+var #uAG(e"/")  // Kulanztage abziehen
+Z-
+var #uAG(b"/" e"/")   // teilen durch Intervall
+if >0 Z/
+
+var #uAG(T"/")   // mal Verz.geb.
+Z*
+  Jetzt haben wir die Gebuehr in Z
+
+  Evtl. ist Verzugsgeb. 0 - dann kein Geb.Satz
+if not >0 jump frech
+  GebSatz anlegen, GebTyp 1 = versp.Rueckg.
+var #9DH$u
+ins #uAU
+var #9DH$C   // Leserklasse d. Entl.
+ins #uAE
+var #9DG$a   // Barcode
+ins #uAA
+var #9DG$m   // Medientypcode
+ins #uAM
+var #9DF     // TitelId
+ins #uAF
+
+new 0
+#00 -
+var "0G0B" #uAU "K" #uAE "D" #dts(0,8) "O" #op
+ins #9GF
+
+Z*100
+  Gebuehr muss in Cent angegeben werden
+var "S" Z0 "E" #uAA "m" #uAM "T" #uAF "d" $days
+ins #9GG
+  Gebuehrensatz speichern
+var "Betrag=" Z n #9GG
+
+put
+if no mes
+sho rec
+dis
+var "GebÅhren sind angefallen"
+if #9GG$d var +n "Verzug: " #9GG$d " Tage"
+ansi
+mes
+  Expl.Satz zurueckholen
+var "#" $expl
+f1nd
+// Mahndatum loeschen
+var ""
+ins $m-#9DH
+
+jump frech
+  oder:
+  ??Expl.Satz aktualisieren:??
+  naechstes Mahndatum ist naechster Arbeitstag (noch verbessern?)
+Wday +1
+var (e"/")
+ins $M-#9DH
+
+var #dts(0,8)
+ins $m-#9DH
+
+  Mahnstufe erhoehen
+var #9DH$n
+z=
+z+1
+var z
+ins $n-#9DH
+
+var #9DH
+mes
+
+jump frech
+
+ u-VARIABLEN in a-verl.flx
+ #uLC (3)  Liste der Medientypcodes (aus $Amcod)
+ #uMT (2)  MedTyp d. Expl. f. Statistik
+ #uaE (2)  Wenn 0, dann momentaner ExplSatz (exec a-verl 0 )
+ #uaF (1)  Frist d. AuslTyps
+ #uaM (3)  MedTyp d. Expl. (default 0)
+ #uaR (2)  errechnetes RckgabeDatum
+ #uaT (3)  Ausl.Typ (a L K 0)
+ $expl (5)  interne Nr. d. aktuellen Satzes
+ #ulC (2)  MedTypCode d. Exempl.
+ #umF (5)  erste Mahnfrist d. MedTyps
+ #umL (1)  Mahnfrist d. Leserkl (aus alf.flx)
+ #urC      Name eines FLEX, der am Ende aufzurufen ist
+ #uvF (4)  Frequenz
+ #uvG (8)  Frist
+ #uAg : Datum Ende der Mitgl.schaft des Lesers (alf.flx) aus #9B$a
+ #uAG : Kulanz/Intervall/Gebuehr
+

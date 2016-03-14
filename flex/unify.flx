@@ -1,0 +1,46 @@
+  unify.flx : A-Datenbank von ASCII nach UTF-8 wandeln
+  2015-07-28
+
+:start
+ask Ordner für die umgewandelte Datenbank?
+if "" end
+ins $nd
+
+mkdir 
+if no mes Geht nicht, den gibt es schon;jump start
+
+// die spezifischen Parameter
+var "copy " P "uparam\\* " $nd
+dos
+
+// Batchdatei vorbereiten
+open x unify.bat
+
+wri "echo off" n
+wri "rename " $nd "\\cat.api " B ".api" n
+wri P "srch -d" D B "*." K1 "ld -ei-1u=" $nd "\\unidat." K1 "lg -k" K n
+
+wri P "index -f70 -@1 -d" $nd "\\unidat." K1 "lg -e" B "=" $nd " -n1 -k" K n
+
+wri P "qrix -fq0 -d" $nd " -ecat=" $nd " -k" K n
+wri P "index -fi1 -@2 -d" $nd "\\" B "*." K1 "ld -e" B "=" $nd " -n1 -k" K n
+wri P "qrix -fq1 -d" $nd " -ecat=" $nd " -k" K n
+wri "del " $nd "\\unidat.a8g" n
+
+wri "echo UTF-8-Datenbank liegt jetzt auf " $nd n 
+wri "echo Sofort starten? Dann Enter. Sonst Abbruch mit Strg+c" n
+wri "echo Ansonsten starten mit dem Befehl  a99 " $nd "\\cat" n
+wri "pause" n
+
+close x
+
+help unify.bat
+
+var "Skript unify.bat ist fertig. Sofort starten?"
+noyes
+if not yes end
+// starten
+Dos unify
+
+
+

@@ -1,0 +1,55 @@
+  O-HEUTE.FLX : Bestellungen von heute (ORDA)
+  2000-01-10/2001-03-21
+
+  aktuelles Datum 8stellig nach #udt:
+date 8
+ins #udt
+
+var "Lieferant ausw„hlen? (Nein = alle Lieferanten)"
+ansi
+yes
+if can end
+if no jump alle
+  Lieferant auswaehlen
+View lief.vw
+if no exec o-mkview
+clo v
+if can end
+  ausgew. Lief. -> #ulf
+ins #ulf
+jump lief
+:alle
+var ""
+ins #ulf
+
+:lief
+  Suchbefehl fuer Bestellungen des Lief. vom aktuellen Datum
+var "|; s 3 " #udt " " #ulf(e"|") "?"
+ins #ubb
+find
+  Nichts:
+if empty jump empty
+var U
+ins #uo!
+var "RBestellungen " #dts ", " #uo!(b": ")
+set
+#uo!
+if l2 jump eine
+  Sortieren
+order a0
+  anzeigen
+show list
+end
+:empty
+message Es liegen keine vor
+:ende
+end
+:eine
+var U
+ins #uo!
+
+sho rec
+disp
+var "Heute nur eine Bestellung, das ist sie!"
+sho iV
+

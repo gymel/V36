@@ -1,0 +1,117 @@
+  D-S.APT : Hauptteil fuer Anzeigeparameter d-s*.apr
+  2002-02-15
+
+  ***** eigentliche Ausgabebefehle ******************
+        Fuer andere Konfigurationen muss man hier 
+        die Feldnummern aendern!
+  Achtung hierarchische Saetze:
+  Folgende Zeile ist wirksam nur wenn man hierarchische Saetze hat:
+  (denn fuer jeden Untersatz wird die nachfolgende Liste abgearbeitet)
+
+#hi +0 e0
+#uvE +E e0
+
+   Tabulartorsetzungen fuer die Tabelle: (Wert 19 u.a. in d-s*.apr)
+#t19
+
+#uaF daF e0
+#+@
+
+#-0
+    Ist Alternativ-Anzeige-Flag gesetzt? dann #-(
+#uaF +( e0
+
+#hi1 { t13 t20 t99 "Band: " t21 t98 } P22
+
+
+  Hauptteil
+#-@
+
+#90 e" = " e"" { t20 "Signatur: " t21 t99 t71 } P{ t76 t98 t22 }
+
+
+
+#18 +#74 { t20 "Titel:   " t21 t99 "" } P{ t98 t22 }
+#19 +#40 { t20 "Titel:   " t21 t99 "" } P{ t98 t22 }
+#20 +#25 ,"_  _ / _" { t20 "Titel:   " t21 t99 "" } P{ t98 t22 }
+#84 e" / " { t20 "Titel:   " t21 t99 "" } P{ t98 t22 }
+#25 { t20 t21 } P22
+
+   Grundmuster einer Tabellenzeile: (fuer andere Felder einfach kopieren)
+
+#52 { t20 "Komp.: " t21 } P22
+#40. ++ e" = " p{ t20 "Verfasser:  " t21 } m{ "; " }
+#42 { t20 "Mitarb.:  " t21 } P22
+
+#23 { t20 "auch:    " t21 } P22
+
+#61 { t20 t21 } P22
+#61i { t20 "Orch.: " t21 } P22
+#57d { t20 "Dirig.: " t21 } P22
+#57i { t20 "Solisten: " t21 } P22
+
+#uim dim Z
+#74 Aim
+#75 p" : " Aim
+#76 p", " Aim
+#uim p20 p"   erschienen: |" e"|" P21
+#uim dim f",: " P22
+
+#84 { t20 "In:" t21 } P22
+
+#77 { t20 "Umfang/Seiten:" t21 } P22
+#77d { t20 "Dateiformat:" t21 } P22
+#88 { t20 "ISSN:" t21 } P22
+#88L { t20 "L-ISSN:" t21 } P22
+#88z { t20 "E-ISSN:" t21 } P22
+
+#70 +#704 { t20 "In:" t21 } P" "
+#+U
+#704
+#76 p"(" P")"
+#706
+#708 p", S."
+#70 P22 e0
+
+#89e { t20 "E-Mail:" t21 } P22
+
+
+#-U
+
+   Muster fuer wiederholbare Felder:
+
+#8e. ++ p>U m>U    (Unterprogramm  #(U  ist in D-SHTM.APR usw.)
+
+#8e. P22 e0
+
+#85. ++ p{ t20 "Serie:   " t21 } m{ t23 } 
+#85. P22 e0
+
+#31. ++ ,"_; _;; _" u_; p{ t20 "Themen:  " t21 } m{ t23 }
+#31. e0 P22
+
+#98 { t20 "Anmerkung" t21 } P22
+#81 { t20 t21 } P22
+
+#3n i4,c { t20 "Sachgruppe" t21 "Code: " } e" " b1 
+#3n i4,f { t20 "Dok.Typ: " t21 "Code: " } e" " b1 
+#3n { t22 t20 "Bedeutung: " t21 } b" "
+#3n p22 e0
+
+
+
+
+#99n { t20 t21 t22 } e0   leere Zeile
+
+#99. { t20 "erfasst/aktualis." t21 } e0
+#99n e""
+#99e e"" " / " 
+#99. p22 e0
+
+#+#   Ende der Ausgabe
+
+#-E    Endabschnitt
+#t{ "</table>" }
+
+#+#
+

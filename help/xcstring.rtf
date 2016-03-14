@@ -1,0 +1,275 @@
+{\rtf1\ansi\ansicpg1250\deff0\deflang1031{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\fmodern allegro Lucida Console;}{\f2\froman\fprq2 Times New Roman;}{\f3\froman Times New Roman;}{\f4\fswiss\fprq2 MS Sans Serif;}{\f5\froman\fcharset0 Times New Roman;}{\f6\fmodern\fprq1 Courier New;}{\f7\froman\fprq2\fcharset0 Times New Roman;}{\f8\fmodern\fprq1\fcharset0 Courier;}{\f9\fmodern\fprq1\fcharset0 Courier New;}{\f10\fmodern\fprq1\fcharset238{\*\fname Courier New;}Courier New CE;}{\f11\fmodern\fprq1 Courier;}{\f12\fmodern\fprq1 allegro Lucida Console;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red0\green176\blue0;\red255\green0\blue0;}
+\viewkind4\uc1\pard\qr\f0\fs24         \f1   \f0       \f2   \f0       \f2   \f3     \f2   \f0   \f2       \f0       \f3   \f2   \f0           \f2         \f3   \f4   \f2   \f3\fs18   
+\par `\cf1\ul\b Register\cf2\ulnone\b0 ` 
+\par \f5 `\cf1\ul\b Interne Sondervariablen\cf2\ulnone\b0 `\cf3\b\f6\fs20   
+\par \pard\f2\fs28 cstring\cf2\b0\f7\fs20    (Abk\'fcrzung von "code string")    \cf4\b\i\f2 acon\cf2\b0\i0   
+\par Die Befehle \b\f6 `\cf1\ul variable\cf2\ulnone `\b0\f2  und \b\f6 `\cf1\ul write\cf2\ulnone `\b0\f7   werden dadurch zu \'e4u\'dferst m\'e4chtigen Instrumenten. Nur diese beiden Befehle k\'f6nnen von \i cstrings\i0  Gebrauch machen!\f2 
+\par Ein \b\i cstring\b0\i0   ist eine \f7 Folg\f2 e von Code-Elementen, beliebig zusammengesetzt, wobei \f7 es sechs\f2  Typen \f7 von Elementen gibt\f2 ,\f7  \f2 getrennt durch Leerzeichen:  
+\par 
+\par \cf3\b 1. \tab\f6 "xyz"\f2\tab\cf2 Zeichenfolgen\b0 , in "..."  oder \f7  \f2 '...'  eingeschlossene druckbare Zeichen\f7 . F\'fcr  \cf4\b\i\f2 acon\cf2\b0\i0\f7  geht auch  |...| . 
+\par \tab\i Achtung:\i0   \b wenn  \\  in der Zeichenfolge auftritt, dann verdoppeln\b0 !\f2   
+\par \pard\fi-1420\li1420\cf3\b 2. \tab d d d  \tab\cf2 ASCII-Codes als Dezimalzahlen\b0\f7  (z.B.  13 10 f\'fcr einen Zeilenvorschub oder 27  f\'fcr den Escape-Code)  \f2 
+\par \cf3\b 3.\f7\tab\cf2\b0\i Achtung: \i0 Hier f\'fcr 2stelliges Schema angegeben; Sonst \f8 #nnnx\f7  bzw. \f8 #nnnnx\f7 ,  x=Space oder Mehrfachcode\cf3\b\f2 
+\par \f7  \f2  \tab\f9 #nnx\f2  \tab\cf2\f7 Feld\f2 inhalt \b0   (\f7 nnx\f2  kann auch eine #u- oder `\cf1\ul Sonderkategorie\cf2\ulnone ` sein: Handb.10.2.6.2)  
+\par \pard\cf3\b   \tab\f9 #nn.\f2   \tab\cf2\f7 Erstes Datenfeld, das mit #nn anf\'e4ngt \b0\f2    
+\par \cf3\b   \tab\f9 #n..\f2   \tab\cf2\f7 Erstes Datenfeld, das mit #n anf\'e4ngt \b0\f2    
+\par \cf3\b   \tab\f9 #nn~\f2   \tab\cf2\f7 Letztes Datenfeld, das mit #nn anf\'e4ngt \b0\f2    
+\par \cf3\b   \tab\f9 #n~~\f2   \tab\cf2\f7 Letztes Datenfeld, das mit #n anf\'e4ngt \b0\f2    
+\par \cf3\b   \tab\f9 #nn+\f2   \tab\cf2\f7 Alle Datenfelder #nnx, getrennt durch Code 10 (^J). Interessant bei HFM-Feldern.\b0\f2    
+\par \cf3\b   \tab\f9 _nnx\f2  \tab\cf2\f7 Feld\f2 text \f7 von \f9 #nnx\f7  \f2 incl. \f7 der Nummer  \f9 nnn\f2  \b0   (ohne das # am Anfang)  
+\par \pard\fi-1420\li1420\tab\cf3\b\f9 #nnx$a\cf2\b0\f7  \b Unter\f2 feld\f7  a von \f9 #nnn\cf3\f2  \cf2\b0 (nur der Inhalt des \f7 Unter\f2 feldes wird ausgegeben)  Auch \f6 #nn.$a\f2  und \f6 #n..$a\f7  m\'f6glich 
+\par \tab\tab\i Achtung:\i0  Kein Leerzeichen zwischen Feldnummer und $, also z.B.  \f9 #90$u\f7 , nicht  \f9 #90 $u\f7 
+\par \tab\tab\i Sonderfall:\i0  Wenn von  \b\f9 #nnn\b0\f7   der Anfangsteil VOR dem ersten Unterfeld gebraucht wird:  \cf3\b\f9 #nnn$$\cf2\b0\f7  \f2 
+\par \cf3\b\f7 4a\f2 . \tab\f7 $name\f2  \tab\cf2\f7 Freie Variable\f2  \b0   (\f7 beliebig benannte Variablen f\'fcr beliebige Inhalte. 
+\par \tab\tab Dazu --> `\cf1\ul\b Extra-Beschreibung\cf2\ulnone\b0 `\f2 )  
+\par \cf3\b\f7 4b\f2 . \tab\f7 &name\f2  \tab\cf2\f7 Persistente Variable\f2  \b0   (\f7 beliebig benannte Variablen f\'fcr beliebige Inhalte. [ab V34.1] 
+\par \tab\tab Dazu --> `\cf1\ul\b Extra-Beschreibung\cf2\ulnone  \b0 `\f2 )  
+\par \cf3\b\f7 5\f2 . \f7\tab\tab\cf2\f2 Interne Sondervariablen \b0   (\f7 meist nur \f2 einzelne Buchstaben; mehr dazu `\cf1\ul\b weiter unten\cf2\ulnone\b0 `)  
+\par \tab\tab Diese Variablen beziehen sich alle auf momentane Eigenschaften/Einstellungen des Systems 
+\par \cf3\b\f7 6\f2 .\cf2\b0    \f7\tab\cf3\b (...)\cf2\b0\f2  \f7\tab G\f2 eklammerter Ausdruck \f7 mit Manipulationsbefehlen, siehe B. unten\f2  
+\par \pard 
+\par Bei den `\cf1\ul\b Sonderkategorien\cf2\ulnone\b0\f7 ` sind nur die f\'fcr \i\f2 a99/acon\i0  wirklich sinnvollen verwendbar:  \f6 #dt, #dts, #fna, #mv, #nr, #op, #uxa, #uxb\f2 .  
+\par \f7 
+\par Es gibt f\'fcr  \cf3\b\f2 3.\f7  \cf2\b0  noch M\'f6glichkeiten der Verfeinerung, wenn nicht der gesamte Feldtext gebraucht wird:  \f2 
+\par \pard\li284\f7 (Zum Ausprobieren und Lernen dieser Befehle (A. und B.)  gibt es eine `\cf1\ul\b Beispielsammlung\cf2\ulnone\b0 `.)\f2 
+\par \pard\b 
+\par \pard\fi-284\li284 A.\b0   An \f7 die Feldnummer anh\'e4ngen\f2  kann man einen Ausdruck \f6 (\i\f7 m\f6 ,\f7 n\i0\f6 )\f7  , mit zwei Zahlen  \i m\i0 >=0 und  \i n\i0 >=0.   \f2 
+\par \pard\li284\f7 Dann wird vom Feld- bzw. Unterfeldtext nur der Teil ab Position \i m\i0  genommen (Z\'e4hlung beginnt bei 0) und zwar \i n\i0  Zeichen (wenn  \i n\i0 =0, dann der gesamte Rest; mit (0,0) bek\'e4me man also alles, aber das kriegt man auch ohne diese Angabe).  \f2 
+\par \f7 Ist  \i m\i0   gr\'f6\'dfer als die L\'e4nge des Datenfelds, kommt nichts heraus.  
+\par \i m\i0   kann negativ sein, dann werden die letzten  \i m\i0   Zeichen genommen, bevor  \i n\i0   ausgewertet wird.\f2 
+\par \f7 Ist  \i n\i0   gr\'f6\'dfer als die L\'e4nge des Restes, wird nach rechts mit Leerzeichen aufgef\'fcllt. 
+\par \i n\i0   kann negativ sein, dann wird eine entspr. Anzahl Zeichen vom Ende her als Ergebnis genommen 
+\par \i Beispiel:\i0   \f9 var #76(0,-4)\f7  liefert die letzten 4 Zeichen von #76., 
+\par \tab\tab dasselbe tun \f9 var #76(-4,4)\f7  und  \f9 var #76(-4,0)\f7  . 
+\par Wenn vor der Zahl  \i n\i0   noch ein  \b\f9 r\b0\f7   steht (dann  \i n\i0   aber nicht negativ!), wird statt dessen links aufgef\'fcllt, der Text also rechtsb\'fcndig auf die L\'e4nge  \i n\i0   abgesetzt (so kann man Ausgabefelder mit fester L\'e4nge erzeugen) . 
+\par \i Beispiel:\i0  \f9 var #76(0,r6)\f7  : Erscheinungsjahr links auf 6 Zeichen auff\'fcllen. 
+\par \i Noch besser:\i0  mit  (\f9 rN,x)\f7   kann man den iV-Text in einem N Zeichen langen Feld nach rechts r\'fccken und links, falls da noch Platz bleibt, mit dem Zeichen \f9 x\f7  auff\'fcllen. 
+\par \i Sonderfall:\i0  Wenn man  \f9 i0\f7   schreibt statt einer Zahl \i m\i0 , wird der Feldinhalt ab der Indikatorposition genommen. Das ist die Position hinter dem Mehrfachcode. Beim Standardschema macht das keinen Unterschied, bei MARC jedoch gibt es vor dem Textbeginn noch 2 Indikatoren. Siehe dazu die Beschreibung im Anhang A des Handbuchs. Wenn man also schreibt: 
+\par \f9 var #nnn(i0,1)\f7 , dann ergibt sich genau der Indikator des Feldes #nnn.  Will man den zweiten Indikator oder das Zeichen hinter dem ersten, dann   \f9 var #nnn(i1,1)\f7 .\f2 
+\par \pard\b 
+\par \pard\fi-284\li284 B.\b0\f7   Die zweite M\'f6glichkeit: man h\'e4ngt noch einen geklammerten Ausdruck direkt an \cf3\b\f9 #nnn\cf2\b0\f7  hinten dran in einer der folgenden Formen:   [ nur bei $- und &-Variablen ein Spatium vor (...), sonst nicht! ]\f2 
+\par \pard\f6\tab (b"xyz")\f2   vom \f7 Feld\f2 text nur den Teil hinter\f7  dem ersten\f2  "xyz" nehmen 
+\par \pard\fi-1846\li1846\tab\f10 (B"xyz")\f7    dasselbe, aber wenn "xyz" gar nicht vorkommt, dann den unver\'e4nderten Text \f2 
+\par \tab\f10 (e"xyz")\f7    Nur den Teil vor "xyz" nehmen (wenn "xyz" nicht vorkommt, unver\'e4ndert)\f2 
+\par \tab\f10 (\f9 E\f10 "xyz")\f7    Nur den Teil bis incl. "xyz" nehmen (wenn "xyz" nicht vorkommt, unver\'e4ndert). "xyz" bleibt stehen\f2 
+\par \tab\f10 (t"xyz")\f2    \f7 Am Ende\f2  den mit dem letzten vorkommenden "xyz" beginnenden Teil beseitigen 
+\par \pard\fi-1136\li1846\f10 (T"xyz")\f2    \f7  \f2 Den Teil nehmen, der hinter dem letzten vorkommenden "xyz" steht (leer, wenn "xyz" nicht vorkommt) 
+\par \pard\fi-1846\li1846\tab\f10 (f"xyz")\f2    \f7 Vorne \f2 jedes einzelne der Zeichen xyz  entfernen, auch wenn es mehrfach vorkommt 
+\par \pard\tab\f10 (F"xyz")\f2   \f7  \f2 d\f7 ie entsprechende Aktion\f2  \f6 am Ende\f2  des Textes 
+\par \pard\fi-1136\li1846\f7\tab\f10 (\f9 u\f10 )\f2  \f7 / (U)  \f2  \f7      beseitigt die mit Nichtsortierzeichen markierten Teile im iV-Inhalt; U: ersten Buchstaben gro\'df machen 
+\par \pard\tab\f10 (\f9 u[]\f10 )\f9   \f7   \f2  \f7    beseitigt Einschl\'fcsse in eckigen Klammern  [u gibt es ab V29.7) 
+\par \tab\i Speziell\i0 , falls iV-Inhalt  XML ist:  (Mehr in `\cf1\ul\b Vb.212\cf2\ulnone\b0 `) \f2 
+\par \pard\fi-1136\li1846\tab\f10 (\f9 x'tag att="abc"'\f10 )\f2  \f7  iV-Inhalt nach\f9  <tag>\f7  mit Attribut \f9 att="abc"\f7  absuchen und den Inhalt nehmen\f2   
+\par \tab\f10 (\f9 X\f10 "\f9 tag\f10 ")\f2    \f7 dasselbe, aber  \f9 <tag \f7 ...  stehenlassen, jedoch \f9 </tag>\f7  am Ende wegnehmen. 
+\par \pard\fi-710\li710\tab\i Achtung:\i0  Wenn das Feld \f9 <tag \f7 ...>  mehrfach vorkommt, werden alle eingesammelt und die Inhalte mit 2x Code 20 getrennt.\f2 
+\par \pard\li284 Statt "..." kann man '...' verwenden (wichtig, wenn \f7 z.B. \f2 innerhalb \f7  \f10 xyz\f2  \f7  \f2 ein " vorkommt).  \f7 Aber nur eins von beiden, nichts anderes!\f2 
+\par \f7 Der Ausdruck wirkt nur auf den Inhalt des betr. Datenfeldes, an den er angeh\'e4ngt ist. 
+\par \i Achtung:\i0  Steht vor dem Klammerausdruck ein Leerzeichen, wirkt er auf den momentanen Inhalt der gesamten  iV, siehe oben \cf3\b 6\f2 . \f7  \cf2\b0  (Das geht dann auch bei $- und &-Variablen, das direkte Anh\'e4ngen eines (...)-Ausdrucks aber nicht.)\cf3\b\f2 
+\par \cf2\b0\f7 Bei  \f10 e\f9 , B \f2 und\f9  b\f7   kann \f10 xyz\f7  auch von der Form [\i\f9 abc\i0 ]\f7  sein, um zu erreichen, da\'df beim ersten Auftreten eines der Zeichen  \i\f9 a\i0\f7 , \i\f9 b\i0\f7  oder \i\f9 c\i0\f7  die Zeichenfolge abgebrochen wird (Fall \f9 e\f7 ) bzw. der Rest hinter dem Zeichen genommen wird (Fall \f9 b\f7  und \f9 B\f7 ).\cf3\b\f2 
+\par \cf2\b0\i\f7 Ausnahmen:\i0  Statt (b"<") mu\'df man (b"[<]") schreiben, entspr. f\'fcr die Zeichen  >, # und ~. 
+\par Mit \b\f9 ?\b0\f7  kann man einzelne Zeichen maskieren, d.h. \f9 (e"?A")\f7  setzt das Ende vor   \f9 xA\f7   mit bel. x. (F\'fcr  \f9 f\f7   und  F  macht das keinen Sinn.) 
+\par Mit  \f9 ^X\f7   (2 Zeichen) innerhalb  \f10 xyz\f7   kann man nach Steuerzeichen suchen: 
+\par          \f9 ^I\f7   z.B. steht f\'fcr den Code 9 (TAB-Code), \f9 ^M^J\f7  f\'fcr 13 10,  \f9 ^T\f7  f\'fcr 20 usw. 
+\par Wenn in  \f10 xyz\f7   das Zeichen ^ selbst gemeint ist, mu\'df man  \b ^~\b0   daf\'fcr setzen. 
+\par Wenn \f10 xyz\f7  mit ~ beginnt, wird ohne Unterscheidung von gro\'df/klein gesucht (ab V28.3). 
+\par Auch in  \f10 xyz\f7   mu\'df jeder \\ verdoppelt werden. 
+\par Au\'dfer f und F: Statt  \f10 xyz\f7   kann auch eine \f9 #u\f7 -Variable oder Kategorienummer stehen: \f9 (b"#uab")\f7 , da.nn wird deren Inhalt statt \f10 xyz\f7  genommen. Mit \f9 (b"~#uab")\f7  passiert dasselbe, aber ohne Unterscheidung  von gro\'df/klein (ab V28.3). 
+\par \pard\b 
+\par \pard\fi-284\li284 C\f2 .\b0\f7   \b\f2 Mehrere\b0\f7  Ausdr\'fccke der Art A und B k\'f6nnen aufeinander folgen, dann alles zusammen in (...) eingeschlossen (also nicht mehrere Klammernpaare!), getrennt durch optionale Leerzeichen.  \f2 
+\par \pard\li284\i Beispiel:\i0  \f6 (b"\f9 abc\f6 " e"\f9 def\f6 " 0,15)\f2  : Hinter \f7  \f9 abc\f2  \f7  \f2 beginnen, vor\f7  \f2  \f9 def\f2  \f7  \f2 enden, dann davon \f7 die ersten \f2 15 Zeichen. 
+\par \f7 Au\'dfer bei \f9 f \f7 und \f9 F\f7  kann statt xyz auch eine \f6 #u\f7 -Variable stehen, z.B.  \f6 b"#uab" 
+\par \f7 Wenn in der iV Steuerzeichen vorkommen (Codes unterhalb 32), mu\'df man sie in xyz in der Form ^A f\'fcr Code 1 usw. angeben, siehe B. Das Zeichen ^ selbst mu\'df als ^~ angegeben werden. \f2 
+\par \i\f7 Wichtiger \f2 Sonderfall:\i0  Wenn man schreibt  \f6 var (...)\f2 , also ohne Kategorienummer, dann werden die Befehle in (...) auf den momentanen Inhalt der iV angewendet, egal wie er vorher entstanden war, z.B. durch einen Befehl  \f6 var F\i\f2 dateiname\i0   \f7 oder  \f6 var \f9 $\f2 . 
+\par \i Hinweis:\i0  Die `\cf1\ul Exportsprache\cf2\ulnone ` ist vergleichsweise mit ihren `\cf1\ul\b Manipulationsbefehlen\cf2\ulnone\b0\f7 ` noch etwas m\'e4chtiger.  \f2 
+\par \pard 
+\par 
+\par \pard\fi-710\li710\cf3\b\f7 Zu 5\f2 .\cf2\b0  \tab\f7 Au\'dferdem  kann man eine Anzahl \cf3\b\f2 Interner Sondervariablen\i  \cf2\b0\i0 in den Ausgabetext einbauen. Das sind die Buchstaben der nachfolgenden Liste, es wird dann jeweils der entsprechende Text statt des Buchstabens automatisch eingesetzt:     
+\par \tab\cf4\b\i acon:\cf2\b0\i0  nur die sinnvollen Variablen sind nutzbar,  die \cf4\f7 nicht\cf2  verf\'fcgbaren\f2  sind mit  \cf4\f7 xx\cf2\f2   markiert.  
+\par \tab Die ersten neun entsprechen gleichnamigen Aufruf-Optionen der DOS-Programme.  
+\par \pard\i Testen:\i0   Starten Sie den FLEX  `\cf1\ul\b\f6 cstring.flx\cf2\ulnone\b0\f2 `  
+\par 
+\par Hier die Liste der \b internen Sondervariablen\b0\f7  (s.o. Punkt 4).\f2  Es handelt sich um Einstellungen oder Eigenschaften des momentanen Zustands, in dem sich das System befindet. Alle diese Werte kann  man im FLEX auswerten. Das geht immer nach dem Schema dieses Beispiels\f7  (au\'dfer bei den  J-Werten)\f2 : 
+\par \f11 var L 
+\par if ="\f8 ~ger\f11 " jump deutsch\f2 
+\par \tab Wenn die Arbeitssprache Deutsch ist\f7  (ger oder GER)\f2 , dann springe zur Marke \f11 :deutsch\f2 . 
+\par   
+\par Die ersten 10 Sondervariablen entsprechen gleichnamigen Aufruf-Optionen der DOS-Programme (s. `\cf1\ul\b Kap.12\cf2\ulnone\b0 ` des Handbuchs)\f7 .\f2   
+\par \cf4\f7 Nicht f\'fcr \i acon\cf2\i0  gilt: 
+\par Die in \cf3\f9 gr\'fcn\cf2\f7  angegebenen Namen bezeichnen dasselbe Element in der INI-Datei, diese Namen k\'f6nnen gleichwertig verwendet werden, also z.B. \f9 InputFileNr\f7  statt \f9 N\f7 . M\'f6glich ist also statt \f9  var P\f7   genausogut  \f9 var ProgDir\f2 
+\par 
+\par A \tab\ul A\ulnone ccess-Modus der aktuellen Sitzung (Berechtigungsstufe aus INI-Datei)    \f7   \cf3\f9 access\cf2\f2 
+\par B \tab\ul N\ulnone ame der Datenbank    \f7   \cf3\f9 DbName\cf2\f2 
+\par D \tab\ul D\ulnone atenbank-Pfadname (mit \\ am Ende)  \f7   \cf3\f9 DbDir\cf2\f2 
+\par E\tab Name der aktuellen \ul E\ulnone xportdatei    \f7   \cf3\f9 OutputFile\cf2\f2 
+\par K\tab Name der \ul K\ulnone onfigurationsdatei    \f7   \cf3\f9 Konfiguration\cf2\f2 
+\par K1\tab nur der erste Buchstabe davon  
+\par L\tab Sprachbezeichnung d. Arbeitssprache (INI-Befehl  \ul L\ulnone anguage=...)  
+\par N\tab\ul N\ulnone\f7 ummer der Datei f\'fcr neue S\'e4tze  \f2   \f7   \cf3\f9 InputFileNr\cf2\f2 
+\par P \tab Name des \ul P\ulnone rogrammverzeichnisses (mit \\ am Ende)    \f7   \cf3\f9 ProgDir\cf2\f2 
+\par \pard\fi-710\li710 Y \cf4 xx\cf2\tab Pfad der IndexDatei (InxName in INI, falls anders als D, sonst leer) (DOS-Option -y)  
+\par \pard 
+\par \pard\fi-710\li710\f7 D\f2 ie anderen Variablen in alphabetischer Folge: 
+\par \pard\b\i\f7 Nochmals Achtung:\b0\i0  D\f2 ie mit \cf4 xx\cf2  gekennzeichneten \f7 Variablen \f2 gibt es in \cf4\i acon\cf2\i0  \f7  \f2 NICHT! 
+\par \pard\fi-710\li710 
+\par \b\f7 $\b0\tab Zweite interne Variable, auch  \b iV2\b0   genannt. Mit  \f9 ins $\f7   kann man sie belegen, mit  \f9 var $\f7   wieder in die normale iV holen.\f2 
+\par 
+\par C \cf4 xx\cf2\tab\ul C\ulnone\f7 opy-Verzeichnis (f\'fcr Sicherungskopie, siehe \f9 _backup.flx /_restore.flx\f7 ) \i ohne\i0  \b\f9\\\b0\f7  am Ende  \f2 
+\par Err \tab\f7 Letzter \f2 Fehlermeldungstext. \f7 Mit  \f9 if no var Err;mes;jump ...\f7  \f2  \f7 kann man eine Meldung erscheinen lassen und einen Sprung ausl\'f6sen, z.B. nach einem find-Befehl:  \f9 var Err\\if not "" jump ...\f2 
+\par F\i\f7 name\i0\f2  \tab\ul F\ulnone ile : hinter F folgt direkt ein Dateiname\f7 , und zwar der Name einer lokalen Datei oder eine URL in der Form http://... oder file:///...\f2 ; der \i Inhalt\i0\f7  dieser Datei (!!) wird in die Ausgabe eingef\'fcgt; folgt kein Dateiname, wird Inhalt der iV als Name genommen. Dabei bleiben auch Steuerzeichen erhalten. F\'fcr Intenet-Dateien empfiehlt sich allerdings, diese zuerst mittels  \f9 `\cf1\ul\b get I url\cf2\ulnone\b0 `\f7   in die iV zu holen und in einer $-Variablen zwischenzuspeichern, weil es dabei bessere Fehlerkontrollen gibt.\f2 
+\par \tab\i Hinweis:\i0  mit  \f6 fetch\i\f2  anz\i0\f7   kann man aus einer ge\'f6ffneten Datei \i\f2 anz\i0  Zeichen in die iV einlesen. 
+\par G\tab Name der LOG-Datei (LogName-Befehl in INI, DOS-Option -L )  
+\par H\tab\f7 Liste der Register-\'dcberschriften (\ul\f2 H\ulnone eadlines, |-Zeilen in Indexparametern)  
+\par I\tab\ul I\ulnone ndexliste : die Liste der symbolischen Registernamen (I-Befehle der Indexparameter) 
+\par \f7                     Trennzeichen bei I und R ist der Code 20 ( \'b6 ),  Ersetzung bei z.B. Bedarf mit  \f9 ins _^T_^M^J_\f2   
+\par \pard\li284\f7 Die mit \f9 J\f7  beginnenden Sondercodes fallen aus dem Rahmen: sie ver\'e4ndern den iV-Inhalt als Ganzes 
+\par Man mu\'df sie jeweils hinten an den  \f9 var\f7 -Befehl mit anh\'e4ngen, nicht auf die n\'e4chste Zeile als eigenen  \f9 var\f7 -Befehl! 
+\par \pard\f9 J\f7\tab Feldname laut CFG zu der Feldnummer, die gerade in der iV steht. 
+\par \tab\i Beispiel: \i0\f9 var "#20" J\f7  : dann steht in der iV: "Titel"\f2 
+\par \pard\fi-710\li710\f9 Jd\f7\tab Der momentane Inhalt der iV wird in dezimale Codes umgewandelt: aus "abc" wird "97 98 99" 
+\par \f9 Jl\f7\tab L\'e4nge der iV, d.h. der momentane Inhalt der iV wird durch dessen L\'e4nge ersetzt! 
+\par \f9 JLx\f7\tab Inhalt der iV nach Links bzw. Rechts durch das Zeichen x auf soviel Stellen auff\'fcllen, wie es der interne Z\'e4hler angibt. 
+\par \f9 JRx\f7\tab Also z.B. vorher geben:  \f9 z=8 \f7   f\'fcr 8 Stellen. Oder:  \f9 z=6\\var #nr JL0\f7   bedeutet: #nr 6stellig mit f\'fchrenden Nullen geben. 
+\par  
+\par \pard Kk\f2  \tab\f7 Werte t und k aus der CFG, mit / dazwischen. Normalfall: 2/4\f2 
+\par \pard\fi-710\li710 M \tab Inhalt der Environment-Variable TE\ul M\ulnone P (dort besteht Schreibrecht!)     \f7  ( \cf3\f9 TempDir \cf2\f2 ) 
+\par \pard\tab bzw. der Inhalt des INI-Befehls \f9 DbAux\f2 , wenn dieser gesetzt wurde.  
+\par \pard\fi-710\li1420\f7\tab\cf4\i\f2 acon\cf2\i0  \f7 : Dateinamensmuster, z.B.  \f9 demo2\\cat*.ald\f7 , wenn auf c:\\allegro  der Befehl  \f9 acon -ddemo2 -bcat\f7   gegeben wurde 
+\par \pard\f2 O \cf4 xx\cf2\tab Name der \ul O\ulnone ffline-Datei  
+\par Q \cf4 xx\cf2\tab Fokusziffer: (Fokus setzen mit Befehl activate i )  
+\par \tab 1 : Auswahlliste  
+\par \tab 2 : Schreibfeld  
+\par \tab 3 : Befehlszeile  
+\par \tab 4 : Anzeigefeld  
+\par Q\f7 a\f2  \cf4 xx\cf2\tab\f7 Was steht momentan in der Auswahlliste?\f2   
+\par \tab 1 : A\f7 ktueller Satz 
+\par \tab 2 : Hintergrundspeicher (#u-Variablen) 
+\par \pard\fi-710\li710\tab 3 : Ergebnismengenliste 
+\par \pard\tab 4 : Abfrageliste aus CFG 
+\par \tab 0 : CFG-Liste der Kategorien\f2   
+\par R\tab\ul R\ulnone estriktionen : Liste der Namen der Restriktionen (R-Befehle)   
+\par \tab\tab\f7 Trennzeichen bei I und R ist der Code 20 ( \'b6 )  \f2 
+\par S\tab\ul S\ulnone\f7 hort-title \'dcberschrift (aus Zeile |<="..." der Indexparameter)  \f2 
+\par T\tab\ul T\ulnone itel der Datenbank (aus Zeile |a="..." der Indexparameter)  
+\par \tab   bzw., wenn gesetzt, die Zeile DbTitle aus der INI-Datei  
+\par U \cf4 xx\cf2\tab Name der aktuellen Erg.Menge  
+\par Uv \cf4 xx\cf2\tab Name der zuletzt benutzten ViewListe  
+\par V \cf4 xx\cf2\tab Name der INI-Datei (\ul V\ulnone orgaben), mit der gestartet wurde  
+\par \f7 V14\tab Werte i5 und i6 der Indexparameter, falls V14-Verkn\'fcpfungen vorhanden, z.B. _9\f2 
+\par W \cf4 xx\cf2\tab Arbeitsverzeichnis (\ul W\ulnone orking directory) (OHNE \\ am Ende) 
+\par X \cf4 xx\cf2\tab Name der letzten Hilfedatei  
+\par Z\tab Wert der internen Zahlenvariablen \b\f7  `\cf1\ul\f2 iZ\cf2\ulnone\f7 `   \f2 
+\par \b0 Zk\tab dasselbe, gerundet auf k Stellen nach dem Komma (k=0...9)  
+\par   
+\par \pard\fi-710\li710 a \cf4\f7 xx\cf2\f2\tab Name der aktuellen \ul A\ulnone nzeigeparameter (DOS: Option -p\f7  \f2 )     \f7   \cf3\f9 DisplayParameter\cf2\f2 
+\par \pard b \tab Breite der Kategorienummern,Textanfang\f7 sposition\f2 . Bei A.CFG:  2,4  
+\par c\i\f7 i\i0\f2  \tab\f7 ( \i i \i0 =1...499) Zeile i der UIF-Datei. Nummern 70-89 sind frei f\'fcr Anwender  \f2 
+\par \pard\fi-710\li710 c\f7 a\f2  \tab\f7 momentaner Inhalt/Umfang des Arbeitsspeichers, in Bytes  // momentane Anz.Felder,Max.Zahl    [ CFG: mK ]\f2 
+\par \f7 cl\f2\tab\f7 Befehlszeile (command line): Was beim Aufruf des Programms hinter dem Programmnamen angegeben wurde\f2 
+\par \pard\f7 cm\f2  \cf4 xx\cf2\tab\f7 momentaner Inhalt der Suchbefehlszeile\f2   \f7 (Feld "Schnelle Suche")\f2 
+\par \pard\fi-710\li710 c\f7 p\f2  \tab\f7 momentaner Inhalt/Umfang des Phrasenspeichers, in Bytes // momentane Zahl, Max.1200  [ CFG: mP ]\f2 
+\par c\f7 r\f2  \tab\f7 momentaner Inhalt/Umfang des Reservespeichers, in Bytes // momentane Anz.Felder,Max.Zahl    [ CFG: mB ]\f2 
+\par \pard\f7 cn\cf4  \cf2\f2\tab\f7 Feldnummer f\'fcr Neuerfassungsdatum  (CFG cn ) , ohne #, also z.B.  \f9 99n\f7 
+\par ce\cf4  \cf2\f2\tab\f7 ... f\'fcr letztes \'c4nderungsdatum  (CFG ce ) 
+\par cg\cf4  \cf2\f2\tab\f7 ... f\'fcr die IdNr  (CFG cg ) 
+\par ci\cf4  \cf2\f2\tab\f7 Form der IdNr (CFG ci )\f2 
+\par \f7 cf\cf4  \cf2\f2\tab\f7 Anzahl der F\'fcllzeichen in einem Neusatz (CFG:  f )\f2 
+\par d \cf4 xx\cf2\tab Name der aktuellen \ul D\ulnone ruckparam (DOS: Option -q\f7  \f2 )     \f7   \cf3\f9 PrintParameter\cf2\f2 
+\par e\tab Name der aktuellen \ul E\ulnone xportparam (DOS: Option -e\f7  \f2 )     \f7   \cf3\f9 ExportParameter\cf2\f2 
+\par f  \cf4 xx\cf2\tab\ul f\ulnone ind Befehl (Name) der letzten ErgMenge  
+\par \pard\fi-710\li710 g \cf4 xx\cf2\tab Zeile im Index, die zuletzt benutzt wurde  
+\par h\tab\ul h\ulnone eadline des Registers, dessen Nummer in der iZ steht (vorher z.B. mit var "1"\\= hineinschreiben)  
+\par \pard\f6 i\f2  \tab\ul i\ulnone nterne Nr. des Datensatzes  
+\par \pard\fi-710\li710\f6 i\f7 R\f2\tab\ul i\ulnone nterne Nr. des\f7  mit  \f9 fetch rec\f7   aus ALD-Datei eingelesenen\f2  Datensatzes  \f7  (nur \cf4\i acon\cf2\i0 )\f2 
+\par \f6 ixk-j\f9  \f2 Satznummern k-j der aktuellen Erg.Menge, getrennt durch das Zeichen x. Ohne k-j: alle Satznummern. 
+\par \pard\tab\i Sonderfall\i0   \f6 x=n\f2  :  jede Nummer auf neuer Zeile. \f7   [\i Hinw.:\i0  Z\'e4hlung beginnt mit 1]\f2 
+\par j \tab Nummer der .cLD-Datei des Satzes  
+\par jb \tab\f7 L\'e4nge des Datensatzes in Byte (aktuelle L\'e4nge im Arbeitsspeicher)  \f2 
+\par jf \tab ... in der Datei (wird schon beim Einlesen des Satzes festgestellt)  
+\par jp \tab Position des Satzes in der Datei ("offset" vom Dateianfang, beginnt mit 0)  
+\par k0  \tab Anzahl der \ul K\ulnone ategorien (Felder) des aktuellen Satzes  
+\par \pard\fi-710\li710 k1  k_1 \f7\tab\f2 Erstes Feld des Satzes (incl. Kategorienummer), k_1: dasselbe ohne # am Anfang  
+\par \pard k2  k_2 \f7\tab N\'e4chstes Feld (leer, wenn das letzte erreicht war)  \f2 
+\par k3  k_3 \f7\tab\f2 Letztes Feld   
+\par k4  k_4 \f7\tab\f2 Voriges Feld (leer, wenn das erste erreicht war)  
+\par \f7 kn\tab Gesamter Datensatz, Felder mit # beginnend, Code 10 als Feldende\f2 
+\par \f7 kr\tab ... desgleichen, aber 13 10 statt nur 10\f2 
+\par l \tab\f7 Gr\'f6\'dfe ("\ul\f2 l\ulnone ength") der ErgMenge  
+\par \pard\fi-710\li710 m \tab Name des Programms und Nummer der Version 
+\par \f7                 \f2 (z.B. \f7  \b a99\b0 :  \f9 a99 v36.2\f7   --  \cf4 acon\cf2 : \f2  \f9 ac-w V35.10\f7 , \f9 ac-x v25.9\f2 )  
+\par \pard n  \tab\ul n\ulnone eue Zeile, gleichwertig: 13 10  
+\par o \cf4 xx\cf2\tab\f7 Anzahl der Offline-S\'e4tze  \f2 
+\par \f7 oq\f2  \cf4 xx\f7  \cf2\f2\tab\f7 Position des Satzes in der Offline.Datei (vgl.  \f9 `\cf1\ul\b get q\cf2\ulnone\b0 `\f7 )\f2 
+\par \pard\fi-710\li710 p \tab\ul P\ulnone\f7 rim\'e4rschl\'fcssel des aktuellen Satzes  (Sprungmarke \f9 #-@\f7  bzw. die mit \f9 `\cf1\ul\b set pX\cf2\ulnone\b0 `\f7  gesetzte)\f2 
+\par \f7 pid          Process Identifier (Nummer des laufenden a99 als Proze\'df)\f2 
+\par \f7 pvs         Name des aktuell eingestellten Persistenz-Index, default:  z1 f\'fcr Register 1 von cat.azx  [ab V35.8]\f2 
+\par q \cf4 xx\cf2  \tab Nummer der aktuellen ErgMenge/momenta\f7 n\f2 e Gesamtzahl von Erg.mengen 
+\par \pard r \tab\ul r\ulnone elative Nummer des Satzes in der ErgMenge  
+\par s \tab Kurzzeile des \f7 aktuellen \f2 Satzes (aus der .\ul S\ulnone TL-Datei) 
+\par \pard\fi-710\li710\f7 size \cf4 xx\cf2\tab Gr\'f6\'dfe des a99-Fensters: nur 4 Zahlen, links rechts oben unten, in Pixeln. (Anwendung siehe \f9 `\cf1\ul\b janas\cf2\ulnone\b0 `\f7 )\f2 
+\par \pard\f7 SIZE \cf4 xx\cf2\tab Gr\'f6\'dfe des gesamten Desktops:  4 Zahlen in gleicher Weise\f2 
+\par \f7 sK\tab Alle Registereintr\'e4ge zum aktuellen Satz, getrennt durch ==\f2  
+\par \f7 sk\tab   dasselbe, aber getrennt durch 13 10 (Zeilenvorschub)\f2  \f7  [also F7 per FLEX] 
+\par \tab   Der Text beginnt dann mit einer Zeile (Anzahl/Gesamtl\'e4nge)\f2 
+\par \pard\fi-710\li710\f7 sL\tab Status des letzten Sperrbefehls (Locking status) (ab V32.4):  \f9 `\cf1\ul\b set lock\cf2\ulnone\b0 ` ...\f7 , aber auch  \f9 if Lock ...\f7 
+\par \pard st \cf4 xx\cf2\tab Inhalt des Statusfeldes unten rechts, in dem die Satznummer steht\f2 
+\par t\tab\f7 Gesamtzahl S\'e4tze (\ul\f2 t\ulnone otal number of records)  
+\par u \tab\f7 aktuelles \f2 Datum und \ul U\ulnone hrzeit  
+\par u\f7 e \cf4 xx\cf2\f2  \tab Datum und \ul U\ulnone hrzeit \f7 der letzten \'c4nderung des aktuellen Satzes\f2  
+\par \f7 v \cf4 xx\cf2\tab Name der Phrasendatei\f2 
+\par vi \cf4 xx\cf2\tab Phrase i (i=1 - 255) (->  \b\f6 `\cf1\ul phrase\cf2\ulnone ` \b0\i\f2 i text\i0 )  
+\par w \cf4 xx\cf2\tab Inhalt des Schreibfeldes  
+\par x \cf4 xx\cf2\tab Name des externen Editors  
+\par \pard\fi-710\li710 y \cf4 xx\cf2\tab Name der Indexparameter (InxParam in INI, falls anders als B) sonst wie B   
+\par \pard z\tab\f7 Wert des internen Z\'e4hlers  \f2 
+\par z0 \cf4 xx\cf2\tab Anzahl Zeilen in der Anzeige (incl. aller Leerzeilen)  
+\par \pard\fi-710\li710 z1 \cf4 xx\cf2\tab Erste Zeile des Anzeigefeldes (als ASCII-Text, ohne RTF-Steuerzeichen!)  
+\par \pard z2 \cf4 xx\cf2\tab\f7 N\'e4chste Zeile  \f2 
+\par z3  \cf4 xx\cf2\tab\f7 Letzte Zeile (Leerzeilen am Ende unber\'fccksichtigt)  \f2 
+\par z4  \cf4 xx\cf2\tab Vorige Zeile  
+\par zc \cf4 xx\cf2\tab Text der aktuellen Zeile (wo sich die Schreibmarke befindet)  
+\par \tab Dann: \f9 #uzC\f7  \f2 =\f7  \f2 dieselbe Zeile, aber __ (2x Unterstrich) an der Stelle,   
+\par \tab wo die Schreibmarke sich befindet  
+\par \tab\f9 #uzD\f2  = Fliptext, falls Schreibmarke innerhalb eines solchen  
+\par \pard\fi-710\li710\tab\f9 #uzF\f7  = Flipbefehl (zugeh\'f6rige Nutzervariable \f9 #uZi\f7 , einschl. der Nummer, also \f9 #uzF#uZi...\f7 )  \f2 
+\par \pard zn \cf4 xx\cf2\tab Nummer der Zeile, in der sich die Schreibmarke befindet 
+\par zv \cf4 xx\cf2\tab Nummer der ersten oben sichtbaren (visible) Zeile 
+\par   
+\par \f7 Wenn  \f9 k2,k4,z2\f7   oder  \f9 z4\f7   verwendet werden, kann man anschlie\'dfend mit  \b\f6 `\cf1\ul if no\cf2\ulnone ` ...\b0\f2  checken, ob es kein Ergebnis mehr gab.  
+\par \f7 Das ist wichtig f\'fcr Schleifen.  \f2 
+\par   
+\par \i Tip:\i0\f7  Sie k\'f6nnen diese Variablen alle leicht ausprobieren. Geben Sie z.B. im Schreibfeld ein, um den Prim\'e4rschl\'fcssel bzw. den Titel der Datenbank bzw. die interne Nummer des aktuellen Satzes zu sehen:  \f2 
+\par   
+\par \b\f12 x var p\\mes\b0   \cf1\f7 bzw.\cf2\f2      
+\par \b\f12 x var T\\mes\b0   \cf4\f7 bzw.\cf2\f2     
+\par \b\f12 x var "interne Nummer: " i\\mes\b0 
+\par \f2 
+\par Dann wird \f7 jeweils \f2 das Ergebnis des \f7  \f9 var\f2 -Befehls in einer Message-Box angezeigt.  
+\par   
+\par ?variable=h xvar  
+\par ?write=h xwrite  
+\par ?var=h xvar  
+\par ?iZ=h xiz  
+\par ?phrase=h xphrase  
+\par ?if no=h xif  
+\par ?Register=h xa  
+\par ?cstring.flx=X cstring  
+\par ?Manipulationsbefehlen=h ac10-6  
+\par ?Exportsprache=h ac10 
+\par ?Sonderkategorie=h ac10-5=Sonderkategorien  
+\par ?weiter unten=x help =interner Sondervariablen 
+\par ?Sonderkategorien=h ac10-5=Sonderkategorien 
+\par ?Kap.12=h ac12 
+\par ?Beispielsammlung=h mbtest 
+\par ?Extra-Beschreibung=h xfreevar 
+\par ?Extra-Beschreibung =h vb258#288 
+\par ?set pX=h xset=set p 
+\par ?Interne Sondervariablen=h =internen Sondervariablen 
+\par ?Vb.212=h vb212#52 
+\par ?get I url=h xget=get I url 
+\par ?set lock=h xset=set lock 
+\par ?janas=h xjanas 
+\par ?get q=h xget=get q 
+\par 
+\par }
+ 

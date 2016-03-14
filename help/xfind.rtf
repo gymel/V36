@@ -1,0 +1,293 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss\fcharset0 MS Sans Serif;}{\f1\froman\fcharset0 Times New Roman;}{\f2\fmodern\fprq1\fcharset0 Courier New;}{\f3\froman\fprq2\fcharset0 Times New Roman;}{\f4\fmodern\fprq1 Courier New;}{\f5\froman\fprq2 Times New Roman;}{\f6\froman Times New Roman;}{\f7\fmodern\fprq1\fcharset0 Courier;}{\f8\fnil\fcharset0 Times New Roman;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red0\green176\blue0;\red255\green0\blue0;}
+\viewkind4\uc1\pard\qr\f0\fs24     \f1             \fs18 `\cf1\ul\b Register\cf2\ulnone\b0 `\cf3\b\f2\fs20 
+\par \pard\li709\cf2\f3 Allerhand Befehle zum Suchen und Finden\b0  
+\par \pard\cf3\b\f2 
+\par find   \cf4\i\f3    \cf2\b0\i0 (Beschreibung der f\'fcr \cf4\b\i acon \cf2\b0\i0 geltenden Abweichungen siehe `\cf1\ul\b weiter unten\cf2\ulnone\b0 `)\cf3\b\f2 
+\par find\cf2  \b0\i suchbefehl 
+\par \cf3\b\i0 Find 
+\par Find \cf2\b0\i suchbefehl\b\i0 
+\par \pard\li709\b0\f3 Mit diesem Befehl werden Ergebnismengen gebildet. 
+\par Diese wird nur bei 'F', nicht bei 'f' angezeigt, sondern sie wird anschlie\'dfend als aktuelle Erg.menge benutzt, wenn man mit den Befehlen  \f2 `\cf1\ul\b next\cf2\ulnone\b0 `, `\cf1\ul\b prev\cf2\ulnone\b0 `\f3 , oder \f2 `\cf1\ul\b export set\cf2\ulnone\b0 `\f3   arbeitet. 
+\par Der \i suchbefehl\i0  mu\'df genauso aussehen wie bei der `\cf1\ul\b Eingabe in der Befehlszeile\cf2\ulnone\b0 ` (Cursor dorthin setzen, F1, dann kommt Hilfe. 
+\par Dort findet man auch Hinweise zur  `\cf1\ul\b\f2 Von/Bis-Suche\cf2\ulnone\b0\f3 `). 
+\par Wenn \i suchbefehl\i0  fehlt, wird der Inhalt der iV benutzt. Wenn man diese vorher geeignet besetzt, kann man den Suchbefehl in Abh\'e4ngigkeit vom aktuellen Satz gestalten. 
+\par Der erste Satz der Ergebismenge wird sofort geladen, wird also zum aktuellen Satz. (Nachfolgendes  \f2 first\f3   ist also nicht n\'f6tig.) 
+\par Wenn \i suchbefehl\i0  mit einem '+' beginnt, wird die nachfolgende Zeichenkette im Volltext der aktuellen Erg.menge gesucht, wie bei der Eingabe per Hand im Suchbefehlsfeld. 
+\par Bei  \cf3\b F \cf2\b0 statt\cf3\b  f  \cf2\b0 wird die Erg.Menge sofort angezeigt und der FLEX beendet, d.h. nachfolgende Befehle ignoriert. 
+\par Mit  \b\f2 `\cf1\ul if no\cf2\ulnone ` ...\b0\f3   kann man springen, wenn nichts gefunden wurde, mit \b\f2 `\cf1\ul if g0\cf2\ulnone `\b0\f3  wenn mindestens ein Satz gefunden wurde. 
+\par Falls ein Syntaxfehler des Suchbefehls vorliegt, gibt es in der Variablen \f2 Err\f3  eine Meldung. Der Test kann erfolgen mit
+\par \f2 if no var Err;mes;jump ... \f3   [ab V35.8]\f2  \f3 (gilt auch f\'fcr acon)
+\par \i Tip:\i0  Wenn man das Find-Men\'fc benutzt (Fernglas), sieht man anschlie\'dfend in der Befehlszeile, wie die Find-Befehle aussehen m\'fcssen! 
+\par \pard\cf3\b\f2 f\cf4 1\cf3 nd\cf2\tab mit Ziffer \cf4 1\cf2  statt Buchstabe \cf4 i\cf2 !    \b0\f3  \cf4\b\i acon  \cf2\b0\i0 (erst ab V28.8)\b\f2 
+\par \pard\li709\tab\b0\f3 Dadurch wird keine Ergebnismenge gebildet, sondern nur deren erster (oder einziger) Datensatz geladen, ohne da\'df also die aktuelle Erg.Menge ver\'e4ndert wird. Gibt es mehrere, dann der mit der niedrigsten internen Satznummer. In FLEXen kann man so vermeiden, da\'df eine bestehende Erg.Menge unbeabsichtigt verschwindet, wenn man einen einzigen anderen Satz zwischendurch braucht. 
+\par Mit \b\f2 `\cf1\ul if no\cf2\ulnone `\b0\f3 kann man checken, ob die Suche nicht gelungen ist, d.h. keine S\'e4tze zu dem Suchbefehl existieren. 
+\par \cf4\b\i acon  \cf2\b0\i0 (ab V32.4) : Der Datensatz wird zugleich gesperrt. Gibt man nach beliebigen Ver\'e4nderungen  \f2 put\f3 , wird er zugleich entsperrt, sonst beim Laden des n\'e4chsten Satzes. 
+\par Wichtig ist dies in Umgebungen, wo mehrere Prozesse an der Datenbank laufen k\'f6nnen, wenn man ganz sicher gehen will, da\'df zwischen  \f2 f1nd\f3   und  \f2 put\f3   kein anderer Proze\'df denselben Satz ver\'e4ndert speichern kann, man ihn somit w\'e4hrend dieser Zeit ganz f\'fcr sich allein hat. 
+\par 
+\par \pard\cf3\b\f2 find\cf2  \b0\i restriktion\cf3\b\i0  [and \cf2\b0\i suchbefehl\cf3\b\i0 ]\cf2\b0\i 
+\par \pard\li709\i0\f3 [Ab V29] Die aktuelle Ergebnismenge wird der Restriktion unterworfen.  Hier ist aber nur EINE Restriktion erlaubt, keine Kombination von solchen. 
+\par \cf4\b\i NUR acon\cf2\b0\i0  zus\'e4tzliche Besonderheit: Wenn hier kein \i\f2 suchbefehl\i0\f3 , dann wird der nachfolgende Suchbefehl unter Beachtung der Restriktion ausgef\'fchrt: 
+\par z.B. mit find  \f2 PYR >1989\f3   erreicht man, da\'df die nachfolgend gebildete Ergebnismenge nur aus S\'e4tzen mit dem Erscheinungsjahr nach 1989 besteht. (PYR mu\'df in den Indexparametern definiert sein, was bei CAT.API der Fall ist) 
+\par \i Hinweis:\i0   Ein Suchbefehl kann mit einer Restriktion beginnen, gefolgt von einem mit  \b\f2 and\b0\f3   angeschlossenen normalen Suchbefehl. Dies ist bei gro\'dfen Datenmengen u.U. effizienter, weil dann der Suchbefehl schon gleich mit Einschr\'e4nkung ausgef\'fchrt wird. 
+\par 
+\par \pard\cf3\b\f2 find\f4  \f2 @\cf2\b0\i\f3         \i0  [ab V30.5]\i     \i0  \cf4\b\i\f5 acon\cf2\b0\i0\f3  \b\f4 
+\par \pard\li709\b0\f5 D\f3 er Inhalt der iV wird in eine Ergebnismenge umgewandelt. Es mu\'df zu dem Zeitpunkt eine Liste von Satznummern in der iV stehen, getrennt durch beliebige nichtnumerische Zeichen, also z.B.  \f2 1,2,3,4\f3   oder  \f2 5 6 7 8\f3 . 
+\par Hinter  \cf3\b\f2 @\cf2\b0\f3   kann man noch ein  \cf3\b\f2 +\cf2\b0\f3   setzen, dann wird die i dem Moment bestehende Erg.Menge um die betr. Nummern erg\'e4nzt. 
+\par Die Erg.Menge erh\'e4lt den schlichten Namen  \f2 (num)\f3 .\f5 
+\par \pard\f6\fs18 
+\par \cf3\b\f2\fs20 find\cf2  \cf3 &  \cf4\i\f3 acon\cf2\b0\i0     (ab V29)\i\f2 
+\par \pard\li709\i0\f3 Aktuelle Ergebnismenge expandieren, d.h. diejenigen S\'e4tze hinzunehmen, die mit einem Satz der Erg.Menge verkn\'fcpft sind ("Schiller-R\'e4uber"-Methode). 
+\par Mit \b\f2 `\cf1\ul if no\cf2\ulnone `\b0\f3 stellt man fest, da\'df die Ergeb.Menge unver\'e4ndert geblieben ist. 
+\par \pard\f1\fs18 
+\par \cf3\b\f2\fs20 find\cf2  \cf3 +\cf2\b0\i zeichenfolge 
+\par \pard\li709\i0\f3 Aktuelle Ergebnismenge nach der  \i\f2 zeichenfolge \i0\f3  durchsuchen. Es passiert dasselbe, wie wenn man im Find-Men\'fc das Feld  "Volltextsuche in der Ergebnismenge" benutzt oder im Feld "Suchbefehl" die Angabe  +\i\f2 suchbefehl\i0\f3    eintippt. Hierbei wird nicht exakt gesucht: Gro\'df-/Kleinschreibung und Umlaute k\'f6nnen so oder so eingegeben werden. Die Zeichenfolge und der Datensatz werden vor dem Vergleich mit Hilfe der Indexparameter umgewandelt, also A in a, \'e4 in ae und \'e9 in e - wie man es in den Registern sieht. Aber aufpassen: die Zeichenfolge mu\'df in ASCII vorliegen! 
+\par M\'f6glich ist hier (aber nur hier) auch das ? als Maskierungszeichen innerhalb eines Wortes: 
+\par "differen?ial" findet "differential" und "differenzial". 
+\par M\'f6glich ist ferner die feldspezifische Suche:  \f2 find +#81,goethe\f3   sucht, ob im Feld \f2 #81\f3  die Zeichenfolge \f2 goethe\f3  vorkommt. 
+\par \pard\f1\fs18 
+\par \i Besondere F\'e4lle: \i0 
+\par \pard\li709\f3\fs20 In den beiden ersten F\'e4llen wird die Erg.Menge zuerst nach internen Satznummern geordnet! Daher ist i.d.R. anschlie\'dfend die vorher eingestellte Ordnung nicht mehr vorhanden. Besonders zu beachten ist dies, wenn man Schleifen programmieren will, in denen eine Erg.Menge abgearbeitet und bestimmte S\'e4tze daraus entfernt werden sollen. Dann empfiehlt sich, vorher den Befehl  \f2 order n\f3   zu geben. 
+\par \pard\cf3\b\f2 find\cf2  \cf3 /\cf2\b0\i  
+\par \pard\li709\i0\f3 Aktuellen Datensatz zur aktuellen Erg.Menge hinzuf\'fcgen, wenn er darin noch nicht enthalten ist. In diesem Fall gilt danach \f2 if yes\f3 , sonst \f2 if no\f3  
+\par 
+\par \pard\cf3\b\f2 find\cf2  \cf3 -\cf2\b0\i  
+\par \pard\li709\i0\f3 Aktuellen Datensatz aus der aktuellen Erg.Menge herausnehmen, wenn er darin enthalten ist. In diesem Fall gilt danach \f2 if yes\f3 , sonst \f2 if no\f3  
+\par 
+\par \pard\cf3\b\f2 find\cf2  \cf3 /si  \cf2\b0\f3 bzw.\cf3\b\f2   find -si  \cf2\b0\f3 bzw.\cf3\b\f2   find *si\cf2\b0\i  
+\par \pard\li709\i0\f3 Erg.Menge Nummer i zur aktuellen Menge erg\'e4nzen bzw. daraus entfernen bzw. aus beiden die Schnittmenge ermitteln. Die Wirkung ist dieselbe, wie wenn man in der Erg.Mengenliste eine ausw\'e4hlt und dann einen 
+\par der Buttons  [Oder]  bzw.  [Nicht]  bzw.  [Und]  dr\'fcckt. 
+\par \i Achtung:\i0  hier mu\'df * f\'fcr [Und] verwendet werden, nicht +, weil + schon (s. oben) f\'fcr die Volltextsuche in der Erg.Menge definiert ist. 
+\par 
+\par \pard\cf3\b\f2 find\cf2  \cf3 /:\cf2\b0\i name\cf3\b\i0   \cf2\b0\f3 bzw.\cf3\b\f2   find -:\cf2\b0\i name\cf3\b\i0   \cf2\b0\f3 bzw.\cf3\b\f2   find *:\cf2\b0\i name 
+\par \pard\li709\i0\f3 Erg.Menge mit dem Namen \i\f2 name\i0\f3  zur aktuellen Menge erg\'e4nzen bzw. daraus entfernen bzw. aus beiden die Schnittmenge ermitteln. Die Wirkung ist dieselbe, wie wenn man in der Erg.Mengenliste eine ausw\'e4hlt und dann einen der Buttons  [Oder]  bzw.  [Nicht]  bzw.  [Und]  dr\'fcckt. 
+\par \i\f2 name\i0\f3  ist der Erg.Mengenname, wie man ihn in der Liste der Erg.Mengen sieht, d.h. das, was hinter dem Doppelpunkt steht. Es gen\'fcgt ein eindeutiger Anfangsteil des Namens. 
+\par \i Achtung:\i0  hier mu\'df * f\'fcr [Und] verwendet werden, nicht +, weil + schon (s. oben) f\'fcr die Volltextsuche in der Erg.Menge definiert ist. 
+\par 
+\par \pard\cf3\b\f2 find\cf2  \cf3\b0 #\cf2\i nnn oder \cf3\b\i0 f1nd\cf2  \cf3\b0 #\cf2\i nnn \cf3\b\i0   \cf4\i\f3 acon\cf2\b0\f2 
+\par \pard\li709\i0\f3 Damit kann man einen einzelnen Satz mit seiner internen Nummer \i nnn\i0  laden. Dadurch entsteht keine 1-elementige Erg.Menge, d.h. eine zu diesem Zeitpunkt bestehende Erg.Menge wird dadurch nicht ber\'fchrt! 
+\par \i Aber: \i0 Hinter # kann mehr als eine Nummer stehen, durch Komma gegrennt, s.u. 
+\par \i Sonderfall: \b\i0\f2 find #0\b0\f3  holt den letzten Satz, aber nur in a99. 
+\par Die Nummer mu\'df sonst gr\'f6\'dfer als 0 sein, denn der erste Satz hat die Nummer 1. 
+\par Mit \b\f2 `\cf1\ul if cancel\cf2\ulnone `\b0\f3  pr\'fcfen, ob die Nummer zu gro\'df war, mit \b\f2 `\cf1\ul if no\cf2\ulnone `\b0\f3 , ob unbesetzt; in dem Fall bleibt der aktuelle Satz erhalten und es wird kein anderer geladen. 
+\par Zusammen mit \b\f2  `\cf1\ul next\cf2\ulnone ` #\b0\f3   kann man  den n\'e4chsten holen (dabei werden unbesetzte Nummern \'fcbersprungen), dann mit \b\f2 `\cf1\ul if cancel\cf2\ulnone `\b0\f3  pr\'fcfen, ob keiner mehr gekommen ist. 
+\par Eine noch andere Variante ist  \b\f2 `\cf1\ul choose\cf2\ulnone ` ...\b0\f3 (der FLEX wird dabei \i nicht\i0  beendet) 
+\par \pard\f1\fs18 
+\par \cf3\b\f2\fs20 find\cf2  \cf3\b0 #\cf2\i i,j,k,...  \cf3\b\i0    \cf4\i\f3 acon\cf2\b0\i0     (Erg.Menge aus Satznummern bilden)\i\f2 
+\par \cf3\b\i0 find\cf2  \cf3\b0 #\cf2\i i-j  \cf3\b\i0          \cf4\i\f3 nur a99\cf2\b0\i0     (Erg.Menge soll aus Satznummern i bis j bestehen)\i\f2 
+\par \pard\li709\i0\f3 Damit kann man mehrere S\'e4tze mit ihren internen Nummern \i i,j,k,... \i0 zu einer Erg.Menge machen bzw. eine Nummernfolge zu einer Erg.Menge zusammenfassen. 
+\par \cf4\i Aber:\cf2\i0  In \cf4 a99\cf2  mu\'df man schreiben:  \f2 find or #\i i,j,k,\i0 ... \f3 bzw.  \f2 find or #\i i-j\i0\f3   um dieselbe Erg.Menge zu bilden. In \cf4 acon\cf2  werden die Nummern zur bestehenden Erg.Menge hinzugef\'fcgt. 
+\par \i Achtung:\i0  Auch gel\'f6schte S\'e4tze k\'f6nnen auf diese Weise in einer Erg.Menge enthalten sein, unbesetzte Nummern jedoch nur in acon, in a99 nicht. 
+\par \i Sonderfall \i0 in \cf4 a99\cf2  \i :\i0  \f2 find or #m\f3 , wenn in a99 eine Erg.Menge aus einem einzelnen Satz mit der internen Nummer m zu bilden ist.\f2  
+\par \f3 
+\par \pard\cf3\b\f2 find\cf2  \cf3\b0 *new\cf2\i   \cf3\b\i0    \cf4\i\f3 NUR acon\cf2\b0\f2 
+\par \pard\li709\i0\f3 Die momentan bestehende Ergebnismenge wird beseitigt. In a99 ist daf\'fcr zu schreiben: \f2 close res\f3 . 
+\par \pard\f1\fs18 
+\par \cf3\b\f2\fs20 find\cf2  \cf3\b0 r\cf2\i num  \cf3\b\i0    \cf4\i\f3 acon     \b0 [ab V32.8]\b   \cf2\b0\f2 
+\par \pard\li709\i0\f3 Aus der momentan vorliegenden Erg.Menge wird der Satz mit der lfd. Nummer \i num\i0  geladen. Der erste hat die Nummer 1. 
+\par Angezeigt wird er nicht! Dazu erg\'e4nzt man  \f2 disp\\sho rec\f3  . 
+\par Steht z.B.  \i\f2 num\i0\f3   in  \f2 #urn\f3 , schreibt man   \f2 var "r" #urn\\find\f3  
+\par Mit \f2 if no ...\f3  checkt man, ob es keinen Satz \i num\i0  gibt (weil  \i num\i0 <1 oder zu gro\'df). 
+\par Tip: Will man nach einigen Aktionen mit Sicherheit zum momentanen Satz in der Erg.Menge zur\'fcckkehren, empfiehlt sich diese Sequenz: 
+\par \f2 var "r" r 
+\par ins #urr\f3 
+\par ... \i beliebige Aktionen (aber keine neue Erg.Menge bilden! Nur f1nd ist erlaubt) ...\i0 
+\par \f2 var #urr 
+\par find\f3 
+\par \i Sonderf\'e4lle:\i0 
+\par \f2 find s3 \f3\tab\'c4lteste Erg.Menge \'f6ffnen 
+\par \f2 var q\\var (b"/")\\ins #uqQ\\var "s" #uqQ\\find\f3\tab Momentan letzte Erg.Menge \'f6ffnen\f2 
+\par \pard\f1\fs18 
+\par \cf3\b\f2\fs20 find\cf2  \cf3\b0 s\cf2\i num 
+\par \cf3\b\i0 find\cf2\b0\i  \cf3\i0 :\cf2\i name 
+\par \pard\li709\i0\f3 Die Erg.Menge Nummer \i num\i0  bzw. mit der Bezeichnung \i\f2 name\i0\f3  wird aktiviert. Die erste hat die Nummer 1 und ist die Boomark-Liste, 2 ist die Liste der vorher angezeigten S\'e4tze. Nummer 0 ist die letzte Erg.Menge. Deren tats\'e4chliche Nummer erh\'e4lt man mit var q. 
+\par Angezeigt wird die Liste nicht! Daf\'fcr kann man mit  \f2  sho list \f3  sorgen. 
+\par Mit \f2 if no ...\f3  checkt man, ob es keine Erg.Menge \i num\i0  gibt. 
+\par Tip: Will man nach einigen Aktionen mit Sicherheit zum momentanen Satz in der momentanen Erg.Menge zur\'fcckkehren, empfiehlt sich diese Sequenz: 
+\par \f2 var "r" r 
+\par ins #urr 
+\par var q 
+\par ins #urq\f3 
+\par   \i Aktionen (einschl. Bildung neuer Erg.Mengen)\i0 
+\par \f2 var "s" #urq(b"/") 
+\par find 
+\par var #urr 
+\par find 
+\par \i\f3 Tip:\i0  Wenn man ganz sicher gehen will, da\'df nicht inzwischen die Grenze von 50 Erg.Mengen erreicht und die \'e4lteste gel\'f6scht wird (wodurch sich die anderen alle verschieben: ein- oder mehrmals den Befehl 
+\par \f2 close res\f3 
+\par geben, dann wird jeweils die letzte gel\'f6scht. 
+\par \f5\tab\i\f3 Tip:\i0  Mit  \cf3\b\f2 set R\cf2\b0\i name \i0\f3  kann man der aktuellen Erg.Menge einen Namen geben. 
+\par \pard\f1\fs18 
+\par \cf3\b\f2\fs20 find _xyz_ 
+\par find ,xyz,\cf2\b0\f3 
+\par \pard\li709\cf4 Volltext-Suche im aktuellen Datensatz\i 
+\par Sonderf\'e4lle!\cf2\i0  Der aktuelle Satz (nur dieser!) wird untersucht. Enth\'e4lt er die Zeichenkette \cf3\b\f2 xyz\cf2\b0\f3 , ist anschlie\'dfend die Bedingung YES erf\'fcllt, sonst NO, d.h. mit "if yes ..." bzw. "if no ..." kann man darauf reagieren. 
+\par Das Besondere ist, im Vergleich zum Befehl  \cf3\b\f2 `\cf1 if %xyz% ...\cf3 `\cf2\b0\f3 , da\'df vor dem Vergleich die Umcodierung der Indexparameter angewendet wird, und zwar sowohl auf xyz wie auf den Text des Satzes. Das ist insbes. bei Unicode-Daten wichtig: man findet dann kyrill. Daten durch Eingabe der Transliteration. 
+\par Man verwendet normalerweise _ als Begrenzer, aber wenn _ innerhalb xyz vorkommt, dann , . 
+\par Auch hier kann _xyz_ bzw. ,xyz, wegbleiben, dann wird der Inhalt der iV genommen. 
+\par Achtung: Eine Ergebnismenge entsteht nicht, die aktuelle Erg.Menge bleibt unber\'fchrt! 
+\par \i Hinweis:\i0  Statt der Indexparameter k\'f6nnen die Exportparameter zum Einsatz kommen, und zwar wahlweise die p- oder die q-Tabelle. Siehe dazu den Befehl  `\cf1\ul\b set xm\cf2\ulnone\b0 ` 
+\par 
+\par \pard\f1\fs18 Zu den beiden n\'e4chsten Befehlen gibt es einen ausf\'fchrlichen Text, der das Konzept der 
+\par `\cf1\ul\b Online- und Offline-Daten\cf2\ulnone\b0 ` erkl\'e4rt: 
+\par \cf3\b\f2\fs20 
+\par find edit\cf2\b0\f3 
+\par \pard\li709\i Sonderfall!\i0  Die bearbeiteten, aber noch nicht gespeicherten  S\'e4tze der momentanen Sitzung werden als Erg.Menge zusammengefa\'dft. (Wie Men\'fcpunkt "Extras | IN ARBEIT befindl. S\'e4tze") 
+\par \pard\cf3\b\f2 find new\cf2\b0\f3 
+\par \pard\li710\i Sonderfall!\i0  Die neuen Datens\'e4tze, noch nicht gespeicherten S\'e4tze der momentanen Sitzung werden als Ergebnismenge zusammengefa\'dft. (Wie Men\'fcpunkt "Extras | Neu, noch nicht gespeichert")\cf3\b\f2 
+\par \pard\li709\cf2\b0\f3 
+\par \pard\cf3\b\f2 find $nnn\cf2\b0\f3 
+\par \pard\li710\i Sonderfall!\i0  Die letzten nnn Bytes der LOG-Datei werden ausgewertet und die darin steckenden korrigierten Datens\'e4tze als Erg.Menge zusammengefa\'dft. Die neuen S\'e4tze kann man nicht auf diese Weise gewinnen, dazu mu\'df man das Register des Erfassungsdatums heranziehen. Eingebettet in `\cf1\ul\b super.rtf\cf2\ulnone\b0 ` unter "Zuletzt bearbeitete S\'e4tze". Interessant ist das f\'fcr den Supervisor in einem Netz. (Die LOG-Datei bezieht sich nicht auf die aktuelle Sitzung, sondern ist das \'c4nderungsprotokoll der gesamten Datenbank.)\cf3\b\f2 
+\par \pard\li709\cf2\b0\f3 
+\par \pard\f1\fs18 Jeweils kann man mit  \f2 if no ...\f1   checken, ob es keine solchen S\'e4tze gibt. 
+\par  \i Achtung: \i0 Die W\'f6rter \b new \b0 und \b edit\b0  m\'fcssen ausgeschrieben werden! (Zur Sicherheit gegen Verwechlung mit anderen find-Befehlen.) 
+\par Die Offline-Datei selbst bekommt man angezeigt mit dem Befehl \b\f2\fs20 `\cf1\ul show offline\cf2\ulnone `.\b0\f1\fs18 
+\par 
+\par ================================================================== 
+\par 
+\par \b Version\b0  \cf4\f2\fs20 acon\cf0\b 
+\par \b0\f3 
+\par Es folgt eine Beschreibung der f\'fcr  \f7 acon\f3   geltenden Abweichungen beim \f2 find\f3 -Befehl. 
+\par \b\f2 
+\par \cf3 find\cf2  \b0\i suchbefehl 
+\par \cf0\i0\f8\tab Suche in den Registern und bilde eine Ergebnismenge 
+\par 
+\par \cf3\b\f2 f1nd\cf2  \b0\i suchbefehl  \cf0\i0\f8 (Ziffer 1 statt Buchstabe i )\cf2\i\f2  
+\par \cf0\i0\f8\tab Suche und lade nur den ersten gefundeten Satz, ohne die Erg.Menge zu ver\'e4ndern 
+\par 
+\par Der Befehl \cf3\b\f2 find\cf0  \b0\f8 ist wohl in acon der wichtigste von allen, weil man mit ihm die Daten selektiert, mit denen man arbeiten will. 
+\par Verschachtelte Klammerung mit den arithmetischen Operatoren AND, OR, NOT ist m\'f6glich. 
+\par Jedem Suchbegriff mu\'df eine interne oder symbolische Registerbezeichnung (z.B. \f7 |1\f8  oder \f7 PER \f8 ) vorangestellt werden: 
+\par \f2 
+\par find REG \i Suchbegriff\i0 
+\par 
+\par \f8 Achtung: Wenn ein \i\f2 Suchbegriff\i0\f8  aus mehreren W\'f6rtern beseht und darin eins der W\'f6rter   \f7 and, or, not\f8   vorkommt, dann den Suchbegriff in "..." einschlie\'dfen. Wenn man Suchbefehle automatisch erzeugt (z.B. mit var-Befehlen), kann es sinnvoll sein, dies grunds\'e4tzlich zu machen. 
+\par 
+\par Evtl. besteht die Ergebnismenge aus nur einem Satz, oder keinem! 
+\par 
+\par Find liefert ERROR (zu checken mit \f7 if no ...\f8  oder \f7 if error ...\f8 ) wenn nichts gefunden wird, die Ergebnismenge zu gro\'df ist oder ein formaler Fehler im Befehl auftritt. 
+\par 
+\par Die maximale Gr\'f6\'dfe der Ergebnismenge ist in der Grundeinstellung (\f2 set maxres\f8 ) auf 4000000 (4 Mio.) Satznummern beschr\'e4nkt. 
+\par 
+\par Der Zugriff auf die Register 1 bis 10 ist frei. Die Suche im Register 11 erfordert die Berechtigungsstufe 3 des Benutzers (eingestellt in \f2 avanti.conf\f8 ). Nur dort sollten folglich sch\'fctzenswerte Daten (z.B. Ausleih,- Bestellinformationen) recherchierbar sein. 
+\par 
+\par \i Beispiel:\i0  ('?' ist Trunkierungssymbol) 
+\par  
+\par \f2 find PER beethoven? and ( TIT klavier? or TIT piano? ) 
+\par if error jump nix 
+\par \f8 
+\par Es werden S\'e4tze mit "beethoven?" als Person und "klavier?" oder "piano?" als Titelstichwort gesucht. 
+\par Wenn es nichts gibt, erfolgt Sprung zum Label \f2 :nix\f8 
+\par 
+\par Die bequemeren Befehle wie "find PER goethe?" kann  man nur verwenden, wenn f\'fcr die betreffende Datenbank in der .cPI solche Bezeichnungen wie "PER" definiert sind. Das erf\'e4hrt man mit dem Befehl \f2 help\f8 . 
+\par 
+\par \i Stets anwendbar:\i0  \f2 
+\par find |i \i\f3 eintrag\i0\f2    \f8  suche \i\f3 eintrag\i0\f8  im Register i 
+\par ( i = 1...9, : f\'fcr 10 und ; f\'fcr 11 ) 
+\par 
+\par Diese Schreibweise funktioniert immer. Man mu\'df daf\'fcr nur wissen, welche Register die Datenbank hat. Der Befehl  \f2 help\f8  liefert dazu die \'dcbersicht. (D.h. man mu\'df zuerst einen Auftrag abgeben, in dem nur "help" steht. Aus der dann erscheinenden Liste ersieht man, in welchem Register z.B. die Personennamen oder Stichw\'f6rter stehen. 
+\par Der Systemverwalter kann Registerbezeichnungen (symbolische Namen) jederzeit einf\'fchren, d.h. in die Indexparameter eintragen. 
+\par 
+\par \b Kombinationen\b0  [ab V35.6, nicht in a99!] 
+\par 
+\par Es gibt interne 2 Ergebnislisten, jede kann bis zu 4.000.000 Nummern fassen. Genutzt wird normalerweise nur die Liste 1. Bei Bedarf kann man die zweite mit  \f2 find set2\f8   einschalten und hernach beide mit logischen Operatoren kombinieren. 
+\par Neu sind ab V35.6 die Befehle 
+\par 
+\par \f2 find set\i i\i0\f8    ( \i i\i0 =1,2) : Liste 1 bzw. 2 einschalten 
+\par 
+\par \f2 find \i Op\i0\f8         (\i Op\i0 =OR,AND,NOT)  Liste 1 mit 2 kombinieren 
+\par                            Ergebnisse sind dann in Liste 1; Liste 2 bleibt unveraendert 
+\par 
+\par Die Liste 2 kann man nat\'fcrlich auch nutzen, um zwischendurch mal eine andere Erg.Menge anzulegen und abzuarbeiten und dann zur ersten zur\'fcckzukehren. Achtung:  \f2 find set1\f8   bzw.  \f2 find set2\f8   schalten nicht nur zur betr. Liste um, sondern mit "next" wird dann auch weitergemacht an der vorher in der betr. Liste erreichten Position. Daf\'fcr braucht man also nicht selber zu sorgen (mit \f2 var r\f8  ... usw.) 
+\par 
+\par Folgendes Beispiel zeigt das Schema, das man nur zu kopieren und zu modifizieren braucht: 
+\par 
+\par \f2 find set1                 // Liste 1 einschalten 
+\par find all shakespeare?     // Erg.Menge bilden 
+\par order n                   // nach Satznummern ordnen 
+\par 
+\par find set2                 // Liste 2 einschalten 
+\par find all goethe?          // Erg.Menge bilden 
+\par order n                   // nach Satznummern ordnen 
+\par find OR                   // beide Listen verODERn 
+\par order n                   // und wieder nach Satznummern ordnen 
+\par                           // hier gehen auch AND und NOT 
+\par find set1                 // Liste 1 wieder einschalten 
+\par    // Ergebnis der Kombination steht in Liste 1 
+\par    // Liste 1 verarbeiten. 
+\par \f8 
+\par Die mittleren f\'fcnf Zeilen kann man beliebig wiederholen mit jeweils anderem Suchbefehl. Stets wird das Ergebnis mit der in Liste 1  vorher entstandenen Erg.Menge wieder per ODER verkn\'fcpft, d.h. die Menge 1 ist immer das Resultat aller vorangegangenen Operationen. (Bis man nach einem find set1  einen neuen find-Befehl gibt.) Nach einem Kombinierbefehl ist Menge 1, also die kombinierte Menge wieder die aktive, d.h.  \f2 find set1\f8   dann nicht n\'f6tig. 
+\par 
+\par \b Weitere Besonderheiten bei acon\b0 
+\par Als Argument f\'fcr den Suchbegriff kann man dem find-Befehl auch den Inhalt einer Anwendervariablen (#uyx) aus dem Hintergrundspeicher \'fcbergeben: 
+\par 
+\par \i Beispiele:\i0 
+\par 1.\tab\f2 #uyx="PER goethe?"\f8     // Var. setzen 
+\par \tab\f2 find #uyx\f8 
+\par 
+\par Ein Trunkierungssymbol mu\'df also auch mit in der Variablen drinstehen. 
+\par 
+\par 2.\tab\f2 find TIT faust? 
+\par \tab first\f8 
+\par \tab\f2 #uxy=#40     \f8     // Var. setzen 
+\par \f2\tab find PER #uyx 
+\par \f8 
+\par Ferner kann man den Suchbefehl auch komplett mit  \f2 var ...\f8   in der iV zusammensetzen und dann  \f2 find\f8   ohne Argument geben: 
+\par 3.\tab\f2 var ... \f8 
+\par \tab\f2 find 
+\par \f8 
+\par 
+\par \b Restriktionen setzen\b0 
+\par \f2 
+\par find Relation \i\f3 Restriktionsargument        wobei  \i0\f2 Relation\i\f3   eines der Zeichen  < = >  ist, oder  \i0\f2 !=\i\f3   f\'fcr "ungleich"\i0\f2 
+\par \f8\tab Das Argument kann auch auch in "..." eingeschlossen sein. 
+\par 
+\par Wenn Restriktionen definiert sind (s. Handbuch 10.2.9) k\'f6nnen diese in Suchbefehlen wie folgt verwendet werden: 
+\par (Wenn es eine R-Zeile gibt, in der ERJ definiert ist). 
+\par 
+\par \f2 find \i\f3 normaler Suchbegriff\i0\f2  and ERJ >1990 
+\par \f8 
+\par Wenn man aber \b vor\b0  irgendeinem anderen \f2 find\f8  den Befehl gibt 
+\par 
+\par \f2 find ERJ >1990 
+\par 
+\par \f8 bewirkt dies, da\'df die Restriktion  \f2 ERJ >1990\f8  f\'fcr \i nachfolgende\i0  \f2 find\f8 -Befehle im selben Auftrag (!) fest eingestellt wird. Damit kann man z.B. verhindern, da\'df eine Suche fehlschl\'e4gt, weil es zuviele Eintr\'e4ge gibt. 
+\par 
+\par So eingestellte Restriktionen wirken sich auch auf Registeranzeigen aus! 
+\par 
+\par \i Hinweis:\i0  Die Restriktion liefert selbst KEINE Ergebnismenge! Also im Beispiel nicht die Menge der Titel mit Erscheinungsjahr >1990. Diese k\'f6nnte nur \'fcber ein geeignetes Register gebildet werden, nicht \'fcber eine Restriktion. 
+\par 
+\par \i Sonderfall:\i0  \f2 
+\par \cf3\b find *new\cf0\b0  
+\par \f8 Mit diesem Sonderbefehl erreicht man, da\'df eine  bestehende Ergebnismenge und eine evtl. eingestellte Restriktion aufgehoben werden. Ein nachfolgender \f2 find\f8  Befehl bewirkt also den Aufbau einer neuen Ergebnismenge (ohne Restriktion, wenn man keine neue einstellt). 
+\par 
+\par \f2 find #<Satznummer1>,...,<SatznummerN> 
+\par \f8 
+\par f\'fcgt eine Folge von internen Satznummern, getrennt durch Kommas, der aktuellen  Ergebnismenge hinzu (ohne Indexzugriff). Zwischen dem Zeichen # und der ersten Satznummer mu\'df kein Leerzeichen stehen. Die Satznummern, schlicht durch Komma getrennt, kann  man sofort als Ergebnismenge verarbeiten lassen. Man nutzt diesen Befehl, wenn man vorher mit dem qrix-Befehl oder mit list i eine Nummern-Ergebnismenge erzeugt hat, und diese Satznummern f\'fcr einen Folgeauftrag aus einer (per Qrix geschriebenen) Datei entnehmen kann. 
+\par Die \'dcbergabe der Satznummern kann auch innerhalb eines algebraischen Ausdrucks erfolgen. 
+\par \i Beispiel: 
+\par \i0\f2 find PER faust and # 23,1492,298 
+\par 
+\par 
+\par \cf2\f1\fs18 
+\par 
+\par ?next=h xnext 
+\par ?prev=h xprev 
+\par ?export set=h xexport 
+\par ?if g0=h xif 
+\par ?if cancel=h xif 
+\par ?if no=h xif 
+\par ?show Q=h xshow 
+\par ?choose=h xchoose 
+\par ?Register=h xa 
+\par ?Online- und Offline-Daten=h off 
+\par ?show offline=h xshow 
+\par ?super.rtf=h super 
+\par ?if _xyz_ ...=h xif=if _abc_ 
+\par ?Eingabe in der Befehlszeile=h commd 
+\par ?weiter unten=h =Version acon 
+\par ?set xm=h xset=set x 
+\par ?Von/Bis-Suche=h commd=von/bis 
+\par 
+\par }
+ 

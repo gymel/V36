@@ -1,0 +1,218 @@
+  EKZ.AIM : EKZ Diskettenformat --> NMN
+  940615
+ 
+  vorlÑufige Version, mit mehrbÑndigen Werken!
+
+    zu kombinieren mit den Ausgabeparametern  PA.APR  !!!
+    zwecks Erstellung von korrekten "allegro"-Daten
+
+re=13 10 "????? 001 "    ein Datensatz endet mit dieser Zeichenfolge
+                        (eigentlich ist es der Anfang des nÑchsten!)
+
+fm=a
+
+  Vor der Bearbeitung eines Datensatzes folgende Ersetzungen:
+
+_ 13 10 "          "   ersetze Blank/Zeilenende/10 Blank
+_ ""                        ersatzlos
+
+_ 13 10 "      "           ersetze Zeilenvorschub + 6 blank
+_ 0                durch 0  (wirkt dann automatisch als Kategorie-Ende)
+
+
+
+y [ é
+y \ ô
+y ] ö
+y ~ 225
+y { Ñ
+y } Å
+y | î
+y _ ^
+y ^ 256
+
+  und jetzt gehts los
+    Hier beginnen die Feldbeschreibungen:
+    jeweils zuerst die NMN-Kategorienummer, dann ein Suchbefehl,
+    (z.B. s " 245 " heisst: suche die Zeichenfolge " 245 ")
+    dann evtl. Vorbearbeitungsbefehle
+
+
+#01           wenn  89 existiert: Untersatz
+s 0 "089 "
+ h            Hierarchiebefehl: macht aus #00 die #01 !
+
+#20       Hauptsachtitel: 331
+s 0 "331 "
+u9
+s 0 "335 "
+u9
+w " : "
+
+#21      Sammlungsvermerk
+s 0 "300 "
+
+#22
+s 0 "304?"
+u9
+
+#24
+s 0 "340?"
+u9
+
+#24a
+s 0 "344?"
+u9
+
+
+
+#31s      Sach-Schlagwort
+s 0 "9??s"
+} 22
+m";"
+
+#31g      Geogr. Schlagw
+s 0 "9??g"
+} 22
+m";"
+
+#33p      Pers. Schlagwort
+s 0 "9??p"
+} 22
+m";"
+
+
+#39        Verfasserangabe in Vorlageform
+s 0 "359 "
+
+#71
+s 0 "403 "
+.
+
+#74
+s 0 "410 "
+
+#75            Verlag:
+s 0 "412 "
+
+#76
+s 0 "425 "
+
+#77
+s 0 "433 "
+.
+
+-nÑchster
+#40
+s 0 "1"
+c "Hrsg."
+qhrsg
+c "<@0>[Mitv"
+qmitv
+c "<@0>[Mita"
+qmita
+c "<@0>[Bearb"
+qbearb
+c "<@0>[Red"
+qbearb
+c "[Ill."
+qillus
+c "_<Regie>_"
+qregie
+c "<@0>[öbers"
+qweiter            keine öbersetzer mitnehmen
+} 3
+u9
+.
+m1
+
+#999
+qweiter
+
+-hrsg
+#41 
+s 0 "1"
+} 3
+u9
+e "_<"
+.
++weiter
+
+-bearb
+#43
+s 0 "1"
+} 3
+.
+u9
++weiter
+
+-illus
+#50
+s 0 "1"
+} 3
+e "_<"
+.
+x
+u9
++nÑchster
+
+-regie
+#51a
+s 0 "1"
+} 3
+e "_<"
+.
+u9
++weiter
+
+-mitv
+#42
+s 0 "1"
+} 3
+e " <"
+.
+u9
+
+-mita
+#42
+s 0 "1"
+} 3
+e " <"
+.
+u9
+
+-weiter
+#60
+s 0 "200 "
+u9
+.
+
+#61
+s 0 "204 "
+u9
+.
+
+
+#85
+s 0 "451 "   Serientitel
+u9
+
+#87         ISBN 
+s 0 "540"
+} 1
+B "ISBN "
+l13
+
+#89D      DB-Ident-Nr. (bei Hauptaufnahmen)
+j 39    auf dieser Position
+l 20
+
+#32D
+s 0 "700"
+} 1
+m"; "
+
+#98
+s 0 "750"
+m
+

@@ -1,0 +1,362 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\froman\fprq2 Garamond;}{\f2\froman\fprq2\fcharset0 Garamond;}{\f3\froman\fprq2\fcharset0 Times New Roman;}{\f4\fmodern\fprq1 Courier New;}{\f5\fmodern\fprq1\fcharset0 Courier New;}{\f6\fnil\fprq2\fcharset2 Wingdings;}{\f7\fswiss\fprq2\fcharset0 Univers;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs24   \fs20\par
+ `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` \par
+\pard\par
+\pard\fi-1273\li1273\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1\fs36 10.2.6.8\tab\f2 Export: Normdaten-Verkn\'fcpfungen\b0\f1\par
+\pard\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs20\par
+\f3 Mit Version 14 kam ein neues Verfahren, mit dem die Verwendung von Norm- oder Stamms\'e4tzen aller Art stark vereinfacht und wesentlich wirkungsvoller gemacht wurde. Mit einem Satz: Identnummern f\'fcr Namen, Schlagw\'f6rter etc. k\'f6nnen automatisch durch Klartexte (Ansetzungsformen) ersetzt werden. \f0\par
+\par
+\b Folgende Ziele wurden verfolgt:\b0\par
+\pard\fi-244\li244\tx245\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\'b7\f0\tab\f3 Die Methode mu\'df mit jedem Kategoriesystem realisierbar sein \f0\par
+\f3\'b7\f0\tab\f3 Es mu\'df m\'f6glich sein, im selben Feld im einen Fall Identnummern, im andern Fall Klartexte zu verwenden (kein striktes Entweder-Oder). Damit h\'e4ngt zusammen: \f0\par
+\f3\'b7\f0\tab\f3 Die nach bisherigen Mustern gestrickten Daten sollen nicht ver\'e4ndert werden m\'fcssen (also Handlungsbedarf nur dann, wenn die neue Methode angewandt werden soll) \f0\par
+\f3\'b7\f0\tab\f3 Existierende Exportparameter m\'fcssen ohne \'c4nderung weiter funktionieren, inclusive "Nachladungen" \f0\par
+\f3\'b7\f0\tab\f3 Der Aufwand f\'fcr die Anpassung von vorhandenen Indexparametern an die neue Methode sollte sehr gering sein \f0\par
+\f3\'b7\f0\tab\f3 Bei \'c4nderung einer Ansetzungsform im Stammsatz: automatische \'c4nderung der Registereintr\'e4ge verkn\'fcpfter S\'e4tze \f0\par
+\f3\'b7\f0\tab\f3 Unterst\'fctzung der Erfassung: Stammsatznummern m\'fcssen leicht auffindbar und kopierbar sein \f0\par
+\f3\'b7\f0\tab\f3 Die bisher bekannten unterschiedlichen Modalit\'e4ten des Umgangs mit Identnummern m\'fcssen unterst\'fctzt werden \f0\par
+\tab (z.B. sind die Steuerzeichen verschieden, auch die Methoden der Wiederholbarkeit von Kategorien) \par
+\f3\'b7\f0\tab\f3 Es mu\'df parametrierbare L\'f6schkontrollen geben: Stammsatz nicht l\'f6schbar, solange Verkn\'fcpfungen vorliegen \f0\par
+\pard\tx245\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\par
+\b\f3 Wie funktioniert die L\'f6sung?\b0\f0\par
+\f3 Die Programme (PRESTO etc.) ersetzen jeweils vor dem Abarbeiten der Index- oder Exportparameter die Identnummern der Stamms\'e4tze durch die Klartexte, also die Namen, Schlagw\'f6rter etc. Nachladungen sind dann unn\'f6tig. Nach dem Abarbeiten wird der Datensatz im Arbeitsspeicher wieder in den Originalzustand versetzt. Die Klartexte werden nicht durch Nachladen der Stamms\'e4tze herbeigeschafft, sondern aus einem geeignet konstruierten Register ("Ersetzungsschl\'fcssel", s.u.) - nur so geht es schnell genug. Der Index wird zwar gr\'f6\'dfer, doch er ufert keineswegs aus. \f0\par
+\f3 (Anmerkung: Die Methode bezieht sich nur auf Stamms\'e4tze, nicht z.B. auf Verkn\'fcpfungen von mehrb\'e4ndigen Werken. Dazu bleibt das "Nachladen" die einzige anwendbare Methode, siehe 10.2.6.7.) \f0\par
+\par
+\par
+\b\f3 Was mu\'df man tun?\b0\f0\par
+\f3 Soweit die Forderungen und das Konzept der L\'f6sung, nun zur Realisierung. Was alles ist zu bedenken und zu tun, um die neuen F\'e4higkeiten der Programme zu nutzen? Damit die \'dcbersicht nicht verlorengeht, m\'fcssen ein paar Randbedingungen festgelegt werden: \f0\par
+\par
+\pard\fi-244\li244\tx245\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 1.\tab\f3 Stamms\'e4tze ben\'f6tigen \b\f0 Identnummern\b0\f3 . Die Identnummern m\'fcssen rein alphanumerisch sein (also nur aus Buchstaben und Ziffern bestehen, ohne Leerzeichen, Punkt, Binde- oder Schr\'e4gstriche). Es braucht jedoch keine bestimmte Kategorie f\'fcr die Identnummern festgelegt zu werden, d.h. K\'f6rperschaftsstamms\'e4tze k\'f6nnen z.B. daf\'fcr eine andere verwenden als Schlagwortstamms\'e4tze. \f0\par
+2.\tab\f3 Die Identnummern m\'fcssen \b\f0 alle im selben Register\b0  stehen, und zwar in der Form\lang1033\f4   nummer=Klartext\lang1031\f3 . Hiervon h\'e4ngt das Funktionieren der Ersetzungen ab. Das Register kann jedoch noch beliebige weitere Eintr\'e4ge enthalten. \f0\par
+3.\tab\f3 Die Identnummern m\'fcssen \b\f0 eindeutig\b0\f3  sein: es darf nicht z.B. dieselbe Nummer f\'fcr ein Schlagwort und eine K\'f6rperschaft verwendet werden, obwohl dies ja unterschiedliche Stammsatztypen sind. (Das ist leicht durch ein Pr\'e4fix wie p / k erreichbar!) Allerdings reicht es aus, die Nummern beim Indexieren durch ein Pr\'e4fix eindeutig zu machen. Die L\'e4nge der Identnummern braucht nicht einheitlich zu sein. \f0\par
+4.\tab\f3 Ein bestimmtes Zeichen mu\'df als \b\f0 Steuerzeichen\b0\f3  festgelegt werden. Das "konsolidierte Format" ($A.CFG) sieht daf\'fcr das Zeichen \b\f0 '_'\b0  vor. Das Pica-System verwendet \b '!'\b0\f3 . Dieses Zeichen mu\'df in den Titels\'e4tzen stets \b\f0 vor\b0  eine Identnummer geschrieben werden, es \b kann\b0\f3  (z.B. bei Pica) zus\'e4tzlich dahinter geschrieben werden. \f0\par
+\tab Das Steuerzeichen darf aber auch an anderen Stellen als normales Zeichen verwendet werden, denn wenn es nicht von einer Identnummer gefolgt ist, passiert nichts. \par
+\tab\f3 Will man erreichen, da\'df f\'fcr bestimmte Datenelemente keine automatische Ersetzung erfolgt, verwendet man f\'fcr diese F\'e4lle ein anderes Steuerzeichen, oder man steckt diese Nummern in ein anderes Register! Oder: man erzeugt keinen "Ersetzungsschl\'fcssel" (s.u.) f\'fcr diese S\'e4tze. \f0\par
+\pard\tx245\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\f3 F\'fcr Titels\'e4tze braucht man \b keine zus\'e4tzlichen Kategorien\b0 . Man gibt statt eines Namens oder eines Schlagwortes dessen Stammsatz-Identnummer in derselben Kategorie ein, aber das Steuerzeichen mu\'df davor stehen. In ein und derselben Kategorie kann also wahlweise ein Klartext oder eine Identnummer eingesetzt werden. Das Entscheidende f\'fcr die Parametrierung ist: man kann so tun, als ob in den Kategorien \i\f0 immer\i0\f3  Klartext st\'fcnde. Man mu\'df die nachfolgend beschriebenen Voraussetzungen schaffen, dann braucht man sich bei der Parametrierung nicht mehr mit den Identnummern zu befassen, denn vor der Abarbeitung der Parameter ersetzen die Programme jeweils alle Identnummern durch die zugeh\'f6rigen Klartexte. Damit dies funktioniert, mu\'df man in die Index-Parameterdatei (z.B. CAT.API) drei neue Befehle einbauen. Nur\b\f4  i5\b0\f3  mu\'df unbedingt vorkommen, f\'fcr die anderen beiden gibt es Standardwerte: \f0\par
+\pard\tx572\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-571\li571\tx572\tx9413\b\f4 i4=k\b0\f0\tab Die Ziffer k ist der \b Ersetzungsmodus\b0 :\tab Standardwert:\b\f4  i4=0\b0\f0\par
+\pard\fi-571\li571\tx572\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Wenn im Datensatz eine Angabe wie\b\f4  _NNN\b0\f0  steht, dann bewirkt der Wert \par
+\tab 0 : Ersatz von\b\f4  _NNN\b0\f0  durch den Klartext, hinter\b\f4  _NNN\b0\f0  folgende Zeichen werden beseitigt \par
+\tab 1 : dasselbe, aber wenn hinter\b\f4  _NNN\b0\f0  noch Zeichen folgen, bleiben diese stehen \par
+\tab\f3 2 : wie 0, aber das Zeichen '_' bleibt stehen (sinnvoll f\'fcr Kontrollzwecke) \f0\par
+\tab 3 : wie 1, aber das Zeichen '_' bleibt stehen \par
+\tab 4 :\b\f4  _NNN_\b0\f3  bleibt stehen, der Klartext wird dahinter eingef\'fcgt, nachfolgende Zeichen verschwinden \f0\par
+\tab 5 : wie 4, aber nachfolgende Zeichen bleiben stehen. \par
+\tab\f3 Wenn in einer Kategorie mehrere Identnummern vorkommen k\'f6nnen, kommen nur 1, 3 oder 5 in Frage. \f0\par
+\tab Wird in einer Exportparameterdatei kein \f3  \f5 i4\f0  \f3  \f0 angegeben, erfolgt keine Ersetzung. \par
+\pard\tx572\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-568\li568\tx572\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f3 Der "Standardwert" f\'fcr \b\f4 i4\b0\f3  (d.h. wenn der Befehl weggelassen wird) ist die Setzung "inaktiv". \par
+\tab Dieser Wert l\'e4\'dft sich durch  \f5 i4=-1\f3   erreichen und bewirkt, da\'df gar keine Ersetzungen stattfinden. \f0\par
+\pard\tx572\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\par
+\pard\fi-571\li571\tx572\tx9413\b\f4 i5=x\b0\f0\tab Das Zeichen x ist das festgelegte \b Steuerzeichen\b0\tab kein Standardwert! \par
+\pard\fi-571\li571\tx572\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Ohne den Befehl\b\f4  i5\b0\f3  werden keine Ersetzungen durchgef\'fchrt. Das bedeutet insbesondere: alle bisherigen Index-Parameterdateien, die ja diesen Befehl nicht enthalten, funktionieren unver\'e4ndert. \f0\par
+\pard\tx572\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-571\li571\tx572\tx9413\b\f4 i5=x\f5 x  \i (\b0\f3 zweimal dasselbe Zeichen) \par
+\i0\f0\tab\f3 Das Steuerzeichen  \b\f4 x\b0\f3   mu\'df vor und hinter dem Schl\'fcssel stehen.\f0  \par
+\pard\fi-571\li571\tx572\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\i\f3 Vorteil:\i0  Im Schl\'fcssel k\'f6nnen auch Sonder- und Leerzeichen vorkommen.\f0\par
+\pard\fi-568\li568\tx422\tx914\tx1634\tx2354\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\tab    \f0 I\f3 n diesem Fall\f0 , also z.B. \f5 i5=__\f0 , mu\f3\'df der Ersetzungsschl\'fcssel vorn und hinten markiert sein, z.B. \f5 _tucho_\f3\par
+\pard\tx572\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\par
+\pard\fi-571\li571\tx572\tx9413\b\f4 i6=i\b0\f0\tab Im Register\lang1033\f4  i\lang1031\f3  (m\'f6gliche Werte 1 - 11) stehen die \b Ersetzungsschl\'fcssel\b0\f0  (s.u.).\tab  Standard:\b\f4  i6=9\b0\f0  \par
+\pard\fi-571\li571\tx572\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\tab Alle\b0\f3  f\'fcr Ersetzungen n\'f6tigen Identnummern m\'fcssen dann in diesem Register stehen. \par
+\tab Dieses Register mu\'df sich im Hauptindex befinden, also z.B. \f5  cat.adx\f3 ,  nicht\f5  cat.aex\f3    o.a. \par
+\pard\tx572\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\par
+\f3 Au\'dferdem mu\'df es bestimmte Typen von Schl\'fcsseln geben, damit die Methode funktioniert. (Im Beispiel PICA.PPI ist die Parametrierung dieser Schl\'fcssel exemplarisch durchgef\'fchrt und kommentiert.) \f0\par
+\f3 Damit die Beschreibung nicht zu theoretisch wird, soll alles an konkreten Beispielen erl\'e4utert werden. \f0\par
+\f3 Hier ist ein Personenstammsatz (wie er im Format $A.CFG aussehen mu\'df): \f0\par
+\par
+\pard\fi-658\li658\tx572\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f4 #00 123 \par
+#4n Tucholsky, Kurt \par
+#4naTiger, Theobald; Wrobel, Ignaz; Panter, Peter \par
+\pard\tx572\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0\f0\par
+\f3 In einem Titelsatz h\'e4tte man folglich z.B. dieses Datenfeld f\'fcr Tucholsky als Verfasser: \f0\par
+\par
+\b\f4 #40 _123\b0\f0          statt\b\f4         #40 Tucholsky, Kurt\b0\f0\par
+\par
+\f3 Beim Parametrieren f\'fcr den Index kann man aber, wie gesagt, so tun, also ob man\lang1033\f4  #40 Tucholsky,`Kurt\lang1031\f3  h\'e4tte. \f0\par
+\f3 F\'fcr den Stammsatz mu\'df die Index-Parameterdatei folgende Schl\'fcssel liefern, damit das klappt: \f0\par
+\pard\tx422\tx914\tx1634\tx2354\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-4267\li4267\tx422\tx914\tx1634\tx2354\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f4 |9123=|ATucholsky, Kurt\f0\tab\tab\tab\f3 Ersetzungsschl\'fcssel\b0\f0 , 123 ist zugl. \b\f3 Prim\'e4r\b0 schl\'fcssel d. Stammsatzes \f0\par
+\b\f4 |9tucholsky, kurt _123\f0\tab\tab\tab\f3\'dcbernahmeschl\'fcssel\b0\f0   (Erfassungshilfe) \par
+\b\f4 |1panter, peter -> tucholsky, kurt\f0\tab Verweisungen\b0  im Namensregister \par
+\pard\tx422\tx914\tx1634\tx2354\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f4 |1tiger, theobald -> tucholsky, kurt\b0\f0\par
+\b\f4 |1wrobel, ignaz -> tucholsky, kurt \par
+\par
+\pard\fi-4267\li4267\tx422\tx914\tx1634\tx2354\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 _1|1tucholsky, kurt\f0\tab\tab\tab\tab\f3 Pseudoschl\'fcssel\b0  f\'fcr automatische \'c4nderung \f0\par
+\pard\tx422\tx914\tx1634\tx2354\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\f3 Wenn hier von "Namen" die Rede ist, gilt dasselbe immer auch f\'fcr Schlagw\'f6rter, Notationen, und andere Datenelemente, f\'fcr die man Stamms\'e4tze nutzen will. \f0\par
+\f3 Die Parameter CAT.API enthalten ab V14 die Erzeugung dieser Schl\'fcssel. \f0\par
+\f3 Es folgt die Erkl\'e4rung, was es mit den einzelnen Schl\'fcsseln auf sich hat und wie alles zusammenh\'e4ngt. \f0\par
+\par
+Der \b\f3 Ersetzungsschl\'fcssel\b0  dient dazu, die beschriebenen Ersetzungen durchzuf\'fchren. Bevor die Indexparameter abgearbeitet werden, sieht das Programm nach, ob in dem Datensatz das Zeichen\b\f4  x\b0\f0  aus dem Befehl\b\f4  i5=x\b0\f0  vorkommt. Wenn also z.B.\b\f4  i5=_\b0\f0  ist und in einem Datensatz irgendwo\b\f4  _123\b0\f0  steht (egal wo!), sucht das Programm im dem Register, das durch i6 festgelegt wurde, in diesem Fall also im Register 9, nach einer Zeile, die mit\lang1033\f4  123=\lang1031\f3  anf\'e4ngt. Den \b\f0 Klartext\b0 , der dahinter steht, hier also\lang1033\f4  Tucholsky,\lang1031\f5  \lang1033\f4 Kurt\lang1031\f0  (in Normalschreibweise, wohlgemerkt), setzt es dann statt der Nummer\lang1033\f4  _123\lang1031\f0  ein. (Wenn\lang1033\f4  123\lang1031\f0  gefunden wird, aber\lang1033\f4  "=..."\lang1031\f0  fehlt, passiert nichts!) Die Angabe\b\f4  |A\b0\f3  ist nur f\'fcr das Programm INDEX n\'f6tig, damit dieses in seinem zweiten Durchgang korrekt arbeiten kann (d.h. die Umcodierung vornehmen kann, siehe unten, #-A ist die Sprungmarke daf\'fcr). Wenn alle diese Ersetzungen erledigt sind, werden die Indexparameter normal abgearbeitet. Danach werden die Ersetzungen sofort r\'fcckg\'e4ngig gemacht, d.h. der Betrachter merkt von alledem nichts! Nur so ist es aber zu erkl\'e4ren, da\'df anschlie\'dfend im Register 1 der Datensatz unter\lang1033\f4  tucholsky,`kurt\lang1031\f0  zu finden ist, nicht unter\lang1033\f4  _123\lang1031\f3  - was bis Version 13 nicht l\'f6sbar war. \f0\par
+\par
+\f3 Der Ersetzungsschl\'fcssel kann zugleich \b Prim\'e4rschl\'fcssel\b0\f0  sein: UPDATE vergleicht beim Einmischen nur den Teil, der vor dem '=' steht. \par
+\par
+\i\f3 Aber: \i0\f0 Im Falle \f5 i5=xx\f0  , also z.B. \f5 i5=__\f0 , \f3 ist der Schl\'fcssel im Kategorietext vorn und hinten zu markieren, z.B. \f5 _tucho_\f3  .  Der Ersetzungsschl\'fcssel mu\'df dann aber so aussehen:  \f5 _tucho_=|2Tucholsky, Kurt\f3  . \par
+\f0\par
+Der \b\f3\'dcbernahmeschl\'fcssel\b0  ist als Erfassungshilfe gedacht. Man m\'f6chte ja auf bequeme und zuverl\'e4ssige Art bei der Dateneingabe die Nummer statt des Namens eingeben k\'f6nnen, oder besser: kopieren. Dieser Schl\'fcssel mu\'df nicht im Register 9 stehen, man mu\'df nur bei der Erfassung wissen, wo man ihn findet. (Im Namensregister selbst w\'fcrde er im OPAC wom\'f6glich eher irritieren.) Die Erfassung geht so: in dem Moment, wo ein Name einzugeben ist, z.B. in einer Abfragezeile, dr\'fcckt man F6, das Register erscheint, schaltet auf das \'dcbernahmeregister um und sucht nach dem Namen. Man setzt den Pfeil auf die Zeile, dr\'fcckt <Enter>, dann <Strg><Enter>, und die Nummer steht an der gew\'fcnschten Stelle. Wenn allerdings noch kein Stammsatz f\'fcr den Namen vorhanden ist, m\'fc\'dfte man diesen \b\f0 zuerst\b0\f3  anlegen - oder den Namen zun\'e4chst im Klartext erfassen. Nebenbei bemerkt: solange ein Name nur einmal auftritt und keine Verweisungsform ben\'f6tigt, solange ist ein Stammsatz blanke Umstandskr\'e4merei. \f0\par
+\f3 Gelegentlich wird folgender Wunsch ge\'e4u\'dfert: In dem Moment, wo ein Name einzugeben ist, und wo man (oder das Programm) feststellt, da\'df es ihn im Katalog noch nicht gibt, mu\'df ein Fenster aufgehen, wo man ihn als Stammsatz erfassen kann. Mit\b\f0  allegro\b0\f3  geht das vorerst nicht. Es empfiehlt sich folgendes: vor der Erfassung des Titelsatzes kurz nachschauen (es geht ja wirklich schnell), ob die ben\'f6tigten Namen etc. vorhanden sind; falls einer fehlt und man tats\'e4chlich einen Stammsatz haben will, diesen \b\f0 zuerst \b0 anlegen, dann erst die Titelerfassung starten. Zuviel der Disziplin? \par
+\f3 M\'f6glich ist der Einbau einer Programmierten Validierung (\f4 -\f6\'d8\f3  10.2.8), wodurch ein eingegebener Name o.a. am Register gepr\'fcft und bei \'dcbereinstimmung eine Meldung ausgegeben wird. \f0\par
+Die \b Verweisungen\b0\f3  sind ein wichtiger Grund, warum man \'fcberhaupt Stamms\'e4tze macht: sie f\'fchren im OPAC von der Verweisungsform zur Ansetzungsform und gelten f\'fcr beliebig viele Titel, obwohl sie nur einmal, eben im Stammsatz, gespeichert sind. Eine neue Verweisung wird nur im Stammsatz erg\'e4nzt, an den Titels\'e4tzen ist nichts zu tun. Die Anzahl der Verweisungen und die Art ihrer Darstellung in den Registern haben auf die Funktion der Verkn\'fcpfung keinen Einflu\'df. \f0\par
+Der \b\f3 Pseudoschl\'fcssel\b0  ist ein sehr wichtiges Hilfsmittel. Er wird nicht einsortiert (daher "Pseudo"), sondern nur f\'fcr Kontrollzwecke gebraucht: Gesetzt den Fall, man \'e4ndert im Stammsatz die Ansetzungsform (\b\f4 #4n\b0\f3  im Beispiel). Dann m\'fcssen ja auch die Titeleintr\'e4ge, die unter\lang1033\f4  tucholsky,`kurt\lang1031\f3  standen, auf die neue Form ge\'e4ndert werden. Das Programm merkt, wenn sich bei einer Korrektur am Stammsatz der Pseudoschl\'fcssel \'e4ndert. Dann sucht es die unter der alten Form stehenden Eintr\'e4ge zusammen und \'fcberf\'fchrt sie auf die neue Form. Die Titels\'e4tze werden dazu nicht angefa\'dft: dort steht ja nur die Nummer, und die \'e4ndert sich nicht. (Besser gesagt: sie sollte sich nicht \'e4ndern. Man setzt am besten in der .CFG mit \b\f4 ?P5\b0\f3  den \'c4nderungsschutz auf die Kategorie #00). Wenn man in der Index-Parameterdatei keinen Pseudoschl\'fcssel anlegt, finden derartige automatische Verlagerungen nicht statt. \f0\par
+\f3 Der Pseudoschl\'fcssel kann manchmal mit dem \b L\'f6schkontrollschl\'fcssel\b0\f0  (s.u.) kombiniert werden. Im Beispiel ist "\lang1033\f4 |1tucholsky,`kurt\lang1031\f3 " zugleich der Schl\'fcssel, der vor dem L\'f6schen des Stammsatzes kontrolliert werden mu\'df. \f0\par
+\f3 Der Pseudoschl\'fcssel beginnt mit dem Steuerzeichen i5, hier also mit '_'. Die Ziffer '1' dahinter hat eine wichtige Bedeutung: an dieser Stelle kann auch '0' stehen. Die '0' bedeutet, da\'df nur solche Eintr\'e4ge verlagert werden sollen, die exakt "\lang1033\f4 tucholsky,`kurt\lang1031\f3 " lauten. Die '1' dagegen bewirkt, da\'df alle Eintr\'e4ge verlagert werden, die mit\lang1033\f4  tucholsky,`kurt\lang1031\f3  beginnen, also z.B. Schlagwortketten mit diesem Namen als Anfangsteil. Diesen Modus kann man also f\'fcr die einzelnen Stammsatztypen unterschiedlich festlegen. \f0\par
+\par
+Beim Entwurf einer Datenbank sind noch zwei Dinge zu beachten: \par
+\par
+\b 1.\b0\f3  Je Stammsatz kann man mehr als einen Pseudoschl\'fcssel definieren. Das bedeutet, da\'df mehrere Eintragungen automatisch verlagert werden k\'f6nnen. W\'fcrde man z.B. neben dem Namensregister noch ein Verfasser/Titelregister machen, dann kann sich dort die \'c4nderung des Stammsatzes auch auswirken. Dies wird z.B. bei der Parametrierung des Modells \b\i\f0 bolero\b0\i0\f3  f\'fcr Musik-Katalogisierung angewandt. \f0\par
+\par
+\b 2.\b0  \i Vorsicht:\i0\f3  Die automatische Verlagerung erfa\'dft auch solche Eintr\'e4ge, die gar nicht vom Stammsatz herr\'fchren! Wenn man z.B. in manchen Titels\'e4tzen\lang1033\f4  #40`_123\lang1031\f0  stehen hat, in manchen anderen aber den Klartext\lang1033\f4  #40`Tucholsky,`Kurt\lang1031\f3 , dann sehen die Registereintr\'e4ge f\'fcr beide gleich aus. Bei einer \'c4nderung der Ansetzungsform im Stammsatz werden dann beide verlagert, denn an das Programm greift dabei nicht auf die Titels\'e4tze zu (das w\'fcrde zu lange dauern!). Allerdings wird man, wenn man \'fcberhaupt mit Stamms\'e4tzen arbeitet, solche Mischanwendungen zu vermeiden suchen. Entweder hat man f\'fcr eine Person einen Stammsatz, dann sollte man diesen in jedem Fall verwenden, oder man hat keinen, dann kann auch nichts schiefgehen. Mehr \'dcberlegung ist n\'f6tig, wenn man den Ersetzungsmodus '1' anwendet. Insbesondere bei Schlagw\'f6rtern mu\'df man pr\'fcfen, ob dann nicht doch Eintr\'e4ge betroffen werden, die tats\'e4chlich nichts mit dem Stammsatz zu tun haben sondern nur zuf\'e4llig denselben Anfangsteil besitzen. Will man in ein schon laufendes System sukzessive Stamms\'e4tze einf\'fchren, sollte man f\'fcr jeden neuen Stammsatz die evtl. schon vorhandenen Klartexteintr\'e4ge auf Nummern umstellen. \f0\par
+\f3    Diese zwei Einschr\'e4nkungen sind nicht gravierend. Erstens sind \'c4nderungen der Ansetzungsform in Stamms\'e4tzen ihrer Natur nach nicht eben h\'e4ufig, zweitens werden die wirklich wesentlichen Eintr\'e4ge in jedem Fall ge\'e4ndert, drittens ist durch eine Neu-Indexierung im Notfall alles wieder zu korrigieren. \f0\par
+\par
+\b\f3 L\'f6schkontrolle\b0\f0\par
+\f3 Sobald man mit Satzverkn\'fcpfungen arbeitet, ganz gleich f\'fcr welche Zwecke, entsteht das Problem der Abh\'e4ngigkeiten: z.B. k\'f6nnen verkn\'fcpfte Bands\'e4tze von mehrb\'e4ndigen Werken nicht mehr ohne den Hauptsatz korrekt verarbeitet (angezeigt oder ausgedruckt) werden. Man wird also verhindern wollen, da\'df ein Hauptsatz gel\'f6scht wird, solange es noch einen verkn\'fcpften Bandsatz gibt. Man wird auch verhindern wollen, da\'df ein Schlagwortstammsatz gel\'f6scht wird, wenn dieser in irgendeinem Titelsatz benutzt wurde. Die Datenbanktheorie hat hierf\'fcr den Fachterminus "referentielle Integrit\'e4t". Bestehende Beziehungen d\'fcrfen nicht unbeabsichtigt zerrissen werden. Wie aber soll man das verhindern, wie kann der L\'f6schbefehl abgefangen werden, wo die Verkn\'fcpfungen doch so unterschiedlich aussehen k\'f6nnen? PRESTO und seine Derivate, aber auch UPDATE ab Version 13a enthalten daf\'fcr eine Methode, die "L\'f6schkontrolle" hei\'dft. \f0\par
+\f3 So installiert man eine L\'f6schkontrolle: \f0\par
+In der Indexparameterdatei richtet man einen Abschnitt mit der Sprungmarke\b\f4  #--\b0\f0  ein. Diese kann nicht normal angesprungen werden, da\b\f4  +-\b0\f3  der Abbruchbefehl ist! Der Abschnitt wird nur dann von den Programmen herangezogen, wenn eine L\'f6schung erfolgen soll. In dem Abschnitt hat zu stehen, welche Schl\'fcssel vor jeder L\'f6schung zu pr\'fcfen sind. Das k\'f6nnen also auch mehrere sein. Nehmen wir als Beispiel die Verkn\'fcpfungen zwischen Haupt- und Unters\'e4tzen und die zwischen dem Sammelband und den enthaltenen Aufs\'e4tzen, wie sie im A-Format definiert sind. Der bewu\'dfte Abschnitt k\'f6nnte dann so aussehen: \f0\par
+\par
+\lang1033\f4 #-- \par
+!00 p"|9" P"+" \par
+#t \{ C \}\f7          Zeilenvorschub zwischen den zwei Schl\'fcsseln!\f4\par
+!00 p"|9" P"*" \par
+#+#\lang1031\f0\par
+\par
+Wenn also ein Datensatz die Kategorie\lang1033\f4  #00 123456\lang1031\f3  enth\'e4lt, werden f\'fcr die L\'f6schkontrolle daraus die zwei Schl\'fcssel\lang1033\f4  123456+\lang1031\f0   und\lang1033\f4  123456*\lang1031\f3  gebildet, die beide im Register 9 zu pr\'fcfen sind. Werden dort Eintr\'e4ge gefunden, die mit diesen Zeichenkombinationen \b\f0 beginnen\b0\f3 , wird die L\'f6schung verweigert. \f0\par
+Man beachte den Befehl\lang1033\f4  #t\{ C \}\lang1031\f3 , der normalerweise bei einem Export einen Zeilenvorschub ausl\'f6st. Hier trennt er zwei unterschiedliche Schl\'fcssel, die getrennt zu pr\'fcfen sind. Ansonsten hat ein solcher Befehl in einer Indexparameterdatei nichts zu suchen. Auf diese Weise k\'f6nnen bis zu 32 L\'f6schkontrollschl\'fcssel definiert werden. \f0\par
+\par
+\b Aber wie funktioniert dann das Programm INDEX?\b0\par
+Genau diese Frage werden diejenigen stellen, die seit \b\i V11\b0\i0  unzufrieden waren, weil man in der Index-Parameterdatei nicht "nachladen" konnte (\f4 -\f6\'d8\f3  10.2.6.7). Es ist nat\'fcrlich immer noch so: das Programm INDEX kann die oben beschriebenen Ersetzungen nicht vornehmen, weil zu dem Zeitpunkt, wo es die Daten abarbeitet, der Index noch gar nicht vorhanden ist, aus dem es die Klartexte entnehmen m\'fc\'dfte. F\'fcr das oben benutzte Beispiel bedeutet dies: INDEX erzeugt den Schl\'fcssel\b\f4  _123\b0\f3  f\'fcr den Titelsatz anstatt\b\f4  tucholsky,`kurt\b0\f3 . Es entsteht also zun\'e4chst ein Index mit vielen solchen Eintr\'e4gen. Diese m\'fcssen in einem \b\f0 zweiten Durchlauf\b0\f3  aufgel\'f6st werden. In diesem zweiten Durchlauf schaut INDEX nach, ob Eintr\'e4ge vorhanden sind, die mit '_' beginnen, also z.B.\lang1033\f4  _123\lang1031\f0 . Dann sucht es im Register i6 nach\lang1033\f4  123=\lang1031\f3 , nimmt den Klartext, den es dahinter findet, f\'fchrt die Befehle bei Sprungmarke #-A aus, und setzt das Ergebnis in das Register, wo _123 stand, und _123 wird dort gel\'f6scht. Wenn "\lang1033\f4 123=\lang1031\f3 " im Register i6 nicht gefunden wird, bleibt es unver\'e4ndert stehen. \f0\par
+Den zweiten Durchlauf startet QRIX automatisch, man kann ihn aber auch von Hand starten: \par
+\b\f4 INDEX -fa1 -d*\i datenpfad\i0  -e\i indexparameter\i0 /\i datenpfad\i0  -k\i konfig\b0\i0\f0\par
+d.h. INDEX hat eine neue Funktion\b\f4  -fa\b0\f3  erhalten. Sind keine Eintr\'e4ge der bewu\'dften Art vorhanden, geschieht nat\'fcrlich nichts. Dieser Durchlauf kann auch gestartet werden, wenn die Datenbank schon (im Netz) in Betrieb ist. \f0\par
+\par
+\f3 F\'fcr sehr gro\'dfe Datenbanken ist es von Vorteil, die Datenbank schon wieder freigeben zu k\'f6nnen. Der zweite Durchlauf geht allerdings recht schnell, weil die Datens\'e4tze selbst nicht nochmals gelesen und ausgewertet werden m\'fcssen. \f0\par
+\f3 Aus diesem Verfahren ergibt sich eine weitere Einschr\'e4nkung: wenn man z.B. einen Namen in einer weiteren Indexeintragung benutzt als zweiten oder weiteren Bestandteil eines Schl\'fcssels, kann INDEX diesen im zweiten Durchlauf nicht finden, und er bleibt als Nummer im Register stehen. Unter PRESTO w\'fcrden die korrekten Eintr\'e4ge entstehen, da die Ersetzung \b\f0 vor\b0\f3  dem Abarbeiten der Indexparameter stattfindet. Hier ist zu bemerken, da\'df mehrteilige Schl\'fcssel eine\b\f0  \lang1033\i\f3 allegro\lang1031\b0\i0 -Eigenheit sind, die andere Datenbanksysteme \'fcberhaupt nicht kennen. Auch die Bildung mehrerer Schl\'fcssel aus einem Datenfeld ist in der Datenbankwelt eine eher seltene Besonderheit. \f0\par
+    Es gibt noch eine \b Alternative\b0 : INDEX kann in einem ersten Durchlauf mit den Optionen\b\f4  -fi0 -@1\b0\f3  zun\'e4chst NUR die Prim\'e4rschl\'fcssel erstellen, in einem zweiten Durchlauf dann mit\b\f4  -fi1 -@2\b0\f3  alle anderen Schl\'fcssel. Wenn es viele Stammsatzverkn\'fcpfungen gibt, ist diese Methode schneller! Mehr zu dem Thema: siehe Kap. 7.1. \f0\par
+\par
+\b Und die Kurzanzeige?\b0\par
+\f3 Auch diese kann Elemente enthalten, z.B. den Verfassernamen, die in den Titels\'e4tzen nur aus einer Stammsatznummer bestehen. INDEX korrigiert im zweiten Durchlauf auch die Kurzanzeige, wenn dies der Fall ist. Unter PRESTO ist es ohnehin kein Problem, da vor der Abarbeitung der Index-Parameterdatei, also auch der Kurzanzeige, die Ersetzungen automatisch erfolgen. \f0\par
+\par
+\pard\tx422\tx914\tx1634\tx2354\tx3096\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 SRCH\b\par
+\pard\tx422\tx914\tx1634\tx2354\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0 Nun zur Volltextsuche. Wenn man "\lang1033\f4 tucho\lang1031\f3 " als Suchwort eingibt, will man alle Datens\'e4tze finden, in denen diese Zeichenkette vorkommt, auch die, in denen statt dessen "\lang1033\f4 _123\lang1031\f3 " steht. Auch dieses funktioniert. SRCH liest bei Version 14, anders als fr\'fcher, vor der Suchaktion die Index-Parameterdatei und informiert sich dar\'fcber, ob derartige Verh\'e4ltnisse vorliegen k\'f6nnen, d.h. es schaut sich die Befehle i5 und i6 an. Und dann tut es folgendes: es liest einen Datensatz ein, kopiert ihn in einen "Suchbereich", nimmt per Index die Ersetzungen vor und ersetzt dann noch mit Hilfe der Tabelle S1.ASP einzelne Zeichen (z.B. Gro\'df- durch Kleinbuchstaben). Somit steht dann im Suchbereich tats\'e4chlich "\lang1033\f4 tucholsky\lang1031\f0 ". Genauer: dort steht "\lang1033\f4 _123_tucholsky,`kurt"\lang1031\f0 . Das bedeutet: man kann sowohl nach dem Namen wie auch der Nummer suchen. Wenn man z.B. als Suchbegriff "\lang1033\f4 #4,123\lang1031\f3 " gibt, werden alle S\'e4tze gefunden, die in einer Kategorie der Gruppe #4 die Ziffernfolge 123 enthalten. Wenn man "\lang1033\f4 #4,tucho\lang1031\f3 " gibt, werden alle S\'e4tze gefunden, die in einer Kategorie der Gruppe #4 die Zeichenfolge "tucho" enthalten - auch dann, wenn diese durch Ersetzung erst \'fcber den Index hereingeholt wird, denn die Ersetzung passiert vor der Abarbeitung des Suchbefehls. \f0\par
+\par
+\f3 F\'fcr den \b\f0 Export\b0\f3 , den SRCH evtl. vornehmen soll, ist es freilich noch etwas anders: daf\'fcr steht im normalen Arbeitsspeicher der unver\'e4nderte Satz (also mit\lang1033\f4  #40`_123\lang1031\f3 ). Es kann ja sein, da\'df man genau so und nicht anders exportieren will. Wenn man will, da\'df die Nummern durch Klartexte ersetzt werden, braucht man nur in der \b\f0 Export-Parameterdatei\b0  den Befehl\b\f4  i4=0\b0\f3  unterzubringen, das ist alles - Nachladen er\'fcbrigt sich. Oder\b\f4  i4=4\b0\f0 , dann stehen Nummer \b und\b0\f3  Name f\'fcr den Export zur Verf\'fcgung. Der Wert i4 kann also f\'fcr den Export anders aussehen als in der Index-Parameterdatei! Alle \'e4lteren Exporte funktionieren unver\'e4ndert, denn sie enthalten keinen Befehl i4. \f0\par
+\par
+\b UPDATE\b0\par
+\f3 Das Programm UPDATE verf\'fcgt ab V14 f\'fcr die Behandlung der Verkn\'fcpfungen \'fcber dieselben Funktionen wie PRESTO. Wie oben erw\'e4hnt, kann der Ersetzungsschl\'fcssel zugleich als Prim\'e4rschl\'fcssel dienen. UPDATE vergleicht ihn nur bis zum Zeichen '=' mit den vorhandenen Schl\'fcsseln. Wenn also ein korrigierter Stammsatz geliefert wird, in dem die Ansetzungsform ver\'e4ndert wurde, kann UPDATE ihn erstens richtig zuordnen und zweitens die n\'f6tigen Ver\'e4nderungen im betroffenen Register und evtl. in der Kurzanzeige vornehm\f0 en. \par
+\par
+Die auf PRESTO beruhenden Programme ALFA, APAC, MENUED etc. enthalten ebenfalls die neuen Funktionen. \par
+Noch zwei Kleinigkeiten: \par
+\pard\fi-421\li421\tx422\tx914\tx1634\tx2354\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\bullet\tab\f3 Wenn man bei PRESTO mit F5 auf Kategorieanzeige umschaltet, sieht man hinter allen Identnummern die Klartexte (so \'e4hnlich wie beim Pica-System). F\'fcr den Katalogisierer ist das eine sehr wichtige Hilfe. Wenn man allerdings mit 'E' in die Bearbeitung geht, sieht man nur noch die Identnummern (anders als bei Pica, wo die Klartexte in Rot dahinter stehen.) \f0\par
+\bullet\tab\f3 Ein Druck auf ':' f\'fchrt in der Titel- oder Kategorieanzeige die Ersetzungen durch, die sich durch die Angabe i4 in der Index-Parameterdatei ergeben. Das ist noch eine Kontrollm\'f6glichkeit: man sieht auf diese Weise, wie der Datensatz aussieht, bevor die Indexparameter abgearbeitet werden. Bei F7 wird das alles automatisch ausgef\'fchrt (so da\'df man gleich die richtigen Schl\'fcssel sieht), die Ersetzungen aber im Arbeitsspeicher sofort r\'fcckg\'e4ngig gemacht. \f0\par
+\pard\tx422\tx914\tx1634\tx2354\tx3074\tx3794\tx4268\tx4396\tx4514\tx4653\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-658\li658\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\b\f2\fs28 10.2.6.9  Satz\'fcbergreifende Suche : Das "Schiller-R\'e4uber"-Problem\b0\f1\fs20\par
+\pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\f0\par
+\f3 Seit es die verkn\'fcpften S\'e4tze f\'fcr mehrb\'e4ndige Werke gibt (1993, V11.2), ist immer wieder einmal ein Disput \'fcber das "Schiller-R\'e4uber-Problem" aufgeflammt. Dabei handelt es sich nicht um ein \lang1033\b\i\f0 allegro\b0\i0\f3 -spezifisches Problem, sondern alle bekannten Systeme kranken daran (au\'dfer MARC-Systemen, weil sie keine Satzverkn\'fcpfungen kennen). Keine ganz geringe Herausforderung also, und es war lange Zeit unklar, wie dieses Problem am besten anzupacken w\'e4re. Schlie\'dflich und endlich wurde f\'fcr \b\i\f0 allegro\b0\i0\f3  eine sinnvolle L\'f6sung gefunden und realisiert. Die folgenden, zur L\'f6sung hinf\'fchrenden Gedanken sollen zun\'e4chst das Problemverst\'e4ndnis f\'f6rdern und mit instruktiven Beispielen den L\'f6sungsweg begr\'fcnden. \f0\par
+\lang1031\f3\par
+\b Was ist \'fcberhaupt das Schiller-R\'e4uber-Problem?\b0\f0\par
+\f3 Wenn ein mehrteiliges Werk "Schillers Dramen" hei\'dft, der Name "Schiller" aber nur im Hauptsatz und der Titel "R\'e4uber" in einem \b verkn\'fcpften\b0  Untersatz steht, kann man nichts finden mit einer logischen UND-Verkn\'fcpfung zwischen\lang1033\f4   schiller  und  raeuber . \par
+\lang1031\i\f0 Warum nicht?\i0\f3  Zur Bildung von Ergebnismengen (und das gilt nicht nur f\'fcr \lang1033\b\i\f0 allegro\b0\i0\f3 ) werden aus dem Index nur die Satznummern entnommen und verglichen, die beiden Suchw\'f6rter stehen aber in getrennten S\'e4tzen. Das logische UND sieht also zwei ungleiche Nummern und erfa\'dft sie deshalb nicht. \f0\par
+\lang1031\f3 Eine g\'e4ngige Abhilfe besteht darin, den Namen des Verfassers auch in jeden Untersatz mit einzutragen. Das erzeugt erstens unerw\'fcnschte Redundanz, l\'f6st aber zweitens nur einen Teil der Probleme dieses Typs, denn auch f\'fcr andere Suchbegriffe, nicht nur f\'fcr Verfasser, wird u.U. eine \b satz\'fcbergreifende\b0  Suche gew\'fcnscht oder stillschweigend erwartet, z.B. f\'fcr Schlagw\'f6rter. \f0\par
+    Hier ein anderes Beispiel, damit es noch deutlicher wird (nicht erfunden, dieses Werk gibt es!) \par
+Wir lassen alles weg, was mit dem Problem nichts zu tun hat. \par
+\par
+\lang1033\f4 _________________________________________________________________________ \par
+\par
+Hauptsatz:    Vollmer, Gerhard: \par
+\f5 Nr.A          Was k\'f6nnen wir wissen? \f4\par
+              \i Schlagwort:\i0  Erkenntnistheorie \par
+_________________________________________________________________________ \par
+\par
+Untersatz:    Band 1 \par
+\f5 Nr.B          Die Natur der Erkenntnis : Beitr\'e4ge zur Evolution\'e4ren \f4\par
+              Erkenntnistheorie. \par
+              \i Mitverf.:\i0  Lorenz, Konrad. \par
+_________________________________________________________________________ \par
+\par
+Untersatz:    Band 2 \par
+\f5 Nr.C          Die Erkenntnis der Natur : Beitr\'e4ge zur modernen \f4\par
+              Naturphilosophie. \par
+              \i Schlagwort:\i0  Naturphilosophie \par
+\lang1031\f0\par
+\f3 Zur Erkl\'e4rung: \f0\par
+\f3 Die Nummern A, B und C sollen die internen Satznummern der drei Datens\'e4tze sein, nicht die Prim\'e4rschl\'fcssel. Die Ergebnismengen werden stets aus diesen Nummern gebildet, nicht aus Bestandteilen der Datens\'e4tze! Man k\'f6nnte also z.B. haben:  A=13245, B=144923, C=55921. Das Programm vergibt sie beim Speichern selbst und man kann sie nicht ver\'e4ndern, daher haben diese Nummern keinen logischen Zusammenhang, und daher kann das Programm von sich aus nicht erkennen, da\'df ein Zusammenhang zwischen den S\'e4tzen besteht. Aber, wie gesagt, beim Bilden von Ergebnismengen hat das Programm nur diese Nummern und sonst nichts, es schaut dabei nicht in die S\'e4tze hinein (das w\'fcrde viel zuviel Zeit kosten). Man mu\'df also einen Weg finden, den Zusammenhang auch f\'fcr das Programm erkennbar zu machen \f0 - das ist der programmiertechnische Kern des Problems. \par
+\par
+\f3\'dcbliche Retrievalsysteme erbringen in der Regel folgende Resultate, manchmal eben weniger als erw\'fcnscht: \f0\par
+\f3 (Der Leser \'fcberlege f\'fcr sich selbst, was wohl sinnvoll ist. Wir geben hier bewu\'dft ziemlich viele Beispiele, damit deutlich wird, da\'df nicht jedes denkbare Ergebnis unbedingt erw\'fcnscht ist.) \f0\par
+\par
+\lang1033\f5     Suchfrage:                       Resultat:       erw\'fcnscht: \f4\par
+--------------------------------------------------------------- \par
+\par
+1.  vollmer                          A               A,B,C   ??? \par
+\par
+2.  wissen                           A               A,B,C   ??? \par
+\par
+3.  erkenntnis                       B,C \par
+\par
+4a. erkenntnis?                      A,B,C \par
+4b. naturphilosophie                 C               A,C     ??? \par
+4c. erkenntnisth? AND naturphil?     nichts          C \par
+\par
+5.  vollmer AND wissen               A               A,B,C   ??? \par
+\par
+6.  wissen AND natur                 nichts          B,C     ??? \par
+\par
+7.  vollmer AND natur                nichts          B,C   \par
+    (entspricht schiller-raeuber) \par
+\par
+8.  vollmer AND naturphilosophie     nichts          C \par
+    vollmer AND lorenz               nichts          B \par
+\par
+9.  lorenz AND erkenntnis            B \par
+\par
+10. lorenz AND wissen                nichts          B       ??? \par
+\lang1031\f0\par
+(Die Suchfragen sind hier vereinfacht dargestellt. Von der Sache her spielt es keine Rolle, ob die Begriffe in verschiedenen Registern stehen oder im selben. Je nach Syntax des Systems sieht der eigentliche Befehl anders aus, bei a99/alcarta ist es wie bei Pica: \par
+"\lang1033\b\f4 find per vollmer? and tit natur\b0 "\f3 .  Das '?' ist auch bei Pica das Trunkierungssymbol.)\f4\par
+\lang1031\f3 In den F\'e4llen 1, 2, 4b, 5, 6 und 10 kann man wohl nicht generell sagen, da\'df die erweiterten Ergebnisse in jedem Fall erw\'fcnscht sind, sicher trifft das nur f\'fcr die F\'e4lle 4c, 7 und 8 zu. Es gibt nat\'fcrlich keinen Algorithmus, der den tats\'e4chlichen Wunsch erschlie\'dfen kann und in jedem Fall korrekt eine erweiterte Suche (satz\'fcbergreifende Suche) durchf\'fchrt oder nicht. Folglich wird man dem Benutzer auf irgendeine Art eine neue Option "erweiterte Suche"  oder "Expansion" zur Wahl stellen m\'fcssen und ihm die Sache hinreichend erkl\'e4ren. \f0\par
+\f3 Das eigentliche Problem tritt nur bei den UND-Verkn\'fcpfungen auf. Die F\'e4lle 1 bis 3 geh\'f6ren nicht zum Problembereich. Wenn A gefunden wird, hat man implizit auch B und C, da diese dann ohnehin mit angezeigt werden k\'f6nnen. Die nachfolgend skizzierte L\'f6sungsidee wird zwar auch die logische NICHT-Verkn\'fcpfung mit einbeziehen (siehe unten Beispiele 5,6,10), aber der Leser mag sich selbst \'fcberlegen, wie sinnvoll das ist. \f0\par
+\par
+\par
+\b\f3 Abstrakte L\'f6sungsidee\b0\f0\par
+\f3 Es wird ein Steuerzeichen eingef\'fchrt, und zwar '&'. Dieses kann vor jeden Suchbegriff einer kombinierten Suche gesetzt werden. \f0\par
+Also z.B.\lang1033\f4    &vollmer   statt   vollmer. \par
+\pard\lang1031\f3 Ein so gekennzeichneter Begriff soll "erweitert" (satz\'fcbergreifend)  gesucht werden. (Man k\'f6nnte auch von einer "Plus-Suche" sprechen.) Das bedeutet: alle Unters\'e4tze werden zu den Ergebnissen hinzugenommen. (Nur die \lang1033\f5 UNTERs\'e4tze\lang1031\f3 , nicht die \'dcBERgeordneten!) Dann w\'fcrde also im Beispiel\lang1033\f4   &vollmer   A,B,C  \f0 herauskommen statt nur schlicht \f4  A. \f0 Mit \f4  &lorenz \f3  w\'fcrde aber unver\'e4ndert nur B herauskommen. Das erscheint sinnvoll, denn Vollmer hat viel mit B und C zu tun, Lorenz dagegen nicht viel mit A und wom\'f6glich gar nichts mit C. Diese \'dcberlegung trifft wohl auch f\'fcr andere Suchkriterien zu, denn schlie\'dflich erfa\'dft man ja ganz bewu\'dft im Hauptsatz diejenigen Elemente, die auf das Gesamtwerk  zutreffen (also AUCH auf die Unters\'e4tze), in den Unters\'e4tzen aber diejenigen, die NUR f\'fcr den jeweiligen Untersatz gelten.\f4\par
+\pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\lang1031\f0 Also nochmal ganz klar: die "erweiterte Suche" bezieht zu jedem Datensatz alle \b unter\b0\f3 geordneten S\'e4tze mit ein, und dies mu\'df auf jeden Term einer kombinierten Suche einzeln anwendbar sein, sonst k\'f6nnen durchaus unerw\'fcnschte Ergebnisse entstehen. \f0\par
+\par
+\pard\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f3 Die nachfolgenden Beispiele sind nicht alle sinnvoll, d.h. man w\'fcrde sie in der Praxis nicht alle anwenden. Das hei\'dft, es w\'e4re wohl nicht zu empfehlen, die Erweiterung grunds\'e4tzlich dauerhaft einzuschalten, also als ob automatisch vor jedes Suchwort ein '&' gesetzt w\'fcrde. Es sollte aber einen "Hauptschalter" geben, der genau dieses bewirkt, wenn es gew\'fcnscht wird. \f0\par
+\pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\par
+\par
+\lang1033\f4     Suchfrage:                       Ergebnisse: \par
+------------------------------------------------ \par
+1.  vollmer                          A          \par
+    &vollmer                         A,B,C \par
+\par
+2   wissen                           A \par
+    &wissen                          A,B,C \par
+\par
+3.  erkenntnis                       B,C \par
+    &erkenntnis                      B,C \par
+\par
+4.  erkenntnis?                      A,B,C \par
+    &erkenntnis?                     A,B,C \par
+    erkenntnis? AND naturphil?       C \par
+    erkenntnisth? AND naturphil?     nichts \par
+    &erkenntnisth? AND &naturphil?   C \par
+\par
+5.  vollmer AND wissen               A \par
+    &vollmer AND wissen              A \par
+    vollmer AND &wissen              A \par
+    &vollmer AND &wissen             A,B,C \par
+\par
+    vollmer NOT wissen               nichts \par
+    &vollmer NOT wissen              B,C \par
+    &vollmer NOT &wissen             nichts \par
+\par
+6.  vollmer AND natur                nichts     \par
+    &vollmer AND natur               B,C \par
+    vollmer AND &natur               nichts \par
+    &vollmer AND &natur              B,C \par
+\par
+    vollmer NOT natur                A \par
+    &vollmer NOT natur               A \par
+\par
+7.  wissen AND natur                 nichts     \par
+    &wissen AND natur                B,C \par
+    wissen AND &natur                nichts \par
+    &wissen AND &natur               B,C \par
+\par
+8.  vollmer AND naturphilosophie     nichts \par
+    &vollmer AND naturphil?          C \par
+    vollmer and lorenz               nichts \par
+    &vollmer AND &lorenz             B \par
+    \par
+9.  lorenz AND erkenntnis            B \par
+    &lorenz AND erkenntnis           B \par
+    lorenz AND &erkenntnis           B \par
+    &lorenz AND &erkenntnis          B \par
+\par
+10. lorenz AND wissen                nichts     \par
+    &lorenz AND wissen               nichts \par
+    lorenz AND &wissen               B \par
+    &lorenz AND &wissen              B \par
+\par
+    lorenz NOT wissen                B \par
+    lorenz NOT &wissen               nichts \par
+\lang1031\f0\par
+\f3 Es wird hieraus deutlich, da\'df mit der "Plus-Suche" jede gew\'fcnschte Erweiterung des Zugriffs differenziert durchgef\'fchrt werden \i\f0 kann\i0\f3 . Voraussetzung: man mu\'df sich klar sein, was man will, und die Plus-Suche \i bewu\'dft\i0\f0  einsetzen. \par
+\i Ob\i0  dies verstanden und ausgenutzt werden wird und \i wie oft\i0\f3 , das ist eine ganz andere Frage. Man kann auch die Meinung h\'f6ren, da\'df die Booleschen Verkn\'fcpfungen insgesamt von kaum einem Endbenutzer verstanden werden, wie auch immer man sie verpackt... Andererseits kann man sicher sein, da\'df die W\'fcnsche nicht verstummen, nachdem dieses Verfahren realisiert ist. Mindestens wird die Frage kommen, wie es denn ist, wenn einer der Beispiels\'e4tze, oder alle drei, noch einem anderen oder mehreren anderen Werken untergeordnet sind, und wenn es mehrere Hierarchiestufen g\'e4be.\f0 .. \par
+\f3 Wahr ist aber auch: je gr\'f6\'dfer unsere Datenbanken werden, umso mehr brauchen wir differenzierte Suchm\'f6glichkeiten, auch wenn sie dann nur verh\'e4ltnism\'e4\'dfig selten zum Einsatz kommen. \f0\par
+\par
+\par
+\b\f3 Was mu\'df man parametrieren?\b0\f0\par
+\par
+\f3 Zum Gl\'fcck wenig. Es gen\'fcgen ein paar f\'fcr Kenner sehr einfache Ma\'dfnahmen in den Indexparametern. \f0\par
+\par
+\b 1. Neuer Befehl \f4  i7\b0\f0\par
+\par
+\pard Mit dem neuen Befehl\lang1033\f4   i7 \f3  wird zum einen das Register festgelegt, wo die notwendigen Hilfsschl\'fcssel anzusiedeln sind, zum andern wird damit dem System signalisiert, \b da\'df\b0\f0  die Datenbank eine Plus-Suche gestattet. \par
+\lang1031\f3\par
+\pard\fi-864\li864\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\b\f4 i7=k\b0\f0\tab\tab Nummer des SR-Hilfsregisters  (1 <= k <= 11)   Empfehlung: k= 9 oder 10. \par
+\pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\par
+\b\f3 2. SR-Hilfsschl\'fcssel: neuer Manipulationsbefehl\f4   X\b0\f0\par
+\par
+\f3 Jeder Untersatz, der bei einer Plus-Suche auffindbar sein soll, mu\'df einen oder mehrere zus\'e4tzliche Schl\'fcssel bekommen. Ein solcher "SR-Hilfsschl\'fcssel" mu\'df aus dem Prim\'e4rschl\'fcssel eines anderen Satzes bestehen (i.d.R. ist das der Hauptsatz eines mehrb\'e4ndigen Werkes). Es kann zu einem Untersatz mehr als einen Hilfsschl\'fcssel geben, d.h. die Unterordnung unter zwei oder mehr Gesamtwerke kann ad\'e4quat ber\'fccksichtigt werden. \f0\par
+\f3 Ein solcher Hilfsschl\'fcssel wird mit Hilfe des neuen Manipulationsbefehls\b\f4  X\b0\f0  angelegt. Wie das geht, zeigen wir an einem \par
+\i Beispiel:\i0\f3  Wir gehen vom Konsolidierten Format aus, wo der Prim\'e4rschl\'fcssel aus #00 gebildet wird und Unters\'e4tze in der #00 die IdNummer des Hauptsatzes mit angeh\'e4ngtem '+' enthalten. Die Prim\'e4rschl\'fcssel stehen im Register 9. Die Hilfsschl\'fcssel sollen aber im Register 8 stehen. Es folgen die notwendigen Zeilen: \f0\par
+\f3 (Eine reservierte Sprungmarke gibt es f\'fcr diesen Zweck \'fcbrigens nicht.) \f0\par
+\par
+\pard\fi-3548\li3548\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\lang1033\f4 i7=8\lang1031\f0\tab\tab\tab\tab\f3 Die SR-Hilfsschl\'fcssel sollen ins Register 8\lang1033\f4\par
+\pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500 ... \par
+\pard\fi-3548\li3548\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500 ak=zz+U\lang1031\f0\tab\tab\tab\f3 F\'fcr jeden Satz wird der Abschnitt #-U angesprungen ...\lang1033\f4\par
+\pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500 ... \par
+\pard\fi-1876\li1876\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500 #-U\lang1031\f0\tab\tab\tab\tab\f3 ... aber nur bei Unters\'e4tzen passiert hier wirklich etwas:\lang1033\f4\par
+\pard\fi-3549\li3549\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500 #00 +#00 c"+" e0\lang1031\f0\tab Kommt '+' vor, d.h. ist es ein Untersatz?\lang1033\f4  \par
+\pard\fi-1876\li1876\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500 #+-\lang1031\f0\tab\tab\tab\tab wenn nicht, dann keine Aktion\lang1033\f4\par
+#00 y0 e"+" X9\lang1031\f0\tab\f3 SR-Hilfsschl\'fcssel aus Inhalt von #00 per Reg. 9 bilden.\lang1033\f4\par
+#+#\lang1031\f0\tab\tab\tab\tab\f3 (F\'fcr Register 10 mu\'df es  X:  hei\'dfen; dann aber ':' aus Befehl\lang1033\f4  i2\lang1031\f0  herausnehmen!)\lang1033\f4\par
+\pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\par
+\par
+\b\f0 Und was passiert dann? \par
+\b0\f4\par
+\f3 Das braucht man nicht unbedingt zu wissen, aber n\'fctzlich zum Verst\'e4ndnis d\'fcrfte es sein: \f0\par
+\f3 Das Programm INDEX bildet zun\'e4chst nur einen tempor\'e4ren Schl\'fcssel im Register 1. Wenn man z.B. #00 55555+17  in einem Untersatz hat, sieht der tempor\'e4re Schl\'fcssel so aus: \\|955555 (Mit F7 in PRESTO sieht man das). Im zweiten Durchlauf macht INDEX daraus den eigentlichen Hilfsschl\'fcssel. Wenn der Hauptsatz (der mit dem Prim\'e4rschl\'fcssel 55555 im Register 9) die interne Nummer 123 hat, dann lautet der SR-Hilfsschl\'fcssel  |123  und steht im Register 8. Das besagt also: der Untersatz geh\'f6rt zum Satz mit der int\f0 ernen Nummer 123. \par
+\f3 Die Hilfsschl\'fcssel d\'fcrfen auch im selben Register stehen wie die Prim\'e4rschl\'fcssel. \f0\par
+\par
+\f3 Wenn die Plus-Suche dann ausgel\'f6st wird, spielt sich folgendes ab: \f0\par
+\f3 Das Programm nimmt sich die aktuelle Ergebnismenge vor. Diese besteht f\'fcr das Programm immer nur aus einer Liste von internen Satznummern. (Wohlgemerkt: nur diese sind in dem Moment greifbar, nicht die Prim\'e4rschl\'fcssel.) F\'fcr jede dieser Nummern wird im Register i7 (im Beispiel also Register 8) nachgesehen, ob es Hilfseintr\'e4ge unter dieser Nummer gibt. Wenn ja, werden die zugeh\'f6rigen internen Nummern zur Ergebnismenge hinzugenommen. \f0\par
+\par
+\f3 Daraus ergibt sich: die Plus-Suche mu\'df auf einen Suchbegriff angewendet werden, \b\f0 bevor\b0\f3  die logische UND-Verkn\'fcpfung ausgef\'fchrt wird. Nochmals: was ist daf\'fcr zu tun? \f0\par
+\par
+\f3 In PRESTO und APAC kann jeweils nur die zum ersten Suchbegriff geh\'f6rige Ergebnismenge erweitern. In den Beispielen entspricht das dem Fall &vollmer AND natur, also genau dem originalen Schiller-R\'e4uber-Problem. \f0\par
+\f3 Man bilde also zuerst die Ergebnismenge zu demjenigen Begriff, der tats\'e4chlich erweitert werden soll (d.h. der m\'f6glicherweise in einem Hauptsatz vorkommt, z.B. schiller oder vollmer). Danach Plus-Suche ausl\'f6sen: \f0\par
+\f3 In PRESTO wird '&' gedr\'fcckt (auf dem Registerbildschirm). \f0\par
+\f3 In APAC ist daf\'fcr auf dem ESC-Men\'fc die neue Funktion "Verkn\'fcpfungen`ber\'fccksichtigen"  zu finden. \f0\par
+\f3 Die Ergebnismenge wird dann etwas gr\'f6\'dfer, aber nur, wenn es zu mindestens einem der S\'e4tze verkn\'fcpfte Unters\'e4tze gibt, f\'fcr die ein SR-Hilfsschl\'fcssel gebildet wurde. Nun f\'fchrt man normal die Verkn\'fcpfung mit dem zweiten Begriff aus (also raeuber bzw. natur). \f0\par
+\par
+\b Hauptschalter\b0\par
+\f3 F\'fcr PRESTO und APAC gibt es auch einen "Hauptschalter": wenn mit der neuen Option  \b\f0 -+\b0\f3   gestartet wird, ist die Plus-Suche fest eingeschaltet. Man \'fcberlege, ob dann nicht in vielen F\'e4llen zuviel kommt. \f0\par
+\par
+\par
+\b\f3 Oberfl\'e4chenfragen\b0\f0\par
+\f3 Ein paar Worte noch zur Pr\'e4sentation an der Benutzeroberfl\'e4che. In der Praxis w\'fcrde man nat\'fcrlich nicht vom Endbenutzer verlangen, ein '&' vor jeden zu erweiternden Begriff zu setzen. Das w\'e4re archaisch! Man w\'fcrde in einer Web-Suchmaske zu jedem Suchbegriff einen Schalter setzen, der die Erweiterung f\'fcr diesen Begriff einschalten w\'fcrde. Wie f\'fcr die Restriktionen gilt auch hier: innerhalb der Programme PRESTO und APAC ist eine wirklich benutzerfreundliche, also glasklar verst\'e4ndliche, Implementierung nicht m\'f6glich. \f0\par
+In der \b\i avanti\b0\i0\f3 -Sprache braucht man jedenfalls nur das '&' vor jeden Begriff zu setzen, der satz\'fcbergreifend gesucht werden soll (siehe oben unter "Abstrakte L\'f6sungsidee"). Anders als bei PRESTO/APAC kann dies jeder der verkn\'fcpften Suchbegriffe sein. \f0\par
+Beispiele: (s.o. die Beispiele 5 und 8) \par
+\pard\fi-864\li864\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\f4\tab\tab find per &vollmer? and tit &wissen \par
+\tab\tab find per &vollmer? and &lorenz?\f0\par
+\pard\tx570\tx864\tx1468\tx1876\tx2937\tx3549\tx4176\tx4489\tx4698\tx6180\tx6772\tx7180\tx7725\tx8038\tx8340\tx9060\tx9780\tx10500\f3 Dasselbe gilt f\'fcr die Suchbefehle in \b\i\f0 a99/alcarta\b0\i0 . \par
+\f3 Die korrekte Behandlung der Indexparameter f\'fcr die Hilfsschl\'fcssel ist in die Programme PRESTO, MENUED, ALFA, INDEX und UPDATE (schon seit V15.0) eingebaut, desgleichen in den \b\i\f0 avanti\b0\i0 -Server und in die Windows-Programme. \par
+\pard\par
+\f3 Dr\'fccken Sie auf den Fernglas-Button, dann sehen Sie, wie die Funktion in die Programme \b\f0 a99\b0  und \b alcarta\b0\f3  eingebaut ist: Das K\'e4stchen "Mit Expansion" ist automatisch immer angekreuzt, WENN es SR-Schl\'fcssel gibt. Wer ohne Expansion suchen will, mu\'df es dann also abschalten. \f0\par
+\b\par
+\par
+\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\b0\f3 `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` \par
+\pard\par
+?Vorangehender Teil=h ac10-9 \par
+?Fortsetzung=h ac10-11 \par
+\par
+}
+ 

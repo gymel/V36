@@ -1,0 +1,110 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss\fcharset0 Arial;}{\f1\fswiss\fprq2\fcharset0 Verdana;}{\f2\fswiss\fprq2 ARIAL;}{\f3\fswiss\fprq2\fcharset0 ARIAL;}{\f4\froman\fprq2 Times New Roman;}{\f5\fswiss\fcharset0 allegro Arial;}{\f6\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red255\green0\blue0;\red0\green176\blue0;\red0\green0\blue255;}
+\viewkind4\uc1\pard\f0\fs20 
+\par \pard\qc\cf1\b\i\f1\fs48 aLF\cf0\b0 
+\par Konzept und Datenstruktur 
+\par \pard\qr\i0\f2\fs20 
+\par `\cf2\ul\b\f3 Einstieg\cf0\ulnone\b0\f2 `\f3   /  \f2 `\cf2\ul\b\f3 Men\'fc\cf0\ulnone\b0\f2 `\f4 
+\par \pard\f1\fs24 
+\par Das Ausleihen mit \i aLF\i0  kann erst beginnen, wenn einige Vorbereitungen getroffen sind. 
+\par 
+\par \b 1. Exemplardaten 
+\par \b0\fs20 Wer zun\'e4chst mit \i allegro\i0  nur die Katalogisierung betrieben hat, besitzt lauter \b Titeldatens\'e4tze\b0 , die so aussehen: 
+\par 
+\par \pard\fi-1800\li1800\tx2272\f5 #00 \cf3\b 013539\cf0\b0  
+\par #20 \'acDer\'ac Fall des Baumeisters : Roman 
+\par #22 Hawksmoor <deutsch> 
+\par #39 Peter Ackroyd. Aus d. Engl. von Hans Wolf 
+\par #40 Ackroyd, Peter 
+\par #74 Reinbek bei Hamburg 
+\par #75 Rowohlt 
+\par #76 1988 
+\par #77 367 S. 
+\par #87 3-498-00024-1 
+\par #90 \b ABC 123\b0  
+\par #902\b DEF 234\b0  
+\par \pard\tx2272 
+\par \f1 Hier liegen zwei Exemplare unter verschiedenen Signaturen vor (#90 und #902). F\'fcr die Einfach-Ausleihe mit ALFA reicht das aus, denn dabei werden nur der Name des Entleihers und das Datum an die jeweilige #90 angeh\'e4ngt. Wer mehr m\'f6chte, vor allem Leihfrist-\'dcberwachung und Geb\'fchrenerhebung und schnellere Verbuchung per Barcode, mu\'df daf\'fcr etwas mehr tun.  
+\par F\'fcr \i aLF\i0  m\'fcssen in diesem Fall zwei sog. \b Exemplars\'e4tze\b0  hinzukommen, f\'fcr jedes Exemplar eines, getrennt gespeichert vom Titelsatz. Diese Exemplars\'e4tze sehen folgenderma\'dfen aus, und man kann sie sich automatisch erzeugen lassen (aLF-Men\'fc: "Exemplars\'e4tze anlegen", die Arbeit macht der FLEX \f6 a-ex.flx\f1 ): 
+\par 
+\par \pard\fi-1800\li1800\tx2272\f5 #00 e00567 
+\par #9D\cf3 F\b 013539\cf0\b0  
+\par #9DG0\'b2s\b ABC 123\b0\'b2e1\cf1\'b2a000040\cf0 
+\par 
+\par #00 e00568 
+\par #9DF\cf3\b 013539\cf0\b0  
+\par #9DG0\'b2s\b DEF 234\b0\'b2e2\cf1\'b2a000041\cf0 
+\par \pard\tx2272\f1 
+\par Die Exemplars\'e4tze sind \'fcber die blaue Nummer in #9DF mit dem Titelsatz verkn\'fcpft. Die Exemplare werden je Titel automatisch laufend numeriert: e1, e2, ..., und diese Nummern werden auch in den Titels\'e4tzen als \f5\'b2e1, \'b2e2\f1  ... an die jeweilige #90 angeh\'e4ngt. Daran erkennt das System, da\'df zu diesen Signaturen schon Exemplars\'e4tze angelegt wurden. 
+\par In rot sieht man die Barcodenummern. Sie k\'f6nnen nicht automatisch erzeugt werden, sondern man mu\'df so vorgehen, da\'df man die B\'fccher mit vorfabrizierten Barcode-Labels ausstattet und deren Nummern dann erfa\'dft - nat\'fcrlich ist das ein logistisches Problem. Dies kann auch vorher geschehen, 
+\par ENTWEDER: indem man jeweils an das Feld #90 das Unterfeld \cf1\f5\'b2a\cf0\f1  mit der Nummer anh\'e4ngt. Dann wird der FLEX a-ex.flx diese Unterfelder in die neuen Exemplars\'e4tze \'fcbernehmen. 
+\par ODER man l\'e4\'dft zuerst die Exemplars\'e4tze alle erzeugen, also ohne \cf1\f5\'b2a\cf0\f1 , und erfa\'dft die Nummern erst nachtr\'e4glich (Titelsatz laden, Exemplar anklicken, Formular mit Alt+# \'f6ffnen, Barcode eingeben). Dies k\'f6nnte dann auch bei Bedarf im laufenden Ausleihbetrieb geschehen, wodurch am Anfang nat\'fcrlich das Entleihen noch nicht so flott gehen kann. 
+\par 
+\par Die Exemplars\'e4tze k\'f6nnen noch weitere Angaben enthalten. Welche, das sieht man, wenn man einen Exemplarsatz anzeigen l\'e4\'dft und Alt+# dr\'fcckt - dann erscheint das Eingabeformular mit vielen leeren Unterfeldern. 
+\par 
+\par Au\'dfer den Exemplars\'e4tzen wird f\'fcr jeden Leser (= Benutzer) ein \b Leserdatensatz\b0  gebraucht. Ein solcher besteht nur aus dem Feld \b #9B\b0  mit einigen Unterfeldern (hier nur die wichtigsten Angaben, es kann weitere geben): 
+\par 
+\par \pard\fi-1800\li1800\tx2272\f5 #00 - 
+\par #9B 0789654\'b2A19980315\'b2nMerkel, Angela\'b2uw\'b2a20081231\'b2k5 
+\par \pard\tx2272\f1 
+\par Die Leserin Angela Merkel, angemeldet seit 15.3.1998, hat hier die Barcodenummer 789654, sie ist momentan nicht gesperrt (sonst w\'e4re vorn die Ziffer 1) und ihr Ausweis gilt bis 31.12.2008. Sie geh\'f6rt zur Leserklasse 5. F\'fcr jede Leserklasse mu\'df es einen Leserklassen-Stammsatz geben (dazu sp\'e4ter mehr), in dem z.B. steht, wie lang die Ausleihfrist ist! (\i Hinweis:\i0  Lesers\'e4tze brauchen keine IdNummernkategorie #00, daher steht hier #00 - , sonst w\'fcrde automatisch eine Nummer vergeben.) 
+\par 
+\par Das \b Ausleihen\b0  geht im Prinzip so vor sich:  (FLEX \f6 a-chkout.flx\f1 ) 
+\par 1. Einscannen des Leserausweis-Barcodes 
+\par     Dann pr\'fcft das Programm, ob der Leser erfa\'dft und ausleihberechtigt ist. Wenn ja: 
+\par 2.  Einscannen der Barcodes aus den Medien, die der Leser ausleihen will 
+\par     Dann holt das Programm jeweils den Exemplarsatz und speichert darin die Nummer des Lesers und das aktuelle Datum sowie das errechnete R\'fcckgabedatum sowie auch schon das erste Mahndatum - falls das Exemplar wirklich ausleihbar ist! Wenn im Exemplarsatz das Unterfeld \f5\'b2vp\f1  steht, handelt es sich um ein Pr\'e4senzexemplar.  
+\par 
+\par Beim \b Zur\'fcckbuchen\b0  (FLEX \f6 a-chkin.flx\f1 ) wird der Leserausweis nicht gebraucht. Dabei werden nur die Barcdodes der zur\'fcckgegebenen Medien eingescannt. Das Programm pr\'fcft jedesmal mehrere Dinge: War das Exemplar \'fcberhaupt verbucht? Wurde die Leihfrist \'fcberschritten? (Wenn ja, welche Geb\'fchr ist in Rechnung zu stellen?) Liegt eine Vormerkung f\'fcr dieses Exemplar vor oder eine allgemeine Vormerkung auf den Titel? Wenn ja, dann kommt der Hinweis, welcher Leser vorgemerkt hat und die Aufforderung, das Exemplar ins Warteregal zu stellen. Gibt es mehrere Vormerker, dann kommt der erste zum Zuge. 
+\par Vormerkungen stehen in eigenen Datens\'e4tzen, den sog. Vormerks\'e4tzen, die so \'e4hnlich aussehen wie Exemplars\'e4tze - siehe unten.\f5 
+\par \pard\f0 
+\par 
+\par \b\f1\fs24 2. Systemdaten 
+\par \pard\tx2272\b0\fs20 
+\par Damit das alles funktioniert, und zwar mit flexiblen M\'f6glichkeiten der Steuerung, braucht man noch einige zus\'e4tzliche Daten, die in sog. Systems\'e4tzen gespeichert sind. Folgende Typen von Systems\'e4tzen gibt es: (Beispiele daf\'fcr kann man sich jeweils in der DemoBank anschauen, man findet dort typische F\'e4lle im Register 1 unter zz ..., ansonsten findet man alle Systems\'e4tze im Register 11 unter  SYS... bis auf die Leserstamms\'e4tze.) 
+\par \i Tip:\i0  Wenn man einen solchen Satz sieht, dann eingeben:  \f6 X cfga\f1 . Man sieht die Liste der Unterfelder mit ihren Bedeutungen. 
+\par Alle diese S\'e4tze kann man \'fcber das `\cf3\ul\b aLF-Hauptmen\'fc\cf0\ulnone\b0 ` anlegen und nachtr\'e4glich jederzeit bearbeiten. 
+\par 
+\par 1. \b Kalenders\'e4tze\b0    [ zz alf-kalendersatz, Reg. 11: SYSR... ] 
+\par Ein Kalendersatz enth\'e4lt 365 (oder 366) Ziffern, f\'fcr jeden Tag des Jahres entweder eine 0 (= Bibliothek zu) oder eine 1 (= Bibliothek offen). 
+\par 
+\par 2. \b Leserklassens\'e4tze\b0   [ zz benutzerklassensatz, Reg. 11: SYSC... ] 
+\par F\'fcr jede Leserklasse (z.B. 1=Student, 2=Dozent, 3=Sch\'fcler, 4=Lehrer, ...) mu\'df es einen solchen Satz geben, in dem die Bedingungen (Leihfrist, Geb\'fchren ...) der betr. Lesergruppe stehen, siehe dazu aber auch 5. 
+\par 
+\par 3. \b Leserstamms\'e4tze\b0   [ zz benutzer-stammsatz; Reg. 10: \i name, vorname\i0  und B\i barcodenummer\i0  ] 
+\par Jeder Leser, siehe oben, mu\'df erfa\'dft sein in einem solchen Satz. 
+\par 
+\par 4. \b Medientyps\'e4tze\b0   [ zz medientypsatz, Reg. 11: SYSE... ] 
+\par Wenn die Bibliothek nicht nur B\'fccher hat, sondern auch noch andere ausleihbare Gegenst\'e4nde (CD, DVD, Spiel), kann sie diese in Typen einteilen und f\'fcr jeden Typ andere Bedingungen festsetzen. Dazu braucht zun\'e4chst jeder Typ einen Medientypsatz, und auf dieser Grundlage erstellt man dann die 
+\par 
+\par 5. \b Medientypstamms\'e4tze\b0   [ zz medientyp-stammsatz, Reg. 11: SYSD...  ] 
+\par Zu jeder Kombination Leserklasse+Medientyp (also z.B. Student+Buch oder Sch\'fcler+DVD) kann man einen solchen Satz anlegen, in dem die Bedingungen (vor allem die Leihfrist und die Verzugsgeb\'fchr) f\'fcr diese Kombination stehen. Fehlen solche S\'e4tze, werden die Bedingungen ersatzweise aus dem Leserklassensatz genommen. 
+\par 
+\par Alle diese S\'e4tze kann man \'fcber das aLF-Hauptmen\'fc anlegen und nachtr\'e4glich jederzeit bearbeiten. 
+\par 
+\par 
+\par \pard\b\fs24 3. Betriebsdaten 
+\par \pard\tx2272\fs20 Automatisch entstehen dagegen im laufenden Betrieb folgende Daten:\f5 
+\par \pard\b0\f0 
+\par \pard\tx2272\f1 6. \b Vormerks\'e4tze\b0   [ zz vormerk..., Reg. 10: Vm...  ] 
+\par Ein solcher sieht so aus: 
+\par \pard\fi-1800\li1800\tx2272\f5 #00 - 
+\par #9DF028149 
+\par #9DGV\'b2OALF\'b2e1\'b2a000005 
+\par #9DH\'b2udk004\'b2D20050528/12:37:45\'b2V20050629 
+\par \pard\f1 Das V in  #9DG bedeutet "Vormerksatz". Er wird gel\'f6scht, sobald die Vormerkung erledigt ist. 
+\par 
+\par 7. \b Geb\'fchrens\'e4tze\b0   [Reg. 11: G... ] 
+\par In einem Geb\'fchrensatz stehen alle Angaben, die zur Produktion einer Mahnung gebraucht werden: wer mu\'df zahlen, wieviel und warum, wann entstand diese Geb\'fchrenschuld etc. 
+\par  
+\par 8. \b Statistikdaten\b0  (dies sind keine Datens\'e4tze in der Datenbank!) 
+\par Wenn man Statistiken will, kann man dies in alf.flx einstellen. Es entstehen dann eigene Dateien, in denen alle zu z\'e4hlenden Vorg\'e4nge aufgezeichnet werden. Wie dies funktioniert, erkl\'e4rt ein `\cf3\ul\b anderer Text\cf0\ulnone\b0 `. 
+\par 
+\par \f0 
+\par ?anderer Text=h statist 
+\par ?Einstieg=h alfh 
+\par ?Men\'fc=h alf 
+\par ?aLF-Hauptmen\'fc=h alf 
+\par 
+\par }
+ 

@@ -1,0 +1,43 @@
+  VKF.FLX : Hole einen oder mehrere Datensaetze aus dem VK per Find-Befehl
+  2008-04-24   Demo des Befehls  get I url  mit dynam. url
+
+  (Auf der PHPAC-Installation fuer den VK ist ein Skript vkf.php dafuer
+   vorbereitet, das den Datensatz in A.CFG und ASCII-Text wandelt.)
+  Start mit  X vkf <suchbegriff>,  in $Reg steht der Registername
+
+ins $such
+  Beginnt Suchbegr. mit Registerziffer? dann $Reg aendern
+if "|" var (0,2);ins $Reg
+var $such
+if "|" var (2,0 f" ");ins $such
+
+:begin
+  dynamische URL damit zusammenbasteln
+var $Url "vkf.php?cmd=" $Reg "+" $such "&exp=e-alleg"
+  und die Daten abrufen
+get I
+  Wenn nicht gefunden, dann kommt die Zeichenfolge "Sorry" vor
+if %Sorry% jump nix
+
+:fund
+  Am Ende des Textes ist eine leere Zeile, die mit # beginnt - weg damit
+var (t"#")
+  Es ist ASCII! Zum Anzeigen braucht man ANSI
+ansi
+  Text auch noch schnell in die ZwAbl kopieren
+ccopy
+  und zeigen
+sho IV
+  Meldung ins Schreibfeld geben
+var "Das ist das Ergebnis" n "(Der Text ist jetzt auch in der Zwischenablage)"
+sho iv
+end
+
+  Noch ein Versuch, aber mit _ vor dem Suchbegriff (Umcodierung verhindern)
+:nix
+var $Url "vkf.php?cmd=" $Reg "+_" $such "&exp=e-alleg"
+get I
+if %Sorry% mes Nichts gefunden!;end
+jump fund
+
+

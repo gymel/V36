@@ -1,0 +1,252 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\fscript\fprq2 Comic Sans MS;}{\f2\fswiss\fprq2 Verdana;}{\f3\fswiss\fprq2\fcharset0 Verdana;}{\f4\fswiss\fcharset0 Arial;}{\f5\fmodern\fprq1 Courier New;}{\f6\fmodern\fprq1\fcharset0 Courier New;}{\f7\fswiss\fprq2 Arial;}{\f8\fnil\fprq2\fcharset2 Wingdings;}{\f9\fswiss\fcharset0 MS Sans Serif;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue0;\red0\green0\blue255;\red255\green0\blue255;\red0\green128\blue0;\red128\green0\blue128;\red0\green176\blue0;}
+\viewkind4\uc1\pard\qc\tx660\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f0\fs24 
+\par \cf1\b\f1\fs32 Fremddaten einspeisen  
+\par \pard\tx660\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\cf2\b0\f2\fs20   
+\par \b\fs24 1.\b0   `\cf3\ul\b Externe Daten\cf2\ulnone\b0 `  
+\par \b 2.\b0   `\cf3\ul\b Einzelheiten der Externstruktur\cf2\ulnone\b0 `  
+\par \b 3.\b0   `\cf3\ul\b So geht das Einlesen mit a99\cf2\ulnone\b0 `   \b\fs20 3a.\b0   `\cf3\ul\b Einlesen von Standard-Datenfeldern\cf2\ulnone\b0 `\fs24   
+\par \pard\tx660\tx1140\tx1860\tx2580\tx3300\tx4260\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b 4.\b0   `\cf3\ul\b Kopieren aus Parallel-Datenbank\cf2\ulnone\b0 `\tab `\cf1\ul\b Schnellkopplung\cf2\ulnone\b0 `  
+\par \pard\tx4260\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab\f3\fs20 (Fremdbank f\'fcr Daten\'fcbernahme \'f6ffnen)\f2\fs24   
+\par \pard\tx660\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\f3 5\f2 .\b0    \f3  `\cf3\ul\b DNB direkt\cf2\ulnone\b0 ` / `\cf3\ul\b GBV SRU\cf2\ulnone\b0 ` / \f2 `\cf3\ul\b\f3 Z39.50 Direktimport\cf2\ulnone\b0\f2 ` 
+\par       \fs20 (\f3 Daten aus DNB, GBV oder LoC usw. abrufen ohne Programm zu verlassen!\f2 )\fs24   
+\par \f3\tab (`\cf3\ul\b Wie das funktioniert\cf2\ulnone\b0 `)\f2 
+\par \b\f3 6\f2 .\b0   `\cf3\ul\b\f3 Import per FLEX\cf2\ulnone\b0\f2 ` \f4\fs20 (z.B. mit Copy&Paste)\f2\fs24 
+\par \b\f3 7\f2 .\b0   `\cf3\ul\b Importe nach alter Art\cf2\ulnone\b0 `  
+\par       \fs20 (Sofort starten: MARC, MAB2, Pica, VLB)\fs24   
+\par \fs20   
+\par   
+\par \b\f3 Hintergr\'fcnde\b0\f2   
+\par \f3 Eine h\'e4ufige Situation: Es sind Daten vorhanden, die in anderen Zusammenh\'e4ngen entstanden, und nun will man sie in  eine Datenbank einmischen. Dazu bietet \i\f2 allegro\i0\f3  viele und weitreichende M\'f6glichkeiten, besonders wenn die Fremddaten eine ungew\'f6hnliche oder jedenfalls ganz andere Struktur haben als man es eigentlich braucht. Die Kapitel 5 (`\cf3\ul\b\f2 Konzept und Arbeitsweise\cf2\ulnone\b0 `)  und 11 (`\cf3\ul\b Importsprache\cf2\ulnone\b0\f3 `) des Systemhandbuches geben dazu ersch\'f6pfende Auskunft.   \f2 
+\par \f3 In K\'fcrze: Ein Import besteht aus zwei Vorg\'e4ngen  \f2 
+\par   
+\par \b 1. Umwandlung\b0   
+\par Man \f3 mu\'df\f2  im allgemeinen Fall eine \b Import-Parameterdatei\b0\f3  erstellen (Handbuch Kap. 11), in der genaue Vorschriften stehen, Feld f\'fcr Feld, was das Konvertierprogramm IMPORT.EXE mit den Fremddaten machen soll. Dieses Programm kann die Fremddaten dann einlesen und mit Hilfe der Export-Parameter \f5 e-1.apr\f2  sofort wieder ausgeben in eine `\cf3\ul\b Externdatei\cf2\ulnone\b0 ` (siehe unten) oder mit den Parametern \f5 i-1.apr \f2  in eine Grunddatei (Typ .ALG).   
+\par \f3 Fertige Import-Parameter gibt es f\'fcr die Formate `\cf3\ul\b\f2 MAB2\cf2\ulnone\b0 `, `\cf3\ul\b MARC\cf2\ulnone\b0 ` und `\cf3\ul\b Pica3\cf2\ulnone\b0\f3 `.  Aber Vorsicht: besonders MAB und MARC sind nicht so einheitlich, wie man es sich vorstellt! Daten aus unterschiedlichen Quellen k\'f6nnen immer mit \'fcberraschenden Unterschieden daherkommen, so da\'df dann die Standardparameter im schlimmsten Fall gar nicht funktionieren. Wer mit diesen Dingen noch nie zu tun hatte, wird oft unangenehm \'fcberrascht.  \f2 
+\par   
+\par \b 2. Einmischen\b0   
+\par Die entstandene Grunddatei kann mit dem DOS-Programm `\cf3\ul\b\f5 upd.exe\cf2\ulnone\b0\f2 ` in die Datenbank eingemischt werden (\b\f5 import.exe\b0\f2  selber kann das nicht, es macht nur die Umwandlung!), Grund- und Externdateien kann aber \i a99\i0  auch direkt einlesen (Befehl `\cf3\ul\f5 read file\cf2\ulnone\f2 `, d.h. man kann auch ohne das DOS-Programm  upd.exe  auskommen:  
+\par \f3 Diese zwei Vorg\'e4nge k\'f6nnen immer in eine Batchdatei verpackt werden.   \f2 
+\par Das \cf1 allgemeine Muster\cf2\f3  mit allen Einzelheiten sieht folgenderma\'dfen aus:  \f2 
+\par   
+\par \b\f5 import\b0  -d\cf4\b\i file\cf2\b0\i0  -f5 -i\cf1\b\i form\cf2\b0\i0  -e i-1/\b new.\i c\i0 lg\b0  -v1 -m0 -s0 -h0 -k\cf5\b\i konf\cf2\b0\i0   
+\par \b up\f6 d\b0\f5  -fm01 -d\cf6\b\i DbDir\i0\\\i DbName\cf2\b0\i0  -u\b new.\i c\i0 lg\b0  -n2 -m1 -k\cf5\b\i konf\cf2\b0\i0   
+\par \f2   
+\par \cf1\i Konkretes Beispiel:\cf2\i0   
+\par Hat man eine Datenbank mit der Konfiguration \f5 $\cf5\b u\cf2\b0 .cfg\f2  und dem Namen \cf3\b\f5 marc\cf2\b0\f2  auf \cf6\b\f5 k:\\database\\catalog\cf2\b0\f2 ,  eine Fremddatei \cf4\b\f5 xyz.dat\cf2\b0\f2  und eine dazu passende Parameterdatei \cf1\b\f5 usmarc\cf2\b0 .\cf5\b u\cf2\b0 im\f3 , dann w\'fcrde das konkret so aussehen: (der Konfigurationsbuchstabe ist dann \cf5\b\f2 u\cf2\b0 , d.h. die umgewandelte Datei \f3 mu\'df\f2  vom Typ \cf5\b u\cf2 lg\b0  sein)  
+\par   
+\par \f5 import -d\cf4\b xyz.dat\cf2\b0  -f5 -i\cf1\b usmarc\cf2\b0  -e i-1/\b new.\cf5 u\cf2 lg\b0  -v1 -m0 -s0 -h0 -k\cf5\b u\cf2\b0   
+\par upd -fm01 -d\cf6\b k:\\database\\catalog\\\cf3 marc\cf2\b0  -u \b new.\cf5 u\cf2\b0 lg -n2 -m1 -k\cf5\b u\cf2\b0   
+\par \f2   
+\par Die \b F\b0 unktionsweise des Ein\b m\b0 ischens wird mit der Option  \f5 -f\b m\b0 xy\f3   angegeben. x und y sind Ziffern. Die M\'f6glichkeiten sind im `\cf3\ul\b\f2 Handbuch Kap.9\cf2\ulnone\b0 ` dokumkentiert.  
+\par \cf1\b\f3 ACHTUNG\cf2\b0 : Unter Windows 7/64bit kann das 16bit-Programm  \f6 update.exe\f3   nicht mehr genutzt werden. Es wird ersetzt durch das Konsolprogramm acon in Verbindung mit einer Jobdatei  \f6 update.job\f3 . Der Aufruf sieht dann so aus: (Das neue Programm upd.exe ruft automatisch acon auf und den Job update.job) 
+\par \f5 upd -fm01 -\f6 b\cf6\b\f5 k:\\database\\catalog\\\cf3 marc\cf2\b0  -u \b new.\cf5 u\cf2\b0 lg -n2 -m1 -k\cf5\b u\cf2\b0   \f3 
+\par 
+\par Die schwierigste Aufgabe besteht im Erstellen einer Import-Parameterdatei. Hat man diese, ist mit dem gezeigten Muster der Rest sehr einfach. F\'fcr das Standard-Schema werden mehrere Import-Parameter mitgeliefert, sowie vorbereitete `\cf3\ul\f2 Batchdateien\cf2\ulnone\f3 `, mit denen dann das Importieren auf wenige Knopfdr\'fccke reduziert wird.   \f2 
+\par   
+\par   
+\par \b\f0 1. Externe Daten\b0\f2   
+\par Besonders einfach ist es, und ohne Handbuch und Importprogramm kommt man aus!, wenn man die Daten schon in einer bestimmten Struktur bereitstellen kann, die wir `\cf3\ul\b Externstruktur\cf2\ulnone\b0 ` nennen.  Solche Daten kann man sofort einlesen.  
+\par \f3 Hier sind zwei Datens\'e4tze in dieser Struktur mit den Kategorienummern des konsolidierten Formats (der zweite ist ein hierarchischer mit 2 Unters\'e4tzen):  \f2 
+\par   
+\par \pard\f5 #00 123456  
+\par \pard\tx660\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f6 #20 Einsicht ins Ich : Fantasien und Reflexionen \'fcber Selbst und Seele  \f5 
+\par \f6 #22 \'acThe\'ac mind's I <dt.>  \f5 
+\par #30 CS PH  
+\par \f6 #31 K\'fcnstliche Intelligenz; Selbstreferenz; Individualit\'e4t  \f5 
+\par \f6 #39 Ausgew\'e4hlt und in Szene gesetzt von Douglas R. Hofstadter und Daniel  \f5 
+\par \f6  Dennett. [Aus d. Amerik. \'fcbers. von Ulrich Enderwitz]  \f5 
+\par #40 Hofstadter, Douglas R.  
+\par #402Dennett, Daniel C.  
+\par #74 Stuttgart  
+\par #75 Klett-Cotta  
+\par #76 1986  
+\par #77 485 S.  
+\par #81 Orig. Ausg. bei Basic Books, 1982  
+\par #87 3-608-93038-8  
+\par   
+\par #00 654321  
+\par \f6 #20 Was k\'f6nnen wir wissen?  \f5 
+\par \f6 #31 Evolution\'e4re Erkenntnistheorie  \f5 
+\par #40 Vollmer, Gerhard  
+\par #74 Stuttgart  
+\par #75 Hirzel  
+\par #76 1985  
+\par #77 Bd.1.2.  
+\par \b #01\b0  1=Bd. 1  
+\par \f6 #20 \'acDie\'ac Natur der Erkenntnis : Beitr\'e4ge zur Evolution\'e4ren  \f5 
+\par  Erkenntnistheorie  
+\par #25 Mit einem Geleitw. v. Konrad Lorenz  
+\par #77 337 S.  
+\par #87 3-7776-0403-8  
+\par #90 2647-3611  
+\par \b #01\b0  2=Bd. 2  
+\par \f6 #20 \'acDie\'ac Erkenntnis der Natur : Beitr\'e4ge zur modernen Naturphilosophie  \f5 
+\par #77 350 S.  
+\par #87 3-7776-0404-6  
+\par #90 2650-9705  
+\par   
+\par \pard\f3 Wenn diese S\'e4tze genau so in einer Datei EXTERN.DAT stehen (auf dem Arbeitsverzeichnis von \i\f2 a99\i0 ), kann \i a99\i0\f3  diese Daten einlesen! Auf dem Men\'fc "Datei" den Punkt "Externe Datei laden", schon sieht man die Daten. Mehr dazu siehe unter 3..  \f2 
+\par   
+\par \b\f0 2. Einzelheiten der Externstruktur\b0\f2   
+\par Jedes Datenfeld beginnt auf neuer Zeile und mit dem Zeichen # am Anfang. Die Feldnummern sind in der `\cf3\ul\b Konfigurationsdatei\cf2\ulnone\b0 ` namens $A.CFG definiert.   
+\par \f3 Mehrfachfelder m\'fcssen durch eine Ziffer oder einen Buchstaben unterschieden sein, z.B. #402 f\'fcr den zweiten Verfasser. Welche Ziffern oder Buchstaben an der Stelle erlaubt sein sollen, steht ebenfalls in der CFG.   \f2 
+\par \f3 Die Reihenfolge der Felder mu\'df nicht der Folge entsprechen, die in der CFG festgelegt ist, das bringt das Programm selber in Ordnung. Mehrfachfelder m\'fcssen allerdings schon in der richtigen Folge stehen. Aber:\f2 
+\par \f3 Zwischen zwei Datens\'e4tzen mu\'df eine Leerzeile sein. Wenn ein Datensatz noch keine #00 hat und die IdNummer nicht automatisch laut CFG (Befehle cg/ci) vergeben werden soll, dann dem Satz ein Feld der Struktur z.B.  #00 x?7 voranstellen (damit eine siebenstellige Nummer mit x davor vergeben wird). 
+\par Wenn eine Kategorie wegen ihrer L\'e4nge in zwei oder mehr Zeilen umgebrochen wird, sollte dies nur zwischen zwei W\'f6rtern geschehen und dann Fortsetzungszeilen mit einem Leerzeichen beginnen.  \f2 
+\par \f3 Entsprechend anders m\'fcssen die Daten aussehen, wenn man intern nicht das konsolidierte Format verwendet sondern ein anderes, etwa MAB (Konfiguration $D.CFG). Dann z.B. #000 statt #00 f\'fcr das erste Feld! \f2 
+\par \f3 Es mu\'df sich um ASCII-Zeichen handeln. (Wenn es ANSI-Codes sind, also Windows-Standard, m\'fcssen in der Datei E-W.APR die Zeilen  "dx=1" und "to" \i\f2 aktiviert\i0  sein, dann wird umcodiert.)  
+\par \f3 Der zweite Datensatz ist ein hierarchischer, bestehend aus einem Hauptsatz und zwei Unters\'e4tzen (jeweils beginnend mit einem Feld  \b\f2 #01\b0\f3  ).  Will man keine hierarchischen, sondern verkn\'fcpfte S\'e4tze, mu\'df das zweite Beispiel so aussehen: (es sind dann drei Datens\'e4tze, jeder hat seine eigene IdNummer #00, die Verkn\'fcpfung geht \'fcber die #00 des Hauptsatzes, die dann in der #09 des Untersatzes steht)  \f2 
+\par   
+\par \pard\tx660\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f5 #00 \b 654321\b0   
+\par \f6 #20 Was k\'f6nnen wir wissen?  \f5 
+\par \f6 #31 Evolution\'e4re Erkenntnistheorie  \f5 
+\par #40 Vollmer, Gerhard  
+\par #74 Stuttgart  
+\par #75 Hirzel  
+\par #76 1985  
+\par #77 Bd.1.2.  
+\par \b   
+\par \b0 #00 324987  
+\par #09 \b 654321\b0 +1=Bd. 1  
+\par \f6 #20 \'acDie\'ac Natur der Erkenntnis : Beitr\'e4ge zur Evolution\'e4ren  \f5 
+\par  Erkenntnistheorie  
+\par #25 Mit einem Geleitw. v. Konrad Lorenz  
+\par #77 337 S.  
+\par #87 3-7776-0403-8  
+\par #90 2647-3611  
+\par \b   
+\par \b0 #00 837613  
+\par #09 \b 654321\b0 +2=Bd. 2  
+\par \f6 #20 \'acDie\'ac Erkenntnis der Natur : Beitr\'e4ge zur modernen Naturphilosophie  \f5 
+\par #77 350 S.  
+\par #87 3-7776-0404-6  
+\par #90 2650-9705  
+\par \pard\f2   
+\par \b\fs24   
+\par \f0 3. So geht das Einlesen mit \i a99\b0\i0   
+\par \f2\fs20   
+\par \f3 Weitere Information dazu: `\cf3\ul\b update-Sondertext\cf2\ulnone\b0 ` 
+\par 
+\par 1. Men\'fc "Datei | Externe Datei laden". Sofort sieht man die Daten im Ergebnismengenfenster. Sie werden nicht sofort in die Datenbank \'fcbernommen, sondern sind erst einmal in der `\cf3\ul\b\f2 Offline-Datei\cf2\ulnone\b0 `. Also keine Angst, etwas falsch zu machen! Dieses Einlesen kann auch geschehen mit dem `\cf3\ul FLEX-Befehl\cf2\ulnone `  \f5 read file\f2  \i dateiname\i0  .  
+\par   
+\par \f3 2. Die S\'e4tze kann man sich einzeln im Anzeigefenster anschauen, bearbeiten, mit den Buttons [N\'e4chster] und [Voriger] darin vor- und zur\'fcckbl\'e4ttern. In der Statusanzeige steht NEU.  \f2 
+\par   
+\par 3. Jeden Satz kann man \b einzeln speichern\b0  mit dem Button [Speichern] .  
+\par   
+\par \f3 4. Oder man l\'e4\'dft \b\f2 alle Daten auf einmal speichern\b0\f3 : Men\'fc "Datei | Offline-Datei -> Datenbank".  Sp\'e4testens beim Verlassen des Programms wird gefragt, ob die Offline-Daten gespeichert werden sollen - wenn man das nicht will, dann unbedingt mit "Nein" antworten!  \f2 
+\par   
+\par Mit dem FLEX-Befehl `\cf3\ul\b\f5 update\cf2\ulnone\b0\f2 ` kann man das Einspeisen von Daten automatisieren\f3 , d.h. innerhalb eines FLEX-Skripts ablaufen lassen\f2 .  
+\par   
+\par \f3 Sind Ihre Daten nicht in diesem Format oder k\'f6nnen Sie es mit eigenen Mitteln nicht herstellen, lesen Sie Kap. 5. Dort steht, wie man vorgeht. Im Kap. 11 wird beschrieben, f\'fcr welche Formate es Umwandlungsparameter gibt, und wie man solche Parameter erstellt.  \f2 
+\par   
+\par \b\f7 3.a \i Sonderfall:\i0  Einlesen von Standarddaten\f2   
+\par \b0\f3 Gelegentlich m\'f6chte man eine Hilfsdatei, in der gewisse immer wieder ben\'f6tigte Datenfelder stehen. Diese soll dann mit einem Handgriff in jeden beliebigen Datensatz eingebaut werden, den man gerade eingibt oder bearbeitet. Eine solche Datei mu\'df standardm\'e4\'dfig E.ADT hei\'dfen. Sie wird eingelesen mit ALt+\'e4 oder mit dem FLEX-Befehl  \f5 read rec\f3  oder, wenn die Datei nicht E.ADT hei\'dft, mit \f5 read rec\f2  \i dateiname\i0 .  
+\par   
+\par \cf1\b\f0\fs28 4. Fremddaten mit \i a99\i0  : Nur ein Knopfdruck\f2  \cf2\b0\fs22    
+\par [Handbuch Kap.2.4]\b\fs28   
+\par \b0\f3\fs20 Zu den beliebtesten Eigenschaften des DOS-Programms PRESTO geh\'f6rt es, da\'df man mit Alt+a auf eine zweite (und dritte) Datenbank umschalten kann und da\'df dann in jener sofort dieselbe Registerstelle aufgeschlagen wird. Mit \i\f2 a99/alcarta\i0\f3  ist dies etwas schwieriger zu realisieren, jedoch erreicht man letztlich mit ganz kurzen FLEXen sogar einen noch etwas gr\'f6\'dferen Komfort.  \f2 
+\par \f3 Es gibt daf\'fcr einen vorbereiteten FLEX namens `\cf3\ul\b\f2 FREMDDB\cf2\ulnone\b0 `, mit dem Sie eine \b Schnellkopplung\b0\f3  zu einer Fremddatenbank einrichten k\'f6nnen - wenn Sie eine auf  Ihrem System haben (d.h. auf einer der zugreifbaren Platten).  F\'fcr weitere Sitzungen werden dann die Einstellungen f\'fcr die FremdBank automatisch in einer Datei \b\f5 fremddb.ini\b0\f2  festgehalten, d.h. die Schnellkopplung geht dann noch schneller.  
+\par \f3 Achten Sie darauf: Wenn die Schnellkopplung aktiviert ist, hat man oben hinter "Option" den Men\'fcpunkt \cf7\b\f2 FremdBank\cf2\b0 . Der schaltet um zum Fenster der Fremdbank. Dort hingegen hat man an derselben Stelle \cf7\b Kopie\cf2\b0 . Druck auf diesen kopiert den angezeigten Satz in die eigene Datenbank, deren Fenster dann sofort wieder erscheint. 
+\par 
+\par \f3 F\'fcr die interessierten Experten wird das Verfahren nachfolgend genau beschrieben:\b\f2   
+\par Aufgabe:\b0  von der eigenen Datenbank \b A\b0  umschalten auf die Fremddatenbank \b B\b0 . Dort soll dieselbe Registerstelle erscheinen. Ein in B gefundener Satz soll per Knopfdruck von B nach A wandern.  
+\par \b   
+\par \f3 L\'f6sung: \b0 Mit Alt+a wie bei PRESTO ist die Sache nicht zu l\'f6sen (denn damit wird das Men\'fc "\ul\f2 A\ulnone\f3 nzeige" ausgel\'f6st). Statt dessen wird hier ein Weg gezeigt, die Umschaltung A\lang1024\f8\'e0\lang1031\f3 B mit Alt+1, die R\'fcckschaltung  B\lang1024\f8\'e0\lang1031\f2 A mit Alt+9 zu machen.   
+\par Man startet beide Datenbanken getrennt mit je einem Aufruf von \i a99\i0\f3 , f\'fcr B kann es auch alcarta sein. Wir nehmen an, beide Aufrufe erfolgen vom selben Verzeichnis.   \f2 
+\par In  \f5 B.INI\f2   hat zu stehen:  
+\par \f5 ExportParameter=E-W  
+\par OutputFile=E.ADT  
+\par \f2   
+\par \i\f3 NEU gegen\'fcber PRESTO:\i0  Hat die Fremddatenbank ein anderes Format, mu\'df man geeignete Exportparameter statt E-W erstellen. Damit wird auch das direkte Importieren aus anderen Formaten m\'f6glich.  \f2 
+\par \b   
+\par Umschaltung  A \lang1024\f8\'e0\lang1031\f2  B\b0    
+\par Dazu braucht man den FLEX namens SWITCH.FLX, der mitgeliefert wird. Darin stehen Kommentare.  
+\par Wird dieser FLEX in A aktiviert, schreibt er zuerst eine Datei \f5 alta.flx\f3  und sendet dann die Botschaft an B, diese auszuf\'fchren. In ALTA.FLX steht dann :  \f2 
+\par \b\f5 activate  
+\par index |\b0\i i xyz\i0   
+\par \f2 wobei \i xyz\i0  der letzte Zugriffspunkt im aktuellen Register \i\f5 i\i0\f2  ist. (Die Schreibweise  \f5 #uxb(0,1)\f3   bewirkt, da\'df nur das erste Zeichen von  \f5 #uxb\f2  ausgegeben wird, das ist die Registerziffer.)  
+\par Der Befehl \b\f5 activate\b0\f3  am Anfang sorgt daf\'fcr, da\'df sich B dann selber aktiviert, also in den Vordergrund kommt.  \f2 
+\par \f3 Dann bl\'e4ttert es Register \i\f5 i\i0\f2  an der Stelle \i\f5 xyz\i0\f2  auf.   
+\par \f3 Es funktioniert in beiden Richtungen! Alt+TAB dagegen schaltet um, ohne da\'df sich was tut. Das kann ohne Schaden jederzeit zwischendurch gemacht werden.  \f2 
+\par Einfachster Einbau in A: Im Schreibfeld eingeben  
+\par \f5    #uX1X switch.flx  
+\par \f3 Dann Ausl\'f6sung mit  Alt+1. (Bleibt f\'fcr nachfolgende Sitzungen erhalten.) Nat\'fcrlich kann der Aufruf auch in einen Flip zum Anklicken oder auf den eigenen Men\'fcpunkt gelegt werden (siehe dazu den Text  FLIP.TXT).  \f2 
+\par \i Verbesserung:\i0  Die Variable \b\f5 #uxa\b0\f3  enth\'e4lt ja nicht die Benutzereingabe, sondern die letzte im Register tats\'e4chlich zum Zugriff benutzte Registerstelle. Beim Umschalten will man aber meist an die Stelle, die man im eigenen Register nicht gefunden hatte. Folgendes kann man tun: zu den Abschnitten der Indexparameter  \f5 #-1 ... #-9\f3  erg\'e4nzt man diese Zeile  \f2 
+\par \f5 #u1 =SB e0   \f2 (evtl. noch y2 oder y1 vor dem =SB.) Und  dann verwendet man oben statt \b\f5 #uxa\b0\f2  die Variable \b\f5 #uSB\b0\f2 .  
+\par \b   
+\par \f3 R\'fcckschaltung B \lang1024\f8\'e0\lang1031\f2  A \b0   
+\par Mit dem FLEX    \b\f5 x download\\flex copy  
+\par \b0\f3 (zu starten in B) wird zuerst der aktuelle Satz in die Datei E.ADT herausgeschrieben, dann wird A veranla\'dft, die Datei COPY.FLX zu lesen und auszuf\'fchren. Auch COPY.FLX wird mitgeliefert und ist kommentiert.  \f2 
+\par Einfachster Einbau in B: Im Schreibfeld eingeben  
+\par \f5    \b #uX9x download\\flex copy  
+\par \b0\f3 Dann Ausl\'f6sung mit  Alt+9. (Bleibt f\'fcr nachfolgende Sitzungen erhalten)  \f2 
+\par \f3 Nat\'fcrlich kann der Aufruf auch in ein Flip oder auf den eigenen Men\'fcpunkt gelegt werden.  \f2 
+\par So wird durch einen einzigen Mausklick ein gefundener Datensatz der Fremddatenbank in die Datei E.ADT exportiert, vom anderen \i a99\i0  dann eingelesen und als neuer Datensatz behandelt. Durch  \b\f5 put\b0\f2   wird er sofort gespeichert Wenn \b\f5 put\b0\f3  fehlt, kommt er nur in den Bearbeitungsspeicher (mit Alt+q sp\'e4ter aufsuchen).  \f2 
+\par Ein FLEX-Befehl \b\f5 delete\b0\f3  in copy.flx l\'f6scht die Datei E.ADT, so da\'df die n\'e4chste Aktion in B sofort stattfinden kann.  \f2 
+\par \f3 Jetzt hat man also auch die Wahl: entweder mehrere \'dcbernahmen hintereinander ohne jedesmal umzuschalten (dann kein \b\f5 activate\b0\f2  in COPY.FLX) oder jedesmal umschalten zwecks Bearbeitung, dann kein \b\f5 put\b0\f2   in COPY.FLX.  
+\par Das Bearbeiten kann auch in B erfolgen, denn mit \f5 download\f2  wird der aktuelle Zustand exportiert. Hinter \f5 download\f2  empfiehlt sich dann, ein \b\f5 undo\b0\f3  einzuschieben, damit in B die \'c4nderung dann wieder beseitigt wird.  \f2 
+\par \i Summa summarum\i0  kann mit \b\i a99 \b0\i0\f3  nicht nur derselbe Komfort (genau so wenig Tastendr\'fccke) wie bei PRESTO erreicht werden, sondern es gibt auch noch eine Reihe von neuen M\'f6glichkeiten.  \f2 
+\par \b\f5 switch.flx\b0\f2   und  \b\f5 copy.flx \b0\f2  sind im Paket enthalten.  
+\par 
+\par 
+\par \b\f9\fs24 5\f0 .\f9 /6.\f0   \f9 zDirect und Import per FLEX\b0\f0   
+\par \f3\fs20\'dcber diese Neuerungen (ab V27) informiert ein `\cf3\ul\b eigenes Papier\cf2\ulnone\b0 `, das auch auf XML-Daten eingeht. 
+\par Die Methode zDirect benutzt ein Hilfsprogramm, das automatisch aufgerufen wird und Daten von Servern aus dem Internet holt. Das merkt man jedoch nicht, sondern diese Daten werden dann sofort automatisch umgewandelt, hier hereingeholt und angezeigt, in der Ihnen vertrauten Form!\f2 
+\par   
+\par \b\f9\fs24 7\f0 .  Importe nach alter Art\b0   
+\par \f3\fs20 Unver\'e4ndert g\'fcltig bleiben die `\cf3\ul\f2 Import-Parameterdateien\cf2\ulnone ` des DOS-Systems. Mehr dazu im Handbuch, `\cf3\ul\b Kap. 5\cf2\ulnone\b0 ` und `\cf3\ul\b Kap. 11\cf2\ulnone\b0 `.   
+\par Im `\cf3\ul\b\i CockPit\cf2\ulnone\b0\i0\f3 ` des DOS-Systems gibt es daf\'fcr einen Men\'fcpunkt "Import-Aktionen" unter "Makros". Dort werden dann angeboten: Deutsche Bibliothek (MAB2), Pica, MARC und VLB. Alles l\'e4uft nach demselben Schema, wie oben beschrieben! Nur wird jeweils eine geeignete Parameterdatei f\'fcr die Fremddaten benutzt, und zwar MAB2.AIM, PICA.AIM usw.  \f2 
+\par   
+\par \b\f3 Diese Importe k\'f6nnen Sie auch direkt von hier aus starten\b0 , wenn die Fremddaten schon auf Ihrem Arbeitsverzeichnis vorliegen. Der Dateiname mu\'df z.B. MAB2.DAT sein, wenn es sich um MAB2-Daten der Deutschen Bibliothek handelt, usw.: (Datei vorher umbenennen, wenn sie anders hei\'dft)  \f2 
+\par   
+\par `\cf3\ul\b MAB2-Daten\cf2\ulnone\b0 ` :  \f5 MAB2.DAT\f2   
+\par   
+\par `\cf3\ul\b Pica-Daten\cf2\ulnone\b0 ` :  \f5 PICA.DAT\f2   
+\par   
+\par `\cf3\ul\b VLB-Daten\cf2\ulnone\b0 ` :  \f5 VLB.DAT\f2   
+\par   
+\par `\cf3\ul\b MARC-Daten\cf2\ulnone\b0 ` :  \f5 OCLC.DAT\f2   
+\par   
+\par \f3 Es entsteht bei diesen Funktionen jeweils eine Datei FREMD.BAT, in der die Programmaufrufe stehen. Diese Datei kann man auch als Vorlage f\'fcr eigene Import-Prozeduren nehmen.  \f2 
+\par 
+\par ?Konfigurationsdatei=h acb-1  
+\par ?Externe Daten=h =1. Externe Daten  
+\par ?Einzelheiten der Externstruktur=h =2. Einzelheiten  
+\par ?So geht das Einlesen mit a99=h =3. So geht das  
+\par ?Kopieren aus Parallel-Datenbank=h =4. Fremddaten mit a99  
+\par ?Offline-Datei=h off  
+\par ?Externstruktur=h =Einzelheiten  
+\par ?update=h xupdate  
+\par ?FREMDDB=X fremddb  
+\par ?Schnellkopplung=X fremddb  
+\par ?update.exe=h ac9  
+\par ?MAB2=h mab2.aim  
+\par ?MARC=h oclc.aim  
+\par ?Pica3=h pica.aim  
+\par ?Handbuch Kap.9=h ac9=Option -fm  
+\par ?Batchdateien=h =7.  Importe nach alter Art  
+\par ?Importe nach alter Art=h =7.  Importe nach alter Art  
+\par ?read file=h xread  
+\par ?Import-Parameterdateien=h param=AIM  
+\par ?MAB2-Daten=x var "MAB2"\\ins #uvI\\exec fremd  
+\par ?Pica-Daten=x var "PICA"\\ins #uvI\\exec fremd  
+\par ?MARC-Daten=x var "OCLC"\\ins #uvI\\exec fremd  
+\par ?VLB-Daten=x var "VLB"\\ins #uvI\\exec fremd  
+\par ?CockPit=X cockpit  
+\par ?Kap. 5=h ac5  
+\par ?Kap. 11=h ac11  
+\par ?Importsprache=h ac11  
+\par ?Konzept und Arbeitsweise=h ac5  
+\par ?Externdatei=h =1. Externe Daten  
+\par ?FLEX-Befehl=h xread  
+\par ?Einlesen von Standard-Datenfeldern=h =3.a Sonderfall 
+\par ?Z39.50 Direktimport=X zc 
+\par ?Import per FLEX=h fleximp 
+\par ?update-Sondertext=h update 
+\par ?eigenes Papier=h fleximp 
+\par ?Wie das funktioniert=h fleximp#310 
+\par ?DNB direkt=X dnb 
+\par ?GBV SRU=X srugbv 
+\par }
+ 

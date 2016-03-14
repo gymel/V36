@@ -1,0 +1,195 @@
+  Z-NUML.FLX : Neuen Umlaufverteiler erstellen
+  2007-06-14   Weitere Funktionen:
+               bei Aufruf mit   ed : Liste bearbeiten
+               bei Aufruf mit   lz : Laufzettel erstellen
+
+  #uzU ist Flag: Bearbeitungsliste steht in der Anzeige.
+           ist gesetzt, wenn Alt+9 gedrueckt wurde
+if #uzU jump savelist
+
+  Aufruf mit ed: Bearbeiten
+if "ed" jump edit
+
+  Aufruf mit lz: Laufzetteldruck
+if "lz" jump laufzett
+
+  Normal:
+var i
+ins $Inn
+
+  Liste zeigen ($Mita wird in z-init erstellt)
+var $Mita
+:hml
+ansi
+sho IV
+var "Jetzt ein + vor jeden Namen setzen, der auf die Liste soll" n
+var +"Sie kˆnnen die Zeilen auch umordnen." n
+var +"Dann Alt+9 zum Speichern" n n
+var +"Nein : Zur¸ck zum Men¸"
+sho iv
+yes
+if no help zabom;end
+if cancel help zabom;end
+  Alt+9: Flag #uzU setzen und z-num.flex neu aufrufen
+#uX9x #uzU1\\exec z-numl
+#uzU
+  vorherigen Satz zurueckholen
+var "#" $Inn(f"#")
+f1nd
+del mlist
+end
+
+  Bei Alt+9, wenn #uzU gesetzt war, kommt man hierhin:
+:savelist
+#uzU
+#uuL
+  Zeilen untersuchen, die mit + vorne uebernehmen
+var z1
+:vloop
+if not "+" jump nxt
+var (f"+" e" ")
+ins #uuM
+  die Zeilen mit + kommen in #uuL
+var #uuL "; " #uuM
+ins #uuL
+:nxt
+  naechste Zeile
+var z2
+if not "" jump vloop
+  #uuL leer:
+if not #uuL mes Kein Name markiert;end
+
+yesno Speichern?
+if not yes disp;end
+
+var $Inn
+if "#" jump old
+
+  Jetzt den Verteilersatz erzeugen
+new 0
+#00 -
+
+var "KÅrzel fÅr diesen Verteiler (eindeutiger Code)"
+asci
+ask
+asci
+  Umcodieren: klein, ohne Umlaute (via Indexparam q-Befehle)
+xcode iq
+ins #uuU
+var "V" #uuU
+ins #9A
+ask Name des Verteilers
+asci
+ins $n-#9A
+:9Ae
+var #uuL(f"; ")
+ins $e-#9A
+  Formular zur Bearbeitung
+form Verteiler
+if cancel end
+  Satz speichern
+put
+end
+
+
+:edit
+var '#' i
+ins $Inn
+
+var #9A
+if not "V" mes Das ist kein Verteilersatz!;end
+  Die Personen auf diesem Verteiler
+var #9A$e ";--"
+  Liste dieses Satzes
+ins #uzm
+
+  Liste $Mita  enth. alle Personen
+var $Mita
+ins #uzM
+
+open x mlist
+  Gesamtliste erzeugen, aber die Namen des aktuellen Satzes
+    mit + markieren
+:mlop
+var #uzM(e"^M" e" ")
+ins #uzl
+
+var n #uzl " - " #uzm
+
+  Kommt dieser Name im aktuellen Satz vor?
+var #uzm(b"#uzl")
+
+  dann mit + ausgeben
+if not "" wri "+" #uzM(e"^M") n
+if "" wri #uzM(e"^M") n
+var #uzM(b"^J")
+ins #uzM
+if #uzM jump mlop
+close x
+var Fmlist
+jump hml
+
+  wieder speichern
+:old
+  Satz zurueckholen
+var $Inn
+f1nd
+  und zur Speicherung
+jump 9Ae
+
+  Laufzettel drucken
+  Aufruf auch aus z-heft.flx
+:laufzett
+var '#' i
+ins $Inn
+
+var #9A
+if not "V" mes Das ist kein Verteilersatz!;end
+
+  Die Personen auf diesem Verteiler stehen in $e
+var #9A$e ";--"
+ins #uzm
+
+  Liste $Mita in #uzM speichern
+var $Mita
+     kuerzel - Name 13 10 kuerzel - name ...
+ins #uzM
+
+open x mlist
+  Liste erzeugen,
+  aber nur die Namen des aktuellen Satzes, stehen in #uzm:
+       #uzm nummer; nummer; nummer
+:llop
+var #uzm(e";" e" " e"%") " - "
+
+ins #uzl
+  Kommt dieser Name in der Gesamtliste #uzM vor?
+var #uzM(b"#uzl" e"^M")
+ins #uzN
+  dann mit 2 Leerzeilen danach ausgeben
+if not "" wri #uzN(0,25) "  ____________________ \\par \\par " n
+var #uzm(b";" )
+ins #uzm
+if #uzm jump llop
+close x
+  Liste zeigen
+
+var #9A$n
+ins #uV1
+var #uzt
+ins #uV2
+var #uDY "," #uzH
+ins #uV3
+
+var #dt(b",")
+ins #uV4
+
+var Fmlist
+ins #uV5
+
+  Die Variablen #uV1 - #uV5 sind eingebettet in z-uml.rtf
+help z-uml
+
+var "Ausdrucken? Dann den Drucker-Button bet‰tigen"
+sho iV
+

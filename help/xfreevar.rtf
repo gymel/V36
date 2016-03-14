@@ -1,0 +1,220 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss\fcharset0 MS Sans Serif;}{\f1\fmodern\fcharset0 allegro Lucida Console;}{\f2\froman\fprq2\fcharset0 Times New Roman;}{\f3\froman\fcharset0 Times New Roman;}{\f4\fswiss\fprq2\fcharset0 MS Sans Serif;}{\f5\fmodern\fprq1\fcharset0 Courier New;}{\f6\fmodern\fprq1\fcharset0 allegro Lucida Console;}{\f7\fswiss\fcharset0 Arial;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red0\green176\blue0;\red255\green0\blue0;}
+\viewkind4\uc1\pard\qr\f0\fs24         \f1   \f0       \f2   \f0       \f2   \f3     \f2   \f0   \f2       \f0       \f3   \f2   \f0           \f2         \f3   \f4   \f2   \f3\fs18   
+\par `\cf1\ul\b Register\cf2\ulnone\b0 `\cf3\b\f5\fs20   
+\par \pard\f2\fs28 $-Variablen\cf2\b0\fs20         ab V25.6  (2005-06)  (in   \cf4\b\i acon\cf2\b0\i0   geht's etwas anders, mehr dazu `\cf1\ul\b weiter unten\cf2\ulnone\b0 `) 
+\par \pard\li48\ri144 In den Befehlen \b\f5 `\cf1\ul variable\cf2\ulnone `\b0\f2  und \b\f5 `\cf1\ul write\cf2\ulnone `\b0\f2   konnten bis V25.5 keine Variablen au\'dfer den zum System geh\'f6rigen und auch in den Exportparametern genutzten #u-Variablen verwendet werden. Deren Namensraum ist begrenzt, weil die Namen nur aus 1 oder 2 Zeichen bestehen k\'f6nnen, und man kann damit keine selbsterkl\'e4renden Namen bilden.  
+\par Daher wurde ein eigenes, neues Konzept in die FLEX-Sprache eingebaut, das hier beschrieben wird: 
+\par 
+\par Die Namen m\'fcssen mit $ beginnen, k\'f6nnen ansonsten aber alle Zeichen enthalten bis auf das Leerzeichen sowie '\f5 ;\f2 ', '=' und '\f5 (\f2 ', und sie k\'f6nnen ziemlich lang sein. Gro\'df- und Kleinschreibung sind signifikant. D.h. \f5 $Name\f2 , \f5 $nAmE\f2   und  \f5 $NaMe\f2   sind drei verschiedene Variablen. 
+\par 
+\par Man mu\'df vorher nichts Besonderes tun, um $-Variablen zu nutzen. Die Existenz einer $-Variablen beginnt mit ihrer Besetzung, d.h. es gibt keine gesonderte Deklaration. Es gibt auch keine Typen: alles ist Text, wie bei den \f5 #u\f2 -Variablen. 
+\par Die Besetzung geht so: 
+\par \f5 var "abc"\f2\tab\tab oder\tab\tab\f5 $Xyz abc\f2 
+\par \f5 ins $Xyz\f2 
+\par also genau wie bei \f5 #u\f2 -Variablen. Zus\'e4tzlich geht auch  \f5 $Xyz=abc\f2 .  Das mag als besser verst\'e4ndlich empfunden werden, vor allem wenn \f5 abc\f2  eine Zahl ist. Intern macht das keinen Unterschied, das Programm unterscheidet beim Speichern nicht zwischen Zahlen- und Textvariablen. 
+\par 
+\par \i Maximale L\'e4nge:\i0 
+\par Eine $-Variable kann maximal 64000 Zeichen lang sein. Ist der iV-Text im Moment der Besetzung l\'e4nger, wird er gek\'fcrzt! 
+\par Tip: Der iV-Inhalt kann viel l\'e4nger sein, bis zu 4 MB (acon: 2MB).  Mit  \f5 ins $\f2   kann man den iV-Inhalt in die sog. "zweite iV" (oder \b iV2\b0 ) kopieren, mit  \f5 var $\f2   sp\'e4ter wieder zur\'fcck in die "normale" iV. Sehr n\'fctzlich kann das sein, wenn man sich mit  \f5 get I\i url\i0\f2   l\'e4ngere Texte aus dem Internet hereinholt. Um einen solchen Text dann mit mehreren Befehlen auszuwerten, braucht man ihn nicht in eine $-Variable zu kopieren, wobei er wom\'f6glich gek\'fcrzt w\'fcrde. 
+\par 
+\par \i Zusatzm\'f6glichkeit:\i0 
+\par Wenn in der iV ein Text wie  "\f5 $Abc xyz\f2 "  steht, wird mit einem schlichten   \f5 ins \f2  die Variable  \f5 $Abc\f2   mit dem Wert \f5 xyz\f2  belegt (sog. dynamische Belegung). 
+\par 
+\par \b Grundprinzip:\b0 
+\par Die Sache ist sehr einfach: Wo bisher im FLEX ein  \f5 #uxy\f2   stehen kann, da darf nun auch ein  $\f5 name\f2   stehen, mit v\'f6llig gleicher Wirkungsweise. Wenn in  \f5 $name \f2 ein Feldinhalt  mit Unterfeldern steht, geht auch  \f5 $name$x\f2 ,  um das Unterfeld \f5 $x\f2  herauszul\'f6sen, insbes. auch der Sonderfall \f5 $name$$\f2 , um den Feldanfang, den Abschnitt vor allen Unterfeldern, zu isolieren. 
+\par Ferner kann man in einem RTF-Hilfetext auch schreiben:  \f5 %%$Xyz \f2 , dann erscheint an der Stelle der Inhalt der Variablen \f5 $Xyz\f2 . 
+\par 
+\par Zu beachten sind folgende \b Besonderheiten\b0  : 
+\par 
+\par \i Ausnahmen:\i0  
+\par 1.  \f5 if\f2 -Befehle mit $-Variablen innerhalb der Bedingung gehen nicht, wie etwa  \f5 if >$name\f2  
+\par  
+\par 2. Innerhalb von Manipulationsbefehlen geht so etwas wie  \f5 (b"#uab")\f2 . Auch hier kann \i nicht\i0  statt \f5 #uab\f2  eine $-Variable stehen.\f5  \f2 
+\par \b 
+\par \b0 3. Ein \f5 `\cf1\ul\b if-Befehl\cf2\ulnone\b0 `\f2  analog zu \f5  if #nnn \f2 geht erst ab V26.7.  
+\par Dies umgeht man so: 
+\par \f5 var $name 
+\par if "" jump fehler 
+\par \f2 Ab V26.7 kann man aber schreiben: 
+\par \f5 if $name ...\f2 
+\par \f5 if not $name ...\f2 
+\par 
+\par 4. `\cf1\ul\b Manipulationsbefehle\cf2\ulnone\b0 ` sind auch m\'f6glich, aber ein Spatium mu\'df hinter dem Variablennamen stehen, also z.B.  
+\par \f5 var $name (b"xyz")\f2 
+\par Hierbei kann man nur den Zugriff auf Unterfelder \b nicht\b0  mit einer Manipulation kombinieren, also etwa  
+\par \f5 var $name$x (b"xyz")\f2 
+\par Als Ausweg w\'e4hlt man Konstruktionen wie  \f5 var \f6 $name (b"\'b2x" e"\'b2" b"xyz")  \f2 oder 
+\par \f5 var $name$x 
+\par var (b"xyz") 
+\par \f2 
+\par \b Es gelten ferner folgende Regeln:\b0 
+\par 
+\par Besetzen (oben schon kurz angesprochen) kann man die freien Variablen auf zwei Arten. 
+\par Wenn  \f5 $Titel\f2   eine $-Variable sein soll, dann weist man ihr folgenderma\'dfen einen Wert zu: 
+\par (genau wie bei #u-Variablen schreibt man Name und Wert einfach nebeneinander hin!) 
+\par 
+\par \f5 $Titel Die Glocke 
+\par \f2 Hinter dem Spatium darf nur Text auftreten, der dann komplett der Variablen zugewiesen wird bis zum Zeilenende; 
+\par //-Kommentare gehen in solchen Zeilen nicht, wie ja auch in den mit # beginnenden Zeilen. 
+\par   [Das Spatium ist hier wichtig, anders als bei \f5 #u\f2 -Variablen, weil die L\'e4nge des Namens unbestimmt ist!] 
+\par \f5 
+\par \f2   oder auch (ebenfalls wie bei #u-Variablen) 
+\par 
+\par \f5 var "Die Glocke"     \f2 oder   \tab\f5 var #20\f2           usw. 
+\par \f5 ins $Titel             \f2      \tab\f5 ins $Titel\f2 
+\par 
+\par In beiden F\'e4llen werden die Zeichen nicht umcodiert, d.h. im ersten Fall, so genommen, wie sie im FLEX stehen. F\'fchrende oder am Ende stehende Leerzeichen werden bei  \f5 ins $name\f2   nicht beseitigt, anders als bei Kategorien und  \f5 #u\f2 -Variablen. Die Beseitigung kann man erreichen, indem man vor den \f5 ins\f2 -Befehl noch setzt  \f5 var (f" " F" ")\f2  . 
+\par 
+\par \i Hinweis:\i0  Mit der Syntax  \f5 $Titel #20\f2   wird die Zeichenfolge '\f5 #20\f2 ' in die Variable $Titel geschrieben (und nicht der Inhalt der Kategorie \f5 #20\f2 ) 
+\par 
+\par Verwenden kann man die Variablen so: 
+\par 
+\par \f5 var ... $Titel ...\f2      bzw.    \f5 write ... $Titel ...\f2 
+\par 
+\par d.h. in jedem \f5 var\f2 - bzw. \f5 write\f2 -Befehl als Teil des cstring. Zwischen Anf\'fchrungszeichen hat $ keine Wirkung, d.h. dort werden Variablennamen nicht erkannt! 
+\par Mit ... ist angedeutet, da\'df dort beliebige andere Elemente stehen k\'f6nnen, die es in einem cstring geben kann. 
+\par 
+\par Es geht auch indirekt, wenn z.B. in \f5 #uab\f2  die Zeichenfolge \b\f5 $Titel\b0\f2  steht: 
+\par \f5 var #uab 
+\par var 
+\par \f2 
+\par danach steht der Inhalt von \f5 $Titel\f2  in der iV. (Denn der var-Befehl ohne Argument nimmt den Inhalt der iV als cstring.) 
+\par 
+\par Bei Zuweisung eines neuen Wertes an dieselbe Variable geht der alte Wert verloren. 
+\par 
+\par \b L\'f6schen\b0  kann man eine Variable, indem man ihr nichts zuweist: 
+\par 
+\par \f5 var "" 
+\par ins $Titel\f2 
+\par 
+\par Sie verschwindet dann aus der Liste, d.h. wird nicht mit einer leeren Zeichenfolge belegt sondern ist dann gar nicht mehr da. 
+\par Und mit 
+\par \f5 
+\par var "" 
+\par ins $0 \f2    bzw.     \f5 ins $1   \f2 (in   \cf4\b\i acon\cf2\b0\i0   gibt's nur \f5 ins $0\f2  )
+\par 
+\par l\'f6scht man alle kleinen bzw. gro\'dfen Variablen auf einmal. 
+\par 
+\par \b Pr\'fcfen\b0 , ob eine Variable belegt ist, geht so: 
+\par \f5 
+\par if not $name jump fehler 
+\par \f2 
+\par Innerhalb eines FLEXes sind alle Variablen global, d.h. in einem FLEX-Unterprogramm kann es keine lokalen Variablen geben. F\'fcr die \'dcbersichtlichkeit sorgt man z.B. durch geeignete Namensgebung. 
+\par 
+\par Aber nun noch eine sehr \b wichtige Besonderheit\b0 : 
+\par Wenn der Name mit einem Gro\'dfbuchstaben oder @ beginnt, bleibt die Variable f\'fcr die gesamte Sitzung erhalten, sonst nur innerhalb des FLEXes, d.h. bei Beginn eines neuen FLEXes ist sie nicht mehr da. Es gibt also zwei Variablenlisten: die "kleine" und die "gro\'dfe". Wir nennen sie \b\f5 $0\f2 -\b0  bzw. \b\f5 $1\f2 -Variable\b0 , der Grund wird unten noch klar. 
+\par \i Empfehlung:\i0  @ nicht als erstes Zeichen verwenden! Es soll in Zukunft f\'fcr systemspezifische Funktionen reserviert sein. 
+\par 
+\par Welchen Umfang ein solcher Variablenspeicher haben kann, ist schwer zu sagen. Bei Tests gab es mit 5000 (f\'fcnftausend) noch keine Probleme. 
+\par Es handelt sich um eine MFC-Listenklasse; deren Grenzen setzt Windows bzw. der darin verwendete Hash-Algorithmus. 
+\par 
+\par Was damit nicht geht: 
+\par \pard{\pntext\f2 1.\tab}{\*\pn\pnlvlbody\pnf2\pnindent0\pnstart1\pndec{\pntxta.}}
+\fi-360\li408\ri144           Einen Variablennamen trunkiert ansprechen   (wie mit   \f5 #ux.\f2   in den Exportparametern) 
+\par {\pntext\f2 2.\tab}Die Variablenliste alphabetisch geordnet durchsehen und dabei bearbeiten/l\'f6schen  (wie mit Alt+r die #u-Variablen) 
+\par {\pntext\f2 3.\tab}Gezielt eine Anzahl Variablen mit einem Befehl l\'f6schen    (wie mit  \f5 #ux~\f2  , um alle #uxy zu l\'f6schen) 
+\par \pard\li48\ri144 
+\par Denn die Listenklasse arbeitet mit einem Hash-Algorithmus, und der l\'e4\'dft solche Dinge nicht zu. Daf\'fcr ist er schnell. 
+\par 
+\par Was sich von selbst versteht: 
+\par \pard\li48\ri144\qj Die #u-Variablen bleiben in allen Aspekten unver\'e4ndert erhalten. 
+\par \pard\li48\ri144 In den Exportparametern hat man keinen Zugriff auf die neuen $-Variablen, mit denen man sich folglich nebenwirkungsfrei austoben kann. 
+\par 
+\par \b Zusatzbefehle\b0 
+\par Der Umgang mit den $-Variablen wird dadurch komfortabler, denn man wird sie irgendwann nicht nur einrichten und benutzen wollen. 
+\par 
+\par \b\f5 first $0 
+\par first $1\b0\f2 
+\par   Setzt einen Zeiger auf das erste Element der "kleinen" bzw. "gro\'dfen" Liste und holt dessen Inhalt in die iV. 
+\par 
+\par \b\f5 next $0 
+\par next $1\b0\f2 
+\par   holt das n\'e4chste Element aus der kleinen bzw. gro\'dfen Liste in die  iV, immer in der Form  $name Text 
+\par Mit \f5  if no \f2  oder   \f5 if "" \f2  kann man testen, ob es kein Element mehr gab.  Somit kann man in einer Schleife die ganze Liste abarbeiten. 
+\par Zur Ordnung siehe den n\'e4chsten Punkt: 
+\par 
+\par \f5 $0>\i dateiname\i0 
+\par $1>\i dateiname\i0\f2 
+\par    schreibt den Inhalt des kleinen bzw. gro\'dfen Variablenspeichers in die Datei  \i dateiname\i0 . 
+\par Eine erkennbare Ordnung gibt es dabei nicht - das ist typisch f\'fcr Hash-Listen. D.h. die beim Einlesen gegebene Ordnung bleibt nicht erhalten und l\'e4\'dft sich auch nicht restaurieren. 
+\par    Die Liste hat genau die Form  $name Text, und das bedeutet, da\'df man sie unmittelbar wieder als FLEX zum Einrichten derselben Variablen benutzen kann. 
+\par  Daraus ergibt sich: 
+\par 
+\par \b SuperTip\b0 
+\par Schreibt man in seinen \f5 _endflx.flx\f2  den Befehl  \f5 $1>var.flx\f2  und in den \f5 _start.flx\f2  an das Ende den Befehl  \f5 exec var\f2 , so hat man in der n\'e4chsten Sitzung immer sofort wieder die "gro\'dfen" Variablen der letzten Sitzung. Selbstredend kann man dies nutzen, um alles m\'f6gliche an Information von Sitzung zu Sitzung zu transportieren (sog. "persistente" Variablen). 
+\par \i Hinweis:\i0   Auch die `\cf1\ul\b Phrasen\cf2\ulnone\b0 ` kann man als persistente Variablen nutzen. 
+\par 
+\par Klar, es wird sofort der Wunsch nach gez\'e4hlten und assoziativen Arrays kommen, mehrdimensional nat\'fcrlich! Aber alles auf einmal geht nicht. Immerhin gibt es durchaus`\cf1\ul M\'f6glichkeiten\cf2\ulnone !` 
+\par 
+\par \b ZusatzTip\b0  
+\par Mit dem nachfolgenden kleinen FLEX kann man den Variablenspeicher nach einer Zeichenfolge durchsuchen lassen. Wenn es mal mehrere 1000 sind, kann das ja sinnvoll sein... Gefunden werden sowohl die Namen wie die Inhalte der Variablen! 
+\par 
+\par ************************************************************************** 
+\par \f5   VS.FLX :    Suche in den $1-Variablen nach einer bestimmten Zeichenfolge 
+\par   2005-06-20  Gross-/Kleinschreibung egal 
+\par 
+\par ask Suchwort 
+\par   Eingegebenes Suchwort in #usw speichern 
+\par ins #usw 
+\par 
+\par first $1 
+\par if no mes Keine Variablen!;end 
+\par 
+\par :loop 
+\par   Variable in #uzs kopieren (Form ist immer $Name Text) 
+\par ins #uzs 
+\par   Darin nach dem Inhalt von #usw suchen (gross/klein egal) 
+\par   (hinten . anhaengen, sonst wuerde das Suchwort nicht gefunden, wenn 
+\par    es genau am Ende des Variablentextes steht!) 
+\par var #uzs "." 
+\par var (b"~#usw") 
+\par   Wenn es vorkam, anzeigen 
+\par if not "" var #uzs;yes;if yes jump found 
+\par   naechste Variable holen 
+\par next $1 
+\par if not no jump loop 
+\par mes Ende! 
+\par end 
+\par :found 
+\par var "Gefunden: " #uzs 
+\par mes 
+\par \f2 
+\par ************************************************************************* 
+\par 
+\par Zum Testen wurde eine Kurzliste des BachWerkeVerzeichnisses verwendet, darin standen 1360 Zeilen wie diese: 
+\par \f5 $Bwv20 O Ewigkeit, du Donnerwort \f2 
+\par 
+\par Diese Datei kann man so wie sie ist als FLEX laufen lassen, dann hat man 1360 "gro\'dfe" Variablen belegt! 
+\par Gibt man nach dem Einlesen diesen Befehl: 
+\par 
+\par \f5 x var $BWV214\\mes\f2 
+\par 
+\par so erscheint richtig:  \f5  T\'f6net, ihr Pauken! Erschallet Trompeten!\f2 
+\par 
+\par \cf0\f1 
+\par \cf4\f2 Sonderfall \i acon\cf0\i0 
+\par In acon gibt es vorerst (Dez. 2009) folgende zwei Dinge: 
+\par 
+\par 1. Eine besondere $-Variable mit dem schlichten Namen \b\f7 $\b0\f2 , ebenfalls in a99. Das ist also quasi eine zweite interne Variable. Mit 
+\par \f5 ins $\f2 
+\par kopiert man den momentanen Inhalt der normalen  iV hinein, und mit 
+\par \f5 var $\f2 
+\par holt man sich umgekehrt den Inhalt von  \f7 $\f2   in die iV. 
+\par 
+\par 2. $-Variablen mit Namen wie bei a99 gibt es zwar auch, aber mit folgender Einschr\'e4nkung: 
+\par    Der Unterschied zwischen s und gro\'df ist nicht relevant, weil ja stets nach Abarbeitung eines Jobs das Programm acon 
+\par        wieder beendet wird. (Dennoch sind $a und $A verschiedene Variablen!) 
+\par 
+\par ?variable=h xvar 
+\par ?write=h xwrite 
+\par ?Register=h xa 
+\par ?Manipulationsbefehle=h xcstring=B.  Die 
+\par ?if-Befehl=h xif 
+\par ?M\'f6glichkeiten!=h xarray 
+\par  
+\par ?weiter unten=h =Sonderfall acon 
+\par ?Phrasen=h xphrase 
+\par 
+\par }
+ 

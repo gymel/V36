@@ -1,0 +1,254 @@
+  MINI.FLX : Anlegen einer Kopie der Mini-Datenbank
+  2003-05-14   auf einem beliebigen Verz. und sofortiger Start
+  2012-08-13   umgestellt auf SEAU (Self-Extracting Archive Utility)
+                ASCII nicht mehr angeboten!
+
+:start
+
+  Frage nach dem Verzeichnis
+var "Wo soll die neue Mini-Datenbank hin? Ein Pfadname bitte:=" #uvZ
+ask
+  Esc oder Nichts eingegeben
+if cancel end
+if "" jump start
+  ist ein : drin?
+if %:% jump bsl
+  Nein, d.h. kein Laufwerk angegeben
+jump nodrive
+
+:bsl
+if %\\% jump anfang
+jump nobsl
+
+:anfang
+  Eingabe speichern in #uvZ
+ins #uvZ
+   den \ am Ende beseitigen (falls da einer ist)
+var #uvZ(F"\\")
+ins #uvZ
+  Laenge checken
+perf lang
+if no jump start
+  Flag #uvY loeschen
+var ""
+ins #uvY
+   der eingegebene PfadName steht jetzt in #uvZ, ohne \
+   Verzeichnis mit diesem Namen anlegen:
+var #uvZ
+mkdir
+   Nicht gelungen? dann -> :error
+if no jump error
+   Anlegen gelungen, Flag in #uvY setzen
+var "1"
+ins #uvY
+  Gelungen (Verz. existierte noch nicht), aber noch Laufwerk pruefen
+jump drive
+
+:los
+var ""
+ins #uvY
+ins #uvX
+sel Welche Codierung?=ANSI (Windows-Code)|Unicode
+ if ="1" var "mini-ASC.exe"
+if ="A" var "mini-ANS.exe"
+if ="U" var "mini-UNI.exe"
+ins #uvM
+
+:prg
+  Aufruf des Programms org.BAT zusammenbauen
+  Das exe kopieren aufs Zielverzeichnis
+open x org.bat
+wri "copy " P #uvM " " #uvZ n
+  Drive einschalten
+wri #uvD n
+  auf das neue DbDir umsteigen
+wri "cd " #uvZ n
+  exe starten (Dateien werden ausgepackt)
+wri #uvM ' /a /d:"' #uvZ '"' n
+  exe loeschen
+wri "del " #uvM n
+var W
+ins #uvD
+wri #uvD(e"\\") n
+wri "cd " W n
+wri "start " P "a99.exe " #uvZ "\\mini" n
+close x
+var "Datenbank wird angelegt auf " #uvZ "." n
+var +"(Nach wenigen Sekunden wird sie dann erscheinen.)" n
+var +"Start?"
+yesno
+if not yes jump abbruch
+
+get env comspec
+ins #uvC
+var #uvC " /c org.bat"
+  org.bat starten, warten bis fertig, dann exit
+CAll
+jump finish
+
+  mkdir hat nicht geklappt. Evtl. existiert der Pfad schon
+:error
+  Pruefe, ob Indexdatei dort liegt
+var #uvZ "\\" B "." K1 "dx"
+fsize
+  Nein. Dann konnte Verz. wohl nicht angelegt werden.
+if no jump mistake
+
+  Ja, gefunden:
+:exist
+  Aber zur Sicherheit:
+  Checken, ob es etwa das Datenverz. selbst ist
+var "~" #uvZ
+ins #uvF
+var D
+ins #uvD
+var #uvD(F"\\")
+  beide Namen vergleichen, wenn gleich -> :samepath
+if =#uvF jump samepath
+
+  ... ob es etwa das ProgDir ist (nicht zulassen)
+var "~" P
+ins #uvF
+var #uvZ(F"\\") "\\"
+  vergleichen, wenn gleich -> :progpath
+if =#uvF jump progpath
+
+:drive
+
+var #uvZ(e"\\")
+ins #uvD
+  #uvD ist jetzt das Laufwerk, z.B. "C:"
+
+  Flag #uvY gesetzt? d.h. Verz. ist neu, sofort los!
+if #uvY jump los
+  Informieren, dass das Verz. existiert, BestÑtigung einholen
+var "Verzeichnis " #uvZ " existiert schon!" n
+var +"Neuer Versuch mit anderem Namen?"
+yesno
+if yes jump start
+end
+
+:samepath
+var "Sie haben ja dasselbe Verzeichnis angegeben, wo Ihre Datenbank liegt,"
+var +n "das geht nat¸rlich nicht!"
+mes
+jump start
+
+:progpath
+var "Sie haben das Programmverzeichnis " P " als Kopierverzeichnis angegeben." n
+var +n "Das empfiehlt sich aber nun gar nicht!"
+mes
+jump start
+
+
+  Ist das Verzeichnis zwar da, aber kein Schreibrecht?
+:mistake
+  Checken, ob man eine Datei anlegen kann
+  zuerst Exportdatei-Name sichern
+var E
+ins #uvE
+  Dann eine Datei mit obskurem Namen zum Schreiben oeffnen:
+  (d.h. pruefen, ob das geht! Sie entsteht dadurch noch nicht!)
+var #uvZ "\\__zyx__.xyz"
+xport f
+  Nein, geht nicht, also kann man da nicht schreiben
+if no jump nexist
+  Es geht; erst Exportdatei-Name restaurieren
+var #uvE
+xport f
+  dann weiter mit der Prozedur
+jump exist
+
+:nexist
+var "Verzeichnis " #uvZ " existiert nicht," n "konnte aber auch nicht angelegt werden"
+mess
+jump start
+
+:finish
+  Kopieren ist abgeschlossen.
+
+:equal
+
+:loesch
+  Variablen loeschen
+var ""
+ins #uvC
+ins #uvD
+ins #uvE
+ins #uvF
+ins #uvX
+ins #uvZ
+ins #uwX
+activate
+end
+
+:exit
+  Ende, TBL wieder freigeben
+jump loesch
+
+
+:noindex
+var "Entweder haben Sie den Vorgang abgebrochen, oder" n
+var +"Indexdatei  " B "." K1 "dx  ist nicht kopiert worden." n
+var +"Neuer Versuch?"
+yesno
+if yes jump start
+jump exit
+
+:nobsl
+var "Im Namen kommt kein Backslash vor. Ein Pfadname muss so aussehen:" n
+jump nodr1
+
+:nodrive
+var "Es fehlt die Angabe des Laufwerks. Ein Pfadname muss so aussehen:" n
+:nodr1
+var +"X:\\abc\\def...\\xyz" n
+var +"F¸r X muss der Laufwerksbuchstabe eingesetzt werden," n
+var +"abc usw. muss ein Verzeichnisname sein" n n
+var +"Neuer Versuch?"
+yesno
+if yes jump start
+jump exit
+
+
+:lang
+  Pruefen, ob der Name nicht mehr als 8 Zeichen hat
+  zuerst hinten ein * anhaengen
+var #uvZ(T"\\") "*"
+ins #uvF
+  Kommt ein Leerzeichen drin vor? Fehler
+if % % jump leerz
+var #uvF(0,9)
+  Kommt in den ersten 9 Zeichen ein * vor, dann Name kuerzer als 9
+if %*% return
+mes Name mit mehr als 8 Zeichen - Besser nicht!
+  Dadurch wird die Bedingung NO erzeugt:
+get env ....
+return
+:leerz
+mes Ein Leerzeichen im Namen? Besser nicht!
+get env ....
+return
+
+  Leeres Verz. mit dem Namen #uvZ wieder beseitigen
+:abbruch
+get env comspec
+ins #uvC
+var #uvC " /c rmdir " #uvZ
+CAll
+activate
+var "OK, alles abgebrochen, es bleiben keine Dateien zurÅck"
+ans
+mes
+jump exit
+
+  Variablen
+    #uvC   COMSPEC
+    #uvD   DbDir
+    #uvE   Exportdatei
+    #uvF   ~#uvF
+    #uvX   Y:Typ Sicherung, N=Normal
+    #uwX   Vorbesetzung dafuer (in backp.rtf)
+    #uvY   Flag. 1=Anlegen des Verz. gelungen
+    #uvZ   gewaehltes Verz.
+

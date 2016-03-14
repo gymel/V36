@@ -1,0 +1,1223 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fscript\fprq2\fcharset0 Comic Sans MS;}{\f1\froman\fprq2 Times New Roman;}{\f2\fscript\fprq2 Comic Sans MS;}{\f3\fswiss\fcharset0 ARIAL;}{\f4\fswiss ARIAL;}{\f5\fmodern\fprq1 Courier New;}{\f6\fswiss\fprq2\fcharset0 Arial;}{\f7\froman\fprq2\fcharset0 Times New Roman;}{\f8\froman\fprq2\fcharset0 allegro New Roman;}{\f9\fmodern\fprq1\fcharset0 Courier New;}{\f10\fmodern\fprq1 Courier;}{\f11\fmodern\fprq1\fcharset0 Courier;}{\f12\froman Times New Roman;}{\f13\froman\fcharset0 Times New Roman;}{\f14\fswiss\fcharset0 Arial;}{\f15\froman allegro New Roman;}{\f16\fmodern\fcharset0 Courier New;}{\f17\fmodern Courier New;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue0;\red255\green0\blue128;\red0\green0\blue255;\red0\green176\blue0;\red0\green128\blue0;\red64\green0\blue0;}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\qc\cf1\b\f0\fs26 FLEXikon - Kurzdokumentation \par
+\pard\qr\cf2\b0\f1\fs18 Strg+f = Finden, Strg+g = Weitersuchen   \par
+\pard\qc\f2\fs24 ACHTUNG: Dies ist nur eine unvollst\f0\'e4ndige\f2  \cf3 Kurzfassung\cf2 !\f1\fs20  \par
+\f3\fs24\par
+Umfassende Information inkl. \i acon\i0  bietet die \par
+\f4 `\cf4\ul\b\f3 Voll-Dokumentation\cf2\ulnone\b0\f4 `\f1\fs20\par
+\pard   \par
+\pard\qc `\cf4\ul\b\i So erstellt man FLEXe\cf2\ulnone\b0\i0\f4\fs24 `\f1\fs20           \f4\fs24    \f1\fs20 `\cf4\ul\b\i Beispiele\cf2\ulnone\b0\i0\f4\fs24 `  \par
+\pard   \par
+\f3 Diese Kurzfassung ist f\'fcr \b\i\f4 a99\b0\i0   gedacht und behandelt nicht \f3 alle\f4  Besonderheiten des \i acon\i0  -Servers. \par
+\f3 M\f4 it einem \b\f5\fs20  \cf1 *\cf2\b0\f3\fs24   sind aber diejenigen Befehle markiert, die auch f\'fcr \cf1\i acon\cf2\f4  \i0   gelten.\b  \par
+\b0\i\f6 Wichtig zu wissen\i0 , besonders wenn man fremde FLEXe lesen will: Fast jeden Befehl kann man bis auf die ersten drei Buchstaben k\'fcrzen. Diese Minimalformen der Befehle sind in der Liste \cf1 rot\cf2  geschrieben. \f1\par
+\par
+Zuerst einige \b Sonderbefehle\b0\fs20   \par
+  \par
+\b\f5 #xyz\b0\i\f1 Text\b\i0\f5   \cf1 *\cf2\b0\f1   \par
+\pard\li709 Die Kategorie \f5 #xyz\i\f1 Text\i0\f7  wird in den aktuellen Satz eingef\'fcgt. Wenn  \i\f1 Text\i0   leer ist, wird \f5 #xyz\f7  gel\'f6scht.  \f1\par
+#xyz kann auch eine Nutzervariable  (#u-Variable)  sein.   \par
+Wenn der Text auf kompliziertere Weise zusammengesetzt werden soll, \f7 dann\f1  zuerst mit Hilfe des Befehls \f5 variable ... \f1 den Text in der internen Variablen erstellen, dan\f7 ach\f1  mit  \f5 insert #xyz\f1   die iV abspeichern.  \par
+\pard   \par
+\b\f5 $a+#xyz\b0\i\f1 Text\b\i0\f5   \cf1 *\cf2\b0\f1   \f7 (acon: auch S statt \b\f5 $\b0\f7  m\'f6glich)\f1\par
+\pard\li709 Das Teilfeld \f8\'b2\f1 a mit Inhalt  \i Text\i0   wird an die Kategorie \f5 #xyz\f7  angeh\'e4ngt.  Wenn #xyz noch nicht da ist, entsteht sie. Statt '$' kann das Teilfeld-Dreieck verwendet werden. z.B.  \f1\par
+\f8\'b2\f5 u+#90 Meier\f1       \f8\'b2u\f7 Meier an #90 anh\'e4ngen  \f1\par
+\pard   \par
+\b\f5 $a-#xyz\b0\i\f1 Text\b\i0\f5   \cf1 *\cf2\b0\f1     \f7 (acon: auch S statt \b\f5 $\b0\f7  m\'f6glich)\f1\par
+\pard\li709 Wenn Teilfeld \f8\'b2\f1 a existiert, wird es ersetzt, sonst wird \f8\'b2\f1 a\i Text\i0  an \f5 #xyz\f7  angeh\'e4ngt.  \f1\par
+Wenn  \i Text \i0  leer ist, wird das Teilfeld \f8\'b2\f1 a aus  \f5 #xyz\f1   beseitigt.  \par
+\pard   \par
+\pard\fi-710\li710\b\f5 *#\i\f9 nnn_ABC_XYZ_\b0\i0\f1  \b\f5   \cf1 *\cf2\b0\f1   Ersetze in Kategorie  #nnn  die Zeichen\f7 folg\f1 e \f7  \i ABC\i0  \f1  durch \f7  \i XYZ\i0\f1   \par
+\tab\tab\tab\tab Hier darf #nnn keine #u-Variable sein!  \par
+\pard   \par
+\pard\fi-710\li710\b\i\f9 _ABC_XYZ_\b0\i0\f1   \b\f5   \cf1 *\cf2\b0\f1     \tab Ersetze die Zeichen\f7 folge\f1  \f7  \i ABC\i0  \f1  im gesamten Satz durch \f7  \i XYZ\i0\f1   \par
+\pard   \par
+\b\f5 ? |i \b0\i\f1 abc\i0   \par
+\pard\li709\f7 Register i aufbl\'e4ttern an der Stelle \i\f1 abc, \i0  z.B.  \f5 ? |1 goethe  \par
+\f7 Der FLEX wird dann erst fortgesetzt, wenn man den Index verl\'e4\'dft. Daher kann man mehrere solche Befehle aufeinander folgen lassen und andere Befehle dazwischenschalten.  \f1\par
+\f7 Wurde mit [Enter] der Index verlassen, steht danach in der iV der gew\'e4hlte Registereintrag, z.B.  \f5 |3 natur\f7 , wenn im Register 3 die Zeile "natur" ausgew\'e4hlt wurde.  \f1\par
+\pard   \par
+\b\f5 :\b0\i label\b\i0   \cf1 *\cf2\b0\f1   \par
+\pard\li709 Sprungmarke. Mit \b\f5  jump\b0\f1  \i\f5 label\i0\f1   wird hierher gesprungen. Wichtig bei \b\f5 if-\b0\f1 Befehlen.  \par
+\pard\li710 Zugleich kann jede Sprungmarke der Anfangspunkt eines Unterprogramms sein. Man startet es mit \b\f5 perform\b0\f1  \i\f5 label\i0\f1  , und es endet, sobald irgendwo ein Befehl \b\f5 return\b0\f1   erreicht wird, falls nicht mit einem \b\f5 end\b0\f1  der gesamte FLEX abgebrochen wird.  \par
+\pard   \par
+\b Rechenbefehle\b0  \b\f5   \cf1 *  \cf2\b0\f7 f\'fcr die interne Zahlenvariable \b\f1 iZ.  \b0\f7 bzw. den Z\'e4hler \b\f1 iz\b0 .   \par
+Es wird immer die interne Zahl mit der Zahl N bzw. (wenn N fehlt) mit dem Inhalt der iV verrechnet, wobei diese zuerst in eine Zahl verwandelt wird.  \par
+Wenn in der iV vor der Zahl noch andere Zeichen stehen, macht das nichts aus, es wird die reine Zahl daraus extrahiert!  \par
+Mit \b\f5  `\cf4\ul var Z\cf2\ulnone ` \b0 bzw.\b  var z\b0\f7   kann man anschlie\'dfend die interne Zahl bzw. den Z\'e4hler in die `\cf4\ul\b\f1 iV\cf2\ulnone\b0 ` kopieren.  \par
+Und so sehen die Befehle aus:  \par
+\b\f10   \par
+Z\f11  \f10 = N\tab\f11\tab\f10 N (\b0\f1 bzw. wenn \b\f10 N\b0\f1  fehlt, die\f10  \b\f1 iV \b0 ) in eine Zahl umwandeln (andere Zeichen fallen dabei weg) und in \b iZ\b0  speichern\b\f10   \par
+Z\f11  \f10 + N\tab\f11\tab\f10 N \b0\f1 bzw.\b\f10  \f1 iV \b0 in Zahl umwandeln und zu \b iZ \b0 addieren, bzw. \b  \b0  \b\f10   \par
+Z\f11  \f10 - N\tab\f11\tab\f10 iZ-N \b0\f1 bzw.\b\f10  \f1 iZ - iV \b0 bilden, bzw. \b\f10   \par
+Z\f11  \f10 / N\tab\f11\tab\f10 iZ/N \b0\f1 bzw.\b\f10  \f1 iZ / iV  \b0 ausrechnen, bzw.\b  \f10   \par
+Z\f11  \f10 * N\tab\f11\tab\f10 iZ*N \b0\f1 bzw.\b\f10  \f1 iZ * iV\b0  , also das Produkt aus beiden\f10   \par
+\f7 F\'fcr den internen Z\'e4hler ist z statt Z zu setzen.  \f1\par
+  \par
+\b\fs24 Alphabetische Liste der Befehle\b0\fs20   \par
+  \par
+\f7 Von den nachfolgenden Befehlen gen\'fcgen jeweils die ersten 3 Buchstaben, also z.B. \cf1\f9 var\cf2\f1  statt \b\f5 variable\b0\f1 , \f7  \cf1\f9 exp\cf2\f1  statt \b\f9 export\b0\f1 ,  aber auch  \b\f9 expo\b0\f7  etc. w\'fcrde funktionieren.  \f1\par
+(Bei \b\i acon\b0\i0\f7  waren fr\'fcher die Befehlsw\'f6rter vollst\'e4ndig anzugeben, das wurde jedoch umgestellt ). Das gilt nicht f\'fcr  \f9 erase\f7   und  \f9 include\f7 .\f1\par
+  \par
+\f7 Nochmal der Hinweis: die genauen Befehlsbeschreibungen erh\'e4lt man \'fcber das `\cf4\ul\b\f1 alphabetische Register\cf2\ulnone\b0 `. \par
+  \par
+\cf1\f9 act\cf2\b\f5 ivate  \par
+\b0\f1  \tab\f7 (Nur in einem ExFLEX sinnvoll) Das Programm r\'fcckt in den Vordergrund.  \f1\par
+\cf5\b\f5   \par
+\cf2 activate \b0\i\f1 i\i0   \par
+\f7\tab\f1 Fokus in das Feld \i i\i0  setzen. Es gibt 4 Felder:  \par
+\f7\tab\f1 1 : Auswahlfeld  \par
+\f7\tab\f1 2 : Schreibfeld  \par
+\f7\tab\f1 3 : Befehlszeile  \par
+\f7\tab\f1 4 : Anzeigefeld  \par
+\f7\tab Die aktuelle Fokusziffer erh\'e4lt man mit dem Befehl  \b\f9 var Q\b0\f1    \par
+  \par
+\cf1\f9 add\cf2\b\f5 form \b0\i dateiname\b\i0   \par
+\pard\li710\b0\f1 Die Datei \i\f5 dateiname\i0\f7  mu\'df eine korrekte Formulardatei sein. Sie wird zus\'e4tzlich an die bereits geladene Formulardatei hinten angeh\'e4ngt.  Mit  \b\f5 if no \b0\i\f7 befehl\i0\f1   \f7  \f1 kann man checken, ob es gelungen ist, d.h. ob die Datei existierte.  \par
+\pard\b\f5   \par
+\cf1\b0\f9 ans\cf2\b\f5 i  \cf1 *\cf2\b0\f1    Die interne Variable ist ASCII-Code, mache daraus ANSI (Windows)  \par
+\cf1\f9 asc\cf2\b\f5 ii \cf1 * \cf2\b0\f1 Umgekehrt: die iV ist ANSI-Code, mache daraus ASCII (DOS)  \par
+  \par
+\cf1\f9 are\cf2\b\f5 sqa\b0\f1   \i name\i0  \par
+\cf1\f9 Are\cf2\b\f5 sqa\b0\f1   \i name\i0  \par
+\pard\li709 Die Datei \i name\i0\f7  \'f6ffnen und in einem aresqa-Listenfenster anzeigen. \cf1\f9 A\cf2\f7  statt \cf1\f9 a\cf2\f7 : Keine Editierfunktionen.\f1\par
+Entstanden ist diese Funktion im Zusammenhang mit den `\cf4\ul\b aresqa\cf2\ulnone\b0 `-Tabellendateien. Anwendbar ist sie aber auf so gut wie alle Textdateien, egal ob im DOS- oder Windows-Code. \par
+\pard\par
+\cf1\f9 ask\cf2\b\f5  |i\b0\i prompt\b\i0 =\b0\i Vorgabe\f1   \cf1\b\i0\f5 *\cf2\b0\i\f1\par
+\b\i0\f5 ask +|i\b0\i prompt\b\i0 =\b0\i Vorgabe\f1   \par
+\pard\li709\i0 Aufforderung zu einer Eingabe. Die eingegebene \f7 Zeichenfolge\f1  wird in der \b iV\b0  gespeichert.  \par
+\f7 Wenn ein  +  gesetzt ist, wird die Eingabe des Nutzers an die iV hinten angeh\'e4ngt.  \f1\par
+\f7 F\'fcr die Eingabe erscheint ein kleines Dialogfenster mit einer Eingabezeile.  \f1\par
+\b\f5 i\b0\f1    \tab\tab\f7 = Nummer des Index, der aufgebl\'e4ttert wird, wenn man [Index] dr\'fcckt  \f1\par
+\i\f5 prompt\i0\f1  \tab = Aufforderungstext  \par
+Wenn man \b\f5 |i\b0\f7  wegl\'e4\'dft, kommt ein rein zuf\'e4lliger Indexabschnitt  \f1\par
+Hinter \b\f5 |i\b0\f7  kann ein Pr\'e4fix folgen, abgetrennt mit \b\f5 |\b0\f1  vom eigentlichen \i\f5 prompt\i0\f7 , wenn eine bestimmte Abteilung im Index aufgebl\'e4ttert werden soll.   \f1\par
+\i Beispiel: \i0   \b\f5 ask +|1D |\b0\i Hochschulort\b\i0 =\b0\i #819\i0\f1     \par
+\f7 Leereingabe f\'fchrt zum Abbruch der Befehlskette.  \f1\par
+Der Teil "=\i Vorgabe\i0 " kann entfallen; der Text  \i Vorgabe\i0   erscheint sonst im Eingabefeld.  \par
+\i Vorgabe\i0   kann auch eine Kategorie oder eine #u-Variable sein: z.B.  \par
+\f5 ask |1Verf.?=#40\f1     legt den Inhalt von #40 als Vorgabe vor.   \par
+\f7 Die Eingabe geht aber nicht direkt zur\'fcck in die Kategorie, sondern in die iV ; man mu\'df sie mit  \f5 insert #40\f7   zur\'fcck\'fcbertragen, falls gew\'fcnscht.  \f1\par
+Statt der gesamten Angabe  \b\f5 |i\b0\i prompt\b\i0 =\b0\i Vorgabe \i0\f7 kann auch eine Kategorienummer oder #u-Variable stehen, dann mu\'df deren Inhalt diesem Text entsprechen. So k\'f6nnen die Fragetexte und Vorgaben datenspezifisch individualisiert werden. Steht hinter \b\f5 ask\b0\f1  gar nichts, wird der Inhalt der iV genommen.  \par
+Mit nachfolgendem \b\f5 if "" ...\b0\f1  kann man abchecken, ob etwas eingegeben wurde!   \par
+Wenn die Aufforderung mit [Esc] abgebrochen wurde, kann dies auch mit   \par
+\b\f5 if cancel ...\b0\f1    \par
+festgestellt werden. Die iV ist dann ebenfalls leer.  \par
+\i Sonderfall:\i0   \par
+\pard    \par
+\b\f5 ask @\b0\i\f1 aufforderung\b\i0\f5   \par
+\pard\li709\b0\f7 Mit @ kommt ein Eingabedialog f\'fcr Name und Passwort. Das Passwort ist bei der Eingabe nicht lesbar. In der iV hat man anschlie\'dfend Name und Passwort, getrennt durch '=' und kann damit beliebige Dinge anstellen.  \f1\par
+\pard   \par
+\cf1\f9 but\cf2\b\f5 ton i / j  \par
+\pard\li709\b0\f7 Indexfenster 1 bzw. 2 \'f6ffnen /   (In beiden F\'e4llen endet dann der FLEX)  \f1\par
+\pard   \par
+\cf1\f9 cal\cf2\b\f5 l \b0\i\f1 Programmaufruf\i0   (a99 wartet auf Beendigung)\b\f5   \par
+\cf1\b0\f9 cAl\cf2\b\f5 l \b0\i\f1 Programmaufruf\i0   (a99 wartet auf Beendigung, Fenster des Programms wird nicht sichtbar)\b\f5   \par
+\cf1\b0\f9 Cal\cf2\b\f5 l \b0\i\f1 Programmaufruf\i0   (a99 wartet nicht auf Beendigung)\b\f5   \par
+\cf1\b0\f9 CAl\cf2\b\f5 l \b0\i\f1 Programmaufruf\i0   (a99 wartet nicht auf Beendigung, Fenster des Programms wird nicht sichtbar)\b\f5   \par
+\pard\li709\b0\f7 Hinter "call " kann man einen kompletten Startbefehl f\'fcr ein externes Programm hinschreiben, wie beim Flipbefehl \b\f1 ~\b0 .  \par
+Es kann sich auch um einen DOS-Befehl handeln, z.B.     \f5 call x d-wrtf.apr\f1      \par
+oder  \f5 call del e.adt\f1   \par
+\i Empfehlung:\i0  Soll ein DOS-Programm aufgerufen werden, dann "\f5 command.com /c \f7 " vor den Befehl setzen, sonst schlie\'dft sich das DOS-Fenster nicht automatisch.  \f1\par
+\f7 Wenn das externe Prog. eine Datei E.ADT produziert, kann diese anschlie\'dfend mit "\f5 read\f7 " (s.u.) eingelesen werden: sie wird dann in den aktuellen Satz eingemischt. So kann man von au\'dfen Daten einschleusen.  \f1\par
+Wenn \i Programmaufruf\i0  fehlt, wird der Inhalt der iV genommen.  \par
+Bei \b\f5 c\b0 all\f7  gilt: Die Abarbeitung der Befehlskette geht erst weiter, wenn man das externe Programm verl\'e4\'dft.  \f1\par
+Bei \b\f5 C\b0 all\f7 , also mit gro\'dfem C, ist das gestartete Programm anschlie\'dfend v\'f6llig selbst\'e4ndig und \i\f1 a99/alcarta\i0\f7  arbeitet weiter, als w\'e4re nichts passiert.  \f1\par
+Bei \f5 c\b A\b0 ll/C\b A\b0 ll\f7  gilt: Es erscheint kein Fenster f\'fcr das externe Programm, dieses l\'e4uft unsichtbar ab (bis auf Symbol in der Task-Leiste). Dies sollte man nur machen, wenn das externe Programm nicht anhalten und eine Nutzerreaktion abwarten wird, sondern automatisch bis zum Ende durchl\'e4uft.  \f1\par
+\pard\f5   \par
+  \par
+\f7 Befehle f\'fcr den Umgang mit der Zwischenablage:\f5   \par
+\b   \par
+\cf1\b0\f9 cco\cf2\b\f5 py\cf6   \par
+\cf2\b0\f1\tab Der Inhalt der iV wird in die Zwischenablage kopiert.   \par
+\cf1\f9 cpa\cf2\b\f5 ste\cf6   \par
+\cf2\b0\f1\tab Der Inhalt der Zwischenablage (Clipboard) wird in die iV kopiert.   \par
+  \par
+\b\f5 ccopy d\cf6   \par
+\cf2\b0\f1\tab Der gesamte Inhalt des Anzeigefeldes wird in die Zwischenablage kopiert.   \par
+\cf1\f9 cpa\cf2\b\f5 ste d\cf6   \par
+\cf2 cpaste d+\cf6   \par
+\cf2 cpaste d0\cf6            \par
+\pard\li710\cf2\b0\f1\tab\f7 Der Inhalt der Zwischenablage wird in das Anzeigefeld eingef\'fcgt an der momentanen Cursorposition.  \f1\par
+\f7 Wenn + gesetzt ist, wird der Inhalt am Ende angef\'fcgt. Bei 0 wird er am Anfang eingef\'fcgt.  \f1\par
+\f7 Soll der alte Inhalt \'fcberschrieben werden, setzt man vorher  \f5 var ""\\show IV\f1  .  \par
+\pard\cf6\b\f5   \par
+\cf2 ccopy w\cf6   \par
+\tab\cf2\b0\f1 Der Inhalt des Schreibfeldes wird in die Zwischenablage kopiert.   \par
+\b\f5 cpaste w\cf6   \par
+\cf2\b0\f1\tab Der Inhalt der Zwischenablage wird in das Schreibfeld kopiert.  \par
+\b\f5   \par
+c\f9 heck\f5  \f9   \cf1\f5 *\cf2\par
+c\f9 heck f\cf6\f5   \par
+\pard\li710\cf2\b0\f1 Der \f7 iV-Inhalt wird gepr\'fcft, ob er mit einer g\'fcltigen Kategorienummer laut CFG beginnt\f1 .\f7  \par
+Im Fehlerfall steht eine Meldung in der iV, die mit  "  "  beginnt, d.h. Pr\'fcfung mit  \f9 if "  "\f7  ...\f1  \f7   \par
+Das  \b\f9 f\b0\f7   bewirkt eine zus\'e4tzliche Pr\'fcfung der Unterfelder, ob sie denn f\'fcr das betr. Feld zul\'e4ssig sind.\f1\par
+\pard\b\f5   \par
+\cf1\b0\f9 cho\cf2\b\f5 ose \b0\i\f1 Suchbefehl\b\i0\f5   \par
+\pard\li709\tx9498\b0\f1 Es wird die Ergebnismenge gebildet \i und\i0  angezeigt. Anders als bei \b\f5 Find\b0\f1  wird der FLEX nicht beendet, sondern nach Verlassen der Kurzanzeige fortgesetzt.  \par
+\pard\li709\f7 Die Kurzzeile des ausgew\'e4hlten Satzes wird in die interne Variable kopiert - mehr passiert nicht. Mit dem Befehl \b\f5 load\b0\f7  aber kann man gleich danach den ausgew\'e4hlten Satz laden lassen, wenn damit etwas passieren soll.  Eine Anzeige der S\'e4tze erfolgt, anders als bei Find, nicht. \f1\par
+\f7 Wird die Erg.menge mit [Esc] verlassen, ist die iV leer. Au\'dferdem kann man den Abbruch auch mit \b\f5  if cancel ... \b0\f1  checken.  \par
+Fehlt der \i\f5 Suchbefehl\i0\f7 , wird daf\'fcr der Inhalt der iV genommen.  \f1\par
+Steht * statt \i\f5 Suchbefehl\i0\f1 , wird ddie aktuelle Erg.Menge genommen.  \par
+  \par
+\pard\cf1\f9 clo\cf2\b\f5 se  \cf1 *\cf2   \par
+\pard\li710\b0\f1\tab Die vorher im selben FLEX (!)  mit \b\f5  open \b0\f7  zum Lesen ge\'f6ffnete Datei wird geschlossen. Am Ende des FLEX passiert das automatisch.  \f1\par
+\pard   \par
+\b\f5 close r\b0 es\cf5\b   \par
+\cf2\b0\f1\tab Wenn gerade eine Ergebnismenge besteht, wird diese geschlossen \b\f7 und gel\'f6scht\b0\f1 . \cf5\b\f5   \par
+\cf2\b0\f1\tab   \par
+\b\f5 close v\b0 iew\b  \b0\f1    (siehe auch \b\f5 view\b0\f1 )\b\f5   \par
+\pard\li710\b0\f1\tab Die momentan offene ViewListe wird geschlossen. Mit \b\f5  if no ... \b0\f1  kann man danach checken, ob sie schon geschlossen war.  \par
+\pard   \par
+\b\f5 close x \b0\f1    (siehe auch \b\f9 ex\f5 port\b0\f1 )\b\f5   \par
+\pard\li710\b0\f1\tab Die momentan offene Ausgabedatei wird geschlossen. Mit \b\f5  if no ... \b0\f1  kann man danach checken, ob sie schon geschlossen war.  \par
+\pard   \par
+\cf1\f9 cop\cf2\b\f5 y  \cf1\f9 (*)\cf2\f5   \par
+\pard\li709\b0\f1 Der aktuelle Datensatz, so wie er gerade ist, wird als neue Kopie behandelt. Nachfolgend gibt man z.B.  \f5 #xyz-\f1   oder \f5 insert-\f1 Befehle und/oder  Ersetzungen,  dann evtl.  \b\f5 put\b0\f1   zum Speichern des neuen Satzes.  \par
+  \par
+\pard\cf1\f9 cry\cf2\b\f5 pt  \cf1 *\cf2\par
+\pard\li709\b0\f7 Der Inhalt der iV wird mit einem geheimen Algorithmus verschl\'fcsselt. Anschlie\'dfend kann man die iV beliebig weiter verwenden. Die Verschl\'fcsselung ist nicht reversibel, l\'e4\'dft sich also nur f\'fcr Passwortzwecke verwenden.  \f1\par
+  \par
+\pard\cf1\f9 dat\cf2\b\f5 e \b0\i\f1 b\b\i0\f5   \cf1\f9 (*)\cf2\f5\par
+\pard\li709\b0\f1 (\i b\i0\f7 =Breite des Datums, 8-17 Byte; 8 w\'e4re nur das Datum, 17 ist Datum/vollst\'e4ndige Uhrzeit, Form JJJJMMDD/hh:mm:ss)   \f1\par
+\b\f4 2  0  0  0  1  1  1  7  /   0  9  :  0  8  :  0  7  \par
+\b0\f5 1 2 3 4 5 6 7 8 9 10  12 14  16  \par
+                    11 13  15  17  \par
+\f1 Datum (und Uhrzeit) werden in die interne Variable kopiert.  \par
+Diese speichert man mit  \f5 insert ...\f1    in eine Kategorie, ein Teilfeld oder eine #uxy  \par
+\pard\f12\fs18\tab\f13 Die so erzeugte Art des Datums hat den gro\'dfen Vorteil, maschinell sortierbar zu sein.  \f12\par
+  \par
+\i Tip:\i0  Das Tagesdatum in der (nicht maschinell sortierbaren) Form   \b\f5 Mon, 4. Dec 2000\b0\f12   kann man sich so besorgen:  \par
+  \par
+\b\f5\fs20 var #dt\cf5   \par
+\cf2\b0\f12\fs18   \par
+dann steht es in der iV.  \par
+  \par
+\i Sonderbefehle\i0\f13  f\'fcr Datumsrechnungen:  \f12\par
+  \par
+\cf1\f9\fs20 day\cf2\b\f5  +\b0\i\f1 x\b\i0\f5    \cf1\f9 (*)\cf2\f5\par
+\pard\li709\b0\f1 Nummer des heutigen Tages +x innerhalb des laufenden Jahres.  \par
+\pard\f12\fs18   \par
+\cf1\f9\fs20 Day\cf2\b\f5  +\b0\i\f1 x\b\i0\f5   \par
+\pard\li709\b0\f1 Datum des heutigen Tages +x , und zwar in der Form   \par
+\f5    JJJJMMTT/hh:mm:ss = Tag, TT. Monat Jahr\f1   \par
+z.B. \f5 20010423/10:18:56 = Mon, 23. Apr 2001\f1   \par
+\pard\f12\fs18   \par
+\f13\tab Der Wert x darf in beiden F\'e4llen auch negativ sein, dann wird zur\'fcckgerechnet.   \f12\par
+\f13\tab\f12 Wenn +x nicht angegeben ist, wird der Inhalt der iV genommen.  \par
+\f1\fs20   \par
+\cf1\f9 del\cf2\b\f5 ete\b0\i\f1   ABC\i0   \par
+\pard\li709 Datei  \i ABC \i0\f7  l\'f6schen. Das ist n\'fctzlich z.B. f\'fcr die Datei E.ADT, wenn man ein Fremddaten-Kopierverfahren organisieren will.   \f1\par
+Mit \b\f5 if no \b0\i\f7 befehl \i0\f1   kann man checken, ob es gelungen ist.   \par
+\pard\b\f5   \par
+\cf1\b0\f9 dir\cf2\b  \b0\i\f7 namensmuster\i0  \b\f5   \cf1 *\cf2\b0\f7\par
+\pard\fi-710\li710\tab Alle Namen, die mit dem Muster \'fcbereinstimmen, werden als Liste in der iV gesammelt, zwischen den Namen steht der Code 20 (^T), bei \i acon\i0  2 Spatien.   \par
+\tab Wenn  \i namensmuster \i0  fehlt, wird der iV-Inhalt als Namensmuster genommen. \par
+\pard\b\f5\par
+\cf1\b0\f9 dis\cf2\b\f5 play "\b0\i\f1 xABC"\b\i0\f5   \par
+display +"\b0\i\f1 xABC"\b\i0\f5   \par
+\cf1\b0\f9 dep\cf2\b\f5 osit "\b0\i\f1 xABC"\i0   \par
+\pard\li709 Abschnitt \f5 #-x\f7  in den Anzeigeparametern ausf\'fchren. Die Zeichenfolge \i\f1 ABC\i0\f7  ist dann in der Variablen #u1 enthalten.  An der betr. Sprungmarke k\'f6nnen z.B. Manipulationen am Datensatz  stattfinden. Die gesamte M\'e4chtigkeit der Exportsprache kann somit in die T\'e4tigkeit eines FLEX einbezogen werden.  \f1\par
+Ist  '+'  gesetzt, wird das Ergebnis an die vorhandene Anzeige \i\f7 angeh\'e4ngt.\i0\f1   \par
+Fehlt die Angabe \b\f5 "\b0\i\f1 xABC"\i0  , werden die Anzeigeparameter ganz normal abgearbeitet.  \par
+Der Befehl  \f5 deposit\f7   bewirkt keine Anzeige, d.h. die Verarbeitung wird nur intern ausgef\'fchrt. Das ist n\'fctzlich, wenn man komplizierte Manipulationen machen will, die mit der FLEX-Sprache allein nicht gehen. Man verwendet dann #u1, um in den Anzeigeparametern zu entscheiden, was zu tun ist. Das Ergebnis der Verarbeitung ist dann in der Internen Variablen deponiert - daher der Name "deposit".   Nebeneffekt: mit den zwei Befehlen  \f1\par
+\f5 deposit  \par
+write\f1   \par
+\f7 kann man die Anzeigeform in die Ausgabedatei \'fcberf\'fchren! Das wird man selten machen. Im Normalfall wird man einen bestimmten Abschnitt ausf\'fchren lassen, um z.B. #u-Variablen zu besetzen oder eine Zusammensetzung aus mehreren Kategorien oder -bestandteilen in die interne Variable zu bringen. Man gibt also normalerweise    \f1\par
+\f5 deposit yTEXT.\f1   Damit wird der Abschnitt  \f5 #-y\f7   ausgef\'fchrt, und es liegt dort  \f5 #u1 TEXT\f1   vor.  \par
+\f7 Wenn eine Ausgabe entsteht, hat man sie anschlie\'dfend in der iV und kann sie mit "write" ausgeben lassen oder mit "insert" in eine Kategorie kopieren, oder aber ignorieren, wenn es nur auf die internen Manipulationen ankommt.  \f1\par
+  \par
+\pard\b\f5 display p \b0\i name\b\i0   \par
+\pard\li709\b0\f1 Lade andere Anzeigeparameter, dann sofort Anzeige d. aktuellen Satzes.  \par
+z.B.  \b\f5 display p d-alfa\b0\f1    Lade D-ALFA.APR  \par
+Die Parameter bleiben aktiv bis Sitzungsende, bis ein erneuter Befehl kommt.  \par
+\pard\b\f5   \par
+display reserve\cf5  \cf2\b0\f1 kurz:\cf5\b\f5   \cf2 dis r  \par
+\pard\li709\b0\f1 Inhalt des Hintergrundspeichers im Anzeigefeld ausgeben  \par
+\pard\b\f5   \par
+display list\cf5  \cf2\b0\f1 kurz:\cf5\b\f5   \cf2 dis l  \par
+\pard\li709\b0\f1 Kurzliste der aktuellen Erg.Menge im Anzeigefeld ausgeben (wie \b\f5 sho List\b0\f1  )  \par
+\pard\b\f5   \par
+display ergeb\cf5  \cf2\b0\f1 oder \b\f5 display sets\b0\f1    kurz:\cf5\b\f5   \cf2 dis e\cf5  \cf2\b0\f1 oder  \b\f5 dis s  \par
+\pard\li709\b0\f1 Liste der Ergebnismengen (die man sonst mit Alt+e sieht) im Anzeigefeld auswerfen  \par
+ \par
+\pard\b\f5 display f\b0\i num\cf5\b\i0   \cf2\b0\f1 kurz:\cf5\b\f5   \cf2 dis f\b0\i num\b\i0   \par
+\pard\li709\b0\f1 Anzeige zur Zeile \i\f5 num \i0\f1  scrollen. Genutzt wird das z.B. in ausl.flx und rueck.flx (ALFA-Ausleihe). \par
+Wenn \i\f5 num \i0\f1  fehlt, wird zu der Zeile des zuletzt benutzten Flips gescrollt. \par
+  \par
+\pard\cf1\f9 dos\cf5\b\f5  \cf2\b0\i\f1 befehl\b\f5   \par
+\cf1\b0\i0\f9 Dos\cf5\b\f5  \cf2\b0\i\f1 befehl\b\f5   \par
+\b0\i0\f1\tab\f7 Damit kann jeder Befehl in einem DOS-Fenster ausgef\'fchrt werden. Intern wird   \f1\par
+\tab\f7 %%\f1 COMSPEC\f7 %%\f1  /c  \par
+\tab davor gesetzt. Beim Befehl `\cf4\ul\b\f5 call\cf2\ulnone\b0\f1 `m\f7 u\'df\f1  man das selber machen!  \par
+  \f7\tab\b\f5 dos\cf5  \tab\cf2\b0\f1 startet ein minimiertes Fenster und wartet, bis der Vorgang beendet ist (entspr. \f5 cAll\f1  )\b\i\f5   \par
+\i0\f9\tab\f5 Dos\cf5  \tab\cf2\b0\f7 startet ein sichtbares Fenster, das dann unabh\'e4ngig ist (entspr. \f5 Call\f1  )\b\i\f5   \par
+\i0   \par
+\cf1\b0\f9 ech\cf2\b o\f5  \f9 off/on\f5  \cf1\f9 Nur *\cf2\f5  \b0\f1    \par
+\pard\li709\fs24\tab\b\f9\fs20 off \b0\f7\fs24 unterdr\'fcckt s\'e4mtliche Meldungen an den Client, die im Verlauf des Auftrags auftreten k\'f6nnen, incl. der Fehlermeldungen. \f1\par
+\f7 Evt. auftretende Fehler m\'fcssen mit Hilfe der Bedingungspr\'fcfung \f5 if error\f1  aufgefangen werden. Eine Meldung kann dann im Fehlerfall mit dem \f5 write\f1 -Befehl selbst generiert werden. \par
+Der Befehl \f5 echo off\f7  wird in komplexen Auftr\'e4gen eingesetzt, um bei der Weiterbearbeitung von Teilergebnissen nicht zuvor die Meldungen des \i\f1 acon-\i0\f7  Servers herausfiltern zu m\'fcssen. \f1\par
+\pard\b\f5\fs20   \par
+\cf1\b0\f9 end\cf2\b\f5   \cf1 *\cf2  \b0\f1    \par
+\pard\li709 Der FLEX wird beendet. Sinnvoll oft nach \b\f5 yesno\b0\f1  und \b\f5 noyes\b0\f1  , z.B.  \par
+\b\f5 if no end   \b0\f1 wenn Nein geantwortet wurde, dann Ende  \par
+\pard\b\f5   \par
+\cf1\b0\f9 erase\cf2\b\f5   \cf1 *\cf2   \par
+\pard\li709\b0\f7 Der aktuelle Satz wird gel\'f6scht. Dazu braucht nicht in der .INI-Datei  \f5 access=3\f7   gesetzt zu sein, d.h. man kann das L\'f6schen in erw\'fcnschten F\'e4llen per Parametrierung erm\'f6glichen. Sogar unter \b\i\f1 alcarta\b0\i0 ! Eine Gefahr besteht dort nicht, weil es kein Schreibfeld zum Eingeben eigener FLEXe gibt.   \par
+\f7 Ist der Satz ein Offline-Satz, wird er ung\'fcltig gemacht. War er gerade ganz neu, verschwindet er aus der Anzeige und aus dem Offline-Speicher.  \f1\par
+\f7 Dieser Befehl mu\'df aus Sicherheitsgr\'fcnden \b in voller L\'e4nge\b0  eingegeben werden, anders als alle anderen Befehle.  \f1\par
+\pard\b\f5   \par
+\cf1\b0\f9 erase off\cf2\b\f5  \cf5   \par
+\pard\li710\cf2\b0\f13\fs18 Der Offline-Speicher von a99 wird geleert. \par
+Anschlie\'dfend kann man mit  \b\f5\fs20 read file\b0\f12\fs18  eine neue Datei vom Typ .ALG oder .ADT in den Offline-Speicher laden.  \par
+\pard\b\f5\fs20   \par
+\cf1\b0\f9 eval\cf2\f5  \i\f7 rechenbefehl\f1        \cf1\b\f7 *\cf2\b0\f1   \i0  \par
+\cf1\b\f9 Z=\cf2\b0\f5  \i\f7 rechenbefehl\f1        \cf1\b\f7 *\cf2\b0\f1   \i0  \par
+\pard\li710 Der  \i\f7 rechenbefehl\f1  \i0  wird \f7 als arithmetischer Ausdruck \f1 interpretiert und \f7 das Ergebnis \f1 in die `\cf4\ul\b interne Variable\cf2\ulnone\b0\f7 ` kopiert bzw. im zweiten Fall in die interne Zahl Z. \par
+\pard\li709 Das Ergebnis ist immer eine Zahl mit bis zu 9 Nachkommastellen, letzte Stelle gerundet. Nullen am Ende werden entfernt; wenn danach nur ein Punkt am Ende bleibt (weil die Zahl eine ganze ist), wird dieser auch entfernt. \par
+Wenn \i rechenbefehl \i0  fehlt, wird der Inhalt der iV genommen. Man kann also zuerst mittels  \f9 var\f7   in der  iV einen beliebigen Ausdruck zusammensetzen und diesen dann auswerten lassen. \par
+\pard\f13\fs18\par
+\pard\li710 Ein \i\f7\fs20 rechenbefehl\i0\f13\fs18  ist eine Folge von Elementen mit Operatoren dazwischen: \par
+\par
+\i\fs22        elem\i0  \b\f9 op\b0\f13  \i elem\i0  \b\f9 op\b0\f13  ... \i elem\i0\fs18\par
+\par
+Jedes  \b\f9 op\b0\f13   ist einer der Operatoren   \b\f9 +  -  *  /  ^ \par
+\b0\f13 Ein \i elem\i0  kann sein: \par
+\pard\fi-710\li1420 -- \tab eine Zahl  (sehr gro\'dfe und sehr kleine Zahlen kann man in Exponentialdarstellung schreiben: z.B. \f9 1E15\f13  bzw. \f9 1E-20\f13 . \par
+-- \tab eine Feldangabe \f9 #nnn\f13  oder \f9 #nnn$x\f13 , wobei \f9 #nnn\f13  auch eine \f9 #u\f13 -Variable sein kann. Es ist nicht notwendig, da\'df ein solches Feld nur aus der Zahl besteht, sondern das Programm wird sich die Zahl selbst heraussuchen, wenn z.B. Buchstaben davor oder Klammern darum herum stehen. (Die Manipulationsbefehle, die es bei \f9 var\f13  gibt, sind hier nicht anwendbar, siehe aber Beispiel 3.) \par
+\pard\li710 -- \tab Eine `\cf4\ul\b freie Variable\cf2\ulnone\b0 ` \f9 $Abc\f13 , auch hier bei Bedarf mit Unterfeld-Code:  \f9 $Abc$d\f13  \par
+\pard\fi-710\li1420 -- \tab einer der `\cf4\ul\b internen Zahlenwerte\cf2\ulnone\b0 ` z oder Z. [Bis V27.1 waren dies die einzigen Rechenvariablen] \par
+\pard\li710\par
+\pard\cf1\f9\fs20 exe\cf2\b\f5 c \b0\i flex\b\i0   \par
+\pard\li709\b0\f1 Ein anderer FLEX wird gestartet, der aktuelle FLEX damit beendet. \i\f5 flex\i0\f1   m\f7 u\'df\f1  mit x oder X beginnen; wenn X, dann m\f7 u\'df\f1  der Name einer FLEX-Datei folgen.   \par
+\pard\b\f5   \par
+\cf1\b0\f9 Exp\cf2\b ort\f5   \par
+\cf1\b0\f9 exp\cf2\b ort\f5   \cf1 *\cf2   \b0\i\f7 Fr\'fcher\b\i0\f9  xport \b0\f7 und\b\f9  download \b0\f7 (beide sind synonym)\b\f5\par
+\pard\li709\b0\f7 Aktuellen Satz exportieren (wie \'fcber Men\'fc Export).  \f1\par
+Mit \b\f7 E\b0  erfolgt der Export \'fcber PrintParameter statt ExportParameter, aber in dieselbe Datei.  \f1\par
+\i\f7 Tip: \i0 Soll nur ein bestimmter Abschnitt in den Exportparametern ausgef\'fchrt  werden: vorher eine Variable besetzen, z.B. #uFL (mit Befehl  \f5 var xxx\\ins #uFL)\f1 , und in den Parametern am Anfang einen Sprung einbauen:   \par
+\f5\tab #uFL +A e0\f1   \par
+Die Parameter und die Ausgabedatei kann man mit dem Befehl \f7 e\b\f5 xport p/f...\b0\f7  \'e4ndern, s.u..  \f1\par
+\pard\b\f5   \par
+\pard\fi-710\li710\f9 export\f5  \f9 -x\b0\f1  \f7  \cf1\b\f9  *\cf2\b0\f1  \par
+\f7\tab Abschnitt  \f14 #-x\f7   der Exportparameter ausf\'fchren, z.B. w\'e4hrend eines Update zwecks "globaler Manipulation"\f1 .\b\f5\par
+\f9\tab Ergebnis wird hinten an den iV-Inhalt angeh\'e4ngt!!\f5\par
+\par
+\f9 export\f5  brief\b0\f1    Die Kurzliste der Erg.Menge wird in die Exportdatei geschrieben. Wenn gerade eine ViewListe aktiv ist (d.h. zuletzt angezeigt wurde oder mit \b\f5 view ...\b0\f7  ge\'f6ffnet wurde), dann wird diese Liste geschrieben. Sollen dagegen die Datens\'e4tze als solche exportiert werden, mu\'df \b\f9 export\f5  view\b0\f1  benutzt werden.\b\f5   \par
+\pard   \par
+\pard\fi-710\li710\f9 export\f5  database\b0\f1   \f7      \f1  Die gesamte Datenbank wird exportiert.\b\f5   \par
+\pard   \par
+\pard\fi-710\li710\f9 export\f5  fam  \cf1 *\cf2\b0\f7    Der aktuelle Satz wird zusammen mit allen per Verkn\'fcpfung dazugeh\'f6rigen S\'e4tzen (wenn es solche gibt) in die Exportdatei geschrieben. Die Reihenfolge ergibt sich durch die Ordnung der Prim\'e4rschl\'fcssel (s.a. Befehl  \f5 family / Family\f1  )\b\f5   \par
+\pard   \par
+\f9 export\f5  offline\cf5   \par
+\pard\li709\cf2\b0\f7 Wenn eine Offline-Datei existiert, wird diese als Ganzes exportiert (wie auf dem Men\'fc "Export").  \f1\par
+\pard\b\f5   \par
+\f9 Export\f5  set  \par
+\f9 export\f5  set  \cf1 *\cf2   \par
+\pard\li709\b0\f7 Aktuelle Erg.menge exportieren (wie \'fcber Men\'fc Export). Mit  \b\f9 E\b0\f1  werden, wie oben, die PrintParameter benutzt.  \par
+\pard\b\f5   \par
+\f9 export\f5  view\b0\f1   \b\f5   \b0\f1    [zur View-Technik siehe "allegro news" 58]  \par
+\pard\li710\f7 Die momentan ge\'f6ffnete `\cf4\ul\f1 ViewListe\cf2\ulnone\f7 ` wird zum Exportieren benutzt. Die Datens\'e4tze werden in der Reihenfolge der ViewListe ausgegeben. In den Exportparametern kann man die Variable \f5 #uzV\f7  nutzen, die jeweils die Zeile aus der Liste enth\'e4lt. Auch die Zwischenzeilen (\'dcberschriften, Summen) werden exportiert. \f1\par
+\b\f5   \par
+\pard\f9 export\f5  Ref\cf5     \f9   \cf1\b0\i acon:\cf5\b\i0   \cf2 set ai\cf5\f5\par
+\pard\li709\cf2\b0\f7 Hiermit werden die V14-Ersetzungen durchgef\'fchrt, d.h. K\'fcrzel und Stammsatz-IdNummern durch Klartexte ersetzt. \f1\par
+\pard\b\f5   \par
+\f9 export\f5  VS  \cf1 *\cf2   \cf5\par
+\pard\li709\cf2\b0\f1 Hiermit kann man gezielt die  \cf4\ul\b\f7 Verschl\'fcsselungs-Sequenzen\cf2\ulnone\b0\f1   im gesamten Datensatz ersetzen lassen. Das sind Zeichenfolgen z.B. von der Form &#2345; , die durch Klartext ersetzt werden sollen. Voraussetzung\f7 en:\f1  im Ersetzungsregister \f7 sind \f1 die Sequenzen korrekt indexiert in den Indexparametern \f7 ist \f1 das Zeichen & auf den Wert 9 gesetzt.  Siehe `\cf4\ul\b\f7 Verlautbarung 154\cf2\ulnone\b0\f1 `. \par
+\i Achtung:\i0\f7  Den Datensatz in einem solchen FLEX nicht anschlie\'dfend speichern, denn die Sequenzen sind dann als solche nicht mehr da. Diesen Befehl also nur einsetzen, wenn es nur um Export von Daten geht. \f1\par
+\pard\b\f5   \par
+\f9 export\f5  a / \f9 export\f5  A / \f9 export\f5  \f9 ai\f5  / \f9 export\f5  A\f9 i\cf5\f5   \cf1 *\cf2\b0\i\f1  \cf5\b\i0\f5   \par
+\pard\li709\cf2\b0\f7 Vertauscht die diakritischen Zeichen (Akzente) mit dem nachfolgenden bzw. vorangehenden Buchstaben. Das ist notwendig, wenn man intern ASCII oder ANSI hat, aber Unicode erzeugen will. Die Codes der Diakritika m\'fcssen in einer Variablen pa in den Exportparametern stehen, normalerweise (OstWest-Code) sieht der Befehl so aus: \f1\par
+pa=181 182 183 184 189 190 198 199 207 208 209 210 211 212 219 222 223 232 \par
+\par
+\pard\b\f9 e\f5 xport \f9 p\f5  \b0\i\f1 name \par
+\b\i0\f9 e\f5 xport t \b0\i\f1 name\b\i0\f5   \cf1 *\cf2\b0\i\f1  \par
+\pard\li709\i0 Parameterdatei  \i name.c\i0 PR bzw. \i name.c\i0\f7 PT f\'fcr den Export laden. Im zweiten Fall wird die Tabellendatei zur schon vorhandenen Export-Parameterdatei hinzugeladen. Das entspricht dem Befehl t\i\f1 name\i0  in der Exportsprache. \par
+Wenn \i name\i0  fehlt, wird der Inhalt der iV genommen. Steht \b ?\b0  statt \i name\i0 , wird eine Dateiauswahl angeboten. \par
+Mit  \b\f5 if no ...\b0\f1   kann man auf den Fehlerfall reagieren (Param. konnten nicht geladen werden). \par
+\pard\b\f5  \par
+\f9 e\f5 xport f \b0\i\f1 filename\b\i0\f5   \cf1 *\cf2\b0\f1  \par
+\b\f9 e\f5 xport f +\b0\i\f1 filename\b\i0\f5   \cf1 *\cf2\b0\i\f1  \par
+\b\i0\f5\tab\b0\i\f1 Gleichwertig:\i0  \b\f5 open x \b0\i\f1 filename\i0  \par
+\pard\li709 Nachfolgende Exporte (per \b\f9 exp\b0\f1  oder \b\f5 wri\b0\f1 ) sollen in die Datei  \i filename\i0   gehen. \par
+\f7 Das '+' bewirkt, da\'df an die Datei angeh\'e4ngt wird, sonst wird sie \'fcberschrieben. \f1\par
+Fehlt der \i filename,\i0  wird der Inhalt der iV als Dateiname genommen. \par
+\pard  \par
+\b\f9 export\f5  wX\cf5  \cf2  \cf1 *\cf5   \par
+\pard\li709\cf2\b0\f7 Steuert die Art der Ausf\'fchrung der nachfolgenden \cf5\b\f5  \cf4\ul write\cf5\ulnone  -\cf2\b0\f1 Befehle.    \par
+Dient nur zur Setzung einer Sprungmarke, ersetzt nicht den write-Befehl selbst!!   \par
+Wenn es in den aktuellen Exportparametern eine Sprungmarke \f5 #-X\f7  gibt, wird der Befehl write nicht direkt ausgef\'fchrt, sondern die Zeichenfolge, die write erzeugt hat, wird an den Export \'fcbergeben, und zwar an die Sprungmarke \f5 #-X\f7  der Parameter. Dort ist die Zeichenfolge unter dem Variablennamen #u1 verf\'fcgbar. Das Ergebnis des Exports wird in die Exportdatei geschrieben.    \f1\par
+\pard\b\f5   \par
+\cf1\b0\f9 ext\cf2\b\f5 ern \b0\f1   (wie Alt+t)  \par
+\pard\li709 Der aktuelle Satz wird in eine Datei namens EXX.XXX ausgegeben und der externe Editor aufgerufen.  \par
+\pard\li710\tab\f7 Nach R\'fcckkehr aus dem externen Editor fragt das Programm, ob man die Datei wieder einlesen wolle.  \f1\par
+Der Name der Datei kann mit dem Befehl \f5 ExEdFile=...\f1  in der `\cf4\ul\b INI-Datei\cf2\ulnone\b0\f7 ` ge\'e4ndert werden. \b\f5   \par
+\pard\b0\f12\fs18   \par
+\pard\li710\b\fs20 Alternativ\b0  kann man den FLEX \b\f5 notepad.flx\b0\f12  benutzen, wenn man den Datensatz mit NOTEPAD bearbeiten will.  \par
+Also: schlicht im Schreibfeld eingeben  \f5 X notepad\f12   \par
+\pard\b\f5   \par
+\cf1\b0\f9 fam\cf2\b\f5 ily  \cf1 *\cf2   \par
+\cf1\b0\f9 Fam\cf2\b\f5 ily  \par
+\pard\li709\b0\f7 Wenn der aktuelle Satz ein Teil eines mehrteiligen Satzes (mit Verkn\'fcpfungstechnik) ist, dann bilde die Ergebnismenge aus allen zusammengeh\'f6rigen S\'e4tzen. Die Ergebnismenge ist dann in der Reihenfolge der Prim\'e4rschl\'fcssel geordnet. Mit \b\f5 F\b0 amily\f1  wird die Ergebnismenge auch sofort angezeigt, mit \b\f5 f\b0 amily\f1  nicht.  \par
+\i Tip:  \i0  Bei \f7  \b\f9 export\f5  fam\b0\f1  wie bei \b\f5 fam / Fam\b0\f1  kann vorher eine Angabe in die iV geschrieben werden (mit \b\f5 var\b0\f1 ), die mit dem Zeichen '\f5 |\f7 ' und einer Registerziffer beginnt. Dann wird die Ergebnismenge bei dem betr. Schl\'fcssel gebildet, d.h. alle Eintr\'e4ge genommen, deren Schl\'fcssel mit der Angabe in der iV beginnt, und zwar in der Reihenfolge des Registers! Der Eintrag beim Prim\'e4rschl\'fcssel ist davon ein Spezialfall, der automatisch gebildet wird, wenn in der iV nichts oder etwas anderes steht.   \f1\par
+\pard\b\f5   \par
+\cf1\b0\f9 fco\cf2\b\f5 py \b0\i name1 name2\i0\f1   \par
+\pard\li709 Datei \i\f5 name1\i0\f1  wird kopiert auf \i\f5 name2\i0\f1 . Fehlen \i\f5 name1 name2,\i0\f7  wird der Inhalt der iV genommen, d.h. es m\'fcssen darin zwei Namen hintereinander stehen. Beide Namen d\'fcrfen vollst\'e4ndige Pfadnamen sein; Vorsicht: innerhalb des FLEX mu\'df jedes \\ dann verdoppelt werden, in der iV aber nicht!  \f1\par
+\pard\b\f5   \par
+\cf1\b0\f9 fet\cf2\b\f5 ch \b0\i number\i0\f1    oder   \b\f5 fetch +\b0\i number\i0\f1  \f7   \cf1\b\f9 (*)\cf2\b0\f1\par
+\b\f5 fetch ^\b0\i code\i0\f1     oder   \b\f5 fetch +^\b0\i code\i0\f1\par
+\pard\li709 Aus der mit \b\f5 open\b0\f7  ge\'f6ffneten Datei werden \i\f5 number\i0\f1   Bytes in die interne Variable gelesen.  \par
+Dabei werden die Codes 0,1 ... 32  durch ^@, ^A ... ^` ersetzt, das Zeichen ^ selbst durch ^~.   \par
+\f7 Mit dem zweiten Befehl wird alles bis zum n\'e4chsten Code \i\f1 code\i0  (dezimal, 0...255) inclusive gelesen.  \par
+\f7 Mit vorgesetztem + werden die gelesenen Zeichen an den vorhandenen Inhalt der iV angeh\'e4ngt statt diesen zu \'fcberschreiben. \f1\par
+Mit \b\f5 if no ...\b0\f7  kann man pr\'fcfen, ob \'fcberhaupt gelesen werden konnte, mit \b\f5 if cancel ...\b0\f1   ob das Ende der Datei erreicht wurde.   \par
+Maximal werden 8000 Byte gelesen.  \par
+Mit  \b\f5 write ^ \b0\f1 kann man die Zeichen entsprechend wieder herausschreiben, d.h. exakt so wie eingelesen.  \par
+Soll eine \b Zeile\b0  gelesen werden (Zeilenende = Codes 13 10): \i --> \b\i0\f5 get \b0\f1 (dabei erfolgt keine Wandlung der Codes 0,..,32!), d.h. das Herausschreiben kann mit normalem  \b\f5 write\b0\f1  geschehen.  \par
+\pard\b\f5   \par
+\f9 fetch b2 / b3 / b4\cf0\f5   \b0\f7  \cf1\i *\cf0\i0  \f1\par
+\pard\li709\f7 Es werden 2 bzw. 3 bzw. 4 Bytes gelesen und als hexadezimale Zahl interpretiert. Das Ergebnis steht dann als Dezimalzahl in der iV. \par
+\pard\cf2\b\f5\par
+fetch \f9 record\f5   \cf1 *\cf2\b0\f1\par
+\pard\li709 Aus der mit \b\f5 open\b0\f7  ge\'f6ffneten Datei (.ALG, .ADT, .ALD, .LOG) den n\'e4chsten Satz in die iV einlesen. (Dann mit  \f9 insert\f7   in den Arb.Speicher kopieren) \par
+Ist es eine .ALG-Datei, dann zuerst  \f9 fetch b\f7 ,  ist es eine .ALD, dann noch dazu  \f9 fetch b4\f7   vor dem  \f9 fetch rec\f7 .\f1\par
+\pard\b\f5\par
+\cf1\b0\f9 fil\cf2\b\f5 e \b0\i dateiname / \b\i0 file +\b0\i dateiname\i0\f1   \par
+\pard\li709 Der Inhalt des Anzeigefensters wird in die Datei ausgegeben. Ist der Dateityp .rtf, wird im RTF-Format ausgegeben, sonst als ASCII-Textdatei, wenn aber \b\f5 set c1\b0\f1  gesetzt wurde, kommt der Text in ANSI  heraus.  \par
+\f7 Wenn  '+'  gesetzt ist, wird hinten angeh\'e4ngt, sonst wird die Datei \'fcberschrieben.   \par
+\f1\par
+\pard\cf1\f9 fin\cf2\b\f5 d  \cf1 *\cf2   \par
+find \b0\i suchbefehl\b\i0   \cf1 *\cf2\b0\i   \par
+\cf1\i0\f9 Fin\cf2\b\f5 d  \par
+Find \b0\i suchbefehl\b\i0   \par
+\pard\li709\b0\f7 Bilde eine Erg.menge. Diese wird nur bei 'F', nicht bei 'f' angezeigt, sondern sie wird anschlie\'dfend als aktuelle Erg.menge benutzt, wenn man mit den Befehlen  \f5 next, prev\f1 , oder \f7  \f9 export\f5  set\f1   arbeitet.   \par
+Der \i suchbefehl\i0  m\f7 u\'df\f1  genauso aussehen wie bei der Eingabe in der Befehlszeile (Cursor dorthin setzen, F1, dann kommt Hilfe).  \par
+Wenn \i suchbefehl\i0\f7  fehlt, wird der Inhalt der iV benutzt. Wenn man diese vorher geeignet besetzt, kann man den Suchbefehl in Abh\'e4ngigkeit vom aktuellen Satz gestalten. Der erste Satz der Ergebismenge wird sofort geladen, wird also zum aktuellen Satz.  \f1\par
+Wenn \i suchbefehl\i0  mit einem '+' beginnt, wird die nachfolgende \f7 Zeichenfolge\f1  im Volltext der aktuellen Erg.menge gesucht, wie bei der Eingabe per Hand im Suchbefehlsfeld.  \par
+Bei  F statt f wird die Erg.Menge sofort angezeigt und der FLEX beendet, d.h. nachfolgende Befehle ignoriert.  \par
+Mit  \b\f5 if empty ...\b0\f1   kann man springen, wenn nichts gefunden wurde.  \par
+\i Sonderfall:\i0  mit \b\f5 find #\b0\i nnn\i0\f1  kann man einen Satz mit seiner internen Nummer \i nnn \i0 laden. Mit \b\f5 if cancel\b0\f7  pr\'fcfen, ob die Nummer zu gro\'df oder zu klein war, mit \b\f5 if no\b0\f1 , ob unbesetzt.  \par
+Zusammen mit \b\f5  next #\b0\f7   kann man  den n\'e4chsten holen, mit \b\f5 if cancel\b0\f7  pr\'fcfen, ob keiner mehr kommt.  \f1\par
+Eine noch andere Variante ist  \b\f5 choose ...\b0\f1 (der FLEX wird dabei \i nicht\i0  beendet)  \par
+\par
+\pard\cf1\f9 f1n\cf2\b\f5 d ...\f9  \f5   \cf1 *\cf2\b0\f1   \par
+\pard\li709 Mit 1 statt i : Es wird keine Erg.Menge angelegt, sondern nur deren erster Satz geladen. Die momentane Erg.Menge bleibt erhalten. \par
+  \par
+\pard\b\f5 find r\i num\b0\i0\f1   \par
+\pard\li709 Aus der aktuellen Erg.Menge wird der \i num\i0 -te Satz geladen. Mit \f5 if no ...\f1  checkt man, ob es diesen nicht gibt.  \par
+\pard\b\f5   \par
+find edit\b0\f1   \par
+\pard\li709\i Sonderfall!\i0\f7  Die bearbeiteten S\'e4tze werden als Erg.Menge zusammengefa\'dft. (Wie Men\'fcpunkt "Extras | IN ARBEIT befindl. S\'e4tze") \f1\par
+  \par
+\pard\b\f5 find new\b0\f1   \par
+\pard\li709\i Sonderfall!\i0\f7  Die neuen Datens\'e4tze werden als Ergebnismenge zusammengefa\'dft. (Wie Men\'fcpunkt "Extras | Neu, noch nicht gespeichert")  \f1\par
+\pard\b\f5   \par
+find s\b0\i num \par
+\b\i0 find\b0\i  \i0 :\i name \par
+\pard\li709\i0\f1 Die Erg.Menge Nummer \i num\i0  bzw. mit der Bezeichnung \i\f5 name\i0\f7  wird aktiviert. Die erste hat die Nummer 1 und ist die Boomark-Liste, 2 ist die Liste der vorher angezeigten S\'e4tze. Nummer 0 ist die letzte Erg.Menge. Deren tats\'e4chliche Nummer erh\'e4lt man mit var q. \f1\par
+\pard\b\f5\par
+find $nnn\b0\f1   \par
+\pard\li710\i Sonderfall!\i0\f7  Die letzten nnn Bytes der LOG-Datei werden ausgewertet und die darin steckenden korrigierten Datens\'e4tze als Erg.Menge zusammengefa\'dft. Die neuen S\'e4tze kann man nicht auf diese Weise gewinnen, dazu mu\'df man das Register des Erfassungsdatums heranziehen. Eingebettet in `\cf4\ul\b\f1 super.rtf\cf2\ulnone\b0\f7 ` unter "Zuletzt bearbeitete S\'e4tze". Interessant ist das f\'fcr den Supervisor in einem Netz. (Die LOG-Datei bezieht sich nicht auf die aktuelle Sitzung, sondern ist das \'c4nderungsprotokoll der gesamten Datenbank.)\cf5\b\f5   \par
+\pard\cf2   \par
+\cf1\b0\f9 fir\cf2\b\f5 st\b0\f1    [Gegenteil: \b\f5 last\b0\f1  ]\b\f5   \cf1 *\cf2   \par
+\pard\li709\b0\f1 Der erste Satz der Erg.menge, in der vorher eingestellten Sortierfolge, wird geladen und angezeigt. Mit \b\f5 if no ...\b0\f1  kann man checken, ob es keinen solchen gibt, weil die Ergebnismenge leer ist.  Mit  \b\f5 first r\b0\f7  wird zugleich die Kurzzeile in die iV geladen.  Den letzten Satz l\'e4\'dft man mit \b\f5 last\b0\f1  laden.  \par
+\pard\f15\fs22   \par
+\b\f5\fs20 first #\b0\f1    [Gegenteil: \b\f5  last #\b0\f1  ]\f7   \b\f5  \cf1 *\cf2   \par
+\pard\li710\b0\f1 Der erste Satz der Datenbank (Satznummer 1)  wird geladen \b und \b0 angezeigt. Mit  \b\f5 find #1 \b0\f1 wird er nicht angezeigt.  \par
+\pard\b\f5   \par
+first off\b0\f1    [Gegenteil: \b\f5  last off\b0\f1  ]\b\f5   \par
+\pard\li710\b0\f1 Der erste Satz der Offline-Datei wird geladen und angezeigt. Mit \b\f5  if no ...\b0\f1  kann man checken, ob es keinen solchen gibt, weil die Offline-Datei leer ist.  \par
+\pard\li709\f7 Der n\'e4chste usw. kann danach mit \b\f5  next off\b0\f1   geladen werden.  \par
+\pard\b\f5   \par
+first sub\b0\f1    [Gegenteil: \b\f5  last sub\b0\f7  ]  Sinnvoll nur bei hierarchischen S\'e4tzen.\b\f5   \par
+\pard\li709\b0\f1 Ein interner Zeiger wird auf den Hauptsatz (!) gestellt. Das ist deshalb so, damit nicht noch ein Sonderbefehl gebraucht wird, um auf den Hauptsatz zu setzen.   \par
+\f7 Mit anschlie\'dfendem \b\f5 next sub\b0\f1  gelangt man zum ersten wirklichen Untersatz.  \par
+Siehe  \b\f5 next sub\cf5  \cf2\b0\f1  und  \b\f5 prev sub\b0\f1 .  \par
+\pard   \par
+\b\f5 first view\b0\f1   \b\f5   \par
+\pard\li709\b0\f1 Die erste Zeile der aktuellen ViewListe wird in die iV geladen. Mit \b\f5 if cancel ...\b0\f7  stellt man fest, ob keine ViewListe ge\'f6ffnet ist.   \f1\par
+\f7 Mit anschlie\'dfendem \b\f5 next view\b0\f7  erh\'e4lt man die zweite Zeile, usw.  \f1\par
+\pard\b\f5   \par
+\cf1\b0\f9 fle\cf2\b\f5 x \b0\i xyz\i0\f1   \par
+\pard\li709 Senden einer Mitteilung an ein anderes \b\i a99/alcarta\b0\i0 .  \par
+Es wird eine "ExFLEX"-Botschaft an das System gesendet. Wenn ein anderes \i a99\i0  oder \i alcarta\i0\f7  l\'e4uft, kann es diese auffangen und ausf\'fchren. \i\f5 xyz \i0\f7 mu\'df der Name einer FLEX-Datei sein (Typ .flx). Das andere a99 liest dann diese Datei und f\'fchrt sie aus. Wenn \i\f5 xyz\i0\f1  fehlt, wird der Inhalt der iV genommen.  \par
+Das zweite a99 kommt nur dann in den Vordergrund, wenn xyz.flx den Befehl \f5 activate\f7  enth\'e4lt.  \f1\par
+\pard\b\f5   \par
+\cf1\b0\f9 fli\cf2\b\f5 p \cf4\b0\i i\cf2 xyz=flex\i0\f1   \par
+\pard\li709 Setzen von Text und FLEX auf dem Flip-Button Nummer i (i = 1...8):   \par
+Auf Button \cf4\i\f5 i\cf2\i0\f1  soll \i\f5 xyz\i0\f1  stehen, und es soll \i\f5 flex\i0\f7  ausgef\'fchrt werden. \i\f5 flex\i0\f1  m\f7 u\'df\f1  mit "x " oder "X " beginnen. Auf "x " folgt direkt eine Befehlsfolge, auf "X " folgt der Name einer FLX-Datei.  \par
+Normalerweise steht auf den Flip-Buttons Flip \ul 1\ulnone  bis Flip \ul 8\ulnone\f7 , und daher k\'f6nnen diese Buttons, obwohl unsichtbar, mit Alt+1 bis Alt+8 ausgel\'f6st werden.   \f1\par
+Soll die Aufschrift einen Alt-Key erhalten, m\f7 u\'df\f1  der betr. Buchstabe bzw. die Ziffer mit vorgestelltem & markiert werden.   \par
+\i Empfehlung:\i0  Weil es keine freien Buchstaben mehr gibt, sollte man die Flip-Aufschrift in der Form  \par
+&i: \i Text\i0   einrichten. Z.B. erscheint auf dem Button 5  der Text   \ul\b 5\ulnone  : Pause\b0  \i ,  \i0 wenn man    \par
+\b\f5 set 5&5: Pause=... \b0\f1   setzt..  \par
+\f7 Es sei denn, man \'e4ndert in der \f12\fs18 `\f1\fs20 UIF-Datei\f12\fs18 `\f7\fs20  auch die eine oder andere Button- oder Men\'fcbeschriftung, um einen Buchstaben frei zu bekommen. Auch dort markiert das Zeichen & den Alt-Buchstaben. Die Flip-Buttons selbst haben dort aber keine Eintr\'e4ge, die kann man nur per FLEX setzen, z.B. in der \i\f1 dbn\i0 .RTF oder START.FLX.  \par
+\pard\b\f5   \par
+\cf1\f9 flo\cf2 w\f5  \b0\i\f7 modus  \i0   [ab V29.3]\f1\par
+\pard\li852\tx852\f7 Ablaufverfolgung. Dieser Befehl schaltet die Visualisierung der FLEX-Befehle ein und aus. \par
+\pard\par
+\cf1\f9 fna\cf2\b\f5 m \b0\i\f1 bezeichnung|typ   \par
+\pard\li710\i0\f7 Eine Dateiauswahl-Box wird pr\'e4sentiert. \i\f1 bezeichnung \i0  steht in der Zeile unter dem Eingabefeld, \i typ\i0  ist eine Angabe wie z.B. \f5 P-*?PR\f1  oder \f5 c:\\\\allegro\\\\*.*\f7 . Dadurch wird gesteuert, was f\'fcr Dateinamen \'fcberhaupt gezeigt werden und evtl. zugeich auf welchem Verzeichnis. Fehlt dies, werden alle gezeigt. Mit \b\f5 if no\b0\f7  kann man checken, ob nichts ausgew\'e4hlt wurde. Wenn ein Name ausgew\'e4hlt wurde, steht er anschlie\'dfend in der iV, und zwar als kompletter Pfadname. Anschlie\'dfend kann man z.B. sofort mit \b\f5  open \b0\f7  diese Datei \'f6ffnen lassen.  \f1\par
+\pard\li709\par
+\pard\b\f5 fnam |\b0\i\f1 typ   /   \b\i0\f5 fnam >\b0\i\f1 typ \par
+\pard\li710\i0 Alle zu  \i typ\i0   passenden Dateinamen werden in die iV geschrieben, getrennt durch | . \par
+Bei > wird in die Ausgabedatei geschrieben, jeder Name auf neuer Zeile. \par
+Mit  \b\f5 if no \b0\f1  kann man checken, ob es keine solchen Dateien gibt, mit \b\f5 if cancel\b0\f7  , ob es zu viele sind. Die Grenze ist bei | eine Gesamtl\'e4nge von 2.000 Zeichen.  \f1\par
+\pard\li709\par
+\pard\cf1\f9 for\cf2\b\f5 m \b0\i\f1 i\i0   \par
+\tab\f7 Formular i wird aufgebl\'e4ttert (i = 1...)  (in der Reihenfolge der .FRM-Datei)  \f1\par
+\pard\li709\f7 Man kann mehrere solcher Befehle hintereinanderschalten. Statt der Nummer i kann auch die \'dcberschrift des Formulars angegeben werden,  z.B. \b\f5  form Buch\b0\f7 . wenn es ein Formular mit der \'dcberschrift [Buch] gibt.  \f1\par
+\pard\li709\tx9498\f7 Es mu\'df nicht die gesamte \'dcberschrift sein, ein eindeutiger Anfangsteil gen\'fcgt.  \f1\par
+\pard\li709 Mit \b\f5 if cancel ...\b0\f1   kann man checken, ob das Formular mit [Esc] verlassen wurde.  \par
+Mit \b\f5 if no ...\b0\f1   kann man checken, ob das Formular existiert  \par
+  \par
+\pard\cf1\f9 fsi\cf2\b\f5 ze \b0\i\f1 dateiname\i0\f5  \f9   \cf1\b\i\f13\fs18 *\cf2\b0\f1\fs20    \par
+\pard\li710\i0\f7 Die Gr\'f6\'dfe der Datei in Bytes wird in die iV \'fcbertragen. Wenn \i\f1 dateiname\i0\f7  fehlt, wird der Inhalt der iV genommen (anschlie\'dfend ist dieser dann \'fcberschrieben!).  \f1\par
+Mit  \b\f5 if no ... \b0\f1  kann man checken, ob es die Datei gar nicht gibt. Mit \b\f5 if >\b0\i N\b\i0  ...\b0\f1  und  \b\f5 if <\b0\i N\b\i0  ...\b0\f7   kann man hinterher pr\'fcfen, ob sie gr\'f6\'dfer oder kleiner als ein bestimmter Wert \i\f1 N\i0  ist.  \par
+\pard\li709   \par
+\pard\cf1\f9 fti\cf2\b\f5 me \b0\i\f1 dateiname   \par
+\pard\li710\i0\f7 Die Zeit der letzten Aktualisierung der Datei wird in die iV \'fcbertragen, und zwar im Format YYYYMMDD/HH:MM:SS, wie \'fcblich.   \f1\par
+Wenn \i dateiname\i0\f7  fehlt, wird der Inhalt der iV genommen (anschlie\'dfend ist dieser dann \'fcberschrieben!).  \f1\par
+Mit  \b\f5 if no ... \b0\f1  kann man checken, ob es die Datei gar nicht gibt, die iV ist dann leer.   \par
+\pard\li709   \par
+\pard\cf1\f9 get\cf2\b\f5  #xyz  \par
+get \b0 [iV] \f9   \cf1\b\i\f13\fs18 *  acon:  \cf2\b0\i0\f7\fs20 nur  \f9 get\f5\par
+\b get +\b0 [iV]\b   \par
+\pard\li709\b0\f1 Aus der mit \b\f5 open ...\b0\f7  ge\'f6ffneten Datei wird eine Zeile gelesen und in die Kategorie #xyz bzw. in die iV kopiert.  Mit \b\f5 ascii\b0\f1  bzw. \b\f5 ansi\b0\f1  kann man die iV umwandeln. Wenn also die Datei ANSI-Daten hat, man braucht aber ASCII:  \b\f5 get iv\\ascii\\ins #uxy\b0\f1  statt nur \b\f5 get #uxy\b0\f1 .  \par
+Mit \b\f5 if cancel ...\b0\f1  kann man checken, ob die Datei zu Ende war (d.h. es konnte nichts mehr gelesen werden), mit \b\f5 if no ...\b0\f7  ob sie gar nicht ge\'f6ffnet war, mit  \b\f5 if yes ...\b0\f7  ob es geklappt hat. Wenn '+' gesetzt ist, wird der gelesene Text an die iV angeh\'e4ngt.  \f1\par
+\i Siehe auch \b\i0\f5 fetch\b0\i\f1  : \i0 wenn eine bestimmte Anzahl Bytes gelesen werden soll statt einer Zeile.  \par
+\pard\b\f5   \par
+get env \b0\i name\f1     \b\i0\f5   \cf1 *\cf2\b0\i\f1\par
+\pard\li710\i0 Die Environment-Variable \i name\i0  wird in die iV kopiert. (Umgekehrt: --> \b\f5 set env\b0\f1  )  \par
+Mit  \b\f5 if no ... \b0\f7  kann man checken, ob sie nicht existierte; die iV ist dann unver\'e4ndert.   \f1\par
+\pard\b\f5   \par
+get \f9 I\f5  \b0\i\f9 url\f1   \b\i0\f5   \cf1 *\cf2\b0\i\f1\par
+\pard\li710\i0 Die \f7 hinter \i\f9 url\i0\f7  steckende Datei wird aus dem Internet geholt und in die iV kopiert, bis zu einer L\'e4nge von 250.000 Byte\f1   \par
+\pard\b\f5   \par
+\cf1\b0\f9 hel\cf2\b\f5 p \b0\i\f1 name\b\i0\f5   \cf1 *  \cf2\b0\f1 (bei \i acon\i0  : Angaben zur Datenbank ausgeben)\b\f5   \par
+help +\b0\i\f1 name\i0   \par
+\pard\li709 Hier ist \i name\i0\f7  der Name einer RTF-Datei (ohne .rtf angegeben), welche dann als Hilfetext in das Anzeigefenster geholt wird. Entspricht dem Flip h. Statt RTF darf es auch eine gew\'f6hnliche ASCII-Datei sein. Das Programm setzt als Kopf HELPHEAD.RTF davor, damit sie angezeigt werden kann - sie erscheint dann nat\'fcrlich in ganz schlichter Form.  \f1\par
+Ist der Name einschl. .RTF angegeben, kann man auch die eingebetteten Flips sehen. Das sind Zeilen, die mit ? beginnen, und zwar nach dem Schema:  \par
+\f5\\par ?\i Fliptext=\i0 x ...  \par
+\f1 Irgendwo im normalen Text der Hilfedatei m\f7 u\'df\f1  dann \i Fliptext\i0  stehen, und zwar links und rechts entweder eckige Klammern oder je ein Code 160, den man mit Alt+0160 eingibt.  \par
+\f7 Wenn ein '+' vor dem Namen steht, wird die Datei an den Text angeh\'e4ngt, der schon in der Anzeige steht, anstatt ihn zu \'fcberschreiben.  \f1\par
+Mit  \b\f5 if no ... \b0\f1  kann man checken, ob die Hilfedatei nicht gefunden wurde.   \par
+\i Sonderfall:\i0  Steht ein ! statt \i name,\i0\f7  kommt die zur Datenbank geh\'f6rige Hilfeseite, z.B. catger.rtf.  \f1\par
+Fehlt \i name\i0\f7  v\'f6llig, wird der Inhalt der iV statt dessen genommen. So kann eine vom Satzinhalt abh\'e4ngige Hilfedatei angefordert werden, oder aber ein Suchbefehl f\'fcr das Anzeigefeld. Soll z.B.  FLEXGER.RTF bzw. FLEXENG.RTF geladen werden, je nach Spracheinstellung. sollte man nur angeben:  \b\f5 help flex\b0\f1   \par
+\f7 Mehr \'fcber das Hilfesystem: siehe Datei `\cf4\ul\b\i\f1 HELP.RTF\cf2\ulnone\b0\i0\f4\fs24 `\f1\fs20   \par
+  \par
+\pard\b\f5 help =\b0\i suchwort\i0\f1   \par
+\b\f5 help >\b0\i suchwort\b\i0   \par
+\pard\li709\b0\f1 Dies sind \i Suchbefehle\i0\f7  f\'fcr den Inhalt des Anzeigefeldes!  \f1\par
+Im Anzeigefeld wird das erste Vorkommen von \i\f5 suchwort\i0\f7  gesucht, wenn = davor steht, bzw. das n\'e4chste (in Vorw\'e4rtsrichtung), wenn > davor steht. N\'fctzlich ist das vor allem, wenn lange Hilfetexte im Anzeigefeld stehen, es funktioniert aber bei jeder Art von Anzeige, also auch bei  \f1\par
+\f7 langen Datens\'e4tzen mit vielen Nachladungen.   \f1\par
+Mit zwei FLEXen kann man ein bequemes Suchen organisieren:  \par
+\f5 #uX8x var "="\\ask +Suchwort?\\help\\ins #usw  \par
+#uX9x var ">" #usw(1,0)\\ins #usw\\help   \par
+\f1 Mit Alt+8 wird dann nach dem Suchwort gefragt und nach dem ersten Vorkommen gesucht, mit Alt+9 wird die Suche fortgesetzt.   \par
+\i Alternativ:\i0  man gibt im Schreibfeld diese Phrasen ein:  \par
+\f5 p ^f x var "="\\ask +Suchwort?\\help\\ins #usw  \par
+p ^g x var ">" #usw(1,0)\\ins #usw\\help   \par
+\f1 Dann erfolgt die Suche bzw. Weitersuche mit Strg+f bzw. Strg+g.\f5   \par
+\f1   \par
+\pard\cf1\b\f9 hyp\cf2 hen\b0\i\f5   \cf1\b\f7 *\cf2\b0\i0\f1  \cf0\b\f5\par
+\pard\li709\b0\f7 Korrekte Bindestriche in der ISBN setzen. \par
+\pard\cf1\f9\par
+if\cf2\b\f5  \b0\i bedingung \f9 befehl\b\i0\f5   \cf1\f9 (*)\cf2\b0\f1   \par
+\pard\li709 Als \i\f5 bedingung \i0\f7  kann man die nachfolgenden Befehlsw\'f6rter einsetzen. F\'fcr \i\f9 befehl\i0\f1   kann jedes FLEX-Befehl eingesetzt werden, aber immer nur ein einzelner Befehl. Oft wird man deshalb einen  \b\f5 jump ...\b0\f1   verwenden.  \i\f9 befehl\i0\f7   wird jeweils ausgef\'fchrt, wenn die \i\f5 bedingung\i0\f7   erf\'fcllt ist.  \f1\par
+  \par
+\pard\b\f5 if not \b0\i bedingung \f9 befehl\b\i0\f5   \cf1 *\cf2\b0\f1   \par
+\pard\li709\i\f9 befehl\i0\f7   wird jeweils ausgef\'fchrt, wenn die \i\f5 bedingung\i0\f7   nicht erf\'fcllt ist.  \f1\par
+\pard\i\par
+\pard\li709\tx142\b\i0\f9 Es folgt eine Auswahl. -->  `\cf4\ul Alle if-Befehle\cf2\ulnone `\f5\par
+\pard\b0\i\f1   \par
+Sonderfall:\i0    \par
+Wenn hinter \b\f5 if\b0\f1   nichts steht, wird der Inhalt der iV als  \i\f5 bedingung\b\i0  \b0\i\f9 befehl\f5  \i0\f1  interpretiert. Dabei kann die iV auch mit  \b\f5 not\b0\f1   anfangen.  \par
+\pard\li709   \par
+\pard\b\f5 if \b0\i #nnn \f9 befehl\i0\f1   \par
+\b\f5 if \b0\i #nnn$a \f9 befehl\i0\f1   \par
+\tab Wenn #nnn bzw. Teilfeld a in #nnn existiert (besetzt ist), wird \i\f7 befehl\f1  \i0\f7 ausgef\'fchrt,  \f1\par
+                 z.B. kann es ein \b\f5 jump ... \b0\f1 sein.  \par
+  \par
+\f7 Die n\'e4chsten 3 Befehle k\'f6nnen in vielen F\'e4llen benutzt werden, um das Ergebnis des vorhergegangenen Befehls zu checken. Bei den einzelnen Befehlen ist das jeweils vermerkt.\b\f5   \par
+if yes \b0\i\f9 befehl\i0\f1     [gleichwertig: \b\f5 if ok\b0\f1 ...]  \par
+\tab Wurde die letzte yesno oder noyes-Frage mit "Ja" beantwortet ...  \par
+\b\f5 if no \b0\i\f9 befehl\i0\f1   \par
+\tab bzw. mit "Nein",  dann wird \i\f9 befehl\i0\f7   ausgef\'fchrt  \f1\par
+\b\f5 if cancel \b0\i\f9 befehl\i0\f1   \par
+\tab Wurde die letzte yesno oder noyes-Frage mit "Abbruch" oder [Esc] beantwortet ...   \par
+  \par
+\b\f5 if main \b0\i\f9 befehl\i0\f1   \par
+\tab\f7 Ist der aktuelle Satz ein Hauptsatz einer verkn\'fcpften Familie? ...  \f1\par
+\b\f5 if fam \b0\i\f9 befehl\i0\f1   \par
+\tab Ist der Satz ein Mitglied einer verkn. Familie (Haupt- oder Untersatz)? ...  \par
+\b\f5 if sub \b0\i\f9 befehl\i0\f1   \par
+\tab\f7 Ist der Satz ein verkn\'fcpfter Untersatz? ...  \f1\par
+\b\f5 if hiera \b0\i\f9 befehl\i0\f1   \par
+\tab Ist es ein hierarchischer Satz? ...  \par
+  \par
+\b\f5 if deleted \b0\i\f9 befehl\i0\f1   \par
+\tab\f7 ... ein gel\'f6schter Satz? ...  \f1\par
+  \par
+\b\f5 if Lock \b0\i\f9 befehl\i0\f1   \par
+\tab ... ein gesperrter Satz? ...  \par
+  \par
+\b\f5 if New \b0\i\f9 befehl\i0\f1   \par
+\tab ... ein neuer Satz (noch nicht gespeichert)? ...  \par
+  \par
+\b\f5 if diff \b0\i\f9 befehl\i0\f1    \b\f5   \par
+\pard\li709\b0\f7 Wenn der aktuelle Satz vorher ver\'e4ndert wurde (Hintergrund gelb!) wird \i\f9 befehl\i0\f7  ausgef\'fchrt, z.B. \b\f5 put\b0\f1 .   \par
+  \par
+\pard\b\f5 if Help \b0\i\f9 befehl\i0\f1    \b\f5   \par
+\pard\li709\b0\f1 Wenn momentan ein Hilfetext in der Anzeige steht, wird \i\f9 befehl\i0\f7  ausgef\'fchrt.   \f1\par
+  \par
+\pard\b\f5 if g\i N\b0  \f9 befehl\f5    \cf1\b\f1 acon\cf2\b0\i0   \par
+\b\f5 if l\i N\cf5  \cf2\b0\f9 befehl\f5    \cf1\b\f1 acon\cf2\b0\i0   \par
+\pard\li710\tab\f7 Wenn die aktuelle Erg.menge gr\'f6\'dfer bzw. kleiner als N (>= 0) ist, wird \i\f9 befehl\i0\f7  ausgef\'fchrt.   \f1\par
+\i Spezialfall:  \b\i0\f5 if g0 \b0\f1  Ist bei vorangehenden \b\f5 find\b0\f7 -Befehl etwas herausgekommen? F\'fcr das Gegenteil kann man auch schreiben:  \f1\par
+\pard\b\f5   \par
+if empty \b0\i\f9 befehl\i0\f1   \par
+\tab Wenn die aktuelle Erg.menge leer ist, wird \i\f9 befehl\i0\f7  ausgef\'fchrt.   \f1\par
+\b\f5   \par
+if z>\b0\i N \f9 befehl\i0\f1   \par
+\b\f5 if z=\b0\i N \f9 befehl\i0\f1   \par
+\b\f5 if z<\b0\i N befehl\i0\f1   \par
+\pard\li710\tab\f7 Wenn der Z\'e4hler  gr\'f6\'dfer  bzw. gleich bzw. kleiner als N ist, wird \i\f5 befehl\i0\f7  ausgef\'fchrt. N wird als ganze Zahl behandelt, d.h. ein Dezimalteil nicht ber\'fccksichtigt.  \f1\par
+\pard\b\f5   \par
+if Z>\b0\i N befehl\i0\f1   \par
+\b\f5 if Z=\b0\i N befehl\i0\f1   \par
+\b\f5 if Z<\b0\i N befehl\i0\f1   \par
+\pard\li710\tab\f7 Wenn die interne Zahl  gr\'f6\'dfer  bzw. gleich bzw. kleiner als N ist, wird \i\f5 befehl\i0\f7  ausgef\'fchrt. N kann eine Dezimalzahl sein.  \f1\par
+\pard\b\f5   \par
+if >\b0\i N befehl\i0\f1   \par
+\b\f5 if <\b0\i N befehl\i0\f1   \par
+\pard\li710\tab Wenn die \b iV\b0\f7  als Zahl gr\'f6\'dfer  bzw. kleiner als N ist, wird \i\f5 befehl\i0\f7  ausgef\'fchrt. Mit der iZ hat das nichts zu tun.  \f1\par
+\pard\b\f5   \par
+if >\i "abc" \b0 befehl\i0\f1   \par
+\b\f5 if <\i "abc"\b0  befehl\i0\f1   \par
+\pard\li710\tab Wenn die \b iV \b0\f7 als Zeichenfolge alphanumerisch gr\'f6\'dfer  bzw. kleiner als "abc" ist, wird \i\f5 befehl\i0\f7  ausgef\'fchrt.  \f1\par
+\pard\b\f5   \par
+if >\i #nnn \b0 befehl\i0\f1  \par
+\b\f5 if <\i #nnn\b0  befehl\i0\f1  \par
+\pard\li710\tab Wenn die \b iV \b0\f7  gr\'f6\'dfer  bzw. kleiner als der Inhalt von #nnn  ist, wird \i\f5 befehl\i0\f7  ausgef\'fchrt. Wenn der Inhalt von #nnn in "..." eingeschlossen ist, wird alphanumerisch verglichen, sonst numerisch. \f1\par
+\pard\b\f5  \par
+if off \b0\i befehl\i0\f1   \par
+\pard\li710 Wenn es eine `\b Offline-Datei\b0 ` gibt, dann \i\f5 befehl\i0\f1   \par
+\pard\b\f5   \par
+if res \b0\i befehl\i0\f1   \par
+\pard\li710\f7 Wenn die Datenbank \'fcber Restriktionen verf\'fcgt  (.RES-Datei), wird \i\f5 befehl\i0\f7  ausgef\'fchrt.   \f1\par
+\pard\b\f5   \par
+if v14 \b0\i befehl\i0\f1   \par
+\pard\li710\tab\f7 Wenn die Datenbank mit V14-Verkn\'fcpfungen arbeitet, wird \i\f5 befehl\i0\f7  ausgef\'fchrt.   \f1\par
+\pard\b\f5   \par
+if tbl \b0\i befehl\i0\f1   \par
+\tab Wenn die TBL-Datei gesperrt ist, wird \i\f5 befehl\i0\f7  ausgef\'fchrt.   \f1\par
+\b\f5   \par
+if usr \b0\i befehl\i0\f1   \par
+\pard\li710\tab Wenn die Datenbank gerade (durch andere User!) in Benutzung ist, \i\f5 befehl\i0\f7  ausgef\'fchrt.   \f1\par
+Ob die Nutzung durch a99/alcarta oder PRESTO/APAC etc. erfolgt, spielt dabei keine Rolle.  \par
+\pard\b\f5   \par
+if "xyz" \b0\i befehl \i0\f1  oder  \b\f5 if 'xyz' \b0\i befehl\i0\f1  \i\f5  \par
+\b\i0 if "~xyz" \b0\i befehl\i0\f1   \i\f5  \i0\f1  oder  \b\f5 if '~xyz' \b0\i befehl\i0\f1  \par
+\pard\li709\f7 Wenn die iV mit xyz anf\'e4ngt, wird \i\f5 befehl\i0\f7  ausgef\'fchrt. Soll der Inhalt einer Kategorie oder eines Teilfelds abgepr\'fcft werden, bringt man diesen Inhalt zun\'e4chst mit \b\f5 var ...\b0\f1  in die iV und wendet darauf dann \b\f5 if "xyz" \b0\f7 an. Hat man  ~  gesetzt, erfolgt der Vergleich ohne Ber\'fccksichtigung von Gro\'df- und Kleinschreibung.  \f1\par
+\i Sonderfall: \i0 Mit \b\f5 if "" ...\b0\f7  kann man pr\'fcfen, ob die iV leer ist (z.B. nach \b\f5 ask \b0\f1 )  \par
+\pard\b\f5   \par
+if =#nnn \b0\i befehl\i0\f1     (vgl. oben den Befehl  \b\f5 if #nnn ...\b0\f1  : nicht dasselbe!)  \par
+\pard\li709 Wenn die iV mit dem Anfang des Inhalts von \b\f5 #nnn\b0\f7  \'fcbereinstimmt, wird \i\f5 befehl\i0\f7  ausgef\'fchrt.   \f1\par
+\b\f5 #nnn \b0\f1 kann eine Kategorie oder eine #u-Variable sein.  \par
+\pard\b\f5   \par
+if \f9 %%\f5 abc\f9 %%\b0\i\f5  befehl\i0\f1    \par
+\b\f5 if \f9 %%\f5 ~abc%% \b0\i befehl\i0\f1      \par
+\pard\li709  Wenn die iV die \f7 Zeichenfolge\f1  \b\f5 abc\b0\f7  enth\'e4lt, wird \i\f5 befehl\i0\f7  ausgef\'fchrt.  Ist ~ gegeben, dann ohne R\'fccksicht auf Gro\'df-/Kleinschreibung  \f1\par
+Wenn man mit dem Befehl \b\f5 fetch\b0\f1  eine Anzahl Zeichen eingelesen hat, gilt folgendes:  \par
+\i Sonderfall: \i0  (Wenn der Inhalt der iV mit  \b\f5 fetch \b0\f1 eingelesen wurde) Innerhalb \b\f5 abc\b0\f7  setzt man ^A f\'fcr den ASCII-Code 01, ^B f\'fcr Code 02 usw., und ^~ steht f\'fcr das Zeichen ^ selbst Somit kann man auch nach nicht-druckbaren Zeichen suchen.  \f1\par
+  \par
+\pard\b\f5 if _abc_ \b0\i befehl\i0\f1      \par
+\pard\li709 Wenn der aktuelle Datensatz die \f7 Zeichenfolge\f1  \b\f5 abc\b0\f7  enth\'e4lt, wird \i\f5 befehl\i0\f7  ausgef\'fchrt.   \f1\par
+  \par
+\pard\b\f5 if *#nnn_abc_ \b0\i befehl\i0\f1      oder    \b\f5 if *#nnn,abc,\b0\f1   \par
+\pard\li709 Wenn Kategorie \b\f5 #nnn\b0\f1  im aktuellen Datensatz die \f7 Zeichenfolge\f1  \b\f5 abc\b0\f7  enth\'e4lt, wird \i\f5 befehl\i0\f7  ausgef\'fchrt.  \f1\par
+Wenn das Zeichen '_' in \f5 abc\f1  vorkommt, m\f7 u\'df\f1  man  \f5 ,abc,\f1   schreiben, bzw. umgekehrt.   \par
+\f7 #nnn mu\'df keine vollst\'e4ndige Kategorienummer sein: mit  \b\f5 if *#3,abc,\b0\f7   kann man z.B. pr\'fcfen, ob in einer Kategorie der Gruppe #3 die Zeichenfolge abc vorkommt!   \f1\par
+\pard\b\f5   \par
+\cf1\b0\f9 include\cf2\b\f5  \b0\i\f7 dateiname\f1    \i0  \f7  \i\f5    \cf1\b\f7 *\cf2\b0\i0\f1\par
+\pard\li709\f7 Damit kann man andere Dateien in eine FLEX-Datei an beliebiger Stelle einbauen lassen. Kein FLEX-Befehl! Zur Zeit der Ausf\'fchrung steht an dieser Stelle der Text aus der Datei, nicht mehr  \f9 include\b\f5  \b0\i\f7 dateiname\i0\f1\par
+\pard\b\f5   \f9\tab Nicht abk\'fcrzbar \par
+\f5\par
+\cf1\b0\f9 ind\cf2\b\f5 ex |i \b0\i\f1 abc        \i0 [siehe oben \b\f5 ?...\b0\f1 ]  \par
+\pard\li709\f7 Register i aufbl\'e4ttern an der Stelle \i\f1 abc, \i0  z.B.  \f5 ind |1goethe  \par
+\f1   \par
+\pard\b\f5 index p \b0\i\f1 name\i0   \par
+\pard\li709\f7 Andere Indexparameterdatei laden. Wichtig zum Testen! Anschlie\'dfend wirken in allen Funktionen die geladenen Parameter.\f5   \par
+\f1   \par
+\pard\cf1\f9 inp\cf2\b\f5 ut \b0\i\f1 n\i0   \par
+\pard\li709\f7 Damit kann die Nummer der Datei ver\'e4ndert werden, in welche die neuen Datens\'e4tze zu speichern sind. Sichtbar wird das nicht.  \f1\par
+Allerdings m\f7 u\'df\f1  die Berechtigung (\f5 access=\f1   in der INI-Datei) mindestens 2 sein.  \par
+\pard   \par
+\cf1\f9 ins\cf2\b\f5 ert #xyz  \cf1 *\cf2   \par
+\cf1\b0\f9 Ins\cf2\b\f5 ert #xyz  \par
+\pard\li709\b0\f7 Inhalt der internen Variablen in die Kat. #xyz kopieren. Es kann auch eine #u-Variable sein. Ist die iV leer, wird die Kategorie gel\'f6scht! Die Anzeige wird danach neu aufgebaut, aber nur bei \f5 Insert\f7 , d.h. der Datensatz erscheint dann sofort mit der ver\'e4nderten Kategorie auch in der Anzeige.  \f1\par
+Fehlt #xyz, wird statt dessen der Inhalt der iV genommen (wo dann sowohl #xyz als auch der Text zu stehen hat).  \par
+Wenn man  \f5 insert #uxyABC\f1   schreibt, wird noch ABC vor die interne Variable gesetzt.   \par
+\f7 Der Befehl nimmt also den Text ABC, h\'e4ngt die iV hinten an, und das Ganze ist die neue Kategorie.  \f1\par
+\i Tip:\i0  Nach mehreren \f5 insert\f1 -Befehlen kann man mit  \f5 display\\show rec\f1   den Neuaufbau der Anzeige erreichen.  \par
+Mit \b\f5 if no ...\b0\f7  kann man pr\'fcfen, ob ein Fehler auftrat, in der iV steht dann die Fehlermeldung. Gilt auch f\'fcr folgende Varianten:  \f1\par
+\pard\b\f5 insert $a+#xyz  \cf1 *\cf2   \par
+\pard\li709\b0\f7 Inhalt der internen Variablen als Teilfeld $a an #xyz anh\'e4ngen  \f1\par
+\pard\b\f5 insert $a-#xyz  \cf1 *\cf2   \par
+\pard\li709\b0\f7 Teilfeld a ersetzen, wenn es vorh. ist, sonst anh\'e4ngen. Wenn die interne Variable leer ist: Teilfeld $a l\'f6schen    \f1\par
+(z.B. \b\f5 var ""\\ins #nnn\b0\f1 )  \par
+\i Sonderfall:\i0   \b\f5 insert $$-#xyz\b0\f1   Setzt die iV an den Anfang des Kategorietextes, ohne Teifeldzeichen.  \par
+\par
+\pard\b\f5 insert _abc_XYZ_   \par
+insert ,abc,XYZ,   \par
+\pard\li709\b0\f1 Im Inhalt der internen Variablen abc durch XYZ ersetzen, ggfls. mehrfach.  \par
+\par
+\par
+\pard\cf1\f9 ixa\cf2\b dd \b0\i\f7 nummer  |iabc\i0  \tab\tab\i i\i0  = \f9 1 2 ... 9 : ;\f7\par
+\b\f5 i\f9 xadd \b0\i\f7 nummer  ~ziabc\i0  \tab\tab\i z\i0  = Kennbuchstabe eines  MultiX-Index  \par
+\b\f5 i\f9 xadd \b0\i\f7 nummer  SYMabc\i0  \tab\par
+\pard\li709 Die Zeichenfolge \i abc\i0  in das Register i einordnen, und zwar mit der Satznummer \i nummer \i0 (d.h. so, als ob der Satz mit dieser internen Nummer einen solchen Registereintrag h\'e4tte). Die \i nummer\i0  darf fehlen, dann gilt die des aktuellen Satzes. \par
+\i Achtung:\i0  Leerzeichen nur vor und hinter der\i  nummer\i0 , nicht vor \i abc\i0 . \par
+Das gew\'fcnschte Register kann somit \'fcber seine Ziffer \i i\i0 , aber auch \'fcber einen symbolischen Namen (wie in den Indexparametern definiert) angesprochen werden. Hat das symbolische Register ein Pr\'e4fix, wird es automatisch hinzugef\'fcgt, d.h. \i abc\i0   soll dann das Pr\'e4fix nicht enthalten, es w\'fcrde ja sonst verdoppelt. \par
+\i Hinweis:\i0  Eine Umcodierung der Eintragung \i abc\i0  erfolgt nicht, sie mu\'df also im FLEX-Befehl so stehen, wie sie ins Register hinein soll. \par
+\pard\cf5\b\f9\par
+\cf1\b0 ixd\cf2\b el \b0\i\f7 nummer  |iabc \par
+\cf5\b\i0\f9 ...\cf2\b0\i\f7\par
+\pard\li709\i0 Mit  \f9 del\f7   statt  \f9 add\f7   macht man die umgekehrte Aktion, d.h. man entfernt die Eintragung aus dem Register. \par
+Auch hier sind alle drei Formen m\'f6glich. \par
+Mit  \f9 if no ...\f7  kann man in beiden F\'e4llen pr\'fcfen, ob es nicht geklappt hat. \par
+\pard\i\par
+\cf1\i0\f9 jan\cf2\b as\cf5\f5  \cf2\b0\i url\cf5\b\i0  \cf2\b0\f1   startet \f7 den \f1 JanaS\f7 -Browser\f1 , diese\f7 r\f1  zeigt dann die Webseite mit der Adresse \i url\i0  an. \par
+\i\f7\par
+\cf1\i0\f9 jum\cf2\b\f5 p \b0\i label\b\i0   \cf1 *\cf2   \par
+\pard\li709\b0\f1 Sprung zur Sprungmarke \i :label\i0   (s. oben)  \par
+  \par
+\pard\cf1\f9 Jum\cf2\b\f5 p xTEXT  \par
+\pard\li709\b0\f1 wie \b\f5 display\b0\f1 , aber Ausgabe per Exportparameter statt Anzeigeparameter.   \par
+Dieser Befehl ist obsolet. Sicherer funktioniert die Ausgabe per \f7  \b\f9 export\b0\f1 , siehe dort.  \par
+\pard\b\f5   \par
+\cf1\b0\f9 kat\cf2\b\f5 list  \par
+\pard\li709\b0\f1 erstellt eine Datei KATLIST.ASY und schreibt hinein die Liste der erlaubten Kategorien (laut CFG).  \par
+\pard\b\f5   \par
+\cf1\b0\f9 key\cf2\b\f5 chk  \par
+\pard\li709\b0\f7 Die Tastatur wird gepr\'fcft. Wurde [Esc] gedr\'fcckt oder 'x', kommt die Frage: "Abbruch? j/n" (wurde nicht [Esc] gedr\'fcckt, hat dieser Befehl keine Wirkung)   \f1\par
+\pard\li710\f7 Anschlie\'dfend kann man mit  \b\f5 if yes ...\b0\f1  bzw.  \b\f5 if no ...\b0\f1   angeben, was passieren soll, wenn der Nutzer [Ja] bzw. [Nein] geantwortet hat.   \par
+Das Programm macht nicht weiter, solange nicht mit [Ja] oder [Nein] geantwortet wurde.  \par
+\f7 Will man in  Schleifen eine Abbruchm\'f6glichkeit einbauen, setzt man also z.B. ein  \b\f5 keychk\\if yes jump abbruch\b0\f1   \par
+\pard\b\f5   \par
+\cf1\b0\f9 las\cf2\b\f5 t\b0\f1    [Gegenteil: \b\f5 first\b0\f7  , siehe dort f\'fcr die Optionen \f5 sub\f1  und \f5 view\f1 !]\b\f5   \cf1 *\cf2   \par
+\pard\li709\b0\f1 Der letzte Satz der Erg.menge, in der vorher eingestellten Sortierfolge, wird geladen und angezeigt. Mit \b\f5 if no ...\b0\f1  kann man checken, ob es keinen solchen gibt, weil die Ergebnismenge leer ist.  Mit  \b\f5 last r\b0\f7  wird zugleich die Kurzzeile in die iV geladen.  Den ersten Satz l\'e4\'dft man mit \b\f5 first\b0\f1  laden.  \par
+\pard\b\f5   \par
+\b0\f9 las\b\f5 t off\b0\f1    [Gegenteil: \b\f5  first off\b0\f1  ]\b\f5   \par
+\pard\li710\b0\f1 Der letzte Satz der Offline-Datei wird geladen und angezeigt. Mit \b\f5  if no ...\b0\f1  kann man checken, ob es keinen solchen gibt, weil die Offline-Datei leer ist.  \par
+\pard\li709 Der vorige usw. kann danach mit \b\f5  prev off\b0\f1   geladen werden.  \par
+\pard\b\f5   \par
+last #\b0\f1    [Gegenteil:  \b\f5 first #\b0\f1  ]\b\f5    \cf1 *\cf2\par
+\pard\li709\b0\f1 Der letzte Satz der Datenbank wird geladen und angezeigt. Mit \b\f5 find #0 \b0\f1 wird er nicht angezeigt.  \par
+\pard\b\f5   \par
+\cf1\b0\f16\fs22 lis\cf2\b\f17 t\b0\tab\cf1\i nur\i0  \i\f16 *\cf2\i0\f17\par
+\tab\f7 Ergebnismenge als Kurzliste in die download-Datei des Auftrags ausgeben. \par
+\tab Dabei erfolgt Umcodierung gem\'e4\'df der momentanen Einstellung \f1\par
+\tab\i Achtung:\i0  In \b\i a99\b0\i0  wird dies mit dem Befehl  \b\f9 export\f5  brief\b0\f1   realisiert.\f17\par
+\b\f5\fs20\par
+\cf1\b0\f9 loa\cf2\b\f5 d\b0  \f1   \par
+\pard\li709 Nur nach vorangegangenem \b\f5  choose ...\b0\f1  (siehe dort)  \par
+\f7 Der ausgew\'e4hlte Satz wird geladen. Nochmaliges \b\f5 load\b0\f7  l\'e4dt wieder den Ausgangssatz.  \f1\par
+\pard   \par
+\cf1\f9 men\cf2\b\f5 u\b0  \i\f1 Text\i0  \par
+\pard\li709\f7 Dient zur Flexibilisierung des Hauptmen\'fcs. \f1\par
+\f7 Der anwendungsspezifische Men\'fcpunkt zwischen "Option" und "?" wird auf den Wert \i\f1 Text\i0\f7  gesetzt. Dieser Men\'fcpunkt l\'f6st den FLEX aus, der in #uXz steht. Dies kann vorher beliebig vorbereitet werden. \f1\par
+Wenn \i Text\i0  fehlt, wird der Inhalt der iV genommen. Man kann also vorher mit dem\b\f5  var\b0\f1 -Befehl die iV vorbereiten. z.B. \par
+\b\f5 var \b0\f1 #uxy \par
+\b\f5 menu\b0\f1  \par
+\f7 Als Default f\'fcr den anwendungsspezifischen Men\'fcpunkt dient der Text in Zeile 243 der Datei UIFEGER. \f1\par
+\pard  \par
+\cf1\f9 mes\cf2\b\f5 sage\b0  \i\f1 Text\i0  \par
+\pard\li709\i Text\i0\f7  wird in einer Messagebox angezeigt und mu\'df mit [OK] best\'e4tigt werden.  \f1\par
+Wenn der Nutzer etwas entscheiden soll: statt dessen Befehl   \f5 yesno\f1  \par
+Wenn er etwas eingeben soll: Befehl    \f5 ask\f1  \par
+\pard\li710\b\f5\tab\b0\f1 Wenn  \i Text\i0  fehlt, wird der Inhalt der iV genommen.  \par
+In   \i Text\i0\f7   k\'f6nnen auch Zeilenschaltungen eingebaut sein: Codes 13 10 einsetzen beim Aufbau der iV mit dem Befehl  \b\f5 var\b0\f1 . \par
+\pard\b\f5  \par
+\cf1\b0\f9 Mes\cf2\b\f5 sage\b0  \i\f1 n,Text\i0  \par
+\pard\li709\i Text\i0\f7  wird in einer Messagebox f\'fcr  \i\f1 n\i0   Sekunden angezeigt und verschwindet dann.  \par
+Wenn  \i n\i0   fehlt, sind es 10 Sekunden. \par
+Wenn  \i n,Text\i0  fehlt, wird der Inhalt der iV genommen. \par
+Tastenfunktionen: + addiert 10 Sekunden,  - subtrahiert 10 Sekunden \par
+\f7 Esc bricht ab, Enter best\'e4tigt. Anschlie\'dfend kann man mit "if no .." bzw. "if yes .." testen, ob Esc oder Enter gedr\'fcckt wurde. Wenn die Zeit normal abl\'e4uft, gilt auch "if yes .."\f5  \par
+\pard\f12\fs18  \par
+\pard\li709\f5\fs20  \par
+\pard\cf1\f9 mkd\cf2\b\f5 ir \b0\i dir\i0\f1  \par
+\pard\li709 Ein neues Verzeichnis namens \i\f5 dir\i0\f1  wird a\f5 ngelegt\f1 .  \par
+Fehlt \i\f5 dir,\i0\f1  wird der Inhalt der \ul\b iV\ulnone\b0  genommen, d.h. es \f7 mu\'df\f1  ein geeigneter Name darin stehen. Es kann ein absoluter oder ein relativer Pfadname sein.  \par
+\pard\li710 Vorsicht: innerhalb des FLEX \f7 mu\'df\f1  jeder \\ dann verdoppelt werden, in der iV aber nicht!  \par
+Mit \f5  \b if no ...\b0\f12\fs18   kann man checken, ob es gelungen ist. \par
+\pard  \par
+\cf1\f9\fs20 new\cf2\b\f5  / new 0  \cf1 *\cf2  \par
+\pard\li709\b0\f1 Es wird ein neuer, leerer Datensatz angelegt. Der aktuelle Satz wird vorher in den Offline- und in den Hintergrundspeicher kopiert (bei  \b\f5 new 0\b0\f1   passiert das nicht).  \par
+Nachfolgend manuelle Eingabe oder #- und \f5 insert\f1 -Befehle, bzw. \f5 transfer\f7 , um Kategorien aus dem Hintergrundspeicher zu \'fcbernehmen! \f1\par
+\pard\b\f5  \par
+\cf1\b0\f9 nex\cf2\b\f5 t\b0\f1    [Gegenteil: \b\f5 prev\b0\f1  , weitere Optionen siehe \b\f5 first\b0\f1 ]\b\f5   \cf1 *\cf2  \par
+\pard\li709\b0\f7 Der n\'e4chste Satz der Erg.menge, in der vorher eingestellten Sortierfolge, wird geladen und angezeigt. Mit \b\f5 if yes/no ...\b0\f7  kann man checken, ob es einen n\'e4chsten Satz gab. Wichtig bei Schleifen! Den ersten Satz l\'e4\'dft man mit \b\f5 first\b0\f1  laden, den letzten mit \b\f5 last\b0\f1 . \par
+\b\f5 next r\b0\f7   holt zus\'e4tzlich die Kurzzeile des Satzes in die iV. \f1\par
+\i Sonderfall: \i0  \b\f5 next #\b0\f7  holt den n\'e4chsten Satz in interner Nummernfolge. Mit \b\f5 if cancel ...\b0\f7  kann man pr\'fcfen, ob die Datenbank zu Ende ist, also keiner mehr da war; mit \b\f5 if no\b0\f1  , ob die Satznummer unbesetzt ist. Diese Tests \f7 mu\'df\f1  man beide machen, um sicher zu gehen!\i   \i0    \par
+\pard\b\f5  \par
+\b0\f12\fs18  \par
+\b\f5\fs20 next off\b0\f1    [Gegenteil:  \b\f5 prev off\b0\f1  ]\b\f5  \par
+\pard\li710\b0\f7 Der n\'e4chste Satz der Offline-Datei wird geladen und angezeigt.  \f1\par
+Mit \b\f5  if yes/no ... \b0\f12 kann man checken, ob es gelungen ist oder nicht (weil der letzte erreicht war oder die Menge leer ist). \par
+\pard\cf5\b\f5  \par
+\cf1\b0\f9 noy\cf2\b\f5 es\b0  \i\f1 Frage\i0  \par
+\f12\fs18\tab siehe \b\f5\fs20 yesno\b0\f12\fs18  \par
+\b\f5\fs20  \par
+\cf1\b0\f9 ope\cf2\b\f5 n \b0\i\f1 name\b\i0\f5   \cf1 *\cf2\par
+\pard\li709\b0\f1 Die Datei \i name \i0\f7 wird zum Lesen ge\'f6ffnet. Anschlie\'dfend kann mit \b\f5 get... \b0\f1 oder  \b\f5 fetch...\b0\f1  daraus gelesen werden.  \par
+Am Ende des FLEX wird die Datei automatisch geschlossen, wenn man sie nicht vorher mit \b\f5 close\b0\f7  schlie\'dft. \f1\par
+\i name\i0\f7  kann auch eine URL sei, dann wird so getan, als sei es eine Datei, und man kann sogleich mit  \b\f5 get\b0\f7   und  \f9 fetch \i number\i0\f7   daraus lesen.\f1\par
+Fehlt \i name, \i0 wird die iV genommen. Mit  \b\f5 if yes/no \b0\f7  kann man checken, ob das \'d6ffnen gelungen ist oder nicht.  \f1\par
+\f7 Zum Schreiben \'f6ffnet man eine Datei mit \b\f5  \f9 ex\f5 port f \b0\i\f1 name, \i0 und mit \b\f5 write\b0\f1  und \b\f9 export\b0\f1  schreibt man hinein. \par
+\f7 Zu einem Zeitpunkt kann stets nur eine Datei zum Lesen ge\'f6ffnet sein. \f1\par
+\pard\b\f5  \par
+open x \b0\i\f1 name\b\i0\f5  \par
+\pard\li709\b0\f1 Die Datei \i name \i0\f7 wird zum Schreiben ge\'f6ffnet. Anschlie\'dfend kann mit \b\f5 `write`... \b0\f1 oder  \b\f5 `\f9 export\f5 `...\b0\f1  hinein geschrieben werden.  \par
+Fehlt \i name, \i0 wird die `\b iV \b0 `genommen. Mit  \b\f5 `if yes/no` \b0\f7  kann man checken, ob das \'d6ffnen gelungen ist oder nicht.  \f1\par
+Der Befehl ist gleichwertig  mit \b\f5  `\f9 ex\f5 port f` \b0\i\f1 name.\i0  \par
+\pard\b\f5  \par
+\cf1\b0\f9 ord\cf2\b\f5 er \b0\i\f1 M P\b\i0\f5   \cf1 *\cf2\b0\f1  \par
+\pard\li709 Erg.menge ordnen (sortieren) \par
+\i M\i0  = Modus: a=aufsteigend, d=absteigend, n=Nach Satznummern \par
+\i P\i0  = Position des Sortierfelds in der Kurzliste: Das erste Zeichen ist Position 0 \par
+\pard\b\f5  \par
+\cf1\b0\f9 per\cf2\b\f5 form \b0\i\f1  label\b\i0\f5   \cf1 *\cf2\b0\i\f1  \par
+\tab\i0 Unterprogramm-Aufruf.\b\f5  \par
+\pard\li710\b0\f1 Es wird, wie bei \b\f5 jump\b0\f1  , zu der Sprungmarke \i  label \i0 gesprungen. Sobald aber ein Befehl \b\f5 return\b0\f7  erreicht wird, geht es mit der n\'e4chsten Zeile weiter, die auf \b\f5 perform\b0\f1  folgt. \b\f5  \par
+\b0\f7 Das Unterprogramm mu\'df keine zusammenh\'e4ngende Zeilenfolge sein. Es kann an jeder Stelle des FLEXes beginnen, d.h. das \i\f1 label\i0  kann weiter oben oder weiter unten stehen.\b\f5  \par
+\pard  \par
+\cf1\b0\f9 phr\cf2\b\f5 ase \b0\i\f1 i text\b\i0\f5  \par
+\pard\li709\b0\f1 Hiermit kann man Phrasen belegen. Der  Wert i kann eine Zahl >0 sein oder ein Buchstabe mit ^ davor, z.B. ^y (gleichwertig mit 25). Wenn \i text \i0\f7 ein FLEX-Befehl ist (beginnt mit "x " oder "X "), wird hinterher beim Ausl\'f6sen der Phrase, also z.B. mit Strg+y, dieser FLEX ausgef\'fchrt. \f1\par
+ (Achtung, nicht benutzen: i=8,9,10,13 bzw. ^h, ^i, ^j, ^m; nicht zu empfehlen sind ferner  ^a, ^c, ^v, ^x, ^z wegen der Cut-and-Paste-Funktionen )  \par
+Frei sind im Normalzustand: ^b, ^e, ^o, ^q, ^w, ^y . \par
+Wenn  \i text\i0   fehlt, wird Phrase \i i\i0\f7  gel\'f6scht. \f1\par
+Wenn  \i i text \i0  fehlt, wird statt dessen der Inhalt der iV genommen. \par
+\f7 Die Werte von 129 bis 255 sind nicht \'fcber die Tastatur zug\'e4nglich, aber man kann diesen Bereich als Speicher f\'fcr eigene Variablen benutzen! Mit \b\f5 var v...\b0\f7  kann man die gespeicherten Werte wieder auslesen. Weiterer Vorteil: diese Variablen bleiben zur n\'e4chsten Sitzung erhalten (in der Phrasendatei). \f1\par
+\pard\b\f5  \par
+\cf1\b0\f9 pip\cf2\b e\cf0\f5  \b0\i\f7 programmn\f1 ame\b\i0\f5\par
+\pard\li709\b0\f7 Hiermit wird keine Datei ge\'f6ffnet, sondern ein Programm gestartet. Mit dem Befehl  \f9 get\f7   bekommt man danach zeilenweise das, was das gestartete Programm \'fcber seine Standard-Ausgabe ausgibt. \par
+Mit  \f9 if cancel\f7   gleich nach dem  \f9 pipe\f7   oder nach einem  \f9 get\f7   pr\'fcft man, ob das Programm sich beendet hat und somit nichts mehr ausgeben wird. \par
+\pard\par
+\cf1\f9 pre\cf2\b\f5 v\b0\f1    [Gegenteil: \b\f5 next\b0\f1  , weitere Optionen siehe \b\f5 first\b0\f1 ]\b\f5   \cf1 *\cf2  \par
+\pard\li709\b0\f1 Der vorige Satz der Erg.menge wird geladen und angezeigt \par
+\f7 Wichtig bei Schleifen! Den ersten Satz l\'e4\'dft man mit \b\f5 first\b0\f1  laden, den letzten mit \b\f5 last\b0\f1 . \par
+Mit \b\f5 if yes/no ...\b0\f1  kann man checken, ob es einen vorigen Satz gab. Wichtig bei Schleifen! \par
+\i Sonderfall: \i0  \b\f5 prev #\b0\f1  holt den vorigen Satz in interner Nummernfolge. -->  \b\f5 next .\b0\f1  \par
+\pard\f12\fs18  \par
+\b\f5\fs20 prev off\b0\f1    [Gegenteil:  \b\f5 next off\b0\f1  ]\b\f5  \par
+\pard\li710\b0\f1 Der vorige Satz der Offline-Datei wird geladen und angezeigt.  \par
+Mit \b\f5  if yes/no ... \b0\f12 kann man checken, ob es gelungen ist oder nicht (weil der erste erreicht war oder die Menge leer ist). \par
+\pard\b\f5  \par
+\cf1\b0\f9 pri\cf2\b\f5 nt \par
+\pard\li709\b0\f1 Anzeigefenster ausdrucken (wie Print-Button) \par
+\pard\b\f5  \par
+print p \b0\i name\b\i0  \par
+\pard\li709\b0\f1 Print-Parameter wechseln (\i name\i0 .apr laden) \par
+\pard\b\f5  \par
+\pard\fi-710\li710\cf1\b0\f9 Put\cf2\f1        \tab\f7 Speichern mit R\'fcckfrage (Anzeige wird erneuert, denn der Satz kann sich durch PV-Routinen ver\'e4ndern) \f1\par
+\pard\cf1\f9 put\cf2\b\f5  \cf1 *\cf2\b0\f1\tab\f7 Speichern ohne R\'fcckfrage (Anzeige wird dann nicht erneuert) \f1\par
+\pard\li709 Der aktuelle Satz wird im aktuellen Zustand gespeichert (wie bei [Speichern]-Button) \par
+\pard\b\f5 Put new \par
+put new\b0\f1  \par
+\pard\li709\f7 Der aktuelle Satz wird als neuer Satz gespeichert. (Dasselbe w\'fcrde  \f5 copy\\put\f1   bewirken.) \par
+\f7 War es ein Online-Satz und wurden keine Ver\'e4nderungen gemacht, entsteht eine Dublette. \f1\par
+Mit \b\f5 if no ...\b0\f1  kann man checken, ob das Schreiben nicht funktioniert hat, es steht dann in der iV eine Fehlermeldung. \par
+ \par
+\pard\cf1\f9 qri\cf2\b\f5 x \b0\i N ixn abc\b\i0   \cf1 *\cf2\b0\i  \par
+\cf1\i0\f9 Qri\cf2\b\f5 x \b0\i N ixn abc\b\i0   \cf1 *\cf2\b0\i  \par
+\pard\li709\i0\f1 Wie \b\f5 index\b0\f1 , aber Kopie des Registerabschnitts ab \i\f5 abc \i0\f1  in die \b iV \b0 bzw. bei \b\f5 Qrix\b0\f1  direkt in die Exportdatei.  \par
+\f7 N gibt die Zahl der gew\'fcnschten Zeilen an; wenn N fehlt, wird 20 angenommen. Ist N negativ, wird r\'fcckw\'e4rts vorgegangen, und dann ist \i\f1 abc\i0\f7  die letzte Zeile der Anzeige. In der iV sind die Zeilen durch \'b6 getrennt.  Mit \b\f5 show IV\b0\f1  kann der Abschnitt sofort in die Anzeige gebracht werden, mit \b ins ... \b0  in eine Kategorie. \par
+\i ixn\i0\f7  kann ein symbolischer Registername sein oder eine Angabe wie  |3 f\'fcr Register 3. \f1\par
+\pard\li709\tx9514\i abc\i0  kann aus 2 Teilen bestehen, getrennt durch das Zeichen '<'. Dann endet die Auflistung mit dem letzten Eintrag, der kleiner ist als das, was hinter '<' steht. \par
+\pard\b\f5  \par
+qrix f \b0\i\f1 function\cf5\b\i0\f5    \cf1\i\f1 *\cf2\i0\f5\par
+\pard\li709\b0\f1 Der Wert \i function\i0\f7  (0,1,3) steht f\'fcr die Funktionsweise: \f1\par
+   (Die Einstellung gilt nur bis zum Ende des FLEXes!)\b\f5\par
+\b0\f1 0 : Registerzeilen genau so, wie sie sind  (default) \par
+\f7 1 : Satznummern hinzugef\'fcgt, getrennt durch : \b\f5 RegZeile:nn:nn:nn\b0\f1\par
+\f7 3 : gleichfalls, aber f\'fcr jede Satznummer eine eigene Zeile: \b\f5 nn|RegZeile \par
+   \b0\f1 (Damit hat man sofort eine ViewListe) \par
+4 : Sonderfall: Schreibt in die Exportdatei nur die Satznummern. Diese kann dann wie eine PRESTO-Ergebnismenge eingelesen werden (\f5 read set\b  \b0\i\f1 name \i0 ) \par
+\pard\b\f5\par
+qrix t \b0\i\f1 i\b\i0\f5   \cf1 *\cf2  \par
+\pard\li709\b0\f1  Der Wert \i i\i0\f7  (>=0) wird als Schwelle f\'fcr die Indexanzeige genommen. Nur Zeilen mit mindestens \i\f1 i\i0\f7  Eintr\'e4gen werden dann gezeigt. N\'fctzlich z.B. f\'fcr visuelle Dublettenkontrollen. Der Wert bleibt beim anschlie\'dfenden Aufbl\'e4ttern des Index erhalten, kann aber durch  \f1\par
+\b\f5 qrix t 0 \b0\f1  abgeschaltet werden.\b\f5  \par
+ \par
+\pard\cf1\b0\f9 rea\cf2\b\f5 d \f9   \cf1 (*)\cf2\f5\par
+read rec \b0\i\f1 name\cf5\b\i0\f5  \par
+\pard\li709\cf2\b0\f1 Datei `\b E.ADT\b0 ` bzw. Datei \b\f5  \b0\i\f1 name  \i0\f7  wird eingelesen. Diese kann eine Reihe von Kategorien enthalten, die dann alle in den aktuellen Satz eingef\'fcgt werden. (Erfassungshilfe; manuell mit ALt+\'e4 oder Men\'fc "Bearbeiten | Read") \f1\par
+Wenn \i name\i0  fehlt, wird der Inhalt der iV genommen. \par
+ \par
+\pard\b\f5 read extern \par
+\pard\li709\b0\f7 Datei EXTERN.DAT wird als externe Erg.menge eingelesen (wie \'fcber das Men\'fc "Datei"). \f1\par
+\pard\b\f5  \par
+read file \b0\i\f1 name\b\i0\f5  \par
+\pard\li709\b0\f1 Datei \i name\i0\f7  wird als Externdatei eingelesen. Es mu\'df sich um eine Datei vom Typ .ADT oder .ALG handeln. Sie wird den schon vorhandenen Offline-Daten hinzugef\'fcgt. \f1\par
+Vorher kann man mit \cf5\b\f5  \cf2 erase off\b0\f1  die Offline-Datei bereinigen. \par
+ \par
+\pard\b\f5 read set \b0\i\f1 name\b\i0\f5   \cf1 *\cf2  \par
+\pard\li709\b0\f1 Datei \i name\i0\f7  wird als PRESTO-Ergebnismenge eingelesen. Die Datei besteht nur aus einer Titelzeile und dann einer Liste von Satznummern in beliebiger Folge, je eine Nummer pro Zeile. (Eine solche Datei namens X.SET entsteht, wenn man vom Men\'fc "Datei" aus PRESTO aufruft und dann eine Ergebnismenge exportiert.) Es spielt keine Rolle, wie die Datei entstanden ist. Mit \b\f5 if no ... \b0\f1  kann man checken, ob es gelang und die Datei etwas enthielt, bevor man sie mit \b\f5 show list\b0\f7  anzeigen l\'e4\'dft. \f1\par
+\pard\b\f5  \par
+\cf1\b0\f9 ren\cf2\b\f5 ame\b0\i\f1   oldname newname\i0  \par
+\pard\li709 Datei mit dem Namen  \i oldname \i0  umbenennen in \i newname\i0 . Mit \b\f5 if no \b0\i\f1 befehl\i0   kann man checken, ob es gelungen ist.  Fehlen \i oldname newname\i0\f7 , wird der Inhalt der iV genommen. Beide Namen m\'fcssen vollst\'e4ndige Pfadnamen sein (anders als bei DOS)! Ist der Pfad der zweiten Datei ein anderer, wird die Datei verschoben.  \f1\par
+Wenn \i newname\i0  schon existiert, gelingt das Verschieben nicht. \par
+\pard\b\f5  \par
+\cf1\b0\f9 rep\cf2\b\f5 eat \f9  \b0\i\f7 [obsolet]\b\i0\f5\par
+\pard\li709\b0\f7 Die gesamte Befehlskette wird so lange wiederholt, bis ein Befehl nicht ausf\'fchrbar ist.  \f1\par
+Sinnvoll in Verbindung mit \f5 next / prev\f1 , um automatische Schleifen zu bilden. Kann nur als letzter Befehl in einer Kette stehen (wenn noch was folgt, wird es ignoriert) \par
+\f7 W\'e4hrend des Ablaufs einer Schleife kann man mit Taste 'x' unterbrechen und dann wahlweise weiterlaufen lassen oder abbrechen. Das geht bei einer mit \b\f5 jump \b0\f1 gebildeten Schleife nicht: \par
+\f7 Schleifen kann man auch mit if... und jump... bilden, und diese Methode wird empfohlen. Aber aufpassen:  irgendeine Ende-Bedingung ist zu pr\'fcfen, sonst h\'e4ngt das Programm. \f1\par
+ \par
+\pard\cf1\f9 ret\cf2\b\f5 urn  \cf1 *\cf2  \par
+\pard\li709\b0\f7 Wenn gerade ein Unterprogramm l\'e4uft, wird es beendet. Siehe  \b\f5 perform\b0\f1  . \par
+\f7 Andernfalls hat dieser Befehl keine Wirkung (d.h. wenn die Zeile in einem normalen Ablauf erreicht wird, dann wird sie \'fcbergangen). \f1\par
+\pard\b\f5  \par
+\cf1\b0\f9 sav\cf2\b\f5 e edit/result/offline\f1  \par
+\pard\li710\b0\f7 Speicherung aller bearbeiteten (incl. der neuen) Datens\'e4tze \i\f1 bzw.\i0   \par
+\f7 der aktuellen Ergebnismenge (nur der bearbeiteten S\'e4tze darin) \i\f1 bzw.\i0   \par
+\f7 aller Offline-S\'e4tze. \b\f5  \par
+\pard  \par
+\cf1\b0\f9 sel\cf2\b\f5 ect \b0\i\f1 prompt=antw1|antw2|antw3|...\b\i0\f5  \par
+select +\b0\i\f1 prompt=antw1|antw2|antw3|...\b\i0\f5  \par
+\pard\li709\b0\f7 Auswahlliste anbieten mit den angegebenen Antworten. Die ausgew\'e4hlte Antwort wird dann in die iV kopiert. Wenn + vor dem \i\f1 prompt \i0\f7 steht, wird die Antwort an die IV angeh\'e4ngt.  \f1\par
+Jede Antwort kann von der Form A=B sein, dann wird nur A benutzt. Sinnvoll ist das, wenn statt Klartext nur ein Code einzugeben ist. \par
+Mit \b\f5 if "" ...\b0\f7   kann man testen, ob etwas ausgew\'e4hlt wurde. \f1\par
+Mit \b\f5 if cancel ...\b0\f1   kann man checken, ob die Auswahl mit [Esc] verlassen wurde. \par
+\i Sonderfall: \b\i0\f5 select ?\b0\i\f1   \i0 Liste der benutzten Hilfetexte zur Auswahl. Wenn man anschliessend den Befehl \b\f5 help\b0\f7   gibt, wird die ausgew\'e4hlte Seite geladen.\b\f5  \par
+\b0\i\f1 Varianten:\b\i0\f5  \par
+\pard select \b0\i\f1 prompt=\b\i0\f5 #usp\b0\i\f1 .\b\i0\f5  \par
+\pard\li709\b0\f1 In #usp \f7 mu\'df\f1  dann die Liste der Antworten stehen  \par
+\pard\b\f5 select #usp\b0\i\f1 .\b\i0\f5  \par
+\pard\li709\b0\f7 In #usp m\'fcssen dann  \i\f1 prompt\i0  \i und\i0  Antwortliste stehen.  \par
+Wenn hinter \b\f5 select\b0\f1  gar nichts steht, wird der Inhalt der iV genommen. \par
+\b\f5  \par
+\pard\ul\f9 set\b0  \i und\i0  \b switch\b0  \i sind ab V29.10 gleichwertig\ulnone\f1\par
+\par
+\cf1\i0\f9 set\cf2\b\f5  \f9 / switch\f5  \cf1 *\cf2   \par
+\pard\li709\tx142\b0\f7 Setzung diverser Werte f\'fcr den weiteren Verlauf. Wenn auf \b\f5 set\b0\f1  nichts folgt, wird der Inhalt der iV genommen.\b\f5  \par
+\f9 Es folgt eine Auswahl. -->  `\cf4\ul Alle set-Befehle\cf2\ulnone `\f5\par
+\pard  \par
+set \f9 a\b0\i\f7 N\b\i0\f5  \par
+\pard\li709\b0\f7 V14-Ersetzung im aktuellen Datensatz durchf\'fchren, Modus \i N\b\i0\f5  \par
+\pard\par
+set b \par
+\pard\li709\b0\f1 Bookmark : Lesezeichen auf den aktuellen Satz setzen. (Anzeigen: \b\f5 show b\b0\f1 )\b\f5  \par
+ \par
+\pard set c0/c1\f9 /c2\f5   \cf1 *\cf2\par
+\pard\li709\b0\f1 Eingabedaten sind ASCII / ANSI (e.adt und \b\f5 insert\b0\f1 -Befehle) Default ist \f7 c\f1 0. \f7  c2 schaltet die Umcodierung v\'f6llig ab.\f1\par
+Auswirkung auch auf die Funktion \b\f5 file\b0\f1  (= Ausgabefunktion "Datei | Anzeige speichern als ...": Der Text kommt in ANSI heraus, wenn der Wert 1 gesetzt ist.  \par
+\f7 Der gesetzte Wert bleibt erhalten bis zum Sitzungsende bzw. zum n\'e4chsten \cf7\f5 set cx\cf2\b  \par
+ \par
+\pard set d/dn/db/d+/d- \par
+\pard\li709\b0\f1 Das Anzeigefeld wird auf \b n\b0\f7 ormale Gr\'f6\'dfe bzw. auf \'dcbergr\'f6\'dfe (\b\f1 b\b0 ig) eingestellt. Fehlt 'n' oder 'b', dann wird der aktuelle Zustand in den anderen umgeschaltet. \par
+\f7 Mit + und - wird die Schriftgr\'f6\'dfe im Anzeigefenster erh\'f6ht bzw. gesenkt. Das funktioniert nur, wenn im RTF-Text der Anzeige keine zus\'e4tzlichen Befehle \\fsnn vorkommen, denn diese haben dann Vorrang! Die Grundgr\'f6\'dfe wird in den Dateien DISPHEAD.RTF, HELPHEAD.RTF etc. gesetzt. Bei RTF-Hilfedateien funktioniert die Sache nicht, denn in diesen kommen normalerweise viele \\fs-Befehle vor.\b\f5  \par
+ \par
+\pard set e0/e1 \par
+\pard\li709\b0\f1 Die Editor-Fehlermeldungen werden aus- bzw. eingeschaltet\b\f5  \par
+ \par
+\pard set env \b0\i name=value\b\i0  \par
+\pard\li709\b0\f1 Die Environment-Variable \i name\i0  wird auf den Wert \i value\i0\f7  gesetzt. Dies gilt jedoch nur, w\'e4hrend \b\f1 a99\b0\f7  l\'e4uft, und nur f\'fcr den Prozess \b\f1 a99\b0 ! Begrenzt kann man sich also Daten im Env.-Speicher ablegen. (Umgekehrt: --> \b\f5 get env\b0\f1  )\b\f5  \par
+ \par
+\pard set Err \par
+\pard\li709\b0\f1 Fehlerwert und Fehlermeldungstext zuruecksetzen. Anschliessend gilt  \f5 if yes\b\par
+\b0\f7 Den Meldungstext erh\'e4lt man mit \f5 var Err\f1 . \par
+\pard\b\f5\par
+set f1/f2/f0 \par
+\pard\li709\b0\f7 Flips k\'f6nnen mit Einzel- bzw. nur mit Doppelklick aktiviert werden bzw. \'fcberhaupt nicht.\b\f5  \par
+ \par
+\pard\b0 set F1/F0\b  \par
+\pard\li709\b0\f7 Formularmodus: 1 = alles \'fcbernehmen beim Verlassen, 0 = Nutzer mu\'df bei jedem Feld die Enter-Taste dr\'fccken.  Default ist 1 (fr\'fcher gab es nur 0) . \f1\par
+\b\f5  \par
+\pard set \f9 k1\f5 /\f9 k0\f5  \par
+\pard\li709\b0\f7 k1 = keine Offline-Speicherung, k0 = Normalbetrieb mit Offline-Speicherung\f1\par
+\b\f5\par
+\pard\b0 set \f9 L\i anzahl\b\i0\f5  \cf1\b0\f9 NUR *\cf2\b\f5\par
+\pard\li709\b0\f7 Maximale Zahl abzuarbeitender Jobzeilen. Default 1000000. L0 bedeutet: unbegrenzt. \par
+\f1\par
+\pard\f9 set Logging off/on\cf5\b\f5  \f9    \cf1\i\f7 nur *\cf5\i0\f5\par
+\pard\li709\cf2\b0\f7 Das Logging beim Speichern abschalten/einschalten. \par
+Wird genutzt in  \f9 update.job\f7   zum Einspeisen einer LOG-Datei.\b\f5\par
+\pard\par
+\b0\f9 set N0/N1/N2\cf5\b\f5    \cf1\i\f7 *\cf2\i0\f5\par
+\pard\li709\b0\f7 Der Modus f\'fcr das Speichern neuer S\'e4tze wird auf 0, 1 oder 2 gesetzt. \i Standard: \i0  2 bzw. Wert von NewMode in der INI-Datei.\b\f5\par
+\par
+\pard\b0\f9 set n\i\f5 nummer\cf5\b\i0    \cf1\i\f7 *\cf2\i0\f5\par
+\pard\li709\b0\f7 Die Dateinummer f\'fcr neue S\'e4tze wird gesetzt (0 < nummer < 256).  \i Standard: \i0  1 bzw. der Wert von InputFile in der INI-Datei. \f1\par
+\pard\tab Gleichwertig:  \cf5\b\f5 input\cf2  \b0\i\f1 nummer\i0\par
+\b\f5\par
+set pX \cf5   \cf1\i\f7 *\cf2\i0\f5\par
+\pard\li709\b0\f7  Prim\'e4rschl\'fcssel f\'fcr \b\f5 update\b0\f1  wird an der Sprungmarke #-X bestimmt. (default @)\b\f5  \par
+ \par
+\pard set R\b0\i name\b\i0  \par
+\pard\li709\b0\f7 Die aktuelle Ergebnismenge erh\'e4lt den Namen \i\f5 name\b\i0  \par
+ \par
+\pard set rec loc/fre  \cf1 * \cf2\b0\f1 (\i\f7 acon:\i0\f1  \f5 set lock / set unlock\f1 )\b\f5  \par
+\pard\li709\b0\f7  Datensatz f\'fcr Schreibzugriff blockieren/freigeben\b\f5  \par
+ \par
+\pard set rec\f9 n\f5  \cf5\f9    \cf1\i\f7 Nur *\cf2\i0\f5  \par
+\pard\li709\b0\f7  Interne Nr. des aktuellen Satzes auf die Zahl setzen, die in der iV steht\b\f5  \par
+\pard\par
+set s0/s1 \par
+\pard\li709\b0\f1 Der Subfield-Hilfemodus wird aus- bzw. eingeschaltet (s. SubHelp in a99.ini)\b\f5  \par
+ \par
+\pard set tbl loc/fre \par
+\pard\li709\b0\f1 TB L-Datei blockieren/freigeben\b\f5  \par
+ \par
+\pard\b0\f9 set Timestamp off/on\cf5\b\f5  \f9    \cf1\i\f7 Nur *\cf5\i0\f5\par
+\pard\li709\cf2\b0\f7 Die Zeitstempelung beim Speichern abschalten/einschalten. \par
+Wird genutzt in  \f9 update.job\f7   zum Einspeisen einer LOG-Datei.\b\f5\par
+\pard\par
+set u\b0\i\f1 xyz\b\i0\f5   \cf1 *\cf2\b0\f1  \par
+\pard\li709\f7 Modus f\'fcr \b\f5 update\b0\f1 . x und y wie bei DOS-UPDATE  (siehe Handbuch, Kap. 9), also z.B.  \b\f5 set u\b0 41\f1 .  \par
+\f7 z=0 bedeutet: Keine Speicherung, sondern Zwischenlagerung im Offline-Speicher. Dort kann man sich die Daten erst einmal anschauen. Die Speicherung kann anschlie\'dfend \'fcber das Men\'fc "Datei" erfolgen. Fehlt z, wird 1 angenommen.\b\f5  \par
+ \par
+\pard\f9 set U1/U2/U0\cf5\f5    \cf1\i\f7 * \cf2\b0\i0\f1\par
+\pard\li709\f7  \cf4\ul\b\f1 Unicode-Modus\cf2\ulnone\b0\f7   setzen bzw. l\'f6schen. \f1\par
+wenn 1 oder 2: eingelesene Daten werden als UTF-8-Codes interpretiert und in interne Codes verwandelt. Die Akzentvertauschung wird automatisch miterledigt. \par
+\pard\b\f5\par
+set wm / wn\b0\f1  \par
+\pard\li709\f7 Fenster auf maximale Gr\'f6\'dfe setzen / Fenster auf Normalgr\'f6\'dfe und -position setzen. \f1\par
+\pard\b\f5  \par
+\cf1\b0\f9 sho\cf2\b\f5 w \b0\i\f1 xxx\i0  \par
+\pard\li709 Steuerung des Auswahlfeldes (Listenfenster links) und der Anzeige.  \par
+\f7 F\'fcr\i\f1  xxx\i0  kann stehen: \par
+<\tab\tab Back-Button (links oben) : vorigen Satz bzw. Hilfetexte\tab\tab  \par
+>\tab\tab Forward-Button \par
+reserve \tab\tab Hintergrundspeicher \par
+record  \tab\tab Datensatz-Kategorien \par
+bookmarks\tab die Lesezeichen als Erg.menge zeigen \par
+ergeb \tab\tab Liste der Erg.mengen (auch: show sets) \par
+cfg  \tab\tab Konfiguration \par
+prompt  \tab\tab Abfrageliste \par
+list \tab\tab Kurzliste der aktuellen Erg.Menge anzeigen, als Fenster (der FLEX endet dann!) \par
+List \tab\tab dasselbe, aber im Anzeigefeld \par
+keys \tab\tab\f7 Registereintr\'e4ge zum aktuellen Satz anzeigen (wie F7) \f1\par
+phras\tab\tab aktuelle Phrasenliste zeigen \par
+print\tab\tab aktuellen Satz in Druckform \par
+Print\tab\tab aktuelle Erg.Menge in Druckform \par
+iv \tab\tab Inhalt der iV im Schreibfeld auswerfen \par
+IV \tab\tab\f7 Inhalt der iV im Anzeigefeld anzeigen (anh\'e4ngen, wenn +IV),  \f1\par
+\tab\tab\tab\f7 das Zeichen \'b6 (Code 20) wirkt als Zeilentrennung  \f1\par
+Bin\tab\tab\f7 Zeige den Inhalt der iV bin\'e4r an (auch hier ist +B m\'f6glich) \f1\par
+offline\tab\tab\f7 Liste der "In Bearbeitung" befindlichen S\'e4tze \f1\par
+about\tab\tab Die "About-Box" erscheint (Version etc.) \par
+\b\f7 Jeweils 3 Buchstaben des Befehls gen\'fcgen, z.B.  sho rec.\b0\f1  \par
+ \b\f5  \par
+\pard\cf1\b0\f9 sle\cf2\b\f5 ep \b0\i\f1 n\b\i0\f5   \cf1 *\cf2\b0\f1  \par
+\pard\li709\i n\i0\f7  Millisekunden unt\'e4tig verharren, bevor weitergemacht wird. (F\'fcr 3 Sekunden mu\'df man also schreiben: sleep 3000) \f1\par
+Nutzbar z.B., wenn man eine Folge von Hilfeseiten abrollen lassen will. Das kann durch eingestreute yesno-Befehle noch flexibilisiert werden:  \par
+\f5 help name1\\sleep 4000\\yesno Weiter?\\if no end \par
+help name2\\sleep 4000... \par
+\pard\b  \par
+\cf1\b0\f9 sli\cf2\b\f5 ce \b0\i\f1 n=mFLEX\i0  \par
+\pard\li709\f7 Ein "Timer" wird gesetzt. Es h\'e4ngt vom Modus \i\f1 m\i0  ab, wie er arbeitet: \par
+\i m\i0 =i : "immer wieder" - Alle \i n\i0\f7  Millisekunden wird FLEX ausgef\'fchrt. \f1\par
+\i m\i0 =1 : "1-mal" - Nach  \i n\i0\f7  Millisekunden wird FLEX ausgef\'fchrt, also nur 1mal \f1\par
+\i m\i0\f7 =0 : der Timer (der irgenwann vorher auf "immer" gesetzt wurde) wird gel\'f6scht. In diesem Fall kommt es auf die Zahl \i\f1 n\i0  nicht an. \par
+\i FLEX\i0\f7  mu\'df mit "x " oder X " beginnen, wie sonst auch. Wenn "x ", dann m\'fcssen die Befehle direkt folgen, getrennt durch \\\\ . \f1\par
+\pard\b\f5  \par
+\cf1\b0\f9 sor\cf2\b t\cf0\f5  \b0\i\f1 MP\i0\par
+\pard\li709\b\f7 Sortieren im Arbeitsspeicher\b0\f1  \par
+\i M\i0  = Modus: a=aufsteigend\f7  (A-Z)\f1 , d=absteigend\f7  (Z-A)\f1  \f7 . Default: a\f1\par
+\i P\i0  = \f7 Sortierposition\f1 : \b Das erste Zeichen ist Position 0 \f7 . \b0 Default: 0\b\f1\par
+\b0\i\f7 Also:\i0   \f9 sort a0\f7   ordnet ab dem ersten Zeichen, und zwar aufsteigend. \par
+\pard\cf2\b\f5\par
+\cf1\b0\f9 spa\cf2\b\f5 ces  \cf1 *\cf2  \b0\f1  \par
+\pard\li710\i\tab\i0 Mehrfach-Leerzeichen innerhalb des iV-Textes beseitigen,  \par
+zwischen "..." und '...' bleiben sie jedoch stehen. \par
+\pard\i  \par
+\cf1\i0\f9 srx\cf0\f5  \i\f7 suchbegriff       \cf1\b *  \cf0\b0\i0 (ab V27)\i\par
+\pard\li709\i0 Suche in dem Text, der momentan in der iV steht, nach dem \f1  \i\f7 suchbegriff\i0\f1\par
+\f7 Wenn \i suchbegriff\i0   fehlt, wird der Inhalt der Variablen  \b\f9 #u!!\b0\f7   genommen \par
+\f13\fs18 Der \i\f7\fs20 suchbegriff\i0\f13\fs18   kann irgendein \b Regul\'e4rer Ausdruck\b0  sein. Wie solche Ausdr\'fccke aussehen m\'fcssen,  ist in einer `\cf4\ul\b gesonderten Beschreibung\cf0\ulnone\b0 ` dokumentiert. \par
+\pard\par
+\cf1\f9\fs20 srX\cf0\f5  \i\f7  \i0    [dahinter nichts angeben]\i      \cf1\b *\cf0\b0\par
+\pard\li709\i0 Dasselbe, aber verwendet den zuletzt benutzten  \i suchbegriff \i0\par
+Vorteilhaft in Schleifen, weil etwas schneller.\f1\par
+\par
+\pard\cf1\f9 STO\cf2\b\f5 P \b0\i program\i0\f1  \par
+\pard\li710\i\tab\i0\f7 Programm abrupt beenden. In Arbeit befindliche S\'e4tze werden, ohne R\'fcckfrage, nicht gespeichert! Die Erg.mengen werden aufbewahrt, wenn diese Option eingestellt ist.  \f1\par
+\i\tab\i0\f7 Eignet sich vorwiegend f\'fcr \i\f1 alcarta\i0 , damit man per Flip das Programm beenden kann. \par
+\tab Nach Abschl\f7 u\'df\f1  der Datenbank wird das Programm \i program\i0\f7  ausgef\'fchrt. Fehlt \i\f1 program\i0 , wird der Inhalt der iV als Befehl genommen. (Vorher \f5 var ""\f1  geben, um das zu verhindern!) \par
+\pard\i  \par
+\pard\fi-709\li709\cf1\i0\f9 sub\cf2\b\f5  #\b0\f1 01 \i nnn\b\i0\f5   \cf1 *\cf2\b0\f1     \par
+\pard\li709 Schaltet im Arbeitsspeicher zum hierarchischen Untersatz, in dessen #01 die Bandnummer \i nnn\i0  steht. \par
+Nachfolgende Befehle \f5 var, ins \f1 und \f5 write\f1  beziehen sich dann auf diesen Untersatz. \par
+Mit  \f5 if no ... \f7 kann man pr\'fcfen, ob es einen solchen nicht gibt. Dann bleibt der Hauptsatz eingeschaltet. \f1\par
+\i Tip:\i0  mit  \f5 sub #01\f1  \i xxx\i0   kann man zum Hauptsatz schalten (\i xxx\i0  = Bandnummer, die es bestimmt nicht gibt). \par
+\f7 Wenn man in der CFG eine andere als die #01 als Startkategorie f\'fcr einen hierarchischen Untersatz deklariert hat, mu\'df diese statt #01 eingesetzt werden. \f1\par
+\pard\i  \par
+\ul\b\i0\f9 switch\b0  \i und\i0  \b set\b0  \i sind ab V29.10 gleichwertig\ulnone\f1\par
+\par
+\cf1\i0\f9 swi\cf2 tch fam\cf5\b    \cf1\i\f7 NUR *\cf2\b0\i0\f12\fs18\par
+\tab\f13 Bilde die Ergebnismenge aller S\'e4tze, die mit dem aktuellen Satz verkn\'fcpft sind (Pica: "family") \par
+\tab Nachfolgende get- und list-Befehle beziehen sich dann auf diese Ergebnismenge. Wenn es nur darum geht, eine Satzfamilie \par
+\tab auszugeben, kann man schlicht  \f9 exp fam \f13  sagen. \f12\par
+\f13\tab\f12 ERROR wird gesetzt, wenn es keine Verkn. gibt. \f13  Man kann jederzeit zu der eigentlichen Erg.Menge  zur\'fcckschalten: \f12\par
+\par
+\f9\fs20 switch resultset\cf5\b    \cf1\i\f7 NUR *\cf2\b0\i0\f12\fs18\par
+\tab Man ist wieder an derselben Position wie vor dem "switch fam". (Der vorher aktuelle Satz wird intern erneut geladen.)\f13  \par
+\tab\f12 Dasselbe trifft bei nochmaligem "switch fam" zu: Das vormals aktuelle Familienmitglied wird wieder geladen. \par
+\pard\fi-710\li710\f13\tab Die Konsequenz ist, da\'df man eine Erg.menge durcharbeiten und dabei zu jedem Satz alle verkn\'fcpften S\'e4tze gleichfalls abarbeiten kann. \f12\par
+\pard\f13\par
+\f9\fs20 switch download 1 / 2\cf5\b     \cf1\i\f7 *\cf2\b0\i0\f12\fs18\par
+\pard\fi-710\li710\tab\f13 Download 1 / Download 2 einschalten. Es k\'f6nnen 2 Download-Parameter und -Dateien definiert sein. Normalerweise ist Download 1 aktiviert. \par
+\tab Wenn erstmals  \f5 set download 2\f13   gegeben wird, mu\'df man gleich danach   \f9 ex\f5 port param ...\f12   und  \f9 ex\f5 port file ...\f12   setzen, damit dem Programm bekannt ist, was bei\f13 m Befehl\f12  \f13  \f9 export\f13   geschehen soll. \par
+\pard\tab Anschlie\'dfende \f9 export\f12 -\f13  und \f9 write\f13 -\f12 Befehle laufen dann mit diesem Set ab, bis wieder  \f5 set download 1\f12   kommt. \par
+\pard\fi-710\li710\f13\tab Mit \f9 var e\f13  bzw. \f9 var E\f13  erh\'e4lt man die Namen der Parameter bzw. der Exportdatei des gerade mit \f9 switch dow\f13  eingestellten Downloads. \par
+\pard\i\par
+\i0\f9\fs20 switch object 1 / 2\cf5\b     \cf1\i\f7 *\cf2\b0\i0\f12\fs18\par
+\pard\fi-710\li710\tab\f13 Satz 1 / Satz 2  einschalten. Es gibt zwei interne Datensatz-Arbeitsspeicher. Normalerweise ist Satz 1 eingeschaltet, d.h. alle Aktionen werden in Satz 1 ausgef\'fchrt. \par
+\tab Jederzeit kann man aber in einem Job auf Satz 2 schalten, einen Datensatz mit \f9 find\f12  \f13 ,\f12  \f5 get\f12  oder \f5 read\f13  hineinholen, damit Aktionen durchf\'fchren und ihn auch mit \f9 put\f13  wieder speichern. \par
+\tab Vorteil: Satz 1 ist die ganze Zeit noch vorhanden und mu\'df nicht erneut geladen werden, sondern nur mit  \f9 set obj 1\f13   wieder eingeschaltet. \par
+\i\tab Empfehlung:\i0  Sicherstellen, da\'df im selben FLEX wieder auf Objekt 1 zur\'fcckgschaltet wird. Ver\'e4nderung und Speicherung des Objekt 2 ist m\'f6glicherweise problematisch. \par
+\tab Gedacht ist der Befehl haupts\'e4chlich, um im FLEX schnell mal in einen anderen Satz schauen zu k\'f6nnen und daraus etwas zu entnehmen. \par
+\i\tab Hinweis:\i0  \f9  \f7 Mit\f9    \cf4\ul\b copy obj 1\cf2\ulnone\b0    \f7 kann man den Inhalt des ersten in den zweiten Satz kopieren. (V28.5)\f5\par
+\pard\b\fs20\par
+\cf1\b0\f9 tra\cf2\b\f5 nsfer #nnn \par
+\pard\li709\b0\f1 Kategorie #nnn aus dem Hintergrundspeicher in die \b iV\b0\f7  kopieren. Mit anschlie\'dfendem \f5 ins... kan\f1 n man den Inhalt in eine Kategorie kopieren, z.B.  \f5 tra #40\\ins #40\f1\par
+\f5 var ""\\ins #unnn\f1  \par
+Wenn eine Nutzervariable  #uxy  in eine Kategorie #nnn kopiert werden soll:  \par
+v\f5 ar #uxy\\ins #nnn\f1  \par
+\pard\cf1\f9 und\cf2\b\f5 o \par
+\pard\li709\b0\f1 Entspricht dem Button [\ul W\ulnone echseln] : Umschalten zwischen Bearbeitungs- und Originalzustand. \par
+\i\f7 Zur Erl\'e4uterung: \i0 F\'fcr jeden w\'e4hrend einer Sitzung "angefa\'dften" Satz hat das Programm in seinem Offline-Speicher den aktuellen Zustand bzw. den Zustand vor der letzten Speicherung des Satzes. Mit \b\f5 undo\b0\f7   wird zwischen diesen beiden Zust\'e4nden umgeschaltet. \par
+\f1\par
+\pard\cf1\f9 upd\cf2\b\f5 ate \cf5  \cf2\b0\i\f1 dateiname     \b\i0\f5  \cf1 *\cf2  \par
+\pard\li709\b0\f1 Zusammen mit \b\f5 upload\b0\f1  entsprecht dies gleichnamigen \b\i acon\b0\i0 -Funktionen bzw. DOS-UPDATE-Funktionen (Kap. 9) \par
+\i Wichtig: \i0 (sonst passiert nichts) \par
+Vor einem \b\f5 update\b0\f1  \f7 mu\'df\f1  man mit \b\f5 set u...\b0\f1  den Modus setzen; --> \b\f5 set\b0\f1 , und evtl. mit  \par
+\b\f5 set p...\b0\f7  den zu benutzenden Prim\'e4rschl\'fcssel vorw\'e4hlen.  \f1\par
+\pard\cf1\f9 upl\cf2\b\f5 oad \cf5  \cf2\b0\i\f1 dateiname     \b\i0\f5  \cf1 *\cf2  \par
+\pard\li709\b0\f1 Das entspricht einem \b\f5 update\b0\f7  mit Modus 01, d.h. jeder Satz wird als neuer Satz behandelt (keine Pr\'fcfung des Prim\'e4rschl\'fcssels) und eingemischt. Der Ablauf kann allerdings interaktiv \'fcberwacht und kontrolliert werden.  \f1\par
+Nicht nur Grunddateien (Typ .ALG) kann man mit \b\f5 update\b0\f1  oder \b\f5 upload\b0\f1  einmischen, sondern auch (wie bei \b\i acon\b0\i0 ) die einfacheren Externdateien (Typ .ADT), die man sich auch mit anderer Software erstellen kann. \par
+\pard\f13\fs18 F\'fcr beide F\'e4lle gilt: Fehlt \cf5\b\f5\fs20  \cf2\b0\i\f1 dateiname , \i0\f7 wird angenommen, da\'df die Daten gleich anschlie\'dfend folgen, im Externformat, als Bestandteil der FLEX-Datei.\i\f1     \i0\f12\fs18  \par
+ \par
+\cf1\f9\fs20 var\cf2\b\f5 iable\b0  \i\f1 cstring\b\i0\f5   \cf1 *\cf2\b0\i\f1     \i0 (Was ist ein `\cf4\ul\i cstring\cf2\ulnone\i0 `? Siehe unten)  \par
+\pard\li709 Der  \i cstring \i0  wird interpretiert und in die interne Variable kopiert. Ein c\i string\i0  kann in derselben Weise bei dem Befehl   \b\f5 write\b0\f1  verwendet werden (siehe unten) \par
+Fehlt \i cstring\i0 , wird statt dessen der Inhalt der iV interpretiert, d.h. es entsteht daraus ein neuer Inhalt in der iV. \par
+\i Sonderfall:\i0  Mit   \f5 var "" \f1   wird die iV leer gemacht. \par
+\pard\b\f5 variable +\b0\i\f1 cstring \b\i0\f5   \cf1 *\cf2\b0\f1  \par
+\pard\li709\f7 Inhalt an die iV hinten anh\'e4ngen. Hiermit kann man beliebige Inhalte zu einer Zeichenfolge verkn\'fcpfen, z.B. \f1\par
+\f5 var #40 ": " #20\f1           Inhalt von #40 und #20 in iV kopieren mit ": " dazwischen \par
+\f5 var +" (" #76 ")"\f7         (Inhalt von #76) an iV hinten anh\'e4ngen \f1\par
+\f5 ins #upt         \f1         iV in #upt speichern (Die iV als solche bleibt erhalten!) \par
+\pard\f12\fs18  \par
+Nach einem \f5 var\f12 -Befehl kann der Inhalt der iV mit einem \f5 ins\f12 -Befehl in eine Kategorie oder #u-Variable kopiert werden, oder es wird einer derjenigen Befehle gegeben, die diesen Inhalt dann als Argument benutzen. Bei diesen Befehlen steht immer als Kommentar:  Wenn ... fehlt, wird der Inhalt der iV verwendet.   \par
+\f1\fs20  \par
+ \par
+\cf1\f9 vie\cf2\b\f5 w\b0\f1   \i name\i0  / \b\f5 View\b0\f1   \i name\i0  \b\f5   \b0\f1    [zur View-Technik siehe "allegro news" 58] \par
+\pard\li709 ViewListe \i name\i0\f7  \'f6ffnen bzw. auch anzeigen. Das \'d6ffnen ist notwendig, wenn man den Befehl  \b\f9 export\f5  view\b0\f1   benutzen will, ohne die ViewListe anzeigen zu lassen. \par
+Die Datei \f7 mu\'df\f1  im ASCII-Code sein, sonst \f7 mu\'df\f1  man vorher  \f5 set c1\f1   und hinterher  \f5 set c0\f1   schreiben. \par
+\f7 Die ViewListe kann anschlie\'dfend mit  \b\f9 export\f5  brief\b0\f1  als solche exportiert (in die Ausgabedatei geschrieben) werden und mit\f7  \f1  \b\f9 export\f5  view\b0\f7  die Datens\'e4tze selbst in der Reihenfolge der ViewListe. \f1\par
+\pard\i  \par
+\cf1\i0\f9 wri\cf2\b\f5 te  \cf1 *\cf2  \par
+\pard\li709\b0\f7 Inhalt der internen Variablen in die Ausgabedatei schreiben (ohne \'c4nderung) \f1\par
+\pard\b\f5 write ^ \par
+\pard\li709\b0\f1 Dasselbe, aber Strg-Kombinationen  werden durch die Steuercodes ersetzt (^A durch 1 etc.), genau umgekehrt wie beim Befehl  \b\f5 fetch\b0\f1  \par
+Nur nach einem Einlesen von Daten mit \b\f5 fetch\b0\f7  ist das sinnvoll. Die Daten k\'f6nnen zwischenzeitlich in eine Kategorie oder #u-Variable kopiert und mit \b\f5 var #...\b0\f7  wieder in die iV zur\'fcckgeholt worden sein.  Wegen der Umwandlung in ^A etc. geht kein Steuerzeichen dabei verloren. \f1\par
+\pard\b\f5  \par
+write\b0\f1   \i cstring\b\i0\f5   \cf1 *\cf2\b0\f1      (Was ist ein `\cf4\ul\i cstring\cf2\ulnone\i0 `? Siehe unten)  \par
+\pard\li709 So kann man am schnellsten Satzinhalte \f7 kombiniert mit\f1  beliebigen Text ausgeben. \line Der \i cstring\i0\f7  kommt zus\'e4tzlich in die iV, steht da also anschlie\'dfend drin! \f1\par
+\i Beispiel: \par
+\i0\f5 write "Titel: " #20 n "Verfasser: " #40 n "Ort: " #74 " (" #76 ")" \par
+\f1 produziert eine Ausgabe in dieser Form: \par
+ \f5  \par
+   Titel: Hamlet \par
+   Verfasser: Shakespeare, William \par
+   Ort: London (1982) \f1  \par
+ \par
+\f7 Das 'n' ist der Befehl f\'fcr eine "neue Zeile". Dies mu\'df ausdr\'fccklich gesetzt werden, denn es wird kein Zeilenvorschub automatisch eingebaut! \f1\par
+Schlichte Exporte kann man hiermit, gen\f7 so\f1  bei \b\i acon\b0\i0 , ohne Exportsprache machen. \par
+\f7 Soll dabei von ASCII nach ANSI umcodiert werden, mu\'df man das \'fcber die iV machen, also \f1\par
+\b\f5 var \b0\i\f1 cstring\b\i0\f5\\ansi\\write\b0\f1   statt nur   \b\f5 write \b0\i\f1 cstring\i0   \par
+\pard  \par
+\cf1\f9 xco\cf2\b de\cf0\b0\f5  \i\f9 ab  \f7       \cf1\b *  \cf0\b0\i0 (ab V27)\f1\par
+\pard\li709\f7 Codiere den in der iV stehenden Text um, und zwar mit der Tabelle p bzw. q \par
+Folgende Werte kann man setzen: \par
+\i\f9 a \i0\f7 = \f9 i d x y\f7        Index-, Display-, Exportparameter, und darin: (y siehe unten) \par
+\i Hinweis:\i0  F\'fcr  \cf1\i acon\cf0\i0   gelten nur i und x \par
+\i\f9 b \i0\f7 = \f9 p q\f7   \tab p- bzw. q-Tabelle \par
+Anschlie\'dfend steht in der iV der entsprechend umcodierte Text. \par
+\pard\cf2\b\f9 xcode y\cf0\b0\i   \cf1\b\f7 * \cf0\b0\i0    \f1\par
+\pard\li709\f7 Zur Umcodierung der iV wird eine Tabelle benutzt, die man vorher mit \b Hilfsbefehlen\b0  der Form  \par
+\b\f9 y \b0\i x\b\i0  ...\b0\f7  und  \b\f9 p \b0\i x\b\i0  ...\b0\f7    anlegen kann. \par
+\pard Die Hilfsbefehle gelten jeweils f\'fcr die gesamte Sitzung, m\'fcssen also nicht in jedem FLEX erneut gegeben werden. \par
+Sie bilden die Umcodiertechnik des alten Programms IMPORT.EXE nach und sehen folgenderma\'dfen aus: \par
+\f12\fs18\par
+\cf5\b\f9\fs20 y \cf0\b0\i x u  \i0\f1\par
+\pard\li709\f7 Ersetzt beim Befehl  \f9 xcode y\f7   jedes \i\f9 x\i0\f7  durch ein  \i\f9 u\i0\f7 . \par
+\pard\cf5\b\f9 y \cf0\b0\i a/z A  \i0\f1\par
+\pard\li709\f7 Ersetzt beim Befehl  \f9 xcode y\f7   jedes \i\f9 a\i0\f7  durch ein  \i\f9 A\i0\f7 ., jedes \i\f9 b\i0\f7  durch ein \i\f9 B\i0\f7  usw. \par
+\pard\cf5\b\f9 y .\cf0\b0\i\f7 nnn mmm\f9   [ \f7 Sonderfall:\i0  256 an der Stelle von \i mmm\i0  bedeutet: Code \i nnn\i0  ignorieren. ]\f1\par
+\pard\li709\f7 Diese Variante ersetzt beim Befehl  \f9 xcode y\f7   jeden Dezimalcode \i nnn\i0  durch den Code \i mmm\i0 . \par
+\pard\cf5\b\f9 p \cf0\b0\i x abc ABC  \i0\f1\par
+\pard\li709\f7 Sog. \i Protyp-Ersetzungen\i0 . Damit kann man Doppelcodes ersetzen: wenn \i\f9 xa\i0\f7  auftritt, wird es durch \i\f9 A\i0\f7  ersetzt, \i\f9 xb\i0\f7  dagegen durch \i\f9 B\i0\f7  usw. Solche Codierungen treten z.B. in MARC-Daten auf, auch wenn diese per Z39 gewonnen werden. \par
+\pard\par
+\cf1\f9 xml\cf2\b\f5  0/1/2/3  \cf1 *\cf2\par
+\pard\li709\b0\f1 Der aktuelle Datensatz wird in einer von vier XML-Varianten ausgegeben. \par
+Bedeutung der Ziffern: Anstelle von  ... kommt jeweils der Inhalt einer \i allegro\i0 -Kategorie heraus. \par
+\par
+0 :   \f5 <label>...</label>\f1\par
+\pard\li994 Hier ist label die Bezeichnung, die sich aus der CFG ergibt.  Wenn das Datenfeld eine Mehrfachkennung hat, wird zuerst die Abfrageliste von oben nach unten nach der Kategorienummer durchsucht. Wird dort nichts gefunden, oder steht Spatium hinter der Kategorienummer, wird die Deskriptorenliste durchsucht. \par
+\pard\li709\par
+1 :   \f5 <feld nr="\i\f1 knum\i0\f5 ">...</feld>\f1\par
+      \i knum\i0  ist die Kategorienummer \par
+\par
+2 :   \f5 <feld lb="\i\f1 label\i0\f5 ">...</feld>\f1\par
+      Wie 0, aber statt der Kategorienummer wird im Attribut  \f5 lb\f1   das Label angegeben \par
+\par
+3 :   \f5 <feld lb="\i\f1 label\i0\f5 " nr="\i\f1 knum\i0\f5 ">...</feld>\f1\par
+      Kombination aus 1 und 2 \par
+\pard\b\f5\par
+xport \f9  \i\f7 Siehe\i0\f9  export\b0\i\f1  \par
+\i0\par
+\cf1\f9 yes\cf2\b\f5 no \b0\i\f1 Frage\i0  \par
+\cf1\f9 noy\cf2\b\f5 es\b0  \i\f1 Frage\i0  \par
+\pard\li709 Die \i Frage\i0  wird in einer Ja/Nein/Abbruch-Box gezeigt. Ohne Antwort geht es nicht weiter. \par
+Die Antwort kann mit einem nachfolgenden \b\f5 if\b0\f1 -Befehl ausgewertet werden, z.B.  \par
+\b\f5 if no end\b0\f1  \par
+\f7 Die Antwort bleibt bestehen, bis z.B. das n\'e4chste yesno oder noyes oder ask etc. kommt, d.h. es k\'f6nnen sich mehrere if-Befehle darauf beziehen. \f1\par
+Bei "noyes" ist der Button [Nein] statt [Ja] der default-Button! Dann \f7 mu\'df\f1  der User bew\f7 u\'df\f1 t auf [Ja] gehen - [Enter] bedeutet sonst Nein. \par
+\pard\li710 Wenn  \i Frage\i0  fehlt, wird der Inhalt der iV genommen.  \par
+In   \i Frage\i0\f7   k\'f6nnen auch Zeilenschaltungen eingebaut sein: Codes 13 10 einsetzen beim Aufbau der iV mit dem Befehl  \b\f5 var\b0\f1 . \par
+\pard  \par
+\b\f5 //  \cf1 *\cf2  \par
+\pard\li709\b0\f1 Leitet eine Kommentarzeile ein. \par
+\i\f7 ACHTUNG:\i0  \f1  In \i a99\i0\f7  wird auch jede Zeile als Kommentar behandelt, die mit Leerzeichen anf\'e4ngt, \cf1 in  \i\f1 acon\i0  \f7  \f1 ist das nicht so\cf2 . \par
+ \par
+\pard  \par
+\cf1\fs28 Was ist ein \b\i cstring\b0\i0 ?\cf2\f7\fs20    (Abk\'fcrzung von "code string") \f1\par
+\f7 Dazu gibt es eine `\cf4\ul\b ausf\'fchrliche Beschreibung\cf2\ulnone\b0 `.\f1  \par
+ \par
+  \par
+?Beispiele=x h flex=FLEX-Beispiele \par
+?So erstellt man FLEXe=x h flex=So erstellt man FLEXe \par
+?Befehle A-L=h flex1 \par
+?cstring.flx=X cstring \par
+?cstring=h =Was ist ein cstring? \par
+?phrase=h xphrase \par
+?export f=h xexport \par
+?Beispiele=x h flex=FLEX-Beispiele  \par
+?So erstellt man FLEXe=x h flex=So erstellt man FLEXe  \par
+?Befehle M-Z=h flex2  \par
+?cstring=h =Was ist ein cstring?  \par
+?super.rtf=h super \par
+?Verlautbarung 154=h vb154 \par
+?aresqa=h aq \par
+?Voll-Dokumentation=h xa \par
+?Alle set-Befehle=h xset \par
+?Alle if-Befehle=h xif \par
+\f7 ?ausf\'fchrliche Beschreibung=h xcstring \f1\par
+\par
+}
+ 

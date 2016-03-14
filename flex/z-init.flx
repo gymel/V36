@@ -1,0 +1,123 @@
+  Z-INIT.FLX : ZAboM-Vorbereitungen: Flip-Buttons setzen u.a.
+  2004-09-09
+
+if not #uOZ jump start
+noyes ZAboM ist bereits initialisiert. Nochmal?
+if not yes help zabom;end
+
+:start
+  Flip-Buttons vorbereiten
+flip 4&4: Bearb.=X cfga
+flip 5&5: Abonn.=X z-nabo
+  Button 6: je nachdem, ob von zaba.rtf oder zabom.rtf ausgegangen
+var "&6: z-Menü=h " X
+flip 6
+flip 7&7: z-Funktion=X o-func
+flip 8&8: Speich.=X cfgb
+  Lieferantensaetze laden und alle in $Lief speichern,
+  mit /// als Trenner
+set obj 2
+
+include zabom.inc
+
+  spezifische Formulare holen
+if not #uOR addform ord.frm
+
+find |; SYSL?
+if l1 jump noli
+
+ Lief.codes und -namen alle in $Lief speichern:
+first
+var ""
+ins $Lief
+:lif
+var $Lief "///" #9A
+ins $Lief
+next
+if yes jump lif
+close res
+
+  Liste der Mitarb. erstellen, in $Mita ablegen
+:mlis
+  Erg.Menge der Mitarb = Nutzerklasse 5, Reg. 10 A5 ...
+find |: A5?
+  Daraus eine Datei machen: kuerzel - Name 13 10 kuerzel - name
+var ""
+ins $Mita
+
+first
+:mli
+var #9B$$
+var (1,0)
+  wenn es ein Kuerzel gibt, dann dieses!
+if #9B$i var #9B$i
+ins #umn
+  Code - Name
+var $Mita n #umn " - " #9B$n
+ins $Mita
+next
+if yes jump mli
+  Erg.menge weg
+close res
+
+  Wird im FLEXsystem nicht gebraucht: (altes ORDER-Konzept)
+  Textbausteindaten laden und alle in $Text speichern,
+  mit /// als Trenner
+
+ find |; SYSX?
+ if l1 jump notx
+
+ first
+ var ""
+ ins $Text
+ :txt
+ var $Text "///" #9A
+ ins $Text
+ next
+ if yes jump txt
+
+  Pruefen, ob Schluessel mit zabo vorkommen
+qri 1 |9 zabo0
+var (f" " b" " f" ")
+if "zabo0 jump done
+  Nein: dann provisorisch einf., damit automatische
+     Nummernvergabe bei 1 anfaengt
+ixadd 0 |9zabn000000
+ixadd 0 |9zbnc000000
+ixadd 0 |9zreb000000
+ixadd 0 |9e00000
+ixadd 0 |9l0000
+ixadd 0 |9y0000
+
+jump done
+
+:noli
+set obj 1
+var "Es sind noch keine Lieferantendaten vorhanden" n "Die Datenbank ist wohl noch nicht auf ORDER/ZAboM vorbereitet"
+mes
+help zabom
+end
+
+:done
+  Erg.Menge beseitigen
+close res
+set obj 1
+var $Lief (f"/")
+ins $Lief
+  var $Text (f"/")
+  ins $Text
+
+  Flag: ORDER und ZAboM sind beide aktiviert!
+#uOR 2
+#uOZ 1
+  Parameter d-krtf.apr laden
+var a
+if not "d-krtf" disp p d-krtf
+  "Initialisierung" in zabom.rtf loeschen
+#ua!
+var X
+if "zaba" help zaba;end
+help ZAboM
+mes ZABOM ist aktiviert! Alt+7 ist jetzt Hotkey
+
+

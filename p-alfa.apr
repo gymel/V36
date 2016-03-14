@@ -1,0 +1,90 @@
+  P-LISTE.APR : Listendruck
+  980416      von Winfried Goss
+              (Aufzurufen nach der Ausgabe mit S-LISTE.APR und Sortierung)
+
+
+    *  Jede mit "; " abgetrennte Signaturangabe in #90 wird rechtsbuendig
+       und ggf. auf neuer Zeile ausgegeben. Das Format lautet wie folgt:
+       Titel[ : Bandtitel][ / Verf.] (Jahr)[. Preis: {Preis}]
+                                    {Signatur erstes Exemplar}[/{Status}]
+
+    *  Ist -Uai0 beim Aufruf _nicht_ gesetzt:
+       Titel[ : Bandtitel][ / Verf.] (Jahr)[. Preis: {Preis}]
+       [ * verliehen: Name; TT.MM.JJ]               {Signatur}[/{Status}]
+
+       Evt. Endabschnitt aktivieren, wenn die Liste zur Best„tigung der
+       Entleihungen benutzt werden soll.
+
+pn="Titelliste"
+
+  ----------- Konstanten --------------------------------------------------
+
+zl=77         Zeilenlaenge
+zm=62         Seitenumbruch nach 60 Zeilen
+z1=0          kein Seitenumbruch innerhalb der Aufnahme
+ff=2          Anzahl Fusszeilen
+ae=13 10      Aufnahme-Ende
+i4=1          Stammsatz-Ersetzungen
+tPRINTER      PRINTER.APT nachladen
+
+  ----------- Anweisungsteil -----------------------------------------------
+
+1=" --"
+  Ueberschrift:
+2=C &0 "Bibliothek ..."
+
+  Titelangabe in #uti speichern. Falls nicht identisch mit letzter Aufnahme:
+#u1 +#20 =tv         weiter mit Titel
+#u1 +#76 1 e0        sonst: mit Jahr
+
+#20 U         Titel ausgeben, Nichtsortierwort uebergehen
+ #20 i4,ª b"ª" e"ª" ", "     alternativ: Nichtsortierwort mit ", " anhaengen
+ #20 U E100    alternativ: Titel nach 100 Zeichen beenden
+ #20 u b100 "..." e3         Titel laenger als 100 Zeichen: "..." anhaengen
+ #40 p" / "    Verf. anhaengen
+#40 b", " e" [" p" / "      alternativ: Vorname
+#40 e"," " "         Nachname
+#40 b"[[]" " ["      Funktionsbez.
+#76 " (" P")"        Erscheinungsjahr
+#95 ". Preis: "
+#90 +S b" " dsg asg         Signatur in #usg speichern, ->
+#+#           sonst fertig
+
+#-S    Signaturangaben: jeden mit "; " abgetrennten Teil separat behandeln
+#nr dsx e0           wenn Ausgabe Datenbankname nicht erwuenscht
+ #90 e" " P" " dsx asx       sonst alternativ: Datenbankname nach #usx
+#usg +#98S i4,p b1 e"[;]" P"/Pr„senz" Asx       je nach Status
+#usg +#98S i4,v b1 e"[;]" P"/Verlust" Asx
+#usg +#98L i4,l b1 e"[;]" dsy Asx
+#usg +#98S b1 e"[;]" Asx   falls nicht ausgeliehen ->
+#98L
+#uai +#98S i4,0 "(verliehen) !" e"!" asx
+#usg e";" b"u" e"" asy    Entleiher
+#usg e";" b"D" b6 f48 "; " Asy   Tag
+#usg e";" b"D" b4 e2 f48 "." Asy  Monat
+#usg e";" b"D" b2 e2 "." Asy      Jahr
+#usy " * verliehen: " C
+#98S
+#usx R        Ausleihinformationen rechtsbuendig ausgeben
+#usg +S b"; " =sg    ggf. mit naechstem Teil beginnen, Schleife
+#+#           sonst fertig
+
+ #- Endabschnitt ggf. aktivieren
+#uai +# i4,0 e0
+#dt { C*4 &0 "Ich best„tige die Ausleihe der Titel:  " } b5
+#t{ "   " "_"*22 C &60 "Unterschrift" }
+
+  ----------- Kopf- und Fussabschnitte -------------------------------------
+
+K
+#p2 2 "Seite " R     Seitenzahl rechtsbuendig
+#t{ C &0 "-"*78 C }
+
+ F             zum Testen von 'zm' aktivieren
+ #t{ "-" }
+
+  ----------- Zeichenumwandlungen etc.: ------------------------------------
+
+p ª 1         Nichtsortierzeichen weglassen
+
+

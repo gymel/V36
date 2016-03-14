@@ -1,0 +1,49 @@
+  PRINT-R.FLX : Print result set using print parameters
+  2002-05-23
+
+if empty jump fehler
+
+  Exportparameter sichern
+var e
+ins #uwe
+
+var "Momentan eingestellt als Druckparameter: " d n
+var +"Sollen diese verwendet werden?"
+yes
+if can end
+if no jump druckparam
+
+:setparam
+  Druckparameter zum Export nehmen
+var d
+xport p
+
+  Datei liste.rtf oeffnen (wird ueberschrieben!)
+open x liste.rtf
+  und longhead.rtf als Kopf reinschreiben
+wri Flonghead.rtf
+
+  Erg.Menge exportieren
+dow set
+  Fussbefehl ausfuehren (Abschnitt F in den Parametern)
+      fuer RTF steht da nur drin, dass } angehaengt wird
+dow F
+  AusgabeDatei schliessen
+close x
+var "Datei " W "\\LISTE.RTF ist fertig. " n "Die Datei kann z.B. mit Word eingelesen werden"
+mes
+  Exportparameter wiederherstellen
+var #uwe
+xport p
+end
+
+:fehler
+mes Momentan keine Ergebnismenge!
+end
+
+:druckparam
+xport p ?
+if no jump druckparam
+var e
+print p
+jump setparam

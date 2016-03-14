@@ -1,0 +1,123 @@
+
+Verlautbarung 243 der Entw.Abt.                              2011-10-31
+-------------------------------
+
+V31.10 : Weitere Verbesserungen an Details
+------------------------------------------
+
+d-wrtf.apr: Hierarch. Saetze!
+-----------------------------
+Bei diesen wurde nur der erste Untersatz angezeigt. Behoben.
+Die Sondervariable #hi wurde ausserdem in a99 und acon nicht
+zuverlaessig ausgewertet. Auch behoben.
+
+
+
+JanaS : Verbesserungen in einigen Kleinigkeiten
+-----
+Im Menue "Datei" gibt es "Oeffnen". Dann erscheint eine
+Eingabezeile, in die man jede URL eintragen kann.
+Tip: Mit  F10 Enter Enter  geht das am schnellsten.
+(Leider ist die Behandlung von Steuer- und Funktionstasten in
+JanaS nicht sehr leicht zu loesen.)
+
+
+FLEX
+----
+get I...  kann bis 4MB grosse Dateien in die iV holen
+          statt vorher nur 255000 Byte.
+
+update
+   war nicht in allen Modalitäten zuverlaessig, das wurde gerichtet.
+   Vor allem  upd 411 und 311 waren nicht immer ok.
+   Hinweis: Wenn Update-Sätze eine #99e (Aenderungsdatum) enthalten,
+   wird diese nicht übernommen. Falls dies im Ausnahmefall gewünscht
+   ist: eine Variante der CFG verwenden, in der ce ausgeblendet ist.
+
+if =zahl
+   Der Zahlenvergleich mit = ging nicht korrekt, bei a99 und acon.
+
+
+a99
+---
+Der Menuepunkt  "Bearbeiten / Neuaufnahme (F9)" konnte nicht mit
+set B269-  grau und inaktiv gesetzt werden. Jetzt geht das. Er ist
+ja auch unnötig, weil man mit F9 oder Button [Neusatz] schneller
+zu der Neusatzfunktion kommt.
+
+
+acon
+----
+#u2 konnte nicht exportiert werden, wenn das Schema mehr als
+dreistellig ist. Jetzt geht's.
+
+
+Fehlende Fehlermeldung in Anhang C
+----------------------------------
+a99:  "too many field definitions"
+Das bedeutet: Die CFG hat zu viele Deskriptorzeilen (#-Zeilen).
+
+Abhilfe:
+
+md1000  
+
+in die CFG schreiben, oder eine andere Zahl, die größer sein darf,
+aber nicht kleiner, als die Zahl der #-Zeilen.
+(s. Anh. A.1.2/.3)
+
+
+srch 32bit
+----------
+Ein erstes Release der angekuendigten 32bit-Variante von SRCH
+ist freigegeben. Man ruft es genauso auf wie srch, aber es ist
+ein reines Konsolprogramm, d.h. es fragt fehlende Optionen
+nicht interaktiv ab, sondern nimmt entweder einen Defaultwert an
+oder bricht mit Fehlermeldung ab. 
+Das neue Programm hat vorerst den Namen  srch32.exe  und ist zunaechst
+mal zum Testen gedacht. Die in der Entw.Abt. durchgefuehrten Tests
+verliefen alle positiv und lieferten exakt dieselben Resultate wie
+das alte Programm, aber wie immer konnten wir natuerlich in endlicher
+Zeit nicht alle Eventualitaeten durchprobieren.
+
+Zwei typische Aufrufe:
+(Es ist noch nicht garantiert, dass ALLE alten Aufrufe klappen)
+
+1.
+srch32 -kn -dc:\allegro\neutest\bank*.nld -sshakespeare
+     -bc:\allegro\neutest\bank -ei-1/c:\allegro\neudat.alg -f4 -m0 -v0
+
+Die letzten drei Angaben braucht srch32 nicht! Wenn -k fehlt,
+wird -ka angenommen, also a.cfg. Ohne die Option -b erfolgt
+keine V14-Ersetzung.
+Fehlt der Exportdateiname in -e, wird stdout angenommen.
+
+Ersetzt man "srch32" durch "srch", wird das 16bit-Programm gestartet
+und liefert dasselbe Ergebnis.
+Wird keine echte Suche gewünscht, sondern nur Export, kann man
+bei srch32 die Option -s0 weglassen.
+Optionen koennen in "..." eingeschlossen werden, um z.B. mehrteilige
+Dateinamen zu ermoeglichen: -d"name der datei" oder -s"kurt tucholsky"
+Statt Aufrufoptionen sind auch die Environment-Variablen -d und -b
+verwendbar, wie es in einigen alten Batches ueblich ist, z.B. in
+der vom CockPit erzeugten ccc.bat.
+
+
+2.
+Geht es um die Verarbeitung einer einzelnen .ALD oder .ALG, die
+sonstwo liegt, und es sollen 2 Exportdateien entstehen:
+
+srch32 -kn -dname.alg -bd:\daten\katalog\cat -stucholsky 
+      -ei-1/i2.alg -ei-v14/e2.alg -f4 -m0 -v0
+
+Statt srch32 kann in diesen Aufrufen auch das alte srch stehen,
+es kommt dasselbe raus.
+Wie schon srch, kann auch srch32 keine Externdateien verarbeiten,
+das kann nur acon mit dem job srch.job:
+
+acon -jsrch -kn -dname.adt -bd:\daten\katalog\cat -stucholsky 
+      -ei-1/i2.alg -ei-v14/e2.alg 
+
+
+Die Laufzeit von srch32 betraegt 10% derjenigen des alten Programms.
+
+

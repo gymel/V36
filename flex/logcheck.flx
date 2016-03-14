@@ -1,0 +1,27 @@
+  LOGCHECK.FLX : Registrieren, ob jemand was eingibt
+  2002-08-05
+  Wird nur aktiv, wenn vorher z.B. mit  
+          slice 10000=iX logcheck  
+  ein Timer gesetzt wurde (d.h. alle 10 Sekunden)
+
+  Name der LOG-Datei
+var G
+  Wenn nicht G, dann normal:
+if "" var D B ".log"
+  LOG-Dateiname jetzt in iV
+  Groesse feststellen und in #uzL speichern
+fsize
+  vorher schon mal registriert? Dann gibt es #uzL, gehe zu :a
+if #uzL jump a
+  nein, dann ist dies der erste Durchlauf!
+ins #uzL
+  in #uzL speichern fuer naechsten Durchlauf
+end
+
+:a
+  Aktuelle Groesse immer noch in iV
+  Ist sie = #uzL ? Wenn ja, nichts machen
+if =#uzL end
+  Sonst in #uzL speichern und Meldung ausgeben
+ins #uzL
+Mes 10,Achtung, jemand hat was eingegeben!

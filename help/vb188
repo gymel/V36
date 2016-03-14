@@ -1,0 +1,204 @@
+
+Verlautbarung 188 der Entw.Abt.                          2006-01-26
+-------------------------------
+
+                        V26.1
+                        =====
+
+F8 neu belegt
+-------------
+Wenn man nichts anderes tut, wird bei F8 der Inhalt des Reservespeichers
+im Anzeigefeld gezeigt. F8 sucht aber zuerst nach einem FLEX namens
+OnF8.flx und fuehrt ihn, wird er gefunden, aus.
+Mit V26 stellen wir einen OnF8.FLX bereit. Er bietet einige Funktionen
+an, die gerade moeglich sind - in Abhaengigkeit vom aktuellen Satz.
+Wer das nicht will, kann  OnF8.flx  loeschen, dann ist alles beim alten.
+Wer seinen eigenen  OnF8.flx  hat oder haben will, legt ihn auf das
+Datenverzeichnis, dann wird der Standard dadurch umgangen (wie immer
+in solchen Faellen).
+
+
+Wenn der find-Befehl nichts findet ... dann Google-Automatik
+------------------------------------------------------------
+... weil er nicht mit einem gueltigen Registernamen anfaengt, ist
+bislang das Resultat nicht immer leer! Zwar kommt das nicht bei
+Fernglas-Nutzung vor, aber bei manuellen Befehlen oder per FLEX 
+kann es sein. Jetzt kommt dann wirklich nichts raus. Fuer avanti
+gilt dasselbe und wird gleichfalls korrigiert. Bisher wurde da
+naemlich stillschweigend noch ein Versuch mit dem vorher zuletzt
+verwendeten Registernamen gemacht! Solche klammheimlichen Sachen
+soll ein Programm denn doch vermeiden.
+Zusaetzlich gibt's einen erweiterten FLEX onfnda99.flx: Dieser
+springt an, wenn in der Suchbefehlszeile was eingegeben wurde und
+nichts rauskommt. Dann zerlegt der FLEX die Eingabe in seine
+Einzelteile und setzt sie mit |1 davor und AND |1 dazwischen wieder
+zusammen. Kommt noch immer nichts, dann dasselbe, aber mit ?
+hinter jedem Wort.
+Ergebnis: man kann im Suchbefehlsfeld zwei, drei Woerter einwerfen
+und kriegt was raus - ohne Registernamen. Voraussetzung ist aber,
+dass Reg. 1 sowas wie ein ALL-Register ist. Beim N-Format werden
+die Standard-Indexparameter so gestaltet. Beim A-Format sollte man
+bei Bedarf in onfnda99.flx eingreifen und |3 statt |1 einsetzen!
+
+
+N.CFG fuer neue, eigene Projekte
+--------------------------------
+Am 6.12.2005 neu vorgestellt wurde eine Konfiguration N.CFG,
+auch "Neutralformat" oder "Nikolausformat" genannt.
+Sie erleichtert das Aufsetzen eigener Projekte, wenn es sich
+im weitesten Sinne um Dokumente handelt, die man erfassen will.
+Mehr dazu steht in einem eigenen Beitrag:
+  http://www.allegro-c.de/neutral/
+Es wurde versucht, nicht allzu vieles noch offenzulassen, weil sich
+dann erfahrungsgemaess allzu schnell Varianten des Standards
+herausbilden. Experimente mit diversen vorliegenden Datenbanken
+haben viele sinnvolle Verbesserungen erbracht. Bereits einbezogen
+sind die Vorkehrungen fuer Schiller-Raeuber, Phrasensuche und
+Linkstrunkierung als wahlweise und leicht nutzbare Optionen.
+Eine DemoBank zum Ausprobieren findet man hier:
+  http://www.biblio.tu-bs.de/db/neutral/
+Alles andere, was den Anwender interessieren koennte, findet
+man leicht unter den beiden angegebenen Adressen. Vor allem
+auch ausfuehrliche Beispiele von Datensaetzen im N-Format und
+eine Darstellung der strukturellen Grundsaetze des Formats.
+Im Gesamtpaket ist N.CFG noch nicht drin, aber:
+Ein Paket zum Herunterladen ermoeglicht sofort das Anlegen einer
+eigenen N-Datenbank:
+  http://ftp.allegro-c.de/aktuelle-version/n-setup.exe
+
+
+Weitere Neuerungen der V26.1
+============================
+
+Indexparameter: Neuerung beim ak-Befehl
+---------------------------------------
+Eingebaut in DOS- und Windows-Programme sowie in avanti.
+
+Bis V25.9 ist es so:
+ak=nn+x    bedeutet:  Nimm Feld #nn als Variable #u1 und gehe zu #-x
+...
+#-x
+#u1 p"|i"     Inhalt von #u1 (also #nn) soll ins Reg.i (i=1,...,9,:,;)
+#+#
+
+oder gleichwertig:
+
+#-x
+#t{ "|i" }
+#u1
+#+#
+
+Ab V26.0 gibt es eine neue ak-Option und einen neuen
+Manipulationsbefehl namens J.
+Damit wird man genausogut schreiben koennen:
+
+ak=nn+xi      (mit i=1,...,9,:,;)
+...
+#-x
+#u1           Praefix "|i" wird vor Inhalt von #u1 gesetzt
+#+#
+
+oder, auch wieder gleichwertig, aber unnoetig aufgeblasen:
+
+#-x
+#t{ J }
+#u1
+#+#
+
+Der Defaultwert des Index-Praefix ist "|1". Das heisst:
+Wenn man im ak-Befehl kein i gesetzt hat, wird Register 1 zugeordnet.
+Weitere Option: der neue Manipulationsbefehl J
+Soll nicht 1 Default sein, schreibt man  Ji, also z.B.  J2. Dann wuerde,
+falls im ak-Befehl das i fehlt, Register 2 zugeordnet. Anders gesagt,
+das i im ak-Befehl geniesst Prioritaet.
+
+Vorteile: (der groesste ist wohl 3.)
+1. Wenn man die Indexparameter konsequent auf diese Weise
+   gestaltet, ist schon aus den ak-Befehlen ersichtlich, welchen
+   Registern die Felder zugeordnet werden.
+2. Aenderungen der Registerzuordnungen brauchen nur in
+   den ak-Zeilen gemacht zu werden.
+3. Verschiedene Kategorien koennen auf gleiche Weise
+   fuer den Index bearbeitet, aber doch unterschiedlichen
+   Registern zugeordnet werden, ohne dass man in den
+   Verarbeitungsabschnitt unter  #-x  eingreifen muss. Da dieser
+   Abschnitt sehr kompliziert sein kann, ist es guenstig, wenn
+   man sich darum nicht kuemmern muss.
+
+Ergebnis: Man kann sich bestimmte Verarbeitungsabschnitte fuer
+bestimmte Schluesseltypen erstellen.
+Z.B. Abschnitte fuer Personennamen, Titel, Schlagwoerter.
+Die Zuordnung zu den Registernummern geschieht aber in den
+ak-Befehlen. Damit kann man eine bessere, uebersichtlichere
+Modularisierung der Indexparameter erreichen.
+
+Alte Parameter bleiben voll gueltig! Die neue Moeglichkeit kommt
+als zusaetzliche Option hinzu. Die Programme bis V25.9 koennen
+freilich diese Option nicht verarbeiten: es kommen dann falsche
+Schluessel im Reg. 1 mit einem J als Praefix heraus, wenn man den
+M-Befehl J verwendet, und es wird Reg. 1 zugeordnet, wenn man nur
+ak=nn+xi sagt und kein J verwendet.
+
+ExtraTip:
+Wer wollte, koennte in seinen Indexparametern folgende Ersetzungen
+vornehmen, auch ohne die ak-Befehle zu aendern:
+
+ "|i"      ersetzen durch   Ji
+ "|iXYZ"   ersetzen durch   p"XYZ" Ji
+
+und zwar sowohl in den Manipulationsbefehlen wie auch in #t-Befehlen.
+
+
+FLEX: var #nnn(i,j)   Indikator per FLEX auswerten!
+-------------------   (siehe  h xcstring )
+Wenn i keine Zahl, sondern der Buchstabe i ist, gilt:
+Der Inhalt von #nnn wird nicht ab dem ersten Zeichen genommen, sondern
+ab der ersten Indikatorposition. Beim Standardschema macht das nichts
+aus. Wenn man aber eine CFG mit t2 und k5 hat (statt k4), dann ergibt
+var #99(i,1) genau den Wert des Indikators, d.h. des Zeichens hinter
+dem Mehrfachcode von #99. Brauchbar ist dieser Sonderfall bei Formaten
+wie MAB und MARC, bei denen es einen bzw. zwei Indikatoren gibt.
+
+
+Signalfile
+----------
+Wenn im SGF die 1 gesetzt ist, aber access>4, dann startete a99
+kommentarlos trotzdem. Jetzt fragt es wenigstens, ob man das
+wirklich will.
+
+
+ASCII <-> ANSI Umcodierung
+--------------------------
+Das N-Format arbeitet mit ANSI statt ASCII. An einigen Stellen fiel
+unangenehm auf, dass die Umcodierung nicht oder falsch arbeitete.
+Diese Stellen wurden alle korrigiert. Notwendig ist aber, in die
+Anzeigeparameter (!) die Tabelle oasci.npt einzubinden. Diese ist
+identisch mit o.apt. In die Indexparameter muss dagegen  o.npt
+eingebunden sein. Das Programm verwendet jeweils die richtige
+Tabelle. oasci.npt ist z.B. an den Stellen noetig, wo ein Hilfetext
+oder eine ViewListe benutzt wird. Diese sind standardmaessig
+in ASCII codiert und das muss auch so bleiben, denn sonst
+muessten wir ja von allen diesen Dateien jeweils 2 Versionen
+liefern und pflegen!
+
+
+"Ansicht / Registereintraege" : Absturz
+---------------------------------------
+... in a99/alcarta. Behoben
+
+
+Neue ISBN
+---------
+Die erweiterte PrÅfung greift nur dann richtig, d.h. setzt im
+Fehlerfall das * hinter die falsche ISBN, wenn diese mit 97
+beginnt. Bis auf weiteres beginnen naemlich alle neuen ISBNs
+mit 978 oder 979, andere sollte man in der Praxis nicht
+antreffen.
+
+
+PRESTO : Glob.Ersetzung
+-----------------------
+war nicht ganz in Ordnung. Korrigiert.
+
+
+

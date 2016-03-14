@@ -1,0 +1,114 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\froman Times New Roman;}{\f2\froman\fprq2\fcharset0 Times New Roman;}{\f3\froman\fprq2 Times New Roman;}{\f4\fmodern\fprq1 Courier New;}{\f5\fmodern\fprq1\fcharset0 Courier New;}{\f6\froman\fcharset0 Times New Roman;}{\f7\fmodern\fprq1 allegro Lucida Console;}{\f8\fmodern\fprq1\fcharset0 allegro Lucida Console;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red255\green0\blue0;\red0\green176\blue0;}
+\viewkind4\uc1\pard\qr\f0\fs24         \f1\fs18 `\cf1\ul\b Register\cf2\ulnone\b0 ` 
+\par \pard\li709\f2\fs20 F\'fcr \cf3\b\i\f3 acon\cf2\b0\i0\f2  hat der Befehl eine\f3  \b\f4 `\cf1\ul\f5 andere Wirkungsweise\cf2\ulnone\f4 `\b0\f2 , siehe unten. 
+\par 
+\par \b Spezielle Einlesefunktionen\b0 
+\par \pard\qr\cf4\b\f4 
+\par \pard read 
+\par read rec\cf2  \b0\i\f3 name\cf4\b\i0\f4 
+\par \pard\li709\cf2\b0\f3 Datei `\cf1\ul\b E.ADT\cf2\ulnone\b0 ` bzw. Datei \b\f4  \b0\i\f3 name  \i0\f2  wird eingelesen. Diese kann eine Reihe von Kategorien enthalten, die dann alle in den aktuellen Satz eingef\'fcgt werden. (Erfassungshilfe; manuell mit ALt+\'e4 oder Men\'fc "Bearbeiten | Read") \f3 
+\par Wenn \i name\i0  fehlt, wird der Inhalt der iV genommen. 
+\par 
+\par \i\f2 Achtung:\i0  Einen kompletten Datensatz einlesen aus einer ge\'f6ffneten Datei (Typ .ALG oder .ADT) geht auch, aber mit dem Befehl  `\cf1\ul\b\f5 fetch rec\cf2\ulnone\b0\f2 `.\f3 
+\par \pard\cf4\b\f4 
+\par read extern\cf2 
+\par \pard\li709\b0\f2 Datei EXTERN.DAT wird als externe Datei eingelesen (wie \'fcber das Men\'fc "Datei | Externe Datei laden"). 
+\par Die Datei kann wahlweise die Grundstruktur (.ALG) haben oder die `\cf1\ul\b Externstruktur\cf2\ulnone\b0 ` (.ADT), das erkennt das Programm automatisch. 
+\par Dies wird man haupts\'e4chlich f\'fcr Prozeduren nutzen, die mit ExFLEXen arbeiten, um Daten von au\'dfen anzuliefern. 
+\par \pard\f1\fs18 
+\par \cf4\b\f4\fs20 read file\cf2  \b0\i\f3 name\b\i0\f4 
+\par \pard\li709\b0\f3 Datei \i name\i0\f2  wird als Externdatei eingelesen. Es mu\'df sich um eine Datei vom Typ .ADT oder .ALG handeln. Sie wird den schon vorhandenen Offline-Daten hinzugef\'fcgt (wie \'fcber das Men\'fc "Datei | Weitere Offline-Datei laden"). \f3 
+\par Vorher kann man mit \cf4\b\f4  \cf2 `\cf1\ul erase off\cf2\ulnone `\b0\f3  den Offline-Speicher leeren. 
+\par Mit \b\f4 `\cf1\ul if no\cf2\ulnone ` ... \b0\f3  kann man checken, ob es gelang und die Datei etwas enthielt, bevor man sie mit \b\f4 `\cf1\ul show list\cf2\ulnone `\b0\f2  anzeigen l\'e4\'dft. \f3 
+\par \pard\li710\cf0\i Hinweis:\i0\f2  Im Dateinamen k\'f6nnen normale Schr\'e4gstriche statt \\ verwendet werden! Wenn man den \\ nimmt, mu\'df man ihn verdoppeln. \f3 
+\par \i\f2 Alternative\f3 :\i0\f2  Statt dieses etwas veralteten Befehls kann man auch schreiben, wenn z.B. der Name in der Variablen  \f5 #una\f2   steht::
+\par \f5 var "F" #una
+\par var          \f2 // Die Datei in die iV holen\f5 
+\par insert       \f2 // Den iV-Inhalt in den Dateisatz einsortieren\f5 
+\par \pard\li709\cf2\f2 
+\par 
+\par Eine Besonderheit sind die sog. \b externen Erg.Mengen\b0 , die z.B. bei einem Aufruf von PRESTO oder SRCH entstehen! Diese bestehen nur aus einer Liste interner Satznummern von Datens\'e4tzen, die bereits zur Datenbank geh\'f6ren. Auch mit FLEXen kann man solche Dateien erstellen und an diese Stelle verwenden: \f3 
+\par \pard\b\f4 
+\par \cf4 read set\cf2  \b0\i\f3 name\f2     \i0  \cf3\b\i\f3 acon\cf2\b0\i0\f2   [ab V29]\b\f4 
+\par \pard\li709\b0\f3 Datei \i name\i0\f2  wird als PRESTO-Ergebnismenge eingelesen. Die Datei besteht nur aus einer Titelzeile und dann einer Liste von Satznummern in beliebiger Folge, je eine Nummer pro Zeile. (Eine solche Datei namens X.SET entsteht, wenn man vom Men\'fc "Datei" aus PRESTO aufruft und dann eine Ergebnismenge exportiert. Dabei werden die Parameter RS.APR benutzt.) Es spielt aber keine Rolle, wie diese Datei entstanden ist. Mit \b\f4 `\cf1\ul if no\cf2\ulnone ` ... \b0\f3  kann man checken, ob \f2 da\f3 s\f2  Einlesen\f3  gelang und die Datei etwas enthielt, bevor man sie mit \b\f4 `\cf1\ul show list\cf2\ulnone `\b0\f2  anzeigen l\'e4\'dft. \f3 
+\par \pard\b\f4 
+\par \cf3\b0\f1\fs18 Beispiel 1:\cf2 
+\par Der FLEX  \f4 `\cf1\ul\b fts.flx\cf2\ulnone\b0 `\f6   erm\'f6glicht eine Volltextsuche in der Datenbank und liest dann die Ergebnisse in a99 ein. Das Volltext-Suchprogramm SRCH.EXE wird gestartet (in einem DOS-Fenster), es f\'fchrt die Suche aus und exportiert eine Datei mit den Nummern der gefundenen Datens\'e4tze. Ab V27.1 kann man statt dessen auch per FLEX eine Volltextsuche in der Gesamtbank machen, wobei der Befehl \f5 `\cf1\ul\b srx\cf2\ulnone\b0 `\f6  zum EInsatz kommt.\f1 
+\par 
+\par \cf3 Beispiel 2:\cf2 
+\par \f3 Man kann das Anzeigefeld zum Editieren benutzen\f2 : 
+\par Zuerst mit F5 die Internform des Satzes anzeigen lassen, dann diese bearbeiten. 
+\par Und nun\f3  reicht ein ganz kurzer FLEX\f7 
+\par \b\f8 x \lang1033\f7 file xx\lang1031\f8\\\lang1033\f7 read rec xx\b0 
+\par \lang1031\f2 um das bearbeitete Anzeigefeld in die Datei  \f5 xx\f2   zu speichern und diese dann wieder in den Datensatz einzulesen. Das klappt auch bei hierarchischen S\'e4tzen! \i\f3 Tip:\i0  Wenn man \f2 das regelm\'e4\'dfig machen will\f3 , auf eine Flip-Taste legen oder auf F3 oder F4. 
+\par \i\f2 Aber Vorsicht:\i0  Wenn man V14-Verkn\'fcpfungen hat (Personen- und andere Stamms\'e4tze), dann diese Methode nicht benutzen! F\'fcr den Fall wurde eine andere entwickelt, die Sie mit dem folgenden Link einschalten k\'f6nnen:  `\cf1\ul\b Bearbeitung im Anzeigefeld aktivieren\cf2\ulnone\b0 `\f3 
+\par \f2 Gestartet wird dann der FLEX  \f5 dispedit.flx\f2 , der bei jedem Kategoriesystem funktioniert. 
+\par \i Tip:\i0 
+\par F\'fcr das externe Bearbeiten von Daten im UTF8-Zeichensatz (Unicode) gibt es  \f5 utf8edit.flx\f2 . \f3 
+\par 
+\par \cf3\f1 Beispiel \f6 3\f1 :\cf2 
+\par \f2 Die aktuelle Ergebnismenge permanent speichern, um sie sp\'e4ter neu einlesen zu k\'f6nnen. 
+\par 
+\par \f5 open x ABC       // beliebiger Dateiname ABC 
+\par wri U n in       // U = Erg.Mengenname,  in = Liste der Satznummern der aktuellen Erg.Menge 
+\par close x\f7 
+\par \f3 
+\par \f2 Das sp\'e4tere Wiedereinlesen geht so: 
+\par \f5 read set ABC \f2   
+\par 
+\par  *************************************************************** 
+\par 
+\par \b\fs22  NUR\b0  \cf3\b\i\f6 acon\cf2\b0\i0\f3\fs18 
+\par 
+\par \i\f5 datafile\i0\f2  sei eine `\cf1\ul\b Externdatei\cf2\ulnone\b0 ` des Typs .ADT , eine Grunddatei der Struktur .ALG oder sogar eine Datenbankdatei des Typs .ALD.  \cf3\i acon\cf2\i0  (genauer gesagt das Programm `\cf1\ul\b acon\cf2\ulnone\b0 `) erkennt die Stuktur selbst\'e4ndig (bei .ALD-Dateien werden gel\'f6schte S\'e4tze \'fcbergangen)! Die S\'e4tze sollen eingelesen und gespeichert werden. Dabei soll jeder Satz noch vorbearbeitet werden. Hier nur das Ger\'fcst, damit es \'fcbersichtlich bleibt: 
+\par  .... 
+\par \f5 read \i datafile\i0\f2\tab // QuellDatei wird ge\'f6ffnet, erste Satz wird eingelesen 
+\par \f5 :loop 
+\par ...\f2\tab\tab // Vorbearbeitung durch beliebige Befehle 
+\par  \f5 put\f2\tab\tab // Satz wegschreiben 
+\par \f5 read\f2\tab\tab // n\'e4chsten Satz einlesen 
+\par \f5 if ok jump loop\f2\tab // wenn noch einer da war, Sprung nach :loop 
+\par ...\tab\tab // weitere Befehle oder Ende des Auftrags\f3 
+\par 
+\par \f2 Diese Arbeitsweise l\'e4uft bei \b\i a99\b0\i0  leider anders: 
+\par 
+\par \f5 open \i datafile\i0\f2\tab // QuellDatei wird ge\'f6ffnet, noch nichts gelesen 
+\par \f5 fetch rec 
+\par :loop 
+\par ...\f2\tab\tab // Vorbearbeitung durch beliebige Befehle 
+\par \f5 put\f2\tab\tab // Satz wegschreiben 
+\par \f5 fetch rec\f2\tab // n\'e4chsten Satz einlesen 
+\par \f5 if not cancel jump loop\f2\tab // wenn noch einer da war, Sprung nach :loop 
+\par ...\tab\tab // weitere Befehle oder Ende des Auftrags\f3 
+\par 
+\par 
+\par 
+\par 
+\par 
+\par 
+\par 
+\par 
+\par 
+\par 
+\par 
+\par 
+\par 
+\par 
+\par \f6 
+\par ?E.ADT=h xeadt 
+\par ?if no=h xif 
+\par ?show list=h xshow 
+\par ?Register=h xa 
+\par ?erase off=h xerase 
+\par ?fts.flx=x var P "flex\\\\fts.flx"\\help 
+\par ?andere Wirkungsweise=h xread=NUR acon 
+\par ?Bearbeitung im Anzeigefeld aktivieren=X dispedit 
+\par ?srx=h xsrx=Beispiel 3 
+\par ?fetch rec=h xfetch=fetch r 
+\par ?Externstruktur=h ac0-0#448 
+\par ?Externdatei=h ac0-0#448 
+\par ?acon=h acon 
+\par 
+\par }
+ 

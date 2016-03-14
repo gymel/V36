@@ -1,0 +1,89 @@
+  F-0.APR : Bestellformular fr Bcher
+  940602    Prototyp fr den Exporttyp FORM
+
+pn="FORM Prototyp"
+
+   Formular-Ausgabe in folgender Struktur:
+
+   14 Zeilen hoch, 72 Zeichen breit
+    1234567890123456789012345678901234567890123456789012345678901234567890
+ ----------------------------------------------------------------------------
+ 0  Bibliotheksname  ........                                     Bestellung
+ 1
+ 2  Verfasser:  (bis 55 Zeichen)  #40                             Datum  #dt
+ 3  Titel (bis 2 Zeilen, ca. 100 Zeichen)  #20                    Best.Nr. #91
+ 4    wenn verkrzt, hinten ... anh„ngen
+ 5  Hrsg.:  #41 oder #60 (je nachdem, was vorkommt)
+ 6  Auflage #71
+ 7  Erscheinungsvermerk  #74+#75+#76+#77
+ 8     bis 100 Zeichen L„nge
+ 9  ISBN  #87                                             Preis: #95 P
+ 10 Kommentar:  #95 K
+ 11 Lieferant:  #95 L                                    Besteller:  #95 B
+ ----------------------------------------------------------------------------
+
+   Bestelldaten sollen hierbei so aussehen (alle als Teilfelder in Kat. 95)
+
+   #95 LLieferantBBestellerKKommentarNBestellnr.PPreis
+
+   andernfalls muss man Anpassungen vornehmen
+  --------- Konstanten --------------------------------------------
+
+fl=12             12 Zeilen je Formular
+fb=13 10 13 10    2 Leerzeilen Formularbergang
+
+                  fm muss NACH fl kommen!
+fm=1              keine getrennten Karten fr Unters„tze
+                  (sonst kommen Leerformulare)
+dx=1
+tPRINTER
+  ------------------------------------------------------------------
+
+  ========  keine ak-Befehle, da genau ein Ausgabesatz =============
+  ==================================================================
+
+  ********* Kategorieliste ****************************************
+
+#hi +# e0         Unters„tze (B„nde) nicht verarbeiten
+
+   šberschrift:
+#t{ %90 "Universit„tsbibliothek Braunschweig                          Bestellung " %60 }
+
+   Zeilenl„nge steht jetzt auf 60, d.h. der Platz rechts ab Pos. 61
+   bleibt zuerst mal frei
+
+#40 e35 P":" { $2,1 }          Name auf 35 Zeichen krzen
+#20 E100 { $3,1 }              Titel auf Zeile 3+4, gekrzt auf 100 Zeichen
+#20 b100 p"..." e3             "..."  dahinter, wenn er l„nger ist
+#41 +#71 e52 { $5,1 "Hrsg.: " }   Zeile 5, Pos.2
+#60 e52 { $5,1 "Hrsg.: " }        wenn kein Hrsg., dann K”rp.
+#71 e50 { $6,1 "Aufl.: " }
+
+   Der Ersch.Vermerk wird erstmal zu einer Kategorie #uev zusammengesetzt:
+#uev dev e0      #uev l”schen, wenn es schon existiert
+#74 e"" aev     #74 hineinschreiben
+#75 " : " Aev    #75 mit " : " dranh„ngen
+#76 ", " Aev     #76 mit ", " dranh„ngen
+#77 ". - " Aev   #77 mit ". - " dranh„ngen
+
+    und dann das ganze auf 100 Zeichen gekrzt ausgeben:
+#uev e100 { $7,1 }    Ersch.Vermerk auf Pos.7/2, auf 100 Zeichen gekrzt
+
+#87 e13 { $9,1 "ISBN " }
+#t{ %80 }             Zeilenl„nge umstellen auf 80
+#t{ $10,1 "Bemerkung: " }     wird hingeschrieben, ob was drin steht oder nicht
+#95 K e50
+#t{ $11,1 "Lieferant: " }
+#95 L e40
+#t{ $11,55 "Besteller: " }
+#95 B
+#t{ $9,55 "Preis: " }
+#95 P
+
+  jetzt setzen wir noch rechts oben Datum und Bestellnummer hin
+#dt b", " { $2,63 }           Zeile 2, Pos.63:  Datum ohne Wochentag
+#t{ $3,63 "Nr.: " }
+#95 N                        Zeile 3, Pos.63
+
+
+p ª 1    Nichtsort.zeichen weglassen

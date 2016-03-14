@@ -1,0 +1,112 @@
+
+
+Verlautbarung 185 der Entw.Abt.                          2005-07-05
+-------------------------------
+
+V25.7
+=====
+
+
+Zwar sind 25 Jahre ein willkuerlicher Zeitraum ohne besondere
+Signifikanz vor dem Hintergrund der Geschichte, und sei es nur
+der Bibliotheksgeschichte. Ein Zeitraum aber, wie sich jetzt zeigt,
+der nicht ausreicht, ein Softwaresystem auf die Beine zu stellen,
+das keine Wuensche mehr offenlaesst. Als voll der Vorahnung und
+des Hintersinns erweisen sich die Worte aus der Kurzoper
+ "Das Fest der Versionaere":
+
+"Denn schafften wir, was wir gesollt,
+ dann habt ihr stets noch mehr gewollt" ...
+
+So also auch jetzt wieder:
+Die eierlegende Wollmilch-Viewliste wird gewuenscht. Man soll
+in ihr auch Zeilen loeschen koennen, das sei doch zuerst
+gegangen und dann abgeschafft worden. Das stimmt zwar nicht ganz,
+aber ok, wir haben es jetzt eingebaut. Damit man sich die
+Standard-ViewListen nicht zerstoert, muss aber eine Massnahme
+hinzukommen: das Einschalten der [Entf.]-Knoepfe vor dem
+Aufruf der ViewListe. Das geht mit
+
+set v1
+und muss vor jedem View-Aufruf ausdruecklich gemacht werden, wenn
+das Zeilenloeschen erlaubt sein soll.
+Dann werden diejenigen Zeilen, auf denen man [Entf] drueckt
+(ob Button oder Taste) mit X markiert bzw. bei nochmaligem
+Druck wird das X wieder weggenommen. Bei Druck auf [ENTF]
+verschwinden die in dem Moment mit X markierten Zeilen.
+Eingebaut ist dies jetzt schon in die View-StandardFLEXe,
+d.h. die damit produzierten Ergebnismengen-Views koennen nun
+direkt von Schmutz bereinigt werden.
+
+In der aresqa-Liste ist es anders: Mit Entf-Taste verschwindet
+sofort die Zeile, aber sie laesst sich mit [Undo] wieder
+hervorholen. Warum dieser Unterschied? Das liegt an der intern
+gaenzlich verschiedenen Programmierung dieser Listen. Wir
+bedauern und bitten um Verstaendnis (wie die Bahn bei Verspaetung,
+da bleibt Ihnen auch nichts uebrig).
+
+Damit sich's aber lohnt, gibt es noch diese Verbesserungen:
+
+1.
+var sk  bzw.  var sK
+produziert in der iV die Liste der Registereintraege, getrennt
+jedoch bei sk nicht durch Zeilentrennzeichen (13 10), sondern 
+durch ==. So kann man die Eintraege anschliessend im FLEX noch
+leicht zerlegen. Geplant ist, dies auch in avanti einzubauen,
+wozu erst aber noch andere Voraussetzungen zu schaffen sind.
+
+2.
+var $name$x
+Wenn man die neuen "freien Variablen" verwendet, kann es ja leicht
+sein, dass man darin einen Feldinhalt aufbewahrt. Dieser kann wiederum
+Teilfelder enthalten. Daher kann man nun gezielt statt der Gesamt-
+Variablen auch, wie bei Kategorien, nur ein Teilfeld ausgeben lassen.
+Was aber nicht geht, ist
+var $name(manipulationsbefehle)
+d.h. an diesem Punkt haelt die Analogie zwischen #nnn und $name
+nicht! Man schreibt, wenn so etwas sein muss, statt dessen
+var $name
+ins #uxy
+var #uxy(manipulationsbefehle)
+In die Dokumentation kommt das natuerlich rein! (xfreevar.rtf)
+
+3.
+URLs in #8e
+Wegen des potentiellen Aergers mit V14-Ersetzungen wurde in CAT.API
+(beide Versionen) eingebaut, dass in #8e der Unterstrich ersetzt
+wird durch %5F.
+
+4.
+FLEX-Befehl Fam klappte nicht ganz korrekt, wenn zu dem Zeitpunkt
+der automatische Expansionsmodus eingeschaltet ist: die Reihenfolge
+der Untersaetze stimmte dann evtl. nicht.
+In letzter Minute korrigiert!
+
+5.
+Ansonsten wurden noch kleinere Verbesserungen an FLEXen vorgenommen,
+z.B. klappte es mit Teilfeldinhalten nicht bei der Tabellenmethode,
+wenn ausgerechnet das erste Feld ein Teilfeld sein sollte.
+Selbstredend werden alle betroffenen Hilfetexte aktualisiert.
+
+------------------------------------------------------------------
+
+Ein Nachteil, mit dem die Anwender bei einem so dynamisch auf
+ihre Wuensche reagierenden System leben muessen, ist der
+schnelle Versionswechsel - sorry, aber das kommt davon, wenn
+man einer Haltung anhaengt, die sich in den Worten ausdrueckt:
+
+"Kaum, dass was geht, da sollt' es *so nicht* gehen,
+ was ihr dann seht, das wollt ihr *anders* sehen,
+ was ihr vernehmt, das sollte *anders* klingen,
+ was *uns* gelingt, das will euch *nicht* gelingen,
+ was euch *gefaellt*, das koennte noch gewinnen,
+ (doch *Zeit* soll hierzu nicht verrinnen),
+ was ihr nicht braucht, das kommt euch viel zu nah,
+ was ihr nicht findet, meint ihr, sei nicht da.
+ Ihr wollt es schneller, schoener, besser,
+ bringt man euch Loeffel, braucht ihr Messer ..."
+
+Folgerichtig muessen wir Ihnen zumuten, jetzt die
+V25.7  aufzulegen. Spaetestens morgen ist sie da.
+
+

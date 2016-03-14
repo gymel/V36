@@ -1,0 +1,842 @@
+  
+  20050310
+    Aufruf:  X kalender JJJJMM   oder   exec kalender JJJJMM
+      oder:  X kalender JJJJ     oder   exec kalender JJJJ   (dann MM=01)
+      oder:  X kalender          aktueller Monat
+    Liste der Variablen mit Beschreibung am Ende!
+    Wenn #uMy besetzt, dann nur Druckversion (ohne Flips)
+  Aufrufwert -> #uU1, wenn keiner gegeben, dann #dts = aktuelles Datum
+if "" var #dts(0,6)
+var (0,6)
+ins #uU1
+var #uU1 "xx"
+var (0,6)
+   war der Wert 4stellig? Dann 01 anhaengen
+if %xx% var #uU1(0,4) "01"
+ins #uU1   // Form ist jetzt JJJJMM
+
+  Variablen loeschen
+var ""
+#uMr
+#uMz
+$BT
+
+  Hilfsvariable fuer die Flips der einz. Tage, falls nicht Druckversion
+if not #uMy #uMzabcdefghijklmnopqrstuvwxyzABCDEFGHIJK
+  Hilfsdatei aufmachen, darin wird das Kalenderblatt zusammengesetzt
+var M "kblatt.rtf"
+open x
+  RTF-Dateikopf schreiben
+wri "{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang1031" n
+wri "{\\fonttbl{\\f0\\froman\\fprq2\\fcharset0 Bookman Old Style;}{\\f1\\fswiss\\fcharset0 Verdana;}}" n
+wri "{\\colortbl ;\\red0\\green160\\blue0;\\red128\\green144\\blue192;\\red255\\green0\\blue0;\\red255\\green255\\blue255;\\red192\\green0\\blue0;\\red96\\green96\\blue96;}" n
+wri "\\viewkind4\\uc1 " n
+wri "\\pard\\qc\\f1\\fs20\\tx3408\\cf2\\b %7 \\cf0 \\b0 " n
+if not #uMy wri "\\par \\pard\\qc\\tx852\\tx1704\\tx2556\\tx3408\\tx4260\\tx5112\\tx5964\\fs32   `\\cf4 --\\cf2%#uU8\\cf0 `     `\\cf2%#uU2\\cf4 <<\\cf0 `    `\\cf2%#uU3\\cf4 >>\\cf0 `  `\\cf2%#uU4\\cf4 ++`\\fs20 " n
+if #uMy wri "\\par \\fs32   \\fs20"
+wri "\\par \\pard\\qc\\tx792\\tx1654\\tx2516\\tx3379\\tx4240\\tx5102\\tx5964\\cf3\\b\\cf2 `%#uU5`    `%#uU7 `    `%#uU6\\b0 `\\cf0 " n
+wri "\\par \\par \\pard\\qc\\cf5\\i\\f0\\fs48 %#uU0  %#uU9\\cf0\\i0\\f1\\fs20 " n 
+wri "\\par \\pard\\par\\li300 \\ri150 \\tx1420\\tx2282\\tx3144\\tx4006\\tx4868\\tx5730\\tx6592\\i\\f0\\cf6\\fs18 Woche\\b\\fs40\\tab Mo\\tab Di\\tab Mi\\tab Do\\tab Fr\\tab Sa\\tab So\\b0\\i0\\cf0 " n
+wri "\\par \\pard\\li300\\ri150\\tx1300\\tx2162\\tx3024\\tx3886\\tx4748\\tx5610\\tx6472 " n
+
+:begin
+var #uU1(0,4)
+  Jahr im zulaessigen Bereich? Sonst kommentarlos ende
+if <1601 mes Es geht erst ab 1601!;end
+if >2399 mes Es geht nur bis 2399!;end
+
+  alle #uYx und #uZx loeschen
+#uY~
+#uZ~
+
+var #dts(0,8)   // heutiger Tag (wg. Unterstreichung)
+ins #uMu
+var #uMu(0,4)
+ins #uM1
+var #uU1(0,4)
+ins #uM2
+
+  Wochennummer-Berechnung
+  Wenn die erste Woche des Jahres weniger als 4 Tage hat, muss man von der
+  Wochennummer 1 abziehen. D.h. Wenn 1.1. = Fr, Sa, So - dann Woche 0
+  Welcher Wochentag ist der 1.1.?
+var #uU1(0,4) "0101+0"
+  Day
+perf Day
+z=0
+
+var (b" = ")
+  Wenn Fr/Sa/So, dann #uMt = 1, sonst 0 (Wochennummer-Korrektur)
+if "Mo" z=7
+if "Di" z=8
+if "Mi" z=9
+if "Do" z=10
+if "Fr" z=4
+if "Sa" z=5
+if "So" z=6
+var z
+ins #uMt
+  Aktueller Tag - 1.1.
+var #uU1 "01-" #uU1(0,4) "0101"
+  Day
+perf Day
+  Nummer des aktuellen Tages im Jahr
+z=
+var #uMt   // addieren, um korrekte Division zu erreichen
+z+
+  und noch 1 drauf, sonst Fehler wenn Monat mit Montag beginnt.
+   z+1   // korrig. 20080513
+  und durch 7 teilen
+z/7
+var z
+  ergibt
+ins #uMf   // Nummer der Woche
+  Aktuelles Jahr -> #uU9
+var #uU1(0,4)
+ins #uU9
+
+  Datum Ostersonntag errechnen
+var #uU9
+perf gauss
+var (b"(" e")") 
+var +"+0"
+  Day
+perf Day
+var (0,8)
+ins #uMc
+  -3 = Karfreitag:
+var #uMc "-2"
+  Day
+perf Day
+ins #uMl
+var #uMc "+1"   // Ostermontag
+  Day
+perf Day
+ var e("/")
+ins #uMm
+var #uMm(e"/") "-47"  // Aschermittwoch
+  Day
+perf Day
+ins #uMi
+var #uMm(e"/") "+48"  // Pfingstsonntag
+  Day
+perf Day
+ins #uMs
+var #uMm(e"/") "+49"  // Pfingstmontag
+  Day
+perf Day
+ins #uMp
+var #uMm(e"/") "+38"  // Himmelfahrt
+  Day
+perf Day
+ins #uMk
+var #uMm(e"/") "+59"  // Fronleichnam
+  Day
+perf Day
+ins #uMj
+  1. Advent
+var #uMm(0,4) "1224+0"
+  Day
+perf Day
+ins #uMq
+var #uMq(b"= " e",")
+if "So" var #uMq(0,8) "-21"
+if "Mo" var #uMq(0,8) "-22"
+if "Di" var #uMq(0,8) "-23"
+if "Mi" var #uMq(0,8) "-24"
+if "Do" var #uMq(0,8) "-25"
+if "Fr" var #uMq(0,8) "-26"
+if "Sa" var #uMq(0,8) "-27"
+  Day
+perf Day
+
+var (0,8)
+ins #uMg
+
+var #uMg "+7"
+  Day
+perf Day
+
+var (0,8)
+ins #uMn
+
+var #uMg "-11"
+  Day
+perf Day
+
+var (0,8)
+ins #uMh
+
+  Name des Monats wird ermittelt
+var #uU1(4,2)
+ins #uMa   // Wert MM
+
+if "01" var "Januar"
+if "02" var "Februar"
+if "03" var "MÑrz"
+if "04" var "April"
+if "05" var "Mai"
+if "06" var "Juni"
+if "07" var "Juli"
+if "08" var "August"
+if "09" var "September"
+if "10" var "Oktober"
+if "11" var "November"
+if "12" var "Dezember"
+
+ins #uU0
+
+  Anzahl Tage des Monats ausrechnen
+var #uU1(0,4)
+ins #uMB
+
+eval #uMa +1
+var (0,r2)
+ins _ _0_
+ins #uMA
+if <13 jump mnum
+var "01"
+ins #uMA
+eval #uMB +1
+ins #uMB
+
+:mnum
+var #uMB #uMA "01+0"
+perf Day
+var (0,8)
+ins #uMB
+
+var #uMB "-" #uU1(0,4) #uMa "01"
+perf Day
+  Anzahl Tage des Monats
+ins #uMT
+eval #uMT +1
+ins #uMT
+
+  Nummer der Woche kursiv ausgeben
+wri "{" 92 "fs22 " 92 "i " #uMf " }" 92 "tab "
+  Flag loeschen
+#uMw
+
+var #uU1 "01+0"
+  Day
+perf Day
+
+
+ins #uMb
+Z=1
+
+  In #uMb steht der erste Tag des Monats
+  Davon haengt ab, wo die Zahl 1 erscheinen muss
+var #uMb(b" = ")
+if "Mo" z=7;jum mo
+if "Di" z=6;jum di
+if "Mi" z=5;jum mi
+if "Do" z=4;jum do
+if "Fr" z=3;jum fr
+if "Sa" z=2;jum sa
+if "So" z=1;jum so
+
+:sa
+wri 92 "tab "
+:fr
+wri 92 "tab "
+:do
+wri 92 "tab "
+:mi
+wri 92 "tab "
+:di
+wri 92 "tab "
+:mo
+#u+s loop
+jump tnr
+jum loop
+
+
+:so
+wri 92 "tab " 92 "tab " 92 "tab " 92 "tab " 92 "tab " 92 "tab " 92 "cf3 "
+#u+s sox
+jump tnr
+:sox
+wri 92 "cf0 " 92 "par " n
+
+  Abarbeitung der Tage, nachdem der erste ausgegeben ist
+:loop
+z-1
+Z+1
+  letzter Tag ueberschritten?
+eval Z -#uMT
+if "0" jump ende
+var z
+if ="0" jump nxtw
+if "7" #u+s loop;jump tnr; jump loop
+if "1" jump sd
+
+:wd
+wri 92 "tab "
+#u+s loop
+jump tnr
+jump loop
+
+:sd
+wri 92 "cf3 " 92 "tab "
+#u+s sdx
+jump tnr
+:sdx
+wri 92 "cf0 " 92 "par "
+jump loop
+
+:nxtw
+  Wochennummer erhoehen f.d. naechste Zeile
+var #uMf
+z=
+z+1
+var z
+ins #uMf
+z=8
+Z-1
+#uMw 1
+jump loop
+
+:ende
+wri 92 "fs20 " 92 "par " 92 "par " #uMr(F"* ")
+
+var "." $BT "."
+if ".." jump noBT
+
+wri 92 "fs20 " 92 "par " 92 "par Br¸ckentage: " 
+
+var $BT (f"*")
+ins $BT
+
+:bt
+var (F"*" T"*" b"=")
+
+if "" jump noBT
+var (t" " t" ")
+ins _, 0_, _
+ins $bt
+wri $bt 
+var $BT
+var (f"*" F"*" t"*")
+ins $BT
+var "." $BT "."
+
+if not =".." wri ", ";jump bt
+
+:noBT
+var $BT (b"=")
+var (t" " t" ")
+ins $bt
+wri $bt
+var #uU1
+z=
+z+1
+var z
+ins #uU2
+#uUQ
+  Indexzeilen der Termine stehen bei Md- im Reg. 10. Alle zu diesem Monat holen
+var "20 |: Md-" #uU1 "@Md-" #uU2
+qrix
+  Zeilenwechsel in ;; wandeln
+ins __;;_
+ins #uUQ
+
+var K1
+if not "~a" jump gn
+  Wenn a.cfg, dann nach ANSI wandeln (bei N ist intern ANSI)
+var #uUQ
+ansi
+ins #uUQ
+:gn
+wri "\\par "
+
+if not #uUQ jump schlus
+wri "`\\cf2 Termine:\\cf0  `\\par " n
+#uY~Termine:
+var "x ind |: M" #uUQ(b"M" e" ")
+ins #uZ~
+:tl
+wri #uUQ(b"-" 6,2) ". - " #uUQ(b"-" 9,0 e";;") "\\par "  n
+var #uUQ(b";;")
+ins #uUQ
+if #uUQ jump tl
+
+:schlus
+var #uU9
+z=
+var #dts(0,4)
+z-
+if not z=0 jump foot
+wri "\\par "
+
+if not #uM1 = #uM2 jump foot
+
+// nur fuers laufende Jahr:
+day +0
+ins #uTO
+wri "Heute (" #dts(6,2 f"0") "." #dts(4,2 f"0") "." #dts(0,4) ") ist der " #uTO ". Tag des Jahres." 92 "par "
+#uTO
+var #uMc "-" #dts(0,8)
+  Day
+perf Day
+
+if >0 ins #uTO
+var #uTO
+if >0 if <150 wri "In " #uTO " Tagen ist Ostern. "
+#uTO
+var #dts(0,4) "1225-" #dts(0,8)
+  Day
+perf Day
+
+
+if >0 ins #uTO;wri "In " #uTO " Tagen ist der 25.12." 92 "par "
+
+:foot
+
+if #uMy #uU2;#uU3;#uU4;#uU5;#uU6;#uU7;#uU8;#uV7;#uY~;#uZ~;jump fuss
+#uU8-Jahr
+#uU2<<<
+#uU3>>>
+#uU4Jahr+
+#uU5Feiertage des Jahres
+#uU6Druckversion
+#uU7Anderes Jahr
+  // in o.apt muss stehen:  o .15 160
+var "JAN FEB MRZ APR MAI JUN JUL AUG SEP OKT NOV DEZ "
+ins #uV7
+
+wri "\\par\\pard\\qr\\f1\\fs20 Termin notieren: auf die Tageszahl klicken." n
+
+:fuss
+wri "\\par\\pard\\qr\\f2\\fs18 Alle Angaben ohne Gew\\'e4hr.\\f3\\fs17 "
+wri "\\par\\pard\\qr\\f2\\fs20\\'a9 \\i allegro-C\\i0  2005/" #dts(0,4) "\\f3\\fs17\\par "
+  jetzt noch die Flip-Zeilen
+wri n '\\par ?JAN =x var "kalender " #uU9 "01"`exec' n
+wri '\\par ?FEB=x var "kalender " #uU9 "02"`exec' n
+wri '\\par ? MRZ=x var "kalender " #uU9 "03"`exec' n
+wri '\\par ? APR=x var "kalender " #uU9 "04"`exec' n
+wri '\\par ? MAI=x var "kalender " #uU9 "05"`exec' n
+wri '\\par ? JUN=x var "kalender " #uU9 "06"`exec' n
+wri '\\par ? JUL=x var "kalender " #uU9 "07"`exec' n
+wri '\\par ? AUG=x var "kalender " #uU9 "08"`exec' n
+wri '\\par ? SEP=x var "kalender " #uU9 "09"`exec' n
+wri '\\par ? OKT=x var "kalender " #uU9 "10"`exec' n
+wri '\\par ? NOV=x var "kalender " #uU9 "11"`exec' n
+wri '\\par ? DEZ =x var "kalender " #uU9 "12"`exec' n
+wri "\\par ?Anderes Jahr =x var 'kalender '`ask +Bitte Jahr eingeben (1601-2399, z.B. 2011) oder Jahr und Monat (z.B. 200803)`if >1600 exec" n
+  und die abschliessende Klammer
+wri " }"
+
+close x
+
+if #uMy jump anzeig
+  Jetzt noch Flips vorbereiten fuer vor - zurueck
+
+var "<<<<<"
+ins #uY~
+var #uU1 "04-31"
+  Day
+perf Day
+
+var (0,6)
+ins #uMe
+var "X kalender " #uMe
+ins #uZ~
+
+var ">>>>>"
+ins #uY~
+var #uU1 "03+31"
+  Day
+perf Day
+
+var (0,6)
+ins #uMe
+var "X kalender " #uMe
+ins #uZ~
+
+var "---Jahr"
+ins #uY~
+var #uU1 "04-366"
+  Day
+perf Day
+
+var (0,6)
+ins #uMe
+var "X kalender " #uMe
+ins #uZ~
+
+var "Jahr+++"
+ins #uY~
+var #uU1 "04+366"
+  Day
+perf Day
+
+var (0,6)
+ins #uMe
+var "X kalender " #uMe
+ins #uZ~
+
+var #uU5   // Feiertage
+ins #uY~
+var "X holidays " #uU9(0,4)
+ins #uZ~
+
+var #uU6   // Druckversion
+ins #uY~
+var "x #uMy1\\exec kalender " #uU1(0,6)
+ins #uZ~
+
+ var #uU7   // anderes Jahr
+ ins #uY~
+ var "x var 'kalender '\\ask +Bitte Jahr eingeben (1601-2399, z.B. 2011) oder Jahr und Monat (z.B. 200803)\\exec"
+ ins #uZ~
+
+:anzeig
+  Nun das fertige Kalenderblatt anzeigen
+var M "kblatt"
+help
+var ""
+sho iV
+  unnoetige Variablen #uMx und #uWx. wieder loeschen
+ #uW~
+ #uM~
+  #uU1 und #uU9 muessen bleiben f. term.flx und die Monats-Flips JAN FEB ...
+   #uU~
+act 4
+  Damit stets die erste Zeile sichtbar wird:
+dis z0
+end
+
+  Unterprog.: Tagesnummer ausgeben, schwarz oder rot
+:tnr
+
+var Z
+var (0,r2)
+ins _ _0_
+  naechstes Datum -> #uMd
+ins #uMd
+var #uU1 #uMd 
+ins #uMd
+
+   wohl nicht mehr noetig!?
+ eval Z -#uMT
+ if =0 wri " ";var #u+s;jump
+
+  Wochennr. ausgeben, falls Flag gesetzt
+if #uMw #uMw;wri "{" 92 "fs22 " 92 "i " #uMf " }" 92 "tab "
+
+  Vergleiche mit den Daten der berechneten Feiertage
+  Wenn es einer davon ist, dann nach :rot springen
+var Z
+if <10 wri " "
+wri '`'
+var #uMd(0,8)
+if =#uMu wri 92 "ul "
+if =#uMl var "K";jump rot
+if =#uMc var "O";jump rot
+if =#uMm var "o";jump rot
+if =#uMs var "P";jump rot
+if =#uMp var "p";jump rot
+if =#uMk var "H";jump rot
+if =#uMj var "F";jump rot
+if =#uMg var "A";jump rot
+if =#uMn var "Z";jump rot
+if =#uMh var "B";jump rot
+ if =#uMi var "Y";jump rot
+if =#uMi var #uMr " " Z ". Aschermittwoch * ";ins #uMr
+  und hier die festen Feiertage
+var #uMd(4,4)
+if "0101" var "N";jump rot
+if "0106" var "E";jump rot
+if "0501" var "M";jump rot
+if "0808" var "f";jump rot
+if "0815" var "m";jump rot
+if "1031" var "R";jump rot
+if "1101" var "a";jump rot
+if "1224" var "h";jump rot
+if "1225" var "W";jump rot
+if "1226" var "w";jump rot
+if "1231" var "S";jump rot
+
+var #uU9
+if not >1989 jump ksf
+var #uMd(4,4)
+if "1003" var "n";jump rot
+
+:ksf
+  Kein Sonn- oder Feiertag
+wri Z
+if not #uMy wri 92 "fs10 " 92 "cf4 " #uMz(0,1) "`" 92 "cf0 "
+
+ var "1 |: Md-" #uMd(0,8)
+ qrix
+ var (b"-" 0,8)
+ if =#uMd wri "*"
+
+wri 92 "fs40 "
+var Z #uMz(0,1)
+ins #uY~
+var "X term " Z
+ins #uZ~
+var #uMz(1,0)
+ins #uMz
+
+var #uMd(0,8)
+if =#uMu wri 92 "ulnone "
+var z
+var #u+s
+jump
+ ret   // end :tnr
+
+  Was fuer ein FeierTag? In #uMr eintragen
+:rot
+ins $t
+
+if "N" var #uMr " " Z ". Neujahr * ";ins #uMr
+if "B" var #uMr " " Z ". Buﬂ- und Bettag (nur SN) * ";ins #uMr
+if "E" var #uMr " " Z ". Erscheinung (nur BW,BY,ST) * ";ins #uMr
+ if "Y" var #uMr " " Z ". Aschermittwoch * ";ins #uMr
+if "K" var #uMr " " Z ". Karfreitag * ";ins #uMr
+if "O" var #uMr " " Z ". Ostersonntag * ";ins #uMr
+if "o" var #uMr " " Z ". Ostermontag * ";ins #uMr
+if "M" var #uMr " " Z ". Tag der Arbeit * ";ins #uMr
+if "H" var #uMr " " Z ". Himmelfahrt * ";ins #uMr
+if "P" var #uMr " " Z ". Pfingstsonntag * ";ins #uMr
+if "p" var #uMr " " Z ". Pfingstmontag * ";ins #uMr
+if "F" var #uMr " " Z ". Fronleichnam (kath. Bundesl.) * ";ins #uMr
+if "f" var #uMr " " Z ". Friedensfest (nur Augsburg) * ";ins #uMr
+if "m" var #uMr " " Z ". Mari‰ Himmelfahrt (nur SL, BY kath.)* ";ins #uMr
+if "a" var #uMr " " Z ". Allerheiligen (BW,BY,NW,RP,SL) * ";ins #uMr
+if "R" var #uMr " " Z ". Reformation (BR,MV,SN,ST,TH) * ";ins #uMr
+if "n" var #uMr " " Z ". Tag d. Dt. Einheit * ";ins #uMr
+if "A" var #uMr " " Z ". Erster Advent * ";ins #uMr
+if "Z" var #uMr " " Z ". Zweiter Advent * ";ins #uMr
+if "h" var #uMr " " Z ". Heiligabend * ";ins #uMr
+if "W" var #uMr " " Z ". Erster Weihnachtstag * ";ins #uMr
+if "w" var #uMr " " Z ". Zweiter Weihnachtstag * ";ins #uMr
+if "S" var #uMr " " Z ". Silvester * ";ins #uMr
+
+  Rot wird durch cf3 eingeschaltet, schwarz cf0
+wri 92 "cf3 " Z
+  unterscheidender Buchstabe wird angehaengt, Schrift sehr klein, unsichtbar
+  (cf4 ist Schriftfarbe weiss)
+if not #uMy wri 92 "fs10 " 92 "cf4 " #uMz(0,1) "`" 92 "fs40 "
+wri 92 "cf0 "
+var #uMd(0,8)
+if =#uMu wri 92 "ulnone "
+if #uMy var #u+s;jump;return
+var Z #uMz(0,1)
+ins #uY~
+var "X term " Z
+ins #uZ~
+var #uMz(1,0)
+ins #uMz
+
+var #uMd(4,4)
+if "1224" jump ENDE
+if "1225" jump ENDE
+
+var #uMd(0,8) "+1"
+perf Day
+if %Fr% var + "*" $BT;ins $BT
+var #uMd(0,8) "-1"
+perf Day
+if %Mo% var + "*" $BT;ins $BT
+
+:ENDE
+var #u+s
+jump
+ret   // end :tnr
+
+
+
+  Unterprogramm, um Osterdatum zu berechnen. In iV steht das Jahr
+  Variablen #u|x werden sonst nicht benutzt!
+:gauss
+ins #u|j
+if <1700 jump Error
+if >2199 jump Error
+if "17" var "23";ins #u|M;var "3";ins #u|N;jump Eb
+if "18" var "23";ins #u|M;var "4";ins #u|N;jump Eb
+if "19" var "24";ins #u|M;var "5";ins #u|N;jump Eb
+if "20" var "24";ins #u|M;var "5";ins #u|N;jump Eb
+if "21" var "24";ins #u|M;var "6";ins #u|N;jump Eb
+  ungueltige Jahreszahl
+:Error
+var "Sorry, das Jahr " #u|j " liegt nicht im Bereich von 1700 bis 2199"
+#u|j
+return
+
+  Beginn der Berechnung
+:Eb
+var #u|j
+z=
+z%19
+var z
+ins #u|A
+
+var #u|j
+z=
+z%4
+var z
+ins #u|B
+
+var #u|j
+z=
+z%7
+var z
+ins #u|C
+
+var #u|A
+z=
+z*19
+var #u|M
+z+
+z%30
+var z
+ins #u|D
+
+var #u|B
+z=
+z*2
+var #u|C
+Z=
+Z*4
+var Z
+z+
+var #u|D
+Z=
+Z*6
+var Z
+z+
+var #u|N
+z+
+z%7
+var z
+ins #u|E
+
+var "3"
+ins #u|m
+
+var "22"
+z=
+var #u|D
+z+
+var #u|E
+z+
+var z
+ins #u|t
+
+var #u|t
+if <32 jump Ende
+
+z=
+z-31
+var z
+ins #u|t
+var "4"
+ins #u|m
+
+var #u|t
+if ="26" var "19"; ins #u|t
+var #u|t
+if not ="25" jump Ende
+var #u|D
+if not ="28" jump Ende
+var #u|A
+if not >"10" jump Ende
+var "18"
+ins #u|t
+
+:Ende
+  Die Normalform JJJJMMTT zusammensetzen:
+var #u|j #u|m(0,r2) #u|t(0,r2)
+ins _ _0_
+  und in #u|d hinterlegen
+ins #u|d
+
+#u|wwird
+var #dts(0,4)
+if >#u|j var "wurde";ins #u|w
+  Antwort zusammenstellen
+var "Im Jahre " #u|j " " #u|w " Ostern am " #u|t "." #u|m " gefeiert. (" #u|d ")"
+
+  Hilfsvar. beseitigen
+#u|~
+  aber in der iV steht jetzt das Ergebnis
+return   // End :gauss
+
+end
+  Funktion :Day zum ermitteln eines Wochentags etc.
+include day.inc
+
+     Liste der u-VARIABLEN in KALENDER.FLX
+ #u+s        Sprungmarke
+ #uMa (2)    Wert MM des naechsten Monats
+ #uMA        MM+1  bzw. 01 wenn MM = 12
+ #uMb (3)    Erster Tag des Monats JJJJMMTT...
+ #uMB        JJJJ des Jahres oder JJJJ+1 wenn #uMA = 01
+ #uMc (5)    Ostersonntag JJJJMMTT
+ #uMd (6)    Tag (JJJJMMTT...) von 1 - 31
+ #uMe (8)    JJJJMM fuer die Flips <<< und >>>
+ #uMf (5)    Wochennummer (s.a. #uMt)
+ #uMg (3)    Tag des 1. Advent (JJJJMMTT..)
+ #uMh (2)    Buss- und Bettag
+ #uMi (2)    Aschermittwoch
+ #uMj (2)    Fronleichnam
+ #uMk (2)    Himmelfahrt
+ #uMl (2)    Karfreitag
+ #uMm (8)    1. Advent
+ #uMp (2)    Pfingstmontag
+ #uMq (9)    Heiligabend
+ #uMr (46)   Liste der Feiertage des Monats
+ #uMs (2)    Pfingstsonntag
+ #uMt (4)    Ausgleichssummand f. #uMf, um korrekte Wochennummer zu erhalten
+ #uMT        Anzahl Tage von JJJJMM
+ #uMu (4)    heutiger Tag (fuer Unterstreichung)
+ #uMy (5)    Wenn besetzt, dann nur Druckausgabe
+ #uMz (9)    Hilfsvar. mit Buchstaben, fuer die Zahlenflips
+             (hinter jeder zahl ein unsichtbarer Buchstabe!)
+ $BT : Brueckentage ...;...;...
+ #uTO (6)    Hilfsvariable
+ #uU0 (1)    Name des Monats (Ueberschrift)
+ #uU1 (18)   call value JJJJMM
+ #uU2 (4)    <<<
+ #uU3 (1)    >>>
+ #uU4 (1)    Jahr+
+ #uU5 (2)    Feiertage des Jahres
+ #uU6 (2)    Druckfassung
+ #uU7 (2)    anderes Jahr
+ #uU8 (1)    -Jahr
+ #uU9 (16)   Jahreszahl (Ueberschrift)
+ #uUQ (9)    Hilfsvar. f. Termine
+ #uV7 (1)    Monatsnamenflips (oberste Zeile)
+ #uY1 (1)    Flip <<<
+ #uY2 (1)    Flip >>>
+ #uY3 (1)    Flip -Jahr
+ #uY4 (1)    Flip Jahr+
+ #uY5 (1)    Flip Feiertage des Jahres
+ #uZ1 (1)    z.B.  X kalender 200502  wenn aktueller Monat 200503
+ #uZ2 (1)          X kalender 200504
+ #uZ3 (1)          X kalender 200403
+ #uZ4 (1)          X kalender 200603
+ #uZ5 (1)          X holi3s 2005
+
+
+ Variablen des Gauss-Algorithmus
+  (Nur im UP :gauss, werden darin alle wieder geloescht)
+ #u|A (3)
+ #u|B (2)
+ #u|C (2)
+ #u|D (4)
+ #u|E (2)
+ #u|M (6)
+ #u|N (6)
+ #u|d (2)
+ #u|j (8)
+ #u|m (4)
+ #u|t (9)
+ #u|w (3)
+ #u|~ (1)
+

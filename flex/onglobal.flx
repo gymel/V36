@@ -1,0 +1,38 @@
+  ONGLOBAL.FLX : Ausfuehrung vor den Aktionen des Menues "Global"
+  2003-12-08
+  Wird von a99 automatisch aufgerufen, wenn einer der drei Punkte
+  des Menues "Global" benutzt wird.
+  In iV steht eine Ziffer i (1,2,3):
+  Nur wenn diese auch wieder zurueckgegeben wird, erfolgt die Aktion
+  d.h. der betr. Abschnitt muss mit  var 'i'  beendet werden 
+  Wenn diese Datei fehlt, laufen die Funktionen normal ab.
+
+if ="1" jump ersetz   // Globale Ersetzung
+if ="2" jump manip    // Globale Manipulation
+if ="3" jump loesch   // Globales Loeschen
+
+  Globale Ersetzung
+:ersetz
+    Zum Beispiel:
+  yes wirklich?
+  if not yes var "x"
+  if yes var "1"
+
+if l1 yes Keine Erg.Menge. Anwendung auf aktuellen Satz?;if not yes var "0";end
+var "1"
+end
+
+:manip
+var l
+if <1 jump ke
+var "2"
+end
+
+:ke
+mes Momentan besteht keine Ergebnismenge
+var "x"
+end
+
+:loesch
+var "3"
+end

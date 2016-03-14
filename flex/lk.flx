@@ -1,0 +1,114 @@
+  LK.FLX : Laengsten und kuerzesten Datensatz ermitteln
+  20070628
+
+#ul1 0
+#ul2 0
+#ul3 0
+#uk1 20000000
+#uk2 20000000
+#uk3 20000000
+
+z=0
+
+#uMX  3
+ask Sätze mit maximal ... Feldern:=#uMX
+if cancel end
+ins #uMX
+eval #uMX +1
+if =1 eval #uMX+2
+ins #uMX
+
+open x k1.lst
+wri "Datens„tze mit nur bis zu " #uMX " Feldern" n
+
+var "Unterbrechung mit Esc ..."
+sho iv
+
+first #
+:loop
+keycheck
+  Wurde [Esc] gedrueckt?
+  Wenn ja und Nachfrage mit ja beantwortet, dann -> :exit
+if yes jump exit
+if del jump nn
+var jb
+if >#ul1 ins #ul1;var i;ins #uI1;jump kl
+if >#ul2 ins #ul2;var i;ins #uI2;jump kl
+if >#ul3 ins #ul3;var i;ins #uI3;jump kl
+
+:kl
+var jb
+if =0 jump nn
+if <#uk1 ins #uk1;var i;ins #uJ1;jump nn
+if <#uk2 ins #uk2;var i;ins #uJ2;jump nn
+if <#uk3 ins #uk3;var i;ins #uJ3;jump nn
+
+:nn
+  Hat der Satz nur bis zu #uMX Felder? Dann interne Nummer in k1.lst
+var k0
+if <#uMX z+1;wri i n
+
+next #
+if cancel jump exit
+if del jump nn
+jump loop
+
+:exit
+close x
+
+  Ende, jetzt den laengsten Satz noch zeigen:
+var "#" #uI1
+find
+sho rec
+disp
+  Nun die 6 Saetze als Erg.Menge zusammenfassen
+var "... ... or #" #uI1 "," #uI2 "," #uI3 "," #uJ1 "," #uJ2 "," #uJ3
+find
+  Erg.Menge benennen
+set RLängste/kürzeste Sätze
+  Meldung aller Ergebnisse
+var "Längster Satz       : " #uI1 ", Länge " #ul1 " Bytes"
+var +n "Zweitlängster Satz  : " #uI2 ", Länge " #ul2
+var +n "Drittlängster Satz  : " #uI3 ", Länge " #ul3
+var +n "Kürzester Satz      : " #uJ1 ", Länge " #uk1
+var +n "Zweitkürzester Satz : " #uJ2 ", Länge " #uk2
+var +n "Drittkürzester Satz : " #uJ3 ", Länge " #uk3
+if z>0 var +n "Sätze mit weniger als " #uMX " Feldern: " z
+   falls auch Saetze mit 2 Feldern:
+ if z>0 var +n "Sätze mit nur 1 oder 2 Feldern: " z
+
+
+
+sho IV
+mes
+var ""
+sho iv
+
+  und Erg.Liste zeigen
+  sho list
+  Variablen loeschen
+#ul1
+#ul2
+#ul3
+#uk1
+#uk2
+#uk3
+#uI1
+#uI2
+#uI3
+#uJ1
+#uJ2
+#uJ3
+
+if z=0 jump schluss
+read set k1.lst
+
+:schluss
+show erg
+del k1.lst
+
+var "Links sehen Sie die Ergebnismenge(n)" n "Längste/kürzeste Sätze  und " n "Datensätze mit weniger als " #uMX " Feldern"
+
+mes
+
+

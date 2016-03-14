@@ -1,0 +1,163 @@
+  O-LIEF.FLX : Bestellungen eines Lieferanten suchen (ORDA)
+  2000-01-10/2004-10-26
+  Entweder:
+  a) Listen der Bestellungen anzeigen oder
+  b) Statistik berechnen
+  Wenn mit Modus aufgerufen, dann in #uoM sichern (z.B. ... abo)
+#uoM
+ins #uoM
+id "ktg" jump ktg
+  Lieferant auswaehlen
+View lief.vw
+if no end
+clo v
+if "" end
+if can end
+
+  Ausgew. Code nach #uoL :
+ins #uoL
+
+  Sonderfunktion?
+var #uoM
+if "abo" jump abos
+  Find-Befehl basteln und ausfuehren, nur erster Satz
+var "|: _L " #uoL(e"|") "?"
+f1nd
+  Nichts gefunden: (anderer Lieferant)
+var #9DB$j
+if not =#uoL jump empty
+
+  Frage stellen:
+yesno Liste der Bestellungen? (Nein: Summe)
+if yes jump liste
+jump summe
+
+:liste
+  Status waehlen
+select Welche Bestellungen?=offene|alle|stornierte|reklamierte|inventarisierte|vorakzess.|ausgew.|abgeschlossen|Abonnements
+if "aus" var "1"
+if "vor" var "2"
+if "off" var "3"
+if "rek" var "4"
+if "sto" var "5"
+if "inv" var "6"
+if "abg" var "7"
+if "Abo" jump abos
+if "all" var ""
+ins #uoT
+#uoD
+
+:datum
+  Wenn bestimmter Typ, dann auch Datumsbereich abfragen
+  ("alle Typen" geht nicht mit Datumsbereich, Index nicht geeignet)
+if #uoT ask Datum JJJJMMTT oder JJJJMMTT---JJJJMMTT? (nur Enter: alle)
+if cancel end
+if #uoT ins #uoD
+
+if not #uoD jump sb
+var #uoD 
+if %---% jump sb
+eval #uoD +1
+z=
+var #uoD "---" z
+ins #uoD
+
+:sb
+  Suchbefehl (Reg. 10 Lieferantencode AND Reg. 11 Bestelltyp)
+   Keine Datumsangabe
+if not #uoD var "|: _L " #uoL(e"|") "? and |; s " #uoT "?"
+   mit Datumsangabe
+if #uoD var "|: _L " #uoL(e"|") "? and |; s " #uoT " " #uoD(e"---") "---s " #uoT " " #uoD(b"---")
+find
+  Nichts gefunden
+if empty jump empty
+
+var U
+ins #uo!
+var "RBestellungen " #uo!(b": ")
+set
+#uo!
+
+if g1 ord d0
+sho list
+
+  Alternative: ViewListe statt Erg.Menge
+ close view
+ delete best.vw
+ xport f best.vw
+  View-Ueberschrift
+ write "000|Bestellungen Lieferant " #uoL(b"|") 13 10
+ first
+  Schleife
+ :schl
+  ViewZeile zusammensetzen
+ write i "|" s 13 10
+ next
+ if yes jump schl
+ xport f nul
+  ViewListe zeigen
+ View best.vw
+
+  show List
+jump ende
+
+:empty
+message Es liegen keine vor
+
+:ende
+end
+
+:summe
+  Statistik ermitteln
+var #00
+ins #uoI
+  Lade Parameter KONT.APR
+xport p kont
+  Datei fuer Ergebn. ist ERGEBNIS
+xport f ergebnis
+  Ergebnismenge exportieren
+down set
+  #uSU mit "xxx"  besetzen (als FLAG)
+var xxx
+ins #uSU
+  aktuellen Satz verarbeiten (Endabschnitt fuer Ergebnisse!)
+down
+  Satz zurÅckholen
+var "|9 " #uoI
+find
+show rec
+var ""
+ins #uoI
+
+  Ergebn. anzeigen (als Hilfetext)
+help ergebnis
+
+end
+:leer
+message F¸r dieses Kontingent liegen keine Bestellungen vor
+end
+
+:ktg
+  Kontingent auswaehlen
+View kont.vw
+if no end
+clo v
+if "" end
+if cancel end
+ins #uoL
+var #uoL(e"|")
+xcode ip
+ins #uoL
+var "|: _Z " #uoL
+Find
+end
+
+:abos
+var "|: _abo " #uoL(e"|")
+Find
+end
+
+
+
+
+

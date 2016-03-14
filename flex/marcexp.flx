@@ -1,0 +1,52 @@
+  MARCEXP.FLX : Ausgabe von MARC21 entweder als XML oder als Textdatei
+  2008-04-11    Aufruf mit  X marcexp txt, wenn Textform gewuenscht
+
+
+
+if "txt" jump marctxt
+if "xml" jump marcxml
+
+yesno XML-Ausgabe? (Nein: Textausgabe)
+if cancel end
+if no jump marctxt
+
+:marcxml
+if empty mes Keine Ergebnismenge!;end
+set dow 2
+  Parameter  marcxml.apr laden
+exp p marcxml
+exp f mxml.xml
+  Dateikopf
+wri '<?xml version="1.0" encoding="UTF-8" ?>' n 
+wri '<collection xmlns="http://www.loc.gov/MARC21/slim" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd" type="Bibliographic">' 
+  Erg.Menge ausgeben
+exp set
+
+  Dateiende
+wri '</collection>' n
+
+set dow 1
+var "Datei " W "\\MXML.XML wurde produziert"
+mes
+end
+
+
+  *********************************************
+  Ausgabe in Textform (mit MARCEDIT einlesbar)
+:marctxt
+set dow 2
+  Parameter  marctxt.apr laden
+exp p marctxt
+exp f mtxt.txt
+  Erg.Menge ausgeben
+if l1 exp
+if g0 exp set
+
+set dow 1
+
+var "Datei " W "\\MTXT.TXT wurde produziert" n "Anzeigen?"
+yes
+if yes help mtxt.txt
+end
+
+

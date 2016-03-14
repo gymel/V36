@@ -1,0 +1,1457 @@
+    ; -----------------------------------------------------
+    ; P-HTML.OPR : Kartenanzeige Katalogisierung                    
+    ; -----------------------------------------------------      
+pn="Kartenanzeige Katalogisierung (2.9.2003)"
+      
+ag=0                    ; Aufnahme-Gliederungsmodus 0
+zl=0                    ; Zeilenlaenge
+ff=2                    ; Kopf- und Fussabschnitt aktivieren
+zm=0                    ; Zeilenmaximum 0 = fortlaufende Ausgabe
+fl=0
+    ; -----------------------------------------------------    
+    ; Zwischenteile
+    ; -----------------------------------------------------
+
+1=13 10 "<br>" 13 10
+2=" / "
+3=" = "
+4=" - "
+5=", "
+6="("           
+7=")"
+8=13 10
+9="&nbsp;"
+
+10="Einheitssacht.: "
+11="Enth.: "
+12="ISBN "
+13=46 " "
+14=" ; "
+15="- "
+16="Nebentitel : "
+17=" [Hrsg.]. "
+18=" : "
+19="Schlagworte: "
+20=": "
+21="&#46; Mahnung"
+22=" * "
+
+25=" [u.a.]"
+26="[S.l.]"
+27=" ("
+
+29="<b>&raquo;&nbsp;&nbsp;</b>"     ; Markierung in der Hierarchie
+
+31=
+32=
+33=
+34=
+35="<p>"                            ; Absatz
+36="</p>"
+37=
+38=
+39=
+40=
+41=
+42=
+43=
+
+47="<span class=hinweis>"
+48="<span class=statusnv>"
+49="<span class=statusv>"
+
+50=
+51=
+52="<span class=small>"
+53=
+54=
+55=
+56=
+57="<span class=zugnr>"
+58="<span class=standort>"
+59="<span class=verf>"
+60="<span class=name>"
+61="<span class=value>"
+62="<p class=sign>"
+63="<p class=h1>"
+64=
+65="<span class=h1>"
+66="<span class=IK>"
+67=
+68="<p class=hinweis>"
+69="</span>"
+
+70="Schlagwortstammsatz"
+71="Ansetzung"
+72="siehe Verweisung"
+73="siehe-auch Verweisung"
+74="Quelle"
+75="Kommentar"
+76="K&ouml;rperschaftsstammsatz"
+77="GKD Ident.-nr."
+78="Personenstammsatz"
+79="PND Ident.-nr."
+80="Verweisung von"
+82="Pseudonym"
+83="wirklicher Name"
+84="Lebensdaten"
+85=
+86=
+
+90="<b>"                                ; fett EIN
+91="</b>"                               ; fett AUS
+92="<em>"                               ; kursiv EIN
+93="</em>"                              ; kursiv AUS
+94="<font color=" 34 "#000080" 34 ">"   ; blau EIN
+95="<font color=" 34 "#FF0000" 34 ">"   ; rot EIN
+96="<font color=" 34 "#008000" 34 ">"   ; gruen EIN
+97="<font size=" 34 "+1" 34 ">"         ; groesser
+98="<font size=" 34 "-1" 34 ">"         ; kleiner
+99="</font>"                            ; jedes Attribut AUS
+
+	; -----------------------------------------------------
+	; Ersetzungen
+*#460_ * _) (_          ; Ersetzung bei getrennten Unterreihen
+    ; -----------------------------------------------------
+    ; Dokumentenkopf (Keine ak-Zeilen!)	
+    ; -----------------------------------------------------
+
+#t{"<html><head>" 13 10 "<title>Datensatz Nr.&nbsp;"}
+#nr
+#t{"</title>" 13 10 }
+tSTYLES.OPT
+#t{"</head>" 13 10 "<body class=main>"}
+	; -----------------------------------------------------
+	; Anweisungsteil
+
+#900 +C e0                  ; Stammsaetze ...
+#800 +D e0
+#700 +F e0
+#9A0 +c e0                  ; Systemdaten
+#9B0 +i e0                  ; Leser
+#9DF +k e0                  ; Exemplar oder Vormerkung
+#9GF +r e0                  ; Gebuehr
+#9AF +t e0                  ; Statistik
+
+    ; -----------------------------------------------------
+    ; Titelaufnahmen
+    ; -----------------------------------------------------
+#nr dex e0                          ; Ex.-Nr. initialisieren!
+#000 +#10z e0                       ; Existiert Ident.-nummer ueberhaupt?
+#nr +A e0                           ; NEIN !
+#10z                                ; JA !
+#00 +#10a c"+" e"+" P" (" |92       ; Existiert ekz-Gesamtaufnahme?
+#00 +#10a c"+" e"+" |90             ; Existiert normale Gesamtaufnahme?
+#+A                                 ; NEIN? Normal oder unverknuepfter Band!
+#10a                                ;
+#</                                 ; Zurueck zur Ausgangsaufnahme
+
+#-a                                 ; LOOP : Gibt es uebergeordnete Aufnahmen?
+#00 +a c"+" t"+" |92                ; Komplette Hierarchie stapeln
+    ; -----------------------------------------------------
+    ; Angaben aus der Gesamtaufnahme
+    ; -----------------------------------------------------
+#060 +#06a 62 P36           ; Signatur Absatz fett rechtsbuendig
+#t{ t62 "&nbsp;" t36 }		; Signatur fehlt
+#06a
+#t65						; SPAN H1
+#200 +#20a 1 P20            ; HE Verf." : "
+#240 +#20a 1 P20            ; HE Koerp." : "
+#20a
+#t69						; /SPAN
+#320 1 #zz 0                ; HST
+#335 18 #zz 0               ; " : "Zus. z. HST.
+#380 18 #zz 0               ; " : " Nebentitel (mehrere?)
+#341 3 #zz 0                ; " = "Parall-tit.
+#359 +d 2 #zz 13            ; " / "beteil. Pers." ."
+#20. +#20g 2 e0 #zz 0       ; wenn #359 nicht gefuellt ist, "/"
+#24. +#20g 2 e0 #zz 0
+#41. 13 e0 #zz 0            ; wenn es keine 200er gibt, "."
+#426 13 e0 #zz 0
+
+#20g
+#200 >a                     ; alle Personennamen invertiert
+#201 14 >a                 ; " ; "
+#202 14 >a  
+#200 e0 13
+#203 >a #zz 17                 ; "[Hrsg.]"
+#204 ++ >a m>a #209 13 #zz 13
+#210 ++ >a m>a #215 13 #zz 13           ; UP-Aufruf fuer neue #210-215
+#24. ++ #249 14 #zz 13
+#-d
+#403 F"." 15 #zz 13             ; "- "Ausg". "
+#426 15 26 e0 #zz 0         ; wenn Druckort: [S.l.]
+#410 15 #zz 0               ; "- "Ort
+#415 25 e0 #zz 0            ; wenn 2.Ort: [u.a.]
+#412 18 #zz 0               ; " : "Verl.
+#417 25 e0 #zz 0            ; wenn 2.Verl.: [u.a.]
+#425 5 P13 #zz 0                ; ", "Jahr
+#426 27 #zz 0               ; " ("Druckort
+#427 18 #zz 7               ; " : " Drucker")"
+#460 1 6 P7 #zz 0          ; "("GT")"
+#385 1 16 #zz 0
+#304 1 10 #zz 0            ; "Einheitssacht.: "EST
+#501 1 #zz 0               ; Fussn.
+#361 1 11 #zz 0            ; "Enth.: "beigef. W.
+#519 1 #zz 0               ; Hochschulschr.
+#540 1 12 #zz 0            ; "ISBN" ISBN
+#540 c"*" " (falsch)." e"."
+#>p                         ; Bestellnr. und Preis
+#194 p{t1 "FSK: " } #zz 0
+
+#100 y0 dsw asw				    // Schlagwortketten behandeln
+#100 >b                     
+#101 y0 dsw asw
+#101 >b
+#102 y0 dsw asw
+#102 >b
+#103 y0 dsw asw
+#103 >b
+#104 y0 dsw asw
+#104 >b
+#105 y0 dsw asw
+#105 >b
+#106 y0 dsw asw
+#106 >b
+#107 y0 dsw asw
+#107 >b
+#108 y0 dsw asw
+#108 >b
+#109 y0 dsw asw
+#109 >b
+#110 y0 dsw asw
+#110 >b
+#t36						; Absatz ENDE
+
+#>A                         ; IK und Annotation
+#<                          ; runterschalten
+    ; -----------------------------------------------------
+    ; Angaben aus uebergeordneten Zwischenstufen
+    ; -----------------------------------------------------
+#-e							; jetzt Zwischenstufen abarbeiten
+#<+f						; geht's noch weiter runter?
+#+A							; nein, ist schon wieder Ausgangsaufnahme
+#-f							; ja, also wieder hoch und Zwischendaten ausgeben
+#<^
+#600 +H c"d" e0
+#600 p{t1 t60 "bestellt am: " t69 t9 } 
+#608 $e p{t1 t60 "bestellte Ex.: " t69 t9}
+#605 p{t1 t60 "bestellt bei: " t69 t9}
+#602 +H $m p{t1 t60 "gemahnt am:" t69 t9} 
+#602 +H $r p{t1 t60 "reklamiert am: " t69 t9}
+#602 +H $s p{t1 t60 "storniert am: " t69 t9 }
+#602 p{t1 t60 "geliefert am: " t69 t9}
+#t99
+#-H
+#600 c"d" p{ t1 t60 "Desiderat" t69 t9} e0
+#608 $k p{t1 t60 "Kommentar: " t69 t9}
+#608 $r p{t1 t60 "Reklamationsgrund: " t69 t9}
+#060 +#06a 62 P36           ; Signatur Absatz fett rechtsbuendig
+#t{ t62 "&nbsp;" t36 }		; Signatur fehlt
+#06a
+#089 F"." P". "             ; Bandzaehlung
+#315                        ; Bandtitel
+#335 18 #zz 0               ; Zusatz
+#359 2 #zz 0                ; Personen
+#<+e                        ; rekursiv zurueckschalten
+#</
+    ; -----------------------------------------------------
+    ; Angaben aus der Ausgangsaufnahme
+    ; Kann auch eine Gesamtaufnahme sein
+    ; -----------------------------------------------------
+#-A
+#600 +I c"d" e0
+#600 p{t1 t60 "bestellt am: " t69 t9 } 
+#608 $e p{t1 t60 "bestellte Ex.: " t69 t9} 
+#605 p{t1 t60 "bestellt bei: " t69 t9}
+#602 +I $m p{t1 t60 "gemahnt am:" t69 t9} 
+#602 +I $r p{t1 t60 "reklamiert am: " t69 t9}
+#602 +I $s p{t1 t60 "storniert am: " t69 t9 }
+#602 p{t1 t60 "geliefert am: " t69 t9}
+#t99
+#-I
+#600 c"d" p{ t1 t60 "Desiderat" t69 t9} e0
+#608 $k p{t1 t60 "Kommentar: " t69 t9}
+#608 $r p{t1 t60 "Reklamationsgrund: " t69 t9}
+#060 +#06a 62 P36           ; Signatur Absatz fett rechtsbuendig
+#t{ t62 "&nbsp;" t36 }		; Signatur fehlt
+#06a
+#000 c"+" 29 e0             ; Unteraufnahme kennzeichnen
+#089 +G e0                  ; Bandbezeichnung
+#315 +G e0
+
+#t65						; SPAN H1
+#200 +#20D P20 #zz 1        ; HE Verf." : "
+#24. +#20D P20 #zz 1        ; HE Koerp." : "
+#20D
+#t69						; /SPAN
+#310 "[" P"]" #zz 0
+#320                        ; HST
+
+#596 +j e0
+
+#335 18 #zz 0               ; " : "Zus. z. HST.
+#380 18 #zz 0               ; " : " Nebentitel (mehrere?)
+#341 3 #zz 0                ; " = "Parall-tit.
+#359 +E 2 #zz 13            ; " / "beteil. Pers." ."
+#20. +#20F 2 e0 #zz 0       ; wenn #359 nicht gefuellt ist, "/"
+#24. +#20F 2 e0 #zz 0
+#41. 13 e0 #zz 0            ; wenn es keine 200er gibt, "."
+#426 13 e0 #zz 0
+
+#20F
+#200 >a                     ; alle 200er invertiert
+#201 14 >a 
+#202 14 >a  
+#200 13 e0 #zz 0
+#203 >a #zz 17
+#204 ++ >a m>a #209 13 #zz 13      
+
+#210 ++ >a m>a #215 13 #zz 13               ; UP-Aufruf fuer neue #210-215
+#24. ++ #249 14 #zz 13
+
+#-E
+#403 F"." 15 #zz 13             ; "- "Ausg". "
+#426 15 26 e0 #zz 0         ; wenn Druckort: [S.l.]
+#410 15 #zz 0               ; "- "Ort
+#415 25 e0 #zz 0            ; wenn 2.Ort: [u.a.]
+#412 18 #zz 0               ; " : "Verl.
+#417 25 e0 #zz 0            ; wenn 2.Verl.: [u.a.]
+#425 5 P13 #zz 0                ; ", "Jahr
+#426 27 #zz 0               ; " ("Druckort
+#427 18 #zz 7               ; " : " Drucker")"
+#433 4 #zz 0
+#+L
+
+#-G
+#315 +#31H e0               ; Bandtitel vorh.? => dann 089 mit "."
+#089 +#08I F"." #zz 0       ; nein, 089 ohne "."
+#31H
+#089 F"." P". " #zz 0       ; Bandzaehlung mit "."
+#200 P18                    ; Verf. ":"
+#315                        ; Bandtitel
+#335 18 #zz 0               ; " : "Zus. z. Bandt.
+#380 18 #zz 0               ; " : " Nebentitel (mehrere?)
+#341 3 #zz 0                ; " = "Parall-tit.
+#08I
+#403 F"." 4 #zz 13         ; "- "Ausg"."
+#359 +J 2 #zz 13            ; " / "beteil. Pers." ."
+#20. +#20K 2 e0 #zz 0       ; wenn #359 nicht gefuellt ist, "/"
+#24. +#20K 2 e0 #zz 0
+             #433 4 e0 #zz 0            ; wenn keine 200er, "."
+#20K
+#200 >a                     ; alle 200er invertiert
+#201 14 >a 
+#202 14 >a   
+#200 13 e0 #zz 0
+#203 >a #zz 17
+#204 ++ >a m>a #209 13 #zz 13
+#210 ++ >a m>a #215 13 #zz 13           ; UP-Aufruf fuer neue #210-215
+#24. ++ #249 14 #zz 13
+#-J
+#425 4 P13 #zz 0              ; "- "Jahr"."
+#433 4 #zz 0               ; "- "Umfang
+
+#-L                        ; ab hier BB und BG gemeinsam
+#460 1 6 P7 #zz 0          ; "("GT")"
+#385 1 16 #zz 0
+#304 1 10 #zz 0            ; "Einheitssacht.: "EST
+
+#501 +#50u c"Dublette" e0
+#501 +#50t 1 #zz 0         ; Fussn.
+#50u
+#501 1 p"Vorsicht : Dublette!$" e"$"
+#50t
+
+#361 1 11 #zz 0            ; "Enth.: "beigef. W.
+#540 1 12 #zz 0            ; ISBN
+#540 c"*" " (falsch)." e"."
+#>p                         ; Bestell.-nr. und Preis
+#194 p{t1 "FSK: " } #zz 0
+#100 y0 dsw asw				    // Schlagwortketten behandeln
+#100 >b                     
+#101 y0 dsw asw
+#101 >b
+#102 y0 dsw asw
+#102 >b
+#103 y0 dsw asw
+#103 >b
+#104 y0 dsw asw
+#104 >b
+#105 y0 dsw asw
+#105 >b
+#106 y0 dsw asw
+#106 >b
+#107 y0 dsw asw
+#107 >b
+#108 y0 dsw asw
+#108 >b
+#109 y0 dsw asw
+#109 >b
+#110 y0 dsw asw
+#110 >b
+#t36						; /P
+
+#>A                         ; IK und Annotation
+    ; -----------------------------------------------------
+    ; Angaben aus Unteraufnahmen
+    ; -----------------------------------------------------
+#00 +m e" (" P"+" |92			; Gibt es noch Unteraufnahmen?
+#nr +#9Da e0                    ; Nein, dann Bestandsangaben
+#00 +z e0                       ; ENDE
+
+#-m                             ; es gibt noch Untereinheiten
+#600 +K c"d" e0
+#600 p{t1 t60 "bestellt am: " t69 t9 } 
+#608 $e p{t1 t60 "bestellte Ex.: " t69 t9}
+#605 p{t1 t60 "bestellt bei: " t69 t9}
+#602 +K $m p{t1 t60 "gemahnt am:" t69 t9} 
+#602 +K $r p{t1 t60 "reklamiert am: " t69 t9}
+#602 +K $s p{t1 t60 "storniert am: " t69 t9 }
+#602 p{t1 t60 "geliefert am: " t69 t9}
+#t99
+#-K
+#600 c"d" p{ t1 t60 "Desiderat" t69 t9} e0
+#608 $k p{t1 t60 "Kommentar: " t69 t9}
+#608 $r p{t1 t60 "Reklamationsgrund: " t69 t9}
+#060 +#06a 62 P36           ; Signatur Absatz fett rechtsbuendig
+#t{ t62 "&nbsp;" t36 }			; Signatur fehlt
+#06a
+#315 +o e0                      ; gibt es 315? dann 089 mit "."
+#089 +p F"." #zz 0              ; nein, 089 ohne "."
+#-o
+#089 F"." P". " #zz 0           ; Bandzaehlung mit "."
+#200 P18                        ; Verf. ":"
+#315                            ; Bandtitel
+#335 18 #zz 0                   ; " : "Zus. z. Bandt.
+#380 18 #zz 0                   ; " : " Nebentitel (mehrere?)
+#341 3 #zz 0                    ; " = "Parall-tit.
+#-p
+#403 F"." 4 #zz 13             ; "- "Ausg". "
+#359 +q 2 #zz 13                ; " / "beteil. Pers." ."
+#20. +#20r 2 e0 #zz 0           ; wenn #359 nicht gefuellt ist, "/"
+#24. +#20r 2 e0 #zz 0
+      #433 4 e0 #zz 0                ; wenn keine 200er, "."
+#20r
+#200 >a                         ; alle 200er invertiert
+#201 14 >a 
+#202 14 >a   
+#200 13 e0 #zz 0
+#203 >a #zz 17
+#204 ++ >a m>a #209 13 #zz 13
+#210 ++ >a m>a #215 13 #zz 13		; UP-Aufruf fuer neue #210-215
+#24. ++ #249 14 #zz 13
+#-q
+#425 4 P13 #zz 0                  ; "- "Jahr". "
+#433 4 #zz 0                   ; "- "Umfang
+#460 1 6 #zz 7                  ; "("GT")"
+#385 1 16 #zz 0
+#304 1 10 #zz 0                 ; "Einheitssacht.: "EST
+#501 1 #zz 0                    ; Fussn.
+#361 1 11 #zz 0                 ; "Enth.: "beigef. W.
+#540 1 12 #zz 0                 ; ISBN
+#540 c"*" " (falsch)." e"."
+#>p                             ; Bestellnr. und Preis
+#194 p{t1 "FSK: " } #zz 0
+#100 y0 dsw asw				    // Schlagwortketten behandeln
+#100 >b                     
+#101 y0 dsw asw
+#101 >b
+#102 y0 dsw asw
+#102 >b
+#103 y0 dsw asw
+#103 >b
+#104 y0 dsw asw
+#104 >b
+#105 y0 dsw asw
+#105 >b
+#106 y0 dsw asw
+#106 >b
+#107 y0 dsw asw
+#107 >b
+#108 y0 dsw asw
+#108 >b
+#109 y0 dsw asw
+#109 >b
+#110 y0 dsw asw
+#110 >b
+#t36							; /P
+
+#>A                             ; IK und Annotation
+
+    ; -----------------------------------------------------
+    ; Titelvormerkungen zaehlen
+    ; -----------------------------------------------------
+#9Da
+#000 +#10n P" V" |102               ; Vormerkung?
+#nr +#10z e0                        ; NEIN
+#10n
+#nr "1" e1 dvm avm                  ; Vormerkungen zaehlen
+#<
+#-b
+#000 +#10m P" V " |103              ; weitere Vormerkungen?
+#nr +#10j e0
+#10m
+#<
+#uvm x"+1" dvm avm                  ; plus 1
+#+b
+
+#10j
+#nr p{ t68 "Dieser Titel ist&nbsp;" } e0
+#uvm x"r0" P{ "-mal vorgemerkt." t69 }
+    ; -----------------------------------------------------
+    ; 1. Exemplar suchen
+    ; Hinweis : Im Schluessel MUSS ":" erscheinen,
+    ; auch wenn der Barcode fehlt!
+    ; -----------------------------------------------------
+#10z
+#nr "xxx" e6 dex aex             ; Exemplarzaehlung UND FLAG
+#nr "000000" e6 deb aeb             ; Ex.-barcode
+#nr "999999" e6 dev aev             ; Ex.-vormerkung Barcode
+#000 +n P":" |102                   ; Exemplar? - oder Ex.-vormerkung
+                                    ; Keinen Bestand gefunden
+#t99                                ; ATTRIBUTE AUS
+
+#<<                                 ; Ausgangsaufnahme
+#000 +m e" (" P"+" |93              ; Untergeordnete Aufnahmen?
+#+z                                 ; ENDE
+    ; -----------------------------------------------------
+    ; Bestandsangaben
+    ; -----------------------------------------------------
+#-n
+#9DG +y i5,V e0                     ; Vormerkung?
+                                    ; NEIN - neues Exemplar
+#nr "000000" e6 deb aeb             ; Ex.-barcode merken
+#9DG $a deb aeb
+#uex +#9Dg c"xxx" p{ t63 "Exemplare :" t36 } e0
+#uex +#9Dj x"+1" dex aex             ; Ex.-nummer hochzaehlen
+#9Dg
+#uex +#9Dh "1" e1 dex aex            ; 1. Exemplar
+#9Dj
+#t{ t1 }                          ; 2. und folgende ...
+#9Dh
+#9DG +#9Dg $a e0
+#nr +#9Do "[ohne Barcode]." e"." dbc abc
+#9Dg
+#9DG $a p" [" P"]" dbc abc
+#9Do
+#t{ "<a href=" 34 "res://dbn/get?record=" }
+#nr                                 ; Link
+#t{ 34 ">" }
+#ubc                                ; Text : Barcode
+#t{ "</a>" }
+
+#080 p{ "<SPAN CLASS=zweig> " } P{ "</SPAN> " }       ; Zweigstelle
+#9DG $z 57 " " P{ " " t69 }
+#9DG +#9Df $c e0                    ; Blockausleihe?
+#nr +#9Dg e0                        
+#9Df
+#t52
+#t{ " (" }
+#9DG $D dad aad                     
+#>D
+#t{ ")" }
+#t69
+
+#9Dg
+#9DG $H
+#9DG dvf e0                         ; initialisieren
+#9DG +#9Dv $v dvf avf e0            ; explizit?
+#9Dg +#9Ds e0                       ; nein, zum Standort
+#9Dv
+#uvf +#9Ds i5,P p{ t59 "&nbsp;Nicht entleihbar&nbsp;" t69 } e0
+#uvf +#9Ds i5,p p{ t59 "&nbsp;Pr&auml;senz&nbsp;" t69 } e0
+#uvf +#9Ds i5,k p{ t59 "&nbsp;Kurzausleihe&nbsp;" t69 } e0
+#uvf +#9Ds i5,g p{ t59 "&nbsp;Bitte nachfragen&nbsp;" t69 } e0
+
+#9Ds								; Standort und Statistik
+#9DG $l 58 9 P{ t9 t69 }  
+#9DG $X 66 9 P{ t9 t69 } 
+#9DG $F 92 { "<br>" } " Bisher&nbsp;" P{ "-mal&nbsp;entliehen  " t93  } 
+
+#t1
+#9DG +#9Di i5,W p{ t49 "[reserviert]&nbsp;" t69 } e0
+#9DG +#9Di i5,v p{ t48 "[zur Zeit nicht verf&uuml;gbar]" t69 } e0
+#9DG +#9Di i5,A p{ t48 "[ausgesondert]" t69 } e0
+#9DG +#9Dl i5,l p{ t48 "[entliehen]" t69 } e0
+#9Di
+#t92        
+#9DI $D p{"Zuletzt entliehen am :&nbsp;"} dad aad
+#>D
+#t93          
+#+s
+
+#9Dl
+#9DG p{" R&uuml;ckgabetermin "} e0
+#9DH $R dad aad
+#>D
+#nr "0" e1 dms ams e0           ; Mahnstufe init.
+#9DH $n dms ams e0
+#ums +s i5,0 e0                 ; noch nicht gemahnt
+#ums +s i5,9 p{t48 " H&ouml;chste Mahnstufe erreicht " t69} e0
+#ums p{t48 " "} P{ t21 t69 }
+#+s
+    ; -----------------------------------------------------
+    ; Exemplarvormerkung
+    ; Hinweis : Kann VOR oder NACH dem gemeinten Ex. gefunden werden
+    ; -----------------------------------------------------
+#-y                         ; Vormerkung gefunden
+#nr "999999" e6 dev aev     ; Barcode des vorgemerkten Ex. merken
+#9DG $a dev aev
+#ueb +#9Dy =ev #zz 0        ; bei UNGLEICHHEIT Sprung
+#nr p{ t1 t97 "Exemplar ist vorgemerkt" t99 t69 } e0
+#nr "000000" e6 deb aeb     ; weitere Zeilen verhindern
+#9Dy
+#nr "999999" e6 dev aev     ; UMSTAND : Zuweisung beim Vergleich rueckgaengig
+#9DG $a dev aev             ; merken fuer evtl. Auswertung OBEN
+#9DF +n P":" |107           ; naechstes Ex. oder Ex.-vormerkung
+#nr +#9Dz e0                ; NICHTS MEHR GEFUNDEN
+
+#-s
+    ; Haben wir bereits eine Ex.-vormerkung gefunden?
+#uev +#9Dy =eb #zz 0        ; bei UNGLEICHHEIT Sprung
+#nr p{ t1 t97 "Exemplar ist vorgemerkt" t99 t69 } e0
+#9Dy
+#nr "000000" e6 deb aeb     ; UMSTAND : Zuweisung rueckgaengig
+#9DG $a deb aeb             ; fuer evtl. Vergleich UNTEN
+#9DF +n P":" |107           ; ohne Barcode : ":" muss im Schluessel erscheinen
+
+#9Dz
+#<<                         ; zurueck zur Ausgangsaufnahme
+#00 +m e" (" P"+" |93       ; geht's noch weiter runter?
+#+z                         ; ENDE
+
+#-j
+#t94                        ; blau
+#t1
+#596 p"in: " 1              ; Quelle
+#+z                         ; ENDE
+        ; -------------------------------------------------
+#(a     ; Unterprogramm (a) : Invertierung Personennamen
+        ; -------------------------------------------------
+#cc b", " e" ["   
+#cc p" " e", " e" ["
+#cc b" [" p" [" e"]" P"]"
+#)a
+
+        ; -------------------------------------------------
+#(b     ; Unterprogramm (b) : Schlagwortketten
+        ; -------------------------------------------------
+        ; Einschraenkung der Anzeige :
+        ; Kette(n) oder Einzelschlagwort(e) in #100 - #102
+        ; -------------------------------------------------
+
+#t1
+#t19
+#usw y2 dsw asw                 ; Zeichen umwandeln
+#usw +#10k c"[$;*/]" e0         ; Kette
+    #nr +#10z p{"Einzelschlagworte"}
+#usw P9                         ; Einzelschlagwort
+#nr +#10Z e0                    ; Ende - ohne Zeilenumbruch
+
+#10k
+#usw +#10r i5,$ e0              ; korrektes Format
+#usw "$a" dsw asw               ; fuer das 1. Schlagwort
+#10r                            ; RSWK Schlagwortkette
+
+
+#usw +#10e c"$" e0              ; 1. Schlagwort
+#nr +#10z e0
+#10e
+#usw b"$" e"$" ds0 as0
+#us0 b1 f" " F" " P9
+#usw b"$" dsw asw
+
+#-R
+#usw +#10t c"$" e0              ; noch ein Schlagwort?
+#nr +#10z e0
+#10t
+#usw b"$" e"$" ds0 as0
+#us0 b1 f" " F" " p22
+#usw b"$" dsw asw
+#nr +R e0
+
+#10z 
+#)b
+
+    ; -----------------------------------------------------
+    ; Stammsaetze
+    ; -----------------------------------------------------
+    ; Einschraenkung : Nur Einzelschlagworte als Stammsatz
+
+#-F
+#t{ "<p class=h1>Schlagwortstammsatz</p>" }
+#t{ "<p>" }
+#700 60 71 69 61 P{ t69 t1 t8 }             ; Ansetzung
+#710 60 72 69 61 P{ t69 t1 t8 }             ; "s. Verw.:"
+#711 60 72 69 61 P{ t69 t1 t8 }             ; "s. Verw.:"
+#712 60 72 69 61 P{ t69 t1 t8 }             ; "s. Verw.:"
+
+#720 60 73 69 61 P{ t69 t1 t8 }             ; "s.a. Verw.:"
+#721 60 73 69 61 P{ t69 t1 t8 }
+#722 60 73 69 61 P{ t69 t1 t8 }
+
+#730 60 73 69 61 P{ t69 t1 t8 }             ; "s.a. Verw.:"
+#731 60 73 69 61 P{ t69 t1 t8 }
+#732 60 73 69 61 P{ t69 t1 t8 }
+
+#708 60 74 69 61 P{ t69 t1 t8 }             ; "Quelle:"
+#709 60 75 69 61 P{ t69 t1 t8 }             ; "Kommentar:"
+#t{ "</p>" }
+#+z
+
+#-D
+#t{ "<p class=h1>K&ouml;rperschaftsstammsatz</p>" }
+#t{ "<p>" }
+#800 60 71 69 61 P{ t69 t1 t8 }             ; "Ansetzung:"
+#810 60 80 69 61 P{ t69 t1 t8 }             ; "Verw. von:"
+#811 60 80 69 61 P{ t69 t1 t8 }
+#812 60 80 69 61 P{ t69 t1 t8 }
+
+#820 60 73 69 61 P{ t69 t1 t8 }             ; "s.a. Verweisung"
+#821 60 73 69 61 P{ t69 t1 t8 }
+#822 60 73 69 61 P{ t69 t1 t8 }
+
+#802 60 77 69 61 P{ t69 t1 t8 }             ; "GKD ID-Nr.:"
+#830 60 75 69 61 P{ t69 t1 t8 }             ; "Kommentar:"
+#+z                                         ; ENDE
+
+#-C
+#t{ "<p class=h1>Personenstammsatz</p>" }
+#t8
+#t{ "<p>" }
+#900 60 71 69 61 P{ t69 t1 t8 }             ; Ansetzung
+#910 60 80 69 61 P{ t69 t1 t8 }             ; Verweisung von
+#911 60 80 69 61 P{ t69 t1 t8 }
+#912 60 80 69 61 P{ t69 t1 t8 }
+#920 60 73 69 61 P{ t69 t1 t8 }             ; siehe-auch Verweisung
+#921 60 73 69 61 P{ t69 t1 t8 }
+#922 60 73 69 61 P{ t69 t1 t8 }
+#904 60 83 69 61 P{ t69 t1 t8 }             ; "wirkl. Name:"
+#931 60 82 69 61 P{ t69 t1 t8 }             ; "Pseudonym:"
+#932 60 81 69 61 P{ t69 t1 t8 }
+#933 60 81 69 61 P{ t69 t1 t8 }             ; weitere Pseudonyme
+#934 60 81 69 61 P{ t69 t1 t8 }
+#935 60 81 69 61 P{ t69 t1 t8 }
+#905 60 84 69 61 P{ t69 t1 t8 }             ; "Lebensdaten:"
+#902 60 79 69 61 P{ t69 t1 t8 }             ; "PND ID-Nr.:"
+#930 60 75 69 61 P{ t69 t1 t8 }             ; "Kommentar:"
+#t{ "</p>" }
+#+z
+                                         ; ENDE
+    ; -----------------------------------------------------
+    ; Systemdatensaetze : Anzeige abgeklemmt    
+    ; -----------------------------------------------------
+#-c
+#t{ "<p class=h1>Systemdatensatz " }
+#9A0 +#9Az i5,R p{"Kalender&nbsp;"} b"R" e4
+#9A0 +#9Az i5,C p{"Leserklasse"} e0
+#9A0 +#9Az i5,D p{"Medientyp"} e0
+#9A0 +#9Az i5,M p{"Medientypstamm"} e0
+#9A0 +#9Az i5,X p{"Textbaustein"} e0
+#9A0 +#9Az i5,P e0                              ; Passwort
+#9A0 p{"[Unbekannter Typ]"} e0
+#9Az e0
+#t{ "</p>" }
+#068 p{"Angelegt am&nbsp;"} e0
+#068 e"/" dad aad
+#>D
+#068 dfd afd
+#>H
+#ufd b"/" " um " P" Uhr"
+#069 p{t1 "Zuletzt ge&auml;ndert am&nbsp;"} e0
+#069 e"/" dad aad
+#>D
+#069 dfd afd
+#>H
+#ufd b"/" " um " P" Uhr"
+#+z                                         ; ENDE
+
+    ; -----------------------------------------------------
+    ; Leserdaten
+    ; -----------------------------------------------------
+
+#-i
+#t{ "<p class=h1>" }
+#9B0 +#9Ba i5,1 p{"Gesperrter Benutzer"} e0
+#9B0 +#9Ba i5,2 p{"Abgemeldeter Benutzer"} e0
+#t{"Benutzer"}
+#9Ba
+#t{ "</p>" }
+#9B0 daa e0
+#9B0 dad e0	
+	
+#t{ "<p class=h2>" }			; Leserklasse nachladen
+#9B0 y0 "SYS" e3 dbk Abk
+#br y0 "/" P"/" Abk
+#9B0 y0 $k "C" Abk
+#ubk +#9Ba y0 |112
+#9B0 +#9Bb $k p{ t95 "Unbekannte Leserklasse [" } P{ "]" t99 } 
+#9Ba
+#9A0 $C 
+#9Bb
+#<\
+#t{ "</p>" }	
+	
+#9B0 +#9Ba i5,0 e0				; Gesperrt oder abgemeldet?
+#9B0 i5,1 p{ t48 "Gesperrt seit dem" t9 } e0
+#9B0 $D =ad
+#>D
+#9B0 i5,2 p{ t48 "Abgemeldet seit dem" t9 } e0
+#9B0 $C =ad
+#>D
+#9B0 $R p" wg. " 
+#t69
+#t1
+#9Ba	
+	
+#9B0 dfd afd e0					; Stehen Gebuehren aus?
+#>H
+#ufd +#9Ba y0 b1 y0 p"GB" |110
+#9B0 +#9Bb e0
+#9Ba
+#9GF p{ t48 "Geb&uuml;hren stehen aus" t69 } e0
+#<\
+#t1
+#9Bb
+	
+#9B0 dfd afd e0					; Stehen Mahnungen aus?
+#>H
+#ufd +#9Ba y0 b1 p"MB" P"/E" |112
+#9B0 +#9Bb e0
+#9Ba
+#9DF p{ t48 "Gemahnte Exemplare stehen aus" t69 } e0
+#<\
+#t1
+#9Bb	
+	
+#9B0 $a dag aag					; Ausweis abgelaufen?
+#dts e8 dtd atd
+#uag x"<td" p{ t48 "Ausweis ist abgelaufen" t69 t1 } e0
+
+#t{t1 t60 "Zweigstelle" t69 }
+#080 +#9Bz 9
+#nr p{ " (Hauptstelle)" } e0
+
+#9Bz
+#t{t1 t60 "Ausweisg&uuml;ltigkeit" t69 }
+#urg drg e0
+#9B0 $b drg arg
+#urg +#9Bo c"1" p{ " Plus Hauptstelle" } e0
+#urg +#9Bo c"2" p{ " Verbund" } e0
+#9B0 p{ " Zweigstelle" } e0
+
+#9Bo
+#t{t1 t60 "Name" t69 }
+#9B0 $n 9
+
+#t{ t1 t60 "Strasse Nr." t69 }
+#9B0 $s 9
+
+#t{ t1 t60 "PLZ Ort" t69 }
+#9B0 $p 9 P"&nbsp;"
+#9B0 $o
+
+#9B0 $t p{ t1 t60 "Telefon" t69 t9 } 
+#9B0 $e y0 p{ t1 t60 "e-Mail" t69 t9 } 
+#9B0 $j p{ t1 t60 "Beruf" t69 t9 } 
+#9B0 dfd afd e0
+#>H
+#ufd y0 b1 p{t1 t60 "Benutzerkennung" t69 t9 } 
+#9B0 +#9Ba i5,1 e0
+#9B0 +#9Ba i5,2 e0
+#9B0 $a p{t1 t60 "Ausweis g&uuml;ltig bis zum" t69 t9 } e0
+#9B0 $a =ad
+#>D
+
+#9Ba
+#t{t1 t60 "Erstanmeldung am" t69 t9} e0
+#9B0 $A =ad
+#>D
+
+#9B0 +#9Ba $d dgb agb           ; Geburtstag
+#9B0 +#9Bj e0                   ; kein Geburtstag
+#9Ba
+#ugb P"$" dgb agb               ; hinten anhaengen
+#ugb +#9Bh i11,$ e0             ; Test auf Laenge : hier 6-stellig
+#9B0 +#9Bg e0                   ; 8-stellig
+
+#9Bh
+#9B0 +#9Bi $d "19" dad aad
+#9Bg
+#9B0 +#9Bi $d dad aad
+
+#9Bi
+#9B0 p{t1 t60 "Geburtstag am" t69 t9} e0
+#>D                    
+#9Bj
+
+#9B0 +#9Ba $N e0        ; Eltern ???
+#9B0 +#9Bb $S e0        ; nur Zweitanschrift?
+#+z                     ; NEIN --> ENDE
+
+#9Ba
+#t{ "<br><span class=h2>Eltern oder Ansprechpartner</span>" }
+#9B0 +#9Bc e0
+
+#9Bb
+#t{ "<br><span class=h2>Zweit- oder Postanschrift</span>" }
+#9B0 +#9Bc e0
+
+#9Bc
+#9B0 $N p{t1 t60 "Ansprechpartner" t69 t9} 
+#9B0 $S p{ t1 t60 "Strasse Nr." t69 t9 } 
+#9B0 $P P"&nbsp;" dpo Apo
+#9B0 $O Apo
+#upo p{ t1 t60 "PLZ Ort" t69 t9} 
+#9B0 $T p{ t1 t60 "Telefon" t69 t9 } 
+#+z                                    
+
+    ; -----------------------------------------------------
+    ; Exemplardatensatz oder Vormerkung
+    ; -----------------------------------------------------
+
+#-k
+#9DG +#9DV i5,V e0
+#t{ "<p class=h1>Exemplar</p>" }
+	;
+    ; Status 
+	;
+#9DG +#9Ds i5,v p{ t48 "[z. Zt. nicht am Standort]" t69 } e0
+#9DG +#9Ds i5,A p{ t48 "[ausgesondert]" t69 } e0
+#9DG +#9Ds i5,W p{ t48 "[reserviert]" t69 } e0
+#9DG +#9Ds i5,0 p{ t49 "[am Standort]" t69 } e0
+#9DG +#9Ds i5,l p{ t48 "[entliehen]" t69 } e0
+#9DG p{ t48 "[unbekannter Status]" t69 } e0
+#9Ds
+
+#9DG dvf e0                         ; initialisieren
+#9DG +#9Dv $v dvf avf e0
+#9Dg +#9Dw e0
+#9Dv
+#uvf i5,p p{ t1 t59 " Pr&auml;senzexemplar " t69 } e0
+#uvf i5,P p{ t1 t59 " Nicht entleihbar " t69 } e0
+#uvf i5,g p{ t1 t59 " Ausleihe nur auf Anfrage " t69 } e0
+#uvf i5,k p{ t1 t59 " Kurzausleihe " t69 } e0
+#9Dw
+
+#t{ t1 t60 "Zweigstelle" t69 }
+#080 +#9Dz 9
+#9DF p{ " (Hauptstelle)" } e0
+
+#9Dz
+#t{ t1 t60 "Medientyp" t69 }
+#9DG +#9Dm $m 9
+#9DG p{t95 " Medientyp fehlt!" t99} e0
+#9Dm
+
+#t{ t1 t60 "Barcode" t69 }
+#9DG +#9Dg $a 9
+#9DG p{t95 " Barcode fehlt!" t99} e0
+#9Dg
+
+#9DG +#9Df $c e0                    ; Blockausleihe?
+#nr +#9Dg e0
+#9Df
+#t{ t1 t60 "Blockausleihe" t69 t9 }
+#9DG $C P" : "
+#9DG $c dad aad
+#>D
+#t{ " - " }
+#9DG $D dad aad                     
+#>D
+#9Dg  
+
+#9DG $b p{t1 t60 "Bandbezeichnung" t69 t9} 
+
+#t{ t1 t60 "Signatur" t69 }
+#9DG +#9Ds $s 9
+#nr p{t95 "Signatur fehlt!" t99} e0
+#9Ds
+
+#9DG $z p{t1 t60 "Zugangsnummer" t69 t9} 
+
+#9DG +#9Dd $d dad aad
+#nr +#9De e0
+#9Dd
+#t{t1 t60 "Zugangsdatum" t69 t9}
+#uad +#9Df c"."                         ; falsche Eingabe !
+#>D
+#9Df
+
+#9De
+#9DG $l p{t1 t60 "Standort" t69 t9} 
+#9DG $n p{t1 t60 "Bemerkung" t69 t9} 
+#9DG $H p{t1 t60 "Bestand" t69 t9} 
+    ; 
+    ; Titelsatz nachladen
+    ; 
+#t{ "<br><span class=h2>Titel</span><br>" }
+#9DG +#9Dl $T P{ " (provisorische Aufnahme)" }
+#9DF dfd afd
+    #>H             *** Zeichenumwandlung ist problematisch ***
+#ufd +#9Dj y0 e":" |90
+#nr +#9Dl p{ t95 "Titelsatz nicht gefunden oder nicht eindeutig" t99 } e0
+	;
+    ; Link zum Titel 
+	;
+#9Dj
+#t{ "<a href=" 34 "res://dbn/get?record=" }
+#nr                                 ; Link
+#t{ 34 ">" }
+#>T                         ; Linktext : UP Titelangaben
+#</
+#t{ "</a>" }
+#9Dl
+#t1
+
+#9DG $F p{t1 t60 "Entleihungen bisher" t69 t9 } 
+
+#9DG +#9Di i5,v e0
+#9DG +#9Di i5,A e0
+#9DG +#99W i5,W e0
+#9DG +#9Di i5,0 e0
+#9DG +#99l i5,l e0
+#9DG +z i5,V e0                 ; Vormerkung? ENDE
+#+z                             ; ENDE
+
+#99W
+#9DH $u dln aln
+#t{ t1 t60 "Reserviert f&uuml;r Leser" t69 t9}
+#>B
+
+#9DH $W dad aad
+#t{ t1 t60 "Zur Abholung bis zum" t69 t9 }
+#>D
+#+z                             ; ENDE
+
+#99l    ; 
+        ; Entliehen, d.h. Status 'l'
+        ; 
+#9DH $u dln aln
+#t{ t1 t60 "Ausgeliehen an Leser" t69 t9}
+#>B
+
+#9DH $R dad aad
+#t{ t1 t60 "R&uuml;ckgabetermin am" t69 t9}
+#>D
+		; 
+        ; Angaben ueber Mahnungen
+		; 
+#9DH $n dms ams e0
+#ums +#9Di i5,0 e0           ; Noch nie gemahnt
+#t{ t1 t95 }
+#9DH $U p{"H&ouml;chste Mahnstufe erreicht.<br>Sp&aumlteste R&uumlckgabe am&nbsp;" } dad aad
+#>D 
+#9DH +#9Dj $U e0
+#9DH $n "[" P{ "]. Mahnung am " }
+#9DH $m dad aad
+#>D
+#9Dj
+#t99
+#9Di
+		; 
+        ; Angaben ueber den (vor-)letzten Entleiher
+		; 
+                                        ; entliehen oder am Standort
+#9DI +#9Dt $u dln aln                   ; existiert 9DI ?
+#nr +#9Ds e0                            ; NEIN
+#9Dt
+#9DH +#9Dr e0                           ; Aktuell ausgeliehen?
+                                        ; NEIN
+#t{t1 t60 "Zuletzt entliehen durch" t69 t9 }
+#>B
+#nr +#9Ds e0
+
+#9Dr
+#t{t1 t60 "Davor entliehen durch" t69 t9 }
+#>B
+#9Ds
+#+z                                     ; ENDE
+        ; -------------------------------------------------
+#9DV    ; Vormerkung
+        ; -------------------------------------------------
+#t{ "<p class=h1>Vormerkung</p>" }
+#9DG +#9Dy $a p{ "<p class=h2>Auf das Exemplar [" } P{ "] des Titels</p>" }
+#9DG p{ "<p class=h2>Auf den Titel</p>" } e0
+#9Dy
+#9DF dfd afd
+#>H
+#ufd +#9Dj e":" |90
+#nr +#9Dl p{t95 "Titelsatz nicht gefunden" t99} e0
+#9Dj
+	; 
+	; Link zum Titel
+	; 
+#t{ "<a href=" 34 "res://dbn/get?record=" }
+#nr                                 ; Link
+#t{ 34 ">" }
+#>T                         ; Linktext : UP Titelangaben
+#</
+#t{ "</a>" }
+#9Dl
+
+#t{ t1 t1 t60 "Vorgemerkt f&uuml;r Leser" t69 t9 }
+#9DH +#9Dt $u dln aln
+#nr +#9Ds p{t95 "Leser nicht gefunden!?" t99} e0
+#9Dt
+#>B
+#9Ds
+
+#t{ t1 t60 "Vorgemerkt am" t69 t9 }
+#9DH $D e"/" dad aad
+#>D
+
+#t{ t1 t60 "Uhrzeit" t69 t9 }
+#9DH $D b"/"
+
+#t{ t1 t60 "G&uuml;ltig bis zum" t69 t9 }
+#9DH $V e"/" dad aad
+#>D
+#+z
+        ; -------------------------------------------------
+        ; Gebuehrensaetze
+        ; -------------------------------------------------
+#-r
+#t{ "<p class=h1>Geb&uuml;hr</p>" }
+#9GF +#9Gf i5,0 e0                      ; OFFEN
+#9GF +#9Gs i5,S p{t48 "Storniert am" t9 } e0
+#t{t48 "Getilgt am" t9 }
+#9Gs
+#9GF $d dad aad
+#>D
+#t69
+
+#9Gf
+#t{t1 t60 "Geb&uuml;hrenart" t69 t9}
+#9GF +#9Ga $G c"0" p{"Verzug"} e0
+#9GF +#9Ga $G c"S" p{"Zwischensumme"} e0
+#9GF +#9Ga $G c"9" p{"&Uuml;bertrag"} e0
+#9GF +#9Ga $G c"7" p{"Mahnung"} e0
+#9GF +#9Ga $G c"8" p{"Sonstiges"} e0
+#9GF +#9Ga $G c"1" p{"Anmeldung"} e0
+#9GF +#9Ga $G c"2" p{"Ausweisverl&auml;ngerung"} e0
+#9GF +#9Ga $G c"3" p{"Ausweisersatz"} e0
+#9GF +#9Ga $G c"4" p{"Entleihung (Verl&auml;ngern)"} e0
+#9GF +#9Ga $G c"5" p{"Entleihung"} e0
+#9GF +#9Ga $G c"6" p{"Reservierung"} e0
+#9GF +#9Ga $G p{"(Unbekannt)"} e0
+#9Ga
+
+#9GG +#9Gg $G e0
+#9GG +#9Gg $d e0
+#nr +#9Gl e0
+
+#9Gg
+#t{ t1 t60 "Grund" t69 t9 }
+#9GG +#9Gb $G
+#9GG $d P{ "&Ouml;ffnungstage Verzug"}
+#9Gb
+
+#9Gl
+#t{ t1 t60 "Zu Lasten Leser" t69 t9 }
+#9GF $B dln aln
+#>B
+
+#t{ t1 t60 "Erfa&szlig;t am" t69 t9 }
+#9GF $D dad aad
+#>D
+
+#t{ t1 t60 "Bearbeitet durch" t69 t9 }
+#9GF $O
+
+#9GG +#9Ga $S e0
+#+z										; Teilfeld "Summe" fehlt
+
+#9Ga									; Teilfeld "Summe" existiert
+#t{ t1 t60 "Betrag" t69 t9 }            
+#>e                                     ; --> EURO
+#>g                                     ; formatieren und ausgeben
+#t{ " €" }
+#9GG +#9Gg $T e0
+#+z
+
+#9Gg
+#t{ "<p class=h2>Entliehener Titel</p>" }
+#9GG +#9Gj $T |90
+#nr +#9Gl p{t95 "Titelsatz nicht gefunden" t99} e0
+#9Gj
+#>T
+#</
+#9Gl
+#+z                                     ; ENDE
+
+		; -------------------------------------------------
+		; Unterprogramm (e) : DM ggf. in EURO umrechnen
+        ; Ergebnis kommt in #uce (Cent) zurück
+		; -------------------------------------------------
+
+#(e
+#9GG +#9Ga c"xEURO" e0          // EURO?
+#9GG $S dpf apf                 // Pfenning sind gegeben
+#upf x"/1.95583" dce ace        // Cent werden errechnet
+#uce x"r0" dce ace              // runden
+#nr +#9Gz e0
+#9Ga
+#9GG $S dce ace                 // Cent sind gegeben
+#9Gz
+#(e
+
+        ; --------------------------------------------------
+        ;   Unterprogramm (g) : Geldbetrag formatieren
+        ;   z.B. 9999 --> 99,99 
+        ;   Übergabe in #uce
+        ; --------------------------------------------------
+
+#(g     
+#uce x"/100" x"r2"
+#)g
+
+
+#(B     ; -------------------------------------------------
+        ; Unterprogramm (B) : Lesernamen nachladen
+        ; Bem.: #uln enthaelt den Leserbarcode
+        ; -------------------------------------------------
+#uln +#9Dt "B" |100
+#uln +#9Ds 95 "Leser nicht gefunden! (" P{ ")" t99 }
+#9Dt
+#t{ "<a href=" 34 "res://dbn/get?record=" }
+#nr                                 ; Pseudo-Link
+#t{ 34 ">" }
+#9B0 $n                             ; Name ( Barcode )
+#uln "&nbsp;(" P")"
+#t{ "</a>" }
+#<
+#9Ds
+#)B
+
+#(T     ; -------------------------------------------------
+        ; Unterprogramm (T) : Titelangaben
+        ; -------------------------------------------------
+#000 +T c"+" e0 #zz 0           ; kann man was hochladen?
+#+U                             ; nein, ist BM, ausgeben
+#-T                   
+#000 +T c"+" t"+" |92           ; -> laden, aufstapeln
+#200 +#20a P20                  ; HE Verf." : "
+#203 +#20a P{ "&nbsp;[Hrsg.] :&nbsp;" }
+#240 P20
+#20a
+#320                            ; HST
+#540 1 12 #zz 0                 ; "ISBN"
+#540 c"*" "&nbsp;(falsch)." e"."
+#556 1 p"Bestellnummer :&nbsp;" #zz 0       ; AV-Best.Nr.
+#194 p{t1 "FSK: " } #zz 0
+#t1                  
+#<                                  ; um 1 runterschalten
+#-U                                 ; Ausgangsaufnahme
+#089 F"." P".&nbsp;"                ; Bandzaehlung
+#200 +#20b P20                      ; HE Verf." : "
+#203 +#20b P{ "&nbsp;[Hrsg.] :&nbsp;" }
+#240 P20
+#20b
+#320 +#32a                      ; HST
+#315                            ; oder Bandtitel (oder beides?)
+#32a
+#540 1 12 #zz 0                ; "ISBN" ISBN (falsch)...
+#540 c"*" p{"&nbsp;(falsch)"} e0
+#556 1 p"Bestellnummer :&nbsp;" #zz 0       ; AV-Best.Nr.
+#194 p{t1 "FSK: " } #zz 0
+#<+U                              ; um 1 runterschalten
+    #9DF +#9Dz e0                   ; Exemplarsatz?
+    #00 +U e0 #zz 1                 ; #000 als Kennzeichen f. Titel?
+#9Dz
+#<<
+#)T
+
+        ; --------------------------------------------------
+        ; Statistiksaetze
+        ; --------------------------------------------------
+
+#-t
+#nr dpf e0
+#nr dad e0
+#t{ "<p class=h1>Statistiksatz</p>"}
+#9AF +#9Aw i10,K e0                 ; Kassensatz
+#9AF +#9At i9,D e0                  ; Tagesstatistik
+#9AF +#9At i10,D e0					; neu : Tagesstatistik
+#9AF +#9Au i9,M 1 p{ "<p class=h2>Monatsstatistik nach Medienarten " } e0
+#9AF +#9Au i10,M 1 p{ "<p class=h2>Monatsstatistik nach Leserklassen " } e0
+#9AF +#9Av i9,Y 1 p{ "<p class=h2>Jahresstatistik nach Medienarten " } e0
+#9AF +#9Av i10,Y 1 p{ "<p class=h2>Jahresstatistik nach Leserklassen " } e0
+#+z                                 ; ENDE
+
+#9At
+#t{ "<p class=h2>Tagesstatistik vom "}
+#9AF $D b6 e2 f"0" P"." Aad         ; Tagesstatistik
+#9Au
+#9AF $D b4 e2 f"0" P"." Aad         ; Monatsstatistik
+#9Av
+#9AF $D e4 Aad                      ; Jahresstatistik
+#uad 
+#t{ "</p>" }
+
+#9AF +#9Al i9,C e0                  ; Statistik fuer Leserklasse
+
+#t{ t60 "Medientyp" t69 t9 } 
+#9AF +#L1m $m y0 p"SYSE" |110		; Medientyp nachladen
+#nr +#L1n p{t95 "Medientyp nicht gefunden." t99} e0
+#L1m
+#9A0 $B 
+#L1n
+#</
+#+z                                 ; ENDE
+
+#9Al
+#t{ t60 "Leserklasse" t69 t9 }
+#9AF +#L1l $m y0 p"SYSC" |110		; Leserklasse nachladen
+#nr +#L1n p{t95 "Leserklasse nicht gefunden." t99} e0
+#L1l
+#9A0 $C 
+#L1n
+#</
+#+z                                 ; ENDE
+
+    ; -----------------------------------------------------
+    ; Kassensaetze
+    ; -----------------------------------------------------
+
+#9Aw
+#9AF +#9AM i9,M p{ "<p class=h2>Monatsgeb&uuml;hrenstatistik vom "} e0
+#9AF +#9AJ i9,Y p{ "<p class=h2>Jahresgeb&uuml;hrenstatistik von "} e0
+#9AF +#9AD i9,D p{ "<p class=h2>Tagesgeb&uuml;hrenstatistik vom "} e0
+#+z                                 ; ENDE
+
+#9AD                    ; Datum jeweils verwursten
+#9AF $D b6 e2 f"0" P"." Aad
+#9AM
+#9AF $D b4 e2 f"0" P"." Aad
+#9AJ
+#9AF $D e4 Aad
+#uad
+#t{ "</p>" }
+	; 
+	; Waehrung aufheben
+	; 
+#9AF +#9Aw $x dwa awa
+#9AF "DM" e2 dwa awa
+#9Aw
+
+#nr "0" e1 dgs ags						; Gebuehrensumme
+#t{ t60 "S&auml;umnis" t69 t9 }         ; Liste der 'Gebuehrensummen'
+#9AH $0 dpf apf
+#ugs x"+pf" dgs ags
+#>G
+#t{ t1 t60 "Anmeldung" t69 t9 } 
+#9AH $1 dpf apf
+#ugs x"+pf" dgs ags
+#>G
+#t{ t1 t60 "R&uuml;ckmeldung" t69 t9 }
+#9AH $2 dpf apf
+#ugs x"+pf" dgs ags
+#>G
+#t{ t1 t60 "Ausweisersatz" t69 t9 }
+#9AH $3 dpf apf
+#ugs x"+pf" dgs ags
+#>G
+#t{ t1 t60 "Verl&auml;ngerung" t69 t9 }
+#9AH $4 dpf apf
+#ugs x"+pf" dgs ags
+#>G
+#t{ t1 t60 "Entleihung" t69 t9 }
+#9AH $5 dpf apf
+#ugs x"+pf" dgs ags
+#>G
+#t{ t1 t60 "Vormerkung" t69 t9 }
+#9AH $6 dpf apf
+#ugs x"+pf" dgs ags
+#>G
+#t{ t1 t60 "Mahnung" t69 t9 }
+#9AH $7 dpf apf
+#ugs x"+pf" dgs ags
+#>G									; Porto entfernt
+#t{ t1 t60 "Sonstiges" t69 t9 }		; Sonstiges stattdessen !
+#9AH $8 dpf apf
+#ugs x"+pf" dgs ags
+#>G									; Storno entfernt !
+    #9AF +#9AU I9,D e0              ; Stundung nur bei 'Tageskasse'
+#t{ "<br><span class=h2>Stundungen</span>" }
+#t{ t1 t60 "+ bezahlt" t69 t9 }
+#9AH $9 dpf apf						; '9' nicht vergessen !
+#ugs x"+pf" dgs ags
+#>G
+#t{ t1 t60 t95 "- ausstehend" t99 t69 t9 }
+#9AI $S dpf apf
+#ugs x"-pf" dgs ags
+    #9AI $u dpf apf
+#ugs x"r0" dpf apf
+#>G
+
+#9AU
+#t{ t1 t60 "<b>Saldo</b>" t69 t9 }
+#9AI $S dpf apf
+#t{ "<b>" }
+#>G
+#t{ "</b>" }
+#+z                                     ; ENDE
+
+            ; ---------------------------------------------
+            ; Unterprogramm (H) : Hauptteil einer Kategorie mit Teilfeldern
+            ; ---------------------------------------------
+#(H
+#ufd e"" dfd afd
+#)H
+
+            ; ---------------------------------------------
+#(D         ; Unterprogramm (D) : Datum umdrehen
+            ; ---------------------------------------------
+#uad b6 f"0" P"."
+#uad b4 e2 f"0" P"."
+#uad e4 dad
+#)D
+
+       	; -------------------------------------------------
+#(G     ; Unterprogramm (G) : 'Pfennig in DM' 'Cent in EURO'
+        ; -------------------------------------------------
+#upf x"/100" x"r2" ddm adm
+#udm e"." P","
+#udm b"."
+#uwa " "            ; Original Währung
+#)G
+    ; -----------------------------------------------------
+    ; Unterprorgamm (A) : IK, Annotation
+    ; -----------------------------------------------------
+#(A
+#193 35 66 9 P{ t9 t69 t36 }
+#190 P36
+#)A
+    ; -----------------------------------------------------
+    ; Unterprorgamm (p) : Bestellnr., Preis
+    ; -----------------------------------------------------
+#(p
+#556 p{ "<br>Bestellnr.:&nbsp;" } #zz 0         ; AV-Best.Nr.
+#592 9 9              				; Preis
+#)p
+
+    ; -----------------------------------------------------
+    ; Dokumenten - ENDE
+    ; -----------------------------------------------------
+#-z
+#nr p{"</body></html>"} e0
+#+#
+
+tHTML.OPT           ; Zeichencodierung ASCII -- HTML
+
+    ; Sonstige Zeichencodierungen
+
+p _ 1                       ; Nichtsortierzeichen!
+p @ 1
+p ~ 1
+                            ; DIN 31628-2 Diakritika: alle ausblenden
+p °/ß =1                    ; Mehr anzeigen : 2001.10
+p Ý 73   I                  ; tuerk I ohne Punkt
+p * "*"                     ; fuer SW-Ketten
+
+q .31 $                     ; Teilfeldzeichen
+q * "$a"                    ; fuer SW-Ketten
+q ; "$a"
+q / "$a"

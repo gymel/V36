@@ -1,0 +1,253 @@
+  VLB.AIM : VLB Textformat mit Feldbezeichnungen--> A.CFG
+  940615 / 000411
+
+      Version Windows (ANSI-Codes, s. Tabelle unten)
+
+
+re=13 10 13 10 13 10     3 Leerzeilen = Satzende
+
+_ 13 10 "                  "          Zeilenumbruch beseitigen
+_ ""
+
+
+
+y .013 0      ersetze Zeilenvorschub
+y .010 0       durch 0  (wirkt dann automatisch als Kategorie-Ende)
+
+
+#01              Bandaufnahmen beginnen unmittelbar mit dem Bandtitel!
+  j 0
+  = "   "          wenn "   " am Anfang steht, ist es kein solches Stck
+  qtitel
+  l 0
+s"Band: "        sonst muss noch die Bandnr. her
+
+
+
+-titel
+#20
+s"Titel: "
+n
+g"Untertitel: "
+w" : "
++39
+
+#20 
+s"Untertitel: "
+n
+
+-39
+#39
+s"Bearb.: "
+_ " /"
+_" ; "
+
+#42
+s"Bearb.: "
+e" /"
+b"Von "
+
+#42£
+s"Bearb.: "
+b"Von "
+b" /"
+e" /"
+
+#43
+s"Bearb.: "
+b"Bearb. v. "
+e" /"
+
+#43£
+s"Bearb.: "
+b"Bearb. v. "
+b" /"
+e" /"
+
+
+
+#40
+s"Autor(en): "
+e" /"
+#402
+s"Autor(en): "
+b" /"
+e" /"
+#403
+s"Autor(en): "
+b" /"
+b" /"
+e" /"
+
+
+#71
+s"jahr: "
+e". 19"
+e". 20"
+
+#76
+s"jahr: "
+u1
+
+#77
+s"zahl: "
+e" - "
+.
+
+#87
+s"ISBN: "
+
+#75
+s"Verlagsbez.: "
+
+ #33D
+ s"Schlagwort: "
+ m"; "
+
+
+#85
+s"Reihenbandnr.: "
+n
+
+#95p
+s"reis: "
+i32
+
+  ANSI  -> ASCII  ein-eindeutige Tabelle (OSTWEST.FON beruecksicht.)
+
+y .130 014 
+y .131 015 
+y .187 016   Pfeil nach rechts
+y .017 132  
+y .137 018     o mit Doppelakut
+y .134 019     u ...
+y .182 020     Absatzzeichen
+y .167 021     Paragraph
+y .135 022     u mit ogonek
+y .133 023     g mit breve
+y .189 024     Pfeil nach oben 
+y .139 025       nach unten
+y .159 028     Verweisungsstrich (obsolet)
+y .165 030     Dreieck 
+y .178 031     Subfield Code
+y .202 127    e mit hacek
+y .199 128    C mit cedille
+y .252 129    ue
+y .233 130   'e
+y .226 131   ^a
+y .228 132    ae
+y .224 133   `a
+y .229 134    a mit Ringel
+y .231 135    c mit cedille
+y .234 136   ^e
+y .235 137    e mit Trema
+y .232 138   `e
+y .239 139    i mit Trema
+y .238 140   ^i
+y .236 141   `i
+y .196 142    Ae
+y .197 143    A mit Ringel
+y .201 144   'E
+y .230 145    ae Ligatur
+y .198 146    AE Ligatur
+y .244 147    ^o
+y .246 148    oe
+y .242 149   `o
+y .251 150   ^u
+y .249 151   `u
+  y .255 152    y mit trema (nicht nutzbar)
+y .214 153    Oe
+y .220 154    Ue
+y .162 155   't
+y .163 156    Brit. Pfund
+y .204 157    s mit Cedille
+y .195 158    u mit Ringel
+y .221 159    U mit Ringel
+y .225 160   'a
+y .237 161   'i
+y .243 162   'o 
+y .250 163   'u
+y .241 164   ~n
+y .209 165   ~N
+y .208 166    C mit hacek
+y .240 167    c mit hacek
+y .194 168    r mit hacek
+y .219 169    R mit hacek
+y .172 170    Nichtsortierzeichen
+y .189 171    S mit hacek
+y .188 172    s mit hacek
+y .253 173   'y
+y .216 174    Z mit hacek
+y .190 175    z mit hacek
+y .185 176    tuerk. i 
+y .222 177    grosses Thorn
+y .254 178    kleines Thorn
+y .132 179    grafik
+y .180 181    ' akut
+y .146 182    ` gravis
+y .094 183    ^ circumflex (als Diakritikum)
+y .250 184    Punkt uebergesetzt
+y .131 186    grafik
+y .144 187 
+y .168 189    Trema
+y .178 190    Halbkreis ueberg.
+y .141 191  
+y .135 192    grafik
+y .136 193   
+y .137 194   
+y .138 195   
+y .139 196   
+y .140 197   
+y .227 198    Doppelakut
+y .179 199    Hacek
+y .134 201    grafik
+y .142 202 
+y .143 203 
+y .176 207    Ringel
+y .175 208    Ueberstrich
+y .215 209    Halbkreis untergesetzt
+y .171 210    umgek. cedille
+y .184 211    Cedille
+y .191 212    untergesetzter Punkt
+y .145 213    Ain
+y .169 214    Copyright 
+y .174 215    R in Kreis
+y .164 216    Waehr.Symb.
+y .133 217    grafik
+y .130 218    grafik  
+y .161 219    diakrit 
+y .129 220    Pfeil nach rechts
+y .128 221    += 
+y .173 222    diskr. Mittelstrich
+y .247 223    diakr. Unterstrich
+y .152 224    "[alpha]"
+y .225 223   scharfes s
+y .153 226    "[Gamma]"
+y .154 227    "pi"
+o .188 228    a mit breve  
+y .156 229    "[sigma]"
+y .157 230    "[mue]"
+y .158 231    "[tau]"
+y .159 232    "Phi"
+y .157 233    I mit Punkt
+y .144 234    t mit ogonek
+y .147 235    "[delta]"
+y .148 236    "[unendlich]"
+y .248 237    daenisches oe
+y .170 238    a mit ogonek
+y .200 239    e mit ogonek
+y .206 240    'C
+y .205 241    'c
+y .217 242    /L
+y .218 243    /l
+y .213 244    'N
+y .245 245    'n
+y .211 246    'O
+y .192 247    'S
+y .186 248     Gradzeichen
+y .193 249    's
+y .183 250    Punkt in der Mitte
+y .212 251   'Z
+y .210 252   'z
+y .203 253    Z mit Punkt
+y .207 254    z mit Punkt

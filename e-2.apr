@@ -1,0 +1,38 @@
+  E-2.APR :   Ausgabe als ASCII-Datei mit Feldbezeichnungen und Zeilenumbruch
+  940613   Exporttyp EXTERN, d.h. fr andere Software verwendbar
+pn="ASCII Export mit Feldbezeichnungen"
+
+  Gibt Daten als ASCII-Datein aus, jede Kategorie mit Nummer
+  auf neuer Zeile, l„ngere Kategorien werden bei 66 Zeichen 
+  umgebrochen und auf der Fortsetzungszeile eingerckt.
+
+  --------- Konstanten -----------------
+
+zl=66	    Zeilenl„nge
+zi=5	    5 Zeichen Einrckung bei Folgezeilen
+zm=0        kein Seitenumbruch (fortlaufende Ausgabe)
+ae=13 10    Zeilenvorschub am Aufnahme-Ende
+fl=0        Listenstruktur (keine Karten)
+
+ke=C        Kategorie-Ende: Zeilenvorschub
+dx=1        damit man beim Testen auch die Steuerzeichen auf dem
+            Bildschirm sieht. (Ansonsten nicht n”tig)
+
+  --------------------------------------
+
+  ********* Kategorieliste *************
+
+#20 p"TI: "
+#40 ++ p"AU: " m"; " 
+#74 e"" p"PP: "
+#75 p"PU: "
+#87 p"ISBN: "
+#70 p"SO: "
+#90 e"" p"CN: "
+        nur diese Kategorien werden ausgegeben!
+        Liste nach Bedarf erweitern
+
+  **************************************
+
+ Code-Umwandlungen: p-Befehle bei Bedarf hier anfgen
+                    oder mit Befehl t hinzuladen

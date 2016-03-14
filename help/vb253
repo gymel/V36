@@ -1,0 +1,199 @@
+
+Verlautbarung 253 der Entw.Abt.                              2013-08-13
+-------------------------------
+
+
+V33.4 ist da
+============
+
+
+
+Neue FLEX-Loeschfunktionen
+--------------------------
+
+Der Wunsch entstand, jede Aktion des "Besens" auch einzeln als solche
+per FLEX ausloesen zu koennen.
+
+Zu dem Zweck wurde der Befehl "erase" um ein paar Optionen erweitert:
+[Dieses Befehlswort muss man immer voll ausschreiben, "era" geht nicht]
+
+erase set
+  Besen: Aktuelle Erg.Menge beseitigen
+  Dasselbe wie bisher schon  "close res"  (s.u. "Hinweis")
+
+erase results
+  Besen: "Alle Ergebnismengen beseitigen"
+  Alle Erg.Mengen ausser Bookmarks und History werden beseitigt.
+
+erase history
+  Besen: "Vorher angezeigte Daten beseitigen"
+  Die "Vorher angezeigten Daten" werden beseitigt.
+
+erase bookmarks
+  Besen: "Lesezeichen beseitigen"
+  Die Lesezeichen werden beseitigt.
+
+erase all
+  Besen: "Alle Aufzeichnungen beseitigen"
+  Alle o.g. Aufzeichnungen werden beseitigt.
+  Das schliesst also auch  erase off  ein!
+
+erase off   [das gab es schon]
+  Besen: "Offline-Speicher leeren"
+  Der "Offline-Speicher" wird geleert. Anschliessend kann man mit
+      "read file" eine neue Datei vom Typ .ALG oder .ADT in den
+      Offline-Speicher laden. Sonst wird die Datei zusaetzlich hinten
+      angehaengt an den Offline-Speicher.
+
+
+Hinweis:
+Die Unterfunktion "Aktuelle Ergebnismenge beseitigen" kann man genauso
+mit "close res" ausloesen. Das war schon lange so. Dabei wird sie nicht
+aus der Datenbank geloescht, nur aus dem Ergebnisspeicher! Zum echten
+globalen Loeschen einer Erg.Menge, wie ueber das Menue "Global", muesste
+man eine Schleife programmieren, wenn man es per FLEX erledigen wollte,
+z.B. so:
+
+...
+last
+:eLoop
+// Satz loeschen, falls nicht schon gel. oder gesperrt:
+if not deleted if not Lock erase
+// vorigen Satz
+prev
+if yes jump eLoop
+// Anfang war erreicht, dann:
+close res     // Erg.Menge auch noch aus der Alt+E-Liste nehmen!
+...
+
+
+srch.exe : Option -b verbessert
+-------------------------------
+Es kam zu Nachladefehlern, wenn Option -b ohne Pfad angegeben war,
+also z.B.  -bcat  statt  -bdemo2\cat.
+Das wurde behoben, srch.exe  klappt nun wie bei der 16bit-Version.
+Es klappt auch, wenn an den Dateinamen nicht ".alg" oder ".ald"
+angehaengt ist - ebenfalls wie frueher.
+Hier eine Kurzanleitung zur Nutzung von srch zum Durcharbeiten
+einer Datei (ersetzt fast das obsolete Handbuchkapitel 4):
+
+------ srch-Aufruf ----------------------------------------------------
+
+Windows:
+srch -kp -dexterndatei.plg -ssuchbegriff -eexportparameter/exportdatei
+   [-bdatenordner\datenbankname]
+
+UNIX/Linux:
+./srch -kp -d./externdatei.plg -s2005 -eexportparameter=exportdatei
+   [-bdatenordner/datenbankname]
+
+Die Option -b ist NUR nötig, wenn die Parameter Nachladungen oder 
+V14-Ersetzungen erfordern.
+
+Wahlweise mit RegEx:  -rregexbefehl  statt  -s...
+
+
+Soll es die Gesamtbank sein:
+      -ddatenordner\datenbankname_*.pld
+bzw.  -ddatenordner/datenbankname_*.pld
+
+(Der "datenbankname" ist der Name der Indexparameterdatei, z.B. "cat")
+
+Soll es eine einzelne von deren Dateien sein, dann deren Nummer statt * 
+
+------ srch-Aufruf ENDE -----------------------------------------------
+
+
+Ueberlange Felder
+-----------------
+Manche sehr langen Felder konnten zwar ueber z.B.  zc.flx  (Z39)
+hineinkommen, etwa #93. Dann jedoch konnte das Indexieren versagen,
+auch index.exe schaffte es nicht, und dann waren scheinbar hinterher
+viele Saetze gar nicht da, die man doch schoen importiert hatte.
+Und zwar auch, wenn das betr. Feld selber gar nicht indexiert wurde,
+wie z.B.  #93.
+Dies lag an zu kleiner Dimensionierung an einer Stelle, die jetzt
+auf ein Maximum von 20.000 (pro Feld) gesetzt wurde.
+Also: Datenbank mal neu indexieren mit V33.4, dann sind die Saetze
+ploetzlich da.
+
+
+cat.api : Sequenzenproblem
+--------------------------
+Das Verhalten bei Vorkommnissen von & in Suchbegriffen war nicht
+ganz konsequent. Das wurde bereinigt durch Verlagerung von zwei
+#b-Befehlen aus Abschnitt  #-0  nach woanders, wo sie sofort beim
+Start ausgefuehrt werden statt erst bei ersten Speichern oder F7.
+(Seltener Fall, Datenschaeden nicht zu befuerchten!)
+(Gemeint ist die "grosse" cat.api, die unter  demo2  liegt.)
+
+
+qr.exe : auch Reg. 10 und 11
+----------------------------
+Das Hilfsprogramm qr.exe kann eine ii-Datei expandieren und als
+Textdatei ausgeben. Bisher hat es dann die enthaltenen Eintraege
+fuer die Reg. 10 und 11 nicht mit ausgeworfen, jetzt kann es das.
+Von Interesse ist das nur, wenn mal eine Indexierung nicht
+klappt und ii-Dateien uebrigbleiben. Die koennte man dann
+inspizieren wollen.
+
+
+o.apt nun komplett ein-eindeutig
+--------------------------------
+Zum Vorschlag des Koll. Fischer, doch die bisher auf den Wert
+127 abgebildeten DOS-Codes endlich auch unter a99 irgendwie
+nutzbar zu machen:
+
+Wir haben als ersten Schritt die in  o.apt  auf 127 umgesetzten Codes
+auf diejenigen Nummern verteilt, die auf der ANSI-Seite noch
+unbenutzt waren, ohne Ruecksicht auf deren Darstellbarkeit!
+So ist aber gewaehrleistet, dass vorhandene Codes in dem betr.
+Bereich bei der Bearbeitung unter a99 nicht verfaelscht werden,
+weil die Abbildung zwischen DOS und ANSI nun gurchgaengig
+eineindeutig ist.
+Hier die modifizierte o.apt im SVN:
+
+   https://svn.allegro-c.de/svn/download/conf/a/o.apt
+
+Mehr zu der Sache selbst, mit den Codelisten und allen unter DOS
+bzw. Windows tats¼chlich sichtbaren Zeichen zu diesen Codes:
+
+   http://www.allegro-c.de/unicode/Neuzeichen.htm
+
+Erreicht ist damit insbes., dass man in seinen Daten auch
+die 22 bisher ungenutzten DOS-Codes (Grafikzeichen) jetzt
+als Mehrfachcodes einsetzen kann, ohne dass ihnen beim
+Bearbeiten unter Windows Widrigkeiten widerfahren.
+Das *koennte* auch bei Altdaten erwuenscht sein, in denen
+einige der genannten Codes mal verwendet wurden; die bleiben
+dann jedenfalls als Codes unveraendert erhalten, wenn man
+die Daten per a99 bearbeitet.
+*Eingeben* mit a99 kann man sie jedoch nicht, nur mittels
+Copy&Paste aus der genannten Liste uebertragen.
+
+In  ad-aw.@pt  sind auch die Unicode-Namen der 22 Codes angegeben:
+(NEU statt ad-aw.apt! Und in ucodes.apt stehen sie ganz am Ende)
+
+p .179 011     BOX DRAWINGS LIGHT VERTICAL     226 148 130 
+p .180 014     BOX DRAWINGS LIGHT VERTICAL AND LEFT     226 148 164 
+p .185 015     BOX DRAWINGS DOUBLE VERTICAL AND LEFT     226 149 163 
+p .186 016     BOX DRAWINGS DOUBLE VERTICAL     226 149 145 
+p .187 017     BOX DRAWINGS DOUBLE DOWN AND LEFT     226 149 151 
+p .188 018     BOX DRAWINGS DOUBLE UP AND LEFT     226 149 157 
+p .191 019     BOX DRAWINGS LIGHT DOWN AND LEFT     226 148 144 
+p .192 020     BOX DRAWINGS LIGHT UP AND RIGHT     226 148 148 
+p .193 022     BOX DRAWINGS LIGHT UP AND HORIZONTAL     226 148 180 
+p .194 023     BOX DRAWINGS LIGHT DOWN AND HORIZONTAL     226 148 172   
+p .195 024     BOX DRAWINGS LIGHT VERTICAL AND RIGHT     226 148 156   
+p .196 025     BOX DRAWINGS LIGHT HORIZONTAL     226 148 128   
+p .197 028     BOX DRAWINGS LIGHT VERTICAL AND HORIZONTAL     226 148 188   
+p .200 029     BOX DRAWINGS DOUBLE UP AND RIGHT     226 149 154 
+p .201 030     BOX DRAWINGS DOUBLE DOWN AND RIGHT     226 149 148 
+p .202 131     BOX DRAWINGS DOUBLE UP AND HORIZONTAL     226 149 169 
+p .203 140     BOX DRAWINGS DOUBLE DOWN AND HORIZONTAL     226 149 166 
+p .204 141     BOX DRAWINGS DOUBLE VERTICAL AND RIGHT     226 149 160 
+p .205 142     BOX DRAWINGS DOUBLE HORIZONTAL     226 149 144 
+p .206 143     BOX DRAWINGS DOUBLE VERTICAL AND HORIZONTAL     226 149 172 
+p .217 156     BOX DRAWINGS LIGHT UP AND LEFT     226 148 152 
+p .218 158     BOX DRAWINGS LIGHT DOWN AND RIGHT     226 148 140   
+

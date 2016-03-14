@@ -1,0 +1,69 @@
+  S-ZSMAHN.APR   Sortieren der ueberfaelligen ZS-Lieferungen nach Lieferant
+  980416
+      Winfried Goss
+
+pn="Sortieren nach Lieferant"
+
+  ----------- Konstanten --------------------------------------------------
+
+zl=0          Zeilenlaenge unbegrenzt
+
+  ----------- Anweisungsteil -----------------------------------------------
+
+1=1 "u1 "
+2=0 "9X "
+3=0 C
+
+#00 +- c"+" e0       keine verknuepften Aufnahmen
+#00 +#97a i4,z did aid      nur ZS-Stamms„tze: Idnr. nach #uid
+#+-    sonst Abbruch
+#97a +#dts i4,1 dtg e0      nur laufend gehaltene ZS
+#+-    sonst Abbruch
+
+#dts e4 "+" Aid      aktuelles Jahr mit "+" an ZS-Identnr. anh„ngen
+#uid +#92 |90        Bandaufnahme nachladen, weiter bei #-A
+#nr "365" e3 atg     nicht gefunden: #udt mit 365 belegen
+#00 did aid          ZS-Identnr. nach #uid
+#dts e4 x"-1" e4 "+" Aid    Vorjahr mit "+" anh„ngen
+#uid +#92 |90        Bandaufnahme nachladen
+#+-    Abbruch, wenn auch nicht vorhanden
+
+#92 +#ufh F",-/ " T"," B"/" B"-" f32 dfh afh     Letzte Heftnr. extrahieren
+#92 +#ufh F",-/ " B"/" B"-" f32 dfh afh          dto., falls kein Komma vorh.
+#+x    #92 nicht belegt oder ungueltig
+#ufh +x x"==0" e0    keine gueltige Angabe
+#ufh "=Heft " =id    Heftnummer nach #uid
+#00 aid       ZS-Band-Id-Nr. vor #uid setzen
+#92a +#dts x">0" dnr anr    Anz. erwarteter Hefte nach #unr
+#+x    #92a nicht belegt oder ungueltig
+
+  akt. Vormonat in Tage umrechnen, ggf. #utg fr Vorjahr hinzuaddieren (365):
+#dts b4 e2 x"-1" x"*30.5" x"+tg" dtg atg
+#dts b6 e2 x"+tg" dtg atg          akt. Tag aufaddieren
+  Letzte Heftnr. durch Anz. Hefte teilen, mit 365 multiplizieren,
+#ufh x"/nr" x"*365" x"-tg" x"r0" dfh afh         akt. Anz. Tage abziehen
+  Ergebnis positiv: alles ok.
+#ufh +x x">=0" e0
+
+#<     Ergebnis negativ: zurueck zur ZS-Hauptaufnahme
+#97s +#ufh x"+fh" x"r0" dfh afh    Lieferfrist aufaddieren
+#97 +#9A |:0         nicht angegeben: Lieferantenstammsatz laden
+#+x    Lieferantenstammsatz nicht vorhanden
+#9A s x"+fh" x"r0" dfh afh        Lieferfrist aufaddieren
+#ufh +m x">=0" "Lieferung f„llig%" e"%" dfh afh         Meldung
+#97f +#ufh x"+fh" x"r0" dfh afh    Mahnfrist aus Hauptaufnahme aufaddieren
+#9A f x"+fh" x"r0" dfh afh        sonst aus Lieferantenstammsatz nehmen
+#ufh +m b"-" "Mahnfrist berschritten%" e"%" dfh afh    Meldung
+#ufh "Mahnfrist l„uft%" e"%" dfh afh      Meldung
+
+#-m    Meldung
+#</    Nachladungen beseitigen
+#97 1         Lieferant
+#uid 2        ZS-Band u. Heftnr.
+#ufh "" P3   Meldung
+#+#    fertig
+
+#-x    Abbruch
+#</    Nachladungen beseitigen
+#+-    Abbruch
+

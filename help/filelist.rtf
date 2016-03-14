@@ -1,0 +1,373 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss\fprq2 Verdana;}{\f1\fswiss\fprq2\fcharset0 Verdana;}{\f2\fmodern\fprq1 Courier New;}{\f3\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue0;\red0\green128\blue128;\red0\green0\blue255;\red0\green176\blue0;\red0\green128\blue0;}
+\viewkind4\uc1\pard\qc\f0\fs24 
+\par \cf1\b\i\fs36 allegro \i0 Systemverwaltung\i  
+\par \pard\cf2\b0\i0\fs20                              
+\par \pard\qc\cf3\b\fs24 Checkliste der Dateien\cf2\b0\fs20 
+\par \pard 
+\par 
+\par \f1 Dies ist die Liste der Dateien, die man wirklich braucht, wo sie liegen m\'fcssen, d\'fcrfen oder k\'f6nnen, und ob man was dran tun soll, kann oder nicht darf. 
+\par Siehe auch `\cf4\ul\b Hilfetext zur Installation\cf2\ulnone\b0 `. \f0 
+\par \f1 Eine ausf\'fchrlichere Dokumentation der Dateitypen steht im Handbuch, `\cf4\ul\b Kap.0.3\cf2\ulnone\b0 `, eine andere ist auf der `\cf4\ul\b allegro-Website\cf2\ulnone\b0 ` zu finden.\f0 
+\par 
+\par Die Windows-Programme \i a99\i0  und \i alcarta\i0  brauchen mit geringen Unterschieden dieselben Dateien. 
+\par Nach einer Installation mit dem Gesamtpaket  \b\f2 inst-all.exe\b0\f1   liegt alles genau da, wo es normalerweise liegen sollte, obwohl es ein paar andere M\'f6glichkeiten gibt. \f0 
+\par 
+\par \f1 Zwar wollen und sollen es die Anwender so einfach wie m\'f6glich haben, das Datenbankwesen IST aber leider keine einfache Welt. Ganz ohne ein paar Vorbereitungen geht es deshalb nicht. Es geht aus dieser Liste hervor, was in welchen Dateien zu tun ist, damit die Sache l\'e4uft. \f0 
+\par 
+\par \b\i a99\b0\i0\f1  funktioniert selbst\'e4ndig, wenn alle Dateien auf dem Startverzeichnis liegen. Fast alle k\'f6nnen aber auch auf dem ProgDir liegen, dann wird dessen Name in der .INI erwartet. In vielen F\'e4llen wird zuerst auf dem Datenverzeichnis (genannt "DbDir") nachgesehen, denn es k\'f6nnte ja eine datenspezifische Datei geben. \f0 
+\par 
+\par \i Tip:\i0  Wenn in der INI kein ProgDir und kein DbDir angegeben ist, aber \b\i a99\b0\i0  \f1 bzw. \b\i\f0 a\f1 lcarta\b0\i0  \f0 so gestartet wird: 
+\par \i\f1 a99\i0 :\f0     \f1\tab\b\f3 K:\\allegro\\allegro.exe m:\\db\\katalog\\opac.ini\b0\f0 
+\par \i\f1 alcarta\i0 :\f0     \f1\tab\b\f3 K:\\allegro\\opac.exe m:\\db\\katalog\\opac.ini\b0\f0 
+\par \f1 also mit vollst\'e4ndigen Pfadnamen, dann wird \f0 
+\par \f2 K:\\allegro\f0  als \b ProgDir\b0  genommen, und 
+\par \f2 m:\\d\f3 b\f2\\katalog\f0  als \b DbDir\b0\f1 . Was bedeuten diese Abk\'fcrzungen? \f0 
+\par 
+\par \cf5\b\f1 Bezeichnungen f\'fcr die Datei-Standorte:\cf2\f0 
+\par \b0 
+\par \cf6\b PATH\cf2\b0  \tab Die Verzeichnisse, die in der DOS-Variablen PATH stehen. 
+\par 
+\par \cf6\b DbDir\cf2\b0\tab Der Name des Datenverzeichnisses. Dieser ist entweder 
+\par            a) \tab\f1 in der INI ausdr\'fccklich anzugeben, ODER \f0 
+\par            b)\tab\f1 wenn die INI auf dem DbDir liegt, dann gen\'fcgt es, wenn \f0 
+\par         \tab\tab\f1 beim Aufruf von a99/alcarta (in der "Verkn\'fcpfung") \f0 
+\par              \tab\f1 der vollst\'e4ndige Pfadname der INI-DATEI angegeben ist, s.o. \f0 
+\par              \tab (Wenn z.B. DbDir auf einer CD ist und die INI auch, kann 
+\par              \tab darin ja nicht das Laufwerk der CD stehen!) 
+\par 
+\par \cf6\b ProgDir\cf2\b0   Programmverzeichnis. Default ist \b\f2 C:\\ALLEGRO\b0\f0    (siehe aber oben) 
+\par \tab Dort werden Dateien gesucht, die nicht auf dem Datenbank- und 
+\par   \tab auch nicht auf dem Startverzeichnis gefunden wurden. 
+\par  \tab\f1 F\'fcr Hilfetexte und FLEXe gibt es eigene Verzeichnisse \cf5\b\f0 HELP\cf2\b0  und \cf5\b FLEX\cf2\b0 , 
+\par  \tab\f1 die normalerweise am ProgDir h\'e4ngen. \f0 
+\par 
+\par \cf6\b Lokal\cf2\b0\tab Startverzeichnis. \f1 Auch "Arbeitsverzeichnis" oder \cf6\b WorkDir\cf2\b0  genannt.\f0 
+\par \f1           \f0 Hier liegende Dateien sind nutzerspezifisch 
+\par    \tab (Lokal geht fast immer, ist aber nicht immer default!) 
+\par 
+\par \b 
+\par MEHRPLATZBETRIEB\b0 
+\par Jeder sollte von einem eigenen Verzeichnis aus starten! Dort brauchen jedoch keine systemspezifischen Dateien zu liegen. 
+\par \f1 Das Verzeichnis f\'fcr \i tempor\'e4re\i0\f0  Dateien wird so bestimmt: 
+\par In der INI-Datei kann man mit \f2 DbAux=\i\f0 pfad\i0  ein Arbeitsverzeichnis setzen. Als Default wird die Systemvariable TEMP genommen, das ist dann z.B.  
+\par \f2 c:\\windows\\temp\f0   (mit DOS-Befehl "set temp" sieht man, was es auf dem eigenen PC ist).\f1  Man sieht es auch in den "Informationen zur Datenbank":  X dbinfo  eingeben!\f0  
+\par 
+\par 
+\par \b\f1 Welche Dateien m\'fcssen bzw. d\'fcrfen ver\'e4ndert werden?\b0\f0 
+\par 
+\par Mit [\cf1 X\cf2 ]\tab sind die Dateien markiert, die datenbankspezifisch bearbeitet oder 
+\par     \tab\f1 erstellt werden \cf1\i m\'fcssen\cf2\i0 . Andere sind nicht so lebenswichtig: \f0 
+\par 
+\par    [v] \tab\f1 bedeutet: die Datei \i kann bei Bedarf\i0  ver\'e4ndert werden. \f0 
+\par    [o] \tab\f1 hei\'dft "optional" - diese Dateien werden nicht unbedingt gebraucht, \f0 
+\par \tab d.h. die Programme kommen ohne sie aus. 
+\par \i Achtung:\i0  Die Dateinamen sind in Wirklichkeit alle komplett in \b\f1 Kleinbuchstaben\b0\f0  
+\par geschrieben, anders als in diesem Text! 
+\par 
+\par 
+\par \pard\tx1704 Name       \tab\cf6 Standort (Verzeichnis-Reihenfolge)\cf2 
+\par                    \tab Bedeutung 
+\par _____________________________________________________________ 
+\par                    \tab Die Verzeichnis-Reihenfolge ist unterschiedlich! 
+\par                    \tab D.h., in welcher Reihenfolge die Verzeichnisse nach einer 
+\par \tab Datei abgesucht werden. 
+\par \tab\f1 Das ist mit \'dcberlegung so gemacht worden. \f0 
+\par 
+\par 
+\par \b 1. Allgemein\b0  \tab\f1 (unabh\'e4ngig von CFG und Datenbank, kein Eingriff n\'f6tig) \f0 
+\par          \tab Die Sprachkennung (GER oder ENG) steht in der INI:  Language=GER 
+\par 
+\par \f1 ALLEGRO.EXE\tab Identisch mit dem Hauptprogramm a99.exe\f0 
+\par 
+\par A99.EXE      \tab\cf6 ProgDir  /  PATH\cf2 
+\par ALCARTA.EXE\tab Die eigentlichen Programme \f1 : Katalogisierung bzw. OPAC\f0 
+\par 
+\par FLEX.EXE      \tab\f1 Programm zum \'dcbergeben von FLEXen von au\'dfen (EXFLEX.TXT) \f0 
+\par 
+\par CGI.EXE      \tab\f1 Hilfsprogramm f\'fcr RuckZuck. \f0 
+\par             \tab Soll auf das \cf6 CGI-Verzeichnis des Webservers\cf2 
+\par 
+\par A99.INI\tab Kommentierte Liste aller INI-Befehle 
+\par           \tab\f1 Kann man als Vorlage f\'fcr eigene INI verwenden \f0 
+\par 
+\par UIFEGER    [v]  \tab\cf6 DbDir / Lokal / ProgDir\cf2   [Default ist GER] 
+\par UIFEENG    \tab User-Interface. enth. u.a. die Button-Beschriftungen! 
+\par              \tab\f1 F\'fcr A99 und alcarta gleich! (Auch Hotkeys ver\'e4nderbar) \f0 
+\par         \tab\f1 Zeilen 200-221 = QuickHelp f\'fcr die Buttons \f0 
+\par 
+\par 
+\par RS.BAT     [v]  \tab\cf6 PATH\cf2\f1   (Batch und Parameter f\'fcr den PRESTO-Aufruf) \f0 
+\par AS.BAT \tab\f1 f\'fcr "a99" bzw. "alcarta" (APAC-Aufruf). Obsolet: \f0 
+\par               \tab [werden nur gebraucht, wenn _rs.flx bzw. _as.flx nicht 
+\par  \tab vorhanden sind] 
+\par 
+\par RS.cPR     [v]  \tab\cf6 Lokal / ProgDir\cf2 
+\par           \tab (wird automatisch aus RS.APR erzeugt bei Aufruf RS.BAT) 
+\par          \tab Bei Export aus PRESTO entsteht RS.SET = externe 
+\par  \tab Ergebnismenge 
+\par 
+\par D-W0.APR  \tab\cf6 DbDir / Lokal / ProgDir\cf2 
+\par                    \tab\f1 Default f\'fcr SatzAnzeige, wenn D-W.cPR fehlt \f0 
+\par 
+\par E-W0.APR    \tab\cf6 Lokal / ProgDir\cf2 
+\par             \tab\f1 Default f\'fcr Export und externes Edit, wenn E-W.cPR fehlt \f0 
+\par 
+\par DOOR.BAT [v]  \tab\cf6 PATH\cf2 
+\par              \tab\f1 Aufruf eines externen Programms \'fcber die Schaltfl\'e4che \f0 
+\par             \tab\f1 mit der T\'fcr. Wenn dieses eine Datei EXTERN.DAT erzeugt, \f0 
+\par         \tab\f1 kann diese anschlie\'dfend eingelesen werden \'fcber \f0 
+\par              \tab\f1 Men\'fc "Datei / Externe Ergebnismenge" \f0 
+\par              \tab Siehe Kommentar in DOOR.BAT! 
+\par            \i Aber:\i0 
+\par _DOOR.FLX \tab\cf6 ProgDir\\FLEX\cf2 
+\par  \tab Wenn allerdings _DOOR.FLX existiert, wird dieser 
+\par  \tab\f1 ausgef\'fchrt statt DOOR.BAT. \f0 
+\par 
+\par PHRASE.A99 [v]\tab\cf6 Lokal\cf2 
+\par \tab\f1 Enth\'e4lt die Codes f\'fcr Sonderzeichen. Einige k\'f6nnen mit \f0 
+\par \tab Strg+x abgerufen werden, andere mit \\ und nachfolgendem 
+\par         \tab\f1 Gro\'df- oder Kleinbuchstaben. Statt \\ kann ein anderes \f0 
+\par   \tab\f1 Zeichen in der INI festgelegt werden (z.B. ESC=43 f\'fcr +) \f0 
+\par    \tab Wenn \\ (oder +) selbst einzugeben ist, dann \\\\ (bzw. ++) 
+\par  \tab (Keine Kommentare oder Leerzeilen in PHRASE.A99 ! ) 
+\par  \tab Je Phrase exakt 2 Zeilen: 
+\par  \tab\f2 Zeichen oder ASCII-Nummer\f0 
+\par    \tab\f2 Ersatztext oder ASCII-Nummer\f0 
+\par \tab\f1 Hinweis: im DOS-Fenster Schriftgr\'f6\'dfe 8x13 oder 10x19, \f0 
+\par \tab einstellen, damit man die korrekten Sonderzeichen sieht. 
+\par \tab\f1 Enth\'e4lt auch die Uservariablen #uXi (i=0...9), die f\'fcr \f0 
+\par   \tab FLEXe verwendet werden (Alt+1 = #uX1 ...) 
+\par               [v]\tab Eine Phrasendatei mit anderem Namen kann in der INI mit 
+\par \tab\f1 dem Schl\'fcssel  \f2 Phrase=...\f0   vorgegeben werden. 
+\par 
+\par PHRASEN \tab\cf6 ProgDir\cf2 
+\par \tab\f1 Enth\'e4lt eine erste Grundausstattung von Phrasen, \f0 
+\par \tab\f1 haupts\'e4chlich Sonderzeichen. \f0 
+\par \tab Wird geladen, wenn beim ersten Start keine 
+\par     \tab Datei PHRASE.A99 gefunden wird. 
+\par     \tab\f1 Geben Sie "h phras" ein, dann kommt das Phrasen-Men\'fc. \f0 
+\par \tab Darauf gibt es einen Flip "Standard-Phrasen laden" 
+\par   \tab Wenn man diesen anklickt, wird die Daten PHRASEN neu 
+\par \tab geladen. 
+\par 
+\par 
+\par \b 2. Datenbankspezifisch\b0  
+\par \tab\b\f2 dbn\b0\f0  = Datenbankname (darf nur bis zu 4 Zeichen lang 
+\par \tab sein!) \f1 D\f0 er eigene \b\f2 dbn\b0\f0  wird in\f1  der\f0  INI mit DbName= gesetzt\f1 .\f0  
+\par 
+\par xyz.INI    [\cf1 X\cf2 ]\tab Name und Standort beliebig, Aufruf sollte erfolgen mit 
+\par       \tab\i\f2 ProgDir\i0\\a\f3 llegro.exe\f2  \i pfad\i0\\\i xyz.\i0 ini\f0 
+\par 
+\par  \tab also z.B. 
+\par    \tab c:\\allegro\\a\f1 llegro.exe\f0  c:\\bolero\\bol.ini  
+\par \tab (wenn ProgDir nicht in bol.ini drinsteht)  oder 
+\par    \tab\f1 allegro\f0  cat.ini   
+\par \tab (wenn cat.ini auf Startverz. liegt und ProgDir drinsteht) 
+\par    \tab\f1 allegro\f0  cat            (geht auch) 
+\par     \tab\i Empfehlung:\i0  A99.INI als Vorlage nehmen. 
+\par 
+\par HE_??GER  [v]\tab Allgemeine Hilfedateien   (==> Datei HELP.RTF) 
+\par ...          \tab\cf6 Lokal / DbDir / ProgDir\\HELP / ProgDir\\FLEX / ProgDir\cf2  (!) 
+\par xyzGER.rtf    \tab\f1 (datenbankspezif. Versionen, andere Sprachen m\'f6glich) \f0 
+\par dbnGER.RTF [o]\tab Datenbankspezifische, generelle Hilfe. Standort: DbDir 
+\par   \i alcarta:\i0     \tab dbn = Name der Datenbank. Vorbild: CATGER.RTF oder 
+\par   HA statt HE \tab eine der anderen Demo-Datenbanken. 
+\par             \tab Default (wenn fehlend): \f2 genrlGER.rtf\f0  / \f2 genrleng.rtf\f0 
+\par 
+\par    \b Hilfedateien\b0  werden zuerst mit, dann ohne Sprachkennung gesucht! 
+\par 
+\par HE_InGER [o]  \tab\cf6 DbDir / ProgDir\\HELP\cf2 
+\par   bzw.        \tab n=1...9,0,;  Registerspezifische Hilfeseiten, erscheinen 
+\par HA_InGER    \tab bei Button [?] des Indexfensters 
+\par               \tab Default wenn nicht vorhanden: HE_IXGER 
+\par 
+\par *.RTF   [o]  \tab\cf6 DbDir / ProgDir\\HELP / ProgDir\\FLEX / ProgDir / Lokal\cf2  (!) 
+\par            \tab (==> HELP.RTF, FLIP.RTF) 
+\par      \tab\f1 Spezifische, selbstgestaltete Hilfedateien (Aufruf \'fcber \f0 
+\par  \tab Flips), Erstellung u. Bearb. mit WordPad oder direkt im 
+\par \tab Anzeigefeld 
+\par 
+\par *.HTM   [o]  \tab\cf6 ProgDir\\HTML\cf2 
+\par        \tab\f1 Lokale HTML-Dateien f\'fcr das Browser-Programm JanaS \f0 
+\par 
+\par \i Datenbank\i0  \tab\cf6 DbDir\cf2 
+\par \tab\f1 Eine Datenbank b\f0 esteht aus folgenden Dateien: 
+\par \tab (dbn = normalerweise CAT, c = normalerweise A) 
+\par    \tab\f2 dbn_*.cLD, dbn.cDX, dbn.TBL, dbn.STL, dbn.RES\f0 
+\par 
+\par dbn.cPI  [\cf1 X\cf2 ]  \tab\cf6 DbDir\f1  / PogDir\cf2\f0   
+\par \f1\tab Indexparameter (welche Felder kommen in welche Register)\f0 
+\par \tab\i Wichtig:\i0  Symbolische Registernamen einrichten! (s. CAT.API) 
+\par    \tab\f1 Register\'fcberschriften, Titel der Datenbank \f0 
+\par   \tab Auch hier ist O.cPT einzubinden, siehe D-WRTF.cPR, 
+\par   \tab\f1 d.h. diese Zeile ist darin notwendig:  \f0 
+\par      \tab\b\f2 to   \b0\f0 (falls man nicht intern Unicode hat) 
+\par 
+\par $c.CFG\tab\cf6 DbDir / ProgDir\cf2 , auch \cf6 Lokal\cf2\f1  m\'f6glich \f0 
+\par   oder c.CFG \tab\f1 Konfigurationsdatei [unver\'e4nderte DOS-Datei] \f0 
+\par \tab Standard: $A.CFG 
+\par \tab Der Buchstabe  c  tritt in den Namen der 
+\par \tab Datenbankdateien auf, siehe oben: z.B.  dbn.cDX 
+\par 
+\par dbn.FRM  [o]\tab\cf6 DbDir / ProgDir\\\f1 HELP\f0  / ProgDir / Lokal\cf2 
+\par      \tab Erfassungsformulare. (Mehr dazu: `\cf4\ul\b\f1 FORM.RTF\cf2\ulnone\b0\f0 ` und `\cf4\ul\b\f1 INPUT.RTF\cf2\ulnone\b0\f0 `) 
+\par 
+\par *.FLX    [o]\tab\cf6 DbDir / ProgDir\\FLEX / ProgDir / Lokal\cf2 
+\par      \tab FLEX-Dateien (siehe FLEXGER.RTF) 
+\par         \tab\f1 Start \'fcber Flip oder von au\'dfen (EXFLEX.TXT, FLEX.EXE) \f0 
+\par 
+\par oninput.flx [\cf1 X\cf2 ]\tab\cf6 DbDir / ProgDir\\FLEX\cf2 
+\par \tab\f1 Wird aktiv bei Button [Neusatz]  (= F9)\f0 
+\par \f1\tab\f0 Beseitigen, wenn bei Druck auf [Neusatz] die Standard- 
+\par \tab Auswahl (Kopie / Neueingabe) erscheinen soll 
+\par 
+\par onforms.flx [\cf1 X\cf2 ]\tab\cf6 DbDir / ProgDir\\FLEX\cf2 
+\par      \tab\f1 Wird aktiv bei Button [Form. \ul #\ulnone ]  (= Alt+#)\f0 
+\par \f1\tab\f0 Beseitigen oder modifizieren, wenn nicht mit dem 
+\par      \tab Standardsystem gearbeitet wird 
+\par 
+\par *.VW    [o]  \tab\cf6 DbDir / ProgDir\\VIEW / ProgDir\\HELP / ProgDir / Lokal\cf2 
+\par \tab ViewListen (mehr dazu: "h viewlist" eingeben) 
+\par \tab Anzeigen mit FLEX-Befehl  View name 
+\par  \tab oder direkt durch  v name  im Schreibfeld. 
+\par 
+\par input.vw  [\cf1 X\cf2 ]\tab\cf6 DbDir / ProgDir\\HELP\cf2 
+\par    \tab\f1 Auswahlliste f\'fcr die Satztypen bei der Neueingabe \f0 
+\par \tab\f1 Anpassen f\'fcr die eigene Datenbank, falls nicht Standard \f0 
+\par \tab\f1 oder \f3 oninput.flx\f1  l\'f6schen \f0 
+\par 
+\par dbn.SGF \tab\cf6 DbDir\cf2 
+\par    \tab Signalfile. Wenn es mit '1' beginnt, dann kein Zugang 
+\par  \tab zur Datenbank, Programm beendet sich. Hinter der '1' 
+\par    \tab\f1 kann eine Begr\'fcndung stehen f\'fcr den Nutzer. \f0 
+\par 
+\par D-WRTF.cPR [\cf1 X\cf2 ]\tab\cf6 DbDir / ProgDir\cf2    (meist aus D-1.cPR abgeleitet) 
+\par D-W0.APR  \tab\f1 (wenn andere gew\'fcnscht: Befehl \f0 
+\par  \tab DisplayParameter/OpacDisplay in .INI) 
+\par \tab Einbinden:  O.cPT, D.cPT, D-RTF.cPT, 
+\par \tab d.h. folgende Zeilen einbauen: 
+\par   \tab\f1 to          o.apt = ASCII <-> ANSI Tabelle f\'fcr div. Zwecke \f0 
+\par   \tab\f1 td          d.apt = ASCII -> ANSI f\'fcr Anzeigefeld \f0 
+\par   \tab\f1 td-rtf     d-rtf.apt = RTF-Schriftattribute f\'fcr Anzeige \f0 
+\par      \tab egal an welcher Stelle. 
+\par     \tab\i\f1 Au\'dferdem\i0\f0  
+\par \tab\f1 -->   Es mu\'df darin einen Abschnitt \b\f2 #-(\b0\f1  f\'fcr die \f0 
+\par \tab Internanzeige geben 
+\par    \tab Siehe D-WRTF.APR: den Abschnitt kann man kopieren. 
+\par    \tab\f1 Wenn Flips gew\'fcnscht, m\'fcssen sie in dieser Datei \f0 
+\par   \tab programmiert werden (s. news 52) 
+\par  \tab Wenn D-WRTF.cPR fehlt, wird als Ersatz D-W0.APR 
+\par \tab genommen, dann hat man aber nur eine Anzeige mit 
+\par \tab Kategorienummern. 
+\par \tab\f1 (gilt f\'fcr jedes Kategorienschema, d.h. Kopie nicht n\'f6tig) \f0 
+\par    \i Alternative:\i0  \tab\f1 Es gibt kommentierte Grundmodelle f\'fcr die \f0 
+\par \tab Anzeigeparameter: 
+\par  \tab\f1 D-SRTF.APR und D-KRTF.APR  f\'fcr Daten ohne bzw. mit \f0 
+\par \tab\f1 verkn\'fcpften S\'e4tzen. Eingebunden sind darin \f0 
+\par \tab D-S.APT und D-K.APT, und nur 
+\par \tab\f1 in diese mu\'df man eingreifen. (Mehr dazu in `\cf4\ul\b\f0 Vb.154\cf2\ulnone\b0 `) 
+\par 
+\par E-W.cPR   [o]\tab\cf6 DbDir / ProgDir\cf2\f1    f\'fcr Export und externes Edit. \f0 
+\par E-W0.APR \tab\f1 (\'c4nderung: Befehl  ExportParameter in .INI) \f0 
+\par          \tab wenn nicht da, wird E-W0.APR genommen 
+\par 
+\par P-W.cPR  [\cf1 X\cf2 ]\tab\cf6 DbDir / Lokal / ProgDir\cf2 
+\par P-W0.cPR  \tab Druckformat. 
+\par \tab\f1 (wenn andere gew\'fcnscht: Befehl  PrintParameter in .INI) \f0 
+\par      \tab (z.B. Modifikation von D-WRTF.APR, ohne Flips etc.) 
+\par      \tab P-W0.APR ist Default, wenn P-W.cPR fehlt. 
+\par  \tab P-W0.cPr kann Kopie von P-W0.APR sein. 
+\par 
+\par D-RTF.cPT [v]\tab\cf6 DbDir / Lokal / ProgDir\cf2 
+\par    \tab RTF-Steuerzeichen (Fett etc., Farben. Kopie von D-RTF.APT) 
+\par   \tab (einbinden in Anzeigeparameter und RTF-Exporte!) 
+\par 
+\par                [v]\tab\cf6 DbDir / ProgDir\cf2 
+\par DISPHEAD.RTF\tab\f1 f\'fcr die Anzeige eines Datensatzes \f0 
+\par LISTHEAD.RTF\tab\f1 f\'fcr Listen (Index- und Kurzanzeige: Button [List]) \f0 
+\par LONGHEAD.RTF\tab\f1 f\'fcr Anzeige in Druckform (Men\'fc "Ansicht") \f0 
+\par HELPHEAD.RTF\tab\f1 f\'fcr Anzeige von TXT-Dateien als Help-Dateien \f0 
+\par \tab\f1 Headerdateien f\'fcr RTF-Anzeige. Werden automatisch \f0 
+\par \tab benutzt. 
+\par  \tab\f1 Datenbankspezifische Versionen m\'f6glich (Schriftarten!) \f0 
+\par \tab\f1 Nicht mit WinWord bearbeitbar, weil es keine vollst\'e4ndigen \f0 
+\par   \tab\f1 RTF-Dateien sind. \'c4nderung nur n\'f6tig, wenn man spezielle \f0 
+\par  \tab\f1 Effekte oder Schriften in Anzeige oder Export w\'fcnscht. \f0 
+\par 
+\par \b 3. Defaults 
+\par \b0\tab\cf6 DbDir / Lokal / ProgDir 
+\par \cf2 
+\par O.APT  [v]  \tab\f1 Eine  o.apt  mu\'df es meistens geben. 
+\par \f0\tab\tab (darin steht ein Kommentar) 
+\par D.APT  [v]\tab\f1 Beide sind Tabellen f\'fcr Zeichen-Umcodierung  ASCII-ANSI \f0 
+\par           \tab\f1 Kopie machen:  o.cpt und d.cpt f\'fcr eigene Konf. c.CFG \f0 
+\par    \tab Werden automatisch geladen, wenn Befehle to und td 
+\par  \tab fehlen. 
+\par       \tab\b O.APT\b0\f1   f\'fcr Index- UND Anzeigeparameter, \f0 
+\par     \tab\f1 enth\'e4lt nur o-Befehle, arbeitet in beiden Richtungen \f0 
+\par       \tab\f1 d.h. mu\'df in beiden Richtungen (ASCII<->ANSI) eindeutig sein! \f0 
+\par     \tab\f1 Macht eine 1:1-Zuordnung, wie sie f\'fcr spaltengenaue \f0 
+\par      \tab Anzeigen gebraucht wird (Index, Kurzliste) 
+\par  \tab\f1 Wichtig auch f\'fcr die Anzeige der Daten in dem \f0 
+\par \tab\f1 Auswahlfeld links und f\'fcr externes Editieren. \f0 
+\par 
+\par \tab\b D.APT\b0\f1 : ASCII->ANSI NUR f\'fcr Anzeige- und \f0 
+\par \tab\f1 Exportparameter, enth\'e4lt nur p- und q-Befehle f\'fcrs \f0 
+\par \tab Anzeigefeld (Umlaute, Akzentbuchstaben, Sonderzeichen) 
+\par  \tab Diese Tabelle braucht nicht 1:1 zu sein. 
+\par 
+\par E.ADT  [o]\tab\cf6 Lokal\cf2 
+\par   \tab\f1 Enth\'e4lt Kategorien, die mit Alt+\'84 eingelesen werden \f0 
+\par  \tab\f1 (oder \'fcber Men\'fc "Bearbeiten / Get") \f0 
+\par \tab\f1 Erfassungshilfe zum Einf\'fcgen immer gleicher Kategorien. \f0 
+\par 
+\par EBOX.ICO  [o]\tab\f1 Standort egal. Braucht man nur f\'fcr Desktop \f0 
+\par 
+\par A-TIMES.TTF\tab\f1 M\'fcssen ordnungsgem\'e4\'df als Schriftarten installiert sein \f0 
+\par A-L\f1 UCIDA\f0 .TTF\tab (Standort meistens \cf6 C:\\WINDOWS\\FONTS\cf2 ) 
+\par      \tab\f1 A-LUCIDA f\'fcr spaltenrichtige Anzeigen! \f0 
+\par      \tab Wenn nicht installiert, hat man keine bibl.spezifischen 
+\par \tab Sonderzeichen 
+\par A-ARIAL.TTF\tab Optional (Alternative zu A-TIMES) 
+\par A-\f1 LETTER\f0 .TTF\tab Optional (Alternative zu A-\f1 LUCIDA\f0 ) 
+\par A-DOS.TTF \tab\f1 f\'fcr das DOS-Fenster. Schriftgr\'f6\'dfe 8x13 und 9x15 \f0 
+\par 
+\par 
+\par \i Nur zur Information 
+\par \i0 
+\par \b 4. Dynamische Dateien\b0  (nur bei Bedarf zur Laufzeit, kein Eingriff sinnvoll) 
+\par 
+\par \i Standort:\i0  alle auf dem Verzeichnis \cf6 TEMP\cf2  des Systems 
+\par 
+\par OUTPUT.ADT\tab Entsteht als Default-Exportdatei (OutputFile=...) 
+\par   \tab\f1 (\'e4ndern: Befehl OutputFile in .INI) \f0 
+\par 
+\par EXX.XXX \tab Zum externen Editieren des aktuellen Datensatzes 
+\par  \tab\f1 (\'e4ndern: Befehl ExEdFile in .INI) \f0 
+\par 
+\par RS.SET \tab Aus PRESTO/APAC mit RS.APR exportierte Ergebnismenge, 
+\par     \tab\f1 wird bei R\'fcckkehr als Erg.Menge pr\'e4sentiert \f0 
+\par 
+\par \f1 Die folgenden Dateien existieren nur w\'e4hrend einer Sitzung, oder wenn man die Sitzung sp\'e4ter fortsetzen will: \f0 
+\par dbn._1  \tab Bookmarks 
+\par dbn._2  \tab History list 
+\par dbn._i  \tab Erg.Mengen (Nummernlisten) 
+\par dbn.$$$  \tab\f1 Hilfsdatei mit Kopien von S\'e4tzen \f0 
+\par dbn.TAB  \tab Hilfstabelle (Adressentabelle der OfflineDatei) 
+\par dbn.RSS \tab Hilfstabelle (Ergebnismengen-Namen) 
+\par dbn.RXX \tab Hilfstabelle (nur bei a99) 
+\par 
+\par \f1 Diese Dateien k\'f6nnen alle gel\'f6scht werden, wenn man die Sitzung nicht \f0 
+\par fortsetzen will. Manuelle Eingriffe sind nicht sinnvoll. 
+\par                                                                           (\f1 2004-11-22/2010-11-16\f0 ) 
+\par 
+\par ?Vb.154=h vb154=Muster  
+\par ?Hilfetext zur Installation=h inst 
+\par ?FORM.RTF=h form 
+\par ?INPUT.RTF=h input 
+\par ?allegro-Website=x jan http://www.allegro-c.de/doku/ff/ 
+\par ?Kap.0.3=h ac0-3 
+\par \f0 
+\par }
+ 

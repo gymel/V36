@@ -1,0 +1,69 @@
+  FILEFUNC.FLX : Funktionen zum Bearbeiten von Dateien
+  2007-08-14
+  Aufruf:  exec X filefunc <dateiname>
+
+var (f" " F" ")
+ins $dn
+var (T".")
+ins #uwz
+
+var $dn "yyy"
+if "~.exe" end
+if "~.com" end
+if "~dxyyy" end
+if "~ldyyy" end
+
+:func
+var "Was wollen Sie mit " $dn " tun?=Bearbeiten|aresqa-Anzeige|Kopieren|L”schen"
+select
+if cancel end
+if no end
+if "Bearb" jump bearb
+if "K" jump cop
+if "L" jump del
+
+  aresqa-Anzeige
+del aresqa.lst
+var "*" $dn
+aresqa
+:vww
+  wenn gespeichert wurde, gibt es aresqa.lst
+fsize aresqa.lst
+if no end
+yes Datei wurde bearbeitet. Bearbeitung sichern?
+if no jump end
+var "aresqa.lst " $dn
+fcopy
+del aresqa.lst
+end
+
+:bearb
+var $dn
+if %~.rtf% jump rtf
+var x " " $dn
+Dos
+end
+
+:rtf
+var "wordpad " $dn
+Dos
+end
+
+:cop
+ask Neuer Name?
+ins $neun
+var $dn " " $neun
+fcopy
+var $neun
+fsize
+if no mes hat nicht geklappt
+end
+
+:del
+yesno Wirklich?
+if not yes jump func
+var $dn
+delete
+end
+
+

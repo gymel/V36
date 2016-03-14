@@ -1,0 +1,173 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fmodern allegro Lucida Console;}{\f1\fswiss\fprq2\fcharset0 Verdana;}{\f2\fmodern\fprq1\fcharset0 Courier New;}{\f3\fmodern\fcharset0 allegro Lucida Console;}{\f4\fswiss\fcharset0 Arial;}}
+{\colortbl ;\red0\green0\blue255;\red0\green176\blue0;\red255\green0\blue0;}
+\viewkind4\uc1\pard\li48\ri144\f0\fs18 
+\par \pard\li48\ri144\qc\b\f1\fs28 Statistik-Konzept f\'fcr aLF-Win 
+\par \pard\li48\ri144\qr\b0\fs18 2006-11-06 
+\par \pard\li48\ri144 Das Konzept wurde neu entwickelt. Anders als beim DOS-System werden keine Statistik-Datens\'e4tze in der Datenbank angelegt. Die Vorteile werden in dieser Darstellung klar werden. Nicht zuletzt wird die Datenbank und ihre Parametrierung von dieser eigentlich sachfremden Aufgabe entlastet. 
+\par 
+\par \b 1. Das Aufzeichnen der statistisch auszuwertenden Daten\b0 
+\par W\'e4hrend jeder Sitzung entsteht eine neue Statistikdatei (Typ .STK). Der Name dieser Datei wird beim Initialisieren von aLF (das geschieht in \f2 a-init.flx\f1 ) festgelegt, und zwar in der Variablen \f2 $Astk\f1 . Nimmt man diese aus \f2 a-init.flx\f1  heraus, unterbleibt das Erzeugen der Statistikdatei. In \f2 a-init.flx\f1  ist dies kommentiert: 
+\par 
+\par   // diese Zeile aktivieren, sonst wird keine Statistikdatei angelegt: 
+\par \b\f0   ins $Astk 
+\par \b0 
+\par \f1 Die STK-Dateien werden in einem Unterordner STAT des Datenbankverzeichnisses angelegt. Dort sollten demnach die ausleihberechtigten Mitarbeiter die Berechtigung zum Anlegen von Dateien haben. Wenn die Dateien woanders liegen sollen, ist nur der Verzeichnisname in \f2 a-init.flx\f1  zu \'e4ndern. Dieser wird in die $-Variable \f2 $Astd\f1  kopiert und ist damit w\'e4hrend des Programmlaufs stets verf\'fcgbar. 
+\par 
+\par Die STK-Dateien haben lange Namen! Sie werden nicht von DOS-Programmen ausgewertet, daher ist das unkritisch. 
+\par 
+\par Der Dateiname sieht so aus: 
+\par \f0 
+\par   \cf1\f3 Datum\cf2 Uhrzeit\cf3 Operator\cf0\f0 .stk 
+\par 
+\par z.B. 
+\par   \cf1\f3 20060914\cf2 0900\cf3 meier\cf0\f0 .stk 
+\par   20060914=\i\f3 Datum\i0\f0  der Sitzung\f3  14.9.2006\f0 
+\par           0900=\i\f3 Uhrzeit\i0\f0  \f3 9:00 \f0 (Beginn der Sitzung) 
+\par               meier=\i\f3 Operator\i0\f0  
+\par 
+\par \f1 Damit wird es dann m\'f6glich, gezielt die Transaktionen zu bilanzieren, die sich in einer Sitzung oder an einem Tage oder in einem Monat ereignet haben oder auch alle, die in einem bestimmten Zeitraum an einem Arbeitsplatz (vom selben "operator") ausgef\'fchrt wurden. 
+\par 
+\par Der "Operator" kann entweder in der INI-Datei mit dem Befehl 
+\par \f0 Operator=... 
+\par \f1 gesetzt werden oder mit der Environment-Variablen \b op\b0 , wobei letztere Vorrang hat. (W\'e4hrend des Programmlaufs steht der Name in der Sonderkategorie \b #op\b0 .) 
+\par \f0 
+\par \b\f1 2. Inhalt einer STK-Datei\b0 
+\par Jede relevante Transaktion wird in der Statistikdatei mit einer Zeile festgehalten, nat\'fcrlich in der Reihenfolge der Ausf\'fchrung. Das erledigen die a-FLEXe, z.B. \b a-chkout.flx, a-verl.flx\b0  und \b a-func.flx\b0 . ) Dort kann man sich anschauen, wie es gemacht wird, und kann diese Prozedur bei Bedarf in eigene FLEXe \'fcbernehmen. Kommentiert mit "Statistik") 
+\par Das erste Zeichen einer Zeile steht f\'fcr die Art der Transaktion: 
+\par \f0 
+\par a  Ausleihe              in a-chkout.flx 
+\par g  Gebuehreneinnahme \f3     in a-func.flx\f0 
+\par v  Verlaengerung \f3         in a-verl.flx\f0 
+\par 
+\par Die Struktur der Zeilen ist folgende: 
+\par 
+\par aDatum:Leserkl;Medientyp/Signatur 
+\par z.B. 
+\par a20060803:2;CD-U/CD IDOL 
+\par  Datum    Leserkl 
+\par             Medientyp 
+\par                Signatur 
+\par 
+\par gDatum:GebTyp/Betrag 
+\par        0 = Verspaetete Rueckgabe 
+\par               Betr. in Cent! 
+\par 
+\par vDatum:Leserkl;Medientyp/Signatur 
+\par   Wie bei Typ a 
+\par 
+\par \i\f1 Hinweis:\i0  Medientyp wird auf ZZZ gesetzt, wenn daf\'fcr kein Eintrag vorhanden ist, d.h. wenn #9DG$m fehlt. 
+\par 
+\par 
+\par \b Erweiterungen:\b0  Wenn weitere Aktionen zu protokollieren sind, mu\'df man in die FLEXe an den entsprechenden Stellen die n\'f6tigen Ausgabebefehle nach dem in \f2 a-chkout.flx\f1  zu sehenden Beispiel einbauen, mit selbstdefinierten Kennbuchstaben. 
+\par 
+\par 
+\par \b 3. Verfahrensweise\b0 
+\par Die Statistikdateien sind erst einmal nur Protokolle, sie m\'fcssen zur Auswertung dann noch vorverarbeitet werden. Das bei jeder Zeile gespeicherte Datum ist f\'fcr die Auswertung nicht erforderlich! Es k\'f6nnte evtl. dazu dienen, Probleme zu analysieren oder auch bestimmte Vorg\'e4nge vor der weiteren Verarbeitung wieder herauszunehmen. 
+\par Man startet den FLEX  \b a-stat.flx\b0  ("Statistik" im aLF-Men\'fc). Erst dieser FLEX erzeugt aus den Statistikzeilen die zu z\'e4hlenden Elemente. Daher mu\'df man im Falle von Erweiterungen hier entsprechend eingreifen, dazu findet man darin Kommentare. 
+\par 
+\par Es erscheint im Anzeigefeld die Liste der vorhandenen .STK-Dateien. 
+\par Die auszuwertenden markiert man mit einem vorgesetzten +, dann mit Alt+9 die Auswertung starten. 
+\par Dann wird erneut a-stat.flx gestartet, aber nun f\'fchrt es die Auswertung der markierten Dateien durch. 
+\par Es entsteht eine Datei stat.alg, die dann sortiert und mit dem Programm SRCH.EXE durchgearbeitet wird, wobei eine Parameterdatei \b a-stat.apr\b0  zum Einsatz kommt. In diese mu\'df man im Falle von Erweiterungen normalerweise nicht eingreifen. Darin stehen Kommentare. 
+\par So sieht eine Zeile in der \b stat.alg\b0  aus: 
+\par \f0 
+\par \b\f2 <1>u1 L:1;SP-F<0>\b0\f3       (<1> und <0> sind die ASCII-Codes 1 bzw, 0) 
+\par \f1 
+\par Diese Struktur ist n\'f6tig, weil dann die Verarbeitung mit SRCH.EXE und Exportparametern m\'f6glich ist. 
+\par Heraus kommt dann aber eine Ergebnisliste, die so aussieht: (L:Leserklasse;Medientyp,  M:Medientyp) 
+\par \f0 
+\par   aLF Ausleihstatistik 
+\par   200611011\f3 002fritz\f0 .stk 
+\par   20061101\f3 1\f0 759\f3 meier\f0 .stk 
+\par   ... 
+\par L:1;BM       12 
+\par L:1;CD-U     15 
+\par L:1;CD-x      2 
+\par L:1;MC-E      5 
+\par L:1;SP-F      6 
+\par L:1;ZZZ       2 
+\par L:2;BM        2 
+\par L:2;CD-X      1 
+\par L:2;CD-x      1 
+\par L:2;ZZZ       5 
+\par L:3;CD-U      2 
+\par L:3;MC-E      2 
+\par L:4;BM        1 
+\par L:4;CD-U      4 
+\par L:4;MC-E      4 
+\par L:4;SP-F      3 
+\par  ________________________________________ 
+\par M:BM         15 
+\par M:CD-U       21 
+\par M:CD-X        1 
+\par M:CD-x        3 
+\par M:MC-E       11 
+\par M:SP-F        9 
+\par M:ZZZ         7 
+\par  ________________________________________ 
+\par 
+\par Entleihungen Gesamtzahl:      67 
+\par 
+\par  ________________________________________ 
+\par 
+\par \f3 Geb\'fchrensumme:   97.00 \'80\f0 
+\par 
+\par \f3 
+\par \f1 Mit dem Men\'fcpunkt "Heute" werden alle STK-Dateien des jeweiligen Tages zusammengefa\'dft  (wir sagen \b kumuliert\b0 ) und eine solche Datei daraus erstellt. In diesem Fall h\'e4tte sie den Namen 20061101.STT = Tagesdatei 1.11.2006 
+\par Diese Form kann einerseits als Endprodukt angesehen werden: man kann sich die Liste kopieren und dann in der Form beliebig ver\'e4ndern. 
+\par Diese Form ist andererseits geeignet, stufenweise mit weiteren Prozeduren kumuliert zu werden zu Monats-, Jahres- oder anderen Zeitraum-Statistiken, wie unten beschrieben. Dies ist ein weiterer Vorteil gegen\'fcber dem DOS-Konzept. 
+\par 
+\par Das Kumulieren besorgt allein der FLEX  \b a-statk.flx\b0 . (Exportparameter werden keine gebraucht.)
+\par Bei den kumulierenden Aktionen m\'fcssen jeweils mehrere Dateien einer Stufe gesammelt und zu einer Datei zusammengefa\'dft werden. Das Prinzip ist, da\'df die auszuwertenden Zeilen alle am linken Rand beginnen, ohne Leerzeichen also. Der Zeilenanfang vor dem ersten Spatium wird dann als Name einer Variablen verwendet: z.B. aus  \b\f2 M:SP-F\b0\f1   wird  \cf1\b\f2 $alf\cf0 M:SP-F\b0\f1 . Durch diesen Trick mu\'df man die Variablennamen nicht ausdr\'fccklich programmieren, sondern alle vorkommenden Leserklassen, Medientypen und was immer man sonst noch protokollieren mag werden automatisch ber\'fccksichtigt. D.h. in \f2 a-statk.flx\f1  braucht man nicht einzugreifen, wenn man Erweiterungen gemacht hat. 
+\par 
+\par \b Tagesstatistik\ul\b0 
+\par \ulnone Alle STK-Dateien des Tages sind zu kumulieren, die Ergebnisse werden als STT-Datei ausgegeben, Form siehe oben, z.B.\f0 
+\par    20061130.STT = Tagesstatistik 30.11.2006 
+\par \f3 Die STK-Dateien k\'f6nnen dann beseitigt werden.\f0 
+\par 
+\par \b\f1 Monatsstatistik\b0\f0 
+\par \f1 Die STT-Tagesdateien des Monats werden eingesammelt, d.h. z.B.\f0 
+\par    200611*.STT -> 200611.STM 
+\par \f3 Die STT-Dateien k\'f6nnen dann beseitigt werden.\f0 
+\par 
+\par 
+\par \b\f1 Jahresstatistik\b0\f0 
+\par \f1 Alle 12 STM-Monatsdateien werden eingesammelt: 
+\par \f0    2006*.STM -> 2006.STJ 
+\par \f3 Die STM-Dateien k\'f6nnen dann beseitigt werden.\f0 
+\par 
+\par 
+\par \f1 Jederzeit kann man mehrere Tages-, Monats- oder Jahresdateien zu ad-hoc-Statistiken f\'fcr einen gew\'fcnschten Zeitraum zusammenfassen! Dabei l\'f6scht man die STT, STM- bzw. STJ-Dateien jedoch nicht, weil sie f\'fcr die regul\'e4re Statistik noch gebraucht werden. 
+\par 
+\par Nach jeder Kumulationsstufe, wenn man keine weiteren Auswertungen plant, kann man die ausgewerteten Dateien der Typen *.ST? gefahrlos entsorgen. Gerne l\'f6schen wird man insbes. die zahlreich anfallenden STK-Dateien jeden Tag nach Erstellung der STT-Datei. 
+\par \f0 
+\par 
+\par \pard\ri144\b\f1 4. Der Ablauf kurz und knapp\b0\f0 
+\par \pard\f4\fs20 
+\par 1. \b Datenprotokollierung:  \b0 (in  a-chkout.flx  u.a.) 
+\par a99 schreibt Datei  \f2 200611071432.stk\f4     (Sitzung beginnt am 7.11.2006 um 14:32) 
+\par       Der Dateiname steht in \b\f2 $Astk\b0\f4 , der Verzeichnisname in \b\f2 $Astd\b0\f4  
+\par 
+\par 2. \b Datenaufbereitung: \b0 ("Statistik" etc. auf aLF-Men\'fc) 
+\par a) \i ad-hoc Auswertung\i0 
+\par Jederzeit kann man eine beliebige Auswahl von STK-Dateien aufbereiten lassen: 
+\par a99: \tab Dateien \f2 *.STK  --> (a-stat.flx) -->  STAT.ALG\f4  
+\par asort: \tab\f2 STAT.ALG --> STATS.ALG\f4  
+\par srch:  \tab\f2 STATS.ALG  --> (a-stat.apr) --> A-STAT.LST\f4  
+\par 
+\par b) \i Tagesstatistik\i0 
+\par Wenn in dieser Weise die STK-Dateien eines Tages ausgewertet werden, entsteht z.B. 
+\par            \f2 20061107*.STK \f4  \f2 -->\f4   \f2 20061107.STT\f4  
+\par Es ergibt sich also f\'fcr jeden Arbeitstag eine Datei  \f2 JJJJMMTT.STT\f4  
+\par 
+\par 3. \b Kumulierung: \b0 ("Monat" und "Jahr" auf aLF-Men\'fc) 
+\par Dabei werden Tages- zu Monats- bzw. die Monats- zu Jahresdateien kumuliert: 
+\par a)\i  Monatsstatistik\i0 
+\par a99:  \f2 JJJJMM??.STT --> (a-statk.flx) --> JJJJMM.STM\f4  
+\par b) \i Jahresstatistik\i0 
+\par a99:  \f2 JJJJ??.STM --> (a-statk.flx) --> JJJJ.STJ\f4  
+\par 
+\par Aus den STJ-Dateien k\'f6nnen auch Mehrjahreskumulationen erstellt werden.
+\par  
+\par }
+ 

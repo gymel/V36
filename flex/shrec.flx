@@ -1,0 +1,398 @@
+  shrec.flx  : Zeige Datensatz in hexa oder dezimal (show record content)
+  2014-11-26   Call:  X shrec
+               or:    X shrec inr   (inr = interne Nr. eines Satzes)
+                      X shrec N/P : next/previous rec#
+if "" jump crec
+if "N" var i;ins $i;eval $i+1
+if "P" var i;ins $i;eval $i-1
+  int.Recnr
+ins $inr
+if <1 var "rec# " $inr " too small";mes;end
+  check if valid
+var t
+ins $t
+eval $t -$inr
+if <0 var "rec# " $inr " too large, there are only " t " records";mes;var t;ins $inr
+var $inr
+
+var "#" $inr
+f1nd
+if no var "No record under nr " $inr;mes;end
+sho rec
+
+:crec
+$dezlist=
+$hexlist=
+
+  Datei ab Position des aktuellen Satzes lesen und checken
+  und zwar in Bloecken von 160 Bytes
+  Dateinummer des aktu. Satzes:
+var j
+ins $recn
+  Position in der Datei:
+var jp
+ins $stpos
+  Addr des 1. Blocks (wird dann hochgezaehlt)
+ins $block
+
+var D B "_" $recn "." K1 "ld"
+ins _\\_/_
+  nur f.d. Anzeige
+ins $Datei
+  Datei oeffnen
+var D B "_" $recn "." K1 "ld"
+open
+
+:begin
+var $block
+var (0,r8)
+  Startadr. 16er Block
+ins $hbl
+
+var $block
+// Lesezeiger positionieren
+fet m
+
+// erstes Byte d. S holen
+fet c
+ins $c
+if "1" var "1 = OK";jump ok
+if "8" var "8 = Gesperrt";jump ok
+if "9" var "9 = Gelöscht";jump ok
+var "{ \\cf6 Falsches Steuerzeichen " $c "} am Satzanfang"
+
+:ok
+
+ins $status
+
+  check the recnr, $wrn = wrong nr flag
+$wrn=
+fet b1
+fet b4
+ins $r
+var i
+ins $i
+eva $r -$i
+  Warnungstext erstellen, wenn falsch
+if not "0" var "{ \\cf6 Attention: Wrong record nr }" $r " instead of " $i;ins $wrn
+  und zurueck zur Anfangsposition des Satzes
+var $stpos
+fet m
+
+:nxt10lines
+  Zaehler f. 10 Zeilen je 16 Byte
+  (falls nicht das Satzende schon gefunden ist)
+if not $rend $lc=10
+
+  Zeilenschleife
+:zloop
+z=16
+perf oneline
+  ZeilenZaehler -1
+eval $lc -1
+ins $lc
+if not =0 jump zloop
+
+  Display ist fertig
+:disp
+  Laenge d. Satzes ausrechnen: aktuelle Leseposition - Startpos
+fet p
+ins $m
+eval $m -$stpos
+ins $m
+
+if $rend jump ende
+
+eval $block +160
+ins $block
+var (0,r8)
+ins $hbl
+jump nxt10lines
+
+:end
+
+  eine Zeile erstellen - naechste 16 Byte
+:oneline
+  Zeile hat zwei Teile: $rtf = RTF character display, $hxd = hex display
+var ""
+if not $dtfl var "{\\cf4 "
+ins $rtf
+ins $hxd
+ins $dzd
+
+// 16 Byte abarbeiten
+:xloop
+
+z-1
+if $dtfl jump z0
+if not z=10 jump z0
+
+  $dtfl: data flag, Einschaltung nach dem 5. Byte
+               damit die ersten 5 alle als Steuerzeichen erscheinen
+$dtfl=1
+var "\\cf4 "
+ins $co
+var "\\cf1 "
+ins $cn
+var $rtf "}"
+ins $rtf
+var $hxd "}"
+ins $hxd
+var $dzd "}"
+ins $dzd
+
+
+:z0
+if z=0 jump eol
+fet b
+ins $b
+if ="-1" $rend=1;jump eol 
+  normales Zeichen?
+
+ins $a
+// Fuellzeichen?
+// if =219 var 219;jump ctrl
+
+if >30 jump normal
+if not $dtfl jump stfl
+if $nf jump stfl
+
+if =0 var "\\cf4 ";ins $co;jump nul
+if <8 var "\\cf5 ";ins $co;jump nul
+if <11 var "\\cf6 ";ins $co
+if =13 var "\\cf6 ";ins $co
+if =26 var "\\cf6 ";ins $co
+if =27 var "\\cf6 ";ins $co
+
+:stfl
+  andere Codes unterhalb 31
+  64 addieren und Zeichen draus machen: 1 -> A
+eval $b +64
+var
+jump ctrl
+
+:nul
+  Kommt hinter dieser 0 das Ende?
+fet c
+if not "13" jump nrn
+
+var "\\par \\par Next 48 bytes:"
+ins $nxrec
+
+$ef=1
+$nf=1
+$lc=4
+$rend=1
+z-3
+var z
+ins $zr
+z=3
+
+:nrn
+var "@"
+
+  control code farbig
+:ctrl
+ins $C
+// flag: HEXzeichen
+$cc=1
+// Steuerzeichen: Farbe $co 
+var $rtf $co $C $cn 
+jump addc
+
+// normales Zeichen
+:normal
+  hex flag loeschen
+$cc=
+  $b ist Zahl, in Code wandeln: aus 65 wird A
+var $b
+var
+  Diese muessen RTF-codiert werden
+if "\\" var "\\\\"
+if "{" var "\\{"
+if "}" var "\\}"
+if "%" var "%%"
+
+  das anzuzeigende Zeichen an Zeile anhaengen
+ins $r
+var $rtf "" $r
+
+  save line in $rtf
+:addc
+ins $rtf
+
+var $a
+var (0,r3)
+ins $a
+if $cc var $dzd $co " " $a $cn
+if not $cc var $dzd " " $a
+  save line in $dzd
+ins $dzd
+
+// Code in Hex wandeln
+var $b
+jump dezhex
+// kommt dann hierher zurueck:
+
+// HexCode anhaengen an $hxd
+:dhx
+var $ze (0,r3)
+ins $ze
+// Wenn Steuercode, dann magenta
+if $cc var $hxd $co " " $ze $cn
+if not $cc var $hxd " " $ze
+  save line in $hxd
+ins $hxd
+  Farbcode rot wieder loeschen, sonst nachfolg. Zeichen auch rot
+if not $ef $co=
+
+jump xloop
+
+  end of line - Zeilendaten fertig, anhaengen an die Liste
+:eol
+if not $zr jump addline
+  end of record! add $zr spaces to $rtf
+fet c
+if "-1" $nxrec=
+
+var $zr
+z=
+if z=0 jump addline
+:sp
+var $rtf " "
+ins $rtf
+z-1
+if z>0 jump sp
+$zr=
+
+:addline
+if not $rtf jump ende
+var $dezlist n "\\par " $hbl ": " $rtf " -- " $dzd 
+if $ef var + $nxrec
+ins $dezlist
+var $hexlist n "\\par " $hbl ": " $rtf " -- " $hxd 
+if $ef var + $nxrec
+ins $hexlist
+eval $hbl +16
+var (0,r8)
+ins $hbl
+var ""
+ins $ef
+return
+
+
+
+  Unterprog. dezimal -> hexa
+:dezhex
+
+ins $vz
+var ""
+ins $ze
+
+
+  Schleife
+:dh:loop
+var $vz " Jd"
+var
+
+  Z als Zahl zum Rechnen, (Achtung: kleines z!)
+  weil nur damit Operator % moeglich (modulo)
+Z=
+  Div.Rest bei Div. durch 16 ergibt naechste HexZiffer
+eval Z/16
+var (b".")
+ins $dvr
+  Nachkommastellen nehmen und wieder mit $b malnehmen
+    ergibt den Divisionsrest
+var "0." $dvr
+ins $dvr
+  Der Nachkommateil kann geringfgig zu klein sein!
+  bei der Multiplikation kommt dann evtl. zuwenig raus,
+      deshalb +0.001
+eval $dvr *16 +0.001
+var (e".")
+Z=
+
+var Z
+  Ziffern >9 in Buchstaben wandeln
+if ="15" var "f"
+if ="14" var "e"
+if ="13" var "d"
+if ="12" var "c"
+if ="11" var "b"
+if ="10" var "a"
+ins $nz
+  ErgebnisZahl ergaenzen, d.h. neue Ziffer vorn anfuegen
+var $nz $ze
+ins $ze
+  erneut durch 16 teilen, am . abschneiden
+eval $vz /16
+var (e".")
+ins $vz
+  falls noch >0, dann schleife
+if >0 jump dh:loop
+  sonst Ergebnis in iV bereitstellen
+var $ze (0,r2)
+ins _ _0_
+ins $ze
+
+jump dhx
+
+
+
+
+:headline
+  Ueberschrift erzeugen
+var "File: " $Datei ", Rec# " i ", " jb " bytes from pos. " $stpos n
+var +"\\par  Status: " $status " ... "
+
+ins $head
+return
+
+
+  Zwei Ergebnisdateien erstellen
+:ende
+
+perf headline
+
+  Die 1. Datei: Hexcodes
+var W "\\hex.rtf"
+open x
+wri Flisthead.rtf
+wri $head
+  drei Flips anlegen
+wri "`{\\cf2\\ul\\b DEZ}` " n
+wri " -- `{\\cf2\\ul\\b NXT}` " n
+wri " -- `{\\cf2\\ul\\b PRV}`\\par "
+if $wrn wri $wrn
+wri n 
+  den Text ausgeben, aber in ANSI wandeln
+var $hexlist " " n
+ansi
+wri
+// ist die neue Zeile leer? Dann:
+if not $rtf wri "\\par \\par END OF FILE" n
+  Die Funktionen zu den Flips anhaengen
+wri n "?DEZ=h .\\dez" n
+wri n "?NXT=X shrec N" n
+wri n "?PRV=X shrec P" n
+close x
+  fertige Datei hex.rtf anzeigen, und zwar die auf WorkDir!
+help .\\hex
+
+  Die 2. Datei: Dezimalcodes
+var W "\\dez.rtf"
+open x
+wri Flisthead.rtf
+wri $head
+wri "`{\\cf2\\ul\\b HEX}`\\par " n
+var $dezlist " " n
+ansi
+wri
+if not $rtf wri "\\par \\par END OF FILE" n
+  Flip zum Umschalten auf HEX
+wri n "?HEX=h .\\hex" n
+close x
+end
+
+

@@ -1,0 +1,48 @@
+  REVIS2.APR : Feststellung von Lcken in einer Zahlenfolge
+  940603
+  
+  REVIS2 ist unabh„ngig vom Kategoriesystem, d.h. mit jeder .CFG verwendbar!!!
+pn="Revision, 2. Durchlauf"
+
+  Feststellung von Lcken in einer Folge sortierter Eintr„ge.
+  Die Vorbereitung muá so erfolgen, daá #u1 eine Zahl enth„lt, #u2
+  die zugeh”rige Textkategorie
+  z.B. #u1 921234    und  #u2 92-1234   im Falle von Zugangsnummern, die
+  auf Lckenlosigkeit geprft werden sollen,
+  z.B. #u1 65661234  und  #u2 AB-1234
+  wenn es sich um Signaturen handelt und AB-1234 eine Signatur ist
+
+  ausgegeben wird nur dann eine Zeile, wenn sich zwei direkt aufeinander-
+  folgende S„tze um mehr als 1 unterscheiden:
+
+  Lcke zwischen         und         (Seitenberschrift)
+
+  #usw                   #u2
+  ...                    ...
+  dabei ist #usw jeweils der vorangeganene Inhalt von #u2
+
+  --------- Konstanten --------------------------------------------
+
+zl=72       Zeilenl„nge fr den Druck
+  
+ae=""       kein Aufnahmeende
+zm=66       Seitenumbruch
+
+
+  ********* Kategorieliste ****************************************
+
+
+#u1 +A x"==nr" e0     Ist #u1 identisch mit der vorigen Nummer+1?
+#u1 +B x"<nr" e0          #u1 < #unr heiát: es folgen 2 gleiche Nummern
+                            hintereinander, dann wird nichts gemacht
+#usw C 
+#u2 p{ &25 }
+
+#-A
+#u1 x"+1" =nr           dann #unr um 1 erh”hen fr den n„chsten Vergleich
+#-B
+#u2 =sw e0
+#+#
+
+K
+#t{ "Lcke zwischen           und" C C }

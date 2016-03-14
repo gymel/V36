@@ -1,0 +1,66 @@
+  E-UNICOD.APR : Ausgabe als UTF-8-Datei mit Kategorie-Nummern
+  2004-01-27 / 2009-06-23
+    Unterschied zu e-unicod.apr: nur die p-Zeilen am Ende
+  Alle Felder in der internen Reihenfolge ausgeben 
+  bzw. einzelne Felder ohne
+pn="Ausgabe UTF-8"
+
+  Gibt Daten in UTF-8 aus, jede Kategorie mit Nummer
+  auf neuer Zeile.
+
+  --------- Konstanten --------------------------------------------
+
+zl=0 	    Zeilenlaenge
+zi=0	    4 Zeichen Einrueckung bei Folgezeilen
+  ks=0        Startpos. ist das #-Zeichen
+zm=0        kein Seitenumbruch (fortlaufende Ausgabe)
+ae=""       kein Zeilenvorschub am Aufnahme-Ende
+fl=0        Listenstruktur (keine Karten)
+
+  Akzentzeichen, aktivieren, wenn sie nicht in Indexparam. stehen
+pa=181 182 183 184 189 190 198 199 207 208 209 210 211 212 219 222 223 232 
+  -----------------------------------------------------------------
+
+  ********* Kategorieliste ****************************************
+  Wenn #u1 besetzt ist, dann -> #-X
+#u1 +X e0
+
+#da
+#bks=0
+##        saemtliche Kategorien ausgeben in interner Reihenfolge
+
+#+#
+
+        falls nicht alle gebraucht oder gewuenscht werden:
+        Weglassungen: Kategorienummern mit / hier anfuegen, z.B.
+  /89   dann wird #89 weggelassen
+  /9..  dann wird die ganze Gruppe #9 weggelassen
+        oder: hier eine Liste der auszugebenden Kategorien eintragen (statt ##)
+        z.B.
+
+#-X
+#hi +- e0      sonst Aerger mit hierarch. Saetzen!
+#u1 
+#+#
+
+#-Y
+#hi +- e0      sonst Aerger mit hierarch. Saetzen!
+#u1 B"ª "
+#+#
+
+  *******************************************************************
+
+ Code-Umwandlungen
+
+  Folgende Zeile deaktivieren, wenn intern UTF-8 !
+tad-utf   ad-utf.apt laden.
+    Hilfscode 28 wird Dreieck (kommt vor wenn Space hinter  )
+p .028 "â–¼"   BLACK DOWN-POINTING SMALL TRIANGLE  TeilfeldDreieck
+
+
+   Fuer HTML-Ausgabe noetig:
+   Nur in e-unicod.apr
+  p .020 "<br>"
+ p < "&lt;"
+ p > "&gt;"
+ p & "&amp;"

@@ -1,0 +1,97 @@
+
+Verlautbarung 211 der Entw.Abt.                              2008-10-26
+-------------------------------
+
+Fakten fuer eilige Leser:
+
+1. Interner Platz fuer Aufbereitung eines Export- oder Anzeigesatzes:
+   4 MB statt nur 256 K
+   Desgl. f. die iV und fuer RTF-Hilfetexte
+
+2. Start von avanti bzw. acon jetzt von bel. Verzeichnis aus problemlos
+   mit  avanti.con(f) + uifsger  auf demselben Verz. oder auf ..\etc
+
+
+Hintergrund und Details:
+
+1.                      BlueChyp macht Platz
+                        ====================
+
+...fuer eine Version, die an entscheidenden Punkten mehr Platz bietet.
+
+Als haette er was geahnt, meldete am letzten Freitag Kollege Wolf aus
+Freiburg mehr Platzbedarf an fuer den Output von Datensaetzen, die eine
+lange Folge von Nachladungen nach sich ziehen und dann fuer einen
+einzelnen Datensatz schon mal deutlich mehr als die 250.000 Byte 
+ausspeien, die a99 und avanti bisher fuer solche Faelle bereithielten.
+Da denkt sich der Laie: ha no, man setzt halt in dem Programm die Zahl 
+250.000 eben schnell mal ein paar Etagen hoeher, und das war's dann.
+Wir haben doch 4 GB Arbeitsspeicher, zum Donnerwetter!
+Nichts waere uns sympathischer, aber es gibt intern doch ein paar
+Dinge mehr zu beachten als eine Zahl, die irgendwo steht und auf ihre
+Aenderung wartet. Die Programme haben ja eine Vorgeschichte und es gibt
+Randbedingungen sowie jede Menge andere Erfordernisse, die auch alle
+speicherintensiv sind, und so muss man sich schon eine Weile Zeit
+nehmen zum Testen und Herausfinden moeglicher Nebenwirkungen in dem
+doch recht grossen Beziehungsgeflecht der Bestandteile des Systems.
+Und auch zum Herausfinden wirklich sinnvoller Groessenordnungen der
+einzelnen Speicherbereiche! Denn die Windows-Dialogelemente koennen 
+nicht durchweg einfach auf "beliebig" gesetzt werden, sie "skalieren" 
+nicht einmal leichtfuessig nach oben, sondern es gibt Grenzen, oberhalb
+derer z.B. auch ein Listenelement dann drastisch schwerfaelliger wird,
+mehr als linear jedenfalls (mit aresqa kann man das erproben). Wir
+sind nun zum Glueck noch rechtzeitig zurande gekommen, die CD-Version
+damit ausstatten zu koennen. Na, und wie gross kann jetzt der output
+werden? Nicht 512K, das Doppelte also, nicht 1MB oder 2, nein, satte 
+VIER Megabyte! Und zugleich gilt das fuer den Inhalt des Anzeigefeldes
+und die maximale Groesse von Hilfetexten. (Bis aber ein 4GB langer 
+Hilfetext dann erscheint, das dauert. Beschwerden an Onkel Bill!)
+
+Klar ist, dass eine solchermassen aufgewertete Version auch einen
+neuen Spitznamen braucht, um sie nominell herauszuheben aus der
+langen Reihe der im Dienst ergrauten Versionen. Der Name BlueChyp, man
+erinnert sich vielleicht, war als Reminiszenz an den Boersenterminus
+"Blue Chip" gebildet worden, der fuer gewinntraechtige, sichere
+Wertpapiere steht. Solche sind nun nicht mehr leicht zu finden, und es
+faellt nicht schwer, die suspekt gewordene Vokabel nun aufzugeben.
+Der neue, frisch gemuenzte Name lautet:
+
+                             Quadrega
+
+und das steht schlicht fuer  Vier Mega.  (Das wirft Licht auf die
+obskure Obsession mit der neuen Quadriga vorige Woche, die mit
+unserem Themenspektrum denn doch weniger als nichts zu tun hat.)
+
+Die Begehrlichkeiten werden damit nicht versiegen, soviel ist klar.
+Doch vorerst machen wir uns mal ein beruehmtes Diktum von Onkel Bill
+zu eigen, obschon wir es betraechtlich uebertreffen:
+   Four megabytes ought to be enough for anybody!
+(Bei ihm waren's 640K, allerdings behauptet er gern, das Gegenteil
+gesagt zu haben...)
+
+
+2. avanti-Startprobleme ausgehebelt
+   --------------------------------
+Es wurden erneut etliche Personenstunden drangegeben, endlich die 
+unertraeglich frustrierenden, unglaublich idiosynkratischen und 
+deswegen unendlich aergerlichen Startprobleme von avanti an den
+Wurzeln zu packen und rueckstandsfrei zu entsorgen. Keine halbwegs
+respektable Software darf sich solche Zustaende leisten - aber Sie 
+wissen ja selber, wie es ist: die fuerchterlichsten Provisorien und
+Kompromisse sind am schwersten loszuwerden.
+
+Nunmehr kann man avanti starten, wie und wo man will, es kann liegen
+wo es beliebt, und die avanti.conf darf so heissen und da liegen, wo
+sie lange Zeit unauffaellig herumlag, sie darf aber auch avanti.con
+heissen und ohne betuliche Trennwand gleich neben avanti und acon 
+liegen. Beim Aufsuchen gilt in beiden Programmen diese Reihenfolge:
+  (nur die zuerst gefundene Datei gilt)
+
+avanti.con
+avanti.conf
+..\etc\avanti.con
+..\etc\avanti.conf
+ 
+Fuer die uifsger gilt:  zuerst auf dem ProgDir, dann ..\etc\uifsger
+
+

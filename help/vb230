@@ -1,0 +1,109 @@
+
+Verlautbarung 230 der Entw.Abt.                              2010-06-30
+-------------------------------
+
+                          V30.6 liegt bereit
+
+JanaS jetzt sicherer
+--------------------
+Es gab Unzufriedenheit mit JanaS, weil es zur Kommunikation mit a99 
+einen Botschaftscode (message type) namens TCARD benutzte, und dieser
+wird, wenngleich selten, auch von anderer Software genutzt. D.h. es
+konnte zu unerwarteten Interferenzen kommen. Dies ist jetzt anders
+geloest, die Kommunikation wird nun stoerungsfrei laufen. Betroffen
+sind nur die Programme a99/alcarta und janas. Das neue janas.exe kann
+nicht mehr mit dem alten a99 und umgekehrt! Also V30.6 rein und fertig.
+Ansonsten braucht der Anwender nichts zu tun oder zu lassen.
+
+
+RDWR.EXE jetzt auch 32bit, und aufgewertet
+------------------------------------------
+Dieses Hilfsprogramm macht nichts anderes als eine Datei zeilenweise zu
+lesen und in eine andere Datei zu schreiben. Dabei kann man aber die
+Nummer der ersten und letzten Zeile angeben. Der Aufruf muss immer
+so aussehen:
+
+  rdwr erste letzte eingabedatei ausgabedatei
+
+"erste" und "letzte" sind Zeilenzaehler (bei .ALG: Satzzaehler).
+Die Zahl "letzte" kann 0 sein, dann wird ab der Zeile "erste" bis
+zum Ende verarbeitet.
+Auf diese Angaben, die man stets alle und in dieser Reihenfolge
+angeben muss, koennen noch ein paar weitere Angaben folgen:
+
+Hi   : i Zeichen uebergehen am Anfang der Zeile
+0    : Code 0 Ìn 13 10 wandeln, Zeilen mit # beginnen
+S    : Spatien am Zeilenende beseitigen
+
+Neue, handliche Sonderfunktionen:
+
+1. Wenn eingabedatei vom Typ .ALD oder .LOG, dann Wandlung nach ADT
+Handelt es sich um .ALG, wird nicht gewandelt, denn .ALG hat die
+Sequenz  13 10  als Satztrennung, somit liest das Programm dann
+nicht Zeilen, sondern Saetze, und das ist erwuenscht. Wenn es die
+Datei nach .ADT wandeln soll, gibt man ausdruecklich  H1 0  an.
+So kann man nun mit einem ganz einfachen Befehl schnell mal eben
+eine Datenbankdatei oder LOG-Datei in eine lesbare Liste wandeln.
+Ausprobieren auf c:\allegro  mit  
+   rdwr 0 0 demo2\cat_1.ald liste.txt
+
+2. Ausgabe auf Konsole: Mit  stdout  als ausgabedatei erscheinen
+die Daten im DOS-Fenster.
+
+3. Zaehlwerk: Fuer "ausgabedatei" den Namen "nul" angeben.
+Dann entsteht keine Datei, aber man erhaelt am Ende die Anzahl
+der Zeilen bzw. Datensaetze. Prima bei sehr grossen Dateien!
+Ausprobieren auf c:\allegro  mit  
+   rdwr 0 0 demo2\cat_1.ald nul
+
+
+Neue Dateiendokumentation
+-------------------------
+Hinsichtlich "OpenSource" ist es unabdingbar, daﬂ Struktur und 
+Eigenschaften aller Dateien als Grundlage fuer alles andere
+erschoepfend dokumentiert sind.
+
+Es gibt zwar schon Orte, an denen etwas ueber die allegro-Dateien
+steht, doch jeweils fuer einen bestimmten Zweck, uneinheitlich oder
+unvollstaendig oder inaktuell:
+
+1. Handbuch 0.3 : Dateien (umfangreich, aber nicht mehr ganz aktuell)
+
+2. Handbuch 0.22 speziell zu den Datendateien (Struktur der .ALD/ALG)
+
+3. Interaktiver Ueberblick:  h files   eingeben
+   Sehr zu empfehlen, praktisch zum direkten Arbeiten mit den Dateien
+
+4. Checkliste :  h filelist   eingeben
+   Knappe Angaben zu fast allen Dateien, hauptsaechlich zum Standort
+
+5. "dateien.htm" : knapp, mit Einfuehrung "Was sind Dateien"
+   http://www.allegro-c.de/formate/dateien.htm#af
+   Nur die allerwichtigsten Dateien, als Ueberblick fuer Einsteiger
+
+Wir wollen jetzt nach und nach an einer Stelle alles zusammenbringen,
+zum Nachschlagen, was es zu den Dateien zu sagen gibt:
+
+  http://www.allegro-c.de/doku/ff
+
+Das ist teilweise angelehnt an und abgeleitet von 1. (Handbuch 0.3)
+Vorerst sind nur die ganz wichtigen drin, und auch die wohl noch nicht
+ganz hinreichend ausfuehrlich. Dazu hoffen wir jetzt auf Hinweise und
+Anregungen zur Verbesserung. Wenn sich jemand berufen fuehlt, die
+Sache ganz anders und viel moderner und funktionabler aufzuziehen,
+dann nur zu...
+
+
+ALCARTA HAT JETZT FLIP-BUTTONS
+------------------------------
+Am unteren Rand erscheinen jetzt die von a99 gewohnten Flip-Buttons.
+Wie man sie belegt, ueberlege sich jeder selbst,
+Anleitung:  h xflip
+Einbau in _start.flx, wobei man mit Hilfe der Variablen m zwischen
+a99 und alcarta unterscheiden kann, z.B. so:
+
+var m
+if "a99" jump ...
+ usw.
+
+

@@ -1,0 +1,67 @@
+  EXPSOLR.FLX : Daten fuer Solr exportieren
+  2010-05-13    Nur 2 Felder: id und text
+
+  Hier sollen die Daten fuer Solr hin:
+open x c:/programme/solr/solrdata.xml
+
+  So muss die Ausgabedatei beginnen:
+write "<add>" n
+
+  fuer die Umwandlung in schlichten Text, ohne Sonderzeichen
+exp p e-solr
+
+  Erg.Menge verarbeiten
+  (Hier ggfls. first #, wenn ALLE Daten verarb. werden sollen)
+first
+
+:loop
+  Taste Esc gedrueckt?
+keychk
+if yes jump abbruch
+
+export
+
+   Alternative:
+   Die eingerueckten Zeilen statt "export", wenn man nur
+    bestimmte Felder in Solr haben will - statt e-solr.apr zu aendern
+
+   Das folgende macht e-solr.flx bei "export"
+   fuer jeden Satz ein <doc>
+  wri "<doc>" n
+   interne Satznummer in "id"
+  wri '<field name="id">' i '</field>' n
+   und alles andere in "text", d.h. keine weitere Differenzierung)
+  wri '<field name="text">'
+   dann hier die Feldinhalte, jeweils mit " " davor
+   exp wX
+
+   exp w0
+   wri '</field>' n
+   wri "</doc>" n
+
+    Man koennte weitere Felder mit anderem name=... liefern: (s. Solr doku),
+    wenn man feldspezifische Suche ermoeglichen will
+    Dazu muss man in die Export-Parameterdatei  e-solr.apr  eingreifen
+    Form:
+      <field name="title"> Inhalt von #20, #23 etc. </field>
+      <field name="subject"> #31, #33. u.a. </field>
+
+  naechster Satz
+:nxt
+  (Hier ggfls. next #, wenn ALLE Daten verarb. werden sollen)
+next
+if no jump ende
+if del jump nxt
+jump loop
+
+:ende
+wri "</add>" n
+close x
+  Bestaetigung
+mes Datei  c:/programme/solr/example/exampledocs/solrdata.xml  ist fertig, kann mit Solr indexiert werden
+end
+
+:abbruch
+mes Export wurde abgebrochen
+
+

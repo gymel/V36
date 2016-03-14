@@ -1,0 +1,68 @@
+  H-EDIT.NPR
+  Ausgabe fuer das Editierfeld von GETEDIT.FLX / EDREC.PHP
+  Notwendige Anpassungen durch  XXX  markiert
+
+pn="Ausgabe fuer HTML-Editierfeld"
+
+   Umwandlungstabelle fuer die Zeichen laden
+   Nur aktivieren, wenn intern ASCII, Anzeige aber UTF-8:
+td-utf8
+
+zl=65    Zeilenlaenge fuer Umbruch
+zi=1     Fogezeile 1 Stelle eingerueckt
+zb=" "   d.h. neue Zeile nur bei Leerzeichen
+zm=0     kein Seitenumbruch
+ks=0     gesamter Kategorietext (incl. Nummer)
+dx=1     Umcodierung einschalten
+ke=C
+ ze=10    Zeilentrennzeichen (fuer Ausgabe in die HTML-Datei)
+ab=""    keine Steuerzeichen am Satzbeginn und ende
+as=""
+ae=""
+
+  Eigentliche Ausgabe:
+  Alle Felder ausgeben (erscheinen dann im Editierfeld)
+#hi +E e0 #zz 0
+
+##
+
+#+#
+
+#-E    Ausgabe von hierarch. Untersaetzen (unvollst.)
+#t{ #0 }
+#001
+#100
+#200
+
+#+#
+
+  XXX  
+  Hier Abstimmung noetig mit  edrec.php !!!
+  Die von edrec.php einzeln angezeigten Felder muessen hier
+  herausgenommen werden.
+  Das sind standardmaessig die folgenden:
+  #20 und #40 haben eigene Eingabefelder,
+  die anderen (#33x etc.) sollen nicht geaendert werden duerfen!
+  (d.h. sie erscheinen nicht im Editierfeld, bleiben aber erhalten)
+/000
+/u1
+/u2
+   Besonders die Datumsfelder sollen nicht geaendert werden:
+/9zc
+/9ze
+  Diese werden (in edrec.php) als Einzelfelder im Formular angeboten 
+  und werden deshalb hier ausgeblendet:
+/040
+/070
+/100
+/200
+/300
+/400
+/360
+/810
+/08i
+/900
+/500
+/870
+
+

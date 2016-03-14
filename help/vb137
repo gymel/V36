@@ -1,0 +1,143 @@
+
+Verlautbarung 137 der Entw.Abt.                            2000-11-08
+-------------------------------
+
+FLEX : Unterprogramm-Technik
+----------------------------
+
+Immer wenn man eine neue Programmiersprache erfindet, kann man sich
+auf eines verlassen: es kommen Momente, wo nach einer Unterprogramm-
+technik zuerst gefragt, dann gerufen und zuletzt vehement verlangt 
+wird.
+Soweit ist es auch mit FLEX gekommen. Eine Machbarkeitsstudie kam
+zu einem positiven Ergebnis, so dass alsbald die Realisierungsphase
+eingeleitet wurde. Die sich anschliessende Testphase ging soeben
+zu Ende, so dass wir nun das fertige Produkt vorstellen koennen.
+
+Eines muss gleich gesagt werden: verschachteln kann man die Unter-
+programme nicht, also kein weiteres UP aus einem bereits laufenden 
+heraus aufrufen. Dann muesste intern mit einer Rekursionstechnik
+gearbeitet werden, was erheblich aufwendiger waere als die
+jetzt realisierte Loesung. Mit etwas Phantasie kann man aber
+durchaus ohne derartige Komplexitaet auskommen. (Schleifen kann man
+ja auch, mit Umsicht, ohne UP realisieren.)
+
+Man kann mit "call" externe Programme in einem UP aufrufen. Es macht 
+aber keinen Sinn, eine andere FLEX-Datei mit "exec" aufzurufen, denn
+dann wuerde "return" nicht funktionieren. Daher wurde das blockiert.
+
+Es gibt nicht, wie in den Export- und Importsprachen, eine Klammer
+zur Eingrenzung des UP. Ein UP beginnt mit einer ganz normalen
+Sprungmarke. Es endet mit dem neuen Befehl "return", der ignoriert
+wird, wenn er im normalen Ablauf erreicht wird. 
+Aufgerufen wird das UP mit "perform" statt mit "jump". 
+Ein UP kann Sprungmarken enthalten, es kann auch von aussen auf 
+solche gesprungen werden. Ein UP kann mehrere Endpunkte haben, d.h.
+der Befehl "return" ist unabhaengig von der Anfangs-Sprungmarke.
+Das UP kann an jeder beliebigen Stelle stehen, also auch oberhalb
+des Aufrufs.
+Das ist alles. 
+So sieht es schematisch aus:
+
+<befehle...>
+...
+  Unterprogramm  upro  aufrufen
+perform upro
+  wenn es fertig ist, geht es hier weiter:
+<weitere befehle>
+end
+
+  Hier kommt das Unterprogramm:
+:upro
+<befehle>
+  Ruecksprung
+return
+
+Die Marke :upro kann also auch mit "jump" angesprungen werden, dann
+hat "return" keine Wirkung.
+Vor Endlosschleifen muss man sich selber in Acht nehmen, wie in jeder
+Programmiersprache und wie auch bei "jump".
+
+
+Und noch 2 Tips:
+
+TIP 1:
+Manchmal muss man mehrere Kategorien abarbeiten und den Inhalt jeweils
+auf dieselbe Art behandeln. Wenn man den Kategorie-Inhalt an ein UP
+uebergeben will, geht das am einfachsten per iV:
+
+var #nnn
+perf up
+
+Im Unterprogramm :up hat man also dann den Inhalt von #nnn in der iV.
+Wenn aber im UB die Kategorienummer selbst gebraucht wird, etwa um
+etwas daran zu veraendern?
+Dann macht man es so:
+
+  Kategorienummer in iV speichern
+var "#nnn"
+  Unterprogramm :up aufrufen
+perf up
+...
+
+  und in :up dann:
+
+:up
+  die per iV uebergebene Kategorienummer in #upp speichern:
+ins #upp
+  Inhalt der betr. Kategorie in iV kopieren: (var ohne cstring!)
+var
+  Inhalt in #uin speichern
+ins #uin
+  jetzt #uin beliebig veraendern
+...
+  Kategorienummer + veraenderten Inhalt in iV kopieren
+var #upp " " #uin
+  diese komplette Kategorie wieder in den Satz einfuegen:
+ins
+  fertig
+return
+
+Wichtig ist hier: der Befehl "var" ohne nachfolgenden cstring nimmt
+den Inhalt der iV und interpretiert ihn als cstring. Wenn also z.B.
+in der iV steht:  #40   dann bewirkt "var", dass man den Inhalt der
+#40 in die iV bekommt.
+(So aehnlich, aber wohl weniger deutlich, steht's bereits in der 
+FLEX-Doku unter "variable". Da steht naemlich:
+"Fehlt cstring, wird der Inhalt der iV verarbeitet, d.h. es 
+ entsteht daraus ein neuer Inhalt in der iV." )
+
+TIP 2:
+Manchmal will man alle Kategorien des Satzes hintereinander 
+verarbeiten, ohne zu wissen, welche jeweils belegt sind.
+Das geht nach diesem Schema:
+(mit den neuen Sondervariablen k0 und k1)
+
+  erstes Feld in die iV kopieren:
+var k0
+perf up
+:loop
+  naechstes Feld
+var k1
+if "" jump ende
+perf up
+jump loop
+:ende
+...
+
+:up
+  Verarbeitung der iV, die jetzt den Kategorietext enthaelt
+   (und zwar einschl. Kategorienummer)
+...
+return
+
+Es gibt ausserdem die Sondervariablen
+
+k2   letztes Feld des Satzes
+k3   voriges Feld (leer, wenn das erste erreicht war)
+
+Und wenn man  "var #nnn"  gemacht hat, steht in einem internen Zaehler
+die interne Nummer der Kategorie  #nnn, so dass dann mit  var k1
+die naechste genommen werden kann. So kann man Teilbereiche eines
+Satzes abarbeiten...
+

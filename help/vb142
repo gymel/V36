@@ -1,0 +1,89 @@
+
+Verlautbarung 142 der Entw.Abt.                          2000-12-15
+-------------------------------
+Die letzte des Jahres!
+Mit weiteren nennenswerten Verbesserungen ist in diesem Jahr nicht
+mehr zu rechnen. Gleichwohl kann es sein, dass wir naechste
+Woche nochmals einige Dinge aktualisieren. Wer die nachfolgend
+beschriebenen Dinge also nicht dringend braucht, kann noch ein
+paar Tage warten.
+
+Offline und Online
+------------------
+
+Gruendlich dokumentiert ist jetzt, was es mit "online" und
+"offline"-Daten auf sich hat, was dabei zu beachten ist und
+was man alles machen kann. Wir hoffen, dass damit alle
+Unklarheiten ausgeraeumt werden, und haben uns ganz 
+besonders um eine klare, jargonfreie Sprache bemueht.
+
+Datei OFF.RTF liegt auch gesondert bereit, falls jemand erst 
+mal nur dieses sehen will. Es steckt auch in HELP.LZH.
+
+Im Zuge dieser Ausarbeitung wurden diverse kleinere Ver-
+besserungen durchgefuehrt. Z.B. der Farbwechsel und die div.
+Statusanzeigen hatte noch ein paar Ungenauigkeiten, der
+FLEX-Befehl "next" tat es nicht ganz korrekt, etc.
+
+Man sollte sich holen:  a99.lzh, help.lzh, flexhelp.lzh
+(alcarta.lzh gleichfalls erneuert)
+In help.lzh steckt  OFF.RTF, die auch eingetragen ist auf
+dem aktualisierten Menu DOKU.RTF. Geben Sie  h off  ein,
+dann kommt der Text direkt.
+
+In der UIFE... sind die Statuswerte (ONL, EDT, DEL usw.)
+in den Zeilen 390-395 eingetragen. Aenderung erlaubt.
+
+Zwei neue FLEX-Moeglichkeiten
+
+1. ENDEFLEX.FLX
+   Bisher kann man zwar einen FLEX namens ENDFLX.FLX haben, der
+   am Programmende ausgefuehrt wird. Aber darin konnte man nicht
+   verhindern, dass das Programm dann letztlich doch beendet wird.
+   Jetzt kann man das: man setze diesen Befehl ans Ende:
+   var "no"
+   Dann wird das Programm nicht beendet. So kann man sogar
+   erreichen, dass das Programm gar nicht beendet werden kann!
+   (Sollte man aber nicht tun, sondern das "no" nur unter
+   wohlerwogenen Bedingungen setzen)
+   ENDEFLEX.FLX umbenennen in ENDFLX.FLX, um ihn zu aktivieren,
+   sonst laeuft alles wie gehabt!
+   ENDFLX.FLX wird ausgefuehrt, bevor die offline-Daten
+   gespeichert und die Datenbank abgeschlossen wird!
+
+2. Tastaturabfrage
+   Wenn man eine Riesen-Ergebnismenge hat oder eine Schleife, wo
+   man nicht sicher ist, dass die Abbruchbedingung erreicht wird,
+   kann man innerhalb der Schleife die Tastatur abfragen:
+
+   ...
+   keycheck              oder "key" oder "keychk" ...
+   if yes jump ende
+   ...
+
+   Das ist alles, was man in die Schleife einbauen muss!
+   Es wird dann geprueft, ob die Taste [Esc] oder 'x' gedrueckt
+   wurde. Wenn ja, gilt die Bedingung "yes".
+
+3. Die Befehle   "find new"  und  "find edt"
+   funktionieren nun in allen Faellen korrekt. Sie bilden die
+   Ergebnismengen der neuen bzw. der bearbeiteten Online-Saetze.
+   "Find offline" wurde abgeschafft, es muss jetzt heissen
+   "show offline", denn dabei wird keine Ergebnismenge 
+   gebildet, sondern es entspricht dem Druch auf den 
+   Button [Q : Daten in Bearb.]
+   ("show Q" und "Find offline" funktionieren zwar auch noch,
+   sollten aber nicht mehr benutzt werden.)
+
+4. Und noch eine  Kleinigkeit:
+   set c1
+   hat jetzt auch zur Folge, dass bei Abspeicherung der Anzeige
+   ueber "Datei | Anzeige speichern als ..."
+   der Text in ANSI- statt ASCII-Codierung abgespeichert wird.
+   (Besser bei anschliessender Uebernahme durch Windows-Progr.)
+
+Die FLEX-Verbesserungen sind alle in die Doku eingearbeitet.
+Kollege Robert Fischer hat dankenswerterweise viel Muehe investiert,
+die Texte nochmals gruendlich zu checken und zu korrigieren.
+FLEXHELP.LZH also auf jeden Fall besorgen!
+

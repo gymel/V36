@@ -1,0 +1,283 @@
+  P-WORDP.APR : WordPerfect : Erstellung einer Rohdatei
+  940603 / 000425   (muss an eine WP-Leerdatei angehÑngt werden)
+pn="WordPerfect-Rohdatei"
+
+  Achtung: das Ergebnis muss an eine leere WP-Datei angehÑngt werden.
+  Vorschlag:
+  -- mit WP eine Datei produzieren, die nur die gewÅnschten Einstellungen
+     enthÑlt, aber keinen Text, diese mit dem Namen EMPTY abspeichern.
+  -- COPY EMPTY LISTE /B           als Vorbereitung
+  -- SRCH .... -ep-wordp+liste     dann werden die Ergebnisse hinten angehÑngt.
+
+ diese Werte mÅssen fÅr jeden Listendruck gesetzt werden:
+ --------------------------------------------------------
+zl=77       ZeilenlÑnge
+zi=0        keine EinrÅckung
+ze=13       NZ  (wird von WP selbstÑndig geÑndert!)
+zm=0        Zeilenmaximum pro Seite: kein Seitenumbruch, fortlaufend drucken,
+               denn den Umbruch soll WP Åbernehmen
+
+as=32 10       vor Unteraufnahmen  Leerz FNZ
+ab=32 10    vor Hauptaufnahmen  FNZ Leerz FNZ
+ 
+fl=0        Listendruck
+
+ke=""     kein Standard Postfix am Kategorie-Ende
+
+   WordPerfect Steuerung, muss an eine WP-Leerdatei angehÑngt werden!
+   erzeugt Textcodierung fÅr WordPerfect 5 ! Mit Version 6 einlesbar
+   p-wordp.apt generiert aus p-wordp.apt (29.12.1994 15:00)
+   --------------------------------------------------------------------
+tp-wordp     Druckertreiber laden  (P-WORDP.APT )
+
+
+p  .160     festes Leerzeichen hinter Seitenzahl
+ --------------------------------------------------------------------
+ 
+  Zwischenteile:
+
+1=". "
+2=", "
+3="; "
+4=10
+5=": "
+6=10 10
+7=" = "
+8=". - "
+9=" / "
+10="("
+11=")"
+12=10 10
+13=10 "   "
+14=". - " t88
+15=" : "
+16="Hrsg.: "
+17="Mitarb.: "
+18="Bearb.: "
+19="Begr.: "
+20="Samml.: "
+21="Texter: "
+22="Uebers.: "
+23="Illustr.: "
+24="Komment.: "
+25="Kompon.: "
+26="Praes.: "
+27="Resp.: "
+28="Vorw.: "
+29= "ISBN "
+35= "   (" t88 "Originaltitel: " t87
+
+38=". " 
+39=""    Schmalschrift rÅcksetzen
+
+
+51=13 &6 "Quelle: " #250  fÅr Quellenangaben von Aufsatztiteln
+
+
+ ***** Hauptteil :  Kategorieliste: **************************************
+ 
+#hi +A e0
+
+#00 =id+- e0 #zz 0           wenn identisch, keine Aktion
+                     gleiche SÑtze werden nur 1mal exportiert!
+#t4         Zeilenvorschub, Anfangsposition
+
+#-A    hier wird die EinrÅckung der Unteraufnahmen veranlasst
+
+ -- %<*!tubs>
+ --  !#+B
+ -- %</!tubs>
+#-B  Anfangspunkt
+
+#t99   Fett
+
+
+
+#hi p84 P84 B" =" f" " F"." P". "
+
+!u2 e"" 
+#u2 b"" p" : "
+
+ -- %<*!tubs>
+ --  !#+a
+ -- %</!tubs>
+#-a
+#hi +d e0   Bandsign. nur, wenn keine Hauptsignatur
+#+e
+
+#-d
+#^90 +f e0
+
+#-e
+#90 +f >S                      Sign. nach rechts ausrÅcken
+#t4    wenn keine Sign., dann Zeilenvorschub
+#-f
+
+#u2 e0 P98    wenn #u2, dann fett aus
+     Beginn der bibliogr. Beschreibung
+#21 p"[" P"]" #zz 4         [Sammlung], dann neue Zeile
+#20 i4,™ 98 e" " P" " #zz 99        Artikel nicht fett
+#20 u e" : " #27 0 #69 9 #zz 8
+#t99
+#t98  fett aus
+#20 b" : " p" : " #27 0 #69 9 #zz 8
+#23 7 #27 0 #69 9 #77 8
+
+#24 1 #27 0 #69 9 #77 8
+#25 15 #69 9 #77 8
+ 
+#39 +#71 0 #77 8
+
+#40 ++ >K m>k #40z 3 #69 3 #76 8
+#60e 0 #69 3 #76 8    zu erg. Urh.
+#60 0 #69 3 #76 8
+#41 p{ t88 "[Hrsg.:] " t87 } #77 8
+#412 >K #69 >l #zz >m
+#42 >K #69 >l #zz >m       Die Unterprogramme machen folgendes:
+#43 >K #69 >l #zz >m           #(K macht die Invertierung "Vorname Name"
+#44 >K #69 >l #zz >m           #(l : "[Funktionsbez.]; "   hintersetzen
+#45 >K #69 >l #zz >m           #(m : "[Funktionsbez.]. - "
+#46 >K #69 >l #zz >m        wenn also ein weiterer Personen- oder
+#47 >K #69 >l #zz >m           Kîrperschaftsname folgt, wird "; " als
+#50 >K #69 >l #zz >m           Postfix ausgegeben, sonst ". - "
+#51 >K #69 >l #zz >m
+#52 >K #69 >l #zz >m
+#53 >K #69 >l #zz >m
+#54 >K #69 >l #zz >m
+#55 >K #69 >l #zz >m
+#58 >K #69 >l #zz >m
+#602 0 #69 3 #zz 8
+#61 0 #69 3 #zz 8
+
+
+#71 0 #72 2 #77 8
+#72 0 #77 8
+#74 0 #76 5 #77 8
+#75 0 #76 2 #77 8
+
+#70 +#83 e0      wenn #70, dann #76 und #77 Åbergehen
+
+#76 0 #77 8
+#77 e" : " e" S"         damit zwischen Zahl und "S." kein Zeilensprung kommt
+#77 e" : " b" S" p"S"
+
+#818 e":" p{ "   [" t88 "Diss." t87 } p""
+#818 b":" p" " P"]" #77 8 #zz 0
+
+#hi +#818 e0
+#unr x"+1" =nr e0
+#818 +E e0
+
+#83 { t88 "   Kongress:" t87 } B"... ; " p""
+
+    Quellenangabe: (wird ggfls. zusammengesetzt)
+ 
+#70 +#702 51 #zz 0 
+#+8
+#702 p" [" P"]" #zz 0   ELand
+#704 p" " #zz 0         Band
+#76 p"(" P")" #zz 0     Jahr
+#706 0 #zz 0           Heft
+#708 ", S."
+
+#-8
+#85 88 p"   (" P")" P87 
+#22 35 P")" 
+#80 4
+#81 4
+#86 4 
+
+#-E
+     hier kînnte noch eine Schlussbehandlung hin
+#+#        Ende der Hauptliste
+
+#(K         UP fÅr Personennamen
+#cc e" = " b", " #zz 0   Verweisungsformen abschneiden, hinter ", " beginnen
+#cc e", " p" " #zz 0     Text vor dem ", " nehmen, " " davorsetzen
+#)K                      in beiden FÑllen kein Postfix! (#zz 0)
+
+#(k           hier kînnte man den 2. und 3. Verf. anders behandeln!
+#cc e" = " b", " #zz 0      wie Sie hier sehen, wird dasselbe gemacht
+#cc e", " p" " #zz 0             wie bei #(K
+#)k
+
+  zwei UPs fÅr die beteiligten Personen
+
+#(l   zuerst wird ein weiteres Unterprogramm aufgerufen: 
+#>F    gib die Funktionsbezeichnung aus
+#t3    schreibe "; "
+#)l
+
+#(m   dasselbe wie #(l, bis auf das Postfix:
+#>F
+#t8    schreibe ". - "
+#)m
+
+#(F     Funktionsbez. Ausgabe
+#i1,5 +5   erste Kategorieziffer =5: weiter bei #-5
+        4er-Kategorien:
+#i2,1 16    wenn 2. Kategorieziffer = 1, dann Zwischenteil 16 = " [Hrsg.]"
+#i2,2 17    Mitarb. usw.
+#i2,3 18
+#i2,4 19
+#i2,5 20
+#i2,6 21
+#i2,7 22
+#)F        Ende Unterprogramm F
+#-5           #5er Kategorien
+#i2,0 23    Illustr. ...
+#i2,1 24
+#i2,2 25
+#i2,3 26
+#i2,4 27
+#i2,5 28
+#i2,8 0
+#)F        Ende Unterprogramm F (!)
+
+
+
+ -- %<*!bugfix>
+ -- #-g
+ -- #t{ t91 10 10 }     gross-schrift aus
+ -- #)G
+ -- %</!bugfix>
+
+
+#(S        Sign. rechtsbÅndig setzen (PrÑfix 86 macht das)
+#cc e"" e" = " 86 P85
+#t4
+#)S
+
+
+K        Kopfteile : #unr auf 0 setzen
+#dt x"*0" =nr
+
+
+F        Anzahl ausgeben
+#t{ 10 10 10 }
+#unr e"." "Anzahl Titel: "
+
+
+ Umcodierungen:
+p  255
+p ™ 1
+q ™ 1
+q [ 1
+q ] 1
+
+  folgende Zeilen ungÅltig machen, wenn Kopfzeile
+  nicht umcodiert werden soll:
+
+q a/z 65    Klein->Gross
+q Ñ "AE"
+q î "OE"
+q Å "UE"
+q é "AE"
+q ô "OE"
+q ö "UE"
+q · "SS"
+
+
+p _ 1
+q _ 1
+

@@ -1,0 +1,92 @@
+  o-KURSE.FLX : Waehrungsliste bearbeiten
+  2001-03-19
+  Berechtigung muss mind. 5 sein:
+var A
+if <5 jump aerror
+  Waehrungssatz holen
+:waehrung
+find |; SYSWWHRG?
+if l1 jump werror
+  und einlesen
+first
+  Daten schreiben in WHRG.TXT
+open x whrg.txt
+var #9A(b"W")
+ins #uoC
+ins #uoD
+  Abarbeiten. Die Whrgen sind durch % getrennt
+:loopw
+var #uoC(e"%")
+ansi
+ins #uoC
+wri #uoC n
+  Naechste Angabe
+var #uoD(b"%")
+  das war alles?
+if "" jump ready
+ins #uoD
+ins #uoC
+jump loopw
+
+:ready
+close x
+var "Es kommt jetzt ein Textfenster, in dem Sie die Kursliste bearbeiten k”nnen." n "Dann das Fenster mit AltF4 schlieáen"
+ansi
+mes
+  Notepad aufrufen
+var "notepad whrg.txt"
+call
+  nach Rueckkehr WHRG.TXT zum Lesen oeffnen
+open whrg.txt
+  und Feld #9A daraus bilden
+var "#9A WWHRG"
+  wenn $c besetzt, ergaenzen
+if #9A$c var +"c" #9A$c
+var +"W"
+ins #uoC
+
+get #uoE
+var #uoC #uoE
+ins #uoC
+:loopr
+  naechste Zeile lesen
+get #uoE
+  keine mehr da
+if can jump finish
+  mit % als Trenner an #uoC anhaengen
+var #uoC "%" #uoE
+ins #uoC
+jump loopr
+
+:finish
+close
+
+var #uoC
+ins
+sho rec
+disp
+var "Ver„nderte Liste speichern?"
+ansi
+yes
+if yes put
+
+end
+:werror
+  Waehrungssatz anlegen
+new
+#00 w?5
+#9A WWHRGcEURWEUR:1.00000:Euro%DEM:1.95583:Deutsche Mark%USD:1.58:US-Dollar%GBP:0.79:Brit.Pfund%SWF:1.56:Schweizer Fr.%SWK:9:47:Schwed.Krone%NOK:8.06:Norw.Kr.%YEN:153.21:Japan.Yen%DKR:7.45:Dän Krone%AUD:1.71:Austral.$%CAD:1.47:Canad.$
+put
+jump waehrung
+
+end
+
+:aerror
+mes No access rights for this operation!
+end
+    Variablen
+    #uoC    Hilfsvar.
+    #uoD
+    #uoE    zum Lesen einer Zeile
+
+

@@ -1,0 +1,320 @@
+
+Verlautbarung 184 der Entw.Abt.                              2005-06-23
+-------------------------------
+
+                       Sonderversion  V25.5$
+                       =====================
+                        Freigabe am 23.6.05
+
+                              Normalanwender bleiben vorerst bei V25.5!
+
+1. Lange Variablennamen
+2. "include" im FLEX
+3. Hierarchische Untersaetze per FLEX loeschen
+4. Bearbeitung im Anzeigefeld
+5. aresqa-Ueberschrift
+6. Neue ISBN (PRESTO und a99)
+
+
+1. Lange Variablennamen
+-----------------------
+
+Im FLEX kann man nun beliebig benannte Variablen benutzen.
+Die Namen muessen mit $ beginnen, koennen ansonsten aber alle Zeichen
+enthalten bis auf das Leerzeichen, und sie koennen ziemlich lang
+sein. Gross- und Kleinschreibung sind signifikant. D.h. $Name,
+$nAmE  und  $NaMe  sind drei verschiedene Variablen.
+
+Man muss vorher nichts Besonderes tun, um $-Variablen zu nutzen.
+Die Existenz einer $-Variablen beginnt mit ihrer Besetzung, d.h. es
+gibt keine gesonderte Deklaration. Es gibt auch keine Typen: alles
+ist Text, wie bei den #u-Variablen.
+
+Grundprinzip:
+Die Sache ist sehr einfach: Wo bisher im FLEX ein  #uxy  stehen kann,
+da darf nun auch ein  $name  stehen, mit völlig gleicher Wirkungsweise.
+
+Im einzelnen:
+
+Besetzen kann man solche Variablen auf zwei Arten:
+Wenn  $Titel  eine $-Variable sein soll, dann weist man ihr
+folgendermassen einen Wert zu: (genau wie bei #u-Variablen!)
+
+$Titel Die Glocke
+
+  oder aber
+
+var "Die Glocke"     oder   var #20       usw.
+ins $Titel                  ins $Titel
+
+Hinter dem Spatium darf nur Text auftreten, der komplett der Variablen
+zugewiesen wird bis zum Zeilenende; //-Kommentare gehen in solchen
+Zeilen nicht, wie ja auch in den mit # beginnenden Zeilen.
+  [Spatium hier wichtig, anders als bei #u-Variablen, weil die Laenge
+   des Namens unbestimmt ist!]
+In beiden Faellen werden die Zeichen nicht umcodiert, d.h. im ersten
+Fall, so genommen, wie sie im FLEX stehen.
+
+Was nicht geht, ist  $Titel #20  u.dgl.! (Bei #u-Variablen auch nicht)
+
+Verwenden kann man die Variablen so:
+
+var ... $Titel ...     bzw.    write ... $Titel ...
+
+d.h. jedem var- bzw. write-Befehl als Teil des cstring. Zwischen
+Anfuehrungszeichen hat $ keine Wirkung, d.h. dort werden Variablen-
+namen nicht erkannt! Mit ... ist angedeutet, dass dort beliebige andere
+Elemente stehen koennen, die es in einem cstring geben kann.
+
+Es geht auch indirekt, wenn z.B. in #uab die Zeichenfolge $Titel steht:
+var #uab
+var
+
+danach steht der Inhalt von $Titel in der iV. (Denn der var-Befehl ohne
+Argument nimmt den Inhalt der iV als cstring.)
+
+Bei Zuweisung eines neuen Wertes an dieselbe Variable geht der alte
+Wert verloren.
+
+Pruefen, ob eine Variable belegt ist, geht so:
+var $name
+if ="" var "$name nicht belegt";mes
+
+Innerhalb eines FLEXes sind alle Variablen global, d.h. in einem FLEX-
+Unterprogramm kann es keine lokalen Variablen geben. Fuer die
+Uebersichtlichkeit sorgt man z.B. durch geeignete Namensgebung.
+
+Loeschen kann man eine Variable, indem man ihr nichts zuweist:
+
+$Titel
+
+Sie verschwindet dann aus der Liste, d.h. wird nicht einfach nur mit der
+leeren Zeichenkette belegt!
+
+Aber nun noch eine sehr wichtige Besonderheit:
+Wenn der Name mit einem Grossbuchstaben beginnt, bleibt die Variable
+fuer die gesamte Sitzung erhalten, sonst nur innerhalb des FLEXes,
+d.h. bei Beginn eines neuen FLEXes ist sie nicht mehr da.
+Es gibt also zwei Variablenlisten: die "kleine" und die "grosse".
+Wir nennen sie $0- bzw. $1-Variable, der Grund wird unten noch klar.
+
+Welchen Umfang ein solcher Variablenspeicher haben kann, ist schwer
+zu sagen. Bei Tests gab es mit 5000 (fuenftausend) noch keine Probleme.
+Es handelt sich um eine MFC-Listenklasse, deren Grenzen setzt Windows
+bzw. der darin verwendete Hash-Algorithmus.
+
+Was damit nicht geht:
+1. Einen Variablennamen trunkiert ansprechen
+   (wie mit   #ux.  in den Exportparametern)
+2. Die Variablenliste alphabetisch geordnet durchsehen
+   und dabei bearbeiten/loeschen
+   (wie mit Alt+r die #u-Variablen)
+3. Gezielt eine Anzahl Variablen mit einem Befehl loeschen
+   (wie mit  #ux~ , um alle #uxy zu loeschen)
+
+Denn die Listenklasse arbeitet mit einem Hash-Algorithmus, und der
+laesst solche Dinge nicht zu. Dafuer ist er schnell.
+
+Was sich von selbst versteht:
+Die #u-Variablen bleiben in allen Aspekten unveraendert erhalten. In den
+Parametern hat man keinen Zugriff auf die neuen $-Variablen, mit denen
+man sich folglich nebenwirkungsfrei austoben kann.
+
+
+Zusatzbefehle:
+--------------
+
+Der Umgang mit den $-Variablen wird dadurch komfortabler, denn man wird
+sie irgendwann nicht nur einrichten und benutzen wollen.
+
+first $0
+first $1
+  Setzt einen Zeiger auf das erste Element der "kleinen" bzw. "grossen"
+  Liste und holt dessen Inhalt in die iV.
+
+next $0
+next $1
+  Holt das naechste Element aus der kleinen bzw. grossen Liste in die
+  iV, immer in der Form  $name Text
+  Mit "if no" oder if "" kann man testen, ob es kein Element mehr gab.
+  Somit kann man in einer Schleife die ganze Liste abarbeiten.
+  Zur Ordnung siehe den naechsten Punkt:
+
+$0>dateiname
+$1>dateiname
+  Schreibt den Inhalt des kleinen bzw. grossen Variablenspeichers in
+  die Datei "dateiname". Eine erkennbare Ordnung gibt es dabei nicht -
+  das ist typisch fuer Hash-Listen. D.h. die beim Einlesen gegebene
+  Ordnung bleibt nicht erhalten und laesst sich auch nicht restaurieren.
+  Die Liste hat genau die Form  $name Text, und das bedeutet, dass man
+  sie unmittelbar wieder als FLEX zum Einrichten derselben Variablen
+  benutzen kann. Daraus ergibt sich:
+
+SuperTip:
+Schreibt man in seinen _endflx.flx den Befehl  $1>var.flx
+und in den _start.flx an das Ende  exec var, so hat man in der naechsten
+naechsten Sitzung immer sofort wieder die "grossen" Variablen der letzten
+Sitzung. Selbstredend kann man dies nutzen, um alles moegliche an
+Information von Sitzung zu Sitzung zu transportieren...
+
+Klar, es wird sofort der Wunsch nach gezaehlten Arrays kommen, mehr-
+dimensional natuerlich! Aber alles auf einmal geht nicht.
+
+ZusatzTip
+---------
+Mit dem nachfolgenden kleinen FLEX kann man den Variablenspeicher nach
+einer Zeichenfolge durchsuchen lassen. Wenn es mal mehrere 1000 sind,
+kann das ja sinnvoll sein... Gefunden werden sowohl die Namen wie die
+Inhalte der Variablen!
+
+**************************************************************************
+  VS.FLX :    Suche in den $1-Variablen nach einer bestimmten Zeichenfolge
+  2005-06-20  Gross-/Kleinschreibung egal
+
+ask Suchwort
+  Eingegebenes Suchwort in #usw speichern
+ins #usw
+
+first $1
+if no mes Keine Variablen!;end
+
+:loop
+  Variable in #uzs kopieren (Form ist immer $Name Text)
+ins #uzs
+  Darin nach dem Inhalt von #usw suchen (gross/klein egal)
+  (hinten . anhaengen, sonst wuerde das Suchwort nicht gefunden, wenn
+   es genau am Ende des Variablentextes steht!)
+var #uzs "."
+var (b"~#usw")
+  Wenn es vorkam, anzeigen
+if not "" var #uzs;yes;if yes jump found
+  naechste Variable holen
+next $1
+if not no jump loop
+mes Ende!
+end
+:found
+var "Gefunden: " #uzs
+mes
+
+*************************************************************************
+
+Zum Testen wurde eine Kurzliste des BachWerkeVerzeichnisses verwendet,
+darin standen 1360 Zeilen wie diese:
+$Bwv20 O Ewigkeit, du Donnerwort / Trinity 1
+
+Diese Datei kann man so wie sie ist als FLEX laufen lassen, dann hat
+man 1360 "grosse" Variablen belegt!
+Gibt man nach dem Einlesen diesen Befehl:
+
+x var $BWV214\mes
+so erscheint richtig:
+$BWV214 Toenet, ihr Pauken! Erschallet Trompeten!
+
+-------------------------------------------------------------------------
+
+
+2. Neu: include  in einem FLEX
+------------------------------
+
+T. Berger hatte vorgeschlagen, dass man aus einem FLEX heraus
+einen anderen starten koennen muesse, nach dessen Beendigung der
+aufrufende dann aber weiterlaufe. Dies ist nicht machbar, denn ein FLEX
+ist kein Objekt, sondern ein nicht-rekursives Unterprogramm. Alles
+andere waere weitaus komplexer und ist unter den gegebenen Umstaenden
+und Randbedingungen unrealistisch.
+Realistisch war allein der Einbau eines "include"-Befehls, der in
+einen FLEX an der von ihm besetzten Stelle eine andere Datei
+einbaut, bevor dann die Abarbeitung beginnt. Dieser Befehl lautet
+
+...  beliebiger FLEX-Text
+include upx.flx
+...  weiterer FLEX-Text
+
+Beim Einlesen der ihn enthaltenden FLEX-Datei bewirkt er, dass
+an seiner Stelle dann die Datei upx.flx eingefuegt wird. Diese
+Technik ist nicht rekursiv, d.h. in upx.flx koennte nicht abermals
+ein "include" stehen, es wuerde nicht ausgefuehrt!
+Der Befehl "include" ist kein richtiger FLEX-Befehl, denn vor der
+Ausfuehrung verschwindet er ja. Er muss vollstaendig angegeben sein,
+d.h. "incl nnn.flx" klappt nicht, und es muss ein Dateiname folgen,
+getrennt durch genau ein Leerzeichen, //-Kommentar dahinter ist moeglich.
+Es ist, wie man leicht einsieht, nicht moeglich, die FLEX-Gesamtgroesse
+von 64000 Byte durch includes zu umgehen!
+Vorgabe des Dateinamens mittels iV (also "dynamisches include") geht
+aus den genannten Gruenden nicht: der Befehl steht ja zur Ausfuehrungs-
+zeit gar nicht mehr da.
+
+Sorry, aber wir hatten auf dem Treffen schon betont, dass man
+billigerweise nicht erwarten koenne, als Bestandteil des ohnehin
+schon hochkomplexen Programms eine vollwertige und voll integrierte
+Programmiersprache zu erhalten. Wir sind nicht so jemand wie Microsoft.
+Und waeren wir es, das Produkt waere signifikant teurer...
+
+Warum haben eigentlich die vielen OpenSource-Communities noch kein
+System hervorgebracht (mit freiem Quellcode!), das allegro ersetzen
+koennte? Mit voll integriertem Perl natuerlich! Oder haben sie?
+
+---------------------------------------------------------------------------
+
+3. Neu:  erase sub
+------------------
+Jetzt kann man, wenn vorher next sub gegeben wurde und ein hierarchischer
+Satz im Arbeitsspeicher ist, den aktuellen Untersatz hiermit loeschen.
+Brauchbar ist das bei externer Bearbeitung: Das Wiedereinlesen und
+Zuorden der Untersaetze funktioniert nicht, wenn man Bandnummern (Inhalte
+von #01) geaendert hatte. Nun kann man vorher die Untersaetze im
+Arbeitsspeicher alle loeschen, bevor man den Datensatz wieder einliest.
+Dann bleiben die Untersaetze so, wie sie in der externen Datei angeordnet
+wurden! In den Einlese-FLEX baut man dazu diese Befehle ein:
+
+:lop
+sub
+next sub
+if no jump op
+erase sub
+jump lop
+:op
+
+
+4. Bearbeitung im Anzeigefeld
+-----------------------------
+Um die Editierung von Datensaetzen im Anzeigefeld zu unterstuetzen, damit sie
+auch bei Vorhandensein von V14- Verkn. und bei hierarchischen Saetzen
+immer richtig arbeitet, wurden zwei FLEXe gemacht: dispedit.flx und
+dispread.flx. Der erste stellt den Datensatz bereit, der zweite kopiert ihn
+aus der Anzeige wieder heraus in den Arbeitsspeicher. Der erste legt ferner
+die Flips 9 und 10 so fest:
+9:  X dispedit
+0:  X dispread
+so dass nach erstmaligem Aufruf die Funktionen mit Alt+9 und Alt+0
+erreichbar sind. Verankert ist dies auch im Fuellhorn ganz unten als
+"Bearbeitung im Anzeigefeld". Dadurch wird dispedit.flx gestartet und
+der Nutzer auf Alt+9/Alt+0 hingewiesen.
+Gebraucht wird e-w0.xpr, das bei Bedarf erstellt wird (als Kopie von
+e-w0.apr).
+
+
+
+5. aresqa-Fenster: Ueberschrift
+-------------------------------
+Mit  set aText  kann man jetzt eine Ueberschrift fuer das naechste aresqa-
+Fenster setzen. Nach seinem Schliessen ist diese Ueberschrift dann wieder
+weg, sie muss also vor jedem aresqa-Aufruf neu gesetzt werden! Es kommt
+sonst der bisherige Default, der nur auf den Dateinamen hinweist.
+
+
+6. PRESTO und a99: Neue ISBN wird erkannt
+-----------------------------------------
+Ab 2007 wird eine 13stellige, neue Form der ISBN verbindlich, die mit der
+EAN kompatibel ist. Sie beginnt immer mit  978- oder 979-
+PRESTO und a99 koennen jetzt damit umgehen. Man muss nichts konfigurieren,
+es gibt kein neues Feld. Einfach in der bisherigen Kategorie die neue
+ISBN eingeben, bei Bedarf sogar eine neue und eine alte mit " = "
+hintereinander. Das Programm erkennt an 978- bzw. 979-, um was es
+sich handelt, und nimmt dann 13 bzw. 10 Stellen sowie eine entsprechende
+Berechnung.
+Fuer die korrekte Indexierung wurde in cat.api eingegriffen! Der Abschnitt
+dafuer ist  #-A.
+
+

@@ -1,0 +1,341 @@
+
+Verlautbarung 195 der Entw.Abt.                              2006-09-18
+-------------------------------
+
+              Neues PHPAC liegt bereit!
+              http://ftp.allegro-c.de/aktuelle-version/avanti/phpac.zip
+
+                         ********************
+                         * PHPAC-Neuerungen *
+                         ********************
+A. Die user-Datenbank
+B. Sitzungs-Mechanismen
+C. Radikale Vereinfachung beim Einrichten von Schreibzugriffen
+
+
+A. Die user-Datenbank
+=====================
+Vorteil der user-Datenbank: man braucht keine Nutzerdaten in die eigene
+Datenbank einzubauen! Das erspart zusaetzliche Parametrierung und haelt
+sachfremde Daten aus der Datenbank heraus. 
+
+
+PHPAC enthaelt dafuer jetzt zwei zusaetzliche Verzeichnisse:
+  user-php   --->  An das Web-Root-Verzeichnis des Webservers haengen,
+                         am besten als Unterverzeichnis "user",
+                         enthaelt Skripte fuer die User-Datenbank.
+  user-db    --->  In ein allegro-Datenbankverzeichnis "user" kopieren
+                         Leere user-Datenbank mit allem Zubehoer.
+                         Völlig unabhängig vom eigenen Schema.
+
+Dann in die  avanti.conf  diese Zeilen einbauen:
+(sie liegt bei Windows meist auf  c:\programme\avanti\etc )
+
+[user]
+directory = c:\allegro\user     (falls user-db dort liegt)
+access = 3 
+konfiguration = b
+indexparameter = user
+# hier statt ..... ein Server-Passwort eintragen:
+usr=.....:3
+
+Das hier gesetzte Passwort muss auch in die Zeile $ID der Datei
+u_ini.php, und zwar gibt es diese Datei sowohl im php-Verzeichnis der
+user-Datenbank also auch der eigenen Datenbank. Dieses Passwort ist
+den Endnutzern nicht bekanntzugeben, diese geben sich beim Registrieren
+selber ein Passwort, das hiermit nichts zu tun hat.
+Die Zeile in u_ini.php sieht so aus:
+
+$ID = "usr/.....";    //(mit dem Server-Passwort statt .....)
+
+Bei der EIGENEN Datenbank braucht man folgende neuen Dateien (sie sind
+mit im Unterverzeichnis  php  von phpac):
+
+u_ini.php    : fuer die Zugriffe auf die user-Datenbank
+
+uregist.htm  : Hiermit registriert sich ein neuer user erstmals.
+uregist.php  : wird von uregist.htm gestartet, 
+               Traegt die neuen Angaben in die user-Datenbank ein
+
+ulogin.htm   : Damit loggt sich ein registrierter user ein.
+ulogin.php   : wird von ulogin.htm gestartet,
+                Ermittelt das Passwort fuer die Sitzung, es kommt
+                dann in ein Cookie, der user muss davon nichts wissen)
+Hat man mehrere eigene Datenbanken, muessen die Dateien jeweils auf
+jedes der Verzeichnisse.
+
+Sekundaeres Passwort
+In die Datei u_ini.php und in av_ini.php muss man ein "sekundaeres
+Passwort" setzen, und es muss in beiden Dateien identisch sein:
+
+$SPW = ".....";
+
+In den PHP-Dateien der User-Datenbank spielt dieses keine Rolle, es
+geht hier um die eigene Datenbank! Betreibt man mehrere Banken mit 
+derselben user-Datenbank, koennen die sekundaeren Passwoerter auch
+verschieden sein, nur muss jeweils in der av_ini und in der u_ini
+dasselbe stehen.
+Hat man mehrere eigene Datenbanken, koennen deren $SPW verschieden
+sein, aber jeweils identisch in u_ini.php und av_ini.php.
+
+
+Die 5 Dateien kann man zu jedem PHP-Verzeichnis eigener Datenbanken
+hinzunehmen, wenn man den neuen user-Komfort mit Schreibzugriffen
+einrichten will. 
+Wenn fuer zwei Datenbanken die user-Populationen getrennt zu verwalten
+sind, muss man zwei user-Datenbanken anlegen und fuer jede die
+entsprechenden Eintraege in der avanti.conf bzw. u_ini.php.
+
+Der Systemverwalter kann die user-Datenbank ganz normal mit a99 oder
+PRESTO bearbeiten. (Die Konfiguration heisst B.CFG).
+
+Und jetzt kommt, wie man umgeht mit der user-Datenbank.
+
+
+B. Sitzungs-Mechanismen
+=======================
+
+Beispiel fuer die Anwendung:
+  http://www.allegro-c.de/classix/
+Die Links "Login" und "Registrieren" fuehren zu ulogin.htm bzw.
+zu uregist.htm.
+
+
+0. Registrierung
+----------------
+Jeder Teilnehmer muss sich einmal registrieren, wobei er sich selber
+ein Passwort gibt. Das geschieht mit der Seite  uregist.htm. Das
+Passwort wird verschlüsselt in der user-Datenbank abgelegt.
+
+1. Sitzungsbeginn
+-----------------
+Die Sitzung beginnt mit der Seite  ulogin.htm.
+Dabei wird ein Cookie gesetzt, das dann bei einer relevanten Aktion
+als Variable mit dem Namen  $uCM  mitgeliefert werden muss.
+Das geschieht normalerweise aus einem Formular heraus mit
+<input type="hidden" id="ucM" name="ucM" value=".....">,
+und statt ..... ist das Cookie einzusetzen. Das wird am besten mit
+JavaScript gemacht, siehe 2.
+
+Das Cookie wird von  ulogin.php  geliefert und ist unentschlüsselbar
+codiert. Darin verquickt ist das "sekundaere Passwort", das dem
+Endanwender nicht bekannt gemacht wird und unter dem Namen $SPW
+in av_ini.php und u_ini.php stehen muss (s.o.). Der Systemverwalter
+kann es jederzeit aendern - alle laufenden Sitzungen werden dann
+abgebrochen, d.h. die Nutzer muessen ein neues Login machen.
+Nur in login.php erfolgt ein Zugriff auf die user-Datenbank, um das
+Passwort zu verifizieren, d.h. nicht bei jeder Transaktion!
+
+2. Verhindern einer Aktion an der Clientseite [Beisp.: in autoform.php]
+---------------------------------------------
+In JavaScript kann man eine Prüfung einbauen, ob das Cookie gesetzt
+ist, JavaScript kann aber seine Richtigkeit nicht verifizieren - das
+geht nur per PHP an der Serverseite, also dem Einfluss des Endnutzers
+nicht zugaenglich (siehe 3.). So geht es:
+Das <form>-Element muss z.B. so aussehen:
+<form name="Satz" action="write.php" method=POST onSubmit="return CheckIn();">
+und im JavaScript steht dann die Funktion Checkin():
+
+function CheckIn()
+  {
+   // Das Cookie auslesen (s.u.)
+   var cs=getco();
+   if(cs==null) return false; // Formular wird nicht abgeschickt!
+   // und in das Formularfeld mit id="uCM" einbauen: (siehe 1.)
+   document.getElementById("ucM").value = cs;
+   // Validierung positiv, dann Bestaetigung einholen
+   // Hier evtl. noch weitere Pruefungen einbauen
+   if(confirm("Sind Sie sicher?")) return true;  // Formular senden
+   // Wenn die Antwort nein ist:
+    return false;  // Formular nicht senden
+  }
+
+// Cookie auslesen und zurueckliefern
+function getco()
+{
+ var coo = document.cookie.search(/log=/); // nicht gefunden:
+ if(coo<0) { alert("Sie sind nicht eingeloggt!"); return(null); }
+ cs = document.cookie.substr(coo+4);
+ coo = cs.search(/[;_]/);
+ if(coo>0) cs = cs.substr(0,coo);
+  // es steht nichts hinter log= ?
+ if(cs.length == 0) { alert("Sie sind nicht eingeloggt!"); return(null); }
+ return(cs);
+}
+
+Ausserdem kann man in JavaScript an beliebiger Stelle, um eine
+Aktion zu verhindern, diese Zeile einbauen (wenn getco() vorhanden ist):
+
+...
+if(getco()==null) { alert("Bitte zuerst Login!"); return; } 
+...
+
+
+3. Verhindern an der Serverseite  [Beisp.: in write.php]
+--------------------------------
+Wird ein PHP-Skript mit Schreibzugriff aufgerufen, kann man darin 
+eine einfache Prozedur einbauen, die den Zugriff verhindert, wenn
+kein oder ein falsches Passwort mitgeliefert wird.
+Zunaechst braucht man diese Zeile:
+$uCM = getval('uCM');  // Variable uCM vom Formular uebernehmen
+
+Und dann im avanti-Job, bevor irgendein Schreibzugriff passiert:
+(diese Zeilen braucht man nicht zu verstehen)
+
+"#uCM $uCM",
+"var #dts(0,8) '$SPW' #uCM(e'-')",
+"crypt",
+"ins #ukk",
+"var #uCM(e'-') '-' #ukk",
+"ins #ukk",
+"if not #ukk = #uCM jump pfehler", // keine Uebereinstimmung
+"..."  // jetzt kann geschrieben werden, Passwort ist korrekt
+
+Und weiter unten:
+
+":pfehler",  //  Fehlermeldung 
+"wri '<br />Sorry, Passwort stimmt nicht<br />'",
+":exit",
+
+
+Schreibzugriffe nuetzen natuerlich nicht viel, wenn man keine Formulare
+fuer Eingabe und Bearbeitung hat. Um solche zu erstellen, gibt es 
+ganz neuen, erheblichen Komfort: 
+
+C. Radikale Vereinfachung beim Einrichten von Schreibzugriffen
+==============================================================
+Bis jetzt ist es so gewesen:
+Um mittels PHPAC Daten zu schreiben, musste man zwei Dateien
+praeparieren, die genau aufeinander abzustimmen waren:
+
+edrec.php : Datensatz im Formular bereitstellen
+            (genauer gesagt: ausgewaehlte Datenfelder)
+            Aufruf mit  .../edrec.php?urN=sznr
+            sznr = interne Satznummer, 0 : neuer Satz
+            Formular beginnt mit
+            <form action="write.php" method="POST">
+
+write.php : Das Formular verarbeiten, d.h. die Daten daraus
+            entnehmen, in den Datensatz einordnen (bzw. einen
+            ganz neuen anlegen bei urN=0) und speichern.
+
+Fuer jeden Bearbeitungszweck mit unterschiedlichen Feldern 
+musste man zwei Dateien nach diesem Muster anlegen. Das kam uns zu
+aufwendig vor. Jetzt sieht es so aus:
+
+Die bisherige Methode bleibt voll erhalten, man muss nichts
+umstellen, wenn man schon solche Dateien hat.
+
+Die Datei(en vom Typ)  write.php  aber durch die neue ersetzen,
+denn diese ist nun universell. Darin braucht man nichts mehr zu tun. 
+Jedes Formular, in dem bestimmte, einfache Regeln eingehalten sind,
+kann man ihm uebergeben, um die Daten zu speichern, d.h. statt der
+bisher u.U. vielen Varianten von write.php hat man nur noch die eine.
+
+GANZ NEU als Zugabe:
+Fuer einfache Faelle gibt es  autoform.php. Damit braucht man gar
+keine eigene PHP-Datei vom Typ edrec.php anzulegen, sondern man ruft
+es einfach so auf:
+
+.../autoform.php?urN=sznr&V01=Titel_20 [20,50]Buchtitel&V02=Land_74_g [20,25]Ersch.Land&T01=Abstract_81 [6,50]Kurzfassung
+
+Hier zum Ausprobieren der einfachste denkbare Fall. Nur ein Feld eines
+bestimmten Satzes soll bearbeitet werden, und zwar Feld #20:
+
+http://www.biblio.tu-bs.de/db/demo2/autoform.php?urN=68&V1=Titel_20
+
+sznr ist die interne Satznummer des zu bearb. Satzes. (Tip: schauen Sie
+in den Quelltext und vergl. Sie mit B.2!)
+
+Hinter einem & folgt jeweils eine Angabe der Form
+
+   ViiFeldname_nnn_a [l,m]Hinweis   oder
+   TjjFeldname_nnn [l,m]Hinweis     (mehrzeil. Textfeld)
+Dabei gilt:
+    ii bzw. jj = eindeutige Nummern (ohne Bezug zu den Kategorienummern,
+       nur damit die Formularfelder eindeutig benannt sind)
+               nnn = Kategorienummer. Ab hier ist alles optional:
+                  _a = Teilfeldcode (optional), Spezialfall: 
+                  __ = Text VOR den Teilfeldern von #nnn
+                      l = Laenge des Formularfelds bzw.
+                          Anzahl Zeilen (bei T)
+                        m = max. Laenge des Inhalts  bzw. 
+                            Anzahl Spalten (bei T)
+                          Hinweis: beliebiger Text
+
+Die eckigen Klammern muessen nur sein, wenn ein Hinweis gesetzt ist,
+aber man kann schreiben [,], dann werden fuer l und m 70 bzw. 200
+als Defaults eingesetzt.
+Hinzufuegen kann man noch ein Argument  
+wm=1 : Bearb.    Satz #sznr bearbeiten
+   2 : Neusatz   Satz #sznr nehmen, aber Bearbeitung als Neusatz speichern
+   3 : Beides    Beides anbieten
+Wenn sznr = 0 ist oder der Satz nicht existiert, wird wm=2 angenommen.
+
+Groessere Formulare kann man sich wie bisher mit edrec.php einrichten.
+Davon macht man sich eine Kopie mit beliebigem Namen.
+Die zu modifizierenden Zeilen stehen unter einem Kommentar mit XXX.
+Dies sind typische Beispiele: 
+
+"var 'Titel_20'",
+"perf feld",
+
+"var 'Land_74_g [,] Erscheinungsland'", 
+"perf feld",
+
+"var 'Abstract_81 [5,60] Kurzfassung'",
+"perf txtfeld",
+
+
+Variante fuer kurze Felder : mehr als ein Feld in einer Zeile
+-------------------------------------------------------------
+Sollen im Formular z.B. mal drei Felder in einer Zeile stehen, geht man
+so vor, mit | als Steuerzeichen: (auch bei autoform.php verwendbar)
+
+"var 'Verlag_75 [20,50] Verlegername(n)|'",
+"perf feld",
+
+"var '|Land_74_g [5,5] Erscheinungsland (Code)|'", 
+"perf feld",
+
+"var '|Ort_74__ [20,50] Erscheinungsort(e)'",
+"perf txtfeld",
+
+Die Syntax ist dieselbe wie beim autoform-Aufruf, nur ohne Vii und Tjj
+vor dem Feldnamen.
+
+
+Fest eingerichtetes Formular
+----------------------------
+Man kann auch selber eine feste Seite mit einem Formular einrichten.
+Oder viele solche Seiten.
+Beginnen sollte ein Formular dann so:
+
+<form class="edit" name="Satz" action="write.php" method="POST"
+   onSubmit="return CheckIn();">
+
+Dann gelten diese Regeln:
+
+1. Einzeiliges Inputfeld:
+   <input name="V_annn" type=text size=20 maxlength=50
+             value="......">
+   So wird write.php den Inhalt in Teilfeld $a von #nnn kopieren.
+   Soll es der ganze Feldinhalt sein, dann name="Vnnn".
+
+2. Mehrzeiliges Inputfeld:
+   <textarea name="Tnnn" rows=3 cols=26>
+   zeile1
+   zeile2
+   zeile3
+   </textarea>
+   Auch hier kann man auf ein Teilfeld einschraenken, indem man schreibt
+      name="T_annn"
+   Der Inhalt wird von write.php dann vorbehandelt, und zwar werden
+   Zeilenwechsel durch den Code 20 ersetzt, das Absatzendezeichen.
+
+
+Hinweis: in diesen Beispiel kommt _ anstatt $ fuer die Unterfelder zum
+Einsatz, denn mit $ koennte es Probleme geben. Sonst waere 74$g zwar
+eleganter - aber _g74 vermeidet die Probleme.
+
+

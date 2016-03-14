@@ -1,0 +1,654 @@
+{\rtf1\ansi\deff0\deftab720{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\froman\fcharset2 Symbol;}{\f2\fswiss Helvetica;}{\f3\froman Times New Roman;}{\f4\froman Times;}{\f5\fmodern Courier;}}
+{\colortbl\red0\green0\blue0;}
+\deflang1031\pard\plain\f2\fs24\b\i Rich Text Format
+\par \pard\qr\tx0\tx2160\tx2880\plain\f4\fs20 1992-04-22
+\par \pard\plain\f4\fs20 
+\par \plain\f2\fs24\b\i RTF Syntax
+\par \plain\f4\fs20 
+\par The Rich Text Format (RTF) standard is a method of encoding formatted text and graphics for easy transfer between applications. Currently, users depend on special translation software to move word processing documents between different DOS applications, and between DOS applications and Apple Macintosh applications.
+\par 
+\par The RTF standard provides a standard format for text and graphics interchange that can be used with different output devices, operating environments, and operating systems.  RTF uses the ANSI, Macintosh, or IBM PC character set to control the representation and formatting of a document, both on the screen and in print. With the RTF standard, documents composed under different operating systems and with different software applications can be transferred between those operating systems and applications.
+\par 
+\par An RTF file consists of unformatted text, "control words," "control symbols," and "groups." A standard RTF file consists of only 7-bit ASCII characters for ease of transport.
+\par 
+\par A "control word" is a specially formatted command that RTF uses to mark printer control codes and information that applications use to manage documents. A control word consists of a backslash followed by an alphabetic string and a delimiter, as shown in the following example
+\par 
+\par \plain\f5\fs20 \\rtf1\'c9
+\par \plain\f4\fs20 
+\par A B C
+\par 
+\par A\tab Backslash begins each control word
+\par C\tab Alphabetic string
+\par C\tab Numeric delimiter
+\par 
+\par The delimiter can be a space or one or more nonalphabetic characters. If a numeric parameter immediately follows the control word, this parameter is the delimiter, and is itself followed by a delimiter, also consisting of a space or one or more nonalphabetic characters.
+\par 
+\par A "control symbol" consists of a backslash followed by a single, nonalphabetic character. For example, \plain\f5\fs20 \\~\plain\f4\fs20  represents a nonbreaking space. Control symbols take no delimiters.
+\par 
+\par A "group" consists of text and control words or control symbols enclosed in braces (\{\}). Formatting specified within a group affects only the text within the group. Generally, text within a group inherits any formatting of the text preceding the group. However, Microsoft implementations of RTF assume that the footnote, header/footer, and annotation groups (described later in this document) do not inherit formatting of the preceding text.  Therefore, to ensure that these groups will always be formatted correctly, you should set the formatting within these groups to the default with the \plain\f5\fs20 \\sectd\plain\f4\fs20 , \plain\f5\fs20 \\pard\plain\f4\fs20 , and \plain\f5\fs20 \\plain\plain\f4\fs20  control words, and then add any desired formatting.
+\par 
+\par Any other characters in the file are plain text. As mentioned above, the backslash (\\) and braces (\{\}) have special meaning in RTF. To use these characters as text, precede them with a backslash.
+\par 
+\par Software that takes a formatted file and turns it into an RTF file is called a "writer."  Software that translates an RTF file into a formatted file is called a "reader." An RTF writer separates the application's control information from the plain text and writes a new file containing the plain text and the RTF groups associated with that text. An RTF reader does the converse of this procedure.
+\par 
+\par An entire RTF file is considered a group and must be enclosed in braces. The control word \plain\f5\fs20 \\rtf\plain\f5\fs20\i n\plain\f4\fs20  must follow the first open brace. The numeric parameter identifies the version of the RTF standard used. The RTF standard described in this document corresponds to version 1.
+\par 
+\par The order of groups within an RTF file is important. Each group specifies the part of the document affected by the group and the different attributes of that text. An RTF file must begin with the following two control words in the following order
+\par 
+\par \'a5 RTF version (\plain\f5\fs20 \\rtf\plain\f5\fs20\i n\plain\f4\fs20 )
+\par 
+\par \'a5 Character set
+\par 
+\par The RTF file can also include groups for fonts, styles, screen color, pictures, footnotes, annotations, headers and footers, summary information, fields, and bookmarks, as well as document, section, paragraph, and character formatting properties. If the font, style, screen color, and summary information groups and document formatting properties are included, they must precede the first plain text character in the document. If included, the group for fonts should precede the group for styles.
+\par 
+\par The groups are discussed in the following sections. If a group isn't used, it can be omitted.
+\par 
+\par Certain groups, referred to as "destinations," mark the beginning of a collection of related text. An example of this is the \plain\f5\fs20 \\footnote\plain\f4\fs20  group, where the footnote text follows the control word. Destinations added after the RTF specification published in the March 1987 Microsoft Systems Journal may be preceded by the control symbol \plain\f5\fs20 \\*\plain\f4\fs20 . This control symbol identifies destinations whose related text should be ignored if the RTF reader does not recognize the destination.  RTF writers should follow this convention when adding new control words. Destinations whose related text should be inserted into the document even if the destination is not recognized should not use \plain\f5\fs20 \\*\plain\f4\fs20 . In this document, all destinations that use \plain\f5\fs20 \\*\plain\f4\fs20  will be shown with \plain\f5\fs20 \\*\plain\f4\fs20  as part of the control word.
+\par 
+\par \plain\f2\fs24\b\i The Character Set
+\par \plain\f4\fs20 
+\par After specifying the RTF writer you must declare the character set. The RTF specification currently supports the following character sets
+\par 
+\par \plain\f4\fs20\b Control word\tab Character set\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\ansi\plain\f4\fs20 \tab ANSI (default)\tab 
+\par \plain\f5\fs20 \\mac\plain\f4\fs20 \tab Apple Macintosh\tab 
+\par \plain\f5\fs20 \\pc\plain\f4\fs20 \tab IBM PC\tab 
+\par \plain\f5\fs20 \\pca\plain\f4\fs20 \tab IBM PC page 850, used by IBM Personal System/2\tab 
+\par 
+\par \plain\f2\fs24\b\i The Font Table
+\par \plain\f4\fs20 
+\par This group contains descriptions of fonts and begins with the control word \plain\f5\fs20 \\fonttbl\plain\f4\fs20 .  All fonts available to the RTF writer can be included in the font table, even if the document doesn't use all the fonts.
+\par 
+\par A font is defined by its name, a font number, and a font family, as shown in the following example.  Semicolons are used as delimiters between fonts.
+\par 
+\par \plain\f5\fs20 \{\\fonttbl\\f0\\froman Tms Rmn;\}\plain\f4\fs20 \'c9
+\par 
+\par 
+\par    A B C       D
+\par 
+\par A Control word
+\par B Font number
+\par C Font family
+\par D Font name
+\par 
+\par The font numbers represent the full font definitions in the group, and vary with each document. The font families are listed below
+\par 
+\par \plain\f4\fs20\b Control word\tab Font family\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\fnil\tab \plain\f4\fs20 Unknown or default fonts (default)\tab 
+\par \plain\f5\fs20 \\froman\tab \plain\f4\fs20 Roman, proportionally spaced serif fonts (TmsRmn, Palatino, etc.)\tab 
+\par \plain\f5\fs20 \\fswiss\tab \plain\f4\fs20 Swiss, proportionally spaced sans serif fonts (Swiss, etc.)\tab 
+\par \plain\f5\fs20 \\fmodern\tab \plain\f4\fs20 Fixed-pitch serif and sans serif fonts (Courier, Elite, Pica, etc.)\tab 
+\par \plain\f5\fs20 \\fscript\tab \plain\f4\fs20 Script fonts (Cursive, etc.)\tab 
+\par \plain\f5\fs20 \\fdecor\tab \plain\f4\fs20 Decorative fonts (Old English Zapf Chancery, etc.)\tab 
+\par \plain\f5\fs20 \\ftech\tab \plain\f4\fs20 Technical, symbol, and mathematical fonts (Symbol, etc.)\tab 
+\par 
+\par If an RTF file uses a default font, the default font number is specified with the \plain\f5\fs20 \\deff\plain\f5\fs20\i n\plain\f4\fs20  control word which must precede the font table group. The RTF writer supplies the default font number used in the creation of the document as the numeric argument. The RTF reader then translates this number through the font table into the most similar font available on the reader's system.
+\par 
+\par \plain\f2\fs24\b\i The Style Sheet
+\par \plain\f4\fs20 
+\par The style sheet group begins with the control word \plain\f5\fs20 \\stylesheet\plain\f4\fs20 . This group contains definitions and descriptions of the various styles used in the document. The style sheet is declared only once, in the RTF file header. All styles in the document's style sheet can be included, even if not all the styles are used.
+\par 
+\par In some applications, styles are based on, or are the basis for, other styles. In these cases, two other control words can be used
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\sbasedon\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Defines the number of the style on which current style is based\tab 
+\par \plain\f5\fs20 \\snext\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Defines next style associated with current style; if omitted, next style is the current style\tab 
+\par 
+\par An example of an RTF style sheet and styles is shown in the following example. In this example, Postscript is declared but not used. Some of the control words in this example are discussed in the following sections.
+\par 
+\par \'c9
+\par 
+\par \plain\f5\fs20 \{\\stylesheet\{\\fs20 \\sbasedon222\\snext0 Normal;\}\{\\s1\\qr\\fs20
+\par A\'d1\\sbasedon0\\snext1 FLUSHRlGHT;\}\{\\s2\\fi-720\\li720\\fs20\\ri2880\\fs20
+\par \\sbasedon0\\snext2 IND;\}\}
+\par \plain\f4\fs20 
+\par \'c9
+\par 
+\par \plain\f5\fs20 \\widowctrl\\ftnbj\\ftnrestart\\sectd\\linex0\\endnhere
+\par \\pard\\plain\\fs20 This is Normal style.
+\par \\par\\pard\\plain\\s1
+\par B\'d1This is right justified.  I call this style FLUSHRIGHT.
+\par \\par\\pard\\plain\\s2
+\par This is an indented paragraph. I call this style IND. It produces a hanging indent.
+\par 
+\par \\par\}
+\par \plain\f4\fs20 
+\par This is Normal Style.
+\par 
+\par This is right justified. I call this style FLUSHRIGHT.
+\par This is an indented paragraph.  I call this style IND.
+\par It produces a hanging indent.
+\par 
+\par A Style sheet
+\par B Styles applied to text
+\par 
+\par 
+\par 
+\par \plain\f2\fs24\b\i The Color Table
+\par \plain\f4\fs20 
+\par 
+\par Screen colors, character colors, and other color information are contained in the color table group. The control word \plain\f5\fs20 \\colortbl\plain\f4\fs20  begins this group. Values for red, green, blue, and the foreground and background colors are shown in the following list. These parameter values correspond to the color indexes used by Microsoft Windows (0-255). Each color table entry is defined by the amount of red, green, and blue it has. For more information on color setup, see your Windows documentation.
+\par 
+\par The following are valid control words for this group
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\red\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Red index\tab 
+\par \plain\f5\fs20 \\green\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Green index\tab 
+\par \plain\f5\fs20 \\blue\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Blue index\tab 
+\par \plain\f5\fs20 \\cf\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Foreground color (default is 0)\tab 
+\par \plain\f5\fs20 \\cb\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Background color (default is 0)\tab 
+\par 
+\par 
+\par Each definition must be delimited by a semicolon, even if the definition is omitted. If a color definition is omitted, the RTF reader uses its default color. In the example below, three colors are defined. The first color is omitted, as shown by the semicolon following the \plain\f5\fs20 \\colortbl\plain\f4\fs20  control word.
+\par 
+\par \plain\f5\fs20 \{\\colortbl;\\red0\\green0\\blue0;\\red0\\green0\\blue255;\}
+\par \plain\f4\fs20 
+\par The following example defines a block of text in color (where supported). Note that the cf/cb index is the index of an entry in the color table, which represents a red/green/blue color combination.
+\par 
+\par \'c9
+\par 
+\par \plain\f5\fs20 \{\\f1\\cb1\\cf2 This is colored text. The background is color 1 and the foreground is color 2.\}
+\par \plain\f4\fs20 
+\par If the file is translated by software that does not display color, this group is ignored.
+\par 
+\par \plain\f2\fs24\b\i Pictures
+\par \plain\f4\fs20 
+\par An RTF file can include picture files composed with other applications. These files are in hexadecimal (default) or binary format. The control word \plain\f5\fs20 \\pict\plain\f4\fs20  begins this group.  Control words that define and describe the picture parameters follow the \plain\f5\fs20 \\pict\plain\f4\fs20  control word.
+\par 
+\par 
+\par These control words are listed in the table that follows. Some measurements in this table are in twips; a twip is one-twentieth of a printer's point. The control words for picture border patterns (\plain\f5\fs20 \\brdrs\plain\f4\fs20 , \plain\f5\fs20 \\brdrdb\plain\f4\fs20 , \plain\f5\fs20 \\brdrth\plain\f4\fs20 , \plain\f5\fs20 \\brdrsh\plain\f4\fs20 , \plain\f5\fs20 \\brdrdot\plain\f4\fs20 , and \plain\f5\fs20 \\brdrhair\plain\f4\fs20 ) are ignored when translated into Microsoft Word for the Macintosh, which uses character properties to make borders.
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\brdrs\tab \plain\f4\fs20 Single border for picture\tab 
+\par \plain\f5\fs20 \\brdrdb\tab \plain\f4\fs20 Double border for picture\tab 
+\par \plain\f5\fs20 \\brdrth\tab \plain\f4\fs20 Thick border for picture\tab 
+\par \plain\f5\fs20 \\brdrsh\tab \plain\f4\fs20 Shadow border for picture\tab 
+\par \plain\f5\fs20 \\brdrdot\tab \plain\f4\fs20 Dotted border for picture\tab 
+\par \plain\f5\fs20 \\brdrhair\tab \plain\f4\fs20 Hairline border for picture\tab 
+\par \plain\f5\fs20 \\macpict\tab \plain\f4\fs20 Source of picture is Macintosh Quick Draw\tab 
+\par \plain\f5\fs20 \\wmetafile\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Source of picture is Windows metafile; argument identifies the metafile type; default is 1 (MM_TEXT)\tab 
+\par \plain\f5\fs20 \\wbitmap\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Source of picture is a bitmap; argument identifies the bitmap type; default is 0 (logical bitmap)\tab 
+\par \plain\f5\fs20 \\picw\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 xExt field if picture is metafile; picture width in pixels if picture is bitmap or from Macintosh Quick Draw\tab 
+\par \plain\f5\fs20 \\pich\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 yExt field if picture is metafile; picture height in pixels if picture is bitmap or from Macintosh Quick Draw\tab 
+\par \plain\f5\fs20 \\picwGoal\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Desired width of picture in twips\tab 
+\par \plain\f5\fs20 \\pichGoal\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Desired height of picture in twips\tab 
+\par \plain\f5\fs20 \\picscalex\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Horizontal scaling value; argument is a value between 1 and 100 (default is 10)\tab 
+\par \plain\f5\fs20 \\picscaley\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Vertical scaling value; argument is a value between 1 and 100 (default is 10)\tab 
+\par \plain\f5\fs20 \\picscaled\tab \plain\f4\fs20 Scales picture to fit within specified frame; used only with \\macpict pictures\tab 
+\par \plain\f5\fs20 \\piccropt\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Top cropping value in twips; positive value crops toward center of picture; negative value crops away from center, adding space border around picture (default is 0)\tab 
+\par \plain\f5\fs20 \\piccropb\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Bottom cropping value in twips; positive value crops toward center of picture; negative value crops away from center, adding space border around picture (default is 0)\tab 
+\par \plain\f5\fs20 \\piccropl\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Left cropping value in twips; positive value crops toward center of picture; negative value crops away from center, adding space border around picture (default is 0)\tab 
+\par \plain\f5\fs20 \\piccropr\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Right cropping value in twips; positive value crops toward center of picture; negative value crops away from center, adding space border around picture (default is 0)\tab 
+\par \plain\f5\fs20 \\wbmbitspixel\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Bitmap bits/pixel (default is 1)\tab 
+\par \plain\f5\fs20 \\wbmplanes\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Number of bitmap planes (default is 1)\tab 
+\par \plain\f5\fs20 \\wbmwidthbytes\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Bitmap width in bytes\tab 
+\par \plain\f5\fs20 \\bin\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Picture is in binary format; numeric parameter is number of bytes to follow\tab 
+\par 
+\par 
+\par The \plain\f5\fs20 \\wbitmap\plain\f4\fs20  control word is optional; if neither \plain\f5\fs20 \\wmetafile\plain\f4\fs20  nor \plain\f5\fs20 \\macpict\plain\f4\fs20  is specified, the picture is assumed to be a Windows bitmap.
+\par 
+\par Be careful with spaces following control words when dealing with pictures in binary format.  When reading files, RTF considers the first space the delimiter and subsequent spaces part of the document text.  Therefore, any extra white space is attached to the picture, with unpredictable results.
+\par 
+\par RTF writers should not use the carriage-return-line-feed (CRLF) combination to break up pictures in binary format. In this case, the CRLF will be treated as literal text and considered part of the picture data.
+\par 
+\par The picture in hexadecimal or binary format follows the picture group control words. The following example illustrates the group format and the result.
+\par 
+\par \plain\f5\fs20 \{\\pict\\wbitmap0\\picw170\\pich77\\wbmbitspixel1\\wbmplanes1
+\par \\wbmwidthbytes22\\picwgoal505
+\par \\pichgoal221
+\par \\picscalex172
+\par \\picscaley172
+\par 4912000000000273023d1101a030
+\par 3901000a000000000273023d98
+\par 0048000200000275
+\par 0240000200010275023e000000000
+\par 273023dO00002b90002b90002
+\par b90002b90002b9
+\par 0002b90002b90002b90002b90002b90002
+\par b92222b90002b90002b90
+\par 002b90002b9
+\par D002b90002b90002b90002b9000
+\par \pard\ri-3600\tx576\plain\f4\fs20\b 
+\par \pard\plain\f4\fs20 A Source
+\par B Width
+\par C Height
+\par D Bits per pixel
+\par E Bitmap planes
+\par F Width of picture in bytes
+\par G Desired picture width
+\par H Desired picture height
+\par I Horizontal scaling value
+\par J Vertical scaling value
+\par K Hexadecimal data
+\par 
+\par \plain\f2\fs24\b\i Footnotes
+\par \plain\f4\fs20\i 
+\par \plain\f4\fs20 The group containing footnote text begins with the control word \plain\f5\fs20 \\footnote\plain\f4\fs20\b . \plain\f4\fs20 Footnotes are anchored to the character that immediately precedes the footnote group. If automatic footnoting is defined, the group can be preceded by a footnote reference character, identified by the control word \plain\f5\fs20 \\chftn\plain\f4\fs20\b .
+\par \pard\tx0\tx2160\tx2880\plain\f4\fs20 
+\par \pard\plain\f4\fs20 The following is an example of a group containing footnotes
+\par 
+\par \plain\f5\fs20 \\ftnbj\\ftnrestart\\sectd \\linemod0\\linex0\\endnhere \\pard\\plain \\ri1170 \\fs20 \{\\up6 Mead's landmark study has been amply annotated.\\chftn 
+\par (footnote \\pard\\plain \\s246 \\fs20 \{\\up6\\chftn \}See Sahlins, Bateson, and Geertz for a complete bibliography.\}
+\par It was her work in America during the Second World War, however, that forms the basis for this paper. As others have noted, \\chftn
+\par \{\\footnote \\pard\\plain \\s246 \\fs20 \{\\up6\\chftn\}
+\par A complete bibliography will be found at the end of this chapter.\} this period was a turning point for Margaret Mead. 
+\par \\par
+\par \plain\f4\fs20 
+\par Mead's landmark study has been amply annotated.\plain\f4\fs20\up6 1\plain\f4\fs20  It was her work in America during the Second World War. however. that forms the basis for this paper. As others have noted\plain\f4\fs20\up6 2\plain\f4\fs20  this period was a turning point for Margaret Mead.
+\par 
+\par \plain\f4\fs20\up6 1\plain\f4\fs20 See Sahlins, Bateson, and Geertz for a complete bibliography.
+\par \plain\f4\fs20\up6 2\plain\f4\fs20 A complete bibliography will be found at the end of this chapter.
+\par 
+\par A Footnotes
+\par 
+\par See "Section Formatting Properties," "Document Formatting Properties," and "Special Characters" later in this document for other control words relating to footnotes.
+\par 
+\par \plain\f2\fs24\b\i Annotations\plain\f2\fs24\b 
+\par \plain\f4\fs20\i 
+\par \plain\f4\fs20 The group containing annotation text begins with the control word \plain\f5\fs20 \\*\\annotation\plain\f4\fs20\b . \plain\f4\fs20 Annotations are anchored to the character that immediately precedes the annotation group. The group must be preceded by an annotation reference character, identified by the control word \plain\f5\fs20 \\chatn\plain\f4\fs20 , which itself must be preceded by a group that begins with the control word \plain\f5\fs20 \\*\\atnid\plain\f4\fs20 , and contains the identification text for the author of the annotation.
+\par 
+\par An example of annotation text follows
+\par 
+\par \plain\f5\fs20 \'c9
+\par 
+\par An example of a paradigm might be Newtonian physics or Darwinian biology.\{\\v\\fs16\{\\atnid bz\}\\chatn\{\\annotation 
+\par \\pard\\plain \\s224 \\fs20 \{\\field\{\\fldinst page \\\\#"'Page '#'\\line"'\}\{\\fldrslt\}\}\{\\fs16 \\chatn \} 
+\par How about some examples that deal with social science? That's what this paper is about.\}\}
+\par \'c9
+\par \plain\f4\fs20\i 
+\par \plain\f2\fs24\b\i Headers and Footers\plain\f2\fs24\b 
+\par \plain\f4\fs20\i 
+\par \plain\f4\fs20 Headers and footers are treated as separate groups in RTF. These groups must precede the first plain text character in the given document section. The control words \plain\f5\fs20 \\header\plain\f4\fs20  and \plain\f5\fs20 \\footer\plain\f4\fs20  begin these groups.
+\par 
+\par Headers and footers can be defined for each section. If none is defined for a given section, the headers and footers from the previous section (if any) are used.
+\par 
+\par The control words \plain\f5\fs20 \\header\plain\f4\fs20  and \plain\f5\fs20 \\footer\plain\f4\fs20  can be replaced by the following control words, as appropriate
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\headerl\tab \plain\f4\fs20 Header on left pages only\tab 
+\par \plain\f5\fs20 \\headerr\tab \plain\f4\fs20 Header on right pages only\tab 
+\par \plain\f5\fs20 \\headerf\tab \plain\f4\fs20 Header on first page only\tab 
+\par \plain\f5\fs20 \\footerl\tab \plain\f4\fs20 Footer on left pages only\tab 
+\par \plain\f5\fs20 \\footerr\tab \plain\f4\fs20 Footer on right pages only\tab 
+\par \plain\f5\fs20 \\footerf\tab \plain\f4\fs20 Footer on first page only\tab 
+\par 
+\par \plain\f2\fs24\b\i Information
+\par \plain\f4\fs20 
+\par The RTF file can also contain an information group, which is translated but not displayed with the text. This information can include the title, author, key words, comments, and other information specific to the file. This information can be used when a document management utility is available.
+\par 
+\par This group begins with the control word \plain\f5\fs20 \\info\plain\f4\fs20\b . \plain\f4\fs20 Some applications, such as Word, ask a user to type this docurnent information when saving the document in native format. When the document is then saved or translated into RTF, the RTF writer specifies this information using the following control words. These control words are destinations, and should be enclosed in braces (\{\}).
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\title\tab \plain\f4\fs20 Title of document\tab 
+\par \plain\f5\fs20 \\subject\tab \plain\f4\fs20 Subject of document\tab 
+\par \plain\f5\fs20 \\author\tab \plain\f4\fs20 Author of document\tab 
+\par \plain\f5\fs20 \\operator\tab \plain\f4\fs20 Person who last made changes to document\tab 
+\par \plain\f5\fs20 \\keywords\tab \plain\f4\fs20 Selected key words for document\tab 
+\par \plain\f5\fs20 \\comment\tab \plain\f4\fs20 Comments; text is ignored\tab 
+\par \plain\f5\fs20 \\version\tab \plain\f4\fs20 Version number of document\tab 
+\par \plain\f5\fs20 \\doccomm\tab \plain\f4\fs20 Comments displayed in Edit Summary Info dialog box\tab 
+\par 
+\par The RTF writer may automatically enter other control words, as shown in the following list
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\vern\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Internal version number\tab 
+\par \plain\f5\fs20 \\creatim\tab \plain\f4\fs20 Creation time\tab 
+\par \plain\f5\fs20 \\revtim\tab \plain\f4\fs20 Revision time\tab 
+\par \plain\f5\fs20 \\printim\tab \plain\f4\fs20 Last print time\tab 
+\par \plain\f5\fs20 \\buptim\tab \plain\f4\fs20 Backup time\tab 
+\par \plain\f5\fs20 \\edmins\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Total editing time (in minutes)\tab 
+\par \plain\f5\fs20 \\yr\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Year\tab 
+\par \plain\f5\fs20 \\mo\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Month\tab 
+\par \plain\f5\fs20 \\dy\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Day\tab 
+\par \plain\f5\fs20 \\hr\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Hour\tab 
+\par \plain\f5\fs20 \\min\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Minute\tab 
+\par \plain\f5\fs20 \\nofpages\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Number of pages\tab 
+\par \plain\f5\fs20 \\nofwords\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Number of words\tab 
+\par \plain\f5\fs20 \\nofchars\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Number of characters\tab 
+\par \plain\f5\fs20 \\id\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Internal ID number\tab 
+\par 
+\par Entries without the n parameter have the \plain\f5\fs20 \\yr \\mo \\dy \\hr \\min\plain\f4\fs20\b  \plain\f4\fs20 format. An example of an information group follows.
+\par 
+\par \plain\f5\fs20 \{\\info\{\\title The Panda's Thumb\}\{\\author Stephen J. Gould\}\{\\keywords science natural history \}\}
+\par \plain\f4\fs20 
+\par \plain\f2\fs24\b\i Fields\plain\f2\fs24\b 
+\par \plain\f4\fs20\i 
+\par \plain\f4\fs20 The field group contains the text of Word fields. The field group begins with the control word \plain\f5\fs20 \\field\plain\f4\fs20 .
+\par 
+\par The following control words can follow the \plain\f5\fs20 \\field\plain\f4\fs20  control word
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\flddirty\tab \plain\f4\fs20 Change has been made to the field result since the field was last updated\tab 
+\par \plain\f5\fs20 \\fldedit\tab \plain\f4\fs20 Text has been added to, or removed from, the field result since the field was last updated\tab 
+\par \plain\f5\fs20 \\fldlock\tab \plain\f4\fs20 Field is locked and cannot be updated\tab 
+\par \plain\f5\fs20 \\fldpriv\tab \plain\f4\fs20 Result is not in a form suitable for display (for example, binary data used by fields whose result is a picture)\tab 
+\par 
+\par 
+\par Two subgroups are available within the \plain\f5\fs20 \\field\plain\f4\fs20  group. They must be enclosed in braces (\{\}) and begin with the following control words
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\*\\fldinst\tab \plain\f4\fs20 Field instructions\tab 
+\par \plain\f5\fs20 \\fldrslt\tab \plain\f4\fs20 Most recently calculated result of the field\tab 
+\par 
+\par The \plain\f5\fs20 \\fldrslt\plain\f4\fs20  control word should be included even if no result has been calculated. This simplifies the RTF reader's task, because even readers that do not recognize fields can generally include the value of the \plain\f5\fs20 \\fldrslt\plain\f4\fs20  group in the document.
+\par 
+\par An example of some field text follows
+\par 
+\par \pard\ri5184\tx1440\tx2880\plain\f4\fs20 IA\tab |C\tab IC
+\par 
+\par \pard\plain\f4\fs20 1          I
+\par 
+\par \plain\f5\fs20 \{\\field\\fldedit\{\\fldinst author\}\{\\fldrslt Joe Smith\}\}\\par\\pard \{\\field\{\\fldinst time\\\\@"hmm AM/PM"\}\{\\fldrslt 812 AM\}\}
+\par \plain\f4\fs20 
+\par \plain\f4\fs20\i A Begins fieId group \plain\f4\fs20 
+\par \plain\f4\fs20\i B Field instructions
+\par C Field result
+\par 
+\par \plain\f2\fs24\b\i Index Entries\plain\f2\fs24\b 
+\par \plain\f4\fs20\i 
+\par \plain\f4\fs20 The index entry group begins with the control word \plain\f5\fs20 \\xe\plain\f4\fs20 . Following this control word is the text of the index entry and other, optional control words that further define the index entry.
+\par 
+\par If the text of the index entry is not formatted as hidden text with the \plain\f5\fs20 \\v\plain\f4\fs20  control word (see "Character Formatting Properties," later in this document), the text is put into the document as well as into the index. Similarly, the text of the \plain\f5\fs20 \\txe\plain\f4\fs20  subgroup, described later, becomes part of the document if it is not formatted as hidden text.
+\par 
+\par The following control words may also be used
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\bxe\tab \plain\f4\fs20 Formats the page number or cross-reference bold\tab 
+\par \plain\f5\fs20 \\ixe\tab \plain\f4\fs20 Formats the page number or cross-reference italic\tab 
+\par 
+\par The following control words are destinations within the \plain\f5\fs20 \\xe\plain\f4\fs20  group and are followed by text arguments. These control words and their arguments must be enclosed in braces (\{\})
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\txe \plain\f5\fs20\i text\plain\f5\fs20 \tab \plain\f4\fs20 Uses text instead of a page number\tab 
+\par \plain\f5\fs20 \\rxe \plain\f5\fs20\i bookmark-name\plain\f5\fs20 \tab \plain\f4\fs20 Generates page numbers for the range of text specified by bookmark-name\tab 
+\par 
+\par \pard\tx0\tx2160\tx2880\plain\f4\fs20 
+\par \pard\plain\f2\fs24\b\i Table of Contents Entries\plain\f2\fs24\b 
+\par \plain\f4\fs20\i 
+\par \plain\f4\fs20 The table of contents entry group begins with the control word \plain\f5\fs20 \\tc\plain\f4\fs20 . It is followed by the text of the table of contents entry and optional switches.
+\par 
+\par As with index entries, text that is not formatted as hidden with the \plain\f5\fs20 \\v\plain\f4\fs20  character formatting control word should be put into the document.
+\par 
+\par The following control words can also be used in this group
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\tcf\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Type of table being compiled; n is mapped by existing Microsoft software to a Ietter between A and Z; default is 67, which maps to C, used for tables of contents\tab 
+\par \plain\f5\fs20 \\tcl\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Level number (default is l)\tab 
+\par 
+\par \plain\f2\fs24\b\i Bookmarks
+\par \plain\f4\fs20 
+\par This group contains two control words \plain\f5\fs20 \\*\\bkmkstart\plain\f4\fs20 ,\plain\f4\fs20\b  \plain\f4\fs20 to indicate the start of the specified bookmark, and \plain\f5\fs20 \\*\\bkmkend\plain\f4\fs20 ,\plain\f4\fs20\b  \plain\f4\fs20 to indicate the end of the specified bookmark. A bookmark is shown in the following example
+\par 
+\par \plain\f5\fs20 \'c9
+\par 
+\par \\pard\\plain \\fs20 Kuhn believes that science, rather than discovering in experience certain structured relationships, actually creates (or already participates in) a presupposed structure to which it fits the data. \{\\bkmkstart paradigm\}Kuhn calls such a presupposed\plain\f5\fs20\b  \plain\f5\fs20 structure a paradigm.\{\\bkmkend paradigm\}
+\par 
+\par \'c9
+\par \plain\f2\fs24\b\i Document Formatting Properties\plain\f2\fs24\b 
+\par \plain\f4\fs20 
+\par This section lists the control words that act on the attributes of a document, such as margins and footnote placement. These attributes must precede the first plain text character in the document.
+\par 
+\par The following control words specify document formatting. If you omit a control word, RTF uses the default value shown in parentheses. Measurements are in twips.
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab 
+\par \plain\f5\fs20 \\paperw\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Paper width (12,240)\tab 
+\par \plain\f5\fs20 \\paperh\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Paper height (15,840)\tab 
+\par \plain\f5\fs20 \\margl\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Left margin (1,800)\tab 
+\par \plain\f5\fs20 \\margr\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Right margin (1,800)\tab 
+\par \plain\f5\fs20 \\margt\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Top margin (1,440)\tab 
+\par \plain\f5\fs20 \\margb\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Bottom margin (1,440)\tab 
+\par \plain\f5\fs20 \\facingp\tab \plain\f4\fs20 Facing pages (activates odd/even headers and gutters)\tab 
+\par \plain\f5\fs20 \\gutter\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Gutter width (0)\tab 
+\par 
+\par \plain\f5\fs20\b Control word\tab \plain\f4\fs20\b Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\deftab\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Default tab width (720)\tab 
+\par \plain\f5\fs20 \\widowctrl\tab \plain\f4\fs20 Widow control\tab 
+\par \plain\f5\fs20 \\hyphhotz\tab \plain\f4\fs20 Hyphenation hot zone ( amount of space at right margin in which words are hyphenated)\tab 
+\par \plain\f5\fs20 \\ftnsep\tab \plain\f4\fs20 Text argument separates footnotes from document\tab 
+\par \plain\f5\fs20 \\ftnsepc\tab \plain\f4\fs20 Text argument separates continued footnotes from document\tab 
+\par \plain\f5\fs20 \\ftncn\tab \plain\f4\fs20 Text argument is a notice for continued footnotes\tab 
+\par \plain\f5\fs20 \\endnotes\tab \plain\f4\fs20 Footnotes at end of section (default)\tab 
+\par \plain\f5\fs20 \\enddoc\tab \plain\f4\fs20 Footnotes at end of document\tab 
+\par \plain\f5\fs20 \\ftntj\tab \plain\f4\fs20 Footnotes beneath text\tab 
+\par \plain\f5\fs20 \\ftnbj\tab \plain\f4\fs20 Footnotes at bottom of page\tab 
+\par \plain\f5\fs20 \\ftnstart\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Beginning footnote number ( 1 )\tab 
+\par \plain\f5\fs20 \\ftnrestart\tab \plain\f4\fs20 Footnote numbers restart on each page\tab 
+\par \plain\f5\fs20 \\pgnstart\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Beginning page number ( 1 )\tab 
+\par \plain\f5\fs20 \\linestart\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Beginning line number ( 1 )\tab 
+\par \plain\f5\fs20 \\landscape\tab \plain\f4\fs20 Landscape format\tab 
+\par \plain\f5\fs20 \\fracwidth\tab \plain\f4\fs20 Uses fractional character widths when printing (Macintosh \'16\tab 
+\par \plain\f5\fs20 \\*\\nextfile\tab \plain\f4\fs20 Destination; argument is file name of file to print or index next; must be enclosed in braces ( \{\} )\tab 
+\par \plain\f5\fs20 \\*\\template\tab \plain\f4\fs20 Destination; argument is file name of related template file; must be enclosed in braces ( \{\} )\tab 
+\par \plain\f5\fs20 \\makeback\tab \plain\f4\fs20 Backup copy is made automatically when document is saved\tab 
+\par \plain\f5\fs20 \\defformat\tab \plain\f4\fs20 Tells RTF reader that document should be saved in RTF format\tab 
+\par \plain\f5\fs20 \\revisions\tab \plain\f4\fs20 Turns on revision marking\tab 
+\par \plain\f5\fs20 \\margmirror\tab \plain\f4\fs20 Switches margin definitions on left and right pages\tab 
+\par \plain\f5\fs20 \\revprop\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Argument indicates how revised text will be displayed; 0, no properties shown; 1, bold; 2, italic; 3, underline (default); 4, double underline\tab 
+\par \plain\f5\fs20 \\revbar\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Vertical lines mark altered text, based on the argument 0, no marking; 1, Ieft margin; 2 right mugin; 3, outside (Ieft on Ieft pages, right on right pages; default)\tab 
+\par 
+\par \plain\f2\fs24\b\i Section Formatting Properties\plain\f2\fs24\b 
+\par \plain\f4\fs20 
+\par The following control words are used to specify section formatting properties. Default values are shown in parentheses.
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\sectd\tab \plain\f4\fs20 Reset to default section properties\tab 
+\par \plain\f5\fs20 \\sbknone\tab \plain\f4\fs20 No section break\tab 
+\par \plain\f5\fs20 \\sbkcol\tab \plain\f4\fs20 Section break starts new column\tab 
+\par \plain\f5\fs20 \\sbkpage\tab \plain\f4\fs20 Section break starts new page (default)\tab 
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\sbkeven\tab \plain\f4\fs20 Section break starts at even page\tab 
+\par \plain\f5\fs20 \\sbkodd\tab \plain\f4\fs20 Section break starts at odd page\tab 
+\par \plain\f5\fs20 \\pgnstarts\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Beginning page number (1)\tab 
+\par \plain\f5\fs20 \\pgncont\tab \plain\f4\fs20 Continuous page numbering (default)\tab 
+\par \plain\f5\fs20 \\pgnrestart\tab \plain\f4\fs20 Page numbers restart at \plain\f5\fs20 \\pgnstarts\plain\f4\fs20  value\tab 
+\par \plain\f5\fs20 \\pgndec\tab \plain\f4\fs20 Page number format is decimal\tab 
+\par \plain\f5\fs20 \\pgnucrm\tab \plain\f4\fs20 Page number format is uppercase roman numeral\tab 
+\par \plain\f5\fs20 \\pgnlcrm\tab \plain\f4\fs20 Page number format is lowercase roman numeral\tab 
+\par \plain\f5\fs20 \\pgnucltr\tab \plain\f4\fs20 Page number format is upper case Ietter\tab 
+\par \plain\f5\fs20 \\pgnlcltr\tab \plain\f4\fs20 Page number format is lower case letter\tab 
+\par \plain\f5\fs20 \\pgnx\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Page number is n twips from Ieft margin (720)\tab 
+\par \plain\f5\fs20 \\pgny\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Page number is n twips from bottom margin ( 720)\tab 
+\par \plain\f5\fs20 \\headery\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Header is n twips from top of page (1080)\tab 
+\par \plain\f5\fs20 \\footery\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Footer is n twips from bottom of page (1080)\tab 
+\par \plain\f5\fs20 \\linemod\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Line number modulus (amount to increase each line number) (1)\tab 
+\par \plain\f5\fs20 \\linex\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Distance from line number to left text margin in twips (360)\tab 
+\par \plain\f5\fs20 \\linestarts\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Beginning line number (1)\tab 
+\par \plain\f5\fs20 \\linerestart\tab \plain\f4\fs20 Line numbers restart at \plain\f5\fs20 \\linestarts\plain\f4\fs20\b  \plain\f4\fs20 value\tab 
+\par \plain\f5\fs20 \\lineppage\tab \plain\f4\fs20 Line numbers restart each page\tab 
+\par \plain\f5\fs20 \\linecont\tab \plain\f4\fs20 Line numbers continued from preceding section\tab 
+\par \plain\f5\fs20 \\vertalt\tab \plain\f4\fs20 Text is top aligned (default)\tab 
+\par \plain\f5\fs20 \\vertal\tab \plain\f4\fs20 Text is bottom aligned\tab 
+\par \plain\f5\fs20 \\vertalc\tab \plain\f4\fs20 Text is centered vertically\tab 
+\par \plain\f5\fs20 \\vertalj\tab \plain\f4\fs20 Text is justified vertically\tab 
+\par \plain\f5\fs20 \\cols\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Number of columns (snaking) (1)\tab 
+\par \plain\f5\fs20 \\colsx\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Space between columns in twips (720)\tab 
+\par \plain\f5\fs20 \\linebetcol\tab \plain\f4\fs20 Line between columns\tab 
+\par \plain\f5\fs20 \\endnhere\tab \plain\f4\fs20 Endnotes included in section\tab 
+\par \plain\f5\fs20 \\titlepg\tab \plain\f4\fs20 Title page has special format\tab 
+\par 
+\par \plain\f2\fs24\b\i Paragraph Formatting Properties
+\par \plain\f4\fs20\i 
+\par \plain\f4\fs20 The following control words are used to specify paragraph formatting properties. Default values are shown in parentheses. When specifying border properties, the border segment control word (\plain\f5\fs20 \\brdrt\plain\f4\fs20 , \plain\f5\fs20 \\brdrb\plain\f4\fs20 , \plain\f5\fs20 \\brdrl\plain\f4\fs20 , \plain\f5\fs20 \\brdrr\plain\f4\fs20 , or \plain\f5\fs20 \\box\plain\f4\fs20 ) must precede the control word(s) specifymg the pattern for the border, to ensure compatibility with previous versions of RTF.
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab 
+\par \plain\f5\fs20 \\pard\tab \plain\f4\fs20 Resets to default paragraph properties\tab 
+\par \plain\f5\fs20 \\s\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Designates style; if a style is specified style properties must be specified with the paragraph\tab 
+\par \plain\f5\fs20 \\ql\tab \plain\f4\fs20 Left aligned (default)\tab 
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\qr\tab \plain\f4\fs20 Right aligned\tab 
+\par \plain\f5\fs20 \\qj\tab \plain\f4\fs20 Justified\tab 
+\par \plain\f5\fs20 \\qc\tab \plain\f4\fs20 Centered\tab 
+\par \plain\f5\fs20 \\fi\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 First-line indent (0)\tab 
+\par \plain\f5\fs20 \\li\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Left indent (0)\tab 
+\par \plain\f5\fs20 \\ri\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Right indent (0)\tab 
+\par \plain\f5\fs20 \\sb\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Space before (0)\plain\f4\fs20\i \tab 
+\par \plain\f5\fs20 \\sa\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Space after (0)\tab 
+\par \plain\f5\fs20 \\sl\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Space between lines (if this control word is missing or if \plain\f5\fs20 \\sl000\plain\f4\fs20  is used, line spacing is automatically determined by tallest character in line); if positive value, use this size if it is greater than the tallest character, otherwise use tallest character; if negative value, use the absolute value of number, even if tallest character is taller\tab 
+\par \plain\f5\fs20 \\intbl\tab \plain\f4\fs20 Paragraph is part of a table\tab 
+\par \plain\f5\fs20 \\keep\tab \plain\f4\fs20 Keep paragraph intact\tab 
+\par \plain\f5\fs20 \\keepn\tab \plain\f4\fs20 Keep paragraph with next\tab 
+\par \plain\f5\fs20 \\sbys\tab \plain\f4\fs20 Side-by-side paragraphs\tab 
+\par \plain\f5\fs20 \\pagebb\tab \plain\f4\fs20 Break page before the paragraph\tab 
+\par \plain\f5\fs20 \\noline\tab \plain\f4\fs20 No line numbering\tab 
+\par \plain\f5\fs20 \\tx\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Tab position in twips from left margin\tab 
+\par \plain\f5\fs20 \\tqr\tab \plain\f4\fs20 Flush-right tab\tab 
+\par \plain\f5\fs20 \\tqc\tab \plain\f4\fs20 Centered tab\tab 
+\par \plain\f5\fs20 \\tqdec\tab \plain\f4\fs20 Decimal tab\tab 
+\par \plain\f5\fs20 \\tb\tab \plain\f4\fs20 Bar tab\tab 
+\par \plain\f5\fs20 \\brdrt\tab \plain\f4\fs20 Border top\tab 
+\par \plain\f5\fs20 \\brdrb\tab \plain\f4\fs20 Border bottom\tab 
+\par \plain\f5\fs20 \\brdrl\tab \plain\f4\fs20 Border left\tab 
+\par \plain\f5\fs20 \\brdrr\tab \plain\f4\fs20 Border right\tab 
+\par \plain\f5\fs20 \\box\tab \plain\f4\fs20 Border around paragraph (box paragraph)\tab 
+\par \plain\f5\fs20 \\brdrs\tab \plain\f4\fs20 Single-thickness border\tab 
+\par \plain\f5\fs20 \\brdrth\tab \plain\f4\fs20 Thick border\tab 
+\par \plain\f5\fs20 \\brdrsh\tab \plain\f4\fs20 Shadowed border\tab 
+\par \plain\f5\fs20 \\brdrdb\tab \plain\f4\fs20 Double border\tab 
+\par \plain\f5\fs20 \\brdrdot\tab \plain\f4\fs20 Dotted border\tab 
+\par \plain\f5\fs20 \\brdrhair\tab \plain\f4\fs20 Hairline border\tab 
+\par \plain\f5\fs20 \\brsp\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Space in twips between borders and object\tab 
+\par \plain\f5\fs20 \\tldot\tab \plain\f4\fs20 Leader dots\tab 
+\par \plain\f5\fs20 \\tlhyph\tab \plain\f4\fs20 Leader hyphens\tab 
+\par \plain\f5\fs20 \\tlul\tab \plain\f4\fs20 leader underline\tab 
+\par \plain\f5\fs20 \\tlth\tab \plain\f4\fs20 leader thick line\tab 
+\par \plain\f4\fs20\i 
+\par \plain\f2\fs24\b\i Absolute-Positioned Objects
+\par \plain\f4\fs20\i 
+\par \plain\f4\fs20 These paragraph formatting control words specify the location of the paragraph on the
+\par page.
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\posx\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Positions paragraph n twips from left edge of reference frame\tab 
+\par \plain\f5\fs20 \\posxc\tab \plain\f4\fs20 Centers paragraph horizontally within reference frame\tab 
+\par \plain\f5\fs20 \\posxi\tab \plain\f4\fs20 Positions paragraph horizontally inside reference frame\tab 
+\par \plain\f5\fs20 \\posxl\tab \plain\f4\fs20 Positions paragraph to left within reference frame\tab 
+\par \plain\f5\fs20 \\posxo\tab \plain\f4\fs20 Positions paragraph horizontally outside reference frame\tab 
+\par \plain\f5\fs20 \\posxr\tab \plain\f4\fs20 Positions paragraph to right within reference frame\tab 
+\par \plain\f5\fs20 \\posy\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Positions paragraph n twips from top edge of reference frame\tab 
+\par \plain\f5\fs20 \\posyil\tab \plain\f4\fs20 Positions paragraph vertically to be in-line\tab 
+\par \plain\f5\fs20 \\posyt\tab \plain\f4\fs20 Positions paragraph at top of reference frame\tab 
+\par \plain\f5\fs20 \\posyc\tab \plain\f4\fs20 Centers paragraph vertically within reference frame\tab 
+\par \plain\f5\fs20 \\posyb\tab \plain\f4\fs20 Positions paragraph at bottom of reference frame\tab 
+\par \plain\f5\fs20 \\absw\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Absolute width of paragraph text in twips\tab 
+\par \plain\f5\fs20 \\dxfrtext\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Horizontal distance in twips of an absolutely postioned paragraph from text in main text flow\tab 
+\par \plain\f5\fs20 \\pvmrg\tab \plain\f4\fs20 Position vertically relative to margin\tab 
+\par \plain\f5\fs20 \\pvpg\tab \plain\f4\fs20 Position vertically relative to page\tab 
+\par \plain\f5\fs20 \\phmrg\tab \plain\f4\fs20 Position horizontally relative to margin\tab 
+\par \plain\f5\fs20 \\phpg\tab \plain\f4\fs20 Position horizontally relative to page\tab 
+\par \plain\f5\fs20 \\phcol\tab \plain\f4\fs20 Position horizontally relative to column\tab 
+\par \pard\ri4896\tx2448\plain\f4\fs20 
+\par \pard\plain\f4\fs20 The following is an example of absolute-positioned text in a document
+\par 
+\par \plain\f5\fs20 \'c9
+\par \\par \\pard \\pvpg\\phpg\\posxc\\posyt\\absw5040\\dxfrtextl73 \plain\f5\fs20\ul abs\plain\f5\fs20  \plain\f5\fs20\ul pos\plain\f5\fs20  \plain\f5\fs20\ul paral\plain\f5\fs20 
+\par \\par \\pard \\phmrg\\posxo\\posyc \\dxfrtext1 152 \plain\f5\fs20\ul abs\plain\f5\fs20  \plain\f5\fs20\ul pos\plain\f5\fs20  \plain\f5\fs20\ul para2\plain\f5\fs20 
+\par 
+\par \'c9
+\par \plain\f4\fs20 
+\par \plain\f4\fs20\i A Text to be positioned
+\par 
+\par \plain\f2\fs24\b\i Tables\plain\f2\fs24\b 
+\par \plain\f4\fs20\i 
+\par \plain\f4\fs20 A table is a collection of paragraphs. A table row is a continuous sequence of paragraphs partitioned into cells. The last paragraph of a cell is terminated by a cell mark (the \plain\f5\fs20 \\cell\plain\f4\fs20  control word), and the row is terminated by a row mark (the \plain\f5\fs20 \\row\plain\f4\fs20  control word) There is no RTF table group; the \plain\f5\fs20 \\intbl\plain\f4\fs20  paragraph formatting control word identifies the paragraph as part of a table.
+\par \pard\tx0\tx2160\tx2880\plain\f4\fs20 
+\par \pard\plain\f4\fs20\i 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\clbrdrb\tab \plain\f4\fs20 Bottom table cell border\tab 
+\par \plain\f5\fs20 \\clbrdrt\tab \plain\f4\fs20 Top table cell border\tab 
+\par \plain\f5\fs20 \\clbrdrl\tab \plain\f4\fs20 Left table cell border\tab 
+\par \plain\f5\fs20 \\clbrdrr\tab \plain\f4\fs20 Right table cell border\tab 
+\par \plain\f5\fs20 \\trowd\tab \plain\f4\fs20 Sets table row defaults\tab 
+\par \plain\f5\fs20 \\trql\tab \plain\f4\fs20 Left justifies table row with respect to its table column\tab 
+\par \plain\f5\fs20 \\trqr\tab \plain\f4\fs20 Right justifies table row with respect to its containing column\tab 
+\par \plain\f5\fs20 \\trqc\tab \plain\f4\fs20 Centers table row with respect to its containing column\tab 
+\par \plain\f5\fs20 \\trgaph\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Half the space between cells of a table row in twips\tab 
+\par \plain\f5\fs20 \\trrh\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Height of a table row in twips; when 0, height is sufficient for all text in line; when positive, height is guaranteed to be at least the specified height; when negative, the absolute value of the height is used, regardless of the height of the text in the line\tab 
+\par \plain\f5\fs20 \\trleft\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Position of Ieftmost edge of table with respect to the left edge of its column\tab 
+\par \plain\f5\fs20 \\cellx\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Moves the right boundary of a table cell, including its half of the space between cells\tab 
+\par \plain\f5\fs20 \\clmgf\tab \plain\f4\fs20 The first cell in a range of table cells to be merged\tab 
+\par \plain\f5\fs20 \\clmrg\tab \plain\f4\fs20 Contents of table cell are merged with preceding cell\tab 
+\par 
+\par The following example shows some table text
+\par 
+\par \plain\f5\fs20 \'c9
+\par \\par\\trowd\\trqc\\trgaph108\\trrh280\\trleft36
+\par \\clbrdrt\\brdrth\\clbrdrn\\brdrth\\clbrdrb\\brdrdb
+\par \\clbrdr\\brdrdb\\celbx3636\\clbrdrt\\brdrth
+\par \\clbrdrl\\brdrdb \\clbrdrb\\brdrdb \\dbrdrr\\brdrdb
+\par \\cellx7236\\clbrdrt\\brdrth\\dbrdrl\\brdrdb
+\par \\clbrdrb\\brdrdb\\clbrdr\\brdrdb\\cellx10836\\pard \\intbl
+\par \\cell \\pard \\intbl \\cell \\pard \\intbl \\cell \\pard \\intbl \\row
+\par \\trowd \\trqc\\trgaph108\\trrh280\\trleft36 \\dbrdrt\\brdrdb
+\par \\clbrdrl\\brdrth \\clbrdrb \\brdrsh\\brdrs \\dbrdrr\\brdrdb
+\par \\cellx3636\\clbrdr\\brdrdb \\dbrdr\\brdrdb
+\par \\clbrdrb\\brdrsh\\brdrs \\dbrdrr\\brdrdb
+\par \\cellx7236\\clbrdrt \\brdrdb \\dbrdr \\brdrdb
+\par \\clbrdrb\\brdrsh\\brdrs \\clbrdrr\\brdrdb \\celbx10836\\pard
+\par \\intbl \\cell \\pard \\intbl \\cell \\pard \\intbl \\cell \\pard
+\par \\intbl \\row \\pard
+\par \'c9
+\par \pard\tx0\tx2160\tx2880\plain\f4\fs20 
+\par 
+\par \pard\plain\f2\fs24\b Character Formatting Properties
+\par \plain\f4\fs20\i 
+\par \plain\f4\fs20 The last group controls character formatting properties. A control word preceding plain text turns on the specified attribute. Some control words (indicated by an asterisk following the description) can be turned off by the control word followed by a zero (0). For example, \plain\f5\fs20 \\b\plain\f4\fs20  turns bold on, while \plain\f5\fs20 \\b0\plain\f4\fs20  turns bold off.
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\plain\tab \plain\f4\fs20 Resets application's default character formatting properties\tab 
+\par \plain\f5\fs20 \\b\tab \plain\f4\fs20 Bold*\tab 
+\par \plain\f5\fs20 \\i\tab \plain\f4\fs20 Italic*\tab 
+\par \plain\f5\fs20 \\strike\tab \plain\f4\fs20 Strikethrough*\tab 
+\par \plain\f5\fs20 \\outl\tab \plain\f4\fs20 Outline*\tab 
+\par \plain\f5\fs20 \\shad\tab \plain\f4\fs20 Shadow*\tab 
+\par \plain\f5\fs20 \\scaps\tab \plain\f4\fs20 Small capitals*\tab 
+\par \plain\f5\fs20 \\caps\tab \plain\f4\fs20 All capitals*\tab 
+\par \plain\f5\fs20 \\v\tab \plain\f4\fs20 Hidden text*\tab 
+\par \plain\f5\fs20 \\f\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Font number\tab 
+\par \plain\f5\fs20 \\fs\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Font size in half-points (default is 24)\tab 
+\par \plain\f5\fs20 \\expnd\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Expansion or compression of leading between characters in quarter-points; a negative value compresses (0)\tab 
+\par \plain\f5\fs20 \\ul\tab \plain\f4\fs20 Continuous underline*\tab 
+\par \plain\f5\fs20 \\ulw\tab \plain\f4\fs20 Word underline*\tab 
+\par \plain\f5\fs20 \\uld\tab \plain\f4\fs20 Dotted underline*\tab 
+\par \plain\f5\fs20 \\uldb\tab \plain\f4\fs20 Double underline*\tab 
+\par \plain\f5\fs20 \\ulnone\tab \plain\f4\fs20 Stops all underlining\tab 
+\par \plain\f5\fs20 \\up\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Superscript position in half-points (default is 6)\tab 
+\par \plain\f5\fs20 \\dn\plain\f5\fs20\i n\plain\f5\fs20 \tab \plain\f4\fs20 Subscript position in half-points (default is 6)\tab 
+\par \plain\f5\fs20 \\revised\tab \plain\f4\fs20 Text has been added since revision marking was turned on\tab 
+\par \plain\f4\fs20\i 
+\par \plain\f2\fs24\b\i Special Characters\plain\f2\fs24\b 
+\par \plain\f4\fs20\i 
+\par \plain\f4\fs20 Special RTF characters are listed below. If a character is not recognized by the RTF reader, it is ignored and the text following it is considered plain text. The RTF specification is flexible enough to allow new characters to be added for interchange with other software.
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\plain\f4\fs20\b\i \tab \plain\f4\fs20\i 
+\par \plain\f5\fs20 \\chdate\tab \plain\f4\fs20 Current date (as in headers)\tab 
+\par \plain\f5\fs20 \\chtime\tab \plain\f4\fs20 Current time (as in headers)\tab 
+\par \plain\f5\fs20 \\chpgn\tab \plain\f4\fs20 Current page number (as in headers)\tab 
+\par \plain\f5\fs20 \\chftn\tab \plain\f4\fs20 Automatic footnole reference (footnotes follow in a group)\tab 
+\par \plain\f5\fs20 \\chatn\tab \plain\f4\fs20 Annotion reference (annotation text follows in a group)\tab 
+\par \plain\f5\fs20 \\chftnsep\tab \plain\f4\fs20 Anchoring character for footnote separator\tab 
+\par 
+\par \plain\f4\fs20\b Control word\tab Meaning\tab \plain\f4\fs20 
+\par \plain\f5\fs20 \\chftnsepc\tab \plain\f4\fs20 Anchoring character for footnote continuation\tab 
+\par \plain\f5\fs20 \\|\tab \plain\f4\fs20 Formula character\tab 
+\par \plain\f5\fs20 \\~\tab \plain\f4\fs20 Nonbreaking space\tab 
+\par \plain\f5\fs20 \\-\tab \plain\f4\fs20 Optional hyphen\tab 
+\par \plain\f5\fs20 \\_\tab \plain\f4\fs20 Nonbreaking hyphen\tab 
+\par \plain\f5\fs20 \\'\plain\f5\fs20\i hh\plain\f5\fs20 \tab \plain\f4\fs20 A hexadecimal value, based on the specified character set (may be used to identify 8-bit values)\tab 
+\par \plain\f5\fs20 \\cell\tab \plain\f4\fs20 End of table cell\tab 
+\par \plain\f5\fs20 \\row\tab \plain\f4\fs20 End of table row\tab 
+\par \plain\f5\fs20 \\par\tab \plain\f4\fs20 End of paragraph\tab 
+\par \plain\f5\fs20 \\sect\tab \plain\f4\fs20 End of section and paragraph\tab 
+\par \plain\f5\fs20 \\page\tab \plain\f4\fs20 Required page break\tab 
+\par \plain\f5\fs20 \\column\tab \plain\f4\fs20 Required column break\tab 
+\par \plain\f5\fs20 \\line\tab \plain\f4\fs20 Required line break (no paragraph break)\tab 
+\par \plain\f5\fs20 \\tab\tab \plain\f4\fs20 Tab character, same as ASCII 9\tab 
+\par \plain\f5\fs20 \\\tab \plain\f4\fs20 Specifies a subentry in an index entry\tab 
+\par \plain\f5\fs20 \\*\tab \plain\f4\fs20 Marks a destination whose text should be ignored if not understood by the RTF reader\tab 
+\par 
+\par An ASCII 9 will be accepted as a tab character. The code \plain\f5\fs20 \\<ASCII10>\plain\f4\fs20  (line feed) or \plain\f5\fs20 \\<ASCIIl3>\plain\f4\fs20  (carriage return) is treated as the control word \plain\f5\fs20 \\par\plain\f4\fs20 . You must include the backslashes or RTF will ignore the control word. You may also want to insert a carriage-return-line-feed pair (without backslashes) at least every 255 characters for better text transmission over communication lines.
+\par \pard\tx0\tx2160\tx2880\plain\f4\fs20 
+\par 
+\par }
+ 

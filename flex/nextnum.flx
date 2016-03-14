@@ -1,0 +1,183 @@
+  NEXTNUM.FLX : Was waere die naechste laufende Nummer?
+  20050722
+  Beschreibung: siehe  nummer.rtf  (h nummer eingeben)
+
+  Dies ist ein Nummernvergabe-Unterprogramm.
+  Man kopiert es in einen eigenen FLEX oder bindet es ein mit
+  include nextnum.flx
+  Aber ACHTUNG: Schreiben Sie diesen Befehl unterhalb einer
+  Zeile mit dem Befehl end. Wo genau, das ist dann egal!
+
+  So benutzt man es:
+  In  #uNK  setzt man den Code  abc  des Nummerngenerator-Satzes,
+    davor ein Z, B oder S, je nach Typ
+    dieser Satz muss im Reg. 11 z.B. unter  SYSZabc etc.  stehen und im
+    Systemsatz steht abc im Feld #9A hinter dem Z (oder B,S)! (s.u.)
+
+  ODER einfacher, OHNE Nummerngenerator-Datensatz:
+  In $nnR und $nnP den Registernamen bzw. das Praefix der gesuchten
+    Nummer vorgeben. Optional in $nnF das Praefix fuers Datenfeld
+  Rueckgabe:  in  #uNx  die naechste Nummer. Aber nur die Nummer, und
+  zwar ohne fuehrende Nullen! Bei Misserfolg: -1
+
+  Beispiel fuer Aufruf des Unterprogramms:
+
+  #uNK <code>       // z.B.  #uNK ZSTD
+     oder Vorgabe von Register und Praefix in $nnR und $nnP:
+     $nnR <reg>     // z.B.  $nnR |:  fuer Reg. 10
+     $nnP <prefix>  //       $nnP abc-
+                    // # statt ' ', wenn prefix mit ' ' endet
+     $nnF 05-       // Praefix 05-  fuer das Feld im Datensatz [optional]
+  set tbl loc       // .TBL blockieren, damit keiner speichern kann
+  perf nextnum      //  Ausfuehrung
+  if ="-1" jump fehler    // Nummernermittlung nicht gelungen
+  var <praefix> #uNx
+  ins #nnn
+     ... evtl. noch weitere Aufrufe des UP fuer weitere Nummern!
+  put free    // dann Satz speichern, zugl. TBL freigeben
+
+  Alles weitere siehe  nummer.rtf  (h nummer  eingeben)
+
+  ********************** Beginn UP
+:nextnum
+
+  Wg. Kompatib. mit aelterer Version:
+var #uoz
+if not "" ins #uoZ
+var #uoZ
+if not "" ins #uNK
+var #uoR
+if not "" ins $nnR
+var #uoP
+if not "" ins $nnP
+var #uoF
+if not "" ins $nnF
+
+var $nnP
+ins _#_ _
+ins $nnP
+
+var i
+ins $n:oi
+
+
+  Steht eine Vorgabe in  $nnR ? Dann keinen Generatorsatz suchen
+if $nnR jump nUMVER
+
+var #uNK
+  derselbe Code wie beim letzten Mal? Dann muss er nicht geladen werden
+if =#uNG jump nUMVER
+  Finde den NummerngeneratorSatz im Reg. 11
+var "|; SYS" #uNK
+f1nd
+if no jump gEXIT
+
+if not #9A jump gEXIT
+var #9A
+if not "Z" if not "B" if not "S" jump gEXIT
+var #9A
+
+if #9A$R if #9A$P jump iNX
+jump gERR
+
+:iNX
+  Inhalt von #9A nach #uNG fuers naechste Mal
+ins #uNG
+
+  Eigentliche Nummernvergabe
+:nUMVER
+if not $nnR var "-2 " #uNG$R " " #uNG$P "999999999999A"
+if $nnR var "-2 " $nnR " _" $nnP "999999999999A"
+
+  nur zur evtl. Kontrolle
+ins $Qa
+
+  die 2 Zeilen holen, wo die hoechste Nummer stehen muesste
+
+qrix
+
+  gefundene Zeile bearbeiten
+var (f" " b" " e"")
+  und die Zeile mit der letzten Nr in #uLN sichern
+
+ins #uLN
+  jetzt hat man die Registereintragung ermittelt
+  nun noch die Zahl herausloesen,
+  sie steht hinter dem Praefix $nnP bzw. #uNx:
+
+var $nnP
+ins #unP
+if $nnR var #uLN(b"#unP");jump aDD
+  Praefix fuers Datenfeld, falls gesetzt
+var #uNG$F
+ins $nnF
+
+var #uNG$P
+ins #uNx
+if not $nnR var #uLN(b"#uNx")
+
+:aDD
+  in iV steht jetzt die Nr., also 1 draufaddieren:
+z=
+  (wenn im Index noch keine Zeile mit dem Praefix existiert, ergibt sich z=1)
+z+1
+var $nnF z
+  # ist Platzhalter fuer Blank, ersetzen:
+ins _#_ _
+ins #uNx
+ins #uoY
+jump resto2
+  #uNx  enthaelt die naechste Nummer, davor #uNG$F
+
+:gERR
+var "Es fehlt ein Teilfeld in " #9A n
+var +"$R und $P  muessen vorkommen"
+ansi
+mes
+jump resto1
+end
+
+:gEXIT
+var "Generator " #uNK " nicht gefunden"
+mes
+
+:resto1
+var "-1"
+ins #uNx
+
+:resto2
+  Den anfangs geladenen Satz zurueckholen, weil evtl. nicht mehr da
+      oder er wird sonst nicht gelb angezeigt
+var "#" $n:oi
+f1nd
+  diese loeschen [unsauber, aber wegen Kontinuitaet]
+#uoz
+#uoZ
+#uoP
+#uoR
+#uoF
+#uNK
+return
+end
+  ******************  ENDE UP
+
+
+ u-VARIABLEN in nextnum.flx
+ $Qa (1)   qrix-Argument, nur zur Kontrolle
+ $nnR (6)  Register (|i oder NUM etc.)
+ $nnP (1)  Praefix der Nr. im Reg.
+ $nnF (2)  FeldPraefix
+ #uNK (3)  Kennung des Nummerngenerators
+ #uNG (6)  Feld #9A des Nummerngenerators 
+ #uNx (4)  naechste Nr.
+ #uLN (3)  Zeile mit der letzten Nr.
+
+  Inhalt von #9A in einem Nummerngenerator-Satz (s. alf.frm) 
+  #9A ZABC              Code ABC, dieser Code steht dann 
+                             in Reg. 11 hinter SYSZ, dort steht also  SYSZABC 
+  $N  Name              Klartext-Name des Generators (hat keine Funktion) 
+  $R  Registername    symbolisch oder direkt,  z.B.  NUM oder |9 oder |: (für Reg. 10) 
+  $P  Praefix            was im Register vor der eigentlichen Nummer steht! 
+  $Z  letzte Nr.        Zuletzt vergebene Nummer (nur bei DOS-Prog. ORDER) 
+
+

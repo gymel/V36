@@ -1,0 +1,51 @@
+
+Verlautbarung 232 der Entw.Abt.                              2010-09-29
+-------------------------------
+
+                          V30.9 liegt bereit
+
+Mehr Flip-Flexibilitaet
+-----------------------
+Bisher ist es so: Rechter Mausklick auf einer Flip-Taste liefert
+ein Auswahlmenue, in dem schlicht die Beschriftungen der Flip-
+Buttons stehen. Bei a99 ist das wenig aufregend, bei a99a jedoch
+sinnvoll - dazu aber muessen die Beschriftungen lang genug sein,
+laenger als bei a99, wo sie notgedrungen kurz zu sein haben, um
+auf die Buttons zu passen. Das rief Frust hervor.
+Aber was tun, um diesem Uebelstand abzuhelfen? 
+
+Die Loesung ist schlicht diese:
+Falls ein FLEX namens  onflips.flx  existiert, wird dieser bei rechtem
+Mausklick auf einem Flipbutton ausgeloest, sonst (wenn's onflips.flx 
+nicht gibt) passiert dasselbe wie bisher.
+Dem  onflips.flx  wird als Argument die Nummer des Buttons uebergeben.
+Bei dem Button 1 wirkt das dann so, als waere manuell
+X onflips 1
+gegeben worden. Somit ist es sinnvoll, den FLEX  onflips.flx  wie
+folgt beginnen zu lassen:
+
+  Argument auswerten:
+if "1" jump flip1
+if "2" jump flip2
+...
+end
+  Rechter Mausklick auf Button 1:
+:flip1
+...
+
+Aber der  onflips.flx  kann natuerlich gaenzlich anders aussehen,
+das ist vollkommen freigestellt. Hier ist also eine neue Moeglich-
+keit, sich auszutoben, und wir sind schon gespannt, an welche Grenzen
+die kreativen Geister nun wieder stossen werden...
+
+Hinweis: Wir liefern keinen  onflips.flx  mit, um nicht sofort
+etwas zu praejudizieren, sondern die Kreativitaet umso besser
+anzustacheln.
+
+Ansonsten bietet V30.9 nur eine Anzahl Verbesserungen in einigen
+Hilfetexten, d.h. es handelt sich um wenig mehr als eine nochmals
+polierte V30.8.
+
+
+
+

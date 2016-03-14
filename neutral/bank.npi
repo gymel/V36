@@ -1,0 +1,1117 @@
+  BANK.NPI : Index-Parameter
+  2005-12-07
+  Enthaelt die Vorschrift, welche Felder in welche Register einzuordnen sind,
+  und in welcher Weise.
+  Hinweis (fuer nicht-Allegrologen):
+   --  Zeilen mit Leerzeichen am Anfang bewirken nichts
+   --  Zwei oder mehr Leerzeichen in einer Zeile bedeuten: Rest ist Kommentar.
+   --  Mit xxx sind Stellen markiert, an denen der Anwender bestimmte Optionen
+       ein- oder ausschalten kann, z.B. die Linkstrunkierung
+   --  Mit SWD ist markiert, wo für SWD-Stammsätze einzugreifen ist
+
+  ACHTUNG: In den vier numerierten Abschnitten muß evtl. eingegriffen werden
+
+  ------------------------------
+  1. Ueberschriften der Register  (erscheint oben im Indexfenster)
+  ------------------------------  Symbol. Registernamen: siehe Abschnitt 4.)
+
+|1="Gesamt-Wortregister (aus Titeln, Namen u.a.)"
+|2="Titelphrasen (2 Wörter)"
+|3="Titel-Anfang (die ersten 80 Zeichen)"
+|4="Personen"
+|5="Körperschaften incl. Verlage"
+|6="Serien"
+|7="Klassifikation"
+|8="Signaturen"
+|9="Datums- und Nummernregister"
+|:="Interne Angaben, Übernahmeregister, Hilfsdaten"
+|;="Systemdaten"
+  Überschrift der Ergebnisanzeige:
+|<="Titel                                          Name                     :Jahr"
+
+  Primaerschluessel u.a. besondere Schl. (diese 4 Zeilen nicht aendern!)
+ak=zz+@     Primaerschluessel
+ak=zz+0     Kurzlisteneintraege
+ak=zz+/     Restriktionen
+ak=zz+.     SR-Schluessel
+
+  ------------
+  2. ak-Zeilen. Fuer jedes zusaetzlich zu indexierende Feld muss ein ak-Befehl
+  ------------  nach dem unten zu sehenden Muster eingefuegt werden:
+
+  Empfehlung:  Fuer eigene Schluessel bei neuen Projekten: Grossbuchstaben
+               Diese Standarddatei verwendet nur Kleinbuchstaben
+     Die Angabe "[|;]" bedeutet: Feldinhalt zerlegen an jedem ; und |
+         d.h. Mehrfacheinträge können wahlweise durch ; oder | getrennt sein!
+     Wollen Sie ein weiteres Feld indexieren?
+        Dann neue Zeile nach demselben Muster einfuegen, z.B.
+        ak=350+c   Wenn Inhalt von #350 wie eine Titelphrase zu indexieren ist
+     Ein Feld lieber nicht indexieren?
+        Dann die Zeile hier herausnehmen (oder Leerzeichen davorsetzen)
+
+  Titelanfang: (und auf Wunsch auch Phrasenindexierung)
+ak=100"|"+c          c: Anfang des Feldtextes 80 Zeichen, Reg. 3
+ak=110."|"+c            zugleich Phrasenindex!
+ak=120."|"+c
+ak=170."[|;]"+c     Titel als SW!
+ak=750."|"+c
+
+  IdNummern
+ak=08.."[|;=]"+i
+  Gesamt-Wortregister:  (Abschnitt #-a  macht Zerlegung in Woerter, Reg. 1)
+ak=100"[|;]"+a
+ak=11.."[|;]"+a
+ak=12.."[|;]"+a
+ak=13.."[|;]"+a
+ak=20.."[|;]"+a
+ak=21.."[|;]"+a
+ak=25.."[|;]"+a
+ak=270."[|;]"+a
+ak=300."[|;]"+a
+ak=310."[|;]"+a
+ak=35.."[|;]"+a
+ak=50.."[|;]"+a
+ak=185+a
+ak=860+a
+
+ak=9z1+s
+
+   Titelwort-Register, wahlweise mit Linkstrunkierung!
+ak=100"[|;]"+l
+ak=11.."[|;]"+l         l: mit Linkstrunkierung, d.h. jedes Teilwort
+ak=120"[|;]"+l
+
+  Namen:                d: Namen in Reg. 4
+ak=20."[|;]"+d 21.."[|;]"+d 25.."[|;]"+d 27.."[|;]"+d 27.."[|;]"+d
+
+  Koerp.+Verlage:
+ak=300."[|;]"+e
+ak=310."[|;]"+e
+ak=35.."[|;]"+e
+ak=360."[|;]"+e
+ak=37.."[|;]"+e
+ak=30.."[|]"+a
+ak=31.."[|]"+a
+ak=35.."[|]"+a
+
+ak=38..+q
+
+ak=4..."[|]"+f    Serientitel   Serienbearbeitung, Reg. 5
+
+ak=50.."[|;]"+g    Schlagwoerter   ebenfalls Reg. 1
+
+ak=540+W           WikiPedia
+
+ak=6..."[|;]"+h    Systematik-Notationen   Reg. 7 unverändert eintragen
+
+ak=900.+k          Signaturen  Reg. 8
+ak=910+k           ZgNummer
+
+ak=875+m           Inh.Verz.
+
+ak=070.+n          URL-Zerlegung!
+
+ak=1..."\w"+o    OpusNummern in Titelfeldern
+
+ak=640."|"+r       zusaetzl. Registereintraege
+
+  Erfassungs- u. Aenderungsdatum:
+ak=9zc+t
+ak=9ze+t
+
+  Schluessel fuer Stammdaten
+ak=n30+u           Uebernahmeregister
+ak=n20."[| ]"+w
+ak=n40."[|;]"+v       Verweisungen auf Hauptform
+ak=n35"[|;]"+v       Verweisungen auf Hauptform
+ak=n4p"[|;]"+v
+ak=n4r"[|;]"+v
+ak=n31."[|;]"+v
+ak=n00+_           Ersetzungsschluessel (V14)
+
+  ============================================================
+  Nutzerspezifische Abschnitte (Grossbuchst. als Sprungmarken)
+
+  Regelwerks- und Format-Dokumentation
+
+ak=R00+R
+ak=R10."[|;]"+T
+ak=R50"[|;]"+S
+  ak=R80"[ |]"+S
+ak=9h0";"+U
+ak=9T0+M    Terminsaetze
+  ============================================================
+  =============================================================
+   Umcodierung der Nutzereingabe
+   (Was bei der Suche eingegeben wird, das wird hier umcodiert
+    und zwar springt das Programm zu #-1, wenn im Register 1
+    zugegriffen wird, usw.
+    D.h.: Nutzer gibt "Müller" ein, gesucht wird "mueller"
+#-1
+#-3
+#-5
+#-6
+#-7
+#-8
+   Dafuer sorgen, dass . erhalten bleibt (faellt sonst weg)
+#u1 f"([/ .,-" F".,)]/- " ,"_._qq_" y1 ,"_qq_._"
+#+#
+
+#-9
+#u1 +#08iz i5,i e0   ISBN
+#u1 +# y0 p"Z" c"^Z978-" c"-" f"Z" p"i978-" e16
+#u1 +# y0 I4,i I4,I c"-" "i" e16         ISBN "-" im Text
+#u1 y0
+#+#
+#08iz e0
+!u1 +# c"i978-" e16
+!u1 +# c"i979-" e16
+!u1 f"i" p"i978-" e16
+#+#
+
+#-:
+  Sonderfunktionen im Reg.10
+#u1 y0 =BB
+#u1 +#unn i5,# e0
+#u1 +#unq P"q" e4 c"q" e0
+#u1 y0
+#+#
+  Es wurde #nnn eingegeben
+#unn e0
+#u1 y0 b1 p"R"
+#+#
+  Es wurde nnn eingegeben
+#unq e0
+#u1 y0 b1 p"R" =AA
+#u1 y0 p"R"
+#+#
+
+
+#+#
+
+   Reg. 2: Phrasen! Hier wird die Nutzereingabe bearbeitet, wenn etwas
+           fuer Reg. 2 eingegeben wird!
+#-2
+   Nur dann was machen, wenn ein blank vorkommt:
+#u1 +#unn c" " e0
+#u1
+#+#
+#unn e0
+  Umcodierung der Nutzereingabe Reg. 2: Beruecksichtigung der Phrasen
+#u1 y1 ,"_, _ _" P"(" p") " =ti
+#uti ,"_ - _ _" ,"_ - _ _" ,"_ et _ _" ,"_ of _ _" ,"_ und _ _" ,"_ a _ _" ,"_ u _ _" ,"_ in _ _" ,"_ i _ _" ,"_ d _ _" ,"_ des _ _" ,"_ ein _ _" ,"_ and _ _" ,"_ der _ _" ,"_ die _ _" ,"_ das _ _" ,"_ the _ _" =tu
+#utu y0 ,"_<__" ,"_>__" ,"_ e _ _" ,"_ im _ _" ,"_ to _ _" ,"_ eine _ _" ,"_ bei _ _" ,"_ on _ _" ,"_ an _ _" ,"_ en _ _" ,"_ fuer _ _" ,"_ by _ _" ,"_ de _ _" ,"_ du _ _" ,"_ zu _ _" ,"_ zum _ _" ,"_ zur _ _" =tu
+#utu y0 f". -" ,"_/_ _" ,"_/_ _" ,"_ + _ _" ,"_ ueber _ _" ,"_ von _ _" ,"_ le _ _" ,"_ la _ _" ,"_ les _ _" ,"_ for _ _" ,"_ auf _ _" ,"_ den _ _" ,"_ dem _ _" ,"_ del _ _" ,"_eines_ _" ,"_einer_ _" F"(" f") " =tu
+#utu y0 ,"_ae_a_" ,"_ue_u_" ,"_oe_o_" =tu  Umlaute -> Grundbuchstaben
+
+#utu y0 f" " e" " F"nmrs" F"e" P"*" t"ing*" t"ung*" F"*" e8 F",-"
+#utu y0 f" " b" " f" -" e" " F"nmrs" F"e" P"*" t"ing*" t"ung*" F"*" e6 F"-," p" "
+  falls man 3-Wort-Phrasen will, diese Zeile aktivieren:
+ #utu y0 f" " b" " f" " b" " f" -" e" " F"nmrs" F"e" P"*" t"ing*" t"ung*" F"*" e6 F"-," p" "
+
+#+#
+  ------------------------------------------
+  3. Abschnitte fuer die Schluesselerzeugung
+  ------------------------------------------
+  Zur Funktionsweise:
+  #-a ist die Sprungmarke, zu der es geht, wenn oben der
+      Befehl  ak=100"[|;]"+a   steht; in #u1 steht dann der
+       Inhalt, d.h. jeweils jeder Teil von #100, der durch ; oder |
+       abgetrennt ist. Abschnitt #-a wird also entsprechend oft
+       durchlaufen, jeweils mit anderem Inhalt in #u1
+
+#-a    Zerlegung in einzelne Woerter, Reg. 1
+#u1 e"" u u[] =ti e0    Am ersten Subfield code abschneiden
+#-ä        Schleife: #uti wortweise abarbeiten
+#uti e"[ |_-]" f" <+-=([" F".,:;)]>-)" p{ 8 "|1" }   Wort ins betr. Register (s. ak-Befehl)
+#uti +ä b"[ |-]" =ti    naechstes Wort
+#uti dti e0     weg mit dem letzten
+#+#
+
+
+#-c        Titelanfang
+#u1 e"[|]" e" :" f" " u p"|3"
+       zusaetzlich:
+#+p   xxx Phrasen-Indexierung (wegnehmen, wenn nicht gewuenscht!)
+#+#
+
+#-d        Namen
+#u1 e"" e"_" e"[[]" u f" " p"|4"
+#+#
+
+#-e
+#u1 e"" e"_" e"[[]" u p"|5"
+#+#
+
+    Beziehungen (Gesamtwerk u.a.)
+#-f
+#u1 +#460 i2,6 e0
+#u1 +# $$ u i2,2 i3,0 p"|3" P{ " [Bearb.]" }
+#u1 $$ u e";" F" " p"|6"
+#u1 +#uXF $s p" ; "
+#u1 +#uXF $v x"*1" e"." x">0" r5 p" ; "
+#u1 $$ x"*1" e"." r5 x">0" p" ; "
+#+#
+#uXF
+#u1 $y y0 p"."
+#u1 $i r2 p","
+  Seitenzahl, aktivieren falls im Index gew.
+ #u1 $p p","
+#+#
+#460 u "|3"
+#+a      dann noch Wortzerlegung Reg.1
+
+#-m    Inhaltsverz.Als Zeilentrenner koennen  und | vorkommen
+#u1 u ,"__ _" ,"_|_ _" =tc e0
+#-ó
+#utc e" " { 8 "|1" }
+#utc +ó b" " =tc
+#utc dtc e0
+#+#
+
+  Schlagwoerter: Reg.1, aber " *" am Ende
+#-g
+#u1 e"_" e"" f" " y1 p"|1"
+#+#
+
+#-h   Notationen. ? am Anfang wegnehmen
+      (steht, wenn bei Vergabe die Notation ungeprüft war)
+#ch +- i2,4 i3,0 e0    #640 nicht
+#u1 $$ y0 f" ?" p"|7"
+  xxx  Wenn gewuenscht, Ersch.Jahr an Notation anhaengen:
+ #040 x"*1" e"." ","
+#040 e4 ","
+#+#
+
+
+#-i        IdNummern
+#ch +#08iz i3,i e0
+#t{ "|9" }
+#u1 I3,0 { s3 } e0    Der Buchstabe hinter der #08!
+#u1 I3,0 e1 P{ s5 }
+#u1 f" "
+#+#
+#08iz e0
+!u1 +# f"ISBN " e" " P"zz" e17 c"^zz" p"„" c"„97?-" f"„" e15 "|9i"
+  sonst 11stellig indexieren und 978- davor
+!u1 f"ISBN " e11 "|9i978-"
+#+#
+
+#-j
+#9A0 +• I5,U e0    // wenn an Pos. 5 kein U ist, -> #-ì
+#9A0 f"U" =vs e0
+      Zerlegen am Zeichen | und in Reg. 10
+#-¢
+#uvs e"|" e":" y0 p{ 8 "|:" }
+#uvs e"|" b":" y0 p{ 8 "|:u " }  Eintrag unter u im Reg. 10
+#uvs e"|" e":" y0 p" _" e";" P";"
+#uvs +¢ b"|" =vs
+#uvs dvs e0
+#+#
+
+#-•
+#9A0 y0 $$ p{ 8 "|:SYSA" }
+#+#
+
+#-k
+#u1 i3,0 e"" y1 p"|8"    Signatur
+#u1 i3,1 e"" y1 p"|9Z"   ZgNum
+#+#
+
+#-n   URL-Zerlegung, "Woerter" gleichfalls in Reg. 1
+#u1 +- c"mailto:" e0
+#u1 B"http://" e"[?]" e"/index.htm" P"XX" e".htmXX" e".htmlXX" e".aspXX" F"X" =rl
+#u1 y p"XXXX/" ,"_ _/_" f"X" Arl
+#-¤
+#url e"[./;,]" f"~_" F"_" { 8 "|1" }
+#url +¤ b"[./;,]" =rl e0
+#url drl e0
+#+#
+
+#-o    OpusNummer
+#u1 e" " e"" p"|1"
+#u1 x"*1" x">0" e"." e"" { 8 "|1" }
+#+#
+
+
+   Zerlegung in Zweier- oder Dreier-Wortgruppen
+   Zuerst im Titelstring ein paar Ersetzungen vornehmen:
+#-p
+#u1 e"" ,"_ : _ ,, _" ,"_ = _ _" y1 u f".(/- " P"(" p") " =ti
+#uti y0 ,"_ - _ _" ,"_ and _ _" ,"_ - _ _" ,"_ et _ _" ,"_ of _ _" ,"_ a _ _" ,"_ u _ _" ,"_ in _ _" ,"_ i _ _" ,"_ d _ _" ,"_ des _ _" ,"_ ein _ _" ,"_ und _ _" ,"_ der _ _" ,"_ die _ _" ,"_ das _ _" ,"_ the _ _" =ti
+#uti y0 ,"_<__" ,"_>__" ,"_ e _ _" ,"_ im _ _" ,"_ to _ _" ,"_ eine _ _" ,"_ bei _ _" ,"_ on _ _" ,"_ an _ _" ,"_ en _ _" ,"_ fuer _ _" ,"_ by _ _" ,"_ de _ _" ,"_ du _ _" ,"_ zu _ _" ,"_ zum _ _" ,"_ zur _ _" =ti
+#uti y0 f". -" ,"_/_ _" ,"_-_ _" ,"_ + _ _" ,"_ ueber _ _" ,"_ von _ _" ,"_ le _ _" ,"_ la _ _" ,"_ les _ _" ,"_ for _ _" ,"_ auf _ _" ,"_ den _ _" ,"_ dem _ _" ,"_ del _ _" ,"_eines_ _" ,"_einer_ _" F"(" f") " =ti
+#uti y0 ,"_ae_a_" ,"_ue_u_" ,"_oe_o_" =ti    Umlaute -> Grundbuchstaben
+  Praeparierter String steht in #uti. Daraus jetzt die Eintraege bilden
+  Die einzelnen Woerter werden dabei sinnvoll verkuerzt!
+#-£
+   Jede "phrase" soll in Register 2:
+#t{ 8 "|2" }
+#uti y0 f" " e" " F"nmrs" F"e" P"*" t"ing*" t"ung*" F"*" e8 F",-"
+#uti y0 f" " b" " f" -+" e" " e",," F"nmrs" F"e" P"*" t"ing*" t"ung*" F"*" e6 F"-," p" "
+  Aktivieren, wenn 3-Wort-Phrasen gewuenscht:
+ #uti y0 f" " b" " f" " b" " f" -" e" " e",," F"nmrs" F"e" P"*" t"ing*" t"ung*" F"*" e6 F"-," p" "
+#uti f" " b" " f" " =ti
+#uti +£ c" " e0
+#uti dti e0
+#+#
+
+#-q   Hochschulschrift
+#u1 e":" y1 "|2H"
+#u1 b":" ","
+#+#
+
+#-r    Sondereintraege (#640)
+#t{ s4 }
+#ch e1 "|"
+#t{ s5 }
+#u1 y0     genau so eintragen, wie es in #640 steht
+#+#
+
+
+#-s   Codes
+#03g +#03g e0
+#03s +#03g e0
+#t{ "|7zzr" }
+#030 +#
+#n10 +#n10 e0
+#t{ "content:text / unmediated / volume" }
+#050 ","
+#+#
+#03g e0
+#t{ "|7zzrcontent:" }
+#030
+#03g " / "
+#03s " / "
+#t{ 8 "|7zzrmedia:" }
+#03g
+#030 " / "
+#t{ 8 "|7zzrcarrier:" }
+#03s
+#030 " / "
+#+#
+
+#n10 i5,g "authority / place!" e"!"
+#n10 i5,p "authority / person!" e"!"
+#n10 i5,s "authority / subject!" e"!"
+#n10 i5,b "authority / corporate!" e"!"
+
+#+#
+
+#-t        Datum ohne Uhrzeit : Reg. 9
+#u1 i3,c { "|9C" } e0   Erfassungsdatum: Praefix C
+#u1 i3,e { "|9E" } e0   Aenderungsdatum: Praefix E
+#u1 e"/"
+#+#
+
+#-u     Uebernahmeregister f.d. Stammformen aus #n30, Reg. 10
+
+
+   SWD: 8 Zeilen wegnehmen, wenn Stammform nicht im Reg. 1 stehen soll:
+#n10 +#990x p"|4" c"p" e2
+#n10 +#990x p"|5" c"b" e2
+#n10 +#990y p"|3" c"w" e2
+#n10 +#990z p"|7" c"c" e2
+#t{ "|1" }
+#990x
+#u1 $$
+#n50 y0 p"  [" P"]"
+
+#t{ 8 }
+#u1 +#990x e0
+
+#990y   Titelschlagwort
+#u1 B":" u f" "
+#u1 c":" e":" y1 " / "
+#t{ 8 }
+#u1 c":" e":" p"|3"
+#u1 c":" b":" f" " u y1 p": " P{ 8 }
+
+  #n30
+#990x e0
+#u1 $$ u ,"_._qq_" y1 ,"_qq_._" p"|:"
+#u1 $w e";" F" " f" " p", "   WerkId
+#n50 +#n00 y0 " [" P"]"
+#n80 $$ b0 e"-" y0 " [" P"]"
+#n00 +#n10 e"-" y1 p" _"
+#000 +#n10 e"-" y1 p" _"
+#+#
+#n10 +# c"[pbstw]" e0
+#n35 +#n30 e0
+#+#
+#n30 ,"_._qq_" y1 ,"_qq_._" { 8 "|7" }
+#n35 "   *" y0
+#+#
+
+#990z
+#n30
+#n35 y0 e"|" "   *"
+#+#
+
+
+#-v    Verweisungen von Verweisungsformen auf Hauptformen
+  Welches Register? (typabhaengig)
+#n10 +#n31x y0 c"p" p"|4" e2
+#n10 +#n31x y0 c"b" p"|5" e2
+#n10 +#n31x y0 c"w" p"|3" e2
+#n10 +#n31y y0 c"c" p"|7" e2
+  sonst Reg. 1
+#t{ "|1" }
+#n31x e0
+#u1 $$ f" " u u[]
+  Verweisungspfeil
+#t{ " -> " }
+#nr +#n10 e0
+
+#n31y e0
+#u1 i3,1 i4,d "dy" e2
+#u1 f" " ,"_._xxx_" y1 ,"_xxx_._"
+#t{ " -> " }
+#n30 $$ ,"_._xxx_" y1 ,"_xxx_._" f" " P" "
+#+#
+
+  Hauptform (auf die verwiesen wird)
+  Werw. auf anderes Register?
+#n10 +#n30 y0 c"k" p"|7" e2
+#n10 +#n30 y0 c"a" p"|7" e2
+#n10 +#n30 y0 c"A" p"|7" e2
+#n10 +#n30 y0 c"c" p"|7" e2
+#n10 +#n30 y0 c"d" p"|7" e2
+#n10 +#n30 y0 c"l" p"|7" e2
+#n10 +#n30 y0 c"u" p"|7" e2
+#n30 $$ u ,"_._xxx_" y1 ,"_xxx_._" f" " P" "
+#+#
+
+#-w   #n20
+#u1 ,"_._zzzz_" y1 ,"_zzzz_._" p"|7"
+#n30 y1 "  *"
+#+#
+
+#-W
+#u1 "~w9" y0
+#+#
+
+#-î   Schleife
+#uvs e"|" e":" y0 p{ 8 "|:" }
+#uvs e"|" b":" y0 p{ 8 "|:u " }  Eintrag unter u im Reg. 10
+#uvs e"|" e":" y0 p" _" e";" P";"
+#uvs +î b"|" =vs    Noch ein | ? Dann wieder #-î
+                 In #uvs ist dann nur noch der Teil hinter |
+#uvs dvs e0
+#+#
+
+  ================================================
+  Schluessel fuer Sonderaufgaben
+
+#-@        Primaerschluessel
+           hier kein #u1 zulaessig! (sonst funktioniert update nicht)
+
+#000 p"|9"
+#020 +# e"=" p{ 8 "|9" }    Schluessel fuer Verkn. zum uebergeordneten Satz
+#021 +#9DG e"=" p{ 8 "|9" }    Schluessel fuer Verkn. zum uebergeordneten Satz
+#n30 +#n10 e0    Normsatz, dann mit  "=#n30"  dahinter
+#9A0 +j e0               Systemsaetze
+#000 +# e0
+#t{ "|:KEIN PRIM-SCHLUESSEL" }
+#+#
+
+#n10 e0
+#t{ 8 }
+  Ersetzungsschluessel f. V14 f. bestimmte Normsaetze
+#n00 +#n30 e"-" y1 p"|:"    NormIdNr normalerweise in #n00
+#000 +#n30 e"-" y1 p"|:"    sonst in #n00
+#+-
+
+#n30 $$ p"=|7" y0     Ansetzungsform f. V14-Ersetzung
+  aber #000 zusaetzlich als Ersetzungsschluessel:
+#000 +#n30 e"-" y1 p{ 8 "|:" }
+#+#
+#n30 $$ p"=|7" y0     Ansetzungsform f. V14-Ersetzung
+#+#
+
+#9DG H B"." e4 p"+"   Expl.Satz Jahreszahl
+#+#
+
+   Abschnitt fuer die Kurzanzeige: besteht nur aus Hauptteil von #100 u. 040
+#-0
+#hi +- e0
+#bp & 9    wegen V23 Unicode
+#bq & 9
+#dV        V23: VS-Ersetzungen im gesamten Satz
+#t{ "|0" }
+#R00 y0 b1 e3 p"#" P" : "
+#R10 y0
+#R10e y0 " (" P")"
+#R80 e"" p" - " y0
+#R00 +# e0
+#9h0 +# e";" y0      Sonderfall Beispieldatensatz!
+#020 +#100x e"+" |90
+#100 +#100y y0 e" :" e"[|]" e50 F" " U
+#100x e0
+#100 e"[|]" y0 e38 F" " U
+#</
+#020 +#310 B"=" B"+" y0 e10 p" :" P". " 
+#310 +#100 y0 e" :" e"[|]" e50 F" " U
+#300 +#100 y0 e" :" e"[|]" e50 F" " U
+#750 +#100 $$ y0 " :" e"[|]" e50 F" " U
+#n10 +#n30 i5,p "Person: !" e"!" y0
+#n10 +#n30 i5,g "Place: !" e"!" y0
+#n10 +#n30 i5,s "Subject: !" e"!" y0
+#n10 +#n30 i5,a "Geocode: !" e"!" y0
+#9L0 +# "Lexikonsatz: " y0
+#9T0d e8 "Termin: "
+#9T0 +# p" - " y0
+
+#031 +#n30 i5,w "Sonder-Datensatz: !" e"!" y0
+#031 +#n30 i5,x "Sonder-Datensatz: !" e"!" y0
+#n10 +#n30 i5,c e0
+#n10 +#n30 "Authority: !" e"!" y0
+
+#9A0 +#n30 y0 e1 "Systemdatensatz, Typ: "
+#R10 +#n30 y0 "Formatsatz: "
+#t{ "ohne Titel" }
+#100y e0
+#100 y0 $$ e"[:|]" e p" -- "
+#100 y0 $$ e"[:|]" m p" : "
+#200 +#040 $$ y0 e20 p{ &50 ":" }
+#20a +#040 $$ y0 e20 p{ &50 ":" }
+#20c +#040 $$ y0 e20 p{ &50 ":" }
+#21e +#040 $$ y0 e20 p{ &50 ":" }
+#210 +#040 $$ y0 e20 p{ &50 ":" }
+#300 +#040 $$ y0 e20 p{ &50 ":" }
+#310 +#040 $$ y0 e20 p{ &50 ":" }
+
+#040 +#900 x"*1" e"." p{ &72 ":" }
+#160 d x"*1" e"." p{ &72 ":" }
+#900 $$ e"=" p{&77 ":"}
+#+#
+
+#n30 $$ y0
+#n35 $$ y0 " : " e"|"
+#+#
+
+  Abschnitt für Restriktionen
+#-/
+#t{ "|/" }   notwendiges Praefix
+#040 +#050 e4   Jahreszahl
+#04p +#050 e4   falls #040 nicht vorh.!
+#160 +#050 $d e4   falls beide nicht vorh.
+#860 +#050 T", " x"*1" e4   letzte Moeglichkeit
+#t{ "0000" }    Falls gar keine Jahreszahl
+#050 +#070 e2     Sprachcode anhaengen
+#t{ "00" }
+#070 +# "2" e1   2=online, 1=offline
+#t{ "1" }
+#+#
+
+#-.   SR-Hilfsschluessel fuer verkn. Untersaetze  V15
+      der Schl. wird automatisch im Register 9 angelegt (s.o. i7=9..)
+      (fuer die satzuebergreifende Suche - Schiller-Raeuber-Problem)
+
+#000 +# c"+" y0 e"+" X9   NUR dann, wenn '+' in #00 vorkommt!
+#020 +# c"+" y0 e"+" X9     oder wenn es in #09 vorkommt
+                    Prim.schl. sind im Reg. 9
+#+-  nichts, wenn es kein verkn. Untersatz ist
+
+#-_                  Ersetzungsschluessel ins Reg. 10 (Zeitschr.Titel)
+#11z +#n00 e0
+#100 +#n00 e0
+#+-
+#n00 e"-" y1 p"|:"
+#11z +# p"=|4" y0
+#100 $$ p"=|4" y0
+#n30 +# e0
+  Uebernahmeschluessel, wenn kein #n30, dann aus #100
+#100 $$ { 8 "|:" }
+#n00 e"-" " _"
+#+#
+
+
+  ============================================================
+  Nutzerspezif. Schl.
+
+#-R   RegelNr ins Reg.10 mit R davor
+#bp # 35
+#t{ "|:R" }
+#u1 b1 c"-" e"-" P"-"
+#u1 +#R00a i5,n e0
+#u1 B"-" =rn e0
+#-é
+#urn e"." r2
+#urn +é b"." =rn
+#urn drn e0
+#+#
+#R00a
+#u1 y0 b1 P{ "\#" }
+#u1 y0 b1
+#R10 y0 p" : "
+#R80 e"" p" -- " y0
+#bp # 2
+#+#
+
+#-S
+#u1 f" " F" " y1 p"|9T"
+#+#
+
+#-T         Regeltitel -> Reg. 10 mit T davor
+#u1 y1 f" " p"|:T"
+#ch +# i2,5 i3,0 e0   #R50: nur term
+!u1 y0 p"\"
+#R00 y0 b1 p" = #"
+#+#
+
+#-U  Demo-Schlagwort
+#u1 u e"_" f" /(<)+-" F"* " p"|9zz "
+#+#
+
+    MemoFlex
+#-M     Eintraege im Reg.10
+#u1 y1 =mo e0     #9T0 Feld zerlegen bei ;
+#-æ
+#umo e";" y0 p{ 8 "|:M " }
+#umo +æ b";" f" " =mo
+#9T0d +#9T0 e0
+#+#
+#9T0 e0
+#t{ 8 "|:Md" }   Eintrag f. Termin
+#9T0d y0 e14 p"-" P" " y0     Md-date(user):text
+#9T0o y0 p"[" P"] "     Operator
+#9T0 y0 " "
+#9T0v +#9T0 y0 e14 p{ 8 "|:Mv" } P" " y0     Mvdate:text  (Verfallsdatum)
+#+#
+#9T0 y0
+#+#
+   // MemoFlex
+
+  Personenname: Wenn kein , vorkommt, dann umdrehen
+#-4
+#u1 +â c"," e0
+#u1 +# c"^ "
+#u1 T" " f" "
+#u1 t" " ", "
+#+#
+#-â
+#u1 e"," Aoo
+#u1 b"," f" " ", " Aoo
+#u1 e","
+#u1 b"," f" " ", "
+#+#
+
+
+
+  Fast dasselbe wie #-a, aber mit Linkstrunkierung!
+#-l
+#u1 e"" u u[] =ti e0    Am ersten Subfield code abschneiden
+#-ö                   Schleife: #uti wortweise abarbeiten
+#uti e"[ |_-]" f" <+-=([" F".,:;)]>-)" y1 b1 =tw
+#-ü
+#utw +#uti v5,@ e0
+    bestimmte sehr haeufige Kombinationen ausblenden
+    Kostet Zeit! Bringt etwa 10% weniger unsinnige Eintraege im Reg. 1
+  Buchstabenkombinationen, mit denen kein richtiges Wort anfaengt:
+#utw +à p"C" c"Cmm" e0
+#utw +à p"C" c"Cmp" e0
+#utw +à p"C" c"Css" e0
+#utw +à p"C" c"Cnn" e0
+#utw +à p"C" c"Cnz" e0
+#utw +à p"C" c"Crs" e0
+#utw +à p"C" c"Crk" e0
+#utw +à p"C" c"Cck" e0
+#utw +à p"C" c"Cct" e0
+#utw +à p"C" c"Cgs" e0
+#utw +à p"C" c"Chn" e0
+#utw +à p"C" c"Chl" e0
+#utw +à p"C" c"Chm" e0
+#utw +à p"C" c"Cht" e0
+#utw +à p"C" c"Chs" e0
+#utw +à p"C" c"Chw" e0
+#utw +à p"C" c"Ckt" e0
+#utw +à p"C" c"Clt" e0
+#utw +à p"C" c"Cnc" e0
+#utw +à p"C" c"Cnd" e0
+#utw +à p"C" c"Cnf" e0
+#utw +à p"C" c"Cng" e0
+#utw +à p"C" c"Cns" e0
+#utw +à p"C" c"Cnt" e0
+#utw +à p"C" c"Cnv" e0
+#utw +à p"C" c"Crb" e0
+#utw +à p"C" c"Crg" e0
+#utw +à p"C" c"Crf" e0
+#utw +à p"C" c"Crh" e0
+#utw +à p"C" c"Crm" e0
+#utw +à p"C" c"Crn" e0
+#utw +à p"C" c"Crr" e0
+#utw +à p"C" c"Ctt" e0
+#utw +à p"C" c"Crt" e0
+#utw +à p"C" c"Cts" e0
+#utw +à p"C" c"Cng" e0
+#utw +à p"C" c"Crl" e0
+
+  #utw y0 p{ 8 "|1" }      oder:
+#utw y0 u>> p{ 8 "|1" }     u>> prueft Tabelle 2!
+                            enthaelt hochfrequente Unsinns-Wortteile
+
+#-à
+   xxx  Linkstrunkierung (deaktivieren, falls nicht gewuenscht!!)
+#utw +ü y0 l>3 b1 =tw
+
+#uti +ö b"[ |-]" =ti    naechstes Wort
+#uti dti e0
+#+#
+  ==========================================================
+
+   Zeichenumwandlungen:
+
+titab         Lade itab.npt
+
+p  3     Unterfeld-Steuerzeichen:
+           zusammen mit dem nachfolgenden Zeichen durch 1 blank ersetzen
+p : 58
+
+  ----------------------------
+  4. Symbolische Registernamen  (im Fernglas-Menue bzw. f. avanti)
+  ----------------------------
+I ALL 1 "All Words"
+I TAF 3 "Titles (beginnings)"
+I PER 4 "Names"
+I KOR 5 "Publishers"
+I SER 6 "Series"
+ I KLA 7 "Klassifikationen"
+ I SGN 8 "Signaturen"
+I ISB 9i978- "ISBN (old)"
+I ISN 9i "ISBN (neu)"
+I ISS 9s "ISSN"
+I NUM 9 "Alle IdNummbers"
+ I HSS 2H "Dissertation place:year"
+I TPH 2 "Two-word phrases"
+ I NUM : "Numbers"
+ I MEM :M. "Memos/Termine"
+I TYP 7zzr "RDA Types"
+I RDC 7zzrcontent: "RDA Content Type"
+
+I WIK w9 "Wikipedia"
+
+R DAT r1 "Entstehungsjahr d. Dokuments"
+R SPR r5 "Sprache des Dokuments"
+R DTY r7 "Typ: 1=Offline / 2=Online"
+
+i1=":'"  Wenn der Anfang eines Schluessels, bis zu einem dieser Zeichen,
+         ein Stopwort ist, wird der Schluessel ignoriert
+
+i3=".,-]:? "   Diese Zeichen sollen am Ende jedes Schluessels beseitigt werden
+
+i2=" +,"    Schluessel, die mit einem dieser Zeichen beginnen, werden ignoriert
+
+
+  Tabelle  o.npt  laden (Zeichenzuordnung  intern<->extern (Datenanzeige))
+to
+tswl1    Stoppwortliste  swl1.npt  laden
+
+  V24.4: (2 Zeilen) f. Unicode
+ib=59   ; = Sequenzen-Steuercode    fuer V23, auch pa:
+pa=180 145 136 149 168 166 227 179 186 175 215 171 184 191 161 173 247 150
+
+p # 2      # ist Steuercode für Texel-Ersetzungen
+           Wenn #x vorkommt, soll es im Index spurlos verschwinden
+p .8 0    Sonderbefehl (s. Vb.163) damit das auch bei y0 klappt!
+q # 2
+q .8 0
+
+  Fußabschnitt, für sog. Register-Maskerade
+F
+#u1 y0 b"\"    Nur das zeigen, was in der Registerzeile hinter \ steht
+#+#
+
+  ***************************************************************************
+  ------ Notwendige Einstellungen, nicht aendern: ---------------------------
+zl=0     kein Zeilenumbruch
+zm=0     keine Seiteneinteilung
+ag=0     Hierarchische Untereinheiten ebenfalls fuer Index behandeln
+i4=1     V14-Verknüpfungen
+i5=_     Steuerzeichen f. Verkn.
+i6=10    Reg. 10 f. Verkn.
+i7=10    ebenso f. SR-Schluessel (satzuebergreifende Suche)
+ic=1     Umcodierung einschalten (Sprungmarken #-1 - #-9 f. Reg. 1-9
+  ---------------------------------------------------------------------------
+  Max. Laenge der Indexeintraege
+il=120         mehr als 249 geht aber nicht!
+ir=7     7 Byte f. Restriktionen (Jahreszahl, Sprache, 1/0 = online/offline
+  Ergebnis-Kurzzeile: soll 80 Zeichen lang sein
+i0=88
+
+  V24.4: u-Befehle entfernen:
+      V23: u-Befehle nur fuer a99 bei Einlesen von Fremddaten
+      und fuer avanti bei Schreibfunktion
+u 000           macht schon vorhandene u-Befehle ungueltig!
+u 194 163 163        POUND SIGN
+u 194 167 167        SECTION SIGN
+u 194 169 169        COPYRIGHT SIGN
+u 194 172 172        NOT SIGN
+u 194 176 176        DEGREE SIGN
+u 194 181 181        MICRO SIGN
+u 194 182 020        PILCROW SIGN
+u 194 183 183        MIDDLE DOT
+u 226 150 188 031    BLACK DOWN-POINTING TRIANGLE
+u 226 150 190 031    BLACK DOWN-POINTING SMALL TRIANGLE
+u 196 155 202
+u 195 135 199
+u 195 188 252
+u 195 169 233
+u 195 162 226
+u 195 164 228
+u 195 160 224
+u 195 165 229
+u 195 167 231
+u 195 170 234
+u 195 171 235
+u 195 168 232
+u 195 175 239
+u 195 174 238
+u 195 172 236
+u 195 132 196
+u 195 133 197
+u 195 137 201
+u 195 166 230
+u 195 134 198
+u 195 180 244
+u 195 182 246
+u 195 178 242
+u 195 187 251
+u 195 185 249
+u 195 191 255
+u 195 150 214
+u 195 156 220
+u 197 165 162
+u 194 163 163
+u 197 159 204
+u 197 175 195
+u 197 174 221
+u 195 161 225
+u 195 173 237
+u 195 179 243
+u 195 186 250
+u 195 177 241
+u 195 145 209
+u 196 140 208
+u 196 141 240
+u 197 153 194
+u 197 152 174
+u 194 172 172
+u 197 160 138
+u 197 161 154
+u 195 189 253
+u 197 189 219
+u 197 190 190
+u 196 177 185
+u 195 158 222
+u 195 190 254
+u 204 129 180
+u 204 128 145
+u 204 130 136
+u 204 135 149
+u 204 136 168
+u 204 134 166
+u 204 139 227
+u 204 140 179
+u 204 138 186
+u 204 132 175
+u 204 174 215
+u 204 168 171
+u 204 167 184
+u 204 163 191
+u 202 191 146
+u 194 169 169
+u 195 152 216
+u 194 164 164
+u 204 184 161
+u 226 134 146 129
+u 226 130 172 128
+u 204 182 173
+u 204 178 247
+u 206 177 151
+u 195 159 223
+u 206 147 152
+u 207 128 153
+u 196 131 188
+u 207 131 155
+u 194 181 181
+u 206 179 177
+u 204 131 150
+u 196 176 157
+u 197 163 144
+u 206 180 147
+u 226 136 158 148
+u 195 184 248
+u 196 133 170
+u 196 153 200
+u 196 134 206
+u 196 135 205
+u 197 129 217
+u 197 130 218
+u 197 131 213
+u 197 132 245
+u 195 147 211
+u 197 154 192
+u 194 176 176
+u 197 155 193
+u 194 183 183
+u 197 185 212
+u 197 186 210
+u 197 187 203
+u 197 188 207
+
+  provisorisch!
+u 195 128 065        LATIN CAPITAL LETTER A WITH GRAVE
+u 195 129 065 180       LATIN CAPITAL LETTER A WITH ACUTE
+u 195 130 065        LATIN CAPITAL LETTER A WITH CIRCUMFLEX
+u 195 131 065        LATIN CAPITAL LETTER A WITH TILDE
+u 195 136 069        LATIN CAPITAL LETTER E WITH GRAVE
+u 195 138 069        LATIN CAPITAL LETTER E WITH CIRCUMFLEX
+u 195 139 069        LATIN CAPITAL LETTER E WITH DIAERESIS
+u 195 140 073        LATIN CAPITAL LETTER I WITH GRAVE
+u 195 141 073        LATIN CAPITAL LETTER I WITH ACUTE
+u 195 142 073        LATIN CAPITAL LETTER I WITH CIRCUMFLEX
+u 195 143 073        LATIN CAPITAL LETTER I WITH DIAERESIS
+u 195 144 068        LATIN CAPITAL LETTER ETH
+u 195 176 100        LATIN SMALL LETTER ETH
+u 196 144 068        LATIN CAPITAL LETTER D WITH STROKE
+u 196 145 100        LATIN SMALL LETTER D WITH STROKE
+u 195 146 079 ó       LATIN CAPITAL LETTER O WITH GRAVE
+u 195 148 079 ô       LATIN CAPITAL LETTER O WITH CIRCUMFLEX
+u 195 149 079        LATIN CAPITAL LETTER O WITH TILDE
+u 195 153 085        LATIN CAPITAL LETTER U WITH GRAVE
+u 195 154 085        LATIN CAPITAL LETTER U WITH ACUTE
+u 195 155 085        LATIN CAPITAL LETTER U WITH CIRCUMFLEX
+u 195 157 089        LATIN CAPITAL LETTER Y WITH ACUTE
+u 195 163 097        LATIN SMALL LETTER A WITH TILDE
+u 195 181 111        LATIN SMALL LETTER O WITH TILDE
+u 196 128 065        LATIN CAPITAL LETTER A WITH MACRON
+u 196 129 097        LATIN SMALL LETTER A WITH MACRON
+u 196 130 065        LATIN CAPITAL LETTER A WITH BREVE
+u 196 132 065        LATIN CAPITAL LETTER A WITH OGONEK
+u 196 136 067        LATIN CAPITAL LETTER C WITH CIRCUMFLEX
+u 196 137 099        LATIN SMALL LETTER C WITH CIRCUMFLEX
+u 196 138 067        LATIN CAPITAL LETTER C WITH DOT ABOVE
+u 196 139 099        LATIN SMALL LETTER C WITH DOT ABOVE
+u 196 142 068        LATIN CAPITAL LETTER D WITH CARON
+u 196 143 100        LATIN SMALL LETTER D WITH CARON
+u 196 146 069        LATIN CAPITAL LETTER E WITH MACRON
+u 196 147 101        LATIN SMALL LETTER E WITH MACRON
+u 196 148 069        LATIN CAPITAL LETTER E WITH BREVE
+u 196 149 101        LATIN SMALL LETTER E WITH BREVE
+u 196 150 069        LATIN CAPITAL LETTER E WITH DOT ABOVE
+u 196 151 101        LATIN SMALL LETTER E WITH DOT ABOVE
+u 196 152 069        LATIN CAPITAL LETTER E WITH OGONEK
+u 196 154 069        LATIN CAPITAL LETTER E WITH CARON
+u 196 156 071        LATIN CAPITAL LETTER G WITH CIRCUMFLEX
+u 196 157 103        LATIN SMALL LETTER G WITH CIRCUMFLEX
+u 196 158 071        LATIN CAPITAL LETTER G WITH BREVE
+u 196 160 071        LATIN CAPITAL LETTER G WITH DOT ABOVE
+u 196 161 103        LATIN SMALL LETTER G WITH DOT ABOVE
+u 196 162 071        LATIN CAPITAL LETTER G WITH CEDILLA
+u 196 163 103        LATIN SMALL LETTER G WITH CEDILLA
+u 196 164 072        LATIN CAPITAL LETTER H WITH CIRCUMFLEX
+u 196 165 104        LATIN SMALL LETTER H WITH CIRCUMFLEX
+u 196 168 073        LATIN CAPITAL LETTER I WITH TILDE
+u 196 169 105        LATIN SMALL LETTER I WITH TILDE
+u 196 170 073        LATIN CAPITAL LETTER I WITH MACRON
+u 196 171 105        LATIN SMALL LETTER I WITH MACRON
+u 196 172 073        LATIN CAPITAL LETTER I WITH BREVE
+u 196 173 105        LATIN SMALL LETTER I WITH BREVE
+u 196 174 073        LATIN CAPITAL LETTER I WITH OGONEK
+u 196 175 105        LATIN SMALL LETTER I WITH OGONEK
+u 196 180 074        LATIN CAPITAL LETTER J WITH CIRCUMFLEX
+u 196 181 106        LATIN SMALL LETTER J WITH CIRCUMFLEX
+u 196 182 075        LATIN CAPITAL LETTER K WITH CEDILLA
+u 196 183 107        LATIN SMALL LETTER K WITH CEDILLA
+u 196 185 076        LATIN CAPITAL LETTER L WITH ACUTE
+u 196 186 108        LATIN SMALL LETTER L WITH ACUTE
+u 196 187 076        LATIN CAPITAL LETTER L WITH CEDILLA
+u 196 188 108        LATIN SMALL LETTER L WITH CEDILLA
+u 196 189 076        LATIN CAPITAL LETTER L WITH CARON
+u 196 190 108        LATIN SMALL LETTER L WITH CARON
+u 197 133 078        LATIN CAPITAL LETTER N WITH CEDILLA
+u 197 134 110        LATIN SMALL LETTER N WITH CEDILLA
+u 197 135 078        LATIN CAPITAL LETTER N WITH CARON
+u 197 136 110        LATIN SMALL LETTER N WITH CARON
+u 197 140 079        LATIN CAPITAL LETTER O WITH MACRON
+u 197 141 111        LATIN SMALL LETTER O WITH MACRON
+u 197 142 079        LATIN CAPITAL LETTER O WITH BREVE
+u 197 143 111        LATIN SMALL LETTER O WITH BREVE
+u 197 144 079        LATIN CAPITAL LETTER O WITH DOUBLE ACUTE
+u 197 146 079        LATIN CAPITAL LIGATURE OE
+u 197 147 O           LATIN SMALL LIGATURE OE
+u 197 148 082        LATIN CAPITAL LETTER R WITH ACUTE
+u 197 149 114        LATIN SMALL LETTER R WITH ACUTE
+u 197 150 082       LATIN CAPITAL LETTER R WITH CEDILLA
+u 197 151 114        LATIN SMALL LETTER R WITH CEDILLA
+u 197 156 083        LATIN CAPITAL LETTER S WITH CIRCUMFLEX
+u 197 157 115        LATIN SMALL LETTER S WITH CIRCUMFLEX
+u 197 158 083        LATIN CAPITAL LETTER S WITH CEDILLA
+u 197 162 084        LATIN CAPITAL LETTER T WITH CEDILLA
+u 197 164 084        LATIN CAPITAL LETTER T WITH CARON
+u 197 168 085        LATIN CAPITAL LETTER U WITH TILDE
+u 197 169 117        LATIN SMALL LETTER U WITH TILDE
+u 197 170 085        LATIN CAPITAL LETTER U WITH MACRON
+u 197 171 117        LATIN SMALL LETTER U WITH MACRON
+u 197 172 085        LATIN CAPITAL LETTER U WITH BREVE
+u 197 173 117        LATIN SMALL LETTER U WITH BREVE
+u 197 176 085        LATIN CAPITAL LETTER U WITH DOUBLE ACUTE
+u 197 178 085        LATIN CAPITAL LETTER U WITH OGONEK
+u 197 180 087        LATIN CAPITAL LETTER W WITH CIRCUMFLEX
+u 197 181 119        LATIN SMALL LETTER W WITH CIRCUMFLEX
+u 197 182 089        LATIN CAPITAL LETTER Y WITH CIRCUMFLEX
+u 197 183 121        LATIN SMALL LETTER Y WITH CIRCUMFLEX
+u 197 184 089        LATIN CAPITAL LETTER Y WITH DIAERESIS
+u 199 141 065        LATIN CAPITAL LETTER A WITH CARON
+u 199 142 097        LATIN SMALL LETTER A WITH CARON
+u 199 143 073        LATIN CAPITAL LETTER I WITH CARON
+u 199 144 105        LATIN SMALL LETTER I WITH CARON
+u 199 145 079        LATIN CAPITAL LETTER O WITH CARON
+u 199 146 111        LATIN SMALL LETTER O WITH CARON
+u 199 147 085        LATIN CAPITAL LETTER U WITH CARON
+u 199 148 117        LATIN SMALL LETTER U WITH CARON
+u 199 149 154        LATIN CAPITAL LETTER U WITH DIAERESIS AND MACRON
+u 199 149 129        LATIN SMALL LETTER U WITH DIAERESIS AND MACRON
+u 199 150 154        LATIN CAPITAL LETTER U WITH DIAERESIS AND ACUTE
+u 199 151 129        LATIN SMALL LETTER U WITH DIAERESIS AND ACUTE
+u 199 152 154        LATIN CAPITAL LETTER U WITH DIAERESIS AND CARON
+u 199 153 129        LATIN SMALL LETTER U WITH DIAERESIS AND CARON
+u 199 154 154        LATIN CAPITAL LETTER U WITH DIAERESIS AND GRAVE
+u 199 155 129        LATIN SMALL LETTER U WITH DIAERESIS AND GRAVE
+u 199 156 142        LATIN CAPITAL LETTER A WITH DIAERESIS AND MACRON
+u 199 158 132        LATIN SMALL LETTER A WITH DIAERESIS AND MACRON
+u 199 162 146        LATIN CAPITAL LETTER AE WITH MACRON
+u 199 163 145        LATIN SMALL LETTER AE WITH MACRON
+u 199 166 071        LATIN CAPITAL LETTER G WITH CARON
+u 199 167 103        LATIN SMALL LETTER G WITH CARON
+u 199 168 075        LATIN CAPITAL LETTER K WITH CARON
+u 199 169 107        LATIN SMALL LETTER K WITH CARON
+u 199 170 079        LATIN CAPITAL LETTER O WITH OGONEK
+u 199 171 111        LATIN SMALL LETTER O WITH OGONEK
+u 199 176 106        LATIN SMALL LETTER J WITH CARON
+u 199 180 071        LATIN CAPITAL LETTER G WITH ACUTE
+u 199 181 103        LATIN SMALL LETTER G WITH ACUTE
+u 199 184 078        LATIN CAPITAL LETTER N WITH GRAVE
+u 199 185 110        LATIN SMALL LETTER N WITH GRAVE
+u 199 186 143        LATIN CAPITAL LETTER A WITH RING ABOVE AND ACUTE
+u 199 186 134        LATIN SMALL LETTER A WITH RING ABOVE AND ACUTE
+u 199 187 146        LATIN CAPITAL LETTER AE WITH ACUTE
+u 199 189 145        LATIN SMALL LETTER AE WITH ACUTE
+u 199 190 215        LATIN CAPITAL LETTER O WITH STROKE AND ACUTE
+u 199 191 237        LATIN SMALL LETTER O WITH STROKE AND ACUTE
+u 200 158 072        LATIN CAPITAL LETTER H WITH CARON
+u 200 159 104        LATIN SMALL LETTER H WITH CARON
+u 200 166 065        LATIN CAPITAL LETTER A WITH DOT ABOVE
+u 200 167 097        LATIN SMALL LETTER A WITH DOT ABOVE
+u 200 168 069        LATIN CAPITAL LETTER E WITH CEDILLA
+u 200 169 101        LATIN SMALL LETTER E WITH CEDILLA
+u 200 170 153        LATIN CAPITAL LETTER O WITH DIAERESIS AND MACRON
+u 200 170 148        LATIN SMALL LETTER O WITH DIAERESIS AND MACRON
+u 200 174 079        LATIN CAPITAL LETTER O WITH DOT ABOVE
+u 200 175 111        LATIN SMALL LETTER O WITH DOT ABOVE
+u 200 178 089        LATIN CAPITAL LETTER Y WITH MACRON
+u 200 179 121        LATIN SMALL LETTER Y WITH MACRON
+u 205 132 189        COMBINING GREEK DIALYTIKA TONOS
+u 206 172 224        GREEK SMALL LETTER ALPHA WITH TONOS
+

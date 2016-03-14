@@ -1,0 +1,1547 @@
+  MABD2.AIM : MAB2-Disketten-Format (DDB) --> A   (mit mehrb„ndigen Werken!)
+  960716  + ZDB-Disketten (einschl. Lokals„tze)    MIT SWD-Ketten
+  Mit Alternative fr Unters„tze bzw. verknpfte S„tze (siehe #09)
+
+  zu kombinieren mit den Ausgabeparametern  I-1.APR  !!!
+  zwecks Erstellung von korrekten "allegro"-Daten
+
+re="###"    wird als Begrenzung zwischen  2 S„tzen genommen
+
+
+  Vor der Bearbeitung eines Datensatzes folgende Ersetzungen:
+
+y .013 0      ersetze Zeilenvorschub
+y .010 0       durch 0  (wirkt dann automatisch als Kategorie-Ende)
+
+_ 0 "101 "   Namensverw.
+_ " = "
+
+_ 0 "105 "
+_ " = "
+
+_ 0 "109 "
+_ " = "
+
+_ 0 "201 "
+_ " = "
+
+_ 0 "205 "
+_ " = "
+
+_ 0 "209 "
+_ " = "
+
+_ "#222"
+_ "Ô"
+
+_ "#157"
+_ "Ð"
+
+_ "#142n"
+_ "õ"
+
+_ "#191l"
+_ "ó"
+
+_ "#191L"
+_ "ò"
+
+
+y Î 170   in Nichtsort.Zeichen wandeln
+y { 256   ZDB-Stichwortkennung? wird nicht gebraucht, beseitigen
+
+
+  Hier beginnen die Feldbeschreibungen: ("Paragraphen")
+    jeweils zuerst die NMN-Kategorienummer, dann ein Suchbefehl,
+    (z.B. s 0 "335 " heisst: suche die Zeichenfolge 0 "335 ")
+    dann kommen evtl. Vorbearbeitungsbefehle
+
+
+#ccc          wenn  89 existiert: Untersatz
+j0
+C 0 "089 "
+qband
+q
+
+#00
+j0
+R24 "l"   Lokalsatz: Byte 24 = 'l'
+(
+l0       #00 ist dann IdNr des LOKAL-Satzes oder Bestandssatzes
+s 0 "001 "
+w"b"      fr 'B'estand
+e"-"
++LOKAL
+)
+q
+
+
+#00             alternativ: #89Z fr ZDB, #89D fr DB-Daten
+ #89Z   bei Bedarf aktivieren, #00 dann wegnehmen
+ #89D
+s 0 "001 "
+C "DBI----"
+w"z"
+C "DBI----"
+e"-"
+
+
+ #99x      aktivieren wenn man z.B. Gruppen 05-08 ausblenden will
+ v a=0
+ C"700 05"
+ v a=1
+ C"700 06"
+ v a=1
+ C"700 07"
+ v a=1
+ C"700 08"
+ v a=1
+ qanfang
+
+-anfang
+#99x  dummy
+j0
+ V a=1
+ qyxyxyx    wenn a=1, nichts (s.oben)
+qhaupt
+
+ ----------------------------
+-band    Diesen Abschnitt herausnehmen, wenn verkn.S„tze gewnscht (s.u.)
+      Lieferungen der DB enthalten nicht mehr immer den Hauptsatz vor
+      dem Untersatz, deshalb muss man die Alternative nehmen, s.u.
+ #01           wenn  89 existiert: Untersatz erzeugen
+ j0
+ l0
+ C 0 "090"
+ (
+ s 0 "090 "
+ W"="
+ )
+ s0 "089 "
+ +haupt
+ --------------------------------
+
+  Alternative: verknpfte S„tze erzeugen
+#00
+s 0 "001 "
+
+#09
+s 0 "010 "       010 = IdNr des Hauptsatzes
+C 0 "090 "
+(
+s 0 "090 "
+w"+"             BdNr mit '+' anhaengen
+s 0 "089 "
+w"="
+_ "ª"
+_ ","
++haupt
+)
+s 0 "089 "
+w"+"
+_ "ª"
+_ ","
+
+
+#23£
+s 0 "331?"    Nichtstandard-NE unter oder mit Sachtitel
+U
++haupt
+
+
+
+-haupt
+#59
+j0
+C "331 Festschr"
+qfestschr
+q
+
+
+#40~
+j0
+l0
+C 0 "1"
+/
+qtitel      wenn 100.. nicht vorkommt: gleich zu -titel
+
+s 0 "1"
+c "[Hrsg"
+qhrsg
+c "[Mitv"
+qmitv
+c "[Mita"
+qmita
+c "[Bearb"
+qbearb
+c "[Red"
+qbearb
+c "[Ill."
+qillus
+c "[šbers"
+qtitel            keine šbersetzer mitnehmen
+.
+} 3
+
+-person      fr Wiederholungs-Schleife
+
+#40~
+s 0 "104?"
+c "[Hrsg"
+qhrsg
+c "[Mitv"
+qmitv
+c "[Mita"
+qmita
+c "[Bearb"
+qbearb
+c "[Red"
+qbearb
+c "[Ill."
+qillus
+c "[šbers"
+qtitel            keine šbersetzer mitnehmen
+.
+
+#40~
+s 0 "108?"
+c "[Hrsg"
+qhrsg
+c "[Mitv"
+qmitv
+c "[Mita"
+qmita
+c "[Bearb"
+qbearb
+c "[Red"
+qbearb
+c "[Ill."
+qillus
+c "[šbers"
+qtitel            keine šbersetzer mitnehmen
+.
+
+
+#999
+qtitel
+
+-hrsg
+#41~
+s 0 "1???"
+e" ["
+.
+x
++person
+
+-bearb
+#43
+s 0 "1???"
+e" ["
+.
+x
++person
+
+-illus
+#50
+s 0 "1???"
+e" ["
+.
+x
++person
+
+-mitv
+#42
+s 0 "1???"
+e" ["
+.
+
+-mita
+#42
+s 0 "1???"
+e" ["
+.
+
+-titel
+
+
+#20
+s 0 "310?"
+x
+
+#20    wenn #20 schon besetzt, dann #19
+k20
+q19
+
+#20       Hauptsachtitel: 331
+s 0 "331?"
+x
+C 0 "333"
+(
+s 0 "333?"
+w"  "
+)
+C 0 "360"
+(
+s 0 "360?"
+w" / "
+)
+s 0 "335?"
+w " : "
+
+#20
+k20
+c" "    wenn kein " " (d.h. nur 1 Wort)
+q
+s 0 "359 "    dann 359 anh„ngen (Titel erg„nzen)
+x
+w"  "
+
+-19
+#19
+s 0 "331?"
+s 0 "335?"
+w" : "
+
+#21      Sammlungsvermerk
+s 0 "300?"
+
+#22
+s 0 "304?"
+
+#24
+s 0 "341?"
+s 0 "342?"
+w "  "
+
+#242
+s 0 "345?"
+s 0 "346?"
+w "  "
+
+#243
+s 0 "349?"
+s 0 "350?"
+w "  "
+
+#244
+s 0 "354?"
+s 0 "355?"
+w "  "
+
+#23
+s 0 "370"
+x
+} 1
+s 0 "333?"
+w"  "
+
+#28 
+s 0 "370c"
+x
+
+#23£
+s 0 "370?"
+m
+
+#23v       AbkTitel
+s 0 "376a"
+
+#88c       CODEN
+s 0 "376b"
+
+#330      1. Schlagwortkette
+s 0 "902"
+c"    "
+_"???????????           "
+_ ""
+w""
+
+-swk1
+#330
+k330
+g 0 "902"
+c"    "    Id-Nummern? bergehen
+(
+_"???????????           "
+_ ""
+/
+)
+(
+= "f"
+% "f???"    3 Zeichen bergehen
+_ "f"
+= "z"
+% "z???"    3 Zeichen bergehen
+_ "z"
+)
+w""
++swk1
+
+#31s
+s 0 "9??s"
+} 22
+m"; "
+
+#31g
+s 0 "9??g"
+} 22
+m"; "
+
+
+
+
+#331      2. Schlagwortkette
+s 0 "907 "
+} 22
+m"; "
+
+#33f      3. Schlagwort
+s 0 "912 "
+} 22
+m"; "
+
+
+#39        Verfasserangabe in Vorlageform
+s 0 "359 "
+
+#71
+s 0 "403 "
+.
+
+#74
+s 0 "410 "
+_ ";*" 
+_ "; "
+.
+s 0 "415 "  2.Ort
+.
+w"; "
+
+
+#75            Verlag:
+s 0 "412 "
+.
+s 0 "417 "     2.Verlag
+.
+w"; "
+
+#76
+s 0 "425 "
+
+#76p
+s 0 "405 "
+
+#77
+j 0
+l 0
+w"@"
+l 1
+
+#77           
+k77
+.
+s 0 "433 "
+.
+
+#77           
+k77
+.
+s 0 "435 "
+w" ; "
+.             
+
+#77           
+k77
+.
+s 0 "437 "
+w" + "
+.
+
+#77
+k77
+.
+i64
+
+#77       
+k77
+.
+= "@"     #77 loeschen, wenn keine Umf.Angabe
+(
+w " "
+l 0
+)
+
+
+#92
+s 0 "427 "
+s 0 "429 "
+w "N"
+
+#77k
+s 0 "407 "
+
+#99X
+s 0 "030 "   030 = codierte Angaben
+             z.B.:  030 z|1iar|z|||27
+R11 "2"      Pos. 11: HE-Typ       ^
+qurh         = 2 : Urheberwerk
+q61          sonst ist 200 eine beteiligte Koerp.
+
+
+-urh
+#60    Urheber, z.B.:
+     200 Deutschland
+     202a2116082-x      GKD-Nr.
+s 0 "200"
+} 1
+x
+.
+s 0 "202?"
+w"_"
+
+
+
+-61
+#61
+s 0 "200"
+} 1
+.
+s 0 "202?"
+w"_"
+
+#61~
+s 0 "204?"
+.
+s 0 "206?"
+w"_"
+
+
+#85
+s 0 "451?"   Serientitel
+_ "Bd. "
+_""
+_ "Nr. "
+_ ""
+_ "H. "
+_ ""
+
+#87
+s 0 "540?"
+b "ISBN "
+l17
+= "97"
+/
+l13
+
+#88
+s 0 "542?"
+B "ISSN "
+l9
+
+#81     Fussnote (bibliogr.)
+s 0 "501 "
+
+#81B    fortlfd. Beilagen
+    sieht z.B. so aus: und kann mehrfach auftreten
+    529x551452552           Fortlaufende Beil.:ÎJahresabschlsse und Hinterlegungsbekanntmachungen
+s 0 "529"
+x
+}1
+Ktt
+(B        UP B fuer Beilagen u.a.
+B"    "
+i32
+c"ª"
+w"ª"
+C "DBI----"      So ist es in ZDB-Daten
+(
+}20
+W"_"
+kutt
+e" "
+)
+kutt
+C "    "
+(
+e"    "
+w"_"
+)
+(B      Ende des UP
+
+-beilagen     529 kann mehrfach auftreten
+#81B
+k81B
+s 0 "529"
+x
+}1
+w"; "
+Ktt
+>B         UP B aufrufen
++beilagen
+
+#81P    parallele Ausgaben
+s 0 "527"
+x
+}1
+Ktt
+>B
+
+-parallel
+#81P
+k81P
+s 0 "527"
+x
+}1
+w"; "
+Ktt
+>B         UP B aufrufen
++parallel
+
+#81F    frherer Titel
+s 0 "531"
+x
+}1
+Ktt
+>B
+
+-frherer
+#81F
+k81F
+s 0 "531"
+x
+}1
+w"; "
+Ktt
+>B
++frherer
+
+
+#81S   sp„terer Titel
+s 0 "533"
+x
+}1
+Ktt
+>B
+
+-sp„terer
+#81S
+k81S
+s 0 "533"
+x
+}1
+w"; "
+Ktt
+>B
++sp„terer
+
+#81Z   zeitweiseTitel
+s 0 "532"
+x
+}1
+Ktt
+>B
+
+-zeitweiser
+#81Z
+k81Z
+s 0 "532"
+x
+}1
+w"; "
+Ktt
+>B
++zeitweiser
+
+
+#81d  Angaben zum HST
+s 0 "507 "
+
+#81f
+s 0 "509 "
+
+#81g
+s 0 "510 "
+
+#81j
+s 0 "513 "
+
+
+#81l
+s 0 "516 "
+
+#81o
+s 0 "522 "
+
+#81p
+s 0 "523 "
+m"; "
+
+#81f
+s 0 "524 "
+m"; "
+
+#81u          Titelkonkordanzen
+s 0 "534"
+x
+}1
+Ktt
+C "DBI----"
+(
+}20
+W"_"
+kutt
+e" "
+)
+
+-tiko
+#81u
+k81u
+s 0 "534"
+x
+}1
+w""
+Ktt
+C "DBI----"
+(
+}20
+W "_"
+kutt
+e" "
+)
++tiko
+
+
+#818   Diss.Verm.
+s 0 "519 "
+
+
+#32Z
+C "DBI----"    wenn DBI vorkommt, dann #32Z, sonst #30a
+/
+q
+s 0 "700 "
+m" "
+
+#32a   1. Notation
+k32Z
+e" "
+@Z
+
+#32a   2. Notation
+k32a
+k32Z
+b" "
+e" "
+@Z
+w" "
+
+#32a   3. Notation
+k32a
+k32Z
+b" "
+b" "
+e" "
+@Z
+w" "
+
+
+
+#30a
+s 0 "700 "
+@C           Umwandeln mit Konkordanztabelle @@C (siehe unten)
+m" "
+
+#59
+C "331 Festschr"
++festschr
+q
+
+-festschr
+#59
+s0 "001 ????? "
+l 0
+g 0 "100 "
+m"; "
+ 
+#99
+j0
+qENDE
+
+-LOKAL    Bestandss„tze (ZDB)
+#9DF
+j1
+c"zizh"
+(
+l0
+j16
+_ "? "   letzte Ziffer weg (Prfziffer, dahinter kommt Leerzeichen)
+_ 0
+i48    fhrende Nullen weg
+w"z"
++9DG
+)
+l0
+s 0 "001 "
+w"z"
+
+-9DG
+#9DG
+j32
+l11
+w"L"
+
+#9DG
+k9DG
+C 0 "200?"
+(
+s 0 "200?"
+w"H" 170
+W170
+s 0 "201?"
++202
+)
+s 0 "201?"
+w"H"
+
+
+-202
+#9DG
+k9DG
+s 0 "202?"
+w"N"
+
+#9DG
+k9DG
+s 0 "204a"
+w"s"
+s 0 "204b"
+w"*"
+s 0 "204c"
+w"*"
+
+
+
+#9DG
+k9DG
+s 0 "203?"
+w"n"
+
+
+  2. Bestandsblock: neuer Datensatz!
+
+#9DF
+j1
+C 0 "206"
+/        wenn 206 nicht vorkommt, nach -230 gehen
+q230
+
+H        hierdurch wird ein neuer Satz angefangen
+l0
+j1
+c"zizh"
+(
+l0
+j16
+_ "? "
+_ 0
+i48    fhrende Nullen weg
+w"z"
++9DG2
+)
+l0
+s 0 "001 "
+w"z"
+
+
+-9DG2
+
+#9DG
+j32
+l11
+w"L"
+
+#9DG
+k9DG
+C 0 "205?"
+(
+s 0 "205?"
+w"H" 170
+W170
+s 0 "206?"
++208
+)
+s 0 "206?"
+w"H"
+
+-208
+#9DG
+k9DG
+s 0 "208?"
+w"n"
+
+#9DG
+k9DG
+s 0 "209a"
+w"s"
+s 0 "209b"
+w"*"
+s 0 "209c"
+w"*"
+
+
+  3. Bestandsblock: neuer Datensatz!
+
+#9DF
+j1
+C 0 "211"
+/        wenn 211 nicht vorkommt, nach -230 gehen
+q230
+
+H        hierdurch wird ein neuer Satz angefangen
+l0
+j1
+c"zizh"
+(
+l0
+j16
+_ "? "
+_ 0
+i48    fhrende Nullen weg
+w"z"
++9DG3
+)
+l0
+s 0 "001 "
+w"z"
+
+
+-9DG3
+
+#9DG
+j32
+l11
+w"L"
+
+#9DG
+k9DG
+C 0 "210?"
+(
+s 0 "210?"
+w"H" 170
+W170
+s 0 "211?"
++213
+)
+s 0 "211?"
+w"H"
+
+-213
+#9DG
+k9DG
+s 0 "213?"
+w"n"
+
+#9DG
+k9DG
+s 0 "214a"
+w"s"
+s 0 "214b"
+w"*"
+s 0 "214c"
+w"*"
+
+
+
+  4. Bestandsblock: neuer Datensatz!
+
+#9DF
+j1
+C 0 "215"
+/        wenn 215 nicht vorkommt, nach -230 gehen
+q230
+
+H        hierdurch wird ein neuer Satz angefangen
+l0
+j1
+c"zizh"
+(
+l0
+j16
+_ "? "
+_ 0
+i48    fhrende Nullen weg
+w"z"
++9DG4
+)
+l0
+s 0 "001 "
+w"z"
+
+
+-9DG4
+
+#9DG
+j32
+l11
+w"L"
+
+#9DG
+k9DG
+C 0 "215?"
+(
+s 0 "215?"
+w"H" 170
+W170
+s 0 "216?"
++214
+)
+s 0 "216?"
+w"H"
+
+-214
+#9DG
+k9DG
+s 0 "218?"
+w"n"
+
+#9DG
+k9DG
+s 0 "219a"
+w"s"
+s 0 "219b"
+w"*"
+s 0 "219c"
+w"*"
+
+
+
+-230    Suppl.
+  Suppl.-Bestandsblock: neuer Datensatz!
+
+#9DF
+j0
+l1
+C 0 "231"
+/        wenn 206 nicht vorkommt, nach -315 gehen
+q315
+H        hierdurch wird ein neuer Satz angefangen
+l0
+j1
+c"zizh"
+(
+l0
+j16
+_ "? "
+_ 0
+i48    fhrende Nullen weg
+w"z"
++9DGa
+)
+l0
+s 0 "001 "
+w"z"
+
+
+-9DGa
+
+#9DG
+j32
+l11
+w"L"
+
+#9DG
+k9DG
+C 0 "230?"
+(
+s 0 "230?"
+w"H" 170
+W170
+s 0 "231?"
++233
+)
+s 0 "231?"
+w"H"
+
+-233
+#9DG
+k9DG
+s 0 "233?"
+w"n"
+
+#9DG
+k9DG
+s 0 "234a"
+w"s"
+s 0 "234b"
+w"*"
+s 0 "234c"
+w"*"
+
+-315       Index etc.
+#9DF
+j0
+l1
+C 0 "315"
+/        wenn 315 nicht vorkommt, nach -zzz gehen
+qzzz
+H        hierdurch wird ein neuer Satz angefangen
+l0
+j1
+c"zizh"
+(
+l0
+j16
+_ "? "
+_ 0
+i48    fhrende Nullen weg
+w"z"
++9DGi
+)
+l0
+s 0 "001 "
+w"z"
+
+
+-9DGi
+
+#9DG
+j32
+l11
+w"L"
+
+#9DG
+k9DG
+C 0 "315?"
+(
+s 0 "315?"
+w"H" 170
+W170
+s 0 "316?"
++317
+)
+s 0 "316?"
+w"H"
+
+-317
+#9DG
+k9DG
+s 0 "317?"
+w"n"
+
+#9DG
+k9DG
+s 0 "318?"
+w" ("
+W")"
+
+#9DG
+k9DG
+s 0 "319a"
+w"s"
+s 0 "319b"
+w"*"
+s 0 "319c"
+w"*"
+
+
+-zzz
+#999
+qENDE
+
+
+   Konkordanztabelle:
+
+@@C
+      DBNummer -> UBBS-Syst
+
+"01"
+"WH" 0
+
+"02"
+"SB" 0
+
+"03"
+"BG" 0
+
+"04"
+"AL" 0
+
+"06"
+"PK" 0
+
+"07"
+"KJ" 0
+
+"09"
+"SBL" 0
+
+"10"
+"PH" 0
+
+"11"
+"PS" 0
+
+"12"
+"RTD" 0
+
+"13"
+"RTA" 0
+
+"14"
+"SW" 0
+
+"15"
+"NWP" 0
+
+"16"
+"PL" 0
+
+"17"
+"WW" 0
+
+"18"
+"BWK" 0
+
+"19"
+"RE" 0
+
+"20"
+"PLK" 0
+
+"21"
+"ML" 0
+
+"22"
+"PB" 0
+
+"23"
+"XX" 0
+
+"24"
+"XY" 0
+
+"25"
+"GGT" 0
+
+"26"
+"NA" 0
+
+"27"
+"MA" 0
+
+"28"
+"CS" 0
+
+"29"
+"PY" 0
+
+"30"
+"CH" 0
+
+"31"
+"GW" 0
+
+"32"
+"BL" 0
+
+"33"
+"ME" 0
+
+"34"
+"AWE" 0
+
+"35"
+"TE" 0
+
+"36"
+"EMF" 0
+
+"37"
+"EL" 0
+
+"38" 
+"BBU" 0
+
+"39"
+"AW" 0
+
+"40"
+"HHG" 0
+
+"41"
+"ELGFA" 0
+
+"42"
+"CT" 0
+
+"43"
+"KW" 0
+
+"44"
+"GSB" 0
+
+"45"
+"AR" 0
+
+"46"
+"BK" 0
+
+"47"
+"TED" 0
+
+"48"
+"MK" 0 
+
+"49"
+"PKL" 0
+
+"50"
+"ST" 0 
+
+"51"
+"SL" 0
+
+"52"
+"AN" 0
+
+"53"
+"GM" 0
+
+"54"
+"GM" 0
+
+"55"
+"RM" 0
+
+"56"
+"SLE" 0
+
+"57"
+"SLF" 0
+
+"58"
+"SLX" 0
+
+"59"
+"LL" 0
+
+"60"
+"BKD" 0
+
+"61"
+"GG" 0
+
+"62"
+"GGV" 0
+
+"63"
+"GE" 0
+
+"64"
+"GEF" 0
+
+"65"
+"NWU" 0
+
+@
+
+@@Z
+
+"100"
+"al"
+
+"110"
+"bg"
+
+"120"
+"eb"
+
+"125"
+"wh"
+
+"130"
+"pk"
+
+"140"
+"gk"
+
+"150"
+"wh"
+
+"160"
+"blp"
+
+"170"
+"sld"
+
+"180"
+"sld"
+
+"200"
+"ph"
+
+"210"
+"ph"
+
+"260"
+"ps"
+
+"280"
+"pb"
+
+"2"
+"rt" 0
+
+"305"
+"gec"
+
+"310"
+"ged"
+
+"320"
+"ged"
+
+"335"
+"geh"
+
+"390"
+"ggt"
+
+"3"
+"ge" 0
+
+"470"
+"bk"
+
+"480"
+"mk"
+
+"490"
+"slg"
+
+"4"
+"sll" 0
+
+"5"
+"re" 0
+
+"600
+"sw"
+
+"601"
+"swp"
+
+"605"
+"gek"
+
+"615"
+"sw"
+
+"620"
+"sw"
+
+"63"
+"nw" 0
+
+"64"
+"nw" 0
+
+"65"
+"nw" 0
+
+"66"
+"bw" 0
+
+"67"
+"aw" 0
+
+"68"
+"pl" 0
+
+"695"
+"ge"
+
+"70"
+"na" 0
+
+"710"
+"ag"
+
+"720"
+"bl"
+
+"725"
+"blk"
+
+"730"
+"blm"
+
+"740"
+"ch"
+
+"760"
+"gw"
+
+"761"
+"gw"
+
+"766"
+"gg"
+
+"77"
+"py" 0
+
+"790"
+"ma" 0
+
+"79"
+"cs" 0
+
+"88"
+"awe" 0
+
+"89"
+"pm" 0
+
+"8"
+"me" 0
+
+"90"
+"te" 0
+
+"910"
+"ms" 
+
+"92"
+"el" 0
+
+"930"
+"fa"
+"935"
+"fal"
+
+"940"
+"ct"
+
+"945"
+"gwg"
+
+"950"
+"mtb"
+
+"960"
+"ba ar"
+
+"970"
+"en"
+
+"980"
+"st"
+
+"981"
+"ab"
+
+"98"
+"al" 0
+
+@

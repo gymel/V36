@@ -1,0 +1,411 @@
+{\rtf1\ansi\ansicpg1250\deff0\deflang1031{\fonttbl{\f0\fswiss\fcharset0 ARIAL;}{\f1\fswiss ARIAL;}{\f2\fswiss\fprq2\fcharset0 Verdana;}{\f3\fscript\fprq2\fcharset0 Comic Sans MS;}{\f4\fmodern\fprq1\fcharset0 Courier New;}{\f5\fmodern\fprq1 Courier New;}{\f6\fscript\fprq2 Comic Sans MS;}{\f7\fswiss\fprq2 Arial;}{\f8\fswiss\fprq2\fcharset0 Arial;}{\f9\fmodern\fprq1\fcharset238{\*\fname Courier New;}Courier New CE;}{\f10\froman Times New Roman;}{\f11\fmodern Courier New;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue0;\red0\green0\blue255;}
+\viewkind4\uc1\pard\qc\f0\fs24  \f1       
+\par \cf1\b\i\f2\fs32 FLEX\i0\f3\fs26  
+\par \f2 Dokumentation der Makrosprache\cf2\f1\fs28  
+\par \pard\qr\b0\i\f0\fs18 Tip:\i0  \f1 Strg+f = Finden, Strg+g = Weitersuchen  
+\par \pard 
+\par _5 Sorry, Ihre Berechtigung reicht nicht\fs20 
+\par \pard\li284\f0\fs22 FLEX ist eine Skript- oder Makrosprache f\'fcr das \i all\f1 egro-\i0\f0 System. Fast alle Vorg\'e4nge, die man mit der Hand ausl\'f6sen kann, sind auch \'fcber einen FLEX-Befehl ausf\'fchrbar, aber auch noch viele andere. 
+\par Die `\cf3\ul\b\f1 Befehlssprache\cf2\ulnone\b0 ` des\f0  Konsolprogramms `\cf3\ul\b acon\cf2\ulnone\b0 ` (und damit auch des\f1  \cf1\b\i avanti \cf2\b0\i0 -Servers\f0 ) \f1 ist weitgehend kompatibel und ist in diese Dokumentation integriert; auf Besonderheiten wird jeweils hingewiesen.\f0  
+\par \i Hinweis:\i0  Nicht das Programm  \b\f4 avanti\b0\f0   selber f\'fchrt FLEX-Befehle aus, sondern das Konsolprogramm `\cf3\ul\b\f4 acon\cf2\ulnone\b0\f0 `,\f1  \f0 das von  \f4 avanti\f0   zu dem Zweck aufgerufen wird. In einer alten avanti-Version vor 2004 war das noch anders. 
+\par \i\f1  
+\par \pard\li284\qc\i0\fs20     `\cf3\ul\b\i\f0\fs28 Voll-Dokumentation\cf2\ulnone\b0\i0  `\f1  \f0  `\cf3\ul\b\i Kurz-Dokumentation\cf2\ulnone\b0\i0 ` 
+\par 
+\par  \f1\fs20 `\cf3\ul\b\i\f0\fs24 Alphabetisches Gesamtregister\cf2\ulnone\b0\i0\f1 ` \fs20 `\cf3\ul\b\i\f0\fs24 Alphabetische Liste der Befehlsw\'f6rter\cf2\ulnone\b0\i0\f1 ` 
+\par 
+\par `\cf3\ul\b\i Beispiele\cf2\ulnone\b0\i0 ` 
+\par `\cf3\ul\b\i\f0 FLEXe f\'fcr Systemfunktionen\cf2\ulnone\b0\i0\f1 `  `\cf3\ul\b\i Liste der Standard-FLEXe\cf2\ulnone\b0\i0 `  
+\par  `\cf3\ul\b Alle FLEX-Dateien sichten\cf2\ulnone\b0 ` \f0   `\cf3\ul\b Neue FLEX-Datei anlegen\cf2\ulnone\b0  `\f1 
+\par \f0 F\'fcr den Einstieg gibt es ein\f1 
+\par `\cf3\ul\b\i\f0 Online-FLEX-Lehrbuch\cf2\ulnone\b0\i0\f1 ` 
+\par \f0 Und f\'fcr Fortgeschrittene eine Sammlung von Tricks:\f1 
+\par `\cf3\ul\b\i\f0 Schnell mal eben...\cf2\ulnone\b0\i0\f1 ` 
+\par \pard\li284\i\f0\fs22 Das \f1 Wichtig\f0 ste zuerst\f1 :\i0   
+\par \fs20 Es gibt eine \b `\cf3\ul interne Variable\cf2\ulnone `\b0  (kurz \b iV\b0\f0 ). Das ist eine tempor\'e4re Zeichenfolge, die nur so lange besteht, bis sie durch einen weiteren Befehl \'fcberschrieben wird. Das geschieht z.B. durch die Befehle \f1 `\cf3\ul\b\f5 ask\cf2\ulnone\b0\f1 `\fs22 ,  \fs20 `\cf3\ul\b\f5 message\cf2\ulnone\b0\f1 `\f0 , \f1 `\cf3\ul\b\f5 yesno\cf2\ulnone\b0\f1 ` und \f0 ganz besonders\f1  `\cf3\ul\b\f5 variable\cf2\ulnone\b0\f1 .` Diese vier sollte man zuerst lernen (der vierte ist der wichtigste!) und dabei die Methode, wie man mit der iV umgeht. Dazu wird eine Anzahl von ganz `\cf1\ul\b einfachen Beispielen\cf2\ulnone\b0 ` bereitgestellt, \f0 die man\f1  \f0 bequem \f1 sofort ausprobieren\f0  kann\f1 .  
+\par Die\b\f0  iV hat\b0\f1  und braucht \b\f0 keinen Namen\b0\f1 , das vereinfacht einiges. 
+\par Man verwendet die interne Variable in der Regel sofort z.B. in einem  \f5 insert\f1 -Befehl\f0 , \f1 z.B.  \f5 insert #98\f1  , um die iV in die Kategorie #98 zu kopieren.  
+\par \f0 D\f1 er zweitwichtigste Befehl\f0  ist\cf3\b\f5 `\ul insert\cf2\ulnone\b0\f1\fs24 `\fs20 .\f0  Will man einen momentanen iV-Inhalt l\'e4nger aufbewahren, dann kopiert man ihn mit   \f5 insert #uxy\f0    in eine Uservariable \f4 #uxy\f0 . Und mit   \f4 var #uxy\f0    von dort sp\'e4ter wieder zur\'fcck in die iV zu weiterer Verwendung.\f1 
+\par Viele der FLEX-Befehle nutzen automatisch den Inhalt der iV, wenn \f0 nichts anderes\f1  angegeben ist, z.B. \cf3\b\f5 `\ul find\ulnone `\cf2\b0\f1  oder \cf3\b\f5 `\ul open\ulnone `\cf2\b0\f1  und viele andere. 
+\par \f0 
+\par Au\'dferdem gibt es eine \b interne Zahlenvariable\b0  (kurz \b\f1 iZ\b0\f0 ), die f\'fcr `\cf3\ul\b Berechnungen\cf2\ulnone\b0 ` verwendet werden kann.  
+\par \f1 
+\par \f0\fs22 NEU ab V25.6: \f1 `\cf3\ul\b\f0 Freie Variablen\cf2\ulnone\b0\f1 `\f0 . Auch dieser werden mit  \f4 insert\f0   belegt. Im Gegensatz zu den Uservariablen sind sie aber nicht in den Exportparametern verwendbar.\f1 
+\par \f0\fs20 
+\par \b Nur die Kurzformen sind "amtlich"\b0 
+\par Alle Befehlsw\'f6rter au\'dfer  \b\f5 erase\b0\f0   kann man bis auf die ersten drei Buchstaben k\'fcrzen. Der Rest des Befehlswortes darf sogar anders lauten, nur die ersten drei Zeichen sind signifikant. Z.B. ist  \f4 keychk\f0   statt  \f4 keycheck\f0   m\'f6glich, aber auch  \f4 key\f0   klappt. Anders gesagt: Nur die dreibuchstabigen Formen (sog. "Trigramme" oder "Triliterale") sind die offiziellen Befehle, der Rest ist optional, ist Konzession an Verst\'e4ndlichkeit und Lesbarkeit, wird vom Programm aber ignoriert.\f1 
+\par \pard\li284\qc  
+\par \cf1\b\f6\fs26 So erstellt man FLEXe\cf2\f1\fs24  
+\par \pard\li284 Tip: \b0 Immer ein Fenster mit der `\cf3\ul\b Demo-Datenbank\cf2\ulnone\b0\f0 ` zus\'e4tzlich \'f6ffnen. In diesem Fenster kann man dauernd die FLEX-Dokumentation ge\'f6ffnet haben. Im Schreibfeld  \b\f5 h xa\b0\f0   eingeben, dann kommt die Liste aller Befehle. Jeden kann man anklicken, um seine Beschreibung zu erhalten.\b\f1  
+\par \b0\f0 Ein FLEX-Makro ist eine Befehlsfolge und wird kurz FLEX genannt, \i der\i0  FLEX (nicht die oder das). Wenn eine solche Befehlsfolge dauerhaft aufbewahrt werden soll, speichert man sie in einer Datei vom Typ \f4 .flx\f0  (siehe unten D), f\'fcr die Ausf\'fchrung durch  \f4 acon\f0   aber Typ \f4 .job\b\f1 
+\par  
+\par A.  Einen FLEX von Hand eingeben  
+\par \b0 (erfordert mindestens Berechtigung\f0  \f1  \f5 access=\f4 4\f5  \f1 in der `\cf3\ul\b INI-Datei\cf2\ulnone\b0 `) 
+\par \fs20  
+\par Der \b einfachste\b0\f0  Weg, einen FLEX einzugeben und sofort auszuf\'fchren, ist die unmittelbare Eingabe im Schreibfeld. Man mu\'df "\b\f5 x \b0\f1 " vorweg setzen und die einzelnen Befehle mit \\ trennen.  
+\par \f0 Oder: ein gro\'dfes "\b\f5 X \b0\f1 " vorweg setzen und den Namen einer FLEX-Datei dahinter (siehe D). 
+\par    \cf1 Beispiel:\cf2  Geben Sie im Schreibfeld ein (und dann Enter) 
+\par                  \f5 x ask Ihr Name bitte\\message\f1  
+\par oder           \f5 x var "Die Datenbank liegt auf: " D\\mes\f1  
+\par  
+\par \f0 In der Praxis ist das nur in wenigen F\'e4llen sinnvoll, sehr wohl aber zum Lernen und Testen, weil man so am schnellsten etwas ausprobieren kann. \f1 
+\par  
+\par Der \b zweit-einfachste\b0\f0  Weg, einen FLEX zu erstellen und auszuf\'fchren ist folgender; er wird dann aber auch f\'fcr mehrfache Verwendung gespeichert: \f1 
+\par 1. Befehlsfolge im Schreibfeld eingeben, \f0 vorn \f1 am Anfang \f0  \f4 #uX\i i\i0\f0   mit \f1 eine\f0 r\f1  Ziffer\f0  \f1  \i\f4 i\i0\f0 =\f1 0, 1, ... 9 
+\par     \cf1 Beispiel:\cf2  man gibt im Schreibfeld ein 
+\par              \f5  \f4 #uX\b\f5 9 \f4 x \f5 message Index 1 wird gezeigt\\index |1 shakesp\b0\f1  
+\par \f0                 Enter dr\'fccken. Der FLEX wird in Variable  \f4 #uX\b\f5 9\b0\f0   gespeichert \f1 
+\par \f0 2. Ausf\'fchren: Alt+Ziffer  (Alt+9 f\'fcr das Beispiel, um  \f4 #uX\b\f5 9\b0\f0   zu aktivieren) \f1 
+\par \f0 3. \'c4ndern: Alt+r um den Reservespeicher zu sehen, Zeile  \f4 #uX\b\f5 9\b0\f0   ausw\'e4hlen, dann [Enter]; Befehle \'e4ndern, nochmals [Enter] zum Zur\'fcckspeichern. \f1 
+\par  
+\par \f7 Auf diese Weise kann man sich bis zu 10 FLEX-Makros einrichten. Sie werden dann zusammen mit den Phrasen abgespeichert (Datei\f1  \f5 phrase.a99\f0 ) und bleiben somit f\'fcr nachfolgende Sitzungen erhalten. Die Makros 1 bis 8 liegen dann auf den Flip-Buttons links vom Schreibfeld! Deren Beschriftung kann man mit dem Befehl  `\cf3\ul\b\f5 flip\cf2\ulnone\b0\f0 `  \'e4ndern. Um z.B. auf den Button 8 die Beschriftung "Sonder" anzubringen, gibt man ein:  \f5 flip 8&8 Sonder \f0 (Die Angabe &8 bewirkt, da\'df auf dem Button eine unterstrichene 8 erscheint, und nur dann kann er mit Alt+8 ausgel\'f6st werden. \f1 
+\par \f0 Nur die FLEXe in den Variablen \f4 #uXi\f0  kann man mit der Alt-Taste ausl\'f6sen, sie haben also eine Sonderstellung. Auf andere Weise kann aber auch die Strg-Taste beim FLEXen helfen, siehe C. \f1 
+\par Noch ein  \cf1 Beispiel.  \cf2 Geben Sie ein:   \b\f4 #uX0\f5  set d\b0\f1  
+\par \f0 Von da an k\'f6nnen Sie mit  Alt+0  das Anzeigefeld zwischen gro\'df und normal schalten. (Kann man mit F11 aber sowieso). \f1 
+\par  
+\par  
+\par \b\fs24 B.  Einbettung in `\cf3\ul Hilfedateien\cf2\ulnone ` oder Anzeigeparameter\b0  
+\par \f0\fs20 Andere Wege, FLEXe bereitzustellen, sind das Einbetten in Hilfedateien oder in die Anzeigeparameter. Das jedoch sind Aufgaben f\'fcr den \i\f1 Allegrologen.\i0  \f0 Im Gesamtpaket sind\f1  \f0 viele\f1  vorbereitete Hilfedateien wie z.B. \f4 doku\f5 .rtf\f1  oder \f5 catger.rtf\f1 , die man als \f0 Muster\f1  heranziehen kann.  
+\par \cf1 Beispiel:\cf2\i  \i0 Geben Sie im Schreibfeld ein: \f5 h \f4 alf\f5 .rtf\f1   (statt nur \f5 h \f4 alf\f1 ), dann sehen Sie auch die eingebetteten FLEXe (die Zeilen am Ende, die mit '?' anfangen).  
+\par \f0 Sie erkennen, da\'df die Flip-Texte immer vorn und hinten durch einen "accent grave" begrenzt sind, und da\'df in den Zeilen unten, die mit ? beginnen, immer genau der Fliptext wiederholt wird und dann mit = der FLEX-Befehl angeschlossen ist. Das Zeichen \\ ist in den Flip-Zeilen meistens durch ` ersetzt. Hier wirkt er als Befehlstrenner. \f1 
+\par \b  
+\par  
+\par \fs24 C.  FLEXe im Phrasenspeicher\b0  
+\par \f0\fs20 Zum Dritten kann man FLEXe im Phrasenspeicher unterbringen! Wird dann die Phrase angefordert, wird statt dessen der FLEX ausgef\'fchrt.  \f1 
+\par \i Beispiele:\i0  wenn in der Datei PHRASE.A99 steht: 
+\par \b\f5 6   \b0\f4 (steht f\'fcr Strg+f)\b\f5  
+\par x var #uSW(1,0)\\ins #uSW\\var "="\\ask +Suchwort?=#uSW\\help\\ins #uSW 
+\par 7   \b0\f4 (steht f\'fcr Strg+g)\b\f5  
+\par x var ">" #uSW(1,0)\\ins #uSW\\help\b0  
+\par \f0 Dann wird mit Strg+f die Phrase 6 und mit Strg+g die Phrase 7 ausgef\'fchrt. Und zwar braucht dabei der Cursor nicht im Schreibfeld zu sein, das klappt auch, wenn er woanders ist. \f1 
+\par \f0 Aber Achtung: die Werte 8,9,10,13,27 d\'fcrfen nicht belegt werden, das sind die Funktionen "Backspace", "TAB", "Enter", "Return" und "Esc". Einige Werte sind in der mitgelieferten PHRASE.A99 durch Sonderbuchstaben belegt, z.B.  Strg+p = \'e7. Noch nicht belegt:  \b\f1 2  5 15  17  23  25 ( Strg+b  e \f0  \f1 o  q  w \f0  \f1 y)\b0  
+\par \f0 Wenn man aber dennoch Phrase 9 belegt, w\'fcrde man diesen FLEX auch mit der TAB-Taste ausl\'f6sen! \f1 
+\par \f0 Phrasen k\'f6nnen statt mit der Hand oder durch Eintragung in die Datei PHRASE.A99 auch aus einem FLEX heraus mit dem FLEX-Befehl \b\f5 `\cf3\ul phrase\cf2\ulnone `\b0\f1  belegt werden (s.u.) 
+\par  
+\par  
+\par \b\fs24 D.  FLEX-Dateien\b0  
+\par \f0\fs20 Eine FLEX-Befehlsfolge f\'fcr \f4 a99/alcarta\f0  kann in einer Datei stehen, diese sollte dann den Typ  \f4 .flx\f0   haben. F\'fcr  acon ist \f4 .job\f0  \'fcblich. 
+\par Jeder Befehl mu\'df auf einer neuen Zeile ganz vorn beginnen. 
+\par \i Besonderheit:\i0  Zeilen, die mit Leerzeichen beginnen, gelten in a99 nicht, in acon aber doch. 
+\par Auf einen  \f4 if\f0 -Befehl k\'f6nnen mehrere Befehle auf derselben Zeile folgen, die dann mit \f4 ;\f0  zu trennen sind. 
+\par Eine solche Datei wird aufgerufen, wenn man z.B. die Flip-Variable  \f4 #uXi\f0  bzw. \f4 #uZi\f0  mit X statt mit x beginnen l\'e4\'dft, 
+\par Beispiel:  \f5 #uX1X o-bestel.flx\f0 .    Mit Alt+1 wird dann \f5 o-bestel.flx\f0  ausgel\'f6st. 
+\par FLEX-Dateien k\'f6nnen auch von au\'dfen aktiviert werden (Hilfsprogramm FLEX.EXE), dann spricht man von einem ExFLEX. Mehr dazu unter H. und \f4 `\cf3\ul\b activate\cf2\ulnone\b0 `\f0 .\f1  
+\par \b\f8 Von Hand\b0\f7  startet man eine FLEX-Datei\f8  \f7  \i\f4 name\i0 .flx\f7 , indem man im Schreibfeld eingibt  \b\f4 X \i name\b0\f7  \i0 . Probieren Sie es mal mit Eingabe von  \b\f4 X euro\b0\f7  \f8  \f7 oder\f8  \f7   \b\f4 X cockpit\b0\f7   oder\f8  \f7   \b\f4 X dbinfo\b0\f7  . 
+\par 
+\par \f0 FLEX-Dateien k\'f6nnen im Datenverzeichnis liegen, im Programmverzeichnis oder auch im Arbeitsverzeichnis des Nutzers. Zus\'e4tzlich gibt es die M\'f6glichkeit, an das Programmverzeichnis ein Unterverzeichnis FLEX anzuh\'e4ngen und dort FLEX-Dateien zu lagern. Bei der Installation werden dort die Standard-FLEXe der Auslieferung abgelegt.  \f1 
+\par \f0 Die Suchreihenfolge f\'fcr FLEXe ist: \f5  DbDir / ProgDir\\FLEX / ProgDir / Lokal\f1  
+\par \f0 Ein besonderer FLEX ist der MyFlex, den man in der INI-Datei einrichten kann. Wenn dort steht: 
+\par \f4 MyMenu=Sonderfunktion 
+\par MyFlex=X meinflex.flx\f0 
+\par Dann erscheint oben im Men\'fc vor dem Punkt "L\'f6schen" der eigene Punkt "Sonderfunktion", und er bewirkt die Ausl\'f6sung des \f4 meinflex.flx\f0 .\f1 
+\par \f0 
+\par Eine Befehlsdatei f\'fcr das Konsolprogramm \b\f4 `\cf3\ul acon\cf2\ulnone `\b0\f0  wird \b Jobdatei\b0  genannt und sollte die Namensendung \f4 .job\f0  erhalten. Zum Testen: Man l\'e4\'dft eine solche Datei  \i\f4 name.\i0 job\f0   ausf\'fchren, indem man z.B. in einem DOS-Fenster eingibt: 
+\par \f4 acon -j\i name\i0\f0  .\f1 
+\par  
+\par  
+\par \b\fs24 E.  AutoFLEXe\b0\i\f5\fs20  \i0\f1  
+\par Eine Sonderstellung haben die Variablen \b\f5 #uX:, #uX;\b0\f1  und \b\f5 #uX=\b0\f0  . Wenn man sie aus den Anzeigeparametern heraus mit einem FLEX belegt, wird dieser sofort nach Fertigstellung der Anzeige ausgef\'fchrt. Im Falle von \b\f5 #uX:\b0\f0  nur dann, wenn gerade kein Index- und kein Ergebnisfenster ge\'f6ffnet ist, im Falle \b\f5 #uX;\b0\f0  aber ohne Einschr\'e4nkung sofort. \b\f9 #uX=\b0\f1  dagegen wird \b vor \b0\f0 dem Ausf\'fchren der Anzeigeparameter abgearbeitet; der Satz ist in dem Moment schon im Arbeitsspeicher. Man belegt es sinnvollerweise im _START.FLX. \f1 
+\par Die Variablen \b\f5 #uX:\b0\f1  und \b\f5 #uX;\b0\f0  werden \'fcbrigens nach Ausf\'fchrung sofort gel\'f6scht, \b\f5 #uX= \b0\f1 dagegen nicht.  
+\par  
+\par  
+\par \b\f0\fs24 F.  SonderFLEXe  f\'fcr Start und Ende der Sitzung\b0\f1\fs20  
+\par Zwei FLEXe nehmen eine Sonderstellung ein, wenn sie existieren: \b\f5 _\f4 start.flx\b0\f1  und \b\f5 _\f4 endflx.flx\b0\f0 . Sie werden direkt nach dem Start bzw. unmittelbar vor Ende der Sitzung ausgef\'fchrt. \f1 
+\par \b\f5 _\f4 start.flx\b0\f1  kann man nutzen, um sofort bestimmte Vorbesetzungen von #u-Variablen, Flip-Buttons oder Phrasen vorzunehmen. \f0 In der INI-Datei kann man mit dem Befehl  \f4 StartFLEX=\f0   auch mehrere, durch ; getrennte FLEX-Dateinamen angeben, diese FLEXe werden dann beim Start nacheinander abgearbeitet.\f1 
+\par  
+\par \b\fs24 G.  PV-FLEX\b0\fs20  
+\par \f0 Das Einrichten von Programmierten Validierungen ist nicht jedermanns Sache, mu\'df man doch daf\'fcr die Exportsprache meistern. \f1 
+\par \f0 Deshalb gibt es, zumindest f\'fcr den wichtigen Punkt direkt vor dem Speichern des Datensatzes, den PV-FLEX. Ist ein solcher vorhanden, wird er bei Druck auf \b\f1 [Speichern]\b0\f0  ausgef\'fchrt. Das eigentliche Speichern mu\'df dann in Form eines "put" in den FLEX eingebaut sein. Ansonsten kann man im PV-FLEX jede erdenkliche Aktion durchf\'fchren, um den aktuellen Satz vor dem Speichern zu pr\'fcfen und zu behandeln.  \f1 
+\par \f0 Der Name der PV-FLEX-Datei ist beliebig. Als Standort kommen die f\'fcr FLEXe insgesamt m\'f6glichen Verzeichnisse in Frage, je nach Gutd\'fcnken. \f1 
+\par Und so wird der PV-FLEX aktiviert: in der \b INI-Datei\b0\f0  gibt es den Befehl  SaveAsk=0/1, wo die Werte "0" (nicht fragen) bzw. "1" (immer fragen) m\'f6glich sind. Au\'dfer diesen Werten kann man aber auch schreiben: \f1 
+\par  
+\par \f5 SaveAsk=X pruef\f1  
+\par  
+\par wenn\f0  \f1  \b\f4 pruef.flx\b0\f1  \f0  \f1 der Name der \f0 PV-\f1 FLEX-Datei ist, oder auch 
+\par  
+\par \f5 SaveAsk=x \i\f1 FLEX-Befehls\f0 folge\i0\f1  
+\par  
+\par wenn es sich um eine kurze Befehls\f0 folge\f1  handelt (bis 127 Zeichen).  
+\par \f0 Es mu\'df also "X " bzw. "x " auf  \f4 SaveAsk=\f0   folgen, wenn ein PV-FLEX ausgef\'fchrt werden soll! \f1 
+\par \f0 Weil aus einem FLEX heraus auch externe Programme gestartet werden k\'f6nnen, ist es ganz klar, da\'df diese erweiterte PV-M\'f6glichkeit \'e4u\'dferst m\'e4chtig ist. \f1 
+\par \f0 Im Vergleich mit relationalen Datenbanken kommt diese Methode dem sog. "Trigger"-Konzept gleich. Dieses erm\'f6glicht bei RDBMS, da\'df die Datenbank bei jeder Ver\'e4nderung gewisse Bedingungen pr\'fcft und dann in bestimmten F\'e4llen programmierte Aktionen durchf\'fchrt. \f1 
+\par  
+\par \b\fs24 H.  ExFLEXe\b0\fs20  \b\f0 : Auftr\'e4ge von au\'dfen\b0\f1 
+\par \f0 Einem laufenden a99 oder alcarta kann auch von au\'dfen ein FLEX-Auftrag erteilt werden! Einen solchen nennt man ExFLEX. Er besteht aus einer normalen FLEX-Datei, und das Senden derselben an a99 besorgt ein Hilfsprogramm namens FLEX.EXE. Ist  \f4 check.flx\f0   der auszuf\'fchrende FLEX, dann gibt man im DOS-Fenster den Befehl  
+\par \b\f4    flex check\b0\f0 
+\par und a99 f\'fchrt dann  \f4 check.flx\f0   aus. \f1 
+\par Mehr dazu in einem `\cf3\ul\b eigenen Text\cf2\ulnone\b0 `. 
+\par  
+\par \pard\li284\qc\cf1\b\f6\fs28 FLEX-Beispiele\cf2\f1\fs24  
+\par \pard\li284\b0\fs20 In einer eigenen Datei findet man eine Reihe von `\cf3\ul\b einfachen Beispielen\cf2\ulnone\b0 ` zum sofortigen Ausprobieren. 
+\par Nach einer Standard-Installation hat man die Verzeichnisse \f5 c:\\allegro\\FLEX\f1  und \f5 c:\\allegro\\HELP\f0 . Darauf findet man zahlreiche Beispiele, die f\'fcr bestimmte Aufgaben mitgeliefert werden. An der Datei  \f4 super.rtf\f0   kann man beginnen, die Zusammenh\'e4nge kennenzulernen: Man gibt im Schreibfeld ein   \f1 
+\par `\cf3\ul\b\f5 h super.rtf\cf2\ulnone\b0\f0 `, dann sieht man das Supervisor-Men\'fc und darunter die Aufrufe der eingebetteten FLEXe bzw. weiteren Hilfedateien. So kann man auch bei den anderen Hilfedateien vorgehen, z.B.   \f1 
+\par `\cf3\ul\b\f5 h adm.rtf\cf2\ulnone\b0\f1 `eingeben, dann sieht man, welche FLEXe jeweils dahinter stecken. 
+\par Die\f0  mitgelieferten\f1  FLEX-Dateien liegen\f0  alle\f1  auf  \f5 c:\\allegro\\FLEX\f1 . 
+\par  
+\par \f0 Deshalb folgen hier nur wenige weitere Beispiele als Muster f\'fcr eigene Aktionen. \f1 
+\par \cf1 Wichtig:\cf2 
+\par \b\f0 Einger\'fcckte Zeilen\b0\f1  gelten als Kommentare und werden vom System \b nicht beachtet\b0\f0 ! Zur Verdeutlichung erscheinen die wirksamen Zeilen in Fettschrift. (In einer FLEX-Datei ist eine solche Hervorhebung nicht m\'f6glich.) \b\i\f1  
+\par  
+\par \cf1\i0\f0 Beispiel 1\cf2\f1  : Ergebnismenge durcharbeiten 
+\par \b0\f0 Aufgabe : Man hat eine Ergebnismenge und m\'f6chte in jedem Satz das Feld #31 bearbeiten. \f1 
+\par 
+\par   \f0 Den ersten Satz der Erg.Menge holen\f1 
+\par \b\f5 first 
+\par :anfang 
+\par \b0\f1   Kategorie #31 zum Bearbeiten vorlegen 
+\par \b\f5 ask bitte bearbeiten\f4  (Esc : Schleife abbrechen)\f5 =#31 
+\par \b0\f1   Wenn man mit Esc beendet hat, Bearbeitung beenden 
+\par \b\f5 if \f4 cancel\f5  end 
+\par \b0\f1   Sonst den bearb. Text wieder in #31 kopieren 
+\par \b\f5 ins\f4 ert\f5  #31 
+\par \b0\f1   und den Satz dann (mit Nachfrage) wieder speichern 
+\par \b\f5 Put 
+\par \b0\f0   N\'e4chsten Satz holen \f1 
+\par \b\f5 next 
+\par \b0\f1   Wenn's \f0 noch einen gibt, dann zur\'fcck zum Anfang der Schleife\f1  
+\par \b\f5 if \f4 yes jump anfang\f5  
+\par \b0\f1 
+\par Man kann auch die gesamte Datenbank durcharbeiten lassen. Rezept dazu in einem `\cf3\ul\b anderen Hilfetext\cf2\ulnone\b0 `. 
+\par 
+\par \cf1\b\f0 Beispiel 2\cf2\f1  : Teil-Automatisierung einer Bearbeitung 
+\par \b0\f0 Die Aufgabe ist folgende: Man hat eine Menge Datens\'e4tze zu bearbeiten, die man jeweils \'fcber die Inventarnummer aufruft, dann eine bestimmte Kategorie hinzuf\'fcgt oder \'e4ndert und den Satz dann wieder abspeichert - manchmal aber auch nicht. \f1 
+\par \i Annahme:\i0  es gibt ein Register INV im Index 9 mit der Inventarnummer. 
+\par Dazu eignet sich ein FLEX nach diesem Muster: 
+\par \b\f5  
+\par \b0\f1   Inventarnummer abfragen (Vorgabe: Inhalt von #uib) Index 9 bei Druck auf [Index] 
+\par \b\f5 :anfang 
+\par ask  |9Inventarnummer=#uib 
+\par \b0\f1   Ist die Eingabe leer? Dann Abfrage wiederholen 
+\par \b\f5 if "" jump anfang 
+\par \b0\f0   Wurde [Esc] gedr\'fcckt? Dann Ende \f1 
+\par \b\f5 if cancel end 
+\par \b0\f1   Eingegebene Nummer wieder in #uib kopieren: 
+\par \b\f5 ins\f4 ert\f5  #uib 
+\par \b0\f1   Text der internen Variablen zusammensetzen aus "inv " und #uib  
+\par \b\f5 var "inv " #uib 
+\par \b0\f0   und als find-Befehl ausf\'fchren (d.h. "find inv ...") \f1 
+\par \b\f5 find 
+\par \b0\f1   Kategorie \f4 #xyz\f1  mit Inhalt \i Text\f5  \i0\f0 einf\'fcgen in den geladenen Satz\f4  \f5 
+\par \b #xyz \b0\i\f1 Text\b\i0\f5  
+\par \b0\f0   den so ver\'e4nderten Satz anzeigen 
+\par \f4 disp 
+\par sho rec\f1 
+\par   Fragen, ob \f0 er \f1 gespeichert werden soll 
+\par \b\f5 yesno Speichern? 
+\par \b0\f0   und Speicherung ausf\'fchren, wenn Antwort "OK" \f1 
+\par \b\f5 if yes put 
+\par \b0\f1 Statt der beiden letzten Befehle kann man auch  \b Put\b0\f0   setzen, dann kommt ebenfalls die Aufforderung zur Best\'e4tigung \f1 
+\par  
+\par \cf1\b\f0 Beispiel 3\cf2  : Eingabe-Unterst\'fctzung \f1 
+\par \b0\f0 Neue Datens\'e4tze sollen immer schon mit einer Anzahl fester Kategorien vorbesetzt werden. Statt \'fcber die Formulartechnik kann man auch einen FLEX anlegen, indem man im Schreibfeld eingibt: \f1 
+\par  
+\par \f5 #uX3x new\\#nn1 Text1\\#nn2 Text2\\#nn3 Text3\\trans #nn4\\form 2 
+\par \f1  
+\par \f0 Dadurch wird zuerst ein neuer (leerer) Satz angelegt, dieser mit drei vorbereiteten Kategorien belegt, Kategorie #nn4 wird aus dem Hintergrundspeicher \'fcbernommen, dann Formular 2 aktiviert f\'fcr die weitere Eingabe. Mit Alt+3 aktiviert man diesen FLEX. Man sieht leicht, wie man dieses Beispiel ausbauen kann. \f1 
+\par \f0 Man kann mehrere solche FLEXe  f\'fcr unterschiedliche Satztypen anlegen. \f1 
+\par \f10\fs18  \f1\fs20  
+\par \cf1\b\f0 Beispiel 4\cf2\f1  : Export der aktuellen Ergebnismenge 
+\par \b0\i Aufgabe:\i0\f0  Es soll mit Hilfe von P-W.APR (Ausgabe im RTF-Textformat) die Ergebnismenge in die Datei LISTE.RTF geschrieben werden, wobei die Hilfsdatei  LONGHEAD.RTF vorangestellt und am Ende noch als Abschlu\'df die Zeichen \b\f5\}\}\}\b0\f0  anzuf\'fcgen sind. \f1 
+\par  
+\par \f0   Dateinamen f\'fcr den Export setzen \f1 
+\par \b\f5 export f liste.rtf 
+\par \b0\f1   Dateikopf zuerst ausgeben 
+\par \b\f5 write Flonghead.rtf  
+\par \b0\f1   Parameter laden 
+\par \b\f5 export p p-w  
+\par \b0\f1   Ergebnismenge ausgeben 
+\par \b\f5 export set 
+\par \b0\f1   Abschlu\f0\'df\f1 zeichen: 
+\par \b\f5 write "\}\}\}" 
+\par \b0\f1  
+\par Jetzt kann die fertige Datei sofort von WinWord aus eingelesen werden.   
+\par  
+\par  
+\par \pard\li284\qc\cf1\b\f3\fs28 FLEXe f\'fcr System-Funktionen\cf2\f1\fs24  
+\par \pard\li284\b0\fs20  
+\par \f0 Es gibt eine Anzahl von FLEXen, die automatisch vom System in bestimmten F\'e4llen aufgerufen werden. Dadurch wird mehr FLEXibilit\'e4t gewonnen. Keiner von diesen mu\'df unbedingt vorhanden sein! Wenn einer fehlt, fehlt eben dessen Funktion. \'c4nderungen an diesen FLEXen erfordern besondere Umsicht, das ist klar. Alle diese FLEXe enthalten Kommentare zu ihrer Wirkungsweise. \f1 
+\par \f0 F\f1 olgende\f0  SystemFLEXe gibt es\f1 : (Die Namen beginnen alle mit _ ) 
+\par  
+\par \b\f5 _door.flx\b0\f1  
+\par \f0 Wird durch den Button mit der T\'fcr aktiviert. Startet standardm\'e4\'dfig DOOR.BAT und setzt die dazu n\'f6tigen  Optionen. \f1 
+\par  
+\par \b\f5 _rs.flx\b0\f1  
+\par Wird in A99 vom Menue  "Datei | DOS-Programm" aktiviert 
+\par \f0 Ruft standardm\'e4\'dfig PRESTO auf, und zwar mit denselben Randbedingungen wie das gerade aktive A99. \f1 
+\par  
+\par \b\f5 _as.flx\b0\f1  
+\par Wird in ALCARTA vom Menue  "Datei | DOS-Programm" aktiviert 
+\par Ruft APAC auf, und zwar mit denselben Randbedingungen wie das gerade laufende ALCARTA 
+\par  
+\par \b\f5 _otherdb.flx\b0\f1  
+\par Wird in A99 vom Menue  "Datei | Weitere Datenbank" aktiviert 
+\par  
+\par \b\f5 _new.flx\b0\f1  
+\par \f0 Sehr spezieller Fall: Wird automatisch gestartet, wenn bei noch leerer Datenbank [Index] gedr\'fcckt wird. Startet dann die Erfassung des ersten Datensatzes. \f1 
+\par  
+\par \b\f5 _newdb.flx\b0\f1  
+\par \f0 Wird gestartet aus NEWDB.RTF heraus, nachdem man eine neue Datenbank anlegen will und eine Struktur gew\'e4hlt hat. (Men\'fcpunkt NEWDB auf dem Menue SUPER.RTF) \f1 
+\par  
+\par \b\f5 _initial.flx\b0\f1  
+\par Nur beim ersten Start einer noch leeren Datenbank: zur Belegung der Flip-Buttons. 
+\par  
+\par \b\f5 _\f4 psw\f5 .flx\b0\f1  
+\par \f0 Wird unmittelbar nach Programmstart und vor dem ersten Zugriff ausgel\'f6st. Dies ist der Ort f\'fcr eine `\cf3\ul\b Pa\'dfwort-Abfrage\cf2\ulnone\b0 `. Normalerweise hat man keinen _psw.flx. Der mitgelieferte password.flx  kann umbenannt werden in _psw.flx, damit erreicht man, da\'df eine Pa\'dfwort-Abfrage erfolgt.\f1 
+\par 
+\par  \b\f5 _start.flx\b0\f1  
+\par \f0 Wird unmittelbar nach Programmstart und nach \f4 _psw.flx\f0  ausgel\'f6st. Geeigneter Ort, um die Flip-Buttons zu belegen. \f1 
+\par 
+\par \b\f5 _endflx.flx\b0\f1  
+\par \f0 Wird unmittelbar vor dem Schlie\'dfen der Datenbank ausgel\'f6st. Hier k\'f6nnen noch datenbankspezifische Pr\'fcfungen eingebaut werden. Wenn dieser FLEX das Wort "no" in die iV schreibt, wird das Beenden des Programms unterbunden. Schreibt man andererseits STOP hinein, kann man die Nachfrage unterbinden, ob das Programm wirklich beendet werden soll. \f1 
+\par  
+\par \b\fs24 On-FLEXe\b0\fs20  
+\par \f0 Folgende FLEXe werden, wenn sie existieren, bei Bet\'e4tigung bestimmter Buttons oder Funktionen ausgel\'f6st: \f1 
+\par \f0 (Ist einer dieser FLEXe nicht vorhanden, wird eine Default-Aktion ausgel\'f6st, anders als bei den SystemFLEXen!) \f1 
+\par \f0 Nicht f\'fcr alle dieser F\'e4lle wird deshalb ein FLEX mitgeliefert, z.B. nicht f\'fcr \f5 onfind.flx\f1 . 
+\par  
+\par \b\f5 oninput.flx\b0\f1  
+\par \f0 Wird beim Druck auf den Button [Neusatz] = F9 ausgef\'fchrt. Darin mu\'df dann  \f5 new \f1  oder  \f5 copy \f0  vorkommen, wenn eine Eingabe gew\'fcnscht wird. \f1 
+\par  
+\par \b\f5 oncopy.flx\b0\f1  
+\par \f0 Wird beim Anlegen eines neuen Datensatzes ausgef\'fchrt, wenn dieser als Kopie eines anderen angelegt wird und \f5 oninput.flx\f1  nicht existiert. 
+\par  
+\par \b\f5 onnew.flx\b0\f1  
+\par \f0 Wird beim Anlegen eines neuen Datensatzes ausgef\'fchrt, wenn \f5 oninput.flx\f1  nicht existiert: 
+\par  
+\par \b\f5 onforms.flx\b0\f1  
+\par Wird beim Druck auf den Button [Form.\ul #\ulnone\f0  ] ausgef\'fchrt. Darin mu\'df dann  \f5 form i\f0   vorkommen, wenn ein Formular gew\'fcnscht wird. In diesem FLEX kann man es einrichten, da\'df ein Formular aufgemacht wird, das zum aktuellen Satz pa\'dft! \f1 
+\par  
+\par \b\f5 ondfile.flx\b0\f1  
+\par \f0 Wird bei dem Men\'fcpunkt "Datei /  Anzeige speichern als..." ausgef\'fchrt \f1 
+\par \f0 Mu\'df den Befehl \b\f5 file\b0\f0  enthalten, wenn gespeichert werden soll. Wenn dieser FLEX  fehlt, wird die normale Funktion ausgef\'fchrt. \f1 
+\par  
+\par \b\f5 onput.flx\b0\f1  
+\par \f0 Wird bei Druck auf den [Speichern]-Button ausgef\'fchrt, aber nur, wenn in der INI-Datei der Wert  \f5 saveask=2\f1   gesetzt ist. 
+\par \f0 Mu\'df den Befehl \b\f5 put\b0\f1  enthalten, wenn gespeichert werden soll. Um zu checken, ob das Speichern funktioniert hat, sollte man auch einen Befehl \b\f5  if no ...\b0\f0   erg\'e4nzen. \f1 
+\par  
+\par \b\f5 onerase.flx\b0\f1  
+\par \f0 Wird bei Bet\'e4tigung der "L\'f6schen"-Funktion ausgef\'fchrt. \f1 
+\par \f0 L\'f6schen verhindern: \f1 
+\par \f0 Wenn dieser FLEX das Wort "NO" in die iV schreibt, wird das L\'f6schen nicht ausgef\'fchrt. \f1 
+\par  
+\par \b\f5 onerror.flx\b0\f1  
+\par \f0 Wird ausgel\'f6st, wenn im Schreibfeld etwas eingegeben wird, was kein Befehl und keine Kategorie ist. (Wenn onerror.flx nicht existiert: Meldung "falsche Eingabe") 
+\par \f1 Der Inhalt des Schreibfeldes steht dann in der iV. \f0 Wenn a99/alcarta nach Ende des onerror.flx keine weiteren Aktionen ausf\'fchren soll, mu\'df vor Beendigung des Flexes die iv gel\'f6scht werden.\f1 
+\par \b\f5 onexprec.flx\b0\f1  
+\par \b\f5 onexpset.flx\b0\f1  
+\par Wenn diese FLEXe existieren, wird beim Menuepunkt "Export | Aktueller Satz" bzw. bei 
+\par \f0 "Export | Aktuelle Erg.Menge" dieser FLEX ausgef\'fchrt. Darin mu\'df dann, wenn wirklich exportiert werden soll, der Befehl  \b\f5 exp\b0\f1   bzw.  \b\f5 exp set \b0\f1  stehen. 
+\par Existieren diese FLEXe nicht, wird normal exportiert.\f11\fs18  
+\par  
+\par \b\f5\fs20 onxportf.flx\b0\f1  
+\par \b\f5 onxportp.flx\b0\f1  
+\par Wenn diese FLEXe existieren, wird beim Menuepunkt "Export | Andere Exportdatei" bzw. bei 
+\par \f0 "Export | Andere Exportparameter" dieser FLEX ausgef\'fchrt.  \f1 
+\par \f0 Existieren diese FLEXe nicht, wird a99 die Normalfunktion ausf\'fchren, alcarta aber nichts machen.\f11\fs18  
+\par  \b\f5\fs20 
+\par onviewrs.flx\b0\f1  
+\par \f0 Ausl\'f6sung bei "Ansicht / Aktuelle Erg.menge". Default: Anzeige mit Printparameter\f1  
+\par \b\f5 
+\par onextern.flx\b0\f1  
+\par \f0 Wird ausgel\'f6st, wenn Alt+t gedr\'fcckt wird. Fehlt er, wird die bisherige Funktion des externen Editierens ausgef\'fchrt. Man k\'f6nnte z.B. den notepad.flx auf diesen Namen umkopieren. \f1 
+\par  
+\par \b\f5 onglobal.flx\b0\f1  
+\par \f0 Wird ausgel\'f6st, wenn einer der drei Punkte des Men\'fcs "Global" ausgel\'f6st wird. In der iV steht dann eine Ziffer, und zwar 1 f\'fcr Ersetzung, 2 f\'fcr Manipulation und 3 f\'fcr L\'f6schung. Nur wenn diese Ziffer dann wieder zur\'fcckgegeben wird, erfolgt die Ausf\'fchrung der Aktion. D.h. man kann noch eigene Aktionen davorschalten. \f1 
+\par  
+\par \b\f5 onhlpa99.flx\b0\f1  
+\par \f0 Wenn der Men\'fcpunkt "F\'fcllhorn" ausgel\'f6st wird in a99 (Default: h doku) \f1 
+\par \b\f5 onhlpalc.flx \b0\f1  
+\par bzw. in alcarta.  (Default:  h alcm) 
+\par  
+\par \b\f5 onfind.flx\b0\f1  
+\par \f0 Wenn der Find-Button (Fernglas) gedr\'fcckt wurde. Wenn  das Find-Men\'fc dann wirklich erscheinen soll, kann der Befehl  \f1 
+\par \b\f5 button f\b0  \f1  eingebaut werden. 
+\par \f0 (Default: Find-Men\'fc) \f1 
+\par \b\f5  
+\par onfnda99.flx\b0\f1  
+\par \f0 Wenn in der Suchbefehlszeile kein ausf\'fchrbarer Befehl eingegeben wurde. \f1 
+\par (Default: Indexanzeige)  \i Tip:\i0  Automatisch steht in \b\f5 #ux0\b0\f1  der Eingabetext! 
+\par Man kann sich mit diesem FLEX neue Kommandozeilen-Befehle einrichten! 
+\par \b\f5 onfndalc.flx \b0\f1  
+\par bzw. dasselbe in alcarta. 
+\par  
+\par \b\f5 on\f4 list\f5 .flx \b0\f1   (ab V2\f0 8\f1 ) 
+\par \f0 Kontextmen\'fc (rechte Maustaste) f\'fcr das Listenfeld auf der linken Seite: Umschalten zw. den div. Inhalten \f1 
+\par  
+\par \b\f5 onoffl.flx \b0\f1   (ab V25.2) 
+\par \f0 Men\'fcpunkt  "Datei / Weitere Offline-Datei laden" . Wenn dieser FLEX nicht existiert, wird die bisherige Funktion ausgef\'fchrt: Offline-Datei ausw\'e4hlen und laden. \f1 
+\par  
+\par \b\f5 onprint.flx\b0\f1  
+\par \f0 Wird ausgel\'f6st, wenn der Printer-Button bet\'e4tigt wird. Wenn wirklich gedruckt werden soll, mu\'df dann innerhalb des FLEXes der Befehl  \b\f5 print \b0\f1 vorkommen, der den Inhalt des Anzeigefeldes ausdruckt. 
+\par  
+\par \b\f5 onpr\f4 op\f5 .flx\b0\f1  
+\par \f0 Wird ausgel\'f6st, wenn auf dem Kontextmen\'fc (rechte Maustaste) des \i Anzeigefelds\i0  der Punkt "Eigenschaften" gew\'e4hlt wird. Wenn nicht vorhanden, passiert dann gar nichts.\f1 
+\par  
+\par \b\f5 on\f4 list\f5 .flx\b0\f1  
+\par \f0 Wird ausgel\'f6st, wenn die rechte Maustaste auf dem \i Auswahlfeld \i0 gedr\'fcckt wird. 
+\par Wenn nicht vorhanden, wird F11 aktiviert.\f1 
+\par  
+\par \b\f5 onf2.flx  onf3.flx  onf4.flx\b0\f1  
+\par \f0 Wird bei Druck auf F2, F3 bzw. F4 ausgel\'f6st. \f1 
+\par \f0 F\'fcr F2 wird onf2.flx mitgeliefert und bewirkt, da\'df die Schreibmarke und der Focus in das Anzeigefeld gesetzt wird. F3 und F4 sind frei, d.h. onf3.flx und onf4.flx werden nicht mitgeliefert. \f1 
+\par  
+\par \b\f5 onf8.flx\b0\f1  
+\par \f0 Wird bei Druck auf F8 ausgel\'f6st. 
+\par Wenn nicht vorhanden: Hintergrundspeicher -> Anzeige (= \f5 display reserve\f1 ) 
+\par  
+\par \b\f5 onf11.flx\b0\f1  
+\par \f0 Wird bei Druck auf F11 ausgel\'f6st. 
+\par Wenn nicht vorhanden: Anzeige umschalten breit<->schmal (\f5 = set d\f1 ) 
+\par  
+\par \b\f5 onf12.flx\b0\f1  
+\par \f0 Wird bei Druck auf F12 ausgel\'f6st. 
+\par Wenn nicht vorhanden: Hilfeseite Tastenbelegung HE_SP  (\f5 = h he_sp\f1 ) 
+\par \pard  
+\par \pard\li284\b\f5 onf\f4 lips\f5 .flx\b0\f1  
+\par \f0 Wird bei rechtem Mausklick auf einen der Flip-Buttons ausgel\'f6st. 
+\par Als Argument wird die Nummer des Buttons uebergeben, also z.B. 5, wenn es Button 5 ist (als h\'e4tte man  \f4 X onflips 5\f0   eingegeben).\f1 
+\par \f0 Fehlt dieser FLEX, liefert die rechte Maustaste ein Auswahlmenue, in dem schlicht die Beschriftungen der Flip-Buttons stehen und der jeweils ausgew\'e4hlte dann ausgef\'fchrt wird.\f1 
+\par \pard\f0 
+\par 
+\par 
+\par ?Beispiele=x h =FLEX-Beispiele 
+\par ?Liste der Befehle=x h flex 
+\par ?Hilfedateien=h help=FLEX-Einbettung 
+\par ?Kurz-Dokumentation=h flexk 
+\par ?h super.rtf=x set wm`h super.rtf 
+\par ?h adm.rtf=x set wm`h adm.rtf 
+\par ?activate=h xactivat 
+\par ?INI-Datei=h a99.ini 
+\par ?Voll-Dokumentation =h xa 
+\par ?Alphabetisches Gesamtregister=x set i9FLEX kann folgendes:`set i8FLEXIKON`View flex`set i9`set i8 
+\par ?phrase=h xphrase 
+\par ?ask=h xask 
+\par ?message=h xmessage 
+\par ?variable.=h xvar 
+\par ?yesno=h xyes 
+\par ?insert=h xinsert 
+\par ?eigenen Text=h exflex.txt 
+\par ?Liste der Standard-FLEXe=X flexikon 
+\par ?flip=h xflip 
+\par ?FLEXe f\'fcr Systemfunktionen=x h =System-Funktionen 
+\par ?Demo-Datenbank=x get env comspec`ins #uwC`var #uwC " /c " P "a99 " P "demo2\\\\orda"`Call 
+\par ?einfachen Beispielen=h flexw 
+\par ?anderen Hilfetext=h xnext=Beispiel 2 
+\par ?Befehlssprache=h xacon 
+\par ?interne Variable=h xiv 
+\par ?Alle FLEX-Dateien sichten=x #uwz *.flx\\exec X param.flx 
+\par ?Neue FLEX-Datei anlegen =X leer flex 
+\par ?Freie Variablen=h xfreevar 
+\par ?Pa\'dfwort-Abfrage=h npw 
+\par ?find=h xfind 
+\par ?open=h xopen 
+\par ?Online-FLEX-Lehrbuch=x janas http://www.allegro-c.de/flex/index.htm 
+\par ?Berechnungen=h xiz 
+\par ?acon=h acon 
+\par ?Schnell mal eben...=x janas http://www.allegro-c.de/flex/tricks.htm 
+\par ?Alphabetische Liste der Befehlsw\'f6rter=h xal 
+\par ?acon=h acon 
+\par 
+\par }
+ 

@@ -1,0 +1,260 @@
+{\rtf1\ansi\ansicpg1253\deff0\deflang1031{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\fscript\fprq2 Comic Sans MS;}{\f2\fscript\fprq2\fcharset0 Comic Sans MS;}{\f3\froman\fprq2 Garamond;}{\f4\froman\fprq2\fcharset0 Times New Roman;}{\f5\fmodern\fprq1 Courier New;}{\f6\fnil\fprq2\fcharset2 Wingdings;}{\f7\fmodern\fprq1\fcharset161{\*\fname Courier New;}Courier New Greek;}{\f8\fswiss\fprq2 Arial;}{\f9\fswiss\fprq2\fcharset0 Arial;}{\f10\fmodern\fcharset0 allegro Lucida Console;}{\f11\fmodern\fprq1\fcharset0 Courier New;}{\f12\fswiss\fcharset0 Courier New,Bold;}{\f13\fswiss\fcharset0 Garamond,Bold;}{\f14\fswiss\fcharset0 Garamond;}{\f15\fswiss\fcharset0 Courier New;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue0;\red0\green0\blue255;}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\qc\f0\fs24   \cf1\b\i\f1\fs28 allegro S\i0 ystemhandbuch V2\f2 6\cf2\f0\fs48\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b0\fs20\par
+\pard\fi-1699\li1699\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\f3\fs36 Anhang A\b0\fs20\tab   \b\fs48 Konfiguration\b0\fs20\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\cf3\b\f0\fs24 `Vorbemerkungen` \par
+`Konfigurationsbefehle`\cf2\b0 (Felddefinitionen und Einstellungen der Datenbank-Grundeigenschaften)\cf3\b\par
+`Abfrageliste`\cf2\b0 (Eingabeverfahren des DOS-Systems)\cf3\b\par
+`Farben`\cf2\b0 (DOS-System)\cf3\b\par
+`Beispiel: Standardkonfiguration $A.CFG` \par
+`Umstieg` \cf2\b0\f4 (von \'e4lteren Versionen auf V13-20)\cf3\b\f0\par
+\par
+\cf2\b0\fs20\par
+\f3\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\fs36 A.0\tab Vorbemerkungen\b0\fs20\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f0\par
+\f4 Eine Datenbanksoftware ben\'f6tigt Angaben, wie der Inhalt einer konkreten Datenbank beschaffen ist. Zum Beispiel mu\'df die Software die verwendeten Feldbezeichnungen (=`Kategorienummern) kennen, um damit arbeiten zu k\'f6nnen. \lang1033\b\i\f0 allegro\b0\i0  entnimmt solche Angaben aus einer \b Konfigurationsdatei \b0  \lang1031\b\i\f5 c\i0 .CFG\b0\f0\fs24 , die oft einfach nur \b Konfiguration\b0  \b\i\f5\fs20 c\b0\i0\f4\fs24  genannt wird. Die Programme lesen diese Datei beim Start und wissen dann \'fcber die fragliche Datenbank Bescheid. Alle Parameterdateien (Export und Import) setzen jeweils eine bestimmte Konfiguration voraus und funktionieren nur mit dieser zusammen. Z.B.: Parameterdateien des Typs\f5\fs20  .MPR\f4\fs24  geh\'f6ren zur Konfiguration\f5\fs20  M.CFG\f0\fs24  usw. \par
+\b\f4\fs20 Wer \f0 braucht dieses Kapitel?\b0  Auf jeden Fall, wer eine ganz neue Datenbank gestalten will, aber auch, wer existierende Datenbanken ausbauen, also neue Felder definieren und Abfragelisten erweitern will. Wenn man eine ganz neue Datenbank zu gestalten hat, kann man mit dem Hilfsprogramm PRONTO.BAT (\lang1024\f6\'e0\lang1031\f4 Kap.1.1.2) beginnen. Damit wird eine Konfiguration, aber auch Anzeige und Indexparameter, in einem Dialog erstellt. Anschlie\'dfend kann man sie weiter verbessern. \f0\par
+\i Anmerkung: \i0 Bei anderen Datenbanksystemen redet man statt von einer Konfiguration oft von einer \b Datenbankdefinition\b0\f4 . Eine solche enth\'e4lt aber meist auch schon Angaben \'fcber die Indexierung. Diese sind bei \lang1033\b\i\f0 allegro\b0\i0\f4  v\'f6llig getrennt von der Konfiguration: die \b\f0 Indexdefinition\b0  steht in einer Index-Parameterdatei (\lang1024\f6\'e0\lang1033\f0  0.3 Typ \i c\i0 PI, auch \lang1024\f6\'e0\lang1033\f0  10.) \par
+\lang1031\f4 Der \lang1033\b\i allegro\b0\i0 -Anwender kann eine vorhandene Konfiguration benutzen, diese abwandeln oder f\'fcr seine Zwecke eine ganz neue erstellen. (\b\i\f0 CockPit\b0\i0  :\lang1031\b\f5  \f7\'eco k\b0\f0  <Auswahl> <neue Version erstellen>)werden folgende Konfigurationen: (die mit dem '$' funktionieren nur ab Version 13) \par
+\par
+\pard\fi-1699\li1699\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\fs36\tab\i\f8\fs24 $A\b0\i0\f0\tab\f4 Standard (abgedruckt in A.4; eine Weiterentwicklung des ehemaligen Nieders\'e4chsischen Schemas ("NMN"), Kurzbeschreibung der Kategorien siehe Anhang B) \f0\par
+\fs20\tab\tab\f4 Vollst\'e4ndige Beschreibung in einem separaten Heft "Das konsolidierte Format". \f0\par
+\b\fs36\tab\i\f8\fs24 $D\b0\i0\f0\tab MAB (das Austauschformat des deutschen Bibliothekswesens) \par
+\b\fs36\tab\i\f9\fs24 $M\b0\i0\f0\tab\f4 sog. "M\'fcnsteraner Schema" (urspr. Heidelberger Entwurf, fr\'fcher P genannt!) \f0\par
+\fs20\tab\tab mit Abwandlungen auch in Bonn (B.CFG) und anderswo \par
+\b\fs36\tab\i\f9\fs24 N\b0\i0\f0\tab\f4 sog. "`\cf3\ul\b Neutralformat\cf2\ulnone\b0 `" (2006 neu konfiguriert) \f0\par
+\fs20\tab\tab\f4 Alternative f\'fcr Metadaten-Anwendungen, die mit anderen Formaten nicht klarkommen\f0  \par
+\b\fs36\tab\i\f8\fs24 $P\b0\i0\f0\tab\f4 Pica-Schema (sog. Pica3-System des Nieders\'e4chsischen Verbundes) \f0\par
+\b\fs36\tab\i\f8\fs24 $U\b0\i0\f0\tab US-MARC (das weltweit meistverwendete Schema) \par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\fs20 Sie vergleichen am besten die folgende Beschreibung mit den kommentierten Dateien $A.CFG, $U.CFG oder $P.CFG, in denen alle Einzelheiten vorkommen.folgenden Abschnitte behandeln alle \b Konfigurationsbefehle\b0\f4 , die in einer .CFG-Datei auftreten k\'f6nnen. \f0\par
+\f4 Die Gro\'df-/Kleinschreibung ist genau zu beachten. \f0\par
+\f4 Die angegebenen Standardwerte werden automatisch wirksam, wenn man den betreffenden Befehl wegl\'e4\'dft. \f0\par
+\f4 Die Buchstaben am rechten Rand besagen, ob man den jeweiligen Wert bei einer schon laufenden Datenbank \'e4ndern kann: \f0\par
+\pard\tx9866\b\f4\'c4\b0   \'c4nderung ohne Bedenken m\'f6glich   \b\f0\tab\f4\'c4\b0\f0\par
+\b V\b0\f4   Vorsicht! (Knowhow n\'f6tig; u.U. sind nach einer \'c4nderung Ma\'dfnahmen wie Neu-Indexierung f\'e4llig)\b\f0\tab V\b0\par
+\b N\b0\f4   Nicht \'e4ndern, nachdem die Datenbank angelegt ist  (Gefahr f\'fcr die Funktion der Datenbank.)\b\f0\tab N\b0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\b\f3\fs28 Kommentare in der CFG\b0\fs20\par
+\f0 Zeilen, die mit \b Leerzeichen\b0  beginnen, gelten als Kommentarzeilen und werden vom Programm nicht beachtet. Zwei oder mehr Leerzeichen hintereinander \i innerhalb\i0\f4  einer Zeile leiten ebenfalls einen Kommentar ein! Man beachte das besonders bei der Abfrageliste: nur zwischen Anf\'fchrungszeichen d\'fcrfen Mehrfach-Leerzeichen \i\f0 vorkommen.\i0\par
+\pard\fi-913\li913\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\fs36\par
+\f3 A.1\tab Konfigurationsbefehle\b0\fs20\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f0 Befehl besteht aus einem Befehls\b zeichen\b0\f4 , das am Zeilenanfang stehen mu\'df, und dem Befehls\b\f0 inhalt\b0 , der ohne Zwischenraum darauf folgt. Manche Befehle haben Ziffern oder Zahlen, andere haben Text als Inhalt. \par
+\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\fs24 A.1.1\tab Festlegung der Struktur der Datenfelder\b0\fs20\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f4 Jedes Datenfeld (= Kategorie) einer Datenbank ist eine Zeichenkette. Sie beginnt mit einer Kategorienummer (engl. "tag") und enth\'e4lt einen beliebig langen Text (ohne Zeilentrennungen), der stets auf einer bestimmten Position hinter der Kategorienummer beginnt. Als Standard wird der einfachste Fall angenommen: die Kategorienummern sind zweistellig, der Text beginnt immer auf der vierten Stelle, zwischen Nummer und Text ist ein Leerzeichen. Wenn die Kategorie mehrfach auftreten kann, steht an der dritten \f0 Stelle ein unterscheidendes Zeichen (Wiederholungszeichen). \par
+\f4 Liegt dieser Normalfall nicht vor, mu\'df man mit zwei Befehlen festlegen, wie lang die Kategorienummern sind und an welcher Position der Text beginnt. Diese somit sehr wichtigen zwei Befehle stellen wir an den Anfang: \f0\par
+\par
+\pard\fi-912\li912\tx912\tx9866\b\f5\fs28 t\b0\i\f0\fs20 ziffer\i0\tab\b\f3\fs28 Breite der Kategorienummern\b0\fs20  \b\tab N\b0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f0\tab\f4 M\'f6glich sind hier f\'fcr \i\f0 ziffer\i0  die Werte 2 bis 6. \par
+\tab Wenn\b\f5  t\b0\f4  fehlt, nehmen die Programme an, da\'df es eine .CFG "alter Art" ist (\f5 -\f6\'d8\f0  A.1.2, A.5). \par
+\tab Standard:\b\f5  t2\b0\f0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx9866\b\f5\fs28 k\b0\i\f0\fs20 pos\i0\tab\b\f3\fs28 Position des Kategorie-Textanfangs\fs20\tab N\b0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f0\tab\f4 Das Zeichen '#' steht auf Position 0. Will man mit einem 3stelligen Kategorienschema arbeiten und hinter der Kategorienummer noch einen Indikator unerbringen (wie bei MAB) oder sogar zwei (wie bei MARC), sind hier k6 bzw. k7 sinnvoll, ohne Indikator w\'e4re k5 zu schreiben. Der k-Wert mu\'df gr\'f6\'dfer sein als der t-Wert. \f0\par
+\tab Standard:\b\f5  k4\b0\f0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\b\i Beispiel:\b0\i0   (trifft zu auf US-MARC, siehe $U.CFG) \par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\f5 t3\b0\f0\tab 3stellige Kategorienummern \par
+\b\f5 k7\b0\f0\tab Text beginnt auf Position 7\b\f5\par
+\b0\f0\tab Jedes Datenfeld wird dadurch auf diese Struktur festgelegt: \par
+\f5\tab #nnnwijTEXT... \par
+\pard\fi-3075\li3075\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab  nnn\f0\tab\tab\tab Kategorienummer (3stellig) \par
+\f5\tab     w\f0\tab\tab\tab Wiederholungskennung (normal: Leerzeichen) \par
+\pard\fi-3076\li3076\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f5\tab      ij\f0\tab\tab\f4 Indikatoren (k\'f6nnen dem Feld eine Zusatzbedeutung geben) \f0\par
+\f5\tab        TEXT\f0\tab\tab Kategorie-Inhalt (beginnt auf der 7. Stelle) \par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab Man erkennt: die Anzahl 2 der Indikatoren ergibt sich aus den Befehlen\b\f5  t3\b0\f0  und\b\f5  k7\b0\f0  automatisch. \par
+\tab Im Standardfall\b\f5  t2\b0\f0  und\b\f5  k4\b0\f0  gibt es keine Indikatoren, nur die Wiederholungskennung auf Position 3. \par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\f3\fs28 A.1.2\tab Kategoriedeskriptoren\b0\fs20\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f4 Die Befehle t und k legen nur die allgemeine Form fest. Darauf mu\'df eine genaue Aufstellung aller zul\'e4ssigen Feldbezeichnungen (= Kategorienummern) folgen. Jede Kategorienummer mu\'df durch eine Zeile beschrieben werden, die mit einem\b\f5  #\b0\f0  beginnt. Eine solche Zeile wird \b Kategoriedeskriptor\b0  genannt, weil sie die Eigenschaften einer Kategorie beschreibt. \par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\i\f4 ACHTUNG:\i0  Vor die erste solche Zeile m\'fcssen die m-Befehle (\f5 -\f6\'d8\f4  A.1.3)\f0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\fs36 #...\fs20\tab Kategoriedeskriptor\b0\par
+\tab\f4 Die Reihenfolge dieser Deskriptoren, nicht die numerische Folge der Kategorienummern, legt die interne Speicherung in den Datens\'e4tzen fest. Sie k\'f6nnen sp\'e4ter jederzeit (auch im laufenden Betrieb!) neue Nummern zwischenf\'fcgen (d.h. neue Felder definieren!) oder auch (ab V14c) die Reihenfolge \'e4ndern. \f0\par
+\tab\f4 Hier als erstes Beispiel eine typische Zeile aus der Konfiguration $U.CFG f\'fcr USMARC: \f0\par
+\b\f5\tab #245"Title statement"\b0\f10\fs24\'b2\b\f5\fs20 M\b0\f10\fs24\'b2\b\f5\fs20 Aabchnp\b0\f10\fs24\'b2\b\f5\fs20 Rnp\b0\f10\fs24\'b2\b\f5\fs20 I01\b0\f10\fs24\'b2\b\f5\fs20 J0123456789\b0\f10\fs24\'b2\b\f5\fs20 Cac\b0\f0\par
+\tab Diese Zeile teilt dem Programm alle wesentlichen Eigenschaften der Kategorie #245 mit. \par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\f4 Zun\'e4chst aber noch ein kurzer R\'fcckblick: bis Version 12.2 sah in der .CFG-Datei eine Kategorie-Definitionszeile so aus: \f0\par
+\b\f5 #20c21a22c23c24c25a27a28a30a31a32a33a39a40d41d42d43d\b0\f0\par
+\pard\tx8236\tx9866\f4 Damit wurde ausgedr\'fcckt, da\'df\b\f5  #20, #21, #22, ..., #43\b0\f4   erlaubte Kategorienummern und in dieser Reihenfolge zu speichern seien, da\'df #20 der Pr\'fcfroutine c zu unterwerfen sei (Artikel am Anfang), #21 aber keiner Pr\'fcfung, #40 hingegen der Pr\'fcfroutine d (ob "Komma Leerzeichen" vorkommt). Weitere Einzelheiten konnte man nicht festlegen. Jede Kategorie war automatisch beliebig mehrfach belegbar durch schlichtes Hinzuf\'fcgen eines unterscheidenden dritten Zeichens hinter der Kategorienummer. So wurden auch #20a, #20\'f6, #20\'a7 usw. vom Programm ohne weiteres akzeptiert. Daher konnte man f\'fcr ein dreistelliges Kategoriesystem wie MAB oder MARC die dritte Stelle nicht festlegen, und eine dreistellige Feldnummer war als solche nicht wiederholbar. Man konnte #10y oder #33R eingeben, was ja nun wirklich keine MAB-Kategorien sind, aber das Programm konnte man nicht bewegen, daran Ansto\'df zu nehmen. Ab Version 13 ist genau dieses und noch manches andere m\'f6glich.   (\f5 -\f6\'d8\f4  A.5 : Umstieg von \'e4lteren auf Version 13+) \f0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 Ab Version 13 kann es \b\f4 f\'fcr jede Kategorie eine eigene Definitionszeile\b0  geben, w\'e4hrend bisher eine einzige Zeile gleich ein Dutzend und mehr Kategorien (17 St\'fcck im obigen Beispiel) definieren konnte. Eine Definitionszeile der neuen Art, auch \b\f0 Felddeskriptor\b0  oder \b Kategoriedeskriptor\b0\f4  genannt, mu\'df formal so aussehen (wenn man alle M\'f6glichkeiten nutzt): \f0\par
+\par
+\b\f5\fs24 #\b0\i tag\i0 "\i name\i0 "\f10\'b2\b\f5 M\b0\i mmm\i0\f10\'b2\b\f5 A\b0\i aaa\i0\f10\'b2\b\f5 N\b0\i nnn\i0\f10\'b2\b\f5 R\b0\i rrr\i0\f10\'b2\b\f5 C\b0\i scscsc\i0\f10\'b2\b\f5 I\b0\i iii\i0\f10\'b2\b\f5 J\b0\i jjj\i0\f10\'b2\b\f5 P\b0\i p\i0\f10\'b2\b\f5 F\b0 "\i fff\i0 "\fs20\par
+\f0\par
+\f4 Auf den ersten Blick ist das eine verwirrende F\'fclle von Angaben. Jeder Teil au\'dfer #\i\f0 tag\i0  kann entfallen, manche werden nur selten gebraucht. \i kursiv\i0\f4  gedruckten Teile sind variabel, d.h. vom Anwender einzusetzen, die anderen haben festgelegte Bedeutungen als Definitionsteile. Das '#' am Zeilenanfang leitet, wie fr\'fcher, die Deskriptorzeile ein. Darauf folgen: \f0\par
+\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\i tag\i0\tab\f4 Kategorienummer ("Kategorienummer" hei\'dft auf Englisch "tag"). Es mu\'df keine Nummer sein, nur f\'fcr die erste Stelle wird empfohlen, da\'df es eine Ziffer ist. Nachtr\'e4gliche \'c4nderung der einmal definierten Nummern ist problematisch, aber jederzeit kann man neue Nummern einf\'fcgen! Die Reihenfolge der Deskriptoren, nicht deren ASCII-Werte, bestimmt die Reihenfolge der Abspeicherung. Die nachfolgenden Angaben beschreiben alle Eigenschaften: \f0\par
+"\i name\i0 "\tab\f4 Frei w\'e4hlbare Bezeichnung f\'fcr die Kategorie. Keine L\'e4ngenbeschr\'e4nkung. Nachtr\'e4gliche \'c4nderung der Bezeichnungen jederzeit ohne Probleme m\'f6glich! \f0\par
+\f10\fs24\'b2\f5\fs20 M\i\f0 mmm\i0\tab Erlaubte \b M\b0\f4 ehrfachkennungen; hier sind alle Zeichen aufzuf\'fchren, die als Wiederholungszeichen hinter der Kategorienummer auftreten d\'fcrfen. Steht hinter\b\f5  \b0\f10\fs24\'b2\b\f5\fs20 M\b0\f0  kein weiteres Zeichen, sondern gleich z.B.\b\f5  \b0\f10\fs24\'b2\b\f5\fs20 A\b0\f0 , dann ist die Kategorie nicht wiederholbar. Fehlt dagegen\b\f5  \b0\f10\fs24\'b2\b\f5\fs20 M\b0\i\f0 mmm\i0 , ist die Kategorie beliebig wiederholbar! (Die Angabe wird von den Programmen INDEX und UPDATE nicht beachtet, nur von PRESTO, APAC, etc.) \par
+\f10\fs24\'b2\f5\fs20 A\i\f0 aaa\b\i0\tab A\b0\f4 ngebbare Teilfelder. Vor allem f\'fcr MARC-Formate relevant. Die mit \i\f0 aaa\i0  angegebenen Zeichen und keine anderen sind als Teilfeldkennungen in der Kategorie verwendbar. Fehlt die Angabe, ist jedes Teilfeld erlaubt. \par
+\f10\fs24\'b2\f5\fs20 N\i\f0 nnn\b\i0\tab N\b0\f4 otwendige Teilfelder. Diese m\'fcssen vorkommen, wenn die Kategorie \'fcberhaupt besetzt wird. Fehlt\f5  \f10\fs24\'b2\f5\fs20 N\i\f0 nnn\i0\f4 , sind alle Teilfelder optional, d.h. keins mu\'df vorkommen. \f0\par
+\f10\fs24\'b2\f5\fs20 R\i\f0 rrr\b\i0\tab R\b0\f4 epetierbare (mehrfach erlaubte) Teilfelder. Nur die hiermit definierten Kennungen d\'fcrfen mehrfach als Teilfeld innerhalb der Kategorie vorkommen. Fehlt\f5  ?R\i\f0 rrr\i0\f4 , d\'fcrfen alle mehrfach vorkommen. Steht hinter\b\f5  \b0\f10\fs24\'b2\b\f5\fs20 R\b0\f0  nichts (d.h. fehlt \i rrr\i0\f4 ), darf jedes h\'f6chstens einmal vorkommen. \f0\par
+\f10\fs24\'b2\f5\fs20 C\i\f0 scscsc\i0\tab\f4 Pr\'fcfmethoden (\b\f0 C\b0 hecks). Dies sind Paare aus je einem Teilfeldzeichen \i s\i0\f4  und einem Pr\'fcfbuchstaben \i\f0 c\i0 . Kommt das Teilfeld \f10\fs24\'b2\i\f0\fs20 s\i0\f4  vor, wird es der Pr\'fcfung \i\f0 c\i0\f4  unterworfen. Die Liste der zul\'e4ssigen Pr\'fcfbuchstaben folgt unten. \f0\par
+\f10\fs24\'b2\f5\fs20 I\i\f0 iii\i0\tab\b I\b0 ndikator 1: erlaubte Zeichen. Das zweite Zeichen hinter der Kategorienummer (das erste ist ja die Mehrfachkennung) wird als \b Indikator\b0\f4  angesehen und mu\'df in der Liste \i\f0 iii\i0  vorkommen. Das Leerzeichen ist immer erlaubt. Fehlt \f10\fs24\'b2\f0\fs20 I\i iii\i0 , sind alle Zeichen erlaubt. MAB-Formate haben einen Indikator (\f5 t3/k6\f0 ). \par
+\f10\fs24\'b2\f5\fs20 J\i\f0 jjj\i0\tab\f4 Indikator 2: erlaubte Zeichen. Das dritte Zeichen hinter der Kategorienummer wird als zweiter Indikator angesehen und entsprechend gepr\'fcft. MARC-Formate haben zwei Indikatoren (\f5 t3/k7\f0 ). \par
+\f10\fs24\'b2\f5\fs20 P\i\f0 p\i0\tab Eigenschaftszahl. Eine Zahl zwischen 0 und 255. Wenn diese Angabe fehlt, wird als Standardwert 7 angenommen. Die Zahl errechnet sich als Summe aus folgenden Eigenschaften, die ein Feld haben oder nicht haben kann: (im Standardfall\b\f5  \b0\f10\fs24\'b2\f0\fs20 P7 sind also die ersten drei Eigenschaften gegeben, bei\f5  \f10\fs24\'b2\f5\fs20 P15\f0  alle vier) \par
+\tab\f4 1 : Feld ist eingebbar  (zugleich mu\'df 4 gesetzt sein, d.h. es mu\'df\f5  \f10\fs24\'b2\f5\fs20 P5\f4  hei\'dfen) \f0\par
+\tab\f4 2 : Feld ist korrigierbar  (zugleich mu\'df 4 gesetzt sein, d.h. es mu\'df\f5  \f10\fs24\'b2\f5\fs20 P7\f0  oder\f5  \f10\fs24\'b2\f5\fs20 P6\f4  hei\'dfen) \f0\par
+\tab 4 : Feld ist sichtbar (wird unter der aktuellen Konfiguration gezeigt) \par
+\tab 8 : Mehrfach-Leerzeichen sind erlaubt (normalerweise werden sie entfernt) \par
+\tab\f4 Folglich w\'fcrde die Angabe\b\f5  \b0\f10\fs24\'b2\b\f5\fs20 P5\b0\f4  bedeuten: das Feld ist eingebbar, aber nicht mehr \'e4nderbar. \f0\par
+\f10\fs24\'b2\f5\fs20 F\i\f0 fff\b\i0\tab F\b0\f4 ormale Maske f\'fcr feste Feldinhalte. Damit kann man festlegen, wie ein Feldinhalt formal zusammengesetzt sein kann. \i\f0 fff\i0\f4  mu\'df in Anf\'fchrungszeichen stehen, wenn darin Mehrfach-Leerzeichen vorkommen. \f0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 Die letzte Angabe,\b\f5  \b0\f10\fs24\'b2\b\f5\fs20 F\b0\i\f0 fff\i0\f4  , ist vor allem gedacht zur genaueren Definition von Feldern fester L\'e4nge. \i\f0 fff\i0\f4  besteht aus einer beliebigen Anzahl von Zeichen, die den zul\'e4ssigen Inhalt der einzelnen Positionen des Feldes charakterisieren, und zwar wie folgt: \f0\par
+\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f5 A\f0\tab Buchstabe oder Leerzeichen \par
+\f5 N\f0\tab Buchstabe, Ziffer oder Leerzeichen \par
+\f5 9\f0\tab Ziffer (0 - 9) \par
+\f5 #\f0\tab Ziffer, Leerzeichen, oder '+' oder '-' \par
+\f5 L\f0\tab '1' oder '0' (logisches "Richtig" / "Falsch") \par
+\f5 X\f0\tab jedes beliebige Zeichen darf statt X auf dieser Position stehen \par
+\f5 c\f0\tab\f4 auf dieser Position darf nur das Zeichen c stehen (c=beliebiges ASCII-Zeichen au\'dfer AN9#LX) \f0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\f4 Nehmen wir als Beispiel die Signatur. Angenommen, #90 ist unsere Signaturkategorie, und unsere Signaturen bestehen aus zwei Buchstaben, einem Leerzeichen und vier Ziffern. Dann w\'e4re zu schreiben: \f0\par
+\par
+\f5 #90"Signatur"\f10\fs24\'b2\f5\fs20 FAA 9999\f0\par
+\par
+\f4 In der Praxis d\'fcrfte gerade bei Signaturen die Methode meist nicht anwendbar sein, denn feste Strukturen gibt es daf\'fcr normalerweise nicht. Und Ausnahmen oder Alternativen l\'e4\'dft eine solche Definition nicht zu. Wenn es aber z.B. so ist, da\'df mindestens die ersten zwei Zeichen Buchstaben sein m\'fcssen, k\'f6nnte man immerhin schreiben\b\f0  \b0\f10\fs24\'b2\b\f0\fs20 FAA\b0  . Denn \b hinter\b0\f4  den festgelegten Positionen kann immer noch beliebiger weiterer Text eingegeben werden, der dann nicht gepr\'fcft wird. \f0\par
+\par
+\f4 Die Pr\'fcfroutinen, auf die man in der Angabe\b\f0  \b0\f10\fs24\'b2\b\f0\fs20 C\b0\i scscsc\i0\f4  zur\'fcckgreifen kann, sind unten aufgelistet. Die Vorteile gegen\'fcber den Versionen vor V13: ein Feld kann mehreren Pr\'fcfungen unterzogen werden, und jede Pr\'fcfung kann auf ein Teilfeld beschr\'e4nkt werden. Hinter dem 'C' stehen, wie gesagt, Zeichen\b\f0 paare\b0\f4 . Das erste mu\'df immer ein Teilfeldcode sein, der in der betreffenden Kategorie vorkommen kann, das zweite ein Pr\'fcfbuchstabe. Wenn das erste ein Leerzeichen ist, wird die Pr\'fcfung auf die gesamte Kategorie angewendet. Wenn ?C... fehlt, wird das Datenfeld ohne Pr\'fcfung akzeptiert.: ist \i\f0 s\i0\f4  ein Leerzeichen, wird die Pr\'fcfroutine \i\f0 c\i0  auf jedes Teilfeld angewendet. \par
+\pard\fi-1699\li1699\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\f5\tab b\b0\f0  :\tab\f4 reserviert f\'fcr die Gruppe #0  (\f5 -\f6\'d8\f0  A.4, Beispiel A.CFG) \par
+\tab\b\f5 c\b0\f0  :\tab\f4 Das erste Wort wird gepr\'fcft. Wenn es ein Artikel ist, fragt das Programm, ob er ordnen soll, wenn nicht: Einf\'fcgen des "Nichtsortierzeichens" (siehe Befehl N) vor den Artikel (Modus n0) bzw. Einschlu\'df des Artikels in zwei solche Zeichen (Modus n1). Die Liste der Artikel ist unter dem Befehl\b\f5  d\b0\f0   (siehe unten) anzugeben. \par
+\b\f5\tab d\b0\f0  :\tab\f4 Pr\'fcfung, ob\f5  ", "\f4  im Eingabetext vorkommt (f\'fcr Personennamen sinnvoll) \f0\par
+\tab\b\f5 e\b0\f0  :\tab\f4 Pr\'fcfung, ob im Text eine Jahreszahl zwischen 1449 und dem aktuellen Jahr +2 vorkommt \f0\par
+\b\f5\tab f\b0\f0  :\tab\f4 Pr\'fcfung, ob\f5  " ; "\f0  im Eingabetext vorkommt. \par
+\tab\b\f5 g\b0\f0  :\tab\f4 Berechnung der Pr\'fcfziffer in der ISBN \f0\par
+\tab\b\f5 h\b0\f0  :\tab\f4 dasselbe f\'fcr die ISSN. Gepr\'fcft wird nur, wenn in der Kategorie ein Bindestrich vorkommt und 4 Zeichen davor eine Ziffer steht. Ansonsten wird die Kategorie ungepr\'fcft \'fcbernommen. \f0\par
+\b\f5\tab t\b0\f0  :\tab\f4 Tagesdatum: die Eingabe mu\'df von der Form\f5  jjjj.mm.tt\f4  sein (sortierf\'e4hig!) \f0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f4 Ab V14 gibt es dar\'fcber hinaus die M\'f6glichkeit, selbst Eingabepr\'fcfungen zu programmieren (auch "Programmierte Validierungen" genannt). Dazu ist ein Abschnitt in den Indexparametern einzurichten (\f5 -\f6\'d8\f0  10.2.8). \par
+\b\f4 Beispiele f\'fcr Kategoriedeskriptoren:\b0\f0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 MAB:\f5\tab #100"Verfasser"\f10\fs24\'b2\f5\fs20 M\f10\fs24\'b2\f5\fs20 Ibcef\f10\fs24\'b2\f0\fs20 C d \par
+\tab\f4 Die Kategorie #100 enth\'e4lt den Verfasser. Sie ist nicht wiederholbar (der 2. Verfasser kommt in #104). Als Indikator kann einer der Werte bcef auftreten. Der Feldinhalt als Ganzes wird nach Methode d gepr\'fcft. \f0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 MARC:\f5\tab #100"Main Entry Person"\f10\fs24\'b2\f5\fs20 M\f10\fs24\'b2\f5\fs20 Aabcdefgklnpqtu46\f10\fs24\'b2\f5\fs20 Rcnq\f10\fs24\'b2\f5\fs20 I0123\f10\fs24\'b2\f5\fs20 J01\f10\fs24\'b2\f5\fs20 Cad\f0\par
+\tab\f4 Die Kategorie #100 mit der Bezeichnung "Main Entry Person" ist nicht wiederholbar; sie kann die Teilfelder abcdefgklnpqtu46 haben, dabei d\'fcrfen c, n und q mehrfach auftreten. Der erste Indikator kann einer der Werte 0123 sein, der zweite 0 oder 1. Das Teilfeld a wird nach Methode d gepr\'fcft. \f0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\f3\fs28 A.1.3\tab Sonstige Konfigurationsbefehle\b0\f0\fs20\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-1278\li1278\cf0\b\f11\fs24 CU\f12\fs28  \tab    \f4\fs20 Intern wird Unicode verwendet (D = DOS, W = Win)\f13  \b0\f14 [ab V33.2]\par
+\pard\li994 Dies ist ein Signal f\'fcr's Programm bei der Anwendung der Tabelle \f15 o.apt\f14 : \line UTF-Codes, die mit >191 beginnen (2 Byte) bzw. >224 (3 Byte), werden nicht umgewandelt. \line (Die Codes D und W haben keine Wirkung.)\par
+\pard\fi-912\li912\tx912\tx9866\par
+\cf2\f10\fs24 $\b\f0\fs20\tab Teilfeld-Trennzeichen  \b0 (Das Zeichen ? hat den ASCII-Code 31)\b\tab  N\b0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f10\fs24\'b2\f0\fs20\tab\f4 Hier ist der Code anzugeben, der als Steuerzeichen f\'fcr die Einleitung von Teilfeldern benutzt wird. Z.B. w\'fcrde\f5  \f10\fs24\'b2\f5\fs20 36\f4  das Dollarzeichen (ASCII-Code 36) daf\'fcr festlegen, d.h. man h\'e4tte z.B. $a statt \f10\fs24\'b2\f5\fs20 a\f0 . Der Manipulationsbefehl (\f5 -\f6\'d8\f0  10.2.6.3) \f10\fs24\'b2\f4\fs20 a beim Export bleibt unver\'e4ndert, er w\'fcrde dann nur den Arbeitstext nach $a statt nach \f10\fs24\'b2\f5\fs20 a \f0 absuchen. Eingabe dieses Zeichens: unter DOS mit Strg+-, Windows: AltGr+2 (die '2' oben links) \par
+\tab\i Standard:\b\i0\f5  \b0\f10\fs24\'b2\b\f5\fs20 31\b0\f0\par
+\pard\fi-912\li912\tx912\tx9866\b\f5\fs28 cn\b0\f0\fs20\tab\b\f4 Kategorie f\'fcr Neu-Erfassungsdatum festlegen\f0\tab V\b0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\f5\fs28 ce\f0\fs20\tab\f4 Kategorie f\'fcr Korrekturdatum festlegen\b0\f0  (Datum der letzten Korrektur) \par
+\tab Hinter cn bzw. ce gibt man die Nummer der Kategorie, in der das betreffende Datum registriert werden soll, z.B.\f5   cn99n\f0  und\f5  cn99e\f4  .  Wahlweise kann cn oder ce (oder beide) fehlen, wenn die Datumsspeicherung nicht erw\'fcnscht ist. Es ist zweckm\'e4\'dfig, dann in der Kategorieliste\f5  #99...?P5\f4   zu setzen, dann sind nachtr\'e4gliche \'c4nderungen von Hand ausgeschlossen. Wird beim Aufruf Option -O gegeben ("Operator", \f5 -\f6\'d8\f0  Kap.12.1), setzt das Programm jeweils den Bearbeitercode hinter das Datum. (S.a. Befehl D) \par
+\pard\fi-912\li912\tx912\tx9866\b\f5\fs28 cg\b0\f0\fs20\tab\b\f4 Kategorie f\'fcr automatische Nummernvergabe festlegen\f0\tab\f4\'c4\b0\f0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab Hinter\f5  cg\f0  gibt man die Kategorienummer\f5  xyz\f0  an, in die das Programm automatisch eine laufende Nummer eintragen soll.  Ist kein\f5  cg\f0 -Befehl vorhanden, erfolgt \b keine\b0  Nummernvergabe. Meist wird\f5  cg00\f0  gesetzt. Bis zu 8 Zeichen hinter cg erlaubt. \par
+\i\tab Beispiel:\b\i0\f5  cg15z\b0\f0  .  Dies bedeutet: das Programm schaut jedesmal vor dem Abspeichern eines Satzes nach, ob darin die Kategorie\b\f5  #15z\b0\f0   besetzt ist. Trifft dies zu \b und\b0\f4  kommt ein Fragezeichen darin vor, wird an dessen Stelle die n\'e4chste noch nicht vergebene Nummer eingesetzt; siehe unten. Wenn\f5  #xyz\f0  aber im Datensatz nicht vorkommt, wird der Befehl\b\f5  ci\b0\f0   zur Nummernvergabe herangezogen: (Den ersten Satz von Hand numerieren!) \par
+\pard\fi-912\li912\tx912\tx9866\b\i\f4 Hinweis:\i0   \b0 Das Windows-Programm a99 erm\'f6glicht eine `\cf3\ul\b Nummernvergabe\cf2\ulnone\b0 ` mit Hilfe der Makrosprache FLEX. Damit l\'e4\'dft sich auch f\'fcr einen Satz mehr als eine Nummer erzeugen.\b\f5\fs28\par
+ci\f0\fs20\tab Standardform der zu vergebenden Nummer\tab\f4\'c4\b0\f0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab Hinter\b\f5  ci\b0\f4  mu\'df eine Angabe der Form\b\f5  Rabc?kABC\b0\f4  stehen. Bis zu 9 Zeichen sind erlaubt, ein ? mu\'df vorkommen. Diese Angabe legt fest, wie im Normalfall die zu vergebende Nummer strukturiert und in welchem Register sie indexiert sein soll. D.h. die Indexparameter m\'fcssen aus\f5  #xyz\f4  einen Schl\'fcssel in dieser Gestalt machen. \f0\par
+\tab Die Bedeutung der Einzelteile: \par
+\pard\fi-1699\li1699\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\f5\tab R\b0\f0\tab Nummer des Registers (1-9 bzw. '\b :\b0\f4 ' f\'fcr Register 10 oder '\b\f0 ;\b0\f4 ' f\'fcr Register 11) \f0\par
+\b\f5\tab abc\b0\f0\tab\f4 beliebige Zeichen, die vor der Nummer stehen sollen, genau in der Schreibweise der Registereintr\'e4ge (kann entfallen, dann steht die Nummer unmittelbar als solche im Register.) \f0\par
+\b\f5\tab ?k\b0\f0\tab an dieser Position soll die Nummer stehen (die eigentliche Vergabe erfolgt erst im Augenblick des Speicherns!). Wenn hinter \b ?\b0  eine Ziffer \b k\b0\f4  steht, wird die Nummer auf soviele Stellen mit f\'fchrenden Nullen aufgef\'fcllt. Wenn\b\f5  k\b0\f4  fehlt, bekommt die Nummer keine f\'fchrenden Nullen. Ein ? mu\'df vorkommen. \f0\par
+\b\f5\tab ABC\b0\f0\tab beliebige Zeichen, die hinter der Nummer stehen sollen (kann entfallen, selten sinnvoll) \par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab Nochmals: der Befehl\b\f5  ci\b0\f0  tritt \b nur\b0  in Kraft, wenn die durch\b\f5  cg\b0\f0  benannte Kategorie \b nicht\b0\f4  besetzt ist. Wenn diese belegt ist, h\'e4ngt es von ihrem Inhalt ab, was dann passiert. Der Inhalt kann so strukturiert sein: \f0\par
+\f5\tab #xzy\b  |R#nnfabc?kABC\b0\f0\par
+\tab\f4 Die einzelnen Teile k\'f6nnen jeweils fehlen; sie bedeuten dasselbe wie oben bei\b\f5  ci\b0\f4  angegeben; zus\'e4tzlich kann hier aber die Angabe\b\f5  #nnf\b0\f0  vorhanden sein: dann wird die zu ermittelnde Nummer in\b\f5  #nnf\b0\f0  und nicht in der durch\f5  cg\f0  benannten Kategorie\f5  #xyz\f0  gespeichert. \par
+\tab Der Sinn dieses komplizierten Arrangements:\f5  cg\f4  sagt dem Programm nur, da\'df die Kategorie\f5  #xzy\f4  eine Anweisung enth\'e4lt, auf welche Weise beim Abspeichern der Aufnahme eine Nummer zu vergeben ist. So ist es auch m\'f6glich, unterschiedlichen Satztypen ganz verschieden strukturierte und indexierte Nummern zu verpassen, indem man in dem jeweiligen Abschnitt der Abfrageliste (\f5 -\f6\'d8\f0  A.2) eine Kategorie\b\f5  #xzy\b0\f0  mit jeweils geeignetem Inhalt nach dem angegebenen Muster unterbringt. \par
+\tab\f4 Das Verfahren ist z.B. auch f\'fcr eine automatische Signaturvergabe anwendbar (aber nicht f\'fcr Signatur UND Inventarnummer zugleich). Wenn die Signatur im Register 8 indexiert ist, kann man setzen \f0\par
+\b\f5\tab ci8xyz?5 \par
+\tab cg90\b0\f0\par
+\tab\f4 und in #90 schreibt man jeweils nur die Signaturgruppe und ein '?' an der Stelle, wo die laufende Nummer hin mu\'df, also z.B.\f5   #90 Mpg ?\f4  , dann wird im Register 8 die letzte Nummer unter Mpg gesucht und das Fragezeichen durch die n\'e4chsth\'f6here ersetzt. Das passiert w\'e4hrend des Speichervorgangs, wo das Register blockiert ist. Doppelte Vergabe einer Nummer im Mehrplatzbetrieb wird so ausgeschlossen. Wird keine Signaut eingegeben, erzeugt das Programm selber eine mit xyz und f\'fcnfstelliger Nummer. \f0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx9866\b\f5\fs28 d\f0\fs20\tab Artikelliste festlegen\tab V\b0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab\f4 Die hinter 'd' angegebenen W\'f6rter (in Kleinbuchstaben zu schreiben) werden bei Kategorien mit dem Pr\'fcfbuchstaben 'c' oder 'f' automatisch gepr\'fcft. Es kann mehrere mit 'd' beginnende Zeilen geben, das Programm fa\'dft sie alle zusammen. Die folgende international gebr\'e4uchliche und den RAK entsprechende Liste ist in der Konfiguration A.CFG standardm\'e4\'dfig enthalten: \f0\par
+\f5\tab d a al an as az bir das dat de dei dem den der des det di die dos een eene \par
+\f11\tab\f5 d egy ei ein eine eines einer einem einen eit el en et ett eyn eyne gl gli \par
+\f11\tab\f5 d ha hai he heis hen hena henas het hith hin hinar hinir hinn ho hoi i il \par
+\f11\tab\f5 d ka ke l la las le les lo los mia n na nji o os s t ta the to um uma un\par
+\f11\tab\f5 d una une uno y yr \par
+\f0\tab\i\f4 Anm.:\i0  Bis Version 12.1 war die Liste in die Programme eingebaut und brauchte nicht in der .CFG zu stehen. Jetzt mu\'df sie drin stehen, wenn man Wert auf Artikelpr\'fcfung legt. Wenn die Artikelliste nicht in der .CFG steht, wird au\'dferdem nach einer Datei ARTIKEL.CFG gesucht und diese zus\'e4tzlich gelesen. Die mitgelieferte ARTIKEL.CFG enth\'e4lt genau die oben angegebene Liste. \f0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx9866\b\f5\fs28 D\b0\f0\fs20\tab\b\f4 Datumsl\'e4nge\f0\tab V\b0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab Die Datumsangaben (siehe Befehle\f5  ce\f0  und\f5  cn\f4 ) werden auf eine bestimmte Zeichenanzahl gek\'fcrzt. D8 liefert nur das Datum, D4 nur das Jahr. Das so gek\'fcrzte Datum wird auch in die Phrase "Leertaste" kopiert. \f0\par
+\tab Standard:\b\f5  D17\b0\f0    (gesamtes Datum mit Uhrzeit) Dieser Wert wird empfohlen. \par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx9866\b\f5\fs28 F\f0\fs20\tab\f4 F\'fcllzeichen-Code\f0\tab N\b0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab\f4 Hinter F gibt man den Code des gew\'fcnschten F\'fcllzeichens an. Nachtr\'e4gliche \'c4nderung: \f0\par
+\tab\f4 1. alles in Grunddateien exportieren (mit Parameterdatei I-1.APR), 2. F-Wert in der .CFG \'e4ndern, \f0\par
+\tab 3. Datenbank neu aufbauen (\f11 index -f70 ...\f0 ) \par
+\tab Standard:\b\f5   F219\b0\f0    (in M.CFG :\b\f5  F127\b0\f0 , beim Chinesisch-System ist\b\f5  F95\b0\f0  sinnvoll) \par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx9866\b\f5\fs28 f\b0\f0\fs20\tab\b\f4 Anzahl der F\'fcllzeichen je Aufnahme\f0\tab\f4\'c4\b0\f0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab Hinter f steht eine Zahl n >= 0. \par
+\tab Beim Abspeichern eines neuen Datensatzes im Schnellzugriff (\f5 -\f6\'d8\f4  1.5) werden dann n F\'fcllzeichen (siehe F) mitgespeichert. Um diesen Betrag kann der Datensatz bei einer sp\'e4teren Bearbeitung im Schnellzugriff verl\'e4ngert werden. Wird diese L\'e4nge \'fcberschritten, so sucht das Programm automatisch einen neuen Platz f\'fcr die Aufnahme und kennzeichnet den alten Platz als freigegeben. \f0\par
+\tab Standard:\b\f5  f0\b0\f4    (d.h. keine F\'fcllzeichen einf\'fcgen)     Jederzeit \'e4nderbar. \f0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx9866\b\f5\fs28 K\b0\f0\fs20\tab\b Kategorie-Anfangszeichen\b0  \b\tab\f4\'c4\b0\f0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab\f4 Hinter K setzt man den Code des gew\'fcnschten Kategoriezeichens, das bei der Anzeige und Eingabe am Bildschirm jeweils vor der Kategorienummer stehen soll. Nachtr\'e4glich \'e4nderbar, denn das Zeichen wird nicht mit gespeichert, es erscheint nur im Editor. Die Deskriptorzeilen m\'fcssen jedoch immer mit '#' beginnen. \f0\par
+\tab Standard:\b\f5  K35\b0\f0     (35 ist der Code des Zeichens '#'). \i Abweichung vom Standard wird nicht empfohlen.\i0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx9866\b\f5\fs28 M\f0\fs20\tab Mehrfachkennung\tab V\b0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab\f4 Mehrfachkategorien erhalten das hinter M stehende Zeichen und die darauf folgenden als Fortsetzungszeichen. Es sei denn, man hat per ?M in der Kategorieliste festgelegt, welche Zeichen als Wiederholungszeichen hinter einer Kategorienummer auftreten d\'fcrfen. Dieser Befehl gilt also nur f\'fcr diejenigen Kategorien, bei denen keine Angabe ?M gemacht wurde. \f0\par
+\tab Standard:\b\f5  Ma\b0\f4 , das bedeutet, man erh\'e4lt\f5   #xxa\f0 ,\f5  #xxb\f0 ,\f5  #xxc\f4 , ... als Mehrfachkategorien, wenn f\'fcr\f5  #xx\f0  keine ?M-Angabe gesetzt ist. \par
+\tab In $A.CFG ist allerdings M2 gesetzt. \par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx9866\b\f5\fs28 m\b0\f0\fs20\tab\b Speicher konfigurieren\b0  (memory configuration)\b\tab\f4\'c4\b0\f0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab\f4 Die Gr\'f6\'dfen mehrerer interner Arbeitsbereiche lassen sich einstellen. Die aktuellen Einstellungen und die Gr\'f6\'dfe der noch freien Bereiche sehen Sie mit \b\f0 Alt+F7\b0  im Anzeigeschirm (\f5 -\f6\'d8\f0  1.5). \i\f4 ACHTUNG:\i0  Diese Befehle m\'fcssen vor die erste mit # beginnende Zeile (\f5 -\f6\'d8\f4  A.1.2)\f0\par
+\f4\tab\f0 Als Standards sind eingestellt: \par
+\pard\fi-2388\li2388\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\fs24\tab\b\f5 mr16000\b0\f0\fs20\tab\f4 maximale Gr\'f6\'dfe der Ergebnismenge (verkleinern Sie bei Problemen zuerst diesen Wert). Dieser Wert gilt nur f\'fcr die DOS-Programme, nicht f\'fcr \i\f0 a99/alcarta\i0 ! \par
+\fs24\tab\b\f5 mk2500\b0\f0\fs20\tab\f4 Anzahl Kategorien im Aufnahmespeicher Dieser enth\'e4lt den aktuellen Satz, an dem man arbeitet oder der angezeigt wird (falls keine extrem gro\'dfen S\'e4tze, gen\'fcgt\f5  mk500\f0 ) \par
+\b\f5\fs24\tab mK48000\b0\f0\fs20\tab\f4 Gr\'f6\'dfe des Aufnahmespeichers in Byte (10000 reicht, wenn keine extrem gro\'dfen S\'e4tze. \f0\par
+\pard\fi-2387\li2387\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab\tab\tab\f4 Der gr\'f6\'dfte Satz mu\'df aus internen Gr\'fcnden doppelt hineingehen; 48000 ist das Maximum.) \f0\par
+\b\f5\fs24\tab md800\b0\f0\fs20\tab\tab Anzahl der Kategoriedeskriptoren (\f5 -\f6\'d8\f4  A.1.2, f\'fcr Pica braucht man 1300) \f0\par
+\b\f5\fs24\tab mb200\b0\f0\fs20\tab\tab\f4 Anzahl Kategorien im Hintergrundspeicher (auch f\'fcr Anwendervariable zust\'e4ndig!) \f0\par
+\pard\fi-2388\li2388\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\fs24\tab\b\f5 mB12000\b0\f0\fs20\tab\f4 Gr\'f6\'dfe des Hintergrundspeichers in Byte (5000 reichen meistens, Obergrenze 32000) \f0\par
+\pard\fi-2387\li2387\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab\tab\tab\f4 (Bereich wird f\'fcr\f5  #uxy\f4 -Variablen gebraucht, nicht zu klein machen, bes. f\'fcr \b\i\f0 a99 \b0\i0 !) \par
+\pard\fi-2388\li2388\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\fs24\tab\b\f5 mP4000\b0\f0\fs20\tab\f4 Gr\'f6\'dfe des Phrasenspeichers in Byte (wird auch z.B. f\'fcr die Zwischenteile gebraucht) \f0\par
+\fs24\tab\b\f5 mX40000\b0\f0\fs20\tab\f4 reservierter Platz f\'fcr Parameterspeicher (Index, Anzeige, Export) (Maximum 64000) \f0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx9866\b\f5\fs28 N\b0\f0\fs20\tab\b Nichtsortierzeichen\tab N\b0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab\f4 Hinter N steht der Code des gew\'fcnschten Nichtsortierzeichens, also des Steuerzeichens, das eine \'dcbergehung des nachfolgenden Wortes beim Sortieren etc. bewirken soll. \f0\par
+\tab Standard:\b\f5  N170\b0\f4  : das ist das Zeichen '\'ac'   (in M.CFG :\b\f5  N95\b0\f0  = Unterstrich) \par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx9866\b\f5\fs28 n\b0\f0\fs20\tab\b Nichtsortier-Modus\tab N\b0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab Wenn man hier  n1  vorgibt, wird vor \b und\b0\f4  hinter das nicht zu sortierende Wort der bei N angegebene Code gesetzt, sonst (standardm\'e4\'dfig) nur vor das Wort. Au\'dferdem gibt es den Modus  n4  f\'fcr MARC-Formate. \f0\par
+\tab\f4 Beim Export l\'e4\'dft sich der Modus \'e4ndern, und zwar \f0\par
+\tab von n0 auf n1 : indem man den Manipulationsbefehl\b\f11  u\'ac\'ac\b0\f0  anwendet (\f5 -\f6\'d8\f0 `10.2.6.3). \par
+\tab von n1 auf n0 : mit dem Ersetzungsbefehl\b\f11  _\'ac _ _\b0\f0  , damit wird das Zeichen hinter dem Wort beseitigt, das vor dem Wort jedoch nicht. Andererseits: wenn Modus n0 eingeschaltet ist, schadet ein zweites Nichtsortierzeichen hinter dem Wort nicht, denn bei Anzeige und Druck wird es ohnehin ausgeblendet (in der Parameterdatei steht dann in der Regel der Befehl\b\f11  p \'ac 1\b0\f0  . \par
+\tab\f4 Vorteil von Modus n1: innerhalb des "Wortes" k\'f6nnen Leerzeichen vorkommen, w\'e4hrend bei n0 das zu \'fcbergehende Wort am ersten Leerzeichen, Bindestrich oder Apostroph automtatisch endet. \f0\par
+\tab Standard:\b\f5  n0\b0\f0      (in A.CFG und M.CFG :\b\f5  n1\b0\f0 ) \par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx9866\b\f5\fs28 p\b0\f0\fs20\tab\b Druckername\tab\f4\'c4\b0\f0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab Standard:\b\f5   pPRN\b0\f0\par
+\tab\f4 Wenn der zu benutzende Drucker f\'fcr das Betriebssystem einen anderen Namen hat, z.B. PRT2, setzt man diesen hier ein. \f0\par
+\tab\f4 Wenn man hinter p einen beliebigen anderen Namen angibt, der dem System nicht bekannt ist, wird er als Dateiname angesehen und die Druckausgabe wird in diese Datei umgelenkt (sie wird angelegt, wenn sie noch nicht existiert). Sie kann anschlie\'dfend bearbeitet und mit dem DOS-Befehl PRINT ausgedruckt werden. \f0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx9866\b\f5\fs28 S\f0\fs20\tab Nicht-Stoppzeichen\tab N\b0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab\f4 auch "Entstoppungszeichen" genannt. Hinter S steht der Code des gew\'fcnschten Nicht-Stoppzeichens, also des Steuerzeichens, das die Wirkung der Stoppwortliste (\f5 -\f6\'d8\f0  10.2.1.3) aufhebt. \par
+\tab Standard:\b\f5  S64\b0\f0   (= '@' = "Klammeraffe") . \par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx9866\b\f5\fs28 w...\f0\fs20\tab Farbeinstellungen\b0    siehe A.3\b\tab\f4\'c4\b0\f0\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\f5\fs28 Y\tab\f0\fs20 YES-NO-Codes\b0  \b\f4\'c4\b0\f0\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab\f4 F\'fcr Ja/Nein-Abfragen m\'fcssen in fremdsprachigen Versionen evtl. die \f0\par
+\tab\f4 Abk\'fcrzungsbuchstaben f\'fcr "JA" und "NEIN" ge\'e4ndert werden. Man setzt die jeweiligen Kleinbuchstaben direkt hinter das 'Y'. \f0\par
+\tab Standard:\b\f5  Yjn\b0\f0  \par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+\pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\f5\fs28 x\f0\fs20\tab Ende\b0  der Befehle. Was danach noch kommt, wird ignoriert. \par
+\pard\par
+\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  `\cf3\ul\b Fortsetzung\cf2\ulnone\b0 ` \par
+\pard\par
+\pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\par
+?Fortsetzung=h aca-2 \par
+?Vorbemerkungen=h =A.0 \par
+?Konfigurationsbefehle=h =A.1 \par
+?Abfrageliste=h aca-2 \par
+?Farben=h aca-2=Farben \par
+?Beispiel: Standardkonfiguration $A.CFG=h aca-3 \par
+?Umstieg=h aca-3=A.5 \par
+?Neutralformat=x jan http://www.allegro-c.de/doku/neutral/ \par
+?Nummernvergabe=h nummer \par
+\par
+}
+ 

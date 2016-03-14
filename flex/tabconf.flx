@@ -1,0 +1,259 @@
+   TABCONF.FLX : Automatische Tabellengenerierung aus simpler Definitionszeile
+   2006-07-04
+
+   Nutzer soll NUR die gew¸nschten Feldnummern eingeben, alles andere macht TABCONF
+   insbes. die Spaltenueberschriften (aus a.cfl bzw. aus der CFG)
+   Es wird eine Parameterdatei t-xyz erstellt, die anschliessend wie ueblich zu nutzen
+   ist, d.h. umgangen wird die Eingabe ueber das unbeliebte Formular tabinit.rtf
+
+   #uqU  User input, z.B. 20, #45, #75, 90$a 92$s
+            # ist optional, auch das Komma (dann mindestens Spatium)
+   #uqu  Kopie von #uqU, wird in :loop abgearbeitet
+   #uqT  Name der Parameterdatei
+   #uyJ  aufbereitete Kopie des Input:  nummer -- text:nummer -- text;...
+   #uyj  Kopie davon
+   #uqJ  noch eine Kopie
+   #uyF  gesamte a.cfl, Zeilen beginnen mit + statt #,  statt $
+   #uyN  gefundene Feldbezeichnung aus a.cfl
+   #uyT  eine der eingegebenen Nummern, z.B. 92$s
+   #uyU  ein zu suchendes Tag, z.B.  +92
+   #uyX  gefundene Zeile aus a.cfl, z.B.  92 BestandN L¸ckenL Sigels Signatur
+   #uy2  Hilfsvar
+
+var n n n "Tabellen erstellen - Schnellmethode" n n
+var +"Geben Sie nur die Nummern der Felder ein, die in der Tabelle erscheinen sollen," n
+var +"und zwar in der gewÅnschten Reihenfolge. (Die Namen sucht sich das Programm selbst heraus.)" n n
+var +"Wenn nur ein Unterfeld gewÅnscht ist, dann dessen Code mit $ an die Feldnummer hÑngen" n
+var +"   z.B.  9DH$u  fÅr das Unterfeld $u von #9DH" n n
+var +"Mit $$ bekommt man den Text, der VOR dem ersten Unterfeldzeichen steht." n
+var +"   z.B.  74$$  ergibt den Text gleich hinter der #74, vor dem ersten Unterfeld." n n
+var +"Trennung zwischen den Nummern: Leerzeichen. Optional zusÑtzlich Komma." n n
+var +"Beispiel:  87, 20, 76, 74$$, 90$a" n n
+var +"Es wird eine Strukturdatei erstellt mit dem Namen t-nnn." K1 "pr" n
+var +"  (nnn = erste Nummer der Liste, also z.B. t-87.apr)" n n
+ansi
+show IV
+
+ask Felder f¸r die Tabelle (z.B. 20, 76, 75, 90$a, 92$s)?
+if "" help table;end
+ins #uqU
+var "t-" #uqU(f"#" e"," e" ")
+ins _$$__
+ins _$_-_
+ins #uqT
+
+  Definitionen sind schon eingelesen? (Datei x.cfl dann in #uyF)
+if #uyF jump erst
+  Definitionsdatei einlesen (Bedeuqung der Feld- und Teilfeldnummern)
+  Default:  Datei x.cfl
+var "F" D K1 ".cfl"
+  damit ist die Datei in der iV, dann speichern in #uy2:
+ins #uy2
+var #uy2(1,0)
+  Checken, ob sie existiert
+fsize
+if no jump progdir
+jump beginn
+
+:progdir
+var "F" P K1 ".cfl"
+ins #uy2
+var #uy2(1,0)
+  Checken, ob sie existiert
+fsize
+if no jump error
+
+  Datei nun in die iV einlesen
+:beginn
+var #uy2
+var
+  # durch + ersetzen etc. (sonst Fehler bei ins #uyF)
+ins _#_+_
+ins _$__
+ins __$_
+ins #uyF
+
+#uy2   // Hilfsvar wieder weg
+
+  #uyF enthaelt jetzt die manupulierte  x.cfl
+
+:erst
+
+#uyJ
+
+  Nutzereingabe kopieren
+var #uqU
+ins #uqu
+
+:loop
+  Erste Feldnummer aus Nutzereingabe nehmen
+var #uqu(e" " e"" e"," F" ," f"#")
+ins #uyT             // z.B.  92$s  (statt z.B. #92$s, )
+   Ein + davorsetzen
+var "+" #uyT(e"$")     // z.B.  +92  statt  #92$s
+ins #uyU
+
+  zugehoerige Zeile in der CFL-Datei suchen
+var #uyF(b"#uyU" e"∂" e"+")
+ins #uyX   // z.B. steht da jetzt   92 BestandN L¸ckenL Sigels Signatur
+
+#uyN
+var #uyT
+if not %$% jump nox
+var "" #uyT(b"$")
+ins #uyS
+
+  Bedeutung dieses Subfields suchen
+var #uyX(b"#uyS" e"")
+ins #uyN
+if "" perf other
+
+:nox
+if #uyN jump write
+
+var "#" #uyT(e"$") J
+ins #uyN
+
+:write
+
+var #uyJ ":" "#" #uqu(f"+#" e"," e" ") " -- " #uyN
+ins #uyJ
+var #uqu(b" " f" ,")
+ins #uqu
+if #uqu jump loop
+
+  ExportParameterdatei fabrizieren, Typ t-*.?pr
+var #uqT "." K1 "pr"
+open x
+
+   Kopfzeilen
+wri "  " #uqT "." K1 "PR : Erstellung einer Tabelle aus  " #uqU n
+wri "  " #dts(0,8) n n "  Grundwerte:" n
+wri "1=0    Ende des Sortierfelds" n
+wri "2=9    Delimiter (TAB)" n
+wri "3=C    Satzende (=neue Zeile)" n
+wri "zl=0   Kein Zeilenumbruch" n
+wri "" n
+wri "zm=0   Kein Seitenumbruch" n
+wri "i4=1   Stammsatz-Ersetzungen vornehmen" n n "  Beginn der Verarbeitung: " n n
+wri "tad-aw   Umcodierung: ad-aw.?pt laden, damit Windows-Codes entstehen" n
+wri "ts     Sortiertabelle s.?pt laden" n n
+
+wri "#uwh +0 e0     #uwh noch nicht belegt? Dann Kopfzeile erzeugen" n
+wri "#uSo +h c'nein' e0     #uSo enth. 'nein' : Kein Sortieren" n
+wri "#+H" n n
+wri "#-0" n
+
+wri "#uSo +B c'nein' e0     #uSo enth. 'nein' : Kein Sortieren" n
+
+
+wri n "  ************************  Variabler Teil:" n "  Nur wenn dieses Feld vorkommt, wird der Satz verarbeitet!" n n
+
+   Das erste Feld wird zugleich Sortierfeld
+
+var #uyJ(e" ")
+if %$% jump sbf
+wri '!' #uyJ(f":#" e" " e"$") ' +A u p"u1 "' n
+jump jend
+:sbf
+wri '!' #uyJ(f":#" e" " e"$") ' +A $' #uyJ(f":#" e" " b"$" 0,1) ' u p"u1 "' n
+
+
+:jend
+wri "#+-" n n
+
+wri "#-A" n
+wri "#t1" n
+
+wri "#-B" n
+
+var #uyJ
+ins #uyj
+ins #uqJ
+
+:lp
+wri "#" #uyJ(f":#" e" " e"$")
+var #uyJ(f":#" e" ")
+if %$% wri " $" #uyJ(e" " b"$")
+wri "   " #uyJ(b" -- " e":") n
+var #uyJ(f":" b":")
+ins #uyJ
+if #uyJ wri "#t2" n
+if #uyJ jump lp
+
+wri "#t3" n "#+#" n
+
+wri n n "  ***********************  Tab.Ueberschrift" n n "#-H      // Headline mit Sortieren" n
+wri "#t{ 'u1 -----------------' t1 '"
+var #uyj
+ins #uyJ
+:lu
+wri #uyj(b" -- " e":")
+var #uyj(b" -- " b":")
+ins #uyj
+if #uyj wri 9
+if #uyj jump lu
+wri "' C }" n
+wri "#nr =wh e0" n
+wri "#+0" n n
+wri "#-h      // Headline ohne Sortieren" n
+wri "#t{ '"
+:lv
+wri #uyJ(b" -- " e":")
+var #uyJ(b" -- " b":")
+ins #uyJ
+if #uyJ wri 9
+if #uyJ jump lv
+wri "' C }" n
+wri "#nr =wh e0" n
+wri "#+0" n n
+  ExportparamDatei beendet
+close x
+
+  Strukturdatei fuer SQL-Export anlegen
+var "q-" #uqT(2,0) "." "str"
+open x
+
+wri "  q-" #uqT(2,0) ".str : Erstellung einer SQL-Tabelle aus  " #uqU n
+
+wri "  " #dts(0,8) n n
+
+  #uqJ ausgeben, aber " --" durch "   " ersetzen, neue Zeile statt :
+:ql
+wri #uqJ(e" --" e":") "   " #uqJ(b"--" e":") n
+var #uqJ(b":")
+ins #uqJ
+if #uqJ jump ql
+
+  Datei schliessen, Menue wieder zeigen
+close x
+h table
+end
+
+  Noch offen:
+
+  Teilfeldkennung nicht definiert. Hier kann man allgemeing¸ltige Unterfelder checken:
+  N-Format kennt 13 Allgemeine Subfields:
+:other
+var #uyS(1,1)
+if "A" var "Abbrev"
+if "D" var "Date"
+if "I" var "Id"
+if "L" var "Lang"
+if "N" var "Num"
+if "P" var "Pretxt"
+if "R" var "Rule"
+if "S" var "Spell"
+if "T" var "Type"
+if "U" var "URL"
+if "X" var "NonpubNote"
+if "Y" var "Text"
+if "Z" var "PubNote"
+ins #uyN
+var #" #uyT(e"$") J #uyU(f"+") "-" #uyN
+ins #uyN
+
+return
+
+:error
+mes Es gibt keine .CFL-Datei! Muster dazu ist a.cfl

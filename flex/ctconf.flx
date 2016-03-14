@@ -1,0 +1,54 @@
+   CTCONF.FLX : Automatische Konfigurierung einer Zaehlung
+   2007-02-08
+
+   Nutzer soll NUR die gewuenschten Feldnummern eingeben, alles andere macht CTCONF
+   Es wird eine Datei  c-nnn.xct  erstellt, die anschliessend wie ueblich zu nutzen
+   ist, d.h. umgangen wird die Eingabe ueber das unbeliebte Formular ctinit.rtf
+   Anschliessend kann aber die neue Strukturdatei ganz normal ueber das ct-Menue
+   auch ausgewaehlt und bearbeitet werden.
+
+ask Die Feldnummer bitte (Ohne #. Wenn mehrere, dann getrennt durch Komma.)=#uc1
+if "" help ct;end
+ins _#__
+ins #uc1
+
+  Dateiname der xct-Datei
+var "c-" #uc1(e",") "." K1 "ct"
+ins #ucU
+open x
+
+  Kopfzeilen (Kommentare)
+wri "  C-" #uc1(e",") "." K1 "CT" n
+wri "  " #dts(0,8) n
+wri "  1.  Bearbeiten Sie die nachfolgende Vorlage, um die Struktur der " n
+wri "        Zaehlung festzulegen! "  n
+wri "        Hinter dem = setzen Sie jeweils Ihre gewuenschten Angaben ein." n n
+
+wri "  2.  Danach Alt+9" n
+wri "        Damit wird dann auch gleich die Auswertung gestartet. Die einmal" n
+wri "        vorbereitete Struktur kann aber immer wieder verwendet werden. " n n
+
+
+  Die Eingabe des Nutzers wird verwertet fuer NAM und FLD
+wri "NAM=" #uc1(e",") "   Name der Auswertung" n
+wri "FLD=" #uc1 n "   Nummer der auszuwertenden Felder" n
+
+  Rest ist Standard
+wri "SEP=;" n "   Trennzeichen innerhalb des Feldes" n
+wri "MIN=1" n "   Minimum: nur auflisten, was mindestens so oft vorkommt" n
+wri "MAX=1000000" n "   Maximum: nur auflisten, was weniger oft vorkommt" n
+wri "MOD=2" n "   Modus: 2=alle Eintraege, 1=nur den VOR dem Trennzeichen, 3=nur HINTER dem Trennz. " n
+wri "ORD=1" n "   Ordnungsweise: 1=alphabetisch, 8=numerisch, 9=unver„ndert" n
+
+close x
+
+  Jetzt noch die Variable #uwQ setzen (tritt in ct.rtf auf)
+var #uc1(e",")
+ins #uwQ
+  und ct.rtf anzeigen, darin ist dann der Name zu sehen und die Zaehlung
+  kann sofort beginnen
+help ct
+var "Einstellung eledigt. " n "Klicken Sie jetzt auf  'Ergebnismenge auswerten' oder 'Gesamte Datenbank auswerten'"
+mes
+
+

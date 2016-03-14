@@ -1,0 +1,115 @@
+  O-KONTUE.FLX : Kontingent-Uebersicht und Auswahl (ORDER)
+  2000-01-10/2001-03-21   Ausgewaehltes Kont. neu berechnen
+                          oder Bestellungen dazu anzeigen
+  ViewListe oeffnen
+:find
+View kont.vw
+  existiert nicht:
+if no jump nokont
+clo v
+  nichts ausgewaehlt:
+if "" end
+  ausgew. Zeile nach #uoJ, am | abschneiden
+ins #uoJ
+var #uoJ(e"|")
+ins #uoJ
+ins #uoK
+:go
+var "|; SYSK" #uoJ "?"
+  gibt's  dafuer einen Kont.Satz?
+find
+  Nein:
+if l1 jump kerror
+sho rec
+:rechnen
+disp
+var "Aktion zu Kontingent " #uoJ n 
+var +"1  : Vorgabebetrag ändern" n
+var +"2  : Liste aller Bestellungen" n 
+var +"3  : Alle offenen Bestellungen" n 
+var +"4  : Reklamierte Bestellungen" n 
+var +"5  : Inventarisierte" n 
+var +"6  : Kontingent " #uoJ " neu durchrechnen" n 
+var +"7  : Alle Kontingente neu durchrechnen"
+Aresqa
+if "" end
+if "1" jump bearb
+if "2" jump liste
+if "3" jump offen
+if "4" jump rekla
+if "5" jump erledigt
+if "6" exec o-kont
+var ""
+ins #uoJ
+exec o-kont
+
+:liste
+  Liste der Bestellungen: Ergebnismenge bilden
+var "|: _K " #uoJ "?"
+Find
+if l1 mes Es gibt keine
+end
+
+:offen
+  Liste der off. Bestellungen: Ergebnismenge bilden
+var "|: _K " #uoJ "?"
+find
+if l1 mes Keine Bestellungen zu diesem Kontingent;end
+var "RBestellungen zu Kont. " #uoJ
+set
+open x offene.lst
+wri "Offene Best. zu Kont. " #uoJ n
+first
+:Off
+var #9DB
+if "3" wri i n
+if "4" wri i n
+next
+if yes jump Off
+//  Find +#9DB3  // reicht nicht, "4" ist auch offen
+close x
+read set offene.lst 
+if l1 mes Keine offenen Bestellungen zu diesem Kontingent
+del offene.lst
+sho list
+end
+
+:rekla
+  Liste der rekl. Bestellungen: Ergebnismenge bilden
+var "|: _K " #uoJ "?"
+find
+if l1 mes Keine Bestellungen zu diesem Kontingent;end
+var "RBestellungen zu Kont. " #uoJ
+set
+Find +#9DB4
+if l1 mes Keine reklamierten Bestellungen zu diesem Kontingent
+end
+
+:erledigt
+  Liste der inv. Bestellungen: Ergebnismenge bilden
+var "|: _K " #uoJ "?"
+find
+if l1 mes Keine Bestellungen zu diesem Kontingent;end
+Find +#9DB6
+if l1 mes Keine inventarisierten Bestellungen zu diesem Kontingent
+end
+
+:nokont
+var "Keine Kontingentliste, diese wird jetzt zuerst eingerichtet" n
+var +"Anschlieáend wiederholen Sie dann bitte diese Funktion!"
+ansi
+mes
+exec X o-mkview
+end
+
+:bearb
+form Kontingent
+Put
+jump rechnen
+
+:kerror
+var "Kein Stammsatz zum Kontingent " #uoJ " gefunden" n
+var +"Liste evtl. nicht mehr aktuell! Neu erstellen?"
+yes
+if yes exec o-mkview
+

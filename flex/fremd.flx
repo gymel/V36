@@ -1,0 +1,86 @@
+  FREMD.FLX : vorliegende Fremddatei importieren
+  2001-05-14  Datei muss auf dem Arbeitsverz. liegen
+  Kann beliebig erweitert werden fuer andere Formate
+
+  In #uvI steht der Formatname, z.B. MARC oder MAB2
+
+  Pruefen, ob Datei existiert:
+var #uvI ".dat"
+fsize
+if no jump error
+
+  Vorbereitungen: imprt.bat erstellen (auf dem Arb.Verz.)
+get env comspec
+ins #uwC
+open x imprt.bat
+wri "rem  Import von " #uvI ".DAT" n "rem  " #dts n n
+var P
+ins #uvP
+wri "set -P=" #uvP(F"\\") n
+var D
+ins #uvP
+wri "set -D=" #uvP(F"\\") n
+wri "set -K=" K n 
+wri "set -K1=" K1 n 
+wri "set -B=" B n 
+wri "set -I=i-1" n n
+
+  Welche Konvertierung ist gewuenscht?
+var #uvI
+if ="OCLC" jump marc
+if ="MAB2" jump mab2
+if ="PICA" jump pica
+if ="VLB" jump vlb
+end
+
+  Jetzt den Namen der Fremddaten in Variable -F schreiben
+:marc
+wri "set -F=oclc" n n
+jump start
+
+:mab2
+wri "set -F=mab2" n n
+jump start
+
+:pica
+wri "set -I=i-pica" n
+wri "set -F=pica" n n
+jump start
+
+:vlb
+wri "set -F=vlb" n n
+jump start
+
+end
+
+:start
+  Aufruf von  FREMD.BAT anhaengen (einheitlich fuer alle)
+wri "call " P "fremd.bat" n
+  Datei IMPRT.BAT abschliessen
+close x
+  Jetzt IMPRT.BAT starten
+var #uwC " /c IMPRT.bat"
+call
+
+var #uvI "." K1 "LG"
+fsize
+if no jump erl
+var "Vorgang wurde abgebrochen, umgewandelte Daten existieren noch" n
+var +"Daten einlesen und evtl. doch noch speichern?" n
+yesno
+if no jump erl
+var #uvI "." K1 "lg"
+read file
+mes Daten sind eingelesen, stehen im Offline-Speicher (Alt+q)
+sho off
+end
+:erl
+mes Erledigt
+end
+
+:error
+var "Eine Datei " #uvI ".dat liegt nicht vor" n
+var +"Stellen Sie die Fremddatei unter diesem Namen bereit!" n
+var +"Und zwar auf dem Verzeichnis " W
+mes
+

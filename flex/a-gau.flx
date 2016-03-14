@@ -1,0 +1,95 @@
+  A-GAU.FLX : Notverbuchung
+  2007-08-27  Nur aus- und rueckgegebene Medien registrieren
+
+
+yes Sofort Notverbuchung starten? (Nein: Information dazu lesen)
+if yes jump notv
+if no help alf-gau.txt
+end
+
+
+:notv
+#ubL
+#ubT
+  Zaehler
+#usL 0
+#usE 0
+#usR 0
+
+  Gibts die Datei schon?
+var "batch.txt"
+fsize
+if no jump begin
+
+  Ja. Von wann ist sie?
+var "batch.txt"
+ftime
+ins #ubT
+
+var "Die Datei batch.txt existiert schon, Datum " #ubT n "Soll sie Åberschrieben werden? (Nein: Neue Daten anhÑngen)"
+ansi
+yesno
+if no jump begin
+  Datei loeschen
+if yes delete batch.txt;jump begin
+  Es wurde "Abbrechen" gedrueckt
+close x
+end
+
+:begin
+  Datei zum Anhaengen oeffnen
+open x +batch.txt
+
+:start
+  Nach dem Wunsch fragen
+var "Ausleihen?" n " Ja: Ausleihe / Nein: RÅckgabe"
+ansi
+yesno
+if yes jump ausl
+if cancel jump ende
+
+  Es war Nein gedrueckt: Rueckgabe
+  Dann nur Schleife zum Barcodes abfragen
+:rueck
+ask Barcode
+  Leereingabe: zur Umschaltung
+if "" jump start
+  R-Zeile schreiben
+ins #ubT
+wri "R" #ubT n
+eval #usR +1
+ins #usR
+jump rueck
+
+  Es war Ja gedrueckt, dann zuerst Leserbarcode
+:ausl
+ask Leser-Barcode: (leere Eingabe: Ende)
+if "" jump start
+  L-Zeile schreiben
+ins #ubL
+wri "L" #ubL n
+eval #usL +1
+ins #usL
+:loop
+ask Buch-Barcode (leere Eingabe: anderer Leser)
+  Leereingabe? Dann neuer Leserabfrage
+if "" jump ausl
+  Sonst E-Zeile schreiben
+ins #ubT
+wri "E" #ubT n
+eval #usE +1
+ins #usE
+:loop
+jump loop
+
+  Ausstieg. Zaehler zeigen
+:ende
+close x
+help batch.txt
+var "Sie sehen in der Anzeige die aufgezeichneten Aktionen (Datei batch.txt)" n
+var +#usL " Leser haben insgesamt " n
+var +#usE " Medien ausgeliehen" n
+var +#usR " RÅcknahmen wurden festgehalten"
+ansi
+mes
+

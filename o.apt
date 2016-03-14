@@ -1,0 +1,175 @@
+  O.APT : ASCII <-> ANSI   ein-eindeutige Tabelle (OSTWEST.FON beruecksicht.)
+  1995-12-01/971124/980112/20000310/20130717
+       NEU 20130717: Keine Mehrfachzuordn. auf 127 mehr (DOS-Grafikzeichen)
+                     wegen Feldwiederholungscodes. Dann bis zu 171 Mehrfachfelder  
+  Syntax:  o .nnn mmm
+           dem DOS-Zeichencode nnn entspricht der Windows/UNIX-Code mmm
+           d.h. statt des Codes nnn wird zur Datenanzeige mmm benutzt
+
+  Diese Tabelle fuer UNIX und Windows wird per "to" eingebunden!
+
+  Sonderfall: Wenn Ihre Datenbank nicht im DOS, sondern Windows Code ist,
+     dann stellen Sie auf Ihrem DATENverzeichnis eine LEERE Datei o.apt
+     bereit, sonst gibt es u.U. Probleme.
+  Wenn Sie z.B. G.CFG verwenden, machen Sie eine Kopie namens o.gpt
+  Datei wird automatisch eingebunden, wenn Sie den Befehl  to  nicht
+  in den Anzeige- bzw. Indexparametern haben.
+  Fuer die DOS-Programme ohne Wirkung
+  (127 wird pauschal fuer alle Rahmensymbole verwendet, die in allegro-
+  Daten normalerweise nicht vorkommen. Wer bis zu vier solche Symbole
+  als Datenzeichen verwendet hat, sollte diese auf 140-143 abbilden!)
+  wichtige Steuerzeichen:
+  Sonderfall: Wenn man einem Zeichen den Wert 0 zuordnet, hat das folgende
+     Wirkung: Das Zeichen UND das im Text unmittelbar nachfolgende Zeichen
+              bleiben beide unveraendert. Das nachfolgende kann also eines
+              sein, das normalerweise veraendert werden wuerde. Solche Dinge
+              treten bei den sinologischen Anwendungen auf. 
+  ACHTUNG: Fuer Unicode Methode 2 in die CFG schreiben:  CU (ab V33.2)
+    bis auf:  
+  o .250 183   Punkt in der Mitte 
+  o .020 182    Absatzzeichen
+
+
+o .014 130    Notenzeichen
+o .015 160    Sonne              vorher 131
+o .016 187    Dreieck nach rechts
+o .017 132    Dreieck nach links
+o .018 137    o mit Doppelakut
+o .019 134    u mit Doppelakut
+o .020 182    Absatzzeichen
+o .021 167    Paragraph
+o .022 135    u mit ogonek
+o .023 133    g mit breve
+o .024 189    Pfeil hoch
+o .025 139    Pfeil runter
+o .028 159    Verweisungsstrich (obsolet)
+o .030 165    Dreieck Spitze oben
+o .031 178    Subfield Code = AltGr+2 (Dreieck Spitze unten)
+o .127 202   e mit hacek              1  27     011B
+o .128 199   C mit cedille            0 199       C7
+o .129 252   ue                       0 252       FC
+o .130 233  'e                        0 233       E9
+o .131 226  ^a                        0 226       E2
+o .132 228   ae                       0 228       E4
+o .133 224  `a                        0 225       E1
+o .134 229   a mit Ringel             0 229       E5
+o .135 231   c mit cedille            0 231       E7
+o .136 234  ^e                        0 234       EA
+o .137 235   e mit Trema              0 235       EB
+o .138 232  `e                        0 232       E8
+o .139 239   i mit Trema              0 239       EF
+o .140 238  ^i                        0 238       EE
+o .141 236  `i                        0 236       EC
+o .142 196   Ae                       0 196       C4
+o .143 197   A mit Ringel             0 197       C5
+o .144 201  'E                        0 201       C9
+o .145 230   ae Ligatur               0 230       E6
+o .146 198   AE Ligatur               0 198       C6
+o .147 244   ^o                       0 244       F4
+o .148 246   oe                       0 246       F6
+o .149 242  `o                        0 242       F2
+o .150 251  ^u                        0 251       FB
+o .151 249  `u                        0 249       F9
+o .152 255   y mit trema              0 255       FF
+o .153 214   Oe                       0 214       D6
+o .154 220   Ue                       0 220       DC
+o .155 162  't                        1 101     0165
+o .156 163   Brit. Pfund              0 163       A3
+o .157 204   s mit Cedille!!          1  95     015F
+o .158 195   u mit Ringel             1 111     016F
+o .159 221   U mit Ringel             1 110     016E
+o .160 225  'a                        0 225       E1
+o .161 237  'i                        0 237       ED
+o .162 243  'o                        0 243       F3
+o .163 250  'u                        0 250       FA
+o .164 241  ~n                        0 241       F1
+o .165 209  ~N                        0 209       D1
+o .166 208   C mit hacek              1  12     010C
+o .167 240   c mit hacek              1  13     010D
+o .168 194   r mit hacek              1  89     0159
+o .169 174   R mit hacek              1  88     0158
+o .170 172   Nichtsortierzeichen        172       AC
+o .171 138   S mit hacek              1  96     0160
+o .172 154   s mit hacek              1  97     0161
+o .173 253  'y                          253       FD
+o .174 219   Z mit hacek              1 125     017D
+o .175 190   z mit hacek              1 126     017E
+o .176 185   tuerk. i                 1  49     0131
+o .177 222   grosses Thorn              222       DE
+o .178 254   kleines Thorn              254       FE
+o .179 011   grafik
+o .180 014   ...
+o .181 180   ' akut                     180       B4
+o .182 145   ` gravis                 3   0     0300
+o .183 136   ^ circumflex                94       5E
+o .184 149   Punkt uebergesetzt       3   7     0307
+o .185 015   grafik
+o .186 016   ...
+o .187 017   ...
+o .188 018   ...
+o .189 168   Trema/diaresis             168       A8   -> 0308 !
+o .190 166   Halbkr.ueberg/breve      2 216     02D8
+o .191 019   grafik
+o .192 021   ...
+o .193 022   ...
+o .194 023   ...
+o .195 024   ...
+o .196 025   ...
+o .197 028   ...
+o .198 227   Doppelakut               3  11     030B
+o .199 179   Hacek/Caron              3  12     030C
+o .200 029   grafik
+o .201 030   ...
+o .202 131   ...
+o .203 140   ...
+o .204 141   ...
+o .205 142   ...
+o .206 143   ...
+o .207 186   Ringel                   3  10     030A
+o .208 175   Ueberstrich/Macron         175     00AF  ->   0304 !
+o .209 215   Halbkr.unter (breve)     3  46     032E
+o .210 171   Ogonek                   3  40     0328
+o .211 184   Cedille                  3  39     0327
+o .212 191   untergesetzter Punkt     3  35     0323
+o .213 146   MODIFIER LETTER TURNED COMMA (Ain?) 02BB
+o .214 169   Copyright                0 169       A9
+o .215 216  /O daenisch  (97 neu)     0 216       D8
+o .216 164   Waehr.Symb.              0 164       A4
+o .217 156   grafik
+o .218 158   ...
+o .219 161   diakrit /                3  56     0338
+o .220 129   Pfeil nach rechts       33 146     2192
+o .221 128   Euro-Symbol (neu 97)    32 160     20A0
+o .222 173   diakr. Mittelstrich      3  54     0336
+o .223 247   diakr. Unterstrich       3  50     0332
+o .224 151   "[alpha]"                3 177     03B1
+o .225 223   scharfes s               0 223       DF
+o .226 152   "[Gamma]"                3 147     0393
+o .227 153   "pi"                     3 192     03C0
+o .228 188   a mit breve
+o .229 155   "[sigma]"                3 195     03C3
+o .230 181   "[mue]" (mikro-Zeichen)  0 181       B5
+o .231 177   "[gamma]"                3 179     03B3
+o .232 150   diakr. Tilde             3   3     0303
+o .233 157   I mit Punkt
+o .234 144   t mit cedille
+o .235 147   "[delta]"                3 180     03B4
+o .236 148   "[unendlich]"           34  30     221E
+o .237 248  /o daenisch               0 248       F8
+o .238 170   a mit ogonek             1   5     0105
+o .239 200   e mit ogonek             1  25     0119
+o .240 206  'C                        1   6     0106
+o .241 205  'c                        1   7     0107
+o .242 217  /L                        1  65     0141
+o .243 218  /l                        1  66     0142
+o .244 213  'N                        1  67     0143
+o .245 245  'n                        1  68     0144
+o .246 211  'O                        0 211       D3
+o .247 192  'S                        1  90     015A
+o .248 176   Gradzeichen              1 176     00B0
+o .249 193  's                        1  91     015B
+o .250 183   Punkt in der Mitte       0 183       B7
+o .251 212  'Z                        1 121     0179
+o .252 210  'z                        1 122     017A
+o .253 203   Z mit Punkt oben         1 123     017B
+o .254 207   z mit Punkt oben         1 124     017C

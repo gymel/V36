@@ -1,0 +1,192 @@
+
+
+Verlautbarung 263 der Entw.Abt.                              2014-09-02
+-------------------------------
+
+V34.6 ist da
+------------
+
+
+FTP geht wieder
+---------------
+Einige Zeit lag der FTP-Service im argen. Nun ist das aus der Welt.
+Irritation kam auf, weil beim Demo-Download die Frage nach einem
+Passwort kommt. Das liegt am FileZilla, wo wir das nicht unterbinden
+konnten. Zum Ausgleich haben wir einen gruenen Download-Button fuer
+die Demo-Version eingebaut. Die Frage nach dem Passwort einfach
+mit einem lapidaren "Enter"-Tastentipp quittieren oder einem 
+lakonischen Klick auf "OK" und sonst nichts.
+
+
+Neuer FLEX fuer Waehrungscodes
+------------------------------
+eurox.flx  holt von der EZB (aus Frankfurt, nicht Regensburg) die 
+aktuelle Liste der Euro-Wechselkurse.
+Einfach mal eingeben:   X eurox
+und dann  ???  in das Eingabefeld, oder einen Waehrungscode, z.B.  CHF.
+
+Auch dieseR FLEX ist zugleich als Anschauungsmaterial gedacht, aus
+dem man was lernen kann; in diesem Fall, wie man sich eines Webdienstes
+bedienen kann - auch wenn der eigentlich nicht wirklich als solcher
+gedacht ist. [Was natuerlich bedeutet, dass er weniger stabil ist. Wie
+auch z.B. beiM dnb.flx.]
+Dieselbe Funktion ist nun auch enthalten in der neuesten Version des
+al.job, auf dem Admin-Menue. Dort 'e' eingeben, dann "???".
+
+
+Scrollen in Erg.Mengen und ViewListen
+-------------------------------------
+Der Scrollbalken in der Kurz- und View-Liste war ein langgehegtes
+Desiderat, sein Fehlen ein Irritat.
+Es gibt ihn jetzt, und das Scrollraedchen (an den heute ueblichen
+Maeusen) tut es auch. Ist jedoch die Erg.Menge groesser als 100, muss
+man portionsweise blaettern, Taste BildRunter / BildRauf, wie bisher,
+und kann dann aber jeweils wieder das Raedchen drehen.
+Warum nur 100? Sie wuerden sich bei grossen Erg.Mengen sonst wundern,
+wie lange es dauert, bis das Fenster erscheint. Denn die Zeilen
+des Fensters muessen zuerst alle aus der STL-Datei zusammengesucht
+werden.
+
+Vermissen wird man dies Feature weiterhin im Indexfenster - dort geht
+das schlichtweg nicht, und leider kann sich daran auch nichts aendern.
+(Es liegt an der Unmoeglichkeit, den Umfang des Registers, also die
+Anzahl Zeilen, im Programm festzustellen.)
+
+
+ViewListen: automatischer Sprung beim Eintippen
+-----------------------------------------------
+Es kam zu Fehlanzeigen, wenn beim Eintippen von Woertern etwas mehr
+als noetig eingebeben wurde. Jetzt bleibt der Balken an der letzten
+Trefferstelle stehen, wenn man weitertippt als noetig, und die
+Anzeige bzw. Aktion bei "Enter" stimmt dann auch.
+
+
+Phrasenspeicher erweitert - Mehr globale Ersetzungen beim Export
+----------------------------------------------------------------
+
+Es hatte sich gezeigt, dass es beim Export schon mal eine Knappheit
+geben kann: Beim Umwandeln von UTF-8 nach ASCII oder ANSI fallen die-
+jenigen Codierungen unangenehm auf, die aus einem Grundbuchstaben plus
+nachgestelltem Diakritikum bestehen: Statt des Zeichens ae kann man in
+UTF-8 auch ein a schreiben und das Sonderzeichen "Trema" (im Unicode-
+Jargon "diaeresis" genannt) direkt dahinter (statt davor, wie wir es
+von alters her gewohnt sind). Konkreter:
+97 204 136   a + "COMBINING DIAERESIS" ==>  97 189  im OSTWEST-Code
+ statt
+195 164      ae ==>  132  im OSTWEST-Code
+
+Zwar koennen wir mit dem Befehl 
+
+pa=181 182 183 184 189 190 198 199 207 208 209 210 211 212 219 222 223 232   
+
+die Akzentzeichen vorgeben und dann mit #da die Vertauschung von
+a<akzent> in <akzent>a veranlassen, aber aber wir wuerden doch gern
+aus a<Trema> nicht <Trema>a machen, sondern ae. Fuer den Zweck bleibt nur
+die Funktion "Globale Ersetzung":
+
+_\189a_ae_
+
+Eine Liste solcher Befehle fuer die gaengigen Zeichen hat T. Berger in
+einer Datei  utfkombi.apt  mit extremer Akribie zusammengestellt.
+(Er wuerde bescheiden sagen: mit dem Minimum der absolut notwendigen
+Akribie.) Hier ist die Datei:
+
+   http://www.gymel.com/
+(Fuer den eiligen Leser: vom Programm verwendet werden nur die mit _
+beginnenden Zeilen, der Rest ist Kommentar.)
+
+Will man dies zur letzten Konsequenz treiben, braucht man sehr viele
+solche Ersetzungsbefehle, und das bedeutet intern: sehr viele Phrasen,
+denn diese Befehle kommen beim Einlesen der Parameter in den Phrasen-
+speicher. Der konnte bisher nur 500 Phrasen fassen, jetzt 2000.
+Es empfiehlt sich, zugleich in der CFG die Groesse des Phrasenspeichers
+zu erhoehen, etwa so:
+
+mP50000   statt bisher mP8000
+
+Hinweis: Eine Zeile  _\nnn\nnn_\nnn_  braucht im Phrasenspeicher nur 7
+Bytes, nicht 16, weil jedes \nnn auf eines reduziert wird. D.h., 50000
+Bytes wuerden fuer gut 7000 solche Befehle reichen!
+Fuer echte Phrasen in a99 (oder PRESTO) ist das ohne Relevanz, weil es
+davon maximal 127 Stueck geben kann.
+
+Spuerbar relevant wurde die Sache, als sich zeigte, dass es in den ZDB-
+Daten grosse Mengen solcher Codes gibt.
+ABER: Groessere Mengen globaler Ersetzungen bremsen den Importvorgang
+sehr merklich - es ist intern eine viel aufwendigere Methodik als die 
+anderen Verfahren der Umcodierung.
+
+
+Kleiner Export-Fehler wegen HFM - Behoben
+-----------------------------------------
+
+Wenn man in Export- oder Indexparametern eine Zeile
+
+#t9
+
+drin hat, kommt es zu merkwuerdigen Ausfaellen der
+nachfolgenden Zeilen.
+Setzt man eine weitere Zeile
+
+#t9
+
+darunter, oder schreibt man statt dessen
+
+#t{t9}
+
+unterbleibt das. Darauf kann natuerlich keiner von selber
+kommen, und selbst ein Kenner der Quellcodes nicht ohne
+detektivische Findigkeit.
+
+Wir haben die Sache geloest. Es liegt daran, dass die Parameter
+beim Einlesen in einen komprimierten, rein internen Code
+gewandelt werden. Zufaellig bekam dabei die #t9 einen Wert,
+der die Zeile dann so erscheinen liess wie eine des neuen
+HFM-Typs. Und diese Fehlinterpretation wird erst wieder
+aufgehoben, wenn die naechste solche Zeile oder eine echte
+HFM kommt. Das war natuerlich Mist.
+Alle exportfaehigen Programme waren betroffen und wurden
+bereinigt.
+Solche Zeilen gibt es etliche in den Parametern fuer die
+ViewListen, v-stand1.apr und v-stand2.apr, zum Glueck aber nicht
+in cat.api und d-wrtf.apr und d-1.apr. 
+
+
+acon: Fehler bei  insert #uxy
+-----------------------------
+acon.exe von V34.5 hatte einen Fehler beim Einfuegen von #u-Variablen,
+wenn das Kategoriesystem einen t-Wert >2 aufwies. Das ist bei d, n, p
+und u.cfg der Fall. Der Befehl "insert" tat es dann einfach nicht.
+Behoben. (Mit HFM hatte das, nebenbei gesagt, nichts zu tun, denn
+HFM findet auf #u-Variablen keine Anwendung.)
+
+
+
+a99a: Fernglas-Formular
+-----------------------
+Es fehlten die Boole-Operatoren AND / OR / NOT
+Jetzt nicht mehr.
+
+
+VuFind 2.x
+----------
+Nochmals der Hinweis auf die inzwischen erfolgte VuFind-2.x-
+Implementierung:
+
+  http://www.allegro-c.de/doku/vufind2/installation.htm
+
+Dafuer sind auch leichte Verbesserungen in marctxt.apr erfolgt.
+(In marcxml.apr auch, das wird dazu aber nicht gebraucht.)
+
+
+
+Referenz-Kataloge noch aktuell?
+-------------------------------
+Wer etwas Zeit eruebrigen kann, dem waeren wir dankbar fuer Meldungen
+ueber nicht mehr aktuelle Eintraege in unserer Liste der
+Referenzdatenbanken:
+
+  http://www.allegro-c.de/ac-dbs.htm
+
+
+

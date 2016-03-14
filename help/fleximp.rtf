@@ -1,0 +1,342 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\fscript\fprq2\fcharset0 Comic Sans MS;}{\f2\fswiss\fprq2 MS Sans Serif;}{\f3\fswiss\fprq2\fcharset0 Verdana;}{\f4\fmodern\fprq1\fcharset0 Courier New;}{\f5\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;}
+\viewkind4\uc1\pard\qc\f0\fs24 
+\par \cf1\b\f1\fs28 Import mit FLEX\cf0\b0\f2\fs24 
+\par 
+\par \pard\f3\fs20 Zwar bleiben die bekannten Importfunktionen mit dem DOS-Programm IMPORT.EXE voll erhalten, aber die FLEX-Sprache bietet ab V27.2 alle M\'f6glichkeiten, die man f\'fcr einfache Datenkonvertierungen braucht. Zwei Dinge sind es vor allem, die man k\'f6nnen mu\'df, um Fremddaten umzuwandeln: 
+\par \pard\qj 
+\par \pard{\pntext\f5\'B7\tab}{\*\pn\pnlvlblt\pnf5\pnindent0{\pntxtb\'B7}}\fi-360\li360\qj\b Daten einlesen\b0  aus einer Datei, und zwar immer einen Datensatz als Ganzes. Entscheidend ist dazu die F\'e4higkeit, in der Fremddatei fortlaufend zu lesen, bis eine charakteristische Zeichenkombination gefunden wird, die das Ende eines Satzes oder den Beginn des n\'e4chsten markiert. Das mu\'df auch dann funktionieren, wenn es keine Zeilenstruktur gibt - typisch f\'fcr manche Fremddatenquellen. Der Befehl  \f4 `\cf2\ul\b fetch eN\cf0\ulnone\b0 `\f3   kann dies. 
+\par \pard\fi-710\li710\qj\tab\i Beispiel:\i0  Die S\'e4tze sind durch zwei Leerzeilen getrennt, das entspricht einer Zeichenkombination 13 10 13 10. 
+\par \pard\qj\tab Man schreibt dann: 
+\par \tab\f4 var 13 10 13 10 
+\par \tab fetch e4 
+\par \tab ins #uzy 
+\par \pard\fi-710\li710\qj\f3\tab und es wird alles eingelesen bis zum n\'e4chsten Auftreten dieser Kombination aus 4 Zeichen. Der eingelesene Satz wird als Ganzes kopiert in #uzy zur weiteren Verwendung. 
+\par \pard\qj 
+\par \pard{\pntext\f5\'B7\tab}{\*\pn\pnlvlblt\pnf5\pnindent0{\pntxtb\'B7}}\fi-360\li360\b Datenfelder herausziehen\b0  aus dem Fremdsatz mit Hilfe der Manipulationsbefehle und in eigene Felder kopieren. H\'e4ufig braucht man dazu Ersetzungen von Zeichenfolgen durch andere sowie Umwandlung von Einzelzeichen \'fcber Tabellen. Die dazu n\'f6tigen F\'e4higkeiten sind jetzt alle vorhanden; neu hinzugekommen ist der Befehl  \f4 `\cf2\ul\b xcode\cf0\ulnone\b0 `\f3 , mit dem auch die fr\'fcheren Import-Protypenersetzungen m\'f6glich sind. Mit den neuen Befehlen p und y (wie in den alten Importparametern) kann man die Zeichenumwandlungen definieren. 
+\par \pard\fi-710\li710\qj\tab\i Beispiel:\i0  Das Feld "Verlag" befindet sich in den Fremddaten im Feld 260 und beginnt mit $b, endet mit $c 
+\par \pard\qj\tab Man schreibt dann, wenn man vorher den ganzen Fremddsatz wie oben eingelesen hat: 
+\par \tab\f4 var #uzy(b"260 " b"$b" e"$c") 
+\par \tab ins #75 
+\par \pard\fi-710\li710\qj\f3\tab und es wird der Inhalt des Fremdfeldes isoliert und in #75 kopiert. 
+\par \tab In den Importparametern h\'e4tte man dasselbe so ausgedr\'fcckt: 
+\par \f4\tab #75 
+\par \tab s "260 " 
+\par \tab b"$b" 
+\par \tab e"$c" 
+\par \pard\f3 
+\par Ein Fall f\'fcr sich, aber mit FLEX recht gut in den Griff zu kriegen, sind XML-Daten. Dazu verr\'e4t mehr die `\cf2\ul\b Verlautbarung 212\cf0\ulnone\b0 `.
+\par 
+\par Hier werden nun zwei F\'e4lle dargestellt, in denen die FLEX-Technik neue Leistungen erbringt, und das ganz ohne Importparameter. Der `\cf2\ul\b Fall 2\cf0\ulnone\b0 ` ist noch schneller und direkter! 
+\par 
+\par \cf1\b 1. Der Fall OHIOLINK 
+\par \cf0\b0 Als Beispiel kann der Fall von MARC-Daten dienen, wie man sie aus dem System OHIOLINK, einem sehr gro\'dfen Zentralkatalog, leicht kopieren kann. Sie k\'f6nnen sofort per ISBN selber einen solchen Satz `\cf2\ul\b original aus OHIO abrufen\cf0\ulnone\b0 `! Es erscheint ein JanaS-Fenster, in dem der Datensatz mit MARC-Nummern zu sehen ist. Achtung: Wenn das System den richtigen Datensatz nicht hat, kommt ein anderer, in der Regel unpassender, bei dem ein Anfangsteil der ISBN \'fcbereinstimmt.) 
+\par Dann: 
+\par 1. Mit der Maus den ganzen MARC-Satz markieren, mit \cf1 Alt+c\cf0  in die Zwischenablage kopieren 
+\par 2. JanaS/Fenster verlassen, in dieses Anzeigefeld klicken, hintereinander \cf1 Alt+a\cf0  und \cf1 Alt+v\cf0    
+\par \tab Der MARC-Satz erscheint. Auf Wunsch kann man mehrere Datens\'e4tze untereinander einkopieren. Dann: 
+\par 3. Im Schreibfeld  \cf1\f4 X ohio\f3  \cf0  eingeben. Anzeigefeld wird verarbeitet. 
+\par 
+\par Anschlie\'dfend hat man den umgewandelten Satz so vor sich, als h\'e4tte man ihn selber eingegeben. 
+\par Der Datensatz ist aber noch nicht gespeichert, d.h. man kann vorher noch \'e4ndern oder l\'f6schen. 
+\par Der FLEX \f4 ohio.flx\f3  liest in einer Schleife jeweils einen Abschnitt bis zum n\'e4chsten "LEADER" und macht aus den so eingelesenen Daten einen \i allegro\i0 -Datensatz. Diese Datens\'e4tze kommen in den Offline-Speicher und k\'f6nnen dann mit Alt+q besichtigt werden. 
+\par Besonders attraktiv bei den Ohio-Daten ist, da\'df in vielen S\'e4tzen die Inhaltsverzeichnisse der B\'fccher enthalten sind! Das gibt es bei keiner anderen Datenbank, und hier bekommt man sie nicht als PDF, sondern als strukturierte Texte in der wiederholbaren MARC-Kategorie 970. 
+\par 
+\par So sehen diese Daten aus: 
+\par 
+\par \f4 LEADER 00000pam  2200000 a 4500 
+\par 001    30811572 
+\par 003    OCoLC 
+\par 005    19950423121748.0 
+\par 008    940630s1995    nyu           000 1 eng   
+\par 010    94027510 
+\par 020    0449225550 
+\par 040    DLC|cDLC|dndc/sfd 
+\par 043    e-uk-en 
+\par 050 00 PR6058.O912|bA63 1996 
+\par 100 1  Howatch, Susan. 
+\par 245 10 Absolute truths /|cby Susan Howatch. 
+\par 250    1st Ballantine Books domestic ed. 
+\par 260    New York :|bFawcett Crest,|c1996. 
+\par 300    624 p. ;|c18 cm. 
+\par 610 20 Church of England|zEngland|xClergy|xFiction. 
+\par 650  0 Cathedrals|zEngland|xFiction. 
+\par 650  0 Bishops|zEngland|xFiction. 
+\par 
+\par LEADER 00000pam  2200000 a 4500 
+\par 001    9066419 
+\par 008    821119s1982    caua     b    000 0 eng   
+\par 010    82022697 
+\par 020    0913890545 (pbk.) : 
+\par 020    |z093179045X (pbk.) 
+\par 040    DLC|cDLC|dKSU 
+\par 050 0  TJ163.2|b.T656 1982 
+\par 082 0  333.79|219 
+\par 245 00 Tools for the soft path /|cby the International Project 
+\par        for Soft Energy Paths ; Jim Harding ... [et al.] 
+\par 260    San Francisco :|bFriends of the Earth,|cc1982 
+\par 300    288 p. :|bill. ;|c28 cm 
+\par 504    Includes bibliographical references 
+\par 650  0 Power resources 
+\par 650  0 Energy conservation 
+\par 650  0 Energy policy 
+\par 700 10 Harding, Jim 
+\par 710 20 International Project for Soft Energy Paths 
+\par 
+\par LEADER 00000pam  2200000 a 4500 
+\par 001    40964731 
+\par 003    OCoLC 
+\par 005    19991025121013.0 
+\par 008    990223s1999    gw a     b    101 0 eng   
+\par 010    99020159 
+\par 020    3540657029 (acid-free paper) 
+\par 040    DLC|cDLC|dOHX|dC#P|dCWR 
+\par 050 00 QB843.E2|bI28 1998 
+\par 072  7 QB|2lcco 
+\par 082 00 523.8/8|221 
+\par 111 2  IAU Colloquium|n(169th :|d1998 :|cHeidelberg, Germany) 
+\par 245 10 Variable and non-spherical stellar winds in luminous hot 
+\par        stars :|bproceedings of the IAU Colloquium no. 169, held 
+\par        in Heidelberg, Germany, 15-19 June 1998 /|cB. Wolf, O. 
+\par        Stahl, A.W. Fullerton (Eds.) 
+\par 260    Berlin ;|aNew York :|bSpringer,|cc1999 
+\par 300    xx, 424 p. :|bill. ;|c24 cm 
+\par 440  0 Lecture notes in physics,|x0075-8450 ;|v523 
+\par 504    Includes bibliographical references and index 
+\par 650  0 Early stars|vCongresses 
+\par 650  0 Stellar winds|vCongresses 
+\par 700 1  Wolf, B.|q(Bernhard),|d1935- 
+\par 700 1  Stahl, O.|q(Otmar),|d1955- 
+\par 700 1  Fullerton, Alexander W.,|d1959- 
+\par 970 11 |tObject Index|p423 
+\par 970 21 |tRotationally Modulated Winds of O Stars|cAlex W. 
+\par        Fullerton|fFullerton, Alexander W., 1959-|p3 
+\par 970 21 |tRotationally Modulated Winds of BA-Type Supergiants 
+\par        |cAndreas Kaufer|fKaufer, Andreas|p11 
+\par 970 21 |tUsing Spectropolarimetry to Determine Envelope Geometry 
+\par        and Test Variability Models for Hot Star Circumstellar 
+\par        Envelopes|cKaren S. Bjorkman|fBjorkman, Karen S.|p19 
+\par 970 21 |tDisks of Classical Be Stars|cStanislav Stefl|fStefl, 
+\par        Stanislav|p24 
+\par 970 21 |tEvidence for Azimuthal Asymmetry in Be Star Winds 
+\par        |cGeraldine J. Peters|fPeters, Geraldine J.|p32 
+\par 970 21 |tShort and Medium Term Variability of Emission Lines in 
+\par        Selected Southern Be Stars|cThomas Rivinius|fRivinius, 
+\par        Thomas|p36 
+\par 970 21 |tDisk Winds of B[e] Supergiants|cFranz-Josef Zickgraf 
+\par        |fZickgraf, Franz-Josef|p40 
+\par 970 21 |tPolarimetric Evidence of Non-spherical Winds|cAntonio 
+\par        Mario Magalhaes|fMagalhaes, Antonio Mario|cClaudia V. 
+\par        Rodrigues|fRodrigues, Claudia V.|p49 
+\par 970 21 |tWolf-Rayet Wind Models: Photometric and Polarimetric 
+\par        Variability|cClaudia V. Rodrigues|fRodrigues, Claudia V. 
+\par        |cAntonio Mario Magalhaes|fMagalhaes, Antonio Mario|p57 
+\par 970 21 |tAnisotropic Outflows from LBVs and Ofpe/WN9 Stars 
+\par        |cAntonella Nota|fNota, Antonella|p62 
+\par 970 21 |tNon-isotropic Outflows in the Infrared: ISO Imaging of 
+\par        LBVs|cNorman R. Trams|fTrams, Norman R.|cC. I. van Tuyll 
+\par        |fvan Tuyll, C. I.|cRobert H. M. Voors|fVoors, Robert H. 
+\par        M.|d[et al.]|p71 
+\par 970 21 |tRadio Evidence for Non-isotropic Outflows from Hot Stars 
+\par        |cStephen White|fWhite, Stephen|p80 
+\par 970 21 |tOptical Interferometry of Non-spherical Winds|cFarrokh 
+\par        Vakili|fVakili, Farrokh|cDenis Mourard|fMourard, Denis 
+\par        |cPhilippe Stee|fStee, Philippe|d[et al.]|p87 
+\par 970 21 |tDirect Observational Evidence for Magnetic Fields in Hot 
+\par        Stars|cGautier Mathys|fMathys, Gautier|p95 
+\par 970 21 |tHST WFPCII Observations of the Inner HR Car Nebula 
+\par        |cStephen Hulbert|fHulbert, Stephen|cAntonella Nota|fNota, 
+\par        Antonella|cMark Clampin|fClampin, Mark|d[et al.]|p103 
+\par 970 21 |tObserving Hot Stars in all Four Stokes Parameters 
+\par        |cThomas Eversberg|fEversberg, Thomas|cAnthony F. J. 
+\par        Moffat|fMoffat, A. F. J.|cMichael Debruyne|fDebruyne, 
+\par        Michael|d[et al.]|p107 
+\par 970 21 |tInverse Spectropolarimetric Modelling of Hot Star Wind 
+\par        Structure and Variability|cJohn C. Brown|fBrown, John C., 
+\par        1947-|cRichard Ignace|fIgnace, Richard|cM. Piana|fPiana, 
+\par        M.|p111 
+\par 970 21 |tPhysics of Radiatively Driven Winds by High Angular 
+\par        Resolution Observations (HARO)|cPh. Stee|fStee, Ph.|cD. 
+\par        Bonneau|fBonneau, D.|cD. Mourard|fMourard, Denis|d[et al.] 
+\par        |p115 
+\par 970 21 |tWind-Compressed Disks|cJon E. Bjorkman|fBjorkman, Jon E. 
+\par        |p121 
+\par 970 21 |tNon-spherical Radiation-Driven Wind Models|cJoachim Puls 
+\par        |fPuls, Joachim|cPeter Petrenz|fPetrenz, Peter|cStanley P. 
+\par        Owocki|fOwocki, Stanley Peter|p131 
+\par 970 21 |tRadiation-Driven Disk Winds|cJanet E. Drew|fDrew, Janet 
+\par        E.|cDaniel Proga|fProga, Daniel|cRene D. Oudmaijer 
+\par        |fOudmaijer, Rene D.|p140 
+\par 970 21 |tRadiative Fluxes and Forces in Non-spherical Winds 
+\par        |cRainer Wehrse|fWehrse, R. (Rainer), 1944-|cGuido 
+\par        Kanschat|fKanschat, Guido|p144 
+\par 970 21 |tLine-Driven Ablation by External Irradiation|cKenneth G. 
+\par        Gayley|fGayley, Kenneth G.|cStanley P. Owocki|fOwocki, 
+\par        Stanley Peter|cSteven R. Cranmer|fCranmer, Steven R.|p151 
+\par 970 21 |tExtremely Luminous Atmospheres|cNir J. Shaviv|fShaviv, 
+\par        Nir J.|p155 
+\par 970 21 |tDisks formed by Rotation Induced Bi-stability|cHenny J. 
+\par        G. L. M. Lamers|fLamers, Henny J. G. L. M., 1941-|cJorick 
+\par        S. Vink|fVink, Jorick S.|cAlex de Koter|fde Koter, Alex 
+\par        |d[et al.]|p159 
+\par 970 21 |tThe Effects of Magnetic Fields on the Winds from 
+\par        Luminous Hot Stars|cJoseph P. Cassinelli|fCassinelli, 
+\par        Joseph P.|cNathan A. Miller|fMiller, Nathan A.|p169 
+\par 970 21 |tModeling Oblique Rotators: Magnetospheres and Winds 
+\par        |cSteven N. Shore|fShore, Steven N.|p178 
+\par 970 21 |tX-Ray Emission from Magnetically Confined Winds|cJacques 
+\par        Babel|fBabel, Jacques|p187 
+\par 970 21 |tO-Star Wind Variability in the Ultraviolet and Optical 
+\par        Range|cLex Kaper|fKaper, Lex, 1966-|p193 
+\par 970 21 |tX-Ray Evidence for Wind Instabilities|cJoseph J. 
+\par        MacFarlane|fMacFarlane, Joseph John|cJoseph P. Cassinelli 
+\par        |fCassinelli, Joseph P.|cD. H. Cohen|fCohen, D. H.|p201 
+\par 970 21 |tX-Ray Variability of the O Star [actual symbol not 
+\par        reproducible] Puppis|cThomas W. Berghofer|fBerghofer, 
+\par        Thomas W.|p203 
+\par 970 21 |tOn the Variable Winds of BA Supergiants|cEugene Chentsov 
+\par        |fChentsov, Eugene|p206 
+\par 970 21 |tUV Wind Variability in B Supergiants and its 
+\par        Implications for Wind Structures|cDerck Massa|fMassa, 
+\par        Derck|cRaman K. Prinja|fPrinja, Raman K.|p214 
+\par 970 21 |tVariability and Evidence of Non-spherical Stellar Winds 
+\par        in A-Type Supergiants|cEva Verdugo|fVerdugo, Eva|cAntonio 
+\par        Talavera|fTalavera, Antonio|cAna I. Gomez de Castro|fde 
+\par        Castro, Ana I. Gomez|p218 
+\par 970 21 |tVariable Winds in Early-B Hypergiants|cBernhard Wolf 
+\par        |fWolf, B. (Bernhard), 1935-|cThomas Rivinius|fRivinius, 
+\par        Thomas|p222 
+\par 970 21 |tWind Variations of Wolf-Rayet Stars|cAnthony F. J. 
+\par        Moffat|fMoffat, A. F. J.|p230 
+\par 970 21 |tSpectral Analyses of Wolf-Rayet Stars: The Impact of 
+\par        Clumping|cWolf-Rainer Hamann|fHamann, Wolf-Rainer|cLars 
+\par        Koesterke|fKoesterke, Lars|p239 
+\par 970 21 |tThe Long-Term Variability of Luminous Blue Variables 
+\par        |cRoberta M. Humphreys|fHumphreys, Roberta M.|p243 
+\par 970 21 |tBlitz Model for the Eruptions of Eta Carinae|cNathan 
+\par        Smith|fSmith, Nathan|cJoyce A. Guzik|fGuzik, J. A. (Joyce 
+\par        A.)|cHenny J. G. L. M. Lamers|fLamers, Henny J. G. L. M., 
+\par        1941-|d[et al.]|p249 
+\par 970 21 |tShort-Term Variations of LBV's|cOtmar Stahl|fStahl, O. 
+\par        (Otmar), 1955-|p251 
+\par 970 21 |tImaging Polarimetry of Eta Carinae with the Hubble Space 
+\par        Telescope|cRegina E. Schulte-Ladbeck|fSchulte-Ladbeck, 
+\par        Regina E.|cAnna Pasquali|fPasquali, Anna|cMark Clampin 
+\par        |fClampin, Mark|d[et al.]|p255 
+\par 970 21 |tNon-spherical Outflows in Massive Binary Systems: 
+\par        Circumbinary Disks?|cGloria Koenigsberger|fKoenigsberger, 
+\par        Gloria|cEdmundo Moreno|fMoreno, Edmundo|cJorge Canto 
+\par        |fCanto, Jorge|p260 
+\par 970 21 |tLong-Term Behaviour of the Variable Wind of P Cygni 
+\par        |cIndrek Kolka|fKolka, I. (Indrek)|p268 
+\par 970 21 |tHigh-Resolution Spectroscopy of Stellar Winds in 
+\par        Recently Recognized LBV Candidates|cAnatoly S. 
+\par        Miroshnichenko|fMiroshnichenko, Anatoly S.|cEugene L. 
+\par        Chentsov|fChentsov, Eugene L.|cValentina G. Klochkova 
+\par        |fKlochkova, V.|p272 
+\par 970 21 |tEvidence for Wind Anisotropies from Dust Formation by 
+\par        Wolf-Rayet Stars|cPeredur M. Williams|fWilliams, Peredur 
+\par        M.|p275 
+\par 970 21 |tISO-SWS Spectroscopy of B[e] Stars|cRobert H. M. Voors 
+\par        |fVoors, Robert H. M.|cLaurens B. F. M. Waters|fWaters, 
+\par        Laurens B. F. M.|cPatrick W. Morris|fMorris, Patrick W. 
+\par        |p279 
+\par 970 21 |tThe Line-Driven Instability|cAchim Feldmeier|fFeldmeier, 
+\par        Achim|p285 
+\par 970 21 |tCo-Rotating Interaction Regions in 2D Hot-Star Wind 
+\par        Models with Line-Driven Instability|cStanley P. Owocki 
+\par        |fOwocki, Stanley Peter|p294 
+\par 970 21 |tPulsations in O Stars|cHubertus F. Henrichs|fHenrichs, 
+\par        Hubertus F.|p305 
+\par 970 21 |tNon-radial Pulsations of BA Supergiants and Be Stars 
+\par        |cDietrich Baade|fBaade, D.|p312 
+\par 970 21 |tTheory of Pulsational Instabilities of Hot Stars|cAlexei 
+\par        A. Pamyatnykh|fPamyatnykh, Alexei A.|p320 
+\par 970 21 |tNon-radially Pulsating Hot Stars: Non-radial Pulsations 
+\par        and Be Phenomenon|cYoji Osaki|fOsaki, Y. (Yoji)|p329 
+\par 970 21 |tPulsation Hydrodynamics of Luminous Blue Variables and 
+\par        Pulsation-Driven Winds|cJoyce A. Guzik|fGuzik, J. A. 
+\par        (Joyce A.)|cArthur N. Cox|fCox, Arthur N.|cKate M. Despain 
+\par        |fDespain, Kate M.|d[et al.]|p337 
+\par 970 21 |tLinear Strange Modes in Massive Stars|cWolfgang Glatzel 
+\par        |fGlatzel, Wolfgang|p345 
+\par 970 21 |tInstabilities in LBVs and WR Stars|cKnut Jorgen Roed 
+\par        Odegaard|fOdegaard, Knut Jorgen Roed|p353 
+\par 970 21 |tThe Evolution of Non-spherical and Non-stationary Winds 
+\par        of Massive Stars|cNorbert Langer|fLanger, Norbert|p359 
+\par 970 21 |tRotation and Anisotropic Losses of Mass and Angular 
+\par        Momentum|cAndre Maeder|fMaeder, Andr\'e2e, 1942-|p368 
+\par 970 21 |tRotation and Wolf-Rayet Star Formation|cGeorges Meynet 
+\par        |fMeynet, G.|p377 
+\par 970 21 |tDusty LBV Nebulae: Tracing the Mass Loss History of the 
+\par        Most Massive Stars|cLaurens B. F. M. Waters|fWaters, 
+\par        Laurens B. F. M.|cRobert H. M. Voors|fVoors, Robert H. M. 
+\par        |cPatrick W. Morris|fMorris, Patrick W.|d[et al.]|p381 
+\par 970 21 |tWolf-Rayet and LBV Nebulae as the Result of Variable and 
+\par        Non-spherical Stellar Winds|cMordecai-Mark Mac Low|fLow, 
+\par        Mordecai-Mark Mac|p391 
+\par 970 21 |tRing Nebulae Abundances: Probes of the Evolutionary 
+\par        History of Luminous Blue Variable Stars|cLinda J. Smith 
+\par        |fSmith, Linda J.|cAntonella Nota|fNota, Antonella|cAnna 
+\par        Pasquali|fPasquali, Anna|d[et al.]|p400 
+\par 970 21 |tThe Wind Momentum - Luminosity Relationship of Blue 
+\par        Supergiants|cRolf-Peter Kudritzki|fKudritzki, R. P.|p405 
+\par 970 21 |tConference Summary: The Demise of Spherical and 
+\par        Stationary Winds|cImmo Appenzeller|fAppenzeller, I. (Immo), 
+\par        1940-|p416 
+\par 971    |d19990923 
+\par 
+\par 
+\par \f3 Die Zeichenfolge am Satzanfang ist LEADER. Das Lesen bis zum n\'e4chsten LEADER sieht in FLEX so aus: 
+\par 
+\par \f4 var "LEADER"   // damit f\'e4ngt jeder Satz an! 
+\par fetch e6       // Daten lesen bis zu dieser Zeichenfolge 
+\par \f3 
+\par Danach steht der Datensatz in der iV bereit. Zweckm\'e4\'dfig ist, ihn zuerst in eine #u-Variable zu kopieren, z.B. \f4 #uzz\f3 . 
+\par Durch diese Syntax wird es auch ganz einfach, Steuerzeichenfolgen als Begrenzung vorzugeben. Wenn etwa das Satzende durch die Sequenz  13 10 13 10 (zwei Leerzeilen) gekennzeichnet ist, dann: 
+\par \f4 var 13 10 13 10 
+\par fetch e4 
+\par \f3 
+\par ======================================================= 
+\par 
+\par \cf1\b 2. ZDirect : Die Direktabfrage \'fcber Z39.50\cf0\b0 
+\par Gut und sch\'f6n, wird man sagen, aber mu\'df das so umst\'e4ndlich sein? Es gibt Protokolle, mit denen man solche Sachen automatisieren k\'f6nnen sollte, wie es ja auch EndNote u.a. tun. Das ist wahr, aber ausgerechnet OHIOLINK hat keinen Z39.50-Service, deshalb wurde die oben beschriebene Methode erdacht. Die Library of Congress dagegen und MELVYL (ebenfalls ein gro\'dfer Zentralkatalog) haben einen, desgl. der GBV, der SWD, HEBIS und ein paar andere. Und daf\'fcr gibt es ab V27.2 eine noch schnellere Methodik. Mitgeliefert werden daf\'fcr zwei neue Module: \f4 zc.exe\f3  und \f4 z39.dll\f3 . Sie beruhen auf der YAZ-Softwarebibliothek (Open Source). Das Programm \f4 zc.exe\f3  kann in einem Zuge von mehreren Servern quasi gleichzeitig per ISBN S\'e4tze abrufen und diese dann in eine Datei schreiben. Ein FLEX kann das Programm \f4 zc.exe\f3  starten und dann sofort die Ergebnisdatei einlesen und umwandeln. Meistens dauert das nur wenige Sekunden je Server. 
+\par 
+\par \b Nutzung\b0 
+\par \pard{\pntext\f5\'B7\tab}{\*\pn\pnlvlblt\pnf5\pnindent0{\pntxtb\'B7}}\fi-360\li360 Will man die Funktion routinem\'e4\'dfig sehr oft nutzen, legt man sie am besten auf einen Flip-Button und schreibt in die Datei \f4 _start.flx\f3  diese Zeile, wenn es etwa der Button 3 sein soll: 
+\par \pard\f4\tab flip 3&3: ZDirect=X zc|Fremddatens\'e4tze mit Z39 abrufen\f3 
+\par 
+\par \pard{\pntext\f5\'B7\tab}{\*\pn\pnlvlblt\pnf5\pnindent0{\pntxtb\'B7}}\fi-360\li360 Zur gelegentlichen Nutzung gibt man ein:  \b\f4 X zc\b0\f3 .  Der Aufruf des Programms  \b\f4 zc.exe\b0\f3   ist darin eingebaut. 
+\par \pard 
+\par \pard{\pntext\f5\'B7\tab}{\*\pn\pnlvlblt\pnf5\pnindent0{\pntxtb\'B7}}\fi-360\li360 Will man gelegentlich unterschiedliche Server einzeln nutzen, macht man sich Kopien von  \f4 zc.flx\f3  , .B. \f4 zc2.flx\f3 , und aktiviert darin die Zeilen f\'fcr die betreffenden Server. Dann ruft man diese FLEXe selektiv auf, z.B. mit  \f4 X zc2\f3  . 
+\par \pard 
+\par \b Was steckt dahinter?\b0 
+\par Der FLEX f\'fcr die Z39-Suche hei\'dft  \f4 `\cf2\ul\b zc.flx\cf0\ulnone\b0 `\f3  (Z-Client). Darin steht eine `\cf2\ul\b Liste der Server\cf0\ulnone\b0 `, die abzufragen sind. Die Eintr\'e4ge dieser Liste haben eine festgelegte Form. In derselben Form kann man dort weitere Eintr\'e4ge f\'fcr andere Server anlegen. Eine Serverzeile sieht so aus: 
+\par \f4 wri ' UBBS;usmarc`ubsun02.biblio.etc.tu-bs.de:2020/opac'  // UB Braunschweig\f3 
+\par Die Kommentare in \f4 zc.flx\f3  erkl\'e4ren alles weitere. 
+\par Eingebunden wird \f4 z39m.inc\f3 , darin werden die Suchergebnisse dann umgewandelt und in den Arbeitsspeicher geholt. Im Anzeigefeld erscheinen alle gefundenen S\'e4tze schon gleich in der umgewandelten Form. Die Originalform kann man sich mit  \f4 h zilist\f3   zeigen lassen. 
+\par In \f4 `\cf2\ul\b z39m.inc\cf0\ulnone\b0 `\f3  steckt das Unterprogramm \f4 :z39m\f3 , welches die eigentliche Arbeit macht. Wenn man die Umwandlung verbessern will, mu\'df man nur in diese Datei eingreifen. Auch diese Umwandlung kommt ohne Importparameter aus, es wird alles mit FLEX gemacht. 
+\par \b Ablauf:\b0 
+\par \f4 zc.flx:\f3  nimmt ISBN vom Nutzer entgegen und startet \f4 zc.exe\f3 
+\par ==> \f4 zc.exe\f3  fragt die Server ab und schreibt die Ergebnisse in Datei \f4 zilist\f3 
+\par \tab ==> \f4 zc.flx\f3  startet Unterprogramm \f4 :z39m\f3  (in \f4 z39m.inc\f3 ) 
+\par \tab\tab ==> Unterprogramm liest \f4 zilist\f3  und holt die Daten in den Arbeitsspeicher 
+\par 
+\par \b Was ist zu tun?\b0 
+\par ... wenn man zc f\'fcr eine eigene, Nichtstandard-Datenbank nutzen will? Nur das Unterprogramm \f4 z39m.inc\f3  ist spezifisch f\'fcr das Zielformat. Ausgeliefert werden zwei Versionen: eine f\'fcr das A-Format (DOS-Code), die zweite f\'fcr das N-Format (ANSI-Code). Man kopiert die passende \f4 z39m.inc\f3  am besten in das eigene Datenverzeichnis und kann es dort frei modifizieren. Dabei braucht man sich nur um die Datenfelder zu k\'fcmmern, also haupts\'e4chlich die Feldnummern durch die eigenen zu ersetzen, alle anderen Probleme der Umwandlung sind in \f4 zc.flx\f3  erledigt. 
+\par Die gr\'f6\'dfte Besonderheit ist: Es werden Daten aus unterschiedlichen Quellen umgewandelt, die sich im Format und sogar in der Zeichencodierung unterscheiden. Im Falle der DNB bekommt man keine MARC-Daten, sondern ISBD! Und im Falle der polnischen Nationalbibliothek sind es Unicode-Daten, beim GBV und DNB unterschiedliche ANSI-Codierungen. Wichtig sind dabei die neuen M\'f6glichkeiten der `\cf2\ul\b Umcodierung\cf0\ulnone\b0 `. 
+\par 
+\par 
+\par ?original aus OHIO abrufen=X oho 
+\par ?z39m.flx=h z39m.flx 
+\par ?z39m.inc=h z39m.inc 
+\par ?zc.flx=X  zc 
+\par ?Liste der Server=h zc.flx 
+\par ?Fall 2=h =2. Zdirect 
+\par ?Umcodierung=h xxcode 
+\par ?fetch eN=h xfetch=fetch e 
+\par ?xcode=h xxcode 
+\par ?Verlautbarung 212=h vb212
+\par 
+\par }
+ 

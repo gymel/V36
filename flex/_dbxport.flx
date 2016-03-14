@@ -1,0 +1,89 @@
+  _DBxport.FLX : Gesamte Datenbank exportieren
+  2001-01-13
+
+var m
+if ="alc" end
+
+  Liste der moeglichen Exporte zeigen
+  (DBXPORT.VW bei Bedarf erweitern)
+:list
+var P "help\\dbxport.vw"
+View
+close view
+  wurde Esc gedrueckt?
+if "" end
+if %|% jump action
+jump list
+:action
+if "i-1w" $w=w;var "i-1"
+ins #uvY
+var #uvY(e"|")
+ins #uvX
+var #uvX(F" ")
+export p
+if $w exp t ad-aw
+
+var #uvY
+if %Windows% export t ad-aw
+  Kommt das Wort "Windows" vor? Dann AD-AW.APT nachladen
+
+:datei
+ask Wie soll die Ausgabedatei heissen?
+if "" end
+ins #uvZ
+
+  Was fuer ein Typ wurde gewaehlt?
+var #uvY(e"|")
+  Fuer die Typen intern und extern: Dateityp auf .cLG bzw. .cDT setzen
+if %i-% jump intern
+if %e-% jump extern
+
+:ausgabedatei
+  Ausgabedatei oeffnen, Name steht in #uvZ
+var #uvZ
+fsize
+if no jump go
+var "Datei " #uvZ " existiert schon. šberschreiben?"
+ansi
+noyes
+if yes jump go
+jump datei
+
+  Jetzt kann's losgehen
+:go
+  Name der Ausgabedatei jetzt einstellen
+var #uvZ
+export f
+  Konnte sie geoeffnet werden? wenn nicht, error
+if no jump error
+  Ausgabe der gesamten Datenbank
+  (Unterbrechung mit Esc moeglich)
+
+var #uvX
+if "marcxml" wri "<collection>" n
+
+download database
+if cancel mess Vorgang wurde abgebrochen!
+
+var #uvX
+if "marcxml" wri n "</collection>" n
+
+var "Datei  " #uvZ "  enth„lt die ausgegebenen Daten"
+ansi
+mess
+end
+:error
+var "Datei " #uvZ " nicht benutzbar" 13 10 "(Kann nicht zum Schreiben ge”ffnet werden)
+ansi
+mess
+jump datei
+
+:intern
+var #uvZ(t".") "." K1 "lg"
+ins #uvZ
+jump ausgabedatei
+
+:extern
+var #uvZ(t".") "." K1 "dt"
+ins #uvZ
+jump ausgabedatei

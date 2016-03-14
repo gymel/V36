@@ -1,0 +1,100 @@
+
+Verlautbarung 233 der Entw.Abt.                              2010-10-30
+-------------------------------
+
+                          V30.10 liegt bereit
+
+Noch mehr Flip-Flexibilitaet
+----------------------------
+Wie erwartet und wie immer erntete V30.9 keinen Applaus, sondern neue
+Unzufriedenheit und neue, die Neuerung sofort wieder relativierende 
+Forderungen.
+Daran sind wir gewoehnt und nehmen es nicht mit Frust, sondern als
+Anregung und -sporn zu neuen Taten. Bedeutet es doch, dass allegro
+aktive und mitdenkende Anwender hat, die mit ihren Anwendungen immer
+neue Barrieren ueberwinden und in neue Komfort-Regionen vorstossen
+wollen, und besser gestern als morgen. Bei Licht besehen, eine schoene
+Bestaetigung.
+
+Und das kam raus:
+
+Die Flip-Buttons sollen eigene, laengere ToolTips zugeteilt bekommen
+koennen. Wohlan, dazu war der FLEX-Befehl  flip ...  zu erweitern.
+So geht's nun:
+
+flip i<aufschrift>=X <flexname>|<tooltiptext>
+
+i ist eine Ziffer von 0 bis 9 (nur die Buttons 1-8 sind sichtbar!)
+Fehlt |<tooltiptext>,  wird  <aufschrift>  genommen.
+Fehlt alles hinter  flip oder i, wird dafuer der iV-Inhalt genommen.
+
+Das Kontextmenue (rechte Maustaste) wird dann aus den ToolTips
+gebildet. Damit ist auch a99a in diesem Punkt aufgewertet - darum
+ging's ja zunaechst und zuvoerderst.
+
+Die Inhalte der ToolTips werden in den Phrasen 901-908 abgelegt,
+auf die man per FLEX mit  "var v<nr>..."  zugreifen kann. 
+Belegen kann man sie mti dem Befehl "phrase i<nr>"
+Also:  var v901  liefert den Text auf Button 1,
+phrase 901 Meine Sonderfunktion   oder
+var "901 Meine Sonderfunktion"\phrase
+teilt dem Button 1 den angegebenen Text als ToolTip zu.
+
+Aufschrift plus ToolTip aendert man aber mit dem Befehl  flip,
+wie oben angegeben. Das Auslesen der Aufschrift geht nicht,
+aber wozu auch? Man hat sie doch selber gesetzt.
+
+Im  _start.flx  liefern wir nun die folgenden Befehle zur
+Belegung der Flip-Buttons mit sinnvollen Funktionen:
+
+flip 1&1: Daten=x sho rec|Interne Form des Datensatzes links anzeigen 
+flip 2&2: zDirect=X zc|Fremddaten mit Z39.50 über ISBN abrufen 
+flip 3&3: Name=X rset|Der aktuellen Ergebnismenge einen Namen geben 
+flip 4&4: Hilfe A-Z=x set i9Hilfe A-Z\\View quick\\set i9|Alphabetische Liste der Hilfethemen 
+flip 5&5: Kalender=X kalender|Kalender des laufenden Monats anzeigen 
+flip 6&6: Termine=h memo|Termine verwalten 
+flip 7&7: Super=h super|Supervisor-Menü 
+flip 8&8: DbInf=X _dbinfo|Info zu dieser Datenbank 
+
+Man speichert sich eine modifizierte Version davon in das eigene
+Datenverzeichnis - wie immer bei eigenen FLEX-Versionen.
+
+
+FLEX-Befehl xml und Nichtsortierzeichen
+---------------------------------------
+Automatisch wird, wenn man den Befehl xml gibt, das Nichtsortierzeichen
+in <ns> und das nachfolgende in </ns> gewandelt, und zwar unter 
+Einbezug von nachfolgenden Leer- und Sonderzeichen. Es gab einen 
+Programmfehler: auch Umlaute und andere Diakritika wurden als Sonder-
+zeichen angesehen. Dies wurde bereinigt.
+Betroffen waren a99/alcarta und acon.
+
+
+Schriftgroesse in der Titelanzeige
+----------------------------------
+In d-wrtf.apr, also die Anzeigeparameter fuer das Standardsystem, wurde
+eine Variable #uFS eingebaut. Sie regelt die Schriftgroesse der Daten-
+satzanzeige. In #uFS steht die doppelte Punktzahl der Schriftgroesse, 
+also 26 fuer 13 Punkt.
+Damit man zur Laufzeit schnell mal eben variieren kann, wurde der
+FLEX  onprop.flx  geschaffen. Er fragt den neuen Wert fuer #uFS ab.
+Bisher gab es onprop.flx nicht; er tritt in Kraft, wenn im Anzeigefeld
+mit der rechten Maustaste das Kontextmenue geoffnet und darin der
+letzte Punkt, Eigenschaften, gewaehlt wird. 
+Siehe dazu Trick 37:
+   http://www.allegro-c.de/flex/tricks.htm#37
+
+
+
+Fehlermeldungen beim Eingeben von Daten in Formularen
+-----------------------------------------------------
+Wenn mit Eingabe von . (Punkt) im Formular das betr. Datenfeld vom 
+Reservespeicher angefordert wird, und dieses enthaelt einen formalen
+Fehler, kommt eine entspr. Fehlermeldung, ohne dass man aber den
+Feldinhalt bereits saehe. Er wird nun in der Meldung mit angezeigt.
+Insbes. bei Personennamen ist es nun so, dass bei Vorliegen einer
+V14-Verknuepfung statt Klartext-Namens keine Fehlermeldung wegen
+des fehlenden Kommas kommt.
+
+
+

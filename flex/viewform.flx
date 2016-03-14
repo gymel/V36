@@ -1,0 +1,397 @@
+  VIEWFORM.FLX : Verarbeitung eines ausgefÅllten VIEW.FRM-Formulars
+  2000-08-15/2004-03-19   zu einer View-Parameterdatei vvv.apr
+
+  bisherige .vw-Datei schliessen, wenn noch offen
+close view
+
+get env comspec
+ins #uwC
+
+var "Es kommt jetzt ein Formular. FÅllen Sie es aus," 13 10 "dann schlie·en Sie es mit [Ende]"
+ansi
+mes
+:start
+  #uvA schon besetzt? dann gleich zum Formular
+if #uvA jump form
+  Trennzeichen?
+if #uvZ jump form
+  vorbesetzen, wenn noch nicht besetzt
+var '" - "'
+ins #uvZ
+
+:form
+  CFG anzeigen
+sho cfg
+  Flags fuer Gruppierung/Summierung loeschen
+ var ""
+ ins #uvY
+ ins #uvM
+
+  Formular "ViP" anzeigen, Eingaben abwarten
+form ViP
+  es war noch nicht geladen: nachholen
+if no jump getform
+
+:input
+sho rec
+  Eingaben? Nein -> Ende
+if cancel end
+
+#uvU
+if empty jump nix
+  Name der aktuellen Erg.Menge -> #uvU
+var U
+ins #uvU
+:nix
+  aktuelle Exp.param und Exp.datei sichern
+var e
+ins #uwe
+
+  Parameterdatei zur Erstellung des FLEX
+
+  Die Eingaben sind jetzt da (#uvA usw.)
+  Aufforderung zur Eingabe von Name und Ueberschrift f.d. Param.
+ask Name / Kurzkommentar f¸r diese ViP (1. Zeile der Parameterdatei)=test
+if cancel end
+if "" var "test / Test"
+ins #uvt
+var #uvt(e" /")
+ins #uvo
+var "v-" #uvo(B"v-")
+ins #uvo
+  name auf 8 Zeichen bzw. am Spatium kuerzen, damit's auf DOS-Platten klappt
+var #uvo(0,8 e" ")
+ins #uvo
+
+var #uvo "." K1 "pr"
+ins #uvs
+  Ausgabedatei ist v-test.cpr
+  var "vvv." K1 "pr"
+  Alternative: auf dem Arb.Verz.
+  var W "\\vvv." K1 "pr"
+
+open x
+
+  Vorspann der Parameterdatei schreiben (view1.apt als Kopfteil)
+wri "  " #uvt(B"/ ") n
+var P "view1." K1 "pt"
+wri F
+
+  wenn #uvY / #uvK besetzt sind: neu besetzen
+  (Trick, damit diese Angaben auch bei Neuladen der Parameter da sind)
+
+if #uvY wri "#nr p'" #uvY "!' e'!' =vY" n
+if #uvK wri "#nr p'" #uvK "!' e'!' =vK" n
+if #uvK wri "#nr p'j!' e'!' =vM" n
+
+  Jetzt wird's kompliziert.
+  Die im Formular eingegebenen Daten werden verarbeitet:
+  (daraus entstehen die entscheidenden Zeilen in den Parametern)
+  in #uvA steht die erste Kategorienummer,
+  in #uvB die gewuenschte Laenge, usw., in #uvZ das Trennzeichen
+  wenn #uvK belegt ist, wird Summierung gewuenscht
+            (mit der Kat. die in #uvK genannt ist)
+  wenn #uvY mit "j" besetzt ist, wird Gruppierung gewuenscht.
+
+var ""
+ins #uvp
+if #uvZ var "X P" #uvZ
+ins #uvp
+
+if #uvA wri "#" #uvA(f"#" e" " e"$") " +#" #uvC(f"#" e" " e"$")
+var #uvA
+if %$% if #uvA wri " $" #uvA(b"$") " u"
+if #uvB wri " e" #uvB
+   Wenn Grupp., dann /// dazwischensetzen
+var #uvY
+if "j" jump zwo
+if #uvA wri #uvp(B"X") " Avv" n '#nr p"...!" e"!" Avv' n
+  Ohne Grupp.
+jump zwei
+  Mit Grupp.
+:zwo
+if #uvA wri " P'///'" #uvp(B"X") " Avv" n '#nr p"...!" e"!" Avv' n
+
+:zwei
+if #uvC if #uvE wri "#" #uvC(f"#" e" " e"$") " +#" #uvE(f"#" e" " e"$") " u"
+if #uvC if not #uvE wri "#" #uvC(f"#" e" " e"$") " +D" #uvE(f"#" e" " e"$") " u"
+var #uvC
+if %$% if #uvC wri " $" #uvC(b"$") " u"
+if #uvD wri " e" #uvD
+var #uvY
+if "j" jump three
+if #uvC wri #uvp(B"X") " Avv" n '#nr p"...!" e"!" Avv' n
+jump drei
+
+:three
+if #uvA wri " P'///'" #uvp(B"X") " Avv" n '#nr p"...!" e"!" Avv' n
+
+:drei
+if #uvE wri "#" #uvE(f"#") " u"
+if #uvF wri " e" #uvF
+if #uvE wri #uvp(B"X") " Avv" n
+
+if #uvG wri "#" #uvG(f"#") " u"
+if #uvH wri " e" #uvH
+if #uvG wri #uvp(B"X") " Avv" n
+
+if #uvI wri "#" #uvI(f"#") " u"
+if #uvJ wri " e" #uvJ
+if #uvI wri #uvp(B"X") " Avv" n
+
+  Achtung, evtl. Aenderungsbedarf:
+  Mit x"ri" wird die Zahl auf i Nachkommastellen gerundet!
+var ""
+if #uvL var #uvL(b",")
+ins #uvm
+
+if #uvK wri "#" #uvK(f"#") ' x"*1" '
+
+if #uvL jump kkk
+if #uvK var "8"
+ins #uvL
+
+:kkk
+
+if #uvm wri 'x"r' #uvL(b",") '" '
+if #uvL wri 'r' #uvL(e",")
+:view2
+if #uvK wri ' F"." =vu' n
+if #uvK var "#" #uvK(f"#")
+if #uvK ins #uvN
+if #uvK var #uvN(e" ")
+if #uvK ins #uvN
+if #uvN wri #uvN " +D e0" n
+if #uvK if #uvL wri "#nr p'00000000' e" #uvL(e",") " =vu" n
+wri "#+D" n n
+wri "  Abschnitt fuer Tabellenexport (#uzV ist die View-Zeile)" n
+wri n "#-Q" n
+wri "#uvY +R c'j' e0" n
+wri "  Sonderzeilen: Trennstriche und Ueberschriften" n
+wri "#uzV +- c'0t|' B'|' f' |' e0" n
+wri "#uzV c'0a|' B'|' f' |' F' '" n
+if #uvA wri "#" #uvA(f"#") " u" n
+if #uvC wri "#t9" n
+if #uvC wri "#" #uvC(f"#") " u" n
+if #uvE wri "#t9" n
+if #uvE wri "#" #uvE(f"#") " u" n
+if #uvG wri "#t9" n
+if #uvG wri "#" #uvG(f"#") " u" n
+if #uvI wri "#t9" n
+if #uvI wri "#" #uvI(f"#") " u" n
+if #uvK wri "#t9" n
+if #uvK wri "#" #uvK(f"#") " u" n
+wri "#+S" n n
+wri "#-R" n
+wri '1=""' n
+wri "  Sonderzeilen: Trennstriche (0t) und ZwischenUeberschriften (0a)" n
+wri "#uzV +- c'0t|' e0" n
+wri "#uzV +- c'0a|' e0" n
+if #uvA wri "#" #uvA(f"#") " u =" #uvA(f"#" e" ") ",1 P{ 9 9 C }" n
+if #uvC wri "#t9" n
+if #uvC wri "#" #uvC(f"#") " u =" #uvC(f"#" e" ") ",1" n
+if #uvE wri "#t9" n
+if #uvE wri "#" #uvE(f"#") " u" n
+if #uvG wri "#t9" n
+if #uvG wri "#" #uvG(f"#") " u" n
+if #uvI wri "#t9" n
+if #uvI wri "#" #uvI(f"#") " u" n
+if #uvK wri "#t9" n
+if #uvK wri "#" #uvK(f"#") " u" n
+
+wri n "#-S" n
+  Sonderzeile: Summe
+wri "#uzV c's|' B'|' f' |' F' '" n
+wri n n
+var P "view2." K1 "pt"
+wri F
+  Parameterdatei ist jetzt fertig, schliessen!
+close x
+
+var #uvo
+
+help view
+
+xport p
+
+  Name der Datei = Name der Erg.Menge (Nummer = q)
+ var B "_" q
+  Alternative: Anlage auf Verzeichnis TEMP
+ var M "vvv"
+var "vvv"
+ins #uvw
+
+  Diesen Namen als Outputdatei verwenden
+open x
+
+   aktuelle Erg.Menge exportieren, Datei schliessen
+var ""
+ins #uvx
+ins #uvQ
+  Wenn keine Erg.Menge, dann ganze Datenbank?
+if empty jump full
+
+down set
+:ready
+close x
+
+  Sortierbefehl zusammenstellen (dabei Sortierkopf #u1 beseitigen)
+  asort name name.vw -u3
+var #uvY
+  Gruppierung gewuenscht? (j in #uvY)
+if "j" jump grp
+if #uvM jump grp
+var #uwC " /c " P "asort " #uvw " " #uvw ".vw -u3"
+  (Option -u3 beseitigt #u1 etc.)
+jump sort
+:grp
+var #uwC " /c " P "asort " #uvw " " #uvw ".alg -u1"
+:sort
+  Sortieren ausfuehren
+cAll
+var #uvY
+if "j" jump grupp
+if #uvM jump grupp
+jump anzeigen
+:grupp
+var #uwC " /c " P "srch -f6 -d" #uvw ".alg -eviewgrup/" #uvw ".vw -v0 -m0 -ka -b" D B
+  Wenn man kontrollieren will, wie der SRCH-Befehl aussieht:
+ins #uUU
+cAll
+var #uvw ".alg"
+delete
+
+:anzeigen
+  unsortierte Datei  name  wieder loeschen
+var #uvw
+delete
+
+var #uvw ".vw"
+            Sortierte Datei anzeigen
+View
+var "vvv"
+ins #uvn
+ins #uv9
+
+
+:vdat
+close view
+ask Erg.Menge als ViewListe aufbewahren? Dann einen Namen eingeben:
+if "" jump vvv
+var (e".")
+ins #uvn
+ins #uv9
+
+var 'vvv.vw "' #uvn '.vw"'
+ins $r
+rename
+if no jump nor
+
+var #uvn(e".") ".vw"
+
+  wieder oeffnen
+view
+jump ende
+
+:vvv
+var "Die ViewListe heisst vvv.vw" 13 10 "Die ViP ist " #uvo 13 10 "Diese kann spaeter wieder verwendet werden"
+mes
+
+:ende
+  aktuelle exp.param wiederherstellen
+var #uwe
+xport p
+  HilfsVariablen loeschen
+var ""
+ins #uwe
+ins #uvm
+ ins #uvn
+ins #uvN
+ins #uvp
+ins #uvs
+ins #uvt
+ins #uvu
+ ins #uvw
+ins #uvx
+ins #uvz
+
+  Diese koennten nochmals gebraucht werden, daher nicht loeschen
+ ins #uvA
+ ins #uvB
+ ins #uvC
+ ins #uvD
+ ins #uvE
+ ins #uvF
+ ins #uvG
+ ins #uvH
+ ins #uvI
+ ins #uvJ
+ ins #uvZ
+var "   Mit  Strg+o  erscheint ViewListe wieder, Menue mit Strg+w!"
+sho iv
+
+end
+
+  Datei view2.frm als zusÑtzliche Formulardatei laden
+:getform
+addform view2.frm
+  nicht gefunden: Ende
+if no jump exit
+form ViP
+if no jump exfo
+jump input
+
+:exit
+message VIEW2.FRM existiert nicht!
+end
+:exfo
+mess Formular ViP nicht gefunden!
+end
+
+:full
+var "Keine Ergebnismenge. Ganze Datenbank als View?" 13 10 "Nein = Zuerst Ergebnismenge machen, dann View-MenÅ wieder starten"
+ansi
+noyes
+if not yes end
+if yes dow database
+jump ready
+
+:nor
+var "Umbenennung in " $r " geht nicht"
+mes
+end
+
+
+ u-VARIABLEN in viewform.flx
+ #uUU (1)    nur f. Kontrolle d. srch-Befehls
+ #uv9 (2)    Name der Ergebnisdatei
+ #uvA (14)   Zeile 1 aus dem Formular view2.frm
+ #uvB (2)    seine Laenge
+ #uvC (16)   Zeile 2
+ #uvD (2)    Laenge
+ #uvE (13)   Zeile 3
+ #uvF (2)    Laenge
+ #uvG (9)    Zeile 4
+ #uvH (2)    laenge
+ #uvI (9)    Zeile 5
+ #uvJ (2)    Laenge
+ #uvK (19)   "Feld mit Zahl"
+ #uvL (9)    Laenge, Dez.Stellen
+ #uvM (2)    obsolet
+ #uvN (6)    Kopie von #uvK
+ #uvQ (1)    obsolet
+ #uvU (2)    Name der aktuellen Erg.Menge
+ #uvY (6)    "j" wenn Gruppierung, sonst leer
+ #uvZ (4)    Trennzeichen (aus view2.frm)
+ #uvm (3)    Dez.Stelle von #uvL
+ #uvn (4)    Name der Erg.Datei
+ #uvo (8)    Name der ViP
+ #uvp (10)   XP#uvZ  (zum Einbau in Exp.Parameter)
+ #uvs (2)    v-name.apr
+ #uvt (4)    "test / Test"
+ #uvu (1)    obsolet
+ #uvw (10)   Name der unsortierten ViewDatei
+ #uvx (2)    obsolet
+ #uvz (1)    obsolet
+ #uwC (4)    %comspec
+ #uwe (3)    Name der aktuellen Exp.Param.Datei

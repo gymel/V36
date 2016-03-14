@@ -1,0 +1,105 @@
+  FREMDDB.FLX : Weitere Datenbank starten fuer Datenuebernahme
+  2001-02-13    (sog. Schnellkopplung)
+  Es wird eine FREMDDB.INI erstellt und ein zweites a99 damit gestartet
+  Der "eigene Menuepunkt" wird zum Umschalten bzw. Kopieren eingerichtet
+
+var m
+if "alc" end
+
+  Gibt es die Datei FREMDDB.INI schon (vorher angelegt)?
+open fremddb.ini
+  nein, dann andere Datenbank suchen
+if no jump suchen
+get
+  drei ersten Zeilen: Konfiguration, DbName und DbDir
+get #uvA
+get #uvV
+get #uvW
+close
+  Anzeigen und fragen, ob selbe Datenbank gewuenscht
+var "Verbindung zu Datenbank " #uvV(b"=") " auf Verzeichnis " #uvW(b"=") "?" n
+var +"(Nein : Andere Datenbank ausw„hlen)
+ansi
+yes
+  Nein: andere gewuenscht, -> beginn
+if no jump beginn
+if canc end
+jump start
+
+:suchen
+yes Fremddatenbank zum Kopieren suchen?
+if no end
+if cancel end
+
+  Beginn der Suche auf dem Arbeitsverzeichnis (W)
+   nur Datenbanken mit derselben Konfig zeigen!
+:beginn
+var "Datenbank (*." K1 "DX-Datei w„hlen)|" W "\\*." K1 "dx"
+ansi
+fname
+if no end
+if canc end
+  gewaehlten Namen nach #uwD
+ins #uwD
+
+  Aber zur Sicherheit:
+  Checken, ob es etwa das aktuelle Datenverz. selbst ist
+var "~" #uwD
+ins #uwE
+var D B
+  beide Namen vergleichen, wenn gleich -> :samepath
+if =#uwE jump samebank
+
+
+  Ein Hilfsverz. fremddb anhaengen an's eigene DbDir
+  (da kommen die Hilfsdateien von a99 hin)
+var M "fremddb"
+ins #uwX
+mkdir
+
+var #uwD(t".")
+ins #uwD
+  jetzt die Datei fremddb.ini erstellen
+open x fremddb.ini
+wri "[General]" n
+wri "Konfiguration=" K n
+wri "DbName=" #uwD(T"\\") n
+wri "DbDir=" #uwD(t"\\") n
+wri "DbAux=" #uwX n
+  Menuepunkt "Kopie"
+wri "MyMenu=Kopie" n
+  startet  copy.flx  auf der Zieldatenbank
+wri "MyFLEX=x download\\flex copy\\var 'kopiert!'\\sho iv\\act 1" n
+
+wri "ExportParameter=e-w" n
+wri "OutputFile=e.adt" n
+  Sonst keine Ausf. d. ExFLEX  alta.flx:
+wri "access=4" n
+
+close x
+  Menupunkt und zugehoerigen FLEX einrichten fuer die Umschaltung
+:start
+menu FremdBank
+#uXzX switch
+
+  Befehl zusammenstellen
+
+var m
+ins #uwM
+
+  Variable $SK besetzen. copy.flx arbeitet nur dann
+$SK=ja
+
+var P #uwM(e" " F"b") " fremddb"
+  und ab geht's ('C' bewirkt, dass Fenster anschliessend unabhaengig)
+Call
+end
+:error
+mes Verzeichnis kann nicht angelegt werden
+end
+
+:samebank
+var "Also bittesch”n!" n "Das ist ja dieselbe Datenbank, das macht keinen Sinn!"
+ansi
+mes
+jump beginn

@@ -1,0 +1,140 @@
+  NPW.FLX    : Neues PassWort an einen Nutzer vergeben
+  2001-03-12
+  Empfehlung: Standort auf dem Arb.Verz. d. Systemverwalters
+
+var m
+if "alc" end
+
+var A
+  Berechtigung fuer diesen FLEX muss 9 sein
+if <9 jump error
+if #uwF jump files
+
+  Ist _psw.flx auf DbDir schon vorhanden? Sonst kopieren
+var D "_psw.flx"
+fsize
+if no jump pswcopy
+  Flag loeschen, d.h. es gibt bereits Pw
+#uw!
+
+:start
+var "Der n„chste bitte (Nutzernamen eingeben)"
+ansi
+ask
+if "" jump exit
+ins #uwN
+:berecht
+var "Berechtigung (dieselbe Ziffer muá auch in der INI des Nutzers stehen)?=0=Keine Schreibberechtigung|1=Schreiben nur in 1 Datei|2=Schreiben in alle Dateien|3=Globale Aktionen|4=Sonderrechte|5=Supervisor|9=PW-Zuweisung"
+ansi
+select
+if no jump exit
+if cancel jump exit
+
+ins #uwB
+var n "User " #uwN ", Berechtigung " #uwB
+sho IV
+
+ask Wie soll das Passwort lauten?
+if cancel jump exit
+if "" jump exit
+ins #uwn
+  Praefix: (muss mit dem in _PSW.FLX uebereinstimmen)
+  hier: "extra" plus Name der Datenbank plus Berechtigung
+     XXXXXXXXXXXXX
+var "extra" B #uwB #uwn
+  und verschluesseln
+crypt
+ins #uwn
+  PSW-Datei des users oeffnen (Verzeichnis hier einstellen:)
+var D "psw\\" #uwN ".psw"
+open x
+if no jump fehler
+:schreib
+  Das verschl. Passwort reinschreiben
+wri #uwn
+clo x
+var "User " #uwN " hat ein Paáwort erhalten fr Berechtigung " #uwB
+ansi
+sho IV
+  Var. loeschen
+var ""
+ins #uwn
+ins #uwN
+ins #uwB
+ins #uw!
+  Zum Anfang
+jump start
+
+:fehler
+  Das Verz. fuer die Passwoerter existiert noch nicht: anlegen
+var D "psw"
+mkdir
+if no jump error
+var D "psw\\" #uwN ".psw"
+open x
+   Datei kann nicht angelegt werden. Schreibberechtigung?
+if no jump error
+jump schreib
+:error
+mes SORRY, SIE HABEN DAZU KEINE BERECHTIGUNG
+end
+
+:pswcopy
+var "!Bisher ist diese Datenbank nicht paáwortgeschtzt" n
+var +"M”chten Sie jetzt Paáw”rter vergeben?"
+ansi
+yes
+if not yes end
+var P "flex\\password.flx " D "_psw.flx"
+fcopy
+if no jump notfound
+var "Auf " D " liegt jetzt _PSW.FLX" n "Setzen Sie diese Datei auf READ ONLY" n "damit sie nicht manipuliert werden kann" n
+var +"Bisher war die Datenbank noch nicht Paáwort-geschtzt." n "Ab sofort kommt man ohne nicht mehr hinein." n "Vergeben Sie deshalb zuerst ein Paáwort fr sich selbst"
+ansi
+mes
+  Flag: Passw.Schutz neu eingerichtet
+#uw!1
+jump start
+
+
+:notfound
+mes PASSWORD.FLX nicht vorhanden!
+end
+
+:exit
+var ""
+ins #uwn
+ins #uwN
+ins #uwB
+set dn
+disp
+sho rec
+end
+:files
+  Wenn #uw! noch gesetzt, dann wurde doch kein Pw eingerichtet
+if #uw! jump EXIT
+
+var ""
+ins #uwF
+var "Nutzer|" D "psw\\*.psw"
+fnam
+if "" jump exit
+if %*.psw% jump exit
+ins #uwN
+var #uwN(T"\\")
+ins #uwN
+var #uwN(e".")
+ins #uwN
+jump berecht
+
+:EXIT
+var D "_psw.flx"
+delete
+
+
+
+   Variablen
+   #uwn   Passwort
+   #uwN   Nutzername
+   #uwB   Berechtigungsziffer
+   #uwF   Flag: Liste der Nutzer zeigen

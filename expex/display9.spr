@@ -1,0 +1,127 @@
+ Calculation commands - the final stage in the simple MARC export parameter.
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ Here, we develop the use of the subroutine, and use some calculation commands
+ to number the added entries correctly.
+
+ The use of a user-variable is also involved. We need it to start off the
+ numbering from 1, and obtain it with the very first export line below, which
+ introduces a number of new concepts.
+
+zl=76
+dx=1
+
+4=C       
+60=%12
+65=%76 $ #13 &14
+74=27 91 48 59 51 52 59 52 55 109
+76=27 91 48 59 51 48 59 52 55 109
+
+ To produce the user-variable "rn" with the content "1":
+ (This will be done for every new record being exported)
+#dt p"1" e1 =rn
+ Take the user-variable "dt" (= date), preface it with "1", end after the
+ first character (i.e. the prefaced "1"), then load the content of the
+ workstring (simply the "1") into user-variable "rn".
+ What is all this about?
+ We use field #dt as nothing more than a device to get an export line going,
+ for which we need some field which is invariably going to be present. Since
+ #dt is one of the special fields that allegro always generates when it starts
+ up, we can always be sure that it is there. What we really want is the "1":
+ to get it, we preface the date with "1", then immediately end the workstring
+ after the "1", by ending it after the first character (the "e1" command).
+ Finally, we store the workstring in user-variable "rn" (the "=rn" command). 
+
+ Now go to the end of this file to discover the use to which we put this
+ user-variable in subroutine "r".
+
+#050 60 a
+#050 C b
+#t65
+#t74
+#100 a F", " P":"
+#t76
+#t4
+#240 a p"["
+#240 l p" "
+#240 p"]" e1 P4
+#245 a F" :/"
+#245 h p" " F" :/"
+#245 b " : " F"./ "
+#245 c " / " F". "
+#t{"."}
+#260 C b"a" ,"_a_ ; _" ,"_; ;_;_" ,"_b_ : _" ,"_ : :_ :_" ,"_c_, _" ,"_,, _, _" p"    " F". " P"."
+#t4
+#700 ++ >A m>A
+#700 p"." e1
+#+Z
+
+#(A
+ At this point in DISPLAY8 we arranged for "I. " to be placed before each
+ added entry.  We will now number them correctly by using another subroutine
+ which we will call "r":
+#>r
+#cc b"a" e"d" ,"_e_ [_" ,"_?_ -- _"
+#cc d p" (" P")"
+#cc b"d" b"?" p" -- " ,"_e_ [_" ,"_?_ -- _"
+#)A
+
+ Subroutine "r", to generate roman numbers for the added author entries.
+#(r
+#urn x">1" p". " e2
+ The "x" introduces either a calculation or a comparison, and what follows it
+ consists of two parts: command+value. Here, the command is saying "if the
+ content of #urn is greater than (>) 1, prefix it with ". ", and end after the
+ second character, i.e. output ". ". This is done to put a full-stop after the
+ previous added entry, before the next one is exported. If #urn is not greater
+ than 1, there will be no previous entry, so no full-stop is needed. 
+ Note that when one of these comparisons does not detect a match, there is no
+ output. This is a particularly important consideration in the following list.
+#urn x"==1" p"I. " e3
+ Here, we need to start assigning the roman numerals. The "==" tells the
+ programme to compare #urn with 1. If it is the same, it will be prefixed with
+ "I. ", and the output will end after the third character, leaving just the
+ roman numeral. If #urn is not the same, nothing will happen, and we proceed to
+ the next line.
+#urn x"==2" p"II. " e4     the prefix is 4 characters long
+#urn x"==3" p"III. " e5     and 5 in this case. The e command has the effect 
+#urn x"==4" p"IV. " e4      that just the prefix will be exported
+#urn x"==5" p"V. " e3
+#urn x"==6" p"VI. " e4
+#urn x"==7" p"VII. " e5
+#urn x"==8" p"VIII. " e6
+#urn x"==9" p"IX. " e4
+#urn x"==10" p"X. " e3
+#urn x"==11" p"XI. " e4
+#urn x"==12" p"XII. " e5
+#urn x"==13" p"XIII. " e6
+#urn x"==14" p"XIV. " e5
+#urn x"==15" p"XV. " e4
+#urn x"==16" p"XVI. " e5
+#urn x"==17" p"XVII. " e6
+#urn x"==18" p"XVIII. " e7
+#urn x"==19" p"XIX. " e5
+#urn x"==20" p"XX. " e4
+#urn x"+1" =rn
+ Now the next #700 field (#700a, #700b, &c.) will be sent down to be processed,
+ and the roman numberal must be incremented by 1. The x"+1" =rn does this, so
+ that if #urn was "2", it will now be "3", and the above list will therefore
+ see that the output is "III. ".
+#)r
+
+#-Z
+ the destination of the jumpmark #+Z
+
+ 컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴
+ What follows is explanatory, and not part of the experiment. Do not change.
+#t{27 91 49 59 51 48 59 52 55 109 &0 #0 %56}
+#t{C C C "�"*56 C "All the added author entries are now correctly numbered. "}
+#t{"This has been achieved by the further use of a subroutine, and also some "}
+#t{"calculation commands."}
+#t{C "Edit DISPLAY9.SPR to see how the calculation commands work."}
+#t{C "This completes the first exercise in parameterisation, but the final "}
+#t{"form of the simple MARC export parameter is the file D-1.SPR, which "}
+#t{"contains a few additional uses of the same commands. Edit it to see what "}
+#t{"they are."}
+
+pn="DISPLAY9.SPR"  19960225

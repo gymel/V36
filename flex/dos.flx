@@ -1,0 +1,62 @@
+  DOS.FLX : Start einiger Datei-Funktionen, DOS-Fenster gezielt oeffnen
+  2001-08-13
+
+  In welchem Prog. sind wir? Wenn alcarta, dann fehler
+var m
+if "alc" jump error
+
+close view
+if not #uvN var D;ins #uvN
+  Zuerst wird eine ViewListe produziert:
+open x _dos.vw
+var $Fname "!!"
+if "!!" jump neu
+if %~ld!% jump neu
+if %~dx!% jump neu
+if %~tbl!% jump neu
+if %~stl!% jump neu
+if %~res!% jump neu
+
+write "x #uvY1\\exec X dir|Zuletzt gew„hlt:  " $Ffile "  im Ordner:  " #uvN n
+write "X doswin.flx|Ein DOS-Fenster ”ffnen auf  " #uvN n
+write "X dosfile.flx|Eine andere Datei ausw„hlen                " n
+write "x #uvv  w\\exec X doswin.flx|Datei " $Fname " von DOS nach Windos konvertieren" n
+wri "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" n
+perform xxx
+close x
+perf view
+end
+:neu
+  Unterprogramm xxx
+:xxx
+wri "** W„hlen Sie einen dieser 4 Ordner, um den Inhalt zu sehen:" n
+wri "x #uvv  d\\exec X dosfile.flx|Daten-Ordner:    " D n
+wri "x #uvv  1\\exec X doswin.flx|    DOS-Fenster dort ”ffnen " n
+wri "x #uvv  p\\exec X dosfile.flx|Programm-Ordner: " P n
+wri "x #uvv  2\\exec X doswin.flx|    DOS-Fenster dort ”ffnen " n
+wri "x #uvv  a\\exec X dosfile.flx|Arbeits-Ordner:  " W n
+wri "x #uvv  3\\exec X doswin.flx|    DOS-Fenster dort ”ffnen " n
+wri "x #uvv  t\\exec X dosfile.flx|Tempor„rer Ordner:    " M n
+wri "x #uvv  4\\exec X doswin.flx|    DOS-Fenster dort ”ffnen " n
+wri "h dos|Hilfe zu DOS -- (Was ist DOS eigentlich?) ----" n
+wri "X cockpit|Fenster mit DOS-CockPit aufmachen [Nicht mit Win'7/64!]" n
+return
+close x
+
+:view
+  Ueberschriften fuer die ViewListe setzen
+set i7Datei-Funktionen
+set i8Sie können gezielt in 4 Ordnern die Dateien sichten
+set i9      oder dort ein DOS-Fenster öffnen
+View _dos.vw
+  Ueberschriften beseitigen
+close view
+delete _dos.vwn
+delete _dos.vw
+set i7
+set i8
+set i9
+return
+end
+:error
+mes Diese Funktion ist in alcarta nicht benutzbar

@@ -1,0 +1,112 @@
+
+Verlautbarung 220 der Entw.Abt.                              2009-08-28
+-------------------------------
+
+V29.8
+=====
+
+Handbuchtexte online mit Suchfunktion
+-------------------------------------
+Es gibt jetzt, aehnlich wie bei den Verlautbarungen, auch fuer die
+Handbuchtexte die Moeglichkeit einer Volltextsuche. Die Arbeit macht
+auch hierbei der FLEX  xgrep.flx, den man zum naemlichen Zweck so 
+starten kann:
+
+X xgrep ac*
+
+denn die Namen der Handbuch-RTF-Dateien beginnen alle mit "ac".
+Leichter geht es mit dem Flip "Suchen", der jetzt auf der Handbuch-
+Startseite  h handbuch  auftaucht. In der Quickliste findet man
+auch eine Zeile "Handbuch durchsuchen", die dasselbe tut.
+
+Es folgt dann die Frage nach dem Suchbegriff, was ein regulaerer
+Ausdruck sein kann, aber auch ein simples Wort. Geben Sie Umlaute stets
+aufgeloest ein, und keine Grossbuchstaben. Also z.B. 'externformat'
+oder 'schiller-raeuber' oder 'indirektes praefix' oder "fehler 12"
+oder "mehrfachcode.*unzulaessig".
+Beeindruckend perfekt ist die Sache nicht, aber nach etwas Gewoehnung 
+doch besser als nichts.
+
+
+a99 : Schnelligkeit der Registeranzeige
+---------------------------------------
+Diese hatte anscheinend gelitten, wenigstens auf einigen Servern, durch
+interne Umstellung von Einstellungen beim Dateizugriff. Dies wurde
+revidiert, der fruehere Zustand sollte wiederhergestellt sein.
+Wenn eine Datenbank waehrend Update-Laeufen unter Last steht, kann es
+aber noch zu Unterbrechungen bei der Indexanzeige kommen.
+
+
+a99: Aenderungsdatum bei hierarchischen Saetzen
+-----------------------------------------------
+Beim Speichern eines hierarchischen Satzes wurde das vorige
+Aenderungsdatum, wenn man zum Zeitpunkt des Speicherns gerade
+vorher einen Untersatz korrigiert hatte, in diesen Untersatz
+kopiert. Das wurde behoben.
+Fehlfunktionen hat dies ansonsten nicht ausgeloest, es wirkte
+nur irritierend, wenn auf einmal in einem Untersatz eine
+(aeltere) #99e drin war.
+
+
+acon
+----
+Unter unguenstigen Umstaenden konnte es zu einem Versagen
+kommen, wenn der Befehl  export wX  gegeben wurde. Das ist
+behoben. Abhilfe bei V29.7:  vorher eine Zeile mit  
+wri ""
+
+
+a99 und acon
+------------
+Die Sonderbefehle k3 und k4 liefern vorn zwei ueberzaehlige Bytes 
+(Steuerzeichen), wenn das betr. Feld das erste eines hierarchischen
+Untersatzes ist. Bei acon auch k2.
+Behoben.
+
+
+Neue Parameter  e-unihtm.apr
+----------------------------
+Es gab schon e-unicod.apr, die einen Datensatz in der
+externen Form mit Umcodierung nach UTF-8 ausgeben soll.
+Ausserdem ist eine Sprungmarke #-X drin, die man im
+Job mittels  dow wX  zum automatischen Umcodieren bei
+write-Befehlen nutzen kann.
+Die neue  e-unihtm.apr  ist eine Kopie, nur mit drei
+zusaetzlichen Zeilen zum Umcodieren der Zeichen < > und &,
+weil die sonst im HTML-Text untergehen oder im Falle <
+fuer ein mysterioeses Verschwinden alles dessen sorgen,
+was danach kommt.
+
+
+Alte Parameter  p-w.apr
+-----------------------
+Diese als Default fuer die Funktion "Anzeige in Druckform" verwendete
+Parameter war bei V29.7 mit einer anderen Datei gleichen Namens 
+vertauscht worden. Das ist rueckgaengig gemacht.
+
+
+a99 : aLF-Ausleihe
+------------------
+Die Fristberechnung klappte nicht immer korrekt, weil die Auswertung
+der Medientypdaten fehlerhaft war. Vor einer Weile war da was geaendert
+worden, aber leider eben mit einem Fehler. Der ist jetzt weg.
+Auch das Mahnporto ist jetzt in den Mahn-Exportvorgang einbezogen:
+Das Porto fuer den Brief (der u.U. mehrere Eintraege enthaelt) wird
+im Schreiben ausgewiesen und es wird ein Gebuehrensatz dafuer erzeugt.
+Entnommen wird das Mahnporto aus dem Leserklassensatz,  #9A$p.
+
+
+ACHTUNG Verstaendnisfehler!
+---------------------------
+Die "interne Sondervariable" J, die man in einem var- oder write-Befehl
+verwenden kann, ist kein FLEX-Befehl! Man darf also, bei Strafe des
+Absturzes, vor dem J keinen \ setzen, denn der \ trennt nur Befehle,
+die Sondervariablen aber muessen durch Spatien getrennt werden.
+Den Absturz haben wir, als kleines Entgegenkommen, jetzt ausgeblendet.
+(Der echte Befehl J oder Jump hat eine ganz andere Bedeutung, man
+schaue nach unter  h xjump, wird aber nicht mehr empfohlen und 
+vielleicht abgeschafft werden.)
+
+
+
+

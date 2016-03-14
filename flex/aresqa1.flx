@@ -1,0 +1,241 @@
+  ARESQA1.FLX : Tabelle und SQL-Skript produzieren
+  2004-11-16  : mit Option fuer Unicode (2 Stellen aendern)
+                Tabelle normalerweise ANSI
+
+  Im Auswahlfeld erst wieder den Satz anzeigen
+sho rec
+  Wenn #uqF besetzt, dann gesamte Datenbank verarb.
+  sonst nur die Erg.Menge - gibt es eine?
+if not #uqF if empty jump nores
+   Entweder steht der Name in #uqQ oder in #uqT
+   Datei  q-xyz.str muss existieren (Strukturdatei)
+var ""
+if not #uqQ if #uqT var #uqT(B"~t-" e" " e".")
+if not #uqQ ins #uqQ
+var "q-" #uqQ(B"~q-" e".") ".str"
+open
+if no jump strerr
+  loesche #uqP etc.(prim.schl.Buchstabe)
+#uqP
+#uqC
+#uqL
+#uqA
+  Exp.param sichern
+var e
+ins #uwe
+
+
+  Datei xyz.str jetzt lesen: Struktur -> #uqA
+    darin steht dann  #nnn Bezeichn//#nnn Bezeichn//#nnn Bezeichn...
+:1stline
+get
+if can jump strerr
+if " " jump 1stline
+if "" jump 1stline
+if "~a" jump 1stline
+if "~t" jump 1stline
+if "~n" jump 1stline
+if "~u" jump unic
+if "~l" jump lock
+if "!" jump 1stline
+
+if "p" jump prk
+if "|" jump 1stline
+ins #uqA
+jump loop
+  Statt interner Satznummer soll ein eindeutiger Schluessel verwendet werden:
+:prk
+ins #uqP
+jump 1stline
+
+:loop
+get
+if can jump verarb
+if " " jump loop
+if "" jump loop
+if "|" jump loop
+if "~a" jump loop
+if "~t" jump loop
+if "~n" jump loop
+if "~u" jump unic
+if "~l" jump lock
+if "!" jump loop
+ins #uqB
+var #uqA "//" #uqB
+ins #uqA
+jump loop
+
+:unic
+#uqC1
+  optional:
+  Parameter p-unicod.apr laden (Falls man Unicode will!)
+xpo p p-unicod
+if no jump perror
+  darin Sprungmarke #-X einschalten (wirkt bei write-Befehlen)
+dow wX
+jump loop
+
+:lock
+#uqL1
+jump loop
+
+:verarb
+close
+  Variable #uqA vorn von // befreien
+var #uqA(f"/")
+ins #uqA
+  Datei q-xyz.sql aus #uqA erzeugen
+var "q-" #uqQ(B"-") ".sql"
+open x
+  Der Anfang ist immer gleich:
+wri "CREATE DATABASE IF NOT EXISTS `aresqa`;" n
+wri "USE `aresqa`;" n
+wri "DROP TABLE IF EXISTS `aresqa`;" n
+
+   Die Tabellendefinition muss jeweils erstellt werden!
+wri "CREATE TABLE `aresqa` (" n
+wri "   `Id` varchar(25) NOT NULL," n
+
+  Dann kommen die Datendefinitionszeilen
+   Die Feldauswahl aus q-x.str wird umgesetzt:
+var #uqA
+ins #uqB
+:sloop
+wri '   `' #uqB(b" " f" " e"//") '` varchar(255) default NULL,' n
+var #uqB(b"//")
+ins #uqB
+if #uqB jump sloop
+
+  Das Ende ist auch immer dasselbe:
+wri "PRIMARY KEY  (`Id`)" n
+  Ohne Unicode:
+wri " ) ;" n
+  Mit Unicode:
+ wri " ) ENGINE=MyISAM DEFAULT CHARSET=utf8;" n
+
+wri "LOAD DATA CONCURRENT LOCAL" n
+wri ' INFILE "c:/allegro/q-' #uqQ(B"-") '.tab"'
+wri " INTO TABLE aresqa" n
+  Diese zwei sind bei MySQL default:
+wri " FIELDS TERMINATED BY '\\t'" n
+wri ' LINES TERMINATED BY "\\r\\n";' n
+close x
+  SQL-Script fertig,
+
+  Jetzt wird q-xyz.tab erzeugt, die CSV-Datentabelle
+    mit TAB als Trenner!
+:table
+var "q-" #uqQ(B"-") ".tab"
+open x
+
+  Primaerschl. setzen
+if #uqP var #uqP
+if #uqP set
+
+  Ersten Satz der Erg.Menge nehmen
+:frst
+if not #uqF first
+if #uqF first #
+if del jump frst
+
+var "Abbruch mit Esc-Taste"
+sho iv
+
+  Schleife zur Verarb. der Saetze
+:schleife
+
+  Tastatur pruefen: wenn Esc gedrueckt, dann Nachfrage und Ende
+keychk
+if yes jump exit
+
+  Sperrung gewuenscht:
+if #uqL set lock
+
+if not #uqP jump satznr
+  Prim.Schl erzeugen mit der Sprungmarke, deren Buchstabe in #uqP steht
+wri p
+jump zeile
+
+:satznr
+  Satznummer ausgeben mit i davor
+wri "i" i
+
+:zeile
+var #uqA
+ins #uqB
+   Schleife. #uqB wird abgearbeitet
+:is
+  Feldnummer kann mit # oder & beginnen
+var "#" #uqB(f"&#" e" ")
+  Inhalt des Feldes nehmen
+var
+  und in #uqV speichern
+ins #uqV
+  Unicode?
+if #uqC jump uc
+  Ohne Unicode:
+var 9 #uqV
+ansi
+wri
+jump noc
+
+  Mit Unicode:
+:uc
+wri 9 #uqV
+
+:noc
+var #uqB(b"//")
+ins #uqB
+if not #uqB jump weiter
+jump is
+
+
+:weiter
+wri n
+  naechster Satz
+:nxt
+if #uqF next #
+if #uqF if can jump exit
+if not #uqF next
+if del jump nxt
+  es gab noch einen Satz? dann -> :schleife
+if yes jump schleife
+  Ende erreicht
+if no jump exit
+
+  Tabellendatei fertig
+:exit
+close x
+  Ende, Tab. kann in MySQL eingelesen werden
+jump exx
+
+:perror
+mes Parameter p-unicod.apr nicht gefunden
+perf exx
+end
+
+
+:strerr
+if not #uqQ var "Keine Strukturdatei (Variable #uqQ nicht belegt)"
+if #uqQ var "Strukturdatei q-" #uqQ(B"~q-") ".str nicht gefunden"
+mes
+perf exx
+end
+
+:nores
+mes Momentan ist keine Ergebnismenge aktiviert!
+end
+
+:exx
+var #uwe
+xpo p
+#uwe
+return
+
+  Fertigmeldung im Schreibfeld ausgeben:
+var "a q-" #uqQ(B"-") ".tab      [Enter] : Liste anzeigen"
+sho iV
+act 2
+end
+
+

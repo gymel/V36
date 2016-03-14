@@ -1,0 +1,49 @@
+   O-ZUGB.FLX :  Zugangsbuch ausdrucken
+   20070612      ausgehend v. einer Ergebnismenge von Exemplarsätzen,
+                 sortiert nach Zugangsnummern (i.d.R. Reg. 10)
+   Es wird empfohlen, liste.txt nach der Erstellung durch diesen Flex
+   mit Word zu öffnen und Text in Tabelle umzuwandeln, ggf. Querformat
+   
+   
+   Erster Satz der Ergebnismengemenge
+   
+first
+if not #9DF jump sorry
+
+open x liste.txt
+   Titel der Erg.Menge, kann den eigenen Bedürfnissen entsprechend angepasst werden
+wri "Zugangsnummer" 9 "Signatur" 9 "Ex." 9 "Titel" 9 "Datum" 9 "BruttoEP" 9 "NettoGP" 9 "Lief." 9 "RNr." n
+:loop  
+   Verschiedene Daten aus dem Exemplarsatz werden hier ausgegeben, kann den eigenen Bedürfnissen entsprechend angepasst werden
+wri #9DG$z 9 #9DG$s 9 #9DG$e 9
+   TitelID aus Exemplarsatz entnehmen
+var "|9 " #9DF$$
+set obj 2
+   Titelsatz dazu laden
+f1nd
+   V14-Verkn. aufloesen
+if v14 export Ref
+   **** Titeldaten ausgeben,  kann den eigenen Bedürfnissen entsprechend angepasst werden
+wri #40 " " #20(e" : ") " " #71 " " #76 9
+
+   Dazugehörenden Bestellsatz laden
+var "|: tz " #00 "?"
+f1nd
+   V14-Verkn. aufloesen
+if v14 export Ref
+   Abrechnungsdatum, Einzelpreis, Gesamtpreis, Lieferant und Rechnungsnummer ausgeben,
+   kann den eigenen Bedürfnissen entsprechend angepasst werden
+wri #9DB$R 9 #9DB$p 9 #9DB$i 9 #9DB$j 9 #9DB$N n
+   zurueck zum Exemplarsatz
+set obj 1
+
+   naechster Exemplarsatz
+next
+if yes jump loop
+close x
+   Datei schliessen und anzeigen
+h liste.txt
+end
+
+:sorry
+var "Sorry, die aktuelle Ergebnismenge besteht nicht aus Exemplarsätzen" mes end

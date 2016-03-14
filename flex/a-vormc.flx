@@ -1,0 +1,70 @@
+  A-VORMC : Vormerk-Check 
+  2008-04-23   [Entwurf von Schleifenbaum, Kiel]
+  "Gibt es Vormerkungen zu meinen Entleihungen?"
+  
+#uaB ""
+  Ist es ein Lesersatz? Dann seine IdNr als Vorgabe
+if #9B var #9B$$(1,0);ins #uaB
+ask Benutzer-Barcode?=#uaB
+if "" end
+ins #uaB 
+
+  Alle Entleihungen des Lesers suchen
+	 
+if #uaB var "|; B" #uaB " 2?"
+find
+
+   Liegt eine Erg.Menge vor? Nein - nichts zu machen
+if l1 end
+   sonst aufsteigend nach Datum ordnen
+ord a0
+first
+  Schleife Anfang
+:loop
+
+  Hier wird geprueft: gibt es eine Vormerkung zu diesem Expl.?
+var #9DF$$
+var +":E" #9DG$e(0,r3)
+ins _ _0_
+ins #uaW
+
+  Suchschluessel ExplVm erstellen, dann nachsehen
+var "|: " #uaW " V?"
+f1nd
+if no jump vl2
+  was gefunden? Dann steht V in #9DG am Anfang
+var #9DG
+if not "V" jump vl2
+dis
+sho rec
+var "Es gibt Vormerkung(en) zu diesem Exemplar. Weitersuchen? "
+yes
+if not yes jump end
+
+  Wenn keine Expl.Vorm., dann Titel-Vorm.?
+:vl2
+  Titelvorm. pruefen
+var "|: " #uaW(e":") " V?"
+f1nd
+if no jump vl3
+  was gefunden? Dann steht V in #9DG am Anfang
+var #9DG
+if not "V" jump vl3
+dis
+sho rec
+var "Es gibt Vormerkung(en) zu diesem Titel. Weitersuchen? "
+yes
+if not yes jump end
+
+:vl3
+  Naechste Ausleihe
+next
+  pruefen, wenn es noch eine gab
+if yes jump loop
+
+:end
+end
+
+ #uaB 	Benutzer-Barcode
+ #uaW 	Suchschlüssel für Vormerksätze
+

@@ -1,0 +1,257 @@
+
+Verlautbarung 212 der Entw.Abt.                              2009-01-06
+-------------------------------
+
+                                      V29.0 ist erschienen!
+                                      (zunaechst nur per FTP)
+
+   Fuerchtet Euch nicht vor XML!
+  ===============================
+Relevante FLEX-Funktionen erweitert
+
+Grundsaetzlich ist es ja moeglich, XML-Fremddaten mittels eines XSLT-
+Skripts extern vorzuverarbeiten. Dazu braucht man nur einen "Parser",
+der das Skript auf die Fremddatei anwendet und damit eine besser
+verarbeitbare Datei erzeugt. Meistens ist dies jedoch ein allzu
+aufwendiger Umweg, um schnell mal eben aus einer XML-Datei ein paar
+Angaben herauszuholen - es geht ja nicht immer um das Konvertieren
+kompletter, komplexer Metadatensaetze. Z.B. kann man mittels der
+aiaqs-Technik (h aiaqs) Daten bei beliebigen Webdiensten abrufen, aus
+a99 heraus ohne externes Programm, und solche Daten sind nun mal sehr
+oft in XML gestrickt. Gut brauchen koennte man ein paar bescheidene
+Parsing-Funktioenchen in FLEX. Jetzt gibt es die.
+
+XML-codierte Daten bestehen oft aus Abschnitten, die je einen Datensatz
+darstellen. So ein Datensatz ist dann in Tags eingeschlossen wie z.B.
+  <record> ... </record>.
+Fuer das Einlesen mit FLEX bedeutet dies, man braucht zwei Dinge:
+
++-----------------------+
+| 1. Abschnitt einlesen | [falls es mehrere gibt]
++-----------------------+
+Noetig ist ein Befehl, mit dem man den XML-Text bis zum naechsten
+Vorkommnis von </record> einlesen kann.
+Diesen Befehl gibt es schon, er geht so:
+
+var "</record"
+fetch e8
+if cancel mes Zeichenfolge nicht gefunden;jump ende
+if "" mes Datei zu Ende;jump ende
+
+Ab V29 kann die Zahl (hier 8) wegbleiben, wenn die in der iV liegende
+Zeichenfolge keinen Code 0 enthaelt - was bei XML zutrifft. (Die Zahl
+steht sonst fuer die Laenge der zu suchenden Zeichenfolge.)
+Achtung: Wenn vor dem ersten <record> noch etwas anderes in der Datei
+stehen kann, muss man als allererstes die zwei Zeilen
+var "<record"
+fetch e7
+ausfuehren lassen, Dann steht der Dateikopf in der iV! Vielleicht
+will man daraus ja erstmal was entnehmen.
+Der o.g. Befehl mit "</record" holt danach den Inhalt des ersten
+Satzes.
+
+Warum nicht  var "<record>"? Das ist auch moeglich, falls das Tag
+<record> keine Attribute hat. (Das Abschlusstag hat nie welche.)
+
++--------------------------------+
+| 2. XML-Feldinhalte extrahieren |
++--------------------------------+
+Innerhalb eines solchen Satzes ist jedes Datenfeld in eigene, spitz-
+geklammerte Tags eingeschlossen, wobei auch noch Attribute hinzukommen
+koennen. Einfaches Beispiel:
+
+<creator type="editor">Marcel Reich-Ranicki</creator>
+
+  Die allgemeine Form eines Datenfelds ist eine von diesen zwei:
+
+A.  <abcX>INHALT</abc>
+        X kann ein oder mehrere Leerz. sein oder entfallen!
+        (Zwischen < und abc darf kein Spatium stehen.)
+
+B.  <abc a1="cde" a2="fgh" ...>INHALT</abc>
+
+Weil hinter abc ein Leerzeichen stehen kann oder auch nicht, wuerde
+var (b"<abc>")
+nicht immer klappen. Bisher ging's sowieso nicht, weil das < an der
+Stelle eine Sonderwirkung hat! Ausserdem kann es aber auch Tags geben,
+die mit abc anfangen, jedoch laenger sind, z.B. <abcd>, d.h.
+var (b"abc")
+waere unzuverlaessig - auch deswegen, weil die Zeichenfolge abc ja auch
+sonstwo im Text vorkommen kann. (Beispiel bei OAI: es gibt <set> und
+<setSpec>, aber auch <set > wurde schon gesehen.)
+
+Aus diesen Gruenden musste etwas geschehen, um die XML-Verarbeitung
+zu erleichtern. Und das sieht ab V29 so aus:
+
+1. b"<abc" und e"<abc" gehen jetzt. Das ist nicht nur fuer XML gut,
+   sondern wurde sowieso Zeit.
+
+Aber noch viel besser, denn das wuerde noch nicht recht lohnen:
+
+2. Neue Manipulationsbefehle x und X spezifisch fuer XML.
+   Damit hat man eine Reihe von Moeglichkeiten:
+   (Achtung: in allen Faellen genau auf die Anfuehrungszeichen achten!)
+
+var (x'abc')   liefert in beiden Faellen (A oder B) den  INHALT
+               aber ein  <abcd>  wird nicht beachtet.
+
+var (X'abc')   mit grossem X
+               liefert  <abc...>INHALT
+laesst also das Tag samt Attributen stehen, nimmt das Abschlusstag aber
+weg. So kann man die Attribute nach Bedarf auch noch auswerten.
+Nur so kann man auch solche Tags auswerten, die keinen Inhalt haben,
+sondern nur Attribute!
+Auch der Sonderfall ist beruecksichtigt, in dem das Tag mit /> endet,
+es also kein Abschlusstag gibt. Steht z.B. <abc i1="c" /> im Datensatz,
+erhaelt man mit  var(X"abc")  das Ergebnis  <abc i1="c" /  .
+
+Noch zwei Moeglichkeiten:
+
+var (x'abc a1="cde"')   mit kleinem x
+liefert  INHALT, aber nur, wenn das Attribut a1 mit Wert cde vorh. ist.
+Dabei muss a1 nicht das erste Attribut von <abc ... sein.
+
+var (x'abc a1=')
+liefert  INHALT, jedoch nur, wenn das Attribut a1 vorhanden ist, auf
+seinen Wert kommt es aber nicht an.
+
+
+**Beispiel 1: MARCXML, Feld 245 isolieren:
+var (x'datafield tag="245"')
+In der IV steht dann der gesamte Inhalt, also mehrere <subfield>-Tags.
+
+**Beispiel 2: MARCXML, Inhalt Feld 245$c isolieren:
+
+var (x'datafield tag="245"' x'subfield code="c"')
+
+In der iV steht dann nur der Inhalt von 245$c
+Wenn im Datensatz dann steht:
+<datafield tag="245" ind1="0" ind2="0">
+  <subfield code="a">Shakespeare</subfield>
+  <subfield code="b">Der Dichter und sein Werk. In 2 Bden</subfield>
+  <subfield code="c">Max J Wolff</subfield>
+</datafield>
+Dann kommt dabei raus:  Max J Wolff
+So etwas war bislang doch etwas schwieriger...
+
+Tip:
+Weil zwischen Tags und auch innerhalb eines Tags zwischen den
+Attributen beliebig viele Leerzeichen und Zeilenschaltungen stehen
+duerfen, koennte sich manchmal folgendes Vorgehen empfehlen:
+
+  Bis zum Anfang des ersten Satzes vorruecken
+var "<record"
+fetch e
+if cancel jump error
+:floop
+  nun einlesen bis zum Ende des Satzes
+  (dann ist der erste Satz im iV-Speicher)
+var "</record"
+fetch e
+if "" jump ende
+  Mehrfach-Leerz. und sonstige "Whitespace"-Codes wegnehmen:
+spaces
+ins $Rec
+
+  Und nun beliebig oft Befehle wie
+
+var $Rec (x'...')
+  irgendeine Aktion mit dem gefundenen Inhalt
+...
+  Dann nächster Satz
+jump floop
+
+Hinweis Neu ab V29.0: Alle sog. "Whitespace"-Zeichen, also die Codes 9,
+10, 13 und 32, werden, in welcher Anzahl und wie auch immer aufeinander
+folgend, vom Befehl "spaces" durch genau ein Leerzeichen ersetzt.
+
+
+Mehrfach-Felder!?
+-----------------
+Und was ist, wenn ein XML-Tag mehrfach auftritt, mit oder ohne
+differenzierende Attribute? Dann geschieht folgendes:
+var (x"abc")
+liefert in der iV saemtliche Inhalte der evtl. mehreren Tags <abc>,
+getrennt durch ;;;. (Im Quelltext koennen sie beliebig verstreut sein.)
+
+Anschliessend kann man diese Liste dann beliebig nachbearbeiten,
+also i.a. in einer Schleife abarbeiten, nach diesem Muster:
+
+var $Rec (x"abc")
+ins #uab
+:loop
+var #uab(e";;;")
+ ... aktionen
+var #uab(b";;;")
+ins #uab
+if #uab jump loop
+
+Wenn man das grosse X nimmt, hat man in diesem Fall jeweils das Tag vor
+dem Inhalt, kann also auch noch evtl. vorhandene Attribute auswerten.
+
+Beispiel: In einem XML-OAI-MARC-Satz koennte stehen:
+   ...
+	<varfield id="245" i1=" " i2=" ">
+		<subfield label="a">Werther</subfield>
+	</varfield>
+	<varfield id="100" i1="1" i2=" ">
+		<subfield label="a">Goethe, J.W. von</subfield>
+	</varfield>
+	<varfield id="260" i1=" " i2=" ">
+		<subfield label="c">2007-09-22</subfield>
+	</varfield>
+   ...
+Angenommen, der ganze Satz steht nun in $Rec.
+Will man hier das Subfield  260$c extrahieren, geht es so:
+
+var $Rec
+var (x'varfield id="260"' x'subfield label="c"')
+danach hat man   2007-09-22  in der iV.
+
+Sonderfall: Wenn das schliessende Tag fehlt, ist das Ergebnis leer.
+            (Es liegt dann kein "wohlgeformtes" XML vor.)
+
+Zeichensatzcodierung: Klar ist, dass man i.a. den eingelesenen XML-Text
+noch umcodieren muss, z.B. mit  xcode u, wenn es sich um UTF-8 handelt.
+
+
+Anwendung der XML-Funktionen: OAI-Browser
+=========================================
+Zusammen mit der voriges Jahr entwickelten aiaqs-Methodik ergab sich
+das synergetische Potential, ein Funktionspaket fuer den Zugriff auf
+OAI-Server zu bauen. So rufen Sie es auf, wenn Sie V29.0 haben:
+
+h oai 
+
+Klicken Sie oben rechts auf HILFE..., dann erfahren Sie alles weitere,
+vor allem auch, welche FLEXe die Arbeit tun.
+
+Es gibt auch eine neue Parameterdatei  oaidc.apr, die das Standard-
+Format oai_dc erzeugt (Dublin Core "unqualified"). Dieses muss jeder
+OAI-Server anbieten. Gebraucht wird sie, wenn man selber OAI-Daten-
+Provider werden will. Mehr dazu unter  h oai.
+
+
+avanti-FLEX    [avanti V29.0 kommt etwas spaeter]
+-----------
+Hier geht jetzt auch  read set <dateiname>  zum Einlesen einer Datei,
+die aus Satznummern besteht (sog. "Externe Erg.Menge").
+
+Ebenfalls gibt es die Sondervariable  ixk-m  zur Ausgabe von
+Satznummern einer Ergebnismenge in die Ausgabedatei.
+
+Unicode
+-------
+Die Akzentvertauschung ging in V28.8 nicht mehr! Behoben.
+
+
+Zur Beachtung empfohlen
+-----------------------
+   wird der gruendlich ueberarbeitete Hilfetext  xcstring.rtf
+
+
+Obsolete Dateien
+================
+vbfind.flx : Laengst ersetzt durch xgrep.flx
+
+

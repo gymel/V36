@@ -1,0 +1,371 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss Arial;}{\f1\fswiss MS Sans Serif;}{\f2\fswiss\fprq2 Verdana;}{\f3\fswiss\fcharset0 Arial;}{\f4\fswiss\fprq2\fcharset0 Verdana;}{\f5\fmodern\fprq1 Courier New;}{\f6\fmodern\fprq1\fcharset0 Courier New;}{\f7\fswiss\fprq2 Arial;}{\f8\fswiss\fprq2\fcharset0 Arial;}{\f9\fmodern\fprq1 Courier Allegro;}{\f10\fswiss\fprq2 MS Sans Serif;}{\f11\fmodern\fprq1 Courier 10cpi;}{\f12\fmodern\fprq1 allegro Lucida Console;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue0;\red0\green0\blue255;\red0\green176\blue0;\red0\green128\blue0;\red128\green0\blue255;\red255\green0\blue255;\red128\green128\blue128;}
+\viewkind4\uc1\pard\f0\fs24   \f1               \f0     \f1   \f0     \f1         \f0                           
+\par \pard\qc\cf1\b\f2 WWW-Anbindung einer \i allegro\i0 -Datenbank\cf2\b0\f0  
+\par \pard\b\f2  
+\par \pard\qc\b0\f0 `\cf3\ul\b\f3\'dcbersicht der PHP-Dateien f\'fcr RuckZuck\cf2\ulnone\b0\f0 `   `\cf3\ul\b Aufbau von PHP-Dateien\cf2\ulnone\b0 ` 
+\par \pard\f2  
+\par \i\f4 Achtung:\i0\f2  Ab 17.3.2003 umgestellt auf `\cf3\ul\b Unicode\cf2\ulnone\b0 .`\cf3\f0  \cf2\f3 Aber nur f\'fcr die Web-Oberfl\'e4che, d.h. die D\f0 atenbank selbst braucht nicht mit Unicode zu arbeiten!\cf3 
+\par  
+\par \cf2\f4 F\'fcr den \b\i\f2 avanti\b0\i0 -Server gibt es eine eigene `\cf3\ul\b Installationsanleitung\cf2\ulnone\b0 `\f4 und weiteres Material\f2 !\cf3\f0 
+\par \cf2\f4\fs20 Au\'dferdem kann man zum Testen ein `\cf3\ul\b RuckZuck-Verfahren\cf2\ulnone\b0 ` installieren, das ohne avanti auskommt. a99 arbeitet dabei als Server, als Skripte kommen nur FLEXe zum Einsatz. Dieses Paket ist schon \'e4lter und war eigentlich eine Vorstufe zu PHPAC. Es wird nicht mehr empfohlen, weil man ab Win'XP leicht auf jedem PC einen kostenlosen Webserver und avanti installieren kann.\cf3\f0 
+\par \fs24 
+\par \cf2\i\f4 Hinweis:\i0\f2  \f4 Ab 2010 gibt es die alternative Oberfl\'e4che `\cf3\ul\b a30\cf2\ulnone\b0 `, eine "Rich Internet Application", die auf Adobe-Flash basiert. \cf3\f0 
+\par \cf2\f4 Ab 2013 wird eine Oberfl\'e4che `\cf3\ul\b a35\cf2\ulnone\b0 `angeboten, die auf HTML5, CSS3 und PHP aufsetzt und auch in einer Variante f\'fcr Mobilger\'e4te existiert. \cf3\f0 
+\par 
+\par 
+\par \cf2\b Installationsvoraussetzungen 
+\par \b0 1. 
+\par \f3 Die Grund- oder Demo-Installation geht davon aus, da\'df der avanti-Server f\'fcr Windows auf derselben Maschine installiert ist, auf dem auch, auf einem eigenen Verzeichnis, die Demo-Datenbank liegt. Der Pfad der Datenbank mu\'df dem Server \'fcber die Datei  \cf1\b\f5 avanti.con\cf2\b0\f0  \f3  \f0 bekanntgemacht werden, die normalerweise \f3 im selben Ordner liegt, in dem sich auch das Programm  \f6 avanti\f3   befindet. Das Muster daf\'fcr ist die Eintragung f\'fcr die DemoBank (unter UNIX/Linux ist die Pfadangabe entsprechend anders): \f0 
+\par \f5 
+\par [avdemo] 
+\par directory = c:\\\f6 allegro\f5\\a\f6 demo2\f5  
+\par access = 3 
+\par konfiguration = a 
+\par indexparameter = cat 
+\par opac = OPAC:0 
+\par admin = AVANTI:3 
+\par master = ALLEGRO:2 
+\par \f0 
+\par Nachdem man dies eingerichtet hat, \b\i avanti\b0\i0  neu starten\f3  (Windows: Dienstprogramm stoppen und starten)\f0 , denn dann liest es die Datei \f5 avanti.con\f0 .\f5 
+\par 
+\par \f2 2. 
+\par E\f0 in Web-Server \f4 mu\'df\f2  \f4 sowieso \f0 installiert sein. Am einfachsten ist \f3 die Installation des \i Apache-Servers\i0  mit dem bekannten, kostenlosen XAMPP-Paket, leicht im Web zu finden. F\'fcr denjenigen, der mit Windows 2000 arbeitet, liegt es nahe, den latent darin bereits vorhandenen IIS-Web-Server in Bereitschaft zu versetzen; man kann sich dann die Installation eines zus\'e4tzlichen Web-Servers ersparen.\f0 
+\par \cf3  
+\par \cf2\f7 Ferner \f8 mu\'df\f7   PHP \f8 5\f7 .x installiert worden sein (vom Netz heruntergeladen, Quelle:\f5  \f9 http://www.php.net ). \i\f7 Achtung:\i0  bei der Installation darauf achten, \f8 da\'df\f7  PHP mit dem "richtigen" Web-Server (Apache, Xitami, IIS, ...) "verbunden" wird!\f0  
+\par \f3 I\f0 n der Konfigurationsdatei \b\f5 php.ini\b0\f0  den Wert  \f5 register_globals=off\f0  setzen\f3  (ist default)\f0 . 
+\par  \cf3 
+\par \cf2\f3 Der avanti-Server mu\'df, wie gesagt, auf der Maschine laufen, wo die Datenbank liegt! Der Webserver kann auf einer anderen laufen. Die IP-Adresse der avanti-Maschine mu\'df in der Datei \b\f5 av_ini.php\b0\f3  stehen (siehe unten). Die PHP-Skripte nehmen die Verbindung mit dem avanti-Server \'fcber TCP/IP auf. \f0 
+\par \cf3  
+\par  
+\par \cf2\b Wohin mit den Dateien? 
+\par \b0\i Achtung:\i0\f3  Alle Dateinamen m\'fcssen komplett in Kleinbuchstaben gehalten werden, alle entsprechen dem Namensmodus 8.3, um Probleme beim Hin- und Herkopieren zwischen DOS und UNIX v\'f6llig zu vermeiden. Wenn Sie das selbstentpackende Archiv `\cf3\ul\b\f0 PHPAC.EXE\cf2\ulnone\b0\f3 ` \'f6ffnen, entpackt es sich und es entstehen drei Unterverzeichnisse: \f0 
+\par  
+\par \b php: \b0  \cf4\b Zum Webserver!\cf2\b0 
+\par \b\f5 php\b0\f0 - und \b\f5 htm\b0\f0 -Dateien und \b\f5 ruckzuck.gif\b0\f0 :  
+\par \f3 Diese Dateien m\'fcssen in ein der Datenbank zugeordnetes Verzeichnis, z.B. \f5 ./katalog\f0  
+\par oder \f5 k:\\\f6 apache\f5\\\f6 xampp\\htdocs\f5\\katalog\f0  am HTM-Verz. des Webservers  (das ist \f5 ./htdocs\f0  bei Apache, \f5 webpages\f0  bei Xitami). 
+\par Ersetzen Sie \b\f5 ruckzuck.gif\b0\f0  durch eine Grafik eigener Wahl. 
+\par \f3 Zu jeder anzubietenden Datenbank mu\'df es ein eigenes Verzeichnis f\'fcr die Skripte geben! Die PHP-Skripte werden also nicht gemeinsam genutzt, sondern m\'fcssen f\'fcr jede Datenbank als Kopie vorliegen. \f0 
+\par  
+\par \b param:\b0   \cf4\b Zur Datenbank!\cf2\b0 
+\par \f7 Parameterdateien (.apr, .apt): 
+\par Kopieren in das Verzeichnis, wo die Datenbank liegt (DbDir) und evtl. umbenennen in \f5 .xPR \f8 f\'fcr\f5  x.CFG \f7 (wenn\f5  x.CFG \f7 statt\f5  A.CFG \f7 verwendet wird);\f5 
+\par \f0 
+\par \b doku:\b0  
+\par \b\f5 phpac.rtf\b0\f3 : der Text, den Sie eben lesen. Geh\'f6rt auch zum "Gesamtpaket" des "allegro"-Systems und ist in a99 als Hilfetext les- und druckbar (auf Verzeichnis HELP kopieren, dann  \f5 h phpac\f3   eingeben). Au\'dferdem  \f5  unicode.rtf\f0   und \f5 passwort.txt\f0 . 
+\par  
+\par 
+\par \b Einstiegspunkt\b0 
+\par Wenn die \b\f5 php\b0\f0 - und \b\f5 htm\b0\f0 -Dateien (sowie \f5 ruckzuck.gif\f0 ) z.B. auf  \f5 .../htdocs/katalog \f3 liegen, ist die Einstiegsadresse von au\'dfen z.B. \f0 
+\par \f5 http://www.ub.uni-musterstadt.de/katalog/detail.php 
+\par \f8 oder (alternativ f\'fcr die Simpel-Recherche)  \f7 
+\par \f5 http://www.ub.uni-musterstadt.de/katalog/\f0  
+\par \f7 dann wird  \b\f5 index.htm\b0\f8   aufgerufen (die man im \'fcbrigen frei gestalten kann).\f10  
+\par \f0  
+\par \f3 Einstieg "von innen", also auf dem eigenen Rechner, (geht auch, ohne mit dem Internet \'fcberhaupt verbunden zu sein): \f0 
+\par  
+\par \f5 http://127.0.0.1/katalog/detail.php 
+\par \f8 oder - alternativ f\'fcr die Simpel-Recherche -  \f7 
+\par \f5 http://127.0.0.1/katalog/ 
+\par \f8 und statt \f5 127.0.0.1\f8  kann man auch \f6 localhost\f8  schreiben.\f10 
+\par  
+\par \fs28 Mehr zu den Dateien, und was damit zu tun ist\f0  
+\par \fs24  
+\par \b PHP-Dateien\b0  
+\par \cf5\b\f6 Diese m\'fcssen auf ein eigenes Unterverzeichnis unter dem Dokumentenverzeichnis des Web-Servers.\cf2\b0\f0  
+\par \f7 Startseite ist  \f5 index.htm\f7  oder \f5 detail.php\f7 , einstellbar in \f5 av_ini.php\f7 . 
+\par In  \b\f5 av_ini.php \b0\f8  liegen die Variablen mit Anpassungsbedarf: das sind haupts\'e4chlich IP-Nr. des \i\f7 avanti\i0 -Servers (\i Hinweis: \i0 avanti kann auf einer anderen Maschine laufen!\f8  Wenn nicht, dann ist es die \f5 127.0.0.1\f7 ), Datenbankname, Username, Passwort, Titel, und einige weitere Angaben, wie $Startpage, $TI ....  
+\par Ferner\f8  enth\'e4lt \f7  \f5 av_ini.php\f8   ein paar Unterprogramme, und zwar diejenigen, die man f\'fcr jeden Job braucht. Dies erspart es, noch eine weitere Datei einbinden zu m\'fcssen. \f7 
+\par Hat man mehrere Datenbanken anzubinden, kopiert man die Dateien alle jeweils auf ein eigenes Unterverzeichnis. 
+\par \f8 Das kann man auch tun, wenn man mehrere verschiedenartige Zug\'e4nge zur selben Datenbank einrichten will. \f7 
+\par  
+\par \f8 Die Dateien mit dem Pr\'e4fix  \b\f5 av_\b0\f8   sind unselbst\'e4ndig, sie werden bei Bedarf von anderen Dateien nachgeladen. \f7 
+\par \cf1 Rot\cf2  sind die Namen der Dateien, in die man evtl. \cf1 eingreifen\cf2\f8  mu\'df. Darin stehen Kommentare! Die anderen kann man bei Erscheinen einer neuen Version jeweils unver\'e4ndert \'fcbernehmen! \f7 
+\par  
+\par \pard\fi-2414\li2414\tx2272\cf1\b\f5 av_ini.php\cf2\b0\f7    \tab\f8 Einstellungen und Grundfunktionen f\'fcr die betreffende Datenbank,  \f7 
+\par \tab\f8 sozusagen die INI-Datei f\'fcr einen bestimmten Zugang. Ferner: CSS (Style Sheet)  \f7 
+\par \tab\f8 zu \'e4ndern u.a.: $DB, $ID, $Server, $Port, $Dispar, $CW, $RESULT, $ShortDisp \f7 
+\par \pard\fi-2272\li2272\tx2272\cf1\f5 index.htm\cf2\f7      \tab Startseite in schlichter Form (Angebot: Link zu \f5 detail.php\f7 ). Freie Gestaltung! 
+\par \pard\tx2272\f5 detail.php\f7    \tab\f8 Startseite f\'fcr Detailsuche, ruft dann auf (wenn der Nutzer etwas eingegeben hat): \f7 
+\par \f5 detail.\f6 job\f7    \tab\f8 wird von  \f5 detail.php\f8   gestartet und macht die eigentliche Arbeit\f7 
+\par \f5 find.php\f7        \tab\f8 Ausf\'fchren einer Detailsuche, startet sofort eine der beiden folgenden: \f7 
+\par \pard\fi-2272\li2272\tx2272\f5 page.php\f7          \tab    Anzeige eines Registerabschnitts, startet nach einem Klick des Nutzers rset.php : 
+\par \f5 rset.php\f7          \tab    Anzeige einer Ergebnismenge, startet nach einem Klick des Nutzers grec.php : 
+\par \f5 liste.php\f7          \tab\f8    Alternative zu rset.php mit K\'e4stchen zum Markieren \f7 
+\par \f5 grec.php\f7            \tab Anzeigen eines Datensatzes (Get Record)\f8 .\f7  \f8 N\f7 ach Klick auf "Bearbeiten"\f8  startet \f6 edrec\f7  
+\par \f5 gre\f6 x\f5 .php\f7            \tab\f8   \f7  \f8 dasselbe, Version f\'fcr Eintr\'e4ge mit 1 Treffer im Register\f7 
+\par \f6 ajax3\f5 .\f6 php\f7            \tab\f8 Universalskript, mit dem man beliebige Jobdateien (\f6 *.job\f8 ) starten kann\f7 : 
+\par \f8\tab (dazu geh\'f6ren noch  \f6 ajax3.js\f8   und  \f6 ajax3.ini\f8  )\f7 
+\par 
+\par (Die folgenden drei werden \cf1 nur\cf2  gebraucht, wenn \cf1 Schreibfunktionen\cf2  angeboten werden sollen) 
+\par \pard\fi-2268\li2268\tx2272\cf1\f5 edrec.php\cf2\f7             \tab\f8 Bereitstellen eines Satzes zum Editieren, oder leeres Formular f\'fcr neuen Satz, \f7 
+\par  \tab      startet dann \f5 write.php\f7  bei Klick auf "Speichern" 
+\par \pard\tx2272\f6 write.php\f7        \tab   Speichern des bearbeiteten oder neuen Satzes (Passwort-Methodik!) 
+\par \pard\fi-2272\li2272\tx2272\f5 del.php\tab\f8 L\'f6schen eines Satzes (Passwort!)  [startet aus \f5 grec.php\f8  bei Klick auf "L\'f6schen"] \f7 
+\par 
+\par \pard\tx2272\i Die folgenden werden automatisch eingebunden:\i0\f8  (keine Modifikation n\'f6tig) \f7 
+\par \f5 av_page.php\f7  \tab\f8 Kernfunktion f\'fcr  \f5 page.php\f7   (Aufbereiten einer Registerseite\f8  samt Bl\'e4tterfunktionen etc.\f7 ) 
+\par \f5 av_rset.php\f7    \tab\f8 ... f\'fcr \f5 rset.php \f7 (Aufbereiten einer Portion der Kurzliste) 
+\par \f5 av_list.php\f7    \tab\f8 ... f\'fcr \f5 liste.php \f7 (Alternative zu av_rset.php) 
+\par \f5 glist.php\f7    \tab ... wird aus \f5 av_list.php\f8  aufgerufen, um die markierten S\'e4tze zu zeigen \f7 
+\par \f5 av_grec.php\f7    \tab\f8 ... f\'fcr \f5 grec.php  \f7 (Holen und Anzeigen eines Datensatzes) 
+\par \pard 
+\par \f8 F\'fcr die \cf1\f7 Schreib\cf2 funktionen \f8 mu\'df\f7  man vor allem in \cf1\f5 edrec.php\cf2\f7  und \cf1\f5 write.php\cf2\f7  eingreifen. Die Stellen sind markiert durch xxx. Es geht um die Kategorien, die in eigenen Edit-Feldern angeboten werden sollen. 
+\par \f8 Daf\'fcr ist bereits eine gewisse Flexibilit\'e4t in einem Unterprogramm von edrec.php verpackt, damit man es relativ leicht hat, das Formular selber zu gestalten: man mu\'df nur ein einfaches Muster kopieren und seine eigenen Feldnummern einsetzen. \f7 
+\par \f8 Im Paket gibt es au\'dferdem noch: \f7 
+\par \cf1\f11 tellme.htm\cf2\b\tab\b0\f8 Hier nur als Muster f\'fcr eine Informationsdatei zur Datenbank. Die kann jeder gestalten, wie er will. Aufruf z.B. aus \cf1\f5 index.htm\cf2\f0  
+\par \f7  
+\par \f0  
+\par \b Parameterdateien\b0  
+\par \cf5\b\f6 Diese m\'fcssen in das Datenbankverzeichnis.\cf2\b0\f0  
+\par \tab\f3 F\'fcr andere Kategoriesysteme, z.B. x.CFG (d.h. wenn Sie nicht A.CFG haben): \f0 
+\par \tab Die folgenden Dateien \b kopieren\b0  auf \f5 *.xpr\f0  bzw. \f5 *.xpt\f0  und entsprechend anpassen. 
+\par \pard\tx2272\f7\tab\i Nur\i0\f8  f\'fcr\cf1\f7   \cf2 $\b\f5 a.cfg\cf1  \cf2\b0\f7 gibt es die Datei 
+\par   \tab\f5 d-html.apr\f7\tab\f8 Datensatzanzeige f\'fcr HTML, angelehnt an \f5 d-1.apr\f7  
+\par \pard\fi-2268\li2268\tx2272\i Muster \b  \cf1\i0\f8 f\'fcr andere CFGs\cf2\f7 :\b0  
+\par \pard\tx2272   \b\f5 d-shtm.apr\b0\f7\tab\f8 allgemeine Modelle f\'fcr die Anzeige: \f7 
+\par \tab Nur die Dateien `\cf3\ul\b d-s.apt  bzw.  d-k.apt\cf2\ulnone\b0 ` \cf1\f8 m\'fcssen dann angepa\'dft werden\cf2\f7  
+\par   \cf1\f5 d-s.apt\cf2\b\tab\b0\f7 wird eingebunden in \f5 d-shtm.apr\f7 
+\par   \b\f5 d-khtm.apr\tab\b0\f7 In die \cf1\f5 av_ini.php\cf2\f7  tragen Sie ein: 
+\par \tab entweder  \f5 $Dispar=d-shtm\f7   oder  \f5 $Dispar=d-khtm\f7  
+\par \pard\fi-2268\li2268\tx2272  \tab\f8 s steht f\'fcr "simpel" und k f\'fcr "komplex" (d.h. mit verkn\'fcpften und hierarchischen Unters\'e4tzen. Sie brauchen nur eins von beiden!) 
+\par \tab Hinweis: die ALFA-Ausleihmethode ist nur in \b\f5 d-khtm\b0\f8  eingebaut. \f7 
+\par \pard\tx2272   \cf1\f5 d-k.apt\cf2\b\tab\b0\f7 wird eingebunden in \f5 d-khtm.apr\f7 
+\par \pard\fi-2268\li2268\tx2272   \b\f5 h-php.apr\b0\tab\f8 Kleine Hilfsfunktionen, universell f\'fcr jede CFG verwendbar. Kopieren auf  \f5 h-php.xpr\f7  
+\par   \cf1\f5 h-edit.apr\cf2\f7       \tab Satz bereitstellen zum Editieren, (kommentiert) 
+\par \tab\cf1\f8 Anpassungen n\'f6tig: Liste der nicht zum Bearbeiten zugelassenen Felder\cf2\f7  
+\par \pard\fi-2126\li2268\tx2272\cf1\f5 p-brief.apr\cf2\f7\tab Kurzzeilen der Ergebnisliste produzieren (\cf1\f8 mu\'df\f7  angepa\f8\'dft\f7  werden\cf2 ) 
+\par \cf1\f5 p-liste.apr\cf2\f7\tab Alternative zu \f5 p-brief.apr\f7  (\cf1\f8 mu\'df\f7  angepa\f8\'dft\f7  werden\cf2 ) 
+\par \pard\tx2272\tab (wenn\f5  liste.php \f7 statt\f5  rset.php \f7 verwendet wird.) 
+\par  
+\par \f8 Die folgenden k\'f6nnen einfach kopiert werden auf \f6 ad\f5 -utf.xpt\f7  usw: 
+\par  \f6 ad\f5 -utf.apt\f7\tab wird zum Umcodieren ASCII->UTF-8 gebraucht  
+\par \tab (Achtung: in \f5 h-*.apr, p-brief.apr, d-*.apr\f7  ) 
+\par  \f5 o.apt\f7     \tab\f8 Codiertabelle 1:1 f\'fcr ASCII -> ANSI, \f7 
+\par \tab\f8 mu\'df\f7  mit  \cf6\b\f5 to\cf2  \b0\f7  \cf1 eingebunden\cf2  sein in die Indexparameter, 
+\par \tab\f8 ist aber f\'fcr PHP nicht wichtig, sondern nur f\'fcr a99! \f7 
+\par  \f5 d-htm.apt\f7     \tab einige HTML-Tags (Schrift, Farben) 
+\par  \f5 ucodes.apt\f7     \tab Umwandlung UTF-8 -> ASCII. Einbauen in Indexparameter, 
+\par \tab wenn intern NICHT  Unicode verwendet wird, sondern ASCII  (also im Normalfall), 
+\par \tab d.h. dort den Befehl  \cf6\b\f5 tucodes\cf2\b0\f7   einsetzen. 
+\par \f8 Die letzte Datei ist wichtig f\'fcr das Editieren und f\'fcr das Umwandeln der Nutzereingabe (wenn z.B. 'M\'fcller' eingetippt wird), weil diese immer in UTF-8 codiert ist. \f7 
+\par  
+\par \pard\i Wichtiger Hinweis:\i0  
+\par In den \b Indexparametern\b0  (Standard: \f5 cat.api\f8 ) mu\'df es Zeilen f\'fcr die \cf1 Register\'fcberschriften\cf2  (beginnen mit |1..., |2... ) und f\'fcr die \cf1\f7 symbolischen  Registernamen\cf2  wie PER oder TIT (diese Zeilen beginnen mit  \b\f5 I ...\b0\f8 ) geben. Ebenfalls f\'fcr Restriktionen (beginnen mit \b\f5 R\b0  ...\f8 ), wenn welche definiert sind. Siehe Handbuch S. 179 u. 178. Die symbolischen Registernamen m\'fcssen aus Gro\'dfbuchstaben bestehen, es k\'f6nnen auch Ziffern dabei sein. Beispiele findet man in \f5 cat.api\f7 
+\par 
+\par \i Empfehlungen: 
+\par \i0 Wenn man intern ASCII hat (also im Normalfall)\f8 ,\f7  dann in die Indexparameter diese Zeile schreiben: 
+\par \f12 pa=181 182 183 184 189 190 198 199 207 208 209 210 211 212 219 222 223 232\f5  \f7 
+\par damit die Akzentzeichen in UTF-8 korrekt dargestellt werden (\i\f8 hinter\i0\f7  dem Buchstaben). 
+\par \i 
+\par \i0 Ferner in die Indexparameter mindestens diese drei Zeilen einbauen\f8  (die dritte nur, wenn intern nicht Unicode verwendet wird)\f7 : 
+\par \f5 
+\par u 0 
+\par u 217 217 047 047\f0 
+\par \f5 tucodes\f0 
+\par  
+\par  
+\par \b Tips zur Einbindung in eigene HTML-Seiten etc.: 
+\par \b0 Dazu eignen sich vor allem drei Dateien: 
+\par  
+\par \f5 page.php\f3    Anzeige eines Registerabschnitts mit Bl\'e4ttern \f0 
+\par \f5            \f8            zu \'fcbergeben sind Registername und Startpunkt der Anzeige:\f0  
+\par            \lang2057 z.B.:  \f5 page.php?\b reg\b0 =PER&\b st\b0 =shakesp\f0  
+\par  
+\par \lang1031\f5 rset.php\f0    Bildung und Anzeige einer Ergebnismenge 
+\par \f5          \f8    mit Bl\'e4tterfunktionen, \'dcbergabe eines "find-Command": \f7 
+\par \f0             z.B.:  \f5 rset.php?\b ufC\b0 =PER+shakesp%%3F\f0  
+\par  
+\par \f5 grec.php\f0    Holen und Zeigen eines Satzes 
+\par            z.B.:  \f5 grec.php?\b urN\b0 =12345\f0    // Zeige Satz Nr. 12345 
+\par            oder   \f5 grec.php?\b urG\b0 =NUM&\b urS\b0 =12345678\f0  
+\par            (Satz mit Eintrag 12345678 im Register NUM) 
+\par  
+\par \f5 edrec.php\f0    Einen Satz zur Bearbeitung bereitstellen 
+\par            z.B.:  \f5 edrec.php?\b urN\b0 =12345\f0    // Bringe Satz Nr. 12345 ins Bearbeitungsformular 
+\par \tab\f3 Ohne Satznummer: Leeres Formular f\'fcr neuen Satz bereitstellen. \f0 
+\par 
+\par Die eigentlichen Funktionen sind ausgelagert in die Dateien \f5 av_page.php, av_rset.php und av_grec.php\f0   
+\par \f3 So bleibt die Anwendung \'fcbersichtlich. F\'fcr die eigene Gestaltung mu\'df man sich nur die oben genannten drei Dateien vornehmen, die av-Dateien werden nur eingebunden mit z.B. dem Befehl \f0 
+\par \cf4\lang2057\b\f5 include_once(\lang1031 "\lang2057 av_grec.php\lang1031 "\lang2057 )\b0   
+\par \cf2\lang1031\f7 Die Variablennamen stehen in Beziehung zu internen Variablen (#u-Variable) von "avanti" und sind daher immer von der Form  uxY mit einem Kleinbuchstaben x und einem Grossbuchstaben Y. 
+\par Die wichtigsten sind: 
+\par  \lang1040\f0 urG   Registername, z.B. PER 
+\par  \lang1031 urS   Register-Startpunkt, z.B.  \lang2057 shakesp 
+\par  ufC   find command, z.B.  PER+shakesp%%3F 
+\par  urN   record number (interne Satznummer) 
+\par  \lang1031 urO   Ordnungsmodus, Default a0 (nur in RSET.PHP) 
+\par 
+\par \f8 Wie allgemein \'fcblich, m\'fcssen Variablen zur \'dcbergabe an PHP codiert werden, also Leerzeichen durch + ersetzt, ? durch  %%3F usw.  \f7 
+\par \f8 Die Passwortmethodik f\'fcr die Schreibfunktionen ist beschrieben in einem zus\'e4tzlichen Text: \f5 passwort.txt\f7 , der auf dem doku-Verzeichnis liegt. Damit hat sich nur der Supervisor zu befassen. 
+\par \f0  
+\par \f8 Sonderfunktion "L\'f6schen eines Satzes" \f7 
+\par \f8 Das Skript  del.php  kann mit \'dcbergabe einer internen Satznummer gestartet werden: \f7 
+\par \f5 .../\b del.php?n=\b0\i\f7 nummer\b\i0\f5 &uPw=\b0\i\f7 password\i0  
+\par \f8 Der Satz mit der betreffenden internen Nummer wird dann gel\'f6scht. \f7 
+\par \f0  
+\par  
+\par  
+\par \b\f2 Aufbau einer PHP-Datei\b0\f0  
+\par \f4 Das PHP-Konzept hat den Vorteil, da\'df man Skripte direkt in HTML-Dateien einbauen kann. Bei den Skriptsprachen Perl und Python ist es dagegen so, da\'df die Skripte eigene Dateien sind, die als CGI-Programme aufgerufen werden. Weil solche Skripte noch dazu auf einem anderen Verzeichnis liegen m\'fcssen, wird das Zusammenspiel leicht un\'fcbersichtlich. \f2 
+\par \f4 Auch aus diesem Grunde hat PHP inzwischen eine hohen Beliebtheit erreicht, und zwar gerade f\'fcr Datenbankanwendungen.eine \i\f2 allegro\i0\f4 -Anbindung mit eigenen Funktionen realisieren will, kann zun\'e4chst das Paket PHPac studieren und dann diese Skripte als Vorlagen nutzen.  (Das Archiv phpac.exe liegt auf dem FTP-Server in ac21) \f2 
+\par \pard\li568\i\f4 Hinweis f\'fcr Perl-Kenner: \i0 PHP hat eine gro\'dfe \'c4hnlichkeit mit Perl. Vermutlich ist das aber eher ein Problem als ein Vorteil, denn es gibt leicht Verwechslungsfehler. Evtl. sind Sie besser bedient mit dem \i\f2 populo\i0\f4 -Paket von Thomas Berger. Dieses kommt mit einem einzigen, gro\'dfen Perl-Skript aus, dessen viele Funktionen durch eigene Befehle aus HTML-Texten heraus aufgerufen werden k\'f6nnen - also sehr \'e4hnlich dem PHP-Konzept!  \f2 
+\par \pard  
+\par PHP-Dateien, das ist wichtig, werden \ul auf dem Server\ulnone\f4  vorverarbeitet. Der Nutzer, der mit dem Browser eine PHP-Datei aufruft, sieht nicht diese PHP-Datei, sondern erh\'e4lt einen davon erzeugten HTML-Text, in dem gar kein PHP mehr drin ist, d.h. es erscheint ihm so, als sei es eine statische HTML-Seite! \f2 
+\par Sollen aber Funktionen \ul im Browser\ulnone\f4  des Nutzers ablaufen (also ohne da\'df erst wieder etwas zum Server geschickt werden mu\'df), z.B. Eingabepr\'fcfungen, so geht das \i\f2 nicht\i0\f4  mit PHP (mit Perl und Python auch nicht). Daf\'fcr bietet sich nur \b\f2 JavaScript\b0  an. In den Skripten \f5 rset.php\f2  und \f5 edrec.php\f2  sind Beispiele zu sehen. 
+\par  
+\par \f4 Nachfolgend ist zum besseren Verst\'e4ndnis der PHPac-Skripte das allgemeine Schema einer PHP-Datei mit eingebautem \i\f2 avanti\i0 -Job dargestellt. Zur Verdeutlichung der unterschiedlichen Anteile werden hier Farben benutzt:\f0  
+\par  
+\par \pard\li1136\cf3\b\f5 BLAU = HTML 
+\par \cf5\f6 GR\'dcN = PHP\cf2\f0  
+\par \cf7\f5 LILA = Javascript 
+\par \cf1 ROT = FLEX 
+\par \cf8\i GRAU\i0  = Kommentar\cf2  
+\par \pard\b0\f0  
+\par \b\fs26 PHP-Datei, allgemeines Schema\b0 
+\par \f4\fs24 Nochmals: Eine solche Datei bekommt der Endnutzer nicht zu sehen, wenn er im Browser die "Source" betrachtet! Er sieht vielmehr statt der PHP-Teile das, was bei der Ausf\'fchrung der PHP-Befehle vorher auf dem Server entstanden ist. Besonders der PHP-Befehl "echo" ist dazu da, Texte auszugeben, die dann sichtbar werden. JavaScript ist dagegen voll sichtbar, wenn man es nicht in eine Datei vom Typ \f5 .js\f2  auslagert.\cf3\f0  
+\par  
+\par \lang2057 <HTML> 
+\par <HEAD> 
+\par \cf8 <!-- \i  Kommentar\i0   -->\cf2  
+\par \cf3 <TITLE> 
+\par \cf8  \lang1031\i Titel der Seite, evtl. hier auch PHP Befehle zur Erzeugung eines variablen Titels! 
+\par \f6  (erscheint im Browser als \'dcberschrift)\cf3\i0\f0  
+\par \lang2057 </TITLE>\cf2  
+\par \cf8   \i\f7 Optional:\i0\f0  
+\par \cf7 <script language="JavaScript"> 
+\par \cf8\i //  Javascript-Funktionen\cf2  
+\par ... 
+\par \cf7\i0 </script> 
+\par \cf2  
+\par \cf3 </HEAD> 
+\par  
+\par <BODY> 
+\par \cf8 <!-- \i   beliebiger HTML-Text --> 
+\par \i0  
+\par \cf5\lang1031\b\f5 <?php\b0\f0  
+\par \cf8\i    // hier beginnt ein PHP-Programm-Abschnitt\i0  
+\par \cf5\lang2057\b\f5 include_once("av_ini.php"); 
+\par \cf8\b0\f0     \lang1031 // da steckt die Funktion  sendjob()  drin, ferner die Angaben zur Datenbank! 
+\par  
+\par \i  // beliebige PHP-Befehle 
+\par \i0  
+\par \cf5\b\f5 $job = array( \cf2  \b0\f0   \cf8 // Beginn eines eingebauten \i avanti\i0 -Jobs = FLEX\cf2  
+\par  
+\par \cf5\b "\cf1\b0 FLEX-Befehl\cf5\b ",\cf2\b0  
+\par \cf5\b "\cf1\b0 FLEX-Befehl\cf5\b ",\cf2\b0  
+\par \cf8\i //   wenn innerhalb eines FLEX-Befehls ein " oder \\ vorkommt, \f3 mu\'df\f0  man \\" bzw. \\\\ schreiben! 
+\par //  Jede FLEX-Zeile \f3 mu\'df\f0  in "..." eingeschlossen sein und mit Komma (bis auf die letzte) enden\i0  
+\par \i //  \f3 Wenn ein " innerhalb einer FLEX-Zeile vorkommen mu\'df, dann \\" schreiben\i0\f0 
+\par \i //  \f3 Empfehlung: in var- und write-Befehlen besser ' statt " verwenden, wo immer m\'f6glich\i0\f0  
+\par \cf2 ... 
+\par \cf5\b "\cf1\b0 FLEX-Befehl\cf5\b "\cf2\b0  
+\par \cf5\b\f5 );\cf2\b0\f0               \cf8  // ENDE des FLEX 
+\par \cf2  
+\par \cf8 //  \i beliebiger weiterer PHP-Text\i0  
+\par \cf2  
+\par \cf8\lang2057 // Job an \i avanti\i0  senden (Funktion steckt in av_ini.php)\cf2  
+\par \cf5\b\f5 $k = sendjob($Server, $Port, $job, $erg);\cf2\b0\f0  
+\par  
+\par \cf8\lang1031 // $k = Anzahl Zeilen der Ausgabe, d.h. Elemente von $erg 
+\par  
+\par // Alternative 1: 
+\par // Ergebnisse (Elemente von $erg )  einfach nur anzeigen\cf2  
+\par \cf5\lang1040\b\f5 av_out($erg);\lang1031  
+\par \cf8\b0\f0 //  Funktion ebenfalls av_ini.php, dadurch wird daraus HTML-Text!\b\f5  
+\par \cf2\b0\f0  
+\par \cf8 // Alternative 2: 
+\par // Ergebnisse, d.h. array  $erg[ ]  mit PHP auswerten, dabei verwendet man 
+\par //  echo ...  und   printf...   zur Produktion von HTML-Text 
+\par \cf2  
+\par \cf5\b ?>   \i  \cf8\b0 ENDE des PHP-Jobs\cf2\i0  
+\par  
+\par       \cf8\i beliebige weitere \cf3 HTML\cf2 - \cf8 und\cf2  \cf5 PHP\cf2 -\cf8 Teile oder auch \cf7 JavaScript\cf2\i0  
+\par  
+\par \cf3 </BODY> 
+\par </HTML> 
+\par   
+\par \cf1\b\i BEISPIELE\b0\i0 
+\par \cf2 
+\par \f2 Datei \cf1\b\f0 ask.htm\cf2\b0  (Diese startet dann die Datei show.php) 
+\par \f5 <! Minimale Startdatei zum Testen: Abfrage einer Nummer vom Nutzer> 
+\par <html> 
+\par <head> 
+\par <title>Test HTM-PHP</title> 
+\par </head> 
+\par <body> 
+\par <h1>Welcher Satz?</h1> 
+\par 
+\par <form name="frage" action="\cf1\b show.php\cf2\b0 " method="get"> 
+\par Bitte die Satznummer: 
+\par <input name="\cf3\b num\cf2\b0 " type="text"> 
+\par </form> 
+\par <! Es wird dann show.php aufgerufen und $num enthaelt dort 
+\par      die eingegebene Nummer> 
+\par </body> 
+\par </html>\f0 
+\par  
+\par \f2 Datei \cf1\b\f0 show.php\cf2\b0 
+\par \f5 <! Minimale Jobdatei zum Testen: Finden und anzeigen> 
+\par <! Aufruf aus dem Formular von ask.htm> 
+\par <html> 
+\par <head> 
+\par <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
+\par <?php 
+\par   include_once("av_ini.php");  // Einstellungen, Grundfunktionen 
+\par echo "<title>"; 
+\par   echo $TI ; 
+\par echo "</title>"; 
+\par ?> 
+\par </head> 
+\par <body> 
+\par <h1>TESTJOB</h1> 
+\par <?php 
+\par // $num wurde von ask.htm uebergeben 
+\par // Job fuer avanti zusammenstellen: 
+\par $job = array( 
+\par               // FLEX-Befehle  ****************************** 
+\par "var '#\cf3\b $num\cf2\b0 '", 
+\par      // wenn z.B. 123 eingegeben wurde, wird jetzt der 
+\par \f6      // Befehl  find #123  gegeben, denn 123 wurde in $num \'fcbergeben: \f5 
+\par "find", 
+\par "if error jump err", 
+\par "xport p p-unicod", 
+\par "dow a", 
+\par "dow wX", 
+\par "wri 'Start' n", 
+\par "wri 'Nummer: ' #nr '<br>IdNr.: ' #00 '<br>'", 
+\par "wri 'Titel: ' #20 '<br>Verf.: ' #40 '<br>E.-Jahr: ' #76 '<br>'", 
+\par "wri 'Kommentar: <br>' #81 n", 
+\par "dow A", 
+\par "end", 
+\par ":err", 
+\par "wri 'Satz mit der Nummer $num existiert nicht<br>'" 
+\par     // Ende der FLEX-Befehle ********************** 
+\par ); 
+\par // Job senden (jetzt enthalten in der Variablen $job) 
+\par $k = sendjob($Server, $Port, $job, $output); 
+\par // Ergebnisse stehen in $output, anzeigen 
+\par av_out($output); 
+\par ?> 
+\par </body> 
+\par </html> 
+\par \f0 
+\par 
+\par 
+\par 
+\par \f3 
+\par ?\'dcbersicht der PHP-Dateien f\'fcr RuckZuck=h =Die Dateien 
+\par ?d-s.apt  bzw.  d-k.apt=x help vb154`help =Muster 
+\par ?Aufbau von PHP-Dateien=h =Aufbau einer PHP-Datei 
+\par ?Unicode.=h unicode 
+\par ?PHPAC.EXE=~start http://ftp.allegro-c.de/ac21/avanti-w/phpac.exe 
+\par ?Installationsanleitung=x jan http://www.allegro-c.de/doku/avanti 
+\par ?RuckZuck-Verfahren=h ruckzuck 
+\par ?a30=~start http://www.allegro-c.de/doku/a30 
+\par ?a35=~start http://www.allegro-c.de/db/katalog/a35start.php 
+\par 
+\par 
+\par }
+ 

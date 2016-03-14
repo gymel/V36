@@ -1,0 +1,49 @@
+  ENDEFLEX.FLX : automatische Ausfuehrung vor Ausstieg, ABER:
+  2000-12-14     Muss _ENDFLX.FLX heissen, damit er ausgefuehrt wird.
+                 also umbenennen, wenn gewuenscht!
+
+  Gibt's noch ungespeicherte neue Saetze?
+find new
+  Nein -> :edit
+if no jump edit
+  Ja, dann fragen:
+var "Es gibt noch ungespeicherte neue S„tze! Speichern?" n "Nein = Liste zeigen"
+ansi
+yesno
+  Nutzer sagt "Speichern", dann -> :newsave
+if yes jump newsave
+  sonst Liste zeigen
+sho list
+  "no" in die iV schreiben, damit Endeprozedur abgebrochen wird!
+var "no"
+end
+:newsave
+if tbl mes TBL gesperrt!;var "no";end
+first
+:loop1
+put
+next
+if yes jump loop1
+
+:edit
+find edt
+if no jump exit
+var 'Es gibt noch "gelbe" Online-S„tze! Speichern?' n "Nein = Liste zeigen"
+ansi
+yesno
+if yes jump edtsave
+sho list
+  "no" in die iV schreiben, damit Endeprozedur abgebrochen wird!
+var "no"
+end
+
+:edtsave
+if tbl mes TBL gesperrt!;var "no";end
+first
+:loop2
+put
+next
+if yes jump loop2
+
+:exit
+end

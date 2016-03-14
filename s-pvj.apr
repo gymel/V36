@@ -1,0 +1,92 @@
+  S-PVJ.APR : Sortieren nach Verfasser / Verlag / Jahr  (#40 / #75 / #76)
+  941122  Vorbild fr andere Sortierungen nach Verfasser
+pn="Sortierformat #40/#75/#76"
+
+  Wenn andere Ordnung gewnscht: unten statt #75 etwas anderes einsetzen
+
+
+  die folgenden Angaben mssen so bleiben
+  damit die fr die Weiterverarbeitung n”tige .ALG-Form entsteht
+  --------------------------------------------------------------
+zl=0        ... Zeilenl„nge unbegrenzt
+ks=1        ... Beginn beim ersten Zeichen hinter #
+ke=0        ... Kategorie-Ende = 0
+as=""       ... Aufnahme-Start: wird unten als Pr„fix gemacht
+ae=13 10    ... Aufn.Ende: CR LF
+
+ts          ... l„dt die Zeichenumwandlungstabelle S.APT fr das Sortieren
+
+am=1        ... nur 1 Ausgabesatz soll produziert werden
+
+dx=1
+ ---------------------------------------------------------------
+
+  ******************************************
+  Beginn der Verarbeitung von Unteraufnahmen
+  ******************************************
+
+#2n +- e0 #zz 0   Stamms„tze: nichts machen
+#4n +- e0 #zz 0
+#6n +- e0 #zz 0
+#3n +- e0 #zz 0
+
+#hi +b e0 #zz 0        wenn es eine Unteraufnahme ist: Sprung nach #-b
+
+  ******************************************
+  Beginn der Verarbeitung von Hauptaufnahmen
+  ******************************************
+ 
+
+        hier beginnt es
+        Umwandlung der !-Felder ber Alternativtabelle:
+        der Sortierbegriff wird zusammengesetzt und als #u1 ausgegeben
+        (Verfasser  Jahr ...)
+!40 +S u e"; " b3 p{ 1 "u1 " } #zz 0      #40 und/oder #20 als Sortierfeld, Ende bei "; "
+!52 +S u e"; " b3 p{ 1 "u1 " } #zz 0      #52 und/oder #20 als Sortierfeld, Ende bei "; "
+!20 +S e" : " u b3 p{ 1 "u1 " } #zz 0
+!8n +S e" : " u b3 p{ 1 "u1 " } #zz 0
+   wenn keine davon vorkommt dann nichts ausgeben 
+#+-
+   Hier fr #75 ein anderes Kriterium einsetzen, wenn gewnscht!
+    (weiter unten nochmal)
+#t{ 1 "u1 " }
+#-S
+!75 b3 e";" p"" #zz 0
+!21 +s b3 p"   " #zz 0      Sammlung vor anderen Werken!
+#76 +s b3 x"*1" e"." #zz 0   zweites Element: Jahr
+      b3 heisst: Beginn beim 4. Zeichen (3+ks)
+
+#76 +s b3 x"*1" e"." #zz 0   Jahr des ersten Bandes nehmen, wenn hierarchisch
+
+#t{ "   " }   wenn berhaupt kein Jahr
+
+#-s
+#t{ 0 }     als Abschluss des Sortierfeldes
+
+     Die Druckform des Sortierfeldes: Produktion als #u2
+     (genauso wie #u1, nur ohne Umcodierung, dann fr den Druck verwertbar!)
+#t{ "u2 " }
+#40 +T u e"; " b3 #zz 0   Kopfkategorie (#40 oder #60) als Sortierfeld, Ende bei "; "
+!52 +T u e"; " b3 #zz 0   #40 oder #20 als Sortierfeld, Ende bei "; "
+#20 +T e" : " u b3 #zz 0
+#8n e" : " u b3 #zz 0
+
+#-T
+#75 b3 e";" p"(" P")" #zz 0
+#21 +d b3 p"   " #zz 0      Sammlung vor anderen Werken!
+#76 +d b3 p"" #zz 0   zweites Element: Jahr
+
+#76 +d b3 p"" #zz 0   Jahr des ersten Bandes nehmen, wenn hierarchisch
+
+#t{ "   " }   wenn berhaupt kein Jahr
+
+#-d
+#t{ 0 }     als Abschluss des Druckfeldes
+#+e
+
+#-b            Sprungmarke b: bei untergeordneten S„tzen
+#t { h0 }
+#-e
+tselect     Select.APT nachladen
+            diese Tabelle enth„lt die auszugebenden Kategorien
+            (S-KURZ, S-MITTEL, S-LANG, S-VOLL)

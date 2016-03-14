@@ -1,0 +1,121 @@
+  OFFCHECK.FLX : Check, ob Offline-Daten mit der Datenbank uebereinstimmen
+  2008-01-25  
+  Empfehlung: An das Ende des _start.flx  den Befehl  exec offcheck
+              An das Ende dieses FLEX evtl. noch den Start eines
+                 weiteren, eigenen FLEX anschliessen, s. :schluss
+
+  interne Nr. des aktuellen Satzes retten
+var i
+ins #uin
+  ersten offline-Satz nehmen
+first off
+  keiner da - Ende
+if no jump schluss
+
+:loop
+  Neue, geloeschte und unveraenderte sind egal
+if NEW jump next
+if del jump next
+if not diff jump next
+  Interne Nr. und Prim.Schl. merken
+var i
+ins #uii
+var p
+ins #upp
+  Aenderungsdatum in #udd legen
+var ue
+ins #udd
+
+  Satz anhand Prim.Schl. suchen
+var #upp(0,2) " " #upp(2,0)
+f1nd
+  nicht gefunden? Fehler
+if no jump nfehler
+  Prim.Schl. des gefundenen Satzes nicht gleich? Fehler
+var p
+if not =#upp jump pfehler
+  Interne Nr. des gefundenen S. nicht gleich? Fehler
+var i
+if not =#uii jump ifehler
+  Aenderungsdatum? Wenn nicht gleich, Fehler
+  zugeh. Online-Satz holen
+undo
+var ue
+  sein Datum in #udD legen
+ins #udD
+  und Offline-Satz wieder einschalten
+undo
+  Datumsvergleich
+if #udD var #udd;if not =#udD jump dfehler
+
+:next
+#udd
+  naechster offline-Satz. Keiner mehr? -> Ende
+next off
+if no jump ende
+jump loop
+
+
+:ifehler
+var "Offline-Satz " #uii " hat in der Datenbank die Nr. " i
+mes
+jump fehler
+
+:pfehler
+var "Offline-Satz " #upp " hat in der Datenbank den Prim.Schl. " p
+mes
+jump fehler
+
+:dfehler
+var "Offline-Satz " #upp " mit Datum " #udd " hat in der Datenbank das Datum " #udD
+mes
+jump fehler
+
+:nfehler
+var "Satz mit Prim.Schl. " #upp " nicht gefunden"
+mes
+
+:fehler
+var "Es stimmen nicht alle Offline-Daten. Gefahr von Verfälschungen!" n
+var +"Deshalb muß die Offline-Datei beseitigt werden" n
+var +"Es handelt sich um " o " Datensätze" n
+var +"Diese werden zuerst exportiert in die Datei off." K1 "lg, die Sie zur"
+var +"Überprüfung heranziehen können." n n
+sho IV
+yes
+if not yes STOP
+set dow 2
+expo p i-1
+if no mes Parameter i-1.xpr fehlen, Offline-Daten koennen nicht exportiert werden;jump nex
+var "off." K1 "lg"
+expo f
+exp off
+var "off." K1 "lg ist erstellt, kann als Offline-Datei geladen werden" n n
+var +"Tip: Geben Sie diesen Befehl ein:   x set u110\\update off." K1 "lg"
+sho IV
+mes
+:nex
+set dow 1
+erase off
+disp
+sho rec
+jump schluss
+
+:ende
+var "#" #uin
+f1nd
+sho rec
+disp
+  Wenn Meldung erwuenscht, aktivieren:
+  mes OK
+#uii
+#upp
+#udd
+#udD
+
+:schluss
+    Hier evtl. noch den Start eines weiteren FLEX anhaengen, z.B.
+  exec xyz-init
+    ODER in der INI-Datei den Befehl  StartFLEX=...  erweitern
+
+

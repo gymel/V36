@@ -1,0 +1,129 @@
+
+Verlautbarung 200 der Entw.Abt.                              2007-07-16
+-------------------------------
+
+V27.4 final release
+===================
+
+Fuellhoehe des Fuellhorns reduziert
+-----------------------------------
+Das Fuellhorn war vielen Anwendern gar zu fuellig. Nun hat uns zwar
+trotz Ermunterung niemand mitgeteilt, was denn auf einem weniger
+vollen Menue alles fehlen duerfe, aber wir haben das dann selber
+entschieden. Unter "Fuellhorn" erscheint jetzt eine magere Liste
+mit nur 12 Punkten unter dem Titel "Was jeder braucht", dann aber
+rechts oben der Flip "Und was gibt es sonst noch alles?"
+(Die magere Datei heisst witzigerweise "fillhorn.rtf")
+Der Menuepunkt '?' bringt weiterhin das alte Voll-Fuellhorn. (Der
+Dateiname ist unveraendert nicht "fullhorn.rtf", sondern "doku.rtf")
+("Fuellhorn" heisst sowieso auf Englisch "cornucopia, und das waere
+zu lang. Andere Sprachen sind noch umstaendlicher...)
+
+
+Nun zum Hauptthema.
+Die Schwierigkeiten mit dem Indexieren, die ihre Wurzeln z.T. in der
+MultiX-Reform hatten, sind ausgemerzt. Das Duo INDEX/QRIX ist wieder
+voll funktionsfähig und im Gesamtpaket V27.4 enthalten.
+Dazu ein Nebenergebnis:
+
+Neues Hilfsprogramm: QR.EXE
+===========================
+
+Beim Indexieren entstehen Hilfsdateien namens iiN, wobei N bei 1
+beginnt und hochgezaehlt wird. Jede solche Datei enthaelt einige 1000
+Registereintraege, aufsteigend sortiert, aber komprimiert, daher nicht
+unmittelbar lesbar. Jedem Eintrag gehen 4 Byte mit der internen
+Satznummer voran.
+Zeit war's also, ein Hilfsprograemmle zu machen, das eine solche
+Datei entkomprimiert und damit lesbar macht. Dies ist geschehen, das
+Prograemmle heisst  QR.EXE  und liegt auch separat bereit:
+     http://ftp.allegro-c.de/aktuelle-version/qr.zip
+Man braucht es eigentlich nur, wenn das Indexieren mal nicht klappt,
+sondern in der QRIX-Phase zusammenbricht. Dann sind stets noch einige
+oder viele II-Dateien vorhanden. Nun kann man sich anschauen, was
+da wirklich drinsteht. Sagen wir, man will sich die Datei II25
+anschauen. Dann geht man auf das DbDir (wo sie liegt) und gibt den
+Befehl:
+   qr ii25
+(vorausgesetzt, das ProgDir ist in dem Moment im PATH enthalten.)
+Weil dann die Liste sehr schnell durchrauscht, macht man es besser
+anders, und zwar so:
+
+  qr ii25 >liste
+
+und schaut sich dann die Datei liste an. Sie sieht im Prinzip so aus:
+...
+267 |3works
+267 |3works
+268 |3works
+268 |3works
+254 |3world
+254 |3world
+284 |3you
+284 |3you
+153 |3zellbiologie (SACHGRUPPE) -> |7bed
+337 |3zellbiologie SIEHE AUCH -> organismen
+156 |3zellkulturen -> |7bt
+178 |3zivilrecht -> |7re
+337 |3zoologie -> |7bl
+280 |3zugang
+280 |3zugang
+211 |3zweiter weltkrieg -> |7H 1939-1945
+294 |4abschiedsszenen in shakespeares komoedien
+281 |4alls well that ends well
+248 |4arbeit und herrschaft im realen sozialismus
+213 |4arbeitsplan fuer die allegro-entwicklung 1991/92
+284 |4as you like it
+284 |4as you like it *
+251 |4aspects of macbeth
+252 |4aspects of othello
+...
+
+Hier sieht man den Uebergang vom Reg. 3 zum Reg. 4. Am Uebergang vom
+Index d zum Index e (MultiX!) sieht es so aus:
+
+306 |:znaz120"1977   206.1977 = 2570-6907
+237 |:znaz120'U6"1961   133.1961;FF
+238 |:znaz120+1'U6"1966    21.1966;FF
+314 |;HR. ANTON ERWACHSEN,hr anton erwachsen
+224 |;SYSA:A1=Physikbibliothek, Mendelssohnstr. 2
+224 |;physikbibliothek, mendelssohnstr 2 -> SYSAA1
+227 |;seminar fuer geschichte
+315 ~e100
+342 ~e100
+213 ~e11
+243 ~e11
+254 ~e11
+346 ~e11
+346 ~e11
+
+Am Ende sieht man eine Mitteilung, welcher Schluessel denn in der
+Datei der laengste ist. Er wird stets maximal so lang sein wie der
+im Parameter il vorgegebene Wert + 2 (fuer das Praefix).
+
+Wenn es einen formalen Fehler gibt in der Datei, z.B. ein anderes
+Zeichen als | oder ~ am Anfang oder ein anderes als /,0,...,9 als
+Registerziffer, kommt eine Meldung, die mit "FALSCH" beginnt bzw.
+"Falsches prefix".
+Damit findet man solche Fehler leicht in einer langen Datei. Man
+wird aber kaum je auf so etwas stossen, weil schon bei der Erzeugung
+der II-Dateien darauf geachtet wird, d.h. Parameterfehler an der
+Stelle schon abgefangen werden. Schluessel mit falschem Praefix
+kriegen vorne |1 verpasst und landen also im Reg. 1.
+
+Die Aufgabe des Programms qrix.exe ist es, die II-Dateien zuerst in
+10er-Gruppen ineinanderzumischen, wobei jedesmal wieder eine II-Datei
+entsteht, nur eben groesser. Am Ende sind es maximal 10, die dann im
+letzten Durchlauf in eine echte Indexdatei umgewandelt werden
+(normalerweise cat.adx). Aus nie geklaerten Gruenden klappt das
+letzte Stadium nicht, wenn genau 10 Dateien uebriggeblieben waren.
+Deshalb erzeugt index.exe eine Datei qs.bat, in der genau der
+richtige Aufruf von qrix.exe steht, um das Zusammenmischen dann doch
+noch zu bewerkstelligen. In den automatisch erstellten Batchdateien
+zum Indexieren ist der Aufruf von qs.bat mit drin, also in ccc.bat
+(erzeugt vom CockPit) und in org.bat (erzeugt von a99).
+
+Im Normalfall. der nunmehr hoffentlich wieder dominieren wird, ist
+qr.exe uninteressant und wird nicht gebraucht.
+
+

@@ -1,0 +1,66 @@
+  LANGUAGE.FLX : open an extra session in English using same INI
+  2005-02-16     Aktuelle INI wird kopiert, bis auf Sprache
+
+  Wenn #uiL schon gesetzt, dann go
+if #uiL jump go
+  sonst  GER<->ENG vertauschen (var L ist die aktuelle Sprache)
+var L
+if "~eng" #uiLGER
+if "~ger" #uiLENG
+
+:go
+  Name der momentanen INI
+var V
+ins #uiI
+  hinten #uiL (default =ENG) anhaengen
+var #uiI(t"." e"ENG" e"GER") #uiL ".ini"
+ins #uiI
+  und loeschen, wenn sie schon existiert (ist evtl. veraltet!)
+delete
+
+
+  Nun die Datei erneuern.
+var #uiI
+open x
+var V
+open
+if no jump nix
+
+  Aktuelle INI lesen und in neue schreiben, bis auf Language
+:loop
+get #uiZ
+if can jump ende
+var #uiZ
+if not "~language=" wri #uiZ n
+jump loop
+
+:ende
+wri "Language=" #uiL n
+close x
+close
+#uiL
+
+  und starten
+var m
+if "alc" jump alc
+var P "allegro " #uiI(B".\\")
+jump dos
+:alc
+var P "allegro opac " #uiI(B".\\")
+
+:dos
+Dos
+
+var ""
+  Desaktivieren, wenn dieses Fenster dann bleiben soll
+STOP
+end
+
+
+
+:nix
+var "Datei " V " nicht zugreifbar!"
+mes
+end
+
+

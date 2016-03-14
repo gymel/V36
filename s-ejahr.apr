@@ -1,0 +1,53 @@
+  S-EJAHR.APR : Sortieren nach  Jahr  (#76)
+  940604  danach beliebige Weiterverarb.
+pn="Sortierung #76"
+
+  die folgenden Angaben mssen so bleiben
+  damit die fr die Weiterverarbeitung n”tige .ALG-Form entsteht
+  --------------------------------------------------------------
+zl=0        ... Zeilenl„nge unbegrenzt
+ks=1        ... Beginn beim ersten Zeichen hinter #
+ke=0        ... Kategorie-Ende = 0
+as=""       ... Aufnahme-Start
+ae=13 10    ... Aufn.Ende
+
+ts          ... l„dt die Zeichenumwandlungstabelle S.APT fr das Sortieren
+
+am=1        ... nur 1 Ausgabesatz soll produziert werden
+
+ ---------------------------------------------------------------
+
+  ******************************************
+  Beginn der Verarbeitung von Unteraufnahmen
+  ******************************************
+
+#hi +b e0 #zz 0        wenn es eine Unteraufnahme ist: Sprung nach #-b
+#76 +a e0 #zz 0
+
+#t{ "u1  ohne jahr" 0 }   #76 kommt  nicht vor
+#t{ "u2  ohne Jahr" 0 }
+#+b
+  ******************************************
+  Beginn der Verarbeitung von Hauptaufnahmen
+  ******************************************
+ 
+
+   sonst:
+#-a
+#t{ 1 "u1 " }
+!76 b3 x"*1" e"." #zz 0   Erscheinungsjahr
+#t{ 0 }         Abschluss des Sortierfeldes
+#t{ "u2 " }
+#76 b3 #zz 0   dasselbe nochmal fr die Druckform
+#t{ 0 }         Abschluss des Druckfeldes
+#+c
+
+#-b            Sprungmarke b: bei untergeordneten S„tzen
+
+#t{ h0 }
+
+#-c
+tselect     Select.APT nachladen
+            diese Tabelle enth„lt die auszugebenden Kategorien
+            (S-KURZ, S-MITTEL, S-LANG, S-VOLL)
+#hi +# #zz 0

@@ -1,0 +1,183 @@
+  MIDOS.AIM : Entwurf zur Umwandlung von MIDOS-Daten in das A-Format
+  940615
+ 
+  Muss abgewandelt werden, da das MIDOS-Format nicht einheitlich ist.
+   Wenn das P-Format zum Einsatz kommen soll (MAB), mÅssen die Kategorie-
+   nummern geÑndert werden, z.B. #320 statt #20, und die Datei muss
+   MIDOS.PIM statt MIDOS.AIM heissen.
+
+
+
+re="&&&" 13 10 13 10        so ist das Satzende codiert
+
+
+_";" 13 10     Kategorie-Ende durch Code 0 ersetzen
+_ 0
+
+_ 34 34        Doppeltes "" durch einfaches ersetzen
+_ 34
+
+
+#20
+s 0 "F20:"
+g 0 "F22:"
+w" : "
+
+
+   fÅr P.CFG mÅsste das heissen:
+
+ #320
+ s 0 "F20:"
+ w" "            damit hinter die Kategorienummer ein Leerzeichen kommt!!!
+ g 0 "F22:"
+ w " : "
+
+#19
+s 0 "F21:"
+
+#24
+s 0 "F24:"
+
+#23
+s 0 "F25:"
+
+#26
+s 0 "F26:"
+
+#22
+s 0 "F27:"
+
+#80
+s 0 "F29:"
+
+#39
+s 0 "F31:"
+_ " | "
+_ "; "
+
+g 0 "F41:"
+w "; "
++verf
+
+#39
+s 0 "F41:"
+
+-verf
+#40
+s 0 "F30:"
+e" | "
+
+#40a
+s 0 "F30:"
+b" | "
+e" | "
+
+#40b
+s 0 "F30:"
+b" | "
+b" | "
+  
+#41            Hrsg. ist in Vorlageform
+s 0 "F32:"
+e " | "
+< " "        von hinten das erste Leerzeichen
+s 0 "F32:"
+e " | "  
+e " "        den Anfang bis zum ersten Leerzeichen
+w", "        und Abtrennung durch Komma
+
+#41a
+s 0 "F32:"
+b " | "
+< " "
+s 0 "F32:"
+b " | "
+e " "
+w", "
+
+
+#42
+s 0 "F33:"
+e " | "
+< " "
+s 0 "F33:"
+e " | "
+e " "
+w", "
+
+
+ ............
+
+#59
+s 0 "F38:"
+
+#60
+s 0 "F40:"
+
+#61
+s 0 "F42:"
+
+
+#69
+s 0 "F43:"
+
+
+.................
+
+#74
+s 0 "F62:"
+_ "//???"
+_ ""
+
+#75
+s 0 "F64:"
+
+
+#76
+s 0 "F63:"
+
+
+
+#71
+s 0 "F65:"
+
+#77
+s 0 "F66:"
+
+g 0 "F67:"
+w" : "
+
+#77b             Bandangaben
+s 0 "F76:"
+_ "#"
+_ ": "
+_ " | "
+_ ""
+
+#81
+s 0 "F90:"
+
+
+#82
+s 0 "F69:"
+
+#37
+s 0 "F84:"
+
+
+#87
+s 0 "ISBN: "
+_ " | "
+_ " = "
+
+#88
+s 0 "ISSN: "
+
+#85
+s 0 "F93:"
+_ "';'"
+_ ";"
+.           Punkt am Ende soll bleiben
+
+#92
+s 0 "F77:"

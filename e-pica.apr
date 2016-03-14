@@ -1,0 +1,559 @@
+  E-PICA.APR  :  Ausgabe als PICA3-Datei
+  960102
+ 
+pn="PICA3-Konversion"
+
+ Achtung: in #(T den Anfangswert fr Pseudo-Barcodes setzen!!!
+
+     Vor dem Start #30,#31 kontrollieren;
+     prfen, ob #39 konstruiert werden muá;
+     0200 neu besetzen;
+     welche Kat. mssen hochgez„hlt werden?
+     #00,#90 immer speziell anpassen
+
+dx=1
+
+zl=0
+zi=0
+zm=0
+
+as=29
+ae=C C   Ende jeder Aufnahme
+ke=C 30         Kategorie-Ende: Zeilenvorschub
+
+ze=10
+
+_[  _[_
+
+_  ]_]_
+
+_[ _[_
+
+_ ]_]_
+
+_<  _<_
+
+_  >_>_
+
+_< _<_
+
+_ >_>_
+
+
+_( _(_
+
+_ )_)_
+
+  *#92_ ; _, _
+
+  ********* Zeichenumwandlungstabelle **********
+p ª 1
+q ª 1
+  ********* ZWISCHENTEILE  1 - 78  *************
+3="; "
+4=10 
+8=". "
+9=" / "
+     Funktionsbezeichnungen
+16=" [Hrsg.]"
+17=" [Mitarb.]"
+18=" [Bearb.]"
+19=" [Begr.]"
+20=" [Samml.]"
+21=" [Texter]"
+22=" [šbers.]"
+23=" [Ill.]"
+24=" [Komment.]"
+25=" [Kompon.]"
+26=" [Pr„ses]"
+27=" [Resp.]"
+28=" [Vorr.]"
+29=" [Red.]"
+
+
+        Minimal mssen diese Kategorien vorhanden sein
+ak=20 +A
+ #20 +A e0 #zz 0
+
+#-@
+#t{"xxxx "}
+#01. "01" e2 #zz 0
+#02. "02" e2 #zz 0
+#03. "03" e2 #zz 0
+#04. "04" e2 #zz 0
+#05. "05" e2 #zz 0
+#06. "06" e2 #zz 0
+#t4
+
+
+        Anwendervariablen:
+   id   "2080 HIL2"+id 6-stellig
+   is   200x
+   ib   l”schen
+   ex   70xx
+   nn   68xx
+   nl   301x
+   se   Teilfeld fr 471x
+   zu   = #91
+
+#-A
+#20
+#+#
+
+#uid +#99z e0 #zz 0
+#nr x"=00000" e"." =id e0 #zz 0    !!e!! Zuweisung des Anfangswertes von #uid
+  #nr x"=20000" e"." =id e0 #zz 0  !!m!! Zuweisung des Anfangswertes von #uid
+#99z
+#nr x"=2000" e"." =is e0 #zz 0
+#nr " " e1 =ib #zz 0          
+  Lokale Schlagwoerter auf Exemplar-
+#nr x"=6800" e"." =nn e0 #zz 0
+  oder auf Lokalebene:
+ #nr x"=6500" e"." =nn e0 #zz 0
+#nr x"=3010" e"." =nl e0 #zz 0
+#nr x"=7001" e"." =ex e0 #zz 0
+
+#dt "0200 0084:22-05-95" e18
+#dt "0210 0084:22-05-95 00:00:00.000" e31
+#dt "0230 9999:99-99-99" e18
+#hi +#76 "0500 Afn" e8
+#dt "0500 Aan" e8            !!e!!
+  #dt "0500 Acn" e8          !!m!!
+
+#76 "1100 " e5 #zz 0
+#76 +#99y c"o.J." e0 #zz 0
+#76 x"*1" e"." #zz 0
+#76 +#99z b" = " " $ "
+#76 +#99z e0
+#99y
+#76 "19XX" e4
+#99z
+#76 +#40 e0 #zz 0
+
+#819 b":" e5 "1100 "    Wenn kein #76
+
+
+#40 "3000 " e5 #zz 0
+#40 >N
+#402 "3001 " e5 #zz 0
+#402 >N
+#403 "3002 " e5 #zz 0
+#403 >N
+#41 >L #zz 0
+#41 " [Hrsg.]" e8
+#412 >L #zz 0
+#412 " [Hrsg.]" e8
+#42 >L #zz 0
+#42 " [Mitarb.]" e10
+#43 >L #zz 0
+#43 " [Bearb.]" e9
+#44 >L #zz 0
+#44 " [Begr.]" e8
+#45 >L #zz 0
+#45 " [Sammler]" e10
+#46 >L #zz 0
+#46 " [Texter]" e9
+#47 >L #zz 0
+#47 " [šbers.]" e9
+#50 >L #zz 0
+#50 " [Ill.]" e7
+#51 >L #zz 0
+#51 " [Komm.]" e8
+#52 >L #zz 0
+#52 " [Komp.]" e8
+#53 >L #zz 0
+#53 " [Pr„s.]" e8
+#54 >L #zz 0
+#54 " [Resp.]" e8
+#55 >L #zz 0
+#55 " [Vorr.]" e8
+#56 >L
+#57 >L #zz 0
+#57 " [Red.]" e7
+#58 >L
+
+#59 "3040 " e5 #zz 0
+#59 >N
+#592 "3041" e5 #zz 0
+#592 >N
+#593 "3042" e5 #zz 0
+#593 >N
+
+#60 "3100 " e5 #zz 0
+#60 >O
+#602 "3101 " e5 #zz 0
+#602 >O
+#603 "3102 " e5 #zz 0
+#603 >O
+#61 "3120 " e5 #zz 0
+#61 >O
+#612 "3121 " e5 #zz 0
+#612 >O
+#613 "3122 " e5 #zz 0
+#613 >O
+
+#21 "3200 Sammlung" e13
+#22 "3211 " e5 #zz 0
+#22 >U
+
+
+#hi1 +#20 p"4004 *" P"*" #zz 0		*** f-Stufe ***
+#dt "4000 " e5 #zz 0                    *** c-Stufe ***
+#20 >U #zz 0
+
+#25 ,"_ / _/_" " : " #zz 0
+
+#24 " = " ,"_ / _/_" #zz 0
+#242 " = " ,"_ / _/_" #zz 0
+#243 " = " ,"_ / _/_" #zz 0
+
+#39 +#99z ,"_ / _/_" p9
+
+#20 e0 #20 0 #69 9 #zz 0
+#40 ++ >K m>k #20 0 #40z 3 #69 8 #zz 0
+#41 ++ >K >F #20 0 #41z 3 #69 8 #zz 0
+#42 ++ >K >F #20 0 #42z 3 #69 8 #zz 0   Die Unterprogramme machen folgendes:
+#43 ++ >K >F #20 0 #43z 3 #69 8 #zz 0    #(K macht die Invertierung "Vorname Name"
+#44 ++ >K >F #20 0 #44z 3 #69 8 #zz 0    #(l : "[Funktionsbez.]. "   hintersetzen
+#45 ++ >K >F #20 0 #45z 3 #69 8 #zz 0
+#46 ++ >K >F #20 0 #46z 3 #69 8 #zz 0
+#47 ++ >K >F #20 0 #47z 3 #69 8 #zz 0
+#50 ++ >K >f #20 0 #50z 3 #69 8 #zz 0
+#51 ++ >K >f #20 0 #51z 3 #69 8 #zz 0
+#52 ++ >K >f #20 0 #52z 3 #69 8 #zz 0
+#53 ++ >K >f #20 0 #53z 3 #69 8 #zz 0
+#54 ++ >K >f #20 0 #54z 3 #69 8 #zz 0
+#55 ++ >K >f #20 0 #55z 3 #69 8 #zz 0
+#56 ++ >K #20 0 #56z 3 #69 8 #zz 0
+#57 ++ >K >f #20 0 #57z 3 #69 8 #zz 0
+#60 #20 0 #60z 3 #69 8 #zz 0
+#602 #20 0 #60z 3 #69 8 #zz 0
+#603 #20 0 #60z 3 #69 8 #zz 0
+#61 +#612 ,"_ / _/_" #20 0 #61z 3 #69 8 #zz 0      ¿
+#612 +#613 ,"_ / _/_" #20 0 #61z 3 #69 8 #zz 0     Ã #612, #613
+#613 +#20 ,"_ / _/_" #20 0 #61z 3 #69 8 #zz 0      Ù
+  #61 +#61a ,"_ / _/_" #20 0 #61z 3 #69 8 #zz 0      ¿
+  #61a +#61b ,"_ / _/_" #20 0 #61z 3 #69 8 #zz 0     Ã #61a, #61b
+  #61b +#20 ,"_ / _/_" #20 0 #61z 3 #69 8 #zz 0      Ù
+#20 e0 #zz 0
+#dt e0
+
+
+
+#99z
+#83 "3160 " e5 #zz 0
+#83 >P
+#832 "3161 " e5 #zz 0
+#832 >P
+#833 "3162 " e5 #zz 0
+#833 >P
+
+
+#23 "3260 " e5 #zz 0
+#23 >U
+#232 "3261 " e5 #zz 0
+#232 >U
+#233 "3262 " e5 #zz 0
+#233 >U
+#234 "3263 " e5 #zz 0
+#234 >U
+
+#71 "4020 " F"."
+
+#74 +#74 e0 #zz 0
+#75 "4030 [S.l.]!" e"!" #zz 0
+#74 +#75 I4, "4030 " e"" #zz 0
+#74 "4030 [S.l.]!" e"!" #zz 0
+#75 +#77 " : "
+#74 e0
+
+#77 "4060 " F"." e" : "
+#77 b" : " "4063 " F"."
+
+   #85 "4170 " e5 #zz 0
+   #85 >U
+   #852 "4171 " e5 #zz 0
+   #852 >U
+   #853 "4172 " e5 #zz 0
+   #853 >U
+#85v "4170 " e5 #zz 0
+#85v >V e"" =se
+#85v b"" "4171 " e5 #zz 0
+#85v >V b"" e"" =se
+#85v b"" b"" "4172 " e5 #zz 0
+#85v >V b"" b"" e"" =se
+#85v b"" b"" b"" "4173 " e5 #zz 0
+#85v >V b"" b"" b"" e"" =se
+#85v b"" b"" b"" b"" "4174 " e5 #zz 0
+#85v >V b"" b"" b"" b"" e"" =se
+#85v b"" b"" b"" b"" b"" "4175 " e5 #zz 0
+#85v >V b"" b"" b"" b"" b"" e"" =se
+#85v +#99z e0 #zz 0
+#85 "4170 " e5 #zz 0
+#85 >V e"" =se
+#85 b"" "4171 " e5 #zz 0
+#85 >V b"" e"" =se
+#85 b"" b"" "4172 " e5 #zz 0
+#85 >V b"" b"" e"" =se
+#85 b"" b"" b"" "4173 " e5 #zz 0
+#85 >V b"" b"" b"" e"" =se
+#85 b"" b"" b"" b"" "4174 " e5 #zz 0
+#85 >V b"" b"" b"" b"" e"" =se
+#85 b"" b"" b"" b"" b"" "4175 " e5 #zz 0
+#85 >V b"" b"" b"" b"" b"" e"" =se
+#99z
+
+#819 "4204 @" e":" #zz 0
+#818 b", " F"0123456789, " p", " #zz 0
+#819 b":" p" : " #zz 0
+#819 e0
+
+
+#-8
+#87 >I e" = " =ib #zz 0
+#87 >I b" = " e" = " =ib #zz 0
+#87 >I b" = " b" = " e" = " =ib #zz 0
+#87 >I b" = " b" = " b" = " e" = " =ib #zz 0
+
+#87 +#99z e" = " c"*" e"*" p"2009 "
+#87 +#99z b" = " e" = " c"*" e"*" p"2009 "
+#87 +#99z b" = " b" = " e" = " c"*" e"*" p"2009 "
+#87 +#99z b" = " b" = " b" = " e" = " c"*" e"*" p"2009 "
+#99z
+
+#89d ,"_.__" "2065 " e";"
+#89D ,"_.__" "2065 " e";"
+
+#89U f"U" p"U" "2215 "    Hochsch.schr.Nr
+
+ Lokale Ebene
+ #uid x"+1" e"." =id #zz 0      	#uid um 1 erh”hen
+ #uid r6,0 p"2080 84d"		Identnummer
+
+#80 +#99w "4710 " ,"__ ; _" #zz 0
+#81 +#99x "4710 " ,"__ ; _" #zz 0
+#81a +#99y "4710 " ,"__ ; _" #zz 0
+#81b +#99y "4710 " ,"__ ; _" #zz 0
+#82 +#99z "4710 " ,"__ ; _"
+#dt +#99z e0 #zz 0
+#99w
+#81 p" ; " ,"__ ; _" #zz 0
+#99x
+#81a p" ; " ,"__ ; _" #zz 0
+#81b p" ; " ,"__ ; _" #zz 0
+#99y
+#82 p" ; " ,"__ ; _" #zz 0
+#t{C }
+#99z
+
+#30 "6000 " ,"__ + _"
+
+
+ #30a "6701 "
+ #30b "6702 "
+ #30c "6703 "
+ #30d "6704 "
+ #30e "6705 "
+
+ #31 >M
+ #31a >M
+ #31b >M
+ #31c >M
+ #31d >M
+ #31e >M
+ #31f >M
+ #31g >M
+ #31h >M
+ #31i >M
+ #31j >M
+ #31k >M
+ #31l >M
+ #31m >M
+ #31n >M
+ #31o >M
+ #31p >M
+ #31q >M
+ #31r >M
+ #31s >M
+ #31t >M
+ #31u >M
+ #31v >M
+ #31w >M
+ #31x >M
+ #31y >M
+ #31z >M
+
+ Exemplarebene
+#91 =zu #zz 0
+#90 ++ >S m>S #zz 0
+#90 +# e0 #zz 0
+#uex P" 29-05-94 : x"
+#89U "7100 U" P{ C }
+#>T
+#+#
+
+  ********* Unterprogramme *********************
+
+
+#(F             Funktionsbezeichnung ermitteln
+                    #4er-Kategorien:
+#i2,1 16        wenn 2. Kategorieziffer = 1, dann Zwischenteil 16 = " [Hrsg.]"
+#i2,2 17        Mitarb. usw.
+#i2,3 18
+#i2,4 19
+#i2,5 20
+#i2,6 21
+#i2,7 22
+#)F
+
+#(f             Funktionsbezeichnung ermitteln
+                    #5er Kategorien
+#i2,0 23        Illustr. ...
+#i2,1 24
+#i2,2 25
+#i2,3 26
+#i2,4 27
+#i2,5 28
+#i2,7 29
+#)f            Ende Unterprogramm f
+
+#(I             ISBD
+#uib +#99z c"*" e0 #zz 0
+#uis P" " #zz 0
+#uib
+#uis +#99z x">2000" e0 #zz 0   2000, 2001, 2001, 2001 ...
+#uis x"+1" e"." =is #zz 0      200x um 1 erh”hen
+#99z
+#)I
+
+#(K         UP fr Personennamen
+#cc e" = " e" [" b", " #zz 0   Verweisungsformen abschneiden, hinter ", " beginnen
+#cc e", " p" " #zz 0           Text vor dem ", " nehmen, " " davorsetzen
+#)K                            in beiden F„llen kein Postfix! (#zz 0)
+
+#(k           hier k”nnte man den 2. und 3. Verf. anders behandeln!
+#cc e" = " e" [" b", " #zz 0      wie Sie hier sehen, wird dasselbe gemacht
+#cc e", " p" " #zz 0              wie bei #(K
+#)k
+
+#(L
+#unl P" " #zz 0
+#unl x"+1" e"." =nl #zz 0      301x um 1 erh”hen
+#cc b", " e" = " e" [" ,"_ ª_/_" #zz 0
+#cc e", " "@"
+#99z
+#)L
+
+#(M
+#cc dsw asw #zz 0         Schlagworttext nach #usw
+#-m
+#unn P" " #zz 0
+#unn x"+1" e"." =nn #zz 0      65xx um 1 erh”hen
+#usw e"[;]" F" "
+#usw +m b"[;]" f" " dsw asw #zz 0
+#)M
+
+#(N
+#cc e"<" b", " e" = " e" [" ,"_ ª_/_" ,"_ /_/_" #zz 0
+#cc e"<" e", " "@" #zz 0
+#cc b"<" p"<" #zz 0
+#cc e0 e" = " e" ["
+#)N
+
+#(O
+#cc +#99y c"ª" e0 #zz 0
+#cc +#99z e" = "
+#99y
+#cc f"ª" e" " #zz 0
+#cc " @" e2 #zz 0
+#cc b" " e" = "
+#99z
+#)O
+
+#(P
+#cc +#20 c"..." e0 #zz 0
+#cc +#99z
+#20 e" : " #zz 0
+#cc b"..."
+#99z e0
+#)P
+
+#(s
+#t{ C }
+#(S
+#uex +- x">7099" e0 #zz 0            mehr als 99 Exemplare?
+ #uex x">7001" e0
+#uex f" " P" 29-05-94 : n"
+#uex x"+1" e"." =ex #zz 0      70xx um 1 erh”hen
+#cc e"" E" " p"7100 " ,"_HA _!HA!_" ,"_HB _!HB!_" ,"_MAGAZIN _!MAGAZIN!_" #zz 0
+#cc b" " e"" #zz 0
+#cc +#99y i4,H i5,A p" @ i" e4
+#cc +#99y i4,H i5,B p" @ i" e4
+#cc +#99y v p" @ "
+#cc " @ u" e4 P{ C } #zz 0
+#99y e0
+#cc +#99z z p"8100 "
+#cc +#99z I3,  e0 #zz 0   dieser Befehl funktioniert nicht: Leerzeile (pt_err1.aus)
+ #91 "8100 "         diese Zeile funktioniert nicht (pt_err2.aus), daher:
+ #uzu "8100 " dzu
+#99z e0
+#cc +u a p"8200 "
+
+#cc +s I4,0 I4,1 I4,2 I4,3 I4,4 I4,5 I4,6 I4,7 I4,8 I4,9 e0 #zz 9
+
+#cc ,"_-__" e8 { 30 "8200 84$0" } P{ C } #zz 0
+#)S
+#)s
+#-u
+#t{ C }
+#-s
+#>T 
+#)S
+#)s
+
+#(T
+#ubc +t x"+1" e"." r8,0 =bc e0 #zz 0
+#nr p"90010001" e8 =bc e0 #zz 0
+#-t
+#ubc e1 x"*3" =pz e0 #zz 0               Prfziffer errechnen
+#ubc b1 e1 x"*7" x"+pz" =pz e0 #zz 0
+#ubc b2 e1 x"*1" x"+pz" =pz e0 #zz 0
+#ubc b3 e1 x"*3" x"+pz" =pz e0 #zz 0
+#ubc b4 e1 x"*7" x"+pz" =pz e0 #zz 0
+#ubc b5 e1 x"*1" x"+pz" =pz e0 #zz 0
+#ubc b6 e1 x"*3" x"+pz" =pz e0 #zz 0
+#ubc b7 e1 x"*7" x"+pz" =pz e0 #zz 0
+#ubc { 30 "8200 84$" } #zz 0
+
+#upz +0 e"." x"%10" x"==0" e0 #zz 0      gewichtete Quersumme -10
+#upz e"." x"%10" x"-10" f"-" e"." #zz 0      gewichtete Quersumme -10
+
+#t{ C }
+#)T
+#-0
+#t{ "0" C }
+#)T
+
+
+#(U     šbergehzeichen „ndern in "@"
+#cc +#99y i4,ª f"ª" E" " c"'" ,"_'_'@_" ,"_ / _/_" #zz 0
+#cc +#99y i4,ª f"ª" E" " P"@" ,"_ / _/_" #zz 0
+#cc +#99z ,"_ / _/_"
+#99y
+#cc b" " ,"_ / _/_"
+#99z
+#)U
+
+#(V     šbergehzeichen „ndern in "@"
+#use +#99y i4,ª f"ª" E" " c"'" ,"_'_'@_" ,"_ / _/_" ,"_ : _ $ _" #zz 0
+#use +#99y i4,ª f"ª" E" " P"@" ,"_ / _/_" ,"_ : _ $ _" #zz 0
+#use +#99z ,"_ / _/_" ,"_ : _ $ _" dse
+#99y
+#use b" " ,"_ / _/_" dse
+#99z
+#)V
+
+p ª 1
+p Ü 199
+p .26 199
+

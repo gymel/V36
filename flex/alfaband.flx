@@ -1,0 +1,143 @@
+  alfaband.flx : ALFA-Bandausleihe/Rueckgabe, wenn es keine Bandsignaturen gibt
+  2014-01-16  (vor allem bei Zeitschriften)
+  Aufruf mit  X alfaband r  fuer Rueckgabe
+
+
+if "r" jump Rueckgabe
+if "a" jump Ausleihe
+
+  *****************************
+:Ausleihe
+
+:band
+ask Jahrgang oder Band?
+if "" end
+ins #uBA
+
+ask Nutzer?=#uNU
+if "" end
+ins #uNU
+
+
+var #dts(0,8)
+ins $d
+
+
+var "Bd. " #uBA " an " #uNU " ausleihen? (Nein: ändern)" 
+yes
+if no jump band
+if cancel end
+
+  Naechstes freies Feld #9X... fuellen und Satz speichern
+var #uBA "²u" #uNU "²D" $d
+asci
+ins #9X~
+put
+  Satz neu anzeigen
+disp
+sho rec
+end
+
+  ****************************
+
+:Rueckgabe
+
+  Incl.: Alle #9X nach oben verschieben, d.h. 
+         aus   #9Xb;#9Xu  wird  #9X ;#9X2
+
+
+if not #9X mes Keine Bände ausgeliehen!;end
+
+perform shift
+
+var "Welcher Band?" 
+ins $ZZ
+var k1 
+
+:X
+if not "#9X" jump Y
+ins _u_ hatte  _
+ins _D_  ausgel. am: _
+ins $y
+var $y (0,4)
+ins $y1
+var $y (4,0)
+ins $y2
+var $ZZ n $y1 "    " $y2
+ins $ZZ
+:Y
+var k2
+if not "" jump X
+
+var $ZZ
+Aresqa
+if "" end
+var (0,4)
+ins
+perform shift
+put
+disp 
+sho rec
+end
+
+  UPro:
+
+  Felder  #9Xn  verschieben, damit keine freien Plaetze dazwischen
+  (Rueckgabe erfolgt nicht von hinten nach vorn, und Reihenfolge soll bleiben)
+
+:shift
+var ""
+ins $ZZ
+
+  letztes Feld nehmen
+var k3
+
+
+  // Die Felder nach oben abarbeiten
+:slop
+  wenn letztes #9X erreicht:
+if "#9X" jump 9X
+jump nxt
+
+
+:9X
+ins $y
+  Dieses Feld ";;" $ZZ  => $ZZ
+var $y ";;" $ZZ
+ins $ZZ
+
+:nxt
+  rueckwaerts zum naechsten Feld
+var k4
+  vorn angekommen?
+if "" jump loesch
+jump slop
+
+
+  // Jetzt alle #9X~ wegnehmen, hinten beginnend
+  // $ZZ enthaelt jetzt alle #9X, getrennt durch ;;
+:loesch
+
+var k3
+:lop
+if not "#9X" jump nzt
+var (0,4)
+ins
+:nzt
+var k4
+if "" jump shft
+jump lop
+
+  Nun die Felder wieder einfuegen, oben beginnend (Reihenfolge bleibt)
+
+:shft
+var $ZZ (4,0 e";;")
+  naechste freie Mehrfachcode nehmen, also #9X2, #9X3 ...
+ins #9X~
+var $ZZ (b";;")
+ins $ZZ
+if $ZZ jump shft
+
+return
+
+

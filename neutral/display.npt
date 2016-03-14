@@ -1,0 +1,340 @@
+  DISPLAY.NPT : Hauptteil fuer Komplexes Anzeigemodell
+  2002-02-18 / 2006-04-10   wird eingebunden in
+    disp-dos.npr : fuer PRESTO
+    disp-win.npr : fuer a99/alcarta
+    disp-web.npr : fuer avanti/RuckZuck
+
+  ***** eigentliche Ausgabebefehle ******************
+        Fuer andere Konfigurationen muss man hier
+        die Feldnummern aendern!
+  ->->->Die individuellen Teile stehen zwischen <<<< und >>>>
+            und sind kommentiert. Sonstige Eingriffe nicht noetig!
+
+
+   <<<<<< ANFANG des wirklich wichtigen Teils: >>>>>>>>>>>>>>>>>>
+
+#n30 >N e0
+#n00 { t20 "Ident.:" t21 } P22
+
+#900 e" = " e"" { t20 "        " t21 t66 t79 } P{ t111 t98 t22 }
+
+#>W    Datentyp ausgeben
+#9T0 +t e0
+#9A0 y0 { t20 "Daten:   " t21 t70 } P{ t102 t22 }
+
+  Titel: Wenn $Y besetzt, dann dies statt des Hauptinhalts
+   (Vorlageform ist zur Anzeige, Ansetzungsform zur Indexierung!)
+#100 +#990a $Y { t20 "Titel:   " t21 t66 } P{ t98 t22 }
+#100 $$ { t20 "Titel:   " t21 t66 } P{ t98 t22 }
+#990a
+#100 $e { t20 "Fassung: " t21 } P22
+#100 $m { t20 "Version: " t21 } P22
+#100 $k { t20 "Tonart:  " t21 } P22
+#100 $w { t20 "Opus:      " t21 } P22
+#100 $A { t20 "Kurztitel: " t21 } P22
+#uoa doa e0
+#03c i5,b "Elektronisches Objekt!" e"!" =oa
+#03c i5,d "Digitalisiertes Objekt!" e"!" =oa
+#03c i5,m "Mikroverfilmung!" e"!" =oa
+#uoa { t20 "Objektart:   " t21 } P22
+#uot dot e0
+#030 i5,M "Film!" e"!" =ot
+#030 i5,T "Tonaufnahme!" e"!" =ot
+#030 i5,S "Software!" e"!" =ot
+#030 i5,U i6,m "Karte!" e"!" =ot
+#uot p"[" P"]" { t20 "        " t21 } P22
+#185 { t20 "       " t21 } P22
+#120 $$ { t20 "Orig.Titel:   " t21 t66 } P{ t98 t22 }
+#120 +#120 $l { t20 "Sprache: " t21 } P22
+#050 { t20 "Sprache: " t21 } P22
+#120 $e { t20 "Ausg.:      " t21 } P22
+#120 $k { t20 "Tonart:  " t21 } P22
+#855 { t20 "Ausg.:      " t21 } P22
+#830c { t20 "Maßstab:    " t21 } P22
+#58e +#04p { t20 "Exist.:    " t21 } P22   Ersch.Verlauf ZDB
+#040 { t20 "Jahr:       " t21 } P22
+#04f { t20 "Orig.:      " t21 } P22
+#04p +#110. { t20 "Auff.jahr:   " t21 } P22
+#160 $d { t20 "aufgefuehrt:  " t21 }
+#160 $p { " in " }
+#160 $$ " (" P")"
+#160 p22 e0
+
+
+#110. ++ $$ { t20 "NebenTitel:  " t21 } m{ t20 "  " t21 } P22
+#11a { t20 "Abk.titel" t21 } P22
+
+
+   Grundmuster einer Tabellenzeile: (fuer andere Felder einfach kopieren)
+   (Die Befehle t20, t21 und t22 setzen die Tabellenbegrenzungen,
+     sie sind in d-krtf.npr, d-khtm.npr bzw. d-kdos.npr definiert)
+
+#200 >V e0
+#20c { t20 "Komponist:  " t21 } P22
+#210. ++ ,"_|_; _" p{ t20 "Beteiligt:" t21 } m"; "
+#210. P22 e0
+#21e { t20 "Hrsg.:     " t21 } P22
+#21l { t20 "Text:      " t21 } P22
+
+#25c { t20 "Dirigent: " t21 } P22
+#25s { t20 "Interpr.:  " t21 } P22
+#25d { t20 "Regie:     " t21 } P22
+#25n { t20 "Sprecher:  " t21 } P22
+#25f { t20 "Festschr.: " t21 } P22
+
+#300 { t20 "Verantw.: " t21 } P22
+#310 { t20 "Beteiligt: " t21 } P22
+
+#35e { t20 "Orchester: " t21 } P22
+
+#750. ++ >T m>T
+
+#810 { t20 "Umfang: " t21 } P22
+#81d { t20 "Zeit:        " t21 } P22
+#81s { t20 "Systemvorauss." t21 } P22
+
+#800 { t20 "Format:      " t21 } P22
+
+#860 +#400. f": " { t20 "Impr.:     " t21 } P22
+
+#360 { t20 "Verlag:   " t21 } P22
+
+
+  Beziehungen/Gesamtwerke:
+
+#400. ++ p>C m>c
+#410. ++ p>C m>c
+#411. ++ p>C m>c
+#412. ++ p>C m>c
+#413. ++ p>C m>c
+#414. ++ p>C m>c
+#415. ++ p>C m>c
+
+#420. ++ p>C m>c
+
+#440. ++ { t20 "Vorher/Nachher: " t21 } m23 P22
+#441. ++ { t20 "Frueherer Titel: " t21 } m23 P22
+#442. ++ { t20 "Spaeterer Titel: " t21 } m23 P22
+#443. ++ { t20 "Vereinigt mit:  " t21 } m23 P22
+#444. ++ { t20 "Hieraus hervorg.: " t21 } m23 P22
+#445. ++ { t20 "Parallel-Ausg.:  " t21 } m23 P22
+#450. ++ { t20 "Rezens. von: " t21 } m23 P22
+#460. ++ { t20 "Verwendet in: " t21 } m23 P22
+
+
+#560 { t20 "GeoBereich:   " t21 } P22
+
+
+#380 { t20 "HsSchrift:   " t21 } P22
+#38d { t20 "Diss:        " t21 } P22
+
+#700 { t20 "Herkunft:    " t21 } P22
+
+#070. ++ >U m>u e0
+
+#500 { t20 "Themen:       " t21 } P22
+
+#600 { t20 "Notationen:   " t21 } P22
+
+#610 { t20 "Sachgruppen:  " t21 } P22
+
+#875 { t20 "Inhalt:       " t21 } P22
+
+#870 { t20 "Abstract: " t21 } P22
+
+#880. ++ { t20 "Anm.:        " t21 } m23 P22
+
+#t{ t20 t21 t22 }    leere Tabellenzeile
+#08z { t20 "ZDB:        " t21 } e0
+#08z >Z
+#08r { t20 "EZB:        " t21 } e0
+#08r >R
+#08g { t20 "GBV:        " t21 } e0
+#08g >G
+#n08s { t20 "SWD-Nr.:   " t21 } P22
+
+#8r0 { t20 "Rechte:     " t21 } P22
+
+
+  Adressendaten
+#780 { t20 "ADRESSE        " t21 } e0 P22
+#780 $n { t20 "Name        " t21 } P22
+#780 $s { t20 "Straße:     " t21 } P22
+#780 $i { t20 "PLZ Ort:      " t21 }
+#780 $c " " P22
+#780 $x { t20 "PostBox:     " t21 } P22
+#780 $e { t20 "E-Mail      " t21 } P22
+#780 $k { t20 "Kontakt:    " t21 } P22
+#780 $w { t20 "Web:        " t21 } P22
+#780 $b { t20 "Bank:        " t21 } P22
+#780 $t { t20 "Tel.:        " t21 } P22
+#780 $f { t20 "FAX:        " t21 } P22
+
+
+
+  Sonderabschnitt "Regelwerk"
+#bp # 35
+#R00 I5,n b1 { t20 "Regel:    " t21 t66 "#" }
+#R00 i5,n b1 { t20 "Feld:    " t21 t66 t70 "#"}
+#t102
+#t98
+#R03 "   (Typ:" P")"
+#t22
+#R10 { t20 "        " t21 t66 } P{ t98 t22 }
+#R10e { t20 "engl.:   " t21 }
+#R90 c"Dublin C" p{ t86 "  [Dublin Core element]" t111 } e0
+#R10e P22 e0
+
+#R80 { t13 t20 "    " t21 } P22
+#R80i { t20 "Indik.: " t21 } P22
+#R80s { t20 "Subf.: " t21 } P22
+#R80v { t20 "Werte: " t21 } P22
+#R85 { t20 "Beisp.: " t21 } P22
+#R90 { t13 t20 "Anm.:   " t21 } P22
+#bp # 8
+
+#R00 +#R00 e0
+#dts +#9L0 e0
+#R00 e0
+#t{ t4 t72 "Mehr dazu" t104 }
+#R00 b1 p"h h" =Z~
+#nr p"Mehr dazu!" e"!" =Y~
+
+
+#9L0 { t20 "Begriff:    " t21 t66 } P{ t98 t22 }
+#9L0e { t20 "Erklärung: " t21 } P22
+
+#t{ t20 " " t21 " " t22 }
+
+#9h0 { t20 t86 "Beispielsatz f.: " t111 t21 } P22
+#9h02 { t20 "                        " t21 } P22
+
+
+#+Q
+
+
+#-t
+   Memos und Termine
+#t{ t4 t20 t79 "MEMO:    " t111 t21 } 
+#9T0f P72 e0
+#9T0 e";" p66 P{ t98 t22 }
+
+#9T0f +#9T0f P104 =Z~ e0
+#+£
+#9T0f e0
+#9T0 e";" y2 =Y~
+#9T0 b";" f" " 4
+#-£
+#9T0t p{ t20 "                  " t21 } P22
+#9T0d B" = " b6 e2 f"0" { t4 t20 t79 "Termin: " t111 t21 } 
+#9T0d b4 e2 f"0" p"."
+#9T0d e4 p"."
+#9T0d b"/" ", Uhrzeit: "
+#9T0d e0 P22
+#t{ t4 t4 t72 "Bearbeiten" t104 }
+#nr "Bearbeiten!" e"!" =Y~
+#nr "x form Memo\if not dif end\Put\if no undo!" e"!" =Z~
+#t{ t4 t4 t72 "Memo-Menu" t104 t4 }
+#nr "Memo-Menu!" e"!" =Y~
+#nr "h memo!" e"!" =Z~
+#070 { t4 t4 &0 t79 "Web-Adresse: " } e0
+#+#
+
+   ===============================================
+   UNTERPROGRAMME
+   Eingriffe selten nötig
+
+
+  Gesamtitel einheitlich aufbereiten
+#(C
+#cc +#990x i2,0 i3,0 $$ { t20 "Gesamtwerk: " t21 } m23
+#cc i3,1 $$ { t20 "Serie:       " t21 } m23
+#cc i3,2 $$ { t20 "Mehrbd.Werk: " t21 } m23
+#cc i3,3 $$ { t20 "In:                  " t21 } m23
+#cc i3,4 $$ { t20 "Zeitschrift: " t21 } m23
+#cc i3,5 $$ { t20 "Sammlung:    " t21 } m23
+#cc i2,2 i3,0 $$ { t20 "Werk:        " t21 } m23
+#nr +#990x e0
+#(c
+#t{ t20 "                  " t21 }
+#cc $$
+#990x
+#cc $v " ; "     Volume
+#cc +#990y i3,1 e0
+#cc +#990y $y "(" P")"   Year
+  aktivieren, falls in jedem Fall Jahr gewuenscht
+  #040 "(" P")"    #040, wenn $y nicht besetzt
+#990y
+#cc $i            issue
+#cc $p ", S."     pages
+#t22
+#)c
+#)C
+
+
+   Unterprogramm fuer Tagungsfelder #750x
+   $e = VeranstArt
+#(T
+#cc +#750_ $e c"vl" { t20 "      " t21 "Vorlesung" } e0
+#cc +#750_ $e c"ue" { t20 "      " t21 "&Uuml;bung"} e0
+#cc +#750_ $e c"se" { t20 "      " t21 "Seminar" } e0
+#cc +#750_ $e c"ko" { t20 "      " t21 "Kolloq." } e0
+#cc i4,  { t20 "Veranstaltung:" t21 } e0
+#cc I4,  { t23 } e0
+#750_
+#cc $$
+#cc $n " ; "
+#cc $p " / Ort: "
+#cc $t " - Zeit: "
+#t22
+#)T
+
+#(W
+  bestimmte Datentypen hier kennzeichnen:
+#030 +# i5,E i6,l { t20 "        " t21 t79 "Lehrveranstaltung" } P{ t111 t22 } e0
+#030 +# i5,E { t20 "        " t21 t79 "Veranstaltung" } P{ t111 t22 } e0
+#031 i5,a { t20 "        " t21 t79 "Zeitschr.Aufsatz" } P{ t111 t22 } e0
+#031 i5,w { t20 "        " t21 t79 "Datensatz f. interne Zwecke" } P{ t111 t22 } e0
+#031 i5,x { t20 "        " t21 t79 "Sonderdatensatz" } P{ t111 t22 } e0
+#9A0 i5,U { t20 "        " t21 t79 "Unicode-Sequenzdaten" } P{ t111 t22 } e0
+#R00 i5,n { t20 "        " t21 t79 "Dokumentation Datenformat" } P{ t111 t22 } e0
+#R00 I5,n { t20 "        " t21 t79 "Regelwerk" } P{ t111 t22 } e0
+#)W
+
+#(V   #200  Label soll je nach Typ verschieden sein:  $e wird geprueft
+#cc +# c"edoz" $$ { t20 "Dozent:  " t21 } P22
+#cc $$ { t20 "Verf.:      " t21 } P22
+#)V
+
+  UP f. Stammsaetze
+#(N
+#n30 $$ { t20 "Amtl. Form:  " t21 t66 } P{ t98 t22 }
+#n35 $$ { t20 "Bedeutung:   " t21 } P22
+#n50 { t20 "                  " t21 } P22
+#n30 $w { t20 "OpusNr:  " t21 } P22
+#n40 { t20 "    auch:       " t21 } P22
+#n4p { t20 "Pseudonyme: " t21 } P22
+#n4r { t20 "Wirkl. Name: " t21 } P22
+#n80 $$ { t20 "Anm.:       " t21 } P22
+#n80 $b { t20 "Hinweis:    " t21 } P22
+#n80 $c { t20 "  "*12 t21 } P22
+#n80 $d { t20 "  "*12 t21 } P22
+#n80 $a { t20 "Quelle:     " t21 } P22
+#n20s { t20 "Sachgr.:    " t21 } P22
+#060 { t20 "Geocode:    " t21 } P22
+#n80 $P { t20 "Sigel:         " t21 } P22
+#n20 { t20 "Code:       " t21 } P22
+#n31d { t20 "Dewey:       " t21 } P22
+#n31l { t20 "LC Class:    " t21 } P22
+#n31b { t20 "Basisklass.: " t21 } P22
+
+#t{ t20 t21 t22 }    leere Tabellenzeile
+#)N
+
+
+
+
+  <<<<<<<<<<<<<<<< ENDE des wirklich wichtigen Teils >>>>>>>>>>>>>>>>>
+
+#-Q
+   hier folgt der Rest von disp-xxx.npr (xxx=win, web, dos)

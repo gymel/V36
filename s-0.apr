@@ -1,0 +1,137 @@
+  S-0.APR : SORT Prototype : to prepare a SORTABLE file in basic format,
+  960214      to be usable after sorting for another export
+
+  Output : Basic file in .ALG format, records preceded by sort header
+           <01h>                         record start
+           u1 sort header<00h>           fields coded for sorting
+           u2 Print header<00h>          same fields for printing
+           20 Title<00h>                 normal fields of record
+           40 Author<00h>
+           ...
+           <0Dh> <0Ah>                   record end
+
+           The field delimiter <00h> follows directly the last character,
+           the next field tag comes immeadiately after <00h>, no line feed!
+           Record end <0Dh> <0Ah> follows the last <00h>.
+           (<0Dh> is the hexadecimal code for ASCII 13 = "carriage return")
+
+  Purpose: Output file can be sorted by ASORT
+           Command:    asort uuu.alg sss.alg
+           then        del uuu.alg
+           then export sss.alg with parameters of type PRINT (==> p-0.apr)
+           (see PR-LIST.BAT for a complete procedure)
+
+  Batch  : SR-LIST.BAT  :  selection by full text search
+           PR-LIST.BAT  :  selection by index access and F4 downloading
+
+pn="S-0 : Prototype for SORT"
+
+  --------- Constants  (don't change) -----------------------------
+
+zl=0        no line breaking
+ks=1        field text for export begins at first character after '#'
+ke=0        Field end code = 00h    (to get the .ALG format)
+              (in the command section below, we use "#zz 0" on every line
+               that is NOT to be terminated by this default postfix)
+i4=0        V14 links enabled
+
+ts          load table S.APT for sort codes of characters
+  --------------------------------------------------------------
+dx=1        not necessary, just for testing to see all codes on screen
+
+
+
+  ========= Headings Commands ==================================
+  ================== not needed if only 1 output per rec =======
+  otherwise: insert headings commands here
+
+
+  If you want to exclude certain records: formulate a condition
+  and use a +- command to abandon the record
+
+  Example:
+  #76 +- b3 x"<1992"    abandon if year in #76 is < 1992
+
+  ********* Field list *****************************************
+
+#hi +b e0 #zz 0   if current record is a subrecord: go to #-b
+                 (it will be appended to the main record without 0Dh 0Ah)
+
+        normal records start here:
+
+        Fields with a '!' will be coded by the "alternative table"
+           (this is contained in S.APT)
+        The sort field in this example is composed of author (#40) and
+        title (#20) and preceded by "u1" which is always the first tag
+        in a sortable file. (This is the special extra role of the user
+        variable #u1)
+
+#t{ 1 }     01h = Code for "main record start"
+
+  ~~~~~~~~ What follows is application specific ~~~~~~~~~~~~~~~~~~~~~~
+
+!40 +s e"[;=]" b3 u F" " p"u1 " #zz 0    there is an author (#40)
+    goto #-s if this line is executable
+       end is at ';' or ';' if one of these exist in #40
+               b3 means: text begins at character position 4
+               (with 3-digit tags this would be b4)
+                  u will delete "non-sort" words (marked by non-sort character)
+                    F" " deletes spaces at end
+                         p"u1 "  puts "u1 " as prefix in front of text
+                                #zz 0   prevents default postfix, because
+                                        sort field is not yet complete.
+      do the same with #60, if we have no #40:
+!60 +s e"[;=]" b3 u F" " p"u1 " #zz 0      (Corporate author instead of person
+      and with #20 if #60 exists neither:
+!20 e" : " b3 u u[] p"u1 " #zz 0            or else the title
+
+   if #40 or #60 existed, we get here by a jump  "+s"
+
+#-s
+    use the date (#76) as a second sort element
+!76 b3 x"*1" e"." p"" #zz 0
+    text begins 3 bytes to the right again
+       multiply by 1 (this extracts the number from the field, if there are
+       other elements in #76, like punctuation
+             e"." ends the number at '.' and we have the pure year
+                  '' is put before the year to ensure correct sorting
+                       #zz 0    prevents default postfix
+#t{ 0 }   write 00h as field delimiter for #u1
+          Result:   01hu1 nameyear00h
+
+    The print head for the end product (a sorted list) is produced
+    in much the same way, but without using the alternative codes
+    It gets the special tag "u2"
+
+#40 +d e"[;=]" b3 u F" " p"u2 " #zz 0
+#60 +d e"[;=]" b3 u F" " p"u2 " #zz 0
+#20 e" : " b3 u u[] p"u2 " #zz 0
+
+#-d
+#76 b3 x"*1" e"." #zz 0
+
+  *** What follows can largely be used without alteration ************
+
+#t{ 0 }     terminate u2 with 00h
+
+#-M    Main part of output
+  either:
+ ##          now write all fields (global output command ## )
+            (automatically using 00h as delimiter , see ke command above)
+  or instead:
+tselect    activate this line if only a special selection of fields
+            must be exported into the sortfile
+            (several choices for "select.apt" exist as "s-*.apt" files, to
+             be chosen from CockPit menu "Options / Completeness")
+
+#nr b3 p"99z"   at the end, export the record number as #99z
+         ~~~    it will be Null-terminated automatically
+#t{ 13 10 }           (<0Dh> <0Ah>  have to be added to make file sortable)
+#+#        Export of this record is complete
+
+
+#-b        Label #-b: start here for hierachically subordinate records
+#t { h0 }  write the hierarchy code (= 02h for Level #01 etc.)
+
+#+M        all the rest same as main record
+

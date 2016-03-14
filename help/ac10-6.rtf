@@ -1,0 +1,102 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\froman\fprq2 Garamond;}{\f2\froman\fprq2\fcharset0 Times New Roman;}{\f3\fmodern\fprq1 Courier New;}{\f4\fnil\fprq2\fcharset2 Wingdings;}{\f5\froman\fprq2\fcharset0 allegro New Roman;}{\f6\fmodern\fprq1\fcharset0 Courier New;}{\f7\fswiss Arial;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;}
+\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs24   \fs20 
+\par  `\cf1\ul\b Vorangehender Teil\cf2\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf2\ulnone\b0 ` 
+\par \pard 
+\par \pard\fi-960\li960\tx960\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1\fs28 
+\par 10.2.6.3\tab Manipulationsbefehle der Exportsprache:  Vorbehandlung von Kategorietexten\b0\fs20 
+\par \pard\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f2 Nach der bisherigen Beschreibung sieht es so aus, als k\'f6nnten Datenfelder nur als Ganzes oder in globaler Verk\'fcrzung (siehe Parameter\b\f3  ks\b0\f0  und\b\f3  kt\b0\f2 ) ausgegeben werden. Es gibt aber sehr viele M\'f6glichkeiten, einen Feldtext als \b\f0 Arbeitstext\b0\f2  vorzubehandeln: z.B. kann man vorn und hinten etwas abschneiden, Teile ausschneiden und/oder Textelemente davor und dahinter setzen, den Inhalt pr\'fcfen, zwischenspeichern oder mit Zahlenwerten verrechnen. \f0 
+\par Das alles macht man mit den sog. \b Manipulationsbefehlen\b0 , die in den `\cf1 Anweisungszeilen\cf2 ` (\f3 -\f4\'d8\f0 `10.2.6.1) zwischen dem bedingten Sprung\b\f3  BS\b0\f0   und den bedingten Postfixen 
+\par (\b\f3  ... #kt1 z1 ... #ktn zn\b0\f2  ) stehen k\'f6nnen. \f0 
+\par \f2 Fast alle Manipulationsbefehle k\'f6nnen in einer Befehlszeile sogar mehrfach auftreten und beliebig miteinander kombiniert werden. Man schreibt einfach mehrere Befehle hintereinander, immer genau ein Leerzeichen dazwischen. (Zwei Leerzeichen bewirken auch hier, da\'df der Rest der Zeile als Kommentar behandelt, also ignoriert wird.) \f0 
+\par \f2 F\'fcr das folgende sind weiterhin die Bezeichnungsregeln (\b\f3 n k X x CS ...\b0\f2 ) von 10.2 g\'fcltig. \f0 
+\par Es sind 5 Typen von Befehlen zu unterscheiden: 
+\par \pard\fi-1200\li1200\tx1200\tx1560\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab `\cf1 Typ 1\cf2\f2 `: Befehle f\'fcr sofortige Ver\'e4nderungen am Arbeitstext (AT), \f0 
+\par \tab `\cf1 Typ 2\cf2 `: arbeitet mit Anwendervariablen (AV), 
+\par \tab `\cf1 Typ 3\cf2\f2 `: veranla\'dft Zeichenausgaben vor oder ndem Arbeitstext, \f0 
+\par \tab `\cf1 Typ 4\cf2\f2 `: besteht aus Bedingungspr\'fcfungen, die dann Reaktionen ausl\'f6sen k\'f6nnen, und \f0 
+\par \pard\fi-1200\li1200\tx720\tx1440\tx2160\tx2376\tx2880\tab\tab `\cf1 Typ 5\cf2\f2 `: Sonderaktionen, z.B. Vorsch\'fcbe und Nachladungen. \f0 
+\par \pard\fi-1200\li1200\tx1440\tx2160\tx2376\tx2880 Ferner gibt es noch ein paar `\cf1 Index-Sonderbefehle \cf2 ` 
+\par \pard\fi-1200\li1200\tx720\tx1440\tx2160\tx2376\tx2880 
+\par \pard\fi-2160\li2160\tx720\tx1440\tx2160\tx2376\tx2880\b\tab\f2 * hei\'dft: Befehl nicht mehrfach in einer Zeile anwendbar\b0\f0 
+\par \pard\fi-1704\li1704\tx1136\tx1704\tx2272\b Befehl\tab Typ\tab Wirkung\tab\tab\tab\tab\b0\tab\tab\tab\b [Seite im Handbuch \f2 ab V26\f0 ]\b0 
+\par \b\f3 !\b0\f0\tab 5\tab nur zum Testen: Anzeige des aktuellen Arbeitstextes u.a. am Bildschirm\tab [201]\tab 
+\par \b\f3 =xy\b0\f0\tab 2\tab Vergleiche AT mit Inhalt von\b\f3  #uxy\b0\f0  und speichere AT in\b\f3  #uxy\b0\f2    gleich: n\'e4chster Befehl, ungleich: Ausgabe des AT und bed.Sprung\f0\tab [199]\tab 
+\par \b\f3 |im   \b0\f0 *  \tab 5\tab\f2 AT als Schl\'fcssel nehmen, im Index\b\f3  i\b0\f0  mit Modus\b\f3  m\b0\f2  suchen, Aufnahme laden. m=8 oder 9: gefundenen Schl\'fcssel in #uxi laden\f0\tab [212]\tab 
+\par \b\f5\'b2\f3 x\b0\f0  oder\b\f3  $x\b0\f0\tab 1\tab Teilfeld x aus AT herausholen und als neuen AT verwenden\tab [198] 
+\par \b\f3 ~x\b0\f0\tab 1\tab Teilfeld \b\f5\'b2\b0\f0 x aus AT entfernen (wenn es mehrfach vorkommt, nur das erste)\tab V15\tab [198]\tab 
+\par \b\f3 ,"_X_Y_"\b0\f0\tab 1\tab Lokale Ersetzung: ersetze im Arbeitstext X durch Y\tab\tab [197]\tab 
+\par \b\f3 axy\b0\f0\tab 2\tab AT +\b\f3  #uxy\b0\f0  in\b\f3  #uxy\b0\f0  speichern (AT nicht ausgeben)\tab [199]\tab 
+\par \b\f3 Axy\b0\f0\tab 2\tab\b\f3 #uxy\b0\f0  + AT in\b\f3  #uxy\b0\f0  speichern (AT nicht ausgeben)\tab [199]\tab 
+\par \b\f3 bk\b0\f0\tab 1\tab\f2 Beginne AT nach Position k. Wenn AT k\'fcrzer ist: Abbruch der Anweisung, keine Ausgabe, kein bedingter Sprung\f0\tab [196]\tab 
+\par \b\f3 bX\b0\f0\tab 1\tab Beginne AT hinter Zeichenkette\b\f3  X\b0\f0 . Wenn\b\f3  X\b0\f0  nicht vorhanden: Abbruch\tab [196]\tab 
+\par \b\f3 Bk\b0\f0\tab 1\tab\f2 Beginne AT nach dem k-ten Zeichen. Wenn AT k\'fcrzer, bleibt er unver\'e4ndert.\f0\tab [196]\tab 
+\par \b\f3 BX\b0\f0\tab 1\tab Beginne AT hinter Zeichenkette\b\f3  X\b0\f0 ; wenn\b\f3  X\b0\f2  nicht vorhanden, AT unver\'e4ndert\f0\tab [197]\tab 
+\par \b\f3 C\b0\f0\tab 5\tab Zeilenvorschub vor Ausgabe des AT (Param.\b\f3  ze\b0\f0  ausgeben)\tab [201]\tab 
+\par \b\f3 cX\b0\f0\tab 4\tab\f2 Pr\'fcfe, ob AT die Zeichenkette\b\f3  X\b0\f2  enth\'e4lt. Wenn ja: Anweisung fortsetzen (AT bleibt unver\'e4ndert); wenn nein: Abbruch\f0\tab [201]\tab 
+\par \b\f3 dxy\b0\f0\tab 2\tab Anwendervariable\b\f3  #uxy\b0\f2  l\'f6schen\f0\tab [200]\tab 
+\par \b\f3 ek\b0\f0\tab 1\tab Beende AT hinter dem\b\f3  k\b0\f0 ten Zeichen (\i Sonderfall\b\i0\f3  k=0\b0\f0 , siehe\b\f3  Z\b0\f0 )\tab [197]\tab 
+\par \b\f3 Ek\b0\f0\tab 1\tab wie\f3  ek\f2  , aber letztes Wort weglassen, wenn es sonst zerschnitten w\'fcrde\f0\tab [197]\tab 
+\par \b\f3 eX\b0\f0\tab 1\tab Beende AT vor Zeichenkette\b\f3  X\b0\f0 ; wenn\b\f3  X\b0\f2  nicht vorh., bleibt AT unver\'e4ndert\f0\tab [197]\tab 
+\par \b\f3 EX\b0\f0\tab 1\tab Beende AT hinter der Zeichenkette\b\f3  X\b0\f0 ; wenn\b\f3  X\b0\f2  nicht vorhanden, bleibt AT unver\'e4ndert\f0\tab [197]\tab 
+\par \b\f3 fk / Fk\b0\f0\tab 1\tab Entferne ASCII-Code\b\f3  k\b0\f0  am Anfang/Ende des AT (evtl. mehrere)\tab [197]\tab 
+\par \b\f3 fx / Fx\b0\f0\tab 1\tab Entferne Zeichen\b\f3  x\b0\f0  am Anfang / Ende des AT (evtl. mehrere)\tab [197]\tab 
+\par \b\f3 fX / FX\b0\f0\tab 1\tab Entferne alle in\b\f3  X\b0\f0  enthaltenen Zeichen am Anfang/Ende des AT\tab [197]\tab 
+\par \b\f3 ik,x\b0\f0\tab 4\tab Anweisung nur fortsetzen, wenn auf Position\b\f3  k\b0\f0  das Zeichen\b\f3  x\b0\f0  steht  (Position 1 = erste Kategorieziffer)\tab\tab [201]\tab 
+\par \b\f3 Ik,x\b0\f0\tab 4\tab Anweisung nur fortsetzen, wenn auf Position\b\f3  k\b0\f0  \b nicht\f3  x\b0\f0  steht\tab [201]\tab 
+\par \b\f6 Ji\tab\b0\f0 1\f2\tab Index-Pr\'e4fix "\b\f6 |i\b0\f2 " vor den AT setzen (Neu in V26). Gleichwertig: \b\f6  p"|i"\f3 
+\par Kz  kz\b0\f0\tab 1\tab\f2 "Matchcode" bilden, z.B. Titelschl\'fcssel; f\'fcr Index nutzbar. \i\f0 Beispiel:\i0\f2  #20 K4 K2 K2 K1  :  4221-Schl\'fcssel aus Titel bilden\f0\tab [203] \tab 
+\par \b\f3 l\i\f0 xy\b0\i0\tab 5\tab\f2 L\'e4nge des aktuellen Arbeitstextes in\f3  #u\i\f0 xy\i0  schreiben\tab\f2\tab\f0 [202] 
+\par \b\f3 L\i\f0 xy\i0\f3\tab\b0\f0 5\tab Label des im AT befindlichen Feldes aus CFG in die #uxy kopieren\tab [202]\tab 
+\par \b\f3 l>k / l<k \b0\f0 4\tab\f2 L\'e4ngenpr\'fcfung: Ist AT l\'e4nger/k\'fcrzer als k Zeichen?\tab\tab [201]\b\f3 
+\par mX m\{CS\}*\b0\f0\tab 3\tab\f2 Direktes und Indirektes Mehrfachpr\'e4fix (Zeichenkette/Steuerkette)\f0\tab [196]\tab 
+\par \b\f3 m>K  *\b0\f0\tab 3\tab Unterprogramm\b\f3  #(K ... #)K\b0\f2  vor Mehrfachkategorie ausf\'fchren\f0\tab [201]\tab 
+\par \b\f3 mz  *\b0\f0\tab 3\tab\f2 Indirektes Mehrfachpr\'e4fix (Zwischenteil)\f0\tab\f2\tab\tab\tab\f0 [201] 
+\par \b\f3 M  *\b0\f0\tab 5\tab\f2 AT als neues Datenfeld in den aktuellen Datensatz einordnen. Notwendig f\'fcr "Glob. Manipulation"  (Kap. 1.5) (AT mu\'df mit g\'fclt. Kategorienummer beginnen)\f0\tab\tab [202]\tab 
+\par \b\f3 N\b0\f0\tab 5\tab Seitenumbruch vor Ausgabe des AT\tab\f2\tab\tab\tab\f0 [202] 
+\par \b\f3 p\{CS\}  \b0\f0 *\tab 3\tab\f2 Indirektes Pr\'e4fix: Steuerzeichenkette\b\f3  CS\b0\f0  vor fertigem AT ausgeben\tab [200]\tab 
+\par \b\f3 P\{CS\}  \b0\f0 *\tab 3\tab Indirektes Postfix: Kette\b\f3  CS\b0\f0  ausgeben, nachdem AT ausgegeben ist\tab [201]\tab 
+\par \b\f3 p>K\b0\f0\tab 3\tab Unterprogramm\b\f3  #(K\b0\f0  aufrufen, bevor AT ausgegeben wird\tab\f2\tab\f0 [200] 
+\par \b\f3 P>K  \b0\f0 *\tab 3\tab Unterprogramm\b\f3  #(K\b0\f0  aufrufen, nachdem AT ausgegeben ist\tab [201]\tab 
+\par \b\f3 pX\b0\f0\tab 1\tab\f2 Direktes Pr\'e4fix:\b\f3  X\b0\f2  vorn an den AT anf\'fcgen\f0\tab\f2\tab\tab\f0 [196] 
+\par \b\f3 PX\b0\f0\tab 1\tab Direktes Postfix:\b\f3  X\b0\f2  hinten an AT anf\'fcgen\f0\tab\f2\tab\tab\f0 [196] 
+\par \b\f3 pz\b0\f0\tab 3\tab\f2 Indirektes Pr\'e4fix: Zwischenteil Nummer\b\f3  z\b0\f0  vor AT ausgeben\tab [200]\tab 
+\par \b\f3 Pz  \b0\f0 *\tab 3\tab Indirektes Postfix: Zwischenteil Nummer\b\f3  z\b0\f0  nach AT ausgeben\tab [201]\tab 
+\par \b\f3 R\b0\f0\tab 1\tab\f2 AT rechtsb\'fcndig in aktuelle Zeile stellen (geht nur bei \b\f3 zl>0\b0\f0  )\tab [198]\tab 
+\par \b\f3 rk,x\b0\f0\tab 1\tab AT\b\f3  k\b0\f2 -stellig rechtsb\'fcndig machen, links mit\b\f3  x\b0\f2  auff\'fcllen\f0\tab\f2\tab\f0 [198] 
+\par \b\f3 sk,x\b0\f0\tab 1\tab AT\b\f3  k\b0\f2 -stellig linksb\'fcndig machen, rechts mit\b\f3  x\b0\f2  auff\'fcllen\f0\tab\f2\tab\f0 [198] 
+\par \b\f3 tk\b0\f0\tab 1\tab\b\f3 k\b0\f0  Zeichen vom Ende des AT entfernen\tab\f2\tab\tab\tab\f0 [197] 
+\par \b\f3 Tk\b0\f0\tab 1\tab die letzten\b\f3  k\b0\f0  Zeichen des AT als neuen AT nehmen\tab\f2\tab\f0 [197] 
+\par \b\f3 tX\b0\f0\tab 1\tab vom AT hinten den mit\b\f3  X\b0\f0  beginnenden Teil entfernen\tab\f2\tab\f0 [197] 
+\par \b\f3 TX\b0\f0\tab 1\tab hinteren Teil des AT ab Zeichenkette\b\f3  X\b0\f0  als neuen AT nehmen\tab [197]\tab 
+\par \b\f3 u  u[]  U   U[] 
+\par \b0\f0\tab 1\tab\f2 Entfernen der \'dcbergehw\'f6rter bzw. zwischen\b\f3  []\b0\f2  eingeschlossene Teile; U genauso, aber erstes Wort dann in Gro\'dfschreibung \'e4ndern\f0\tab [198] 
+\par \b\f3 vk,x\b0\f0\tab 4\tab Anweisung nur fortsetzen, wenn Zeichen auf Pos.\f3  k\f0  kleiner als\f3  x\f0  ist\tab [201]\tab 
+\par \b\f3 Vk,x\b0\f0\tab 4\tab Anweisung nur fortsetzen, wenn Zeichen auf Pos.\f3  k\f2  gr\'f6\'dfer als\f3  x\f0  ist\tab [201]\tab 
+\par \b\f3 w\b0\f0\tab 1\tab AT als Kategorienummer interpretieren, deren Inhalt wird neuer AT\tab [198]\tab 
+\par \b\f3 x"\b0\i\f0 OpW\b\i0\f3 "\b0\f0\tab 1\tab Rechenbefehl: AT als Zahl nehmen, Operation \i Op\i0  mit Wert \i W\i0\f2  ausf\'fchren, das Ergebnis wird als neuer AT genommen\f0\tab [209]\tab 
+\par \b\f3 X   \b0\f0 *\tab 5\tab\f2 Aus dem Arbeitstext einen Sondereintrag f\'fcr satz\'fcbergreifende Suche machen\f0\tab [202]\tab 
+\par \b\f3 y0\b0\f0\tab 1\tab Verhindern der Umcodierung des AT, dann Anweisung fortsetzen\tab [198]\tab 
+\par \b\f3 y1 / y2\b0\f0\tab 1\tab Codierung mit\b\f3  p\b0\f0 - bzw.\b\f3  q\b0\f2 -Befehlen sofort ausf\'fchren, Anweisung fortsetzen\f0\tab [198]\tab 
+\par \b\f3 y3\b0\f0\tab 1\tab\f2 Ersetzungen ausf\'fchren: Texel- und V23-Ersetzungen (vb163/164)\f0\tab 
+\par \b\f3 y\f6 4\f3  \b0\f0\tab 1\tab Ausblenden von \f2 UTF-8-\f0 Codes \f2 aus der Umcodierung mit y1 / y2\f7 
+\par \b\f3 y"n"\b0\f0\tab 1\tab Vom AT nur die Zeichen bestimmten Typs nehmen, die anderen weglassen  [198]\tab 
+\par \b\f3 Z\b0\f0    *\tab 5\tab\f2 Unterdr\'fccken des Ausgabe des AT (gleiche Wirkung wie\b\f3  e0\b0\f0 )\tab [202]\tab 
+\par \pard\tx720\tx1440\tx2160\tx2376\tx2880 
+\par \pard\fi-658\li658\tx720\tx1440\tx2160\tx2376\tx2880\b\f1\fs28 Wichtig\b0\f0\fs20\tab deshalb nochmal deutlich: der Originaltext eine\f2 s\f0  \f2 Datenfelds\f0  bleibt durch die Manipulationsbefehle unangetastet: das Programm erstellt sich einen \b Arbeitstext\b0\f2 , das ist zun\'e4chst einfach eine Kopie des Feldtextes, und daran werden dann die Manipulationen ausgef\'fchrt. Durch jeden Befehl des Typs 1 \b\f0 entsteht ein neuer Arbeitstext\b0\f2 , auf den dann der n\'e4chste Befehl wirkt. Nach Abarbeitung der Befehlskette wird schlie\'dflich der entstandene Arbeitstext ausgegeben, nicht der Originaltext. Dann wird der Arbeitstext sofort wieder vergessen, und f\'fcr das n\'e4chste auszugebende Feld wird ein neuer angelegt. \f0 
+\par \pard\fi-2160\li2160\tx720\tx1440\tx2160\tx2376\tx2880 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 `\cf1\ul\b Vorangehender Teil\cf2\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf2\ulnone\b0 ` 
+\par \pard\fi-2160\li2160\tx720\tx1440\tx2160\tx2376\tx2880 
+\par 
+\par ?Typ 1=h ac10-7 
+\par ?Typ 2=h ac10-7=Typ 2 
+\par ?Typ 3=h ac10-7=Typ 3 
+\par ?Typ 4=h ac10-7=Typ 4 
+\par ?Typ 5=h ac10-7=Typ 5 : Sonderaktionen 
+\par ?Index-Sonderbefehle =h ac10-7=INDEX-Sonderbefehle 
+\par ?Anweisungszeilen=h ac10-5=10.2.6.1   Anweisungen 
+\par ?Vorangehender Teil=h ac10-5 
+\par ?Fortsetzung=h ac10-7 
+\par 
+\par }
+ 

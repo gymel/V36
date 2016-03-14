@@ -1,0 +1,129 @@
+{\rtf1\ansi\ansicpg1253\deff0\deflang1033{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\fscript\fprq2 Comic Sans MS;}{\f2\fscript\fprq2\fcharset0 Comic Sans MS;}{\f3\froman\fprq2 Garamond;}{\f4\froman\fprq2\fcharset0 Times New Roman;}{\f5\fmodern\fprq1\fcharset0 Courier New;}{\f6\fmodern\fprq1 Courier New;}{\f7\fmodern\fprq1\fcharset0 Courier;}{\f8\fmodern\fprq1\fcharset161{\*\fname Courier New;}Courier New Greek;}{\f9\fnil\fprq2\fcharset2 Wingdings;}{\f10\froman\fprq2\fcharset0 Garamond;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red255\green0\blue0;\red128\green0\blue128;\red0\green128\blue0;\red0\green176\blue0;}
+\viewkind4\uc1\pard\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\lang1031\f0\fs24       \fs20 
+\par  `\cf1\ul\b Vorangehender Teil\cf2\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf2\ulnone\b0 ` 
+\par \pard\qc\cf3\b\i\f1\fs28 allegro S\i0 ystemhandbuch V2\f2 6\cf2\f0\fs48 
+\par \pard\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b0\fs20 
+\par \b\f3\fs36 0.7\tab Datensicherung: Konzept und Methoden\b0 
+\par \f0\fs20 
+\par \f4 Im Normalfall ist es ganz einfach:  `\cf1\ul\b h backp\cf2\ulnone\b0 `  eingeben, dann "Sicherungskopie" w\'e4hlen. 
+\par 
+\par Hier wird f\'fcr interessierte Systemverwalter erkl\'e4rt, welche \'dcberlegungen dahinterstecken.\f0 
+\par 
+\par \f4 Bedenken Sie: Ihre Daten sind die weiche Frucht harter Arbeit - Sicherung tut not. Die unbedingt zu sichernden Daten stehen nur in den .cLD-Dateien - die anderen lassen sich rekonstruieren. Ver\'e4nderungen an diesen Dateien werden nur durch PRESTO (und dessen Varianten, auch a99) und  UPD  in einer Datei  \f5 CAT.LOG\f4   protokolliert, wenn \lang1033\b\f6 CAT\lang1031\b0\f0  der Name Ihrer Datenbank ist. 
+\par Nehmen wir als Beispiel an, Ihre Datenbank befindet sich auf \f4  \f7 C:\\ALLEGRO\\KATALOG\f0 . 
+\par Um im Katastrophenfall die Datenbank\lang1033\b\f6   CAT\b0   \f4 rekonstruieren zu k\'f6nnen, geht man folgenderma\'dfen vor. Hier ist auch der "Handbetrieb" beschrieben, um den interessierten\f6  \b\i\f0 Allegrologen\b0\i0\f4  ein detailliertes Verst\'e4ndnis zu vermitteln und damit alles genau dokumentiert ist. \f0 
+\par \lang1031 
+\par \pard\li426\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\fs24 Der \lang1033\b\i CockPit\b0\i0 -Pilot hat es im Normalfall \b viel leichter\b0 : man aktiviert nur\b\f8  \'b5r s\b0\f6  bzw.\b\f8  \'b5r w\b0\f6   (-\f9\'d8\f6  0.11.2) \f4 und w\'e4hlt dann das "Private Backup" bzw. "Private Restore" (das sind die Prozeduren  PBACKUP.BAT und PRESTORE.BAT). \f0 
+\par \lang1031\b\fs20 Also:\b0  Starten Sie auf \cf3 C:\\ALLEGRO\cf2  das Programm \cf3 CP.BAT\cf2\f4 , dann den Men\'fcpunkt "\cf3\f0 sichern\cf2 ", und den Unterpunkt "\cf3 Private Datensicherung\cf2 " 
+\par \b Noch einfacher\b0 : Datenbank auf eine andere Platte kopieren. Im Windows-System wird das durch den FLEX `\cf1\ul BACKUP\cf2\ulnone\f4 ` unterst\'fctzt, die genau die richtigen Dateien kopiert und im Bedarfsfall auch die Wiederherstellung regelt. \f0 
+\par \pard\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 
+\par \pard\fi-1140\li1140\tx1140\tx9866\b Manuelle Methode bis DOS 5 \b0 (danach gibt es die Programme BACKUP und RESTORE von Microsoft nicht mehr)\b 
+\par 
+\par 1.\b0\tab\b Anfertigen einer Sicherungskopie\b0   \lang1033\b\f8\tab                   \'b5r s\b0\f6 
+\par \pard\fi-1140\li1140\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\lang1031\f0\tab\f4 Eine gen\'fcgende Anzahl formatierter Disketten mu\'df bereitliegen. \f0 
+\par \tab\f4 Man w\'e4hlt mit dem Befehl CD das Verzeichnis KATALOG an, auf dem sich die Datenbank befindet. Dann gibt man die Befehle \f0 
+\par \pard\fi-4020\li4020\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\lang1033\f6\tab rename cat.log xxx.log\fs16\tab (.LOG-Datei darf nicht mit gesichert werden!)\fs20 
+\par \tab backup c:cat*.* a:\fs16\tab\f5 (o.a., z.B. TAPE f\'fcr die Sicherung auf einem "streamer tape")\f6\fs20 
+\par \tab del xxx.log\fs16\tab\tab\tab\f5 (jetzt .LOG-Datei l\'f6schen)\f6\fs20 
+\par \pard\fi-1140\li1140\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\lang1031\f0\tab wenn A: das zur Sicherung zu benutzende Diskettenlaufwerk ist und die Daten auf dem Laufwerk C: liegen (sonst statt c: das aktuelle Laufwerk angeben). MS-DOS fordert weitere Disketten an, wenn eine nicht reicht. Konsequent: feuersichere Aufbewahrung der Kopie an einem vom Rechner entfernten Ort. 
+\par \tab Es ist \b sehr\b0  wichtig, die .LOG-Datei \b nicht\b0\f4  mit zu sichern, sondern gleich nach dem Kopieren zu l\'f6schen, bevor man wieder an der Datenbank arbeitet. (Auch wenn Ihnen dies nicht einleuchtet, machen Sie es unbedingt trotzdem so!) Bei der n\'e4chsten Bearbeitung wird automatisch eine neue .LOG-Datei begonnen. \b\f0 Diese \b0\f4 braucht man zum Rekonstruieren, denn sie enth\'e4lt die \i\f0 nach\i0  der Sicherung entstandenen Daten! 
+\par \b 2.\b0\tab\f4 Man arbeitet mit der Datenbank. In gewissen, frei bestimmbaren Abst\'e4nden wiederholt man den Vorgang 1. \b\f0 oder\b0  kopiert die .LOG-Datei ihrerseits auf eine Diskette (siehe unten). 
+\par \b 3.\b0\tab\f4 Wenn irgendwann durch Plattenfehler, Stromausfall oder andere St\'f6rungen die Datenbank "abgest\'fcrzt" und nicht mehr brauchbar ist (keine Registeranzeige oder offensichtliche Fehler), l\'f6scht man die unbrauchbar gewordenen Dateien, \b\f0 aber nicht\b0  die .LOG-Datei, und speist die Sicherungskopie ein. 
+\par \tab\f4 Das geht so:  man gibt nach Anw\'e4hlen des Datenbank-Verzeichnisses die folgenden Befehle: \f0 
+\par \lang1033\f6\tab del cat*.cLD 
+\par \tab del cat.tbl 
+\par \tab del cat.cDX 
+\par \tab del cat.stl 
+\par \tab del cat.res 
+\par \tab restore a: c:      \f5\fs16 (bzw. entspr. Befehl f\'fcr ein "streamer tape")\f6\fs20 
+\par \lang1031\f0\tab\f4 und f\'fchrt danach die Schritte 4. bis 6. aus. \f0 
+\par \tab\f4 Alternativ, oder wenn man keine Sicherungskopie gemacht hat und wenn die .cLD-Dateien noch da sind, kann man auch so vorgehen: man l\'f6scht CAT.cDX und CAT.TBL und regeneriert dann mit dem Programm 7 (= INDEX) die Datenbank aus den noch vorhandenen .cLD-Dateien (\f6 -\f9\'d8\f0  Kap.7). Dazu nutzt man die Funktion\lang1033\b\f6  -fi\b0\f5  des Programms INDEX, dabei bleiben auch die Satznummern erhalten! Mit diesem Schritt w\'e4re die Rekonstruktion abgeschlossen, d.h. die folgenden Schritte entfallen dann. \f6 
+\par \lang1031\b\f0 4.\b0\tab\f4 Danach kopiert man die .LOG-Datei, falls sie beim Zusammenbruch verschwunden war (das ist sehr unwahrscheinlich), von ihrer Sicherungsdiskette auf das Datenverzeichnis. Sie mu\'df CAT.LOG hei\'dfen. \f0 
+\par \b 5.\b0\tab\f4 Schlie\'dflich gibt man, vom \\ALLEGRO-Programmverzeichnis aus, den Befehl \f0 
+\par \pard\fi-1860\li1860\tx1140\tx1860\tx9866\lang1033\b\f6\tab\tab upd -fp -dkatalog\\cat -ucat.log -n1\tab\f8\'b5r w\b0\f6 
+\par \pard\fi-1140\li1140\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\lang1031\f0\tab\f4 Hier mu\'df man\lang1033\b\f6  -S\b0\f5  erg\'e4nzen, wenn man auf einem \b\f6 Einzelplatz\b0 system arbeitet. Daraus kann man sich ein Makro namens PLAYBACK machen. Oder (bequemer!) man setzt \b\i\f0 CockPit\b0\i0  ein (\f6 -\f9\'d8\f0  0.11.2). 
+\par \lang1031\b 6.\b0\tab Nach Ablauf dieses Programms wird die Datenbank wieder in dem Zustand sein, den sie vor dem Zusammenbruch (nach der letzten noch fehlerfreien Speicherung) hatte. 
+\par \b 7.\b0\tab\f4 Gelegentlich beginnt man wieder neu bei 1, wenn die .LOG-Datei eine gewisse Gr\'f6\'dfe erreicht hat. Eine vorgeschriebene Grenze gibt es nicht - zu empfehlen sind ca. 500 KB bis 1 MB, damit im Fall des Falles die Wiederherstellung nicht zu lang dauert. \lang1033\b\i\f0 CockPit\b0\i0\f4  macht  Sie ab 1.2 MB darauf aufmerksam, da\'df es an der Zeit w\'e4re, eine Sicherung vorzunehmen. \f0 
+\par \pard\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\lang1031 
+\par 
+\par \f4 Wenn man LOG-Dateien auf Disketten oder auf ein anderes Laufwerk bzw. Dateisystem (UNIX) kopiert, mu\'df man \'fcber die Vorg\'e4nge sorgf\'e4ltig Buch f\'fchren und sich f\'fcr eine von drei Methoden entscheiden: \f0 
+\par 
+\par \pard\fi-1140\li1140\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\lang1033\b\f3\fs28   A\b0\tab\f4\fs24 Man kopiert jeweils die gesamte LOG-Datei und l\'f6scht sie \b\f0 nur\b0\f4  zum Zeitpunkt einer Gesamtsicherung (Vorgang 1.) Diese einfachste Methode empfiehlt sich, wenn man gen\'fcgend Platz auf der Platte hat. Man beachte aber die unten folgende Anmerkung.\f3\fs28 
+\par \pard\fi-1136\li1136\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b   B\b0\tab\f0\fs24 Man numeriert die LOG-Dateien \f3\fs28 (\f6\fs20 cat1.LOG, cat2.LOG, ...) und \b\f5 l\'f6scht sie nach dem Kopieren\b0\f6 . 
+\par \pard\fi-1140\li1140\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\lang1031\f0\tab\f4 Dann mu\'df man die Vorg\'e4nge 4. und 5. im Bedarfsfall mehrfach ausf\'fchren, zuerst mit\lang1033\f6  cat1.log ... 
+\par \pard\fi-1134\li1134\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\f3\fs28   C\b0\tab\f0\fs24 Man kopiert die jeweils neu entstandene LOG-Datei an das Ende der beim letzten Mal gesicherten LOG-Datei (z.B. mit \f6\fs20 copy /b`A:cat.LOG + C:cat.LOG) und \b\f5 l\'f6scht sie nach dem Kopieren\b0 . Dann brauchen 4. und 5. nur einmal ausgef\'fchrt zu werden. So geht es mit \b\i\f0 CockPit\b0\i0 : Gesamtsicherung mit\b\f6  \f8\'b5r s b\b0\f5 , f\'fcr die \b\f6 erste\b0  .LOG-Datei\b\f8  \'b5r s L\b0\f6  , dann immer\b\f8  \'b5r s +\b0\f5  ("additiv") bis zur n\'e4chsten Gesamtsicherung. \f6 
+\par \lang1031\f0\tab Man beachte aber: 
+\par \pard\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 
+\par \b Wichtige Anmerkung:\b0 
+\par \f4 Nur Methode B kommt in Frage, wenn man mit INDEX zwischendurch neue Dateien einspielt. Die Regenerierung einer Datenbank mu\'df dann so erfolgen, da\'df die LOG-Dateien in chronologischer Folge eingespielt werden und die neuen Dateien dazwischen, ebenfalls in korrekter Folge, erneut mit dem Programm INDEX einsortiert werden. Man f\'fchre also Vorgang B jeweils vor einem INDEX-Lauf durch, kopiere auch die neuen Dateien auf eine Sicherungsdiskette und numeriere sie ebenfalls chronologisch. \f0 
+\par \f4 Es w\'e4re zu riskant, das INDEX-Programm ebenfalls seine Vorg\'e4nge in der LOG-Datei protokollieren zu lassen. Ein Absturz w\'e4hrend eines INDEX-Laufes w\'fcrde eine anschlie\'dfende Regenerierung sehr schwierig gestalten und nicht immer zuverl\'e4ssig erm\'f6glichen. Wenn ein solcher Absturz passiert, f\'fchre man das PLAYBACK-Verfahren durch und wiederhole den INDEX-Lauf. \f0 
+\par \f4 Wenn man mit  UPD  statt mit INDEX neue Daten einspeist, ist keine besondere Aktion vonn\'f6ten, denn UPD protokolliert wie PRESTO alles in der .LOG-Datei. Einen abgest\'fcrzten  UPD-Lauf k\'f6nnen Sie wiederholen - wenn der Index danach noch in Ordnung ist, denn die schon vorhandenen S\'e4tze werden nicht verdoppelt. \f0 
+\par \f4 Der Platzbedarf f\'fcr die .LOG-Datei ergibt sich daraus, da\'df jede Aufnahme bei jedem Bearbeitungsvorgang, den man mit dem Speicherbefehl (F10 oder #r) abschlie\'dft, vollst\'e4ndig kopiert wird. Besonders dann, wenn man mit dem Platz sparsam umgehen mu\'df, \'fcberpr\'fcfe man nach mehreren l\'e4ngeren Bearbeitungssitzungen die Gr\'f6\'dfe der .LOG-Datei und wende nicht die Methode A an, weil dabei die .LOG-Datei auf der Platte bleibt und st\'e4ndig w\'e4chst. (Wie oben schon erw\'e4hnt: \lang1033\b\i\f0 CockPit\b0\i0\f4  pa\'dft auf und macht Sie ab einer einstellbaren Dateigr\'f6\'dfe darauf aufmerksam (\f6 -\f9\'d8\f0  0.11.6, Befehl L). 
+\par \lang1031 
+\par Eine \b\f4 v\'f6llig andere Sicherungsmethode\b0\f0  ist diese: 
+\par Wenn man zwei oder mehr getrennte (nicht vernetzte) Rechner hat, auf denen dieselbe Datenbank installiert ist, gehe man so vor: 
+\par \pard\fi-1140\li1140\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500  \bullet\tab Bearbeitung findet nur auf Rechner 1 statt, auf Rechner 2 etc. wird die Datenbank nur lesend benutzt. Rechner 2 kann z.B. auch ein UNIX-System sein. 
+\par  \bullet\tab\f4 Zu gewissen Zeiten kopiert man die .LOG-Datei von Rechner 1 auf eine Diskette und speist sie mit dem UPD-Programm in die Datenbank auf Rechner 2 ein. Dazu gen\'fcgt ein Befehl: \f0 
+\par \pard\fi-2580\li2580\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\lang1033\b\f6\tab\tab\tab upd -d \i dbp\\dbn\i0  -fp -u a:cat.log\b0 
+\par \pard\fi-1140\li1140\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\lang1031\f0\tab den man auf Rechner 2 von C:\\ALLEGRO aus gibt, wobei\lang1033\f5  dbp der Datenbankpfad und dbn der Datenbankname ist. Die Diskette mit cat.LOG mu\'df zu dem Zeitpunkt in Laufwerk A: sein. Nat\'fcrlich wird man f\'fcr einen Routinebetrieb diesen Befehl in einem Makro, z.B. mit dem Namen NEWDATA.BAT verstecken. \f6 
+\par \lang1031\f0  \bullet\tab\f4 Auf Rechner 1 l\'f6scht man anschlie\'dfend die .LOG-Datei. Die Datenbank auf Rechner 2 stellt nun quasi die Sicherungskopie dar! \f0 
+\par \pard\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 
+\par \f4 Auf einem lokalen Netz mit Mehrplatzzugriff liegt diese Situation nat\'fcrlich nicht vor, denn dort hat man nur ein Exemplar der Datenbank, an dem von mehreren Pl\'e4tzen aus gearbeitet werden kann. Es kann aber sein, da\'df einer der angeschlossenen Rechner (der nicht im selben Raum steht!) eine gen\'fcgend gro\'dfe Platte hat, die man zur Sicherung benutzen kann. Das ist dann schneller und bequemer als alles andere. man kopiert nur schlicht das ganze Datenverzeichnis und l\'f6scht dann die LOG-Datei. \f0 
+\par 
+\par \f4 Im Kap. 9.2 wird erkl\'e4rt, wie man zwei Datenbanken \b\f0 gegenseitig\b0  aktualisieren kann, wenn in beiden katalogisiert wird. 
+\par \b\f3\fs36 
+\par 
+\par 0.8\tab\f10 Was geh\'f6rt alles zu einer Datenbank?\b0\f3 
+\par \f0\fs20 
+\par Hier ist zusammengestellt, welche Dateien zum Kern und Umfeld einer \lang1033\b\i allegro\b0\i0\f4 -Datenbank geh\'f6ren. Wenn man z.B. eine Datenbank mit allem Zubeh\'f6r sichern, auf ein anderes System kopieren oder auch verbreiten will ("Database Publishing"), ist diese Aufstellung als Checkliste brauchbar. (Eingeklammert: die nur in Nichtstandardf\'e4llen notwendigen Dateien). Bei den einzelnen Dateien ist angegeben, ob und wie sie im Katastrophenfall \b\f0 regenerierbar\b0  (d.h. automatisch wiederherstellbar) oder (manuell-intellektuell) \b rekonstruierbar\b0  sind, oder ob nicht. \lang1031\f4 Das Regenerieren geht \'fcber das Men\'fc `\cf1\ul\b Reorganisieren\cf2\ulnone\b0 `.\lang1033\f0 
+\par \lang1031\f4 Nicht aufgef\'fchrt sind die Programme (Typ .EXE). Soll eine Datenbank auf einen anderen Rechner kopiert und dort nur zur Recherche benutzt werden, gen\'fcgt das Programm APAC.EXE. Ansonsten m\'fc\'dfte auf dem Zielrechner das normal erworbene und komplett installierte \lang1033\b\i\f0 allegro\b0\i0 -System vorhanden sein. 
+\par \lang1031\i Nochmals der Hinweis:\i0  Unter \b UNIX\b0\f4  sind alle Namen vollst\'e4ndig mit \b\f0 Kleinbuchstaben\b0  zu schreiben. 
+\par 
+\par \cf3\b Beispiel:\cf2 
+\par Nehmen wir mal an\b0\f4 , die Datenbank hei\'dft  \cf4\b\f0 DAT\cf2\b0   und benutzt die Konfiguration \cf3\b K\cf2 .CFG\b0 . Es ist hier unerheblich, auf welchem Unterverzeichnis die Dateien angesiedelt sind. 
+\par \i Empfehlung:\i0  alle datenbankspezifischen Dateien auf das Datenverzeichnis bringen, alles andere auf das Programmverzeichnis. (Ersetzen Sie \cf4\b DAT\cf2\b0  durch Ihren eigenen Datenbanknamen und evtl. \cf3\b K\cf2\b0  durch Ihren Konfigurationsbuchstaben, z.B. \b A\b0  oder \b P\b0 .) 
+\par \f4 An den Farben sehen Sie gewisse Zusammenh\'e4nge: Der Konfigurationsbuchstabe \cf3\b\f0 K\b0  \cf2\f4 mu\'df\f0  in einigen Namen hinter dem Punkt stehen, der Datenbankname \cf4\b DAT\cf2\b0\f4  bildet den Anfangsteil im Namen aller Dateien, die wirklich zur Datenbank geh\'f6ren. \f0 
+\par 
+\par \pard\fi-658\li658\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\cf5\lang1033\b\f3\fs28 Kernbestandteile\cf2\b0 
+\par \pard\fi-2319\li2319\tx2320\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\cf3\b\f6\fs20 K\cf2 .CFG\b0\tab\lang1031\f5 D\lang1033\f6 ie \cf6\b\i\f5 Konfiguration\cf2\b0\i0\f6  : \lang1031\f4 Das Date\lang1033\f0 nschema ; regenerierbar  \f6 (-\f9\'d8\f6  Anh.A) 
+\par \cf4\b DAT\cf2 _\i n\i0 .\cf3 K\cf2 LD\b0\tab\lang1031\f5 D\lang1033\f6 ie \i Datendateien\i0  (\i n\i0  = 1...255); \f4 vollst\'e4ndig regenerierbar, aber \b\f0 nur\b0  aus einer Sicherungskopie mit Hilfe von UPD\lang1031\f4  \lang1033\f0  und der aktuellen .LOG-Datei \f6  (-\f9\'d8\f6  0.7) 
+\par \cf4\b DAT\cf2 .\cf3 K\cf2 DX\b0\i\tab Indexdatei\i0 ; \f4 zusammen mit DAT.TBL regenerierbar : ben\'f6tigt werden die .KLD-Dateien, DAT.KPI und das Programm INDEX (Optionen -fi und -fn, siehe  Kap.7), dabei wird auch DAT.STL erneuert und DAT.TBL, wenn sie nicht mehr da ist.\f6 
+\par \cf4\b DAT\cf2 .TBL\b0\i\tab Satztabelle\i0 ; \f0 regenerierbar durch das Programm INDEX mit Option\f6  -ft. \f4 Ausf\'fchrung \'fcber\f6  \b\i\f0 CockPit\i0\f8  \'b5r o\f6  t\b0 ) 
+\par \cf4\b DAT\cf2 .STL\b0\i\tab Kurztitelregister\i0 ; \f0 regenerierbar durch das Programm INDEX, und zwar mit der Funktion "Kurztiteldatei erneuern" (Option -fs\f6  : \b\i\f0 CockPit\i0\f8  \'b5r o k\b0\f6  ). 
+\par \pard\fi-2320\li2320\tx2320\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\cf4\b DAT\cf2 .RES\b0\i\tab Restriktionsdatei\i0 ; \f0 regenerierbar durch Programm INDEX mit Funktion \f6 "Restriktionsdatei erneuern" (Option -fx : \b\i\f0 CockPit\i0\f8  \'b5r o x\b0\f6  ). \f0 Datenbank ist auch ohne solche Datei benutzbar.\f6 
+\par \cf4\b DAT\cf2 .\cf3 K\cf2 PI\b0\i\tab\cf6\b\f5 Index-Parameterdatei\cf2\b0\i0\f6 ; \f0 bei genauer Kenntnis der Datenbank und der Parametersprache rekonstruierbar\f6  (-\f9\'d8\f6  10) 
+\par \lang1031\f5\tab\lang1033\f4 enth\'e4lt die Vorschriften f\'fcr die Indexdatei, das Kurztitelregister und die Restriktionsdatei. Beispiele: CAT.API, BANK.NPI\f6 
+\par \pard\fi-2319\li2319\tx2320\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b [ \cf4 DAT\cf2 .LOG ]\b0\i\tab Sicherungsdatei\i0  (-\f9\'d8\f6  0.7); \f4 nicht regenerierbar. Wird nur ben\'f6tigt, wenn eine besch\'e4digte Datenbank wiederherzustellen ist. Man mu\'df aber dann eine Sicherungskopie haben!\f6  
+\par \tab Achtung: \cf3\b\i Nicht\cf2\b0\i0  \f4 mit kopieren, nicht mit ausliefern! Es w\'e4re sinnlos.\f6 
+\par \pard\fi-2320\li2320\tx2320\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b D-\lang1031 ?\lang1033 .\cf3 K\cf2 PR\b0\i\tab\cf6\b\f5 Anzeigeparameter\cf2\b0\i0\f6 . (-\f9\'d8\f6  Kap.10); \f0 rekonstruierbar 
+\par \lang1031\tab\i\f4 Beispiele (f\'fcr $A.CFG) :\i0  D-1.APR (f\'fcr PRESTO)  und D-WRTF.APR (f\'fcr a99)\lang1033\f6 
+\par \pard\fi-2319\li2319\tx2320\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\lang1031\f0 
+\par 
+\par \cf5\lang1033\b\i\fs28 Peripherie\cf2\b0\i0\fs24\tab\f4 (diese Dateien sind bei hinreichender Dokumentation alle rekonstruierbar, au\'dfer den UIF-Dateien ist keine zwingend erforderlich!\f3 
+\par \pard\tx2320\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\lang1031\f0\fs20 
+\par \pard\fi-2319\li2319\tx2320\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\lang1033\b\f6 CP.OPT\b0\tab\f4 Datei mit den Vorgaben f\'fcr das\f6  \b\i\f0 CockPit\b0\i0  (\f6 -\f9\'d8\f4  0.11), falls man damit arbeitet. Diese Datei kann auch anders hei\'dfen; sie wird \'fcber CP.BAT aufgerufen. (Mu\'df auf Startverz. liegen) \f0 
+\par \cf4\b\f6 DAT\cf2 .\lang1031 ini\lang1033\tab\b0\f4 Einstellungen f\'fcr die Windows-Programme. Dokumentation in\f6  A99.INI (-\f9\'d8\f6  Kap.2.5) 
+\par \pard\fi-2320\li2320\tx2320\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\lang1031\b\f5 _start.flx\lang1033\b0\f6\tab\lang1031\f4 Dieses FLEX-Makro wird nach dem Start von a99 ausgef\'fchrt, bevor der Nutzer etwas tun kann. \lang1033\f6  
+\par \pard\fi-2319\li2319\tx2320\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\cf4\b DAT\cf2 .\lang1031 frm\lang1033\tab\b0\f0 `\cf1\ul\b Formulardatei\cf2\ulnone\b0\f4 `: Eingabe und Bearbeitungsformulare f\'fcr a99.\f6 
+\par \cf4\b DAT\cf2 .\lang1031 sgf\lang1033\tab\b0\f0 Signalfile: Kleine Textdatei. Wenn sie mit '1' beginnt, kann keiner einsteigen.\f6 
+\par \b HDAT\b0\tab\f0 Datenbankspezifische DOS-Hilfeseite; erscheint bei\f6  Shift+F1 \f4 vom Funktionsmen\'fc.\f6  
+\par \cf4\b DAT\cf2 .RTF\b0  \tab\f4 Die Entsprechung f\'fcr die Windows-Programme\f6 
+\par \pard\fi-2320\li2320\tx2320\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b HC\cf4 DAT\cf2\b0\tab\f4 Datenbankspezifischer Hilfetext bei Shift+F1 im Editor (Hinweise f\'fcr die Erfassung)\f6 
+\par \b H*spr\b0\tab\f0 evtl. abgewandelte H-Dateien\f6   (spr = \f0 Sprachkennung:\f6  GER, ENG, etc.) 
+\par \b UIF?\b0\i spr\i0\tab\f0 evtl. abgewandelte UIF-Dateien\f6  (UIF0, UIF1, UIFA, UIFE, \i spr\i0  = Sprachkennung) 
+\par \b *.FLX\tab\lang1031\b0\f0 Datenbankspezifische Makros, geschrieben in der FLEX-Sprache\lang1033\b\f6 
+\par *.\cf3 K\cf2 PR\b0\tab\f4 evtl. datenbankspezifische Export-Parameterdateien f\'fcr die Listenproduktion etc.\f6 
+\par \b *.\cf3 K\cf2 PT\b0\tab\f4 zugeh\'f6rige Tabellendateien, z.B. Druckertreiber\f6  (-\f9\'d8\f6  10.2) 
+\par \b *.\cf3 K\cf2 IM\b0\tab\f4 evtl. spezifische Import-Parameterdateien f\'fcr die Zufuhr von Fremddaten\f6 
+\par \b *.BAT\b0\tab\f4 evtl. Stapeldateien f\'fcr bestimmte Produktionen, z.B.\f6  CP.BAT, PR-LIST.BAT. 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f0 `\cf1\ul\b Vorangehender Teil\cf2\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf2\ulnone\b0 ` 
+\par \pard\f4 
+\par ?Vorangehender Teil=h ac0-4 
+\par ?BACKUP=h backp  
+\par ?Fortsetzung=h ac0-9 
+\par ?Formulardatei=h form 
+\par ?Reorganisieren=h org 
+\par ?h backp=h backp 
+\par }
+ 

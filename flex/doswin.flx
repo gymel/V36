@@ -1,0 +1,127 @@
+  DOSWIN.FLX : DOS-Fenster auf Verz. #uvN aufmachen
+  2001-08-13
+
+get env comspec
+ins #uwC
+  Steht was in #uvv?
+var #uvv
+  Wenn eine Ziffer, dann zu der entspr. Stelle
+if "1" jump dbdir
+if "2" jump progdir
+if "3" jump workdir
+if "4" jump tempdir
+if "c" jump copyfile
+if "w" jump dos-win
+  Wenn #uvv leer, dann
+     DOS-Fenster auf dem Verz. #uvN oeffnen
+var #uwC " /c " P 'comm.bat "' #uvN '" ' #uvN(0,2)
+Call
+jump exit
+
+:dbdir
+var D
+ins #uwD
+var #uwC " /c " P "comm.bat " D " " #uwD(0,2)
+Call
+jump exit
+
+:progdir
+var P
+ins #uwD
+var #uwC " /c " P "comm.bat " P " " #uwD(0,2)
+Call
+jump exit
+
+:workdir
+var W
+ins #uwD
+var #uwC " /c " P "comm.bat " W " " #uwD(0,2)
+Call
+jump exit
+
+:tempdir
+var M
+ins #uwD
+var #uwC " /c " P "comm.bat " M " " #uwD(0,2)
+Call
+jump exit
+
+:copyfile
+var "Name fÅr die Kopie von " $Fname "?"
+ansi
+ask
+if "" jump exit
+ins #uvG
+var $Fname "    " #uvG
+ins #uvG
+var "Die Datei  " #uvG(e" ") n "       soll kopiert werden auf" n
+var +#uvG(b" ")
+var +n "AusfÅhren? (Nein: noch Ñndern)"
+ans
+yesno
+if yes jump cf
+if canc jump exit
+var "Kopiert werden soll:=" #uvG
+ask
+if can jump exit
+if "" jump exit
+ins #uvG
+:cf
+var #uvG
+fcopy
+var #uvG(b" ")
+ins #uvG
+var #uvG(f" ")
+fsize
+if no mes Hat nicht geklappt!
+jump exit
+
+:dos-win
+  Konvertierung DOS->WIN, Dateiname steht in $Fname
+var $Fname
+if "" mes Keine Datei angegeben;jump exit
+open
+open x datei.ans
+get
+:zeile
+ansi
+wri
+wri n
+get
+if yes jump zeile
+close x
+close
+var "Konvertierte Version von " $Fname "  ist erstellt," n
+var +"und zwar unter dem Namen datei.ans" n
+var +"Ausgangsdatei durch die neue Datei ersetzen?" n
+var +"Nein: Neue Datei umbenennen" n
+var +"Abbruch: Nichts tun"
+yesno
+if can del datei.ans;jump exit
+if no jump newname
+var $Fname " alt.bak"
+fcopy 
+var "datei.ans " $Fname
+fcopy
+del datei.ans
+var "Erledigt. ACHTUNG: alte Version noch unter " W "\\alt.bak vorhanden!"
+var +n "(Falls es ein Irrtum war: " $Fname " wieder dadurch ersetzen!)"
+mes
+jump exit
+
+:newname
+var "Neuer Name fÅr " $Fname "?"
+ansi
+ask
+if "" jump exit
+ins #uvN
+var "datei.ans " #uvN
+fcopy
+del datei.ans
+var "Erledigt, " #uvN " ist jetzt eine Kopie von " $Fname
+mes
+
+:exit
+#uvv
+exec X dos
+

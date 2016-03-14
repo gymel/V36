@@ -1,0 +1,660 @@
+  FILES.FLX : Interaktive Dokumentation der Dateitypen
+  2001-01-17/2004-02-10
+  Wenn #uvZ schon besetzt, dann zur Dateinamensauswertung
+
+var m
+if ="alc" end
+
+var A
+if <5 mes Sorry, keine Berechtigung
+if <5 end
+
+var B
+ins #uvB
+var M
+ins #uvM
+var W
+ins #uvW
+var P
+ins #uvP
+   Wenn #uvZ besetzt ist, entfaellt Auswahl
+var #uvZ
+ins #uvN
+   sondern gleich Sprung zur Auswertung
+if #uvZ jump auswert
+
+  Zunaechst das Datenbankverzeichnis als Ausgangspunkt nehmen
+  (wenn #uvD schon da ist, gleich nach :start springen)
+if #uvD jump start
+var D
+ins #uvD
+  Flip 1 vorbereiten (aktivieren, wenn gewuenscht)
+    Vorsicht, ein eigenes #uX1 wird dadurch geloescht!
+ var "X files"
+ ins #uX1
+
+:start
+help files
+
+var "Sie k”nnen in der Liste der Dateien bl„ttern." n "Wenn Sie eine Datei ausw„hlen, wird dazu eine kurze Erkl„rung gezeigt" n "und im Anzeigefenster ein ausfhrlicher Text" n
+var + n "Zuerst sehen Sie die Dateien auf diesem Verzeichnis:  " #uvD n
+var + n "Fortfahren?" n
+var + "(Nein = Lieber die šbersicht des Handbuchs lesen, Kap.0.3)"
+ansi
+yesno
+if yes jump begin
+if no help ac0-3
+jump exit
+
+:begin
+var ""
+  Flag #uv$ loeschen
+ins #uv$
+  Wenn #uvZ besetzt, dann ende, in #uvX steht evtl. FLEX-Name
+if #uvZ #uvZ;var #uvX;exec
+  Auswahl einer Datei
+var "Dateien-šbersicht|" #uvD "*.*"
+ansi
+  Dateien zeigen, Auswahl abwarten
+fnam
+if "" end
+  ausgewaehlter Name steht in iV (leer, wenn nichts gewaehlt)
+ins #uvN
+:auswert
+  den Namen hinten abschneiden, aber wieder ein \ anhaengen
+var #uvN(t"\\") "\\"
+  das ist das Verzeichnis fuer die naechste Auswahl
+ins #uvD
+
+  Der name selbst beginnt hinter dem letzten \
+var #uvN(T"\\")
+  jetzt steht der Name in der iV und kann verglichen werden
+  Ist es eines der Programme?
+
+if "~presto" if %~exe% jump kern
+if "~srch.exe" jump kern
+if "~upd.exe" jump kern
+if "~acon.exe" jump kern
+if "~import.exe" jump kern
+if "~index.exe" jump kern
+if "~invent.exe" jump kern
+if "~ref.exe" jump kern
+if "~qrix.exe" jump kern
+if "~x.exe" jump kern
+if "~asort.exe" jump kern
+if "~apac" jump kern
+if "~acp.exe" jump kern
+if "~alf" if %~exe% jump kern
+if "~order" if %~exe% jump kern
+if "~menued.exe" jump kern
+if "~rdwr.exe" jump kern
+if "~log2alg.exe" jump kern
+if "~cfgconv.exe" jump kern
+if "~fontload.exe" jump kern
+if "~sniffer.exe" jump kern
+if "~cp.bat" jump kern
+
+if "~a99.exe" jump wins
+if "~alcarta.exe" jump wins
+if "~allegro.exe" jump veralt
+
+  jetzt die diversen Typen feststellen
+  und zum zustaendigen Abschnitt springen
+
+var #uvN 
+if not %.% jump notyp
+var #uvN(T".") "q"
+if %~log% jump log
+if %~ld% jump ald
+if %~lg% jump alg
+if %~1d% jump a1d
+if %~1g% jump a1d
+if %~8d% jump a1d
+if %~8g% jump a1d
+if %~xxx% jump xxx
+if %~dt% jump adt
+if %~dx% jump adx
+if %~xq% jump aex
+if %~tbl% jump tbl
+if %~stl% jump stl
+if %~res% jump res
+if %~rss% jump rss
+if %~rxx% jump rss
+if %~tab% jump rss
+if %~cfg% jump cfg
+if %~cfl% jump cfl
+if %~frm% jump frm
+if %~pi% jump api
+if %~pre% jump cp
+if %~pr% jump apr
+if %~opt% jump opt
+if %~doc% jump doc
+if %~xls% jump xls
+if %~pt% jump apt
+if %~im% jump aim
+if %~asp% jump asp
+if %~flx% jump flx
+if %~job% jump flx
+if %~inc% jump inc
+if %~rtf% jump rtf
+if %~ini% jump ini
+if %~ina% jump ini
+if %~sgf% jump sgf
+if %~fon% jump fon
+if %~ttf% jump ttf
+if %~$$$% jump $$$
+if %~bat% jump bat
+if %~mac% jump mac
+if %~txt% jump txt
+if %~css% jump css
+if %~htm% jump htm
+if %~pdf% jump pdf
+if %~xml% jump xml
+if %~set% jump set
+if %~aph% jump aph
+if %~a99% jump a99
+if %~lzh% jump lzh
+if %~zip% jump lzh
+if %~cab% jump lzh
+if %~ico% jump ico
+if %~jpg% jump ico
+if %~gif% jump ico
+if %~png% jump ico
+if %~bmp% jump ico
+if %~bak% jump bak
+if %~vw% jump view
+if %~vt% jump vt
+if %~ct% jump ct
+if %~asy% jump str
+if %~str% jump str
+if %~emk% jump emk
+if "_" jump rset
+if %~exe% jump prog
+if %~com% jump prog
+  zuletzt: beginnt der Dateiname mit h ?
+var #uvN(T"\\")
+  dann Hilfedatei oder UIF
+if "~h" jump hhh
+if "~ii" jump ii
+if "~uif" jump uif
+if "~proto" jump proto
+if "~pronto" jump pronto
+if "~cp.pre" jump cp
+if "~liste" jump liste
+
+var "Dieser Dateityp: " #uvN(T".") " hat mit 'allegro' nichts zu tun"
+mes
+
+jump begin
+
+:notyp
+var #uvN(T"\\")
+if ="~h" var +" ist ein Hilfetext der einfachen Sorte" n "Solche werden haupts„chlich in den Unterfenstern bei F1 verwendet";jump show
+if ="~uif" var +" ist ein 'User Interface File'" n "Darin stehen die Meldungstexte etc. eines Programms";jump show
+var "Dies k”nnte eine simple Textdatei sein"
+jump show
+
+:ald
+var #uvN "  ist eine Datendatei" n n "In solchen Dateien stehen die Datens„tze"
+help ac0-3=.cLD
+jump help
+
+:alg
+var #uvN "  ist eine Grunddatei" n n "Solche Dateien k”nnen in eine Datenbank eingemischt werden (FLEX-Funktion 'update')"
+help ac0-3=allegro-grunddatei
+jump showalg
+
+:a1d
+var #uvN "  ist eine alte Version einer Datendatei (Typ .ALD/.ALG)" n n "Solche entstehen beim Neuaufbau der Datenbank"
+var +n "Im Normalfall sollte man diese Dateien l”schen, meistens passiert das automatisch."
+help ac0-3=.cLD
+jump help
+
+:adt
+var #uvN "  ist eine Externdatei und" n "kann ber Men 'Datei' eingelesen werden" n n "Dateien mit dieser Struktur k”nnen leicht hergestellt werden," n "auch mit anderer Software!"
+help ac0-3=.cDT
+jump show
+
+:xxx
+var #uvN "  ist eine Hilfsdatei fr das externe Editieren" n n "Sie enth„lt einen Datensatz in Externform"
+jump help
+
+:adx
+var #uvN  "  ist die Indexdatei der Datenbank " #uvN(T"\\" e".") n n "Sie enth„lt die alphabetischen Register"
+help ac0-3=Index-Datei
+jump help
+
+:aex
+var #uvN  "  ist eine zus„tzliche Indexdatei der Datenbank " #uvN(T"\\" e".") n n "Sie enth„lt die alphabetischen Register"
+help ac0-3=Index-Datei
+jump help
+
+:log
+var #uvN "  ist die LOG-Datei der Datenbank" n "Darin werden alle Transaktionen aufgezeichnet." n n "Die Datei wird u.a. fr die Rekonstruktion nach Zusammenbruch gebraucht"
+help ac0-3=Sicherungsdatei
+jump help
+
+:tbl
+var #uvN "  ist die Satztabelle der Datenbank" n n "Diese braucht das Programm, um die S„tze zu finden"
+help ac0-3=Satztabelle
+jump help
+
+:stl
+var #uvN "  ist das Kurztitelregister der Datenbank" n n "Darin stehen die Kurzzeilen, die man in der Anzeige einer Ergebnismenge sieht"
+help ac0-3=Kurztitelregister
+jump help
+
+:res
+var #uvN "  ist die Restriktionsdatei der Datenbank" n n "Sie wird gebraucht fr die Einschr„nkung einer Suche z.B. nach Erscheinungsjahr"
+help ac0-3=Restriktionsdatei
+jump help
+
+:rss
+var #uvN "  ist eine Hilfsdatei von a99 oder alcarta." n n "Solche Dateien treten nur auf, wenn man" n "'Sitzung sp„ter fortsetzen' gew„hlt hat," n "und enthalten dann Angaben fr die Fortsetzung der Sitzung"
+jump help
+
+:cfg
+var #uvN "  ist eine KONFIGURATIONsdatei" n n "Diese enth„lt das Schema der Datenbank (Liste der Feldnamen)" n "und andere wichtige Angaben zur Struktur"
+help ac0-3=CFG
+jump show
+
+:cfl
+var #uvN "  ist eine Feldliste" n n "Darin stehen Bescheibungen von Datenfeldern," n "und zwar haupts„chlich die Bedeutung der Teilfelder, die in bestimmten Dateneldern vorkommen k”nnen"
+help ac0-3=CFG
+jump show
+
+:api
+var #uvN "  ist eine INDEX-PARAMETERdatei" n n "Das ist die Vorschrift, die dem Programm sagt, welche Felder -in die Register sollen" n "und in welcher Weise (Zerlegung in Einzelw”rter, Umlautbehandlung ...)"
+help ac0-3=Datenbank-Definition
+jump show
+
+:frm
+var #uvN "  ist eine FORMULARdatei" n n "Sie dient zur Untersttzung der Dateneingabe und -bearbeitung"
+help form
+jump show
+
+:apt
+var #uvN "  ist eine EXPORT-HILFStabelle"  n "Der Typ .@pr ist allgemeingltig, d.h. unabh„ngig vom Schema" n "Wird eine Datei vom Typ .xpt nicht gefunden, dann wird die gleichnamige vom Typ .@pt genommen" n n "Meistens stehen darin nur Listen von Code-Umwandlungen fr die Ausgabe"
+help ac0-3#330
+jump show
+
+:aim
+var #uvN "  ist eine IMPORT-PARAMETERdatei" n n "Braucht man zum Umwandeln von Fremddaten in das eigene Format"
+help ac0-3=.cIM
+jump show
+
+:asp
+var #uvN "  ist eine Tabelle von Zeichencodes fr das Programm SRCH." n n "Damit wird erreicht daá die Groá-/Kleinschreibung und Umlaute" n "bei der Suche nichts ausmachen"
+help ac0-3=.asp
+jump show
+
+:flx
+var #uvN "  ist eine FLEX-Datei (ein Makro)" n "'FLEX' heiát die Makrosprache des Systems." n "Damit k”nnen Funktionen aller Art anwendungsspezifisch erstellt werden" n "Der Typ .JOB kennzeichnet FLEX-Dateien fr acon (avanti)"
+help flex
+jump show
+
+:inc
+var #uvN "  ist eine FLEX-Datei, die mit 'insert' in andere FLEX-Dateien eingebunden werden kann." n "Eine .inc-Datei enth„lt meistens ein Unterprogramm"
+help flex
+jump show
+
+:rtf
+var #uvN
+help
+var #uvN "  ist ein HILFETEXT (Sie sehen ihn im Anzeigefeld)" n n "Solche Texte k”nnen auch anwendungsspezifisch modifiziert" n "und beliebig erweitert werden"
+
+jump help
+
+:hhh
+var #uvN "  ist ein ASCII-Hilfetext" n n "Solche Texte k”nnen auch anwendungsspezifisch modifiziert" n "und beliebig erweitert werden." n "Sie werden in einigen Funktionen bei Druck auf F1 angezeigt"
+help help
+jump show
+
+:ii
+var #uvN "  ist eine Zwischendatei, die das Programm INDEX" n "anlegt. Normalerweise verschwinden solche Dateien automatisch wieder" n n "Siehe dazu das Kapitel 7"
+help ac0-3=iinnnn
+jump help
+
+:doc
+var #uvN "  ist wahrscheinlich eine Word-Textdatei"
+jump help
+
+:xls
+var #uvN "  ist wahrscheinlich eine Excel-Tabelle"
+jump help
+
+:uif
+var #uvN "  ist ein 'User Interface File'" n "Darin stehen Texte, die in den Programmen als Menpunkte, Fragen, Fehlermeldungen etc. erscheinen" n n "Tip: alle Texte von a99, z.B. auch die Button-Beschriftungen, stehen in UIFEGER"
+help ac0-3=uif
+jump show
+
+:proto
+var #uvN "  ist eine Protokolldatei, und zwar gibt es" n "protok : Protokoll des Programms INDEX" n "protoq : Protokoll des Programms QRIX" n n "Darin sind die Meldungen aufgezeichnet, die diese Programme w„hrend  des Durchlaufs erzeugen"
+jump show
+
+:liste
+var #uvN "  ist eine vom DOS-System produzierte Liste" n n "Normalerweise k”nnen solche Listen von DOS aus gedruckt werden"
+jump show
+
+:pronto
+var #uvN "  geh”rt zu den Dateien, die das Programm PRONTO als Bausteine benutzt" n n "Mit PRONTO kann man das Fundament fr eine neue Datenbankstruktur legen" n "Starten Sie es im DOS-Fenster mit dem Befehl PRONTO"
+jump show
+
+:cp
+var #uvN "  enth„lt einige Einstellungen, die sich das Programm CockPit" n "fr die n„chste Sitzung aufbewahrt"
+jump show
+
+:exx
+var #uvN "  ist eine tempor„re Datei von a99" n n "Darin steht der Datensatz, der extern editiert werden soll"
+jump show
+
+:ini
+var #uvN "  ist eine INITIALISIERUNGS-Datei fr die Windows-Programme" n n "Darin stehen alle Einstellungen fr die Benutzung einer Datenbank mit a99 oder alcarta"
+help a99.ini
+jump show
+
+:sgf
+var #uvN "  ist eine SIGNALdatei, die der Systemverwalter setzen kann," n n "um zu verhindern, daá jemand mit a99/alcarta die Datenbank ”ffnet"
+help ac0-3=sgf
+jump show
+
+:opt
+var #uvN "  ist eine OPTIONENdatei fr das DOS-CockPit" n n "Darin stehen die Einstellungen fr die Arbeit mit dem DOS-System"
+help ac0-3=.opt
+jump show
+
+:bat
+var #uvN "  ist eine DOS-Stapeldatei" n n "Mit solchen Dateien kann man Vorg„nge einrichten, die mit" n "dem Dateisystem und dem Starten von Programmen zu tun haben"
+help ac0-3=stapeldatei
+jump show
+
+:txt
+var #uvN "  ist eine ASCII Textdatei" n n "sie kann bearbeitet werden z.B. mit dem X-Editor" n "Dies ist jedoch kein 'allegro'-Dateityp"
+help ac0-3=ASCII
+jump show
+
+:mac
+var #uvN "  ist eine Macro-Datei," n "die zum X-Editor geh”rt"
+jump help
+
+:htm
+var #uvN "  ist eine HTML-Datei, also fr das Internet bestimmt" n n "Sie k”nnte als Export entstanden sein" n "Auf " P "HTML liegen die lokalen Dateien fr JanaS"
+jump show
+
+:pdf
+var #uvN "  ist ein Adobe-Acrobat-Dokument"
+jump help
+
+:css
+var #uvN "  ist eine Stylesheet-Datei." n "Sie dient der Anzeige von HTML- oder XML-Dateien"
+jump show
+
+:xml
+var #uvN "  ist eine XML-Datei" n "Solche Dateien spielen eine Rolle beim Datenaustausch im Internet"
+var "xml-rtf.flx " #uvN
+exec
+
+:set
+var #uvN "  ist eine Liste von Satznummern, die als Ergebnismenge angezeigt werden k”nnen" n n "Solche Dateien werden von PRESTO und SRCH erzeugt," n "wenn man diese Programme von a99 aus aufruft." n "a99 handhabt diese Dateien automatisch"
+jump help
+
+:a99
+var #uvN "  ist eine PHRASENdatei fr die Windows-Programme" n "sie kann bearbeitet werden z.B. mit dem X-Editor"
+help phras
+jump show
+
+:aph
+var #uvN "  ist eine PHRASENdatei fr die DOS-Programme" n "sie kann bearbeitet werden z.B. mit dem X-Editor"
+help phras
+jump show
+
+:fon
+var #uvN "  ist eine Font-Datei (Zeichensatz) fr DOS" n "Funktioniert nur im Vollbild-Modus."
+jump help
+
+:ttf
+var #uvN "  ist eine Windows-Schriftdatei." n n "Funktioniert nur unter Windows 95 etc." n "Die Schriften A-TIMES und A-LETTER sollten installiert sein," n "damit man alle Sonderzeichen nutzen kann."
+jump help
+
+:lzh
+var #uvN "  ist eine Archivdatei" n n "Solche Dateien sind komprimiert und k”nnen viele andere Dateien enthalten" n "Sie werden haupts„chlich zum Transportieren von Daten benutzt" n "Man kann sie mit dem Programm LHARC auspacken (LZH), oder auch mit WinZip (ZIP)"
+jump help
+
+:$$$
+var #uvN "  Eine Hilfsdatei, die a99 ben”tigt," n "um bearbeitete Datens„tze aufzubewahren," n "bevor sie abgespeichert werden" n n
+var +"Normalerweise wird diese Datei am Ende der Sitzung gel”scht," n "sie bleibt nur erhalten, wenn man die Option" n
+var +"'Sitzung sp„ter fortsetzen' w„hlt"
+jump help
+
+:ico
+var #uvN "  ist eine Grafikdatei" n "Kann in HTML-Dateien verwendet werden."
+jump help
+
+:bak
+var #uvN "  k”nnte die Ausgangsfassung einer Datei sein" n ", die mit a99 bearbeitet wurde. Kann man l”schen"
+jump help
+
+:prog
+var #uvN "  ist ein Programm." n n " Es wird normalerweise ber eines der Mens gestartet" n "oder automatisch aufgerufen."
+jump help
+
+:kern
+var #uvN(T"\\")
+ins #uvQ
+var "ac0-4=" #uvQ(e".")
+help
+var #uvN "  ist ein Programm des 'allegro'-DOS-Systems." n n " Es wird normalerweise ber eines der Mens gestartet" n "oder automatisch aufgerufen."
+jump help
+
+:veralt
+var #uvN
+ftime
+if <"2005" jump allt
+var #uvN "  ist das Startprogramm des 'allegro'-Windows-Systems."
+mes
+jump begin
+
+:allt
+var #uvN(T"\\")
+ins #uvQ
+var "ac0-4=" #uvQ
+help
+var #uvN "  ist ein ganz altes Programm des 'allegro'-DOS-Systems." n n " Es wird nicht mehr gebraucht, wollen Sie es l”schen?"
+ansi
+yes
+var ""
+if yes var #uvN
+del
+
+jump begin
+
+:wins
+var #uvN(T"\\")
+ins #uvQ
+var "ac0-4=" #uvQ(e".")
+help
+var #uvN "  ist ein Programm des 'allegro'-Windows-Systems." n n " Es wird normalerweise ber eines der Mens gestartet" n "oder automatisch aufgerufen."
+jump help
+
+:view
+var #uvN "  ist eine ViewListe" n n "Eine solche Datei enth„lt entweder" n
+var +"das Ergebnis einer View-Produktion, also eine vom Anwender definierte Sicht der Ergebnismenge" n
+var +"oder eine ViewListe, in die Hilfetexte oder anderes eingebaut sein k”nnen"
+help view
+jump show
+
+:vt
+var #uvN "  ist eine Tabelle, die mit Office-Programmen eingelesen werden kann" n n "Sie wurde aus einer ViewListe exportiert, ber die Funktion 'als Tabelle ausgeben'"
+help view
+jump show
+
+:ct
+var #uvN "  ist eine COUNT-Struktur, die fr Z„hlungen gebraucht wird" n n "Sie kann dafr jederzeit neu verwendet werden'"
+var +n 'Dazu geh”rt eine gleichnamige Datei des Typs .' K1 'PR'
+help view
+jump show
+
+:str
+var #uvN "  ist eine Tabellen-Struktur, die zum Tabellen-Erstellen gebraucht wird"i
+var +n "Sie kann dafr jederzeit neu verwendet werden'"
+help table
+jump help
+
+:emk
+var #uvN "  ist eine Kontrolldatei, die vom Programm JUMPS.EXE erstellt wurde"
+var +n "Damit k”nnen Parameter- und Konfigurationsdateien untersucht werden"
+jump help
+
+:rset
+var #uvN "  ist eine Ergebnismengen-Datei" n "und enth„lt die Satznummern, die zu einer Ergebnismenge geh”ren"
+jump help
+
+:help
+ins #ufT
+var E
+ins #uwE
+xport f mist.txt
+wri #ufT
+var #uvN
+fsize
+ins #uvS
+var #uvN
+ftime
+ins #ufH
+var "Datum: " #ufH(6,2) "." #ufH(4,2) "." #ufH(0,4) ", " #ufH(9,0)
+ins #ufH
+ wri n n "Dateigr”áe: " #uvS " Byte, " #ufH n
+var #uwE
+xport f
+
+var #ufT n n "Dateigr”áe: " #uvS " Byte, " #ufH" n n "Zurck zur Dateiauswahl? " n
+   aktivieren, wenn Alt+1 eingesetzt werden soll
+  var +"Wenn Nein, dann" n "k”nnen Sie anschlieáend mit Alt+1 wieder einsteigen"
+var +"(Abbruch: Kopie dieses Textes im Anzeigefeld!)"
+ansi
+yesno
+if no #uvZ;jump exit
+if yes if #uvZ jump exit
+if yes jump begin
+if canc if #uv$ jump flist
+help mist.txt
+jump exit
+
+:flist
+help mist.txt
+var "*." #uvN(T".")
+ins #uwz
+  PARAM.FLX zeigt Dateien gleichen Typs (#uwz) als ViewListe
+exec X param.flx
+
+    Beginn der ausgew. Datei zeigen
+:show
+ins #ufT
+var "1"
+   FLag setzen. Es kommt dann anschlieáend die betr. Auswahlliste fuer den Dateityp
+ins #uv$
+var #uvN
+open
+if no jump dateifehler
+var #ufT n n "Der Anfang der Datei (3 Zeilen) sieht so aus:" n
+var +"--------------------------------------------------------------" n
+get +iV
+var +n
+get +iV
+var +n
+get +iV
+var +n
+var +"--------------------------------------------------------------"
+close
+   in iV steht jetzt der gesamte anzuzeigende Text!
+jump help
+
+   Eine xLG-Datei zeigen
+:showalg
+ins #ufT
+var #uvN
+open
+if no dateifehler
+fetch 1
+var #ufT n n "Der Anfang der Datei (3 Zeilen) sieht so aus:" n
+var +"--------------------------------------------------------------"
+ins #uvI
+fetch ^@
+ins #uv1
+fetch ^@
+ins #uv2
+fetch ^@
+ins #uv3
+var #uvI n #uv1 n #uv2 n #uv3 n
+var +"--------------------------------------------------------------"
+
+close
+   in iV steht jetzt der gesamte anzuzeigende Text!
+ansi
+sho IV
+var "Datei " #uvN " bearbeiten?"
+yes
+if not yes jump begin
+var #uvN
+ins #ua!
+exec algedit
+
+:dateifehler
+var #ufT
+jump help
+
+:apr
+var #uvN(T"\\")
+if "~v-" jump vapr
+if "~d-" jump dapr
+if "~p-" jump papr
+
+var #uvN "  ist eine Export-Parameterdatei" n "Der Typ .@pr ist allgemeingltig, d.h. unabh„ngig vom Schema" n "Wird eine Datei vom Typ .xpr nicht gefunden, dann wird die gleichnamige vom Typ .@pr genommen"
+help ac0-3=Export-Para
+jump show
+
+:vapr
+var #uvN "  ist eine View-Parameterdatei, auch ViP genannt" n "d.h. eine Vorschrift, mit der eine 'andere Sicht' der" n "Ergebnismenge erstellt werden kann"
+ins #uvP
+var #uvN(T".")
+ins #uvO
+var #uvP n n "Diese Parameter sind nur mit der Konfiguration " #uvO(0,1) ".CFG einsetzbar"
+h view
+jump show
+
+:dapr
+var #uvN "  ist eine Anzeige-Parameterdatei" n "d.h. eine Vorschrift, mit der Datens„tze fr die" n " Darstellung im Anzeigefenster aufbereitet werden." n "Ohne solche Vorschriften k”nnte man nur die Datenfelder" n "mit den Kategorienummern sehen"
+ins #uvP
+var #uvN(T".")
+ins #uvO
+var #uvP n n "Diese Parameter sind nur mit der Konfiguration " #uvO(0,1) ".CFG einsetzbar"
+h ac10-1=Display
+jump show
+
+:papr
+var #uvN "  ist eine Druck-Parameterdatei" n "d.h. eine Vorschrift zur Aufbereitung von Datens„tzen" n "fr den Druck, meistens fr Listen"
+ins #uvP
+var #uvN(T".")
+ins #uvO
+var #uvP n n "Diese Parameter sind nur mit der Konfiguration " #uvO(0,1) ".CFG einsetzbar"
+h ac10-1=Print
+jump show
+
+
+:exit
+  #u-Variablen beseitigen
+var ""
+ins #ufT
+ins #uvS
+ins #uvP
+ins #uvO
+ins #uvQ
+ins #uvI
+ins #ufH
+ins #uwE
+ins #uvC
+ins #uv3
+ins #uv2
+ins #uv1
+if #uvZ #uvZ;var #uvN(t"\\");ins #uvN;var "X dir " #uvN;exec
+

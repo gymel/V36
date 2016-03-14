@@ -1,0 +1,147 @@
+
+Verlautbarung 139 der Entw.Abt.                            2000-11-20
+-------------------------------
+
+Voll im Trend
+-------------
+
+Die Reaktionen auf die Ankuendigung letzte Woche haben unsere
+insgeheim schon gehegte Vermutung eindrucksvoll bestaetigt:
+es gibt ihn, den ganz starken Trend zum Einzelklick. Wie auch immer
+man das ausdeuten mag (z.B. "keiner will mehr als nur EINEN Finger
+krumm machen fuer Information, aber wenn schon, dann nur EINMAL", 
+oder aber "Man muss automatisieren, was nur immer moeglich ist,
+damit optimaler Freiraum fuer kreative Potentiale geschaffen wird!"),
+das sei dahingestellt - wir haben die Sache nun umgesetzt, und
+natuerlich fuer a99 UND alcarta.
+   a99.lzh und alcarta.lzh  auf ac20/update  sind erneuert
+Das Allers-Problem duerfte geloest sein. Wenn hartnaeckig doch das
+falsche kommt (bei mehreren Flips in 1 Zeile): doppelklicken.
+
+Nebenbei: Das Programm wird durch den Einzelklick nicht schneller,
+das ist ein rein subjektiver Eindruck - wohl weil man nur halb soviel
+zu tun hat wie beim Doppelklick. Die Verarbeitung des Einzelklicks
+ist intern sogar aufwendiger, doch das sind nur Bruchteile von
+Millisekunden, jede Fingerbewegung dauert millionenmal laenger!
+(Tip: Ueber das Win-Menue "Start | Einstellungen | Systemsteuerung 
+| Maus" kann man die Doppelklickfrequenz veraendern! Aber das ist
+jetzt nicht mehr so relevant...)
+
+Volltextsuche in Kurzliste
+--------------------------
+Man liegt sicher nicht ganz falsch mit der Vermutung, dass das
+Volltextsuchen in der Kurzliste als naechstes Desiderat in
+der Luft liegt. Wo das doch bei den Views so schoen klappt, vor
+und zurueck...
+Obgleich und wiewohl man ja eine Volltextsuche in den Datensaetzen
+veranstalten KANN, und obzwar dann dabei immerhin eine neue Ergebnis-
+menge zustande kommt, hat es dennoch seinen Reiz, auch in der Kurz-
+liste, wenn und waehrend diese sichtbar ist, stante pede suchen zu
+koennen. Eben genau wie in einer ViewListe, vor und zurueck.
+Langer Rede kurzer Sinn: das geht jetzt.
+Ob man dafuer was parametrieren muss? Ausnahmsweise nicht.
+Fuer Kenner: genutzt werden die p-Befehle in den Indexparametern,
+um die Zeichen fuer den Vergleich zu normalisieren.
+Gesucht wird nur in den Kurzzeilen, nota bene, d.h. man findet nur
+Woerter (genauer: Zeichenfolgen), die darin vorkommen. Suchen in 
+den Datensaetzen kann man unveraendert ueber die Suchbefehlszeile.
+(Man gibt dort die Zeichenkette mit '+' davor ein, nachdem man
+die Ergebnismenge hat.)
+
+FLEX-Erweiterung
+----------------
+NEU in der FLEX-Sprache: zwei Besondere Variablen fuer
+die Befehle var und wri, mit je 5 Optionen. Damit kann man nun auf 
+die Felder eines Satzes zugreifen, ohne deren Kategorienummern wissen
+zu muessen, bzw. man kann auf die Zeilen der Anzeige zugreifen und
+diese verarbeiten (als ASCII-TextZeilen). FLEX.LZH erneuert.
+
+  Zugriff auf die Kategorien: 
+  (vgl. Sonderkategorien #u0k, Handbuch S.193)
+k0   Anzahl Kategorien des aktuellen Satzes
+k1   Inhalt der ersten Kategorie
+k2   ... der naechsten
+k3   ... der letzten
+k4   ... der vorigen
+
+  Und ganz analog Zugriff auf die Anzeige-Zeilen:
+z0   Anzahl Zeilen im Anzeigefeld (egal, was da drin steht)
+z1   Inhalt der ersten Zeile (ASCII)
+z2   ... der naechsten
+z3   ... der letzten
+z4   ... der vorigen
+
+Der Inhalt der internen Variablen ist dann in jedem Fall ASCII! 
+Wenn man also schreibt (im Schreibfeld)
+
+x var z3\message
+dann kommt die letzte Zeile, aber wenn sie Umlaute enthalten koennte,
+schreibt man besser:
+x var z3\ansi\mes
+Wenn man dagegen den Inhalt in eine Kategorie kopieren will, ist es
+so richtig (denn da muss es ja ASCII sein):
+x var z3\ins #nnn
+
+Bei k2/k4/z2/z4 kann man anschliessend mit "if no ..." checken, ob
+es noch eine naechste bzw. vorige gab; wichtig fuer Schleifen! Z.B.
+...
+var z2
+if no jump ende
+...
+
+Damit man sieht, wie diese Bes.Var. in Schleifen eingesetzt werden:
+
+Beispiel 1:
+----------
+Man will alle Kategorien des aktuellen Satzes in der Anzeige
+erscheinen lassen, im Abstand von 0,2 Sekunden:
+(Das n steht jeweils fuer den Zeilenvorschub (neue Zeile) hinter
+dem Kategorietext)
+
+  erste Kategorie -> interne Variable, und in ANSI wandeln:
+var k1 n
+ansi
+  anzeigen
+sho IV
+sleep 200
+:loop
+  naechste Kategorie:
+var k2 n
+  wenn es keine weitere gibt:
+if no jump ende
+ansi
+  zur Anzeige ergaenzen
+sho +IV
+sleep 200
+jump loop
+:ende
+mess Das war's
+
+Beispiel 2
+----------
+Es sollen alle Zeilen aus der aktuellen Anzeige herausgesucht werden,
+die das Wort "xyz" enthalten. Dann diese Zeilen insgesamt zeigen.
+Dann muss man die betr. Zeilen zuerst in eine Datei schreiben, die 
+man 
+anschliessend mit h-Befehl anzeigen laesst.
+(Man koennte statt dessen auch die Anzeige in eine Datei schreiben
+lassen, diese mit "open" oeffnen, mit "get" die Zeilen einlesen und
+auswerten, dann mit "show +IV" anzeigen!)
+
+xport f match.txt
+
+var z1
+ins #uzz
+if %xyz% write #uzz n
+write n
+:loop
+var z2
+ins #uzz
+if no jump ende
+if %xyz% write #uzz n
+jump loop
+:ende
+xport f nul
+help match.txt
+del match.txt
+

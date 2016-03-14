@@ -1,0 +1,171 @@
+
+Verlautbarung 163 der Entw.Abt.                             2003-02-05
+-------------------------------       Bereitgelegt:
+                                      a99/alcarta, presto, srch,
+                                      index etc., procav, avanti-x.
+Formulare : neuer Enter-freier Modus
+------------------------------------
+Das Eingeben von Daten mit Formularen wird als gewoehnungsbeduerftig
+empfunden, weil man jedes Feld mit [Enter] eingeben muss. Onkel
+Bill hatte dagegen irgendwo mal entschieden, dass [Enter] ein
+Formular schliesst und alle Felder dem Programm uebergibt. Deshalb
+ist da mittlerweile jeder dran gewoehnt und empfindet das als
+"intuitiv". Wir zollen dieser gewachsenen Endnutzererwartung nun
+Tribut, aber wer inzwischen den bisherigen Modus verinnerlicht hat,
+kann den auch wieder einschalten.
+Die neue Arbeitsweise ist so: [Enter] uebergibt, wie bisher, den
+Feldinhalt an das Programm zwecks Pruefung und geht zum naechsten
+Feld. TAB geht ohne sofortige Pruefung zum naechsten Feld. Der
+Button [Ende] = Alt+e uebergibt alle Felder dem Programm zur
+Pruefung und schliesst das Formular. Wenn ein Feld vorher schon
+mal mit [Enter] uebergeben wurde, wird es dann nochmals geprueft.
+Geleerte Felder werden im Satz geloescht.
+Dasselbe passiert, wenn man in die ComboBox zur Auswahl eines anderen
+Formulars geht. Es passiert jedoch nicht, wenn man das Formular
+anders als mit Alt+e verlaesst: mit Esc, Alt+F4 oder [x].
+Mit dem FLEX-Befehl
+set F0
+(den man z.B. in _start.flx einbauen kann) wird der alte Modus
+restauriert. Ein INI-Befehl hierfuer ist somit unnoetig.
+Mit  set F1 schaltet man den neuen Modus wieder ein.
+
+Wenn Passwort, dann Username -> #op
+-----------------------------------
+Hat man die Passwortmethode eingerichtet, dann wird derjenige
+Name, den der User beim Einstieg benutzt, in die Variable #op
+kopiert und ueberschreibt den evtl. per "Operator" gesetzten
+Namen aus der INI-Datei.
+Es sei denn, man aktiviert die kommentierte Zeile in der
+Datei _psw.flx, in der die Variable #uwN geloescht wird.
+Das Programm loescht die #uwN dann aber selber, nachdem es
+den Usernamen entnommen hat.
+
+Exportsprache : TexelTechnik
+----------------------------
+Auf Englisch gibt es das Wort "texel" (= text element) fuer die
+sog. "Zwischenteile" der Exportsprache. Diese kommen nun zu einer
+unerwarteten neuen Nutzanwendung: man konnte sie bislang nur als
+Prae- oder Postfixe vor bzw. hinter Kategorietexte setzen oder
+mit dem #t-Befehl irgendwo zwischen Kategorien setzen lassen.
+Jetzt kann man sie auch in Kategorien einbetten.
+Dazu gibt es eine neue Moeglichkeit, einem Zeichen eine Steuerfunktion
+zuzuorden, die bisher nicht existierte.
+Was ist der Sinn? Man erhaelt ein Mittel fuer neutrale Textauszeich-
+nungen innerhalb von allegro-Daten, einfach anzuwenden und
+leicht fuer die verschiedenen Ausgabezwecke auszunutzen, also
+fuer HTML, RTF, XML, DOS jeweils in geeigneter Weise.
+
+Als Beispiel waehlen wir das Zeichen #, welches innerhalb von
+Kategorietexten vorkommen darf (aber vermutlich selten vorkommt).
+(Andere Moeglichkeiten sind $ oder _. Nicht empfohlen: & oder \, weil
+diese mit Sonderfunktionen bei Unicode bzw. RTF befrachtet sind.)
+
+Wenn man in den Exportparametern nun setzt:
+p # 8
+dann hat das folgende Wirkung, wenn in den auszugebenden Daten irgendwo
+das Zeichen # vorkommt:
+
+Das Programm prueft: Welches Zeichen steht hinter dem #?
+   Statt dieses Zeichens X wird das Zw.t. mit der Nummer ausgegeben,
+   die dem Code von X entspricht, also 65 fuer A usw.
+
+Die Ausgabe des Zwischenteils erfolgt ohne weitere Umcodierung, wie
+sonst auch. Strukturbefehle (S.171) duerfen dabei nicht vorkommen.
+Auch bei Anwendung von y0 finden die Texel-Ersetzungen statt!
+2 Sonderfaelle sind zu bedenken:
+Wenn es das betr. Zwischenteil nicht gibt, wird das # mitsamt dem
+nachfolgenden X nicht ausgegeben! Also braucht man nur die
+betr. Zwischenteile zu deaktivieren, wenn man bestimmte Markierungen
+voellig unwirksam machen will.
+Ist # das letzte Zeichen eines Kategorietextes, wird es ebenfalls
+nicht ausgegeben.
+
+Was nutzt das schon, wird man seufzen, wenn's nur 100 Zwischenteile
+geben kann? Die hat man eh schon alle verbraucht ...
+Da haben wir ein Einsehen und setzen die Grenze auf 400 rauf, bei
+den DOS-Programmen aber nur auf 128. Alle Buchstaben sind damit
+immerhin abgedeckt.
+
+Wozu das taugt: Wenn man in einer allegro-Datenbank Textstuecke
+verwaltet, wie z.B. die Paragraphen eines Regelwerks oder die
+Definitionen und Kommentare eines Thesaurus, dann moechte man
+ein bequemes Mittel, um gewisse Textmarkierungen (Markup) ein-
+streuen zu koennen. Voila, schreibt man z.B. in eine Kategorie:
+
+     Nehmen Sie #Kallegro-C#k!
+
+dann wird 'allegro-C' kursiv ausgegeben. Nur wenn man einheitlich
+K fuer "kursiv ein" und k fuer "kursiv aus" definiert, dann gilt
+das fuer a99 (RTF) und fuer avanti (HTML).
+Deshalb ist zu setzen:
+
+fuer HTML:
+75="<i>"        K = Kursiv ein (75 = ASCII-Code von K)
+107="</i>"      k = Kursiv aus (107 = Code von k)
+
+fuer RTF (also a99)
+75="\i "        K = Kursiv ein (75 = ASCII-Code von K)
+107="\i0 "      k = Kursiv aus (107 = Code von k)
+
+fuer DOS: (nur Farbe moeglich!)
+75=27 91 49 59 51 49 109           rot
+107=27 91 48 59 49 59 51 54 109    reset / hellblau (normal)
+
+Keine Wirkung ohne Nebenwirkung! Was passiert mit markierten Woertern
+beim Indexieren? Im Index soll ja nicht "kallegro-ck" stehen!
+Unwirksam machen: Mit dem Befehl
+p # 2
+in den Indexparametern und in anderen Parametern, wo es nicht wirken
+soll, macht man diese Codierung unwirksam, die Codes werden dann
+bei der Verarbeitung uebergangen.
+Wenn das Verschwinden auch bei y0 stattfinden soll (dann wirken
+ja die p-Befehle nicht!) muss man zusaetzlich den Spezialbefehl
+p .8 0
+setzen.
+
+Auch diese Befehle kann man mit #b kombinieren, also z.B. fuer
+gewisse Kategorien ein- oder abschalten. An geeigneter Stelle
+schreibt man
+
+#bp # #
+
+um dem Zeichen seine normale Wirkung zurueckzugeben.
+
+ACHTUNG, bitte keine Missverstaendnisse:
+Wohlgemerkt: wenn  p # 8  nicht drinsteht in einer Parameterdatei,
+passiert gar nichts! Der Befehl gilt immer nur fuer diejenigen
+Parameter, in denen er vorkommt, er ordnet nicht etwa diese
+Sonderwirkung fest dem jeweiligen Zeichen fuer die gesamte
+Datenbank zu. So etwas muesste in der CFG stehen, aber fuer
+diesen Zweck werden wir da keinen neuen Befehl einfuehren, d.h.
+man kann nicht p # 8  in die CFG reinschreiben.
+Das bedeutet aber auch:
+Hat man aber einmal fuer seine Datenbank die Methodik solcher
+Markierungen eingefuehrt, muss man in alle betroffenen Parameter-
+dateien entweder
+p # 8
+einbauen, wenn die Markierungen wirken sollen, bzw.
+p # 2
+p .8 0
+wenn sie das nicht sollen - z.B. in den Indexparametern.
+Das bedeutet also u.U. einige Arbeit, daher muss man sich den
+Schritt gut ueberlegen.
+
+
+a99: F5 und Nichtsortierzeichen
+-------------------------------
+Schaltet man mit F5 auf die Internanzeige und mit F5 zur Anzeige zurÅck,
+so sind (und bleiben) die Nichtsortierzeichen ausgeblendet, auch wenn die
+Umcodierung sie auf sichtbare Zeichen umsetzt.
+Behoben.
+Bisher wurde stillschweigend davon ausgegangen, dass die Normalanzeige
+die Nichtsortierzeichen ausblenden soll - offenbar wird das nicht immer
+so gewuenscht.
+
+Exportsprache
+-------------
+Noch nicht dokumentiert: die Sonderkategorie
+#pzp
+enthaelt die aktuelle Position in der gerade erzeugten Zeile = deren momentane Laenge.
+Druckercodierungen (Esc-Sequenzen) werden dabei nicht mitgerechnet!
+

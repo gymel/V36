@@ -1,0 +1,111 @@
+  Textausgabe im RTF-Format ohne Seitenumbruch als fortlaufende Datei
+  geeignet fr Nachbearbeitung mit Textsoftware wie WORD oder WordPerfect
+  P-RTF.APT     940606 dh
+
+   	RTF = Rich Text Format von Microsoft ist ein allgemeines Format,
+	das fr den Austausch von Dokumenten gedacht ist.
+   
+	Dieser Treiber funktioniert mit folgenden Parameterdateien fr die
+	Listengestaltung (CockPit-Men æo"Listengestaltung"):
+        (sie haben jeweils am Ende den Befehl tPRINTER)
+
+		- P-1ZEIL.APR
+		- P-2Zeil.APR
+		- P-EINZEL.APR
+		- P-ALLGEM.APR
+		- P-DIN.APR
+		- P-NORMAL.APR
+
+    Installation
+	Kopieren Sie diese Datei in das allegro-Programmverzeichnis. Danach
+	wird der Treiber Ihnen im CockPit-Men æo"Drucker" ebenfalls zur
+	Auswahl angeboten, als ob es ein Druckertreiber w„re.
+
+	Der Treiber ist nur geeignet fr die Ausgabe einer Liste in eine
+	Datei. Diese Datei l„dt man dann in ein Textverarbeitungsprogramm.
+	Es gibt prinzipiell zwei M”glichkeiten, einen Text im RTF-Format in ein
+	Textverarbeitungsprogramm zu laden: Entweder kann das Programm das
+	Format direkt lesen und umwandeln, oder man muá das Formatkonvertierungs-
+	programm, das es zu jedem guten Textverarbeitungsprogramm gibt, bemhen.
+	Im letzten Fall erh„lt man eine Datei im "Haus-"Format des Text-
+	verarbeitungsprogramms.
+
+	Die oben genannten Parameterdateien funktionieren mit diesem Treiber
+	(nahezu) ohne nderungen. Vorraussetzung ist, daá der Befehl
+	tPRINTER, der diesen Treiber nachl„dt, als LETZTER Befehl in der 
+	Parameterdatei steht!
+
+	Nachteil dieses Treibers: Um ein gutes Druckergebnis zu erhalten, kann
+	man in der Textverarbeitung nur eine Schrift mit festem Zeichenabstand
+	benutzen. Das sind die schreibmaschinen-„hnlichen Schriften Courier oder
+	PICA. Eine andere Bezeichnung kann Line Printer sein. Andere Schriften
+	ergeben kein gutes Erscheinungsbild der Liste.
+
+	Falls man andere Schriften benutzen m”chte, kommt man um eine
+	Nachbearbeitung des Ergebnisses im Textverarbeitungsprogramm nicht herum.
+	Oder man muá sich bemhen, neue Versionen der Parameterdateien zu
+	erstellen, wo dann etliche allegro-Befehle durch RTF-Befehle ersetzt
+	werden mssen. Dazu geh”ren alle Positionierungsbefehle, die eine
+	Ausgabe ab einer bestimmten Zeichenposition bewirken, die Befehle R und C
+
+	Die RTF-Spezifikation (in englisch) ist als Datei in der Mailbox und
+	auf dem ftp-Server zu finden.
+
+di=""
+	d.h. keine Initialisierung (wird ueber "DISPHEAD.RTF" gemacht)
+ff=0
+  zl=76        Zeilenl„nge
+zt=" "       nur am Leerz. Trennen
+zm=0	   Zeilenmaximum ist Null (kein Seitenumbruch)
+z1=0		Minimale Zeilen vor dem Umbruch entf„llt, siehe zm
+z2=0		maximaler šberlauf ber zm entf„llt ebenfalls
+ze="\par "      Zeilenende. \par ist der eigentliche RTF-Befehl fr
+		eine feste Zeilenschaltung. 13 10 bewirkt nur eine 
+		Formatierung der RTF-Datei, bewirkt im Endprodukt aber
+		nichts
+  fl=0		formularl„nge 0 (Endlosliste)
+
+
+         Spezielle Druckarten
+99=092 098 032			"\b "		Fettschrift
+98=092 098 048 032		"\b0 "		Fettschrift l”schen
+97=092 117 108 032		"\ul "		Unterstreichen setzen
+96=092 117 108 048 032		"\ul0 "		Unterstreichen l”schen
+95=092 117 112 049 050		"\up12 "	Hochstellen
+94=092 100 110 049 050		"\dn12 "	Tiefstellen
+93=092 117 112 048 032 092 100 110 048 032        ruecksetzen:
+					"\up0 \dn0 " Hoch-/Tiefstellen l”schen
+ 92=                             Breitschrift setzen
+ 91=                             Breitschrift l”schen
+ 90=                             doppelt hohe Schrift setzen
+ 89=                             doppelt hohe Schrift l”schen
+88=092 105 032			"\i "		Kursivschrift
+87=092 105 048 032		"\i0 "		Kursivschrift l”schen
+ 86=										Proportionalschrift setzen
+ 85=										Proportionalschrift l”schen
+
+        Internationale Zeichens„tze
+ 84=										Internationalen Zeichensatz w„hlen
+
+        Zeichenabst„nde
+ 83=092 102 115 050 052 032      "\fs24 "	12 Punkt ÷ 10 CPI  
+ 82=092 102 115 050 048 032      "\fs20 "	10 Punkt ÷ 12 CPI
+ 81=092 102 115 049 052 032      "\fs14 "	7 Punkt ÷ 15 CPI
+
+        Rand setzen
+ 80=										linken Rand setzen
+ 79=										rechten Rand setzen
+
+  Farben: Reihenfolge ergibt sich aus der Liste im RTF-Vorspann
+
+71=92 99 102 54 32         "\cf6 "       rot
+72=92 99 102 52 32 t99     "\cf4 " t99   gruen fett
+73=92 99 102 55 32 t99     "\cf7 " t99   gelb fett
+74=92 99 102 50 32         "\cf2 "       blau
+75=92 99 102 53 32         "\cf5 "       magenta
+76=92 99 102 48 32         "\cf0 " t98   schwarz 
+77=92 99 102 51 32 t99     "\cf3 " t99   cyan
+78=92 99 102 49 32         "\cf1 "       grau
+
+
+

@@ -1,0 +1,63 @@
+ Text elements.
+ ~~~~~~~~~~~~~~
+
+ When the same prefix and postfix occurs repeatedly in the same parameter file,
+ it is convenient to use a so-called "text elements" ("texels") as a shorthand
+ way of representing it. Text elements can also be used to effect changes of
+ both colour and positioning. They can be introduced into the display with
+ either the usual prefix and postfix commands in association with the export of
+ a particular field, or the "t" command which introduces them unconditionally.
+
+ In this parameter, we will use them to replace some of the prefixes, and also
+ to produce a colour change.  In other respects, the parameter is identical
+ with DISPLAY4.SPR.
+
+ Texels are usually placed at the beginning of the parameter file, just before
+ the export lines. There can be up to 99 of them, numbered as you like.
+
+1=" : "
+ 1 stands for " : " in the export lines 
+71=27 91 48 59 51 49 59 52 55 109    red
+   Esc [  0  ;  3  1  ;  4  7  m
+   an ANSI escape sequence, which will produce the colour red on white
+
+72=27 91 49 59 51 50 59 52 55 109    green
+73=27 91 48 59 51 51 59 52 55 109    yellow
+74=27 91 48 59 51 52 59 52 55 109    blue
+75=27 91 48 59 51 53 59 52 55 109    magenta
+76=27 91 48 59 51 48 59 52 55 109    normal
+77=27 91 49 59 51 54 59 52 55 109    cyan
+78=27 91 48 59 51 55 59 52 55 109    white
+
+ The following command is required to activate the ANSI escape sequences;
+ its placing within the file has no significance:
+dx=1
+
+#t71   display texel 71 (which will change the colour to red)
+
+#100 a F", "
+#100 d p" (" P")"
+#t76   change the colour back to normal
+
+#240 C a F", " p"[" P"]"
+#245 C a F" :/" 
+#245 b F"/ " p1
+ preface the content with texel 1 (" : ")
+#245 c p" / "
+#260 a F":,; " p". - "
+#260 b F", " p1
+#260 c p", " P"."
+#050 p"Shelfmark: " R
+
+ Try replacing the other prefixes and postfixes with texels.
+
+ 컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴
+ What follows is explanatory, and not part of the experiment. Do not change.
+#t{27 91 49 59 51 48 59 52 55 109}
+#t{C C C "�"*56 C "Here, we have made the display easier to read by changing "}
+#t{"the colour of the heading to red."}
+#t{C "Subsequent changes will work towards the final form in which we want "}
+#t{"the record to appear."}
+#t{C "Edit DISPLAY5.SPR again (F2 F2 F10) to experiment with colour changes."}
+
+pn="DISPLAY5.SPR"  19960224

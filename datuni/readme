@@ -1,0 +1,59 @@
+                                                  allegro/datuni/README
+
+Data base model DAT : UTF-8 mini model
+
+Entry in  avanti.con:
+
+[symbName]                       for avanti/acon access
+directory = c:\allegro\datuni
+access = 3
+konfiguration = adat
+indexparameter = dat
+opac = OPAC:0
+master = AVANTI:3
+
+  for job files, avanti automatically adds this line:
+  @ DB=symbName ID=master/AVANTI
+
+
+List of files  in data directory
+................................
+
+$adat.cf g     * Configuration (list of fields etc.)
+_start.flx       executed on startup of a99
+a35erg.apr     * param for brief results listing in a35
+d-1.apr          DOS Presto record display parameters, config specific
+d-2.apr          generic (neutral) display of a record, works with any database
+dat.adx          Index file
+dat.api          Index parameters, config specific
+dat.frm          Data entry and edit forms for a99
+dat.ini          INI for a99; contains settings for a session
+dat.res          restrictions data (for qualifying a search by date or record type etc.)
+dat.rtf          help file a99 (press the ? Button to see it)
+dat.stl          short title list a99 (for result set display, one line per rec)
+dat.tbl          record address table (locations of records in .ald)
+dat_1.ald        data file (contains the records)
+                   up to 255 files, up to 16MB each (or N times 16MB)
+d-html.apr     * record display param for a35, ISBD format
+d-sutf.apr       record display, labeled format (requ. utf-rtf.apt in c:\allegro)
+d-s.apt        *   included in d-sutf.apr, contains the field specifications
+e-unihtm.apr     param f. internal format display (a35)
+e-w.apr          export internal format
+e-w0.apr         export for notepad editing
+input.vw       * choice of input and editing forms for a99
+iu.apt           index param character conversion table
+neusatz          list of important fields for input of new rec (a99)
+neusatz.flx    * input script for new record (a99), called from input.vw
+onf3.flx         UTF editing of current record (a99, press F3)
+p-w.apr        * print parameters (a99)
+README           this file
+stop.apt         stop word list (words to be excluded from index)
+users            subdir for users with write access (coded passwords)
+  utf8edit.flx   execute utf-8 editing of current record [on FLEX directory]
+
+Those with * need to be edited if the database is structurally
+different or enhanced from this one. Comments are included.
+
+Parameter files and .cfg that are valid for more than one database
+may be relocated to the program directory (where acon resides).
+

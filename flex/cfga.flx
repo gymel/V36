@@ -1,0 +1,226 @@
+  CFGA.FLX : Datenfelder mit Klartextbezeichnung anzeigen,
+  2004-09-09   incl. Teilfelder!
+  Hierzu gehoert CFGB.FLX fuer den umgekehrten Vorgang
+  Achtung: Gebraucht wird Datei  x.cfl  passend zur Konfiguration X.CFG
+           siehe  a.cfl als Muster!
+  Variablen:  #uyX   mit X = Grossbuchstabe
+
+:start
+  Parameter fuer RTF-Ausgabe
+xport p hilite
+if no jump perr
+  Hilfsdatei oeffnen
+del cfgdispy.
+open x cfgdispy.rtf
+   Kopf der rtf-Datei: (insbes. wg. d. Farben, s.u. die Befehle \cfi )
+wri "{\\rtf1" n
+wri "{\\fonttbl" n
+wri "{\\f0\\fmodern allegro Lucida Console;}" n
+wri "}{\\colortbl;\\red0\\green0\\blue0;\\red255\\green0\\blue0;}"
+    Hier die Schriftgroesse einstellen: fs20 heisst 10Punkt !
+wri "{\\f0\\fs20 "
+  Definitionen sind schon eingelesen? (Datei x.cfl dann in #uyF)
+var "+" ce
+ins #uce
+var "+" cn
+ins #ucn
+if #uyF jump erst
+  Definitionsdatei einlesen (Bedeutung der Feld- und Teilfeldnummern)
+  Default:  Datei x.cfl  auf DbDir?
+var "F" D K1 ".cfl"
+ins #uy2
+var #uy2(1,0)
+  Checken, ob sie existiert
+open
+if no jump progdir
+jump beginn
+
+:progdir
+  Oder liegt sie auf dem ProgDir?
+var "F" P K1 ".cfl"
+ins #uy2
+var #uy2(1,0)
+  Checken, ob sie existiert
+open
+if no jump error
+
+  Datei nun in die iV einlesen, sie ist jetzt geoeffnet
+:beginn
+get 
+ins $c
+if cancel jump filend
+if "#" jump fld
+if "$" jump fld
+jump beginn
+:fld
+var #uyF $c
+ins #uyF
+jump beginn
+
+:filend
+close
+var #uyF
+  # durch + ersetzen (sonst Fehler bei ins #uyF)
+ins _#_+_
+ins _$__
+ins __$_
+ ins _^M__
+ ins _^J__
+
+ins #uyF
+#uy2
+
+:erst
+  Erstes Feld des aktuellen Satzes nehmen
+var k1
+  und in #uyT (mit Feldnummer vorne!)
+
+:loop
+ins #uyT
+  Feldnummer mit + davor (ACHTUNG: 3 stimmt nicht bei MAB oder MARC!)
+var "+" #uyT(f"#" 0,3)
+if =#uce jump nxtf
+if =#ucn jump nxtf
+  Sonderbehandlung fuer #9A xabc  ->  #9Ax abc
+if "+9A " var "+" #uyT(f"#" 0,2) #uyT(f"#" 3,1)
+ins #uyU
+  zugehoerige Zeile in der Datei suchen
+var #uyF(b"#uyU" e"" e"+")
+ins #uyX
+
+  Definitionszeile des betr. Feldes:
+ins #uyZ
+var "" #uyX(b"" e"" e"+")
+ins #uyX
+var (1,1)
+if not "" jump schreib
+  Nicht gefunden, dann mit 3 Zeichen versuchen
+
+var "+" #uyU(f"+" e" ")
+ins #uyU
+
+var #uyF(b"#uyU" e"" e"+")
+ins #uyZ
+if not "" jump schreib
+
+  Nicht gef., dann per CFG suchen
+var "#" #uyU(f"+") J
+ins #uyZ
+
+:schreib
+var #uyZ(b"")
+if "" jump anix
+ins #uyY
+var "x" #uyY
+ins #uyY
+jump ausg
+  Diese Zeile hat keine Teilfeldliste, vorige uebernehmen:
+:anix
+var #uyY
+asci
+ins #uyX
+
+:ausg
+  Feldbezeichnung ausgeben [MARC/MAB/N : 1,4)
+var #uyU(1,3)
+if "01 " wri "  Band:\\par " n
+exp wX
+wri "#" #uyT(1,3) "  " #uyZ(e"" 0,20)
+exp w0
+  Farbe rot
+wri " ·\\cf2 "
+exp wX
+wri #uyT(4,0 e"")
+exp w0
+  Farbe schwarz
+wri "\\cf1 \\par " n
+
+:tf
+  Teilfeld suchen
+var #uyT(b"")
+  keins mehr, naechstes Feld
+if "" jump nxtf
+ins #uyT
+var #uyT(e"" 1,0)
+if "" jump tf
+var "" #uyT(0,1)
+ins #uyS
+  Subfieldkennung suchen in #uyX
+var #uyX(b"#uyS" e"")
+ins #uyK
+if "" perf other
+
+  ausgeben:  Tf.Code Bezeichnung = Inhalt
+exp wX
+wri "   " #uyS " " #uyK(0,20)
+exp w0
+wri " ·\\cf2 "
+exp wX
+wri #uyT(1,0 e"")
+exp w0
+wri "\\cf1 \\par " n
+jump tf
+:nxtf
+var k2
+if not "" jump loop
+
+  Hilfsdatei zumachen
+wri n "\\par }"
+close x
+
+  Hilfsdatei anzeigen
+h cfgdispy
+var n "###  Speichern mit Alt+8 oder X cfgb, nicht mit Button [Speichern]!"
+sho +IV
+
+var ""
+sho iV
+delete cfgdispy.rtf
+activate 4
+end
+:error
+var "Datei " #uy2(1,0) " existiert nicht"
+sho iV
+
+  Simulation einer leeren .cfl,
+  dann wird nur .cfg benutzt fuer die Feldbezeichnungen
+var "+abc dummy+xxx ENDE"
+ins #uyF
+jump filend
+
+
+  Teilfeldkennung nicht definiert
+  N-Format kennt 13 Allgemeine Subfields:
+:other
+#uyK .....
+var K1
+if not "~n" return
+var #uyT(0,1)
+if "A" var "FldAbbr"
+if "D" var "FldDate"
+if "I" var "FldId"
+if "L" var "FldLang"
+if "N" var "FldNum"
+if "P" var "FldPre"
+if "R" var "FldRule"
+if "S" var "FldSpell"
+if "T" var "FldType"
+if "U" var "FldURL"
+if "X" var "FldNNote"
+if "Y" var "FldText"
+if "Z" var "FldPNote"
+ins #uyK
+return
+
+  Datei hilite.apr auf hilite.xpr kopieren
+:perr
+var P "hilite.apr"
+fsize
+if no jump nerr
+var P "hilite.apr " D "hilite." K1 "pr"
+fcopy
+jump start
+
+:nerr
+var "Es fehlt die Datei  hilite." K1 "pr" n "Kopieren Sie hilite.apr auf diesen Namen!"
+mes

@@ -1,0 +1,93 @@
+  E-0.APR : EXTERN Prototype : to download records in ASCII format
+  960214           with tags, line breaking, or even page breaking
+
+  Output : records in allegro basic format:
+           written as ASCII text file, fields with tags
+           every field on a new line, line breaking at 66 characters
+           longer fields indented on continuation lines
+
+  Purpose: Output file can be used
+           a) as an interface to other software that would be able to read it
+           b) as a proof reading list for data entry operators
+
+  Batch  : EXTERN.BAT
+
+pn="E-0 : Prototype for EXTERNAL format"
+
+
+  --------- Constants (to be changed as needed) -------------------
+
+zl=66	    Line length
+zi=4	    Indentation 4 spaces on continuation lines of long fields
+   ^         Activate one of the following if needed:
+ zi=5         5 for 3-byte tag configurations
+ zi=6         6 for 4-byte tag configurations
+zm=0        no page breaking (continuous output as a file)
+ zm=62       page breaking at 62 lines  (activate if wanted)
+    ~~
+ae=13 10    another line feed at end-of-record
+   ~~~~~
+fl=0        List format (no card-like format with fixed number of
+                         lines per record)
+ks=0	    Start position 0 in every field (i.e., the tags will be written
+   ~                                         with the '#' in front!)
+ ks=1        Write tags without the '#'  (activate this line if wanted)
+ke=C &0     Field end: new line + start on position 0 for new field
+
+ tprinter    activate if you want a print file
+             (printer.apt will be loaded, it's a copy of a p-*.apt)
+
+dx=1        not necessary, just for testing to see all codes on screen
+
+  -----------------------------------------------------------------
+
+  ********* Field list ********************************************
+
+  EITHER we want full output of all fields: then we just use
+  the global export command:
+  ~~~~~~~~~ Application specific part ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ##      global output of all fields in their internal order
+
+       we can exclude some fields by the '/' command:
+ /25   if #25 is to be excluded from the global output
+ /9..  if all fields of group #9 are to be excluded
+ /33.  if all fields #33x are to be excluded
+
+  ------------------------------------------------------------------
+
+  OR we want a specific selection of fields only, then we list them:
+  ----- deactivate this section if you activate the above one ------
+#01         Hierarchy (volume numbers) in subrecords
+#02
+#03
+#04
+#05
+
+#20              Title
+#40. ++          all authors (#40, #40a, #40b, ...)
+#74              place
+#75              publisher
+#76              year
+#77              collation
+#90              call number
+  -------------------------------------------------------------------
+
+  ****************************************************************************
+
+ Code changes : add p-commands if some characters must be coded
+                differently in the output
+ Examples:
+ p „ "ae"   to write se instead of „
+ p { [      replace { by [ in the output
+ p @ 1      omit (suppress) @ in the output
+ p # 95     replace '#' by ASCII code 95 (decimal)
+ p à .27 2 1 224 27 2 0
+            replace à by a (decimal) escape sequence
+ p à "alpha"   replace character by word
+
+ If any fields need to be coded differently, use additional q commands:
+ (and write  !nnn  instead of  #nnn for those fields)
+
+ q a/z 65   turn smalls into caps  (for example)
+ q „ "ae"   and so on
+

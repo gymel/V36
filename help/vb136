@@ -1,0 +1,112 @@
+
+Verlautbarung 136 der Entw.Abt.                           2000-11-06
+-------------------------------
+
+a99/alcarta : Mittelgrosse Verbesserungen
+-----------------------------------------
+
+1. Volltextsuche : Schreibweisen-Toleranz
+-----------------------------------------
+Wenn per Suchbefehls-Eingabe eine Volltextsuche in einer Ergebnismenge
+veranstaltet wird, braucht man nicht mehr auf die Gross-Klein-
+Schreibweise sowie auf Umlaute zu achten. Eingabe von Mueller, mueller, 
+Mueller und mueller sind gleichwertig, alle finden sowohl Mueller wie 
+auch Mueller.  Nicht aber Muller. Ansonsten gilt dasselbe fuer 
+Akzentbuchstaben.
+Das ist dasselbe Verhalten, wie es schon in den ViewListen eingefuehrt
+wurde!
+Benutzt werden dafuer intern die p-Befehle der Index-Parameter, die 
+zur Umcodierung der Indexeintraege dienen. Sowohl der Datensatz wie 
+die Suchwort-Eingabe werden vor Ausfuehrung der Suche umcodiert.
+
+Tip: Das Ausloesen der Volltextsuche geht am schnellsten im Feld 
+"Suchbefehl", wenn man dort "+" und dahinter das Suchwort eingibt.
+Beispiele:
++klavier       Saetze, in denen "klavier" oder "Klavier" vorkommt
++#20,klavier   ... in denen es im Feld #20 vorkommt
++#2,klavier    ... in denen es in einem Feld der Gruppe #2 vorkommt
+NEU auch: Die V14-Referenzen in den Datensaetzen werden vor der 
+Volltextsuche aufgeloest! Bisher war das nicht der Fall. 
+Beim "Suchen und Ersetzen" (im Menue "Global") ist jedoch 
+weiterhin exakte Eingabe angesagt!
+
+
+2. Index-Fenster
+----------------
+Die Eingabezeile ist jetzt eine "Combo-Box". Die letzten 20 Eingaben
+bleiben praesent und koennen erneut abgerufen werden: man betaetigt 
+den Pfeil an der rechten Seite oder drueckt [Cursor runter]
+
+
+3. Suchbefehlszeile (im Hauptfenster)
+-------------------
+Hierfuer gilt dasselbe, es wurde gleichfalls durch eine Combo-Box 
+ersetzt.
+
+(Es ist merkwuerdig, dass diese beiden letzten Punkte nicht schon 
+laengst vehement gefordert wurden.)
+
+
+4. Umfang des Formularspeichers
+-------------------------------
+Es war bemerkt worden, dass dieser arg begrenzt ist. Die Formulare 
+werden im Phrasenspeicher gelagert, daher muss man diesen genuegend 
+gross machen (Befehl mP in der CFG-Datei).
+Es kommt jetzt eine Fehlermeldung ("Kein Platz mehr fuer Phrasen"), 
+wird die Grenze ueberschritten, bzw. "Too many forms", wenn es mehr
+als 50 Formulare sind.
+Weil die Frage immer wieder kommt: eine Flexibilisierung der Formulare
+(freie Gestaltbarkeit) waere enorm viel schwieriger zu realisieren und
+wird sicher in naeherer Zukunft nicht kommen.
+
+
+5. Gesamte Datenbank exportieren
+--------------------------------
+Mit "download database" kann man jetzt den Menuepunkt "Export | 
+Gesamte Datenbank" ausloesen. Man wird sich ueberlegen, ob man dies 
+bei grossen Banken einsetzen wird, fuer kleinere kann es sicher sehr
+nuetzlich sein, schnell mal eben die Datenbank in eine andere
+Struktur zu ueberfuehren.
+Benutzt werden die aktuellen ExportParameter. Per "xport p ..." kann 
+man natuerlich vorher andere einstellen.
+
+
+6. PV-FLEX
+----------
+Das Einrichten von Programmierten Validierungen ist nicht Jedermann's
+Sache, muss man doch dafuer die Exportsprache meistern. Nicht diese
+abzuschaffen, aber ihre Notwendigkeit zu reduzieren, ist erklaertes
+Ziel der Entwicklungsarbeit.
+Jetzt gibt es, zumindest fuer den wichtigen Punkt direkt vor dem
+Speichern des Datensatzes, den PV-FLEX. Ist ein solcher vorhanden, 
+wird er bei Druck auf [Speichern] ausgefuehrt. Das eigentliche 
+Speichern muss dann in Form eines "put" in den FLEX eingebaut sein, 
+in der Regel gefolgt von "display\show rec", um eine Erneuerung der 
+Anzeige auszuloesen. 
+Ansonsten kann man im PV-FLEX jede erdenkliche Aktion durchfuehren, 
+um den aktuellen Satz vor dem Speichern zu pruefen und zu behandeln.
+Der Name des PV-FLEX ist beliebig. Als Standort kommen die fuer FLEXe
+insgesamt moeglichen Verzeichnisse in Frage, je nach Gutduenken.
+Und so wird der PV-FLEX aktiviert: in der INI-Datei gibt es den
+Befehl  SaveAsk=0/1, wo bisher nur die Werte "0" (nicht fragen)
+bzw. "1" (immer fragen) moeglich waren. Diese Werte bleiben 
+unveraendert moeglich, aber jetzt kann man auch schreiben:
+
+SaveAsk=X pruef
+
+wenn PRUEF.FLX der Name der FLEX-Datei ist, oder auch
+
+SaveAsk=x <FLEX-Befehlskette>
+
+wenn es sich um eine kurze Befehlskette handelt (bis 127 Zeichen).
+Es muss also "X " bzw. "x " auf SaveAsk= folgen, wenn ein FLEX
+ausgefuehrt werden soll!
+Weil aus einem FLEX heraus auch externe Programme gestartet werden
+koennen, ist es ganz klar, dass diese neue PV-Moeglichkeit noch
+maechtiger ist als die alte (die unveraendert bestehen bleibt).
+
+Im Vergleich mit relationalen Datenbanken aehnelt diese Methode dem
+sog. "Trigger"-Konzept. Dieses ermoeglicht bei RDBMS, dass die 
+Datenbank bei jeder Veraenderung gewisse Bedingungen prueft und
+dann in bestimmten Faellen programmierte Aktionen durchfuehrt.
+

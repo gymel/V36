@@ -1,0 +1,38 @@
+// newdb.job : Neue Datenbank anlegen
+// 2014-07-21   Dateien: .?dx, .tbl, .stl, .res, *_1.?ld
+
+
+// wird gestartet mit
+//  al.bat new dbdir dbn konfig
+// z.B.  al new demo3 cat a
+
+//  acon hat mit al.job in diesem Moment schon die Dateien angelegt!
+//  das passiert ohne dass Sie dazu etwas tun muessen.
+
+// Es wird nur noch ein Testsatz gespeichert, den man
+// spaeter loeschen kann.
+
+#u1 TestSatz
+
+// IdNr a0 
+katlist
+var (b"^J" b"^J" e" ")
+ins $k
+var $k "     a0"
+ins 
+
+
+put
+if no jump error
+
+wri "Datenbank " B " auf " D " ist angelegt, Konfiguration ist " K n
+wri "Ein Testsatz wurde gespeichert. Er hat die IdNr " $k " a0  und die interne Nummer 1" n
+wri "Dieser Satz kann sofort oder spaeter geloescht werden!" n
+end
+
+:error
+wri "Das Anlegen einer Datenbank " B " auf " D " ist nicht gelungen" n
+wri "Vielleicht konnte der Ordner " D " nicht angelegt werden," n
+wri "oder Sie haben dafuer kein Schreibrecht."
+
+

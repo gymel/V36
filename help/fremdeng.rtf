@@ -1,0 +1,201 @@
+{\rtf1\ansi\deff0\deflang1031{\fonttbl{\f0\fscript\fprq2 Comic Sans MS;}{\f1\froman\fprq2 Times New Roman;}{\f2\fmodern\fprq1 Courier New;}{\f3\fswiss MS Sans Serif;}{\f4\fmodern\fprq1\fcharset0 Courier New;}{\f5\fnil\fprq2\fcharset2 Wingdings;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;\red255\green0\blue255;\red0\green128\blue0;\red128\green0\blue128;\red0\green0\blue0;}
+\viewkind4\uc1\pard\qc\tx660\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\cf1\b\i\f0\fs32 allegro\i0  Data Import 
+\par \pard\tx660\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\cf0\b0\f1\fs20 
+\par \b\fs24 1.\b0   `\cf2\ul\b External Data\cf0\ulnone\b0 ` 
+\par \b 2.\b0   `\cf2\ul\b Details of external data structure\cf0\ulnone\b0 ` 
+\par \b 3.\b0   `\cf2\ul\b How to load external data in a99\cf0\ulnone\b0 ` 
+\par \pard\tx660\tx1140\tx1860\tx2580\tx3300\tx4260\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b 4.\b0   `\cf2\ul\b Copying from a parallel database\cf0\ulnone\b0 `\tab 
+\par \b 5.\b0   `\cf1\ul\b Fast coupling\cf0\ulnone\b0 ` 
+\par \pard\tx4260\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab\fs20 (Opening a resource database for copying)\fs24 
+\par \pard\tx660\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b 6.\b0   `\cf2\ul\b Conventional Import\cf0\ulnone\b0 ` 
+\par       \fs20 (Ready-made for MARC, MAB2, Pica, VLB)\fs24 
+\par \fs20 
+\par 
+\par \b Background\b0 
+\par A frequent situation: one has obtained material from other environments and wants to insert it into a database. \i allegro\i0  possesses powerful methods, esp. for cases where the external data have a very different or even exotic structure. Chapters 5 (Concept and application)  and 11 (Import Language) of the System Handbook describe it all. 
+\par Briefly: An "import" proceeds in two phases: 
+\par \b 1. Conversion\b0 
+\par In the most general case, an  \b Import Parameter File\b0  has to be written (Chap. 11), containing a precise description, field by field, of the external data and what IMPORT.EXE is supposed to do with it. This program can then read and process the material and export it into a file of type .ADT using  \f2 e-1.apr\f1   (see below) or of type .ALG using \f2 i-1.apr\f1 . 
+\par There are prefabricated import parameters for the bibliographic formats `\cf2\ul\b MAB2\cf0\ulnone\b0 `, `\cf2\ul\b MARC\cf0\ulnone\b0 ` and `\cf2\ul\b Pica3\cf0\ulnone\b0 `. 
+\par \b 2. Merging\b0 
+\par A file of type .ALG (as produced by IMPORT) can be merged into a database by `\cf2\ul\b\f2 upd.exe\cf0\ulnone\b0\f1 `  (\b\f2 import.exe\b0\f1  itself can only do the conversion, its name may thus be found misleading!). \b  \i a99\b0\i0  can directly read external files of type .ALG or .ADT (The FLEX command `\cf2\ul\f2 read file\cf0\ulnone\f1 ` can be used automate this). 
+\par The two phases can be combined in a batchfile: 
+\par The \cf1 general pattern\cf0  of a batch looks like this: 
+\par 
+\par \b\f2 import\b0  -d\cf3\b\i file\cf0\b0\i0  -f5 -i\cf1\b\i form\cf0\b0\i0  -e i-1/\b new.\i c\i0 lg\b0  -v1 -m0 -s0 -h0 -k\cf4\b\i conf\cf0\b0\i0 
+\par \b upd\b0  -fm01 -d\cf5\b\i DbDir\i0\\\i DbName\cf0\b0\i0  -u\b new.\i c\i0 lg\b0  -n2 -m1 -k\cf4\b\i conf\cf0\b0\i0 
+\par \f1 
+\par \cf1\i Example:\cf0\i0 
+\par Say there's a database using \f2 $\cf4\b u\cf0\b0 .cfg\f1  as its configuration and the name of  \cf2\b\f2 marc\cf0\b0\f1 , located on  \cf5\b\f2 k:\\database\\catalog\cf0\b0\f1 ,  and we have an external file \cf3\b\f2 xyz.dat\cf0\b0\f1  and a suitable parameter file \cf1\b\f2 usmarc\cf0\b0 .\cf4\b u\cf0\b0 im\f1 , then our batch would be: (the configuration letter being \cf4\b u\cf0\b0 , the file has to be of type \cf4\b u\cf0 lg\b0  ) 
+\par 
+\par \f2 import -d\cf3\b xyz.dat\cf0\b0  -f5 -i\cf1\b usmarc\cf0\b0  -e i-1/\b new.\cf4 u\cf0 lg\b0  -v1 -m0 -s0 -h0 -k\cf4\b u\cf0\b0 
+\par upd -fm01 -d\cf5\b k:\\database\\catalog\\\cf2 marc\cf0\b0  -u \b new.\cf4 u\cf0\b0 lg -n2 -m1 -k\cf4\b u\cf0\b0 
+\par \f1 
+\par The  \b f\b0 unction mode of the \b m\b0 erging is indicated by the option  \f2 -f\b m\b0 xy\f1  . x and y are digits. The possible values are documented in the  `\cf2\ul\b Handbook Chap.9\cf0\ulnone\b0 ` . 
+\par The mos difficult job is therefore the writing of an import specification file. Once this has been done, the rest is simple, following the indicated method. For the standard schema, several import specs are part of the package along with appropriate `\cf2\ul Batch files\cf0\ulnone ` to make the import process a very simple procedure. 
+\par 
+\par 
+\par \b\f3 1. External data\b0\f1 
+\par In the least complicated situation one would have data in a predefined format, called the `\cf2\ul\b external format\cf0\ulnone\b0 ` . 
+\par Here are two records int his format, using the tags of the "consolidated bibliographic format" (the second is a "hierarchic record" with two subrecords): 
+\par 
+\par \pard\f2 #00 123456 
+\par \pard\tx660\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f4 #20 Einsicht ins Ich : Fantasien und Reflexionen \'fcber Selbst und Seele \f2 
+\par \f4 #22 \'acThe\'ac mind's I <dt.> \f2 
+\par #30 CS PH 
+\par \f4 #31 K\'fcnstliche Intelligenz; Selbstreferenz; Individualit\'e4t \f2 
+\par \f4 #39 Ausgew\'e4hlt und in Szene gesetzt von Douglas R. Hofstadter und Daniel \f2 
+\par \f4  Dennett. [Aus d. Amerik. \'fcbers. von Ulrich Enderwitz] \f2 
+\par #40 Hofstadter, Douglas R. 
+\par #402Dennett, Daniel C. 
+\par #74 Stuttgart 
+\par #75 Klett-Cotta 
+\par #76 1986 
+\par #77 485 S. 
+\par #81 Orig. Ausg. bei Basic Books, 1982 
+\par #87 3-608-93038-8 
+\par 
+\par #00 654321 
+\par \f4 #20 Was k\'f6nnen wir wissen? \f2 
+\par \f4 #31 Evolution\'e4re Erkenntnistheorie \f2 
+\par #40 Vollmer, Gerhard 
+\par #74 Stuttgart 
+\par #75 Hirzel 
+\par #76 1985 
+\par #77 Bd.1.2. 
+\par \b #01\b0  1=Bd. 1 
+\par \f4 #20 \'acDie\'ac Natur der Erkenntnis : Beitr\'e4ge zur Evolution\'e4ren \f2 
+\par  Erkenntnistheorie 
+\par #25 Mit einem Geleitw. v. Konrad Lorenz 
+\par #77 337 S. 
+\par #87 3-7776-0403-8 
+\par #90 2647-3611 
+\par \b #01\b0  2=Bd. 2 
+\par \f4 #20 \'acDie\'ac Erkenntnis der Natur : Beitr\'e4ge zur modernen Naturphilosophie \f2 
+\par #77 350 S. 
+\par #87 3-7776-0404-6 
+\par #90 2650-9705 
+\par 
+\par \pard\f1 If one has records like these in a file EXTERN.DAT on the working directory of \i a99\i0 , the program can read these directly! On the "File" menu, use the command "External result set", and you see the records displayed at once. More about this under 3.. 
+\par 
+\par \b\f3 2. Details of the external structure\b0\f1 
+\par Every record has to start on a new line beginning with the  # character followed by a tag number. The tag numbers are defined in a  `\cf2\ul\b configuration file\cf0\ulnone\b0 ` named $A.CFG . 
+\par Multiple fields must be distinguished by a digit or letter following the tag, like  #402 for the 2nd author. 
+\par A blank line is the demarcation between two records. 
+\par If a field, because of its length, is broken into several lines, this should be done only between words, and subsequent lines have to begin with a space. 
+\par Codes have to be ASCII. (In case of ANSI, being the Windows standard, activate the two lines "\f2 dx=1\f1 " and "\f2 to\f1 " in the file d-w.apr, ANSI will then be changed into ASCII via the table o.apt ) 
+\par The second example is a hierarchic record consisting of a main and two subordinate records (each beginning with a \b #01\b0  field). If linked records are wanted rather than hierarchic ones, the second example has to look like this: (being three records, each with its own ID number #00, the link being effected by the number in field #00 of the main record) 
+\par 
+\par \pard\tx660\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f2 #00 \b 654321\b0 
+\par \f4 #20 Was k\'f6nnen wir wissen? \f2 
+\par \f4 #31 Evolution\'e4re Erkenntnistheorie \f2 
+\par #40 Vollmer, Gerhard 
+\par #74 Stuttgart 
+\par #75 Hirzel 
+\par #76 1985 
+\par #77 Bd.1.2. 
+\par \b 
+\par \b0 #00 324987 
+\par #09 \b 654321\b0 +1=Bd. 1 
+\par \f4 #20 \'acDie\'ac Natur der Erkenntnis : Beitr\'e4ge zur Evolution\'e4ren \f2 
+\par  Erkenntnistheorie 
+\par #25 Mit einem Geleitw. v. Konrad Lorenz 
+\par #77 337 S. 
+\par #87 3-7776-0403-8 
+\par #90 2647-3611 
+\par \b 
+\par \b0 #00 837613 
+\par #09 \b 654321\b0 +2=Bd. 2 
+\par \f4 #20 \'acDie\'ac Erkenntnis der Natur : Beitr\'e4ge zur modernen Naturphilosophie \f2 
+\par #77 350 S. 
+\par #87 3-7776-0404-6 
+\par #90 2650-9705 
+\par \pard\f1 
+\par \b\fs24 
+\par \f3 3. How to load external data in a99\b0  \f1\fs20 
+\par 1. Go to the menu "File | External result set". The contents of file EXTERN.DAT will appear in the result window. These records will not, however, be merged into the database right away, they are just loaded into the `\cf2\ul\b Offline Store\cf0\ulnone\b0 `. Don't worry, therefore - you are safe from making horrible mistakes! 
+\par 
+\par 2. The offline records can be looked at in the display window, you can edit them, and use the [Next] and [Previous] buttons (lower right) to browse forward and backward. In the status display, you see  "NEW" to indicate that the record is not (yet) part of the database. 
+\par 
+\par 3. Every record may be \b saved individually\b0  using the [Save Rec] button. 
+\par 
+\par 4. Or  \b save all offline records at once\b0  using the menu "File | Offline file -> Database".  If unsaved records are left when exiting the program, you will be asked to decide whether or not to save the remaining offline records - just reply "no" to prevent it! 
+\par 
+\par The FLEX command `\cf2\ul\b\f2 update\cf0\ulnone\b0\f1 ` automates the merging of offline data. 
+\par 
+\par If you have data in formats different from this or if you cannot easily produce this format using tools available to you, read Chap. 5. It explains how to proceed. Chap. 11 describes existing conversion parameters and how to create individual parameters. 
+\par 
+\par \cf1\b\f3\fs28 4. Copying from a parallel database\f1  \cf6\b0\fs22  
+\par [Handbook Chap.2.4]\cf0\b\fs28 
+\par \b0\fs20 It is one of the most popular features of the DOS program PRESTO that it can switch to another database by Alt+a , whereupon the same index section of the other database will pop up. In  \i a99/alcarta\i0  this is a trifle more difficult to achieve, but with a few very brief FLEXes life can become even more comfortable. 
+\par But you don't have to write any FLEXes yourself; there's a  FLEX named `\cf2\ul\b FREMDDB\cf0\ulnone\b0 ` that establishes a  \b fast coupling\b0  between your database and another one - if you have one in your system (i.e., on one of the accessible disks).  For future sessions, the settings for this coupling will be saved in a  \b\f2 fremddb.ini\b0\f1  - coupling will then be even faster. 
+\par For experts interested in the details, here's a step-by-step description of the procedure: 
+\par \b 
+\par The task:\b0  Switch from database \b A\b0  to a resource database \b B\b0 . Display the same index section there. If a usable record is found in  B , copy it from B to A on the push of a button. 
+\par \b 
+\par Solution: \b0  Alt+a like in PRESTO cannot be used  (because it is used for "\ul A\ulnone dd bookmark"). Instead, the swithing  A\lang1024\f5\'e0\lang1031\f1 B is done by Alt+1, the reverse  B\lang1024\f5\'e0\lang1031\f1 A with Alt+9 . 
+\par Start both databases with separate calles to \i a99\i0 , for B \i alcarta\i0  can be used as well. We  assume both calls are issued from the same work directory. 
+\par In  \f2 B.INI\f1   we need to have: 
+\par \f2 ExportParameter=E-W 
+\par OutputFile=E.ADT 
+\par \f1 
+\par \i NEW and better than in PRESTO:\i0  If the resource database is in a different format, one has to provide appropriate export parameters E-W for it. Then, one can even import directly from databases in completely different formats. 
+\par \b 
+\par Switching  A \lang1024\f5\'e0\lang1031\f1  B\b0  
+\par A FLEX called SWITCH.FLX is provided for this. It contains comment. 
+\par When activated in A, this FLEX writes a file \f2 alta.flx\f1  and then sends a message to B to execute this FLEX. The ALTA.FLX contains just this : 
+\par \b\f2 activate 
+\par index |\b0\i i xyz\i0 
+\par \f1 with \i xyz\i0   being the last access point in the current index \i\f2 i\i0\f1  . 
+\par The \b\f2 activate\b0\f1  command will bring B into the foreground. 
+\par Then, index \i\f2 i\i0\f1  is displayed at position \i\f2 xyz\i0\f1  . 
+\par It works both ways! Alt+TAB may also be used to switch between both databases, with no effect on the indexes however. 
+\par The simplest way to install the function in A: Enter this into the input field: 
+\par \f2    #uX1X switch.flx 
+\par \f1 After this, Alt+1 will do the switch, and will be preserved for future sessions. The "fast coupling" function will, instead, produce a new menu item in the main menu. 
+\par \b 
+\par Backswitch B \lang1024\f5\'e0\lang1031\f1  A \b0 
+\par The simple FLEX    \b\f2 x download\\flex copy 
+\par \b0\f1 (to be started in B) will at first download the current record to the file E.ADT , then send a message to  A to inform it that it should execute the  COPY.FLX . This file, too, comes with the package and is commented. 
+\par The simplest way to install the function in B: Enter this into the input field: 
+\par \f2    \b #uX9x download\\flex copy 
+\par \b0\f1 After this, Alt+9 will do the switch, and will also be preserved for future sessions. 
+\par 
+\par A FLEX command \b\f2 delete\b0\f1  in copy.flx deletes the file E.ADT to make sure the next copy action can follow immediately. 
+\par \b\f2 
+\par switch.flx\b0\f1   und  \b\f2 copy.flx \b0\f1  are contained in the package. They may be adapted for individual purposes. 
+\par 
+\par 
+\par \b\f3\fs24 6.  Conventional Import\b0 
+\par \f1\fs20 The DOS `\cf2\ul Import Parameter Files\cf0\ulnone ` remain valid. More about these in the handbook Chapters 5 and  11. 
+\par For the standard format, $A.CFG, several import parameters come with the package. 
+\par In the DOS `\cf2\ul\b\i CockPit\cf0\ulnone\b0\i0 `, there is a menu item "Import-Aktionen" under "Macros". The options are these: Deutsche Bibliothek (MAB2), Pica, MARC and VLB. For each of these there is a parameter file written for that particular format: MAB2.AIM, PICA.AIM and so on. 
+\par 
+\par 
+\par ?configuration file=h acb-1 
+\par ?External Data=h =1. External Data 
+\par ?Details of external data structure=h =2. Details 
+\par ?How to load external data in a99=h =3. How to load 
+\par ?Copying from a parallel database=h =4. Copying from 
+\par ?Offline Store=h off 
+\par ?update=h xupdate 
+\par ?FREMDDB=X fremddb 
+\par ?Fast coupling=X fremddb 
+\par ?upd.exe=h ac9 
+\par ?MAB2=h mab2.aim 
+\par ?MARC=h oclc.aim 
+\par ?Pica3=h pica.aim 
+\par ?Handbook Chap.9=h ac9=Option -fm 
+\par ?Conventional Import=h =6.  Conventional Import 
+\par ?read file=h xread 
+\par ?Import Parameter Files=h param=API 
+\par ?MAB2-Daten=x var "MAB2"\\ins #uvI\\exec fremd 
+\par ?Pica-Daten=x var "PICA"\\ins #uvI\\exec fremd 
+\par ?MARC-Daten=x var "OCLC"\\ins #uvI\\exec fremd 
+\par ?VLB-Daten=x var "VLB"\\ins #uvI\\exec fremd 
+\par ?CockPit=X cockpit 
+\par 
+\par 
+\par }
+ 

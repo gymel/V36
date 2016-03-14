@@ -1,0 +1,282 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman Times New Roman;}{\f1\fmodern\fprq1 Courier New;}{\f2\fswiss\fcharset0 MS Sans Serif;}{\f3\froman\fprq2 Times New Roman;}{\f4\froman\fprq2\fcharset0 Times New Roman;}{\f5\fmodern\fprq1\fcharset0 Courier New;}{\f6\fmodern\fprq1\fcharset0 Courier;}{\f7\fmodern\fprq1 Courier;}{\f8\froman\fcharset0 Times New Roman;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red0\green176\blue0;\red255\green0\blue0;}
+\viewkind4\uc1\pard\qr\f0\fs18 
+\par `\cf1\ul\b Register\cf2\ulnone\b0 ` 
+\par 
+\par \pard\cf3\b\f1\fs24 if\cf2\f2\fs20 -Befehle : Bedingungspr\'fcfungen\b0\f3     
+\par 
+\par \f4 Das allgemeine Schema der Bedingungspr\'fcfungen ist \f3 
+\par  
+\par \cf3\b\f1 if \cf2\b0\i bedingung\b\i0  \b0\i command\i0\f3  \i\f1     \cf4\b\f3 acon\cf2\b0\i0  
+\par \tab Wenn die  \i\f1 bedingung\i0\f4    erf\'fcllt ist, wird \i\f1 command\i0\f4   ausgef\'fchrt. (Fehlt \i\f1 command\i0\f4  , geschieht nichts.)\f3  \f4  
+\par \pard\li710\tab Es kann sich bei \i\f1 command\f5  \i0\f4  auch um einen weiteren \f5 if\f4 -Befehl handeln, d.h. man kann mehrere Bedingungen hintereinander pr\'fcfen, und nur wenn sie alle zutreffen, wird der Befehl ausgef\'fchrt. 
+\par \i Hinweis auf einen Mangel:\i0  Ein  \f5 else\f4   gibt es nicht. Ggfls. verwendet man einen  \f5 jump\f4   nach woanders, dann hat die nachfolgende Zeile die Wirkung, die man mit  \f5 else\f4   erzielen w\'fcrde. Oder man macht zwei Befehle: 
+\par \f5 if\cf3\b\f1  \cf2\b0\i bedingung\b\i0  \b0\i command\f5 1\i0\f3  \i\f1     \i0\f3  
+\par \f5 if not\cf3\b  \cf2\b0\i\f1 bedingung\b\i0  \b0\i command\f5 2\i0\f3  \i\f1  \i0\f3  
+\par \pard\b\f4\tab\b0  Aber bedenken, ob nicht  \i\f1 command\f5 1\i0\f4   die  \i\f1 bedingung\i0\f4   ver\'e4ndern k\'f6nnte.\b 
+\par 
+\par Ab V25.2\b0  kann \i\f1 command\i0\f4  aus \b mehreren Befehlen\b0  bestehen,  die alle auf derselben Zeile stehen und durch  \b ; \b0   getrennt sein m\'fcssen. Das gilt f\'fcr alle nachfolgend beschriebenen F\'e4lle, ab V29.5 auch f\'fcr \i acon\i0 .\b\f1  \i\f4 Aber Vorsicht:\i0  \b0 Schiefgehen kann das, wenn einer der Befehle ein  \f5 perform\f4    oder ein    \f5 write\f4   oder  \f5 var\f4   mit Manipulationen ist; dann lieber mit  \f5 jump\f4   zu einem eigenen Abschnitt springen oder ein Unterprogramm machen und dieses mit  \f5 perform\f4   ablaufen lassen. (Wobei leider in einem Unterprogramm kein weiteres  \f5 perform\f4   stehen kann.)\b\f1 
+\par 
+\par \i\f4 Hinweise:\i0\f5  \b0\f4  Unbedingt auf die Schreibweise achten!  Z.B.mu\'df es  \f5 if Help\f4   hei\'dfen - d.h.  \f5 if help\f4   geht nicht! 
+\par Die Bedingungsw\'f6rter k\'f6nnen, soweit es eindeutig ist, alle bis auf das erste Zeichen verk\'fcrzt werden, d.h.  \b\f5 if H\b0\f4    geht auch.\b\f1 
+\par \b0\f3 
+\par \f4 Jede Bedingung kann durch vorgesetztes  \cf3\b\f1 not\cf2\b0\f4   in ihr Gegenteil verkehrt werden:\f3 
+\par \cf3\b\f1 if not \cf2\b0\i bedingung\b\i0  \b0\i command\i0\f3  \i\f1     \cf4\b\f3 acon\cf2\b0\i0  
+\par \pard\li710\tab\f4 d.h. w\f3 enn die \i\f1 bedingung\i0\f3   \b nicht\b0\f4  erf\'fcllt ist, wird \i\f1 command\i0\f4  ausgef\'fchrt. 
+\par \f3 
+\par \pard\i\f1 command \i0\f4  kann jeweils auch ein weiterer  \f1 if\f3 -Befehl sein! 
+\par   
+\par \f4 Nun zu den einzelnen Bedingungen. Dabei handelt es sich um festgelegte Ausdr\'fccke, bis auf den ersten Typ.\f3 
+\par Mit \cf4\b\i acon\cf2\b0\i0\f4  sind diejenigen markiert, die auch f\'fcr das Konsolprogramm  \b\f5 acon\b0\f4   gelten, denn dieses bearbeitet f\'fcr acon die Jobs. \cf3\b\f1  
+\par 
+\par \cf2\f4 Pr\'fcfung des Vorhandenseins von Datenfeldern und Variablen\cf3\f1 
+\par if\cf2  \b0\i #nnn command    \cf4\b\f3 acon\cf2\b0\i0  
+\par \cf3\b\f1 if\cf2  \b0\i #nnn$a command\i0\f3  \i\f1     \cf4\b\f3 acon\f4  ab V28.8\cf2\b0\i0\f3 
+\par \tab Wenn #nnn bzw. \f4 Unter\f3 feld a in #nnn existiert (besetzt ist), wird \i command \i0\f4 ausgef\'fchrt, \f3 
+\par  
+\par \cf3\b\f1 if\cf2  \b0\i #nn. command    \cf4\b\f3 acon\cf2\b0\i0 
+\par \cf3\b\f1 if\cf2  \b0\i #n.. command    \cf4\b\f3 acon\cf2\b0\f1 
+\par \pard\fi-710\li710\i0\f3\tab Wenn ein Feld \i\f1 #nn\f5 x\i0\f3  \f4  \f3 bzw. ein\f4  \f3  \i\f1 #n\f5 xx\i0\f4  \f3  existiert (\i\f5 x\i0\f3  beliebig), wird \i command \i0\f4 ausgef\'fchrt; auch hier kann man $a anh\'e4ngen \f3 
+\par \pard\i\f1 
+\par \cf3\b\i0 if\cf2  \b0\i\f5 $abc\f1  command\i0\f3  \f4   [ab V26]\f3  \i\f1     \cf4\b\f3 acon\cf2\b0\i0 
+\par \tab Wenn \f4 die Variable  \i\f5 $abc \i0\f4  belegt ist\f3 , wird \i command \i0\f4 ausgef\'fchrt. \f3 
+\par 
+\par \b\f4 Pr\'fcfung des Ergebnisses eines vorangegangenen Befehls\b0 
+\par Die n\'e4chsten drei Befehle k\'f6nnen in vielen F\'e4llen benutzt werden, um das Ergebnis des vorangegangenen Befehls zu checken. 
+\par In den Befehlsbeschreibungen ist jeweils vermerkt, wie  \f5 yes/no/cancel\f4   in dem Zusammenhang zu verstehen sind. \b\f1  
+\par 
+\par \cf3 if yes\cf2  \b0\i command\i0\f3     [gleichwertig: \b\f1 if ok\b0\f3 ...]  \i\f1     \cf4\b\f3 acon\cf2\b0\i0  
+\par \tab\f4 Ging z.B. eine\f3  `\cf1\ul\b yesno\cf2\ulnone\b0 `-Frage \f4 voran und wurde sie \f3 mit "Ja" beantwortet\f4 , \f3 dann wird \i\f1 command\i0\f4   ausgef\'fchrt.\f3 
+\par  
+\par \cf3\b\f1 if no\cf2  \b0\i command     \cf4\b\f3 acon\cf2\b0\i0          oder gleichwertig: 
+\par \pard\fi-710\li710\cf3\b\f1 if error\cf2  \b0\i command  \cf4\b\f3 acon\cf2\b0\i0  
+\par \pard\tab\f4 Ging z.B. eine\f3  `\cf1\ul\b yesno\cf2\ulnone\b0 `-Frage \f4 voran und wurde sie \f3 mit "\f4 Nein\f3 " beantwortet\f4 , \f3 dann wird \i\f1 command\i0\f4   ausgef\'fchrt.\f3 
+\par \pard\fi-710\li710\tab\i Hinweis:\i0  \cf4\i acon\cf2\i0  kennt eine Anzahl von besonderen `\cf1\ul\f4 Fehlerpr\'fcfungen\cf2\ulnone\f3 `. 
+\par  
+\par \pard\cf3\b\f1 if cancel\cf2  \b0\i command\i0\f3  
+\par \pard\fi-710\li710\f4\tab Ging z.B. eine\f3  `\cf1\ul\b yesno\cf2\ulnone\b0 `-Frage \f4 voran und wurde sie \f3 mit "\f4 Abbrechen\f3 " beantwortet\f4 , \f3 dann wird \i\f1 command\i0\f4   ausgef\'fchrt.\f3   
+\par \f4\tab Diese Bedingung tritt auch in anderen Situationen auf, etwa beim Lesen aus Dateien oder bei Nutzereingaben mit \f5 ask\f4  oder \f5 form\f4 .\f3 
+\par \pard  
+\par 
+\par \b\f4 Pr\'fcfungen auf Gleichheit/Ungleichheit oder Vorkommen von Zeichen(folgen) 
+\par 
+\par \cf3\f1 if z>\i N\cf2  \b0 command\i0\f3      \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0 
+\par \cf3\b\f1 if z=\i N\cf2  \b0 command\cf3\b\i0  
+\par if z<\i N\cf2\b0  command\i0\f3  
+\par \pard\li710\tab Wenn der `\cf1\ul\b\f4 interne Z\'e4hler\cf2\ulnone\b0 `  gr\'f6\'dfer  bzw. gleich bzw. kleiner als die Zahl \cf3\b\i\f1 N\cf2\b0\i0\f4  ist, wird \i\f1 command\i0\f4  ausgef\'fchrt. \cf3\b\i\f1 N\cf2\b0\i0\f4   und \f5 iz\f4  werden f\'fcr den Vergleich als Dezimalzahlen behandelt! \f3 
+\par \pard\b\f1  
+\par \cf3 if Z>\i N\cf2  \b0 command\i0\f3      \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0 
+\par \cf3\b\f1 if Z=\i N\cf2  \b0 command\cf3\b\i0  
+\par if Z<\i N\cf2\b0  command\i0\f3  
+\par \pard\li710\tab Wenn die `\cf1\ul\b interne Zahl\cf2\ulnone\b0\f4 `  gr\'f6\'dfer  bzw. gleich bzw. kleiner als \cf3\b\i\f1 N\cf2\b0\i0\f4  ist, wird \i\f1 command\i0\f4  ausgef\'fchrt. \cf3\b\i\f1 N\cf2\b0\i0\f4   und  \f5 iZ\f4  werden als Dezimalzahl behandelt. \f3 
+\par \pard\b\f1  
+\par \cf3 if >\i N\cf2  \b0 command\i0\f3      \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0 
+\par \cf3\b\f1 if \f5 =\i\f1 N\cf2  \b0 command\i0\f3  
+\par \cf3\b\f1 if <\i N\cf2\b0  command\i0\f3  
+\par \pard\li710\tab Wenn die \b `\cf1\ul iV \cf2\ulnone `\b0\f4 als Zahl gr\'f6\'dfer bzw. gleich  bzw. kleiner als  \cf3\b\i\f1 N\f5  \cf2\b0\i0\f4  ist, wird \i\f1 command\i0\f4  ausgef\'fchrt. 
+\par Mit der `\cf1\ul\b\f5 iZ\cf2\ulnone\b0\f4 ` hat das nichts zu tun. Will man diese pr\'fcfen, dann zuerst in die iV kopieren mit  \b\f1 var Z\b0\f5  \f3  \f4 - oder siehe oben!\f3 
+\par \pard\b\f1  
+\par \cf3 if >\i "abc"\cf2  \b0 command\i0\f3      \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0 
+\par \cf3\b\f1 if <\i "abc"\cf2\b0  command\i0\f3  
+\par \pard\li710\tab Wenn die \b `\cf1\ul iV \cf2\ulnone `\b0\f4 als Zeichenfolge alphanumerisch gr\'f6\'dfer  bzw. kleiner als "abc" ist, wird \i\f1 command\f5  \i0\f4  ausgef\'fchrt. \f3 
+\par \i Achtung\f4  \f3 :\i0  hier als Begrenzer nur " erlaubt, nicht ' . 
+\par \pard\b\f1  
+\par \cf3 if >\i #nnn\cf2  \b0 command\i0\f3      \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0\f4 : Leider etwas anders, `\cf1\ul\b siehe unten\cf2\ulnone\b0 `\f3 
+\par \cf3\b\f1 if <\i #nnn\cf2\b0  command\i0\f3  
+\par \pard\li710\tab Wenn die \b `\cf1\ul iV \cf2\ulnone `\b0\f4  gr\'f6\'dfer  bzw. kleiner als der Inhalt von #nnn  ist, wird \i\f1 command\i0\f4  ausgef\'fchrt. 
+\par Wenn der Inhalt von #nnn in "..." eingeschlossen ist (d.h. die Anf\'fchrungszeichen m\'fcssen mit in #nnn stehen), wird alphanumerisch verglichen, sonst numerisch. \f3 
+\par \pard\b\f1  
+\par \cf3 if "xyz" \cf2\b0\i command \i0\f3  oder  \cf3\b\f1 if 'xyz' \cf2\b0\i command \i0\f3     \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0 
+\par \cf3\b\f1 if "~xyz" \cf2\b0\i command\i0\f3   oder  \cf3\b\f1 if '~xyz' \cf2\b0\i command\i0\f3     \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0 
+\par \pard\li709\f4 Wenn die iV mit xyz anf\'e4ngt, wird \i\f1 command\i0\f4  ausgef\'fchrt. Soll der Inhalt einer Kategorie oder eines Unterfelds abgepr\'fcft werden, bringt man diesen Inhalt zun\'e4chst mit \b\f1 `\cf1\ul var\cf2\ulnone ` ...\b0\f3  in die iV und wendet darauf dann \b\f1 if "xyz" \b0\f4 an. Hat man  ~  gesetzt, erfolgt der Vergleich ohne Ber\'fccksichtigung von Gro\'df- und Kleinschreibung. \f3 
+\par \i\f4 Hinweise: \i0\f3 M\f4 askierung einzelner Zeichen gibt es hierbei nicht. 
+\par \tab\tab    Vor dem " bzw. ' kann ein '=' stehen, das macht keinen Unterschied.\i\f3 
+\par \cf4\f4 Wichtiger Sonderfall:\cf2\f3  \i0 Mit \b\f1 if "" ...\b0\f4  kann man pr\'fcfen, ob die iV leer ist 
+\par (z.B. nach \b\f1 `\cf1\ul ask\cf2\ulnone `\f5  \b0\f4 oder nach\b\f5  var #nnn \b0\f4 oder\b\f5  var $\i name\i0  \b0\f3 ) 
+\par 
+\par \tab\i Beispiel: \i0 Wenn die \f4 in der INI-Datei eingestellte \f3 Sprache Englisch ist, \f4 mache unter der Sprungmarke \f3  \b\f6 :engl\b0\f3  \f4  weiter\f3 
+\par \f7 var L 
+\par if "~eng" jump engl \f3 
+\par \pard\b\f1 
+\par \cf3 if =#nnn\cf2  \b0\i command\i0\f3     (vgl. oben den Befehl  \b\f1 if #nnn ...\b0\f3  : nicht dasselbe!) 
+\par \cf3\b\f1 if =\f5 $abc\cf2\f1  \b0\i command\i0\f3     (vgl. oben den Befehl  \b\f1 if \f5 $abc\f1  ...\b0\f3  : nicht dasselbe!) 
+\par \f4\tab\cf4\b\i\f3 acon\f4  \cf2\b0\i0 : etwas anders, au\'dferdem sind $-Variablen nicht zul\'e4ssig, mehr `\cf1\ul\b siehe unten\cf2\ulnone\b0 `\f3 
+\par \pard\li709 Wenn die iV mit dem Anfang des Inhalts von \b\f1 #nnn\f5  \b0\f4 bzw.\b\f5  $abc \b0\f4  \'fcbereinstimmt, wird \i\f1 command\i0\f4   ausgef\'fchrt. 
+\par Beginnt der Inhalt von \b\f1 #nnn\b0\f4  mit ~, wird ohne R\'fccksicht auf Gro\'df-/Kleinschreibung verglichen, siehe oben. \f3 
+\par \b\f1 #nnn \b0\f3 kann eine Kategorie oder eine #u-Variable sein\f4 , $abc irgendeine freie Variable\f3 . 
+\par \i Achtung\f4  \f3 :\i0  bei der Variante \cf3\b\f1 if "xyz"\cf2\b0\f4  ist es etwas anders: dort mu\'df die iV mit \cf3\b\f1 "xyz"\cf2\b0\f4  beginnen (die iV kann aber l\'e4nger sein), hier mu\'df \cf3\b\f1 #nnn\cf2\b0\f3  mit dem Inhalt der iV beginnen (aber \cf3\b\f1 #nnn\cf2\b0\f4  kann l\'e4nger sein). \f3 
+\par \pard\b\f1  
+\par \cf3 if %%abc%%\cf2  \b0\i command\i0\f3       \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0  
+\par \cf3\b\f1 if \f5 %%\f1 ~abc%%\f5 %\cf2\f1  \b0\i\f5 command\i0\f4   \f3     \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0  
+\par \pard\li709 Wenn die iV die Zeichen\f4 folge\f3  \b\f1 abc\b0\f4  enth\'e4lt, wird \i\f1 command\i0\f4   ausgef\'fchrt.  \f3 
+\par \f4 Ist ~ gesetzt, findet der Vergleich ohne R\'fccksicht auf Gro\'df-/Klein statt, jedoch klappt das nur mit Grundbuchstaben, nicht mit Umlauten etc. 
+\par \i\f3 Sonderfall: \i0  (Wenn der Inhalt der iV mit  \f1 `\cf1\ul\b fetch\cf2\ulnone\b0 `\b  \b0\f3 eingelesen wurde)  
+\par \i\f4 Hinweis:\i0  Wenn man pr\'fcfen will, ob der Inhalt einer #u-Variablen  #uxy  in der iV vorkommt, kann man so vorgehen: 
+\par \f5 var +"Z"        \f4  (um es abzufangen, wenn #uxy ganz am Ende der iV steht, weil b"..." dann leer w\'e4re)\f5 
+\par var (b"#uxy")            \f4  (`\cf1\ul\b Mehr  dazu\cf2\ulnone\b0 `)\f5 
+\par if not "" \i command\i0\f3 
+\par \f4 
+\par \i Hinweis:\i0  Eine M\'f6glichkeit der Maskierung gibt es hier nicht, aber beim n\'e4chsten Befehl:\f3 
+\par \f4 
+\par \i Tip:\i0  Besser ist in diesem und im n\'e4chsten Fall die Suchfunktion `\cf1\ul\b\f5 srx\cf2\ulnone\b0\f4 `  mit RegEx-Suchtechnik. Sie erm\'f6glicht u.a. auch das Suchen nach nicht druckbaren Sonderzeichen sowie variable Maskierung.\f3 
+\par  
+\par \pard\cf3\b\f1 if _abc_\cf2  \b0\i command\i0\f3       \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0 
+\par \pard\li709 Wenn der aktuelle\f4 , gesamte\f3  Datensatz die exakte Zeichen\f4 folge \f3  \b\f1 abc\f5  \b0\f4  enth\'e4lt, wird \i\f1 command\i0\f4   ausgef\'fchrt. 
+\par Mit ? kann man einzelne Zeichen maskieren. Wenn in der Zeichenfolge ein Unterstrich auftritt, kann man \f5 if ,...,\f4  schreiben. 
+\par \i Hinweis:\i0  Besser ist  `\cf1\ul\b find _xyz_\cf2\ulnone\b0 `, weil dabei die Gro\'df-Kleinschreibung nicht exakt stimmen mu\'df. 
+\par \f3  
+\par \pard\cf3\b\f1 if *#nnn_abc_\cf2  \b0\i command\i0\f3     \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0 
+\par \pard\li709 Wenn Kategorie \b\f1 #nnn\b0\f3  im aktuellen Datensatz die exakte Zeichen\f4 folg\f3 e \b\f1 abc\b0\f4  enth\'e4lt, wird \i\f1 command\i0\f4  ausgef\'fchrt. 
+\par Hier kann #nnn keine #u-Variable sein. \f3 
+\par \pard\cf3\b\f1 
+\par if \f5 space\cf2\f1  \b0\i command\i0\f3  \f4     (ab V29)\f3 
+\par \pard\li709\f4 Wenn das erste Zeichen der \f3  iV \f4  ein Spatium oder sonstiges "Whitespace"-Zeichen ist, wird \i\f1 command\i0\f4  ausgef\'fchrt.  
+\par \f3 
+\par \pard\b\f4 
+\par Pr\'fcfungen der Satzstruktur 
+\par 
+\par \cf3\f1 if main\cf2  \b0\i command    \cf4\b\f3 acon\cf2\b0\i0  
+\par \pard\fi-710\li710\tab\f4 Ist der aktuelle Satz der \i Hauptsatz\i0  einer verkn\'fcpften Familie? (D.h. gibt es verkn\'fcpfte Unters\'e4tze dazu?)\f3 
+\par \pard\cf3\b\f1 if fam\cf2  \b0\i command    \cf4\b\f3 acon\cf2\b0\i0  
+\par \tab Ist der Satz ein \i\f4 Mitglied \i0\f3 einer verkn. Familie (Haupt- oder Untersatz)? ... 
+\par \cf3\b\f1 if sub\cf2  \b0\i command    \cf4\b\f3 acon\cf2\b0\i0  
+\par \tab\f4 Ist der Satz ein verkn\'fcpfter \i Untersatz\i0 ? ...\f3 
+\par \cf3\b\f1 if hierarchy\cf2  \b0\i command   \cf4\b\f3 acon\cf2\b0\i0  
+\par \pard\fi-568\li710\tab Ist es ein hierarchischer Satz? ... Siehe dazu auch `\cf1\ul\b\f1 next sub\cf2\ulnone\b0\f3 `\cf3\b\f1  \cf2\b0\f3  und \cf3\b\f1  \cf2\b0\f3 `\cf1\ul\b\f1 prev sub\cf2\ulnone\b0\f3 ` 
+\par \pard\cf3\b\f1 if h\f5 s\cf2\f1  \b0\i command \i0\f3 
+\par \pard\fi-710\li710\tab Ist \f4 der Balken in\f3  ein\f4 em\f3  hierarchische\f4 n\f3  \f4 Unters\f3 atz? ...\f4  [funktioniert nur, wenn gerade links die Satzanzeige aktiv ist]\f3 
+\par \pard 
+\par 
+\par \b\f4 Andere Bedingungspr\'fcfungen 
+\par 
+\par \cf3\f1 if \f5 Artic\cf2\f1  \b0\i command\i0\f3    \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0  
+\par \pard\li709 Wenn \f4 der Inhalt der iV mit Artikel beginnt, wird \i\f1 command\i0\f4   ausgef\'fchrt.  Die Artikel sind in der CFG definiert. 
+\par Gro\'df-/Kleinschreibung ist dabei nicht relevant, d.h. 'der' ist identisch mit 'Der' und  'DER' usw. 
+\par Mit  \cf3\b\f1 if \f5 ARtic\cf2\b0\f4   (also gro\'dfem R) wird dar\'fcber hinaus das Wort dann mit Nichtsortierzeichen markiert. Bei diesem Befehl kann das  \i\f1 command\i0\f4   auch entfallen! Das Nichtsortierzeichen ist immer der Code N aus der CFG , bei Bedarf ersetzt man dies durch einen anderen , und zwar z.B. mit   \f5 insert _^170_@_, \f4 wenn es @ sein soll  
+\par \pard\cf3\b\f1 
+\par if \f5 b\cf2\f1  \b0\i command\i0\f3   \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0  
+\par \f4\tab\f3 Wenn \f4 der Inhalt der iV eine ISBN oder ISSN ist und die Pr\'fcfziffer nicht stimmt, wird 
+\par  \tab\i\f1 command\i0\f4   ausgef\'fchrt. `\cf1\ul\b Mehr dazu\cf2\ulnone\b0 ` unter dem Sonderbefehl  \f5 `\cf1\ul\b hyphen\cf2\ulnone\b0 `\f4 . 
+\par \tab Anwendung nach diesem Muster: 
+\par \b\f5\tab\b0 ... 
+\par \tab if not b jump ok 
+\par \tab mes "Pr.Ziff. falsch"  
+\par \tab end 
+\par \tab :ok 
+\par       ... 
+\par \cf3\b\f1 if deleted\cf2  \b0\i command\i0\f3  \i\f1    \cf4\b\f3 acon\cf2\b0\i0 
+\par \tab\f4 ... ein gel\'f6schter Satz? ... \f3 
+\par  
+\par \cf3\b\f1 if \f5 D\f1 eleted\cf2  \b0\i command\i0\f3  \i\f1    \f5 nur \cf4\b\f3 acon\cf2\b0\i0 
+\par \tab\f4 ... ein gel\'f6schter Satz, der mit  \b\f5 fetch rec\b0\f4   eingelesen wurde? \f3 
+\par  
+\par \cf3\b\f1 if diff\cf2  \b0\i command\i0\f3    \b\f1  
+\par \pard\li709\b0\f4 Wenn der aktuelle Satz vorher ver\'e4ndert wurde (Hintergrund gelb!) wird \i\f1 command\i0\f4  ausgef\'fchrt, z.B. \b\f1 `\cf1\ul put\cf2\ulnone `\b0\f3 .  
+\par  
+\par \pard\cf3\b\f1 if empty\cf2  \b0\i command\i0\f3    \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0 
+\par \tab Wenn die aktuelle Erg.menge leer ist, wird \i\f1 command\i0\f4  ausgef\'fchrt.  \f3 
+\par \b\f1 
+\par \cf3 if g\i N\cf2\b0  command   \cf4\b\f3 acon\cf2\b0\i0  
+\par \cf3\b\f1 if l\i N \cf2\b0 command   \cf4\b\f3 acon\cf2\b0\i0  
+\par \pard\li710\tab\f4 Wenn die aktuelle Erg.menge gr\'f6\'dfer bzw. kleiner als N (>= 0) ist, wird \i\f1 command\i0\f4  ausgef\'fchrt.  \f3 
+\par \i Spezialfall:  \b\i0\f1 if g0 \f5 : \b0\f3  Ist bei\f4  dem\f3  vorangehenden \b\f1 find\b0\f4 -Befehl etwas herausgekommen? F\'fcr das Gegenteil kann man auch schreiben: \f3 
+\par \pard\b\f1  
+\par \cf3 if Help\cf2  \b0\i command\i0\f3    \b\f1  
+\par \pard\li709\b0\f3 Wenn momentan ein Hilfetext in der Anzeige steht, wird \i\f1 command\i0\f4  ausgef\'fchrt.  \f3 
+\par \pard  
+\par \cf3\b\f1 if Lock\cf2  \b0\i command\i0\f3     \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0 
+\par \tab ... ein gesperrter Satz? ... \f4   Dann wird  \i\f1 command\i0\f4   ausgef\'fchrt. (Freigabe mit  \f5 set unlock\f4 )  
+\par \tab Will man's genauer wissen, dann macht man es so: 
+\par \tab\f5 if not Lock jump nol\f4    
+\par \tab\i\f1 command\i0\f4     // auszuf\'fchren, wenn der Satz gesperrt ist 
+\par \tab und unter  \f5 :nol\f4   wertet man evtl. die Variable \f5 sL\f4  aus (\f5 var sL\\if "9" ...\f4 ) 
+\par \tab Zur Variable  \f5 sL\f4   siehe Doku zu  \f5 `\cf1\ul\b set lock\cf2\ulnone\b0 `\f4 . 
+\par \tab\f3 
+\par \cf3\b\f1 if Lock\f5  #\cf2\b0\i Num\b\i0\f1  \b0\i command\i0\f3     \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0 
+\par \tab\f4 Damit wird der Satz mit der internen Nummer  \i\f5 Num\i0\f4   gepr\'fcft, ohne ihn erst zu laden. 
+\par \tab Fehlt  \i\f5 Num\i0\f4  , dann wird daf\'fcr der iV-Inhalt genommen. 
+\par \tab Ansonsten gilt zur Bedingungspr\'fcfung, was oben unter  \f5 if Lock\f4   steht. 
+\par \f3  
+\par \cf3\b\f1 if New\cf2  \b0\i command\i0\f3  
+\par \tab ... ein neuer Satz? ... 
+\par \pard\li709 
+\par \pard\cf3\b\f1 if off\cf2  \b0\i command\i0\f3  
+\par \pard\li710\f4 Falls\f3  eine `\cf1\ul\b Offline-Datei\cf2\ulnone\b0 ` \f4 beim Start geladen wurde\f3 , dann \i\f1 command\i0\f3  
+\par \pard\b\f1  
+\par \cf3 if res\cf2  \b0\i command\i0\f3      \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0 
+\par \pard\li710\f4 Falls die Datenbank \'fcber Restriktionen verf\'fcgt  (.RES-Datei), wird \i\f1 command\i0\f4  ausgef\'fchrt.  \f3 
+\par \pard\b\f1  
+\par \cf3 if \f5 Stop\cf2\f1  \b0\i command\i0\f3    \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0  
+\par \pard\li709 Wenn \f4 der Inhalt der iV ein Stoppwort ist, wird \i\f1 command\i0\f4   ausgef\'fchrt. Die Stoppw\'f6rter sind in der Index-Parameterdatei definiert. Die Schreibweise braucht nicht exakt zu stimmen, d.h. gro\'df/klein ist irrelevant. \f3 
+\par \pard\cf3\b\f1 
+\par if tbl\cf2  \b0\i command\i0\f3     \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0 
+\par \tab Wenn die TBL-Datei gesperrt ist, wird \i\f1 command\i0\f4  ausgef\'fchrt.  \f3 
+\par \b\f1  
+\par \cf3 if usr\cf2  \b0\i command\i0\f3     \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0  \f4   [ab V33]\f3  
+\par \pard\li710\tab Wenn die Datenbank gerade (durch andere User\f4  oder in anderen Fenstern\f3 ) in Benutzung ist,\f4  wird\f3  \i\f1 command\i0\f4  ausgef\'fchrt.  \f3 
+\par Ob die Nutzung durch a99/alcarta\f4 /acon\f3  \f4  \f3 oder\f4  die alten Programme \f3  PRESTO/APAC etc. erfolgt, spielt dabei keine Rolle. 
+\par \pard\b\f1  
+\par \cf3 if v14\cf2  \b0\i command\i0\f3      \b\f1  \b0\i   \cf4\b\f3 acon\cf2\b0\i0 
+\par \pard\li710\tab\f4 Wenn die Datenbank mit V14-Verkn\'fcpfungen arbeitet, wird \i\f1 command\i0\f4  ausgef\'fchrt.  
+\par Die Werte i5 und i6 der Indexparameter erh\'e4lt man mit  \b\f5 var V14\b0\f4 , z.B. \b _9\b0  oder \b _:\b0\f3 
+\par \pard\b\f1  
+\par \cf3 
+\par \cf2\i\f8\fs18 Sonderfall: \i0 Tastaturpr\'fcfung\b0\i\f0  \i0\f8  
+\par Wenn man pr\'fcfen will, ob die Taste [Esc] gedr\'fcckt wurde, z.B. innerhalb einer Schleife (um den Abbruch zu erm\'f6glichen), geht das mit dem `\cf1\ul\b\f5 keychk\cf2\ulnone\b0\f0 `-Befehl, den man VOR einen \f8  \f5 if\f0 -Befehl zu setzen hat: 
+\par  
+\par \f1 keychk 
+\par if yes jump ... 
+\par \f0  
+\par 
+\par \cf4\f8 ACHTUNG:\cf2\f0 
+\par \f8 NUR f\'fcr \cf4\b\i\f3\fs20 acon \cf2\b0\i0\f0\fs18  gilt\f8  (also in .job-Dateien)\f0 : 
+\par 
+\par \cf3\b\f1\fs20 if #nnn = #kkk \cf2\b0\i\f0\fs18 command          \i0 Statt\f8  \f0  \cf3\b\f1\fs20 =\cf2\b0\f0\fs18  \f8  \f0 kann auch  \cf3\b\f1\fs20 <\cf2\b0\f0\fs18   ode\f8 r  \cf3\b\f1\fs20 >\cf2\b0\f8\fs18   stehe\f0 n\i 
+\par \i0\tab Vergleiche Inhalt von\f8  \f0  \f5 #nnn\f8  \f0  mit\f8  Inhalt von \f0  \f5 #kkk\f0  
+\par \tab\f8  Bei Gleichheit bzw. gr\'f6\'dfer/kleiner: \i\f0 command\i0\f8   ausf\'fchren \f0 
+\par    \tab\f8  \f5 #nnn\f8   und/oder  \f5 #kkk\f8   k\'f6nnen auch Anwendervariablen sein (#u-Variablen) aber keine $-Variablen oder &-Variablen. \f0 
+\par 
+\par \f8 Wenn  \f5 #kkk \f8  nicht besetzt ist, gilt die Bedingung (korrekt) als nicht erf\'fcllt. 
+\par Wenn  \f5 #nnn \f8  beide nicht besetzt sind, gilt Bedingung "no" 
+\par \f0 
+\par \f8 Statt  \f5 #kkk\f8   kann auch eine Zahl stehen, dann wird ein Zahlenvergleich durchgef\'fchrt, sonst Stringvergleich. \f0 
+\par 
+\par \i\f8 Beachte:\i0\f0  Im Gegensatz zum Vergleich in einer Flex-Datei\f8  (s.o.)\f0  wird jeweils der vollst\f8\'e4ndige Inhalt der Variablen verglichen und nicht nur eine anf\'e4ngliche \'dcbereinstimmung gepr\'fcft.\f0 
+\par 
+\par \f8 Unterfelder k\'f6nnen nicht angegeben werden, dazu mu\'df man erst Anwendervariablen erzeugen, z.B. \f0 
+\par 
+\par \f5 var #123$a   \f4 // $a aus #123 in #uv1 kopieren\f5  
+\par ins #uv1 
+\par var #234$b   \f4 // $b aus #234 in #uv2 kopieren\f5  
+\par ins #uv2 
+\par if #uv1 = #uv2 ... 
+\par 
+\par \f8 
+\par ?jump=h xjump 
+\par ?yesno=h xyes 
+\par ?noyes=h xyes 
+\par ?put=h xput 
+\par ?iV =h xiv 
+\par ?iZ=h xiz 
+\par ?var=h xvar 
+\par ?ask=h xask 
+\par ?Register=h xa 
+\par ?fetch=h xfetch 
+\par ?keychk=h xkeychk 
+\par ?Offline-Datei=h off 
+\par ?next sub=h xnext 
+\par ?prev sub=h xprev 
+\par ?interne Z\'e4hler=h xiz 
+\par ?interne Zahl=h xiz 
+\par ?find=h xfind=find _xyz_ 
+\par ?Fehlerpr\'fcfungen=h xavanti=Fehlerbedingungen 
+\par ?find _xyz_=h xfind=find _xyz_ 
+\par ?siehe unten=h =ACHTUNG: 
+\par ?srx=h xsrx 
+\par ?Mehr dazu=h xisbn 
+\par ?hyphen=h xisbn 
+\par ?set lock=h xset=set lock 
+\par ?Mehr  dazu=h xcstring#56 
+\par 
+\par }
+ 

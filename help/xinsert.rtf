@@ -1,0 +1,99 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fmodern\fprq1 Courier New;}{\f1\froman\fprq2 Times New Roman;}{\f2\froman\fprq2\fcharset0 Times New Roman;}{\f3\fmodern\fprq1\fcharset0 Courier New;}{\f4\froman Times New Roman;}{\f5\fmodern\fprq1\fcharset0 Courier;}}
+{\colortbl ;\red0\green176\blue0;\red0\green0\blue255;\red0\green0\blue0;\red255\green0\blue0;}
+\viewkind4\uc1\pard\qr\f0\fs24   \cf1\b\fs20 `\cf2\ul\f1 Register\cf1\ulnone\f0 ` 
+\par \pard\cf3\f2 Datenfelder, Unterfelder und Nutzervariablen belegen oder einf\'fcgen\cf1\f0 
+\par 
+\par insert\cf3  #xyz\cf1    \cf4\i\f1 acon\cf3\i0\f0 
+\par \cf1 Insert\cf3  #xyz 
+\par \cf1 insert\cf3  \f3 $abc\cf1\f0    \cf4\i\f1 acon 
+\par \cf1\i0\f0 insert\cf3  \f3 &abc\cf1\f0   \cf3 
+\par \pard\li709\b0\f1 Inhalt der `\cf2\ul\b internen Variablen\cf3\ulnone\b0 ` \f2 (iV) \f1 in d\f2 as\f1  \f2 Feld\f1  \f2  \b\f0 #xyz\b0\f1  \f2  \f1 kopieren\f2  
+\par \tab\tab bzw. in die `\cf2\ul\b freie Variable\cf3\ulnone\b0 ` \f3 $abc\f1  \f2  
+\par \tab\tab bzw. in die `\cf2\ul\b Persistente Variable\cf3\ulnone\b0 `  \f3 &abc \f2 [ab V34.1]\f1 
+\par \f2 D\f1 er Inhalt der iV \f2 wird vorher meistens \f1 mit dem Befehl `\cf2\ul\b\f0 var\cf3\ulnone\b0\f1 ` vorbereitet. 
+\par \f0 #xyz\f1  kann auch eine \f3 #u\f1 -Variable sein. 
+\par \f2 Der iV-Inhalt selbst ist nach dem Befehl unver\'e4ndert.\f1  
+\par \i\f2 Sonderfall:\i0  Mit  \cf1\b\f3 insert $\cf3\b0\f2   kopiert man den Inhalt der iV in  \b iV2 \b0 (die "zweite interne Variable"). 
+\par Mit  \cf1\b\f3 var $\cf3\b0\f2   kopiert man diesen Inhalt wieder zur\'fcck. Der Inhalt der iV2 bleibt, im Gegensatz zur iV, auch nach Ende des jeweiligen FLEXes erhalten, bis zum n\'e4chsten  \f3 insert $\f2 .  
+\par In jedem Fall wird der momentane Inhalt der betr. Variablen \'fcberschrieben. 
+\par Zudem ist die maximale Laenge der iV2 wie auch der iV mit 4 MB viel gr\'f6\'dfer als die maximal 64K einer $-Variablen.  (In acon sind es nur jeweils 2MB.) 
+\par 
+\par Nach\f1  \cf1\b\f0 Insert\cf3\b0\f2  wird die Anzeige neu aufgebaut, d.h. der Datensatz erscheint sofort mit dem ver\'e4nderten Feld auch in der Anzeige und Auswahlliste. \f1 
+\par \f2 
+\par Steht hinter  \cf1\b\f0 insert\cf3\b0\f2   nichts\f1 , wird statt dessen der Inhalt der iV genommen\f2 .\f1  \f2 Dort mu\'df\f1  dann sowohl \b\f0 #xyz\b0\f1  \f2 bzw. \b\f3 $abc\b0\f2  \f1 als auch der Text stehen\f2 , das Ganze vorher erzeugt mit einem geeigneten  \f3 var\f2 -Befehl.\f1  
+\par \f2 Es kann sich auch um \b mehrere Datenfelder\b0  handeln, getrennt durch Zeilenvorschub:  
+\par \f3 var "#nnn text" n "#mmm text"\\insert\f1 . 
+\par \f2 Jedoch geht das nicht mit \f3 #u\f2 -Variablen. F\'fcr \cf4\i acon\cf3\i0  gilt als Trennung \b\f3 ;#  \b0\f2  (Sicherheitsma\'dfnahme gegen "code injection").\f1 
+\par Ist die `\cf2\ul\b iV\cf3\ulnone\b0 ` leer, wird d\f2 as Feld\f1  \b\f0 #xyz\f3  \b0\f2 bzw. die Variable \b\f3 $abc\b0\f2  \b gel\'f6scht\b0 . 
+\par Wenn man  \b\f3 ins #ux~\b0\f2   schreibt. werden alle Variablen mit \b\f3 x\b0\f2  an der zweiten Stelle gel\'f6scht (wie bei  d\b\f3 x~\b0\f2   in den Exportparametern). \f1 
+\par Wenn man  \cf1\b\f0 insert\cf3\b0  #xy\f3 z\f0 ABC\f1   schreibt, \f2 bleibt\f1  ABC vor d\f2 em Inhalt der\f1  \f2 iV stehen\f1 .\f2  Der Befehl h\'e4ngt also die iV hinten an ABC an, und das Ganze ist der neue Feldinhalt. \f1 
+\par \i Tip:\i0  Nach  \f0 insert\f1 -Befehlen kann man\f2  stets\f1  mit  \f0 display\\show rec\f1   den Neuaufbau der Anzeige \f2 ausl\'f6s\f1 en. 
+\par Mit \b\f0 `\cf2\ul if no\cf3\ulnone ` ...\f3  \b0\f2  kann man pr\'fcfen, ob ein Fehler auftrat, in der iV steht dann die Fehlermeldung. Gilt auch f\'fcr folgende Varianten: \f1 
+\par  
+\par \pard\i\f2 Hinweis:\i0  Die folgenden zwei Varianten gelten erst ab V27.3 auch f\'fcr  #u-Variablen:\f1 
+\par 
+\par \cf1\b\f0 insert\cf3  $a+#xyz\cf1    \cf4\i\f1 acon\cf3\i0\f0 
+\par \pard\li709\b0\f2 Inhalt der internen Variablen als Teilfeld \b\f0 $a\b0\f2  an  \b\f0 #xyz\b0\f2   anh\'e4ngen. (Auch wenn in \b\f0 #xyz\b0\f2  schon ein Teilfeld \b\f3 $a\b0\f2  vorhanden ist). \f1 
+\par 
+\par \pard\cf1\b\f0 insert\cf3  $a-#xyz\cf1    \cf4\i\f1 acon\cf3\i0\f0 
+\par \pard\li709\b0\f2 Teilfeld \b\f3 $a\b0\f2  ersetzen, wenn es vorh. ist, sonst anh\'e4ngen. 
+\par Wenn die interne Variable leer ist: Teilfeld \b\f3 $a\b0\f2  l\'f6schen  \f1 (z.B. \b\f0 var ""\\ins \f3 $a-\f0 #nnn\b0\f1 ) 
+\par \i Sonderfall:\i0   \b\f0 insert $$-#xyz\b0\f1   Setzt die iV an den Anfang des Kategorietextes, ohne Teifeldzeichen. 
+\par 
+\par \pard\i\f2 Freie Variable:  \i0 Statt  \b\f0 #xyz\b0\f2   kann auch der Name \b\f3 $Abc\b0\f2  einer `\cf2\ul\b freien Variablen\cf3\ulnone\b0 ` stehen (mehr siehe dort). 
+\par \i 
+\par Hinweis:\i0  Bei \cf4\b\i\f1 acon\cf3\b0\i0\f2  kann das $ durch ein S ersetzt werden (bei $$ nur das erste), um Probleme mit PHP-Variablen zu vermeiden. Noch einfacher kann man jedoch auch \b\f0 insert \f3 #\f0 #xyz\b0\f2   schreiben, um den Anfangstext durch den iV-Inhalt zu ersetzen, oder 
+\par \b\f0 #\f3 #\f0 xyz\f3  \i Text\b0\i0\f1 
+\par \f2 um den Anfangstext direkt durch \i Text\i0  zu ersetzen. Alles nur bei acon, eingef\'fchrt mit Version 2.2.12.\f1 
+\par 
+\par \i Sonderversion:\f2  \i0 Befehl f\'fcr \b Lokale Ersetzung\b0\f1 
+\par \cf1\b\f0 insert\cf3  _abc_XYZ_\cf1    insert\cf3  ,abc,XYZ,\cf1    \cf4\i\f1 acon\cf3\i0\f0 
+\par \pard\li709\b0\f1 Im Inhalt der internen Variablen wird \f2  \b\f0 abc\b0\f1  \f2  \f1 durch\f2  \f1  \b\f0 XYZ\b0\f1  \f2  \f1 ersetzt. Wenn \f2  \b\f0 abc\b0\f1  \f2  \f1 mehrfach vorkommt, wird jedes Vorkommnis ersetzt.  
+\par Nachfolgendes \b\f0 ins #\i\f1 nnn\i0  \b0 kopiert dann den \f2 ver\'e4nderten \f1 Inhalt in eine Kategorie oder eine #u-Variable. 
+\par \i\f2 Zu beachten: 
+\par \i0\f1 o  \b\f0 abc\b0\f1  darf an jeder Stelle der iV vorkommen. 
+\par o  Es gilt exakte Schreibung\f2 : \b\f0 a\f3 B\f0 c\b0\f2  oder \b\f3 ABC\b0\f2  w\'fcrden z.B. nicht ersetzt.\f1  
+\par o  Maskierung und Trunkierung gibt es nicht\f2 , d.h. $ und ? und andere Sonderzeichen haben keine Sonderwirkung\f1 . 
+\par o  XYZ darf leer sein, dann wird \b\f0 abc\b0\f1  beseitigt. 
+\par o  XYZ darf l\f2\'e4\f1 nger oder k\f2\'fc\f1 rzer sein als abc. 
+\par o  Die iV darf mit Leerzeichen beginnen und enden, diese bleiben erhalten. 
+\par o  \b\f0 abc\b0\f1  \f2 mu\'df\f1  aus mindestens einem Zeichen bestehen - \f2 klar, denn \f1 sonst wei\f2\'df\f1  das 
+\par     Programm ja nicht, wo XYZ hin soll. 
+\par o  Das abschlie\f2\'df\f1 ende _ bzw. \f2 Komma\f1  darf man vergessen, das mittlere nicht, 
+\par     denn dann passiert nichts (auch kein Absturz und keine Meldung). 
+\par o  \f2 Steuerzeichen (control codes) k\'f6nnen in \f3 abc\f2  und \f3 XYZ\f2  so angegeben werden: z.B.  \f3 ^M^J\f2   f\'fcr 13 10\f1 
+\par     \f2 sowohl in \b\f0 abc\b0\f2  wie in \b\f3 XYZ\b0\f2 .\f1  \f2 D.h. \f3 ^A\f2  steht f\'fcr Code 1 usw. , \f3 ^T\f2  f\'fcr Code 20 = \'b6 [ab V27.6] 
+\par     Jedes Zeichen, druckbar oder nicht, kann ansonsten auch codiert in der Form \f3 ^xxx\f2  mit genau drei Ziffern \f3 xxx\f2  angegeben werden, 
+\par     F\'fcr das Zeichen \b\f3 ^\b0\f2  selbst ist  \b\f3 ^~\b0\f2   anzugeben. Folgt dem ^ kein Zeichen >@ oder drei Ziffern, bleibt es unver\'e4ndert stehen\f1 
+\par \pard 
+\par \i\f2 Direkte Einf\'fcgung in den Datensatz oder Reservespeicher:\i0\f1 
+\par \f2 Feste Inhalte kann man unmittelbar in eine Kategorie oder #u-Variable einf\'fcgen, indem man diese schlicht hinschreibt, in dieser Form (siehe `\cf2\ul\b\f1 Sonderbefehle\cf3\ulnone\b0 `): 
+\par \b\f0 #xyzText\b0\f1 
+\par \f4\fs18 
+\par \i Anm.: \i0 Mehrfach-Leerzeichen verschwinden, falls nicht per CFG erlaubt. Ist #xyz eine #u-Variable, werden ALLE Leerzeichen am Anfang und Ende des Textes entfernt, jedoch nicht im Innern! 
+\par Vor dem \b\f0\fs20 insert\b0\f4\fs18  kann man den Befehl \b\f0\fs20 `\cf2\ul spaces\cf3\ulnone `\b0\f4\fs18  geben, um Mehrfach-Leerz. in der iV auszumerzen. 
+\par 
+\par \cf4\i\f2\fs20 Beispiel:\cf0\i0    `\cf2\ul\b Ausprobieren\cf0\ulnone\b0 ` 
+\par \b\f3 
+\par   var I 
+\par   ins _^T_^M^J_ 
+\par   Aresqa 
+\par \b0\f1 
+\par \pard\li284\f2 Mit  \b\f3 var I\b0\f2   wird die Liste der symbolischen Registernamen in die iV geschrieben, aber mit Code 20 (= \'b6  = ^T) als Trenner. F\'fcr eine Anzeige mit Aresqa braucht man jedoch die Codes 13 10 (= ^M^J). Der \b\f5 ins\b0\f2 -Befehl besorgt dies und Aresqa zeigt dann die Liste an.\f1 
+\par \pard 
+\par 
+\par \cf3\f4\fs18 
+\par 
+\par ?iV=h xiv 
+\par ?internen Variablen=h xiv 
+\par ?if no=h xif 
+\par ?Register=h xa 
+\par ?var=h xvar 
+\par ?Sonderbefehle=h xsonder 
+\par ?spaces=h xspaces 
+\par ?Ausprobieren=x var I`ins _^T_^M^J_`Aresqa 
+\par ?freien Variablen=h xfreevar 
+\par ?freie Variable=h xfreevar 
+\par ?Persistente Variable=h vb258#287 
+\par }
+ 

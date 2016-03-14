@@ -1,0 +1,1126 @@
+ Dateiname:        PICA\PICA.PPT
+ Inhalt:           Hilfstabelle fÅr die Index-Parameterdatei einer allegro-
+                   Pica3-Datenbank. Die Parametrierung ist ausgelegt fÅr den
+                   Nachweis der BestÑnde mehrerer Bibliotheken: lokalen
+                   Notationen und Signaturen in Register 7 bzw. 8 wird die
+                   Bibliotheksnummer (ELN) vorangestellt und lokale Schlag-
+                   wîrter nicht indexiert. FÅr den OPAC nur einer Bibliothek
+                   ist das nicht sinnvoll. In dem Fall sollten die mit '<<<'
+                   markierten Zeilen eingebunden und die mit '>>>' markierten
+                   Zeilen auskommentiert werden.
+                   Lokale Schlagwîrter werden nur dann indexiert, wenn die
+                   mit '<<<' versehenen Kopfbefehle aktiviert werden.
+ Verfasser:                   B. Eversberg
+ ergÑnzt bis:      25.08.95   S. Busemann
+ énderungen am:    29.08.95 - Der Sprungbefehl +#ure in den Abschnitten #-C
+                              und #-c funktioniert nicht (mehr ?) und wurde
+                              gegen +d ausgetauscht
+                   01.09.95 - Es gab vor V14a IMPORT-Programme, die ` (ASCII
+                              96) als erstes Kategorie-Wiederholungszeichen
+                              vergaben, jetzt ist es wieder a. Die i5-Befehle
+                              in Abschnitt #-Ñ wurden entsprechend angepa·t.
+                   15.09.95 - Zwei y0-Befehle in Abschnitt #-T ergÑnzt.
+                   20.03.96 - Unter #-A die ersten beiden !u1-Zeilen geÑndert
+                              Unter #3000x dritte !u1-Zeile vor #nr eingefÅgt
+                              und in VVV-Zeilen u## eingefÅgt
+                   21.03.96 - In ak=400.-Befehl Zerlegungstext entfernt
+                              in den beiden !u1-Zeilen unter #-s e" = " er-
+                              gÑnzt
+                            - in !u1-Zeile unter #-s u{} eingefÅgt zur Aus-
+                              blendung des Indexierfeldes in #3220
+                              Kopfbefehl ak=151*.+F eingefÅgt
+                   22.03.96 - In Zeilen unter #-Q und erstem #>P-Aufruf P5
+                              ergÑnzt, um auch RSWK-Ketten mit ' *' zu kenn-
+                              zeichnen
+                            - In den Zeilen zur Bildung der Titel-Stichwort-
+                              kette ('Ast') B"@" ergÑnzt
+                            - Die NBV-Identnummer in #2196 wird in Register 9
+                              mit dem PrÑfix 'NBV' indexiert.
+                            - Abschnitt unter #-I Åberarbeitet, da nicht ganz
+                              fehlerfrei und die Indexierung der #2196 ge-
+                              wÅnscht wurde
+                            - 'i5=!' und 'ak=zz+!' auskommentiert, um die
+                              Stammsatz-VerknÅpfungs-Mechanismen zu deakti-
+                              vieren
+                            - Kopfbefehle fÅr die Normsatz-Kategorien 201*,
+                              202*, 203* und 204* eingefÅgt
+                              unter #-U e" [" und #t{""} ergÑnzt
+                            - Unter #-P, #-J und #-j in den 'Erscheinungs-
+                              jahr'-Zeilen Befehl s4,? ergÑnzt
+                            - neben den Einzelschlagwîrtern aus den Kate-
+                              gorien der Gruppe 55xx werden jetzt auch die
+                              Schlagwortketten indexiert (unter #-V und #-v)
+                            - unter #-X Abbruchbefehl eingefÅgt
+                   26.03.96 - neuen Kopfbefehl fÅr die Kat.-Gruppe 418. ein-
+                              gefÅgt.
+                            - Da mitunter zwischen Vornameninitialen Leer-
+                              zeichen fehlen, wurden in den Vornamen-Zeilen
+                              unter #-A drei lokale Ersetzungsbefehle einge-
+                              fÅgt. Diese Befehle wurden auch unter #-1 er-
+                              gÑnzt.
+                            - Der Zerlegungstext " ? " in den zwei Kopfbe-
+                              fehlen ak=4030... erzeugte zu viele Bestand-
+                              teile. öber einen neuen Kopfbefehl und die
+                              Benutzervariable #uov wird die Kategorie nur
+                              bei " : " und " ; " getrennt.
+                            - In den !u1-Zeilen unter #-P und #-J e-Befehle
+                              gelîscht und Ersetzungsbefehl ergÑnzt
+                            - Unter #-S werden Auslassungspunkte in Gesamt-
+                              titelangaben nicht mehr indexiert
+                            - In den !4004-Zeilen unter #-B b"*" durch B"*"
+                              ersetzt, da nicht immer eine BandzÑhlung vor-
+                              handen ist.
+                            - e"<"-Befehl in der Zeile unter #-s entfernt,
+                              damit Ordnungshilfen mitordnen
+                   27.03.96 - Kopfbefehl ak=316.+B deaktiviert
+                            - unter #-Y in der zweiten Zeile e-Befehle ent-
+                              fernt und statt der Verweisung Zwischenteil 8
+                              hinzugefÅgt
+                            - öberschrift fÅr Register 6 geÑndert
+                            - In der Zeile #4000 ... Ast wurde B"!" B"!" ge-
+                              lîscht, da Hauptsachtitel Ausrufungszeichen
+                              enthalten kînnen.
+                   28.03.96 - Damit bei Vorhandensein einer VerknÅpfung zu
+                              einem Personen-Normsatz nur die expandierte
+                              Namensform indexiert wird, Kopfbefehl ak=30..+L
+                              und unter #-A die Zeile mit dem Sprungbefehl
+                              +#3090x deaktiviert
+                            - Da bei Sammlungen die Verfasser auch Doppel-
+                              namen haben kînnen, wird das Postfix [Sammlung]
+                              im Unterprogramm #(S hinzugefÅgt
+                   01.04.96 - Titel-Indexierung unter #-B Åberarbeitet,
+                              neuen Abschnitt #-b fÅr Sammlungen eingefÅgt.
+                            - Mit dem neuen Sprungbefehl ak=0500+Ä werden
+                              Verweisungen von Titel, Verfasser und Urheber
+                              auf die PPN der Serienhauptaufnahme in Register
+                              5 erzeugt.
+                   02.04.96 - Da nicht alle #316x einen Kongre·ort enthalten,
+                              Sprungbefehl und Marke #-y unter #-Y eingefÅgt
+                   03.04.96 - Unter #-C und #-c e-Befehle geÑndert und B"@"-
+                              Befehl hinzugefÅgt
+                   09.01.97 - Da durch FremddatenÅbernahme mehrteilige
+                              Schlagwîrter in #51xx vorkommen kînnen, die in
+                              den Permutationsmustern mehrere Positionen be-
+                              legen, wurde die Auswertung der Muster ge-
+                              Ñndert. Neu sind der Kopfbefehl ak=uqk""+r und
+                              der Abschnitt #-r, geÑndert wurde der Abschnitt
+                              unter #-R.
+                   20.01.97 - Aus CAT.API wurde der Spezialparameter |a
+                              (öberschrift fÅr den Anzeige-Bildschirm) Åber-
+                              nommen, aber auskommentiert, um énderungen in
+                              der UIF1-Datei nicht unwirksam zu machen.
+                            - Die Indexierung der 418x mit der sortierfÑhigen
+                              ZÑhlung in Pica wurde als ungeeignet fÅr einen
+                              Benutzer-OPAC empfunden, da die Bildung der
+                              Sortierform fÅr die Benutzer nicht transparent
+                              ist. Statt dessen wird auf die 'ZÑhlung in der
+                              Reihe' zurÅckgegriffen. GeÑndert wurden die
+                              Abschnitte unter #-è und #-5.
+                            - Mit der EinfÅhrung eines Flips bei Schriften-
+                              reihen in PICA3A.PPT sind Verweisungen der
+                              Form ... -> |5... in Register 1, 2 und 4 Åber-
+                              flÅssig geworden. Deshalb wurde die Zeile unter
+                              #-Ä, die diese Verweisungen produziert, aus-
+                              kommentiert.
+                            - Weil Schlagwort-Verweisungen in Register 3 auf-
+                              grund der Umcodierung der Benutzereingabe nicht
+                              auf das mit '*' gekennzeichnete Schlagwort
+                              fÅhrten, wurde der Abschnitt unter #-3 ergÑnzt.
+                   30.01.97 - Damit Wortteile von mit Binde- und SchrÑgstrich
+                              zusammengesetzten Wîrtern (z. B. Buch-/Soft-
+                              warepaket) nicht mit fÅhrendem '/' indexiert
+                              werden, in der !u1-Zeile unter #-E Befehl f"/"
+                              hinzugefÅgt.
+                   07.04.97 - Da in Version 15 die Befehle b"#" und e"#"
+                              nicht mehr wie vorher funktionieren, "#" durch
+                              "[#]" ersetzt.
+                   15.04.97 - Analog zur Erscheinungsform 'd' (Schriften-
+                              reihe) wurden fÅr 'b' (Zeitschrift/Zeitung) mit
+                              der EinfÅhrung eines Flips Verweisungen der
+                              Form ... -> |5... aus Register 1, 2 und 4 ent-
+                              fernt (Zeile unter #-Ä auskommentiert). Auch
+                              die Sachtitel der b-SÑtze werden nun in Re-
+                              gister 4 statt 5 eingetragen (d. h. keine
+                              Spezialbehandlung mehr unter #-B).
+                   23.04.97 - Die Datei wurde um die Parametrierung fÅr Re-
+                              striktionen und SR-SchlÅssel ergÑnzt: neu sind
+                              die Spezialparameter ir und i7, die Kopfbefehle
+                              ak=zz+/ und ak=zz+., entsprechende Abschnitte
+                              fÅr die SchlÅsselproduktion und Hilfszeilen am
+                              Ende der Datei.
+                   25.04.97 - Da MenÅtext 186 ('Online-Katalog der ...') aus
+                              UIF1GER entfernt wurde, Parameter |a aktiviert.
+                   14.05.97 - Da fÅr die neuen INDEX- und QRIX-Programme i-
+                              Befehle in PICA.PPI stehen mÅssen, wurde der
+                              Abschnitt 'Konstanten' dorthin verlagert.
+                   20.05.97 - Da mit der EinfÅhrung der SR-SchlÅssel im Pri-
+                              mÑrabschnitt #-% keine Lîschungen mehr stehen
+                              dÅrfen, die sich auf andere als den PrimÑr-
+                              schlÅssel beziehen, wurde die Zeile mit den
+                              Lîschbefehlen unter #-/ eingefÅgt.
+                   22.05.97 - Damit analog zu in TitelsÑtzen enthaltene Per-
+                              sonennamen der '-' in den Ansetzungsnamen der
+                              NormsÑtze ausgeblendet wird, in den !100*-Zei-
+                              len unter #-U lokale Ersetzungsbefehle ergÑnzt.
+                            - unter #-H Abbruchbefehl eingefÅgt
+                            - Damit in Register 7 die Basisklassifikations-
+                              SchlÅssel der TitelsÑtze ohne Erscheinungsjahr
+                              unterhalb der öberschriftenzeile ordnen, unter
+                              #-G PrÑfix in Postfix verwandelt.
+                   03.06.97 - Parametrierung des RestriktionsschlÅssels unter
+                              #-/ korrigiert, da fehlerhaft
+                   07.01.98 - FÅr Normdatensatz Drucker, Verleger, Buch-
+                              hÑndler Kopfbefehle ak=4043.+k, ak=280*.+u und
+                              ak=480*.+u sowie Abschnitte #-k und #-u und
+                              mehrere #180*- bzw. !180*-Zeilen eingefÅgt.
+
+
+   ----- Kopfbefehle ------------------------------------------------------
+
+   Hilfsvariablen:
+
+   #upr: alle Personennamen, mit ";" getrennt
+   #uns: Haupt-Unter-Schlagwortkette im Normsatz Schlagwort (SWD)
+   #ust: Titel-Stichwortkette (alle Sachtitel vereinigt)
+   #uks: Kîrperschafts-Stichwortkette (alle Kîrperschaftsnamen vereinigt)
+   #uqk: Schlagwortkette aller RSWK-Schlagwîrter
+   #urk: Schlagwortkette aller RSWK-Schlagwîrter
+   #ugk: Schlagwort-Grundkette zur Bildung der Permutationsketten
+   #uin: Laufvariable bei der Bildung der RSWK-Permutationsketten
+   #upm: auf 6 Stellen mit Nullen aufgefÅllte Schlagwort-Permutationsmuster
+   #ure: Signatur-/NotationenschlÅssel mit oder ohne Bibliotheksnummer (ELN)
+   #uvf: 1. Verfasser fÅr Kurztitelregister
+   #upn: expandierte Ansetzungsform des Personennamens des Normsatzes
+   #ugt: Gesamtitel
+   #ukn: Kategorienummer der lokalen Schlagwîrter (fÅr Vergleich)
+   #ulk: alle Grundketten der lokalen Schlagwîrter
+   #upk: alle Permutationsketten der lokalen Schlagwîrter
+
+
+         ----- spezielle SchlÅssel -----
+ak=zz+%            PrimÑr- und ErsetzungsschlÅssel
+ak=zz+/            RestriktionsschlÅssel
+ak=zz+.            SR-SchlÅssel
+ak=zz+0            Kurzanzeige
+ak=0000+@          SchlÅssel fÅr BlÑtterfunktionen (Register 10)
+ ak=zz+!            PseudoschlÅssel
+ak=zz+Z            ZwischenÅberschrift fÅr Basisklassifikation,
+                                           Zeitschriften und Serien
+
+         ----- Register 1: Personennamen -----
+ak=30..+A          alle Personennamen in #upr sammeln
+ ak=30..+L          evtl. Verweisungsformen auch
+ak=upr"\;"+M       und fÅr jeden Bestandteil einen SchlÅssel erzeugen
+ak=200*.+U         Personennamen-Verweisungsformen (Normsatz)
+ak=201*.+U
+ak=202*.+U
+ak=203*.+U
+ak=204*.+U
+ak=410*+U          Pseudonyme (Normsatz)
+
+         ----- Register 2: Kîrperschaften -----
+ak=31..+K          Kîrperschaften
+ak=151*.+F         Kîrperschaftsnamen-AbkÅrzungen (Normsatz)
+ak=250*.+F         Kîrperschaftsnamen-Verweisungsformen (Normsatz)
+
+         ----- Register 3: Stich- und Schlagwîrter -----
+ak=ust" "+E        Titelstichwîrter
+ak=ust"\-"+E       Titel-Stichwortteile hinter einem Bindestrich
+ak=uks" "+e        Kîrperschafts-Stichwîrter
+ak=uks"\-"+e       Kîrperschafts-Stichwortteile hinter einem Bindestrich
+ak=51..+R          RSWK-Kettenglieder
+ak=uqk""+r        RSWK-Grundketten
+ak=urk""+Q        RSWK-Grundketten
+ak=51.."[*<>]"+O   RSWK-Permutationsketten (die in <...> stehen)
+ak=55...+V         verbale Sacherschlie·ung (u. a. subject headings)
+ak=55..."|?| "+v
+ ak=65.."*"+é  <<<  lokale Schlagwîrter (lokale Ebene)
+ ak=68.."*"+é  <<<  lokale Schlagwîrter (Exemplarebene)
+ak=ulk""+Q        Grundketten lokale Schlagwîrter (lokale und Exemplarebene)
+ak=upk""+Q        Permutationsketten lokale Schlagwîrter (lokale und Exemplarebene)
+ak=8....+X         Schlagwîrter (Normsatz)
+
+         ----- Register 4: Titel und Kongresse -----
+ak=400.+B          HST (#4000 bzw. #4004) und Unterreihen (#4005)
+ak=32...+B         weitere Sachtitel
+ ak=424.+B          VerknÅpfungen
+ ak=316.+B          Kongresse
+
+         ----- Register 5: Reihen, Serien -----
+ak=417.+S          Gesamtheit in Vorlageform
+ak=418.+è          Gesamtheit in Ansetzungsform
+ak=0500+Ä          Verweisungen von Titel, Verfasser, Urheber auf Serie
+
+         ----- Register 6: Orte, Verlage, Erscheinungsjahre -----
+ak=4030.+p         Vorbereitung: Trennstellen erzeugen
+ak=uov"\  "+P     Ort bzw. Verlag, Erscheinungsjahr
+ak=uov"\  "+J     Erscheinungsjahr, Ort bzw. Verlag
+ak=1100+j          Erscheinungsjahr
+ak=316.+Y          Kongre·ort, -jahr
+ak=4043.+k         Drucker, Verleger oder BuchhÑndler bei alten Drucken
+ak=280*.+u         Druckernamen-Verweisungsformen (Normsatz)
+ak=480*.+u         frÅhere, spÑtere, zeitweise Namen des Druckers etc.
+
+         ----- Register 7: Sachgruppen -----
+ak=530.+G          Basisklassifikation
+ak=50..." ; "+N    Notationen
+ak=60..+H          lokale Notationen (lokale Ebene)
+ak=270*.+W         Ist-Verweisung Basisklassifikation (Normsatz)
+ak=500*.+W         Umschreibung fÅr Notation (Normsatz)
+ak=530*+W          freie Umschreibung fÅr Notation (Normsatz)
+ak=540*.+W         zusÑtzliche Begriffe zu einer Notation (Normsatz)
+
+         ----- Register 8: Signaturen -----
+ak=9D00G""+C      Standortsignaturen
+ak=9D00G""+c      Magazinsignaturen
+
+         ----- Register 9: Standardnummern -----
+ak=2....+I         ISBN, ISSN, BNB-, LoC-, DB-Nummer usw.
+ak=02..+I          Ident-Nummer in NormsÑtzen (GKD, SWD)
+
+         ----- Register 10: Titel-Ident-Nummern, öbernahmeschlÅssel -----
+ ak=zz+ö            öbernahmeschlÅssel (Erfassungshilfe)
+ak=4900+D          Lokalsatz:    Datum der Ersterfassung
+ak=4901+D          Lokalsatz:    Datum der letzten énderung
+ak=7900+D          Exemplarsatz: Datum der Ersterfassung
+ak=7901+D          Exemplarsatz: Datum der letzten énderung
+
+         ----- Register 11: Lokal- und ExemplarsatzschlÅssel -----
+ak=7800+T          fÅr Nachladezwecke
+                   (Titelsatz ---> ExemplarsÑtze)
+
+
+
+   ----- Zwischenteil-Definitionen ----------------------------------------
+
+1=": "
+2="|:"
+3="+"
+4=", "
+5=" *"
+6=" / "
+7="|3"
+8="(K)"
+9=8
+
+
+   ----- Kategorieliste ---------------------------------------------------
+
+#+-               Abbruch, wenn kein ak-Befehl ausgefÅhrt wurde
+
+         ----- spezielle SchlÅssel -----
+
+#-%                PrimÑr- und ErsetzungsschlÅssel
+#0100 +#100* y0 f" " p"|:"   Titel- und Normsatz:  PPN     in Register 10
+#7800 +# y0 p"|;"            Exemplarsatz:         EPN     in Register 11
+#9D00F y0 p"|;"              Lokalsatz:            PPN-Bibliotheksnummer
+#9D00L p"-"                                                in Register 11
+#+#
+                             lt. allego-news Nr. 35, S. 3, vergleicht
+                             UPDATE nur bis zum '='
+#100* +# y0 p"=|n"           Personen-Normsatz
+#150* +# y0 p"=|2"           Kîrperschafts-Normsatz
+#170* +# y0 p"=|7"           Basisklassifikation-Normsatz
+#180* +# y0 p"=|6"           Drucker-Normsatz
+#800* B"| " y0 Ans           Schlagwort-Normsatz
+#801* B"| " p" / " y0 Ans
+#802* B"| " p" / " y0 Ans
+#803* B"| " p" / " y0 Ans
+#804* B"| " p" / " y0 Ans
+#805* B"| " p" / " y0 Ans
+#uns +# dns y0 B"| " p"=|3"
+#+#
+
+
+#-/                RestriktionsschlÅssel
+#nr dns dti dst dks dpr dqk drk dgk din dlk dov e0  Anwendervariablen lîschen
+#1100 +#0500 e" " E"-" p"|/"           Erscheinungsjahr
+#t{ "|/zzzz" }                           falls kein Erscheinungsjahr vorhanden
+#0500 +#005* i6,A i7,o p"a" y0 e1      Materialcode
+#0500 +#005* i6,A i7,b p"t" y0 e1
+#0500 +#005* i6,A i7,d p"t" y0 e1
+#0500 +#005* i6,A p"b" y0 e1
+#0500 +#005* i6,C p"c" y0 e1
+#0500 +#005* i6,D p"d" y0 e1
+#0500 +#005* i6,E p"e" y0 e1
+#0500 +#005* i6,G p"g" y0 e1
+#0500 +#005* i6,H p"h" y0 e1
+#0500 +#005* i6,I p"i" y0 e1
+#0500 +#005* i6,K p"k" y0 e1
+#0500 +#005* i6,M p"m" y0 e1
+#0500 +#005* i6,S p"s" y0 e1
+#0500 +#005* i6,B p"v" y0 e1
+#0500 +#005* i6,Z p"z" y0 e1
+#t{ "0" }                                falls kein Materialcode vorhanden
+#005* +#800* i6,T p"n" y0 e1           Datensatztyp: Normdatensatz
+#0500 +# p"t" y0 e1                                  Titeldatensatz
+#t{ "0" }                                            andere
+#800* B"| " y0 Ans                     Belegung der Anwendervariable #uns
+#801* B"| " p" / " y0 Ans              (Schlagwort-Normsatz)
+#802* B"| " p" / " y0 Ans
+#803* B"| " p" / " y0 Ans
+#804* B"| " p" / " y0 Ans
+#805* B"| " p" / " y0 Ans
+#+#
+
+
+#-0                Kurzanzeige
+#t{ "|0" }
+#100* +#100* e0              Normsatz Person
+#150* +#150* e0              Normsatz Kîrperschaft
+#170* +#170* e0              Normsatz Basisklassifikation
+#180* +#180* e0              Normsatz Drucker, Verleger, BuchhÑndler
+#800* +#800* e0              Normsatz Schlagwort (SWD)
+#9D00F +# y0 p"Lokal-/Exemplarsatz zum Titel PPN "
+#4000 y0 u## u!! e73 e" : " e" / " e". - " ,"_@__"         HST
+#4004 +#1100 b"*" e"*" y0 s34 p" *" p{ &40 }               BandzÑhlung
+#4000 +#3000 e0
+#4261 y0 u!! e73 e" : " e" / " e". - " ,"_@__"             PrimÑrsatz-Titel
+#4020 +#1100 y0 s34 p" *" p{ &40 }                         SekundÑr-Ausgabe
+!3000 y0 B"!" B"!" b"@" e"*" e"!" ,'_"__' P", " Avf        Verfasser
+!3000 y0 B"!" B"!" e"@" e"+" Avf
+!uvf dvf y0 ,"_/_ _" e30 s31 p" / " p{ &43 }
+#1100 e" " E"-" s8 p" " P"  " p{ &66 }                     Erscheinungsjahr
+
+                   Aufbereitung der Stichwortkette #ust:
+                   alle Titel werden zu einer Kette in #ust vereinigt,
+                   die anschlie·end zur Titelwortindexierung zerlegt wird
+                   (Kopfbefehl ak=ust...)
+
+#4004 +#3211 b"*" b"*" e" / " B"@" Ast           HST bei Stufenaufnahmen
+#4000 e" : " e" / " e" ;;" B"@" Ast              HST
+#4000 e" ;;" e" / " b" : " p" " Ast              Zusatz zum HST
+#3211 u<> B"@" p" " Ast                          EST
+#3220 B"@" p" " Ast                              Ansetzungssachtitel
+#3260 B"@" p" " Ast                              weitere Sachtitel
+#3261 B"@" p" " Ast
+#3262 B"@" p" " Ast
+#3263 B"@" p" " Ast
+#3264 B"@" p" " Ast
+#3265 B"@" p" " Ast
+#3266 B"@" p" " Ast
+#3267 B"@" p" " Ast
+#3268 B"@" p" " Ast
+#3269 B"@" p" " Ast
+#4241 B": " B"-> " B"!" B"!" B"@" p" " Ast       verknÅpfte Titel
+#4242 ++ B": " B"-> " B"!" B"!" B"@" p" " m" " Ast
+#4243 ++ B": " B"-> " B"!" B"!" B"@" p" " m" " Ast
+#4244 ++ B": " B"-> " B"!" B"!" B"@" p" " m" " Ast
+#+#
+
+#100* y0 ,"_@_ _"            Kurzanzeige fÅr Normsatz Person
+#+#
+
+#150* y0                     Kurzanzeige fÅr Normsatz Kîrperschaft
+#+#
+
+#170* y0                     Kurzanzeige fÅr Normsatz Basisklassifikation
+#530* +# y0 p"  "
+#500* y0 p"  "
+#+#
+
+#180* y0 ,"_@_ _"            Kurzanzeige fÅr Normsatz Drucker etc.
+#+#
+
+#800* B"| " y0               Kurzanzeige fÅr Normsatz Schlagwort (SWD)
+#801* B"| " p" / " y0
+#802* B"| " p" / " y0
+#803* B"| " p" / " y0
+#804* B"| " p" / " y0
+#805* B"| " p" / " y0
+#+#
+
+
+#-@                SchlÅssel fÅr BlÑtterfunktionen B / b
+#9D00F |100                  Lokal- und Exemplarsatz
+#0000 e" = " p"|:"           Titelsatz
+#+#
+
+
+#-!                PseudoschlÅssel (Normsatz-KontrollschlÅssel)
+#100* + e0
+#150* + e0
+#170* + e0
+#180* + e0
+#800* + e0
+#+-
+#-
+#t{ "!1" }         setzt ! vor den LîschkontrollschlÅssel
+                   1 bedeutet: bei énderung sollen alle EintrÑge,
+                   die so BEGINNEN, verlagert werden.
+
+#--                LîschkontrollschlÅssel
+                   (wird beim Lîschen automatisch angesteuert!)
+!100* b"@" p"|1"             Person in Register 1
+!100* +# e"@" p", " P""     Postfix-Zeichen ASCII 15!
+!150* +# B"@" p"|2"          Kîrperschaft in Register 2
+#170* +# y0 p"|7" P"'"       Basisklassifikation in Register 7
+!180* b"@" p"|6"             Drucker in Register 6
+!180* +# e"@" p", "
+!uns +# p"|3" P5             Schlagwort in Register 3
+#+#
+
+
+#-Z                ZwischenÅberschrift fÅr
+#0500 +#0100 i7,b e0
+#0500 +#0100 i7,d e0
+#170* p"|7" y0               Basisklassifikation in Register 7
+#530* +#170* y0 p"  *"
+#500* ++ y0 p"  *" m"; "
+#170* +# e0
+#+-
+#0100 p"|5" y0               Zeitschriften und Serien in Register 5
+#4000 y0 e" : " e" / " e". - " ,"_@__" p"  *"              HST
+#+#
+
+
+         ----- Register 1: Personennamen -----
+
+#-A                zunÑchst alle Personennamen in #upr sammeln:
+#ch +- i4,*                  nicht bei Normdaten (#30X*)
+ #u1 +#3090x i3,9 e0          Verweisungsform? Dann weiter bei #3090x
+#u1 p";" y0 e1 Apr           ";" an #upr anhÑngen
+#u1 +# i6,! y0 Apr           Falls Kategorieinhalt mit Ident-Nr. anfÑngt
+!u1 B"!" B"!" f"@" b"@" e"[*[]" F" " ,"_/_ _" ,"_-_ _" y2 P", " Apr  Familienname,
+                                                                     Vorname:
+!u1 B"!" B"!" u## u++ f"@" e"[[@]" t"/" ,"_/_ _" ,"_._ _" ,"_  _ _" ,"_ -_-_" ,"_-_ _" y2 Apr
+#u1 i3,0 >S                            bei #300X: evtl. [Sammlung] dahinter
+#u1 i3,4 p"[Festschrift]!" y0 e"!" Apr                    bei #304X
+#u1 i3,6 p"[Widmung]!" y0 e"!" Apr                        bei #306X
+
+#u1 +#3000x B"!" B"!" b"@" e"*" u<> c"-" p";" y0 e1 Apr    kommt ein '-' vor?
+#+#                                                        Dann:
+#3000x                                           Doppelname: VVV@NNN-MMM
+!u1 B"!" B"!" f"@" b"@" e"[*/[]" b"-" F" " y2 P", " Apr                        MMM,
+!u1 B"!" B"!" u## f"@" e"[/[@]" ,"_._ _" ,"_  _ _" ,"_ -_-_" ,"_-_ _" y2 Apr   VVV
+!u1 B"!" B"!" f"@" b"@" e"-" y2 p" " P"-" Apr                                  NNN-
+#nr p" -> " e4 Apr                                                              ->
+!u1 B"!" B"!" f"@" b"@" e"[*/[]" F" " ,"_-_ _" y2 P", " Apr                    NNN-MMM,
+!u1 B"!" B"!" u## f"@" e"[/[@]" ,"_._ _" ,"_  _ _" ,"_ -_-_" ,"_-_ _" y2 Apr   VVV
+#+#
+
+#3090x                       bei #309X (Kategorie dient nur als Sprungmarke)
+                             (Verweisungsformen fÅr Personennamen
+                              bei NMN-Altdaten und ggf. bei Fremddaten)
+                             z. B. #3090 +3000+Vorname@Nachname
+#u1 p";" y0 e1 Apr           ein ";" an  upr anhÑngen
+!u1 u++ b"@" e"[*/[]" F" " y2 P", " Apr          Nachname,
+!u1 u++ e"[/[@]" y2 Apr                          Vorname
+#u1 p" -> " y0 e4 Apr                             ->
+!u1 b"+" e"+" w b"@" e"[*/[]" F" " y2 P", " Apr
+                                       Inhalt der Kategorie in +....+ ab '@'
+!u1 b"+" e"+" w e"[/@]" y2 Apr         Inhalt der Kategorie in +....+ bis '@'
+                                       (w-Befehl schaltet um auf
+#+#                                     die betreffende Kategorie)
+
+
+#-L                Namensverweisungen,
+                   wenn z. B. #3000 Vorlageform!Ident-Nr.!Ansetzungsform
+#ch +- i4,*                  nicht bei Normdaten (#30X*)
+!u1 +#3000p c"!" e0          kommt ein '!' vor?
+#+-                          Wenn nicht, keine weitere Namensverweisung
+#3000p                       sonst: (Kategorie dient nur als Sprungmarke)
+!u1 dpn b"!" b"!" ,"_/_ _" y2 Apn
+                                       Abbruch, falls Namensformen identisch:
+!u1 e"!" e" [" f"@" f"#" ,"_/_ _" y2 =pn+- e0
+#u1 p";" y0 e1 Apr                     andernfalls ein ";" an #upr anhÑngen
+                                                 Vorlageform:
+!u1 e"!" f"@" b"@" e"[*[]" F" " ,"_/_ _" y2 P", " Apr           Familienname,
+                                                                Vorname:
+!u1 e"!" u## f"@" e"[[@]" t"/" ,"_/_ _" ,"_._ _" ,"_  _ _" ,"_ -_-_" y2 Apr
+#u1 p" -> " y0 e4 Apr                                            ->
+                                                 Ansetzungsform:
+!u1 B"!" B"!" f"@" b"@" e"[*[]" F" " ,"_/_ _" y2 P", " Apr      Familienname,
+                                                                Vorname:
+!u1 B"!" B"!" u## f"@" e"[[@]" t"/" ,"_/_ _" ,"_._ _" ,"_  _ _" ,"_ -_-_" y2 Apr
+#+#
+
+#-M
+#u1 +# c"" y0 p"|1" F", "             Zeichen ASCII 15 bereits vorhanden?
+#u1 y0 p"|1" F", " P""                Zeichen ASCII 15 anhÑngen!
+#+#
+
+
+#-U                Personennamen-Verweisungsformen
+#t{"|1"}
+!u1 b"@" e" ["
+!u1 B": " u!! e"@" e" [" f"#" ,"_/_ _" p4
+#t{ " -> " }
+!100* b"@" ,"_-_ _"
+!100* e"@" t"/" ,"_/_ _" ,"_-_ _" p4
+#t{""}
+#+#
+
+
+         ----- Register 2: Kîrperschaften -----
+
+#-K                Kîrperschaft in Register 2
+#u1 +- i4,*                  nicht bei Normdaten (#310*)
+#u1 B"!" B"!" p" " Aks                 fÅr Kîrperschafts-Stichwortkette #uks
+#ch +- i3,6 e0                         Abbruch bei #316x (Kongresse)
+!u1 B"!" B"!" B"@" p"|2"               Kîrperschaft
+#+#
+
+#-F                Kîrperschaftsnamen-Verweisungsformen
+!u1 B"@" p"|2"               Verweisungsform
+#t{ " -> " }                  ->
+!150* B"@"                   Hauptansetzungsform
+#+#
+
+
+         ----- Register 3: Stich- und Schlagwîrter -----
+
+#-E                Titelstichwort in Register 3
+!u1 e" " f"<" f"/" F">" B"@" F"!" F"?" p"|3"     e" " fÅr Stichwortteil
+#+#                                              hinter einem Bindestrich
+
+#-e                Kîrperschaftsstichwort in Register 3
+!u1 e" " f"<" F">" F"," F"." p"|3" P8            e" " fÅr Stichwortteil
+#+#                                              hinter einem Bindestrich
+
+
+#-R                RSWK-Schlagwîrter
+#u1 +- i1,5 i2,1 i4,8        nicht bei #51X8 (Permutationsmuster)
+#u1 +- i1,5 i2,1 i4,9              und #51X9 (Angaben zur Kette)
+!u1 i4,0 p"" e1 Aqk                   Beginn einer neuen Kette
+!u1 B"| " B"!" B"!" p" / " Aqk         Schlagwîrter sammeln
+!u1 B"| " B"!" B"!" p"|3" P5           Schlagwort, mit ' *' gekennzeichnet
+#+#
+
+#-r                RSWK-Grundkette bilden
+!u1 b" / " e" / " p"1" Ark
+!u1 b" / " b" / " e" / " p"2" Ark
+!u1 b" / " b" / " b" / " e" / " p"3" Ark
+!u1 b" / " b" / " b" / " b" / " e" / " p"4" Ark
+!u1 b" / " b" / " b" / " b" / " b" / " e" / " p"5" Ark
+!u1 b" / " b" / " b" / " b" / " b" / " b" / " e" / " p"6" Ark
+#+#
+
+#-Q                Grundkette ins Register eintragen
+!u1 b2 ,"_?_ / _" ,"_|?| __" f" " p"|3" P5
+#+#
+
+#-O                RSWK-Permutationsketten
+#ch +- I4,8                  nur fÅr #51X8 (Permutationsmuster)
+#urk =gk e0                  zunÑchst zugehîrige Grundkette ermitteln:
+#ch i3,0 p"1" e1 =in e0
+#ch i3,1 p"2" e1 =in e0
+#ch i3,2 p"3" e1 =in e0
+#ch i3,3 p"4" e1 =in e0
+#ch i3,4 p"5" e1 =in e0
+#ch i3,5 p"6" e1 =in e0
+#ch i3,6 p"7" e1 =in e0
+#ch i3,7 p"8" e1 =in e0
+#ch i3,8 p"9" e1 =in e0
+#ch i3,9 p"10" e2 =in e0
+#-q
+#ugk b"" =gk e0
+#uin x"-1" =in e0
+#uin +q x">0" e0
+#ugk e"" =gk e0
+#u1 s6,0 Apm                 Permutationsmuster auf 6 Stellen mit Nullen
+                             auffÅllen, da die IndikatorprÅfung Åber das
+                             Kategorieende hinaus prÅft!
+#>P                          dann Permutationskette zusammensetzen
+!upk dpm dpk p"|3" P5        und in Register 3 einfÅgen
+#+#
+
+
+#-V                verbale Sacherschlie·ung: Schlagwortketten
+!u1 +# i3,0 B"| " ,"_|?| _/ _" p"|3" P5          LoC subject headings
+!u1 +# i3,1 B"| " ,"_|?| _/ _" p"|3" P5          Medical subject headings
+!u1 +# i3,2 B"| " ,"_|?| _/ _" p"|3" P5          PRECIS
+!u1 +# i3,3 p"|3" P5                             DB-Schlagwîrter bis 1986
+!u1 +# i3,4 B"| " ,"_|?| _/ _" p"|3" P5          BL subject headings
+!u1 +# i3,5 B"!" B"!" p"|3" P5                   Einzelschlagwort
+#+-
+
+#-v                verbale Sacherschlie·ung: Schlagwîrter
+!u1 B"!" B"!" F" " p"|3" P5                      Schlagwort
+#+#
+
+
+#-X                Schlagwîrter im Schlagwort-Normsatz
+#u1 +- I4,* e0     nicht fÅr Normsatz-Kategorien
+#u1 +- i2,0 e0     nur fÅr Kategorien #830* bis #890*
+#u1 +- i2,1 e0
+#u1 +- i2,2 e0
+!u1 B"| " e" <" p"|3"
+#t{ " -> " }
+!uns P5
+#+#
+
+#-é                lokale Schlagwîrter
+#ch +ô dkn i6,< e0           enthÑlt Kategorie Permutationsmuster?
+#ch i2,0 p"0" e1 Akn
+#ch i2,1 p"1" e1 Akn
+#ch i2,2 p"2" e1 Akn
+#ch i2,3 p"3" e1 Akn
+#ch i2,4 p"4" e1 Akn
+#ch i2,5 p"5" e1 Akn
+#ch i2,6 p"6" e1 Akn
+#ch i2,7 p"7" e1 Akn
+#ch i2,8 p"8" e1 Akn
+#ch i2,9 p"9" e1 Akn
+#ch i3,0 p"0" e1 Akn
+#ch i3,1 p"1" e1 Akn
+#ch i3,2 p"2" e1 Akn
+#ch i3,3 p"3" e1 Akn
+#ch i3,4 p"4" e1 Akn
+#ch i3,5 p"5" e1 Akn
+#ch i3,6 p"6" e1 Akn
+#ch i3,7 p"7" e1 Akn
+#ch i3,8 p"8" e1 Akn
+#ch i3,9 p"9" e1 Akn
+#ch i4,0 p"0" e1 Akn
+#ch i4,1 p"1" e1 Akn
+#ch i4,2 p"2" e1 Akn
+#ch i4,3 p"3" e1 Akn
+#ch i4,4 p"4" e1 Akn
+#ch i4,5 p"5" e1 Akn
+#ch i4,6 p"6" e1 Akn
+#ch i4,7 p"7" e1 Akn
+#ch i4,8 p"8" e1 Akn
+#ch i4,9 p"9" e1 Akn
+#ukn =ak+Ñ e0
+#ugk dgk p"" e1 Alk                   nÑchste Grundkette
+#-Ñ
+#u1 p"0" Alk
+#u1 i5,  p"1" Agk                     nÑchstes Schlagwort
+#u1 i5,a p"2" Agk
+#u1 i5,b p"3" Agk
+#u1 i5,c p"4" Agk
+#u1 i5,d p"5" Agk
+#u1 i5,e p"6" Agk
+!u1 B"!" B"!" ,"_|?| __" p"|3" P5      Schlagwort, mit ' *' gekennzeichnet
+#+#
+#-ô                          Permutationsmuster auswerten:
+#u1 f"<" F">" s6,0 Apm       Permutationsmuster auf 6 Stellen mit Nullen
+#upm p"xx" e3 Apk           auffÅllen, Trennzeichen einfÅgen
+#>P                          und Permutationskette zusammensetzen
+#upm dpm e0
+#+#
+
+
+         ----- Register 4: Titel und Kongresse -----
+
+#-B
+#u1 +U i4,* e0                         bei Normdaten (#400*) Verweisung
+#u1 +- i6,# e0                         Abbruch, falls z. B. #4000 #cc#...
+#u1 +b i1,3 i2,2 i3,0 i4,0 e0          bei #3200 Sprung
+#u1 +#4000a i1,3 i2,2 i3,2 e0
+#u1 +#4000a i1,4 i2,0 i3,0 i4,0 e0
+#0100 +#0500 e0
+#4000a                                 #4000 nicht indexieren,
+#3200 +- c"Sammlung" e0                wenn #3200 "Sammlung" enthÑlt
+#0500 p"|4" e2                         in Reg. 4 wird eingetragen:
+ #u1 +#4241a i1,4 i2,2 i3,4 e0          bei #424X (VerknÅpfungen) Sprung
+ #4004 +#4004 e0
+#u1 +s i2,2 i3,1 e0                    bei #321X (EST) Sprung
+#u1 +s i2,2 i3,6 e0                    bei #326X (Weitere Sachtitel) Sprung
+#u1 +s i2,2 i3,3 e0                    bei #3230 (Keytitle) Sprung
+!4004 B"*" B"*" e" / " e" : " B"@" ,"_ Ã__" y2 f" "   HST (bei Stufenaufnahmen)
+!4004 B"*" B"*" e" / " b" : " p1                      Zusatz
+!4004 +# e0
+
+#-s
+!u1 u{} e" : " e" = " e" / " e" ;; " B"@" ,"_ Ã__" y2 f" "      Titel
+!u1 e" = " e" / " e" ; " e" ;; " B"@" b" : " p1                 Zusatz
+#+#
+
+#-b
+#u1 +#3220 c"Sammlung" e0
+#+f
+#+#
+#3220 +#4000b u{} Aas
+#+f
+#4000b
+!uas +#3000 p"|4"
+#+f
+!3000 B"!" B"!" f"@" b"@" e"[*[]" F" " ,"_/_ _" p" // " P", "   Familienname,
+                                                                Vorname:
+!3000 B"!" B"!" u## u++ f"@" e"[[@]" t"/" ,"_/_ _" ,"_._ _" ,"_  _ _" ,"_ -_-_"
+!4000 b"/" p" /"
+#t{8}
+#-f
+!4000 B"@" p"|4"
+#+#
+
+                                       VerknÅpfungen:
+#4241a                                 (Kategorie dient nur als Sprungmarke)
+!u1 B": " B"-> " B"!" B"!" B"@" e" : " f" "
+!u1 b" : " p1
+#+#
+
+
+         ----- Register 5: Reihen, Serien -----
+
+#-S                Gesamtheit in Vorlageform (Serie)
+!u1 dgt B"@" e"[#]" e" $" e" ;" y2 Agt           Serientitel
+!u1 b"[#]" e" $" e" ;" y2 p" ; " Agt             ZÑhlung der Unterreihe
+!u1 b" $ " e" ;" y2 p" : " Agt                   Titel der Unterreihe
+!ugt y0 e65 p"|5"
+!u1 +# b";" c"..." e0                            Auslassungspunkte Åbergehen
+!u1 b";" x"*1" e"." f"-" r5 p" ;"                ZÑhlung
+#+#
+
+
+#-è                Gesamtheit in Ansetzungsform
+#u1 b"!" e"!" p"|5" P" ; "   Ident-Nummer der Gesamtaufnahme
+ #u1 b"[#]" e"[#]" p" ; "     sortierfÑhige ZÑhlung
+!u1 T" ; " b" ; " e"," r6    ZÑhlung in der Reihe
+!u1 T" ; " b"," r3 p","
+#+#
+
+
+#-Ä                Gesamtheit in Ansetzungsform
+ #u1 +#4000 i7,b e0
+ #u1 +#4000 i7,d e0
+#+-
+!4000 u{} e" : " e" = " e" / " e" ;; " B"@" ,"_ Ã__" y2 f" " p"|4"   Titel
+#0100 p" -> |5"
+#3000 >A
+#3001 >A
+#3002 >A
+#3100 >B
+#3101 >B
+#3102 >B
+#+#
+
+
+         ----- Register 6: Orte, Verlage, Erscheinungsjahre -----
+
+#-p                Vorbereitung: Trennstellen der Kategorie 4030 festlegen
+#u1 ,"_ : _  _" ,"_ ; _  _" p"  " Aov
+#+#
+
+
+#-P                Ort bzw. Verlag, Erscheinungsjahr in Register 6
+#t{"|6"}
+!u1 F" " ,"_ [u.a.]__" ,"_ u.a.__"               Ort bzw. Verlag
+!1100 x"*1" e"." s4,? p","                       Erscheinungsjahr
+#+#                                              (nur die Zahl)
+
+
+#-J                Erscheinungsjahr, Ort bzw. Verlag in Register 6
+#t{"|6"}
+!1100 x"*1" e"." s4,? P","                       Erscheinungsjahr
+!u1 F" " ,"_ [u.a.]__" ,"_ u.a.__"               Ort bzw. Verlag
+#+#
+
+#-j                Erscheinungsjahr in Register 6
+#4030 +- e0
+#t{"|6"}
+!u1 x"*1" e"." s4,?                                        Erscheinungsjahr
+#+#
+
+
+#-k                Drucker, Verleger oder BuchhÑndler in Register 6
+#t{"|6"}
+!u1 b"@" e" [" e". - "
+!u1 u!! f"@" c"@" p4 e0
+!u1 u!! e"@" e" [" e". - " f"#" ,"_/_ _"
+#+#
+
+
+#-u                Druckernamen-Verweisungsformen in Register 6
+#t{"|6"}
+!u1 b"@" e" ["
+!u1 B": " u!! f"@" c"@" p4 e0
+!u1 B": " u!! e"@" e" [" f"#" ,"_/_ _"
+#t{ " -> " }
+!180* b"@" ,"_-_ _"
+!180* f"@" c"@" p4 e0
+!180* e"@" t"/" ,"_/_ _" ,"_-_ _"
+#+#
+
+
+#-Y                Kongre·ort und -datum in Register 6
+!u1 +y b"(" e")" e", " y2 p"|6"
+#+-
+#-y
+!u1 b" : " p","
+#t8
+#+#
+
+
+         ----- Register 7: Sachgruppen -----
+
+#-G                Basisklassifikation in Register 7
+#u1 +- i4,*                            nicht bei Normdaten (#530*)
+#u1 B"!" B"!" e" " y0 p"|7" P"'"       Basisklassifikation'
+#1100 e" "                             Erscheinungsjahr
+#+#
+
+
+#-N                Notationen
+#u1 +- i4,*                  nicht bei Normdaten (#550*)
+#u1 +# i3,1 p"|7B" y0        #5010: DDC
+#u1 +# i3,3 p"|7L" y0        #5030: LCC
+#u1 +# i3,4 p"|7M" y0        #5040: NLM
+#u1 +# i3,5 i4,5 p"|7S"      #5055: DB-Statistik
+#u1 +# i3,5 p"|7D" y0        #5050: Sachgruppen der DB
+#u1 +# i3,7 p"|7N" y0        #5075: NZN-Notation
+#u1 +# i3,8 p"|7Z" y0        #5080: ZDB-Notation
+#+-
+
+
+#-H                Bibliotheksnummer+lokale Notation in Register 7
+#u1 +- i4,*                  nicht bei Normdaten (#600*)
+#u1 dre e0
+#9D00L P"+" Are         >>>  falls ohne Bibl.-Nummer, diese Zeile einrÅcken
+#u1 Are
+#ure y0 p"|7"
+#+#
+
+
+#-W                Verweisung Begriff -> Notation
+!u1 p"|3" P" -> "
+#170* y0 p"|7" P"'"
+#+#
+
+
+         ----- Register 8: Signaturen -----
+
+#-C                Bibliotheksnummer+Standortsignatur in Register 8
+!u1 +- dre I6,l e0
+!ch L P"+" Are         >>>  falls ohne Bibl.-Nummer, diese Zeile einrÅcken
+!u1 +d b"l" y0 u$$ u!! e" @ " e" \ " B"@" Are
+#+-
+
+#-c                Bibliotheksnummer+Magazinsignatur in Register 8
+!u1 +- dre I6,s e0
+!ch L P"+" Are         >>>  falls ohne Bibl.-Nummer, diese Zeile einrÅcken
+!u1 +d b"s" y0 u$$ u!! e" @ " e" \ " B"@" Are
+#+-
+#-d
+#ure y0 p"|8"
+#+#
+
+
+         ----- Register 9: Standardnummern -----
+
+#-I
+!u1 +# y0 i1,0 i2,2 i3,0 i4,* p"|9G"   #020* : Ident-Nummer der GKD
+!u1 +# y0 i1,0 i2,2 i3,1 i4,* p"|9S"   #021* : Ident-Nummer der SWD
+#u1 +- i4,*                            Abbruch bei den Åbrigen Normsatz-Kat.
+#u1 +- i1,0                            Abbruch bei #0200, #0210, #0230
+#u1 +# i2,0 i3,0 e"[ *]" p"|9"         #200x : ISBN
+#u1 +# i2,0 i3,1 e"[ *]" p"|9"         #201x : ISSN
+#u1 +# i2,0 i3,3 y0 p"|9B"             #203x : BNB-Nummer
+#u1 +# i2,0 i3,4 p"|9L"                #204x : LoC-Nummer
+#u1 +# i2,0 i3,6 p"|9DB"               #206x : DB-Nummer
+#u1 +# i2,1 i3,0 i4,0 p"|9DW"          #2100 : WV-Nummer der DB
+#u1 +# i2,1 i3,0 i4,5 p"|9DC"          #2105 : CIP-Nummer der DB
+#u1 +# i2,1 i3,1 e"-" r7,0 p"|9Z"      #211x : ZDB-Nummer
+#u1 +# i2,1 i3,9 i4,0 p"|9M"           #2190 : NMN-Ident-Nummer
+#u1 +# i2,1 i3,9 i4,5 p"|9N"           #2195 : NZN-Ident-Nummer
+#u1 +# i2,1 i3,9 i4,6 p"|9NBV"         #2196 : NBV-Ident-Nummer
+#u1 +# i2,2 i3,0 i4,0 e5 p"|9C"        #2200 : CODEN
+#u1 p"|9X"                             alle anderen Nummern
+#+#
+
+
+         ----- Register 10: Ident-Nummern -----
+
+#-ö                öbernahmeschlÅssel in Register 10
+                   (zum Kopieren der Ident-Nr. bei der Dateneingabe)
+#4000 +- e0                  nicht fÅr TitelsÑtze
+!530* +#170* p2              Notation
+!500* p2
+#170* +#0100 p" = "          = Basisklassifikation
+!100* +#100* b"@" p2         Personennachname
+!150* +#0100 p2              Kîrperschaftsname
+!180* +#180* b"@" p2         Druckernachname
+!uns +#0100 p2               SWD-Terme (unter #-% vorbereitete Kette)
+#+-
+!100* e"@" p", "             Personenvorname
+!180* e"@" p", "             Druckervorname
+#0100 p" !" P"!"             PPN mit !...! anhÑngen
+#+#                          (diese wird dann mit Strg+Enter Åbernommen)
+
+
+#-D                Datum der Ersterfassung bzw. der letzten énderung
+#9D00L p"|:"                 Lokalsatz
+#9D00G L p"|:"              Exemplarsatz
+#u1 b"-" b"-" e2 p"+"
+#u1 b"-" e2
+#u1 e"-"
+#+#
+
+
+#-.                SR-SchlÅssel in Register 10
+#0000 +#0000 c"+" e0
+#+-
+#0000 y0 e"+" X:
+#+#
+
+
+         ----- Register 11: ExemplarsatzschlÅssel -----
+
+#-T                ExemplarsatzschlÅssel in Register 11:
+#9D00F y0 p"|;"    TitelID-Bibliotheksnummer-Exemplarnr.
+#9D00G L y0 p"-"
+#9D00G e p"-"
+#+#
+
+
+         ----- Sprungmarke fÅr zweiten INDEX-Durchgang -----
+
+#-n                                    Personennamen
+!ch f" @" b"@" e"[*/[]" F" " P", "
+!ch f" @" e"[/[@]"
+#+#
+
+
+         ----- Umcodierungen der Benutzereingabe -----
+               (Benutzereingabe steht jeweils in #u1 und wird vorbehandelt,
+                fÅr Register 1 bei #-1 usw.)
+
+#-1                Personennamen
+!u1 e"," F" "
+!u1 b"," f" " ,"_._ _" ,"_  _ _" ,"_ -_-_" ,"_-_ _" p", "
+#+#
+
+#-2                Kîrperschaftsnamen
+!u1 B"@"
+#+#
+
+#-3                Stich- und Schlagwîrter
+#dt dr3 p" *" e2 Ar3
+#u1 T2 =r3+# e0
+!u1
+#+#
+
+#-4                Titel
+!u1
+#+#
+
+#-5                Zeitschriften, Reihen
+#u1 dr5 e8 Ar5
+#u1 e8 x"*1" e"." r8,0 =r5+# e0
+!u1 e";" F" "
+!u1 b";" e"," f" " r6 p" ; "
+!u1 b";" b"," r3 p","
+#+#
+
+#-6                Orte, Verlage, Erscheinungsjahre
+!u1
+#+#
+
+#-7                Sachgruppen
+#u1 y0
+#+#
+
+#-8                Signatur
+#u1 y0
+#+#
+
+#-9                ISBN, ISSN
+#u1 y0
+#+#
+
+
+         ----- Unterprogramme -----
+
+#(A
+#t{8 "|1"}
+!cc B"!" B"!" f"@" b"@" e"[*[]" F" " ,"_/_ _" P", "             Familienname,
+                                                                Vorname:
+!cc B"!" B"!" u## u++ f"@" e"[[@]" t"/" ,"_/_ _" ,"_._ _" ,"_  _ _" ,"_ -_-_"
+#0100 p" -> |5"
+#)A
+
+#(B
+#t{8 "|2"}
+!cc B"!" B"!" B"@"                     Kîrperschaft
+#0100 p" -> |5"
+#)B
+
+#(P                          Permutationsketten bilden
+#upm i6,1 >1
+#upm i6,2 >2
+#upm i6,3 >3
+#upm i6,4 >4
+#upm i6,5 >5
+#upm i6,6 >6
+#upm I7,0 p" / " e3 Apk
+#upm i7,1 >1
+#upm i7,2 >2
+#upm i7,3 >3
+#upm i7,4 >4
+#upm i7,5 >5
+#upm i7,6 >6
+#upm I8,0 p" / " e3 Apk
+#upm i8,1 >1
+#upm i8,2 >2
+#upm i8,3 >3
+#upm i8,4 >4
+#upm i8,5 >5
+#upm i8,6 >6
+#upm I9,0 p" / " e3 Apk
+#upm i9,1 >1
+#upm i9,2 >2
+#upm i9,3 >3
+#upm i9,4 >4
+#upm i9,5 >5
+#upm i9,6 >6
+#upm I10,0 p" / " e3 Apk
+#upm i10,1 >1
+#upm i10,2 >2
+#upm i10,3 >3
+#upm i10,4 >4
+#upm i10,5 >5
+#upm i10,6 >6
+#upm I11,0 p" / " e3 Apk
+#upm i11,1 >1
+#upm i11,2 >2
+#upm i11,3 >3
+#upm i11,4 >4
+#upm i11,5 >5
+#upm i11,6 >6
+#)P
+
+#(S                                    Sammlungsvermerk
+#3200 c"Sammlung" p"[Sammlung]!" y0 e"!" Apr    Zeichen ASCII 15
+#)S                                              vor [Sammlung]
+
+#(1
+!ugk b"1" e"" Apk
+#)1
+
+#(2
+!ugk b"2" e"" Apk
+#)2
+
+#(3
+!ugk b"3" e"" Apk
+#)3
+
+#(4
+!ugk b"4" e"" Apk
+#)4
+
+#(5
+!ugk b"5" e"" Apk
+#)5
+
+#(6
+!ugk b"6" e"" Apk
+#)6
+
+
+   ----- Hilfszeilen fÅr Restriktionen ------------------------------------
+
+R JVU r1 "Erscheinungsjahr?"
+R MAT r5 "Materialart?"
+R REC r6 "Datensatztyp?"
+
+
+   ----- Zeichenumwandlungen ----------------------------------------------
+
+tzeiumwix          ZEIUMWIX.PPT = Zeichenumwandlungstabelle
+
+
+tstoplist          STOPLIST.PPT = Stoppwortliste
+

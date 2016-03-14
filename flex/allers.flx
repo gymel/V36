@@ -1,0 +1,315 @@
+  allers.flx : Datensatz einlesen nach Bearbeitung im Anzeigefeld
+  2015-07-16   NUR bei UTF-8 intern (Anzeige mit \urtf1 statt \rtf1!)  
+               ACHTUNG: V35.7 oder spaeter erforderlich wg. Befehl  exp Pi
+
+  Zum Gedenken an Heinrich Allers, gestorben 14. August 2013
+  Originalbeitrag aus ENT-UTF.FLX vom 30.4.2013,
+  Daraus entnommen das Unterprogramm :Allers am Ende
+
+  Voraussetzung: Vorher den Satz mit F5 in Kategorieform anzeigen lassen,
+  dann bearbeiten. 
+  Dann diesen FLEX starten (direkt mit  X allers  oder wie auch immer)
+
+  Einstieg ist weiter unten
+jump BEGINN
+
+// *** Unterprogramm :write
+  UP zur Verarb. eines Abschnitts zwischen zwei \u-Codes 
+  ABER darin koennen Codes \'hh  vorkommen, z.B. \'b2 fuer Dreieck
+       oder \'fc fuer das ue; das ist jeweils der ANSI-Hexcode
+  diese werden hier gewandelt in ASCII-Codes, z.B. \'b2 in 31
+  (Dieses UP steht hier oben, weil's u.U. oft gebraucht wird)
+:write
+  Vor der eigentl. Schleife den ganzen Abschnitt vorbearb.
+  1. Das Ende muss weg:
+var (e"\\par }")
+
+  2. Einige Ersetzungen, rtf-Spezifika
+ins _\\par __
+ins _\\tab _\\'b6_
+ins _\\{_{_
+ins _\\}_}_
+  3. der \ ist etwas schwierig
+ins _\\\\_|_
+ins _|_\\_
+  4. Absatzende
+ins _¶__
+ins $w
+
+  Schleife :w zur Verarb. des Abschnitts, der keine \u-Codes enthaelt:
+  (der Inhalt ist jetzt in $w)
+:w
+  jeweils den Anfang bis \' unveraendert rausschreiben
+var $w (e"\\'")
+wri
+  dann den Code nehmen, der hinter \' kommt
+var $w (b"\\'")
+  nix mehr? UP beenden
+if "" return
+ins $w
+  Was ist hinter \'? 2 Sonderfaelle:
+  Dreieck \'b2 ->31 , Absatzende \'b6 ->20
+if "b2" wri 31;jump 2weg
+if "b6" wri 20;jump 2weg
+
+  Normalfaelle (\'hh) umrechnen
+var $w (0,1)
+ins $a
+var $w (1,1)
+ins $b
+
+  $a und $b sind 2 Zeichen, z.B. f und c; Dezimalwerte draus machen
+var $a
+if "a" var "10"
+if "b" var "11"
+if "c" var "12"
+if "d" var "13"
+if "e" var "14"
+if "f" var "15"
+ins $c
+  die erste Ziffer *16
+eval $c *16 
+ins $a
+
+var $b
+if "a" var "10"
+if "b" var "11"
+if "c" var "12"
+if "d" var "13"
+if "e" var "14"
+if "f" var "15"
+  zweite Ziffer dezimal
+ins $b
+
+  jetzt wird's spannend, in "dow 2" steckt die Tabelle aw-utf.apt
+set dow 2
+eval $a +$b
+var
+  Nun steht erstmal der ANSI-Code des Zeichens in iV
+  Wandlung ueber Tabelle  aw-utf.apt  nach UTF-8
+xco xp
+set dow 1
+  und raus damit
+wri
+
+:2weg
+  $w um die ersten 2 Byte kuerzen, Schleife
+var $w (2,0)
+ins $w
+jump w
+// ENDE Schleife :w
+
+// *** ENDE Unterprogramm :write
+
+// Der eigentliche Start
+:BEGINN
+  automat. Umcodierung aus
+set c1
+  Die Codes 31 und 178 werden sonst per o-Befehlen umcodiert
+exp Pi o .31 31
+exp Pi o .178 178
+
+  Den (bearbeiteten) Anzeigetext als .rtf speichern
+file record.rtf
+open record.rtf
+if no mes Die Datei record.rtf gibt's nicht;end
+
+// Man braucht geeignete Parameter fuer die Umcodierung
+set dow 2
+  Param. f. ANSI -> UTF-8 laden, falls noch nicht geschehen
+var e
+if "e-1" jump sdw1
+exp p e-1
+  Da muss diese Tabelle rein, nur auf die kommt's an:
+  (Sie wird gebraucht bei "xco xp" im UP :write)
+exp t aw-utf
+:sdw1
+set dow 1
+
+  Datei zum Schreiben oeffnen
+open x record.adt
+
+  Daten aus record.rtf lesen
+  die hat einen Dateikopf, damit UTF-Anzeige klappt,
+  diesen Kopf beim Lesen uebergehen, Text beginnt hinter \par 
+var "\\par "
+fetch e
+
+// *** Hauptschleife
+  record.rtf durcharbeiten:
+  Diese Schleife verarbeitet die Datei z.T. zeichenweise
+  Die Unicode-Zeichen beginnen mit \u !
+:LOOP
+  erst pruefen, ob noch was kommt
+fet c
+if "-1" jump ENDE
+  Einlesen, bis zum naechsten \u
+var "\\u"
+fetch e
+var (f"^M^J")
+
+  Jetzt steht in iV ein Abschnitt ohne UTF-Codes
+if "\\par" wri 13 10
+
+  das Gelesene ausgeben, falls nicht leer, dabei Codes \'xx wandeln
+if not "" perf write
+
+  und nun das Zeichen, das hinter \u kommt
+fetch c
+if "-1" jump ENDE
+ falls es eine Dez.Zahl ist, dann folgt ein RTF-Unicode
+if <48 jump K
+if >57 jump K
+
+   es ist eine Zahl. Diese einlesen, endet mit ?
+var "?"
+fetch e1
+  Zahl zwischen \u und ? jetzt in iV
+ins $u
+  Umrechnen in echte UTF-8-Hex-Zahl, das macht :Allers
+perf Allers
+
+
+jump LOOP
+
+:K
+  Es ist \u ohne DezZahl dahinter - so wieder ausgeben
+ins $z
+wri "\\u"
+jump LOOP
+
+// *** ENDE der Hauptschleife
+
+  Datei  record.rtf  beendet
+:ENDE
+  Dateien schliessen
+close
+close x
+
+  Ausgabedatei einlesen, in den Satz einfuegen, anzeigen
+var Frecord.adt
+ins
+  am letzten Feld koennen noch gewisse RTF-Steuerzeichen haengen, fort damit:
+var k3
+var (e"\\par" F"^T")
+ins
+  Codewerte 31 und 178 wieder ruecksetzen f.d. korrekte Anzeige
+exp Pi o .31 178
+exp Pi o .178 31
+sho rec
+disp
+end
+
+  ----------------------------------
+
+  UP  Original Heinrich Allers 2013
+  [Nur #uxy geaendert in $uy]
+  Umrechnung einer RTF-Entitaetszahl in UTF-8 (1, 2 oder 3 Byte)
+  z.B.   \u8352? --> "â‚¬" = 226 130 172    (Euro-Zeichen)
+  Wird u.U. auch oft gebraucht, aber nur wenn viel UTF im Satz vorkommt
+
+:Allers
+
+
+if <256 jump utf1
+if <2048 jump utf2
+jump utf3
+
+  1byte-Codes
+:utf1
+var $u
+=
+var "319"
+-     // 319=256+64
+var "64"
+/ 
+var Z
+var (e".")
+=
+var "196"
++ 
+var Z
+var
+wri
+
+var $u
+z =
+var "64"
+z % 
+var z
+=
+var "128"
++
+var Z
+var
+wri
+return
+
+  2byte-Codes
+:utf2
+var $u\=
+var "256"\-
+var "64"\/ 
+var Z\var (e".")\=
+var "196"\+ 
+var Z
+var
+wri
+
+var $u\=
+var "256"\-
+var Z
+z = 
+var "64" 
+z % 
+var z\=
+var "128"\+
+var Z
+var
+wri
+
+return
+
+  3byte-Codes
+:utf3
+var $u\=
+var "4096"\/
+var Z\var (e".")\=
+var "224"\+ 
+var Z\ins $ua
+
+var $ua\=
+var "224"\-
+var "4096"\X
+var Z\ins $u1
+
+var $u\=
+var $u1\-
+var "64"\/
+var Z\var (e".")\=
+var "128"\+
+var Z\ins $ub
+
+var $ub\=
+var "128"\-
+var "64"\X
+var Z\ins $u2
+
+var $u\=
+var $u1\-
+var $u2\-
+var "128"\+
+var Z\ins $uc
+
+var $ua
+var
+wri
+var $ub
+var
+wri
+var $uc
+var
+wri
+
+return 
+

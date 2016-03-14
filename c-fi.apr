@@ -1,0 +1,383 @@
+  c-fi.apr : Aufbereitung der Auswertungsdatei fuer eine Zaehlung   
+  960318 / 040225
+
+  COUNT  :  Zaehle Feldinhalte
+        Die Ergebnisdatei muss zuerst sortiert, 
+        dann mit COUNT2.APR exportiert werden
+
+  Output : Sortierbare Saetze, die nur genau die zu zaehlenden Kategorien
+           enthalten. Diese muessen dann sortiert werden, und im letzten 
+           Schritt mit SRCH und COUNT2.APR exportiert werden.
+
+  Zweck  : Wenn man z.B. Notationen oder Schlagwoerter in bestimmten 
+           Kategorien hat, koennte man ermitteln lassen, welche Eintraege
+           insgesamt vorkommen, und wie oft.
+
+  Batch  : QUANT.BAT            fragt die variablen Dinge ab!
+           mit -Uc1nnn [-Uc2x] [-Uc3i]
+
+                   nnn=N1,N2,N3,N4          auszuwertende Kategorien
+                            x= ;  b          Trennzeichen (b for blank)
+                                    i=1,2       1=nur Teil 1, 2=alles
+
+  Variationen: mit ** sind Stellen markiert, wo man sinnvolle Varianten
+               programmieren kann.
+
+  Diese Parameterdatei produziert Datensaetze in dieser Form:
+
+  #u1 sortierbegriff (in Kleinbuchstaben und ohne Sonderzeichen)
+                     (dafuer wird s.apt benutzt!)
+
+  #u2 Originalform der Kategorieinhalte, die in #u1 vorliegen
+      Diese wird hinterher zum Drucken benutzt
+ 
+  2. Phase  : ASORT sortiert die Ergebnisdatei
+  3. Phae   : SRCH exportiert die sortierte Datei  mit COUNT2.APR
+              Dabei wird in jedem Fall A.CFG benutzt.
+
+  --------- Konstanten  ---------------------------------------------
+
+zl=0        Kein Zeilenumbruch
+   Codetabelle laden:
+   ** fuer Aenderungen an der Sortierung muss man S.APT und Q4.APT aendern
+tquant   lade QUANT.APT fuer die Sortiercodierung (= Kopie von S oder Q4)
+         (enthaelt q-Befehle, die dann auf  !u1 wirken
+         Zur Erinnerung: #xx wird von den p-Befehlen codiert
+                         !xx wird von den q-Befehlen codiert
+  i4=0      V14 Ersetzungen sollen stattfinden ; steht in QUANT.APT = Q4.APT
+  -------------------------------------------------------------------
+
+   Die Kopfbefehle beziehen sich nicht auf bestimmte Kategorien,
+   denn diese werden von aussen (per Option -Uc1 usw.) vorgegeben!
+   Bei Sprungmarke #-A sehen Sie, was damit gemacht wird.
+
+   ======== Kopfbefehle ==========================================
+
+ak=zz+A        Bei #-A wird #ua1 fabriziert aus #uc1, 
+               in #ua1 wird 'ı' als Trennzeichen benutzt
+               alle gewuenschten Kategorien stehen jetzt da drin!
+
+  Wenn kein #ua1 vorliegt, passiert weiter nichts:
+  
+ak=ua1"ı"+B    Alle Bestandteile von #ua1 auf gleiche Art verarbeiten
+    Sollen andere als die durch #uc1 vorgegebenen Kategorien ausgewertet
+    werden: Hier Befehle wie
+  ak=33.";"+B
+    einbauen, um z.B. alle #33er Kategorien auf gleiche Weise auszuwerten
+    (Die Vorgabe mit . ist per #uc1 nicht moeglich)
+
+   ===============================================================
+
+   ******** Kategorieliste ***************************************
+   
+#+-         #ua1 war leer, dann nichts ausgeben
+            (Wenn in #ua1 was steht kommt man hier nicht hin)
+
+
+  ** Wenn nur ein Teilfeld von #u1 verarbeitet werden soll,
+     dann geeignete Manipulation an #u1 vornehmen:
+
+  Hier wird der output produziert:
+  Fuer jeden Bestandteil erzeugen wir #u1 und #u2 :
+#-B
+#t{ 1 "u1 " }   Es wird Code <01h> und "u1 " an den Anfang gesetzt
+                dann ist es anschliessend per srch exportierbar.
+
+  Sortiermodus:
+#uc5 +1 c"1" e0
+#uc5 +2 c"2" e0
+#uc5 +8 c"8" e0
+#uc5 +9 c"9" e0            $$
+
+#-1
+!u1 e"" u u[] u__ y2 f" ." F".,-':/; "
+#+:                            #u1 enthaelt den zu zaehlenden Text **
+
+   Wenn z.B. nur ein Teil des Feldes auszuwerten ist, ergaenze man hier
+   noch geeignete Manipulationsbefehle, z.B.
+   (Dasselbe muss dann unten fuer #u2 passieren)
+
+   !u1 e"-" p{ 1 "u1 " }     #u1 bei '-' abschneiden, d.h. nur Teil vor '-'
+                             verwenden
+   !u1 x p{ 1 "u1 " }       Nur x verwenden
+
+#-2                  Pica-Namensumwandlung
+
+!u1 b"@"             Nachname
+!u1 e"@" p", "       Vorname
+#+:
+
+#-8       negative Zahlen muessen umgedreht werden:
+#u1 +* x"*1" e"." c"-" x"+999999999" e"." r9,0 p"-"       numerische Auswertung
+#u1 x"*1" e"." r9,0
+#-*
+#u1 x"*1" b"." p"."
+#+:
+
+#-9
+#u1 f" ." F".,-'; " y0    Modus 9 = "unveraendert ausgeben"
+
+#-:
+#nr p""    Satznr wg Eindeutigkeit anhaengen (Ausfilterung in COUNt2.APR)
+#t{ 0 }                      Feldende : Code 00h
+   
+#u1 e"" u[] u__ f" ." F".,-':;/ " p"u2 "
+                             Dasselbe Feld in druckbarer Form aufbereiten **
+                             und als #u2 ausgeben
+
+   Wird mehr als #u1 und #u2 gebraucht, hier ergaenzen.  **
+
+#t{ 0 C }                Satzende : Codes 0 13 10
+#+#                      C erzeugt 13 10, bei UNIX nur 10
+
+  ak=zz+A fuehrt hierher:
+  (Im folgenden Abschnitt wird nichts ausgegeben, sondern eine Variable
+   #ua1  erzeugt, die alle benoetigten Bestandteile enthaelt, in jedem
+   Fall getrennt durch das Zeichen 'ı' 
+   Danach wird mit  ak=ua1"ı"+A  die wirkliche Ausgabe veranlasst.
+
+#-A
+#uc3 +@ e0              #uc3 war von aussen gesetzt
+#nr p"2" e1 =c3         wenn nicht, auf 2 setzen als default
+#-@
+#dt dvs da1 e0      
+#uc1 dtt att            Kopiere #uc1 in #utt
+
+  Jetzt:  #utt nn1,nn2,nn3      die auszuwertenden Kategorien
+
+  Trennzeichen: #uc2  =   ; b - / . , ( * ' :   (eines davon)
+  welches ist es?
+#uc2 +K c"4" e0         4 Zeichen vom Anfang nehmen, sonst nichts
+#uc2 +M c"" e0          ist das Trennzeichen
+#uc2 +N c";" e0         ; ist das Trennzeichen
+#uc2 +N c"s" e0         ; ist das Trennzeichen (s als Ersatz bei XP!)
+#uc2 +O c"b" e0         blank ist Trennzeichen
+#uc2 +Y b"[=]" e0       = ist das Trennzeichen
+#uc2 +P c"-" e0         - ist das Trennzeichen
+#uc2 +Q c"/" e0         / ist das Trennzeichen
+#uc2 +R c"." e0         . ist das Trennzeichen
+#uc2 +S c"," e0         , ist das Trennzeichen
+#uc2 +T c"(" e0         ( ist das Trennzeichen
+#uc2 +U c"*" e0         * ist das Trennzeichen
+#uc2 +V c"'" e0         ' ist das Trennzeichen
+#uc2 +W c":" e0         : ist das Trennzeichen
+#uc2 +X c"" e0          ist das Trennzeichen
+#uc2 +X c"$" e0          ist das Trennzeichen ($ als Ersatz)
+
+  ** (hier evtl. noch andere Trennzeichen einbauen)  **
+#uc2 + c"|" e0         | ist das Trennzeichen (N.CFG !)
+
+  Default: keine Trennung (#uc2 nicht gesetzt oder anderes Zeichen)
+
+  Wir erzeugen #ua1 : Alle Komponenten werden hintereinander 
+                      gehaengt, getrennt durch 'ı'
+
+#-L
+#utt e"," f"ı" w P"ı" Aa1         Befehl w interpretiert den Arbeitstext
+                                  als Kategorienummer und macht dann diese
+                                  Kategorie zum Arbeitstext
+#utt +L b"," dtt att              naechste Kategorie
+#ua1 F"ı" =a1      
+#+-
+
+#-K    4 Zeichen
+#utt e"," f"ı" w e4 P"ı" Aa1        Befehl w sucht die Kategorie!
+#utt +K b"," dtt att             noch eine Kategorie? dann -> #-K
+#ua1 F"ı" =a1      
+
+#+-
+
+
+  Die folgenden Abschnitte sind bis auf das Trennzeichen identisch:
+  (die Stellen sind mit ^ markiert)
+  ** evtl. noch entsprechende weitere Abschnitte oder Aenderungen
+     an den Trennzeichen
+#-M
+#utt e"," f"ı" w P"ı" Avs        Befehl w sucht die Kategorie!
+#uc3 +m c"2" e0                  #uc3 = 2? -> #-m
+#uc3 +a c"3" e0                  #uc3 = 3? -> #-a
+#uvs e"" F" ı" P"ı" =vs         sonst Ende bei   (#uc3 = 1)
+#+m    ^
+#-a
+#uvs b"" F" ı" P"ı" =vs         Anfang bei 
+#-m    ^
+#utt +M b"," dtt att             noch eine Kategorie? dann -> #-M
+      ^
+#uvs F"ı" ,"__ı_" =a1           ersetze  durch #
+             ^
+#+-
+
+#-N
+#utt e"," f"ı" w P"ı" Avs      
+#uc3 +n c"2" e0      
+#uc3 +b c"3" e0
+#uvs e";" F" ı" P"ı" =vs
+#+n
+#-b
+#uvs b";" F" ı" P"ı" =vs
+#-n
+#utt +N b"," dtt att
+#uvs F"ı" ,"_;_ı_" =a1
+#+-
+
+#-O
+#utt e"," f"ı" w P"ı" Avs      
+#uc3 +o c"2" e0              
+#uc3 +c c"3" e0
+#uvs e" " F" ı" P"ı" =vs
+#+o
+#-c
+#uvs b" " F" ı" P"ı" =vs
+#-o
+#utt +O b"," dtt att       
+#uvs F"ı" p"))" ,"_ _ı_" f")" =a1         Sonderfall ' ' 
+#+-
+
+#-P
+#utt e"," f"ı" w P"ı" Avs      
+#uc3 +p c"2" e0             
+#uc3 +d c"3" e0
+#uvs e"-" F" ı" P"ı" =vs
+#+p
+#-d
+#uvs b"-" F" ı" P"ı" =vs
+#-p
+#utt +P b"," dtt att           
+#uvs F"ı" ,"_-_ı_" =a1         
+#+-
+
+#-Q
+#utt e"," f"ı" w P"ı" Avs      
+#uc3 +q c"2" e0             
+#uc3 +e c"3" e0
+#uvs e"/" F" ı" P"ı" =vs
+#+q
+#-e
+#uvs b"/" F" ı" P"ı" =vs
+#-q
+#utt +Q b"," dtt att           
+#uvs F"ı" ,"_/_ı_" =a1         
+#+-
+
+#-R
+#utt e"," f"ı" w P"ı" Avs      
+#uc3 +r c"2" e0
+#uc3 +f c"3" e0
+#uvs e"." F" ı" P"ı" =vs
+#+r
+#-f
+#uvs b"." F" ı" P"ı" =vs
+#-r
+#utt +R b"," dtt att           
+#uvs F"ı" ,"_._ı_" =a1         
+#+-
+
+#-S
+#utt e"," f"ı" w P"ı" Avs      
+#uc3 +s c"2" e0
+#uc3 +g c"3" e0
+#uvs e"," F" ı" P"ı" =vs
+#+s
+#-g
+#uvs b"," F" ı" P"ı" =vs
+#-s
+#utt +S b"," dtt att           
+#uvs F"ı" ,"_,_ı_" =a1         
+#+-
+
+#-T
+#utt e"," f"ı" w P"ı" Avs      
+#uc3 +t c"2" e0
+#uc3 +h c"3" e0
+#uvs e"(" F" ı" P"ı" =vs
+#+t
+#-h
+#uvs b"(" F" ı" P"ı" =vs
+#-t
+#utt +T b"," dtt att           
+#uvs F"ı" ,"_(_ı_" =a1         
+#+-
+
+#-U
+#utt e"," f"ı" w P"ı" Avs      
+#uc3 +u c"2" e0
+#uc3 +i c"3" e0
+#uvs e"*" F" ı" P"ı" =vs
+#+u
+#-i
+#uvs b"*" F" ı" P"ı" =vs
+#-u
+#utt +U b"," dtt att
+#uvs F"ı" ,"_*_ı_" =a1
+#+-
+
+#-V
+#utt e"," f"ı" w P"ı" Avs      
+#uc3 +v c"2" e0
+#uc3 +j c"3" e0
+#uvs e"'" F" ı" P"ı" =vs
+#+v
+#-j
+#uvs b"'" F" ı" P"ı" =vs
+#-v
+#utt +V b"," dtt att           
+#uvs F"ı" ,"_'_ı_" =a1         
+#+-
+
+#-W
+#utt e"," f"ı" w P"ı" Avs      
+#uc3 +w c"2" e0
+#uc3 +k c"3" e0
+#uvs e":" F" ı" P"ı" =vs
+#+w
+#-k
+#uvs b":" F" ı" P"ı" =vs
+#-w
+#utt +W b"," dtt att           
+#uvs F"ı" ,"_:_ı_" =a1         
+#+-
+
+#-X
+#utt e"," f"ı" w P"ı" Avs      
+#uc3 +x c"2" e0
+#uc3 +l c"3" e0
+#uvs e"" F" ı" P"ı" =vs
+#+x
+#-l
+#uvs b"" F" ı" P"ı" =vs
+#-x
+#utt +X b"," dtt att           
+#uvs F"ı" ,"__ı_" =a1         
+#+-
+
+#-Y
+#utt e"," f"ı" w P"ı" Avs      
+#uc3 +y c"2" e0
+#uc3 +Z c"3" e0
+#uvs e"[=]" F" ı" P"ı" =vs
+#+y
+
+#-Z
+#uvs b"[=]" F" ı" P"ı" =vs
+#-y
+#utt +Y b"," dtt att           
+#uvs F"ı" ,"_ =_ı_" =a1         
+#+-
+
+#-
+#utt e"," f"ı" w P"ı" Avs      
+#uc3 +„ c"2" e0             
+#uc3 + c"3" e0
+#uvs e"|" F" ı" P"ı" =vs
+#+„
+#-
+#uvs b"|" F" ı" P"ı" =vs
+#-„
+#utt + b"," dtt att           
+#uvs F"ı" ,"_|_ı_" =a1         
+#+-
+
+   ****************************************************************
+
+pn="C-FI : Feldinhalte auswerten" 
+

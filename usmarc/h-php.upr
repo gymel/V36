@@ -1,0 +1,332 @@
+  Sonder-Routinen fuer PHPac, Funktioniert fuer jede Konfiguration!!
+  H-PHP.APR  2001-10-24
+  KEIN ANPASSUNGSBEDARF
+
+pn="PHPAC extra functions"
+
+zl=0       Zeilenlaenge 
+
+zi=1        1 Leerzeichen Einrueckung
+fl=0        kein Kartendruck
+
+fm=0        Modus: keine Einzelausgabe fr die Untersaetze
+zm=0        kein Seitenumbruch
+zb=" "     moegliche Stellen fuer Zeilenbruch
+as=""
+ab=""
+ae=""
+ze="" 
+
+i4=1
+dx=1
+
+
+  p .31 47   Teilfeldzeichen -> /
+p .34 "&quot;"
+p / "&#x2f;"
+p .60 "&lt;"
+ p & "&amp;"
+
+p  255   neue Zeile bei Absatzzeichen. Ander Moeglichkeiten:
+ p  1     ausblenden, oder
+ p  182   normal anzeigen
+ 
+
+ab=""
+as=""
+ae=""
+
+   ------------- RuckZuck -----------------
+            4 Sprungbefehle. Muessen ganz oben stehen
+            Fuer die Sonderfunktionen
+     Im FLEX werden die Variablen #utZ etc. gesetzt, dann Download
+     hier ist der Sprungverteiler dafuer:
+#utY +~ e0         Text fuer input-Textfeld in HTML
+#utZ +' e0         Text fuer input-Zeile in HTML
+#uII +: e0 #zz 0
+#ukt +_ e0 #zz 0
+#utX +A e0
+#+#
+
+#-A
+#utX e""
+#utX dtX e0
+
+#+#
+
+#-'   Text fuer input-Zeile in HTML ausgeben (aus EDREC.PHP)
+       #utZ enthaelt eine Kategorienummer. 
+         Ausgegeben wird dann der Inhalt der betr. Kategorie.
+         z.B.  #utZ 20  -->  #20 wird ausgegeben
+#bze=" "
+#bp .170 "Â¬"    Nichtsortierzeichen
+#bp .31 "â–¼"   .226 150 188     Teifeld-Dreieck
+#utZ w 
+   #t{ '">' }     als Abschluss
+#utZ dtZ e0   variable wieder loeschen
+#+#
+
+#-~   Text fuer Textfeld in HTML ausgeben
+       #utY enthaelt eine Kategorienummer. 
+         Ausgegeben wird dann der Inhalt der betr. Kategorie.
+         z.B.  #utY 98  -->  #98 wird ausgegeben
+#bze=" "
+ #bzl=60
+#bp .170 "Â¬"    Nichtsortierzeichen
+
+#utY e"[[]" e" " P" " w 
+   #t{ '">' }     als Abschluss
+#utY dtY e0   variable wieder loeschen
+#+#
+
+
+  Sonderabschnitt fuer RuckZuck-Funktionen (Aenderung nur durch Experten)
+  ----------------------------------------
+
+    Anzeige eines Registerabschnitts (aus PAGE.FLX)
+    Die Zeilen stehen alle in #uII, getrennt durch 
+#-:
+#bze=""
+#t{ #0 }
+    Zuerst die Links fuer das Blaettern
+#t{ '<b><i><a' C ' href="page.php?urG=' }
+#urG y0 e" "
+   Flag fuer Rueckwaerts
+#urA +#uII f"-" p'&urA=-'
+#t{ "&urA=-18" }
+
+  #uwD y0 e" " p"&uwD=" 
+
+#uII y0 b"" e"" e" ->" f" " f"0123456789" p"XXX" ,"_+_%2B_" ,"_ _+_" ,"_<_&lt;_" f"X" b1 p"&urS=_"
+#t{ '">' C 'Eine Seite zur&uuml;ck</a>' 13 10 }
+
+#t{ ' / <a' C ' href="page.php?urG=' }
+#urG y0 e" "
+
+#urA +#uII f"-" p'&urA='
+#t{ "&urA=18" }
+
+  #uwD p"&uwD="
+
+#uII y0 t"" T"" b1 e" ->" f" " f"0123456789" p"XXX" ,"_+_%2B_" ,"_ _+_" f"X" b1 p"&urS=_"
+#t{ '">' C 'Eine Seite weiter</a></b></i><br>' #5 "<br>" C }
+
+  Letzte Eintragung in #uII beginnt hinter dem letzten 
+
+  Jetzt die Registerzeilen
+
+#t{ '<font face="Courier New">' #0 C 13 10 }
+#uII +™ c"" e0
+#+-
+
+#-™
+   Einleitung des Hyperlink
+#t{ '     <a href="' }
+
+   Ist es eine Verweiszeile?
+#uII +“ e"" c" ->" y0 b" ->" p'page.php?urA=18!' e"!"
+  Nur 1 Treffer? Dann Satz einlesen in extra Fenster
+#uII +r x"==1" p"javascript:grec('urG=!" e"!"
+#t{ 'find.php?urG=' }
+  in #urG steht Name des Registers, z.B. "per"
+#urG y0
+#t{ "&urS=_" C }   weil sonst unerwuenschter Umbruch im HTML-Quelltext
+#+s
+
+#-r
+#urG y0
+
+#t{ "&urS=_" C }   weil sonst u.U. unerwuenschter Umbruch im HTML-Quelltext
+
+    Ersetze Leerzeichen durch ! (um Mehrfach-Leerzeichen zu erlauben)
+#-s
+!uII e"" f" " f"0123456789" p"XXX" ,"_+_%2B_" ,"_ _!_" ,"_<_&lt;_" f"X" b1 F" #'"
+ #uII e"" 
+
+
+#uII +I x"==1" e0
+#t{ "" } 
+#+J
+#-I
+#t{ '' 39 ')' }
+#-J
+#t{ '"' C ">" }
+   // der sichtbare Teil des Hyperlink:
+#uII e"" f" " f"0123456789" ,"_<_&lt;_" p"XXX" ,"_ _ _" f"X" b1
+
+#t{ "</a>" }
+#uII e5 f" " e" " x">1" p"  (" P")"
+#t{ " <br>" 13 10 }
+#uII +™ F"" b"" =II
+#t{ "</font>" }
+
+   Behandlung der Verweiszeilen
+#+#
+#uIi e0
+#-“
+   kommt -> |i vor?
+#uII +#uII e"" b"->" b"|" e1 "&urG=|"    wenn | vorkommt
+#uxb F" " y0 p"&urG=|"     wenn nicht, dann selbes Register (in #uxb)
+#uII +J e"" b" ->" f" " B"|?" y0 f" " p"&urS=_"
+#+#
+
+  Eine Kurzzeile vorbereiten (steht in #ukt)
+  Wird nicht gebraucht, wenn  p-brief.xpr  eingesetzt wird!
+#-_
+#ukt e0
+#hi +- e0
+   < durch &lt; ersetzen
+#ukt ,"_<_&lt;_" =kt
+#+#
+  ----------- Ende RuckZuck ---------------
+
+ td-utf8
+q # "%23" 
+q < "%3C" 
+
+q .017 32
+q .235 32
+
+q .014 130
+q .015 131
+q .016 187    Pfeil nach rechts   >>
+q .018 137    o mit Doppelakut
+q .019 134    u ...
+q .020 182    Absatzzeichen
+q .021 167    Paragraph
+q .022 135    u mit ogonek
+q .023 133    g mit breve
+q .024 189    Pfeil nach oben 
+q .025 139      nach unten
+q .028 159    Verweisungsstrich (obsolet)
+q .030 165    Dreieck 
+q .031 178    Subfield Code
+q .127 202   e mit hacek
+q .128 199   C mit cedille
+q .129 "%fc"   ue
+q .130 233  'e
+q .131 226  ^a
+q .132 "%e4"   ae
+q .133 224  `a
+q .134 229   a mit Ringel
+q .135 231   c mit cedille
+q .136 234  ^e
+q .137 235   e mit Trema
+q .138 232  `e
+q .139 239   i mit Trema
+q .140 238  ^i
+q .141 236  `i
+q .142 "%c4"   Ae
+q .143 197   A mit Ringel
+q .144 201  'E
+q .145 230   ae Ligatur
+q .146 198   AE Ligatur
+q .147 244   ^o
+q .148 "%f6"   oe
+q .149 242  `o
+q .150 251  ^u
+q .151 249  `u
+q .152 .255     y mit trema
+q .153 "%d6"   Oe
+q .154 "%dc"   Ue
+q .155 162  't
+q .156 163   Brit. Pfund
+q .157 204   s mit Cedille
+q .158 195   u mit Ringel
+q .159 221   U mit Ringel
+q .160 225  'a
+q .161 237  'i
+q .162 243  'o 
+q .163 250  'u
+q .164 241  ~n
+q .165 209  ~N
+q .166 208   C mit hacek
+q .167 240   c mit hacek
+q .168 194   r mit hacek
+q .169 219   R mit hacek
+q .170 172   Nichtsortierzeichen
+q .171 189   S mit hacek
+q .172 188   s mit hacek
+q .173 253  'y
+q .174 216   Z mit hacek
+q .175 190   z mit hacek
+q .176 185   tuerk. i 
+q .177 222   grosses Thorn
+q .178 254   kleines Thorn
+q .179 132   grafik
+q .180 .20
+q .181 180   ' akut
+q .182 146   ` gravis
+q .183 094   ^ circumflex (als Diakritikum)
+q .184 250   Punkt uebergesetzt
+q .185 .20
+q .186 131   grafik
+q .187 144
+q .188 .20
+q .189 168   Trema
+q .190 178   Halbkreis ueberg.
+q .191 141 
+q .192 135   grafik
+q .193 136  
+q .194 137  
+q .195 138  
+q .196 139  
+q .197 140  
+q .198 227   Doppelakut
+q .199 179   Hacek
+q .200 .20
+q .201 134   grafik
+q .202 142
+q .203 143
+q .204 .20
+q .205 .20
+q .206 .20 
+q .207 176   Ringel
+q .208 175   Ueberstrich
+q .209 215   Halbkreis untergesetzt
+q .210 171   umgek. cedille
+q .211 184   Cedille
+q .212 191   untergesetzter Punkt
+q .213 145   Ain
+q .214 169   Copyright 
+q .215 174   R in Kreis
+q .216 164   Waehr.Symb.
+q .217 133   grafik
+q .218 130   grafik  
+q .219 161   diakrit 
+q .220 129   Pfeil nach rechts
+q .221 128   += 
+q .222 173   diskr. Mittelstrich
+q .223 247   diakr. Unterstrich
+q .224 152   "[alpha]"
+q .225 223   scharfes s
+q .226 153   "[Gamma]"
+q .227 154   "pi"
+o .228 188   a mit breve  
+q .229 156   "[sigma]"
+q .230 157   "[mue]"
+q .231 158   "[tau]"
+q .232 159   diakr. Tilde
+q .233 157   I mit Punkt
+q .234 144   t mit ogonek
+q .235 147   "[delta]"
+q .236 148   "[unendlich]"
+q .237 248   daenisches oe
+q .238 170   a mit ogonek
+q .239 200   e mit ogonek
+q .240 206   'C
+q .241 205   'c
+q .242 217   /L
+q .243 218   /l
+q .244 213   'N
+q .245 245   'n
+q .246 211   'O
+q .247 192   'S
+q .248 186    Gradzeichen
+q .249 193   's
+q .250 183   Punkt in der Mitte
+q .251 212  'Z
+q .252 210  'z
+q .253 203   Z mit Punkt
+q .254 207   z mit Punkt
+

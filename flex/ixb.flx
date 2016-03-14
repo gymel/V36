@@ -1,0 +1,27 @@
+  IXB.FLX : Lese IXA.IXA und speise die Zeilen in den Index ein
+  20071212
+
+  Datei liegt auf DbDir
+var D "ixa.ixa"
+open
+  nicht vorhanden - Ende
+if no end
+var "Extra-Einträge aus Datei ixa.ixa werden wieder eingemischt, bitte warten"
+sho iv
+
+  Zeilenweise verarbeiten
+:loop3
+get
+if cancel jump ende
+  Nur Zeilen, die mit ixdel oder ixadd beginnen
+if "ixdel" var (b" ");ixdel;jump loop3
+if "ixadd" var (b" ");ixadd
+jump loop3
+
+:ende
+close
+var "Die Extra-Einträge sind verarbeitet"
+sho iV
+mes
+end
+

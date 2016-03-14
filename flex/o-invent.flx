@@ -1,0 +1,359 @@
+  O-INVENT.FLX : Bestellsatz inventarisieren (ORDA)
+  2000-01-10/2008-02-20
+  Aktueller Satz muss ein Bestellsatz sein, d.h. #9DB muss besetzt sin:
+  Nummernvergabe ab V28.2 per FLEX, s. order.inc
+
+if #9DB jump inv
+disp
+message Das geht nur bei einem Bestellsatz! Dieser Satz ist kein solcher.
+end
+
+:inv
+  Satznr d. BestellSatzes sichern (f. Abschluss)
+var i
+ins #uoi
+  ist Inventar.Datum schon vorhanden? dann -> :fehler
+if #9DA$I jump fehler
+  nein, dann Datum 8stellig in die interne Var.
+date 8
+  Nach #9DA$I (Inv.Datum) und #9DB$e (Eing.datum)
+ins $I-#9DA
+ins $e-#9DB
+
+  Preis in $p in EUR umrechnen und in #9DB$q kopieren
+    Waehrungscode steht in $c
+    (Abschnitt #-D in d-wrtf.apr abarbeiten)
+depo D
+  Inhalt von #9DB + $q steht jetzt in #ubs
+var #ubs
+if not "" ins #9DB
+  Formular "[Inventarisierung]" aktivieren:
+:invent
+form Inventar
+var #9DB$e
+if not %.% jump schr
+var #9DB$e(b"." b".") #9DB$e(b"." e"." 0,r2) #9DB$e(e"." 0,r2)
+ins _ _0_
+ins $e-#9DB
+:schr
+
+ if canc end
+  Status (erstes Zeichen von #9DB):  6 einsetzen
+$$-#9DB6
+
+var #9DB$q
+Z=
+var Z2
+ins $q-#9DB
+
+if not #9DB$Q jump speich
+  In $Q steht der Preis in DM, umrechnen:
+var #9DB$Q
+Z =
+Z / 1.95883
+var Z2
+ins $q-#9DB
+  und $Q loeschen
+$Q-#9DB
+
+:speich
+    Hier fehlte " EUR":  (4.7.01)
+var #9DB$q(e"E") " EUR"
+ins $q-#9DB
+sho rec
+dis
+  Bestellsatz speichern (Dabei wird $z in #9DB erzeugt, s. cat.api,
+                         Abschnitt #9De im PV-Bereich)
+yesno Bestellsatz speichern? (Nein: noch korrigieren, Abbruch: nichts machen)
+if no jump invent
+if cancel jump cancel
+
+  Wenn Zustimmung, dann ZugNr vergeben
+var $Zgen
+if "" var "ZSTD"
+ins #uoz
+set tbl loc
+  UP zur Nummernvergabe
+perf nextnum
+if "-1" jump gEXIT
+  geklappt, dann ist die ZugNr in #uoY
+var #uoY
+ins $z-#9DB
+ins $Zugnr
+var i
+ins $zi
+
+  ZugNr sofort indexieren, damit keine Doppelvergabe
+set obj 2
+new 0
+var #uoY
+
+  Hier aendern, wenn nicht #91 bzw., wenn nicht |9Z als Praefix!
+ins #91
+  ZugNr ist der dritte Schl., z.B. |92009-nnnnnn
+var sK (b"==|9Z" e"==")
+ins $zj
+  ins Register einordnen
+var $zi " |9Z" $zj
+ins $zk
+ixadd
+  und den Neusatz wieder weg
+erase
+  zur. z. Obj.1
+set obj 1
+
+put free
+
+  ZugNr aus $z nach #uzg kopieren
+var #9DB$z
+ins #uzg
+  BestellNr nach #uzb
+var #9DA$$
+ins #uzb
+   Find-Befehl fuer Titelsatz basteln:
+var "|9 " #9DA$T
+   Titelsatz holen
+find
+
+  Signaturvergabe (2005)
+    Code des Signaturgenerators steht in $Sgen
+  *** Diesen Abschnitt raus, wenn nicht gewuenscht ***
+var $Sgen
+if "" var "SSTD"
+ins #uoz
+set tbl loc
+perf nextnum
+if "-1" jump gEXIT
+  geklappt, dann ist die signatur in #uoY
+var #uoY
+ins #90~
+ins $Signa
+  ** bis hierhin ***
+put free
+
+  Wenn Zg.Nr. auch im Titelsatz sein soll, folgende Zeilen aktivieren:
+   #uzg in #91 kopieren
+ var #uzg
+ ins #91
+ sho rec
+ dis
+   Titelsatz wieder speichern (mit Frage)
+ var "Titelsatz mit Zug.Nummer ebenfalls wieder speichern?"
+ yesno
+ if yes put
+
+var #00
+ins #uNN
+
+  Exemplarsatz erstellen
+new
+#00 -
+var #uNN
+ins #9DF
+  evtl. aendern: Status 0 = verfuegbar, g = Geschaeftsgang
+#9DGg
+var $Signa
+ins $s-#9DG
+var "1"
+ins $e-#9DG
+  ZgNr
+var #uzg
+ins $z-#9DG
+  BestNr
+var #uzb
+ins $B-#9DF
+var #dts(0,8)
+ins $d-#9DG
+sho rec
+dis
+var "Es wurde ein Exemplarsatz erstellt. Dieser kann noch bearbeitet werden."
+  yesno
+  if not yes erase;jump abschluss
+sho iv
+  Dies wird auch als UP benutzt, daher die returns
+:formex
+form Exemp
+  if cancel end
+if not #9DG$a return;jump exspeich
+
+  Pruefen, ob Barcode schon existiert (1 Zeile aus Reg. 10 holen)
+var "1 |: E" #9DG$a
+qri 
+var (B"E")
+ins #uOE
+
+var #9DG$a
+if not =#uOE return;jump exspeich
+
+var "Den Barcode " #9DG$a " gibt es schon!"
+mes
+jump formex
+return
+
+:exspeich
+put
+:exemp
+yes Noch ein Exemplarsatz?
+if not yes jump abschluss
+copy
+#00 -
+var #9DG$e
+z=
+z+1
+var z
+ins $e-#9DG
+perf formex
+  form Exemp
+Put
+jump exemp
+
+
+:abschluss
+  Fragen, ob endgueltiger Abschluss gewuenscht
+  Aber erst die ZugNr des Expl.Satzes wieder wegnehmen
+var $zk
+ixdel
+
+var "Bestellung ganz abschließen?"
+  dann Status 7
+yesno
+if not yes end
+var "#" #uoi
+find
+disp
+sho rec
+$$-#9DB7
+var #dts
+var (0,8)
+ins $A-#9DA
+  Formular [Abschluss]
+form Absch
+if no addform ord.frm;form Absch
+if no mes Formular [Abschl.] nicht vorhanden!;jump schreib
+  RechnBetrag: Komma->Punkt, .00
+eval #9DB$i
+Z=
+var Z2
+
+ins $i-#9DB
+  Anweis.Datum in korrekte Form bringen
+var #9DB$R
+if not %.% jump schreib
+var #9DB$R(b"." b".") #9DB$R(b"." e"." 0,r2) #9DB$R(e"." 0,r2)
+ins _ _0_
+
+ins $R-#9DB
+
+:schreib
+put
+disp
+sho rec
+end
+
+
+:fehler
+message Ist schon inventarisiert!
+end
+:cancel
+undo
+end
+
+  ********************** Beginn UP Nummernvergabe
+:nextnum
+set obj 2
+  Steht eine Vorgabe in  #uoR ? Dann keinen Systemsatz suchen
+if #uoR jump nUMVER
+var #uoz
+  derselbe Code wie beim letzten Mal? Dann muss er nicht geladen werden
+if =#uoX jump nUMVER
+  Finde den NummerngeneratorSatz im Reg. 11
+var "|; SYS" #uoz
+f1nd
+if no jump gEXIT
+
+if not #9A jump gEXIT
+var #9A
+if not "Z" if not "B" if not "S" jump gEXIT
+var #9A
+
+if #9A$R if #9A$P jump iNX
+jump gERR
+
+:iNX
+  Inhalt von #9A nach #uoX fuers naechste Mal
+ins #uoX
+
+  Eigentliche Nummernvergabe
+:nUMVER
+if not #uoR var "-2 " #uoX$R " " #uoX$P "999999999999A"
+if #uoR var "-2 " #uoR " " #uoP "999999999999A"
+
+  2 Zeilen holen, wo die hoechste Nummer stehen muesste
+qrix
+
+  gefundene Zeile bearbeiten
+var (f" " b" " e"")
+  und die Zeile mit der letzten Nr in #uzn sichern
+
+ins #uzn
+  jetzt hat man die Registereintragung ermittelt
+  nun noch die Zahl herausloesen,
+  sie steht hinter dem Praefix #uoP bzw. #uoY:
+if #uoR var #uzn(b"#uoP");jump aDD
+  Praefix fuers Datenfeld, falls gesetzt
+var #uoX$F
+ins #uoF
+
+var #uoX$P
+ins #uoY
+if not #uoR var #uzn(b"#uoY")
+
+:aDD
+  in iV steht jetzt die Nr., also 1 draufaddieren:
+z=
+  (wenn im Index noch keine Zeile mit dem Praefix existiert, ergibt sich z=1)
+z+1
+var #uoF z
+  # ist Platzhalter fuer Blank, ersetzen:
+ins _#_ _
+ins #uoY
+set obj 1
+  #uoY  enthaelt die naechste Nummer, davor #uoX$F
+return    // end UP nextnum
+end
+
+:gERR
+var "Es fehlt ein Teilfeld in " #9A n
+var +"$R und $P  muessen vorkommen"
+ansi
+mes
+var "-1"
+ins #uoY
+return
+end
+
+:gEXIT
+var "Nummerngenerator " #uoz " nicht gefunden
+mes
+var "-1"
+ins #uoY
+seet tbl free
+return
+end
+  ******************  ENDE UP
+
+
+ u-VARIABLEN in o-invent.flx
+ #uNN (2)  #00 des Titelsatzes
+ #ubs (1)  #9DB mit $q (erzeugt in d-wrtf.apr, #-D)
+ #uoF (2)  Praefix d. zu verg. Nummer im Datenfeld
+ #uoP (1)  Praefix d. Nummer im Index
+ #uoR (6)  symb. Name des Nummernregisters
+ #uoX (6)  Inhalt von #9A
+ #uoY (5)  die neu vergebene Signatur
+ #uoi (2)  int Nummer d. aktuellen Satzes gesichert
+ #uoz (4)  Nummerngenerator-Daten
+ #uzb (2)  #9DA$$. Bestellnummer d. aktuellen Bestellung
+ #uzg (2)  Zugangsnummer
+ #uzn (3)  Indexzeile mit der letzten vergebenen Nummer
+

@@ -1,0 +1,170 @@
+  DOLLAR.FLX  Umrechnung Euro <-> US-DOLLAR
+  2000-11-27/2001-01-23   Hierzu gehoert  DOLLAR.RTF
+  Start mit  X dollar  (am Ende: Liste der Variablen)
+
+   Wenn #uxV besetzt, soll neuer Kurs eingegeben werden
+   (Setzung in DOLLAR.RTF, wenn `Kurs aendern` geklickt wird)
+if #uxV jump kurs
+
+   Wenn vorher schon mal aufgerufen, ist #uxK besetzt
+if #uxK jump start
+   sonst Variablen vorbesetzen:
+     #uxK = Kurs,
+     #uxT = Datum/Uhrzeit der letzten Setzung
+var "0.8929"
+ins #uxK
+var "20150519/11:21:33"
+ins #uxT
+Z = 1
+
+var #uxK
+Z /
+var Z4
+ins #uxL
+if #uxB jump rr
+var "1"
+ins #uxB
+:rr
+perf rech
+help dollar
+end
+
+:kurs
+  Aktuellen Kurs ueber einen WebService beziehen:
+get Ihttp://www.webservicex.net/CurrencyConvertor.asmx/ConversionRate?FromCurrency=EUR&ToCurrency=USD
+
+  Die Zahl herausklauben, steht in <double>
+
+var (x"double")
+
+ins #uxK
+  Kehrwert ausrechnen, auf 4 Stellen runden
+eval 1 /#uxK
+Z=
+var Z4
+ins #uxK
+  Aktuellen Kurs erfragen
+ask Wieviel EUR ist ein Dollar?=#uxK
+if "" jump loev
+  und in #uxK speichern
+ins #uxK
+ins #uxM
+:loev
+  Flag #uxV wieder loeschen
+var ""
+ins #uxV
+  Unterprog.: Datei dollar.flx erneuern mit neuem Kurs
+perf new
+  Text anzeigen
+
+help dollar
+end
+
+:start
+   Nutzer soll einen Betrag eingeben
+ask Betrag (Komma oder Punkt möglich)=#uxB
+if no end
+if canc end
+  eingegebene Zahl -> #uxB  zwischenspeichern
+ins #uxB
+perf rech
+  DOLLAR.RTF wieder anzeigen (Werte #uxM, #uxU sind da eingebettet)
+help dollar
+  Schleife
+jump start
+
+  Unterprog. Werte ausrechnen
+:rech
+  den eingegebenen Betrag nehmen
+var #uxB
+  und in die interne Zahl (iZ) kopieren
+Z =
+  Umrechnungsfaktor nach iV kopieren
+var #uxK
+  jetzt teilen: iZ / iV  EUR->Dollar
+Z /
+  Ergebnis steht wieder in iZ, kopiere nach iV, Rundung 2 Stellen
+var Z2
+  und dann nach #uxU (fuer die Anzeige in dollar.rtf)
+ins #uxU
+
+  Jetzt umgekehrt: zwischengespeicherten Betrag zurueckholen und wieder nach iZ
+var #uxB
+Z =
+  das ist der Faktor Dollar->EUR
+var #uxK
+  malnehmen mit iZ
+Z *
+  iZ -> iV, dabei runden
+var Z2
+  und in #uxM speichern (gleichfalls fuer dollar.rtf)
+ins #uxM
+  Unterprog Ende
+return
+
+  Unterprogramm: Datei dollar.flx erneuern (d.h. diese Datei!)
+  mit dem neuen Kurs und dem aktuellen Datum/Uhrzeit.
+  Dabei wird die Datei eingelesen und wieder geschrieben, nur die
+  Kurszahl (#uxK) und Datum (#uxT) werden geaendert
+  So werden Kurs und Datum permanent gemacht!
+:new
+  Datei ddddd.flx zum Schreiben oeffnen
+var P "flex\\ddddd.flx"
+open x
+  nicht gelungen - kein Schreibrecht
+if no return
+  Datei dollar.flx oeffnen
+var P "flex\\dollar.flx"
+open
+  Alles einlesen bis zum Code 34 = "
+fetch ^34
+  und sofort wieder in die neue Datei schreiben
+write ^
+  Dann die Kurszahl schreiben und " dahinter
+write #uxK 34
+  alles bis zum Code 34 einlesen (das ist die alte Kurszahl)
+fetch ^34
+  und bis zum naechsten, da beginnt das Datum
+fetch ^34
+  diesen Teil wieder schreiben
+write ^
+  Datum in der Form YYYYMMDD/hh:mm:ss
+var #dts
+  in #uxT kopieren
+ins #uxT
+  und in die Datei schreiben, " dahinter
+write #dts 34
+  Rest des alten Datums einlesen (und ignorieren)
+fetch ^34
+  jetzt 4000 Bytes holen (Rest der Datei! sie ist kleiner)
+fetch 4000
+  und sofort wieder wegschreiben
+write ^
+  und Dateien schliessen
+close x
+close
+  alte Datei loeschen
+var P "flex\\dollar.flx"
+del
+  neue Datei umbenennen in dollar.flx
+var P "flex\\ddddd.flx " P "flex\\dollar.flx"
+rename
+  Jetzt noch #uxL mit dem umgekehrten Kurswert belegen
+  d.h. dem Wert  1/#uxK, auf 4 Stelleng gerundet
+Z = 1
+
+var #uxK
+Z /
+var Z4
+ins #uxL
+  Unterprogramm Ende
+return
+
+  verwendete Variablen:
+  #uxK  Faktor $   -> EUR
+  #uxL         EUR -> $
+  #uxT  Datum/Zeit der letzten Aenderung
+  #uxB  eingegebener Betrag
+  #uxM  Gegenwert in EUR, wenn es $ waere
+  #uxU  Gegenwert in $, wenn es EUR waere
+  #uxV  Flag (gesetzt in dollar.rtf), dass Kurs geaendert werden soll

@@ -1,0 +1,279 @@
+  A-INIT.FLX : aLF-Vorbereitungen: Kalender laden, Flip-Buttons setzen
+  2004-09-09    Wird von a-chkout.flx und a-chkin.flx gerufen, wenn
+                Initialisierung noch nicht erfolgt ist.
+                Kann mehrfach ausgefuehrt werden.
+
+if not #ua? jump start
+noyes aLF ist bereits initialisiert. Nochmal?
+if not yes help alf;end
+
+:start
+  Nummer d. aktuellen Satzes sichern
+var i
+ins #uaI
+
+var m
+ins #uzp   // Flag: a99 oder alc
+
+  Anzeigeparameter laden - bei Bedarf aktivieren
+ var a
+ if not "d-wrtf" disp p d-wrtf
+
+  Aktivieren, wenn Quittungen gewuenscht:
+  #uqQ 1
+
+   Lokalspezifische Einstellungen
+   -----------------------------------------------------------
+include alf.inc
+  Spezielle Formulare laden, falls noch nicht da
+if not #ua? addform alf.frm
+
+   Statistikordner anlegen, wenn noch nicht da
+var $Astd
+mkdir
+
+  // Name der Statistikdatei (Protokolldatei):
+var $Astd #dts(0,8) #dts(9,2) #dts(12,2) #op ".stk"
+  // diese Zeile aktivieren, sonst wird keine Statistik angelegt:
+ins $Astk
+  -----------------------------------------------------------
+
+  Medientypsaetze laden und alle in $Amtyp speichern,
+  mit /// als Trenner
+find |; SYSD?
+if l1 jump noty
+first
+var ""
+$Amtyp
+:tyl
+var $Amtyp n "///" #9A
+ins $Amtyp
+
+next
+if yes jump tyl
+  alle verarbeitet, Erg.Menge beseitigen
+close res
+
+:lk
+find |; SYSC?
+if l1 jump nocl
+first
+var ""
+$Aclas
+  Leserklassensaetze laden und alle in $Aclas speichern
+  mit /// als Trenner
+:cll
+var $Aclas n "///" #9A
+ins $Aclas
+next
+if yes jump cll
+  alle verarbeitet, Erg.Menge beseitigen
+close res
+
+  Medientypstammsaetze laden und alle in $Amtyp speichern
+  mit /// als Trenner  (wird nur fuer Statistik gebraucht)
+  die Codes zusaetzlich in $Amcod
+find |; SYSE?
+if l1 jump nots
+first
+var ""
+ins $Amtsz
+ins $Amcod
+:tsz
+var $Amtsz n "///" #9A
+ins $Amtsz
+var $Amcod n "///" #9A$C "=" #9A(1,1)
+ins $Amcod
+next
+if yes jump tsz
+  alle verarbeitet, Erg.Menge beseitigen
+close res
+
+:ks
+  Kalendersaetze laden, zuerst Bereich ruecksetzen
+var ""
+kal
+var #dts
+var (0,4)
+z=
+z-1
+var z
+  voriges Jahr -> #ua?
+ins #ua?
+ins #uaJ
+  Kal.Satz holen
+var "|; SYSR" #ua? "?"
+f1nd
+var #9A
+if not ="R" jump kerr
+  #9A beginnt mit R0i, ueberspringen
+var #9A(6,0)
+  Die Zeichenfolge verarbeiten (Nullen und Einsen)
+  Der Befehl  kal  speichert nur die Ziffern in einem internes Feld,
+  das speziell fuer diesen Zweck existiert. Der Befehl Wday nutzt dies.
+kal
+  #ua? eins hochsetzen: dieses Jahr
+var #ua?
+z=
+z+1
+var z
+ins #uaJ
+var #ua? "/" #uaJ
+ins #ua?
+  und Kalendersatz suchen
+var "|; SYSR" #uaJ "?"
+f1nd
+var #9A
+if not ="R" jump kerr
+var #9A(6,0)
+kal
+
+  Hier sind momentan 4 folgende Jahre beruecksichtigt.
+  Bei Bedarf erweitern, aber es muss dann auch die entsprechenden
+  Kalendersaetze geben!
+
+  #ua? eins hochsetzen: folgendes Jahr
+z+1
+var z
+ins #uaJ
+var #ua? "/" #uaJ
+ins #ua?
+  und Kalendersatz suchen
+var "|; SYSR" #uaJ "?"
+f1nd
+var #9A
+if not ="R" jump kerr
+var #9A(6,0)
+kal
+
+  #ua? eins hochsetzen: folgendes Jahr
+z+1
+var z
+ins #uaJ
+var #ua? "/" #uaJ
+ins #ua?
+  und Kalendersatz suchen
+var "|; SYSR" #uaJ "?"
+f1nd
+var #9A
+if not ="R" jump flip
+var #9A(6,0)
+kal
+
+  #ua? eins hochsetzen: folgendes Jahr
+z+1
+var z
+ins #uaJ
+var #ua? "/" #uaJ
+ins #ua?
+  und Kalendersatz suchen
+var "|; SYSR" #uaJ "?"
+f1nd
+var #9A
+if not ="R" jump flip
+var #9A(6,0)
+kal
+
+  #ua? eins hochsetzen: folgendes Jahr
+z+1
+var z
+ins #uaJ
+var #ua? "/" #uaJ
+ins #ua?
+  und Kalendersatz suchen
+var "|; SYSR" #uaJ "?"
+f1nd
+var #9A
+if not ="R" jump flip
+var #9A(6,0)
+kal
+
+
+:flip
+  Flip-Buttons vorbereiten
+flip 1&1: Ausleihe=X alf
+flip 2&2: a-Menü=x sho rec\\help alf
+flip 3&3: a-Funktion=X a-func
+flip 4&4: Bearb.=X cfga
+flip 8&8: Speich.=X cfgb
+flip 6&6: Rückbchg.=X a-chkin
+jump ret
+:kerr
+var "Kalendersatz " #uaJ " fehlt!"
+mes
+#ua?
+  Aktuellen Satz restaurieren
+:ret
+var "#" #uaI
+find
+  HilfsVariablen weg
+#uaJ
+#uaI
+
+  Ist Flag #uaC gesetzt? nein = nur init
+if not #uaC jump asta
+var #uaC
+  besagt, woher der Aufruf kam
+if "0" jump alf
+
+if "1" exec a-chkout
+
+if "2" exec a-chkin
+
+:asta
+
+var m
+if "alc" end
+var "Beachten Sie die Buttons 1-4 und 8" n "Darauf liegen wichtige Funktionen"
+mes
+
+help alf
+end
+
+:alf
+#uaC1
+help alf
+exec alf
+
+:noty
+var "Es sind noch keine Medientypdaten vorhanden" n "Die Datenbank ist wohl noch nicht auf Ausleihe vorbereitet"
+sho iV
+  Wenn keine Medientypsaetze vorh., treten die defaults in Kraft
+jump lk
+
+:nots
+var "Es sind noch keine Medientyp-Stammdaten vorhanden" n "Die Datenbank ist wohl noch nicht auf Ausleihe vorbereitet"
+sho iV
+jump ks
+
+:nocl
+var "Es sind noch keine Leserklassen vorhanden" n "Die Datenbank ist wohl noch nicht auf Ausleihe vorbereitet"
+sho iV
+  Wenn keine Leserklassen vorh., treten die defaults in Kraft
+jump ks
+
+
+ u-VARIABLEN in a-init.flx
+
+ #uaC  0/1/2  Flag
+ #ua?  Welche Kalender geladen, z.B. 2006/2007/2008
+
+ #uaI (3)  Nr. d. aktuellen Satzes
+ #uaJ (9)  Jahreszahl
+ #uzp (1)  "a99" oder "alc"
+
+ $-Variablen:
+
+ $Aintv  Intervall f. Verzugsgebuehr
+ $Aklnz  Kulanz  Tage
+ $Avgeb  Verzugsgebuehr  EUR pro Intervall
+ $Astd   Verzeichnis f. Statistikdaten
+ $Astk   Name der Statistikdatei f.d. aktuelle Sitzung
+
+ Einige Stammsaetze, /// als Trenner
+ $Amtyp  Medientypsaetze
+ $Aclas  Leserklassensaetze
+ $Amtsz  Medientypstammsaetze
+ $Amcod  Codes der Medientypen
+
+

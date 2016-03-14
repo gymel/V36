@@ -1,0 +1,180 @@
+  ONFNDA99.FLX : Schnelle Suche - SuchFLEX fuer a99/acarta mit ALL-Register
+  2010-07-27/2011-02-30
+   nach einem Entwurf von R. Huebner 2010-04-27
+
+:start
+
+   3 Zeilen fuer Such-Abfrage, wenn als eigenstaendiger FLEX gewuenscht
+   Suchworte abfragen:
+  ask Neue Suche?
+  if "" end
+  asci
+   dann muss die nächste Zeile aber deaktiviert werden!
+   (in #ux0 steht, was im Befehlsfeld eingegeben wurde)
+
+var #ux0
+   - raus
+ins _-_ _ 
+   und in #uSW sichern
+insert #uSW
+
+var #ux0
+ins _-__
+ins $s
+eval
+if <10000 jump 1st
+
+var "I" $s
+var (B"I978" f"I" 0,9)
+ins $s
+
+var "ALL " $s
+ins #uFB
+jump srch
+
+:1st
+   erstes Wort pruefen, weg damit falls Stopwort
+perf stp
+  waren es alles Stopw.? Dann #uSW leer
+if not #uSW jump nix
+  Sonst Anfang des Suchbefehls in #uFB legen
+var "ALL " #uSW(e" " F",.;-")
+
+ins #uFB
+jump nxt
+
+:lop
+  ACHTUNG:  Aendern ALL wenn ein anderes Reg. das allgemeine Wortregister ist
+var #uFB " and ALL " #uSW(e" " F",.;-")
+ins #uFB
+:nxt
+  erstes Wort wegnehmen
+var #uSW(b" ")
+ins #uSW
+  und naechstes auf Stop pruefen
+perf stp
+  nichts mehr da
+if not #uSW jump srch
+jump lop
+
+  dann in #uFB der fertige Suchbefehl
+:srch
+var #uFB
+find
+
+if empty jump trunc
+
+jump ergeb
+
+// Nichts gef., 2. Versuch mit Trunk.
+:trunc
+var #ux0
+ins #uSW
+var 'ALL ' #uSW(e' ' F",.;-") '?'
+
+ins #uFB
+jump tnxt
+
+:tlop
+var #uFB ' and ALL ' #uSW(e' ' F",.;-") '?'
+ins #uFB
+:tnxt
+var #uSW(b' ')
+ins #uSW
+if not #uSW jump tsrch
+perf stp
+  nichts mehr da
+if not #uSW jump tsrch
+jump tlop
+
+:tsrch
+
+/* find-Befehl aus #uFB in die iV kopieren: */
+var #uFB
+
+/*  und ausfuehren: */
+find
+
+if empty jump 2trunc
+jump ergeb
+
+// Nichts gef., 3. Versuch ohne Endung und mit ?
+:2trunc
+var #ux0
+ins #uSW
+var 'ALL ' #uSW(e' ' F',.;-ensr') '?'
+
+ins #uFB
+jump 2tnxt
+
+:2tlop
+var #uFB ' and ALL ' #uSW(e' ' F',.;-ensr') '?'
+ins #uFB
+:2tnxt
+var #uSW(b' ')
+ins #uSW
+if not #uSW jump 2tsrch
+ins #uSW
+perf stp
+  nichts mehr da
+if not #uSW jump 2tsrch
+jump 2tlop
+
+if #uSW jump 2tlop
+
+:2tsrch
+
+/* find-Befehl aus #uFB in die iV kopieren: */
+var #uFB
+
+/*  und ausfuehren: */
+find
+
+if empty jump nix
+jump ergeb
+
+   Anmerkung fuer Sprungmarke :nix: "Neue Suche?" einbauen, falls nicht an
+   onfnda99.flx, sondern mit eigener Abfrage, dann kann ein Sprung zu :start
+   fuer neue Suche eingebaut und Meldungstext entspr. angepasst werden
+
+:nix
+var "Die Suche nach *" #ux0 "* brachte kein Ergebnis." n "Vielleicht hierzu nichts vorhanden" n "Im Index nachsehen?"
+yesno
+if not yes end
+var #ux0(e" " F".,")
+  Abhilfe, nur damit danach Index wieder korrekt funktioniert
+find per yyzzxx
+
+index
+end
+
+  Unterprog
+  Von #uSW Stopwoerter vom Anfang wegnehmen
+:stp
+var #uSW(e" " F",.-")
+if not Stop return
+var #uSW(b" ")
+ins #uSW
+if #uSW jump stp
+  nun #uSW leer oder erstes Wort kein Stpw
+return
+
+:ergeb
+  Erg.Namen auf den tatsaechlich erfolgreichen Befehl setzen
+var "R" #uFB
+ansi
+set
+order a0
+
+  Abhilfe, nur damit danach Index wieder korrekt funktioniert
+find per yy-zrx,
+if l1 jump rex
+  falls das zufaellig doch drinsteht
+close res
+
+:rex
+  letzte Erg.Menge wieder aktivieren
+find s0
+sho list
+
+

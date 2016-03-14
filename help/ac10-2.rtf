@@ -1,0 +1,231 @@
+{\rtf1\ansi\ansicpg1253\deff0\deflang1031{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\froman\fprq2 Garamond;}{\f2\froman\fprq2\fcharset0 Times New Roman;}{\f3\fmodern\fprq1 Courier New;}{\f4\fnil\fprq2\fcharset2 Wingdings;}{\f5\froman\fprq2\fcharset0 Garamond;}{\f6\fmodern\fprq1\fcharset0 Courier New;}{\f7\froman\fprq2\fcharset0 allegro New Roman;}{\f8\fmodern\fprq1\fcharset161{\*\fname Courier New;}Courier New Greek;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red255\green0\blue0;}
+\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs24           \fs20 
+\par `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` 
+\par \pard\fi-658\li658\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1\fs36 
+\par 10.2\tab Die Exportsprache\b0\fs20 
+\par \pard\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0 
+\par 
+\par \b\f1\fs28 Vorbemerkungen zu diesem Abschnitt\b0\fs20 
+\par \f0 
+\par \f2 Es folgt jetzt, nach der Einf\'fchrung in das Konzept, die systematische Erl\'e4uterung aller Elemente der \lang1033\b\i\f0 allegro\b0\i0\f2 -Exportsprache. Die Reihenfolge dieser Elemente in einer Parameterdatei ist beliebig (bis auf die Liste der Kategorien), aber es ist wegen der \'dcbersichtlichkeit g\'fcnstig, sich an die hier gezeigte Einteilung zu halten bzw. die der Prototypen oder anderer Beispieldateien zu \'fcbernehmen.\f0 
+\par \lang1031 
+\par Es gibt in einer Parameterdatei 
+\par 
+\par \pard\fi-432\li432\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab 5 Gruppen von \b `\cf1\ul Basis - Parametern\cf0\ulnone `\b0\f2  (entsprechend den in 10.0.1 beschriebenen Ebenen), die man auch als Rand- oder Nebenbedingungen bezeichnen k\'f6nnte (\f3 -\f4\'d8\f0  10.2.1 - 10.2.5) \f2 . Ihre Setzung gilt f\'fcr die gesamte Laufzeit, aber mit dem Steuerbefehl #b kann man einzelne Werte auch w\'e4hrend der Abarbeitung zwischen zwei Datenfeldern ver\'e4ndern (siehe dazu \f3 -\f4\'d8\f2 10.2.6.4)\f0 
+\par \pard\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab Eine Liste von Konstanten, die sog. \b `\cf1\ul Zwischenteile\cf0\ulnone `\b0  (\f3 -\f4\'d8\f2 10.2.0). Das sind Zeichenketten, die aus Text-,  Interpunktions- und Steuerzeichen bestehen k\'f6nnen. Jedes hat eine Nummer, und diese Nummern benutzt man in der Kategorieliste, um die zugeh\'f6rigen Zwischenteile als "Versatzst\'fccke" (oder "Vor- und Nachspann", meistens Interpunktionszeichen) zwischen die Kategorietexte zu plazieren\f0 
+\par \pard\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab\f2 als Kernst\'fcck die \b\f0 `\cf1\ul Kategorieliste\cf0\ulnone `\b0 , in der die Ausgabe jedes einzelnen Datenfeldes mit speziellen Befehlen, den \b `\cf1\ul Anweisungen\cf0\ulnone `\b0 , beschrieben wird (\f3 -\f4\'d8\f0  10.2.6). Jede solche Anweisungszeile kann eine Anzahl von sog. \b `\cf1\ul Manipulationsbefehlen\cf0\ulnone `\b0\f2  enthalten, die den Kategorietext vorbearbeiten. In der Kategorieliste k\'f6nnen au\'dferdem Bedingungspr\'fcfungen, Wertzuweisungen, Berechnungen, Spr\'fcnge und Unterprogramme vorkommen.\f0 
+\par \pard\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par \b\f5\fs28 Konventionen f\'fcr Bezeichnungen\b0\f1\fs20 
+\par \f0 
+\par In der nun folgenden Beschreibung der Exportsprache gelten diese Bezeichnungen: 
+\par \pard\tx792\tx1584\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1584\li1584\tx792\tx1584\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\tab n\b0\f0\tab eine ganze Zahl >= 0 
+\par \b\f3\tab k\b0\f0\tab eine ganze Zahl zwischen 0 und 255 (ein "Byte-Wert") 
+\par \b\f3\tab z\b0\f0\tab eine ganze Zahl zwischen 0 und 99 (Nummer eines Zwischenteils) 
+\par \b\f3\tab x , y\b0\f0\tab einzelne druckbare Zeichen (Ziffern, Buchstaben, Sonderzeichen) 
+\par \b\f3\tab CS\b0\f0\tab eine `\cf1\ul\b\f2 Steuerzeichenkette\cf0\ulnone\b0\f0 ` ("character string") (Definition in 10.2.0) 
+\par \pard\fi-2664\li2664\tx792\tx1584\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\tab #xxf\b0\f0\tab und\b\f3  #yyf\b0\f0\tab sind Kategorienummern; je nach Konfiguration hat sie 2, 3 oder 4 Ziffern, ein Folgezeichen\b\f3  f\b0\f0  tritt nur bei mehrfach besetzten Kategorien auf, z.B.\f3  #31s\f0 
+\par \pard\fi-1584\li1584\tx792\tx1584\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\tab X\b0\f0\tab\f2 eine Zeichenfolge "abc" in Anf\'fchrungszeichen oder Apostrophen. Die Schreibweisen "abc" und 'abc' sind v\'f6llig gleichwertig, man kann es abwechselnd so oder so machen. Wenn allerdings darinnen ein Anf\'fchrungszeichen vorkommt, mu\'df man Apostrophe nehmen und umgekehrt. Ausgegeben wird nur, was zwischen den Anf\'fchrungen steht.
+\par \cf2\tab\tab Nicht-eingebbare Zeichen kann man mit \f6\\nnn\f2  kodieren, z.B. \f6\\31\f2  f\'fcr \b\f7\'b2 \b0 und\b  \b0\f6\\31\\48\f2  f\'fcr \f7\'b20\cf0\f0 
+\par \pard\tx792\tx1584\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f2 F\'fcr jeden Basis-Parameter ist ein <Normalwert> (engl. "default") angegeben. Dieser wird vom Programm automatisch angenommen, wenn der betreffende Parameter in der Datei nicht vorkommt. Das Zeichen '*' bei einem Normalwert bedeutet, da\'df dieser Parameter keine Wirkung auf den Zeilenumbruch, nur auf die Druckausgabe hat.\f0 
+\par 
+\par Achten Sie auf \b\f2 Gro\'df- und  Kleinschreibung\b0 : f\'fcr alle Befehle ist die im folgenden gezeigte Schreibung verbindlich.\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f1\fs28 Basis-Parameter  \b0\fs20 
+\par \f0 Alle Basis-Parameter haben zweibuchstabige Namen. Der \b erste Buchstabe\b0\f2  des Namens bezieht sich auf die Ebene, zu der der Parameter geh\'f6rt (\f3 -\f4\'d8\f0  10.0.1). Es gibt dazu jeweils eine \b englische Entsprechung\b0 , die man gleichwertig benutzen kann (d.h. statt z.B.  \b ae\b0   kann man auch  \b re\b0   schreiben): 
+\par 
+\par \pard\fi-6673\li6673\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b a\tab `\cf3\ul A\cf1 ufnahme-Parameter\cf0\ulnone `\b0\tab\tab\tab\tab (\b r\b0 ecord-related parameters)\tab (\f3 -\f4\'d8\f0  10.2.1) 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-6673\li6673\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b s\tab `\cf3\ul S\cf1 eiten- oder Formularparameter\cf0\ulnone `\b0\tab\f2\tab\f0 (\b f\b0 orm-related parameters)\tab (\f3 -\f4\'d8\f0  10.2.2) 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-6673\li6673\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b z\tab `\cf3\ul Z\cf1 eilen-Parameter\cf0\ulnone `\b0\tab\tab\tab\tab (\b l\b0 ine-related parameters)\tab (\f3 -\f4\'d8\f0  10.2.3) 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-6673\li6673\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b d\tab `\cf3\ul D\cf1 rucker- u. Codierungsparameter\cf0\ulnone `\b0\tab (\b p\b0 rinter-related parameters)\tab (\f3 -\f4\'d8\f0  10.2.4) 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-6673\li6673\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b k\b0\tab `\cf1\ul\b allgemeine \cf3 K\cf1 ategorie-Parameter\cf0\ulnone\b0 `\tab\tab\tab\tab\tab\tab (\f3 -\f4\'d8\f0  10.2.5) 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par \pard\fi-6673\li6673\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b #\tab `\cf1\ul Exportbefehle\cf0\ulnone `\b0  stehen in Zeilen, die mit '#' oder '!' beginnen;\tab (\f3 -\f4\'d8\f0  10.2.6) 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b !\b0\tab diese Befehle bilden die \b Kategorieliste\b0\f2  = Liste der auszugebenden Kategorien mit Angaben f\'fcr die Behandlung jeder einzelnen Kategorie\f0 
+\par \tab\f2 Die Kategorieliste ist sozusagen das eigentliche Programm; nur diese Zeilen beschreiben wirklich Ausgabevorg\'e4nge oder stellen Anweisungen dar, die auf Daten angewendet werden.\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f1\fs28 Kommentare\b0\f0\fs20 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab Jede Zeile, die mit einem \b Leerzeichen\b0  oder Tabulatorzeichen \b beginnt\b0\f2 , wird vom Programm als Kommentar angesehen und \'fcbergangen. In die erste Zeile sollte man eine Kurzcharakteristik der Datei schreiben, weil diese Zeile in der Auswahlliste (\f3 -\f4\'d8\f0  0.5) als Hilfe abrufbar ist. 
+\par  \bullet\tab\f2 In jeder Parameterzeile k\'f6nnen nach den eigentlichen Parametern auch noch Kommentare stehen, abgetrennt durch mindestens \b\f0 zwei Leerzeichen\b0\f2  oder Tabulatorzeichen (letzteres wird nicht empfohlen). Leerzeichen innerhalb von Anf\'fchrungszeichen haben nicht diese Wirkung, d.h. dort sind mehrere erlaubt.\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par \b\f1\fs28 Parameter nachladen\b0\f0\fs20 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f2 Wenn gewisse Parameter in mehreren Dateien immer gleich sind (vor allem die Codiertabellen, Zwischenteile oder Stopw\'f6rter), kann man diese zu einer eigenen Datei zusammenfassen, deren Namenstyp .cPT (standardm\'e4\'dfig also .APT) sein mu\'df.\f0 
+\par \tab Ist z.B. PRINTER.APT eine solche Datei, dann wird diese mit dem Befehl 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f3 tPRINTER\lang1031\b0\f0 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab den man in eine andere Parameterdatei schreibt, nachgeladen, d.h. zu der betreffenden Datei hinzugenommen. 
+\par \tab\f2 Genauer: Es k\'f6nnen mehrere t-Befehle an beliebigen Stellen innerhalb einer Parameterdatei vorkommen, um mehrere Standardteile in eine Datei einzubeziehen, so als st\'fcnde deren Text an derselben Stelle.\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par Die Datei PRINTER.cPT hat eine Sonderbedeutung: man kann sie als \b Druckertreiber\b0  bezeichnen. Mitgeliefert werden die Tabellen  P-EPSON.APT, P-NECP2.APT, P-DESKJET.APT und P-LEER.APT. Wenn man im \lang1033\b\i CockPit\lang1031\b0\i0\f2  \'fcber den Men\'fcpunkt "Optionen / Drucker" eine dieser Dateien ausw\'e4hlt, wird sie auf den Namen PRINTER.APT umkopiert. Sie enthalten Zwischenteile mit den Nummern 79-99, die zur Druckersteuerung gedacht sind. Wenn man diese Zwischenteile konsequent verwendet, kann man Parameterdateien schreiben, die weitgehend druckerunabh\'e4ngig sind. Anpassungen an andere Drucker sind nicht schwierig, denn die genannten Tabellen sind kommentiert. \f0 
+\par \i Hinweis:\i0\f2  Prototyp P-0.APT enth\'e4lt eine Tabelle aller Zeichen des OSTWEST-Zeichensatzes. Diese Datei kann man als Vorlage f\'fcr einen neuen Druckertreiber nehmen.\f0 
+\par 
+\par \b\f1\fs28 Wie wird eine Parameterdatei abgearbeitet?\b0\f0\fs20 
+\par 
+\par Eine Parameterdatei wird immer als Ganzes eingelesen und bleibt dann geladen - bis zum Ende des Programmlaufs oder bis man mit \b F2\b0  oder Sh+\b F4 \b0 eine andere anfordert (\f3 -\f4\'d8\f2  1.5). Dabei werden die Basisparameter und Zwischenteile registriert. F\'fcr jeden konkreten Exportvorgang wird dann die Kategorieliste durchgearbeitet (\f3 -\f4\'d8\f2  10.2.6, dort wird in allen Details erl\'e4utert, wie das abl\'e4uft). Mittels des Kopfbefehls\b\f3  ak\b0\f0  (\f3 -\f4\'d8\f2  10.2.1) k\'f6nnen je Aufnahme mehrere Durchl\'e4ufe mit jeweils unterschiedlichen Startpunkten (= Sprungmarken) in der Kategorieliste veranla\'dft werden.\f0 
+\par \f2 Die Abarbeitung konkreter Parameterdateien oder einzelner Teile davon wird an vielen Stellen auf unterschiedliche Art ausgel\'f6st. Automatisch passiert es, wenn \'fcber den Index eine Aufnahme angefordert wurde: um sie anzuzeigen, wird die (vorher geladene) Anzeigeparameterdatei durchgearbeitet. Dr\'fcckt man \b\f0 F7\b0\f2 , wird die (ebenfalls geladene) Indexparameterdatei abgearbeitet und die zur Aufnahme geh\'f6rigen Registereintr\'e4ge dann angezeigt. Dr\'fcckt man \b\f0 F4\b0\f2 , wird die (ebenfalls geladene) Exportparameterdatei abgearbeitet und der Datensatz auf diese Weise ausgegeben. Die Programme SRCH, IMPORT und INDEX benutzen die jeweils f\'fcr ihre Aufgaben angeforderten Parameterdateien vollautomatisch, um ihre Produktion durchzuf\'fchren. Im Detail jedoch spielen sich immer die gleichen Dinge ab, nur mit unterschiedlichen Randbedingungen.\f0 
+\par 
+\par 
+\par \pard\fi-1224\li1224\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1\fs28 10.2.0  Zwischenteile\b0\f0\fs20 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 Ein \b Zwischenteil\b0  ist eine \b Zeichenkette\b0\f2 , die bei der Druckaufbereitung zwischen einzelne Kategorien eingef\'fcgt werden soll, z.B. die Zeichenkette " . - " als Interpunktion zwischen bestimmten Teilen der bibligraphischen Beschreibung. Es k\'f6nnen 128 solche Zwischenteile (Nummern 0 bis 127) vom Programmbenutzer definiert werden (Windows-Programm \i a99\i0 : 400), und jedes davon kann als \b Pr\'e4fix\b0\f0  vor bzw. als \b Postfix\b0  hinter jeder auszugebenden Kategorie eingesetzt werden (\f3 -\f4\'d8\f0  10.2.6) 
+\par \f2 Man k\'f6nnte auch von Text\b\f0 bausteinen\b0  oder Text\b konstanten\b0\f2  sprechen, da es sich um beliebige Zeichenketten handelt, die an jeder Stelle in einen Ausgabetext eingef\'fcgt werden k\'f6nnen und mehrfach verwendbar sind. \f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab So definiert man ein Zwischenteil: 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f3\fs24 z=CS\b0\f0\fs20 
+\par 
+\par \pard\fi-1224\li1224\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3\tab z\b0\f0\tab\f2 ist eine Zahl zwischen 1 und 128 (0 ist reserviert f\'fcr die leere Zeichenkette und darf nicht umdefiniert werden). 
+\par \tab\tab F\'fcr die Windows-Programme sowie avanti und acon ist die Grenze 400.\f0 
+\par \b\f3\tab CS\b0\f0\tab ist eine `\cf1\ul\b\f2 Steuerzeichenkette\cf0\ulnone\b0\f0 ` (siehe unten) 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\tx851\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f2 Die Zwischenteil-Definitionen k\'f6nnen in der Parameterdatei in beliebiger Reihenfolge und an beliebiger Stelle stehen, auch am Ende: jede Parameterzeile, \b\f0 die mit einer Zahl beginnt\b0 , wird als Definition eines Zwischenteils angesehen. \i Empfohlen wird\i0\f2 , alle Zwischenteile zusammenh\'e4ngend und in aufsteigender Folge zu schreiben.\f0 
+\par \pard\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f2 Wenn eine Parameterdatei eingelesen wird, so liest das Programm sie zun\'e4chst bis zum Ende durch und registriert alle Zwischenteile. Daraus folgt: Wenn man eine Nummer in der Parameterdatei mehrfach definiert, \i\f0 gilt nur die letzte\i0  Angabe. 
+\par \pard\tx851\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i Achtung:\i0  Die Zwischenteile sind \b Konstanten\b0\f2 , es ist nicht m\'f6glich, Zwischenteile w\'e4hrend des Programmlaufs zu \'e4ndern, indem man etwa Definitionszeilen zwischen die Exportbefehle schreibt. \f0 
+\par \f2 F\'fcr variable Textelemente sind die Nutzervariablen da!\f0 
+\par \f2 Jedoch kann man vom Editor aus die Werte der Zwischenteile anzeigen lassen und auch zum Testen interaktiv \'e4ndern (Befehl #p, \f3 -\f4\'d8\f0  10.3.1). 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab 
+\par \f2 Sie finden im folgenden einige Beispiele, weitere nat\'fcrlich in den mitgelieferten Parameterdateien.\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f1\fs28 Steuerzeichenketten (Character Strings)\b0\f0\fs20 
+\par 
+\par Dies ist ein Konzept zur Darstellung von \b gemischten Zeichenketten\b0\f2 , das f\'fcr Zwischenteile und Basis-Parameter (\f3 -\f4\'d8\f2  10.2.1-5) gleicherma\'dfen anwendbar ist.\f0 
+\par \f2 F\'fcr das Symbol CS kann in den oben und nachfolgend beschriebenen Parametern jeweils eine Zeichenkette eingesetzt werden, die formal so aussieht:\f0 
+\par \b\f3\fs24     z1 z2 z3 ... zn\b0\f0\fs20 
+\par \f2 F\'fcr jedes dieser beliebig vielen\b\f3  zi\b0\f0 , getrennt durch jeweils genau ein Leerzeichen, kann eines der drei folgenden Elemente stehen: 
+\par 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   a)\tab eine \b Zahl zwischen 0 und 255\b0    (also ein Byte-Wert, dezimal angegeben) 
+\par   b)\tab eine \b Kette druckbarer Zeichen\b0\f2 , zwischen Anf\'fchrungsstriche bzw. Apostrophe eingeschlossen. Darin kann ein Apostroph bzw. Anf\'fchrungszeichen vorkommen, also z.B.\f3  "abc'def'ghi"\f0 , oder auch umgekehrt:\f3   'abc"def"ghi'\f0 , aber nicht\f3  "abc'def"ghi'\f2 . Das gilt \'fcberall da, wo druckbare Zeichenketten anzugeben sind, also auch bei den Manipulationsbefehlen (\f3 -\f4\'d8\f0  10.2.6.3). 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Direkt hinter a) bzw. b) kann ein \b Wiederholungsfaktor\b0  mit '*' angeschlossen werden, z.B. ist\f3  "`--"*20\f2   dasselbe wie 40 Bindestriche. Das erste Zeichen hinter " wird nicht vervielf\'e4ltigt.\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   c)\tab ein \b Strukturbefehl\b0  mit den Steuerzeichen\b\f3   & %% # $ h s t C N K\b0\f2   (siehe n\'e4chste Seite) au\'dferhalb von Anf\'fchrungszeichen.\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par Eine Steuerzeichenkette wird wie folgt abgearbeitet:  
+\par 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab eine \b Zahl\b0\f2  wird als ein Byte an die Ausgabe \'fcbergeben\f0 
+\par \tab (mehrfach, wenn ein Wiederholungsfaktor angeschlossen ist) 
+\par \i\tab Wichtig:\i0\f2  bei der Zeilenl\'e4ngenberechnung f\'fcr den Umbruch z\'e4hlen diese Bytes nicht mit.\f0 
+\par \tab\f2 Die Zahlencodes werden normalerweisen nicht auf den Bildschirm ausgegeben, sondern nur auf Datei oder Drucker. Mit dx=1 erreicht man, da\'df sie auch f\'fcr die Bildschirmausgabe benutzt werden. Das ist notwendig, wenn man ANSI-Steuersequenzen f\'fcr Bildschirmattribute einbauen will (Beispiele in COLOR.APR, \f3 -\f4\'d8\f0  10.2.4). 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-2664\li2664\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\tab\f2 Sonderf\'e4lle:\b0\f0\tab\tab Die Zahl 0 wird auch als Code 0 ausgegeben (d.h. sie ist kein Sonderfall) 
+\par \tab\tab\tab\tab\tab Die Zahl 13 in einem Zwischenteil bewirkt einen Zeilenumbruch (wie 'C'). Unter DOS wird die Kombination 13 10 ausgegeben, unter UNIX nur 10. 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab die \b\f2 Zeichen zwischen Anf\'fchrungszeichen\b0\f0  werden in den laufenden Text eingebaut (mit Umbruchbehandlung, wenn zl>0), ggfls. mehrfach hintereinander, falls ein Wiederholungsfaktor folgt. 
+\par \i\tab Sonderfall:\i0\f2  (C-Programmierer, aufgepa\'dft!)  die \b\f0 leere\b0  Zeichenkette\f3  ""\f2   bedeutet: Ausgabe entf\'e4llt, d.h. es wird \b\f0 kein einziges\b0  Zeichen ausgegeben, auch kein Code 0. Der Code 0, siehe oben, ist ein Zeichen wie andere auch (ein Byte mit dem Wert 0). Sinnvoll ist die leere Zeichenkette bei bestimmten Basisparametern wie z.B.\b\f3  as\b0\f0  oder\b\f3  ke\b0\f0  (\f3 -\f4\'d8\f0  10.2.1...).   Zwischenteil 0 hat automatisch diesen Wert, d.h. man braucht nicht\b\f3   0=""\b0\f0  zu schreiben. 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\b\tab Strukturbefehle\b0\f2  werden ihrer Bedeutung entsprechend ausgef\'fchrt (siehe unten).\f0 
+\par \tab\f2 Wenn z.B. der Befehl %%86 kommt, wird f\'fcr den nachfolgenden Text bis zum Ende der Aufnahme oder einem weiteren %%-Befehl mit einer Zeilenl\'e4nge von 86 Zeichen gearbeitet.\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par Der ASCII-Code 0 hat in \lang1033\b\i allegro\lang1031\b0\i0 -Grunddateien die Funktion "Feldende" (\f3 -\f4\'d8\f0  0.2.2). Wenn man also Grunddateien erzeugt, wird dieser Code gebraucht. Das kommt in den Dateien des Typs \b I\b0  vor, z.B. \lang1033\b\f3 I-1.APR\lang1031\b0\f0 . 
+\par \f2 Das Wichtige am Konzept der Steuerzeichenkette ist, da\'df sie Steuerzeichen und druckbare Zeichen in beliebiger Mischung enthalten kann. Das erm\'f6glicht eine flexible \b\f0 Druckersteuerung,\b0  \b Farbumschaltungen\b0  in der Bildschirmanzeige (Beispiele siehe unten), eine freie \b Positionierung\b0\f2  im Druckbild, \'c4nderung von Umbruchparametern mitten im Text und zudem die Einschaltung jeder gew\'fcnschten \b\f0 Interpunktion\b0\f2  und anderer Elemente in den Text. Nur die druckbaren Zeichen innerhalb "..." werden beim Zeilenumbruch ber\'fccksichtigt. \f0 
+\par 
+\par 
+\par \b\f1\fs28 Strukturbefehle :  \f3 &  %%  #  $  h  s  t  C  N  K\f6   J\b0\f0\fs20 
+\par 
+\par \f2 Diese dienen u.a. zur \'c4nderung von Grundparametern w\'e4hrend der Ausgabe. Jeder Bestandteil zi einer Steuerzeichenkette kann ein solcher Strukturbefehl sein.\f0 
+\par \i\f2 Einschr\'e4nkung:\i0\f0  Die Befehle\f3   & %% # $ s\f2   k\'f6nnen nur in Zwischenteilen, nicht in Basisparametern vorkommen. Oder anders ausgedr\'fcckt: in Basisparametern d\'fcrfen nur die Buchstabenbefehle vorkommen.\f0 
+\par \b\i Beispiele\b0\i0\f2  f\'fcr die einzelnen Befehle: (beachten Sie: keine Leerzeichen zwischen Befehlszeichen und den zugeh\'f6rigen Zahlenwerten) \f0 
+\par \cf3 Achtung: die ersten 4 sind nicht anwendbar, wenn  zl=0  gesetzt ist!\cf0 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 &18\f0\tab Tabulatorsprung\b0\f2  auf Position 18 der laufenden Zeile; Achtung: wenn die aktuelle Zeile zum Zeitpunkt dieses Befehls schon l\'e4nger ist, wird der Teil ab Position 18 \'fcberschrieben. Zeilenanfang:\f3  &1\f0  . 
+\par \b\f3 %%100\b0\f0\tab Umstellung der \b\f2 Zeilenl\'e4nge\b0  (Parameter zl) auf 100 Zeichen (max.120). Dabei z\'e4hlt die Einr\'fcckung mit:\f0 
+\par \b\f3 #10\b0\f0\tab\f2\'c4nderung der \b Einr\'fcckung\b0  (zi) auf 10 Zeichen ab der n\'e4chsten Zeile; wirksam nach dem n\'e4chsten Zeilenvorschub. Wenn die Einr\'fcckung gr\'f6\'dfer ist als die aktuelle Zeilenl\'e4nge (z.B. #250), wird sie auf die aktuelle Cursorposition eingestellt. Dadurch kann die Einr\'fcckung variabel gestaltet werden.\f0 
+\par \tab\f2 Einr\'fcckung abschalten:\f3  #0\f0 . 
+\par \b\f3 $4,30\f0\tab Positionierung\b0\f2  auf Zeile 4, Zeichen 30 ($ allein : HOME-Position = $0,0) d.h. es wird anschlie\'dfend auf dieser Stelle weitergedruckt, wobei die aktuelle Einr\'fcckung ber\'fccksichtigt, d.h. zu 30 addiert wird. Damit hat man M\'f6glichkeiten zur Gestaltung von Formularen. Die zweite Zahl kann fehlen, wenn die Anfangsposition der Zeile anzusteuern ist, also z.B. $4 statt $4,0 .\f0 
+\par \tab\f2 Der Strukturbefehl $ ist auch f\'fcr folgenden Fall geeignet: man will mehrere kurze Angaben (Signatur, Notationen etc.) am linken Rand der Karte unterbringen und den eigentlichen Text mit einer gewissen Einr\'fcckung daneben. Dann definiert man z.B. ein Zwischenteil  35=%%10 #0  und setzt dieses als Pr\'e4fix vor die betr. Kategorie (z.B. #90). Vor die n\'e4chste Kategorie, die dann wieder auf der oberen Zeile, aber einger\'fcckt erscheinen soll, setzt man z.B. das Pr\'e4fix  36=%%56 #15 $.  Dieses bewirkt, da\'df die Zeilenl\'e4nge auf 56 eingestellt wird und die Einr\'fcckung auf 15, und der nachfolgende Text beginnt dann in der ersten Zeile und l\'e4\'dft die links schon stehenden Angaben unber\'fchrt, da die Einr\'fcckung ein \'dcberschreiben verhindert. \i\f0 Nebenwirkung:\i0\f2  Wenn man $ benutzt, wird die Einr\'fcckung auf 1 gesetzt, falls sie auf 0 steht.\f0 
+\par \b\f3 h0\b0\f0\tab\b Hierarchie-Code 
+\par \b0\tab\f2 Eine Hauptaufnahme (Stufe #00) hat den Hierarchie-Code 1, auf Stufe #01   ist es der Wert 2, usw. Dieser Code wird an der aktuellen Schreibposition ausgegeben, sobald der Strukturbefehl h kommt. Folgt dem h eine Zahl ungleich 0, so wird der Hierarchiecode auf diese Zahl aufaddiert. Z.B. w\'fcrde h47 bewirken, da\'df statt des Byte-Wertes 1 der Wert 48 ausgegeben wird, und das ist der ASCII-Wert der Ziffer '0'.\f0 
+\par \tab\f2 (Ben\'f6tigt wird dieser Strukturbefehl haupts\'e4chlich f\'fcr Exporte in andere Formate, aber auch f\'fcr das Grundformat: siehe dazu I-1.APR und S-*.APR)\f0 
+\par \b\f3 t29\f0\tab Verschachtelung\b0\f2  : Zwischenteil Nummer 29 wird in das aktuelle Zwischenteil eingebaut. Das ist z.B. n\'fctzlich, wenn man z.B. Steuersequenzen f\'fcr Drucker oder Bildschirm (Schriftart- bzw. Farbumstellung) in mehreren Zwischenteilen ben\'f6tigt. Man legt diese Sequenzen dann auf bestimmte Nummern und verwendet sie an beliebiger Stelle mit Hilfe dieses Strukturbefehls.\f0 
+\par \b\f3 s4\b0\f0\tab Basisparameter\f3  ks\f0  (\f3 -\f4\'d8\f2  10.5.2) \'e4ndern. Von diesem Punkt ab werden die Kategorietexte ab dem 4-ten Zeichen ausgegeben, bis ein neuer\b\f3  s\b0\f2 -Befehl kommt oder der n\'e4chste Satz bearbeitet wird (dann wird der Parameter\f3  ks\f2  auf den Ausgangswert zur\'fcckgesetzt). \f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b Sondercodes:\b0 
+\par 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 C\f0\tab Zeilenvorschub\b0  ("Carriage Return", in Zwischenteilen gleichwertig mit dem Code 13). 
+\par \tab Sobald dieser Code auftritt, wird eine neue Zeile begonnen. Anstelle des '\f3 C\f0 ' wird der Wert des Parameters\b\f3  ze\b0\f0  ausgegeben (Zeilenende-Steuerzeichen \f3 -\f4\'d8\f0  10.2.3). 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 N\b0\f0\tab\b Neue Seite\b0\f2  : Sobald dieser Code auftritt, wird eine neue Seite begonnen, was eine komplizierte Aktion ist: es wird zuerst der Fu\'dfabschnitt ausgef\'fchrt, dann der Parameter\b\f3  sv\b0\f2  ausgegeben, dann der Kopfabschnitt ausgef\'fchrt, und dann der Export fortgesetzt (\f3 -\f4\'d8\f2  10.2.6.5.3). Ab Version 12.2 wirkt dieser Befehl bei Kartendruck als Startbefehl f\'fcr eine \b\f0 Fortsetzungskarte\b0 . 
+\par \tab\f2 Ansonsten ist der Seitenumbruch ein v\'f6llig automatisch ablaufender Vorgang, den man durch die Parameter\f3  z1, z2, zm, sz\f2  und den selbstdefinierten Fu\'dfabschnitt beeinflussen kann. Der Code N braucht nur dann benutzt zu werden, wenn an einer bestimmten Stelle ein Seitenumbruch erzwungen werden soll.\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 K\f0\tab Nummer der Fortsetzungskarte\b0 . Sinnvoll ist dieser Befehl praktisch nur in dem Grundparameter\b\f3  fa\b0\f0  (\f3 -\f4\'d8\f0  10.2.2, Beispiel siehe dort), um an bestimmter Stelle eine Kartennummer anzubringen. 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f6 J\f0\tab\f2 Register-Pr\'e4fix\b0\f0  \f2 : Der Wert i, der im letzten ak-Befehl  \f6 ak=nn+Mi\f2   gesetzt wurde, wird in der Form\f0  \f2  \b\f6 |i\b0\f2  hier eingesetzt. (i = \f6 1,2,...,9,:,;\f2 )\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\i Anmerkungen\b0\i0 
+\par 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab\f2 Zeilenl\'e4nge, Einr\'fcckung und Textbeginn werden automatisch auf die Werte\f3  zl, zi\f0  bzw.\f3  ks\f0  (\f3 -\f4\'d8\f2  10.2.3/5) zur\'fcckgesetzt, jedesmal nachdem ein Satz fertig ausgegeben ist. Man mu\'df also nicht mit einem eigenen Befehl in einem abschlie\'dfenden Zwischenteil daf\'fcr sorgen, da\'df dies geschieht. \f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab\f2 Sollte der Drucker durch eins der Zwischenteile in seiner Einstellung beeinflu\'dft worden sein, so wird er nicht automatisch in den Normalmodus zur\'fcckgesetzt! Wenn man z.B. als letztes Datenelement ein Abstract (#98 oder #99) drucken und  daf\'fcr  den  Drucker auf Schmalschrift umstellen l\'e4\'dft, mu\'df diese Einstellung (am besten durch das auf  #98  folgende Postfix) wieder r\'fcckg\'e4ngig gemacht werden. Man kann auch in dem Parameter\f3  as\f2 , der vor der eigentlichen Druckausgabe dem Drucker \'fcbermittelt wird, die Normaleinstellung vornehmen, dann kann nichts schiefgehen.\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab\f2 Die Reihenfolge der Strukturbefehle kann wichtig sein: z.B. k\'f6nnte\f3  #50 %%76\f2  nicht ausgef\'fchrt werden, wenn vorher die Zeilenl\'e4nge auf 45 steht; es m\'fc\'dfte umgekehrt\f3  %%76 #50\f2  hei\'dfen, sonst wirkt #50 nicht.\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par 
+\par \b\i Beispiele\i0\f2  f\'fcr Zwischenteil-Definitionen und Steuerzeichenketten:\b0\f0 
+\par \pard\fi-1800\li1800\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 2=" / "\b0\f0\tab\tab\f2 Leerzeichen, Schr\'e4gstrich, Leerzeichen\f0 
+\par \b\f3 13=C "   "\b0\f0\tab\tab Zeilenvorschub, dann drei Leerzeichen 
+\par \tab\tab\tab (d.h. z1=C, z2="   " )  
+\par \b\f3 67=C "ISBN "\b0\f0\tab Zeilenvorschub, dann "ISBN " 
+\par \b\f3 18=0\b0\f0\tab\tab\tab\f2 Der ASCII-Code 00 (ein einzelnes Byte mit dem Wert 0) wird ausgegeben. Das ist zu unterscheiden von der "leeren Zeichenkette", die aus \'fcberhaupt keinem Zeichen besteht:\f0 
+\par \b\f3 17=s0\b0\f0\tab\tab\tab\f2 Wenn dieses Zwischenteil benutzt wird: ab der n\'e4chsten Kategorie wird der gesamte Text, einschlie\'dflich '#' und Kategorienummer, ausgegeben. Manchmal wird f\'fcr gewisse Kategorien auch deren Nummer gebraucht, dann ist das sehr n\'fctzlich.\f0 
+\par \b\f3 88=27 52\b0\f0\tab\tab <Escape> '4' (bewirkt Umschaltung auf Kursiv bei Epson-kompatiblen Druckern) 
+\par \tab\tab\tab Vorsicht:\b\f3  27 "4"\b0\f2  w\'fcrde auch gehen, aber die '4' w\'fcrde in die Zeilenl\'e4ngen-Berechnung einbezogen!\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f3 9=27 52 '"Anmerkung:" ' 27 53 27 103 
+\par 10=27 77\b0\f0 
+\par \pard\fi-1797\li1797\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab\f2 Damit w\'fcrde die Befehlszeile\f3   #81 p9 P10\f0   auf einem EPSON-Drucker dieses produzieren: 
+\par \i\tab\tab\tab "Anmerkung:"\i0  \fs16 Text der Kategorie #81 in Schmalschrift (wegen 27 103)\f2\fs20 , die nachfolgende Kategorie w\'fcrde wieder in Normalschrift erscheinen wegen 10=27 77 = Elite-Schrift.\f0 
+\par \tab\tab\tab\f2 Weil man eine Menge \'e4ndern m\'fc\'dfte, wenn man solche Dinge auf andere Drucker \'fcbertragen will, gibt es standardisierte Zwischenteile in den Dateien P-*.APT, den sog. Druckertreibern. Wenn man einen davon auf PRINTER.APT umkopiert und ihn dann mit dem Befehl\f3  tPRINTER\f0  in die Parameterdatei einbindet, kann man schreiben 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 9=t88 '"Anmerkung:" ' t87 t81\b0\f0 
+\par \pard\fi-1797\li1797\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab und erreicht mit\f3  #81 p9 p82\f2  dasselbe, aber druckerunabh\'e4ngig. Benutzt sind hierbei die Zwischenteile 88 (Kursiv ein), 87 (Kursiv aus), 83 (Schmalschrift) und 82 (Normalschrift) definiert mit den Codes f\'fcr den jeweiligen Drucker. Siehe auch Anmerkung unten.\f0 
+\par \pard\fi-1800\li1800\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 43="-.-"*5\b0\f0\tab\tab erzeugt die Folge\f3  "-.-.-.-.-.-"\f0 
+\par \b\f3 31=&10 "("\b0\f0\tab\tab Sprung auf Position 10 und dort Ausgabe des Zeichens '('  
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 71=27 91 49 59 51 49 59 52 55 109 
+\par \pard\fi-1800\li1800\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0\f0\tab\tab\tab\f2 "ANSI"-Befehl f\'fcr Farbumschaltung: rot (1) auf wei\'df (7) (= \f3 Esc[1;31;47m\f0  ) 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 77=27 91 49 59 51 55 59 52 52 109 
+\par \pard\fi-1800\li1800\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0\f0\tab\tab\tab\f2 ... wei\'df(7) auf blau(4)  (\f3 Esc [1;37;44m\f2  , siehe D-1.APR f\'fcr die anderen Farbcodes)\f0 
+\par \tab\tab\tab Achtung: wenn man\f3  77=27 "[1;37;44m"\f0  schreibt, bewirkt das dieselbe Farbeinstellung, aber die Zeichen in\f3  ".."\f0  werden beim Umbruch mitgerechnet, es passen weniger Zeichen in die Zeile! 
+\par \tab\tab\tab Zu den Farbcodes Siehe auch \f3 -\f4\'d8\f0  Anh. A.3 (Grundeinstellung der Farben in der CFG) 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f3 26=$1,60 t71 " <Signatur:> " t77 
+\par \pard\fi-1797\li1797\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0\f0\tab\tab\tab\f2 Positioniere auf Zeile 1, Zeichen 60, gib in rot auf wei\'df den Text " <Signatur:> " aus und schalte auf wei\'df auf blau zur\'fcck.\f0 
+\par \tab\tab\tab\f2 (Man sieht hier, da\'df gerade die Farbumschaltungen ein gutes Beispiel f\'fcr solche Zwischenteile sind, die man mit dem t-Befehl in andere Zwischenteile einbauen kann.)\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 ae="99 ENDE" 0 13 10\b0\f0 
+\par \pard\fi-1797\li1797\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab\f2 schreibt ans Aufnahme-Ende beim Export die Kategorie "99 ENDE" und setzt korrekt den Code 0 sowie 13 und 10 dahinter, wie es bei einer Ausgabe im .ALG-Format sein mu\'df.\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f3 22=". " #250 C\b0\f0 
+\par \pard\fi-1797\li1797\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab\f2 Es wird ein Punkt mit Leerzeichen dahinter gemacht. Dann wird die Einr\'fcckung auf die Position auf die aktuelle Position, also das Zeichen hinter dem Leerzeichen gestellt und in die n\'e4chste Zeile gegangen. Dort beginnt der nachfolgende Text auf der gerade vorher eingestellten Position! Der Rest der Aufnahme wird mit dieser Einr\'fcckung ausgegeben, wenn nicht ein weiterer #-Befehl folgt. Vor Beginn der n\'e4chsten Aufnahme wird der Wert wieder auf zi gestellt.\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b Druckertreiber:\b0\f2  Die Nummern 79 - 99 sind in den mitgelieferten Parameterdateien f\'fcr die Einstellung von Druckattributen vorgesehen, z.B. 99 = Fettschrift ein, 98 = Fettschrift aus usw. Es handelt sich um die Dateien\b\f3  P-EPSON.APT\b0\f0 ,\b\f3  P-NECP2.APT\b0\f2  usw., die sog. "Druckertreiber". \'dcber \lang1033\b\i\f0 CockPit\lang1031\i0\f8  \'eco d\b0\f2  w\'e4hlt man davon einen aus, der dann auf\b\f3  PRINTER.APT\b0\f0  umkopiert wird. Mit dem Befehl\f3  tPRINTER\f2  bindet man dies ein in die .APR-Datei, wo die Nummern benutzt werden sollen. Es gen\'fcgt dann, in der Kategorieliste z.B. etwas wie\f3  #xx p99 P98\f0   zu schreiben, damit\f3  #xx\f2  fett gedruckt wird. So gestaltet man Parameterdateien druckerunabh\'e4ngig.\f0 
+\par \f2 Die Dateien P-*.APT sind unabh\'e4ngig von der Konfiguration, d.h. man kann sie ohne weiteres z.B. auf\b\f3  .MPT\b0\f2  umkopieren und hat damit die entsprechenden Druckertreiber f\'fcr M.CFG.\f0 
+\par \f2 Die Nummern 71 - 78 werden meistens f\'fcr Bildschirmfarben benutzt (siehe D-1.APR). In Druckparametern w\'fcrden diese st\'f6ren, auch bei Ausgabedaten f\'fcr Windows oder UNIX.\f0 
+\par \pard\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f2 Dieses Konzept der Codierung von Schriftattributen erstreckt sich auch auf die Ausgabe von Daten f\'fcr andere Oberfl\'e4chen. Es gibt die Pseudo-Druckertreiber  \f6 ad-htm.apt\f2   f\'fcr HTML-Codierung (Einsatz an \b\f0 WWW\b0\f2 -Schnittstellen) und  \f6 ad-rtf.apt\f2   f\'fcr \b\f0 Windows\b0 -RTF-Ausgabe (Einsatz in \b\i a99/alcarta\b0\i0\f2 ). Dabei gelten dieselben Nummern wie f\'fcr die Druckausgabe, z.B. steht dann in \f6 ad-htm.apt\f2  f\'fcr das Ein- und Ausschalten der Fettschrift: \f3 99="<b>"\f0  und \f3 98="</b>"\f0 , in \f2  \f6 ad-rtf.apt\f0  \f2  \f0 steht \f3 99="\{\\b "\f0  und \f3 98="\}"\f2 . Der Vorteil: Hat man Parameter mit diesen einfachen Konventionen entwickelt, kann man sie leicht f\'fcr andere Umgebungen umschreiben \f0 -\f2  es mu\'df kaum mehr getan werden als eine andere .APT einzusetzen. \f0 
+\par \pard 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` 
+\par \pard 
+\par ?Vorangehender Teil=h ac10-1 
+\par ?Fortsetzung=h ac10-3 
+\par ?Zwischenteile=h ac10-2=10.2.0  Zwischenteile 
+\par ?Kategorieliste=h ac10-5=Kernprogramm 
+\par ?Manipulationsbefehlen=h ac10-6 
+\par ?Anweisungen=h ac10-5=10.2.6.1   Anweisungen 
+\par ?Basis - Parametern=h ac10-2=Basis-Parameter 
+\par ?Aufnahme-Parameter=h ac10-3 
+\par ?Zeilen-Parameter=h ac10-4 
+\par ?Drucker- u. Codierungsparameter=h ac10-4=10.2.4 
+\par ?Seiten- oder Formularparameter=h ac10-3=Formular- 
+\par ?allgemeine Kategorie-Parameter=h ac10-5 
+\par ?Exportbefehle=h ac10-5=Kernprogramm 
+\par ?Steuerzeichenkette=h ac10-2=Steuerzeichenketten 
+\par 
+\par }
+ 

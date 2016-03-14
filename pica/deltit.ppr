@@ -1,0 +1,35 @@
+ Dateiname:        PICA\DELTIT.PPR
+ Inhalt:           Export-Parameter-Datei zur Erzeugung einer Liste der
+                   aufgrund der DEL-Datei in der allegro-Pica3-Datenbank zu
+                   lîschenden TitelsÑtze
+ letzte énderung:  13.11.96 (S. Busemann)
+
+
+   ----- Konstanten -------------------------------------------------------
+
+pn="Liste der aufgrund der DEL-Datei zu lîschenden TitelsÑtze"
+
+zl=0               kein Zeilenumbruch
+zm=0               kein Seitenumbruch
+ks=1               Beginn beim ersten Zeichen hinter #
+fl=0               keine Formularaufteilung
+ke=""              Kategorie-Ende-Zeichen
+
+
+   ----- Zwischenteil-Definitionen ----------------------------------------
+
+1=9
+2=0 C
+
+
+   ----- Kategorieliste ---------------------------------------------------
+
+#0000 +x b5 |102             Titelsatz Åber Register 10 nachladen, um die
+#+#                          neunstellige PPN zu erhalten
+
+#-x
+#0100 +# b5 P"-" |112        falls es noch LokalsatzschlÅssel mit der PPN
+                             gibt, fertig
+#0100 p1 P2                  sonst kann der Titelsatz gelîscht werden
+#+#
+

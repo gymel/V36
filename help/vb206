@@ -1,0 +1,95 @@
+
+Verlautbarung 206 der Entw.Abt.                              2008-05-26
+-------------------------------
+
+V28.4 mit kleinen, feinen Verbesserungen
+========================================
+
+
+aiaqs
+-----
+Weiter verbessert wurden die FLEXe, die als Beispiel fuer die
+Anwendung der aiaqs-Methodik geschrieben wurden. Alles weitere
+dazu steht in dem erweiterten Hilfetext:  h aiaqs
+
+Mit der aiaqs-Technik kann man sozusagen mit ganz einfachen
+und schnell zu erlernenden Mitteln eine Art Web-Services
+einrichten, die a99 nutzen kann, die aber ohne HTML und XML, ohne
+JavaScript und auch ohne Parametrierung auskommen. Notwendig sind
+nur Kenntnisse in FLEX und PHP, letztere halten sich aber sehr
+in Grenzen und man kann vorgefertigte Beispiele modifizieren, z.B.
+vktest.php und vktest.flx, im Text ausfuehrlich kommentiert.
+So ein Service koennte z.B. der Abruf eines Normdatensatzes aus
+einer zentralen Datenbank sein, oder etwas so scheinbar Banales
+wie der Abruf des Ortsnamens zu einer Postleitzahl. Geben Sie,
+um ein Beispiel zu sehen, mal in a99 dieses ein:
+
+x get Ihttp://www.biblio.tu-bs.de/db/plz/gp.php?plz=.....\sho IV
+
+aber mit Ihrer Postleitzahl da, wo .... steht. (Wir haben dazu
+eine PLZ-Datenbank von 1994 per avanti zugaenglich gemacht.)
+Die FLEXe fuer aiaqs sind mit im GP, die PHP-Dateien sind hier:
+http://ftp.allegro-c.de/aktuelle-version/aiaqs.zip
+
+
+Ende einer Datei zeigen   [s.a. Trick 72]
+-----------------------
+Der neue FLEX endfile.flx  zeigt wahlweise die letzte Zeile oder
+eine gewuenschte Anzahl Bytes am Ende einer Datei.
+
+Aufruf, wenn es sich um die Datei xyz handelt:
+X endfile xyz          letzte Zeile
+X endfile xyz 500      die letzten 500 Bytes
+
+Eingebunden ist endfile.flx jetzt auch in dir.flx als neue Funktion
+im Dateibehandlungsmenue (nach Auswahl einer Datei).
+
+
+Ergebnismenge aus Nummernbereich bilden   [s.a. Trick 24]
+---------------------------------------
+Mit PRESTO ging es so, wenn man die Satznummern 1000 bis 2000 als
+Ergebnismenge haben wollte:
+Anzeigebildschirm, beliebiger Satz
+x #1000 eingeben: Satz 1000 erscheint
+(   tippen - Nummer 100 wird gemerkt
+x #2000 eingeben: Satz 2000 erscheint
+)  tippen - fertig ist die Ergebnismenge!
+Anders, aber nicht schwieriger ist es mit a99 - man macht es jetzt so:
+
+X ergnum
+Eingabezeile erscheint,
+1000-2000 eingeben
+fertig, die Erg.Menge erscheint.
+
+
+FLEX-Verbesserung
+-----------------
+var ... (F"...")
+bei den Manip.Befehlen f und F konnte man die Steuerzeichen nicht
+alle korrekt verwenden, speziell das Zeichen ^ als solches konnte
+nicht benutzt werden. Jetzt geht das: f"^~MJ" beseitigt Zeilenvor-
+schuebe am Ende des iV-Textes, denn:
+Wichtiger Fall: Wenn man mit  fetch <numb>  eine Anzahl Bytes aus
+einer Textdatei eingelesen hat, sind in der iV die Steuerzeichen
+13 und 10 ersetzt durch ^M bzw. ^J, also je zwei Nichtsteuerzeichen:
+die Code 94 und 77 bzw. 74.
+Will man nun am Ende der iV diese beseitigen, sollte das gehen mit
+var (F"^~MJ ")
+d.h. jedes der Zeichen ^ M J und Spatien sollen am Ende weg,
+genommen werden, egal wieviele davon zu finden sind. Jetzt geht das.
+
+
+a99: Problem beim Start, wenn Passwort
+--------------------------------------
+Bei Vorhandensein von Passwoertern (FLEX _psw.flx im DbDir)
+fiel die Verarbeitung der StartFLEXe aus! Das wurde behoben.
+
+Export-Parameter fuer RIS
+-------------------------
+Die Literaturverwaltungsprogramme "Reference Manager" und "Citavi"
+koennen ein Datenformat namens RIS einlesen. Dieses ist recht einfach.
+Die Datei  e-ris.apr  zeigt, wie man es exportiert. Eingebaut ist dies
+schon in den allegro-OPAC der UB Braunschweig:
+http://www.biblio.tu-bs.de/db/katalog/
+wo man sich die Ergebnisse im RIS-Format als Mail senden lassen kann.
+

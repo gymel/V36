@@ -1,0 +1,81 @@
+  O-INIT.FLX : ORDER-Vorbereitungen: Flip-Buttons setzen
+  2004-09-09
+
+if not #uOR jump start
+noyes ORDER ist bereits initialisiert. Nochmal?
+if not yes help order;end
+
+:start
+   Anzeigeparam. d-wrtf laden
+ var a
+ if not "d-wrtf" disp p d-wrtf
+
+  Flip-Buttons vorbereiten
+flip 4&4: Bearb.=X cfga
+flip 5&5: Bestell.=X o-bestel
+flip 6&6: o-Menü=h order
+flip 7&7: o-Funktion=X o-func
+flip 8&8: Speich.=X cfgb
+
+  Datei order.inc enth. einige Variablen, z.B. f. Nummerngenerierung
+include order.inc
+
+if not #uOR addform ord.frm
+#uOR 1
+
+  Lieferantensaetze laden und alle in $Lief speichern,
+  mit /// als Trenner
+
+var "#" i
+ins $oi
+
+find |; SYSL?
+if l1 jump noli
+
+ Lief.codes und -namen alle in $Lief speichern:
+first
+var ""
+ins $Lief
+:lif
+var $Lief "///" #9A
+ins $Lief
+next
+if yes jump lif
+
+erase set
+
+
+  *** obsolet:
+    Textbausteindaten laden und alle in $Text speichern,
+    mit /// als Trenner  (wird im FLEX-System nicht gebraucht)
+
+ find |; SYSX?
+ if l1 jump notx
+
+ first
+ var ""
+ ins $Text
+ :txt
+ var $Text "///" #9A
+ ins $Text
+ next
+ if yes jump txt
+  ***
+
+var $oi
+f1nd
+
+  "Initialisierung" in order.rtf loeschen
+#ua!
+help order
+mes ORDER ist aktiviert! Alt+7 ist jetzt Hotkey
+act 1
+end
+
+:noli
+
+var "Es sind noch keine Lieferantendaten vorhanden" n "Die Datenbank ist wohl noch nicht auf ORDER vorbereitet"
+mes
+end
+
+

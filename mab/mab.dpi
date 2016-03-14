@@ -1,0 +1,229 @@
+  MAB.DPI : Indexparameter fuer MAB2, Kurzfassung
+  2001-01-26 
+
+  Die folgenden Zeilen gelten fÅr jede Index-Parameterdatei, nicht Ñndern!
+ --------------------------------------------------------------------------
+
+zl=0           kein Zeilenumbruch
+zm=0           keine Seiteneinteilung
+ad=0           Wenn keiner der "Kîpfe" (ak) vorkommt, dann keine Eintragung
+ag=0           Hierarchische Untereinheiten ebenfalls fÅr Index behandeln
+
+ --------------------------------------------------------------------------
+
+il=72          SchlÅssellÑnge (72 ist optimal)
+ ic=1           nur wenn Umcodierung der Eingabe gewÅnscht
+                 dann werden die Sprungmarken #-1 ... #-9 benutzt
+i0=72          LÑnge der Kurzanzeige
+ir=4           LÑnge der Restriktionsschluessel (nur Ersch.Jahr)
+
+  öberschriften der Register:
+
+|1="1 : Namen von Personen (Verfasser, Herausgeber, usw.)"
+|2="2 : Kîrperschaften (Behîrden, Institute, usw.) VORSICHT: unvollstÑndig!!!"
+|3="3 : Wîrter aus Titeln, Schlagwîrter"
+|4="4 : Titel (Sonderabteilung K : Kongresse)"
+|5="5 : Reihen (Serientitel ; Bandnummer)"
+|6="6 : Verlage (Name,Erscheinungsjahr)"
+|7="7 : Sachgruppen
+|8="8 : Signaturen (insbes. Lesesaal-Standorte)"
+|9="9 : ISBN  (mit 'i' davor, also z.B. i3-512-02341-7)"
+  öberschrift der Kurzanzeige:
+|<="       Titel                                        Verf.       Jahr  Signatur"
+
+  Symbolische Registernamen
+I PER 1 "Personennamen"
+I TIT 3 "Titel- und Schlagwîrter"
+I TAF 4 "TitelanfÑnge"
+I SER 5 "Serientitel"
+I VLN 6 "Verlagsnamen"
+I KOR 2 "Kîrperschaftsname"
+  Restriktionen:
+R PYR r1 "Erscheinungsjahr"
+
+  Spezialzeichen:
+i1=":>"
+
+i2="=:->"      Indexeintragungen, die mit einem dieser Zeichen anfangen,
+               werden ignoriert
+i3=".,-:] "    diese Zeichen sollen am Ende eines SchlÅssels beseitigt werden
+
+  *********************************************************************
+
+ 
+  PrimaerschlÅssel ist: #00 (Zeile evtl. austauschen)
+ak=001+@
+  Kurzanzeige-Zeile:
+ak=zz+0
+  Restr.Schl.
+ak=zz+/
+  Sonstige SchlÅssel:
+ak=33."[ ]"+C
+ak=1.+A
+ak=30." "+C
+ak=2.+B
+ak=331+D 304+D
+ak=454/455+G
+ak=902.+S
+ak=907.+S
+ak=912.+S
+ak=412+V
+
+  Kategorieliste: Hier findet die Arbeit statt
+
+#-0           Shortlist: Author: Title (Date)
+#t{ "|0" }
+!331 y0 U
+!100 y0 U p{ &42 "/ " }
+!425 x"*1" e4 p{ &56 " " }
+#+#
+
+#-@           Primaerschl. Reg.9
+!u1 p"|9"
+#+#
+
+#-/     Restr.Schl.
+#425 B" = " x"*1" e4 r4,0 p"|/"
+#+#
+
+#-A
+!u1 u "|1"
+#+#
+
+#-B
+!u1 u "|2"
+#+#
+
+#-C
+!u1 "|3"
+#+#
+
+#-D
+!u1 u "|4"
+#+#
+
+#-G
+!u1 u E65 "|5"
+!u2 x"*1" e"." r5 p" ;"
+#+#
+
+#-S
+!u1 +- i8,^       SW ohne IdNr
+!u1 +# i5,z T" " "|7g"
+!u1 +# i5,p b22 "|1" P" *"
+!u1 +# i5,c b22 "|2" P" *"
+!u1 +# i5,k b22 "|2" P" *"
+!u1 b22 "|3" P" *"
+#+#
+
+#-V
+!u1 p"|6"
+#+#
+#-1
+!u1
+#+#
+
+
+   Zeichenumwandlungen:
+   p = Normaltabelle (anzuwenden, wenn Zeile mit # beginnt)
+   q = Alternativtabelle  (anzuwenden, wo oben ! statt # steht)
+
+p  2
+q  2
+
+p ™ 1    Nichtsortierzeichen weglassen
+q ™ 1    Nichtsortierzeichen weglassen
+         Zeichenumsetzungen:
+p .63 70  Fragezeichen
+p a/z A          alles in Grossbuchstaben
+p Ñ é
+p î ô
+p Å ö
+p _ 1
+
+p [ 1
+p ] 1
+
+q A/Z 97  alles in Kleinbuchstaben (!) umsetzen zum Sortieren (A->a, B->b...)
+q Ñ "ae"  Umlaute auflîsen
+q î "oe"
+q Å "ue"
+q é "ae"
+q ô "oe"
+q ö "ue"
+q · "ss"
+q Ç 101      Akzentbuchstaben
+q ä 101
+q à 101
+q ê 101
+q â 101
+q † 97
+q Ö 97
+q É 97
+q ¢ 111
+q ï 111
+q ì 111
+q £ 117
+q ó 117
+q ñ 117
+q ° 105
+q ç 105
+q å 105
+q ã 105
+q § 110
+q • 110
+q Ä 99
+q á 99
+q Ü 97
+q è 97
+q ò 121
+q ë "ae"   Ligaturen
+q í "ae"
+q Ì "oe"
+q ≤ "th"
+p ë "ae"   Ligaturen
+p í "ae"
+p Ì "oe"
+p ≤ "th"
+
+q ` 1
+
+
+q ˙ 32
+p ˙ 32
+
+
+q [ 1
+q ] 1
+q !// =1    die Zeichen ! bis / werden auf 1 gesetzt, d.h. ausgefiltert
+q : 1    diese auch
+q / 47
+q * 42
+q ; 1
+q ? 63
+q _ 1
+q ^ 1
+q ~ 1
+p ~ 1
+             DIN 31628-2 Diakritika: alle ausblenden
+q ®/ﬂ =1
+p ®/ﬂ =1
+
+p ∞ 73   I    tÅrk I ohne Punkt
+q ∞ 105  i
+
+q  1
+q  1
+q + 43
+
+
+q & "und"
+
+q - -        diese Zeichen sollen bleiben:
+q , , 
+
+to      o.dpt laden : ASCII<->ANSI Tabelle
+
+  Stopwortliste laden
+
+tswl1

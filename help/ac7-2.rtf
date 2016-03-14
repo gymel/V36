@@ -1,0 +1,134 @@
+{\rtf1\ansi\ansicpg1253\deff0\deflang1031{\fonttbl{\f0\fswiss\fprq2\fcharset128  MS Sans Serif;}{\f1\froman\fprq2 Times New Roman;}{\f2\fscript\fprq2 Comic Sans MS;}{\f3\fscript\fprq2\fcharset0 Comic Sans MS;}{\f4\froman\fprq2 Garamond;}{\f5\froman\fprq2\fcharset0 Garamond;}{\f6\froman\fprq2\fcharset0 Times New Roman;}{\f7\fmodern\fprq1 Courier New;}{\f8\fnil\fprq2\fcharset2 Wingdings;}{\f9\fmodern\fprq1\fcharset161{\*\fname Courier New;}Courier New Greek;}{\f10\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red0\green0\blue255;\red255\green0\blue0;}
+\viewkind4\uc1\pard\fi-658\li658\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs24   \f1\fs20 `\cf1\ul\b Erster Teil\cf0\ulnone\b0 `\b\fs36 
+\par \pard\qc\cf2\i\f2\fs28 allegro S\i0 ystemhandbuch V\f3 32\cf0\f1\fs48 
+\par \pard\fi-658\li658\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f4\fs36 
+\par \pard\tx914\tx1320\tx1634\tx2040\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 7.5\tab\f5 QRIX - Werkzeug f\'fcr Datenbank-Ingenieure\b0\f4\fs20 
+\par \f1 
+\par \b Wie arbeitet INDEX?\b0 
+\par \f6 Eine Indexdatei ist ein recht kompliziertes Gebilde. Seit Version 10.2 gibt es mehrteilige Indexdateien mit bis zu 9 Registern, ab 12.1 sind es 11. Mit zunehmender Gr\'f6\'dfe der Anwendungen wurde der Wunsch nach einer flexibleren Handhabung und schnellerem Aufbau der Indexdateien dringender. Ab Version 10.3 ist das Programm INDEX intern anders gestaltet, und zu seiner Unterst\'fctzung wurde ein neues Programm, QRIX, entwickelt. Beide Programme wurden mehrfach optimiert; gegen\'fcber 10.2 braucht das Indexieren nur noch weniger als 10%% der Zeit. Rechner mit Pentium-Prozessoren schaffen nicht selten mehrere hundert S\'e4tze pro Sekunde. \f1 
+\par \f6 Hier soll zun\'e4chst die Arbeitsweise des Programms INDEX etwas n\'e4her erl\'e4utert werden, bevor die Benutzung von QRIX erkl\'e4rt wird. \f1 
+\par \f6 Das Programm INDEX erledigt nicht die gesamte Arbeit der Indexerstellung, sondern es erzeugt zun\'e4chst einmal vorsortierte Zwischendateien mit den Namen iik (k=1,2,...). Ist das erledigt, mu\'df ein zweites Programm, eben QRIX (sprich "cricks", f\'fcr "Quick Reorganization of IndeX") den Rest erledigen, d.h. die Zwischendateien vereinigen zu einer richtigen Indexdatei. QRIX schreibt protokollarische Meldungen in die Datei PROTOQ, INDEX dagegen in PROTOK.\f1 
+\par 
+\par \f6 Eine Indexierung (= Datenbank-Generierung) geht folgenderma\'dfen vor sich: (s.a. Kap.7) \f1 
+\par 
+\par \pard\fi-408\li408\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b  1.\b0\tab INDEX liest .\i c\i0 LD-Dateien und/oder .ALG-Dateien ein und gibt eine neue Datenbankdatei (Typ .\i c\i0\f6 LD) und eine Satztabelle (Typ .TBL) aus. Dabei produziert es mit Hilfe der Index-Parameterdatei die Zugriffsschl\'fcssel, die es aber zun\'e4chst im Arbeitsspeicher aufbewahrt. \f1 
+\par \b  2.\b0\tab\f6 Wenn der Arbeitsspeicher voll wird, sortiert INDEX die gesammelten Eintr\'e4ge und schreibt sie in eine Hilfsdatei mit dem Namen ii\i\f1 k\i0\f6  . Dann l\'e4uft Vorgang 1. weiter, bis die Ausgangsdaten zu Ende sind. Die Zahl \i\f1 k\i0\f6  beginnt bei 1 und wird jedesmal um 1 hochgez\'e4hlt. \f1 
+\par \b  3.\b0\tab Sind alle Ausgangsdaten durchgearbeitet, liegen als Zwischenergebnis einige Hilfsdateien ii1, ii2, ..., iin vor. Dann ruft INDEX das Programm QRIX auf. Hatte man Option -m1 gegeben, kann man vorher unterbrechen, z.B. um die Ausgangsdaten auszulagern, und QRIX dann mit der Hand starten. (Der Aufruf wird an das Ende der Datei PROTOK geschrieben, damit man ihn sich bei Bedarf ansehen kann.) 
+\par \b  4.\b0\tab\f6 QRIX nimmt jeweils 10 Hilfsdateien und mischt sie zu einer neuen zusammen: aus den Nummern 1-10 wird Nummer 1, aus 11-20 wird Nummer 2 usw., bis nur noch h\'f6chstens 10 Dateien \'fcbrig sind. \f1 
+\par \b  5.\b0\tab Wenn schon eine .cDX-Datei vorhanden ist, sind 2 Situationen denkbar, und das Programm fragt, welche davon vorliegt: (man antwortet durch Druck auf '0' oder '1') 
+\par \pard\fi-912\li912\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\b\f7 1\b0\f1  \tab\f6 INDEX war gestartet worden, um neue Daten zur Datenbank hinzuzuf\'fcgen: in diesem Fall mu\'df QRIX die neuen Hilfsdateien mit der vorhandenen .cDX-Datei zu einer neuen .cDX-Datei zusammenmischen. \f1 
+\par \pard\fi-913\li913\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Wenn man INDEX mit Option\f7   -f?1\f6   startet (? = 7,i,n), wei\'df das Programm gleich Bescheid. \f1 
+\par \pard\fi-912\li912\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\b 0\b0  \tab\f6 Die alte Indexdatei ist \'fcberfl\'fcssig, denn es wurde eine Index-Erneuerung gestartet. Dann wird die .cDX-Datei zun\'e4chst gel\'f6scht und aus den Hilfsdateien neu aufgebaut. \f1 
+\par \pard\fi-913\li913\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Dies kann man dem Programm durch Option\f7   -f?0\f6   mitteilen (? = 7,i,n). Oder man l\'f6scht die .cDX-Datei vor dem Start. \f1 
+\par \pard\fi-406\li406\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b  6.\b0\tab\f6 Wenn mit Stamms\'e4tzen gearbeitet wird (es kommt ein Befehl\b\f7  i5\b0\f6  in der Index-Parameterdatei vor), dann startet QRIX das Programm INDEX automatisch f\'fcr einen \b\f1 zweiten Durchlauf\b0  (\f7 -\f8\'d8\f6  10.2.6.8). Hierbei werden die Ersetzungen der Stammsatznummern durch die Klartexte der Namen, Schlagw\'f6rter etc. durchgef\'fchrt (\f7 -\f8\'d8\f6  10.2.6.3 Index-Sonderbefehle). Dies gilt auch f\'fcr die Kurzanzeige: sie wird automatisch mit bearbeitet. \f1 
+\par \tab Den zweiten Durchlauf kann man auch von Hand starten: dann ist INDEX mit der Option\b\f7  -fa1\b0\f6  aufzurufen. QRIX schreibt diesen Aufruf f\'fcr Kontrollzwecke an das Ende der Datei PROTOQ. \f1 
+\par \pard\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b Wiederanlauf nach Unterbrechung\b0 
+\par \f6 Wenn QRIX z.B. durch Stromausfall abgebrochen wurde, stellt man zun\'e4chst fest, wie weit es gekommen war. Beispiel: es gibt die Dateien ii1 bis ii76 und ii751 bis ii1248. Das bedeutet: es mu\'df mit ii751 weitergemacht werden (ii76 ist sehr wahrscheinlich unvollst\'e4ndig). Das veranla\'dft man durch \f1 
+\par \b\f7 qrix -fq -n751 ...\b0\f1 
+\par Dann entsteht eine neue \f7 ii76\f1  aus \f7 ii751 - ii760\f1 , usw. Ist dann die letzte verarbeitet, geht es wieder vorn los: aus \f7 ii1\f1  bis \f7 ii10\f1  wird eine neue \f7 ii1\f1 , aus \f7 ii11\f1  bis \f7 ii20\f1  wird \f7 ii2\f6 , usw. Sind schlie\'dflich nur noch bis zu 10 \f7 ii\f6 -Dateien \'fcbrig, wird daraus die eigentliche Indexdatei erstellt. \f1 
+\par 
+\par \b Zum Zeitbedarf\b0 
+\par \f6 Abh\'e4ngig von der Leistung des Systems k\'f6nnen je Stunde 50.000 bis 1.000.000 Datens\'e4tze indexiert werden. Mehrt\'e4gige Indexierungsl\'e4ufe d\'fcrften selbst bei Millionenmengen kaum auftreten. Man kann mehrteilige Indexdateien auch etappenweise erstellen oder einzelne Indexteile herausnehmen oder getrennt erneuern, ohne den Gesamtindex neu generieren zu m\'fcssen (dazu gibt es die QRIX-Optionen -w und -W). Oder z.B. zeitweise einen Zusatzindex dranh\'e4ngen und sp\'e4ter wieder beseitigen, den man f\'fcr eine Dublettenpr\'fcf\f1 ung braucht (\f7 -\f8\'d8\f1  7.6/7). 
+\par 
+\par \b Aufruf\b0 
+\par \f6 Mit folgenden Optionen ruft man QRIX auf: Zun\'e4chst die \b\f1 Funktionen:\b0 
+\par 
+\par \pard\fi-913\li913\tx914\tx8236\tx9923\b\f7 -fc\f1\tab Index kompaktieren\b0   (insbes. Kombination mit -w und -W, s.u. !)\b\i\tab CockPit\i0\f9  \'b5r o c\b0\f1 
+\par \pard\fi-912\li912\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab vorhandene .cDX-Datei komprimieren; .\i c\i0\f6 LD und .TBL bleiben unber\'fchrt \f1 
+\par \tab\tab Wenn man\f7  -fc1\f6  gibt, wird der alte Index nicht gel\'f6scht, sondern in OLDIX umbenannt. Nach R\'fcckbenennung ist er dann wieder benutzbar. \f1 
+\par \tab\tab\f6 Nur bei dieser Funktion bleiben die manuellen \'c4nderungen (\f7 -\f8\'d8\f1  Kap.1.4, Funktionen Inst/Del), die man im Index gemacht hat, erhalten. 
+\par \tab\tab\f6 Diese Funktion ist sinnvoll, wenn ein Index sich nach l\'e4ngerem Gebrauch stark vergr\'f6\'dfert hat. \f1 
+\par \tab\tab Die Kombination\f7   QRIX -fc -W47 \f6  w\'fcrde z.B. bewirken, da\'df beim Kompaktieren die Teil-Indizes 4 und 7 weggelassen werden (wozu das gut ist? \f7 -\f8\'d8\f1  7.6 und 7.8). 
+\par \pard\fi-913\li913\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 -fd\f1\tab\tab Index anzeigen\b0  (default-Funktion) 
+\par \pard\fi-912\li912\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab zusammen mit den Optionen -s, -S, -w, -W und -x kann man sich verschiedene Teile einer Indexdatei am Bildschirm ansehen oder ausdrucken lassen. Stop/Abbruch mit\b\f7  x\b0\f6  . Diese Funktion wird z.B. angewendet bei der Einrichtung WWW-Zug\'e4ngen, um Index-Einblicke zu erm\'f6glichen. \f1 
+\par \pard\fi-913\li913\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 -fqi\f1\tab Hilfsdateien mischen und Index aufbauen\b0    (i = 0 oder 1\f6  f\'fcr Neuaufbau bzw. Einmischen\f1 ) 
+\par \pard\fi-912\li912\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Dieser Aufruf wird von INDEX automatisch gemacht, sobald die ii-Dateien fertig sind. Man kann aber auch nach dem Ablauf von INDEX unterbrechen (Option\f7  -m1\f1 ) und\f7  QRIX`-fq\f6  sp\'e4ter mit der Hand aufrufen. Die von INDEX erzeugten Dateien iik werden zusammengemischt. Wenn keine .cDX-Datei existiert, wird sie neu erzeugt. Wenn eine vorhanden und ist und\f7  -fq1\f1   gegeben wurde, wird sie mit den Hilfsdateien zu einem neuen Index vereinigt, bei\f7  -fq0\f6  wird der vorhandene Index gel\'f6scht; wenn i fehlt, wird gefragt, ob das Vereinigen stattfinden soll oder nicht. \f1 
+\par \tab\tab Wenn man\b\f7  QRIX -fq\b0\f6  von Hand gibt, f\'fcge man die Option\b\f7  -Kn\b0\f6  mit n=Schl\'fcssell\'e4nge hinzu. (Wenn INDEX automatisch QRIX aufruft, passiert auch das automatisch.) Sonst fragt das Programm nach dieser Zahl, falls es die Index-Parameterdatei nicht findet (denn darin steht die Zahl im Befehl\f7  il\f1 ). 
+\par \pard\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f6 Mit diesen drei Funktionen sind folgende M\'f6glichkeiten sinnvoll kombinierbar: \f1 
+\par 
+\par \pard\tx8236\b Zusatz-Optionen:\i\tab CockPit\i0\f9  \'b5f q\b0\f1 
+\par \pard\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1633\li1633\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 -E\b0\i\f1 datei\b\i0\tab interne Satznummern ausgeben\b0  : dies wird in WWW-Anwendungen eingesetzt, und zwar zusammen mit der Option: 
+\par \pard\fi-913\li913\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 
+\par -\f10 d\b0\i\f6 dbdir\tab\b\i0 Datenordner\b0\i  : \i0 Wo liegt die Datenbank, also auch der Index, um den es geht? 
+\par \b\f7 
+\par -e\b0\i\f1 parami\f6 =dbdir 
+\par \b\i0\f1\tab\f6\tab\f1 Indexparameter\b0 : \f6  QRIX mu\'df wissen, wie die Indexdatei hei\'dft bzw. hei\'dfen soll und was die maximale Schl\'fcssell\'e4nge ist. Option -e erm\'f6glicht es ihm, diese Dinge festzustellen. Weder -d noch -e d\'fcrfen fehlen.\f1 
+\par \b\f7 
+\par -\f10 Ze\f1\tab\tab Index\f6 datei  \f10 cat.aex\f6  nehmem statt  \b0\f10 cat.adx\b\f6   (MultiX)  \b0 bei Funktion  \f10 -fd\f1 
+\par \f6 
+\par \b\f7 -Mn\f1\tab\tab Zeilenanzahl vorgeben\b0  : es werden n Zeilen ausgegeben (nur bei\f7  -fd\f1  sinnvoll) 
+\par \pard\fi-1633\li1633\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 -tnnn,ppp\f1\tab Kategorienummern\b0\f6  f\'fcr die Ausgabe in \i\f1 datei\i0\f6 . Die Satznummer wird in Kategorie #nnn ausgegeben, in #ppp kommt die Kurzanzeige. Es entstehen Ausgabes\'e4tze im Grundformat, die nur aus #nnn und #ppp bestehen. Diese Grunddatei kann anschlie\'dfend per SRCH verarbeitet werden. Dabei kann man die eigentlichen S\'e4tze laden (per Nachladebefehl\b\f7  |01\b0\f6 ). Dies wird in \'e4lteren Web-Verfahren gebraucht, wo man nicht den "avanti"-Server einsetzen konnte. \f1 
+\par \tab\tab\tab Die entstandene \i datei\i0\f6  mu\'df dann anschlie\'dfend durch SRCH verarbeitet werden. \f1 
+\par \pard\fi-913\li913\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 -sabc\f1\tab Selektive Anzeige\b0   (Ausschnitt aus dem Index, nur bei\f7  -fd\f1  sinnvoll) 
+\par \pard\fi-1633\li1633\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 -Sxyz\b0\f1\tab\tab Das Programm soll bei\f7  abc\f1  mit der Anzeige beginnen, bei\f7  xyz\f1  enden 
+\par \pard\fi-913\li913\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 -wijk\f1\tab\f6 Register ausw\'e4hlen\b0   (w = with; i j k = aufsteigende Ziffern zwischen 1 und 9, : f\'fcr 10,  ;  f\'fcr 11) \f1 
+\par \pard\fi-1633\li1633\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab nur die Register i, j und k sollen angezeigt werden; z.B.\f7  -w135\f1 
+\par \pard\fi-913\li913\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 -Wijk\f1\tab Register i, j und k weglassen\b0   (W = Without) 
+\par \pard\fi-1632\li1632\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab\f6 z.B. mit -W123579 w\'fcrde man nur die Register 4, 6 und 8 bekommen \f1 
+\par \pard\fi-1633\li1633\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab (sind \f6  \f1 -w \f6  \f1 und\f6  \f1  -W \f6  \f1 gleichzeitig angegeben, wirkt nur\f6  \f1  -w) 
+\par \pard\fi-913\li913\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 -xn\f1\tab\tab\f6 Schwellenwert f\'fcr die Anzeige\b0\f1  
+\par \pard\fi-1633\li1633\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab\f6 nur Eintr\'e4ge mit mehr als n Datens\'e4tzen erscheinen in der Anzeige. Standardwert ist\b\f7  -x29\b0\f1 . Wenn man den gesamten Index sehen will:\b\f7  -x0\b0\f1   geben (nur bei\f7  -fd\f1  sinnvoll) 
+\par \pard\fi-913\li913\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 -T\f1\tab\tab Testbetrieb\b0\f6  : man erh\'e4lt zus\'e4tzliche Meldungen \'fcber den Verlauf der Arbeit des Programms. \f1 
+\par \pard\fi-1701\li1701\tx407\tx993\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 -Q\b0\i\f1 proto\b\i0\tab Protokolldatei\b0 : Meldungen werden in die Datei PROTOQ geschrieben. Mit dieser Option kann man einen anderen Namen vorgeben. 
+\par \pard\fi-1633\li1633\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 >\b0\i\f1 filename\b\i0\tab Ausgabe in Datei \i filename\i0  umlenken\b0\f6  : f\'fcr Option\b\f7  -fd\b0\f6  ist es sinnvoll, die Ausgabe statt auf den Bildschirm in eine Datei schreiben zu lassen. Bei \'e4lteren WWW-Schnittstellen wurde dies eingesetzt, um Registerausz\'fcge zun\'e4chst in eine Datei schreiben zu lassen und diese dann f\'fcr die Anzeige in Netscape aufzubereiten. \f1 
+\par \pard\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1633\li1633\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b Beispiel:\f7\tab\tab qrix -fq1 -dbibl -ecat/bibl -x1000 \f10    \b0\f1 (\b\f10 ii\b0\f1 -Dateien auf BIBL\\ suchen und dort in \f6  \f10 cat.adx\f1  \f6  \f1 einmischen) 
+\par \f6\tab\tab\tab\b\f10 qrix -fd -dbibl -ecat/demo2 -Ze -x0 >ixlist\b0    \f1 (\f6 gesamte  \f10 cat.aex\f1  \f6  als lineare Liste ausgeben in die Datei  \f10 ixlist\f6  \f1 ) 
+\par \pard\fi-1632\li1632\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-658\li658\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f4\fs36 7.6\tab Einzelne Register erneuern\b0\fs20 
+\par \pard\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1 
+\par \f6 Wer gr\'f6\'dfere Datenmengen hat (d.h. mindestens mehrere zehntausend), wird es l\'e4stig finden, wegen einer \'c4nderung an einem der Register gleich einen umfassenden Gesamtlauf zur Neu-Indexierung zu machen. Ist auch nicht notwendig. Man geht so vor: Nehmen wir an, die Register 2 und 5 sollen erneuert werden. Dann: \f1 
+\par 
+\par \pard\fi-913\li913\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274    \bullet\tab\f6 Man f\'fchrt die n\'f6tigen \'c4nderungen an der Index-Parameterdatei aus und macht zun\'e4chst alle nicht f\'fcr die Register 2 und 5 zust\'e4ndigen ak-Zeilen unwirksam, indem man jeweils ein Leerzeichen davor setzt. \f1 
+\par    \bullet\tab Man beseitigt die Register 2 und 5 wie in Abschnitt 7.8 gezeigt  (\b\f7 qrix -fc -W25 ...\b0 )\f1 
+\par    \bullet\b\f7\tab index -fi1 -0\b0\f1   erstellt die neuen Register 2 und 5 und arbeitet sie in die alte Indexdatei ein, evtl. unter Mithilfe von QRIX, welches aber automatisch aufgerufen wird. (Achtung: bei\f7  index -fi0\f6  h\'e4tte man anschlie\'dfend \b\f1 nur\b0\f6  noch die Register 2 und 5, die anderen w\'e4ren weg!) Die nur f\'fcr INDEX geltende Option\b\f7  -0\b0\f6  (Null) verhindert \'fcbrigens, da\'df die Leerschl\'fcssel, die ja ins Register 1 kommen, bei dem Durchlauf neu gebildet werden. Schaden k\'f6nnte das zwar nicht, aber es w\'fcrden lauter Meldungen "Ladefehler ..." kommen. \f1 
+\par    \bullet\tab\f6 Nicht vergessen: in der Index-Parameterdatei wieder alle ak-Zeilen wirksam machen (Leerzeichen vor den ak-Zeilen wieder wegnehmen). Sonst werden bei k\'fcnftigen \'c4nderungen und Neueingaben nur die Register 2 und 5 bedient. \f1 
+\par \pard\fi-658\li658\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f4\fs36 7.7\tab\f5 Neues Register hinzuf\'fcgen\b0\f4\fs20 
+\par \pard\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1 
+\par \f6 Solange man noch weniger als 11 Register hat, kann man ohne weiteres eines oder mehrere neue hinzuf\'fcgen. Das geschieht wie folgt:   (wenn es um das Kurztitelregister geht, siehe 7.0, Situation 6) \f1 
+\par 
+\par \pard\fi-913\li913\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274    \bullet\tab\f6 In der Index-Parameterdatei erg\'e4nzt man die n\'f6tigen ak-Zeilen und Prozeduren f\'fcr die Schl\'fcssel, die in dem neuen Register stehen sollen. Dann macht man zeitweilig die anderen ak-Zeilen alle unwirksam, indem man jeweils ein Leerzeichen davor setzt. \f1 
+\par    \bullet\tab Man startet\b\f7   index -fi1\b0\f6   und l\'e4\'dft es durchlaufen. Das neue Register wird angelegt und in die vorhandene Indexdatei eingearbeitet. \f1 
+\par    \bullet\tab Nicht vergessen: in der Index-Parameterdatei wieder alle ak-Zeilen wirksam machen (Leerzeichen vor den ak-Zeilen wieder wegnehmen). 
+\par \pard\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-658\li658\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f4\fs36 7.8\tab\f5 Ein Register ganz l\'f6schen\b0\f4\fs20 
+\par \pard\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1 
+\par Ein Register \b k\b0\f6 , das nur tempor\'e4r gebraucht wird, kann auch mit Option \b\f7 -W\b0\f6  wieder v\'f6llig beseitigt werden. Das leistet der Befehl \f1 
+\par 
+\par \b\f7 qrix -fc -Wk -e\b0\i\f1 param/datapath\i0 
+\par 
+\par Zugleich wird dabei der Index kompaktiert - was nie schaden kann. 
+\par 
+\par \pard\fi-658\li658\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f4\fs36 7.9\tab\f5 Registerausz\'fcge\b0\f4\fs20 
+\par \pard\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1 
+\par \i Hinweis: \i0\f6 Viel leichter geht's mit den Windows-Programmen \'fcber den Button [List] im Indexfenster (\lang1024\f8\'e0\lang1031\f1  Kap.2). 
+\par \f6 Die FLEX-Sprache hat einen Befehl `\cf1\ul\b qrix\cf0\ulnone\b0 `, mit dem man leicht Registerausz\'fcge aller Art erstellen kann (Men\'fc Export / Komfort-Methoden / Registerauszug). 
+\par Manchmal wird gew\'fcnscht, einzelne Register ganz oder teilweise in eine Textdatei kopieren zu k\'f6nnen. Wie das geht, wurde oben unter 7.5 schon erw\'e4hnt. Wir zeigen es hier noch deutlicher und mit Beispielen, damit es jeder leicht durchf\'fchren kann, auch ohne sich mit den anderen Optionen zu befassen. Wenn man die Bildschirmausgabe mit dem MS-DOS-Steuerzeichen \b\f1 >\b0\f6  in eine Datei oder auf den Drucker umlenkt, kann man Registerausz\'fcge in Textdateien umwandeln oder ausdrucken. Das \b\i\f1 CockPit\b0\i0\f6 -Men\'fc\b\f9  \'b5f q\b0\f6  f\'fcr QRIX enth\'e4lt einen Punkt \b\f1 d Dateiname\b0\f6 . Dort tr\'e4gt man den gew\'fcnschten Namen oder PRN ein. Der QRIX-Aufruf wird dann erg\'e4nzt um die Option  >\i\f1 dateiname\i0\f6 . Diese kann man nat\'fcrlich auch in eigene Aufrufe einbauen. \f1 
+\par 
+\par \b Beispiel 1:\b0\f6  Auf KATALOG (Unterverzeichnis von C:\\ALLEGRO) liegt die Datenbank CAT. Aus dem Register 1 soll ein Ausschnitt von 30 Zeilen L\'e4nge in die Datei EXTRACT geschrieben werden, beginnend bei "mozart". Das k\'f6nnte man so erreichen: \f1 
+\par \f7 qrix -dkatalog -fd -x0 -smozart -M30 -w1\f10  -ecat/katalog\f7  >extract\f1 
+\par 
+\par \b Beispiel 2:\b0\f6  Man will aus Register 1 die Zeilen mit den gel\'f6schten S\'e4tzen sehen. Die Schl\'fcssel beginnen alle mit "//". Der Befehl kann so aussehen: \f1 
+\par \f7 qrix -fd -x0 -dkatalog -s// -S0\f10  -w1 -ecat/katalog\f1 
+\par 
+\par \f6 DOS: \f1 Anstatt diese Aufrufe mit der Hand einzugeben oder in Batchdateien zu installieren, kann man auch im \b\i CockPit\b0\i0\f6  das Men\'fc "Funktionen / QRIX" aufrufen. Alle Einzelheiten des Aufrufs werden dort in einer Eingabemaske eingestellt. \f1 
+\par 
+\par \pard\fi-1633\li1633\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 NEWINX ???\b0\f1  \tab\f6 Eine Datei mit diesem Namen entsteht, wenn QRIX nicht wei\'df, wie die zu produzierende Indexdatei hei\'dfen soll. Mit der Option\f7  -e\i\f1 dbn\i0  kann man es ihm sagen, wobei \i dbn\i0\f6  der Datenbankname ist. Bei Start \'fcber \b\i\f1 CockPit\b0\i0  tritt dieser Fall nicht auf. 
+\par \pard\fi-1632\li1632\tx407\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i\tab\tab\tab Abhilfe: \i0 einfach NEWINX umbenennen, also z.B. 
+\par \tab\tab\tab\f7   ren newinx cat.adx\f1  . 
+\par \f6\tab\tab\tab und eine zu dem Zeitpunkt bestehende, viel kleinere cat.adx vorher l\'f6schen.\f1  
+\par \pard\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par ?Erster Teil=h ac7-1 
+\par ?qrix=h xqrix 
+\par  
+\par }
+ 

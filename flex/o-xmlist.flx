@@ -1,0 +1,72 @@
+  O-XMLIST.FLX : Titelliste der Bestellungen als XML-Datei
+  20070607       ausgehend v. einer Bestellungs-Erg.Menge
+
+  Erster Satz d. Bestellmenge
+first
+if not #9DA jump sorry
+
+set dow 2
+exp p p-xml
+exp f liste.xml
+
+  Titel d. Erg.Menge
+wri "<titelliste><titel>" U "</titel>" n
+
+:loop
+  Bestelldaten sichern
+var #9DA
+ins #uDA
+var #9DB
+ins #uDB
+  TitelID aus Bestellsatz entnehmen
+var "|9 " #9DA$T
+set obj 2
+  Titelsatz dazu laden
+f1nd
+  V14-Verkn. aufloesen
+if v14 export Ref
+
+  Bestelldaten in Titelsatz einmischen
+var #uDA
+ins #9DA
+var #uDB
+ins #9DB
+
+  Unicode-Umcodierung abschalten
+dow w0
+  Start-Tag fuer den Satz (auf Wunsch aendern)
+wri '<record inr="' i '">' 13 10
+  Unicode-Umcodierung anschalten
+dow wX
+  Akzentvertauschung ausfuehren
+dow a
+  Satz als XML ausgeben, Modus 1
+xml 1
+  Unicode-Umcodierung wieder abschalten
+dow w0
+  Ende-Tag fuer den Datensatz
+wri "</record>" 13 10 13 10
+set obj 1
+  naechster Bestellsatz
+next
+if yes jump loop
+
+wri n "</titelliste>"
+close x
+set dow 1
+
+  Datei schliessen und anzeigen
+h liste.xml
+#uDA
+#uDB
+end
+
+:sorry
+var "Sorry, die aktuelle Ergebnismenge besteht nicht aus Bestelldaten"
+mes
+end
+
+  Variablen
+  #uDA = #9DA
+  #uDB = #9DB
+

@@ -1,0 +1,244 @@
+pn="RIS.AIM 26.3.01
+    Parameterset zum Importieren aus RefMan-Daten
+  ACHTUNG: In Importdateien dÅrfen KEINE TabulatorsprÅnge nach den Kategorien kommen um die Beschreibung abzuruecken!
+           Es muss zuerst mindestens ein BLANK stehen, sonst wird die #xy(dez9) nicht importiert!
+re="ER  "  ein Datensatz endet mit dieser Zeichenfolge
+rs="TY  "  (eigentlich ist es der Anfang des nÑchsten!)
+  Vor der Bearbeitung eines Datensatzes folgende Ersetzungen:
+ _ 13 10 "   "  Ers LF CR 3 Bl durch 1 Bl um Z.umbr zu entf 
+ _" " 
+_ 13 10        Ers LF CR durch  0 (= Default-Feldende)
+_ 0
+
+
+y .13 256
+y .10 0
+ 
+
+#00
+s "ID  - "
+w"mpi"
+
+#20  		Titel   
+s "T1  - "
+N
+s "T2  - "
+w " : "
++25
+
+#20
+s "ST  - "
+N
++25
+
+#20
+s "TI  - "
+N
+_ " -- "
+_ " : "
+
+
+-25
+#25
+s "N1  - "
+
+#85
+s "T3  - "
+x
+N
+
+#37
+s "LA  - "   Language
+
+
+#40 
+s "A1  - "   Autor1
+m"; "
+
+#40~ 		Autoren 
+s "AU  - "   
+m"; "
+
+#42 		Autoren 
+s "A3  - "   
+m"; "
+
+
+#76  		Jahr
+s "Y1  - "
+e "/"
++ausg
+
+#76
+s "PY  - "
+e"/"
+
+-ausg
+#71
+s "ET  - "
+W". Aufl."
+
+#31
+s "KW  - "
+m"; "
+
+
+#8e 
+s "UR  - "
+
+
+#99  	Weiche
+j0 	
+C "JOUR"
+qJ
+C "JFULL"
+qJ
+C "MGZN"
+qJ
+C "THES"
+qT
+C "CHAP"
+qC
+ C "BOOK"
+ qC
+ C "SER"
+ qC
+ C "CONF"
+qC
+
+#95
+j0
+w "unbekannter Doktyp"
++zz  		Ende
+
+-J
+#95
+j0
+i45
+w "az" 0
++jour
++zz
+
+  Typ BOOK u.a.
+-C
+#95
+j0
+i45
+w "b" 0
++book
+ +zz
+
+-T
+#95
+j0
+i45
+w "b" 0
++book
++zz 		Ende
+  ++++++++++++++++++++++++++++
+-jour
+#70      	Journal title:  JF, JA,J0, J1, J2     
+s "J?  - "
+N
++704
+
+#70
+s "T2  - "
+N
+s "M1  - "
+w". "
+
+-794
+#704  		Vol
+s "VL  - "
+#706  		Heft
+s "IS  - "
+#708  		Seite
+s "SP  - " 
+W "-"	
+g "EP  - " 
+#88  		ISSN
+s "SN  - "
+#98
+s "N2  - "      Abstract
+#99
+j0
+i45
++zz  		Ende
+       +++++++++++++++++++++++++++++++++++
+-book
+#41  		Editor
+s "A2  - "
++71
+
+#41  		Editor
+s "ED  - "
+
+-71
+#71  		Edition
+s "VL  - "
+#75  		Verlag
+s "PB  - "
+x
+#74  		Ort
+s "CY  - "
++77
+
+#74
+k75
+e" : "
+
+#75
+k75
+b" : "
+
+-77
+#77  		Seite ; Volumes
+s "SP  - " 
+_ "--"
+_ "-"
+W "-"	
+g "EP  - " 
+s "M1  - "
+w " ; "
+  #83  		Konf.Datum
+  s "Y2  - "
+
+#84 		Buchtitel
+s "T2  - "
+
+#85  		Serie
+s "T3  - "
+#852  		SerienNr
+s "IS  - "
+#87  		ISBN
+s "SN  - "
+
+#99
+j0
+i45 
+
+#90
+s "H2  - "
+_ " ("
+_ "("
+_ " "
+_ " ; "
+m
+
+        ++++++++++++++++++++++++++++++++++
+-diss
+#818  		Uni
+s "PB  - "
+s "M1  - "
+w ", "
+s "M2  - "
+w ", "
+s "Y2  - "
+w ", "
+-zz
+
+
+
+
+

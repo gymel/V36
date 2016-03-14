@@ -1,0 +1,238 @@
+  QRIX.FLX : Registerauszug ins Anzeigefenster oder in eine Datei bringen
+  2002-05-09   Erg.Menge oder ViewListe daraus machen
+
+var "Register-Abschnitte in Textlisten, Ergebnismengen oder ViewListen verwandeln" n n
+var +"WÑhlen Sie zuerst Register und Startposition aus!" n n
+var +"1. Schalten Sie in das gewÅnschte Register, " n
+var +"2. Gehen Sie zu der richtigen Stelle," n
+var +"3. Dann  Enter"
+ansi
+sho IV
+
+  Variablen vorbereiten: #uQA = Anfangs-, #uQE = Endposition
+var #uQR
+if "" var "1"
+ins #uQR
+var #uQA
+if "" var "a"
+ins #uQA
+var #uQE
+if "" var "b"
+ins #uQE
+  Begrenzerzeichen @ fuer Qrix einstellen
+qrix d@
+
+var "|" #uQR #uQA
+activ 4
+  Index an Position #uQA zeigen
+ind
+if "" jump exit
+ins #uQR
+var "_" #uQR(3,0)
+ins #uQA
+var #uQR(1,1)
+ins #uQR
+
+var "Anfangsposition:  '" #uQA(1,0) "'  im Register " #uQR n n
+var +"WÑhlen Sie jetzt die Endposition aus! (im selben Register)" n
+var +"(Genau gesagt: Die Position HINTER der gewÅnschten letzten Zeile.)" n n
+var +"1. Gehen Sie zu der richtigen Stelle," n
+var +"2. Dann  Enter"
+ansi
+mes
+sho IV
+activ 4
+var "|" #uQR #uQE
+  Index fuer Endposition zeigen
+ind
+if "" jump exit
+ins #uQE
+var #uQE(2,0)
+ins #uQE
+
+  Funktionswahl
+:funk
+var "Abschnitt: " n #uQA(1,0) n "   bis " n #uQE n " im Register " #uQR n n
+var +"Es gibt 5 Mîglichkeiten:" n n
+var +"ViewListe          : kann auch anschlie·end exportiert werden" n
+var +"ErgebnisMenge      : dann benutzbar wie jede andere Erg.Menge" n
+var +"Normal             : genauso wie im Register sichtbar, als Liste" n
+var +"Mit Satznummern    : dasselbe, aber dazu die internen Nummern der SÑtze" n
+var +"Sofort exportieren : mit Exportparametern nach Wahl" n
+var +"Anfangspunkt noch Ñndern (z.B. Trunkierung verlangen)" n
+var +"Endpunkt noch Ñndern"
+ansi
+sho IV
+
+set aFunktionswahl
+var "ViewListe" n "ErgebnisMenge" n "Normal, als Liste wie im Register" n "Dasselbe, aber mit Satznummern" n "Sofort exportieren mit beliebigen Exportparametern" n "Anfangspunkt noch Ñndern" n "Endpunkt noch Ñndern"
+ansi
+Aresqa
+if no jump exit
+if "" var "Normal"
+if "Erg" jump rset
+if "View" jump vlist
+if "Normal" var "f 0"
+if "Das" var "f 1"
+if "Sofo" jump expo
+if "Anfa" jump anfa
+if "Endp" jump endp
+qrix
+
+  Minimum der Trefferzahl
+ask Schwelle? (0,1,2,... : Zeilen mit mind. ... Treffern, Default 0)=#uQS
+if cancel end
+if "" var "0"
+ins #uQS
+  Schwellenwert festsetzen
+var "t " #uQS
+qrix
+
+yesno Direkt anzeigen? (Nein : in eine Datei schreiben)
+if yes jump yes
+
+:dateiname
+ask Dateiname?=#uQD
+if "" jump exit
+ins #uQD
+open x
+if no jump dateiname
+  Befehl zusammenbasteln
+var "0 |" #uQR " " #uQA(f"_") "@" #uQE
+  und ausfuehren
+Qrix
+close x
+var #uQD
+help
+end
+
+:yes
+  Befehl zusammenbasteln
+var "0 |" #uQR " " #uQA(f"_") "@" #uQE
+  und ausfuehren
+qrix
+  Ergebnis steht in der internen Variablen; anzeigen:
+show IV
+end
+
+  Sofort exportieren
+:expo
+var "f 4"
+qrix
+del qr-set
+open x qr-set
+var "0 |" #uQR " " #uQA(f"_") "@" #uQE
+  und ausfuehren
+Qrix
+close x
+  Erg.Menge einlesen
+read set qr-set
+var e
+ins #uwe
+xport p ?
+xport f ?
+ins #uwE
+wri Flonghead.rtf
+first
+:lox
+dow
+next
+if yes jump lox
+wri "}}}}"
+var "Datei " E " ist fertig"
+mes
+close x
+var #uwe
+xport p
+var #uwE
+xport f
+end
+
+  als Ergebnismenge zusammenfassen
+:rset
+  Funktionsmodus 1 = Registerzeile:nummer
+var "f 1"
+qrix
+del qr-set
+open x qr-sig
+  Befehl vorbereiten
+var "0 |" #uQR " _" #uQA(f"_") "@_" #uQE
+  und ausfuehren (Nummern in qr-set schreiben)
+Qrix
+close x
+  qr-sig jetzt:
+   signatur:nr
+   signatur *:nr
+  Die mit * sollen nicht mit rein!
+open x qr-set
+wri "Tabelle" n
+if no mes Datei qr-set kann nicht geoeffnet werden!
+open qr-sig
+get #uzl
+:looop
+  var #uzl
+  if % *% jump nnn     // klappt nicht!
+var #uzl(b" *")
+if not "" jump nnn
+
+:subset
+wri #uzl(b":" e":") n
+var #uzl(b":")
+ins #uzl
+  noch weitere Nummer?
+if #uzl jump subset
+
+:nnn
+get #uzl
+if not can jump looop
+
+close x
+close
+
+  Aus der Nummernliste eine Erg.Menge machen
+read set qr-set
+sho list
+h exprt
+end
+
+:vlist
+var "f 3"
+qrix
+close view
+del qr-list.vw
+open x qr-list.vw
+wri "Reg. " #uQR ", " #uQA(1,0) " bis " #uQE n
+var "0 |" #uQR " " #uQA "@" #uQE
+  und ausfuehren
+Qrix
+close x
+var "qr-list"
+ins #uv9
+View qr-list.vw
+help view
+end
+
+:anfa
+var "Neuer Anfangspunkt (Trunkierung gewÅnscht? ? an das Ende setzen)=#uQA
+ansi
+ask
+ins #uQA
+if "" end
+var "_" #uQA
+ins #uQA
+jump funk
+
+:endp
+var "Neuer Endpunkt?=#uQA
+ask
+ins #uQE
+if "" end
+jump funk
+
+:exit
+  Satz wieder anzeigen
+disp
+end
+
+
+

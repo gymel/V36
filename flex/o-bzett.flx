@@ -1,0 +1,97 @@
+  O-BZETT.FLX : Bestellzettel erzeugen
+  2008-02-11
+  Elemente fuer den Bestelltext aufbereiten
+  Die Textdatei ist  best-ger.rtf  oder  best-eng.rtf
+  Darin sind die Variablen mit %... eingebettet, z.B. %$Btitel
+
+  In $Lief sind die Lieferanten, jeweils getrennt durch ///
+  Einen Lieferantensatz kriegt man so:
+  var "L" #9DB$j\ins #uJJ\var $Lief (b"#uJJ" e"///")\ins #uLL
+  Und aus #uLL holt man sich die benoetigten Angaben
+
+  Aktueller Satz ist Bestellsatz, #9DB beginnt mit dem Typ
+  A = Abo, sonst ist es eine Buchbestellung
+
+  Angaben aus Bestellsatz entnehmen
+var #9DB
+if "A" var " Abonnement"
+if not " A" var " Buchbestellung"
+ins $BTyp
+
+var #9DA$$
+ins $BNr
+
+var #dt(b", ")
+ins $BDat
+
+var #9DB$p
+ins $BPreis
+
+var #9DB$A
+ins $BAuft
+
+var #9DB$C
+ins $BAnmerk
+
+var #9DB$c
+if "" var "Ý"
+ins $BWhrg
+  Lieferantensatz holen
+var "L" #9DB$j
+ins #uJJ
+var $Lief (b"#uJJ" e"///")
+ins #uLL
+
+  Lieferantendaten entnehmen: Name+Adr.
+var #uLL$n
+ins $LName
+
+var #uLL$a
+ins _, _^J_
+ins __^J_
+ins $LAdr
+  Sprache
+var #uLL$p
+if "" var "deu"
+ins $Spr
+
+
+  Titelsatz holen
+var "|9 " #9DA$T
+set obj 2
+f1nd
+  Titeldaten entnehmen
+var #20
+if "" var #8n
+ins _ª__
+ins $BTitel
+var ""
+if #40 var #40 ": "
+ins $BVerf
+var ""
+if #71 var ". - " #71
+ins $BAufl
+var ""
+if #74 if #75 var #74$$ " : " #75
+if not #74 if #75 var #75
+if #74 if not #75 var #74$$
+ins $BVlg
+var ""
+if #76 var ", " #76
+ins $BJahr
+var ""
+if #88 var "ISSN " #88
+if #87 var "ISBN " #87
+ins $BIsn
+  zurueck zum Bestellsatz
+disp
+sho rec
+set obj 1
+
+  Den zur Sprache gehoerigen Text anzeigen
+  (Darin sind die Namen der Variablen eingebettet)
+var "best-" $Spr
+help
+
+
+

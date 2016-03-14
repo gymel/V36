@@ -1,0 +1,37 @@
+  NOTEPAD.FLX : Externes Editieren des Satzes mit Notepad
+  2001-02-09/2008-08-28
+
+  Exportparam sichern
+var e
+ins $epa
+
+  Satz mit e-w0 ausgeben in notep.txt
+xport p e-w0
+  aber mit ANSI-Codes!
+xport t ad-aw
+del notep.txt
+open x notep.txt
+dow
+close x
+  Notepad aufrufen (evtl. hier anderen Editor einsetzen)
+call notepad notep.txt
+  Satz wieder einlesen (ANSI!)
+  Zuerst eine ASCII-Datei e.adt draus machen
+open notep.txt
+open x e.adt
+fetch 6000
+asci
+write ^
+close x
+
+  Dann einlesen (read nimmt automatisch e.adt)
+read
+del notep.txt
+  Exportparam wiederherstellen
+var $epa
+xport p
+
+disp
+sho rec
+
+

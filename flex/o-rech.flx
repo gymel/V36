@@ -1,0 +1,403 @@
+  O-RECH.FLX : Rechnungssatz anlegen zu Abo oder Bestellung
+  2008-02-05   "edit": Rech.bearb., "teil": Teilbetrag
+
+  Wie wurde aufgerufen? (d.h. was steht in iV?)
+if "edit" jump edit
+if "teil" $teil=1
+
+  Abosatz?
+var #9DB
+if "A" jump abo
+if "B" jump band    // Bandsatz
+
+  Buchbestellung?
+if #9DA jump mono
+  Laufende Zs? (Dann #9C abo)
+var #9C
+if "abo" jump ztit
+
+var "Rechnungen kann man nur einem Abo-, Band-, Titel- oder Bestellsatz zuordnen"
+var +n "Suchen Sie den zuzuordnenden Satz, dann wieder Alt+7 ..."
+mes
+end
+
+:band
+  AboId steht in #9DA$J
+var "|9 " #9DA$J
+f1nd
+sho rec
+disp
+
+  Abosatz ist geladen, Elemente entnehmen
+:abo
+var #9DU
+ins #uDU
+var "#" i
+ins #uoi
+var #00
+ins #uDO
+var #9DA
+ins #uDA
+var #9DB
+ins #uDB
+var #9DC
+ins #uDC
+var #9DG
+ins #uDG
+  Teilbetr. gewuenscht?
+if $teil jump teilb
+  Neuen Satz anlegen und Felder belegen
+new
+#00 zrec?6
+#9C rec
+var #uDA$T ":" #uDO
+ins $a-#9R
+var #uDB$j
+ins $l-#9R
+  Preis etc. aus Abosatz nehmen
+var #uDB$p
+ins $p-#9R
+var #uDB$c
+ins $c-#9R
+var #uDB$a
+ins $k-#9R
+  Tagesdatum = Eing.Datum vorgeben
+var #dts(0,8)
+ins $D-#9R
+  Rech.Datum: Monat versuchsweise vorgeben
+var #dts(0,6)
+ins $d-#9R
+disp
+  Rechn.Daten im Formular bearbeiten
+form Rech
+if cancel erase;var #uoi;f1nd;sho rec;disp;end
+
+  ist es eine Fremdwaehrung?
+  dann umrechnen und in #9R$q
+if not #9R$c jump sp2
+  dann umrechnen und in #9R$q
+var #9R$c " " #9R$t
+perf wumrech
+ins $u-#9R
+
+var "Wenn weitere Teilbetr„ge zu erfassen sind, dann die Titel" n
+var +"zuerst suchen und jeweils Alt+7 'Teilbetrag zu diesem Titel'"
+ansi
+sho iV
+
+  Gesamtbetr. umrechnen
+var #9R$c " " #9R$p
+perf wumrech
+ins $q-#9R
+
+:sp2
+set tbl loc
+
+  ZgNr vergeben
+perf nextnum
+var #uoY
+ins $z-#9R
+var #9R
+ins #uzR
+disp
+sho rec
+Put free
+set tbl free
+  IdNr des Rechnungssatzes festhalten f. Teilbetraege
+var i
+ins #uRR
+  Rechnungsdaten in #uzR kopieren
+var #9R
+ins #uzR
+
+yes Bandsatz anlegen?
+if yes perf bandsatz
+end
+
+:ztit
+var "|: " #00 "-al?"
+find
+if l1 mes Kein Abo zu dieser Zeitschrift;end
+if g1 jump alist
+jump abo
+
+:mono
+var "#" i
+ins #uoi
+var #00
+ins #uDO
+var #9DA
+ins #uDA
+var #9DB
+ins #uDB
+var #9DC
+ins #uDC
+var #9DG
+ins #uDG
+if $teil jump teilb
+new
+  Angaben aus Bestellsatz uebernehmen
+#00 mrec?6
+#9C rec
+var #uDA$T ":" #uDO
+ins $a-#9R
+var #uDB$j
+ins $l-#9R
+var #uDB$p
+ins $p-#9R
+var #uDB$a
+ins $k-#9R
+var #dts(0,8)
+ins $D-#9R
+var #dts(0,6)
+ins $d-#9R
+sho rec
+disp
+form Rech
+if cancel erase;var #uoi;f1nd;sho rec;disp;end
+
+  ist es eine Fremdwaehrung?
+if not #9R$c jump spm
+  dann umrechnen und in #9R$q
+var #9R$c " " #9R$t
+perf wumrech
+ins $u-#9R
+
+var "Wenn weitere Teilbetr„ge zu erfassen sind, dann die Titel" n
+var +"zuerst suchen und jeweils Alt+7 'Teilbetrag zu diesem Titel'"
+ansi
+sho iV
+
+  dann Gesamtbetr. umrechnen und in #9R$q
+var #9R$c " " #9R$p
+perf wumrech
+ins $q-#9R
+
+:spm
+set tbl loc
+
+  ZgNr vergeben
+perf nextnum
+var #uoY
+ins $z-#9R
+var #9R
+ins #uzR
+sho rec
+disp
+Put free
+set tbl free
+  IdNr des Rechnungssatzes festhalten f. Teilbetraege
+var i
+ins #uRR
+  Rechnungsdaten in #uzR kopieren
+var #9R
+ins #uzR
+
+end
+
+
+:alist
+open x abolist.vw
+wri "Wählen Sie aus dieser Liste:" n
+
+first
+
+:loop
+wri i " | " s n
+next
+if yes jump loop
+close x
+View abolist.vw
+close v
+delete abolist.vw
+close res
+jump abo
+
+end
+
+  Teilbetr. erfassen, RechnId liegt in #uRR...
+:teilb
+var ""
+ins $teil
+if not #uRR jump terr
+var "#" #uRR
+f1nd
+
+if no mes Rechnung nicht gefunden - noch nicht erfasst?;end
+
+  Angaben aus Bestellsatz uebernehmen in #uzR
+  TitelId:AboId
+var #uDA$T ":" #uDO
+ins $a-#uzR
+  Lieferant
+var #uDB$j
+ins $l-#uzR
+  Kontingent
+var #uDB$a
+ins $k-#uzR
+  Band
+var #uDG$Y
+ins $Y-#uzR
+  Betraege des vorigen #9R rausnehmen
+var ""
+ins $p-#uzR
+ins $q-#uzR
+ins $t-#uzR
+ins $u-#uzR
+
+form Teilb
+if cancel end
+
+var "Wenn weitere Teilbetr„ge zu erfassen sind, dann die Titel" n
+var +"zuerst suchen und jeweils Alt+7 'Teilbetrag zu diesem Titel'"
+ansi
+sho iV
+
+:tspeich
+  ist es eine Fremdwaehrung?  dann $t -> $u
+if not #9R$c jump spt
+  dann umrechnen und in #9R$q
+var #9R$c " " #uzR$t
+perf wumrech
+ins $u-#uzR
+
+:spt
+
+set tbl loc
+
+  ZgNr vergeben
+perf nextnum
+var #uoY
+ins $z-#uzR
+
+  Die Daten stehen alle in #uzR, kopiere in naechste #9Rx
+var #uzR
+ins #9R~
+sho rec
+disp
+put free
+
+yes Bandsatz anlegen?
+if yes perf bandsatz
+
+var "Wenn weitere Teilbetr„ge zu erfassen sind, dann die Titel" n
+var +"zuerst suchen und jeweils Alt+7 'Teilbetrag zu diesem Titel'"
+ansi
+sho iV
+end
+
+  Die Teilbetraege bearbeiten
+:edit
+if not #9R mes Das ist kein Rechnungssatz!;end
+  Satz zum Bearbeiten im Anzeigefeld zeigen
+var A
+if <7 mes Sorry, Ihnen fehlt die Berechtigung;end
+form Rechnung
+end
+
+  IdNr in #uRR fehlt
+:terr
+var "Vorher die Rechnung suchen, zu der ein Teilbetrag zu erfassen ist,"
+var +n "Dann Alt+7 und 'Teilbetr. erfassen'"
+var +n "und dann den Titel, das Abo oder die Bestellung suchen und wieder Alt+7"
+mes
+end
+
+
+  UP naechste ZNummer finden
+:nextnum
+
+var "-2 " $ZNr " " $ZNp "999999999999A"
+
+  2 Zeilen holen, wo die hoechste Nummer stehen muesste
+qrix
+
+  gefundene Zeile bearbeiten
+var (f" " b" " e"")
+if "" var "0"
+
+  und die Zeile mit der letzten Nr in #uzn sichern
+
+ins #uzn
+  jetzt hat man die Registereintragung ermittelt
+  nun noch die Zahl herausloesen, sie steht hinter dem Praefix #uoP
+var $ZNp
+ins #uoP
+var #uzn(b"#uoP")
+
+  in iV steht jetzt die Nr., also 1 draufaddieren:
+z=
+  (wenn im Index noch keine Zeile mit dem Praefix existiert, ergibt sich z=1)
+z+1
+var $ZNd z
+ins #uoY
+  #uoY  enthaelt die naechste Nummer
+return
+
+
+:bandsatz
+new 0
+#00 zbnd?6
+var #uzR$a(e":")
+ins $T-#9DA
+var #uzR$a(b":")
+ins $J-#9DA
+#9DBBl
+var #uzR$t
+if "" var #uzR$p
+ins $p-#9DB
+  Jahr/Band
+var #uzR$Y
+ins $Y-#9DG
+  ZgNr
+var #uzR$z
+ins $z-#9DG
+var #uDU
+ins #9DU
+sho rec
+disp
+form Zs-Band
+disp
+put
+
+return
+
+  Unterprogramm:
+:wumrech   // Waehrung nach Kurswert umrechnen
+ins $btrg
+if $Wtab jump wu2
+set obj 2   // Tabelle laden, falls noch nicht da
+var "|; SYSWWHRG"
+f1nd
+dis
+var #9A$W
+ins $Wtab
+set obj 1
+:wu2           // Zahlenwert aus $betrag entnehmen
+eval $btrg
+ins $bt
+  // Trick : Waehrungscode entnehmen -> #uwk
+var $btrg (f"0123456789,. " F"0123456789,. ") ":"
+ins #uwk
+  // TRICK : Umrechnungswert aus $Wtab entnehmen
+var $Wtab (b"#uwk" f":" e":")
+if "" var "-1"
+ins $wk
+  // jetzt rechnen und Ergebnis zurueckgeben
+Z=$bt / $wk
+var Z2
+return
+
+
+
+ u-VARIABLEN in o-rech.flx
+ #uDA (5)  Kopie von #9DA
+ #uDB (10)  ... #9DB
+ #uDC (2)   ... #9DC
+ #uDG (3)   ... #9DG
+ #uDO (5)   ... #00
+ #uRR (3)  interne Nr des Rechnungssatzes
+ #uoi (4)  #interne Nr
+ #uzR (2)  Kopie der letzten #9Rx
+ $teil (3)  Flag f. Teilbetrag-Bearb.
+

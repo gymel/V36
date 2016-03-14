@@ -1,0 +1,1205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+
+  
+  
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+  
+
+  
+  
+  
+  
+  
+  <title>JanaS : Janus-allegro-System</title>
+  <style>
+td { font-family: Verdana; font-size: 9pt; }
+  </style>
+</head>
+
+
+<body style="background-color: rgb(230, 230, 230);" lang="DE">
+
+
+
+<div class="Section1"><b></b><b>
+</b>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+
+
+
+  <tbody>
+
+
+
+    <tr>
+
+
+
+      <td style="vertical-align: top;"><a href="http://www.allegro-c.de"><img src="a10.gif" alt="allegro Homepage" style="border: 0px solid ; width: 90px; height: 112px;"></a></td>
+
+
+
+      <td style="vertical-align: middle; text-align: center;"><b><i><span style="font-size: 16pt; font-family: Verdana; color: red;">JanaS<br>
+
+
+
+      <small>&lt;---------------------------------------------------------------&gt;<br>
+
+
+
+      <u>Jan</u>us-<u>a</u>llegro-<u>S</u>ystem</small><br>
+
+
+
+      </span></i></b><b><span style="font-size: 16pt; font-family: Verdana; color: red;"></span></b></td>
+
+
+
+      <td style="vertical-align: top; text-align: right;"><img src="planet.gif" alt="Planet Erde" style="width: 90px; height: 90px;"><br>
+
+
+
+      </td>
+
+
+
+    </tr>
+
+
+
+  
+  
+  
+  </tbody>
+</table>
+
+
+
+<b><span style="font-size: 16pt; font-family: Verdana; color: red;">
+</span></b>
+<p class="MsoNormal" style=""><b><span style="font-size: 11pt; font-family: 'Verdana'; color: black;"></span></b></p>
+
+
+
+<o:p></o:p><br style="color: rgb(204, 0, 0);">
+
+
+
+<span style="font-family: verdana; font-weight: bold; color: rgb(204, 0, 0);">Bisher
+V23 konnte a99:</span>&nbsp;<span style="font-family: verdana;"></span><br style="font-family: verdana;">
+
+
+
+<ul style="font-family: verdana;">
+
+
+
+  <li>eine Datenbank zug&auml;nglich machen zum Suchen, Lesen, Schreiben und
+Exportieren<br>
+
+
+
+  </li>
+
+
+
+</ul>
+
+
+
+<ul style="font-family: verdana;">
+
+
+
+  <li>Textdateien im RTF-Format anzeigen und darin eingebaute Makros
+(FLEXe) ausf&uuml;hren</li>
+
+
+
+</ul>
+
+
+
+<ul style="font-family: verdana;">
+
+
+
+  <li>externe Programme starten, z.B. auch einen Browser, die dann aber
+v&ouml;llig unabh&auml;ngig laufen</li>
+
+
+
+</ul>
+
+
+
+<ul style="font-family: verdana;">
+
+
+
+  <li>Von au&szlig;en kann man a99 mit FLEXen fernsteuern - a99 als
+Server&nbsp; <br>
+
+
+
+  </li>
+
+
+
+</ul>
+
+
+
+<div style="text-align: right;"><small><a href="http://www.allegro-c.de/alca99/alca99.htm"><big><big><span style="font-family: verdana;">Kurzanleitung f&uuml;r a99</span></big></big></a></small><br>
+
+
+
+</div>
+
+
+
+<span style="font-family: verdana; font-weight: bold; color: rgb(204, 0, 0);">Ab V24 kommt ein Browser hinzu:</span><br style="font-family: verdana;">
+
+
+
+<br>
+
+
+
+<span style="font-family: verdana;">Es gibt ein Zusatzprogramm namens
+<span style="font-weight: bold;">JanaS</span>, das&nbsp;nichts anderes als ein Browser-Fenster bereitstellt. So
+sieht es aus:<br>
+
+
+
+<br>
+
+
+
+</span>
+<div style="text-align: center;"><a href="flex:x%20jan%20doku.htm">als
+</a><span style="font-family: verdana;"><a href="flex:x%20jan%20doku.htm"><img alt="JanaS Browser-Fenser" src="janas.png"></a></span><br>
+
+
+
+<span style="font-family: verdana;"></span></div>
+
+
+
+<br>
+
+
+
+<span style="font-family: verdana;">In diesem Beispiel zeigt das
+Programm eine HTML-Datei namens <a href="flex:x%20jan%20doku.htm">doku.htm</a>
+an - das ist ein
+HTML-&Auml;quivalent des sog. "F&uuml;llhorns". Hinter jedem Link steckt ein
+Befehl f&uuml;r a99 - das ist der Mehrwert, den&nbsp;ein normaler Browser nicht bieten k&ouml;nnte.<br>
+
+
+
+</span><br>
+
+
+
+<br>
+
+
+
+<big style="font-family: verdana;">JanaS kann zwei Dinge:</big><br style="font-family: verdana;">
+
+
+
+<ul style="font-family: verdana;">
+
+
+
+  <li>Im Internet surfen, also u.a. HTML-Dateien anzeigen (siehe
+Beispiel oben)<br>
+
+
+
+  </li>
+
+
+
+</ul>
+
+
+
+<ul style="font-family: verdana;">
+
+
+
+  <li>a99 wieder aktivieren und ihm Befehle und Daten zusenden. <br>
+
+
+
+(Im Beispiel:
+hinter jedem Link steckt ein Befehl f&uuml;r a99)<br>
+
+
+
+  </li>
+
+
+
+</ul>
+
+
+
+<span style="font-family: verdana;"><br>
+
+
+
+JanaS l&auml;uft zwar als
+getrenntes Programm, aber </span><br>
+
+
+
+<ul>
+
+
+
+  <li><span style="font-family: verdana;">a99 und JanaS k&ouml;nnen
+Nachrichten und Daten
+austauschen. </span></li>
+
+
+
+</ul>
+
+
+
+<ul>
+
+
+
+  <li><span style="font-family: verdana;">In HTML-Dateien k&ouml;nnen FLEX-Befehle eingebaut sein. Beispiel: <a href="doku.htm">doku.htm</a>
+("F&uuml;llhorn")<br>
+
+
+
+    </span></li>
+
+
+
+</ul>
+
+
+
+<ul>
+
+
+
+  <li><span style="font-family: verdana;">HTML-Formulare sind nutzbar,
+um Daten zu erfassen oder zu bearbeiten. Beispiel: <a href="#htmform">htmform.flx</a></span><span style="font-family: verdana;"></span></li>
+
+
+
+</ul>
+
+
+
+<ul>
+
+
+
+  <li><span style="font-family: verdana;">In Formularen kann Unicode
+(UTF-8) verwendet werden, im Gegensatz zu den Formularen, die in a99
+eingebaut sind. Damit wird die Unicode-Eingabe und -Bearbeitung nun
+auch ohne <span style="font-style: italic;">avanti</span> m&ouml;glich.<br>
+
+
+
+    </span></li>
+
+
+
+</ul>
+
+
+
+<span style="font-family: verdana;"></span><span style="font-family: verdana;"></span><span style="font-family: verdana;"> Grafik, Tabellen, JavaScript, CSS -
+alle diese Mittel kann man ebenfalls
+einsetzen.<br>
+
+
+
+<br>
+
+
+
+Um Mi&szlig;verst&auml;ndnisse zu vermeiden:<br style="font-family: verdana;">
+
+
+
+</span>
+<span style="font-family: verdana;">JanaS hat nichts mit <span style="font-style: italic;">avanti</span> zu tun
+und braucht keinen Web-Server. Es dient nicht dazu, eine Datenbank ins
+Netz zu stellen, sondern unterst&uuml;tzt ohne Netz die Arbeit mit a99 auf dem lokalen PC.
+Anders gesagt:
+JanaS und a99 m&uuml;ssen auf dem selbem PC laufen, sonst k&ouml;nnen sie nicht
+zusammenarbeiten.<br>
+
+
+
+<br>
+
+
+
+</span>
+<hr style="width: 100%; height: 2px;"><span style="font-family: verdana;"><span style="font-weight: bold;"><br>
+
+
+
+Beschreibung</span> <br>
+
+
+
+<br>
+
+
+1. Lokale Datei<br>
+
+
+
+</span><span style="font-family: verdana;">a99 startet JanaS mit
+FLEX-Befehl&nbsp; </span><big><span style="font-family: monospace;">janas <span style="font-style: italic;">dateiname</span> </span></big><span style="font-family: verdana;">&nbsp; <br>
+
+
+</span>
+<div style="margin-left: 40px;"><span style="font-family: verdana;">
+Das Programm janas.exe wird gestartet und
+zeigt&nbsp;den Inhalt von&nbsp;</span><big><span style="font-family: monospace;"><span style="font-style: italic;">dateiname</span></span></big><span style="font-family: verdana;">&nbsp;an,
+wobei dies eine Datei auf dem lokalen Verzeichnis HTML sein mu&szlig;,
+die am eigenen Programmverzeichnis h&auml;ngt. Oder der Dateiname
+enth&auml;lt einen Pfad, z.B. in dieser Form: &nbsp; </span><big><span style="font-family: monospace;">file:///d:/hilfsdateien/abc.htm</span><br style="font-family: monospace;">
+
+</big>
+<span style="font-family: verdana;"></span></div>
+
+
+<span style="font-family: verdana;"><br>
+
+
+</span><span style="font-family: verdana;">2. Internet-Adresse<br>
+
+
+
+</span><span style="font-family: verdana;">a99 startet JanaS mit
+FLEX-Befehl&nbsp; </span><big><span style="font-family: monospace;">janas <span style="font-style: italic;">url</span> </span></big><span style="font-family: verdana;">&nbsp; <br>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp; Das Programm janas.exe wird gestartet und
+zeigt&nbsp;den Inhalt von </span><big><span style="font-family: monospace;"><span style="font-style: italic;">url</span></span></big><span style="font-family: verdana;">&nbsp;an<br>
+
+
+</span><span style="font-family: verdana;"><br>
+
+
+</span><br>
+
+
+<span style="font-family: verdana;">"Besondere Links" in einer html-Datei sehen so aus:<br>
+
+
+
+&nbsp;&nbsp; </span><big style="color: rgb(153, 0, 0);"><span style="font-family: monospace;">href="<span style="font-weight: bold;">flex:x</span>
+<span style="font-style: italic;">befehlsfolge</span>"</span></big><span style="font-family: verdana;">&nbsp; oder&nbsp; </span><big style="font-family: monospace; color: rgb(153, 0, 0);">href="<span style="font-weight: bold;">flex:X</span>
+<span style="font-style: italic;">flexname</span>"</big><span style="font-family: verdana;">&nbsp; Start einer FLEX-Datei<br>
+
+
+
+&nbsp;&nbsp;
+oder<br>
+
+
+
+&nbsp;&nbsp; </span><big style="font-family: monospace; color: rgb(153, 0, 0);">href="<span style="font-weight: bold;">flex:h</span> <span style="font-style: italic;">dateiname</span>"</big><span style="font-family: verdana;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+a99 soll die Hilfedatei&nbsp; </span><span style="font-family: verdana;"><big style="font-family: monospace; color: rgb(153, 0, 0);"><span style="font-style: italic;">dateiname.</span>rtf</big></span><span style="font-family: verdana;">&nbsp; zeigen<br>
+
+
+
+</span><span style="font-family: verdana;"><span style="font-family: verdana;"><br>
+
+
+
+Ein Beispiel aus der oben gezeigten
+"F&uuml;llhorn"-Seite:&nbsp;&nbsp; <big style="color: rgb(153, 0, 0);"><span style="font-family: courier new;">&lt;a href="flex:h
+fremd"&gt;IMPORT&lt;/a&gt;</span></big><br>
+
+
+
+</span></span><span style="font-family: verdana;"><br>
+
+
+
+<br>
+
+
+
+&nbsp;&nbsp; JanaS stellt dann automatisch auf TEMP eine
+FLEX-Datei&nbsp; <span style="font-family: monospace;">jPID</span></span><big><span style="font-family: monospace;">.flx</span></big><span style="font-family: verdana;">
+bereit, in der
+steht<br>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-style: italic;">FLEX-befehlsfolge</span><br>
+
+
+
+&nbsp;&nbsp;&nbsp; bzw.<br>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><big><span style="font-family: monospace;">exec</span></big><span style="font-family: verdana;"> <span style="font-style: italic;">flexname</span><br style="font-style: italic;">
+
+
+
+&nbsp;&nbsp;&nbsp; bzw.<br>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><big><span style="font-family: monospace;">help</span></big><span style="font-family: verdana;"> <span style="font-style: italic;">dateiname</span><br>
+
+
+
+</span>
+<div style="margin-left: 40px;"><span style="font-family: monospace;">Dabei ist PID die Prozess-IdNummer des aufrufenden a99.</span></div>
+
+
+<span style="font-family: verdana;"><br>
+
+
+
+<span style="font-style: italic;">Anmerkungen f&uuml;r Systemverwalter:</span>
+<br>
+
+
+
+</span>
+<ul>
+
+
+
+  <li><span style="font-family: verdana;">Das Fenster von a99 wird
+automatisch aktiviert (d.h. es kommt in den Vordergrund), wenn es&nbsp;
+auf diese Weise von JanaS aufgerufen wird. Bewu&szlig;t verhindern kann man dies aber
+in dem zweiten Fall, indem man an <span style="font-style: italic;">flexname</span>
+das Zeichen @ anh&auml;ngt. [Ab V26.5]</span><br>
+
+
+
+  </li>
+
+
+
+</ul>
+
+
+
+<span style="font-family: verdana;"></span>
+<ul>
+
+
+
+  <li><span style="font-family: verdana;">"Besondere Links" k&ouml;nnen auch
+in HTML-Seiten eingebettet sein, die nicht auf dem PC des Nutzers
+liegen, sondern irgendwo im Internet! D.h. man kann geeignete
+HTML-Seiten sonstwo bereitstellen, die Wirkung der FLEXe erfolgt aber
+stets nur im lokalen System des a99-Nutzers. (Wer einen solchen Link in
+einem normalen Browser anklickt, erh&auml;lt eine Fehlermeldung wie
+z.B.&nbsp; "flex is not a registered protocol".)<br>
+
+
+
+Weil das eine potentielle Gefahr ist, mu&szlig; der Nutzer dann die
+Ausf&uuml;hrung des FLEXes best&auml;tigen, und zwar kommt folgende Meldung: &nbsp;</span><big><span style="font-family: monospace;">FremdFLEX! Ausf&uuml;hren?</span></big><span style="font-family: verdana;"><br>
+
+
+
+    </span></li>
+
+
+
+</ul>
+
+
+
+<ul>
+
+
+
+  <li><span style="font-family: verdana;"><span style="font-family: verdana;">Das Programm </span></span><big style="font-family: monospace;">janas.exe</big><span style="font-family: verdana;"><span style="font-family: verdana;">
+kann man auch im DOS-Fenster von Hand
+starten, aber nicht mit&nbsp; </span></span><big style="font-family: monospace;">janas</big><span style="font-family: verdana;"><span style="font-family: verdana;">
+    <span style="font-style: italic;">url</span>&nbsp; sondern mit:</span></span>&nbsp;
+    <big><span style="font-family: monospace;">janas</span></big><span style="font-family: verdana;"> </span><span style="font-style: italic; font-family: verdana;">dateiname</span><span style="font-family: verdana;">&nbsp;&nbsp; <br>
+
+
+
+in der Datei </span><span style="font-family: verdana;"><span style="font-family: verdana;"><span style="font-style: italic;">dateiname</span></span></span>
+    <span style="font-family: verdana;">mu&szlig; dann nur die eigentliche
+URL
+stehen, die der Browser anzeigen soll!</span><br>
+
+
+
+  </li>
+
+
+
+</ul>
+
+
+
+<span style="font-family: verdana;"><span style="font-family: verdana;"></span></span><span style="font-family: verdana;"><span style="font-style: italic;">Tip
+f&uuml;r Fortgeschrittene:</span><br>
+
+
+
+Die Variante mit dem @ kann man nutzen, um a99 irgendetwas tun zu
+lassen und dann eine andere HTML-Datei zu laden, ohne da&szlig; a99
+zwischendurch erscheint, d.h. das Wechselspiel der beiden wird optisch
+gar nicht sichtbar! Dazu mu&szlig; nur am Ende der Datei </span><span style="font-family: verdana;"><span style="font-style: italic;">flexname</span></span><span style="font-family: verdana;"> ein </span><big><span style="font-family: monospace;">janas</span></big><span style="font-family: verdana;">-Befehl stehen, der dann das Laden der besagten anderen HTML-Datei ausl&ouml;st.<br>
+
+
+
+Die Formularmethode (siehe unten) nutzt man, um dem FLEX Information
+mitzugeben, die er dann in Form von #u-Variablen zur Verf&uuml;gung hat.<br>
+
+
+
+Die HTML-Datei, die er am Ende aufruft, k&ouml;nnte gerade in dem FLEX
+erstellt worden sein. Man erkennt leicht das Potential dieser Methodik.<br>
+
+
+
+Als einfaches Beispiel zum Studieren, Ausprobieren und Ausbauen gibt es&nbsp; </span><big><span style="font-weight: bold; font-family: monospace;">jax.htm</span></big><span style="font-family: verdana;">&nbsp; und&nbsp; </span><big><span style="font-weight: bold; font-family: monospace;">jax.flx</span></big><span style="font-family: verdana;">. Zum Starten:&nbsp; </span><big style="font-weight: bold;"><span style="font-family: monospace;">janas jax.htm</span></big><span style="font-family: verdana;">&nbsp; in a99 eingeben.<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<span style="font-weight: bold;">Zusammenfassung zum&nbsp;FLEX-Befehl&nbsp; </span></span><big style="font-family: monospace; font-weight: bold;">janas</big><span style="font-family: verdana;"><span style="font-weight: bold;">:</span><br style="font-weight: bold;">
+
+
+
+(So steht es auch im Hilfetext&nbsp; xjanas.rtf )<br>
+
+
+
+</span><span style="font-family: verdana;"><br>
+
+</span><span style="font-family: monospace;"><big style="font-family: monospace;">janas 1</big><span style="font-family: verdana;"> &nbsp;&nbsp;&nbsp; <big>Die
+Datei &nbsp;</big></span><big><span style="font-family: monospace;">j&lt;pid&gt;.htm</span></big><span style="font-family: verdana;"><big> &nbsp;wird (erneut)
+angezeigt</big><br>
+
+<br>
+
+
+
+</span></span><span style="font-family: verdana;">
+
+Bei den n&auml;chsten drei Befehlen wird automatisch </span><big><span style="font-family: monospace;">janas.exe</span></big><span style="font-family: verdana;"> gestartet,
+falls es noch nicht l&auml;uft:<br>
+
+
+
+</span><span style="font-family: monospace;"><big style="font-family: monospace;"><br>
+
+</big></span><big style="font-family: monospace;">janas <span style="font-style: italic;">url</span></big><span style="font-family: verdana;">&nbsp; Die Web-Adresse <span style="font-style: italic;">url</span> wird angesteuert und angezeigt<br>
+
+
+
+<br>
+
+
+
+</span><span style="font-family: monospace;"><span style="font-family: verdana;"><big><span style="font-family: courier new;">janas file:///c:/allegro/abc/xyz.htm</span><br>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; So l&auml;&szlig;t
+man eine irgendwo im lokalen System liegende HTML-Datei anzeigen. Man
+beachte<br>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; den
+Dreifach-Schr&auml;gstrich hinter "file:"<br>
+
+
+
+</big><br>
+
+
+
+</span></span><big style="font-family: monospace;">janas <span style="font-style: italic;">dateiname</span></big><span style="font-family: verdana;"><br>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Die
+Datei&nbsp; <span style="font-style: italic;">dateiname</span>&nbsp;
+(ohne Pfadangabe) mu&szlig; auf dem HTML-Verzeichnis liegen (unterhalb<br>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; des
+ProgDir) und wird
+dann im Browser angezeigt.<br>
+
+
+
+<br>
+
+
+
+<span style="font-family: courier new;"></span></span><big style="font-family: monospace;">janas</big><span style="font-family: verdana;">&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; Inhalt
+der iV wird als URL etc. genommen, d.h. vorher vorbereiten, sonst kommt
+<br>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+"Die Seite kann nicht angezeigt werden"<br>
+
+
+
+<br>
+
+
+
+</span><big><span style="font-family: monospace;">janas 0</span></big><span style="font-family: verdana;">&nbsp;&nbsp;&nbsp; Wenn janas.exe gerade l&auml;uft,
+wird es beendet, das Fenster beseitigt. <br>
+
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;Wenn mehr
+als ein JanaS-Fenster&nbsp;aus mehreren a99-Fenstern heraus <br>
+
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; gestartet
+wurden, verschwindet nur dasjenige, das zum jeweiligen&nbsp;a99
+geh&ouml;rt.<br>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Einbau in&nbsp; </span><big><span style="font-family: monospace;">_endflx.flx</span></big><span style="font-family: verdana;"> &nbsp;ist zu erw&auml;gen.<br>
+
+
+
+<br>
+
+
+
+Au&szlig;erdem kann man diesen Befehl geben:<br>
+
+
+
+</span><big style="font-family: monospace;">Call janas.exe&nbsp;</big><span style="font-family: verdana;"> &nbsp;&nbsp; janas.exe wird
+gestartet und erscheint mit leerem Fenster. <br>
+
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Unter "Datei" kann man "&Ouml;ffnen"
+w&auml;hlen und eine URL angeben.<br>
+
+&nbsp;<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<span style="font-weight: bold;">Formulare im HTML-Text</span><br>
+
+
+
+<br>
+
+
+
+Wenn man ein HTML-Formular gebaut hat, mu&szlig; man diejenigen
+Input-Felder, die in bestimmten Kategorien oder #u-Variablen landen
+sollen, so angeben:<br>
+
+
+
+<br>
+
+
+
+</span><big><span style="font-family: monospace;">&lt;form
+name="formularname" action="flex:X tuwas" method=GET/POST&gt;</span></big><span style="font-family: verdana;"><br>
+
+
+
+</span><big><span style="font-family: monospace;">Feld x: &lt;input
+name="nnn"&gt;<br>
+
+
+
+</span></big><span style="font-family: verdana;"><br>
+
+
+
+wobei&nbsp;&nbsp;</span><big><span style="font-family: monospace;">nnn</span></big><span style="font-family: verdana;"> &nbsp;eine g&uuml;ltige Kategorienummer oder #u-Variable &nbsp;</span><big><span style="font-family: monospace;">uxy</span></big><span style="font-family: verdana;"> &nbsp;sein kann. Beides ohne
+#. <br>
+
+
+
+Um nebenbei eine #u-Variable zu belegen, die der Nutzer nicht sehen
+soll:<br>
+
+
+
+</span><big><span style="font-family: monospace;">&lt;input
+type="hidden" name="<span style="color: rgb(0, 153, 0); font-weight: bold;">ujC</span>" value="<span style="font-weight: bold; color: rgb(0, 153, 0);">wert</span>"&gt;<br>
+
+
+
+</span></big><span style="font-family: verdana;">Im FLEX&nbsp; </span><big><span style="font-family: monospace;">tuwas.flx</span></big><span style="font-family: verdana;">&nbsp; hat
+man demnach den Wert&nbsp; </span><big style="font-family: monospace; font-weight: bold; color: rgb(0, 153, 0);">#ujC
+wert</big><span style="font-family: verdana;">&nbsp; zur Verf&uuml;gung.<br>
+
+
+
+</span><br>
+
+
+
+<span style="font-family: verdana;">Die so angelegten Felder werden
+dann zuerst belegt, bevor der FLEX&nbsp;&nbsp;</span><big><span style="font-family: monospace;">tuwas.flx</span></big><span style="font-family: verdana;">&nbsp;
+ausgef&uuml;hrt wird, d.h. man mu&szlig; sich darum nicht selber k&uuml;mmern! (Genau
+gesagt, der FLEX&nbsp; </span><big><span style="font-family: monospace;">j&lt;pid&gt;.flx</span></big><span style="font-family: verdana;">&nbsp; wird mit den betreffenden Befehlen gef&uuml;llt und
+am
+Schlu&szlig; steht&nbsp; <span style="font-family: courier new;">exec X tuwas</span>
+.) In diesem FLEX mu&szlig; dann z.B. an geeigneter Stelle ein &nbsp;</span><big><span style="font-family: monospace;">put</span></big><span style="font-family: verdana;"> &nbsp;stehen, wenn der Satz gespeichert
+werden soll.<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<span style="font-weight: bold;">Begleitende Ma&szlig;nahmen</span><br>
+
+
+
+<br>
+
+
+
+<span style="font-weight: bold;">_door.flx</span> : Ausgel&ouml;st durch
+Schaltfl&auml;che "T&uuml;r". Da k&ouml;nnte z.B. drinstehen:<br>
+
+
+
+&nbsp;&nbsp; </span><big><span style="font-family: monospace;"></span></big><span style="font-family: verdana;"><br>
+
+
+
+</span><span style="font-family: verdana;">&nbsp;&nbsp; </span><big><span style="font-family: monospace;">janas
+http://www.allegro-c.de</span></big><span style="font-family: verdana;"><br>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; oder z.B. Datei doku.htm von HELP:<br>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><big style="font-family: monospace;">janas doku.htm</big><span style="font-family: verdana;"><br>
+
+
+
+<br>
+
+
+
+<span style="font-weight: bold;">onerror.flx</span> : Ausgel&ouml;st durch
+ung&uuml;ltige Eingabe im Schreibfeld<br>
+
+
+
+&nbsp;&nbsp; Pr&uuml;fen, ob Eingabe mit "</span><span style="font-family: monospace;">http:</span><span style="font-family: verdana;">" oder "</span><span style="font-family: monospace;">file:</span><span style="font-family: verdana;">" anf&auml;ngt, dann
+&uuml;bergeben an JanaS<br>
+
+
+
+<br>
+
+
+
+</span><span style="font-family: monospace;">if "www" jump www</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">if "http:" jump http</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">if "file:" jump http</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">...</span><br style="font-family: monospace;">
+
+
+
+<br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">:www</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">var "http://" #uxE</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">janas</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">var ""</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">end</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">:http</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">var #uxE</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">janas</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">var ""</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">end</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: verdana;"><br>
+
+
+
+<br>
+
+
+
+<a name="htmform"></a><br>
+
+
+
+Beispiel f&uuml;r einen FLEX, der ein komplettes HTML-Formular erzeugt und
+dann JanaS aktiviert:<br>
+
+
+
+(Die HTML-Datei mit dem Formular wird zun&auml;chst ins Help-Verz.
+geschrieben)<br>
+
+
+
+Zum Ausprobieren gibt's eine etwas&nbsp; <a href="flex:X%20htmform">bessere Version</a>.&nbsp;
+(Dahinter steckt der FLEX&nbsp; <a href="flex:h%20htmform.flx">htmform.flx</a>
+)</span><span style="font-family: verdana;"><br>
+
+
+
+</span><span style="font-family: monospace;">var "help\\test.htm" </span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">open x</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">&nbsp; Vorbereitung f&uuml;r
+write-Befehle</span><br>
+
+
+
+<span style="font-family: monospace;">xport p e-u</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">dow wX<br>
+
+
+
+dow a</span><br>
+
+
+
+<br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">wri "&lt;html&gt;&lt;head&gt;" n</span><br style="font-family: monospace;">
+
+
+
+<br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">wri '&lt;meta
+http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;' n</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">wri "&lt;/head&gt;&lt;body&gt;" n</span><br style="font-family: monospace;">
+
+
+
+<br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">wri '&lt;form action="<span style="font-weight: bold;">flex:x show
+rec</span>' 92 92 'disp" method=GET&gt;' n</span><br style="font-family: monospace;">
+
+
+
+<br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">wri '&lt;input type="submit"
+value="SEND"&gt;' n</span><br style="font-family: monospace;">
+
+
+
+<br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">wri 'Titel: &lt;input name="20"
+size=60 maxlength=120 value="' #20 '"&gt;&lt;br&gt;' n</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">wri 'Signatur: &lt;input
+name="90" size=30 maxlength=120 value="' #90 '"&gt;&lt;br&gt;' n</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">wri 'Verfasser: &lt;input
+name="40" size=60 maxlength=120 value="' #40 '"&gt;&lt;br&gt;' n</span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">wri 'Jahr: &lt;input name="76"
+size=20 maxlength=20 value="' #76 '"&gt;&lt;br&gt;' n</span><br style="font-family: monospace;">
+
+
+
+<br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">wri
+'&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;'<br>
+
+
+
+dow A</span><br style="font-family: monospace;">
+
+
+
+<br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">close x</span><br style="font-family: monospace;">
+
+
+
+&nbsp;&nbsp;&nbsp; <span style="font-family: monospace;">Und nun die
+pr&auml;parierte Datei von JanaS anzeigen lassen </span><br style="font-family: monospace;">
+
+
+
+<span style="font-family: monospace;">janas test.htm</span><span style="font-family: verdana;"> <br>
+
+
+
+<br>
+
+
+
+</span><span style="font-family: verdana;"><br>
+
+
+
+Und in der Datei e-u.apr steht nur drin:<br>
+
+
+
+<br>
+
+
+
+</span><span style="font-family: monospace; color: rgb(51, 51, 153);">&nbsp;
+E-U.APR : Einen Feldinhalt nach UTF-8 wandeln<br>
+
+
+
+&nbsp; 2004-01-04&nbsp; insbes. wirkt sich dies auf den FLEX-Befehl
+"write" aus<br>
+
+
+
+<br>
+
+
+
+zl=0<br>
+
+
+
+<br>
+
+
+
+&nbsp; Wenn "write" gegeben wird, steht der Inhalt in #u1<br>
+
+
+
+#-X<br>
+
+
+
+#u1<br>
+
+
+
+&nbsp; ASCII -&gt; UTF-8 Tabelle laden<br>
+
+
+
+td-utf8</span><br style="color: rgb(51, 51, 153);">
+
+
+
+<br style="color: rgb(51, 51, 153);">
+
+
+
+<span style="font-family: verdana; color: rgb(51, 51, 153);"></span><span style="font-family: verdana;"><span style="font-family: verdana; color: rgb(51, 51, 153);"></span><br>
+
+
+
+</span><span style="font-family: verdana;"></span>
+<hr style="width: 100%; height: 2px;">
+<div style="text-align: right;"><span style="font-family: verdana;">B.Eversberg 2004 / 2009-03-23<br>
+
+<br>
+
+</span><span style="font-family: verdana;"></span></div>
+
+<span style="font-family: verdana;">
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+<br>
+
+
+
+</span>
+<p class="MsoNormal" style=""><o:p></o:p></p>
+
+
+
+</div>
+
+
+
+</body>
+</html>

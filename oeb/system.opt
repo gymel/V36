@@ -1,0 +1,108 @@
+    ; -----------------------------------------------------
+    ; SYSTEM.OPT :  SchlÅssel SystemdatensÑtze
+    ; Ver.: WIN 1.2 
+    ; Bem.: Einzubinden in KAT.OPI
+    ; Bem.: PrimÑrschlÅssel ergÑnzt
+    ; Bem.: Benîtigt UPDATE 1.2
+    ; -----------------------------------------------------
+
+    ; PrimÑrschlÅssel fÅr neue SystemdatensÑtze
+ak=9A0+f
+    ; Medientypstammsatz
+ak=9A0+‰
+    ; Systemdatensatz   : NEU : 9Aa ... 9Az
+ak=9A.+ﬁ
+
+#-f                                 ; PrimÑrschlÅssel
+#t{ "|;SYS" }
+#9A0 +#9Ac c"XMLKB" e0              ; Zweigstellenstammsatz ...
+#9A0 +# c"SORTIERK" e""            ; SYSXSORTIERKOEPFE
+#9A0 +#9Aa c"SATZTYP" e0            ; Satztyp ...                         
+#9A0 +#9Ab c"FORM" e0               ; Formular ...
+#+-                 
+
+#9Ac                                ; Zweigstellenstammsatz
+#t{ "XZWEIGSTELLE*" }               ; SYSXZWEIGSTELLE*...
+#080 y0                             ; KÅrzel (kann fehlen)
+#+# 
+    
+#9Aa e0                             ; Satztyp
+#9A0 y0 e""                        ; SYSXSATZTYP ...
+#9A0 y0 t p"-"                     
+#9Aa y0 n p"="
+#9Aa y0 s p"$"             
+#+# 
+
+#9Ab e0                             ; Formular
+#9A0 y0 e"" P"ULAR"                ; SYSXFORMULAR...
+#9A0 y0 N p"-"
+#+#                                                
+
+#-‰
+#9A0 +- I5,M e0                     ; Medienart 
+#t{ "|;SYS" }
+#080 y0 "/" P"/"                    ; Achtung : muss leer sein
+#9A0 +# C y0 p"E"                  ; SYS/Zweigstelle/E...   
+#+-
+
+#-ﬁ                                 ; Systemdaten
+#t{ "|;SYS" }
+#080 y0 "/" P"/"                    ; /Zweigstellenkennung/
+#u1 +#L29 y0 i5,X e0                ; SYSX (Textbaustein, Satztyp etc.) 
+!u1 +# e"" y0 i5,Z                 ; obsolet : Bibliotheksstammsatz
+!u1 +# e"" y0 i5,P                 ; Passwort bzw. Operator
+!u1 +# e"" y0 i5,C                 ; Leserklassen
+!u1 +# e"" y0 i5,R                 ; Kalender
+!u1 +# e"" y0 i5,F                 ; obsolet : Fenster
+!u1 +# e"" y0 i5,O                 ; obsolet : Farben
+!u1 +# e"" y0 i5,M                 ; Medienart
+!u1 +#L28 e"" y0 i5,N              ; Ident.-Nr.
+!u1 e"" y0 i5,D                    ; Medienklasse
+!9A0 +# B y0 "/"
+#+-
+
+#L28                                ; Ident.-Nr. Stammsatz
+!9A0 y0 m "/"                      ; MedientypkÅrzel - KANN FEHLEN!
+#+#
+
+    ; -----------------------------------------------------
+    ; SYSX ...
+    ; -----------------------------------------------------
+
+#L29                                ; PrimÑrschlÅssel
+#u1 +- c"SATZTYP" e0                ; siehe oben
+#u1 +- c"SORTIERK" e0               ; siehe oben
+#u1 y0 e""                         ; SYSX Typ ...
+#u1 +#L30 y0 c"KATEGORIE" e0        ; Kategorie
+#u1 +#L31 y0 c"FORM" e0             ; Formular
+#u1 +#L32 y0 c"PROMPT" e0           ; Erfassungsfeld
+#u1 +#L31 y0 c"SORTIERUNG" e0       ; Sortierung
+#+#                                                      
+
+#L30    ; Kategorie : Indikatoren?
+#u1 y0 n ":"                       ; Nummer
+#u1 y0 s "$"                       ; ggf. Teilfeld
+#9A0 y0 t "-"                      ; ggf. SatztypkÅrzel
+#t{ "=" }                           ; in jedem Fall Trennzeichen
+                                    ; ... PrÅfroutinen
+#u1 +#L9B y0 p "[" P"]"            ; hier?
+#9A0 y0 p "[" P"]"                 ; hier oder gar nicht
+#L9B
+#u1 +#L9C y0 d                     ; Beschreibung hier?
+#9A0 y0 d                          ; andernfalls hier!
+#L9C
+#+#
+
+#L31
+#u1 y0 N ":"                       ; ID
+#u1 y0 n "="                       ; Bezeichnung Klartext
+#+#
+
+#L32                                ; Erfassungsfeld
+#9A0 y0 N "-"                      ; Kennung der Maske
+#u1 y0 a "."                       ; Position
+#u1 y0 n ":"                       ; Kategorienummer
+#u1 y0 s "$"                       ; ggf. Teilfeld
+#u1 y0 f "!"                       ; ggf. fester Inhalt
+#u1 y0 p "?"                       ; ggf. vorgeprompteter Inhalt
+#+#

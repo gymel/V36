@@ -1,0 +1,113 @@
+
+Verlautbarung 201 der Entw.Abt.                              2007-09-05
+-------------------------------
+
+V27.6 Neuer Befehl "sort"
+=========================
+
+            Bereitstellung:
+            http://ftp.allegro-c.de/aktuelle-version/inst-all.exe
+
+Sortieren jetzt auch im Arbeitsspeicher
+---------------------------------------
+Bisher muss man jedesmal, wenn es etwas alphanumerisch zu ordnen gibt,
+eine Datei erzeugen, diese mit asort.exe sortieren, dann wieder oeffnen
+und einlesen. Man wuenscht sich schon lange ein bequemeres Verfahren.
+Jetzt ist es da: der neue Befehl "sort".
+Hier die Dokumentation (aus xsort.rtf):
+
+sort MP
+   Sortieren im Arbeitsspeicher
+   M = Modus: a=aufsteigend (A-Z), d=absteigend (Z-A) . Default: a
+   P = Sortierposition: Das erste Zeichen ist Position 0 . Default: 0
+Also:  sort a0  ordnet ab dem ersten Zeichen, und zwar aufsteigend.
+
+Geordnet werden die Zeilen, die in dem Moment in der internen Variablen
+stehen. Die Zeilen muessen durch die Codes 13 10 getrennt sein. Das ist
+z.B. dann automatisch der Fall, wenn man mit
+var Fdateiname
+vorher eine ASCII-Textdatei in die iV eingelesen hat! Wenn man die iV
+mit var-Befehlen zusammensetzt, kann man die Sondervariable n benutzen,
+um die Codes 13 10 zwischen die Zeilen zu setzen.
+
+Das Ergebnis, die sortierten Zeilen, liegt danach wieder in der iV,
+d.h. deren Inhalt wird nicht irgendwo anders hingeschrieben oder
+ausgegeben, sondern an Ort und Stelle sortiert. Mit sofortigem
+write
+kann man aber den Inhalt sofort in die aktuelle Ausgabedatei schreiben,
+diese mit close x schliessen und zeilenweise einlesen.
+
+Wie wird geordnet? Was ist mit Umlauten, Grossbuchstaben, ...?
+Die Sortierfolge kann man vorher festlegen durch einen Befehl
+`set xab`   z.B. set xip
+den man sonst zum Umcodieren von Zeichenfolgen verwendet. Ohne einen
+solchen Befehl werden die p- oder q-Befehle der Indexparameter benutzt,
+und zwar diejenigen, die aus dem A ein a machen (bei cat.api sind das
+die q-Befehle).
+
+Grenze: Die gesamte Datenmenge (= Laenge der iV) darf nicht groesser
+    als 128000 Byte sein. Was darueber hinausgeht, wird abgeschnitten.
+
+Dieser Befehl bietet also eine einfachere Alternative gegenueber dem
+Sortieren von Dateien, wenn es sich um relativ kleine Datenmengen
+handelt.
+
+Wie zerlegt man einen #u-Inhalt in Zeilen? Das geht so:
+var #uxy(e"^M^J")            liefert die erste Zeile
+var #uxy(b"^M^J")            den Rest ab der zweiten Zeile
+var #uxy(b"^M^J" e"^M^J")    die zweite Zeile
+Die Zeichen ^ und M sind getrennt einzugeben, d.h. hier steht in der
+FLEX-Datei nicht der Code 13 bzw. 10.
+
+Vorsicht!
+Wenn man einen langen Inhalt, d.h. mehr als 32000 Zeichen, in der iV
+hat (sie kann bis zu 256000 Zeichen umfassen), ist das Speichern in
+eine Hintergrundvariable mit  ins #uxy  problematisch, denn der Inhalt
+wird abgeschnitten. Ausserdem koennte der Hintergrundspeicher zu klein 
+sein. Deshalb ist es ratsam, nach dem Sortieren mit sort, 
+wenn der Inhalt laenger sein koennte, zuerst mit "write" in eine
+Datei zu speichern und diese dann zeilenweise zu lesen.
+
+
+>> Simple Aufgabe - bisher schwer zu loesen<<
+
+Gelegentlich will man die Schlagwoerter in #31, wo sie durch "; " 
+getrennt stehen, mal alphabetisch sortieren, damit das ordentlicher
+aussieht. Dafuer extra eine Datei schreiben und wieder einlesen?
+Nein, das geht jetzt so:
+
+var #31 "; ||"
+ins _; _^M^J_
+sort
+ins _^M^J_; _
+var (e"; ||")
+ins #31
+
+Und der Kenner erkennt: Im lokalen Ersetzungsbefehl ins _.._.._
+können jetzt Steuerzeichen vorkommen! ^A fuer Code 1, ^M fuer 13,
+^J fuer 10 usw. usf.
+Aber wozu das "; ||"? Das ist ein notwendiger Trick. Mehr dazu in
+der Trick-Serie.
+
+
+Manipulationen bei freien Variablen
+-----------------------------------
+Freie Variablen ($-Variablen) unterliegen ein paar Ausnahmen gegenueber
+den Hintergrundvariablen (#u-Variablen). Dazu gehoerte bisher, dass man
+keine Manipulationsbefehle anwenden konnte. Jetzt geht das! Man muss
+nur zwischen den Namen (der ja variabel lang ist und auch Sonderzeichen
+enthalten kann!) und den geklammerten Manipulationsbefehl ein Spatium
+setzen. Folgendes steht jetzt in der Dokumentation:
+
+3. `Manipulationsbefehle` sind auch moeglich, aber ein Spatium muss
+hinter dem Variablennamen stehen, also z.B.  var $name (b"xyz")
+Hierbei kann man jedoch den Zugriff auf Unterfelder nicht mit einer
+Manipulation kombinieren, also etwa  var $name$x (b"xyz")  geht nicht.
+Als Ausweg waehlt man Konstruktionen wie
+
+var $name (b"²x" e"²" b"xyz")
+  oder
+var $name$x
+var (b"xyz")
+
+

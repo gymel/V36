@@ -1,0 +1,226 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fscript\fprq2 Comic Sans MS;}{\f1\fscript\fprq2\fcharset0 Comic Sans MS;}{\f2\froman\fprq2 Times New Roman;}{\f3\froman\fprq2 Garamond;}{\f4\fmodern\fprq1 Courier New;}{\f5\fmodern\fprq1\fcharset0 Courier New;}{\f6\froman\fprq2\fcharset0 Times New Roman;}{\f7\fnil\fprq2\fcharset2 Wingdings;}{\f8\froman\fcharset0 allegro New Roman;}{\f9\fmodern\fprq1 Courier;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;}
+\viewkind4\uc1\pard\qc\cf1\b\i\f0\fs28 allegro S\i0 ystemhandbuch V\f1 32\cf0\f2\fs48 
+\par \pard\fi-658\li658\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0\fs20 
+\par \lang1033\b\fs48 9\tab\f3 Datenbank\f2 -\f3 Management\b0\f2 
+\par \pard\fi-658\li658\qr\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\i\fs20 a99\i0  kann `\cf2\ul\b per FLEX\cf0\ulnone\b0 ` updaten! 
+\par \pard\fi-658\li658\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs36 9.0\tab Konzept\b0 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs20 
+\par \fs24 Das Programm Nummer 9,\lang1033\b\f4  UPD\lang1031\f5 .EXE\lang1033\b0\f6 , kann Datens\'e4tze aus einer Grunddatei (Typ .ALG) lesen, mit vorhandenen S\'e4tzen in der Datenbank identifizieren und evtl. austauschen, zusammenmischen, oder auch l\'f6schen, und zwar auf Mehrplatzsystemen auch w\'e4hrend des laufenden Betriebs. Wie PRESTO zeichnet es seine Aktionen auch in der .LOG-Datei auf. (F\'fcr das Programm INDEX trifft beides nicht zu, daf\'fcr arbeitet es viel schneller.) 
+\par Ab V28.6 kann statt \b\f4 UPD\lang1031\f5 .EXE\lang1033\b0\f6  das 32bit-Programm \f5 `\cf2\ul\b acon.exe\cf0\ulnone\b0 `\f6  mit  \f5 update.job\f6   eingesetzt werden. 
+\par Ab V32.1 wird ein Aufruf  \f5 upd -fm...\f6   umgewandelt in  \f5 acon -jupdate -fm...\f6  , sonst bleibt alles gleich.
+\par \f2 
+\par \lang1031 UPD \f6  \f2 hat die folgenden drei Funktionen: 
+\par \pard\fi-739\li739\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs20 Playback\b0  : eine Sicherungsdatei (Typ .LOG) wird in eine Backup-Kopie der Datenbank eingespielt, um den Zustand vor einem Zusammenbruch wiederherzustellen (\f4 -\f7\'d8\f6  0.7). Die Identifizierung erfolgt \'fcber die interne Satznummer, daher wird kein eindeutiger Schl\'fcssel ben\'f6tigt. Das Playback funktioniert nur dann richtig, wenn man zum Zeitpunkt der Datensicherung die .LOG-Datei l\'f6scht. Danach entsteht dann eine neue .LOG-Datei, die exakt die nach der Sicherung erfolgenden Ver\'e4nderungen aufzeichnet. (.LOG-Datei l\'f6schen, \b\f2 keinesfalls\b0  mit sichern, denn ihr Inhalt ist ja schon komplett in der Datenbank enthalten!) 
+\par \pard\fi-737\li737\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f6 Auf Mehrplatzsystemen sollte man erst nach Abschlu\'df des Playback den Betrieb wieder anfahren. \f2 
+\par \pard\fi-739\li739\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b Mischen (Merge)\b0\f6  : eine Grunddatei (Typ .cLG) wird in eine Datenbank eingespeist, wobei auch S\'e4tze gel\'f6scht werden k\'f6nnen. Das Einspeisen kann auf unterschiedliche Art geschehen. Identifiziert wird dabei \'fcber einen vom Benutzer definierten "Prim\'e4rschl\'fcssel", der eindeutig sein mu\'df (mehr dar\'fcber sp\'e4ter). \f2 
+\par \pard\fi-737\li737\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab Die Funktion "Mischen" kann auch vom\f6  Konsolprogramm \f2  \b\i a\f6 con\b0\i0   ausgef\'fchrt werden (\f4 -\f7\'d8\f2  9.5). 
+\par \pard\fi-739\li739\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b Check\b0\f6  : eine Grunddatei, die z.B. durch Import entstanden ist, wird an einer Datenbank auf Dubletten gepr\'fcft. Wenn eine \'dcbereinstimmung bei vorher festzulegenden Zugriffsschl\'fcsseln erkannt wird, gibt das Programm den neuen Datensatz und den oder die vermutlich identischen, vorhandenen S\'e4tze aus (Parameterdatei und Dateiname sind mit Option\lang1033\b\f4  -e\b0\f2  anzugeben). Der Anwender kann die Liste kontrollieren, die Grunddatei redigieren und sie dann mit Funktion "Mischen" einarbeiten lassen. 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031 
+\par \i Hinweis:\i0  Das Programm INDEX (\f4 -\f7\'d8\f6  Kap.7) kann mit seiner Funktion 7 ebenfalls neue Daten in eine Datenbank einbringen, jedoch kann es keine S\'e4tze identifizieren und austauschen, sondern nur als neue S\'e4tze hinzuf\'fcgen. Au\'dferdem darf man INDEX nicht im laufenden Mehrplatzbetrieb einsetzen, sonst gibt es Sch\'e4den an den Registern. \f2 
+\par 
+\par 
+\par \pard\fi-658\li658\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs36 9.1\tab Ablauf\b0 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs20 Das Programm UPD\f6 .EXE\f2  wird vom \b\i CockPit\b0\i0\f6 -Men\'fc "Funktionen" \'fcber Ziffer 9 aufgerufen oder von MS-DOS aus mit seinem Namen UPDATE. Unter UNIX mu\'df man es per Shellscript mit allen n\'f6tigen Optionen starten. \f2 
+\par \f6 Die wichtigsten Optionen f\'fcr den Start von UPDATE sind  (\f4 -\f7\'d8\f2  Kap.12): 
+\par 
+\par \pard\fi-1847\li1847\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f4\tab -fp\b0\f2\tab\tab Funktion "Playback" 
+\par \b\f4\tab -fm\b0\i\f2 xy\i0\tab\tab Funktion "Mischen" (die zwei Ziffern \i xy\i0  bestimmen den Modus, siehe unten) 
+\par \b\f4\tab -fc\b0\f2\tab\tab\f6 Funktion "Check"  (Vergleich mit Prim\'e4rschl\'fcssel), mit Kontrollausgabe \f2 
+\par \pard\fi-2352\li2352\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\tab\tab\tab\tab\f6 (daf\'fcr ist zus\'e4tzlich eine Option\lang1033\b\f4  -e\b0\f2  \i param/file\i0\f6  n\'f6tig,  \f4 -\f7\'d8\f2  Kap.12) 
+\par \pard\fi-1847\li1847\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f4\tab -d\b0\f2  \i dbp\\dbn\i0\tab Angabe der Datenbank, an der das  Programm arbeiten soll; 
+\par \lang1031\i\tab\tab\tab dbp\i0  = Name des Datenbank-Verzeichnisses, \i dbn\i0  = Datenbankname 
+\par \tab\lang1033\b\f4 -u\b0\f2  \i ufile\i0\tab Name der einzuspeisenden Datei 
+\par \lang1031\tab\tab\tab Wenn die Datei \i ufile\i0  vom Typ .LOG ist, wird "Playback" gefahren, auch bei\lang1033\b\f4  -fm\b0\f2  oder\b\f4  -fc\b0\f2 . 
+\par \b\f4\tab -F\b0\f2\tab\tab\f6 Beschleunigung auf Mehrplatzsystem, aber die anderen Pl\'e4tze erhalten beim Speichern (F10) meistens die Meldung "bitte warten". \f2 
+\par \b\f4\tab\tab\tab\b0\f2 Setzt man eine Ziffer hinter \b F\b0\f6 , wird diese als Sekundenzahl gedeutet und das Programm dadurch k\'fcnstlich verlangsamt, und zwar um die angegebene Zahl von Sekunden je Satz. \f2 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031 
+\par \pard\fi-1847\li1847\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f4\tab -I\b0\i\f2 name\i0\tab andere Indexparameter benutzen (\i name.c\i0 PI statt \i dbn.c\i0 PI) 
+\par \b\f4\tab -m1\b0\f2\tab\tab\f6 manuelle Unterbrechung m\'f6glich (durch Druck auf 'x') \f2 
+\par \b\f4\tab -n \b0\i\f2 k\i0\tab\tab\f6 Neue Datens\'e4tze sollen in Datei \i\f2 k\i0  gespeichert werden 
+\par \b\f4\tab -N \b0\i\f2 j\i0\tab\tab\f6 f\'fcr neue Datens\'e4tze gilt: wenn \i\f2 j\i0\f6 =0: Leers\'e4tze nicht zum Speichern benutzen, \i\f2 j\i0\f6 =1: Alle Leers\'e4tze zum Speichern zugelassen (d.h. nicht nur die in der mit\lang1031\f4  -n\i\f2 k\i0  angegebenen Datei) 
+\par \tab\tab\tab\f6 F\'fcr \i\f2 j\i0 =2 (default) gilt: nur in die mit Option\f4  -n\f6  gew\'e4hlte Datei wird gespeichert. \f2 
+\par \pard\fi-2353\li2353\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f4\tab -e\b0\i\f2 param/outfile\i0\tab Kontroll-Liste mit Parameterdatei \i param\i0 .ALG in Datei \i outfile\i0  ausgeben 
+\par \pard\fi-1847\li1847\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f4\tab -x\b0\i\f2 proto\i0\tab Die Protokollmeldungen sollen in die Datei \i proto\i0 ; sonst gehen sie in\lang1031\f4  upro\f2 . 
+\par \b\f4\tab -R\b0\f2\tab\tab Aufzeichnung: alle Bildschirmmeldungen werden auch in die Protokolldatei geschrieben. 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \i\f6 Nicht mehr ab Win'7/64:\i0\f2 
+\par Wenn man auf dem \b\i CockPit\b0\i0\f6 -Men\'fc "Funktionen" die \b\f2 9\b0\f6  w\'e4hlt, kann man alle UPD-Optionen in ein \'fcbersichtliches Formular eintragen. Das sieht etwa so aus: \f2 
+\par 
+\par \pard\li426\b\f4\fs18 Funktionen \b0     Routinen     Makros     Dateien     Optionen     HELP     EXIT 
+\par  +--------------+ 
+\par \f5  \'a6              \'a6   +----------------------- Optionen -----------------------+ \f4 
+\par \f5  \'a6  HELP        \'a6   \'a6 k : Konfiguration:         A                           \'a6 \f4 
+\par \f5  \'a6              \'a6   \'a6 f : Funktion:              m41                         \'a6 \f4 
+\par \f5  \'a6 1 : PRESTO   \'a6   \'a6 c : Laufwerke:             C                           \'a6 \f4 
+\par \f5  \'a6 2 : OFFLINE  \'a6   \'a6 d : Datenverzeichnis:      C:\\ALLEGRO\\KATALOG          \'a6 \f4 
+\par \f5  \'a6 4 : SRCH+EX  \'a6   \'a6\b\f4  u : Update-File     : \b0\f5                                  \'a6 \f4 
+\par \f5  \'a6 5 : IMPORT   \'a6   \'a6 n : Dateinummer     :      1                           \'a6 \f4 
+\par \f5  \'a6 7 : INDEX    \'a6   \'a6 manuelle Unterbrechung     0                           \'a6 \f4 
+\par \f5  \'a6 q : QRIX     \'a6   \'a6 e : Export Parameter:                                  \'a6 \f4 
+\par \f5  \'a6 8 : SORT     \'a6   \'a6     Export Datei    :                                  \'a6 \f4 
+\par \f5  \'a6\b\f4  9 : UPDATE   \b0\f5\'a6   \'a6 e : Export Parameter:                                  \'a6 \f4 
+\par \f5  +--------------+   \'a6     Export Datei    :                                  \'a6 \f4 
+\par \f5                     \'a6                                                        \'a6 \f4 
+\par \f5                     \'a6 GO (START)                                             \'a6 \f4 
+\par \f5                     \'a6                                                        \'a6 \f4 
+\par \f5                     \'a6                                                        \'a6 \f4 
+\par \f5                 +-----------path\\filename of update file------------+        \'a6 \f4 
+\par \f5                 \'a6\b\f4 a:\\newdata.alg \b0\f5                                     \'a6--------# \f4 
+\par                 +---------------------------------------------------# 
+\par \b  Auswahl der einzumischenden Datei (Grunddatei oder .LOG-Datei) 
+\par \b0  C:\\ALLEGRO\\KATALOG 
+\par  Datenbank = CAT         Konfiguration = A   Progr.Verz. =    C:\\ALLEGRO 
+\par  Einzelplatzbetrieb                          Sprache = GER    Laufwerk = C   V2\f5 6.6\f4  
+\par \pard\f2\fs20 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par Hier soll folgendes passieren: die Datenbank auf C:\\ALLEGRO\\KATALOG ist zu aktualisieren, und zwar mit der Mischfunktion\f4  \b -fm41\b0\f6  (mehr dazu sp\'e4ter). Die Aktualisierungsdaten stehen in der Datei NEWDATA.ALG auf dem Laufwerk A: (die Momentaufnahme zeigt den Punkt, wo gerade dieser Name eingegeben wurde). Wenn man das Eingabefeld "Update-File" anw\'e4hlt, werden zuerst zur Auswahl die .ALG-Dateien angeboten, die auf dem Daten- bzw. Programmverzeichnis stehen. Gibt es keine solche oder w\'e4hlt man davon keine aus sondern verl\'e4\'dft die Liste mit <Esc>, kommt man in das unten sichtbare Eingabefeld, wo man "freih\'e4ndig" eine Datei vorgeben kann, die auf einem ganz anderen Pfad steht. Men\'fcpunkt \b\f2 GO\b0\f6  l\'f6st dann den Start aus. Dabei entsteht eine Batchdatei CCC.BAT, die haupts\'e4chlich diese Zeile enth\'e4lt: 
+\par \f2 
+\par \f4\fs18 upd -fm41 -kA -n1 -dC:\\ALLEGRO\\KATALOG\f5\\CAT\f4  -PC:\\ALLEGRO -a3 -ua:\\newdata.alg -lger\f2\fs20 
+\par \f6 
+\par Dies also ist ein spezielles Beispiel f\'fcr einen Aufruf des Programms. \f2 
+\par Die allgemeine Form des \b Aufrufs\b0\f6  von  UPD  f\'fcr einen automatischen Ablauf sieht so aus: \f2 
+\par 
+\par \pard\fi-1386\li1386\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f6 f\'fcr Playback:\lang1033\b\f4\tab upd -fp -d \b0\i\f2 sub\\dbn\b\i0\f4  -u\b0\f2  dbn\b\f4 .log [-k\b0\i\f2 c\b\i0\f4 ] [-S]\b0\f2 
+\par \lang1031\f6 f\'fcr Mischen:\lang1033\b\f4\tab upd -fm\b0\i\f2 xy\b\i0\f4  -d \b0\i\f2 sub\\dbn\b\i0\f4  -u \b0\i\f2 filename\b\i0\f4  -n1 [-k\b0\i\f2 c\b\i0\f4 ] [-S] [-F] [-e...] [-N\b0\i\f2 j\i0 ] 
+\par \lang1031\f6 f\'fcr Check:\lang1033\b\f4\tab upd -fc -d \b0\i\f2 sub\\dbn\b\i0\f4  -u \b0\i\f2 filename\b\i0\f4  -e \b0\i\f2 param\i0 /\i outfile\b\i0\f4  [-k\b0\i\f2 c\b\i0\f4 ]\b0\f2 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031 wobei \i filename \i0\f6 der vollst\'e4ndige Name (mit Laufwerk und Pfad) einer .cLG-Datei ist und die Datenbank \i\f2 dbn\i0  auf dem Unterverzeichnis \\ALLEGRO\\\i sub\i0  liegt. Die Optionen in [...] sind nicht immer notwendig. 
+\par 
+\par Wenn man die Option\lang1033\b\f4  -u\b0\f6   weglie\'df, fragte das DOS-Programm selbst nach dem Namen der einzumischenden Datei. Es gen\'fcgt bei der DOS-Version sogar, beim Aufruf nur die Optionen\b\f4  -k\b0\f2   und\b\f4  -f\b0\f2  anzugeben, alles andere wird dann abgefragt. Somit kann man auch UPD-Aufrufe immer so konfigurieren, wie man es braucht. 
+\par \lang1031\f6 F\'fcr den "Check" mu\'df die Export-Option  -e\i\f2 param/outfile\i0   gesetzt werden; dabei entsteht mit Hilfe von \i param.c\i0 PR (z.B. mit\f4  e-1.apr\f2 ) eine Ausgabedatei \i outfile\i0\f6 , in der am Ende die identifizierten Datens\'e4tze, die vorhandenen und dazu die neuen, im Format \i\f2 param\i0  stehen sollen. 
+\par \f6 F\'fcr DOS gilt: fehlt\lang1033\b\f4  -d\b0\i\f2 sub\i0 , wird der Pfadname genommen, der in der Umgebungsvariablen -D (Datenbankpfad) eingetragen ist, wenn diese nicht existiert, wird das aktuelle Verzeichnis genommen. 
+\par \lang1031 Auch bei Funktion "Mischen" kann man mit einer Option\lang1033\b\f4  -e\b0\f6  verlangen, da\'df ein Export erstellt wird. \f2 
+\par \lang1031 Die Option\lang1033\b\f4  -k\b0\i\f2 c\i0\f6  mu\'df nur gesetzt werden, wie immer, wenn man nicht A.CFG verwendet. DOS: Alternativ kann man auch die Umgebungsvariable\b\f4  -K\b0\f2  vorher setzen (mit\b\f4   set -k=\b0\i\f2 c\i0  ). 
+\par \lang1031 
+\par \b\f6 Zu erkl\'e4ren bleiben die Variablen \i\f2 x\i0  und \i y\i0  der Option\lang1033\f4  -fm\f2\fs24 :\b0 
+\par \lang1031\b\i\fs20 x\b0\i0\f6  wirkt sich in solchen F\'e4llen aus, wenn zu dem neuen Datensatz ein alter mit gleichem Prim\'e4rschl\'fcssel gefunden wird: \f2 
+\par \pard\fi-1383\li1383\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i 
+\par \b x\b0\i0   = \lang1033\b\f4  0  :\b0\f2\fs24\tab Es findet \b keine Ersetzung\b0\f6  statt; jeder Satz wird ohne Vergleich des Prim\'e4rschl\'fcssels wie ein neuer Satz eingemischt \f2 
+\par \pard\fi-1386\li1386\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f4\fs20     1  :\b0\f2\fs24\tab der alte Satz wird durch den neuen \b\f6 vollst\'e4ndig ersetzt\b0 , mitsamt aller Unters\'e4tze \f2 
+\par \b\f4\fs20     2  :\b0\f2\fs24\tab der alte Satz bleibt \b\f6 unver\'e4ndert\b0\f2 , d.h. der neue wird ignoriert, 
+\par \pard\fi-1383\li1383\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f4\fs20     3  :\b0\f2\fs24\tab der alte Satz wird \b kategorieweise in den neuen eingemischt\b0\f6  (d.h. vorhandene Kategorien des alten Datensatzes bleiben erhalten, vom neuen werden nur die zus\'e4tzlichen Kategorien \'fcbernommen!). Die Unters\'e4tze des alten Satzes bleiben komplett erhalten, wenn der neue welche hat, fallen sie weg. \f2 
+\par \b\f4\fs20     4  :\b0\f2\fs24\tab der neue Satz wird \b kategorieweise in den alten eingemischt\b0\f6  (d.h. eine im neuen Satz vorhandene Kategorie ersetzt eine entsprechende, im alten Datensatz vorhandene; vorhandene Kategorien bleiben nur erhalten, wenn sie im neuen Satz nicht vorkommen.) Unters\'e4tze des alten Satzes verschwinden vollst\'e4ndig und werden durch die des neuen ersetzt! E gibt hierbei besondere M\'f6glichkeiten, Felder zu l\'f6schen bzw. neue Mehrfachfelder einzuf\'fcgen. Siehe dazu `\cf2\ul\b\f2 Abschnitt 9.6\cf0\ulnone\b0 `. 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\fs20 
+\par \b\i y\b0\i0\f6  gilt f\'fcr den anderen Fall, wo kein Datensatz mit gleichem Prim\'e4rschl\'fcssel existiert: \f2 
+\par \pard\fi-1848\li1848\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f4     \b0\i\f2\fs24 y\b\i0\f4\fs20  = 0  :\b0\f2\fs24\tab neuen Datensatz \b ignorieren\b0 
+\par \b\f4\fs20         1  :\b0\f2\fs24\tab neuen Datensatz \b einmischen\b0  (in die durch Option\b\f4\fs20  -n\b0\f2\fs24  angegebene Datei). 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\fs20 
+\par \f6 Ein h\'e4ufiger Fall ist\lang1033\b\f4   -fm41\b0\f6   : nur die in den neuen Fremddaten nicht belegten Kategorien bleiben in den alten Datens\'e4tzen erhalten (z.B. k\'f6nnen dies Signaturen sein oder lokale Sacherschlie\'dfungsdaten), die anderen werden alle ersetzt, und neue Aufnahmen werden in die Datenbank eingef\'fcgt. Man wird diesen Fall z.B. anwenden, wenn man per ISBN Fremddaten aus einer CD- oder online-Quelle abzieht und diese dann zwecks Qualit\'e4tsverbesserung in die eigene Datenbank einmischt. Die Fremddaten m\'fcssen in jedem Fall zun\'e4chst per Import konvertiert werden. Dabei kann man problematische Kategorien entweder ausfiltern, also nicht \'fcbernehmen, oder auf solche Nummern legen, die man in den eigenen Daten nicht besetzt hat. So vermeidet man ungewollte Kategorieersetzungen. \f2 
+\par \lang1031\i Anmerkung:\i0  Die Kombination\lang1033\b\f4   -fm20\b0\f6   w\'e4re sinnlos, denn das Programm w\'fcrde gar nichts tun. \f2 
+\par \lang1031 
+\par \b Teilfelder aktualisieren: \b0 Wenn in der Update-Datei eine Kategorie steht mit \f8\fs24\'b2\'b2\f2\fs20  am Anfang und dann einem oder mehreren Teilfeldern, werden die Teilfelder ausgetauscht. \i Beispiel:\i0  in der Update-Datei steht 
+\par \f4 #260   \f8\fs24\'b2\'b2\f4\fs20 bRowohlt\f8\fs24\'b2\f4\fs20 c1980 
+\par \tab\f2 im Titelsatz (der aktualisiert werden soll) steht 
+\par \f4 #260`  \f8\fs24\'b2\f4\fs20 aBerlin\f8\fs24\'b2\f4\fs20 bFischer\f8\fs24\'b2\f4\fs20 c1977\f2 . 
+\par     \tab Dann kommt heraus: 
+\par \f4 #260   \f8\fs24\'b2\f4\fs20 aBerlin\f8\fs24\'b2\f4\fs20 bRowohlt\f8\fs24\'b2\f4\fs20 c1980\f2 
+\par \i Sonderfall: \i0  Steht in der Update-Datei\f4  #260 \f8\fs24\'b2\'b2\f4\fs20 b\f2   (ohne Text hinter \f8\fs24\'b2\f2\fs20 b), wird Teilfeld \f8\fs24\'b2\f6\fs20 b gel\'f6scht. \f2 
+\par 
+\par \i Obacht:\i0  \b\f6 Hierarchische S\'e4tze\b0  werden bei -fm3 bzw. -fm4 so gemischt, da\'df die alten Unters\'e4tze komplett erhalten bleiben bzw. komplett ersetzt werden. Das Einmischen funktioniert also nicht auf den unteren Ebenen. Hier wird man in Zukunft besser mit verkn\'fcpften statt hierarchischen Aufnahmen arbeiten (\f4 -\f7\'d8\f2  Kap.10.2.6.7). D\f6 as Programm\f2  \f6  \b\i\f2 a\f6 con\b0\i0\f2  (\f4 -\f7\'d8\f6  9.5) kann allerdings auch Unters\'e4tze von hierarchischen S\'e4tzen gezielt einzeln austauschen. \f2 
+\par 
+\par \pard\fi-658\li658\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs36 9.2\tab LOG-Datei auswerten/umwandeln\b0 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs20 
+\par \f6 F\'fcr a99 gibt es einen FLEX namens `\cf2\ul\b\f2 LOG.FLX\cf0\ulnone\b0 `, mit dem man die LOG-Datei anzeigen lassen kann. 
+\par \f6 Gelegentlich entsteht der Wunsch, die .LOG-Datei einer Datenbank untersuchen zu k\'f6nnen. Ohne andere Mittel kann man folgendes tun: die Datei von \i\f2 dbn\i0 .LOG auf \i dbn\i0\f6 .ALD umbenennen, dann l\'e4\'dft sie sich mit dem Programm SRCH durchsuchen und exportieren. Ihre Struktur ist formal identisch mit der Struktur einer \b\f2 Datenbank\b0\f6 datei, deshalb kann SRCH sie lesen. Dieser Trick war mit Version 13 aber unn\'f6tig geworden, denn es kam das Hilfsprogramm namens \b\f2 LOG2ALG.EXE\b0  (lies "LOG to ALG"). Es wandelt die Datei \i dbn\i0 .LOG um in eine \b Grund\b0 datei \i dbn\i0\f6 .ALG. Dabei werden die internen Satznummern, die jeweils am Beginn einer Aufnahme stehen, weggelassen. Jeder (Haupt-) Datensatz beginnt mit dem Code 1, gel\'f6schte S\'e4tze beginnen mit der Sonderkategorie\f4  \b #u1 @@@@@\b0\f6 . Neu erfa\'dfte S\'e4tze beginnen mit\f4  \b #u1 #####\b0\i N\i0\f2 , wobei \i N\i0  die Nummer der Datei ist, in welcher der Satz gespeichert wurde. Die Datei \i dbn\i0 .ALG kann man ebenfalls mit UPD einmischen, dann aber mit Funktion\f4  -fm11\f2   statt\f4  -fp\f6 , und NUR dann, wenn es einen eindeutigen Prim\'e4rschl\'fcssel gibt. 
+\par Was hat man davon? Wenn man z.B. regelm\'e4\'dfig zwei getrennte, unabh\'e4ngig voneinander betriebene Datenbanken aktualisieren will, kann man mit UPD und vorgeschaltetem LOG2ALG die .LOG-Dateien zwischen beiden Datenbanken austauschen, um die jeweils andere zu aktualisieren. Dieser Wunsch entsteht immer dann, wenn man auf zwei oder drei nicht vernetzten Einzelrechnern Katalogisierung betreibt und die Daten untereinander austauschen will, so da\'df jeder \'fcber denselben Datenbestand verf\'fcgt. \f2 
+\par \i Bitte beachten:\i0  In der Konfiguration der Zieldatenbank sollte man die Befehle\f4  cn\f2  und\f4  ce\f6  (f\'fcr Erfassungs- bzw. \'c4nderungsdatum) abschalten, damit diese Angaben in den einzumischenden Daten erhalten bleiben. \f2 
+\par 
+\par \b Beispiel:\b0\f6  die Datenbanken hei\'dfen beide CAT (mit A.CFG) und liegen jeweils auf C:\\ALLEGRO\\KATALOG. \f2 
+\par \pard\fi-1386\li1386\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 Schritt 1: \tab Mit\lang1033\b\f4   log2alg cat\b0\f6   erh\'e4lt man die Datei CAT.ALG; man kopiert sie auf die Diskette im Laufwerk A: und bringt diese zu dem anderen Rechner. \f2 
+\par \lang1031 Schritt 2:\tab\tab Man gibt auf dem anderen Rechner den Befehl 
+\par \pard\fi-1385\li1385\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f4\tab\tab upd -fm11 -S -u a:cat.alg -dkatalog -n1\b0\f2    
+\par \lang1031\tab\tab (die Nummer hinter\lang1033\b\f4  -n\b0\f2  ist beliebig zwischen 1 und 255). 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f6 S\'e4tze mit gleichem Prim\'e4rschl\'fcssel werden dann ausgetauscht, gel\'f6schte werden in der Zieldatenbank ebenfalls gel\'f6scht, und neu erfa\'dfte werden in dieselbe Datei geschrieben wie in der Quelldatenbank. Dieser Vorgang kann w\'f6chentlich oder sogar t\'e4glich durchgef\'fchrt werden. Es ist zu raten, die .LOG-Datei dann jeweils zu l\'f6schen, damit nicht dieselben Daten immer wieder zur\'fcck \'fcbertragen werden. (Schlimm w\'e4re das nicht, sie w\'fcrden einfach nochmals ersetzt.) \f2 
+\par \i Ausnahme:\i0\f6  wenn man neue Daten mit INDEX einmischt, werden diese nicht in der .LOG aufgezeichnet! Man mu\'df daher den INDEX-Vorgang an beiden Datenbanken durchf\'fchren, um die Datenbanken beide zu aktualisieren. \f2 
+\par 
+\par \pard\fi-658\li658\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\fs36 9.3\tab\f6 S\'e4tze l\'f6schen mit UPD\b0\f2 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs20 
+\par \f6 Der Code 9 zum L\'f6schen funktioniert auch dann, wenn die .ALG-Datei nicht aus einer .LOG-Datei hervorgegangen ist. Dadurch kann man das Programm UPD auch benutzen, um L\'f6schungen automatisch durchzuf\'fchren. Die zu l\'f6schenden S\'e4tze m\'fcssen nur mit einem ASCII-Code 9 statt 1 beginnen und brauchen nur diejenigen Kategorien zu enthalten, die zur Bildung des Prim\'e4rschl\'fcssels notwendig sind. Einfacher: der zu l\'f6schende Satz beginnt mit\f4   #u1 @@@@@\f6 . Wenn  UPD  einen solchen Satz aus der .ALG-Datei einliest, bildet es den Prim\'e4rschl\'fcssel, sucht in der Datenbank den zugeh\'f6rigen Satz und l\'f6scht diesen. Wird er nicht gefunden, passiert nichts. \f2 
+\par 
+\par \b\f6 Bemerkungen \'fcber Prim\'e4rschl\'fcssel\b0\f2 
+\par Der \b\f6 Prim\'e4rschl\'fcssel\b0  ist der erste Schl\'fcssel, der bei der Abarbeitung der ak-Befehle (\f4 -\f7\'d8\f6  10.2.1) in der Index-Parameterdatei dbn.API entsteht. Der Prim\'e4rschl\'fcssel mu\'df, um f\'fcr  UPD  tauglich zu sein, \f2 
+\par \pard\fi-737\li737\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   \bullet\b\tab eindeutig\b0\f6  sein: wenn mehrere S\'e4tze mit demselben Prim\'e4rschl\'fcssel vorhanden sind, wird der mit der kleinsten Satznummer genommen, was zu ganz falschen Ersetzungen f\'fchren kann! \f2 
+\par   \bullet\tab\f6 bei hierarchischen mehrb\'e4ndigen Werken \b\f2 aus der Hauptaufnahme\b0  hervorgehen; es darf sich also nicht z.B. um eine Zugangsnummer handeln, die evtl. nur in einer Unteraufnahme vorkommt. 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f6 Jedoch hat der Prim\'e4rschl\'fcssel ansonsten keine Sonderstellung f\'fcr das Datenbanksystem. Das bedeutet: man kann f\'fcr einen speziellen Update-Vorgang ad hoc einen anderen Schl\'fcssel zum Prim\'e4rschl\'fcssel deklarieren. Dazu braucht man nur die ak-Zeilen umzuordnen, also den bewu\'dften Schl\'fcssel an die erste Stelle zu r\'fccken; keineswegs mu\'df man neu indexieren! Dasselbe gilt f\'fcr die Check-Funktion: hintereinander kann man mehrere Check-Durchl\'e4ufe mit unterschiedlichen Prim\'e4rschl\'fcsseln durchf\'fchren. \f2 
+\par 
+\par \b\f6 Hinweise zur Programmierung des Prim\'e4rschl\'fcssels:\b0\f2 
+\par \f6 Nehmen wir als Beispiel an, wir h\'e4tten keine bestimmte Kategorie wie z.B. #00 mit eindeutiger Identnummer, sondern der Prim\'e4rschl\'fcssel soll aus Kategorie #89D (DB-Nummer) gebildet werden, und wenn diese nicht vorhanden ist, aus der immer vorhandenen Signatur #90. Die beste L\'f6sung ist diese: \f2 
+\par \pard\fi-1848\li1848\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f4 ak=zz+@\lang1031\b0\f2\tab\tab\f6 Dieser Sonderbefehl wird in jedem Fall ausgef\'fchrt, nur gibt es dann keine #u1 \f2 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 ... 
+\par \pard\fi-1847\li1847\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f4 #-@\lang1031\b0\f2\tab\tab\tab\f6 hier beginnt die Ausf\'fchrung\lang1033\b\f4 
+\par \pard\fi-3073\li3073\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #89D +# e";" p"|9DB"\lang1031\b0\f2\tab\f6 die DB-Nummer soll im Reg. 9 stehen mit Pr\'e4fix DB\lang1033\b\f4 
+\par #90 p"|8"\lang1031\b0\f2\tab\tab\tab\tab Wenn #89D nicht besetzt ist, kommt die Signatur dagegen im Reg. 8\lang1033\b\f4 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #+#\b0\f2 
+\par \lang1031\f6 Zwar ist es nicht zwingend, eine bestimmte Sprungmarke f\'fcr den Prim\'e4rschl\'fcssel zu reservieren, es f\'f6rdert jedoch die \'dcbersichtlichkeit. Und: die Programme \b\i\f2 aLF\b0\i0  und \b\i ORDER\b0\i0\f6  erwarten, anders als  UPD, da\'df bei Sprungmarke\lang1033\b\f4  #-@\b0\f6  der Prim\'e4rschl\'fcssel gebildet wird, und da\'df dies ohne die Hilfskategorie\b\f4  #u1\b0\f2  geschieht. Daher wird mit dem Befehl\b\f4  ak=zz+@\b0\f6  gearbeitet (und nicht mit zwei Befehlen f\'fcr #89D und #90). \f2 
+\par \lang1031\i Vorsicht:\i0  Im Abschnitt\f4  #-@\f6  keine Setzung von Anwendervariablen (#u-Variablen) vornehmen! Diese sind sonst beim zweiten Durchlauf nicht verf\'fcgbar, und man erh\'e4lt fehlerhafte Register. \i\f2 Besser:\i0  Abschnitt\f4  #-0\f6  daf\'fcr benutzen. \f2 
+\par 
+\par \pard\fi-658\li658\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs36 9.4\tab Datenbank ganz neu aufbauen mit UPD\b0 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs20 
+\par Statt mit INDEX kann man eine Datenbank auch mit\f6  \f2  UPD \f6  \f2 ganz neu aus einer Grunddatei aufbauen. Der Startbefehl sieht dann z.B. so aus, gegeben auf dem Programmverzeichnis C:\\ALLEGRO: 
+\par \f4 upd -fm41 -kp -dPICA -iPICA -uc:\\allegro\\pica\\pica.plg -n1 -m0 -S -L\f2 
+\par Die Ausgangsdatei PICA.PLG auf dem Verzeichnis C:\\ALLEGRO\\PICA wird dann mit den Indexparametern PICA.PPI unter Konfiguration P.CFG zu einer neuen Datenbank aufgebaut. (Wenn jedoch auf C:\\ALLEGRO\\PICA schon eine Datenbank namens PICA existiert, werden die neuen Daten eingemischt.) 
+\par \f6 Theoretisch kann man also auf INDEX verzichten und immer  UPD  benutzen, um eine Datenbank aufzubauen. Praktisch ist es aber f\'fcr gr\'f6\'dfere Datenmengen zu langsam: INDEX kann gut die 10fache Geschwindigkeit erreichen. \f2 
+\par 
+\par 
+\par \pard\fi-658\li658\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs36 9.5\tab Datenbanken aktualisieren mit \i a\f6 con\i0  \f2 oder \i a99\b0\i0 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs20 
+\par Ab Version 16 gibt es die Alternative, Datenbanken nicht mehr mit\f4   upd -fm...\f2   zu aktualisieren, sondern mit dem\f6  Konsolprogramm\f2  \b\i `\cf2\ul\i0\f6 acon\cf0\ulnone\i\f2 `\b0\i0  oder mit \b\i a99\b0\i0 . \b\i 
+\par a\f6 con\b0\i0   f\'fchrt Auftr\'e4ge aus, die ihm beim Aufruf mit der Option \f5 -j\i\f6 jobname\i0   \lang1033\'fcbergeben werden. acon wird in einer zus\'e4tzlichen Dokumentation genau beschrieben, daher soll hier nur auf die M\'f6glichkeit hingewiesen werden. Der Auftrag mu\'df diese drei Zeilen enthalten, wenn eine Datei  \f4 f:\\user\\xy\\neudat.alg\f2  eingemischt werden soll: 
+\par \pard\fi-739\li739\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f4\tab @3 
+\par \tab set u41 
+\par \pard\fi-737\li737\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab upd f:\\user\\xy\\newdata.alg\f2 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 Die mit  \b\f4 set u41\b0\f6   angegebenen Ziffern entsprechen genau den in 9.1 angegebenen Werten f\'fcr die Option \b\f4 -fm\b0\f2 . 
+\par \b\i a99\b0\i0\f6   kann nebenbei Funktionen eines Datenbankservers aus\'fcben. Die Auftr\'e4ge, die man ihm als solchem gibt, hei\'dfen FLEXe und sind zu schreiben in der FLEX-Sprache, die mit der \b\i\f2 avanti\b0\i0\f6 -Sprache kompatibel ist, aber noch andere Elemente enth\'e4lt. Daher kann man den gleichen Auftrag, der oben angegeben wurde, auch in einen FLEX f\'fcr \b\i\f2 a99\b0\i0\f6  verpacken (der Befehl @3 ist dabei unn\'f6tig). Entweder startet man diesen interaktiv (mit der Hand), oder man \'fcbergibt ihn von au\'dfen als sog. ExFLEX. Dazu schreibt man die beiden Zeilen in eine Datei  \f9 misch.flx\f2   und ruft dann das Hilfsprogramm FLEX.EXE auf: 
+\par \f4 flex misch 
+\par \f2 Es gibt bei \b\i a99\b0\i0\f6  noch eine weitere M\'f6glichkeit: Update zur Probe. Man setzt dann hinter den Befehl \f4 set u..\f2  noch die Ziffer 0, also z.B. \f4 set u410. \f6 Dieser Vorgang l\'e4uft dann sehr schnell ab. Im Offline-Speicher von a99 kann man sich die ver\'e4nderten S\'e4tze dann ansehen \f2 -\f6  in der Datenbank ist noch nichts passiert. Man verl\'e4\'dft entweder a99 dann ohne weitere Aktion, oder man veranla\'dft das Programm \'fcber sein Men\'fc "Datei", die Daten dann echt einzumischen. Das dauert genauso lange wie bei UPDATE. \f2 
+\par 
+\par \b\f6\fs36 9.6  Besondere M\'f6glichkeiten beim Updating\b0\f2 
+\par \fs20 
+\par \f6 Zum Aktualisieren einer Datenbank kann man mehr tun als nur S\'e4tze vollst\'e4ndig ersetzen. Dies macht man mit dem Modus \f4 -fm11\f2  oder \f4 -fm10\f2  (\f4 -\f7\'d8\f2  9.1). Der Modus \f4 -fm31\f6  erm\'f6glicht es, nur diejenigen Kategorien zu erg\'e4nzen, die im Datensatz noch nicht vorkommen, die vorhandenen aber unber\'fchrt zu lassen. Das ist ein eher seltener Fall. \f2 
+\par Wenn man den Modus 41 anwendet, kann man sowohl mit dem Programm UPDATE wie mit dem \b\i avanti\b0\i0\f6 -Server einige zus\'e4tzliche M\'f6glichkeiten nutzen. Zu Teil wurden sie schon im Zusammenhang weiter oben erw\'e4hnt, aber wir stellen sie hier nochmals als \'dcbersicht zusammen: \f2 
+\par \f6 F\'fcr die Beispiele setzen wir voraus, da\'df der Prim\'e4rschl\'fcssel aus der Kategorie\f4  #00\f2   gebildet wird. 
+\par 
+\par \b\f6 Datensatz l\'f6schen\b0\f2 
+\par \i Beispiel:\i0  Es soll der Satz mit\f4  #00 1234567\f6  gel\'f6scht werden. Dann braucht in der Update-Datei nur zu stehen: \f2 
+\par \f4 #u1 @@@@@ 
+\par #00 1234567\f2 
+\par \f6 Es mu\'df nur die Kategorie da sein (hier #00) aus der der Prim\'e4rschl\'fcssel gebildet wird. Wenn noch andere Kategorien angegeben sind, hat das keine Auswirkung. In der .LOG-Datei wird aber in jedem Fall der vollst\'e4ndige Satz als Kopie aus der Datenbank protokolliert. \f2 
+\par 
+\par \b\f6 Datensatz als neuen Satz einspeisen, ohne R\'fccksicht auf Prim\'e4rschl\'fcssel\b0\f2 
+\par \i Beispiel:\i0\f6  Ein neuer Satz hat noch keine #00, er soll auf jeden Fall als neuer Satz eingemischt werden, und zwar in die Datei 72. Dann mu\'df der Satz mit einer speziellen #u1 beginnen: \f2 
+\par \f4 #u1 #####72 
+\par #...\f2                   [Datensatz] 
+\par \f6 NEU ab V29:  Mit \b\f4 #u1 ####\f5 ?\b0\i\f4 N\i0\f6   (nur 4mal #) erreicht man, da\'df der Prim\'e4rschl\'fcssel verglichen und nur dann der Satz als Neusatz in die Datei N kommt, wenn es noch keinen Satz gleichen Prim\'e4rschl\'fcssels gibt, ansonsten wird er normal eingemischt. Das Feld  \b\f4 #u1 \b0\f6 verschwindet in jedem Fall. \f2 
+\par 
+\par \b\f6 Kategorie l\'f6schen\b0\f2 
+\par \i Beispiel:\i0  Aus dem Satz mit\f4  #00 1234567\f2  soll die Kategorie\f4  #32\f6  entfernt werden. Dann mu\'df der Update-Satz folgendes enthalten: \f2 
+\par \f4 #00 1234567 
+\par #32 _              \f2 (Ein Unterstrich auf der ersten Textposition, sonst nichts) 
+\par \f4 #...\f2 
+\par \f6 Es k\'f6nnen noch beliebige andere Kategorien kommen, die erg\'e4nzt oder ausgetauscht werden sollen. \f2 
+\par 
+\par \b\f6 Teilfelder aktualisieren (ersetzen oder l\'f6schen)\b0\f2   dies wurde schon am Ende von 9.1 behandelt, siehe oben. 
+\par 
+\par \pard\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\f6 Anh\'e4ngen von Wiederholungskategorien \f2 
+\par \pard\tx740\tx1386\tx1860\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0\f6 Wenn z.B. #31 die Schlagwortkategorie ist und #312 das zweite, #313 das dritte Schlagwort usw., kann das Problem entstehen: es sollen neue Schlagw\'f6rter hinzugef\'fcgt werden, vorhandene also bestehen bleiben. Dann mu\'df man die neuen Schlagw\'f6rter so anliefern: \f2 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f5 #31 ~ErstesSchlagwort 
+\par #31 ~ZweitesSchlagwort\f4 
+\par \f6 Die Tilde auf der ersten Textxposition des Feldes (! nicht auf der Position des Wiederholungszeichens!) bewirkt, da\'df diese Kategorien auf die n\'e4chsten freien Pl\'e4tze hinter die schon vorhandenen Kategorien kommen, entsprechend der Felddefinition in der CFG. Hat die erste solche Kategorie einen Buchstaben oder eine Ziffer an der Stelle, werden die nachfolgenden entsprechend hochgez\'e4hlt.\f2 
+\par \cf1\i\f6 ACHTUNG:\cf0\i0  Bei a99 und dem Konsolprogramm acon ist das leider anders: da mu\'df die Tilde auf die Wiederholungsposition.\f2 
+\par 
+\par 
+\par \pard\tx1140\tx1860\tx2580\tx3300\tx4020\tx4740\tx5460\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b Parametrierte Vorbehandlung 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0\f6 Ein potentiell sehr m\'e4chtiges Konzept f\'fcr den fortgeschrittenen \i\f2 Allegrologen\i0 .  Man startet UPDATE mit der Option 
+\par \f4 -emanip/nul \f2 und macht sich vorher eine Parameterdatei  MANIP.APR, in der steht, was im Einzelnen passieren kann. Wie bei den Globalen Manipulationen (\lang1024\f7\'e0\lang1031\f6  1.5.4) mu\'df es in MANIP.APR eine Sprungmarke \f4 #-#\f6  geben, unter der dann steht, was gemacht werden soll. F\'fcr jeden Satz wird dieser Abschnitt ausgef\'fchrt, und zwar unmittelbar vor dem Speichern (egal ob es ein neuer Satz ist oder ein ersetzter), d.h. nach der Nummernvergabe und Zeitstempelung. \f2 
+\par 
+\par \b\f6 Unters\'e4tze von hierarchischen S\'e4tzen austauschen\b0\f2 
+\par \f6 Nur der avanti-Server kann die Unters\'e4tze gezielt einzeln ersetzen, das Programm UPDATE l\'f6scht einfach die alten Unters\'e4tze und h\'e4ngt die neuen an. Voraussetzung jedoch ist, damit der Server das korrekt durchf\'fchrt, da\'df die Bandnummern in den Kategorien\f4  #01\f6  \'fcbereinstimmen. Wenn im neuen Satz ein Untersatz mit \f4 #01 47\f2  vorkommt, wird ein Untersatz gesucht und ersetzt, der gleichfalls mit\f4   #01 47\f6   beginnt. Ist das nicht der Fall, wird der neue Untersatz hinten angeh\'e4ngt, nicht dazwischen eingeordnet. \f2 
+\par \pard 
+\par ?per FLEX=h xupdate 
+\par ?LOG.FLX=X log 
+\par ?Abschnitt 9.6=h =9.6  Besondere 
+\par ?acon.exe=h acon 
+\par ?acon=h acon 
+\par }
+ 

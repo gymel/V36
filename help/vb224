@@ -1,0 +1,202 @@
+
+Verlautbarung 224 der Entw.Abt.                              2009-12-22
+-------------------------------
+
+                                             Spätdezember zieht herauf,
+                                       wieder wird ein Jahr Geschichte.
+                                         Zwar verschoben sich Gewichte,
+                                           nicht jedoch der Zeitenlauf.
+a30 : Einige Neuerungen
+=======================
+
+Paket samt Doku ist aktualisiert:  http://www.allegro-c.de/doku/a30/
+
+Darin sind die folgenden Neuerungen integriert:
+
+1. Eingabefeld zugleich Suchbefehls-Eingabe
+2. Zusaetzliches Feld fuer eine Kurzzeile zum Datensatz
+3. Absicherung der Jobs gegen Ausspaehung
+4. JavaScript aus a30 heraus nutzen
+5. Formulare auch zum Start von Sonderfunktionen
+6. Identifizierung per Passwort ("Sitzungs"-Konzept)
+
+
+Demo:  http://www.biblio.tu-bs.de/db/a30/demo.htm
+(Tip: Die neuen Ident-Funktionen stehen im Menue "Sonderfunktionen")
+
+1. Eingabefeld zugleich Suchbefehls-Eingabe
+-------------------------------------------
+Wenn etwas anderes eingegeben wird als einer der definierten Befehle,
+dann ruft das Programm den Job  a30sim.job  auf und uebergibt ihm die
+Eingabe. Diesen Job kann der Systemverwalter ganz beliebig schreiben.
+Im a30-Paket ist es als Beispiel so angelegt, dass dann eine Suche im
+Register TIT mit and-Verknuepfung der eingegebenen Woerter erfolgt.
+D.h. das Eingabefeld kann dann unmittelbar als Befehlseingabe fuer
+eine simple Stichwortsuche betrachtet werden.
+
+
+2. Zusaetzliches Feld fuer eine Kurzzeile zum Datensatz
+-------------------------------------------------------
+Mit dem Label  _!_SHO  kann man vom Job aus eine Zeile an a30 geben, die
+dann direkt unter dem Befehls-Eingabefeld erscheint. Es ist sinnvoll,
+dort eine Kurzzeile fuer den aktuellen Satz auftauchen zu lassen, weil
+der Satzja nur in den Tabs INT und EXT zu sehen ist. Im Job erreicht
+man das am einfachsten mit dem Befehl
+
+wri "_!_SHO " s
+
+doch genausogut koennte man hier bestimmte, fuer die betr. Situation
+guenstigere Elemente anzeigen lassen - oder was immer man will.
+
+
+3. Absicherung der Jobs gegen Ausspaehung
+-----------------------------------------
+Namensaenderung: Die Datei  a30db.ini  heisst jetzt  a30_ini.php.
+Aus demselben Grund wurde folgendes eingerichtet:
+Damit niemand von aussen Einsicht in einen .job nehmen kann (einfach
+durch Aufruf seines Namens im Browser), kann man die .JOB-Dateien auf
+ein anderes Verzeichnis legen, das dem Webserver zugaenglich ist; 
+sinnvoll ist ein Unterverzeichnis des Skriptpfads der Datenbank.
+Dazu braucht man nur in der Datei  a30_ini.php (vorher a30db.ini)
+eine Zeile dieser Form zu setzen:
+$Jobdir="pathname"   
+z.B.   $Jobdir="ourjobs/", das waere dann unter Windows der Pfad 
+\xampp\htdocs\demo\ourjobs\    fuer die DemoBank
+Dort muessen dann alle die .job-Dateien liegen, die indirekt ueber
+das zentrale Skript a30ajax.php gestartet werden. Andere koennten auch
+woanders liegen, standardmaessig werden aber keine anderen geliefert.
+
+4. JavaScript aus a30 heraus nutzen
+-----------------------------------
+Es ist moeglich, aus einem ActionScript-Programm heraus auch
+JavaScript-Funktionen aufzurufen, und zwar wenn diese im <head>
+der HTML- oder PHP-Datei stehen, in der a30.swf eingebettet ist.
+Als Beispiel wurde in a30 eingebaut, dass man eine Funktion
+a30s() aufrufen kann. Diese ist in  demo.htm  zu sehen.
+In a30.mxml kann man sehen, wie deren Aufruf gemacht wird; dazu
+gibt es eine Funktion  ExternalInterface.call(...).
+a30s() soll ein neues Fenster oeffnen, in dem das erscheint, was ein
+ein PHP-Skript erzeugt, dessen Name der Funktion uebergeben wird.
+Der Aufruf passiert, indem man z.B. in die Menuedatei a30son.htm  
+einen solchen Link einbaut (bei Demo zu sehen):
+
+<a href="event:S:grec.php">Satz in eigenem Fenster anzeigen</a>
+
+Auch in die Anzeige eines Titelsatzes kann so etwas eingebaut sein.
+Die Nummer des aktuellen Satzes wird als Variable #urN automatisch
+dem Skript grec.php uebergeben. Klickt man auf diese Link, wird also
+der Aufruf
+   http://<basis-url>/grec.php?urN=<satznr>
+ausgefuehrt und das Ergebnis in einem eigenen Browserfenster gezeigt.
+Bei IE und Opera wird ein neues Tab aufgemacht, bei Safari ein neues
+Fenster, nur FireFox und Chrome bringen ein kleineres Fenster.
+Hiermit kann man die von PHPAC her bekannten Unterfenster zur Satz-
+anzeige und -bearbeitung und damit auch die Formulartechnik "autoform"
+dann voll nutzen, d.h. damit ist die Palette der Moeglichkeiten zur
+Gestaltung von Eingabe- und Editorfunktionen ist nochmals erweitert.
+
+
+5. Formulare auch zum Start von Sonderfunktionen
+------------------------------------------------
+Manche Sonderfunktionen erfordern ja eine Nutzereingabe, lassen sich
+also nicht einfach mit einem simplen Hyperlink erledigen. Ein Client/
+Server-System hat damit aber von Natur aus Schwierigkeiten: avanti
+kann nicht aus einem Job heraus schnell mal eben dem Nutzer eine
+Frage stellen und dann weitermachen - anders als a99! Ein avanti-
+Job ist eine in sich abgeschlossene Sache, die im Server ablaeuft,
+weit weg vom Nutzer, da ist eine Zwischenfrage ein technisches Problem.
+In vielen Faellen kann die Frage aber vorab gestellt werden, bevor
+der Job gestartet wird. Wenn z.B. die Aufgabe lautet: Alle neuen
+Daten ab einem Datum XYZ heraussuchen. Dann braucht ja der Job nicht
+zuerst einmal anzulaufen und dann die Frage zu stellen, sondern
+die Nutzereingabe des Datums XYZ kann auch VOR dem Start des Jobs
+erfolgen. Und so kann man es mit a30 dann auch machen. So geht's:
+
+Nutzereingaben lassen sich mit Formularen erledigen. Die Datei
+a30for.xml enthaelt alle Formulare, die zur Anwendung gehoeren,
+darunter koennen auch welche sein, die NICHT zur Bearbeitung von
+Datensaetzen dienen. Hier ein Beispiel:
+  <form id="10" label="Neue Daten ab JJJJMMTT"
+                action="a30dab" but1="Los!">
+    <item type="textinput" name="VuND" label="Datum " />
+  </form>
+Anzeigen laesst man dieses Formular mit einem Hyperlink:
+<a href="event:_!!_FOR Neu\nVuND 20091001">Neue Daten ab JJJJMMTT</a>
+wie z.B. in der Datei a30men.htm. (Was hinter event: steht, wird in 
+diesem Fall so verarbeitet, als waere es dem Programm von aussen 
+uebergeben worden.)
+Mit _!!_FOR Neu  wird das Formular angezeigt, die Angabe VunD 20091001
+setzt das Datum 20091001 als Vorgabe in das Eingabefeld VunD.
+Auf den Button wird "Los!" geschrieben, und er soll die Aktion
+a30dab.job  ausloesen.
+(Hier ist !! noetig, weil ein einzelnes ! sonst nicht wirken wuerde,
+denn die Kombination _!_ hat ja eine Sonderbedeutung, auch in einer
+HTML-Datei, die a30 einlesen soll.
+
+
+6. Identifizierung per Passwort ("Sitzungs"-Konzept)
+-------------------------------
+Wer die a30-Nutzung mit Passwort absichern will, kann das jetzt tun,
+die noetigen Vorkehrungen wurden eingerichtet. Es handelt sich um ein
+neu entwickeltes, recht leicht zu handhabendes, effizientes Konzept,
+das u.a. keine Eintraege in der Datenbank erfordert.
+Soll KEINE Absicherung erfolgen, dann MUSS in der a30_ini.php stehen:
+$Ident = "no";
+Wie die Ident-Funktionen aufzurufen sind, ist in der Datei a30son.htm
+der DemoBank zu sehen.
+Default ist also, dass Identifizierung verlangt wird.
+
+1. Drei Formulare dafuer in der Formulardatei (s. a30for.xml bei Demo)
+   "Identifikation", "Registrierung", "Neues Passwort"
+   Diese muss man in die  a30for.xml  der eigenen Datenbank kopieren.
+   
+2. Anlegen einer Id-Datei fuer einen neuen Nutzer
+   An das Arbeitsverzeichnis des avanti-Servers (und acon) haengt man
+   einen Ordner namens  users
+   Derjenige, der avanti startet, muss dort Schreibrecht haben.
+   In diesen Ordner kommt fuer jeden berechtigten User eine Datei,
+   mit dem username als Dateiname (ohne extension)
+   Vor der ersten Anmeldung enthaelt diese Datei nur ***  (s. Anm.1)
+
+3. Passwort-Vergabe durch den Nutzer selber bei erster Nutzung
+   Das geht ueber das Formular "Registrierung"
+   Spaetere Passwort-Aenderung ueber "Neues Passwort"
+
+4. Verfahren im Routinebetrieb
+   In jeden Job, der abgesichert werden soll, baut man dies ein, und
+   zwar vor die erste Stelle, die nur angemeldeten Nutzern zugaenglich
+   sein soll:
+
+   perf authent
+   // Abgesicherte Aktionen 
+
+   Und ganz unten dieses Unterprogramm (a30 liefert #uID nach Anmeldung mit):
+   (:authent kehrt nicht zurueck, wenn keine Berechtigung)
+
+   :authent
+   var #dts(0,8) #uID(e"K") 
+   cry
+   ins #uid
+   var #uID(e"K") "K" #uid
+   ins #uid
+   if #uid = #uID return
+   if not #uid = #uID wri "_!_POP Sorry, Keine Berechtigung, ..." n
+   end
+
+5. Die Id-Funktionen stehen alle auf dem Menue "Sonderfunktionen"
+   (Datei a30son.htm), die man aus dem normalen Menue aufrufen kann.
+   Die Funktionen werden alle von  a30id.job  erledigt. Darin steht 
+   auch der Name "users" des Ordners, wo die Nutzerdateien liegen,
+   d.h. hier kann man diesen auch aendern.
+
+Die Anmeldung verfaellt immer um Mitternacht, kann jedoch dann fuer den
+gesamten neuen Tag wieder erneuert werden.
+
+Anm.1: Der Systemverwalter, der die Userdateien einrichtet, kann so
+verfahren:
+a) Dem user gleich danach mitteilen, dass er eingetragen ist und sich 
+   schnellstens registrieren soll
+b) Den Nutzer mit einem temporaeren Passwort selber registrieren und 
+   ihm dieses mitteilen, mit der Empfehlung, es sofort zu aendern.
+
+

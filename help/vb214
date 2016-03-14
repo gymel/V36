@@ -1,0 +1,106 @@
+
+Verlautbarung 214 der Entw.Abt.                              2009-02-27
+-------------------------------
+
+AJAX3  [s.a. Aschermittwochsbotschaft]
+=====
+Eine neue Methodik steht bereit, mit der das Entwickeln von Web-
+Anwendungen mit Dynamik erleichtert wird. Bisher musste man vier
+verschiedene Sprachen meistern: HTML+CSS, JavaScript, PHP oder Perl
+und FLEX. Jetzt genuegen zwei: HTML und FLEX. Genau beschrieben wird
+die Sache hier:
+  http://www.allegro-c.de/doku/phpac/ajax3.htm
+wo man auch schon Beispiele ausprobieren kann. Es werden nur vier
+neue Dateien gebraucht: ajax3.js, ajax3.php, ajax3.ini und utf.apr.
+Diese kommen mit rein in das PHPAC-Paket. acon fuer Solaris und Linux
+kommen naechste Woche neu, damit dann auch das erweiterte PHPAC.
+
+
+NULL-Datenbank
+--------------
+Wer AJAX3-Dienste konstruieren will oder lokal ein paar pfiffige FLEXe
+einfach als Werkeuge einsetzen und dabei gar keine Datenbank braucht, 
+der braucht leider doch eine, weil sonst acon nicht anspringt.
+Wir haben dafuer eine recht minimale Datenbank erstellt, die nicht den
+hohen Parameter-Aufwand der DemoBank hat. Diese koennte man natuerlich
+auch benutzen, klar, aber jeder Job muss ja nicht nur die Datenbank
+oeffnen, sondern auch das ganze Geraffel von Parametern einlesen, und
+die Zeit dafuer ist dann unnuetzer Overhead.
+Die NULL-Datenbank liegt als  null.zip  bereit und kommt einfach
+nach  c:\allegro\null. In die  avanti.con  traegt man ein:
+
+[null]
+directory = c:\allegro\null
+access = 3
+konfiguration = a
+indexparameter = null
+opac = OPAC:3
+
+Und in  av_ini.php  fuer solche Zwecke muss dies:
+
+$DB="null";
+$ID="opac/OPAC";
+
+Wobei  acon.exe, wenn als Konsolprogramm eingesetzt, nur die avanti.con
+braucht und natürlich Jobdateien, keine PHP-Skripte.
+
+
+Neuer Datums-FLEX  [siehe Himmelfahrtsbotschaft]
+-----------------
+
+day.inc : Welcher Wochentag ist/war der ...
+          Und welches Datum gehoert zum Tag mit der Nummer x
+             (fuer die Jahre 1601 - 2399)
+Es stehen Kommentare drin, wie man damit umgeht.
+Eingebaut ist es bereits in den alten kalender.flx und in den
+weekday.flx, welche also nun ab 1601 bis 2399 arbeiten, 600 Jahre
+mehr als vorher.
+Auch direkter Aufruf moeglich:  X day.inc
+Dann eingeben:
+  JJJJMMTT            Wochentag
+  JJJJMMTT+x          JJJJMMTT/00:00:00 = WT, MON JJJJ
+          -x = Anzahl von Tagen, 0 wenn selbes Datum gewuenscht
+  JJJJMMTT-jjjjmmtt   Differenz der Daten in Tagen
+
+
+a99 "Ergebnismenge in Druckform"
+--------------------------------
+Der FLEX-Befehl  show Print  klappte dann nicht, wenn es einen
+FLEX namens  onviewrs.flx  gibt. Dieser tritt in Kraft, wenn man
+den Menuepunkt "Ansicht / Ergebnismenge in Druckform" ausloest.
+Nun funktioniert es wieder, es wird aber in dem Fall nicht der
+besagte FLEX genutzt, sondern die Standardfunktion.
+Der FLEX hat den Vorteil, dass dann die Erg.Menge beliebig gross
+sein darf. Bei der Standardfunktion und damit auch  show Print
+ist die Groesse auf 4 MB beschraenkt (bisher 255K).
+
+
+acon (avanti-FLEX)
+====
+Einige Unstimmigkeiten, bes. Abweichungen von FLEX, wurden behoben.
+(Relevante Doku-Dateien x*.rtf sind aktualisiert)
+
+*  switch object 1/2 ging nicht, es gab nur noch Objekt 1.
+   Behoben.
+
+*  xcode u  ging nicht.
+   Behoben.
+
+*  day +x / day -x
+   funktioniert! Stand nur nicht in der Doku
+   Day ...
+   geht dagegen leider nicht. Das liegt am Fehlen einer wichtigen
+   Funktion im Standard-C++ unter Linux/UNIX
+   Ersatz:  day.inc einbinden (s.oben)
+            und dann  perform Day  statt  Day
+
+*  var (Manipulation),  z.B.  var (b" = ")
+   also die nachtraegliche Manipulation des aktuellen iV-Inhalts,
+   ging leider nicht.
+   Behoben.
+
+*  jump
+   ging nicht, wenn kein Label dahinter angegeben war, statt dass
+   dann der iV-Inhalt als Label genommen wuerde (dynam. Sprung).
+   Behoben.
+

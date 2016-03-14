@@ -1,0 +1,110 @@
+ EUROx.flx   Liste der aktuellen Euro-Wechselkurse
+ 2014-08-26  (uses Web service by European Central Bank)
+
+:exch
+ask Währungscode? (??? Liste aller Codes) 
+var (f" " F" ")
+if "" end
+
+// If ??? was entered, make $cu empty:
+if "???" var ""
+// set input to uppercase
+xco cu
+
+// curr code in upper.
+ins $cu
+
+// build the string to look for in the response
+var "currency='" $cu "' rate='"
+// e.g.:  currency='USD' rate='
+ins #uXW
+
+//  Call the ECB service, it sends a list with all the rates
+
+var "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
+get I
+// Text is now in iV
+// All relevant lines look like this:
+//        <Cube currency='USD' rate='1.3192'/>
+
+// For testing: (ecb.txt = locally saved text received from the URL)
+//var Fecb.txt
+
+
+ins $xx
+
+if "ERROR" jump exerr
+
+// is $cu empty?
+if not $cu jump exchlist
+
+// The response from ECB is now in $xx
+//  extract the line for the rate using the string prepared for it
+
+var $xx (b"#uXW" e"'")
+if "" jump exch
+// the rate is now in iV
+perf CRATE
+// display the results
+var n "Aktueller Kurs der EZB Frankfurt: " n "    1 " $cu " = " $xy " EUR" n "    1 EUR = " $xx " " $cu n n
+mes
+
+end
+
+:CRATE
+// put the rate value to $xx, filled up by spaces to 8 characters
+var (0,8)
+ins $xx
+
+// and calculate the reverse value
+eval 1 / $xx
+// make it 8 spaces
+var (0,8)
+ins $xy
+return
+
+:exchlist
+var n "  Aktuelle EURO-Wechselkurse der EZB Frankfurt, " #dt(b", ") n n 
+ins $list
+sho IV
+
+var $xx
+// the list comes unsorted, sort alphabetically!
+// (There are other lines of text, which doesn't matter)
+sort a0
+ins $xz
+
+:exchloop
+
+// extract the next code
+var $xz (b"<Cube currency='" e"'")
+ins $cu
+
+// no further value in the list
+if "" Wri n;end
+var $xz
+// and the rate
+var (b"rate='" e"'")
+
+// calc the reverse
+perf CRATE
+
+// and print both
+var $list n "    1 " $cu " = " $xy " EUR   |   1 EUR = " $xx " " $cu 
+ins $list
+sho IV
+
+// next line begins somewhere after "/>"
+var $xz (b"/>")
+ins $xz
+// loop, if there was sthg left, then loop
+if $xz jump exchloop
+
+end
+
+:exerr
+var n "Keine Internet-Verbindung? ..." n
+ask
+jump Admin
+
+

@@ -1,0 +1,217 @@
+  UTF-ENT.FLX : Umrechnung URF-8-Codes <-> Entitaetenzahlen
+  2009-03-22  von H. Allers
+
+
+:anf
+#ux9
+
+var "UTF-8 -> Entitätencode" n "Entitätencode -> UTF-8" n "Ende"
+Aresqa
+if "" end
+if "UTF" jump ent
+if "Ent" jump utf
+if "End" end
+
+:ent
+var "UTF-8-Zahlen eingeben (2 oder 3, dezimal, mit Leerzeichen getrennt):=#ux9"
+ansi\ask
+if "" jump anf\if cancel jump anf
+ins #ux9\#ux1\#ux2\#ux3
+var #ux9(e" ")\ins #ux1
+var #ux9(b" " e" ")\ins #ux2
+var #ux9(b" " b" " e" ")\ins #ux3
+
+var #ux2
+if "" var "UTF-8-Codes mssen mindestens 2-bytig sein!";ansi;mes;jump ent
+var #ux3\if "" jump ent2\jump ent3
+
+:ent2  // 2-bytige UTF-8:
+perf p2
+var #ux1\=
+var "196"\-
+var Z\ins #uy1
+
+var #ux2\=
+var "128"\-
+var "256"\+
+var Z\ins #uy2
+
+var #uy1\=
+var "64"\X
+var #uy2\+
+var "Der zum UTF-8-Code " #ux1 " " #ux2 n
+var +"geh”rige dez. Entit„tencode ist die Zahl " Z
+ansi\mes
+#ux9\jump ent
+end
+
+:ent3  // 3-bytige UTF-8:
+perf p3
+var #ux1\=
+var "224"\-
+var "4096"\X
+var Z\ins #uy1
+
+var #ux2\=
+var "128"\-
+var "64"\X
+var Z\ins #uy2
+
+var #ux3\=
+var "128"\-
+var Z\ins #uy3
+
+var #uy1\=
+var #uy2\+
+var #uy3\+
+var "Der zum UTF-8-Code " #ux1 " " #ux2 " " #ux3 n
+var +"geh”rige dez. Entit„tencode ist die Zahl " Z
+ansi\mes
+#ux9\jump ent
+end
+
+
+:utf
+var "Entit„tencode als Dezimalzahl eingeben:=#ux9"
+ansi\ask
+if "" jump anf\if cancel jump anf
+ins #uxe
+perf pu
+var #uxe
+if <256 jump utf1
+if <2048 jump utf2\jump utf3
+
+:utf1
+var #uxe\=
+var "319"\-     // 319=256+64
+var "64"\/ 
+var Z\var (e".")\=
+var "196"\+ 
+var Z\ins #uxa
+
+var #uxe
+z =
+var "64"
+z % 
+var z\=
+var "128"\+
+var Z\ins #uxb
+
+var "Dem (dez.) Entit„tscode " #uxe " entsprechen" n
+var +"die UTF-8-Codes " #uxa " " #uxb
+ansi\mes
+#uxe\jump utf
+end
+
+:utf2
+var #uxe\=
+var "256"\-
+var "64"\/ 
+var Z\var (e".")\=
+var "196"\+ 
+var Z\ins #uxa
+
+var #uxe\=
+var "256"\-
+var Z
+z = 
+var "64" 
+z % 
+var z\=
+var "128"\+
+var Z\ins #uxb
+
+var "Dem (dez.) Entit„tscode " #uxe " entsprechen" n
+var +"die UTF-8-Codes " #uxa " " #uxb
+ansi\mes
+#uxe\jump utf
+end
+
+:utf3
+var #uxe\=
+var "4096"\/
+var Z\var (e".")\=
+var "224"\+ 
+var Z\ins #uxa
+
+var #uxa\=
+var "224"\-
+var "4096"\X
+var Z\ins #ux1
+
+var #uxe\=
+var #ux1\-
+var "64"\/
+var Z\var (e".")\=
+var "128"\+
+var Z\ins #uxb
+
+var #uxb\=
+var "128"\-
+var "64"\X
+var Z\ins #ux2
+
+var #uxe\=
+var #ux1\-
+var #ux2\-
+var "128"\+
+var Z\ins #uxc
+
+var "Dem (dez.) Entit„tscode " #uxe " entsprechen" n
+var +"die UTF-8-Codes " #uxa " " #uxb " " #uxc
+ansi\mes
+#uxe\jump utf
+end
+ 
+:p2
+var #ux1
+if <194 jump p2a
+if >223 jump p2a
+var #ux2
+if <128 jump p2b
+if >191 jump p2b
+return
+:p2a
+var "Bei 2-bytigen UTF-8-Codes gilt fr das erste Byte 'a':" n
+var +"193 < a < 224"
+ansi\mes\jump ent 
+:p2b
+var "Bei 2-bytigen UTF-8-Codes gilt fr das zweite Byte 'b':" n
+var +"127 < b < 192"
+ansi\mes\jump ent 
+
+:p3
+var #ux1
+if <224 jump p3a
+if >240 jump p3a
+var #ux2
+if <128 jump p3b
+if >191 jump p3b
+var #ux3
+if <128 jump p3c
+if >191 jump p3c
+return
+:p3a
+var "Bei 3-bytigen UTF-8-Codes gilt fr das erste Byte 'a':" n
+var +"223 < a < 240"
+ansi\mes\jump ent 
+:p3b
+var "Bei 3-bytigen UTF-8-Codes gilt fr das zweite Byte 'b':" n
+var +"127 < b < 192"
+ansi\mes\jump ent 
+:p3c
+var "Bei 3-bytigen UTF-8-Codes gilt fr das dritte Byte 'c':" n
+var +"127 < c < 192"
+ansi\mes\jump ent 
+
+// if it a valid number or beyond the range?
+:pu
+var #uxe
+if <128 jump pu-a
+if >65535 jump pu-a
+return
+:pu-a
+var "Sorry. Fr den dezimalen Entit„tscode E gilt:" n
+var +"127 < E < 65536"
+ansi\mes\jump utf 
+

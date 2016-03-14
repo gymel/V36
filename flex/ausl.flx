@@ -1,0 +1,72 @@
+  AUSL.FLX : ALFA-Ausleihe (Aktivierung per Flip aus der Anzeige)
+  2001-02-21
+
+  Nutzerkennung und Datum werden als $u bzw. $D an eine Signatur angehaengt
+  Schon vorher wurde evtl. zu einem hierarch. Untersatz geschaltet!
+  In #usi steht die Kategorienummer, z.B. #90a
+  In #usn steht interne Nr. des nachgeladenen Satzes, wenn es sich um einen
+          verkn. Untersatz handelt, in dem die Signatur steht, sonst #usn leer
+  (in D-WRTF.APR gesetzt)
+var ""
+ins #usN
+if not #usn jump normal
+  Satznr des aktuellen Satzes festhalten
+var #nr
+ins #usN
+
+:normal
+var #usi
+  Inhalt der Kategorie in #usI kopieren
+var
+ins #usI
+var #usI(e" = ")
+ins #usI
+  Zeile nehmen, auf die gerade geklickt wurde
+var zc
+  und in #usZ speichern
+ins #usZ
+  In der Zeile steht die Signatur hinter "e " und endet bei   (Code 160)
+var "|;Ausleihe von " #usZ(b"e " e" ") " an wen? (Nutzername oder -kennung)=#uuS"
+ansi
+ask
+if "" end
+yesno Ausleihen?
+if n end
+if c end
+  Username in #uuS aufbewahren
+asci
+ins #uuS
+if not #usn jump prep
+  Wenn #usn, dann den zugehoerigen Satz holen (verkn. Untersatz)
+var "#" #usn
+find
+:prep
+var #usi(0,4)
+ins $usi
+  Teilfeld $u an die Kategorie anhaengen
+var "$u-" $usi " " #uuS(e"=")
+ins
+
+  und Teilfeld $D mit dem Datum
+var "$D-" $usi " " #dts(0,8)
+ins
+
+if not #usn jump haupt
+put
+  aktuellen Satz zurueckholen
+var '#' #usN
+find
+jump anzeig
+
+:haupt
+  wieder zum Hauptsatz schalten:
+first sub
+pre sub
+  Datensatz wieder speichern
+put
+:anzeig
+  und neu anzeigen
+disp
+  Anzeige auf die betr. Zeile scrollen:
+disp f
+sho rec

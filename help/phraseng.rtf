@@ -1,0 +1,157 @@
+{\rtf1\ansi\deff0\deftab720{\fonttbl{\f0\fnil MS Sans Serif;}{\f1\froman\fcharset2 Symbol;}{\f2\fscript\fprq2 Comic Sans MS;}{\f3\froman Times New Roman;}{\f4\froman\fprq2\fcharset238 Times New Roman;}{\f5\fmodern allegro Letter Gothic;}{\f6\froman\fprq2 Times New Roman;}{\f7\fmodern\fprq1 Courier New;}{\f8\froman\fprq2 allegro New Roman;}{\f9\fmodern\fprq1 allegro Letter Gothic;}}
+{\colortbl\red0\green0\blue0;\red255\green0\blue0;\red0\green0\blue255;\red128\green128\blue128;}
+\deflang1031\pard\qc\plain\f2\fs28\cf1\b Phrases\plain\f5\fs18 
+\par \pard\plain\f5\fs18 
+\par \pard\qr\plain\f6\fs18 `\plain\f5\fs18\cf2\b\ul Repair default phrases\plain\f6\fs18 ` \plain\f8\fs20 
+\par \plain\f5\fs18 
+\par \pard\plain\f5\fs18\b 1. \plain\f5\fs18\cf1\b Strg Phrases\plain\f5\fs18   
+\par         \plain\f5\fs18\cf3\b Enter a new phrase:  \plain\f6\fs18\cf0 (in the write field)\plain\f5\fs18 
+\par         p \plain\f5\fs22 ^b xyz     \plain\f6\fs18 Now\plain\f5\fs18  Strg+b \plain\f6\fs18 is set to\plain\f5\fs18  xyz \plain\f6\fs18 .\plain\f5\fs18 
+\par \tab \plain\f5\fs18\cf3\b To use the phrase:\plain\f5\fs18\cf0    Strg+b  \plain\f6\fs18\cf0 evokes\plain\f5\fs18\cf0  xyz \plain\f5\fs18 
+\par         \plain\f6\fs18 For such phrases, however, there are only  5  letters left:\plain\f5\fs18 
+\par \tab    \plain\f7\fs18\b  b e q w y\plain\f5\fs18 
+\par 
+\par \plain\f5\fs18\b 2. \plain\f5\fs18\cf1\b Esc Method\plain\f5\fs18\b   \plain\f6\fs18 (nothing to do with the Esc key!)\plain\f5\fs18 
+\par \pard\li568\plain\f5\fs18 
+\par \pard\plain\f5\fs18   \tab \plain\f5\fs18\cf3\b Enter a new phrase:  \plain\f6\fs18\cf0 (in the write field)\plain\f5\fs18 
+\par \pard\li568\plain\f5\fs18   p \plain\f5\fs22 h Association     \plain\f6\fs18 Now phrase  \plain\f6\fs18\b h\plain\f6\fs18  is set to\plain\f5\fs18   \plain\f5\fs18\b Association\plain\f5\fs18  
+\par \pard\plain\f5\fs18\cf3\b \tab To use the phrase:\plain\f5\fs18\cf0   type in  \plain\f5\fs18\cf0\b \\ h\plain\f5\fs18\cf0   \plain\f6\fs18\cf0 then Association appears\plain\f5\fs18 
+\par \plain\f6\fs18 \tab Capitals and small letters can be set to different phrases!
+\par  \tab (If  \plain\f5\fs18\b \\\plain\f6\fs18   itself has to be entered: type \plain\f5\fs18\b \\\\\plain\f6\fs18   )
+\par \plain\f5\fs18 
+\par  \tab \plain\f5\fs18\i Rem.\plain\f5\fs18 
+\par  \tab The default Esc-\plain\f6\fs18 key is\plain\f5\fs18  \plain\f5\fs18\b \\\plain\f5\fs18  \plain\f6\fs18 but some other character can be set to this function\plain\f5\fs18 
+\par  \tab \plain\f6\fs18 (change the Esc code  in the INI file, e.g., \plain\f5\fs18   Esc=42 \plain\f6\fs18 for\plain\f5\fs18  * )
+\par \tab \plain\f6\fs18 If you then need \plain\f6\fs18\b *\plain\f6\fs18  itself, type   \plain\f6\fs18\b **\plain\f6\fs18   )\plain\f4\fs22\b 
+\par 
+\par 
+\par The phrases file of a99 \plain\f4\fs22 
+\par \plain\f4\fs22\i Name:\plain\f4\fs22  PHRASE.A99, 
+\par Using the command  \plain\f7\fs22 phrase=...\plain\f4\fs22   in the INI file, another file can be given this role. We recommend that you first copy PHRASE.A99 to a name of your choice and then implement this name in your INI file.
+\par The phrases file must be in ASCII DOS characters. 
+\par \plain\f4\fs22\i Recommendation:\plain\f4\fs22  when editing this file manually, use the X editor in a DOS window.
+\par \plain\f6\fs22\i Attention:\plain\f6\fs22  The phrases file is saved automatically at the end of a session, any changes made during the session will thus be preserved.
+\par \plain\f7\fs20\i Tip:\plain\f7\fs20  \plain\f6\fs20 Enter a  p in the find command line. The current contents of the phrase store will be displayed.\plain\f7\fs20\b 
+\par \plain\f8\fs20 We describe here, how a phase phile is structured and what the released file phrase.a99 contains.
+\par There are two kinds of phrases: the \plain\f8\fs20\b Strg phrases \plain\f8\fs20 and the \plain\f8\fs20\b Esc Phrases\plain\f8\fs20 . They differ by the way they are activated: by the Strg key and by an Esc character, resp. (see below).
+\par There can be only one  \plain\f8\fs20\i Strg\plain\f8\fs20  phrase per \plain\f8\fs20\i letter\plain\f8\fs20 , and one additional \plain\f8\fs20\i Esc\plain\f8\fs20   phrase for every \plain\f8\fs20\i alphanumeric character\plain\f8\fs20  .
+\par Every Phrase may contain text (at least 1 character) or a FLEX  (beginning with  "x " or "X  " ).
+\par \plain\f5\fs18 
+\par \plain\f5\fs18\b 1. Strg Phrases\plain\f5\fs18   
+\par \tab Not all letters can be assigned a Strgt phrase!
+\par \tab \plain\f9\fs18\b not possible\plain\f9\fs18 : \plain\f7\fs18\b a c d f g h i j m u v x z    free: b q w y\plain\f5\fs18 
+\par \tab The others are already in use in the official phrase file but may be reassigned.
+\par \tab For every phrase there have to be two lines after this pattern:
+\par 
+\par         Number     (1 f\'fcr a, 2 f\'fcr b, ... 25 f\'fcr y)
+\par         ASCII text (!) of the phrase or FLEX text 
+\par \pard\li710\fi-710\plain\f5\fs18 
+\par \tab PHRASE.A99 comes with the pre-assigned values listed below. (Inspect your own copy of `\plain\f5\fs18\cf2\ul PHRASE.A99\plain\f5\fs18 `. It  is overwritten every time you exit from A99! Therefore, it can contain no comments and no blank lines.)
+\par \tab \plain\f5\fs18\i Example:\plain\f5\fs18  \plain\f5\fs18\b press Strg+k to get \plain\f5\fs22 \'ac\plain\f5\fs18 
+\par \pard\plain\f5\fs18 
+\par            \plain\f5\fs18\cf1 Online input of a Strg phrase:\plain\f5\fs18 
+\par            If, for example, "xyz" is wanted as the phrase text for Strg+b, then enter (in the input field):
+\par            p \plain\f5\fs22 ^b xyz     \plain\f5\fs18 Set Strg+b to xyz .
+\par 
+\par  These are the pre-assigned values:
+\par 
+\par \plain\f5\fs22 5 = ^e
+\par \'eb
+\par 
+\par 11 = ^k
+\par \'ac
+\par 
+\par 12 = ^l
+\par \'da
+\par 
+\par 14 = ^n
+\par \'f1
+\par 
+\par 16 = ^p
+\par \'e7
+\par 
+\par 18 = ^r
+\par \'c2
+\par 
+\par 19 = ^s
+\par \plain\f9\fs22 \'9a\plain\f5\fs22 
+\par 
+\par 20 = ^t
+\par \plain\f9\fs22 \'a2\plain\f5\fs22 
+\par 
+\par 25 = ^y
+\par \'fd
+\par 
+\par \plain\f5\fs18 
+\par \plain\f5\fs18\b 2. Phrases for the Esc method\plain\f5\fs18 
+\par       The default  Esc code is \\ , 
+\par \pard\li568\fi-568\plain\f5\fs18 \tab Use the   Esc=Code  command in the INI file to set a different value, like  Esc=43 for +
+\par \pard\plain\f5\fs18       (If you then need to input the character \\ or + itself: enter \\\\ or ++ resp. )
+\par       The structure in the phrase file is the following:
+\par \pard\li568\plain\f5\fs18 Two lines per Phrase, the first contains the character to be typed after the Esc code, the second line contains the character or string to be inserted whtn the code is used. Digits or special characters are also possible for Esc phrases, not just letters.
+\par \plain\f5\fs18\i Application:\plain\f5\fs18  type  \plain\f5\fs18\b \\ \plain\f5\fs18 first, then\plain\f5\fs18\b  L\plain\f5\fs18  , and the phrase assigned to L appears. 
+\par 
+\par \plain\f5\fs18\cf1 Define a new Esc phrase online:\plain\f5\fs18  If, for example, you want "Braunschweig" as the Esc phrase for the letter B, enter this
+\par    p B Braunschweig
+\par into the write field. From that moment, "Braunschweig" appears when typing  \\  b  .
+\par \pard\plain\f5\fs22 
+\par \plain\f5\fs18  \tab These are the pre-assigned values:
+\par \plain\f5\fs22 
+\par C
+\par \'ce
+\par 
+\par L
+\par \'d9
+\par 
+\par N
+\par \'d5
+\par 
+\par O
+\par \'d3
+\par 
+\par R
+\par \'ae
+\par 
+\par S
+\par \'c0
+\par 
+\par Y
+\par \'d4
+\par 
+\par Z
+\par \'cb
+\par 
+\par a
+\par \'aa
+\par 
+\par c
+\par \'cd
+\par 
+\par e
+\par \'c8
+\par 
+\par l
+\par \'da
+\par 
+\par n
+\par \'f5
+\par 
+\par r
+\par \'c2
+\par 
+\par s
+\par \'c1
+\par 
+\par y
+\par \'d2
+\par 
+\par z
+\par \'cf
+\par \plain\f5\fs18 
+\par 
+\par ?PHRASE.A99=h phrase.a99
+\par ?Repair default phrases=x var P "phrasen"\\get p\\mes done
+\par \plain\f5\fs18 
+\par 
+\par }
+ 

@@ -1,0 +1,72 @@
+
+Verlautbarung 178 der Entw.Abt.                           2004-06-02
+-------------------------------
+
+V24.42 : Letzte Fragen jetzt beantwortbar
+=========================================
+Oder: V24 fuer gehobene Ansprueche
+[Anwender mit Normalanspruechen sind nicht betroffen]
+
+"42" ist die Antwort auf die letzten Fragen des Universums, wie
+aus dem Buch "Hitchhiker's Guide to the Galaxy" von Douglas
+Adams zu erfahren ist. 
+Es gab nun aber immer noch Fragen, die sich mit a99/avanti
+schlecht oder kaum beantworten liessen. Diese letzten Fragen
+sind die Groesser/Kleiner- oder auch Von/Bis-Fragen.
+"Welches sind die Buecher, deren Verfassername mit 'Bu'
+bis 'Dri' beginnt?" kommt hoechst selten vor. Aber Fragen wie
+"Welche Saetze wurden vom 15.10.2000 bis 21.8.2001 erfasst?"
+werden schon oefter gestellt, und erst recht:
+"Welche Saetze wurden seit dem 1.4.2004 erfasst?"
+
+Das Gemeinsame dieser Fragen ist, dass sie sich nicht durch
+Trunkierung erledigen lassen. In a99 ist es zwar moeglich,
+durch geschickte Wahl der Trunkierung die relevanten Register-
+zeilen dann alle manuell "einzusammeln" (mehrfach Druck 
+auf / = ODER). Mit FLEX oder avanti stand man aber dann doch 
+im Regen.
+
+In urlaubsbedingt entspanntem Umfeld gelang es nun, die
+letzten Fragen nochmals ganz neu anzudenken, Grobentwuerfe
+verschiedener Art auf Bierdeckeln zu skizzieren und den ganzen
+Problemkomplex endlich einer Loesung zuzufuehren.
+
+Die Sache geht nun so, und zwar fuer jedes Register XYZ:
+(logische Reg. genau wie echte, also z.B. |7 )
+
+find XYZ A---B
+wobei A und B beliebige Zeichenketten sind.
+
+Eine solche Von-Bis-Abfrage, beliebig mit anderen Fragen zu
+kombinieren, bewirkt folgendes:
+Im Register XYZ werden alle Eintraege eingesammelt, die
+zwischen A (einschliesslich) und B (ausschliesslich) liegen.
+Wenn B fehlt, dann alle bis zum Ende des Registers.
+A darf nicht fehlen.
+
+Etwas genauer: der erste Eintrag ist derjenige, der
+exakt A lautet, der letzte derjenige, der direkt vor B
+kommt - auch wenn B selbst gar nicht im Register steht.
+Ein Eintrag, der mit A beginnt (und laenger ist als A) 
+gehoert dazu, d.h. A selbst muss auch nicht im
+Register vorkommen.
+Will man, dass der exakt A lautende Eintrag NICHT
+dazugehoert, muss man z.B.  A 0---B  schreiben.
+
+Die Wahl von --- als Syntaxzeichen mag willkuerlich
+erscheinen, wurde jedoch nach einiger Diskussion
+als am wenigsten problembehaftet eingestuft.
+Wer also Registereintraege hat, die --- enthalten,
+und solche Eintraege in Von/Bis-Abfragen einbeziehen
+will, muss hier kurz innehalten, doch ist es wenig
+wahrscheinlich, dass die Sache dann unloesbar wird.
+
+Sonderfall: 
+-- Die Zeichenfolgen A und B muessen jedes fuer
+   sich mit _ markiert werden, wenn die Umcodierung vermieden
+   werden soll.
+-- Soll expandiert werden, setzt man vor das Ganze ein &,
+   wie sonst auch bei normalen Suchbegriffen.
+   Beispiel:  per v---w  bzw.  per &v---w   in der Demobank.
+
+

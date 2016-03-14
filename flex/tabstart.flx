@@ -1,0 +1,306 @@
+  TABSTART.FLX : Anzeigefeld in eine Tabellen-Parameterdatei wandeln
+  2001-01-06   Name vom Typ  t-xxx.apr.
+  2004-12-06   zusaetzlich eine aresqa-Strukturdatei erstellen
+        (Anzeige vorher mit TABINIT.FLX vorbereitet,
+         dann vom Anwender bearbeitet)
+        Wenn #uSo gesetzt und "nein" enthaelt, dann kein Sortieren
+
+  Flags setzen
+#uwK xxx
+var ""
+ins #uwG
+ins #uwH
+   Flags f. sortieren
+ins #uwS
+ins #uwN
+  Hilfsdatei q-name.str loeschen
+var "q-" #uqT(B"~q-" B"~t-" t".") ".str"
+del
+  erste Zeile der Anzeige in die iV nehmen (ist immer Kommentar)
+var z1
+
+:schleife
+  naechste Zeile
+var z2
+  keine mehr da
+if no jump exit
+ins #uwZ
+var #uwZ(e" ")
+  Zeile bei Leerzeichen abschneiden und in #uwz
+ins #uwz
+  Jetzt wird verglichen, womit die Zeile beginnt
+  Wenn eine Zeile mit T-xyz kommt, -> T-xyz.cPR
+if "~t-" jump open
+
+if "#" jump kat
+if "~ansi" wri "tad-aw" n
+if "~unic" wri "td-utf8" n
+if "~num" jump numm
+if "!nnn" perform fehler4
+if "!" jump sort
+jump schleife
+
+:numm
+ins #uwN
+jump schleife
+
+:sort
+ins _!#_!_
+ins #uwS
+ins #uwz
+if %$% jump dollar
+if #uwN jump NUMM
+wri #uwz ' +A u p"u1 "    ' #uwZ(b" " f" ") n
+var "xxx"
+ins #uwG
+jump schleife
+
+:NUMM
+wri #uwz ' +a P"." e"[0123456789]" p"u1 "   ' #uwZ(b" " f" ") n '#+-' n '#-a' n
+wri #uwz ' +A x"*1" r20,0' n
+var ""
+ins #uwN
+var "xxx"
+ins #uwG
+
+jump schleife
+
+  Wenn $ vorkommt, dann etwas anders
+:dollar
+if #uwN jump NUMB
+wri #uwz(e"$") ' +A $' #uwz(b"$" 0,1) ' u p"u1 "    ' #uwZ(b" " f" ") n
+var "xxx"
+ins #uwG
+jump schleife
+
+:NUMB
+wri #uwz(e"$") ' +a $' #uwz(b"$" 0,1) ' P"." e"[0123456789]" p"u1 "   ' #uwZ(b" " f" ") n '#+-' n '#-a' n
+wri #uwz(e"$") ' +A $' #uwz(b"$" 0,1) ' x"*1" r20,0' n
+var ""
+ins #uwN
+var "xxx"
+ins #uwG
+jump schleife
+
+
+
+  Zeile beginnt mit #
+:kat
+var #uwZ
+if "#t" jump f1
+if "#-" jump f1
+if "#+" jump f1
+var #uwZ(b" " f" ")
+if "" jump noname
+
+:f1
+if #uwG jump first
+wri "#t2" n
+  Zeile fuer das Datenfeld produzieren:
+wri #uwz(e"$")
+var #uwz
+  Kommt $ vor? Dann Teilfeld gewuenscht!
+if %$% wri " " 31 #uwz(b"$" e" ")
+wri "     " #uwZ(b" " f" ") n
+var #uwH 9 #uwZ(b" " f" ")
+ins #uwH
+jump schleife
+
+:first
+wri "#+-" n n "#-A" n "#t1" n n "#-B" n
+var ""
+ins #uwG
+  Zeile fuer das Datenfeld produzieren:
+wri #uwz(e"$")
+var #uwz
+  Kommt $ vor? Dann Teilfeld gewuenscht!
+if %$% wri " " 31 #uwz(b"$" e" ")
+wri "     " #uwZ(b" " f" ") n
+
+var #uwZ(b" ")
+ins #uwH
+jump schleife
+
+  Ausgabedatei = T-xyz.cPR   c=K1
+:open
+var #uwz
+ins #uqT
+:op2
+if not #uwU var #uqT(e"." e" ") "." K1 "pr"
+  Der Name T-xyz selbst wird nicht akzeptiert
+if "~t-xyz" jump fehler
+if #uwU var #uwU
+ins #uwW
+  Datei zum Schreiben oeffnen
+
+fsi
+if no jump weiter
+  var "Datei " #uqT(e"." e" ") "." K1 "pr  existiert schon, Åberschreiben?"
+var "Datei " #uwW " existiert schon, Åberschreiben?"
+ansi
+yes
+if yes jump weiter
+if cancel end
+jump fehler2
+
+:weiter
+if #uwU jump wrop
+  Namen der Datei fabrizieren
+var #uqT(e"." e" ") "." K1 "pr"
+  und zum schreiben oeffnen
+ins #uwU
+:wrop
+var #uwU
+
+open x
+  Kopf der Parameterdatei ist immer gleich
+wri "  " #uqT n "  " #dts(0,8) "  Parameterdatei zur Tabellenerstellung" n n
+wri "1=0    Ende des Sortierfelds" n
+wri "2=9    Delimiter (TAB)" n
+wri "3=C    Satzende (=neue Zeile)" n
+wri "zl=0   Kein Zeilenumbruch" n n
+wri "zm=0   Kein Seitenumbruch" n
+  Wenn es V14-Eintraege gibt: i4=1 setzen
+if v14 wri "i4=1   Stammsatz-Ersetzungen vornehmen" n n
+wri "#uwh +0 e0" n
+wri "#uSo +h c'nein' e0     #uSo enth. 'nein' : Kein Sortieren" n
+wri "#+H" n
+wri "#-0" n n
+wri "#uSo +B c'nein' e0     #uSo enth. 'nein' : Kein Sortieren" n n
+
+jump schleife
+
+:fehler
+var ' "xyz" geht nicht als Name, bitte einen anderen:'
+ansi
+ask
+if "" end
+jump Name
+
+:fehler2
+var #uqT(b" ")
+ins #uqt
+var "Neuer Name:=" #uqT(B"-" e" ")
+ask
+if "" end
+:Name
+ins #uqT
+var "t-" #uqT(B"T-" B"t-" e" ")
+ins #uqT
+var #uqT "  " #uqt
+ins #uqT
+#uqt
+#uwU
+jump op2
+
+:exit
+if #uwG jump fehler3
+  Wenn SQL, dann ist #uq4 nicht besetzt. #uwS dann unnoetig
+if not #uq4 jump ltp
+
+:ltp
+  Letzten Teil der Parameter produzieren (schreibt Kopfzeile der Tabelle)
+wri "#t3" n "#+#" n n
+wri "#-H      Headline mit Sortieren" n
+wri "#t{ 'u1 -----------------' t1 '" #uwH "' C }" n
+wri "#nr =wh e0" n
+wri "#+0" n
+
+wri "#-h      Headline ohne Sortieren" n
+wri "#t{ '" #uwH "' C }" n
+wri "#nr =wh e0" n
+wri "#+0" n
+wri "  Sortiertabelle s.apt laden" n
+wri "ts" n
+
+
+  Schliessen
+close x
+
+  Zusaetzlich : Vorbereitungen fuer aresqa:
+  Datei q-name.str oeffnen
+var "q-" #uqT(B"~t-" B"~q-" e"." e" ") ".str"
+open x
+wri "  q-" #uqT(B"~t-" B"~q-" e"." e" ") ".str : " #uqT(b" ") n
+wri "  " #dts(0,8) " : aresqa-Strukturdatei" n n
+  Anzeigetext nochmals zeilenweise lesen, ausgew. Zeilen ausgeben
+var z1
+:nxtl
+var z2
+if no jump qend
+if "UNICODE" wri "UNICODE" n
+if "LOCK" wri "LOCK" n
+if "#" jump feld
+if "&" jump feld
+jump nxtl
+:feld
+ins #uqL
+wri #uqL(e" ") "    " #uqL(b" " f" ") n
+jump nxtl
+
+:qend
+close x
+  und Hilfetext table.rtf wieder zeigen (#uqT ist da eingebettet)
+#uqV
+var ""
+if not #uwU jump qqd
+var "Es ist eine Parameterdatei " #uwU " erstellt worden." n
+var +"Diese kann immer wieder verwendet werden, wenn eine gleichartige Tabelle zu erstellen ist" n
+var +"Au·erdem: "n
+:qqd
+var +"Es wurde eine Strukturdatei q-" #uqT(B"~t-" B"~q-" e".") ".str  produziert." n
+var +"Diese ist fÅr SQL-Tabellen zustÑndig."
+ansi
+mes
+var #uqT(B"q-")
+ins #uq0
+help table
+end
+
+:fehler3
+mes Es sind keine Feldnummern angegeben - so geht das nicht!
+jump fehlend
+
+:fehler4
+var "Kein Sortierfeld angegeben (nnn durch gÅltige Nummer ersetzen!)" n
+var +"Ist das OK?"
+ansi
+yes
+if yes jump nso
+mes Dann bitte eine Feldnummer einsetzen!
+end
+
+:nso
+var "!nr"
+ins #uwS
+ins #uwz
+#uwNNUMM
+return
+
+:fehlend
+close x
+var #uwU
+delete
+#uwU
+end
+
+:noname
+var "was ist der Name von Feld " #uwZ "?"
+ask
+if "" jump noname
+ins #uwN
+var #uwZ "  " #uwN
+ins #uwZ
+#uwN
+jump f1
+
+  Variablen:
+  #uqT   Name der T-*.xPR  bzw.  q-*.str
+  #uwG   Flag: Wenn erste #-Zeile kommt, wird es geloescht
+  #uwH   Headline
+  #uwL   Locking gewÅnscht
+  #uwN   Flag: Wenn gesetzt, dann numerisch sortieren
+  #uwS   Sortieren
+  #uwZ   eingelesene Zeile
+  #uwz   Anfangsteil der Zeile
+

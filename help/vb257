@@ -1,0 +1,466 @@
+
+Verlautbarung 257 der Entw.Abt.                              2014-02-03
+-------------------------------
+
+Das GesamtPaket V34.0 liegt bereit, desgl. das a35-Paket.
+Einige DOS-Programme wurden nochmals erneuert, damit sie kompatibel
+bleiben.
+Wer jetzt mit V33.5 arbeitet und weder parametriert oder FLEXt noch
+ALFA nutzt, noch die DOS-Programme, der braucht V34.0 nicht. Ausser
+evtl. wegen des FLEX-Befehls "rename" oder wegen des Besens (s. weiter
+unten) oder man legt Wert drauf, stets auf dem neuesten Stand zu sein
+und nun also die "34" aufleuchten zu sehen.
+
+
+Inhalt
+======
+
+1. Exportparameter: Nichtdarstellbare Zeichen entschaerft
+2. ALFA erweitert und verbessert
+3. FLEX-Themen
+4. a35 aktualisiert
+5. Zugabe: IBAN-Unterprogramm, zugl. Beisp. f. eigene Zwecke
+6. Uebereifer des Besens gestoppt
+7. SRU-Datenabruf vom GBV
+
+ **********************************************************************
+ 
+
+1.
+Exportparameter: Nichtdarstellbare Zeichen
+------------------------------------------
+Wer nicht selber parametriert, kann dieses Kapitel uebergehen. Denn
+an allen vorhandenen Parametern braucht man nichts zu aendern! 
+Nur bei Bedarf helfen ein paar neue Bequemlichkeiten.
+
+Der X-Editor ist schon lange out. Unter Win'7/64 tut er es gar nicht
+mehr. Zwar gibt es das Emulatorprogramm DOSBbox, in dem er laueft, aber
+wohl nicht in ganz komplett identischer Weise. Und zeitgenoessische
+Programmierer sind dafuer nicht erwaermbar. Kollege Lehmann hatte mal
+alles Wissenswerte zur DOSBox zusammengestellt:
+  http://portal.allegronet.de/allegrowerkstatt/wege-zur-dosbox-thema-64bit-betriebssysteme
+Doch darum soll's nicht gehen, man soll sie gar nicht brauchen!
+
+Parameterdateien enthalten oft Sonderzeichen, vor allem das
+Unterfelddreieck (Code 31) und das Absatzendezeichen (Code 20), oder
+auch das Nichtsortierzeichen (Code 170), die man mit fortschrittlichen
+Editoren nicht oder schwer eingeben kann, oder man kriegt sie falsch
+oder gar nicht angezeigt, u.U. sogar beim Speichern verfaelscht oder 
+vernichtet. So sollte das nicht bleiben, deshalb wurde was getan, und 
+zwar zwei Dinge:
+
+Nochmals: Vorhandene Dateien muessen an keiner Stelle geaendert
+          werden, sie funktionieren einfach weiter! Es gibt ein paar
+          neue Moeglichkeiten, alle alten bleiben erhalten.
+
+1. An fast allen kritischen Stellen wurde es ermoeglicht, statt eines
+   Problemzeichens alternativ seinen Dezimalcode nnn einzugeben, 
+   und zwar mit der Umschreibung  \nnn
+               Fuer das Dreieck:  \31
+   ACHTUNG: Nur dezimal, nicht hex! Sonst gaeb's Probleme mit den RTF-
+   Codes in Parameterdateien, wie z.B. \f1
+   [Geaenderte Quelldatei:  exet2.cpp  bzw.  exet2.c  fuer atools]
+
+2. Wichtige Parameterdateien des Standardsystems wurden in dieser
+   Weise umgearbeitet. Darunter sind:  cat.api, d-wrtf.apr, d-krtf.apr,
+   d-k.apt und d-html.apr, weil darin alle Sorten solcher Faelle
+   vorkommen und sie sich daher gut zum Testen eigneten.
+   Achtung: Beide cat.api sind umgearbeitet, die groessere auf demo2
+            und die kleinere auf dem ProgDir.
+
+Die "kritischen Stellen" sind folgende (aber keine anderen):
+
+a) In ak-Befehlen innerhalb  "..." (hinter der Feldnummer)
+
+b) Manipulationsbefehle: ueberall innerhalb "..." und '...'
+   einschliesslich im lokalen Ersetzungsbefehl (im globalen ging
+   es bereits), ferner:
+
+c) In Indikatorbefehlen  ip,k  fuer das Zeichen k
+
+*Zusaetzlich* wurde eine neue Kurznotation eingerichtet, mit der
+man schreiben kann:
+
+  b$a   statt  b"\31a"   Positioniere hinter die Zeichenfolge \31a
+  e$    statt  e"\31"    Beende den Arbeitstext vor dem naechsten \31
+
+und zwar wird statt $ dann automatisch der Unterfeldcode eingesetzt,
+der in der CFG definiert ist.
+Dasselbe geht mit den Befehlen B, E und c, sowie mit t, T, p und P.
+Z.B.  p$a  wirkt wie p"\31a"
+Diese Kurzschreibung ist bequem und besser lesbar, sie wird beim
+Einlesen der Parameter einfach so wie die laengere Schreibweise
+behandelt, also z.B. B$a wie B"\31a" und  e$ wie e"\31".
+Was nicht geht, ist z.B.  p$aXYZ  statt  p"\31aXYZ", d.h. hinter dem
+$ ist bei der Kurzschreibweise nur 1 Zeichen erlaubt.
+
+Fuer alle genannten Faelle gilt:
+e$ ist NICHT dasselbe wie e"$" usw., sondern e"$" sucht nach dem
+Dollarzeichen, sonst nichts, wie es schon vorher gewesen war;
+e$ dagegen gab es vorher nicht, es sucht nach dem Unterfeldzeichen,
+normalerweise also dem Dreieck, und setzt davor den Endpunkt.
+
+Anders gesagt: Innerhalb "..." und '...' hat das Zeichen $ keine neue,
+veraenderte Wirkung, dort bleibt es ein Zeichen wie jedes andere.
+In Ersetzungsbefehlen bleibt die in Vb.256 beschriebene neue
+Wirkung des $ auf erster Position unveraendert.
+
+Nun zu den Ausnahmen:
+
+d) Noch NICHT ermoeglicht ist die neue Schreibweise fuer Sprungmarken
+   und UP-Namen.
+   Deshalb wurden die Sprungmarken z.B. in cat.api so ueberarbeitet,
+   dass keine kritischen Zeichen mehr vorkommen. Am Beginn steht dann
+   als Kommentar eine Liste der noch nicht verwendeten Zeichen.
+   Ein paar sind's schon noch, sie sind im Kommentar der genannten
+   ueberarbeiteten dateien aufgelistet.
+   Sprungmarken koennten zwar noch ein Desiderat bleiben, UP-Namen
+   dagegen kaum, denn davon gibt es i.d.R. viel weniger.
+   Aber wie auch immer: die Sprungmarke  #-\  wird gueltig bleiben,
+   wir vermeiden jeden Bruch der Kontinuität.
+
+e) Ebenfalls noch NICHT: Indikatoraktionen (Handb. 10.2.6.4, S. 205)
+   #ik,x A   wo der Wert x ein Sonderzeichen sein koennte.
+             Die Standardparameter enthalten kaum solche Befehle, und
+             wenn, dann fast immer Ziffern fuer x, nie Sonderzeichen
+             (Dieser Steuerbefehl kann nur in Unterprogrammen auf-
+             treten und bezieht sich auf die Sonderkategorie #cc)
+
+Unabhaengig davon galt schon bisher:
+
+f) #nnn $a ...:  Unterfeld $a ausgeben (frueher nur das Dreieck statt $)
+                 Gleichwertig jetzt:  b"\31a" e"\31"  und  b$a e$
+                 Spezialfall: $$ = Text vor dem ersten Unterfeld
+   Tip: Ein Manipulationsbefehl wirkt stets auf den Arbeitstext, nicht
+        auf den gesamten Feldtext. Daher bewirkt
+        #nnn b"X" $$    dasselbe wie   #nnn b"X" e"\31"  oder  ... e$
+        d.h. es wird der Text hinter X genommen bis zum naechsten \31
+        Aber intuitiv am besten lesbar ist wohl e$.
+
+Die alten Versionen der Parameter bleiben indessen voll gueltig, d.h.
+die neue Schreibweise ist fakultativ, nicht obligatorisch! Dadurch ist
+die Loesung fuer Puristen vielleicht unbefriedigend, aber das ist der
+Preis der Kontinuitaet.
+Betroffen und zu erneuern waren die Programme: a99, a99a, alcarta,
+acon, srch, index, import.
+
+Und PRESTO? Tja, das wurde in gleicher Weise aktualisiert...
+[Auch APAC, srch16, upd16, index16 und ALFA, nicht aber LARGO.]
+Auch wenn also die wenigen noch verbliebenen PRESTO-Nutzer zwar
+ohnehin eine aeltere Version und langbewaehrte, lange nicht mehr
+veraenderte Parameter verwenden - die o.a. Verbesserungen koennen auch
+sie sofort nutzen.
+In der DOSBox (s.o.) laeuft das neue PRESTO, wenngleich der Start eine
+Minute dauert, aber dann sogar passabel schnell. Es gibt zwar keine
+echte Notwendigkeit, sich das zuzumuten, aber wir erkennen an, dass es
+gleichwohl genutzt wird, und wollen das nicht gewaltsam abwuergen.
+Diese alten Programme werden und sollten natuerlich keine neuen Nutzer
+finden, denn sie koennen *sehr viel* weniger als a99 und alcarta.
+
+In jedem Fall tun es die alten Parameter, wie gesagt, auch immer noch
+mit den neuen Programmen, ohne dass man ein Jota zu aendern haette!
+Nur fuer neue Editoren sind die neuen Parameter ganz klar besser.
+
+Nochmals der Hinweis:
+Aktuell ueberarbeitet wurden die groessten und wichtigsten Dateien:
+cat.api, d-????.apr (nicht d-1.apr), d-k.apt.
+In der $a.cfg, das ist schon nicht mehr neu, sind die Dreieckzeichen
+alle durch $ ersetzt, dort wird die \-Schreibweise nicht gebraucht.
+(Auch in der CFG gilt: alte Schreibweisen bleiben gueltig.)
+
+
+2.
+ALFA erweitert und verbessert
+-----------------------------
+Das bei Spezialbibliotheken beliebte Ausleihverfahren ALFA
+(siehe  h alfa)
+wurde ein wenig erweitert, und zwar hauptsaechlich fuer mehrteilige
+hierarchisch aufgenommene Publikationen, und fuer das Ausleihen von
+Zeitschriftenbaenden. Anregungen dazu kamen aus einer anwendenden
+Bibliothek, also aus der Praxis.
+
+Dazu wurde erstens die  cat.api  (die groessere der beiden!) etwas
+erweitert, damit auch die bislang ungenutzte #9X indexiert wird, die
+jetzt bei Zeitschriften-Titelsaetzen die Ausleihdaten aufnimmt,
+und die #91, falls sie Ausleihangaben enthaelt.
+
+Zweitens gibt es nun folgende Moeglichkeiten:
+(Wirksam nur, wenn #uAL und #uAU gesetzt sind, wie bisher.)
+
+1. Hat ein Datensatz keine Signatur (#90), dann wird ersatzweise
+   die Zugangsnummer genommen (#91). Wenn man Einzelbaende von
+   hierarchisch aufgenommen Werken ausleihen will und die Zugangs-
+   nummern auf der Bandebene eingegeben hat, ist damit schon alles
+   klar fuer die Bandausleihe. Das gilt vor allem auch fuer
+   hierarchische Untersaetze.
+
+2. Sind Zeitschriftensaetze kenntlich durch Anwesenheit einer #8n
+   fuer den Ansetzungstitel, gibt es eine neue Funktion "Bd.Ausl."
+   in der Anzeige des Titelsatzes. Anklicken, dann kommt eine Abfrage
+   nach der Band- oder Jahrgangsnummer des auszuleihenden Bandes und
+   dann die Frage nach der Nutzerkennung (wie sonst auch). Diese
+   Angaben kommen dann in eine #9X des Titelsatzes, wobei die
+   Mehrfachkennungen automatisch verwaltet werden.
+   Ist eine #9X vorhanden oder mehrere, gibt es einen Flip "Bd.Rckg."
+   fuer die Rueckbuchung. Eine Auswahlliste der evtl. mehreren
+   ausgeliehenen Baende erscheint, aus der man den rueckzubuchenden
+   auswaehlt.
+
+Zustaendig sind die Anzeigeparameter  d-wrtf.apr, in welche die
+neuen Moeglichkeiten eingebaut sind. Statt der #8n koennte man auch
+eine andere dort einstellen! (3 Zeilen im Unterprogramm  #(c  )
+Fuer den Webkatalog enthalten d-khtm.apr + d-k.apt die noetigen
+Details, um eine Ausleihe am Web-OPAC zu ermoeglichen.
+
+Hinweis zu Schreibrechten:
+Nutzer, die ALFA nutzen sollen, z.B. bei Selbstbedienungs-Ausleihe,
+brauchen Schreibrecht auf die Datenbankdateien incl. .adx, .tbl und
+.log, denn alle diese sind in das Speichern eines Satzes involviert.
+(.stl und .res nicht bei den Aenderungen, die in #90 passieren durch
+die ALFA-Vorgaenge.)
+
+
+3.
+FLEX-Themen
+===========
+
+FLEX-Problem bei hierarchischen Saetzen [allegro-Mail 10.1.]
+---------------------------------------
+
+Ein seit je bestehendes FLEX-Problem bei *hierarchischen* Saetzen
+(nicht bei verknuepften!) ist dieses:
+
+var #41
+
+liefert z.B. den Inhalt von #41, AUCH WENN dies Feld gar nicht im
+Hauptsatz steht, sondern in irgendeinem hierarch. Untersatz.
+Nicht nur der Befehl "var" hat diese Eigenheit, auch "if" ist damit
+behaftet:
+
+if #41 mes Zum Kuckuck
+
+bringt die Message "Zum Kuckuck" auch dann, wenn #41 nur in einem der
+hierarch. Untersaetze steht.
+
+Weil das seit Anbeginn (1996) so war, die Frage: Sollen wir's aendern?
+
+Jedenfalls ist es in den Exportparametern immer schon anders gewesen,
+und aus guten Gruenden, die man durchaus auch fuer FLEX geltend machen
+koennte!
+Wir haben deshalb die Funktion zunaechst einmal an die des Exports
+angeglichen.
+Denkbar ist aber, dass irgendwo da draussen einer oder viele FLEXe
+ihr Ding machen, die bei einer Aenderung versagen wuerden, weil sie auf
+eben diese Eigenheit angewiesen sind. Sollte sich das herausstellen,
+koennten wir eine einschaltbare Option schaffen, die das besagte
+Verhalten fuer die Laufzeit des FLEXes abstellen wuerde.
+
+
+FLEX: rename und delete, Dateinamen mit Leerzeichen
+---------------------------------------------------
+Es bestand ein gravierendes Problem, und wer anders als Berger hat es
+aufgedeckt, mit Spatien in Dateinamen.
+Der Befehl "rename" vertrug keine Namen mit Spatien, wie sie Microsoft
+nun mal LEIDER, sehr im Gegensatz zu UNIX, im Windows-System
+ermoeglicht hat. Weil es nun Anwender gibt, die ihre Software
+unter "c:\Program Files" installiert haben, kann es zu Problemen
+kommen, wenn ein Befehl "rename" kommt. Denn der braucht dann 
+die Namen in "..." eingeschlossen. Bisher ging das trotzdem nicht,
+jetzt haben wir's gerichtet.
+Andererseits braucht der Pfadname nicht abolut zu sein, sondern
+es genuegt ein relativer; der zweite Name muss ebenfalls (!) ein
+Pfadname sein, sonst wird die Datei zum Arbeitsverzeichnis verschoben.
+(Genaugenommen muesste also der FLEX-Befehl  "move"  heissen.)
+Jeder der beiden Namen braucht seine eigenen Anfuehrungszeichen, falls
+er ein Spatium enthaelt. Kommt kein Spatium vor, sind die "..."
+nicht noetig, d.h. alte FLEXe, die es tun, brauchen keine Aenderung.
+Mehr:  h xrename
+Beispiel:   rename demo2/liste.txt "demo2/Alte Liste.txt"
+Wir haben zusaetzlich alle Standardflexe, in denen ein "rename"
+auftritt, dahingehend ueberarbeitet, dass bei Misserfolg eine
+Fehlermeldung erscheint.
+
+
+Der Befehl "delete" dagegen hat, anders als rename, nur *einen* Namen
+als Argument. Da sind dann keine "..." noetig. Wir haben aber nun
+eingebaut, dass man gleichwohl welche setzen kann, in welchem Fall
+es bisher nicht klappte.
+
+
+FLEX: Arrays
+------------
+In xarray.rtf wurde folgender Abschnitt am Ende angefuegt:
+(Was hier beschrieben ist, funktionierte aber bereits!)
+
+Wie nun aber, wenn wir in einem FLEX die Variable  $TFritz  neu
+belegen wollen, jedoch "Fritz" steht in der Variablen $name, und
+der Wert soll "12345" sein, dies jedoch stuende gerade in #utn ?
+Das geht so:
+
+var "$T" $name " " #utn
+  in der iV steht nun  $TFritz 12345
+insert
+  in der Variablen  $TFritz  steht nun  12345
+Danach liefert uns   var $TFritz  den Wert "12345"
+
+
+FLEX: Freie Variablen
+---------------------
+Noch nirgends erwaehnt war das wichtige Faktum der maximalen Laenge:
+Eine $-Variable kann maximal 64000 Zeichen lang sein.
+Ist der iV-Text im Moment der Besetzung laenger, wird er gekuerzt!
+Aergerlich kann das mal werden, wenn man per FLEX laengliche
+XML-Datensaetze umwandeln will. Eine allgemeingueltige Abhilfe
+kann nicht gegeben werden.
+
+
+FLEX: iV2 jetzt auch in a99
+---------------------------
+In Vb.223 war berichtet worden, dass acon eine "zweite interne Variable"
+habe, kurz iV2, die man mit  ins $  als Kopie der aktuellen iV anlegen
+koenne und spaeter dann mit  var $  wieder in die normale iV kopieren.
+Zudem wird mit  get I<url>  der aus dem Internet geholte Inhalt auch
+sofort automatisch in die iV2 kopiert. Was sehr nuetzlich sein kann,
+wenn dieser Inhalt z.B. ein Datensatz ist, den man danach mittels
+var ... (...)  zerlegen will. Dasselbe passiert mit  var F<dateinname>.
+Man schreibt also z.B.
+var $ (b"A" e"Z")
+um aus der iV2 den Inhalt zwischen A und Z zu extrahieren, d.h. in
+die normale iV zu kopieren. Der iV2-Inhalt aendert sich dabei nicht,
+d.h. man kann beliebig viele solche Befehle aufeinander folgen lassen.
+Dies geht intern schneller als fuer den Zweck eine $-Variable zu
+nehmen oder eine #u-Variable.
+Zudem ist die maximale Laenge der iV2 wie auch der iV mit 4 MB viel
+groesser als die maximal 64K einer $-Variablen.  (In acon sind es
+nur jeweils 2MB, das sollte evtl. mal angeglichen werden.)
+Kleines Beispiel:  x var Fcat.api\ansi\show IV. Was erscheint im 
+Anzeigefeld? Der komplette Inhalt der Datei  cat.api, umcodiert in
+ANSI, damit alles korrekt zu lesen ist. Na gut, einfacher geht das
+mit  h cat.api,  so aber kann man nun z.B. schreiben:
+  var $ (b"pn=" e"^M")\mes  
+um sich die Zeile zeigen zu lassen, die mit  pn=  beginnt.
+
+Diese brauchbare Sache gibt es jetzt auch in a99, was laengst haette
+realisiert werden sollen, aber immer wieder vergessen wurde.
+Der iV2-Inhalt bleibt in a99 erhalten ueber das Ende des FLEX hinaus
+bis zum Ende der Laufzeit oder zum naechsten Befehl  ins $.! (In
+acon geht das nicht, denn am Ende eines Jobs beendet sich acon.)
+Alle Doku-Texte, in denen die iV2 relevant ist, wurden aktualisiert.
+
+
+4.
+a35 aktualisiert
+----------------
+Aktualisiert bereitgestellt wurde auch das Paket a35. (Diese "35" hat
+uebrigens nichts zu tun mit der Versionsnummer V34, sondern soll
+besagen, dass es abgeleitet ist vom unberuehmten a30, realisiert
+jedoch mit dem nun sehr mainstreamigen HTML5. (Ohne Flash!)
+
+
+5.
+Kleine Zugabe: IBAN ermitteln [nur f. DE]
+-----------------------------
+[Als Beispiel fuer ein UPro, das man auch eigenstaendig nutzen kann]
+
+Der FLEX  iban.flx  ermittelt die zu Kontonummer und BLZ gehoerige
+IBAN, allerdings nur fuer deutsche Banken. 
+Das Ergebnis steht dann in der Zwischenablage, kann also mit Strg+v
+sonstwo eingefuegt werden. Zusaetzlich erscheint es im Schreibfeld.
+Man findet die Funktion auch in der Quick-Liste unter IBAN,
+Aufruf mit  X iban  oder als UPro:
+Dann diese Zeile
+include iban.flx
+unten an den eigenen FLEX haengen und so aufrufen:
+
+// Variablen belegen
+#ukO ...KtoNr...
+#ubL ...BLZ...
+// aufrufen
+perform iban
+
+und schon steht die IBAN in der iV und auch in der Zwischenablage,
+falls man sie woanders einkopieren will.
+Im Prinzip ist dieser FLEX ueberfluessig, weil es viele Dienste
+im Netz gibt fuer den Zweck, aber man kann ihn als Beispiel fuer
+vergleichbare Unterfunktionen nehmen, die man sich evtl. 
+einrichten will. Kommentare erklaeren alles.
+
+
+6.
+Vorauseilender Erfuellungseifer des Besens gestoppt
+---------------------------------------------------
+"Die ich rief, die Geister ...", das soll fuer den a99-Besen nicht
+mehr gelten!
+Die Unterfunktionen "Alle Aufzeichnungen beseitigen" und "Alle Ergeb-
+nismengen beseitigen" verzichteten auf eine rueckversichernde Frage,
+sondern schritten gleich zur unumkehrbaren Tat. Diese Unerfreulichkeit
+wurde ausgemerzt.
+
+
+7. SRU-Datenabruf vom GBV
+-------------------------
+"X dnb" lautet der sehr beliebte Befehl, mit dem man Daten deutscher
+Buecher schnell und bequem von der DNB abrufen kann und den gefundenen
+Datensatz dann sofort vor sich hat, als habe man ihn gerade eben
+selber eingegeben. Signatur noch rein und speichern, falls ansonsten
+alles akzeptabel ist.
+Fuer auslaendische Buecher gibt es bislang nur "X zc", das Verfahren
+namens "zDirect" zum Abruf von Daten ueber die alte Z39.50-Schnitt-
+stelle, wobei immerhin mehrere Z39-Server zugleich abgefragt werden
+koennen. Die meistgenutzten sind wohl der GBV und die Library of
+Congress, einstellbar in der FLEX-Datei  zc.flx. Der Abruf geht dann
+allerdings, anders als beim dnb-flx, nur mittels ISBN.
+Hinzugesellt wird nun ein FLEX mit dem unhandlichen Namen srugbv.flx,
+mit dem die neue SRU-Schnittstelle des GBV abgefragt wird, und hierbei
+kann man wie beim dnb.flx auch mittels Stichworteingabe suchen und
+bekommt die gefundenen Daten zur Auswahl.
+
+So wird's gemacht: Nach Installation von V34.0 gibt man
+
+  X srugbv
+
+und wird dann aufgefordert:
+   ISBN oder Stichwoerter eingeben
+Hiernach kommt entweder sofort der eine und einzige gefundene Datensatz
+oder eine Kurzliste der ersten 5, gefolgt von einer Zeile "Mehr",
+mit der man die naechsten 5 abruft usw. Man waehlt den vermutlich
+richtigen und bekommt ihn praesentiert, fertig umgewandelt ins
+A-Format, wie beim DNB-Verfahren. "Stichwoerter" bedeutet hier
+"ALL-Woerter", und meistens ist eine Kombination aus Personenname
+und einem praegnanten Titelwort aussichtsreich. Man muss bedenken,
+dass die GBV-Datenbank betraechtlich groesser ist als die der DNB,
+die Treffermengen daher oftmals auch.
+Dahinter steckt eine vollkommen andere Datenstruktur und ein gaenzlich
+anderes technisches Verfahren, doch das bleibt alles "transparent",
+wie Programmierer gerne sagen, was aber nicht "durchschaubar" 
+bedeutet, wie in der Politik, sondern "unsichtbar". Wer's dennoch 
+durchschauen und evtl. sogar verbessern moechte, kann gern 
+hineinschauen in die genannten FLEXe, sie sind alle drei ausfuehrlich 
+kommentiert.
+Fuer haeufigen Gebrauch empfiehlt sich der Einbau in einen der
+Flip-Buttons, z.B. Button 3, indem man in seinem _start.flx diese
+Zeile unterbringt (d.h. die evtl. vorhandene Zeile aendert):
+
+flip 3&3: GBV=X srugbv
+
+Und dann nur noch  Alt+3  und los geht's.
+
+Tip fuer Neugierige: Nach einem Datenabruf kann man sich anschauen,
+wie denn die angekommenen Daten eigentlich aussahen. Dazu gibt man
+nur ein:
+  x var $\show IV
+und man sieht im Anzeigefeld den Inhalt der iV2 (neu in a99), und
+das sind genau die vom GBV gekommenen Daten, die der FLEX dann
+umgewandelt hat.
+
+Tips zum Testen
+Mit  x open x test.xml\write $\close x
+kann man diese Daten in eine Datei  test.xml  schreiben und dann mit
+  X srugbv test.xml
+die Umwandlung offline testen, falls man am srugbv.flx  was verbessern
+will. Das geht dann schneller als jedesmal den Abruf neu zu machen.
+Das laesst sich aber ohne Umweg ueber eine Datei noch kuerzer machen
+mit  X srugbv $
+womit die noch vorhandenen Daten in der iV2 erneut verarbeitet werden.
+
+

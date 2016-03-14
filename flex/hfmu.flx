@@ -1,0 +1,184 @@
+  hfmu.flx : Mehrfachfelder insges. in HFM wandeln, evtl. mit Ausnahmen
+  2014-07-01   d.h.  #nnnx --> #nnn.zzz 
+
+  WICHTIGE HINWEISE
+
+  1. *** Fuer Gesamtdurchlauf: die mit *** markierten Zeilen aktivieren
+     Sonst wird nur der aktuelle Satz umgewandelt. Das ist sinnvoll, um
+     erst einmal die Sache mit verschiedenen Datens„tzen zu testen.
+
+  2. Wahlweise kann man die umgewandelten S„tze gleich wieder speichern
+     lassen oder aber in eine Grunddatei exportieren, dies dann wahlweise
+     in unver„nderter Codierung oder aber gleich in UTF-8 umcodiert.
+
+  3. ACHTUNG: Wenn bestimmte Mehrfachfelder eine Semantik haben!
+           Dann diese unter  :except  eintragen, s.u.
+           ODER nur bestimmte Felder wandeln lassen.
+     M.a.W.: Es ist nicht n”tig, *alle* Mehrfachfelder in die neue
+     Form zu wandeln; die gewohnte Semantik kann beibehalten werden.
+
+  4. Falls 3- bzw. 4stelliges Schema: (t3 bzw. t4 in der CFG)
+     dann im gesamten FLEX folgendes tun:
+           (0,3) ersetzen durch (0,4) bzw. (0,5)
+           (4,0) ersetzen durch (5,0) bzw. (6,0)
+           (3,1) ersetzen durch (4,1) bzw. (5,1)
+
+  5. Wenn schon HFM-Felder vorhanden sind, klappt's auch!
+     (Nur die Nummern bleiben u.U. nicht erhalten,
+      und aus  #nnn.1 TEXT  wird  #nnn  TEXT, falls #nnn unbesetzt)
+     Wenn nicht erwuenscht, dann unter :except ausblenden lassen
+
+
+  *** s.o. Punkt 2.
+      Wenn statt "put" ein Eport gewuenscht ist:, dann diese 3 Zeilen aktivieren
+      und weiter unten "exp" statt "put"
+ exp p i-1     normale Ausgabe im Internformat
+   ODER
+ exp p i-1u    Ausgabe mit Umcodierung nach UTF-8 (Unicode)
+ var D "datu." K1 "lg"
+ exp f
+
+
+  *** Lade Satz #1
+ first #
+ if del jump nxxt
+  *** Hauptschleife
+ :LOOP
+
+  Aktuellen Datensatz in Var. $kr kopieren
+var kr
+ins $kr
+
+  Inhalt leeren
+erase main
+
+  Nummer des ersten Felds, i.d.R.  #00
+var $kr (0,3)
+
+  Hier koennen evtl. Ausnahmen gemacht werden
+  Ausblendungen (dies ist ein UP, das beim ersten Feld ohne Aufruf durchlaufen wird!
+  -------------
+:except
+var #umf(0,3)
+
+    Hier evtl. solche Felder ausblenden, die nicht behandelt werden sollen, z.B.:  
+  if "#30" jump keep
+  if "#73" jump keep
+  Fuer Standard-Anwender: (#99e und #99n muessen bleiben)
+if "#99" jump keep
+
+  ODER: Wenn man nur bestimmte Felder wandeln will, dann so:
+  if "#nn" jump exr
+  ...
+  jump keep
+
+:exr
+var #umf(0,3)
+  Feldnr. in #ufe sichern f. Vergleich
+ins #ufe
+  return wird nur wirksam, wenn "perf except" gegeben wurde:
+return
+
+
+  Ersten Feldinhalt, z.B.  #00 IdNr, in #umf kopieren
+var $kr (e"^M")
+ins #umf
+  Es handelt sich beim ersten Feld noch nicht um ein Mehrfachfeld!
+jump ungleich
+
+  Diese Schleife arbeitet alle weiteren Felder des Satzes ab
+:loop
+var $kr (e"^M")
+ins #umf
+
+  Ausblendungen pruefen
+perf except
+  Wenn Feld ausgebl. wurde, dann ist #umf weg
+if not #umf jump nxt
+
+  Ist es ein Mehrfachfeld? D.h. erste 3 Stellen gleich vorigem
+var #umf(0,3)
+
+ins #ufe
+if =#uf2 jump 2gleich
+if =#uf1 jump 1gleich
+  Feldnr. ist ungleich der vorigen, d.h. es ist kein Mehrf.feld
+jump ungleich
+
+
+  Erstes Mehrfachfeld:  #nnnXInhalt wird  #nnn.1 Inhalt
+:1gleich
+var #umf(0,3)
+ins #uf2
+
+var #umf(3,1)
+  Ist das schon ein .-Feld?
+if not "." var #umf(0,3) ".1 " #umf(4,0)
+  wenn ja, dann muessen die Ziffern weg
+if "." var #umf(0,3) ".1 " #umf(4,0 f"0123456789" f" ")
+
+ins 
+jump nxt
+
+
+  Zweites und weitere: Mit ~ naechste Nr. .zzz automatisch vergeben
+:2gleich
+var #umf(3,1)
+  Ist das schon ein .-Feld?
+if not "." var #umf(0,3) "~" #umf(4,0)
+  wenn ja, dann muessen die Ziffern weg
+if "." var #umf(0,3) "~" #umf(4,0 f"0123456789" f" ")
+
+ins
+jump nxt
+
+  Feldnr. ist ungleich der vorigen, Nr. in #uf1 sichern
+:ungleich
+var #umf(0,3)
+  Feldnr sichern und #uf2 loeschen
+ins #uf1
+#uf2
+  Feld in den Satz, mit ' ' statt evtl. vorhandenem Mehrfachzeichen
+var #umf(3,1)
+
+if not "." var #umf(0,3) " " #umf(4,0)
+if "." var #umf(0,3) " " #umf(4,0 f"0123456789" f" ")
+
+ins
+jump nxt
+
+  Ausgeblendetes Feld einfach kopieren
+:keep
+var $kr (e"^M")
+ins
+var ""
+ins #umf
+  Dieses return wirkt auch auf "perform except"!
+return
+  Falls mit "jump keep" aufgerufen:
+jump exr
+
+:nxt
+  oberstes Feld wegnehmen
+var $kr (b"^M^J")
+ins $kr
+if $kr jump loop
+
+    Zum Testen, Unterbrechung dann mit Esc
+keycheck
+if yes end
+
+  *** Hauptschleife: naechsten Satz holen, wenn noch einer da, dann -> LOOP
+ put    // zum Testen ohne Speicherung kann man diese Zeile weglassen
+   oder
+  exp
+ :nxxt
+ next #
+ if yes if del jump nxxt
+ if yes jump LOOP
+
+  *** Sonst den umgewandelten Satz anzeigen
+sho rec
+disp
+
+

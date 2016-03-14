@@ -1,0 +1,125 @@
+  V-STAND2.APR : Jahrgangsweise ordnen, Seitenzahlen addieren
+  2000-08-07   Diese Datei kann als Muster fuer andere Views verwendet werden
+  Mit Gruppierung und Summierung
+  Aenderungen: nur im "Variablen Teil" noetig, 
+  s.u. Kommentare mit *******
+
+  ---- Allgemeiner Teil -----------
+
+zl=0     kein Zeilenumbruch
+i4=1     V14-Ersetzungen gewuenscht
+
+9=9     Tabellen-Trennzeichen (aendern, wenn gewuenscht, z.B.  9="^" )
+
+#hi +- e0     hierarch. Untersaetze nicht beruecksicht.
+#uvx +A e0    wenn #uvx besetzt, --> #-A
+#uvQ +Q e0    wenn #uvQ besetzt, --> #-Q (Tab.Export gewuenscht)
+#nr =vx       nur beim ersten Satz: #uvx besetzen (als Flag), dann #-Y
+#+Y           Ueberschrift erzeugen (in VIEW2.APT)
+
+
+#-A
+  ****** Variabler Teil ********
+  Nur hier muss man eingreifen, und zwar
+  diejenigen Kategorien einsetzen, aus denen der View bestehen soll
+  jeweils mit geeigneten Manipulationsbefehlen
+
+   Abschnitt fuer die ViewListen-Zeile
+
+#nr p'j!' e'!' =vY         Gruppierung gewuenscht
+
+#76 +#40 x"*1" x">1449" e"." u e4 P'///' Avv
+#nr p"o.J.///" e7 Avv
+#40 e" = " u e15 F" " P": " Avv
+#20 u e40 Avv
+#77 +D x"*1" x"r2" r7 F"." =vu
+#nr p'00000000' e7 =vu
+#+D      Sprung zur Verarbeitung von #uvv
+
+         Abschnitt fuer den Tabellenexport (Felder mit Trennzeichen)
+         aus VIEWTAB.FLX heraus mit "download view"
+#-Q
+         #uzV enthaelt die aktuelle View-Zeile
+         mit 00000t|... beginnen Trennstrichzeilen, 
+         mit 00000a|... beginnen Ueberschriftzeilen
+#uzV +- c't|' B'|' f' |' e0
+#uzV c'a|' B'|' f' |' F' '
+ #76 +E
+ #nr p"o.J." e4
+#-E
+#t9
+#40 e" = "
+#t9
+#20
+#t9
+#77 x"*1" e"." r7 
+         mit 00000s|... beginnen Summenzeilen
+#uzV c's|' B'|' f' |' F' ' e"."
+
+  *********** Ende variabler Teil, Rest kann so bleiben *************
+
+  Die Daten stehen jetzt in der Stringvariablen #uvv (Variabler Teil)
+
+  Anpassung: maximale Laenge (80) kann geaendert werden,
+  siehe unten (mehrfach!)
+
+  Es werden 2 Kategorien ausgegeben: 
+  #u1  sortierbarer String
+  #u2  Datenstring fuer die Anzeige des View
+  Danach kann das Sortieren stattfinden, danach kann #u1 wieder weg
+  (das macht ASORT -u1, es bleibt dann nur #u2 uebrig!)
+
+#t{ C }
+#+#
+
+#-D    Verarbeitung von #uvv (immer gleich)
+
+#uvv +B e0    #uvv besetzt? dann --> #-B
+  sonst besetzen mit interner Satznummer
+  #nr p" Satztyp ungeeignet fuer diesen View:" Avv
+ Keine der Kategorien kam vor: nichts ausgeben
+#+- 
+
+#-B
+#t{ 1 "u1   " }        Code 1 = Satzbeginn, u1 = Sonderkategorie
+  Ausgabe von #uvv als sortierbarer String: 
+  (wird am Ende des Sortierens wieder beseitigt)
+!uvv f"/" F".-/;: " e80
+  ! bedeutet: Umcodierung mit den q-Befehlen (in s.apt)
+  Code 0 als Endezeichen
+#t{ 0 }    Feldende #u1
+  Satznummer 8stellig (aenderbar) mit fuehrenden Nullen, "|" dahinter
+#nr r8,0 p"u2   " P"|"
+#uvv f"/" e"///" =v@
+  Wenn Gruppierung gewuenscht: 'j' in #uvY
+#uvY +C c"j" p":" e1 Av@
+  sonst #uvZ anhaengen (" wegnehmen)
+#uvZ f34 F34 Av@
+
+#-C
+#uvv f"/" b"///" f" -,./;:" ,"_///__" Av@
+
+  #uv@ wird mit exakt 80 Zeichen Laenge ausgegeben (Auffuellung mit blanks)
+#uv@ F".-/;: " e80 s80
+  Wenn es eine #uvu gibt: mit _ anhaengen
+#uvu p"_"
+  Codes 0 13 10 als Endezeichen (Zeilenvorschub) 
+#t{ 0 C }
+  #uvv wieder loeschen
+#uvv dvv e0
+#uv@ dv@ e0
+#uvw dvu e0
+#uvq dvq e0
+#+#
+
+#-Y   Ueberschrift des View (#uvo/#uvU extern gesetzt)
+#t{ 1 "u1      00000" 0 "u2   v000000a|" }
+#dts p"  " ,"_:_-_" =vz
+#uvo F" " p", " Avz
+#uvU p"/" ,"_:_-_" Avz
+#uvz p"  " e80 s80
+#t{ 0 C }
+#+A
+
+ts    s.apt = Sortierwertetabelle
+p ª 1

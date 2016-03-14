@@ -1,0 +1,46 @@
+  ONLIST.FLX  Auswahl der im Auswahlfeld zu zeigenden Liste
+  2008-09-12  Kontextmenue zum Auswahlfeld (rechte Maustaste)
+              Beliebig erweiter- und modifizierbar!
+
+  Was steht denn gerade im Auswahlfeld? (1 = aktueller Satz)
+var Qa
+if not "1" var "1 : Datensatz (Alt+r)" n;ins $m
+
+var Qa
+if not "0" if not "4" perf zl
+  (Zeile 1 nur, wenn gerade nicht der Datensatz im Auswahlfeld steht)
+var $m "2 : Hintergrundspeicher (Alt+r)" n "3 : Erg.Mengen (Alt+e)" n "4 : Kategorien (Alt+y)" n "5 : Abfrageliste (2xAlt+y)"
+var +n "6 : Phrasen" n "7 : Aktueller Satz in Druckform" n "8 : Aktuelle Erg.Menge in Druckform" n "9 : Hilfe zu dieser Datenbank" n $z "Hilfe" n "Auswahlliste wegblenden (F11)"
+ansi
+  Ueberschrift setzen
+set aWas soll angezeigt werden?
+  Angebot zeigen (Zeilen stehen in iV, mit 13 10 getrennt)
+Are
+if "" end
+  Was wurde gewaehlt?
+if "1" sho rec;disp
+if "2" sho res
+if "3" sho sets
+if "4" sho cfg
+if "5" sho prompt
+if "6" sho phras
+if "7" sho print
+if "8" sho Print
+if "9" var B;help
+if "Z" mes Das geht mit der Taste [Entf]
+if "A" set d
+if not "H" end
+
+  H = Hilfe: zugehoerigen Text zeigen
+var Qa
+if "1" help recrd
+if "2" help resrv
+if "0" help konfg
+if "3" help resrv
+if "4" help prmpt
+end
+
+:zl
+var "Zeile l”schen" n
+ins $z
+return

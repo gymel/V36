@@ -1,0 +1,229 @@
+
+
+Verlautbarung 268 der Entw.Abt.                              2015-04-24
+-------------------------------
+
+V35.4 ist da
+------------
+
+Inhalt:
+a99 und acon
+Globaler Ersetzungsfehler
+RDA: Neue Datenfelder
+GND: Neue Beispieldaten in der Demo
+aLF und ORDER: Kleinere Verbesserungen
+DemoBank jetzt mit RDA-Material
+
+
+a99 und acon : if Stop ...
+--------------------------
+
+Der Befehl "if Stop" soll "yes" liefern, wenn der Inhalt der iV
+in dem Moment ein Stopwort ist.
+Faelschlich ergab sich aber auch dann "yes", wenn die iV leer war.
+Doch ist das leere Wort, das Wort ohne Buchstaben, ein Stopwort? 
+Das ist buchstaeblich sinnlos: im Index waere es mangels Sichtbarkeit
+sowieso unauffindbar. Den verborgenen "Subtext", oder das Wort zwischen
+den Zeilen, kann bis heute kein System indexieren, wenn auch die
+Mathematik mit der "leeren Menge" so hantiert, als waer's eine.
+Aufgefallen war es im Fall des PHPAC-Skripts  av_all.php. Es kam
+dadurch zu Endlosschleifen mit der wenig schluessigen Fehlermeldung
+"Job limit reached".
+
+a99 und acon: Felder loeschen
+-----------------------------
+Es war die Funktion entfallen, mittels _ als einzigem Inhalt ein
+Feld beim Updating zu loeschen. Das wurde repariert.
+
+
+a99 : if #nnn$x ... klappte nicht
+---------------------------------
+Es fiel auf, dass z.B. die Bedingungspruefung  if #9DH$u ... nicht
+mehr ging. Das wurde repariert. Gebraucht wird das in so einigen
+aLF- und ORDER-FLEXen, wie etwa  a-verl.flx  fuer die Verlaengerung,
+aber auch sonst sehr oft.
+
+
+a99 : Probleme mit "update"
+---------------------------
+Der FLEX-Befehl "update" verursachte irritierende Meldungen des
+Typs  "Ungueltige Eingabe", so als ob ein falsches Datenfeld 
+dazwischen waere, mit ungueltiger Kategorienummer. Behoben, oder
+jedenfalls nicht mehr reproduzierbar.
+
+
+acon : if #uxy ... versagte
+---------------------------
+wenn zuvor die Variable mit  var ""\ins #uxy  scheinbar geloescht
+worden war. Es konnte also leere #u-Felder geben, was nicht sein soll.
+Das passierte aber NUR bei t>2 in der CFG, also z.B. bei MARC- oder 
+MAB- oder Pica-Schemata, nicht bei a.cfg.   Behoben.
+
+
+Globaler Ersetzungsfehler
+-------------------------
+Wenn man z.B. die Ziffer 2 innerhalb des Datenfelds #912 ersetzen
+wollte durch 5, dann waere anschliessend aus der #912 eine #915 
+geworden. Das kann keiner wollen, sondern eine "feldspezifische"
+Ersetzung soll sich auf den *Inhalt* beschraenken und nicht die 
+Feld*nummer* mit einbeziehen.
+Wenn aber wirklich aus #912 die #915 werden soll, dann muss man das
+ausdruecklich sagen: "Suche nach" #912 / "Ersetze durch" #915, und in
+dem Fall NICHTS eingeben unter "im Feld"! (Siehe dazu auch Hilfetext.)
+Da dies Problem aeusserst selten aufgetreten sein wird, wurde es erst
+vor kurzem entdeckt. Und ist nun behoben.
+Betroffen war neben a99 auch acon, weil ein FLEX-Befehl
+*#912_2_5_
+sich genauso auswirken wuerde - das Unterprogramm ist dasselbe.
+Betroffen waren aber auch die Quadriga-Programme srch, index und
+import wegen der entsprechenden Befehle in der Exportsprache.
+
+
+RDA : Neue Datenfelder
+----------------------
+Fuer die neuen RDA-Datenelemente werden eingefuehrt:
+(MARC- und Pica-Importparameter werden erstellt, sobald die ersten
+Testdaten von DNB oder GBV vorliegen)
+
+A. MARC 336, 337, 338:
+
+#0cc  Inhaltstyp (content type)
+#77c  Datentraegertyp (carrier type)
+[#77m  Medientyp (media type)]
+
+ACHTUNG: wer eine eigene Variante der $a.cfg hat. muss bei #0c den
+Buchstaben  c  hinter $M einfuegen.
+Der Medientyp ist redundant, daher rein betulich und wird vorerst 
+nicht empfohlen. Erst wenn andere als die LC-Typen auftreten sollte,
+kann man diese in #77m lagern, ansonsten ist der Medientyp einfach
+der erste Buchstabe des Datentraegertyps.
+
+So kann es aussehen fuer ein ganz normales Buch:
+
+#0cc txt
+#77c nc
+
+Wer strikt MARC-konform arbeiten wollte, koennte das aber tun, und
+z.B. bei einem Buch jeweils diese drei Felder erfassen:
+[Leerzeichen nur zur Verdeutlichung!]
+
+MARC:
+#0cc   $a text $b txt $2 rdacontent
+#77c   $a volume $b nc $2 rdacarrier
+#77m   $a unmediated $b n $2 rdamedia
+
+Pica3 SWB:
+0501 Text$btxt 
+0502 ohne Hilfsmittel zu benutzen$bn 
+0503 Band$bnc 
+
+Vorlaeufig wuerde dies nicht mehr aussagen als die Kurzform, und nur
+diese ist direkt austauschbar.
+Sollte sich das aendern, liesse sich die Kurzform wandeln in die lange.
+Die Codes lassen sich als Restriktionen verwenden, d.h. einbauen in die
+.res-Datei, das ist aber noch nicht geschehen.
+
+Fuer die LC-Typen haben wir, mit den deutschen Bezeichnungen der DNB,
+die ViewListen  ctype.vw und mtype.vw  erstellt. Fuer die Erfassung
+unter a35 existieren diese Listen als <select>-Listen und koennen mit
+der neuen Formulartechnik eingebunden werden in Bearbeitungsformulare,
+Beispiel ist  buch.frf.
+Dazu:  http://www.allegro-c.de/doku/aconflex.htm
+
+B. MARC 264:
+
+Fuer das neue, wiederholbare MARC-Feld  264  (statt des alten 260)
+"Production, Publication, Distribution, Manufacture, and Copyright
+Notice" wird #73 empfohlen, und zwar mit der Syntax:
+   #73x Ort : Name, Jahr $tTYP
+mit beliebig vielen x. Fuer TYP ist zu setzen:
+0 - Ersteller (Production) [fuer unveroeff. Ressourcen]
+1 - Verleger (Publication)
+2 - Verbreiter (Distribution)
+3 - Hersteller (Manufacture) [fuer veroeff. Ressourcen]
+4 - Copyright-Jahr (Copyright notice date)
+ACHTUNG: In der $a.cfg die Angabe $M bei #73 wegnehmen.
+
+
+GND  [hat nicht direkt mit RDA zu tun]
+---
+In der DemoBank sind jetzt einige (27) GND-Saetze drin, und zwar in dem
+dafuer eingerichteten neuen GND-allegro-Internformat mit der HFM-
+Kategorie #gn.
+Man findet sie im Register 9 unter "gnd/..." und ausgewaehlte Beispiele
+der diversen Typen im Reg. 1 unter "zz gnd"
+Das ist nur ein erster Schritt. Besonders nuetzlich ist dies noch nicht,
+sondern dient mehr der Anschauung. Mit F7 sieht man, wie immer, welche
+Schluessel aus einem Satz entstehen. Das ist noch lange nicht perfekt.
+Eine Anzeige kriegt man nur mit F5, d.h. in die d-wrtf.apr ist dafuer 
+noch nichts eingebaut. Provisorisch aber in die d-krtf.apr / d-k.apt.
+Uebernahme- und Ersetzungsschluessel sind auch noch provisorisch in ~g2
+und |:. D.h. man kann bereits in Titeldaten mit  _gndNummer  eine 
+Verknuepfung herstellen. (Kein / zwischen gnd und Nummer, und die 
+Nummer ohne -pruefziffer am Ende.)
+Die cat.api der DemoBank enthaelt die zur Indexierung noetigen
+Erweiterungen, das ist klar.
+ACHTUNG: In die $a.cfg gehoert fuer das neue Feld diese neue Zeile:
+#gn"GND"
+Im HelpDir findet man  gndkat.vw, eine ViewListe der GND-Kategorien.
+
+
+aLF und ORDER
+-------------
+Ein neuer FLEX, a-expl.flx, der eingebunden ist in die FunktionsFLEXe
+o-func.flx (Alt+7) und a-func.flx (Alt+3) listet alle Exemplare zum
+Titel als Ergebnismenge auf. Das klappt auch dann, wenn es mehr
+als 202 Exemplare sind, wo die aLF-Anzeige unter dem Titelsatz
+ab 203 keine korrekten Flips mehr erzeugen kann. In den genannten
+Menues steht dafuer "Exemplardaten zu diesem Titel".
+
+
+ORDER
+-----
+Ein neuer FLEX  o-whrg.flx  aktualisiert die Waehrungstabelle mit
+den Daten der EZB Frankfurt. Steckt im Menue hinter 
+  Waehrungskurse / aktualisieren
+Manueller Aufruf:  X o-whrg.flx
+In dem Zusammenhang wurde auch - laengst ueberfaellig - die DemoBank
+hinsichtlich solcher Daten aktualisiert.
+
+Ferner neu: o-besta.flx  ("BestellStatistik"). 
+Steckt hinter  Erg.Menge durchrechnen / Statistik
+Er verarbeitet eine Ergebnismenge aus Bestellsaetzen, z.B. denen
+zu einem Kontingent. Erstellt wird eine Liste der Bestellsummen zu
+den verschiedenen Auftraggebern oder Lieferanten. 
+Oder, wenn es z.B. die Bestellungen des lfd. Jahres sind oder alle 
+noch offenen Bestellungen o.a.: wahlweise eine Aufgliederung nach 
+Auftraggebern, Lieferanten oder Kontingenten.
+
+
+Doku
+----
+Einige wichtige RTF-Texte wurden aktualisiert und ueberarbeitet.
+Als Web-Dokument gibt es jetzt auch die Liste der Programme mitsamt
+der Aufruf-Optionen (Inhalt der Kap. 0.4 und 12 des Handbuchs):
+  http://www.allegro-c.de/doku/programme.htm
+
+
+DemoBank: Jetzt mit RDA-Material
+--------------------------------
+Im Reg. 8 unter "hw..." findet man fast alle Beispiele, die
+im neuen "Wiesenmueller" vorgestellt werden.
+Die Datensaetze im SWB-Pica3-Format kann man auch hier besichtigen:
+http://www.basiswissen-rda.de/zusatzmaterial-1/beispiele-in-pica3-swb/kapitel-13/
+Darin steht auch etliches zu den RDA-Besonderheiten und -Neuerungen.
+
+Fast jeder Datensatz ist in der Demo doppelt vertreten:
+
+1. In der gegenwaertig anzutreffenden Form
+2. In der zu erwartenden kuenftigen Form, wie im genannten Papier.
+Beides aber konvertiert in das allegro-a-Format. Der Satz in 
+der Form 2 enthaelt aber zusaetzlich im Feld #98r den kompletten
+RDA-Satz im SWD-Pica-Format.
+
+So kann man nun ein wenig vergleichendes Datenstudium betreiben 
+und eruieren, wo denn RDA seine neuen Muskeln spielen laesst.
+Wir wollen versuchen, diese Demo in geeigneter Form unter a35
+auch "ins Netz zu stellen".
+
+

@@ -1,0 +1,160 @@
+  E-SOLR.APR : Export fuer Solr, Grundstruktur
+  20100525     Ausgabe in ASCII 7-bit, diakrit. Buchstaben -> Grundbuchstaben
+  Nur, um Daten fuer Solr auszugeben!
+  AENDERUNGSSTELLEN fuer andere CFG: markiert mit ****
+
+zl=0        Zeilenlaenge unbegrenzt (kein Umbruch)
+zm=0   Kein Seitenumbruch
+
+ke=32       Kategorie-Ende = Leerzeichen
+
+i4=1    V14-Nummern aufloesen
+
+
+
+ak=zz+1 
+  Nur fuer das Ende
+ak=zz+2
+
+   -------- Anweisungsteil --------------------------------------------------
+
+  Hier kommts nur hin, wenn ein hierarch. Untersatz dran ist
+  Wenn Flag #uxy gesetzt, hier Schluss
+#uxy +# e0 #zz 0
+
+  Falls der ganze Satz exportiert werden soll
+#-1
+#uFL +3 e0
+#t{ "<add>" C }
+#dt =FL e0
+
+  **** aendern
+#-3
+  Bestimmte Satztypen ausschliessen (dasselbe weiter unten nochmal)
+#3n. +- e0
+#4n. +- e0
+#6n. +- e0
+#9A +- e0
+#9B +- e0
+#9C. +- e0
+#9D. +- e0
+#9G. +- e0
+#9R. +- e0
+#9a. +- e0
+#9s. +- e0
+  **** /aendern
+
+#dt dxy e0 #zz 
+#hi1 +A e0 #zz 0
+  So muss ein Satz fuer Solr anfangen
+#t{ "<doc>" C }
+#t{ '<field name="id">' }
+  interne Satznummer (!) kommt in <id>
+#uiR +n #zz 0     Aus  allsolr.flx / srch.job
+  sonst die normale interne Nr.
+#nr 0 #zz 0
+  alle Felder kommen ins "text"-Feld
+  Hier muesste man differenzieren, wenn feldspezifische Suche gebraucht wird
+#-n
+#t{ '</field><field name="text">' }
+
+#-A
+#t{ C }
+
+#90 e"a" e"n" e"P" p"#90 " M
+#90a e"a" e"n" e"P" p"#90a" M
+#90b e"a" e"n" e"P" p"#90b" M
+#90c e"a" e"n" e"P" p"#90c" M
+
+#87 ,"_-__" p"#87z" M
+#88 ,"_-__" p"#88z" M
+
+!#           Pauschalexport : alle Kategorien hintereinander ausgeben
+             aber siehe unten die mit / beginnenden Zeilen
+#+#
+
+  // Nur damit am Ende die schliessenden Tags den Satz beenden
+#-2
+  Bestimmte Satztypen ausschliessen (wie oben)
+  **** aendern
+#3n. +- e0
+#4n. +- e0
+#6n. +- e0
+#9A +- e0
+#9B +- e0
+#9C. +- e0
+#9D. +- e0
+#9G. +- e0
+#9R. +- e0
+#9a. +- e0
+#9s. +- e0
+
+
+
+  **** /aendern
+  Flag #uxy setzen, damit hierarch. Untersaetze hier nicht wirksam werden
+#nr Axy e0 #zz 0
+#hi1 +# e0 #zz 0
+  schliessende Tags
+#t{ C "</field></doc>" C }
+#+#
+
+
+  Diese Felder beim Pauschalexport weglassen:
+  **** aendern
+/77
+/8e.
+/99e
+/99n
+/9y
+/9z
+  **** /aendern
+
+  ------------------------------------------------------------------
+  Bei "write" in expsolr.flx wird hier umcodiert: 
+    (in #u1 steht der Text, !u1 heisst: Umcodieren mit q-Tabelle
+#-X
+#hi1 +- e0
+!u1
+#+#
+
+
+F
+#t{ "</add>" C }
+#+#
+
+    i.apt laden (Indexparameter-Zeichenumwandlungstabelle)
+    **** aendern, wenn nicht i.apt
+ti
+
+ Einige Werte aber anders
+q ª 1
+q  32
+q  3
+q  32
+q & "and"
+q < 32
+q > 32
+q , 1
+q _ 32
+q - -
+
+  diese weglassen bzw. durch Grundbuchst. ersetzen:
+
+q .11 1
+q .12 1
+q .14 1
+q .15 1
+q .16 o
+q .17 u
+q .18 1
+q .19 1
+q .22 u
+q .23 g
+q .24 1
+q .25 1
+q .26 1
+q .28 1
+q .29 1
+q .30 1
+

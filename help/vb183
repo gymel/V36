@@ -1,0 +1,340 @@
+
+Verlautbarung 183 der Entw.Abt.                          2005-05-25
+-------------------------------
+
+                    Zum Jubilaeum 25 Jahre allegro
+V25.5
+=====
+
+Neue Anwendung: Chronik
+-----------------------
+Zur Feier des 25jaehrigen Bestehens wurde die allegro-Chronik neu
+bearbeitet und es wurde eine - allegro-Datenbank draus gemacht.
+Mit einer neuen Konfiguration J.CFG und entsprechenden Parametern
+und FLEXen wird man die Anwendung in Kuerze als eigenes Paket
+erhalten koennen.
+Am besten schaut man sich gleich das Endprodukt an, vielleicht
+ist das ein Anreiz fuer aehnliche Projekte. Hier die URL:
+   http://www.allegro-c.de/chronik
+
+
+Neue Sub-Anwendung: Kalender
+----------------------------
+Nebenbei entstanden ist ein FLEX-Funktionspaket "kalender".
+Auf dem "Fuellhorn" Mitte rechts zu finden! Man erhaelt das
+Kalenderblatt des aktuellen Monats. Das Weitere wird man
+leicht erkennen. Verwendung findet intern das Unterprogramm
+zur Berechnung des Ostertermins. Dieses ist auch in dem
+selbstaendigen FLEX gauss.flx zu finden. Geben Sie einfach
+mal ein:  X gauss
+Mehr dazu:  h kalender  eingeben. Interessant ist, dass man
+jeden Tag anklicken und mit einem FLEX term.flx verbinden kann.
+Sinn der Sache ist nicht zuletzt eine Demonstration der Datums-
+befehle (siehe  h xdate ) und der Rechenfunktionen.
+
+
+Fenstergroesse bei Index und Kurzliste
+--------------------------------------
+Diese sind jetzt endlich vergroesserbar. Zwei Methoden gibt es:
+F11 : Fenster passt sich der Groesse des Hauptfensters an
+Maus: Rechten Rand beliebig verschieben.
+Verschiebung in der Hoehe ist nur beim Ergebnisfenster moeglich, und
+auch dabei nicht beliebig!
+Noch eine Kleinigkeit: wenn der Index gelb ist, kann man jetzt auch
+mit [Cursor links] statt [Alt+z] die Satzanzeige ausloesen.
+
+
+FLEX-Doku weiter vervollstaendigt. Abruf mit   h flex
+-----------------------------------------------------
+Enthalten ist jetzt eine vollstaendige, kommentierte Liste aller
+mitgelieferten Standard-FLEXe. Dis bisherige Liste, FLEXLIST.VW,
+war nicht vollstaendig. Die neue heisst FLEXIKON.VW und kommt
+bei Klick auf  Liste der Standard-FLEXe  oder Eingabe von  v flexikon.
+Die Liste ist nun etwas anders gestaltet.
+Die Besonderheit: alle direkt ausfuehrbaren FLEXe sind durch ein X
+gekennzeichnet. Drueckt man Enter auf einer solchen Zeile, hat
+man die Wahl, diesen FLEX sofort auszufuehren oder sich den Text
+zeigen zu lassen. Benutzt wird dabei der FLEX namens flexikon.flx
+
+
+Neue Schrift Lucida
+-------------------
+Als Alternative zur nichtproportionalen Letter Gothic ist im
+Gesamtpaket jetzt auch die neue allegro Lucida Console. Nach der
+Installation und evtl. Neustart ist sie unter Option | Datenfont
+zur Auswahl bereit.
+Empfehlung: Unter "Option / Datenfont" diese Schrift mit 9 Punkt
+Groesse einstellen!
+Tip: Wer die Anzeige von ASCII-Dateien auf Lucida umstellen will
+(denn sie wird meist als besser lesbar empfunden) ersetzt in der
+Datei HELPHEAD.RTF  (auf ProgDir) diese Zeile
+{\f1\fmodern allegro Letter Gothic;}
+durch
+{\f1\fmodern allegro Lucida Console;}
+Im neuen GP ist dies so eingestellt, desgl. in LISTHEAD.RTF, der
+Datei fuer die Listenfunktion des Index- und Kurzlistenfensters.
+Wenn einem beide Schriften nicht gefallen, kann man auch statt
+dessen in den RTF-Dateien "Courier New" einstellen.
+
+
+DemoBank
+--------
+Die DemoBank wird jetzt auf c:\allegro\demo kopiert, dann aber
+eine Kopie nach c:\allegro\demo2 gemacht, die wie bisher als
+Arbeits-Demo dienen soll. Dadurch ist es moeglich, sich jederzeit
+wieder eine Originalversion herzustellen. Eine Funktion speziell
+dafuer, "Neue Kopie der DemoDatenbank", ist jetzt auf dem Menue
+  newdb  vorhanden (h newdb  eingeben).
+
+
+Mini-Datenbanken
+----------------
+Die fuer den Einstieg in eigene Projekte und zum Lernen gedachten
+drei Mini-Datenbanken wurden ueberarbeitet. Geben Sie  h mini
+
+
+Mini-Ergebnismengen
+-------------------
+Wenn bei einem find-Befehl eine einelementige Erg.Menge herauskam,
+klappte bei frueheren Versionen ein anschliessendes "first" und
+"next" sowie "dow set" nicht oder nicht korrekt. Jetzt geht es.
+
+
+Hilfetexte fuer Teilfelder
+--------------------------
+Hat man einen Inhalt im Schreibfeld oder in einem Formularfeld,
+kann man bekanntlich mit F1 Hilfe dazu holen. Feldspezifische
+Hilfe kommt aber nur dann, wenn es eine zur Kategorienummer #abc
+passende Hilfedatei namens habc gibt. Gibt es sie nicht, wird
+nach einer Datei hab gesucht, gibt's die auch nicht, wird es
+noch mit ha versucht - wenn die ebenfalls fehlt, greift das
+Programm zu he_adger (bzw. he_adeng, wenn man Englisch eingeschaltet
+hat). So weit, so gut. Emsige Anwender koennen damit sehr weit
+kommen: sie koennen sich fuer jede Kategorie einen Hilfetext machen.
+Ist das geschafft, kommt der Punkt, wo man auch fuer Teilfelder
+spezifische Hilfetexte haben will. In Formularen kann man ja
+jedes Teilfeld gezielt abfragen lassen: eine Zeile wie
+$x-#nnn"Teilfeld x"   in der Formulardatei
+zeigt das Teilfeld x von #nnn. F1 funktionierte in diesem Falle
+bisher nicht. Nun ist das anders: es wird nach hnnnx gesucht!
+
+
+TopTip fuer die RTF-Bearbeitung
+-------------------------------
+Mit Shift+Strg+L kann man die aktuelle Zeile mit einem "Bullet"
+versehen (Aufzaehlungspunkt). Noch besser, wenn man mehrfach
+Shift+Strg+L drueckt, wird aus dem Bullet zuerst eine Zahl, dann
+ein Buchstabe, eine roemische Zahl ...
+Und wenn in der Zeile dann Enter gedrueckt wird, entsteht ein
+neue Zeile mit entsprechender Weiterzaehlung! Die roemische
+Zaehlung klappt leider nur bis 49 (xlix), danach kommt 1.
+In WordPad ist es genauso.
+Mit Strg+r bzw. Strg+l kann man die Zeile, in der der Cursor
+steht, nach rechts bzw. wieder nach links ausrcken. Nur die
+ganze Zeile, wohlgemerkt. Wenn r bzw. l mit einer Phrase belegt sind,
+erscheint ausserdem deren Text, d.h. man muss diesen dann wieder wegnehmen.
+
+
+GeheimTip fuer FLEX
+-------------------
+Eine FLEX-Datei muss nicht den Typ .flx haben! Der Typ ist
+ganz beliebig. Mit .flx hat man nur den Vorteil, beim Aufruf
+den Typ nicht mit angeben zu muessen. Hat man z.B. eine Datei
+toll.tip, kann man sie ohne weiteres mit  X toll.tip  starten.
+Wenn natuerlich darin keine FLEX-Befehle stehen, wird man
+schon sehen, was man davon hat...
+
+
+Volltextsuche per FLEX
+----------------------
+Mit dem Befehl  find _#01_ sollte man hierarchische Saetze finden
+koennen. Das jedoch war nicht der Fall. Dies wurde korrigiert.
+Ferner: Bei Benutzung des FLEX ftf.flx zur Volltextsuche kann man nun
+auch einen Suchbegriff mit Leerzeichen am Ende eingeben. So zum
+Beispiel, wenn man Vorkommnisse von #31 ohne Folgezeichen sucht,
+denn dabei muss man ja "#31 " eingeben (ohne die Anfuehrungszeichen).
+
+
+Hilfetexte f. Reg. 10/11
+------------------------
+Nicht sinnvoll war der Dateiname ha_i; fuer das Register 11.
+Jetzt lautet er ha_i11, und fuer Reg. 10 ist es ha_i10.
+Fuer PRESTO galt schon laenger: hi10 und hi11.
+
+
+Name der FLEX-Datei wird angezeigt
+----------------------------------
+Sinnvoll beim Testen: Der Name der FLEX-Datei wird jetzt mit angezeigt,
+wenn eine message- oder yesno-Box erscheint. Aber nur bei access>4.
+Brauchbar ist das, wenn man Fehler sucht oder Verbesserungen machen
+will: man sieht gleich, in welcher Datei dies zu geschehen hat.
+
+FLEX: Fehlermeldungen verhindern
+--------------------------------
+Die in der CFG eingestellten Fehlermeldungen fuer einzelne
+Kategorien kann man insgesamt abstellen, damit sie bei
+automatischen Belegungen im FLEX nicht stoeren:
+set e0
+  ... befehle ...
+set e1
+
+
+FLEX: Neue cstring-Variablen
+----------------------------
+ca : Arbeitsspeicher Belegung/Max.Groesse//Anz.Felder,MaxZahl
+cr : Reservespeicher Belegung/Max.Groesse//Anz.Felder,MaxZahl
+cp : Phrasenspeicher Belegung/Max.Groesse//Anz.Felder,MaxZahl
+
+
+FLEX: Expansionsmodus fuer Index einstellen
+-------------------------------------------
+Der Befehl   set x1  schaltet den Expansionsmodus ein, womit dann
+die Bildung einer Erg.Menge ueber die Register mit einer sofortigen
+Expansion verbunden ist. Alle zugehoerigen Untersaetze, die per
+SR-Schluessel indexiert sind, werden dann zu jedem Mitglied der
+Ergebnismenge hinzugenommen. Dies entspricht der Option -+
+beim DOS-Programm PRESTO.
+Mit  set x0  schaltet man den Modus wieder ab. Wer diesen Modus
+gleich beim Start haben moechte, baut demnach  set x1  in den
+_start.flx  ein.
+Nicht wirksam ist der Modus bei find-Befehlen! Da muss man ihn
+nach wie vor ausdruecklich mit vorgesetztem & einschalten. Es
+koennte sonst Nebenwirkungen geben, weil ja zahllose FLEXe irgendwelche
+find-Befehle enthalten!
+
+
+FLEX: f1nd jetzt pruefbar
+-------------------------
+Mit  f1nd <suchbefehl>  wird der erste Satz der Erg.Menge geladen, die
+sich aus dem <suchbefehl> ergibt, ohne dass diese Erg.Menge wirklich
+gebildet wird (eine bestehende bleibt dann erhalten). Bisher konnte man
+aber nicht pruefen, ob das gelungen ist, d.h. ob f1nd Erfolg hatte.
+Jetzt kann man mit  if no ...   reagieren, wenn kein Satz gefunden wurde.
+
+
+FLEX: switch object    [bei a99 sind switch und set gleichwertig]
+-------------------
+Wie schon lange bei avanti, kann jetzt auch in a99 mit zwei Objekten
+des Typs Record gearbeitet werden. Normalerweise ist der erste Record aktiv.
+Mit  switch object 2 schaltet man auf den zweiten, mit
+switch obj 1 wieder zurueck auf den ersten.
+Nuetzlich ist das, wenn man Aktionen durchfuehrt, bei denen andere
+Saetze geladen werden, wobei am Ende aber wieder der Ausgangssatz
+geladen und aktiv sein soll. Dann schaltet man zu Beginn der betr.
+Aktionen um auf  Objekt 2, am Ende zurueck auf 1. Bisher musste man dazu
+die Nummer des Ausgangssatzes sichern und diesen am Ende wieder laden.
+
+
+FLEX: switch download    [bei a99 sind switch und set gleichwertig]
+---------------------
+Wie schon lange bei avanti, kann jetzt auch in a99 mit zwei verschiedenen
+Exportdateien arbeiten. Das Umschalten geht so:
+
+swi dow 2
+xport p name
+xport f dateiname   oder   open x dateiname
+... write- und download-Befehle
+swi dow 1     Rueckschaltung auf Export 1
+... write etc. fuer Datei 1
+
+Ab hier kann beliebig zwischen 1 und 2 hin und her geswitcht werden!
+Beide Exportdateien werden am Schluss des FLEXes automatisch geschlossen,
+man braucht dafuer nichts zu tun. Also kann man von aussen sofort an die
+Datei heran, wenn der FLEX fertig ist.
+
+
+FLEX: if Art command
+--------------------
+Wenn der Inhalt der iV mit Artikel beginnt, wird command  ausgefuehrt.
+Die Artikel sind in der CFG definiert. Gross-/Kleinschreibung ist dabei
+nicht relevant: 'der' ist identisch mit 'Der" und 'DER' und ...
+Das Wort wird ferner mit Nichtsortierzeichen markiert, falls es ein
+Artikel ist. Dies kann man also nutzen, um einen eingegebenen Titel
+ungefragt zu prüfen und zu markieren!
+
+FLEX: if Stop command
+---------------------
+Wenn der Inhalt der iV ein Stoppwort ist, wird command  ausgefuehrt.
+Die Stoppwoerter sind in der Index-Parameterdatei definiert.
+Die Schreibweise braucht nicht exakt zu stimmen, d.h. gross/klein
+ist irrelevant.
+
+
+FLEX: View again
+----------------
+Das erneute Anzeigen der letzten ViewListe, und zwar ab der zuletzt
+gezeigten Zeile, klappte nicht immer. Jetzt klappt's.
+
+
+FLEX: update mit ANSI-Daten
+---------------------------
+Jetzt kann vor einem "upd" oder "upl" auch  set c1  gesetzt werden und
+hat dann die Wirkung, die eingelesenen Daten von ANSI nach ASCII zu
+codieren. Bisher mussten die externen Daten ASCII sein.
+
+
+Codetabellen fuer Unicode
+-------------------------
+Wer intern UTF-8 hat, will vielleicht auch mal eine DOS-Anzeige
+oder eine RTF-Anzeige oder -Ausgabe haben. Dafuer gibt es zwei
+Tabellen mit den noetigen P-Befehlen:
+
+du.apt      UTF-8 -> ASCII (DOS OstWest-Code)
+du-rtf.apt  UTF-8 -> RTF (Windows OstWest-Code fuer a99)
+
+Beide Tabellen ersetzen die nicht vorhandenen Akzentbuchstaben
+durch ihre Grundbuchstaben!
+
+
+Export a99/avanti: Manipulationsbefehl w
+----------------------------------------
+Ein bei den DOS-Programmen nicht auftretendes Problem: wenn man in Export-
+parametern schreibt:
+
+#123 w
+
+dann wird der Inhalt von #123 genommen, als Kategorienummer interpretiert
+und der Inhalt der betr. Kategorie zum Arbeitstext gemacht. Wenn in
+#123 also z.B.  steht  345,  dann wird durch die Zeile der Inhalt von #345
+ausgegeben. Beim Auftreten von Mehrfachfeldern konnte es in a99/avanti zu
+falschen Zuordnungen kommen, dass also z.B. der Inhalt von #81 ausgegeben
+wurde, obwohl #81a verlangt wurde.
+Dieses pathologische Verhalten wurde geheilt.
+
+
+aLF und ORDER
+-------------
+An beiden Paketen wurden weitere Verbesserungen gemacht. Man braucht nur
+die darin enthaltenen FLEXe, Hilfetexte und Parameter auf das eigene
+Datenverzeichnis zu kopieren.
+Bereitgestellt sind alf2005e.lzh und ord2005e.lzh
+
+PRESTO : PV-Abarbeitung
+-----------------------
+Bisher wurde zuerst der Abschnitt mit dem Wert #u2 N in den PV-Routinen
+der Indexparamater bearbeitet. Dann steht anschliessend eine evtl. vergebene
+Nummer schon im Satz drin. Die Speicherung sollte nach diesem Vorgang aber
+nicht mehr unterbrochen werden, es k”nnte sonst zu Doppelnummern kommen.
+Daher ist die Reihenfolge jetzt: zuerst der Abschnitt  #u2 s,  danach
+kann man nochmal reagieren, die Nummer ist aber noch nicht vereben,
+dann kommt Abschnitt  #u2 N, worauf kein Unterbruch mehr moeglich ist.
+Im Abschnitt zu  #u2 N  hat man aber die Nummer und kann sie evtl.
+wieder wegnehmen! Das laeuft innerhalb der Sperrzone, so dass Doppel-
+vergabe ausgeschlossen ist.
+
+
+EXPEX
+-----
+Von 1996 datiert ein Paket namens EXPEX, mit dem man sowohl etwas ueber
+das Exportieren lernen kann wie ueber das MARC-Format. Dieses Paket
+wird nun im Gesamtpaket mit ausgeliefert und auf c:\allegro\expex
+installiert. Wer damit ueber will, startet einfach auf c:\allegro
+mit dem DOS-Befehl  expex
+
+
+Vorschau auf V26: MultiX
+------------------------
+Ein Planungspapier wurde erstellt, das einen moeglichen Durchbruch durch
+die 2GB-Barriere beschreibt. Das ist bisher die Maximalgroesse einer
+Indexdatei. Ds Papier erhaelt man in a99 mit dem Befehl  h multix
+

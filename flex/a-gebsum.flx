@@ -1,0 +1,114 @@
+  A-GEBSUM.FLX : GebuehrenSumme eines Lesers  ### Versuch f¸r KG -> nach Anzeige der Geb¸hren gleich Frage nach Tilgung
+  2005-08-30     Aktueller Satz ist ein Lesersatz mit #9B
+
+  Nummer des aktuellen Lesersatzes retten
+var i
+ins #uaI
+
+  Gebuehrensaetze holen: stehen unter GB... im Reg.11
+var "|; GB" #9B$$(1,0)
+find
+  Keine?
+if l1 jump nog
+  Zahlen auf 0:
+Z=0
+z=0
+  ersten Geb.Satz nehmen
+first
+  Schleife
+:lp
+var #9GF$G
+  gestundet?
+if "U" jump std
+  nein, normal, dann Summe zu Z addieren
+var #9GG$S
+Z+
+  naechsten Geb.Satz
+nex
+if yes jump lp
+  keiner mehr, dann Gesamtsumme
+jump sum
+
+  Gestundete Betraege hier addieren
+:std
+var #9GG$S
+z+
+nex
+if yes jump lp
+
+  Schleife beendet, Anzeige aufbereiten
+:sum
+  Lesersatz zurueckholen
+var "#" #uaI
+f1nd
+  Betrag ist in Cent! durch 100 teilen
+Z/100
+  mit 2 Nachkommastellen in #uaS setzen
+var Z2
+ins #uaS
+  Meldung aufbereiten
+var n n "Leser " #9B$n " hat zu zahlen: " n "     " #uaS " EUR"
+  und in #uaS speichern
+ins #uaS
+  Jetzt noch den gestundeten Betrag
+var z
+Z=
+Z/100
+  wenn >0, dann Meldung damit erweitern
+if Z>0 var #uaS n "Gestundet sind: " Z2 " EUR"
+if Z>0 ins #uaS
+var #uaS
+ansi
+  und im Anzeigefeld zeigen, zusaetzlich als MessageBox
+sho IV
+mes
+
+  Fragen, ob gleich tilgen
+var "Forderungen tilgen?"
+yesno
+if not yes jump nop
+  Dann die Saetze alle auf Status T setzen
+first
+:nxf
+var "T" #9GF(1,0)
+ins #9GF
+put
+perf gebstat
+next
+if yes jump nxf
+var "#" #uaI
+f1nd
+sho rec
+disp
+mes Erledigt
+end
+:nop
+  Erg.Menge der Geb.Saetze beseitigen
+close res
+end
+
+  Negativmeldung
+:nog
+var "Keine GebÅhren registriert fÅr " #9B$n " (" #9B$$(1,0) ")
+ansi
+mes
+
+:gebstat
+  Bei Bezahlung auch:
+  Protokolldatei f. Statistik
+var $Astk
+if "" return    // STK-Datei nicht angelegt - nichts schreiben
+var "+" $Astk
+open x
+     gDatum:GebTyp/Betrag
+wri "g" #dts(0,8) ":" #9GF$G "/" #9GG$S n
+close x
+return
+
+end
+
+
+ u-VARIABLEN in a-gebsum.flx
+ #uaI (2)  IdNr aktueller Satz
+ #uaS (6)  errechnete Geb.Summe
+

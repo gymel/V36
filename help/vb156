@@ -1,0 +1,125 @@
+
+Verlautbarung 156 der Entw.Abt.                          2002-05-28
+-------------------------------
+                                       Bereitgelegt:
+1. View-Flexibilisierung               a99a.lzh, a99b.lzh, a99.lzh
+2. Expansion                  	       alcarta.lzh, inst-all.lzh
+3. Restriktion                         Version: V22.03
+
+
+1. View-Flexibilisierung
+------------------------
+
+Kollege Eger machte einen sehr bedenkenswerten Vorschlag: Flexibili-
+sierung der Ueberschriften in den View- und Ergebnismengenfenstern.
+Die Machbarkeitsstudie ergab M-Stufe 5, d.h. "Kleiner Eingriff in 
+einzelne Quellprogramme".
+Das ist nicht allzu schlimm, deshalb wurde nicht lange gefackelt.
+
+Es gibt drei Varianten des Kurzlistenfensters:
+
+A  Ergebnismenge
+B  Offline-Datei (Saetze in Bearbeitung)
+C  ViewListe
+
+Dazu gehoeren jeweils drei Kopfzeilen:
+a  Titelzeile des Fensters (sog. "caption")
+b  Namenszeile (Name der gezeigten Datei oder Erg.Menge)
+c  Kurztitel-Struktur bzw. Hinweis: nicht sortierbar, oder leer
+
+Somit muessen 9 Ueberschriften gesetzt werden koennen!
+Das geschieht mit Hilfe eines neuen set-Befehls:
+
+set iZtext
+
+Dabei ist Z eine Ziffer 1-9, text der einzusetzende Text.
+Variabel wird das durch die Moeglichkeit, die Vorgabe via iV zu machen:
+
+var "iZ" ...
+ansi
+set
+
+Nun zur Bedeutung der Ziffer Z:
+
+             | Kopfzeile  a     b     c
+-------------|-------------------------
+Erg.Menge    |            1     2     3
+OfflineDatei |            4     5     6
+ViewListe    |            7     8     9
+
+Um also die mittlere Zeile fuer eine ViewListe zu setzen, hat man zu
+schreiben:
+
+set i8Text
+
+Um die Setzung zurueckzunehmen und damit den Default wieder herzustellen,
+schreibt man
+
+set i8
+
+ohne Text dahinter.
+Jede Setzung bleibt bis zum Situngsende bestehen, wenn sie nicht erneut
+geaendert wird. Daher kann man im start.flx auch diejenigen Setzungen
+vornehmen, die fuer die gesamte Sitzung gelten sollen.
+
+Die Defaults bleiben unveraendert, d.h. wenn man keine set i-Befehle 
+benutzt, aendert sich nichts.
+Die Defaults sind folgende:
+  1 : uif[356] = Ergebnismenge durchblaettern
+  2 : SET : Erg.Mengen-Name
+  3 : Kurztitel-Ueberschrift (Indexparam.Zeile |<="..." )
+
+  4 : uif[355] = Offline-Datei durchblaettern
+  5 : "Offline list" (fest eingebaut)
+  6 : leer
+
+  7 : uif[366] = ViewListe
+  8 : Dateiname der ViewListe
+  9 : uif[358] = "(Sortieren nicht moeglich ...)"
+
+Will man feste Setzungen fuer bestimmte Zeilen, kann man dies auch
+ueber die UIF erreichen: z.B.
+
+4 "Datensaetze, die momentan in Bearbeitung sind"
+
+wuerde den Default fuer Zeile 4 ersetzen, usw., 
+ein Befehl set i...  wuerde diese Setzung dann aber aendern 
+(nicht jedoch die UIF).
+
+Hinweis: mit  var ci  kriegt man den aktuellen Inhalt der UIF-Zeile i.
+
+
+Damit sich's aber lohnt, noch ein paar Kleinigkeiten:
+(Hier allerdings liegt M-Stufe 6 vor, jedoch mit hohem Handlungs-
+bedarfsfaktor)
+
+2. Expansion
+------------
+Im Find-Menue sind ab sofort die Expansions-Kaestchen automatisch aktiv,
+wenn es SR-Schluessel gibt.
+Mit dem FLEX-Befehl  find &  (ohne was dahinter) kann man die aktuelle
+Ergebnismenge nachtraeglich expandieren.
+
+
+3. Restriktion
+--------------
+Bisher kann man eine Erg.Menge nicht nachtraeglich per Restriktion 
+verkleinern - bei DOS ging das aber schon lange (mit F9). 
+Jetzt geht's auch bei a99 und alcarta. 
+Man gibt in der Befehlszeile bzw. in einem FLEX-Befehl
+find  oder  Find  den Restriktionsbefehl einfach so an wie er sonst
+als Bestandteil eines kombinierten Suchbefehls aussehen wuerde, dann
+wird die Restriktion auf die aktuelle Erg.Menge angewendet. Also z.B.
+
+Find erj >1990
+
+Wenn im Suchbefehl die Restriktion als erstes angegeben wird, z.B.
+find erj >1990 and per shakespeare?
+dann wird die Restriktion schon beim Suchen sofort angewendet. Damit
+koennen bei sehr grossen Datenbanken auch dann noch Ergebnisse 
+erzielt werden, wenn es bisher nicht mehr ging, weil die Grenze von
+64000 Eintraegen ueberschritten wurde.
+Wenn man im Find-Menue eine Restriktion eingibt, wird der Befehl jetzt
+folgerichtig so konstruiert, dass die Restriktion zuerst kommt.
+
+

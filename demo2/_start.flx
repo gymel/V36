@@ -1,0 +1,87 @@
+  _START.FLX : Start der DEMO-Datenbank
+  2001-02-05
+  Beachten: Zeilen, die mit Leerzeichen beginnen, sind Kommentare!
+
+  Schauen, ob bereits Datenbanken registriert sind
+var "|9 db ?"
+find
+  Nein? -> :start (Erg.Menge kleiner als 1)
+if l1 jump start
+  Sonst Variable #uw_ mit Text belegen (erscheint dann in START.RTF)
+var "Eigene Datenbanken benutzen"
+ins #uw_
+close res
+
+:start
+   Aktivieren, wenn ALFA sofort eingeschaltet sein soll
+    (d.h. Leerzeichen vorn wegnehmen)
+ #uALFA
+
+   Aktivieren, wenn Anzeige des ALFA-Entleihers gewuenscht
+ #uAU2
+
+  Belegung der Flip-Tasten
+  Und zwar getrennt fuer a99 und alcarta
+var m
+if "alc" jump alc
+flip 1&1: Daten=x sho rec|Interne Form des Datensatzes links anzeigen
+flip 2&2: zDirect=X zc|Fremddaten mit Z39.50 über ISBN abrufen
+flip 3&3: ErgName=X rset|Der aktuellen Ergebnismenge einen Namen geben
+flip 4&4: Hilfe A-Z=x set i9Hilfe A-Z\\View quick\\set i9|Alphabetische Liste der Hilfethemen
+flip 5&5: Kalender=X kalender|Kalender des laufenden Monats anzeigen
+flip 6&6: Termine=h memo|Termine verwalten
+flip 7&7: Super=h super|Supervisor-Menü
+flip 8&8: DbInf=X _dbinfo|Info zu dieser Datenbank
+jump drei
+:alc
+flip 1&1: Hilfe=h cat|Hilfe zu dieser Datenbank
+flip 2&2: Daten=x sho rec|Interne Form des Datensatzes links anzeigen
+flip 3&3: ErgName=X rset|Der aktuellen Ergebnismenge einen Namen geben
+flip 4&4: Umrechnung=X umrech|Umrechnungen zwischen versch. Einheiten
+flip 5&5: Kalender=X kalender|Kalender des laufenden Monats anzeigen
+flip 6&6: Elemente=h elem|Bestandteile dieses Programms
+flip 7&7: Suchtechnik=h commd|Hilfe zur Suche
+flip 8&8: ALL-Reg.=x ind all a|Universelles Register aller Wörter
+
+:drei
+
+get env windir
+var +"\\fonts\\a-letter.ttf"
+ftime
+if not no jump fertig
+get env windir
+var +"\\fonts\\a-lucida.ttf"
+ftime
+if not no jump fertig
+var "Auf Ihrem PC sind die allegro-Schriften nicht installiert"
+var + n n "Empfehlung: Damit Index und Kurzliste brauchbar aussehen,"
+var + n "stellen Sie ber 'Optionen / Datenfont' die Schrift 'Courier New' ein"
+var + n n "Oder lassen Sie sich die allegro-Schriften installieren"
+var + n "(Die TTF-Dateien liegen auf " P ")"
+ansi
+mes
+
+:fertig
+f1nd per shakespeare, william
+sho rec
+  Display breit schalten
+ set db
+
+  Voreinstellungen fuer Termincheck:
+  diese 3 Zeilen aktivieren, wenn beim Start sofort Memo-Seite kommen soll
+  und der Termincheck sofort aktiviert werden soll
+ #uvZ1
+ slice 600=iX memo
+ h memo
+
+   Aktivieren, wenn die normale Startseite zuerst erscheinen soll
+h cat
+var "Die Startseite kommt zurck, wenn Sie unten das Fragezeichen klicken."
+var + n "  Dieses Feld ist das Eingabe- oder Schreibfeld."
+var + n "    Hier gibt man Datenfelder ein oder Befehle (F1 fr Hilfe)"
+ansi
+sho iv
+sho rec
+activate 2
+
+

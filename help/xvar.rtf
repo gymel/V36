@@ -1,0 +1,85 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\froman Times New Roman;}{\f2\fmodern Courier New;}{\f3\fmodern\fprq1 Courier New;}{\f4\fmodern\fprq1\fcharset0 Courier New;}{\f5\froman\fprq2 Times New Roman;}{\f6\fswiss\fcharset0 MS Sans Serif;}{\f7\froman\fprq2\fcharset0 Times New Roman;}{\f8\froman\fcharset0 Times New Roman;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red0\green176\blue0;\red255\green0\blue0;}
+\viewkind4\uc1\pard\qr\f0\fs24     \f1   \f2   \f0   \f1   \fs18 `\cf1\ul\b Register\cf2\ulnone\b0 ` 
+\par \pard\cf3\b\f3\fs20 var\f4  ...\cf2\f0  \b0\i\f5        \cf4\b acon\cf2\i0\f0 
+\par \cf3\f4     \cf2\f0 Vielleicht der wichtigste Befehl von allen!\b0 
+\par Ohne diesen kann man mit dem FLEX-Konzept nicht viel anfangen. Man baut damit beliebige Zeichen\f6 folg\f0 en zusammen\f6 , die man f\'fcr igendeinen Zweck braucht\f0 .\f6  Und nicht nur das, auch Manipulieren kann man damit eine Zeichenfolge.\f0  Die Zeichen\f6 folg\f0 e befindet sich dann in der "internen Variablen", kurz \b iV\b0\f6 . Und was passiert dann damit? Sehr viele andere Befehle k\'f6nnen diese Zeichenfolge anschlie\'dfend benutzen, das steht jeweils in der Beschreibung der Befehle angegeben. 
+\par \i Einfaches Beispiel:\i0    (`\cf1\ul\b Sofort ausprobieren\cf2\ulnone\b0 `) 
+\par \f4 
+\par var "Ihre Datenbank: " B " liegt auf " D 
+\par message 
+\par \f6 
+\par Der \f4 var\f6 -Befehl setzt eine Zeichenfolge zusammen, hier unter Nutzung von internen Variablen B und D, und der Befehl  \f4 message\f6   zeigt sie dann an. 
+\par Man k\'f6nnte auch sagen: Die iV ist eine Variable ohne Namen - sie wird immer dann verwendet, wenn in einem Befehl nichts anderes angegeben wird, obwohl etwas gebraucht wird. 
+\par Das allgemeine Rezept ist also: Zuerst mit   \cf3\b\f3 var\f4  \cf2\b0\f6  einen Inhalt zusammensetzen, dann einen Befehl ohne nachfolgendes Argument geben, der dann aber automatisch den in der iV stehenden Inhalt als Argument benutzt. Die maximale L\'e4nge des iV-Inhalts ist 4MB, in acon 2MB. 
+\par [\i Programmierer\i0   denken vielleicht, da\'df \f4  var \f6  eine Variable deklariert. Das tut er also nicht, sondern er setzt einen variablen Inhalt zusammen, der dann in einem \i unbenannten\i0    Bereich steht, den wir "interne Variable" nennen. Im FLEX wird dieser Bereich stets 'implizit', d.h.ohne einen Namen, angesprochen - im Beispiel durch  \f4 message\f6 . Anders gesagt: Das fehlende Argument hinter einem Befehl ist stets die iV.]\cf3\b\f3 
+\par 
+\par variable\cf2\b0  \i\f5 cstring       \cf4\b acon\cf2\b0                                          (Was ist ein \cf1\ul `\b\i0 cstring\b0\i `\cf2\ulnone\i0  ? Unbedingt lesen!) 
+\par  
+\par \pard\li709\f7 Meistens benutzt man nur die Kurzform   \cf3\b\f3 var\cf2\b0\f7 ,  die Wirkung ist dieselbe. (Zur Erinnerung: Bei jedem Befehl sind nur die ersten 3 Zeichen wirksam.)\i 
+\par \i0\f5 Der  \i cstring \i0  wird interpretiert und \f7 das Ergebnis \f5 in die `\cf1\ul\b interne Variable\cf2\ulnone\b0\f7 ` kopiert. Darin k\'f6nnen Kategorie- und Variableninhalte verwendet werden und eine gro\'dfe Zahl von `\cf1\ul\b\f5 Sondervariablen\cf2\ulnone\b0 `. 
+\par Ein\f7  \f5  c\i string\i0  \f7  \f5 kann in derselben Weise bei dem Befehl   \b\f3 `\cf1\ul write\cf2\ulnone `\b0\f5  verwendet werden. 
+\par Fehlt \i cstring\i0 , wird statt dessen der\f7  momentane\f5  Inhalt der `\cf1\ul\b iV\cf2\ulnone\b0 ` \f7 als  \i\f5 cstring\i0\f7   angesehen und \f5 interpretiert, d.h. es entsteht daraus ein neuer Inhalt in der iV. 
+\par \f7 Was dann in der iV steht, wirkt sich auf den nachfolgenden Befehl aus bzw. wird von diesem verwendet. Bei jedem Befehl ist dies, wie gesagt, angegeben.\f5 
+\par \cf4\i\f7 Wichtiger Sonderfall:\cf2\i0\f5  Mit   \f3 var "" \f7   wird die iV leer gemacht. So kann man Kategorien l\'f6schen: z.B. kann man \f3 #uxy\f5  \f7 oder eine $-Variable oder eine &-Variable \f5 so beseitigen: 
+\par \b\f3 var ""\f5 
+\par \f3 ins #uxy \f5   \b0     \f7 bzw.   \b\f3 ins \f4 $\b0\i\f5 n\f7 ame  \b\i0\f5   \b0     \f7 bzw.   \b\f3 ins \f4 &\b0\i\f5 n\f7 ame\i0\f5 
+\par \i 
+\par Sonderfall: \i0 Steht z.B.  "\f3 #123\f5 " in der iV und kommt dann der Befehl  \b\f3 var\b0\f7  (ohne etwas dahinter), wird der Inhalt der iV interpretiert, und so steht anschlie\'dfend der Inhalt von  \f3 #123\f5   in der iV.\f7  
+\par Wenn also z.B. in \f4 $kat\f7  eine Kategorienummer \f4 #173\f7  steht, kann man mit \f4 var $kat\f7  und direkt danach  \f4 var\f7   erreichen, da\'df man den Inhalt der Kategorie \f4 #173\f7  in der iV hat. Dasselbe gilt f\'fcr die Persistenzvariablen  \f4 &xyz\f7 .\i\f5 
+\par \i0 
+\par \pard\cf3\b\f3 var\cf2  +\b0\i\f5 cstring        \cf4\b acon\cf2\b0  \i0 
+\par \pard\li709\f7 Inhalt an die iV hinten anh\'e4ngen. Hiermit kann man beliebige Inhalte zu einer langen Zeichenfolge verkn\'fcpfen, \f5 
+\par \cf4\f1\fs18 Beispiel:\cf2\f3\fs20 
+\par var #40 ": " #20\f5           Inhalt von #40 und #20 in iV kopieren mit ": " dazwischen 
+\par \f3 var +" (" #76 ")"\f7         (Inhalt von #76) an iV hinten anh\'e4ngen \f5 
+\par \f3 ins #upt         \f5         iV in #upt speichern (Die iV als solche bleibt erhalten!) 
+\par \pard\f1\fs18 
+\par \i Sonderf\f8\'e4\f1 ll\f8 e\f1 :\i0 
+\par \cf3\b\f3\fs20 var F\cf2\b0\i\f5 filename        \cf4\b acon\cf2\b0  \i0 
+\par \pard\li709 Inhalt der Datei  \i filename\i0  in die iV kopieren.\f7  Gr\'f6\'dfe: Maximal 4 Mio. Bytes.\f5  
+\par \f7 Ab V28.3 kann \i\f5 filename\i0\f7  bei a99 auch eine URL sein, und zwar auch eine dynamische. Mehr dazu beim Befehl  \f4 `\cf1\ul\b get Iurl\cf2\ulnone\b0 `\i\f5 
+\par Achtung:\i0  im Dateinamen \f7  \b /\b0\f5  \f7  \f5 statt \\ verwenden, oder aber \\\\ 
+\par \i\f7 Indirekte Methode:\i0  Wenn der Dateiname nicht konstant ist, sondern z.B. in  \f4 $name\f7   steht, dann: 
+\par \f4 var "F" $name 
+\par var 
+\par \f5 
+\par \pard\cf3\b\f3 var \f4 $\cf2\b0\i\f5         \cf4\b acon\cf2\b0  \i0 
+\par \pard\li709\f7 Mit  \f4 var $\f7   kopiert man den Inhalt der iV2 ("zweite interne Variable"  wieder zur\'fcck in die iV. Der Inhalt der iV2 bleibt, im Gegensatz zur iV, auch nach Ende des jeweiligen FLEXes erhalten, bis zum n\'e4chsten  \f4 insert $\f7 , der umgekehrten Aktion. 
+\par \i Kleines Beispiel:\i0   \f4 x var Fcat.api\\ansi\\show IV\f7 . Was erscheint im Anzeigefeld? Der komplette Inhalt der Datei  \f4 cat.api\f7 , umcodiert in ANSI, damit alles korrekt zu lesen ist. Na gut, einfacher geht das mit  \f4 h cat.api\f7 ,  so aber kann man nun z.B. schreiben:  var $ (b"pn=" e"^M")\\mes  um sich die Zeile zeigen zu lassen, die mit  pn=  beginnt. 
+\par \pard\f1\fs18 
+\par \f8 Nochmals: \f1 Nach einem \f8  \f4 var\f8 -Befehl steht der Inhalt der iV als "Arbeitstext" f\'fcr alle anderen Befehle zur Verf\'fcgung. \f1 
+\par D\f8 ieser Inhalt\f1  kann z.B. mit einem \f3 ins\f1 -Befehl in eine Kategorie oder \f4 #u\f1 -Variable \f8 oder $-Variable \f1 kopiert werden, oder es wird einer derjenigen Befehle gegeben, die den Inhalt dann als Argument benutzen, z.B. \f3\fs20 `\cf1\ul\b message\cf2\ulnone\b0 `\f1\fs18  oder \f3\fs20 `\cf1\ul\b ask\cf2\ulnone\b0 `\f1\fs18   oder \f3\fs20 `\cf1\ul\b yesno\cf2\ulnone\b0 `\f1\fs18 oder\f3\fs20 `\cf1\ul\b\f4 open\cf2\ulnone\b0\f3 `\f1\fs18  \f8 usw. usf. \f1 Bei diesen Befehlen steht \f8 jeweils\f1  als Kommentar:  Wenn ... fehlt, wird der Inhalt der iV verwendet.  
+\par 
+\par \b\f8 Inhalt der internen Variablen nachtr\'e4glich ver\'e4ndern 
+\par \b0\f1 
+\par \cf3\b\f3\fs20 va\f4 r (\cf2\b0\i\f8\fs18 m-befehle\cf3\b\i0\f4\fs20 )   \cf2\b0\f8\fs18  `\cf1\ul\b Demo\cf2\ulnone\b0 ` \i\f5\fs20       \cf4\b acon\cf2\b0\i0\f8\fs18 
+\par \tab In der Klammer stehen sog. Manipulationsbefehle, kurz: M-Befehle\f1 
+\par \pard\li710\f8\tab Die M-Befehle in der Klammer bearbeiten den aktuellen iV-Inhalt. Es handelt sich um dieselben Befehle, die man hinter einer Kategorienummer einsetzen kann, um deren Inhalt zu manipulieren, siehe unter \f3\fs20 `\cf1\ul\b\f4 cstring\cf2\ulnone\b0\f3 `\f1\fs18 
+\par \pard 
+\par \cf4 Beispiel:\cf2 
+\par \pard\li284 Meldung ausgeben, welche Datenbank man benutzt und wo sie liegt, dann in einer zweiten Zeile die Uhrzeit \f8 . `\cf1\ul\b Gleich ausprobieren\cf2\ulnone\b0 `\f1 
+\par \pard\f3\fs20 date 
+\par ins #udt 
+\par var "Sie benutzen die Datenbank " B " auf dem Verzeichnis " D n 
+\par var +"Uhrzeit: " #udt(9,0) 
+\par mes\f1\fs18 
+\par \f8 
+\par ?Register=h xa 
+\par ?interne Variable=h xiv 
+\par ?write=h xwrite 
+\par ?iV=h xiv 
+\par ?cstring=h xcstring 
+\par ?message=h xmessage 
+\par ?ask=h xask 
+\par ?yesno=h xyes 
+\par ?cstring=h xcstring=A. 
+\par ?Sondervariablen=h xcstring=4. 
+\par ?open=h xopen 
+\par ?get Iurl=h xget=get I url 
+\par ?Gleich ausprobieren=x date`ins #udt`var "Sie benutzen die Datenbank " B " auf dem Verzeichnis " D n`var +"Uhrzeit: " #udt(9,0)`mes 
+\par ?Demo=x var "abcdefghi"\\ins $a\\var "Vorher: " $a\\mes\\var $a (b"c" e"gh")\\ins $b\\var 'Nach Anwendung des Befehls (b"c" e"gh") auf den Inhalt "abcdefghi":' n "entsteht daraus: " $b\\mes 
+\par ?Sofort ausprobieren=x var "Ihre Datenbank " B " liegt auf " D`mes 
+\par 
+\par }
+ 

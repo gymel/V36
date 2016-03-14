@@ -1,0 +1,228 @@
+  ZC.FLX :  Z-Client, Hole einen Datensatz ueber Z39 mit ISBN, evtl. von
+  20070213   mehreren Servern, und zeige die Ergebnisse
+       --->> Weiter unten ist die >>Liste der Server<<, die man nach Bedarf
+             bearbeiten kann. Andere Aenderungen in dieser Datei unnoetig.
+
+             Aufruf mit oder ohne ISBN moeglich,
+             Aufruf mit Argument "c": vorhandene Datei zilist nochmal umwandeln
+
+   >> Die Umwandlung macht ein Unterprogramm, das in z39m.inc steckt.
+      Dieses ist spezifisch fuer das Zielformat und kann fuer eigene Zwecke
+      frei veraendert werden, dann kopieren auf eigenes Datenverzeichnis.    
+  
+   Empfehlung: diese Datei mit einem ANSI-Editor bearbeiten (Codierbefehle)
+
+ins $f
+
+// Es geht nur mit A.CFG
+var K1
+if not "a" if not "A" help fremd;end
+
+var $f
+if "c" jump convert
+if "h" jump help
+  Falls bereits eine ISBN uebergeben wurde:
+if not "" jump v87
+:frage
+ask Eine ISBN oder ISSN bitte! (Mit oder ohne -, 10 oder 13 Stellen. c:Wiederholung)
+if "c" jump convert
+if "" jump noi
+jump v87
+
+  Zwei Variablen erzeugen aus #87:
+var #87(e" ")
+:v87
+ins #ui1
+ins _-__
+ins #ui2
+#ui3
+
+  und mit bzw. ohne Striche erzeugen
+
+var #ui2
+  wurde eine 13stellige eingegeben? Dann das Praefix in #ui3
+if "978" var (3,0 f"-");ins #ui2;#ui3 978-
+if "979" var (3,0 f"-");ins #ui2;#ui3 979-
+var #ui2
+hyp
+ins #ui1
+var #ui3 #ui1
+ins #ui4
+var #ui3(F"-") #ui2
+ins #ui5
+
+
+  #ui2 ist ohne Bindestriche - einige Server brauchen das so
+
+  Batchdatei zc.bat machen zum Aufruf von zc.exe (Z39-Client)
+  (Tip: Hinterher sieht man in der zc.bat, wie der Befehl lauten muss. Das
+        Programm koennte man auch fuer automatisierte Abrufe von ganzen
+        Listen von ISBNs einsetzen...)
+open x zc.bat
+  Das Clientprog. heisst zc.exe (basiert auf YAZ)
+wri P "zc.exe"
+  Auf zc.exe folgen die Serverdaten
+  *************************************************
+  Die Liste der abzufragenden Server: (bis zu 50)
+    (siehe z.B.:
+     http://staff.library.mun.ca/staff/toolbox/z3950hosts.htm
+     http://targettest.indexdata.com)
+     http://opus.tu-bs.de/zack/statistic/targetmaps/
+  Syntax einer Zeile:
+    NAME;Format`user=name,passwod=pwd,Adresse:Port/Datenbank
+
+    Der NAME taucht als Ueberschrift in der Ergebnisliste auf!
+    Alle Angaben vor der Adresse koennen fehlen
+
+  wri ' DNB;sutrs`user=gast,password=gast,tcp:z3950.dbf.ddb.de:210/iltis'
+  Klappt nicht! Z.Zt. kein brauchbarer Z39-Zugang bei DNB;
+  Tip: statt dessen  X dnb  nutzen
+
+wri ' LOC;usmarc`z3950.loc.gov:7090/voyager'
+
+
+wri ' GVK12;marc21`sru.gbv.de:210/gvk'      // GBV neu 2012
+
+wri ' SWB;usmarc`z3950n.bsz-bw.de:20210/swbtit'  // SWB 2015
+
+   Univ. of California:
+ wri ' MELVYL;usmarc`melvyl.cdlib.org:210/CDL90'
+   biblios.net (U.S., LC enthalten)
+ wri ' BIBLIOS;marc21`z3950.biblios.net:210/bibliographic'
+
+ wri ' UBBS;usmarc`sunny.biblio.etc.tu-bs.de:210/tubbs_opc`
+ wri ' NLA;usmarc`z3950.librariesaustralia.nla.gov.au:210/Bibliographic'  // Nat.Libr. of Med.
+  wri ' NLM;usmarc`tegument.nlm.nih.gov:7090/VOYAGER'  // Nat.Libr. of Med.
+ wri ' CATNYP;usmarc`catnyp.nypl.org:210/INNOPAC'
+  wri ' BNPOL;usmarc`alpha.bn.org.pl/INNOPAC' // Poln. Nationalbibl.
+  wri ' HEBIS;usmarc`user=3950,password=z39.50,tolk.hebis.de:210/hebis'
+  wri ' HBZ;mab`183.30.112.135:9991/HBZ01'  // HBZ geht nicht
+  wri ' UBBS;usmarc`ubsun02.biblio.etc.tu-bs.de:2020/opac'  // UB Braunschweig
+  wri ' VK;usmarc`ubsun02.biblio.etc.tu-bs.de:2020/vk'  // UB Braunschweig
+  wri ' NEBIS;usmarc`opac.nebis.ch:9909/NEBIS'  // NEBIS Schweiz
+  wri ' BVB;unimarc`193.174.96.24:31310/BVBSR011'    // BVB ??? geht nicht mehr
+  wri ' BVB;unimarc`user=Z39-ZACK,password=M89-C1?K,bvbr.bib-bvb.de:9991/BVB01'    // BVB ???
+  wri ' BLZCAT;SUTRS`Z3950cat.bl.uk:9909/BLAC'      // British Library
+  wri ' TALIS;SUTRS`z3950.rdn.ac.uk:210/talis'     // Talis  ???
+  wri ' UOX;usmarc`library.ox.ac.uk:210/ADVANCE'  // Oxford U. Libr. ???
+  wri ' Vaticana;usmarc`193.43.102.65:21210/ADVANCE'   // Vaticana  ???
+   // Nur mit Passwort zugaenglich!
+
+  // diese tun es leider nicht:
+  wri ' OCLC;usmarc`zcat.oclc.org:210/OLUCWorldCat'
+  wri ' OCLCTest;usmarc`zgate-test.oclc.org:7210/OLUCWorldCat'
+  wri ' RLG;usmarc`z3950.rlg.org:210/xxdefault'
+  wri ' UCH;usmarc`ipac.lib.uchicago.edu:210/uofc'
+  **************************************************
+
+
+wri ' "'
+  Und dann der eigentliche Suchbefehl mit den 2 Formen der ISBN
+  Wenn 978-angegeben war
+if #ui3 wri '@or @or @or @attr 1=7 ' #ui4 ' @attr 1=7 ' #ui5 ' @attr 1=7 ' #ui1 ' @attr 1=7 ' #ui2
+  bzw. wenn nicht:
+if not #ui3 wri '@or @attr 1=7 ' #ui4 ' @attr 1=7 ' #ui5
+  Ergebnis von zc.exe soll in Datei zilist gelenkt werden:
+wri '" >zilist'
+
+close x
+  Batchdatei zc.bat starten
+dos zc.bat
+
+  Ergebnis ist Datei zilist, zu verarbeiten durch z39m.inc
+:convert
+
+fsi zilist
+  Nichts drin oder nur sehr wenig:
+if <50 jump nix
+  Zuerst Zeichenersetzungstabellen arrangieren
+perf cconv
+
+  Vorbereitung der Ausgabe in Datei edit.adt
+exp p e-1
+if no jump exerr
+
+  Datei zum Schreiben der konvertierten Daten oeffnen
+open x edit.adt
+if no mes Datei edit.adt kann nicht geschrieben werden
+
+  Name der Datei uebergeben nach :z39m
+    darin Verarbeitung  zilist -> edit.adt
+var "zilist"
+
+  Aufruf mit jump statt perf, damit Unterprogramme moeglich!
+jump z39m
+  Rueckkehr erfolgt dann mit  jump z39mend  von dort nach hier:
+:z39mend
+  Datei zumachen
+close x
+  und dann anzeigen
+help edit.adt
+set c0
+  Alt+9 soll Ergebnisdatei anzeigen
+#uX9x help zilist\\var "Alt+Cursor links : umgewandelte Daten wieder zeigen"\\sho iV
+  Vorbereitung fuer Alt+0 - Anzeigefeld in Datensatz einlesen
+#uX0X dispread
+  Anzeige der Ergebnisdatei (im A-Format!)
+var "Alt+9: Originaldaten anzeigen" n "Alt+0 Daten in Arbeitsspeicher einlesen" n "F5 und 'L”schen' : Daten ungltig machen"
+ansi
+sho iV
+
+end
+
+  Keine Ergebnisse
+:nix
+mes Sorry, das war nix
+end
+
+:exerr
+var "Parameterdatei e-1." K1 "pr existiert nicht"
+mes
+end
+
+:noi
+mes Ohne ISBN geht's nicht
+end
+
+  Unterprogramm laden (darin steckt :z39m)
+include z39m.inc
+end
+  
+  Zeichenumwandlungstabellen einrichten
+:cconv
+  Flag schon gesetzt? (das braucht nur beim ersten Aufruf zu geschehen)
+if $ZZZ return
+
+  einige Eiinzelzeichen-Ersetzungen, zuerst fuer das Zeilenende
+y .13 256    // 13 bleibt weg
+y .10 96     // 10 wird durch ` ersetzt
+  Einzelzeichen, die bei GBV und DNB vorkommen
+y – ß
+y û ß
+y ø Ú
+y ± Ú
+
+  Protypkombinationen [nichts mit Unicode zu tun]
+  z.B.:  ersetze  Éa  durch ä usw. [dies sind ANSI-Codes]
+p É aouAOU äöüÄÖÜ
+p è aouAOU äöüÄÖÜ
+p Â aeiouEycCsSzSnN áéíóúÉıÍÎÁÀÒÔõÕ
+p â aeiouEycCsSzSnN áéíóúÉıÍÎÁÀÒÔõÕ
+p Ğ eac Èªç
+p Ó eac Èªç
+p Ñ eac Èªç
+p ñ eac Èªç
+
+  Flag setzen
+$ZZZ 1
+return
+
+:help
+var "zDirect arbeitet mit dem Protokoll Z39.50 und sucht in ausgew„hlten" n
+var +" Datenbanken nach einer ISBN, um dann die gefundenen Daten im allegro-" n
+var +"Format zu pr„sentieren." n
+var +"Sie werden deshalb jetzt gleich zur Eingabe einer ISBN aufgefordert." n
+var +"(10 oder 13 Stellen sind m”glich, mit oder ohne Bindstriche)"
+ansi
+mes
+jump frage

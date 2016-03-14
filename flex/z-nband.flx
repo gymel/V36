@@ -1,0 +1,202 @@
+  Z-NBAND.FLX : Neuen Zs-Bandsatz anlegen
+  2007-06-18    Verknuepfung mit einem Abo!
+
+var i
+ins $Inn
+  Ist es ein ABo-Satz?
+var #9DB$$
+if "A" jump abo
+  ein anderer Bandsatz?
+if "B" jump band
+
+  Ein Titelsatz? Vorher fragen (evtl. diese 6 Zeilen rausnehmen)
+if not #20 if not #8n jump nerr
+var "Bandsatz anlegen zu " #20(e":") "?"
+if #8n var "Bandsatz anlegen zu " #8n(e":") "?"
+ansi
+yesno
+if not yes end
+
+  Abos finden: stehen unter "a nr" im Reg. 10
+set i3Wählen Sie das Abo aus, zu dem der Band gehört
+var "|: " #00 "-a?"
+find
+if l1 jump aerr
+if =1 jump abo
+choose *
+if cancel set i3;end
+load
+prev #
+next #
+set i3
+
+  Jetzt ist der AboSatz geladen
+:abo
+var #00
+ins #uD0
+var #9DA
+ins #uDA
+var #9DB
+ins #uDB
+var #9DG
+ins #uDG
+var #9DC
+ins #uDC
+var #9DU
+ins #uDU
+  Neusatz anlegen f.d. Band
+new
+sho rec
+#00 zbnd?6
+  TitelId
+var #uDA$T
+ins $T-#9DA
+  AboId
+var #uD0
+ins $J-#9DA
+  Bestellpreis ?? im Bandsatz??
+ var #uDB$p
+ ins $p-#9DB
+
+:bdat
+  ZgDatum
+var #dts(e"/")
+ins $d-#9DG
+  Jg/Bd
+var #dts(0,4) "/"
+ins $Y-#9DG
+  Kennung Bl = Bandsatz, laufend
+#9DB Bl
+var #uDB$j
+ins $j-#9DB
+  Umlauf
+var #uDU
+ins #9DU
+  Erw.Art
+var #uDC$k
+ins $k-#9DC
+  Periodiz.
+var #uDC$w
+ins $w-#9DC
+sho rec
+disp
+form ZsBand
+yesno Speichern?
+if not yes jump era
+if #9DG$z jump bput
+if not $ZNp jump bput
+  wenn kein $z, dann ZgNumm vergeben
+perf nextnum
+var #uoY
+ins $z-#9DG
+:bput
+  180 Fuellzeichen
+set cf180
+put
+  Fuellz. wieder auf 0
+set cf0
+#uD0
+#uDA
+#uDB
+#uDG
+#uDC
+#uDU
+  Sonst u.U. Fehler beim naechsten Zugriff
+last off
+  Dann gleich zum Heftzugang
+yes Sofort erstes Heft eintragen?
+if yes exec z-heft
+end
+
+  Neuen Satz wieder beseitigen
+:era
+erase
+var "#" $Inn
+f1nd
+disp
+sho rec
+  Fuellz. wieder auf 0
+set cf0
+end
+
+  Ausgehend vom Bandsatz? Dann Kopie machen, Jahrgang hochzaehlen
+:band
+copy
+#00 zbnd?6
+#9DN
+
+var #9DG$Y(e"/")
+z=
+z+1
+var #9DG$Y(b"/")
+Z=
+Z+1
+var z "/" Z
+ins $Y-#9DG
+var #dts(e"/")
+ins $d-#9DG
+form ZsBand
+yesno Speichern?
+if not yes jump era
+if #9DG$z put;end
+  wenn kein $z, dann ZgNumm vergeben
+perf nextnum
+var #uoY
+ins $z-#9DG
+set cf180
+put
+set cf0
+end
+
+:nerr
+mes Das ist keine Zeitschrift!
+end
+
+:aerr
+    Falls Baende nur bei bestehendem Abo anzulegen und damit zu verkn.:
+  yesno Zu diesem Titel besteht kein Abonnement! Eins anlegen?
+  if not yes end
+  exec z-nabo
+
+  Titelsatz, aber wir haben kein Abo - Bandsatz trotzdem anlegen
+var #00
+ins #uDA
+new
+sho rec
+#00 zbnd?6
+  TitelId
+var #uDA
+ins $T-#9DA
+
+jump bdat
+
+
+  UP naechste ZgNummer finden
+:nextnum
+
+var "-2 " $ZNr " " $ZNp "999999999999A"
+
+  2 Zeilen holen, wo die hoechste Nummer stehen muesste
+qrix
+
+  gefundene Zeile bearbeiten
+var (f" " b" " e"")
+if "" var "0"
+
+  und die Zeile mit der letzten Nr in #uzn sichern
+ins #uzn
+  jetzt hat man die Registereintragung ermittelt
+  nun noch die Zahl herausloesen, sie steht hinter dem Praefix #uoP
+var $ZNp
+ins #uoP
+var #uzn(b"#uoP")
+
+  in iV steht jetzt die Nr., also 1 draufaddieren:
+z=
+  (wenn im Index noch keine Zeile mit dem Praefix existiert, ergibt sich z=1)
+z+1
+var $ZNd z
+ins #uoY
+  #uoY  enthaelt die naechste Nummer
+return
+

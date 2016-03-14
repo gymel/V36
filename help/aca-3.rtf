@@ -1,0 +1,365 @@
+{\rtf1\ansi\deff0\deflang1031{\fonttbl{\f0\froman\fprq2 allegro New Roman;}{\f1\froman\fprq2 Times New Roman;}{\f2\froman\fprq2 Garamond;}{\f3\fmodern\fprq1 Courier New;}{\f4\froman\fprq2\fcharset0 Times New Roman;}{\f5\fmodern\fprq1\fcharset0 Courier New;}{\f6\froman\fprq2\fcharset0 allegro New Roman;}{\f7\fmodern\fprq1\fcharset0 allegro Lucida Console;}{\f8\fmodern\fprq1 allegro Lucida Console;}{\f9\froman\fprq2\fcharset0 Garamond;}}
+{\colortbl ;\red0\green0\blue255;\red255\green0\blue0;\red0\green176\blue0;}
+\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs24 
+\par   \f1\fs20 `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` 
+\par \pard 
+\par \pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 
+\par \pard\fi-913\li913\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\f2\fs36 A.4\tab Beispiel:   Standard-Konfiguration\b0\fs20    \b\f3\fs48 $A.CFG\b0\f2\fs20 
+\par \pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f4  (Aus Platzgr\'fcnden wurde dieser Abdruck der Datei leicht gek\'fcrzt - das `\cf1\ul\b\f1 Original\cf0\ulnone\b0 ` wird ja mitgeliefert!) 
+\par \f4  Die Datei darf auch A.CFg hei\'dfen. Wenn beide existieren, wird $A.CFG vorgezogen. \f1 
+\par    Konsolidiertes allegro-Format 
+\par    ***************************** 
+\par    **** Teil 0 : Festlegung der allgemeinen Struktur  **** 
+\par \f3 
+\par t2\f1      es ist ein 2stelliges Kategoriesystem\f3 
+\par k4\f1      Kategorietext beginnt auf Position 4\f3 
+\par 
+\par \f4    Speicherbelegung: wenn der Arbeitsspeicher nicht reicht, folgende Werte \'e4ndern und aktivieren \f1 
+\par \f4    Diese Zeilen m\'fcssen vor der Liste der erlaubten Kategorien stehen! \f1 
+\par \f3 mr15001 \f1\tab\f4 maximale Ergebnismengengr\'f6\'dfe  (bis 16.000)  (Reduktion auf 1000 bringt 60K !) \f1 
+\par \f3 mk2500\f1  \tab\tab Arbeitssp. Anzahl Kategorien (1000 reicht) 
+\par \f3 mb200\f1  \tab\tab Hintergr.Sp. Anzahl Kategorien 
+\par \f3 mB12000\f1\tab\tab\f4 Gr\'f6\'dfe (in Byte, 1000 reicht meist bei DOS, mehr bei Windows) \f1 
+\par \f3 mP4000\f1\tab\tab\f4 Phrasenspeichergr\'f6\'dfe (auch f\'fcr Zwischenteile n\'f6tig!) \f1 
+\par \f3 mX64000\f1\tab\tab Parameterspeicher 
+\par  \tab\tab\f4 pr\'fcfen Sie mit Alt+F7 die Einstellungen und den freien Platz, wenn \f1 
+\par  \tab\tab\tab eine extrem lange Aufnahme geladen ist! 
+\par    **** Teil 1 : Liste der erlaubten Kategorien ******** 
+\par 
+\par \f4    Hierarchie-Struktur f\'fcr bis zu 6 Unterstufen \f1 
+\par \f4   \cf2  !!! Folgende 9 Zeilen bitte nicht \'e4ndern\f3 
+\par \pard\fi-2388\li2388\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\cf0 #u1"Kopfzeile 1"\f1\tab\f4 Die Sonderkategorien #u1 und #u2 m\'fcssen immer ganz oben stehen\f3 
+\par \pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 #u2"Kopfzeile 2" 
+\par \pard\fi-2387\li2387\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 #00"IdNr"\f1\tab\tab Empfehlung: IdNr mit einem Typbuchstaben beginnen lassen,\f3 
+\par \pard\fi-3075\li3075\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 #01"BandNr"\f1\tab\tab\tab\f4 z.B. 'b' f\'fcr Buch, 'z' f\'fcr Zeitschrift ...\f3 
+\par \pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 #02"TeilNr" 
+\par #03 
+\par #04 \cf2\f5    Von diesen Zeilen KEINE weglassen!\cf0\f3 
+\par #05 
+\par #06 
+\par \pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f1\tab\cf3\f4 Hinweise f\'fcr m\'f6gliche Ver\'e4nderungen: 
+\par \cf0\f1    \tab\cf2\f4 So m\'fcssen die Zeilen aussehen, wenn KEINE hierarchischen Datens\'e4tze gebraucht werden:\cf0  \f1 
+\par \pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f3    #u1 
+\par    #u2 
+\par    #00 
+\par    #01\f4      wenn nur EINE Stufe gew\'fcnscht wird; sonst hier auch #00\f3 
+\par    #00 
+\par    #00 
+\par    #00\cf2\f5    Von diesen Zeilen KEINE weglassen!
+\par \cf0\f3    #00 
+\par    #00 
+\par \f1    !!! Ende der Hierarchiezeilen\f3 
+\par 
+\par \f0   Jetzt kommen die anwendungsspezifischen Kategorie-Definitionen. 
+\par \f6     \cf2 Ab hier kann man alles \'e4ndern, solange man noch keine Daten mit entspr. Feldern hat\cf0\f0 
+\par   Die Kategorienummern sind 2stellig (siehe Befehl  t2  ganz oben) 
+\par   die 3. Ziffer ist dann der Wiederholungscode, Indikatoren gibt es wegen k4 nicht. 
+\par \f6   Wenn \'b2Mabc gesetzt ist, sind nur a, b und c als Wiederholungscodes zul\'e4ssig \f0 
+\par \f6   Wenn auf \'b2M keine Buchstaben/Ziffern folgen: keine Wiederholung zul\'e4ssig \f0 
+\par \f6   Die "Feldbezeichnungen" sind f\'fcr das Programm (noch) nicht n\'f6tig. \f0 
+\par \f1 
+\par   (Dies hier ist nicht die Abfrageliste! Die steht unten in Teil 3)\f3 
+\par 
+\par \f7 #09"VerknNr"\'b2M \f8 
+\par \f7 #0c"Codes"\'b2M \f8 
+\par \f7 #18"Verf+Titel Vorlageform"\'b2M \f8 
+\par \f7 #19"HST Vorlage"\'b2M \f8 
+\par \f7 #20"Titel"\'b2Mgps\'b2A gps\'b2C c \f8 
+\par \f7 #21"SammlVerm"\'b2M\'b2C c \f8 
+\par \f7 #22"EST"\'b2M\'b2C c \f8 
+\par \f7 #23"Nebentitel"\'b2M2345FPSZkv\'b2C c \f8 
+\par \f7 #24"Paralleltitel"\'b2M2345\'b2C c \f8 
+\par \f7 #8n"ZeitschrStammtitel"\'b2M123ar\'b2C c \f8 
+\par \f7 #25"TitelErgz"\'b2M \f8 
+\par \f7 #26"BeigefWerkTitel"\'b2M2\'b2C c \f8 
+\par \f7 #27"Kartenkopf"\'b2M2345678 \f8 
+\par \f7 #28"ModerneSchreibw"\'b2M \f8 
+\par \f7 #30"Notation"\'b2Mabghkly \f8 
+\par \f7 #31"Schlagw"\'b2Macgkpstu \f8 
+\par \f7 #32"FremdNotation"\'b2MABDLMNZ \f8 
+\par \f7 #33"FremdSchlagw"\'b2M0123456789BDLM \f8 
+\par \f7 #35"K\'fcnstler" \f8 
+\par #36"Kunstwerk" 
+\par \f7 #37"Sprache"\'b2M \f8 
+\par \f7 #39"VerfAngabe"\'b2Mg \f8 
+\par \f7 #40"Verfasser"\'b2M123456789abc\'b2C d \f8 
+\par \f7 #41"Hrsg"\'b2M23\'b2C d \f8 
+\par \f7 #42"Mitarb"\'b2M23456789\'b2C d \f8 
+\par \f7 #43"Bearb"\'b2C d \f8 
+\par \f7 #44"Begr"\'b2C d \f8 
+\par \f7 #45"Sammler"\'b2C d \f8 
+\par \f7 #46"Texter"\'b2C d \f8 
+\par \f7 #47"\'dcbersetzer"\'b2C d \f8 
+\par \f7 #50"Illus"\'b2C d \f8 
+\par \f7 #51"Komment"\'b2C d \f8 
+\par \f7 #52"Kompon"\'b2C d \f8 
+\par \f7 #57"anderePerson"\'b2Mabfi\'b2C d \f8 
+\par \f7 #58"Name im Titel"\'b2M23456789\'b2C d \f8 
+\par \f7 #59"GefeiertePerson"\'b2M2345\'b2C d \f8 
+\par \f7 #60"Urh"\'b2M2\'b2C c \f8 
+\par \f7 #61"beteilK\'f6rp"\'b2M23456789i\'b2C c \f8 
+\par #62"Ausstellung" 
+\par #63"Ausstellungslokal" 
+\par #68"Adr.d.1.Verf." 
+\par \f7 #70"Quelle"\'b2M2468ciZ\'b2C c \f8 
+\par \f7 #71"Ausgabe"\'b2M \f8 
+\par \f7 #72"ReprVerm"\'b2M \f8 
+\par \f7 #73"ImpressumVorlageform"\'b2M \f8 
+\par \f7 #74"ErschOrt"\'b2Md \f8 
+\par \f7 #75"Verleger"\'b2Md \f8 
+\par \f7 #76"EJahr"\'b2Mfrspz\'b2C e \f8 
+\par \f7 #77"Umfang"\'b2M0bdfghkmnotvz \f8 
+\par \f7 #81"Fussnote"\'b2M89BFPSZabcdefghijklmnopqrstuvwxyz \f8 
+\par #82"NE-Verm" 
+\par \f7 #83"Kongress"\'b2M234\'b2C f \f8 
+\par \f7 #84"\'dcbergeordnWerk" \f8 
+\par \f7 #85"Serie"\'b2M234\'b2A sANiuUv\'b2C f \f8 
+\par #86"ReportNr" 
+\par \f7 #87"ISBN"\'b2C g \f8 
+\par \f7 #88"ISSN"\'b2C h \f8 
+\par \f7 #89"FremdIdNr"\'b2MBCDGLNPSZf \f8 
+\par \f7 #90"Signatur"\'b2M23456789abcdiz\'b2APadnz \f8 
+\par \f7 #91"ZugangsNr"\'b2M23456789 \f8 
+\par \f7 #92"Bestand"\'b2Mi\'b2ANL \f8 
+\par #93"Inhalt" 
+\par \f7 #97"ErwerbDaten"\'b2Ma \f8 
+\par #98"Abstract" 
+\par \f7 #99"Datum"\'b2Menz \f8 
+\par \f7 #2n"EST Stammsatz"\'b2Mdruz\'b2C c \f8 
+\par \f7 #3n"SacherschliessungsStammsatz"\'b2Magrtz\'b2Aabfnrs \f8 
+\par \f7 #4n"PersonenStamm"\'b2Madprtz\'b2P254 \f8 
+\par \f7 #6n"K\'f6rpStamm"\'b2Mdfrsz\'b2C c\'b2P254 \f8 
+\par \f7 #9s"allgVerw"\'b2Maz \f8 
+\par #9A"Systemdaten" 
+\par #9B"BenutzerDaten" 
+\par \f7 #9D"ExplDaten"\'b2MABCDEFGHIJ \f8 
+\par \f3 
+\par \f1 
+\par   **** Teil 2 : Konfigurationsbefehle  ******************** 
+\par   Die Befehle folgen hier alphabetisch (s. Anhang A.2): 
+\par 
+\par   Erfassungsdatum soll in #99n\f3 
+\par cn99n 
+\par \f4   Datum der letzten \'c4nderung soll in #99e (aktivieren, wenn gew\'fcnscht)\f3 
+\par  ce99e 
+\par 
+\par cg00 
+\par ci9 
+\par \f1   Artikelliste (war bis Version 12.1 automatisch drin)\f3 
+\par 
+\par d the a al an as az bir das dat de dei den der det di die dos 
+\par d een eene egy ei ein eine eit el en et ett eyn eyne gl gli 
+\par d ha hai he heis hen hena henas het hith hin hinar hinir 
+\par d hinn ho hoi i il ka ke l la las le les lo los mia n na 
+\par d nji o os s t ta to um uma un una une uno y yr des dem eines 
+\par d einer einem einen 
+\par 
+\par 
+\par F219\f4     F\'fcllzeichen-Code\f3 
+\par f0\f4       keine F\'fcllzeichen f\'fcr neue Datens\'e4tze\f3 ,\f4  z.B.  f20 schreiben f\'fcr 20 F\'fcllzeichen je Satz\f3 
+\par 
+\par K35\f1      Kategoriezeichen bei Anzeige ist #\f3 
+\par k4\f1       Textanfang 4. Position\f3 
+\par 
+\par lGER\f1     Sprache (language) ist GERMAN\f3 
+\par 
+\par \f4   F\'fcr Mehrfachkategorien: \f1 
+\par \f4     Normalerweise wird #40a, #40b etc. gemacht. F\'fcr A.CFG soll es anders sein:\f3 
+\par M2\f1     d.h. #402, #403 etc. bei Mehrfachkategorien\f3 
+\par 
+\par 
+\par \f1 
+\par \f3 N170\f4         Nichtsortierzeichen 170 = \'ac \f1 
+\par \f3 n1\f4           Nichtsortiermodus 1, d.h. \'ac  vor und hinter dem Wort (das war fr\'fcher anders!) \f1 
+\par 
+\par \f3 pPRN \f1      Name des Druckers (oder : LPT1) 
+\par  \tab\f4 (setzen Sie f\'fcr PRN einen Dateinamen ein, dann wird nicht gedruckt, \f1 
+\par  \tab\tab     sondern die Ergebnisse in die Datei geschrieben, schreiben Sie 
+\par  \tab\tab     pNUL, dann passiert beim Druckbefehl gar nichts) 
+\par 
+\par \f3 S64\f1        Entstoppungszeichen soll @ sein 
+\par 
+\par \f4      Farbkombinationen (s. Anh. A.3; f\'fcr wd und wb braucht man bis zu 3 Kombinationen) \f1 
+\par \f3 wd160150140\f1   \tab\tab Display (Titelanzeige) 
+\par \pard\fi-2388\li2388\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f3 wb170160150\f1\tab\tab Browse  (REGISTER-Anzeige) 
+\par \pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500  \tab\f4 f\'fcr Schwarz-Weiss die folgenden Zeilen aktivieren: \f1 
+\par \pard\fi-2388\li2388\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500   \f3 wd107070170\f1  \tab\tab Display 
+\par \pard\fi-2387\li2387\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500   \f3 wm007\f1\tab\tab\tab Message (Nachrichten vom Programm) 
+\par   \f3 ws007\f1\tab\tab\tab\f4 Select  (Auswahl-Men\'fcs) \f1 
+\par   \f3 we007\f1\tab\tab\tab Error   (Fehlermeldungen) 
+\par   \f3 wh070\f1\tab\tab\tab Help    (Hilfeseiten) 
+\par \pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 
+\par 
+\par \f4   Befehl Y : Angabe der Zeichen f\'fcr "Ja" und "Nein"  (s.a. Zeile 301 in UIF0...) \f1 
+\par \f3 Yjn\f1      deutsch (ja/nein) 
+\par  Yyn    englisch (yes/no) 
+\par  Yon    frz (oui/non) 
+\par  Ysn    ital. (si/non) 
+\par 
+\par 
+\par \f4   ****  Teil 3 : Abfrage-Liste f\'fcr die Erfassung:  ******************** \f1 
+\par 
+\par   Zuerst die Satztyp-Abfrage: 
+\par \f3 
+\par \f5 Typ" 1 = selbst\'e4ndig (Buch)   2 = unselbst. (Aufsatz, Beitrag)   3 = Stammdaten \f3 
+\par      z = Zeitschriften-Stammsatz    r = siehe- u. siehe-auch-Verw. 
+\par \f5      7 = Sachdaten   9 = sonstige Kat.   u = Band   v = verkn\'fcpfte Bandaufnahme" \f3 
+\par \f1    (Wenn man 1 eingibt, geht es bei Sprungmarke -1 los, usw.) 
+\par 
+\par \f3 -1     Typ 1: Buch 
+\par =F0        d.h. Satz soll in die default-Datei (Option -n vom Programmaufruf) 
+\par 00 "     Id.Nr.: " 
+\par -E 
+\par 40 "  Verfasser: "+E    (Wiederholungsschleife!) 
+\par 41 "      Hrsg.: "+T 
+\par \f5 60 "  K\'f6rpersch: " \f3 
+\par -T 
+\par 20 "! Sachtitel: "      Pflichtkategorie: ohne Eingabe geht's nicht weiter 
+\par 71 "    Auflage: " 
+\par \f5 74 "\'b2        Ort: "     Wenn man hier nichts eingibt, kommt eine Nachfrage \f3 
+\par 75 "     Verlag: " 
+\par 76 "       Jahr: " 
+\par 77 "     Umfang: " 
+\par 91 " Zug.Nr.:    " 
+\par 85 "      Serie: " 
+\par 87 "       ISBN: " 
+\par 90 "   Signatur: " 
+\par 31 " Schlagwort: " 
+\par -x 
+\par 
+\par \f5 -2    Unselbst\'e4ndiges Werk \f3 
+\par =F0 
+\par 40 "  Verfasser: "+2 
+\par 20 "! Aufs.titel: " 
+\par \f5 70 "  Zeitschr. (oder _K\'fcrzel): "+B \f3 
+\par 70c"      CODEN: "+B 
+\par 70i"       ISSN: "+B 
+\par 84 "   enth. in (Id.Nr.): "+C 
+\par -B 
+\par 704"     BandNr: " 
+\par 76 "       Jahr: " 
+\par 706"       Heft: " 
+\par -C 
+\par 708"     Seiten: " 
+\par -x 
+\par 
+\par \f5      Typabfrage f\'fcr Norms\'e4tze: (bei s kommt dann noch eine Typabfrage) \f3 
+\par -3 
+\par \f5 Typ" p = Personen    k = K\'f6rpersch.  z = Zeitschr./Serie  e = EST  \f3 
+\par      s = Systematik   a = Signaturgruppe  t = Thesaurus " 
+\par 
+\par \f5    Besser geeignet ist f\'fcr solche S\'e4tze das "Referentenprogramm" \f3 
+\par 
+\par \f5 -s      Klassifikations-Stamms\'e4tze verschiedener Art: \f3 
+\par \f5 Typ" c = Klassifikation   a = Aufstellungsgruppe   l = Sprachschl\'fcssel             \f3 
+\par \f5      h = Zeitcode         g = geogr. Schl\'fcssel" \f3 
+\par 
+\par   ........ 
+\par -8 
+\par -u   Unteraufnahme bei hierarchischen Aufnahmen 
+\par 01 "  Band: " 
+\par 41 " Hrsg.: " 
+\par 20 " Titel: " 
+\par 76 "  Jahr: " 
+\par 77 "Umfang: " 
+\par -x 
+\par 
+\par \f5 -v   Bandaufnahme , verkn\'fcpft gespeichert \f3 
+\par      (vorher die Hauptaufnahme in die Anzeige holen, dann bewirkt der folgende 
+\par \f5      Befehl, da die IdNr aus #00 \'fcbernommen wird und man nur noch mit '+' die \f3 
+\par \f5      Bandnummer dranh\'e4ngen mu\'df \f3 
+\par 00 "  IdNr+BandNr: ". 
+\par 41 " Hrsg.: " 
+\par 20 " Titel: " 
+\par 76 "  Jahr: " 
+\par -9 
+\par 77 "Umfang: " 
+\par -x 
+\par ......... 
+\par -z     Zeitschriften-Stammsatz 
+\par =F100       File 249 benutzen 
+\par 8n " Zeitschrift/Serie (Titel in Zitierform): " 
+\par 20 " Titel in RAK-Form: " 
+\par \f5 8na"            K\'fcrzel: " \f3 
+\par 8nr"       Verw.Formen: " 
+\par \f5 23F"    fr\'fcherer Titel: " \f3 
+\par \f5 23S"    sp\'e4terer Titel: " \f3 
+\par 8n1"    Zitiertitel 1 : " 
+\par 8n2"    Zitiertitel 2 : " 
+\par 88 "              ISSN: " 
+\par 88c"             CODEN: " 
+\par 76p"     Ersch.Verlauf: " 
+\par 74 "     Ersch.Ort    : " 
+\par 75 "     Verlag       : " 
+\par 92 "     Bestand      : " 
+\par 8nz"     Kommentar    : " 
+\par -x 
+\par 
+\par -p     Personenstammsatz 
+\par =F252 
+\par 4n " Personenname Ansetzung: " 
+\par 4na" siehe auch:             " 
+\par 4nr" Verweisungsformen:      " 
+\par 4np" Pseudonyme :            " 
+\par 4nt" wirklicher Name:        " 
+\par 4nd" Lebensdaten:            " 
+\par 4nz" Kommentar: " 
+\par -x 
+\par \f5 -k     K\'f6rperschafts-Stammsatz \f3 
+\par =F253 
+\par \f5 6n " K\'f6rperschaft Ansetzung: " \f3 
+\par 6na" siehe auch:             " 
+\par 6nr" Verw.Formen:            " 
+\par \f5 6nf" fr\'fchere Form:           " \f3 
+\par \f5 6ns" sp\'e4tere Form:           " \f3 
+\par 6nd" 'Lebensdaten'  " 
+\par 6nz" Kommentar:  " 
+\par -x 
+\par 
+\par -e     EST-Stammsatz 
+\par =F254 
+\par 2n " Einheitssachtitel:  " 
+\par 40 " Verfasser:          " 
+\par 2nr" Verweisungsformen (in gleicher Sprache):  " 
+\par \f5 2nu" \'dcbersetzungen in anderen Sprachen:        " \f3 
+\par 2nd" Angaben zur Datierung: " 
+\par 2nz" Kommentar:          " 
+\par -x 
+\par 
+\par \f5 -r    Siehe- und Siehe-auch-Verweisungen (f\'fcr alle Register) \f3 
+\par      Form:  verweistext -> |R ziel 
+\par             mehrfach, getrennt durch "; " 
+\par =F248 
+\par 9s "siehe-Verw.:      " 
+\par 9sa"siehe-auch-Verw.: " 
+\par \f2 
+\par \pard\fi-912\li912\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\b\fs36 A.5\tab\f9 Umstieg von \'e4lteren Versionen auf V13 oder neuere\b0\f2\fs20 
+\par \pard\tx912\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\f6 Zur F\'f6rderung des \'dcbergangs von A.CFG auf das konsolidierte Format $A.CFG gibt es das Programm KONSOL.BAT. \f0 
+\par \f6 Grunds\'e4tzlich ist es so, da\'df f\'fcr den Umstieg von einer der \'e4lteren Versionen auf V13 oder eine sp\'e4tere \b\f0 keine\b0  Umarbeitung der Konfiguration oder der Parameterdateien notwendig ist. Die Programme erkennen am Fehlen des \b t\b0\f6 -Befehls, da\'df eine .CFG alter Art vorliegt. Dann interpretieren sie die Kategorie-Definitionszeilen korrekt und arbeiten ohne erkennbare Unterschiede. Nur dann, wenn Sie die neuen M\'f6glichkeiten zur pr\'e4zisen Definition der Kategorien nutzen wollen, m\'fcssen Sie zur Tat schreiten. Das Hilfsprogramm CFGCONV.EXE nimmt Ihnen dann einen Teil der Arbeit ab, so da\'df der Aufwand nicht besonders gro\'df wird. Wenn Ihre Konfiguration z.B. \b\f0 X.CFG \b0 ist, starten Sie CFGCONV so: 
+\par \b cfgconv x 
+\par \b0 Dann entsteht eine Konfigurationsdatei neuer Art mit Namen \b $X.CFG\b0\f6 . Diese k\'f6nnen Sie nun Ihren Vorstellungen entsprechend ausgestalten. Wichtig ist dieses: die alten Programme funktionieren solange weiter, wie die alte H.CFG noch da ist. Die neuen Programme bevorzugen aber die $H.CFG, wenn sie schon existiert, sonst kommen sie auch mit der alten H.CFG klar. Wenn Sie schlie\'dflich die $H in H umbenennen, k\'f6nnen die alten Programme damit nichts anfangen, sie werden wahrscheinlich abst\'fcrzen. Den neuen macht es nichts aus. So ist es m\'f6glich, die alten Programme zun\'e4chst noch f\'fcr alle F\'e4lle vorzuhalten. Sie k\'f6nnen ein altes Programm von der Diskette erneut kopieren. Wenn Sie z.B. SRCH.EXE von V12 brauchen: Diskette V12 einlegen, dann  ren srch.exe srch14.exe,  lharc x a:ac12 srch.exe. \f0 
+\par Die neue Konfiguration beginnt in jedem Fall mit dem Befehl\b  t2\b0\f6 , denn jedes bisherige Kategoriesystem ist genau genommen ein zweistelliges Schema. F\'fcr die alten Programme sind alle Kategorienummern zweistellig, die dritte Stelle ist das Wiederholungszeichen. Daher mu\'df man f\'fcr das weitere Vorgehen drei Situationen unterscheiden: \f0 
+\par \pard\tx438\tx876\tx1314\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 
+\par \pard\fi-438\li438\tx438\tx876\tx1314\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 1.\tab Die .CFG enthielt den Befehl\b  k4\b0  (oder keinen\b  k\b0\f6 -Befehl): dann braucht an den Daten nichts ver\'e4ndert zu werden. Das trifft zu auf die Konfiguration \b\f0 A.CFG\b0\f6 . In der neuen .CFG erg\'e4nzt man zu jeder Kategorie einen Befehl\b  \'b2M\b0  mit den zul\'e4ssigen Werten f\'fcr die Wiederholungszeichen. Wenn man das nicht macht, werden ohne Kommentar alle Zeichen akzeptiert. (Vgl. $A.CFG) \f0 
+\par \pard\tx438\tx876\tx1314\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 
+\par \pard\fi-438\li438\tx438\tx876\tx1314\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 2.\tab Die .CFG enthielt\b  k5\b0  (man hatte also ein Pseudo-dreistelliges Schema), und die vierte Stelle war immer ein Leerzeichen. Dann braucht man nur\b  t2\b0  in\b  t3\b0\f6  zu \'e4ndern, die Daten k\'f6nnen bleiben, wie sie sind. \f0 
+\par \tab\f6 Die vierte Stelle kann k\'fcnftig f\'fcr Wiederholungszeichen genutzt werden, d.h. die dreistelligen Nummern sind auf einmal wiederholbar. Die neue .CFG mu\'df man nun ausbauen: F\'fcr jede erlaubte dreistellige Nummer mu\'df es eine Zeile geben (siehe Abschnitt A.1). \f0 
+\par \pard\tx438\tx876\tx1314\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 
+\par \pard\fi-438\li438\tx438\tx876\tx1314\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500 3.\tab\f6 Wie Fall 2., aber die vierte Stelle war f\'fcr Indikatoren genutzt worden (MAB-\'e4hnliche Systeme). In diesem Fall mu\'df man ebenfalls\b\f0  t3\b0\f6  setzen. Dann gibt es jedoch zwei M\'f6glichkeiten: \f0 
+\par \pard\fi-876\li876\tx438\tx876\tx1314\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab a)\tab\f6 Man will mit v\'f6llig unver\'e4ndertem Kategoriesystem weiterarbeiten, d.h. die bisher nicht wiederholbaren 3stelligen Nummern sollen auch in Zukunft nicht wiederholbar sein. Dann braucht man keine weiteren Ver\'e4nderungen vorzunehmen. Die zul\'e4ssigen Indikatoren m\'fcssen aber in der neuen .CFG so behandelt werden, als seien es Wiederholungszeichen, denn sie stehen ja auf der Position, wo bei einem dreistelligen Schema neuer Art das Wiederholungszeichen stehen mu\'df. Man w\'fcrde also z.B. f\'fcr die MAB-Kategorie 100 zu schreiben haben: #100\'b2M*bcef statt #100\'b2I*bcef.  Man mu\'df das nicht sofort machen, denn ohne die\b  \'b2M\b0 -Befehle akzeptieren die Programme einfach alle Zeichen, die auf Position 4 stehen. Man mu\'df aber, wie im Fall 2., f\'fcr jede erlaubte 3stellige Nummer eine Zeile in die .CFG einsetzen. Die automatische Umwandlung mit CFGCONV erzeugt z.B. nur die Zeile\b\f0  #33\b0 , man erweitert das also auf\b  #331, #333, #335\b0 ... 
+\par \tab b)\tab\f6 Man will in Zukunft die 3stelligen Nummern auch wiederholen k\'f6nnen. Dann mu\'df man in der neuen .CFG\b\f0  k5\b0  in\b  k6\b0\f6  \'e4ndern, denn die Programme ben\'f6tigen die vierte Stelle f\'fcr das Wiederholungszeichen, und der Indikator rutscht auf Position 5. Das aber bedeutet: man mu\'df die Daten \'e4ndern! Hinter jede Kategorienummer ist ein Leerzeichen einzuschieben. Zun\'e4chst erstellt man die neue .CFG. Als Minimum mu\'df die Liste aller erlaubten dreistelligen Nummern vorhanden sein. Die Umwandlung der Daten macht man am besten so: \f0 
+\par \pard\fi-1314\li1314\tx438\tx876\tx1314\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab\tab 1. \tab Export aller Daten mit I-1.cPR  (Kopie von I-1.APR) in einem SRCH-Durchlauf. Ergebnis: Grunddateien des Typs .cLG. 
+\par \tab\tab 2. \tab Import dieser Daten mit IMPORT.EXE (ab V13) und einer Parameterdatei ALG3.cIM (=`Kopie der mitgelieferten ALG3.AIM). 
+\par \tab\tab 3.\tab\f6 Jetzt m\'fcssen Sie leider alle Export- und Indexparameter durchsehen: aus b4 bzw. i5,x m\'fcssen Sie b5 bzw. i6,x machen, da sich der Text um eine Stelle verschoben hat! \f0 
+\par \tab\tab 4.\tab Indexierung der dabei entstandenen neuen .cLG-Dateien mit INDEX.EXE ab V13. 
+\par \pard\fi-876\li876\tx438\tx876\tx1314\tx1699\tx2388\tx3076\tx3765\tx4454\tx5143\tx6180\tx6900\tx7620\tx8340\tx9060\tx9780\tx10500\tab\tab\f6 In allen Export-Parameterdateien mu\'df man\b\f0  ks=5\b0  durch\b  ks=6\b0  ersetzen oder\b  ks\b0  beseitigen! 
+\par \pard 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1 `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` 
+\par \pard 
+\par ?Vorangehender Teil=h aca-2 
+\par ?Fortsetzung=h acb-1 
+\par \f0 
+\par ?Original=h $a.cfg 
+\par 
+\par }
+ 

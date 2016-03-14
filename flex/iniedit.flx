@@ -1,0 +1,58 @@
+  INIEDIT.FLX : Bearbeiten der Vorgabedatei
+  2002-07-09
+  anschliessend wahlweise neu starten mit den veraenderten Vorgaben
+  Befehl zum Bearbeiten der Datei:
+
+var m
+if ="alc" end
+
+var x
+if "x" jump xed
+var "Sie k”nnen jetzt die INI-Datei bearbeiten." n "Das geschieht in einem DOS-Fenster mit dem Editor " x
+jump edit
+:xed
+var "Sie k”nnen jetzt die INI-Datei bearbeiten." n "Das geschieht in einem DOS-Fenster mit dem X-Editor"
+var +n "Wenn Ihnen das nichts sagt, schauen Sie sich zuerst die Beschreibung dieses Editors an!" n
+var +"Wollen Sie jetzt bearbeiten? (Nein: Editor-Beschreibung sehen)"
+:edit
+ansi
+yes
+if yes jump start
+if no jump acd
+end
+
+:acd
+var x
+if "x" help acd
+end
+
+:start
+get env comspec
+ins #uwC
+var V
+ftime
+ins #upT
+
+var #uwC " /c " x " " V
+call
+var V
+ftime
+if =#upT jump ende
+
+  Informieren:
+mes Veraenderungen werden erst bei der naechsten Sitzung wirksam!
+  Fragen:
+yes Neue Sitzung sofort starten?
+if yes jump neu
+end
+
+  Nutzer will neu starten:
+:neu
+  Befehl
+var m
+ins #uwM
+var P #uwM(e" " F"b") " " V
+
+  und aktuelles Programm stoppen
+STOP
+:ende

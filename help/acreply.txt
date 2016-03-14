@@ -1,0 +1,102 @@
+
+                               ACREPLY.COM
+           Benutzereingaben in einer Umgebungsvariablen ablegen
+
+                          (Ersatz fuer REPLY.COM)
+                                                                     2000-04-23
+Da auf einigen Rechnern das alte Programm REPLY.COM nicht korrekt
+funktioniert, haben wir einen Ersatz - ACREPLY.COM - erstellt. REPLY.COM
+arbeitet intern mit einigen "dirty tricks", die ein "sauberes" DOS
+verlangen. Gerade Notebooks besitzen aber aus technischen Gruenden oft
+Besonderheiten, mit denen REPLY nicht fertig wird. ACREPLY arbeitet nur
+mit erlaubten DOS-Funktionen, dafuer ist die Anwendung etwas
+umstaendlicher. Aber nur etwas, denn bei diesem Programm hat man den
+Vorteil, daá man von vornherein die zu belegende Variable bestimmen
+kann.
+
+
+Aufruf
+
+    acreply variable [n] [[+]datei]
+
+    variable    Namen der Umgebungsvariablen, die belegt werden soll
+
+    n           eine Ziffer von 1 bis max. 255. Wenn man n nicht angibt,
+                darf die Eingabe maximal 255 Zeichen umfassen.
+
+    datei       Umleitung der Ausgabe nach datei. datei wird
+                ueberschrieben, falls sie existiert.
+
+    +datei      Umleitung der Ausgabe nach datei. Die Eingabe wird an
+                eine schon existierende Datei angehaengt. Falls datei
+                noch nicht existiert, wird sie erzeugt.
+
+
+Arbeitsweise
+
+Das Programm erwartet eine Eingabe von der Tastatur. Nachdem <Enter>
+gedrueckt worden ist, gibt es die Eingabe in eine Datei aus, setzt aber
+"@set variable=" davor. Vor dem Abschluá der Eingabe, kann man den Text
+editieren, indem man mit <BACKSPACE> Zeichen loescht und neue eingibt.
+
+Man kann mit n bestimmen, daá maximal n-1 Zeichen eingelesen werden.
+
+Die Ausgabe erfolgt voreingestellt in eine Datei namens ACANTW.BAT. Sie
+wird immer ueberschrieben. Moechte man die Ausgabe eine andere Datei
+haben, so muá man als dritten (!) Parameter einen Dateinamen angeben.
+Die Angabe des Dateinamens ohne '+' bewirkt, daá die Datei neu erzeugt
+wird und eine eventuell vorhandene gleichen Namens ueberschreibt. Gibt
+man vor dem Namen ein '+' an, so wird die Eingabe an eine schon
+existierende Datei angehaengt. Eine nicht existierende Datei wird ggf.
+erzeugt.
+
+
+Beispiele
+---------
+Ein kommentiertes Beispiel ist in der Batchdatei  xt.bat zu finden.
+Weitere:
+
+acreply                     <- Programmaufruf
+
+Antwort ist eine einzeilige Bedienungsanleitung. Es ist keine
+Fehlermeldung, aber es passiert sonst nichts weiter
+
+acreply reply               <- Programmaufruf
+test test test              <- Eingabe mit <Enter> abgeschlossen
+
+Das Programm erzeugt die Datei ACANTW.BAT, die diese Zeile enthaelt:
+
+set reply=test test test
+
+
+Verwendung in einer Batchdatei
+
+Das Programm wird am besten so angewendet (Ausschnitt):
+
+...
+echo Geben Sie jetzt den Datenbanknamen an:
+acreply dbname 255 antwort.bat
+call antwort.bat
+...
+
+Die echo-Zeile sorgt fuer einen Prompt, damit der Benutzer weiá,
+was von Ihm erwartet wird. Dann nimmt das Programm die Eingabe entgegen.
+Nachdem <ENTER> gedrueckt wurde, erzeugt es die Datei ANTWORT.BAT, in der
+der oben erwaehnte SET-Befehl steht. Der Aufruf von ANTWORT.BAT sorgt
+dafuer, daá die Umgebungsvariable DBNAME entsteht.
+
+Man kann den Aufruf verketten:
+
+...
+echo Geben Sie die Konfiguration an:
+acreply -k 255 antwort.bat
+echo.
+echo Geben Sie den Datenbanknamen an:
+acreply -b 255 +antwort.bat
+echo.
+echo Geben Sie den Datenbankpfad an:
+acreply -d 255 +antwort.bat
+call antwort.bat
+...
+
+

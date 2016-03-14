@@ -1,0 +1,64 @@
+  CTSTART.FLX : Anzeigefeld als C-*.xCT speichern
+  2001-01-27    fuer eine Zaehlstruktur
+
+  Erste Zeile holen (ist immer Kommentar
+var z1
+
+:schleife
+  naechste Zeile
+var z2
+  keine mehr da? -> :exit
+is no jump exit
+  faengt Zeile mit NAM= an? (nur die wird gesucht)
+if "~nam=" jump name
+  naechste
+jump schleife
+
+  name gefunden, Zeile nach #uwQ
+:name
+ins #uwQ
+:NAME
+var #uwQ(e" ")
+ins #uwQ
+var #uwQ(B"=")
+ins #uwQ
+  Der eigentliche Name ist jetzt isoliert in #uwQ
+  wenn es "xyz" ist, hat der User keinen eingegeben!
+if "~xyz" jump error
+
+
+:exit
+
+  Schliessen
+close x
+  Name fuer die .xCT-Datei wird gebildet
+var "c-" #uwQ(e".") "." K1 "ct"
+ins #ucU
+  die Anzeige wird in der Datei dieses Namens gespeichert
+file
+var #ucU
+fsize
+if no jump ferror
+
+  und Hilfetext ct.rtf wieder zeigen (#uwQ ist da eingebettet)
+help ct
+end
+
+:error
+var "Wie soll die Struktur heiáen? (xyz geht nicht)"
+ansi
+ask
+if "" end
+ins #uwQ
+jump NAME
+
+   Speichern hat nicht geklappt
+:ferror
+var "Fehler beim Speichern von " #ucU n "Kein korrekter Name? Keine Schreibberechtigung?"
+mes
+end
+  Variablen:
+  #uwQ   Name der C-*.xCT
+  #ucU   vollstaendiger Name
+  #uwz   eingelesene Zeile
+

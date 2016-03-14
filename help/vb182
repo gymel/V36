@@ -1,0 +1,266 @@
+
+Verlautbarung 182 der Entw.Abt.                          2005-02-25
+-------------------------------
+
+V25.2
+=====
+
+Das neue Programm   allegro.exe
+===============================
+
+Was macht man damit?
+--------------------
+Man setzt es statt a99.exe in die Verknuepfungen bzw. Programm-
+aufrufe (z.B. in Batchprogrammen oder auch in FLEXen) ein. Es
+startet seinerseits das Programm a99.exe, aber nur, wenn es
+nicht ein Programm  aktuell.exe  gibt, das noch aktueller ist!
+Dann wird dieses gestartet und, falls das geht, auf a99.exe kopiert.
+WENN das geht, wird aktuell.exe geloescht und von Stund' an immer
+sofort a99.exe gestartet - bis eine neue Version kommt.
+M.a.W.: Jeder, der nach einer Aktualisierung startet, hat die neue
+Version, auch wenn a99.exe selbst noch nicht erneuert werden konnte,
+weil jemand es gerade benutzte.
+inst-all.exe beseitigt jetzt die evtl. noch vorhandenen aelteren
+Icons auf dem Desktop und Eintraege im Startmenue von Windows.
+
+allegro.exe erzeugt auf dem Desktop dasselbe Icon wie a99.exe,
+man bemerkt also an der Oberflaeche keinen Unterschied.
+
+Und alcarta? Das kann man ebenfalls mit allegro.exe starten!
+Beim Aufruf setzt man nur "opac" dazwischen:
+  allegro opac <ini-Name>
+alles andere verhaelt sich sinngemaess genauso.
+Statt "aktuell.exe" wird dabei "opac.exe" genommen. Im Gesamtpaket 
+ist opac.exe drin, und normalerweise kopiert das Install-Programm
+dieses gleich um auf alcarta.exe. Klappt dies nicht, wird es
+spaeter von allegro.exe ausgefuehrt, sobald es geht.
+
+Vorteil I:
+----------
+Wenn man die Verknuepfungen und Aufrufe alle auf allegro.exe umstellt,
+muss man in Zukunft nicht mehr darauf achten, dass beim Installieren
+eines neuen a99.exe bzw. alcarta.exe gerade keiner damit arbeitet.
+Systemverwalter, die gezielt NUR a99 bzw. alcarta im laufenden Betrieb
+austauschen wollen, kopieren dann "aktuell.exe" bzw. "opac.exe" auf das
+im Netz befindliche ProgDir, das ist alles.
+
+Vorteil II:
+-----------
+Wer nun kuenftig aus dem Bauch heraus  allegro.exe  startet, erlebt
+keine Irrit- oder gar Frustration, sondern es passiert sogar etwas
+besseres als bisher, wenn man  a99.exe  einfach so startete:
+Man gelangt in die DemoBank mit a99.ini als INI-Datei. Von da aus
+kann man ja alles machen...
+
+Summa summarum:  Das neue  allegro.exe  darf, so man will, als
+Hauptprogramm betrachtet werden. Aber a99.exe bleibt voll erhalten,
+alle bisherigen Aufrufe und Verknuepfungen funktionieren. UND
+die Aktualisierung einer Netz-Installation wird an einer wichtigen
+Stelle erleichtert.
+
+Im GP ist jetzt a99.exe unter dem Namen aktuell.exe.
+Die Installation kopiert es auf a99.exe - falls das geht!
+Wenn a99.exe gerade in Benutzung ist, geht es ja nicht. Dann sorgt
+nachfolgend allegro.exe irgendwann (so bald es eben geht) dafuer,
+dass das alte  a99.exe  durch die neue Version ersetzt wird. Wer unter-
+dessen startet, bevor das passiert ist, arbeitet aber mit dem
+aktuellen Programm.
+
+
+Mehr zu aresqa
+==============
+Optisch etwas verbessert wurde das Fenster: andere Schrift auf den
+Buttons (wie in den anderen Unterfenstern: MS Sans Serif 8 Punkt)
+
+Besonderheiten bei der Suche im aresqa-Fenster
+----------------------------------------------
+Wenn nach einer Kategorienummer zu suchen ist, setzt man einen \ vor 
+das Zeichen #: z.B.  \#61
+Denn das # bewirkt sonst, daﬂ die Nummer dahinter als Zeilennummer
+angesehen und zu der betr. Zeile gesprungen wird.
+Nicht nur fuer das Zeichen # gilt dies, auch fuer < und >.
+
+MegaTip: Menuetechnik mit Aresqa
+--------------------------------
+In komplexen Datenbanken mit vielen Satztypen ist es muehsam,
+die fuer einen Satztyp jeweils moeglichen Funktionen alle zum
+Anklicken in der Titelanzeige als Flips anzulegen, also in die
+Anzeigeparameter einzubauen.
+Hier die Alternative:
+Auf einen der FlipButtons, z.B. 6, legt man den FLEX  func.flx.
+Oder auch auf einen Flip, der einfach "Aktionen" lautet oder so,
+un der bei jedem Satz immer gleich auftaucht!
+In dem FLEX func.flx macht man folgendes:
+1. Feststellung des Satztyps, z.B. anhand vorhandener Felder etc.:
+   if #nnn jump fnnn
+   if #mmm$x jump fmmm
+   u.ae. usw.
+
+2. Je Satztyp dann Feststellung der bei dem konkreten Satz
+   sinnvollen Funktionen:
+   :fnnn
+     zuerst die allgemeinen, immer moeglichen Funktionen:
+   var "Funktion 1"
+   var +"Funktion 2"
+     dann diejenigen, die nur bedingt moeglich sind:
+   if #kkk var +"Funktion 3"
+   if #iii var +"Funktion 4"
+     Menue anzeigen (mit A ist keine Bearbeitung moeglich!)
+   Aresqa
+     ausgewaehlte Zeile speichern
+   ins #ufU
+     und FLEX ausfuehren:
+   exec fnnn
+
+und im FLEX  fnnn.flx  nimmt man die Variable #ufU her und
+fuehrt die Funktionen aus.
+Dann genuegt  Alt+6 oder der Druck auf Button 6, um die Aresqa-
+Menuetechnik in Betrieb zu setzen, bzw. der Einheits-Flip.
+
+Variante:
+Statt
+  if #nnn jump fnnn
+kann man natuerlich auch schreiben
+  if #nnn exec fnnn
+und dann die weitere Untersuchung der Gegebenheiten eben in
+fnnn.flx machen.
+
+Klar, das Ganze kann fast genauso auch mit "select" statt "Aresqa"
+stattfinden. Doch "select" ist betulicher: es braucht immer einen
+Tastendruck mehr.
+
+
+FLEX-Befehl if : Jetzt mehrere darauf folgende Befehle
+------------------------------------------------------
+Bisher kann auf einen if-Befehl nur ein weiterer FLEX-Befehl
+folgen, der dann ausgefuehrt wird, wenn die Bedingung erfuellt ist.
+(Dieser Befehl kann aber wiederum ein if-Befehl sein! Oder ein perform,
+d.h. Aufruf eines Unterprogramms!)
+JETZT koennen mehrere, beliebige Befehle auf if ... folgen. Sie muessen
+alle auf derselben Zeile stehen und mit ; getrennt sein.
+Hierdurch erfolgt eine Angleichung an avanti, wo dies schon
+lange erlaubt war. Erlaubt ist dies nicht nur in FLEX-Dateien, sondern
+auch in eingebetteten FLEXes oder Flip-FLEXen.
+Hinweis: Jedoch kann man bei avanti auch auf normalen
+Zeilen mehrere, durch ; getrennte Befehle auflisten, die dann
+hintereinander ausgefuehrt werden. Um dasselbe zu erreichen, 
+ist bei FLEX der \ als Trenner zu verwenden. Notwendig ist
+diese Moeglichkeit streng genommen aber nicht, daher wurde die
+Sache mit dem ; in normalen Zeilen nicht in FLEX uebernommen.
+
+
+Kommentare in FLEXen jetzt auch innerhalb der Zeile
+---------------------------------------------------
+Mit // kann man in einer FLEXdatei jetzt auch Kommentare innerhalb
+einer Zeile abgrenzen, was bei avanti schon lange ging. Vor dem //
+muss jedoch ein Leerzeichen sein! Denn sonst wuerden Befehle
+wie  janas http://www.allegro-c.de  nicht mehr gehen...
+In Datenzeilen (mit # oder $ oder Dreieck beginnend) und zwischen 
+Anfuehrungszeichen "..." und '...' (in einem cstring) hat jedoch
+der // keine Wirkung, denn innerhalb von Daten muss ja alles
+vorkommen duerfen.
+Achtung: Die Regel gilt nur fuer FLEX-Dateien, nicht in FLEX-Befehls-
+folgen, die man in Hilfetexte einbettet oder mit x beginnend manuell
+eintippt. Bedarf fuer Kommentare besteht in solchen Faellen kaum.
+
+
+dbinfo.flx verbessert
+---------------------
+obsolet:  dbinfo.apr
+neu: dbi.rtf  enthaelt eingebettete Variablen
+     dbinfo.flx belegt diese und laedt dann dbi.rtf
+     Sofort wird es als dbinfo.rtf auf TEMP gespeichert
+     Sonst wuerden die Buttons back/forward nicht korrekt klappen
+     weil bei forward, wenn dbi.rtf wieder geladen wuerde, die
+     Variablen weg waeren - sie werden in dbinfo.flx gleich wieder
+     beseitigt, damit sie nicht stoeren.
+Angezeigt werden jetzt auch der Aufbohrfaktor und die Sprache (neben
+der Konfiguration), ferner der Name der Phrasendatei (var v).
+Noch ein Vorteil:
+Die dbi.rtf kann man veraendern! Nur Vorsicht mit den eingebetteten
+Variablen. Nicht umbenennen, aber wegnehmen darf man welche.
+Eine engl. Version wird als dbieng.rtf mitgeliefert. Sie wird automatisch
+verwendet, wenn Englisch als Sprache eingestellt ist.
+
+Phrasenanzeige (Eingabe von p in Suchbefehlsfeld)
+--------------
+Diese kam oft falsch heraus, abhaengig von der letzten Einstellung im
+Anzeigefeld. Korrigiert.
+
+Zugabe:
+Neuer FLEX dirs.flx
+-------------------
+Dieser FLEX soll hauptsaechlich als Muster fuer Dateiverarbeitung
+dienen!
+Gibt man jetzt im Schreibfeld ein:
+dir <dateispezifikation>
+so wird in einem aresqa-Fenster die Liste aller Dateien vorgelegt,
+die der Dateispezifikation entsprechen, und zwar auf dem in der
+Spezifikation angegebenen Pfad UND allen Unterverzeichnissen.
+Die mit Enter ausgewaehlte Datei wird zur Bearbeitung angeboten.
+Wenn man nur d statt dir sagt, wird die Liste ALLER Dateien
+angeboten, aber nur auf einem Verzeichnis. Wenn dabei ein Name
+eines Unterverzeichnisses ausgewaehlt wird, erfolgt Umschaltung.
+Am besten gleich ausprobieren: nur mal eingeben
+dir *.apt
+dir d-*.apr
+dir demo2\*.a??
+dir c:\*.txt
+oder was immer man sehen will. Der FLEX dirs.flx wird dann aus
+onerror.flx heraus gestartet.
+
+Andere Moeglichkeit: zuerst #upN mit der Spezifikation besetzen,
+dann dirs.flx aufrufen; z.B. so:
+#upN *.aim
+exec dirs
+
+
+Session in English
+------------------
+Jeder kann jetzt schnell mal seine eigene Datenbank auf English
+benutzen. Dafuer wurde in's Fuellhorn ein neuer, orangefarbener
+Flip "English" eingebaut, hinter dem ein FLEX language.flx steckt.
+Er kopiert die aktuelle INI-Datei auf eine gleichnamige mit ENG
+hintendran und startet diese. In der Kopie steht dann aber
+Language=ENG
+statt GER.
+Aendert man also seine INI, muss man die englische nicht extra
+auch noch aendern, weil sie jedesmal erneuert wird.
+Der FLEX laesst sich auch fuer andere Sprachen nutzen. Hat man
+etwa ein rumaenisches Interface UIFERUM gemacht, setzt man:
+#uiLRUM
+exec language
+und es wird ein neues Fenster aufgemacht, eben mit UIFERUM, und
+es entsteht eine xyzRUM.ini aus der eigenen xyz.ini.
+Eingebaut ist dies jetzt in doku.rtf und catger.rtf / cateng.rtf,
+und zwar rechts unter "CockPit".
+Hinweis: Nur die Menue- und Buttonbeschriftungen sowie Fehlermeldungen
+sind betroffen, sowie einige Hilfetexte. Viele Hilfeseiten und
+alle FLEXe sowie Anzeigeparameter und Registerueberschriften
+bleiben deutsch. Um dies alles zu aendern, muesste man englische
+Versionen all dieser Dateien machen...
+Brauchbar ist dieser FLEX aber als Muster, wenn man in einer Datei
+eine bestimmte Zeile ersetzen lassen will.
+
+
+Korrektur bei ViewListen
+------------------------
+Eine ViewListe muss aus Zeilen gleicher Laenge bestehen. Tut sie
+das nicht, wird sie umgearbeitet, die Zeilen werden alle auf
+die Laenge der laengsten erweitert. Die Datei wird dadurch
+ersetzt. Leider entfielen bisher dabei die Leerzeilen. Das
+duerfte nicht immer erwuenscht sein, daher wurde es abgestellt.
+
+ORDA
+----
+Das ORDA-Menue wurde angereichert um die zwei Punkte
+Exemplar : Anlegen eines neuen Exemplarsatzes
+Status   : Aenderung des Bestellstatus, z.B. auf 7 = Abschluss
+
+PRESTO
+------
+war verschlimmbessert worden: zwar konnte man nun auch ##nnn Text
+statt #nnn Text eingeben, aber dafuer ging F9 zum Eingeben von
+hierarchischen Untersaetzen nicht mehr. Das wurde korrigiert.
+
+

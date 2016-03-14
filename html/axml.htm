@@ -1,0 +1,978 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <title>allegro-C und XML</title>
+
+  
+  
+  <style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:"allegro Letter Gothic";
+	panose-1:2 11 4 9 2 2 2 3 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:modern;
+	mso-font-pitch:fixed;
+	mso-font-signature:7 0 0 0 147 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:70.85pt 70.85pt 2.0cm 70.85pt;
+	mso-header-margin:36.0pt;
+	mso-footer-margin:36.0pt;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+  </style>
+  
+  <meta content="Bernhard Eversberg" name="author">
+
+  
+  <meta content="XML-Schnellkurs und Beziehungen zwischen allegro-Konzept und XML" name="description">
+</head>
+
+<body lang="DE">
+
+<div class="Section1">
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td style="vertical-align: top;" width="25%"><a href="http://www.allegro-c.de"><img style="border: 0px solid ; width: 90px; height: 112px;" alt="" title="allegro homepage" src="a10.gif"></a> </td>
+
+      <td style="vertical-align: top; text-align: center;" width="50%"><br>
+
+      <br>
+
+      <big style="color: rgb(255, 0, 0);"><big><span style="font-weight: bold; font-family: verdana;"><span style="font-style: italic;"> <big>allegro</big></span><big> und XML</big><br>
+
+      </span></big></big><br>
+
+      <br>
+
+      </td>
+
+      <td style="text-align: right;" width="25%"><small><span style="font-family: verdana;"></span></small><a href="xmldevil.htm"><img src="xmldevil.jpg" alt="XMLFace" style="border: 0px solid ; width: 68px; height: 108px;" title="XMLdevil"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <br>
+
+      <small><span style="font-family: verdana;"></span></small><a href="http://www.w3.org/XML/" style="font-weight: bold;"><span style="font-family: monospace;"></span></a></td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+<p style="text-align: center;" class="MsoNormal"><span style="font-family: verdana;">Offiziell:</span><br>
+
+<a href="http://www.w3.org/XML/" style="font-weight: bold;"><span style="font-family: monospace;">http://www.w3.org/XML/</span></a> <br>
+
+<span style="font-family: Arial; color: red;"><a href="axml.htm#beisp"><span style="color: rgb(0, 0, 0);"></span></a></span></p>
+
+<p style="text-align: center;" class="MsoNormal"><span style="font-family: Arial; color: red;"><a href="axml.htm#beisp"><span style="color: rgb(0, 0, 0);"></span></a></span><span style="font-family: Arial; color: red;"><span style="color: rgb(0, 0, 0);">Beispiele:</span><br>
+
+<a href="#beisp">MARCXML und MABXML</a><br>
+
+</span><big><big><b><i><span style="font-family: Arial; color: red;">
+</span></i></b></big></big></p>
+
+<p style="" class="MsoNormal"><b><span style="font-size: 11pt; font-family: Arial;"></span></b></p>
+<p style="" class="MsoNormal"><b><span style="font-size: 11pt; font-family: Arial;"></span></b></p>
+<table style="width: 80%; text-align: left; margin-left: auto; margin-right: auto;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td>
+      <p style="" class="MsoNormal"><b><span style="font-size: 11pt; font-family: Arial;">
+XML
+Schnellkurs</span></b><b><span style="font-family: Arial;"></span></b></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Hier
+soll es nur um die elementaren, um die allerwichtigsten Dinge
+gehen!&nbsp;
+Damit man den Wald erblickt und nicht nur lauter B&auml;ume...</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+Jeder
+wei&szlig;: Daten bestehen aus Datenelementen oder -feldern. (Wer's
+      <span style="font-style: italic;">nicht</span> wei&szlig;, kann es in einer <a href="dateien.htm">Einf&uuml;hrung</a>
+nachlesen.) </span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+Ein
+typisches
+      <span style="font-style: italic;">allegro</span>-Datenfeld sieht so
+aus: (durch die Farben unterscheiden wir echte <span style="color: rgb(136, 34, 136);">Daten</span> von <span style="color: rgb(0, 128, 128);">Steuerzeichen</span>)</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;; color: teal;">#40</span><span style="font-family: &quot;Courier New&quot;; color: purple;"> Goethe, Johann
+Wolfgang <span style="color: rgb(0, 128, 128);">&not;</span>von<span style="color: rgb(0, 128, 128);">&not;</span></span><span style="font-family: Arial;"></span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+Ein
+typisches
+XML-Datenelement sieht so aus:</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;; color: teal;">&lt;Verfasser&gt;</span><span style="font-family: &quot;Courier New&quot;; color: purple;">Goethe, Johann
+Wolfgang </span><span style="font-family: &quot;Courier New&quot;; color: teal;">&lt;nichtsort&gt;</span><span style="font-family: &quot;Courier New&quot;; color: purple;">von</span><span style="font-family: &quot;Courier New&quot;; color: teal;">&lt;/nichtsort&gt;&lt;/Verfasser&gt;</span><span style="font-family: Arial;"></span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+Es k&ouml;nnte
+aber auch so
+aussehen:</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;Author&gt;</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB"><span style="">&nbsp;&nbsp;
+      </span>&lt;FirstName&gt;</span><span style="font-family: &quot;Courier New&quot;; color: purple;" lang="EN-GB">Johann
+Wolfgang</span><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;/FirstName&gt;</span><span style="font-family: &quot;Courier New&quot;; color: purple;" lang="EN-GB"></span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;; color: purple;" lang="EN-GB"><span style="">&nbsp;&nbsp;
+      </span></span><span style="font-family: &quot;Courier New&quot;; color: teal;">&lt;nonsort&gt;</span><span style="font-family: &quot;Courier New&quot;; color: purple;">von</span><span style="font-family: &quot;Courier New&quot;; color: teal;">&lt;/nonsort&gt;</span><span style="font-family: &quot;Courier New&quot;; color: purple;"></span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;; color: purple;"><span style="">&nbsp;&nbsp;
+      </span></span><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;LastName&gt;</span><span style="font-family: &quot;Courier New&quot;; color: purple;" lang="EN-GB">Goethe</span><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;/LastName&gt;</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;; color: teal;">&lt;/Author&gt;</span><span style="font-family: &quot;Courier New&quot;;"></span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+Oder noch g&auml;nzlich anders - die M&ouml;glichkeiten sind unbegrenzt. Die
+Bezeichnungen zwischen
+&lt;...&gt;
+hei&szlig;en "<span style="font-weight: bold;">Tags</span>" und dienen als
+Namen f&uuml;r die eingeschlossenen Datenelemente. Auf deutsch
+hei&szlig;t "tag" soviel wie "label". Es gibt keine festgelegten
+Elementbezeichnungen f&uuml;r
+Bibliothekszwecke oder f&uuml;r irgendwelche anderen Zwecke.
+Jeder, der XML anwendet, kann sich seine Elemente selber ausdenken -
+das
+ist es gerade, was viele so charmant finden an XML. Und verbale
+Bezeichnungen suggerieren leichter als Nummern (die f&uuml;r sich genommen
+nichts aussagen und deshalb gelernt werden m&uuml;ssen!), man verst&uuml;nde, was
+gemeint ist. Verspielt wird nur der
+gro&szlig;e Vorteil der Nummern: sie sind sprachunabh&auml;ngig und damit von
+Hause aus international. <br>
+
+      </span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+Man hat bei XML nur eine ganz einfache <b>Grundregel</b> einzuhalten,
+die so aussieht: </span></p>
+
+      <p style="" class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;; color: teal;">&lt;tag&gt;</span></b><b><span style="font-family: &quot;Courier New&quot;; color: purple;">irgendwelche Daten</span></b><b><span style="font-family: &quot;Courier New&quot;; color: teal;">&lt;/tag&gt;</span></b><span style="font-family: Arial;"></span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+Dabei ist Gro&szlig;-/Kleinschreibung wichtig: </span><span style="font-family: &quot;Courier New&quot;; color: teal;">&lt;author&gt;</span><span style="font-family: Arial;">, </span><span style="font-family: Arial;"><span style="font-family: Arial;"><span style="color: teal;">&lt;Author&gt;</span></span></span><span style="font-family: Arial;"> und </span><span style="font-family: Arial;"><span style="font-family: Arial;"><span style="color: teal;">&lt;AUTHOR&gt; </span></span></span><span style="font-family: Arial;">w&auml;ren drei verschiedene Elemente<span style="color: teal;"></span>! Aber alles
+andere ist beliebig. </span><span style="font-family: Arial;"><br>
+
+Die </span><span style="font-family: Arial;"><span style="font-family: Arial;"></span><b><span style="font-family: &quot;Courier New&quot;; color: purple;">Daten</span></b></span><span style="font-family: Arial;">, nebenbei gesagt, sollen aus <a href="http://www.allegro-c.de/unicode">Unicode</a>-Zeichen bestehen
+(UTF-8).<br>
+
+      </span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+Noch eine <span style="font-weight: bold;">zweite</span> Grundregel
+ist wichtig: Ein Tag kann durch ein
+oder mehrere <b>Attribute</b>
+erweitert werden. Wenn man etwa mehrere Typen von Personen
+unterscheiden will, ohne daf&uuml;r mehrere verschiedene Tags einzuf&uuml;hren,
+k&ouml;nnte das z.B. so aussehen:<br>
+
+      </span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;Person
+typ="<span style="color: rgb(136, 34, 136);">author</span>"&gt;</span><b><span style="font-family: &quot;Courier New&quot;; color: purple;" lang="EN-GB">Lessing,
+Gotthold Ephraim</span></b><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;/Person&gt;</span><span style="font-family: Arial;" lang="EN-GB"></span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+      </span><span style="font-family: Arial;">Eine <span style="font-weight: bold;">dritte</span> Sache (oben beim
+Goethe-Beispiel schon zu sehen) erh&ouml;ht das Potential
+von XML dann ins wahrhaft Astronomische: Tags k&ouml;nnen <span style="font-weight: bold;">ineinander verschachtelt</span> werden: Der
+Inhalt zwischen dem &ouml;ffnenden und schlie&szlig;enden Tag kann wiederum
+weitere XML-Datenelemente umfassen. Aber vollst&auml;ndig umfassen! Es darf
+nicht ein &ouml;ffnendes Tag innerhalb des Inhalts liegen und das zugeh&ouml;rige
+schlie&szlig;ende dann au&szlig;erhalb. Ansonsten ist die Reihenfolge von Elementen
+in keiner Weise geregelt. Man k&ouml;nnte somit haben:<br>
+
+      <br>
+
+      </span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;Person
+typ="<span style="color: rgb(136, 34, 136);">author</span>"&gt;&lt;Nachname&gt;</span><b><span style="font-family: &quot;Courier New&quot;; color: purple;" lang="EN-GB">Lessing</span></b><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;/Nachname&gt;</span><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;Vorname&gt;</span><b><span style="font-family: &quot;Courier New&quot;; color: purple;" lang="EN-GB">Gotthold
+Ephraim</span></b><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;/Vorname&gt;&lt;/Person&gt;</span><span style="font-family: Arial;" lang="EN-GB"></span></p>
+
+      <small><span style="font-family: Arial;">oder</span></small>
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;Personen&gt;
+      </span><br>
+
+      <span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;Person
+typ="<span style="color: rgb(136, 34, 136);">author</span>"&gt;</span><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB"></span><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;Vorname&gt;</span><b><span style="font-family: &quot;Courier New&quot;; color: purple;" lang="EN-GB">Gotthold
+Ephraim</span></b><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;/Vorname&gt;</span><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;Nachname&gt;</span><b><span style="font-family: &quot;Courier New&quot;; color: purple;" lang="EN-GB">Lessing</span></b><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;/Nachname&gt;</span><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;/Person&gt;</span><span style="font-family: Arial;" lang="EN-GB"></span></p>
+
+      <small><span style="font-family: Arial;"></span></small>
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;Person
+typ="<span style="color: rgb(136, 34, 136);">author</span>"&gt;</span><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB"></span><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB"></span><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB"></span><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;Nachname&gt;</span><b><span style="font-family: &quot;Courier New&quot;; color: purple;" lang="EN-GB">Schiller</span></b><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;/Nachname&gt;</span><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;Vorname&gt;</span><b><span style="font-family: &quot;Courier New&quot;; color: purple;" lang="EN-GB">Friedrich</span></b><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;/Vorname&gt;</span><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;/Person&gt;</span><span style="font-family: Arial;" lang="EN-GB"></span>
+      <small><span style="font-family: Arial;"></span></small><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB"><br>
+
+      </span><span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB">&lt;/Personen&gt;
+      </span><br>
+
+      <span style="font-family: &quot;Courier New&quot;; color: teal;" lang="EN-GB"></span><span style="font-family: Arial;">Konventionelle bibliothekarische Formate
+haben dazu keine Entsprechung. So etwas l&ouml;st Begeisterung aus - bis man
+anf&auml;ngt, mit solchen Daten irgend etwas zu programmieren oder zu
+parametrieren... Andererseits mu&szlig; man ja nicht alles ausreizen, was XML
+im Prinzip erm&ouml;glicht! &Uuml;brigens ist XHTML eine modernere Variante von
+HTML und richtet sich streng nach den Formalien von XML.</span><span style="font-family: Arial;"></span><span style="font-family: Arial;"></span><br>
+
+      <span style="font-family: Arial;"><br>
+
+      </span><span style="font-family: Arial;">Wie
+auch immer, man
+erkennt leicht: Die interne Struktur einer <i>allegro</i>-Datenbank
+hat mit XML nichts zu tun. Das wird auch so bleiben. XML ist als
+Arbeitsformat in
+einer Datenbank unpraktisch, zum Eingeben von Hand sowieso. Das braucht
+einen
+auch nicht zu verwundern, denn f&uuml;r solche Zwecke wurde es nicht
+geschaffen.
+Sondern f&uuml;r
+das Strukturieren von Dokumenten im weitesten Sinne und erst sp&auml;ter dachte man an den Daten<b>austausch</b>
+zwischen Systemen und Programmen, nicht jedoch an das Speichern im Innern einer Datenbank.
+Austausch-Standards
+sollen nur die unterschiedlichsten Systeme miteinander verbinden.
+Intern k&ouml;nnen die alle machen, was sie wollen, daran &auml;ndert sich auch
+durch XML nichts.</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">F&uuml;r die
+traditionellen bibliothekarischen Austauschformate <a href="http://www.loc.gov/marc">MARC21</a>
+und <a href="http://www.allegro-c.de/formate/mab.htm">MAB2</a>
+existieren
+inzwischen XML-Varianten: <a href="http://www.loc.gov/marc/marcxml.htm">MARCXML</a>
+und <a href="http://www.ddb.de/professionell/pdf/mabxml_1_dok.pdf">MABXML</a>.
+Beispiele siehe <a href="axml.htm#beisp">unten</a>. Diese definieren keine
+neuen, verbalen Labels f&uuml;r die Datenelemente,
+sondern verpacken die altbekannten Formatnummern nur als Attribute.
+Damit
+&auml;ndert sich an der Inkompatibilit&auml;t der Formate &uuml;berhaupt nichts. XML
+ist nicht
+gleichbedeutend mit Kompatibilit&auml;t. Was XML vereinheitlicht, das ist
+nur die formale Art der
+Datenauszeichnung: die alten Nummern
+sind
+nun mit spitzgeklammerten Labels ausgezeichnet statt mit bestimmten
+Steuerzeichen. Dadurch kann man nun mit allgemein &uuml;blichen
+Werkzeugen auf die Daten losgehen, statt immer neue Spezialprogramme
+daf&uuml;r zu
+schreiben. Mehr aber nicht. Mit anderen Worten: Es wird nicht MARC oder
+MAB durch XML ersetzt, das w&auml;re eine grob unsachliche Aussage, sondern
+nur die bisherigen <span style="font-weight: bold;">Steuerzeichen</span>
+(eine Norm namens ISO2709) durch
+XML-Spitzklammern. Eine
+Neuentwicklung
+der
+Library of Congress, <a href="axml.htm#mods">MODS</a>, ersetzt die Nummern von
+MARC durch verbale Tags,
+englische nat&uuml;rlich. MODS ist, anders als MARCXML, nicht mehr 100% mit
+MARC21
+kompatibel, sondern bildet nicht alle MARC-Einzelheiten ab.</span></p>
+
+      <span style="font-family: arial;"><br>
+
+      </span>
+      <p style="" class="MsoNormal"><b><span style="font-family: Arial;">Es
+ergeben sich nun f&uuml;r
+      <i>allegro</i> zwei Fragen:</span></b><span style="font-family: Arial;"></span></p>
+
+      <p>
+      </p>
+
+      <p style="" class="MsoNormal"><b><span style="font-family: Arial;">1. <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Wie bekommt man
+XML-Daten
+in eine <i>allegro</i>-Datenbank hinein?</span></b><span style="font-family: Arial;"></span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Drei
+M&ouml;glichkeiten stehen zur Wahl:</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>1.
+      <span style=""></span><span style="color: blue;">Umwandlung mit der
+Importsprache</span>, Einspeisen mit dem
+Programm UPDATE</span></p>
+
+      <p style="margin-left: 42.6pt; text-indent: -42.6pt;" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp;&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Die
+m&auml;chtigste, aber schwierigste
+Methode; nur f&uuml;r fortgeschrittene <span style="font-style: italic;">allegrologen</span></span></p>
+
+      <p style="margin-left: 42.6pt; text-indent: -21.3pt;" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp;&nbsp; </span>2.
+      <span style=""> </span><span style="color: blue;">Mit FLEX</span>:
+geeignet, wenn nur einzelne, nicht allzu viele Felder aus
+XML-Fremddaten zu
+&uuml;bernehmen sind und die Feldinhalte mehr oder weniger unver&auml;ndert
+&uuml;bernommen
+werden k&ouml;nnen. Die Importsprache bietet dagegen mehr Funktionen f&uuml;r das
+Manipulieren
+einzelner Datenfelder.<br>
+Ab V29 gibt es den Manipulationsbefehl x (f&uuml;r <span style="font-family: Courier New,Courier,monospace;">var</span> und <span style="font-family: Courier New,Courier,monospace;">write</span>).
+Wenn in der "internen Variablen" ein XML-Text steht, der das oben
+gezeigte Datenfeld mit Lessing enth&auml;lt, kann man es mit &nbsp;</span><span style="font-family: monospace;">var (x'Person type="author"')</span><span style="font-family: Arial;"> &nbsp;herausziehen.</span></p>
+
+      <p style="margin-left: 42.6pt; text-indent: -42.6pt;" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>3. <span style=""> </span><span style="color: blue;">Vorher
+die XML-Daten
+mit eigenen Programmen in die allegro-Externstruktur umwandeln</span>,
+dann mit
+dem Men&uuml; "Datei / Weitere Offline-Datei laden" einlesen. Welche
+Software man f&uuml;r die externe Umwandlung benutzt, das spielt nat&uuml;rlich
+f&uuml;r <i>allegro</i>
+keine Rolle.</span></p>
+
+      <p style="" class="MsoNormal"><b><span style="font-family: Arial;"><br>
+
+2.<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Wie kann
+man
+Daten mit
+XML-Struktur aus einer <i>allegro</i>-Datenbank herausbekommen?</span></b><span style="font-family: Arial;"></span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Dazu
+gibt es jetzt (ab V24.4) ebenfalls drei Wege:</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>1.<span style=""> </span><span style="color: blue;">Export mit Hilfe
+der</span></span> <a style="font-family: helvetica,arial,sans-serif;" href="expar.htm">Exportsprache</a></p>
+
+      <p style="margin-left: 42.6pt; text-indent: -42.6pt;" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>Die m&auml;chtigste, aber schwierigste
+Methode. Jedes kleinste Detail kann damit programmiert werden. Dieser
+Weg ist
+zu
+w&auml;hlen, wenn die Daten einem von au&szlig;en vorgeschriebenen XML-Schema
+entsprechen
+sollen, wie etwa MARCXML oder MABXML. Bei solchen Schemata ist es
+typisch, <i>allegro</i>-Elemente in einer vorgeschriebenen Reihenfolge
+in
+mehrere Teile auseinanderzunehmen oder auch anders zusammenzusetzen
+oder
+ineinander zu
+verschachteln.</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>2.<span style=""> </span><span style="color: blue;">Ausgabe der Daten
+mit Hilfe von FLEX-Makros</span></span></p>
+
+      <p style="margin-left: 42.6pt; text-indent: -42.6pt;" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><span style="">&nbsp;&nbsp;&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;
+      </span>Schnell und relativ einfach zu realisieren, etwas weniger
+m&auml;chtig in den
+Details der Umwandlung. Diese Methode kommt in Betracht, wenn man
+einige&nbsp;
+Datenelemente f&uuml;r nicht allzu komplizierte externe Verwendungszwecke
+braucht, wie etwa
+f&uuml;r statistische Auswertungen.</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp;&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>3.<span style=""> </span><span style="color: blue;">Den
+neuen FLEX-Befehl<span style="">&nbsp; </span></span></span><span style="font-family: Arial;"><span style="color: blue;"><span style=""><b><span style="font-family: &quot;Courier New&quot;;"><span style="color: rgb(0, 153, 0);"><big>xml</big></span></span></b></span></span></span><b style="color: rgb(0, 102, 0);"><span style="font-family: &quot;Courier New&quot;;"></span></b><span style="font-family: Arial; color: blue;"><span style="">&nbsp;
+      </span>einsetzen</span><span style="font-family: Arial;"></span></p>
+
+      <p style="margin-left: 42.6pt; text-indent: -42.6pt;" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><span style="">&nbsp;&nbsp;&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;
+      </span>Wandelt
+einen Datensatz als Ganzes um in vier verschiedene Standard-Strukturen.
+Das macht kaum Arbeit, allenfalls kleinere Eingriffe in die
+Konfigurationsdatei (.CFG-Datei) sind n&ouml;tig, in der die
+Feldbezeichnungen stehen. Dieses
+Verfahren ist sinnvoll, wenn die Daten extern gebraucht werden und es
+nicht so
+genau auf deren Struktur ankommt, sondern darauf, ob man sie dann mit
+XML-Werkzeugen bearbeiten kann. </span></p>
+
+      <p style="" class="MsoNormal"><br>
+
+      <b><span style="font-family: Arial;"></span></b></p>
+
+      <p style="" class="MsoNormal"><b><span style="font-family: Arial;"><br>
+
+      <big>Der
+neue FLEX-Befehl</big></span></b></p>
+
+      <p style="" class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;;"><span style="color: rgb(0, 153, 0);"><br>
+
+      <big>xml</big></span><big> </big></span></b><i><span style="font-family: Arial;">modus</span></i><span style="font-family: Arial;"></span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+Wandelt
+den aktuellen Datensatz um in einen XML-Datensatz, also eine Folge von
+Datenelementen, die mit Tags versehen sind in der XML-typischen Weise:</span></p>
+
+      <p style="" class="MsoNormal"><b><span style="font-family: &quot;Courier New&quot;; color: teal;">&lt;tag&gt;</span></b><b><span style="font-family: &quot;Courier New&quot;; color: purple;">Text des Datenfelds</span></b><b><span style="font-family: &quot;Courier New&quot;; color: teal;">&lt;/tag&gt;</span></b><b><span style="font-family: &quot;Courier New&quot;;"> </span></b><span style="font-family: Arial;"></span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Der
+XML-Text steht dann als
+Ganzes in der internen Variablen! Das ist aber nur eine Zugabe. Er wird
+in derselben Form sogleich in die Ausgabedatei geschrieben, denn das
+wird in aller Regel der Sinn der Sache sein. Damit in der Ausgabedatei
+aber Unicode ankommt (intern ist normalerweise kein Unicode!), sind
+zus&auml;tzlich vorher die folgenden drei Befehle zu geben, damit die
+Akzentvertauschung und
+die Unicode-Umcodierung ausgef&uuml;hrt werden:<br>
+
+      </span><span style="font-family: monospace;">xport p p-xml<br>
+
+dow a<br style="font-family: monospace;">
+
+      </span><span style="font-family: monospace;">dow wX</span><span style="font-family: Arial;"><br>
+
+      </span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Ferner
+die n&ouml;tigen write-Befehle vorher und nachher, um den Datensatz
+angemessen in umschlie&szlig;ende Tags einzubetten, denn der Befehl selbst
+produziert nur die nackten Datenelemente, kein Drumherum. Das Drumherum
+kann aber genausogut in die Exportparameter eingebaut werden, unter der
+Sprungmarke </span><span style="font-family: monospace;">#-X</span><span style="font-family: Arial;"> !&nbsp; Als Komplettbeispiel kann man
+sich den FLEX&nbsp; </span><span style="font-family: monospace;">xmlexp.flx</span><span style="font-family: Arial;"> ansehen, mit dem man die aktuelle
+Ergebnismenge in eine Datei mit XML-Struktur &uuml;berf&uuml;hrt. Dieser wird
+aktiviert &uuml;ber den neuen Men&uuml;punkt "XML-Ausgabe" auf dem Exportmen&uuml; (in
+den "Komfort-Methoden").</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+Wenn man tats&auml;chlich NUR das XML-Produkt in der internen Variablen
+haben will: vorher&nbsp;&nbsp; </span><span style="font-family: monospace;">open x nul</span><span style="font-family: Arial;">&nbsp; geben und hinterher </span><span style="font-family: monospace;">close x</span><span style="font-family: Arial;">, dann unterbleibt die
+Dateiausgabe.<br>
+
+      </span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+Die Export-Parameterdatei&nbsp; </span><span style="font-family: Arial;"><span style="font-family: monospace;">p-xml.apr&nbsp;</span></span><span style="font-family: Arial;">
+kann f&uuml;r jede CFG benutzt werden. Sie leistet die Umwandlung des
+internen Zeichensatzes in Unicode (UTF-8), wie es f&uuml;r XML empfohlen
+wird, einschl. Ersatz der Sonderzeichen (s.u.).<br>
+
+Anschlie&szlig;end
+kann jeder
+XML-Kenner mit solchen Daten etwas anfangen, auch wenn die tags keinem
+existierenden Schema genau entsprechen - und es gibt bislang kein
+etabliertes
+und standardisiertes XML-Schema f&uuml;r Bibliotheksdaten. Es gibt aber
+Werkzeuge, vor allem <a href="http://www.w3schools.com/xsl/xsl_w3celementref.asp">XSLT</a>,
+mit denen man die exportierten XML-Daten, falls n&ouml;tig, noch in
+ganz
+andere Formen verwandeln kann.</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+      <span style="font-style: italic;">Sonderfall hierarchische S&auml;tze:</span>
+Jeder Untersatz wird automatisch in </span><span style="font-family: monospace;">&lt;subrec
+level="i"&gt;...&lt;/subrec&gt;</span><span style="font-family: Arial;">
+eingeschlossen, wobei </span><span style="font-family: Arial;"><span style="font-family: monospace;">i</span></span><span style="font-family: Arial;"> die Hierarchiestufe ist (1 f&uuml;r #01 , 2
+f&uuml;r #02 usw.).<br>
+
+      </span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+Wie
+aber sehen die Tags
+aus, d.h. was steht innerhalb der spitzen Klammern? Braucht man daf&uuml;r
+Exportparameter? Eben nicht, das ist das Sympathische an diesem Befehl.<span style="font-family: Arial;"> Das Geheimnis: </span></span><span style="font-family: Arial;">Die
+Tags stehen schon l&auml;ngst in
+der <b>CFG</b>, mit der man arbeitet! Daraus werden sie entnommen.
+(Standardfall: Datei $A.CFG.)<br>
+
+      </span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+Der <i>modus
+      </i><span style="">&nbsp;</span>ist eine Ziffer: 0,1,2,3</span></p>
+
+      <p style="margin-left: 21.3pt; text-indent: -21.3pt;" class="MsoNormal"><span style="font-family: Arial;">0 :<span style="">&nbsp;&nbsp; </span></span><span style="font-family: &quot;Courier New&quot;;">&lt;<span style="font-style: italic;">label</span>&gt;...&lt;/<span style="font-style: italic;">label</span>&gt;</span><span style="font-family: Arial;"></span></p>
+
+      <p style="margin-left: 21.3pt; text-indent: -21.3pt;" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span>Hier ist <span style="font-style: italic;">label</span> die
+Bezeichnung, die sich
+aus der CFG ergibt.<span style="">&nbsp; </span>Wenn das Datenfeld
+eine Mehrfachkennung hat, wird zuerst die Abfrageliste von oben nach
+unten nach
+der Kategorienummer durchsucht. Wird dort nichts gefunden, oder steht
+Spatium
+hinter der Kategorienummer, wird die Deskriptorenliste durchsucht (die
+Zeilen, die mit # anfangen).</span></p>
+
+      <p style="margin-left: 21.3pt; text-indent: -21.3pt;" class="MsoNormal"><span style="font-family: Arial;" lang="EN-GB">1 :<span style="">&nbsp;&nbsp;
+      </span></span><span style="font-family: &quot;Courier New&quot;;" lang="EN-GB">&lt;feld
+nr="<span style="font-style: italic;">knum</span>"&gt;...&lt;/feld&gt;</span><span style="font-family: Arial;" lang="EN-GB"></span></p>
+
+      <p style="margin-left: 21.3pt; text-indent: -21.3pt;" class="MsoNormal"><span style="font-family: Arial;" lang="EN-GB"><span style="">&nbsp;</span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family: Arial;">knum ist die Kategorienummer</span></p>
+
+      <p style="margin-left: 21.3pt; text-indent: -21.3pt;" class="MsoNormal"><span style="font-family: Arial;" lang="EN-GB">2 :<span style="">&nbsp;&nbsp;
+      </span></span><span style="font-family: &quot;Courier New&quot;;" lang="EN-GB">&lt;feld
+lb="<span style="font-style: italic;">label</span>"&gt;...&lt;/feld&gt;</span><span style="font-family: Arial;" lang="EN-GB"></span></p>
+
+      <p style="margin-left: 21.3pt; text-indent: -21.3pt;" class="MsoNormal"><span style="font-family: Arial;" lang="EN-GB"><span style="">&nbsp;&nbsp;&nbsp;
+      </span><span style="">&nbsp;&nbsp; </span></span><span style="font-family: Arial;">Wie 0, aber statt der Kategorienummer wird
+im
+Attribut&nbsp; </span><span style="font-family: &quot;Courier New&quot;;">lb&nbsp;</span><span style="font-family: Arial;"> das Label angegeben</span></p>
+
+      <p style="margin-left: 21.3pt; text-indent: -21.3pt;" class="MsoNormal"><span style="font-family: Arial;" lang="EN-GB">3 : <span style="">&nbsp; </span></span><span style="font-family: &quot;Courier New&quot;;" lang="EN-GB">&lt;feld</span><span style="font-family: &quot;Courier New&quot;;"><span style="font-family: &quot;Courier New&quot;;" lang="EN-GB">
+nr="<span style="font-style: italic;">knum</span>"</span></span><span style="font-family: &quot;Courier New&quot;;" lang="EN-GB"> lb="<span style="font-style: italic;">label</span>"&gt;...&lt;/feld&gt;</span><span style="font-family: Arial;" lang="EN-GB"></span></p>
+
+      <p style="margin-left: 21.3pt; text-indent: -21.3pt;" class="MsoNormal"><span style="font-family: Arial;" lang="EN-GB"><span style="">&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family: Arial;">Kombination aus 1 und 2</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+Je nach
+Verwendungszweck
+kann man sich also aussuchen, wie die Daten herauskommen sollen. Bei
+Modus 0
+gibt es so viele Tags wie man verschiedene Felddeskriptoren hat, bei
+den
+anderen
+F&auml;llen gibt es nur ein Tag namens &lt;</span><span style="font-family: Arial;"><span style="font-family: &quot;Courier New&quot;;" lang="EN-GB">feld</span></span><span style="font-family: Arial;">&gt;,
+zu dem die
+Kategorienummer
+und/oder das Label als Attribut erg&auml;nzt werden. </span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Die
+zentrale Rolle f&uuml;r
+den xml-Befehl spielt also die CFG, die man verwendet. Mit ihrer Hilfe
+kann man
+das Ergebnis stark beeinflussen. In der Standarddatei $A.CFG wurden die
+Labels in den Deskriptorenzeilen alle XML-gerecht gestaltet:
+ohne Leer- und Sonderzeichen.</span></p>
+
+      <p style="" class="MsoNormal"><b><span style="font-family: Arial;"><br>
+
+Hinweise
+zur CFG</span></b></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Stellen
+Sie drei Dinge sicher:</span></p>
+
+      <p style="margin-left: 28.4pt; text-indent: -28.4pt;" class="MsoNormal"><span style="font-family: Arial;">1.<span style="">&nbsp; </span>alle
+vorkommenden Felder m&uuml;ssen eine Bezeichnung in ihrer Deskriptorzeile
+haben</span></p>
+
+      <p style="margin-left: 28.4pt; text-indent: -28.4pt;" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp;</span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>Das sind die Zeilen, die mit #
+anfangen, z.B.</span></p>
+
+      <p style="margin-left: 28.4pt; text-indent: -28.4pt;" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp;&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family: &quot;Courier New&quot;;">#20"Titel"...</span><span style="font-family: Arial;"></span></p>
+
+      <p style="margin-left: 28.4pt; text-indent: -28.4pt;" class="MsoNormal"><span style="font-family: Arial;">2.&nbsp; <span style=""></span>Felder,
+die mit bestimmten Wiederholungszeichen eine andere als die
+Grundbedeutung
+haben, m&uuml;ssen mit einer eigenen Bezeichnung in der Abfrageliste
+vorkommen, z.B.
+so (ohne # vorne):</span></p>
+
+      <p style="margin-left: 28.4pt; text-indent: -28.4pt;" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp;&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family: &quot;Courier New&quot;;">57i"<span style="">&nbsp; </span>Interpret:
+"</span><span style="font-family: Arial;"></span></p>
+
+      <p style="margin-left: 28.4pt; text-indent: -28.4pt;" class="MsoNormal"><span style="font-family: Arial;">3.&nbsp; <span style=""></span>die
+Feldbezeichnungen d&uuml;rfen in jedem Fall nur aus Buchstaben, Ziffern,
+Bindestrich
+oder Unterstrich bestehen, das erste Zeichen darf nur ein Buchstabe
+sein.</span></p>
+
+      <p style="margin-left: 28.4pt; text-indent: -28.4pt;" class="MsoNormal"><span style="font-family: Arial;"><span style="">&nbsp;&nbsp; </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Nur
+Grundbuchstaben, keine Umlaute
+etc.!<span style="">&nbsp;&nbsp; </span>(Die Bezeichnung wird am
+ersten
+Leer- oder Sonderzeichen abgeschnitten!)</span></p>
+
+      <p style="" class="MsoNormal"><i><span style="font-family: Arial;">Beispiel:</span></i><span style="font-family: Arial;"></span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;;">#57"anderePerson"
+      <span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family: Arial;">Deskriptorzeile f&uuml;r #57</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;;">57d"Dirigent:"</span><span style="font-family: Arial;"><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span><span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>Abfragezeile f&uuml;r #57d</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Wenn
+man die Abfrageliste
+ansonsten nicht braucht, ist es einfach: man listet unterhalb der
+Deskriptoren
+alle Felder in der zweiten Form auf.</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Und die
+Reihenfolge?
+Die Felder
+kommen in der Reihenfolge heraus, wie sie im Datensatz stehen - und das
+ist die
+Reihenfolge der Deskriptorzeilen in der CFG.</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Will
+man eine andere:
+schnell eine abgewandelte CFG machen mit Deskriptorzeilen in der
+gew&uuml;nschten
+Reihenfolge,
+ansonsten alles gleich, kein Eingriff in die Daten n&ouml;tig. Eine so
+modifizierte CFG kann gefahrlos
+eingesetzt
+werden auch beim Bearbeiten von S&auml;tzen! Den Namen dieser Datei
+einsetzen in die Befehlszeile </span><span style="font-family: monospace;">Konfiguration=</span><span style="font-family: Arial;"> in der INI-Datei.<br>
+
+      </span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+Wenn
+aber bestimmte Felder
+NICHT mit ausgegeben werden sollen?</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Dann
+schreibt man im FLEX vor den
+xml-Befehl die Liste der betreffenden Felder, die Reihenfolge ist dabei
+beliebig.</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Wenn
+z.B. #81, #99e und
+#99n nicht mit ausgegeben werden sollen;</span><br>
+
+      </p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;;" lang="IT">#99n</span></p>
+
+      <p class="MsoNormal" style=""><span style="font-family: &quot;Courier New&quot;;" lang="IT">#81</span></p>
+
+      <span style="font-family: &quot;Courier New&quot;;" lang="IT"></span>
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;;"></span><span style="font-family: &quot;Courier New&quot;;" lang="IT">#99e</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;;" lang="IT">xml 1</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier New&quot;;">undo</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Denn
+die Felder werden
+dadurch aus dem aktuellen Satz im Arbeitsspeicher gel&ouml;scht! Durch </span><span style="font-family: &quot;Courier New&quot;;">undo</span><span style="font-family: Arial;"> wird das wieder
+r&uuml;ckgaengig gemacht. Genauer gesagt: der unver&auml;nderte, in der Datenbank
+befindliche Satz wird wieder g&uuml;ltig gemacht, der verk&uuml;rzte im
+Arbeitspeicher
+ung&uuml;ltig.</span></p>
+
+      <p style="" class="MsoNormal"><i><span style="font-family: Arial;"><br>
+
+Ausprobieren:</span></i><span style="font-family: Arial;"></span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Geben
+Sie im Schreibfeld ein:<span style="">&nbsp;&nbsp; </span></span><span style="font-family: &quot;Courier New&quot;;">x
+xml 0\sho IV</span><span style="font-family: Arial;"></span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">und
+dann statt der 0
+hintereinander 1,2,3. Sofort sehen Sie, was gemeint ist. In der
+Doku-Datei <a href="flex:h%20xxml">xxml.rtf</a> ist das f&uuml;r jeden
+Modus als Flip eingebaut.<br>
+
+      </span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+Drei
+Details m&uuml;ssen noch
+beleuchtet werden:</span><br>
+
+      <br>
+
+      <b><span style="font-family: Arial;"></span></b></p>
+
+      <p style="" class="MsoNormal"><b><span style="font-family: Arial;">Teilfelder&nbsp;
+      </span></b><span style="font-family: Arial;">(in MAB&nbsp;
+"Unterfelder" genannt)</span><b><span style="font-family: Arial;"></span></b></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Damit
+wird immer in
+derselben Weise umgegangen:</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Aus<span style="">&nbsp;&nbsp; </span></span><span style="font-family: &quot;Courier&quot;;">#nnn
+Text▼aTeilfeld
+a▼bTeilfeld b</span><span style="font-family: Arial;"> &nbsp; wird<span style="">&nbsp; </span></span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier&quot;;">&lt;label&gt;Text&lt;uf
+code="a"&gt;Teilfeld
+a&lt;/uf&gt;&lt;uf code="b"&gt;Teilfeld b&lt;/uf&gt;&lt;/label&gt;</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier&quot;;">&nbsp;</span></p>
+
+      <p style="" class="MsoNormal"><b><span style="font-family: Arial;">Nichtsortierzeichen</span></b></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Auch
+damit
+wird immer in
+derselben Weise umgegangen:</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Aus<span style="">&nbsp;&nbsp; </span></span><span style="font-family: &quot;Courier&quot;;">#20 &not;Die&not; Erkenntnis der
+Natur&nbsp;</span><span style="font-family: Arial;"> wird<span style="">&nbsp;
+      </span></span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: &quot;Courier&quot;;">&lt;Titel&gt;&lt;ns&gt;Die
+&lt;/ns&gt;Erkenntnis der Natur&lt;/Titel&gt;</span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">Die
+Nichtsortierzeichen k&ouml;nnen
+an jeder beliebigen Stelle in jedem Datenfeld vorkommen!<br>
+
+      </span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;">In
+beiden F&auml;llen sind dieselben Abk&uuml;rzungen verwendet, ns und uf, die in
+MABXML definiert wurden.<br>
+
+      </span></p>
+
+      <p style="" class="MsoNormal"><span style="font-family: Arial;"><br>
+
+      <span style="font-weight: bold;">XML-Steuerzeichen</span><br>
+
+XML kommt mit ganz wenigen Steuerzeichen aus: &lt;, &gt; und &amp; .
+Diese drei Zeichen d&uuml;rfen deshalb nicht als solche innerhalb der Daten
+vorkommen. Sie werden automatisch ersetzt durch &amp;lt; , &amp;gt;
+bzw. &amp;amp; , wie es allgemein &uuml;blich ist.<br>
+
+      </span></p>
+
+      <br>
+
+      <hr style="width: 100%; height: 2px;"><a name="beisp"></a><br>
+
+      <span style="font-weight: bold;">BEISPIELE</span> (und ein paar
+subjektive Anmerkungen)<br>
+
+      <br>
+
+      <span style="font-weight: bold;">Beispiel f&uuml;r zwei Datenelemente in
+MARCXML:</span><br>
+
+      <br>
+
+      <span style="font-family: courier new;">&lt;datafield tag="245"
+ind1="1" ind2="0"&gt;</span><br style="font-family: courier new;">
+
+      <span style="font-family: courier new;">&nbsp; &lt;subfield code="a"&gt;<span style="font-weight: bold;">Arithmetic /</span>&lt;/subfield&gt;</span><br style="font-family: courier new;">
+
+      <span style="font-family: courier new;">&nbsp; &lt;subfield code="c"&gt;<span style="font-weight: bold;">Carl Sandburg ; illustrated as an
+anamorphic adventure by Ted Rand.</span></span><br style="font-family: courier new;">
+
+      <span style="font-family: courier new;">&lt;/subfield&gt;</span><br style="font-family: courier new;">
+
+      <span style="font-family: courier new;">&lt;/datafield&gt;</span><br>
+
+      <span style="font-family: courier new;">&lt;datafield tag="260" ind1="
+" ind2=" "&gt;</span><br style="font-family: courier new;">
+
+      <span style="font-family: courier new;">&lt;subfield code="a"&gt;<span style="font-weight: bold;">San Diego :</span>&lt;/subfield&gt;</span><br style="font-family: courier new;">
+
+      <span style="font-family: courier new;">&lt;subfield code="b"&gt;<span style="font-weight: bold;">Harcourt Brace Jovanovich,</span>&lt;/subfield&gt;</span><br style="font-family: courier new;">
+
+      <span style="font-family: courier new;">&lt;subfield code="c"&gt;<span style="font-weight: bold;">c1993.</span>&lt;/subfield&gt;</span><br style="font-family: courier new;">
+
+      <span style="font-family: courier new;">&lt;/datafield&gt;<br>
+
+      <br>
+
+      </span>Im klassischen MARC sieht das so aus:<br>
+
+      <table>
+
+  <tbody>
+
+    <tr>
+
+      <th style="font-family: monospace;" align="right" nowrap="TRUE" valign="top">245</th>
+
+      <td style="font-family: monospace;">10<strong>|a</strong>Arithmetic /<strong>|c</strong>Carl
+Sandburg ; illustrated as an anamorphic adventure by Ted Rand.</td>
+
+    </tr>
+
+    <tr>
+
+      <th style="font-family: monospace;" align="right" nowrap="TRUE" valign="top">260</th>
+
+      <td> <span style="font-family: monospace;">&nbsp;&nbsp;</span><strong><span style="font-family: monospace;">|a</span></strong><span style="font-family: monospace;">San Diego :</span><strong style="font-family: monospace;">|b</strong><span style="font-family: monospace;">Harcourt
+Brace Jovanovich,</span><strong style="font-family: monospace;">|c</strong><span style="font-family: monospace;">c1993.</span></td>
+
+    </tr>
+
+  
+        </tbody>
+      </table>
+
+      <br>
+      <small><span style="font-family: Verdana;">
+F&uuml;r diesen Standard wurden, wie man sieht, keine verbalen Tags
+erfunden, man hat vielmehr die MARC-Nummern als Attribute f&uuml;r das Tag
+&lt;datafield&gt; genommen. Auff&auml;llig ist die Interpunktion am Ende
+der Unterfelder, typisch f&uuml;r MARC21 (aber nicht f&uuml;r Unimarc oder das
+abgeschaffte UKMARC) : sie bleibt auch in der XML-Version erhalten! Das
+wird
+von XML-Experten f&uuml;r sehr unsch&ouml;n gehalten, unelegant war es schon
+immer, ist aber wegen der
+angestrebten 100% Kompatibilit&auml;t unvermeidlich.</span><br style="font-family: Verdana;">
+      <span style="font-family: Verdana;">
+Nebenbei
+(es interessiert niemanden): in XML werden f&uuml;r diese
+Datenelemente 400 Byte verbraucht, im alten MARC 146. F&uuml;r solche
+Verschwendung gibt es keinen zwingenden Grund. Ohne weiteres h&auml;tte man
+z.B. df statt datafield
+und sf statt subfield
+definieren k&ouml;nnen. Und wenn
+XML es zulie&szlig;e, statt der betulichen Wiederholung des Tags am Feldende
+so etwas wie &lt;/&gt; zu schreiben, w&uuml;rde auch einiges gespart, und
+zwar bei&nbsp; </span><span style="font-style: italic; font-family: Verdana;">jeder</span><span style="font-family: Verdana;">
+XML-Anwendung. Sparsamkeit ist jedoch nicht im Sinne der
+Hardwareindustrie, die an dem Zustandekommen der Standards nicht ganz
+unbeteiligt ist. Aber solche Ausw&uuml;chse werden allenthalben klaglos
+geschluckt, schon ein Hinweis darauf wird nicht gern geh&ouml;rt. Man sollte
+es sich aber mal klarmachen: Wenn jeder MARC-Satz nur 10 Felder h&auml;tte
+und 20 Unterfelder, dann enthielten 1 Mio. Datens&auml;tze insgesamt 20
+Millionen mal das Wort "datafield" und 40 Millionen mal "subfield". Ist
+das elegant? Zusammen mit den Spitzklammern w&auml;ren das </span><span style="font-style: italic; font-family: Verdana;">allein</span><span style="font-family: Verdana;"> f&uuml;r
+diese Tags&nbsp; mindestens&nbsp; 880MB mehr als beim alten MARC. </span><span style="font-style: italic; font-family: Verdana;">Zum Vergleich:</span><span style="font-family: Verdana;"> der allegro-OPAC der
+UB Braunschweig braucht bei 1.1 Mio. Datens&auml;tzen weniger als 800 MB
+      </span><span style="font-style: italic; font-family: Verdana;">insgesamt</span><span style="font-family: Verdana;">, incl. Index und
+allen anderen Dateien. Sie sollten das
+jedoch nicht &uuml;berbewerten, es interessiert wirklich niemanden -
+"Platten kosten doch nichts mehr!". Wenn man XML nur zum Austausch
+benutzt, kann man in der Tat dar&uuml;ber hinwegsehen. Aber der
+Programmierer, der hinterher mit den Daten umgeht, hat dann jedesmal
+"datafield" etc.
+hinzuschreiben statt "df"
+- vielleicht ist das eine
+&Uuml;berlegung wert? (Denn Programmiererzeit kostet schon noch was und wird
+im Gegensatz zu den Platten immer teurer.)</span></small><br>
+
+      <span style="font-weight: bold;"><a name="mods"></a><br>
+      <small><span style="font-family: Verdana;">
+Dieselben Datenelemente in MODS:</span></small></span><small><span style="font-family: Verdana;"> </span><br style="font-family: Verdana;">
+      <span style="font-family: Verdana;">
+Gans anders als in MARCXML gibt es hier verbale Tags, au&szlig;erdem mehr
+Verschachtelungen. Es besteht aber wohl noch Unklarheit hinsichtlich
+der Interpunktion!</span></small><span style="font-family: courier new,courier,monospace;"><br style="font-weight: bold;">
+
+      </span><span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+&lt;titleInfo&gt;</span><br style="font-family: courier new,courier,monospace;">
+
+      <span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;title&gt;Arithmetic /&lt;/title&gt;</span><br style="font-family: courier new,courier,monospace;">
+
+      <span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+&lt;/titleInfo&gt;</span><br style="font-family: courier new,courier,monospace;">
+
+      <span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+&lt;note type="statement of responsibility"&gt;Carl Sandburg ;
+illustrated as an anamorphic adventure by Ted Rand.&lt;/note&gt;<br>
+
+&nbsp;&nbsp;&nbsp; &lt;originInfo&gt;</span><br style="font-family: courier new,courier,monospace;">
+
+      <span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;place&gt;</span><br style="font-family: courier new,courier,monospace;">
+
+      <span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;code
+authority="marc"&gt;cau&lt;/code&gt;</span><br style="font-family: courier new,courier,monospace;">
+
+      <span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;text&gt;San Diego&lt;/text&gt;</span><br style="font-family: courier new,courier,monospace;">
+
+      <span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;/place&gt;</span><br style="font-family: courier new,courier,monospace;">
+
+      <span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;publisher&gt;Harcourt Brace
+Jovanovich&lt;/publisher&gt;</span><br style="font-family: courier new,courier,monospace;">
+
+      <span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;dateIssued&gt;c1993&lt;/dateIssued&gt;</span><br style="font-family: courier new,courier,monospace;">
+
+      <span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;dateIssued
+encoding="marc"&gt;1993&lt;/dateIssued&gt;</span><br style="font-family: courier new,courier,monospace;">
+
+      <span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;edition&gt;1st ed.&lt;/edition&gt;</span><br style="font-family: courier new,courier,monospace;">
+
+      <span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;issuance&gt;monographic&lt;/issuance&gt;</span><br style="font-family: courier new,courier,monospace;">
+
+      <span style="font-family: courier new,courier,monospace;">&nbsp;&nbsp;&nbsp;
+&lt;/originInfo&gt;</span><br>
+
+      <br>
+      <small><span style="font-family: Verdana;">
+Ein wenig sparsamer ist man hingegen doch beim MABXML-Entwurf gewesen,
+der ebenfalls verbale Tags vermeidet und die alten Nummern in Attribute
+einbettet:</span></small><br>
+
+      <br>
+
+      <small><span style="font-weight: bold; font-family: Verdana;">Beispiel f&uuml;r vier Datenelemente in
+MABXML:</span></small><br style="font-weight: bold;">
+
+      <br>
+
+      <span style="font-family: courier new;">&lt;feld nr="331" ind="
+"&gt;Journal of neurology f&uuml;r Testzwecke und Validation Lokaldaten
+Heise&lt;/feld&gt;</span><br style="font-family: courier new;">
+
+      <span style="font-family: courier new;">&lt;feld nr="335" ind="
+"&gt;official journal of the European Neurological Society&lt;/feld&gt;</span><br style="font-family: courier new;">
+
+      <span style="font-family: courier new;">&lt;feld nr="341" ind="
+"&gt;Zeitschrift f&uuml;r Neurologie&lt;/feld&gt;</span><br style="font-family: courier new;">
+
+      <span style="font-family: courier new;">&lt;feld nr="370"
+ind="a"&gt;Organ d. Deutschen Gesellschaft f&uuml;r Neurologie u. d.
+Deutschen Gesellschaft</span><br style="font-family: courier new;">
+
+      <span style="font-family: courier new;">f&uuml;r Neurochirurgie&lt;/feld&gt;</span>&nbsp;&nbsp;
+      <br>
+      <small><span style="font-family: Verdana;"><br>
+Und f&uuml;r Unterfelder bzw. Teilfelder hat man&nbsp; </span><span style="font-weight: bold; font-family: Verdana;">&lt;uf
+code=...</span><span style="font-family: Verdana;">&gt;&nbsp; bzw.&nbsp; </span><span style="font-weight: bold; font-family: Verdana;">&lt;tf/&gt;</span><span style="font-family: Verdana;">&nbsp;
+definiert.</span></small><br>
+
+      <span style="font-family: courier new,courier,monospace;"></span></td>
+    </tr>
+  </tbody>
+</table>
+<p style="" class="MsoNormal"><b><span style="font-size: 11pt; font-family: Arial;"></span></b></p>
+<br>
+
+<span style="font-family: &quot;times new roman&quot;;"></span>
+<hr style="width: 100%; height: 2px;"><span style="font-family: &quot;times new roman&quot;;"></span>
+<div style="text-align: right;"><small><span style="font-family: verdana;"><a href="mailto:B.Eversberg@tu-bs.de">B.
+Eversberg</a>, UB Braunschweig, 2004-04-13 / 2006-05-12<br>
+
+<br>
+
+</span></small></div>
+
+</div>
+
+</body>
+</html>

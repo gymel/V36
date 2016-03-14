@@ -1,0 +1,150 @@
+{\rtf1\ansi\ansicpg1253\deff0\deflang1031{\fonttbl{\f0\fscript\fprq2 Comic Sans MS;}{\f1\fscript\fprq2\fcharset0 Comic Sans MS;}{\f2\froman\fprq2 Times New Roman;}{\f3\froman\fprq2 Garamond;}{\f4\froman\fprq2\fcharset0 Times New Roman;}{\f5\fmodern\fprq1 Courier New;}{\f6\fnil\fprq2\fcharset2 Wingdings;}{\f7\fmodern\fprq1\fcharset161{\*\fname Courier New;}Courier New Greek;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue0;\red0\green0\blue255;}
+\viewkind4\uc1\pard\qc\cf1\b\i\f0\fs28 allegro S\i0 ystemhandbuch V2\f1 6\cf2\f2\fs48\par
+\pard\fi-658\li658\tx1080\tx1634\tx2354\tx3074\tx3544\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\f3\par
+11\tab Import-Parameter\b0\par
+\pard\fi-658\li658\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\fs20\par
+\par
+\pard\ri1927\tx710\tx1361\tx2009\tx7826\f2\fs24 `\cf3\ul\b 11.0\cf2\ulnone\b0 `\tab Zum Konzept \par
+\tab 1\tab `\cf3 Struktur von allegro-Dateien\cf2 ` \par
+\tab 2\tab `\cf3 Inhalt einer Import-Parameterdatei\cf2 ` \par
+`\cf3\ul\b 11.1\cf2\ulnone\b0 `\tab Wie macht man eine Import-Parameterdatei? \par
+`\cf3\ul\b 11.2\cf2\ulnone\b0 `\tab Die Import-Sprache \par
+\tab 1\tab `\cf3 Basis-Parameter: 4 Typen von Fremddaten\cf2 ` \par
+\tab 2\tab `\cf3 Globale Konvertierungsbefehle\cf2 ` \par
+\tab 3\tab `\cf3 Die Kategorieliste - das Kernprogramm\cf2 ` \par
+\tab 3.1\tab `\cf3 Die Kategorie-Angabe\cf2 ` \par
+\tab 3.2\tab `\cf3 Positionierung\cf2 ` : Angabe des Textbeginns \par
+\tab 3.3\tab `\cf3 Textausschnitt bestimmen\cf2 ` \par
+\tab 3.4-6\tab `\cf3\f4 Manipulationsbefehle, Vergleiche, Spr\'fcnge, Unterprogramme\cf2\f2 ` \par
+`\cf3\ul\b 11.3\cf2\ulnone\b0 `\tab Beispiel einer Umwandlung mit \i allegro\i0\par
+\pard\fi-658\li658\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\fs20\par
+\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f2\fs36 11.0  Zum Konzept\b0\par
+\fs20\par
+\fs24 Der Ausdruck \b Import\b0  steht im \b\i allegro\b0\i0\f4 -System f\'fcr die Umwandlung andersartig strukturierter Daten in eine \b\i\f2 allegro\b0\i0 -Grundstruktur. \par
+\f4 Wie so etwas abl\'e4uft, wird in `\cf3\ul\b\f2 Kap. 5\cf2\ulnone\b0\f4 ` beschrieben. Lesen Sie zum besseren Verst\'e4ndnis den Abschnitt 5.0 vor der Lekt\'fcre dieses Kapitels. \f2\par
+\fs20\par
+\f4 Dieses Kapitel f\'fchrt in die \b\f2 Importsprache\b0\f4  ein, mit der man Fremddaten von fast beliebiger Struktur beschreiben und ihre \'dcberf\'fchrung in eine \b\i\f2 allegro\b0\i0 -\b Grunddatei\b0\f4  (Typ .ALG) programmieren kann. Eine Grunddatei l\'e4\'dft sich anschlie\'dfend, also in einem zweiten Schritt, mit dem Programm INDEX oder UPDATE in eine Datenbank umwandeln oder in eine vorhandene Datenbank einmischen. \f2\par
+\f4 Legionen von Programmierern haben sich f\'fcr gleiche oder sehr \'e4hnliche Anwendungen die unterschiedlichsten Datenstrukturen ausgedacht. Genau aus diesem Grund ist eine universelle Importsprache n\'f6tig, weil man sonst f\'fcr jede Umwandlung ein eigenes Programm in C, Pascal oder einer anderen "Hochsprache" schreiben m\'fc\'dfte. Eine solche universelle Sprache mu\'df weitaus mehr leisten als nur Datenfelder umgruppieren und anders numerieren. Dieses Kapitel beschreibt ausf\'fchrlich, welche Einzelaufgaben anfallen k\'f6nnen \f2 und wie man sie mit \b\i allegro\b0\i0\f4  l\'f6st. \f2\par
+In der \b\i allegro\b0\i0\f4 -Importsprache als Spezialsprache erstellt man Umwandlungsprogramme, hat man sich einmal eingearbeitet, in Bruchteilen der Zeit, die man etwa f\'fcr ein C- oder BASIC-Programm br\'e4uchte. Auch ad-hoc-Umwandlungen f\'fcr Einmal-Aktionen, die sonst am Aufwand scheitern w\'fcrden, sind daher realisierbar. \f2\par
+\par
+\f4 Nach Untersuchung einer gr\'f6\'dferen Zahl von Datenformaten stellte sich heraus, da\'df man alle \'fcberhaupt relevanten Formate in nur vier Typen einteilen kann:  (Beispiele siehe 11.1) \f2\par
+\par
+\pard\fi-432\li432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 A\b\tab\f4 feste Satz- und Feldl\'e4nge\b0 : alle Datens\'e4tze haben dieselbe L\'e4nge und sind an festgelegten Stellen in Felder untergliedert. Zu diesem Typ geh\'f6ren die meisten kommerziellen Datenbanksysteme. Steuerzeichen f\'fcr Feld- und Satzbegrenzungen gibt es in der Regel nicht, denn sie w\'e4ren redundant. \f2\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-432\li432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 B\b\tab\f4 feste Anzahl Felder mit variabler L\'e4nge\b0\f2 : die einzelnen Felder sind zwar (meist in Grenzen) variabel lang, aber es gibt eine feste Anzahl von Feldern, die durch ein bestimmtes Steuerzeichen (sog. "delimiter") oder eine Zeichenkombination getrennt sind. Bei diesem Typ haben die Felder meist keine Kategoriekennungen, sondern die Bedeutung ergibt sich aus ihrer Position innerhalb der Feldkette. \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-432\li432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 C\b\tab\f4 variable Anzahl Felder mit variabler L\'e4nge\b0\f2 : dieser Typ, zu dem auch \b\i allegro\b0\i0\f4 -Daten geh\'f6ren, hat in der Regel eindeutige Feldkennungen, damit die einzelnen Datenfelder \'fcberhaupt identifizierbar sind. Es gibt Steuerzeichen oder Zeichenkombinationen, die als Satz- und Feldbegrenzungen fungieren. Jede Datenquelle hat hierbei ihre Besonderheiten. Die sog. "Download"-Dateien von Datenbank-Hosts und von den meisten CD-ROM-Datenbanken fallen unter diesen Typ. \f2\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-432\li432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 D\b\tab Satzstruktur mit "directory"\b0\f4 : nach einer internationalen Norm (ISO 2709 bzw. DIN 1506) werden bibliographische Austauschdaten auf Magnetband mit dieser Struktur geliefert. MARC- und MAB1-Daten sind oft, aber nicht immer, in dieser Form anzutreffen. Die Norm l\'e4\'dft noch einige Freiheitsgrade, die in der Praxis auch ausgenutzt werden. Die Feldkennungen stehen in einem "Inhaltsverzeichnis", die Feldinhalte davon getrennt in einem variablen Teil. Es kann, mu\'df aber nicht, zus\'e4tzliche Feld- und Satzbegrenzungszeichen geben. Ansonsten liegt hier ebenfalls eine variable Anzahl Felder mit variabler L\'e4nge vor. \f2\par
+\tab\f4 Das Format MAB2, das Anfang 1996 eingef\'fchrt wurde, wird von der Deutschen Bibliothek nicht mehr in ISO-Struktur verbreitet. Es geh\'f6rt damit zum Typ C. \f2\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\f4 F\'fcr den \b\i\f2 allegro\b0\i0\f4 -Anwender k\'f6nnen noch zwei Sonderf\'e4lle wichtig werden: \f2\par
+\par
+\pard\fi-432\li432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f4 [\f2 E\tab\b Bibliofile\b0\f4 -Daten: Die CD-ROM-Platten der Firma Library Corporation (in Deutschland vermutlich kaum noch in Gebrauch) enthalten im Prinzip die MARC-Daten der Library of Congress, jedoch erh\'e4lt man beim "downloading" nicht die ISO-Struktur, sondern eine eigenwillige  Strukturierung, die Sonderbefehle erfordert (\f5 -\f6\'d8\f2  11.2.1,Typ D; 11.2.3.2). \f4   \cf1 obsolet\cf2 ! ]\f2\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-432\li432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 F\b\i\tab allegro\b0\i0 -Daten. Damit sind .ALG-Dateien gemeint (\f5 -\f6\'d8\f4  0.3), aber auch andere Dateien, in denen die korrekten Kategorienummern bereits als Feldbezeichnungen enthalten sind. Es kann vorkommen, da\'df ein Anwender seine eigenen Daten importieren will, um etwa die F\'e4higkeiten der Importsprache f\'fcr gewisse Umwandlungen auszunutzen. Deshalb gibt es auch f\'fcr diesen Datentyp noch besondere M\'f6glichkeiten (\f5 -\f6\'d8\f2 11.2.3.1) \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\f4 Datenbanken, die intern nicht einem dieser Typen entsprechen, k\'f6nnen in aller Regel eine Ausgabeform ("download" oder "export") produzieren, die unter Typ B oder C f\'e4llt. Bei dBASE z.B. produziert man eine Ausgabe vom Typ B mit dem Befehl\lang1033\f5   COPY TO filename DELIMITED WITH %% . \f2 Das Zeichen '%%' ist dann der "Delimiter", d.h. es begrenzt die einzelnen Felder.\f5\par
+\lang1031\f2\par
+\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f3\fs28 11.0.1\tab Struktur von \i allegro\i0 -Dateien\b0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f2\fs20\par
+\b\i allegro\b0\i0 -Daten sind vergleichsweise einfach strukturiert (wenn man vom Index absieht): \par
+\pard\fi-432\li432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab\f4 Haupts\'e4tze in Grunddateien (Typ .\i\f2 c\i0 LG) und in Datenbank-Dateien (Typ .\i c\i0\f4 LD) beginnen mit dem Code 1 (01h), Unters\'e4tze mit 2...6 (02h...06h). In Datenbank-Dateien steht hinter dem Code 1 eine 4 Byte lange Satznummer, ansonsten sind beide Strukturen gleich. Ein Hauptsatz und beliebig viele Unters\'e4tze bilden eine Satzgruppe. Ein gel\'f6schter Satz beginnt mit Code 9 statt 1, der Rest ist gleich. \f2\par
+ \bullet\tab die Datenfelder (Kategorien) beginnen mit festgelegten Kennungen aus zwei oder drei Ziffern oder Buchstaben und enden mit dem Code Null (00h). Am Bildschirm erscheint vor der Kategoriekennung das Zeichen '#', das aber nicht mit gespeichert wird. (Das anwendungsspezifische Kategorienschema steht von den Daten getrennt in einer Datei \i c\i0 .CFG (Standard: A.CFG). Darin sind die Nummern der erlaubten Felder, deren Eigenschaften und auch ihre interne Reihenfolge festgelegt. Beschreibung \f5 -\f6\'d8\f2  `\cf3\ul\b Anhang A\cf2\ulnone\b0 `.) \par
+ \bullet\tab\f4 Die Kategorien sind als fortlaufende Zeichenketten gespeichert, also ohne Zwischenr\'e4ume und ohne Zeilenumbr\'fcche. \f2\par
+ \bullet\tab\f4 am Ende einer Satzgruppe, hinter dem abschlie\'dfenden Code 0 des letzten Feldes, stehen die Codes 13`10 (0Dh`0Ah). Notwendig sind sie nur in Grunddateien (.\i\f2 c\i0 LG) und nur zum Sortieren. \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 (Mehr zu diesem Thema: siehe auch \f5 -\f6\'d8\f2  0.2.2) \par
+\f4 Will man irgendwelche Daten in diese Form bringen, mu\'df man also ein bestimmtes Kategorienschema zugrundelegen (beschrieben in einer Konfigurationsdatei \i\f2 c\i0\f4 .CFG), in welches man die Daten \'fcberf\'fchren will. Man erstellt dann eine \b\f2 Import-Parameterdatei\b0 , welche den Dateityp .\i c\i0 IM bekommt. Dadurch bleibt immer erkennbar, vor allem auch vom Programm aus, zu welchem Schema \i c \i0\f4 die Parameter geh\'f6ren: .AIM geh\'f6rt zu A.CFG, .UIM zu U.CFG usw. \f2\par
+Der Name der Parameterdatei ist ansonsten beliebig. \par
+\par
+Wer selbst programmiert (in Basic, C, Pascal o.a.) und seine Daten gut kennt, kann die hier beschriebene Form auch selbst herstellen, um sich die Einarbeitung in die Importsprache zu ersparen. Wenn die Einzelheiten dann genau stimmen, kann man eine solche Datei unmittelbar indexieren oder per UPDATE in eine Datenbank einmischen. \par
+Wenn man die Daten mit \b\i a99\b0\i0\f4  einlesen und einspeisen will, kann man auch die leichter zu erstellende Struktur des Typs .ADT w\'e4hlen (\lang1024\f6\'e0\lang1031\f2  Kap.0.2.2). \b\i a99\b0\i0\f4  kann so eine Datei \'fcber das Men\'fc "Datei / Weitere Offline-Datei laden" einlesen und mit dem FLEX-Befehl \b\f2 update\b0\f4  auch genauso einspeisen, wie das DOS-Programm UPDATE es machen w\'fcrde. \f2\par
+\f4 Die Reihenfolge der Kategorien ist dabei nicht zwingend vorgeschrieben, nur die #00 mu\'df am Anfang eines Satzes stehen. (Hierarchische Unters\'e4tze m\'fcssen mit #01,..,#06 beginnen.) Die Programme ordnen beim Einlesen dann die Kategorien innerhalb eines Satzes in der Reihenfolge, die in der CFG vorgegeben ist. \f2\par
+\par
+\par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f3\fs28 11.0.2\tab Inhalt einer Import-Parameterdatei\b0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f2\fs20\par
+Eine \b Import-Parameterdatei\b0\f4  enth\'e4lt folgende Bestandteile (in dieser Reihenfolge): \f2\par
+\par
+\pard\fi-432\li432\tx432\tx7810 a)\tab eine Anzahl \b Basis-Parameter\b0\f4 , die man auch Rand- oder Nebenbedingungen nennen k\'f6nnte: Steuerzeichen von Satzanfang- und -ende sowie Feldende (dabei kann es sich um beliebige Zeichenkombinationen handeln). Diese Angaben sind vom Typ der Fremddaten abh\'e4ngig.\f2\tab (\f5 -\f6\'d8\f2  11.2.1) \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-432\li432\tx432\tx7810 b)\tab\f4 evtl. Befehle f\'fcr \b\f2 globale Ersetzungen\b0  von Zeichenketten, die an einem Fremdsatz vorzunehmen sind, bevor er umgewandelt wird,\tab (\f5 -\f6\'d8\f2  11.2.2.2) \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-431\li431\tx432\tx7526 c)\b\tab Zeichenumwandlungsbefehle\b0\f4  unterschiedlicher Art: z.B. mu\'df man gelegentlich von ANSI nach ASCII umcodieren. Oder man hat etwa in MARC-Daten Codierungen f\'fcr Sonderzeichen (speziell f\'fcr Umlaute), die aus jeweils einem Steuerzeichen (Protyp) und einem Textzeichen bestehen, z.B. "\f7\'d6\f4 u" f\'fcr '\'fc'. Diese Kombinationen lassen sich in die Einzelzeichen umsetzen. Andere Zeichenmanipulationen k\'f6nnen \'fcber die Exportfunktion vorgenommen werden. Man mu\'df die eingelesenen Daten ohnehin \'fcber eine Export-Parameterdatei wieder ausgeben lassen (siehe Kap.5), daher kann man die Umwandlungsfunktionen der Export-Schnittstelle mitbenutzen. Im allgemeinen wird man I-1.cPR als Export-Parameterdatei nehmen, um die Fremddaten im \b\i\f2 allegro\b0\i0\f4 -Schema abzuspeichern. Dann m\'fc\'dfte man die entsprechenden Zeichen-Umwandlungsbefehle in die Datei I-1.cPR einf\'fcgen.\f2\tab (\f5 -\f6\'d8\f2  11.2.2) \par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-432\li432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 d)\tab eine \b Liste der \i allegro\b0\i0 -Kategorien, die aus dem vorliegenden Material gebildet werden sollen. \par
+\pard\fi-432\li432\tx432\tx7526\tab\f4 Diese Kategorien k\'f6nnen in beliebiger Reihenfolge aufgef\'fchrt werden.\f2\tab (\f5 -\f6\'d8\f2  11.2.3) \par
+\pard\fi-432\li432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4 Zu jeder der Kategorien mu\'df bzw. kann es \b\f2 Befehle\b0  geben, die dem Programm sagen: \par
+\pard\fi-1080\li1080\tx432\tx1080\tx7526\tab d.1.\tab wo der \b Anfang\b0\f4  der betr. Kategorie im Fremddatensatz zu finden ist (dabei gibt es mehrere Modalit\'e4ten, je nach Typ); dieses macht man mit einem \b\f2 Positionierungsbefehl\b0 ,\tab (\f5 -\f6\'d8\f2  11.2.3.2) \par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f4 Es ist dabei auch m\'f6glich, auf eine Fremdkategorie mehrfach zur\'fcckzugreifen oder eine nochmals aufzugreifen, die bereits umgewandelt wurde oder die als Variable im Hintergrundspeicher steht. \f2\par
+\pard\fi-1080\li1080\tx432\tx1080\tx7526\tab d.2.\tab wie das \b Ende\b0  bzw. die \b\f4 L\'e4nge\b0\f2  des Kategorietextes zu bestimmen ist,\tab (\f5 -\f6\'d8\f2  11.2.3.3) \par
+\pard\fi-1080\li1080\ri648\tx432\tx1080\tx7526\tab d.3.\tab ob \b lokale Ersetzungen\b0\f4  im Kategorietext durchzuf\'fchren sind. \f2\tab (\f5 -\f6\'d8\f2  11.2.3.4) \par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Auch eine Umsetzung von Feldinhalten mittels \b Konkordanzlisten\b0\f4  ist m\'f6glich. \f2\par
+\pard\fi-1080\li1080\tx432\tx1080\tx7526\tab d.4.\tab welche sonstigen \b Bearbeitungen\b0  am Kategorietext vorzunehmen sind. \tab (\f5 -\f6\'d8\f2  11.2.3.4) \par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab Hierbei gibt es eine Anzahl von Spezialfunktionen. \par
+\pard\fi-1080\li1080\tx432\tx1080\tx7526\tab d.5.\tab Ferner gibt es \b Vergleichs- \b0 und \b Sprungbefehle\b0 , die bei Vorliegen oder \tab (\f5 -\f6\'d8\f2  11.2.3.5/.6) \par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f4 Nichtvorliegen bestimmter Bedingungen Verzweigungen im Ablauf ausl\'f6sen. \f2\par
+\pard\fi-1080\li1080\tx432\tx1080\tx7526\tx9413\tab d.6.\tab\f4 Zwei M\'f6glichkeiten gibt es f\'fcr \b\f2 mehrfach besetzte\b0  Kategorien: \tab (\f5 -\f6\'d8\f2  11.2.3.6) \par
+\pard\fi-1080\li1080\ri648\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f4 solche k\'f6nnen in jeweils eigene \b\i\f2 allegro\b0\i0\f4 -Kategorien oder gesammelt in eine einzige \'fcberf\'fchrt werden, z.B. getrennt durch ';'. \f2\par
+\pard\fi-1080\li1080\tx432\tx1080\tx7526\tab d.7.\b\tab\f4 Hierarchisch gegliederte Datens\'e4tze\b0\f2  \tab (\f5 -\f6\'d8\f2  11.2.3.4) \par
+\pard\fi-1080\li1080\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\f4 k\'f6nnen in ebensolche \b\i\f2 allegro\b0\i0\f4 -S\'e4tze \'fcberf\'fchrt werden. \f2\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-432\li432\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 e)\b\tab Kommentare\b0 : Jede mit Leerzeichen beginnende Zeile wird als Kommentar behandelt. \par
+\tab\f4 Zwei Leerzeichen hintereinander in einer Zeile bewirken, da\'df der Rest der Zeile ignoriert wird. \f2\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-658\li658\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\b\f3\fs36 11.1  Wie macht man eine Import-Parameterdatei?\b0\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f2\fs20\par
+Eine Import-Parameterdatei kann in gleicher Weise wie die Export-Parameter (\f5 -\f6\'d8\f2  10.1) vom \b\i CockPit\b0\i0\f4  aus (\'fcber`\lang1033\b\f7\'ecd\b0\f4 ) oder mit jedem Texteditor als Textdatei erstellt werden. Der Name mu\'df von der allgemeinen Form \i\f2 iname.c\i0 IM sein, wobei \i iname\i0  ein beliebiger Name Ihrer Wahl ist, \i c\i0\f4  der Kennbuchstabe Ihres Kategoriesystems. Standard w\'e4re also .AIM. An der Dateikennung .cIM erkennt die Software, um was es sich handelt. So wird z.B. verhindert, da\'df man eine .PIM-Parameterdatei benutzt, wenn man gerade mit dem Kategoriesystem A.CFG arbeitet. \f2\par
+\lang1031\f4 Wo geh\'f6rt die Parameterdatei hin? Sie darf auf dem Datenverzeichnis stehen, wo die Quelldaten untergebracht sind (d.h. die zu konvertierenden Daten; dort sucht das Programm zuerst danach), aber auch auf dem Programmverzeichnis (dort liegt sie im Normalfall), drittens auf dem Startverzeichnis, von wo aus IMPORT aufgerufen wird. \f2\par
+\par
+\f4 Auch f\'fcr den Import kann man sich, wie beim Export, an Beispiele halten. Zur Orientierung k\'f6nnen folgende mitgelieferten und kommentierten Parameterdateien f\'fcr die einzelnen Typen dienen: \f2\par
+\pard\tx788\tx1080\tx1634\tx2657\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-2654\li2654\tx788\tx1080\tx1634\tx2657\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs30 A\lang1033\b\f5\fs20\tab BAS.AIM\b0\f2\tab BAS-Format \f5 -\f6\'d8\f2  A.CFG \par
+\lang1031\tab\tab\tab\tab\f4 Die einzelnen Felder haben feste Positionen in S\'e4tzen mit fester L\'e4nge. \par
+\f2\par
+\fs30 B\lang1033\b\f5\fs20\tab DBIII.AIM\b0\f2  \tab dBASE ASCII-Datei \f5 -\f6\'d8\f2  A.CFG \par
+\lang1031\tab\tab\tab\tab\f4 dBASE kann mit dem COPY-Befehl sog. "ASCII files" herstellen. Dabei sind dann die Datenfelder auf ihre tats\'e4chliche L\'e4nge beschnitten und durch Begrenzungszeichen ("delimiter") eingeschlossen. Jeder Satz hat die gleiche Anzahl Felder. Unbesetzte Felder bestehen nur aus zwei Begrenzungszeichen. \f2\par
+\i Tip: \i0 Mit dem Hilfsprogramm DB2DELIM kann man dBase-Daten vorbehandeln und die Details der Struktur herausbekommen. \par
+\par
+\fs30 C\lang1033\b\f5\fs20\tab MEDIC.AIM\b0\f2\tab MEDLARS download \f5 -\f6\'d8\f2  A.CFG \par
+\pard\fi-2655\li2655\tx788\tx1080\tx1634\tx2657\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\tab\tab\tab\tab\f4 Ein typischer Fall f\'fcr Dateien, die man aus Recherchesitzungen erhalten kann. Der Satzanfang ist an einer bestimmten Zeichenkombination erkennbar, die Felder haben festgelegte Bezeichnungen. Zeilenumbr\'fcche innerhalb von Feldern m\'fcssen beseitigt werden. \f2\par
+\pard\fi-2656\li2656\tx788\tx1080\tx1634\tx2657\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f5\tab PICA.AIM\b0\f2\tab Pica3-Format (vom Verbund Niedersachsen ab Januar 1993) \f5 -\f6\'d8\f2  A.CFG \par
+\b\f5\tab DBCD.AIM\b0\f2\tab CD-ROM-Daten der Deutschen Bibliothek (MAB-90) \f5 -\f6\'d8\f2  A.CFG  (s. 11.3) \par
+\b\f5\tab MAB2.AIM\b0\f2\tab MAB2 \f5 -\f6\'d8\f2  A.CFG.   Beides MAB-Formate, aber ohne Directory. \par
+\pard\fi-2654\li2654\tx788\tx1080\tx1634\tx2657\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f5\tab MABDISK.AIM\b0\f2\tab\f4 Hiermit k\'f6nnen auch ZDB-Daten umgewandelt werden. MABDISK ist f\'fcr das \'e4ltere MAB1 gedacht, und zwar die Disketten-Variante. \par
+\f2\par
+\pard\fi-2656\li2656\tx788\tx1080\tx1634\tx2657\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\fs30 D\lang1033\b\f5\fs20\tab OCLC.AIM\b0\f2  \tab USMARC \f5 -\f6\'d8\f2  A.CFG \par
+\pard\fi-2655\li2655\tx788\tx1080\tx1634\tx2657\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\tab\tab\tab\tab Das USMARC-Format z.B. von OCLC ist, wie MAB1, nach ISO 2709 konstruiert, hat aber ansonsten mit MAB1 wenig gemeinsam.  Diese Parameterdatei funktioniert auch mit Daten des RLIN-Verbundes und der Library of Congress. \par
+\pard\fi-2654\li2654\tx788\tx1080\tx1634\tx2657\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f5\tab BIEL.AIM\b0\f2  \tab Bielefeld MAB \f5 -\f6\'d8\f2  A.CFG   (nur noch historisch?) \par
+\lang1031\tab\tab\tab\tab Der Bielefelder CD-ROM-Katalog produzierte als Export ein weitgehend normgerechtes MAB1-Format mit Directory. \par
+\par
+\pard\fi-2656\li2656\tx788\tx1080\tx1634\tx2657\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\fs30 F\lang1033\b\f5\fs20\tab ALG.AIM\lang1031\i\f2\tab allegro\b0\i0 -Grunddatei (Typ .ALG) \f5 -\f6\'d8\f2  A.CFG \par
+\lang1033\b\f5\tab KAT.AIM\b0\f2\tab ASCII-Datei mit Kategorienummern \f5 -\f6\'d8\f2  A.CFG \par
+\pard\fi-2655\li2655\tx788\tx1080\tx1634\tx2657\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\tab\tab\tab\tab\f4 Dateien, die bereits das richtige Kategoriesystem haben, k\'f6nnen sehr bequem \f2\par
+\pard\fi-2656\li2656\tx788\tx1080\tx1634\tx2657\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f5\tab KAT00.AIM\b0\f2\tab importiert werden, wobei man noch beliebige Vorbearbeitungen einbauen kann. \par
+\pard\fi-2655\li2655\tx788\tx1080\tx1634\tx2657\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\tab\tab\tab\tab\f4 KAT00.AIM ist f\'fcr den Re-Import von Exporten mit E-W.APR gedacht. \f2\par
+\pard\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\fi-658\li658\tx432\tx1080\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\par
+\pard\par\f4 
+?11.0=h =11.0  Zum Konzept \par
+?Struktur von allegro-Dateien=h =11.0.1 \par
+?Inhalt einer Import-Parameterdatei=h =11.0.2 \par
+?11.1=h =11.1  Wie \par
+?11.2=h ac11-1 \par
+?Die Kategorieliste - das Kernprogramm=h ac11-2 \par
+?Manipulationsbefehle, Vergleiche, Spr\'fcnge, Unterprogramme=h ac11-3 \par
+?Globale Konvertierungsbefehle=h ac11-1=11.2.2  Globale \par
+?11.3=h ac11-4 \par
+?Anhang A=h aca-1 \par
+?Basis-Parameter: 4 Typen von Fremddaten=h ac11-1=11.2.1 \par
+?Die Kategorie-Angabe=h ac11-2=11.2.3.1  K \par
+?Positionierung=h ac11-2=11.2.3.2  P \par
+?Textausschnitt bestimmen=h ac11-2=11.2.3.3  T \par
+?Kap. 5=h ac5 \par
+\par
+}
+ 

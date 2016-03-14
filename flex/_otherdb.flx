@@ -1,0 +1,93 @@
+  _OTHERDB.FLX : Weitere Datenbank starten
+  2000-10-23/2002-03-25  d.h. neues a99-Fenster oeffnen
+
+  Wenn alcarta dies duerfen soll, dann hier 2 Zeilen wegnehmen:
+var m
+if ="alc" end
+
+var "Andere Datenbank=INI-Datei suchen|Indexdatei suchen|Neue Datenbank anlegen"
+
+select
+if cancel end
+if "" end
+if ="INI" jump ini
+if ="Index" jump db
+set db
+h newdb
+end
+
+:ini
+fna Datenbank (INI-Datei waehlen)|*.ini
+if no end
+jump go
+:db
+fna Datenbank (*.cDX-Datei waehlen)|*.?dx
+if no end
+jump gox
+:go
+  gewaehlten Namen nach #u{}
+ins #u{}
+  Befehl zusammenstellen
+var m
+  Sind wir in a99 oder alcarta?
+if ="a99" jump a99
+var P "alcarta " #u{}
+Call
+end
+
+  ini ist ausgewaehlt, Name in #u{}
+:a99
+  Name Version, z.B.  a99 v33.3
+var m
+ins #uwM
+var P #uwM(e" " F"b") " " #u{}
+
+  und ab geht's ('C' bewirkt, dass Fenster anschliessend unabhaengig)
+Call
+var ""
+ins #uwM
+end
+
+:gox
+ins #u{}
+var m
+  Sind wir in a99 oder alcarta?
+if ="a99" jump a99i
+var P "alcarta " #u{}
+Call
+end
+
+:a99i
+var m
+ins #uwM
+var #u{}(t".") ".ini"
+fsize
+  gibt's die Datei schon?
+if yes jump op
+
+  sonst neu anlegen
+if no var #u{}(t".") ".ini"
+open x
+wri "[General]" n
+wri "Konfiguration=" #u{}(T"." 0,1) n
+wri "DbName=" #u{}(T"\\" e".") n
+wri "access=5"
+close x
+
+
+var "Es wurde eine INI-Datei mit dem Namen" n
+var +#u{}(t".") ".ini" n
+var +"angelegt. Diese kînnnen Sie in eine VerknÅpfung einbauen," n
+var +"um die Datenbank in Zukunft îffnen zu kînnen." n
+var +"So mu· der Programmaufruf in der VerknÅpfung aussehen:" n
+var +P #uwM(e" " F"b") "   " #u{}(t".") n
+var +"Dieser Befehl wird jetzt sofort ausgefÅhrt!"
+ansi
+mes
+
+:op
+var P #uwM(e" " F"b") " " #u{}(t".")
+  und ab geht's ('C' bewirkt, dass Fenster anschliessend unabhaengig)
+Call
+var ""
+ins #uwM

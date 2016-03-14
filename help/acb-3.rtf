@@ -1,0 +1,215 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\froman\fprq2 Garamond;}{\f2\froman\fprq2\fcharset0 Garamond;}{\f3\froman\fprq2 allegro New Roman;}{\f4\froman\fprq2\fcharset0 allegro New Roman;}}
+{\colortbl ;\red0\green0\blue255;}
+\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs20 `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `  
+\par \pard 
+\par \pard\fi-658\li658\tx672\tx1428\tx2100\tx2856\tx3612\tx4284\tx5040\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1\fs48 Anhang B\i      allegro-\i0 Kategoriesystem\b0\fs20 
+\par \f0 
+\par \f1 
+\par \pard\tx288\tx672\tx1428\tx2100\tx2856\tx3612\tx4284\tx5040\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0 
+\par \pard\fi-672\li672\tx288\tx672\tx1428\tx2100\tx2856\tx3612\tx4284\tx5040\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\b\f1\fs32 B.3\tab\f2 Gesch\'e4ftsgangsdaten (Erwerbung und Ausleihe)\lang1031\b0\f0\fs20 
+\par \pard\tx288\tx672\tx1428\tx2100\tx2856\tx3612\tx4284\tx5040\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f3 Im Erwerbungssystem hat man es mit \b\f4 Bestells\'e4tzen\b0\f3 , \b\f4 Lieferantens\'e4tzen\b0\f3  und \b\f4 Exemplars\'e4tzen\b0  zu tun. Letztere werden auch im Ausleihsystem gebraucht. Dort gibt es dann nat\'fcrlich auch noch \b Benutzers\'e4tze\b0 . Neben diesen 4 Satztypen kommt noch eine Anzahl von Systems\'e4tzen hinzu. Deren Beschreibung ist der Dokumentation zum Erwerbungs- bzw. Ausleihprogramm zu entnehmen. Wir dokumentieren hier die genannten vier Satztypen deshalb, damit interessierte Anwender, die einen sp\'e4teren Einsatz der anderen Programme vorhaben, schon jetzt die entsprechenden Daten aufbauen k\'f6nnen, auch ohne die Programme schon zu besitzen. \f3 
+\par \b Wichtig:\b0\f4  Die hier beschriebenen Satzstrukturen k\'f6nnen auch dann ohne \'c4nderungen benutzt werden, wenn nicht das Kategorienschema $A.CFG angewendet wird, sondern irgendein anderes. Da es zur Zeit keine im Bibliothekswesen gebr\'e4uchliche Normierung dieser Datenelemente gibt (auch nicht innerhalb der MAB-Formate), besteht kein Grund, andere als die hier beschriebenen und erprobten Strukturen erfinden zu wollen. Im Gegenteil: wenn man sich an diese Vorschl\'e4ge h\'e4lt, kann man sehr viel Parametrierungsarbeit sparen, denn die unter dem A-Schema entwickelten Parameter k\'f6nnen dann \'fcbernommen werden. Aus diesen Gr\'fcnden werden hier diese Felder in aller Ausf\'fchrlichkeit dargestellt. \f3 
+\par 
+\par \b\f4 1. Bestells\'e4tze\b0\f3 
+\par \pard\fi-288\li288\tx288\tx672\tx1428\tx2100\tx2856\tx3612\tx4284\tx5040\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4 Man ben\'f6tigt nur \b\f3 eine\b0\f4  zus\'e4tzliche Kategorienummer f\'fcr alle Erwerbungsdaten. Die Programme ORDER und aLF sehen standardm\'e4\'dfig #9D daf\'fcr vor, im Bedarfsfall kann man eine andere nehmen. \f3 
+\par \tab Ein Bestellsatz besteht aus nur zwei Kategorien: 
+\par \pard\tx288\tx672\tx1428\tx2100\tx2856\tx3612\tx4284\tx5040\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-4284\li4284\tx288\tx672\tx1428\tx2100\tx2856\tx3612\tx4284\tx5040\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274    #9DA\i bestellnummer\i0\f4\'b2T\i\f3 titelidentnummer\i0  ...\tab (Identor) 
+\par \pard\tx288\tx672\tx1428\tx2100\tx2856\tx3612\tx4284\tx5040\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 und 
+\par \pard\fi-4284\li4284\tx288\tx672\tx1428\tx2100\tx2856\tx3612\tx4284\tx5040\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274    #9DB\i status\i0\f4\'b2...   \f3\tab\tab\tab\tab (Bestelldaten) 
+\par \pard\tx288\tx672\tx1428\tx2100\tx2856\tx3612\tx4284\tx5040\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f4 Die "Identor"-Kategorie identifiziert die Bestellung, die "Bestelldaten"-Kategorie enth\'e4lt die eigentlichen Bestellangaben. In der Identorkategorie k\'f6nnen anstelle der Punkte Datumsangaben \'fcber den Gesch\'e4ftsgangsablauf stehen: \f3 
+\par 
+\par \f4   \'b2O\i\f3 datum\i0 (\i\f4 K\'fcrzel des Vormerkenden\i0\f3 ) 
+\par \f4   \'b2V\i\f3 datum\i0 (\i\f4 K\'fcrzel des Referenten\i0\f3 ) 
+\par \f4   \'b2E\i\f3 datum\i0 (\i\f4 K\'fcrzel des Bearbeiters in der Erwerbung\i0\f3 ) 
+\par \f4   \'b2B\i\f3 datum\i0 (\i\f4 K\'fcrzel des Bestellers\i0\f3 ) 
+\par \f4   \'b2S\i\f3 datum\i0 (\i\f4 K\'fcrzel des Stornierenden\i0\f3 ) 
+\par \f4   \'b2R\i\f3 datum\i0 (\i\f4 K\'fcrzel des Reklamierenden) \f3 
+\par \f4   \'b2Idatum\i0\f3 (\i\f4 K\'fcrzel des Inventarisierenden) \f3 
+\par \f4   \'b2Adatum\i0\f3 (\i\f4 K\'fcrzel des Abschlie\'dfenden) \f3 
+\par \f4   \'b2Fdatum\i0\f3 (\i\f4 K\'fcrzel des Freigebenden) \f3 
+\par 
+\par \f4 Diese Eintragungen k\'f6nnen u.U. jeweils mehrfach auftreten. Das Erwerbungsprogramm legt sie automatisch an. \f3 
+\par 
+\par \b Beispiel:\b0 
+\par 
+\par \f4   #9DA0010282\'b2T0-7100-0632-2\'b2V911002(kra)\'b2E911010(mue)\'b2B911012(sch)\'b2I911210(mue) \f3 
+\par 
+\par \b Interpretation:\b0 
+\par \pard\fi-288\li288\tx288\tx672\tx1428\tx2100\tx2856\tx3612\tx4284\tx5040\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i0\tab\f4 Am 10.10.91 wurde durch die Erwerbung (Mitarbeiter mue) der Titel mit der Identifikation 0-7100-0632-2 vorakzessioniert und durch den Verantwortlichen sch ma 12.12.91 bestellt. Die Bestellung basiert auf einem Vorschlag des Referenten kra vom 02.10.91. Mitarbeiter mue hat am 10.12.91 die eingegangene Lieferung inventarisiert. Die Rechnung ist noch nicht beglichen worden (es fehlt der Zusatz \'b2A...), eine Freigabe ist auch noch nicht erfolgt (es fehlt der Zusatz \'b2F...). \f3 
+\par \pard\tx288\tx672\tx1428\tx2100\tx2856\tx3612\tx4284\tx5040\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 Der\i  status\i0  in der Bestelldatenkategorie kennzeichnet den Zustand der betreffenden Bestellung: 
+\par \pard\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-517\li517\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274    \b\tab 1\b0   durch den Referenten vorgeschlagen, 
+\par    \b\tab 2\b0   durch die Erwerbung vorakzessioniert, 
+\par    \b\tab 3\b0   bestellt, 
+\par    \b\tab 4\b0   Bestellung reklamiert, 
+\par    \b\tab 5\b0   Bestellung storniert, 
+\par    \b\tab 6\b0   Bestellung inventarisiert, 
+\par    \b\tab 7\b0   Bestellung abgeschlossen, 
+\par    \b\tab 8\b0   Desiderat, 
+\par \b\tab 9\b0   vorgemerkt. 
+\par \pard\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f4 Dem Status folgen die eigentlichen Bestelldaten: es sind Teilfelder, die mit dem Steuerzeichen \'b2 und einem Kennbuchstaben identifiziert werden: \f3 
+\par 
+\par \pard\fi-1633\li1633\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #9DB\i status\i0\tab\f4 Gesch\'e4ftsgangs-Status \f3 
+\par \tab\f4\'b2s... \f3\tab\f4 Code mit 6 Zeichen, der Publikationsform, Erwerbungsart, Fachgebiet und Bestellart in verschl\'fcsselter Form enth\'e4lt, \f3 
+\par \tab\f4\'b2j... \f3\tab Lieferantencode, 
+\par \tab\f4\'b2c... \f3\tab\f4 W\'e4hrung, in der die Bestellung erfolgt, \f3 
+\par \tab\f4\'b2p... \f3\tab\f4 Preis je Exemplar in der W\'e4hrung, in der bestellt wird, \f3 
+\par \tab\f4\'b2P... \f3\tab DM-Preis, 
+\par \tab\f4\'b2n... \f3\tab Anzahl der bestellten Exemplare, 
+\par \tab\f4\'b2v... \f3\tab\f4 Anzahl der B\'e4nde je Exemplar (bei mehrbd. Werken), \f3 
+\par \tab\f4\'b2d... \f3\tab Bestelldatum in der Form jjmmtt, 
+\par \tab\f4\'b2D... \f3\tab\f4 F\'e4lligkeitsdatum in der Form jjmmtt, \f3 
+\par \tab\f4\'b2A... \f3\tab Auftraggebercode, 
+\par \tab\f4\'b2a... \f3\tab Kontingentcode, 
+\par \tab\f4\'b2T... \f3\tab\f4 Titelzusatz (nur f\'fcr Bestellung gedacht), \f3 
+\par \tab\f4\'b2C... \f3\tab Anmerkung, Quelle, 
+\par \tab\f4\'b2I... \f3\tab Kommentar zur Bestellung, 
+\par \tab\f4\'b2f... \f3\tab 1. Mahnfrist, 
+\par \tab\f4\'b2g... \f3\tab 2. Mahnfrist, 
+\par \tab\f4\'b2h... \f3\tab 3. Mahnfrist, 
+\par \tab\f4\'b2M... \f3\tab\f4 Mahnungsz\'e4hler, \f3 
+\par \tab\f4\'b2o... \f3\tab Datum der letzten Mahnung in der Form jjmmtt, 
+\par \tab\f4\'b2l... \f3\tab Nummer des Lieferscheins, 
+\par \tab\f4\'b2q... \f3\tab Preis bei Lieferung, 
+\par \tab\f4\'b2Q... \f3\tab Kommentar zur Lieferung, 
+\par \tab\f4\'b2e... \f3\tab Eingangsdatum in der Form jjmmtt, 
+\par \tab\f4\'b2u... \f3\tab Reklamationsgrund, 
+\par \tab\f4\'b2U... \f3\tab Reklamationsdatum in der Form jjmmtt, 
+\par \tab\f4\'b2i... \f3\tab Rechnungsbetrag, 
+\par \tab\f4\'b2R... \f3\tab Rechnungsdatum in der Form jjmmtt, 
+\par \tab\f4\'b2N... \f3\tab Rechnungsnummer, 
+\par \tab\f4\'b2K... \f3\tab Rechnungskommentar, 
+\par \tab\f4\'b2m... \f3\tab Mehrwertsteuersatz in %% 
+\par \tab\f4\'b2r... \f3\tab Rabatt in %, 
+\par \tab\f4\'b2t... \f3\tab Sonstige Nebenkosten, 
+\par \tab\f4\'b2E... \f3\tab Rechnungseingangsdatum, 
+\par \tab\f4\'b2V... \f3\tab Rechnungsvermerke, 
+\par \tab\f4\'b2w...\f3\tab Bestellweg. 
+\par \pard\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f4 Es gibt keine festgelegte Reihenfolge der Teilfelder. Es k\'f6nnen auch Teilfelder fehlen, die nicht gebraucht werden. \f3 
+\par 
+\par \b\f4 2. Exemplars\'e4tze\ul\b0\f3 
+\par \ulnone\f4 Exemplars\'e4tze werden bei Inventarisierungen erzeugt und zwar je ein Satz f\'fcr jede buchbinderische Einheit, d.h. jedes separat ausleihbare Objekt. Exemplars\'e4tze enthalten immer die Kategorien \f3 
+\par \pard\fi-4513\li4513\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   \b\tab #9DF\b0\i titelidentnummer\b\i0\f4\'b2B\b0\i\f3 bestellnummer\i0\fs16\tab\f4 (Inhalt von Kategorie #00 des Titelsatzes bzw. verkn\'fcpften Bandsatzes, zu dem das Ex. geh\'f6rt)\f3\fs20 
+\par \pard\fi-517\li517\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\tab #9DG\b0\i status exemplarangaben\i0 ... 
+\par    \b\tab #9DH\b0\i ausleihangaben\i0 ...   \f4\fs16 (tempor\'e4r, nur solange ausgeliehen oder vorgemerkt)\f3\fs20 
+\par    \b\tab #9DI\b0\i ausleihangaben\i0 ...   \f4\fs16 (tempor\'e4r, nach R\'fcckgabe steht hier der vorherige Inhalt von #9DG)\f3\fs20 
+\par \pard\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 Der \i status\i0\f4  in der Kategorie #9DG spezifiziert die Exemplarverf\'fcgbarkeit. Bei der Inventarisierung wird er auf \b\f3 'g'\b0\f4  (im Gesch\'e4ftsgang) gesetzt. Andere Indikatorwerte werden bei den Vorg\'e4ngen des Ausleihprogramms gesetzt, und zwar 'l' f\'fcr "ausge\b\f3 l\b0\f4 iehen", 'W' f\'fcr "\b\f3 W\b0\f4 arteregal f\'fcr Vormerker", 'v' f\'fcr "\b\f3 v\b0\f4 erloren", 'x' f\'fcr "Fahndung", 'f' f\'fcr "\b\f3 F\b0\f4 ernleihe", 'g' f\'fcr "\b\f3 G\b0\f4 esch\'e4ftsgang", 'A' f\'fcr "ausgesondert" und '0' f\'fcr "verf\'fcgbar". \f3 
+\par \f4 Die Kategorie #9DH dient zur Aufnahme von Entleihungsangaben. Sie besteht nur w\'e4hrend der Dauer der Entleihung und hat dann die Teilfelder \'b2u (Benutzernummer), \'b2D`(Ausleihdatum), \'b2R (berechnetes R\'fcckgabedatum), \'b2E Ende der Abholfrist (bei Vormerkung) und evtl. \'b2M (Mahnungsdaten). \f3 
+\par \pard\fi-4513\li4513\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 Teilfelder der Kategorie #9DG: \fs16\tab\tab\tab\f4 (Die Angaben der rechten Spalte sind f\'fcr alte B\'fccher gedacht!)\f3\fs20 
+\par \pard\fi-1633\li1633\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #9DG\i status\i0\tab\f4 Verf\'fcgbarkeits-Zustand  (s.o.) \f3 
+\par \tab\f4\'b2L...\f3\tab Sigel der besitzenden Bibliothek (falls mehrere beteiligt sind) 
+\par \tab\f4\'b2l...\f3\tab\f4\tab\f3 Standort'Aufstellungssignatur 
+\par \pard\fi-5233\li5233\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4\'b2s...\f3\tab Signatur (Magazinsignatur)\tab\f4\'b2P...\f3\tab Provenienz 
+\par \pard\fi-4513\li4513\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4\'b2e...\f3\tab Exemplarnummer\tab\tab\tab\f4\'b2G...\f3\tab Gaskell-Code 
+\par \tab\f4\'b2a...\f3\tab Verbuchungsnummer (Barcode)\tab\f4\'b2D...\f3\tab\f4 Sch\'e4den des Exemplars \f3 
+\par \pard\fi-5233\li5233\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4\'b2z...\f3\tab Zugangsnummer\tab\tab\tab\f4\'b2I...\f3\tab\f4 Unregelm\'e4\'dfigkeiten \f3 
+\par \pard\fi-4513\li4513\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4\'b2d...\f3\tab Zugangsdatum\tab\tab\tab\f4\'b2M...\f3\tab fehlende Seiten 
+\par \pard\fi-1633\li1633\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4\'b2m\f3\tab\f4\tab Medientypk\'fcrzel \f3 
+\par \tab\f4\'b2B...\f3\tab\f4 Sortierf\'e4hige Bandnummer, wenn Teil eines mehrbd. Werks oder fortlfd. Sammelwerks, falls dieses nicht in verkn\'fcpfter, sondern in hierarchischer Form erfa\'dft ist. \f3 
+\par \tab\f4\'b2b...\f3\tab\f4 Bandbezeichnung in Textform, wenn abweichend von \'b2B \f3 
+\par \tab\f4\'b2T\f3\tab\f4\tab Titel-Anmerkung\f3 
+\par \tab\f4\'b2E...\f3\tab Ausgabe/Auflage (bei Lehrbuch-Exemplaren) 
+\par \tab\f4\'b2Y...\f3\tab Erscheinungsjahr (bei Lehrbuch-Exemplaren) 
+\par \tab\f4\'b2n...\f3\tab\f4 Fu\'dfnote/Kommentar zum Exemplar/Bestand \f3 
+\par \tab\f4\'b2v...\f3\tab\f4 Ausleihbarkeit/Benutzungsmodus (z.B. k=Kurzausl., p=Pr\'e4senz, c=Kopieren nicht erlaubt) \f3 
+\par \tab\f4\'b2V\f3\tab\f4\tab Vormerk-Anzahl \f3 
+\par \tab\f4\'b2f...\f3\tab Exemplarleihfrist 
+\par \tab\f4\'b2w...\f3\tab Wartezeit o.a. Angaben zur Bereitstellung 
+\par \tab\f4\'b2F...\f3\tab\f4 Ausleihfrequenz-Z\'e4hler (f\'fcr Statistik) \f3 
+\par \tab\f4\'b2H...\f3\tab\f4 Zusammenfassende Bestandsangabe (Zeitschriftenbesitz; nicht f\'fcr Ausleihsystem!) \f3 
+\par \pard\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f4 Die Struktur des Exemplarsatzes kann auch in allgemeinerem Sinne f\'fcr Besitzangaben (Holdings, s. Teilfeld \'b2H) verwendet werden, wenn man einen Gesamtkatalog f\'fchren will. Dann stellt der "Exemplarsatz" eigentlich einen Bestandssatz dar. \f3 
+\par 
+\par Teilfelder der Kategorie #9DH: 
+\par \pard\fi-1633\li1633\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f4 #9DH\'b2u...\f3\tab\f4\tab\f3 Identnummer des Ausleihers 
+\par \pard\fi-4513\li4513\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4\'b2R...\f3\tab\f4 R\'fcckgabedatum\f3\tab\tab\f4\'b2W...\f3\tab Wartedatum (Abholtermin) 
+\par \pard\fi-1633\li1633\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4\'b2D...\f3\tab Ausleihdatum 
+\par \pard\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f4 Das Erfassen von Exemplars\'e4tzen ("Inventarisierung") geht schnell und einfach mit dem \b\i\f3 aLF\b0\i0 -Programm - auch dann, wenn man es (noch) gar nicht zur Ausleihe einsetzt, oder mit dem Programm \b INVENT\b0\f4 . Man sucht die Titelaufnahme, und mit 'I' erh\'e4lt man eine Eingabemaske, auf der alle Teilfelder bequem einzugeben und zu bearbeiten sind. Die Teilfelder, die sich aus der Titelaufnahme bereits ergeben, sind dann schon ausgef\'fcllt. Zum Eintragen der Barcodenummer ist ein Lesestift oder Handscanner einsetzbar. Mit der Tastenkombination TAB \'fc bekommt man die Bestands\'fcbersicht, aus der man ein Exemplar zur Bearbeitung ausw\'e4hlen kann. \f3 
+\par 
+\par \b\f4 3. Systems\'e4tze : Bibliotheksadressen, Lieferantens\'e4tze\b0\f3 , etc. 
+\par 
+\par \f4 F\'fcr eine Anzahl von Aufgaben im Zusammenhang mit der Bestandsverwaltung und mit den Ausleih- und Erwerbungsfunktionen braucht man Daten, die nicht bibliographischer Natur sind, aber gleichwohl in flexibler Weise gespeichert werden m\'fcssen. Diese \b\f3 Systemdaten\b0  werden allesamt mit nur einer einzigen Kategorie, der\b  #9A\b0 , abgespeist. Das erste Zeichen in dieser Kategorie zeigt dann an, um welchen Typ von Systemsatz es sich handelt: 
+\par \pard\fi-913\li913\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\tab A\b0\tab Auftraggeber, Bibliotheksadresse 
+\par \b\tab B\b0\tab Bestellnummerngenerator 
+\par \b\tab C\b0\tab\f4 Klassensatz f\'fcr Benutzerdaten (beschreibt die Eigenschaften einer Benutzergruppe) \f3 
+\par \b\tab F\b0\tab\f4 Fensterinhalt (Hilfsfenster f\'fcr die Erwerbungs- und Ausleihfunktionen) \f3 
+\par \b\tab I\b0\tab Identnummerngenerator 
+\par \b\tab K\b0\tab Kontingentdaten 
+\par \b\tab L\b0\tab Lieferantendaten 
+\par \b\tab P\b0\tab\f4 Pa\'dfwortdaten \f3 
+\par \b\tab R\b0\tab\f4 Kalenderdatensatz (f\'fcr Datumsberechnungen in der Ausleihe) \f3 
+\par \b\tab S\b0\tab Signaturgenerator 
+\par \b\tab W\b0\tab\f4 W\'e4hrungstabelle \f3 
+\par \b\tab X\b0\tab Textbaustein 
+\par \pard\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f4 Die Struktur dieser Datens\'e4tze ist in den Dokumentationen der Programme \b\i\f3 aLF\b0\i0  und \b\i ORDER\b0\i0\f4  dokumentiert. Hier werden nur die zwei Typen n\'e4her beschrieben, die eine gewisse Relevanz zu den Katalogdaten haben: \f3 
+\par \f4 F\'fcr die Bestandsverwaltung in Zentralkatalogen und Zeitschriften-Gesamtverzeichnissen braucht man Datens\'e4tze f\'fcr Bibliotheksadressen. \f3 
+\par Ein Adressensatz beginnt mit\b  #9A A...\b0\f4  und enth\'e4lt die folgenden Teilfelder: \f3 
+\par \pard\fi-1633\li1633\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b #9A\tab A\b0\i Sigel\i0\tab Das Sigel der Bibliothek steht direkt hinter dem A 
+\par \tab\f4\'b2N...\f3\tab\f4 Eintrag f\'fcr die Registerzeile in Reg. 11 (f\'fcr Nachladung) \f3 
+\par \tab\f4\'b2n...\f3\tab\f4 Namensform f\'fcr die Anschrift \f3 
+\par \tab\f4\'b2a...\f3\tab Anschrift 
+\par \tab\f4\'b2t...\f3\tab Telefonnummer 
+\par \tab\f4\'b2O..\f3\tab\f4\'d6ffnungszeiten \f3 
+\par \tab\f4\'b2B...\f3\tab Benutzungsbedingungen 
+\par \tab\f4\'b2Z...\f3\tab Ansprechperson 
+\par \pard\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f4 Im Erwerbungssystem gibt es f\'fcr eine Reihe von Systemdatens\'e4tzen die Verwaltungskategorie #9A (falls gew\'fcnscht eine andere). Ein besonders wichtiger Systemsatztyp ist hier der Lieferantensatz. Er beginnt mit\b\f3  #9A L...\b0\f4  und enth\'e4lt hinter dem \b\f3 L\b0\f4  eine Anzahl von Datenfeldern f\'fcr den Lieferanten: \f3 
+\par 
+\par \pard\fi-1633\li1633\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b #9A\tab L\b0\i code\i0\tab Kurzbezeichnung des Lieferanten, bis zu 4 Zeichen 
+\par \tab\f4\'b2n...\f3\tab\f4 Lieferantenname (wie f\'fcr Adresse erforderlich) \f3 
+\par \tab\f4\'b2a...\f3\tab\f4 Lieferantenanschrift (mit '\'b6' als Zeilentrenner) \f3 
+\par \tab\f4\'b2k...\f3\tab Kontaktperson (inkl. Anrede) 
+\par \tab\f4\'b2l...\f3\tab Land 
+\par \tab\f4\'b2p..\f3\tab\f4 Sprachk\'fcrzel (wird f\'fcr Textbausteine ben\'f6tigt) \f3 
+\par \tab\f4\'b2s...\f3\tab Standardlieferfrist (wie mit Lieferant vereinbart) 
+\par \pard\fi-2353\li2353\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4\'b2f/g/h...\f3\tab Mahnfrist1/2/3 
+\par \pard\fi-1633\li1633\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\f4\'b2t...\f3\tab Telefon 
+\par \tab\f4\'b2b...\f3\tab Bank   (Name, Ort und evtl. Anschrift) 
+\par \tab\f4\'b2K...\f3\tab Kontonummer 
+\par \tab\f4\'b2z...\f3\tab Bankleitzahl 
+\par \tab\f4\'b2w...\f3\tab Standardlieferweg 
+\par \tab\f4\'b2F...\f3\tab Faxnummer 
+\par \tab\f4\'b2B...\f3\tab Bemerkungen 
+\par \pard\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par \b 4. Benutzerdaten\b0 
+\par 
+\par Ein \b Benutzerdatensatz\b0\f4  besteht nur aus der Kategorie #9B und enth\'e4lt maximal folgende Teilfelder: (welche tats\'e4chlich genutzt werden, ist abh\'e4ngig von der Benutzerklasse und bibliotheksseitig im jeweiligen "Klassensatz", einem Verwaltungssatz des Ausleihsystems, einstellbar) \f3 
+\par 
+\par \pard\fi-1633\li1633\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #9B\tab i\tab\tab Indikator ('0' oder '1') 
+\par \i\tab BenNr\i0\tab Benutzernummer (Barcodenummer des Ausweises) 
+\par \tab\f4\'b2k...\f3\tab Klasse (Ziffer 1..9 oder Buchstabe a..z) 
+\par \tab\f4\'b2n...\f3\tab Name, Vorname 
+\par \tab\f4\'b2u...\f3\tab m oder w 
+\par \tab\f4\'b2d...\f3\tab Geburtsdatum 
+\par \tab\f4\'b2a...\f3\tab Alter 
+\par \tab\f4\'b2f...\f3\tab Fachgebiet 
+\par \tab\f4\'b2b...\f3\tab Beruf 
+\par \tab\f4\'b2D...\f3\tab Sperrdatum 
+\par \tab\f4\'b2R...\f3\tab Sperrgrund (Kommentar) 
+\par \tab\f4\'b2G...\f3\tab\f4 Summe der aufgelaufenen Geb\'fchren \f3 
+\par \tab\f4\'b2s...\f3\tab\f4 Stra\'dfe und Hausnummer oder Postfach \f3 
+\par \tab\f4\'b2o...\f3\tab Wohnort 
+\par \tab\f4\'b2p...\f3\tab Postleitzahl 
+\par \tab\f4\'b2t...\f3\tab Telefon 
+\par \tab\f4\'b2N...\f3\tab Name der Eltern (bei Studenten!); dann auch deren Anschrift: 
+\par \tab\f4\'b2S...\f3\tab\f4 Stra\'dfe und Hausnummer \f3 
+\par \tab\f4\'b2O...\f3\tab Ort 
+\par \tab\f4\'b2P...\f3\tab Postleitzahl 
+\par \tab\f4\'b2T...\f3\tab Telefon 
+\par \tab\f4\'b2Z...\f3\tab Ansprechperson (Wenn der "Benutzer" keine Person ist) 
+\par \pard\tx518\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f4 Das erste Zeichen der Kategorie #9B, vor den Teilfeldern, ist ein Indikator, und zwar '0', wenn der Benutzer ausleihberechtigt ist, und '1', wenn er gesperrt ist. Dann folgt die Benutzernummer, dann erst die Teilfelder. Die tats\'e4chliche Reihenfolge der Teilfelder innerhalb des Datensatzes ist ohne Bedeutung. \f3 
+\par 
+\par \f4 Diese Satzstruktur kann auch f\'fcr das Einfach-Ausleihprogramm ALFA benutzt werden, obwohl ALFA keine Benutzerdatens\'e4tze unbedingt ben\'f6tigt. Es existiert f\'fcr diesen Zweck eine leicht erweiterte Version der Standard-Parameterdateien (CAT.API und D-1.APR). \f3 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0 
+\par `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   
+\par \pard 
+\par ?Vorangehender Teil=h acb-2 
+\par \f3 
+\par }
+ 

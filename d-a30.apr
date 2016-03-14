@@ -1,0 +1,221 @@
+  D-A30.APR : a30-Anzeige  Plus Nachladungen von ueber- und untergeordneten Saetzen
+  2009-09-09  Abgeleitet von D-KDOS.APR
+
+pn="Hierarchie-Export a30"
+
+  Fuellen Sie die Bereiche zwischen den mit <<<<<<<<<  und >>>>>>>>>
+  markierten Zeilen mit Ihren Exportbefehlen aus!
+  Meistens reicht es, den Abschnitt unter Sprungmarke #-Z anzupassen!
+  (siehe ganz unten)
+
+  Der Hauptteil ist in  d-k.apt!
+
+  Der aktuelle (anzuzeigende oder auszugebende) Satz wird PRIMAERSATZ genannt.
+  Dabei handelt es sich um entweder
+
+  A.  einen Hauptsatz
+      wenn er unabhaengig gespeicherte Untersaetze hat, muss die
+      Kategorie #00 mit  einer eindeutigen IdNr X besetzt sein.
+      In der Anzeige sollen unter dem auptsatz alle untergeordneten
+      Saetze erscheinen.
+      Die untergeordneten Saetze haben dann in #00 IdNummern der Form  X+n
+      mit einer Bandnummer n :
+
+  B.  einen Untersatz
+      dann enthaelt #00 die IdNr des Hauptsatzes PLUS eine Bandnummer
+      z.B.  #00 123456+005=Vol.5
+      (hinter '='  kann eine Bandnummer in Textform folgen, sonst wird
+      die auf '+' folgende Nummer genommen, fuehrende Nullen werden beseitigt)
+      In der Anzeige sollen stufenfoermig die unmittelbar uebergeordneten, 
+      aber nicht die nebengeordneten Saetze erscheinen.
+
+  C.  beides, auch "Mittelsatz" genannt: der Primaersatz ist einerseits
+      einem anderen untergeordnet, besitzt aber auch selbst Untersaetze.
+      In der Anzeige soll fuer die untergeordneten Saetze nach A, fuer die
+      uebergeordneten nach B verfahren werden.
+
+
+  Es kann bis zu 5 untergeordnete Stufen geben (theoretisch noch mehr).
+  Jede weitere Stufe enthaelt in der #00 oder #09 ein weiteres '+' . 
+  Dieses wird fuer den Nachladevorgang ausgewertet.
+
+  *********** Grundparameter, nicht ohne Grund aendern: ***************
+tad-utf     Umcodierung ostWest -> UTF8, aber folgende Zeichen anders:
+
+p & "&amp;"
+p < "&lt;"
+p > "&gt;"
+p ª 1       Nichtsortierzeichen ausblenden
+p .20 255   Absatzende
+
+
+zl=0      Zeilenlaenge nicht relevant
+zi=15 
+
+
+zb=""     Umbruch bei Leerz. und Bindestrich
+zm=0        keine Seitenschaltung
+dx=1        Umcodierung einschalten
+
+i4=1        V14-Ersetzungen ausfuehren
+
+
+  <<<<<<<<<<<<    Raum fuer Ihre Zwischenteile (Textkonstanten)
+  Empfehlung: Nummern 30 bis 59
+  >>>>>>>>>>>>    Ende der anwendungsspezifischen Textkonstanten
+4="<br>"
+
+  Tabellen-Steuercodes (nur HTML)
+18=""
+19=""
+
+  Beginn einer Zeile. Setze haengenden Einzug auf 120px, erste Spalte kursiv
+20='<textformat blockindent="120" indent="-120" tabstops="120,120,160"><i>'
+21="</i>" 9       zwischen zwei Tab.Spalten
+22="</textformat>" 13 10        Ende der Tab.Zeile (bei RTF und DOS nichts)
+23="<br>" 9       Neue Zeile mit Einzug! (13 10 waere ohne Einzug)
+
+
+
+#uFL +W c"A" e0
+ #bzl=78    Zeilenlaenge
+#t{ '<font face="Lucida console" size="+1">' }
+td-k      d-k.apt laden
+#-R
+#>_
+
+#t{ '</font>' }
+
+71='<font color="#FF0000">'
+76="</font>"
+66="<b>"
+99="<b>"
+98="</b>"
+88="<i>"
+87="</i>"
+76="</font>"
+
+#+#
+
+#(c
+#cc I3,  P{ "<br>" } e0
+#cc ,"_s_: _" ,"_L__" e"" e" =" p{ "<br>" t20 "Signatur:" t21 t71 t66 } P{ t98 t76 t22 }
+
+#)c
+
+
+#u1 +X e0
+
+  interne Ausgabe
+#-W
+#da
+#bzl=0
+#bks=0
+##        saemtliche Kategorien ausgeben in interner Reihenfolge
+
+#+#   Ende d. internen Ausg.
+        falls nicht alle gebraucht oder gewuenscht werden:
+        Weglassungen: Kategorienummern mit / hier anfuegen, z.B.
+  /89   dann wird #89 weggelassen
+  /9..  dann wird die ganze Gruppe #9 weggelassen
+        oder: hier eine Liste der auszugebenden Kategorien eintragen (statt ##)
+        z.B.
+
+#-X
+#hi +- e0      sonst Aerger mit hierarch. Saetzen!
+#u1 
+#+#
+
+
+   <<<<<<<<< weitere Unterprogramme hier anfuegen <<<<<<<
+   Unterprogramm fuer URL in #8e
+#(u
+#t{ t20 " " t21 '<font color="#0000FF"><b><u><a href="' }
+#+K
+#(U
+#t{ t20 "URL: " t21 '<font color="#0000FF"><b><u><a href="' }
+#-K
+#cc e""
+#t{ '" target="_blank">' }
+#cc B"?" e"" 
+#t{ "</a></u></b></font>" C }
+#t22
+#)u
+#)U
+
+#(t
+#t{ " --- " }
+#(T
+
+#t{ '<a href="event:a30get.php?urN="' }
+#nra
+#t{ '">Titel:</a>' t66 }
+
+#cc a e":" |92
+#20
+#8n " (" P")"
+#</
+#t{ t98 t22 }
+#cc a b":" p{ t20 "Abo:" t21 t66 } P{ t98 t22 }
+#udt ddt e0
+#cc d p{ t20 "R.Datum:" t21 t66 } =dt
+#udt b6 e2 f"0"
+#udt b4 e2 f"0" "."
+#udt e4 "."
+#t{ t98 t22 }
+#udt ddt e0
+#cc D p{ t20 "Eingang:" t21 t66 } =dt
+#udt b6 e2 f"0"
+#udt b4 e2 f"0" "."
+#udt e4 "."
+#t{ t98 t22 }
+#cc Y p{ t20 "Band:" t21 t66 } P{ t98 t22 }
+#cc p =bT e0
+#cc t =bT e0
+#cc c p{ t20 "W„hrung:" t21 t66 } P{ t98 t22 }
+#cc +#99z q e0
+#cc p p{ t20 "GesamtBetrag:" t21 t66 } P{ t98 t22 }
+#99z e0
+#cc q p{ t20 "GesamtBetrag EUR:" t21 t66 } P{ t98 t22 }
+#cc +#99z u e0
+#cc t p{ t20 "TeilBetrag:" t21 t66 } P{ t98 t22 }
+#99z e0
+#cc u p{ t20 "TeilBetrag EUR:" t21 t66 } P{ t98 t22 }
+#cc x p{ t20 "Extrakosten:" t21 t66 } P{ t98 t22 }
+#ubT x"+bt" =bt
+#)T
+#)t
+
+
+#(E    Unterprogramm: Link zum Hauptsatz
+#t{ '<font color="#0000FF"><b><u><a href="event:X a30get--VurN=' }
+#nra      <----  interne Nummer des nachgeladenen Hauptsatzes
+     #t{ '2206' }     <-------- testweise eine vorhandene Satznummer
+#t{ '">' }
+#t{ "Gesamtanzeige zu diesem Titel" }       <----- Variable aus dem Hauptprogramm als Fliptext
+#t{ '</a></u></b></font><br><br>' }
+#)E 
+
+   >>>>>>>>> Ende der Unterprogramme >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+  Fussabschnitt  (FLEX:  export Foot )
+#(_
+   Links zu GBV und Google ueber ISBN, in separatem Fenster zu oeffnen (event:S:...)
+       GBV:  http://gso.gbv.de/xslt/DB=2.1/CMD?ACT=SRCHA&IKT=1007&TRM=
+       GBS:  http://books.google.de/books?as_isbn=
+#87 +F e0
+#+#
+
+#-F
+
+#t{ C '<br><a href="event:S:http://gso.gbv.de/xslt/DB=2.1/CMD?ACT=SRCHA&IKT=1007&TRM=' }
+#87 B"ISBN " e" =" f"=" 
+#t{'" target="_blank"><img src="gbv.jpg"></a>' C }
+
+#t{ C '<br><a href="event:S:http://books.google.de/books?as_isbn=' }
+#87 B"ISBN " e" =" f"="
+
+#t{'" target="_blank"><img src="gbs.gif"></a></p>' C '<hr />' }
+
+#)_
+

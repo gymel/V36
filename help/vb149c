@@ -1,0 +1,67 @@
+
+Verlautbarung 149c der Entw.Abt.                          2001-03-28
+-------------------------------
+
+Sonderzeichen ohne Maus
+-----------------------
+
+Ein weithin verspuerter, gleichwohl selten artikulierter Wunsch ist
+das Eingeben von Sonderzeichen ohne Rueckgriff auf die Maus.
+Bevor der aufgestaute Frust mit Vehemenz ueber uns hereinbricht, 
+haben wir uns zu einer Loesung aufgerafft. Denn in der Tat: 
+So bequem wie unter DOS mit Alt+w war's in a99 noch lange nicht, 
+und in punkto Komfort hinter DOS zurueckzubleiben, damit kann kein 
+Windows-Programm am Markt bestehen. Da sagen die Altgedienten einem
+dann glatt ins Gesicht: jaja, alles ganz schoen, dieses a99, 
+aber es geht nix ueber PRESTO wegen der Schnelligkeit bei der 
+Eingabe.
+
+Wenn man jetzt im Schreibfeld Alt+m drueckt (bislang hatte das
+keine Wirkung) erscheint in der Anzeige die neue Datei SPCHR.RTF,
+die auf ac21 bereitliegt. Der Cursor geht ins Anzeigefeld. Man
+faehrt zu dem gewuenschten Zeichen, setzt die Schreibmarke direkt
+davor, dann nochmal Alt+m, und das war's schon. Genauso schnell 
+wie in PRESTO mit Alt+w. (Noch schneller sind nur Phrasen, aber
+man kann nicht fuer jedes Sonderzeichen sich eine merken.)
+
+Ganz kleine Verbesserungen
+--------------------------
+Der Button [Show] im Index wechselt jetzt sofort nach Betaetigung
+seine Aufschrift zu [List]. Erneutes Alt+s hat dann keine Wirkung,
+bisher loeste es dann die List-Funktion aus.
+
+Die Fehlerbehandlung beim Start wurde verbessert, und zwar in den
+Faellen, wo keine Anzeigeparameter vorhanden sind und/oder o.apt
+bzw. o.xpt fehlt. In der Regel sollte jetzt das Starten klappen,
+wenngleich dann nur eine Kategorieanzeige kommt, doch die Fehler-
+meldung informiert ueber den Sachverhalt.
+
+Wenn a99 ohne INI gestartet wird, erscheint das Dateiauswahl-Fenster.
+Default ist jetzt die Suche nach INI-Dateien, bisher war es die
+Suche nach Indexdateien, auf die man aber immer noch umschalten kann.
+Empfohlen wird aber: DEMO-Datenbank installieren und dann im
+Startmenue die Funktion "Eigene Datenbanken registrieren". Danach
+ist die DemoBank zugleich Startplattform fuer die eigenen
+Datenbanken, fuer die dann beim ersten Start auch eine erste INI
+angelegt wird. Noch schneller und bequemer kann der Einstieg
+wohl kaum gemacht werden.
+
+Die ERRORLEVEL-Setzungen bei einem abrupten Programmabbruch,
+vor allem in der Startphase, wurden jetzt praezisiert. Bislang
+kam immer 10 heraus. Bei regulaerem Ausstieg ist es ein sehr
+hoher Wert, nicht null, aber das liegt an Windows.
+Also:
+Ausstiege ohne Fehlermeldung
+ 9  STOP per FLEX
+10  Keine Zugriffsrechte
+11  In der Dateiauswahl (INI/cDX) nichts ausgewaehlt
+12  Ausgewaehlte INI abgelehnt
+
+Ausstiege mit vorheriger Fehlermeldung in [OK]-Fenster
+50  Signaldatei steht auf Stop
+51  Abfrageliste zu lang, oder andere CFG-Fehler
+52  TBL fehlt / Datenbank existiert nicht oder fehlerhaft
+53  Fehler in Indexparametern
+54  Problem mit Anzeigeparametern
+55  D-W0.APR oder O.APT nicht gefunden
+

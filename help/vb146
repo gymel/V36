@@ -1,0 +1,178 @@
+
+Verlautbarung 146 der Entw.Abt.                          2001-02-07
+-------------------------------
+           *------------------------------------*
+           |     Auftakt V21 : INST-ALL.EXE     |
+           |  Erstes Gesamt-Installationspaket  |
+           *------------------------------------*
+
+In aller Kuerze:
+================
+
+Bereitliegend auf dem NEUen Verzeichnis  ac21
+                                         ----
+   INST-ALL.EXE : InstallShield Gesamtpaket  
+                        *-----------------------------------------*
+             4.6 MB     | Da ist ALLES drin, was man fuer eine    |
+   entpackt: 8.8 MB     | NEU- oder UPDATE-Installation braucht.  |
+                        *-----------------------------------------*
+Nicht nur Neuinstallation leistet also INST-ALL! Sie koennen auch
+bedenkenlos als Zielverzeichnis das eigene Programmverzeichnis
+angeben, dann wird alles, was neuer ist als die vorhandenen
+Dateien, drueber kopiert. Es sind ueber 700 Dateien, wenn man die
+alle durchsehen wollte... 
+Tip: Natuerlich kann man schnell mal vorher sein ProgDir komplett 
+---- einzippen, damit evtl. lokal geaenderte Dateien gesichert sind.
+     Es *koennte* ja der Teufel wollen, dass eine gleichnamige
+     Datei dabei ist, die man nicht verlieren will. Aber wenn
+     man sowieso eine Sicherungskopie hat, ist das unnoetig.
+
+Es entstehen, falls noch nicht vorhanden, die Unterverzeichnisse 
+HELP, FLEX und DEMO mit den entsprechenden Inhalten. Auch dort 
+werden gleichnamige Dateien durch neuere ueberschrieben.
+Eigene Datenverzeichnisse bleiben natuerlich unberuehrt.
+
+Die grossen Neuerungen:
+
+1. DEMO-Bank ist jetzt auch Admin-Plattform. Das Startbild zeigt die
+   Funktionen.
+
+2. Neu: "Tabellen erstellen"
+   Im Menue "doku" zu finden. Direkt:  h table
+   Die entstehenden Tabellen haben auch eine Ueberschriftszeile und
+   koennen direkt mit Office-Programmen eingelesen werden.
+
+Grosser Dank an alle Tester fuer die konstruktiven Beitraege,
+Anregungen und investierte Zeit, die gemeldeten Probleme wurden alle
+behoben. Nur bei den Hilfetexten kann nie genug Arbeit investiert
+werden ... Andererseits: stimmt was nicht, wird gemeckert, stimmt
+alles, heisst es: Liest ja eh keiner. So kommt keine Motivation
+auf! [Die englischen Texte koennen noch viel Arbeit vertragen, 
+nur die UIFs sind auf aktuellem Stand.]
+
+-------------------------------------------------------------------
+
+Mehr fuer Neugierige
+====================
+
+INST-ALL ist bereits recht gruendlich erprobt. Dennoch werden wir
+bis zum Brennen einer neuen CD weitere Verbesserungen einbringen,
+die sich aus den Erfahrungen sicher ergeben werden.
+
+Verzeichnisfragen
+-----------------
+Weil man keine PATH-Setzungen verlangen kann und weil alles auf
+unterschiedlichsten Anordnungen ohne Eingriff in INI usw. laufen
+soll, wurde jetzt folgendes eingerichtet:
+Wenn man die Befehle  ProgDir und DbDir in der INI-Datei weglaesst,
+UND wenn die INI-Datei auf dem DATENverzeichnis liegt, dann
+entnimmt a99/alcarta beides unmittelbar aus dem Aufruf.
+Es muss also dann der Aufruf immer diese Form haben:
+
+      <ProgDir>a99 <DbDir><ini-name>
+z.B.
+      c:\allegro\a99 k:\datenbanken\opac\cat
+
+Das war nicht so einfach wie man denken sollte, denn es gibt sehr
+aergerliche Diskrepanzen zwischen NT und 95/98 bei der Auswertung
+der Befehlszeile...
+Das Gesamtpaket macht davon Gebrauch: Der entstehende Aufruf fuer
+die DemoDatenbank funktioniert immer, egal wo man die Programme
+installiert. Die DemoBank muss nur am ProgDir haengen! (Das kann
+man beim Installieren sowieso nicht aendern. Noch nicht mal
+weglassen kann man die DEMO.)
+
+CockPit
+-------
+Auch dem CockPit wurde endlich mehr Pfadkomfort verpasst.
+Das Setzen der PATH-Umgebungsvariable ist nicht mehr noetig.
+Folgendes ist zu beachten:
+
+-- cp.bat mit Optionen -o und -P aufrufen, z.B.
+     c:\allegro\cp -of:\user\xyz\cp.opt -Pc:\allegro
+
+-- Die Zeile d fuer die Datenbank darf in der OPT-Datei fehlen,
+   dann muss noch die Option -d hinzu, also z.B.
+    ... -dk:\datenbank\opac\cat
+
+-- Die Zeile C in der CP.OPT sollte so aussehen:
+   C %-P%cp
+   WENN die CP.OPT im Programmverzeichnis liegt.
+   Bisher steht da nur  C cp, was also voraussetzt, dass die CP.OPT
+   im Arbeitsverzeichnis liegt. Ist das der Fall, kann es auch
+   so bleiben.
+
+-- Die UIFC darf nun auch auf dem Datenverzeichnis liegen.
+
+Empfehlung: Anschauen, wie der Aufruf aussieht, der beim Installieren
+des neuen Pakets entsteht, und was in der CP.OPT steht.
+
+
+Registerueberschriften
+----------------------
+Im Indexfenster werden jetzt nur noch diejenigen Register in der
+Combobox zur Auswahl angeboten, fuer die es in den Index-
+parametern eine Ueberschrift gibt (eine mit | beginnende Zeile).
+So kann man auch verhindern, dass bestimmte Register dort
+aufscheinen: einfach die Ueberschriftszeile rausnehmen.
+
+
+Breitschaltung
+--------------
+Jetzt funktioniert die Breitschaltung noch einfacher: Rechte Maustaste
+auf dem Listenfeld oder einem Button - Umschaltung. Und dann sieht
+man unten ueber dem Suchbefehl etwas ganz neues: 8 Flip-Buttons,
+die bisher immer unsichtbar waren (Nr. 9 und 10 bleiben unsichtbar!)
+Es steht drauf Flip 1 , ... , Flip 8. Die Ziffern sind unterstrichen,
+daher kann man sie mit Alt ausloesen.
+Jedoch: es geht noch weiter, man kann die Aufschriften per FLEX
+setzen, mit dem neuen Befehl "flip", siehe unten.
+
+"Loeschen" jetzt im Menue
+-------------------------
+Der Button "Loeschen" genau ueber "Speichern" war nicht besonders 
+guenstig angebracht. Die Funktion ist nun oben auf dem Menue und kann
+somit weniger leicht aus Versehen ausgeloest werden. Nach wie vor
+kann man Alt+oe geben.
+Der Button ist ersetzt durch "Anzeige" (= Alt+z und F5), was bislang auf
+der Oberflaeche nicht zu sehen war.
+
+
+FLEX
+----
+
+NEU : Beschriftungen der Flip-Buttons setzen
+
+flip ixyz
+   Setzt den Text xyz auf den Flip-Button i.
+   Das macht Sinn, weil jetzt die Buttons 1 bis 8 sichtbar werden,
+   wenn das Anzeigefeld auf Breit gestellt ist.
+   Rufen Sie  h xflip  auf, da steht alles andere.
+Diese Angaben werden in die Variablen #uXi kopiert, welche in der
+Phrasendatei gespeichert werden. Wenn man noch keine Phrasendatei
+hat, wird beim ersten Start die Datei PHRASEN genommen, gespeichert
+wird dann aber unter dem Standardnamen PHRASE.A99, falls man
+keinen anderen in der INI eingetragen hat.
+
+xport f ?
+   Damit wird der Menuepunkt "Neue Exportdatei" ausgeloest
+   (xport p ?  fuer die Parameterdatei ging bereits!)
+
+dow off
+   Ausgabe der Offline-Datei. "if no ..." zur Pruefung, ob es keine gab
+
+Die Hilfedatei fuer den Export enthaelt jetzt Flips, um alle Funktionen
+direkt aus diesem Text heraus auszuloesen statt vom Menue!
+
+
+Kontext-Menue
+Neuer Punkt auf dem Kontextmenue des Anzeigefeldes:
+  Last Help Text
+Damit kann man den letzten Hilfetext zurueckholen, falls einem der
+ungewollt entglitten ist und man nicht mehr weiss, wie man dahin
+gekommen war ... 
+
+Last and also least
+... ist es nun endlich gelungen, das "allegro"-Icon auch in der
+Anwendungsleiste sichtbar zu machen, die bei Alt+TAB erscheint.
+

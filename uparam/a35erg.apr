@@ -1,0 +1,109 @@
+  a35erg.apr : Einzeilige Ergebnisausgabe mit UTF-8
+  2012-08-29   Verwendung in  a35erg.job
+  Wenn diese fehlt oder nicht klappt, dann wird a35ers.@pr genommen
+
+pn="Ausgabe f. a35 Kurzliste"
+
+  --------- Konstanten --------------------------------------------
+
+zl=0 	    Zeilenlaenge
+zm=0        kein Seitenumbruch (fortlaufende Ausgabe)
+
+  Akzentzeichen DOS-Codes, stehen hier, falls sie nicht in Indexparam. stehen
+ pa=181 182 183 184 189 190 198 199 207 208 209 210 211 212 219 222 223 232 
+
+  Variante, falls intern Windows-Code
+  pa=180 145 136 149 168 166 227 179 186 175 215 171 184 191 161 173 247 150
+  -----------------------------------------------------------------
+  oder ganz weglassen, wenn intern UTF-8
+
+  #uKU = Kurzzeile des Satzes
+
+#hi +- e0
+
+  ak=zz+Z
+      Aufbereitung der Kurzzeile 
+  >>> cfg-spezifisch! Modifizieren, wenn nicht a.cfg genutzt wird
+
+#-Z
+#da         Akzente vertauschen (muessen jeweils hinter den Buchstaben)
+
+#t{ '<td><a href="javascript:reqLink(' }
+#nr
+#t{ ')">' }
+
+  Aufbereitung der auszugebenden Felder
+ 
+  Laenge mit E statt e begrenzen, dann wird am Leerzeichen abgeschnitten
+#20 +b U ,"_ _. _" E56 F";.-: "
+#84 U ,"_ _. _" E43 F";.-: "
+#09 b"+" e"=" e8 ". "
+#84 +b e0
+#09 +b e0
+
+
+  Einige spez. Satztypen:
+#9DA $T "Best.!" e"!"
+#9DB $j " bei "
+#9DA $B e"(" " am "
+#9DA +T $T |92 
+
+#9DF "Expl. !" e"!"
+#9DG $e
+#9DG $L " in "
+#9DG $s ", "
+#9DF +T $$ |92 
+
+#9A i4,L $$ b1 
+#9A i4,L $n p" = "
+#9A i4,L $a ,"__, _" p" : "
+#9A +b e0
+
+     wenn keines der Felder vorkommt, dann 
+#-a
+#uKU      Kurztitelzeile, geliefert von a35erg.job
+
+#-b
+#t{ '</a></td><td>' }
+
+  Noch 2 Spalten f. Ersch.jahr und Sign. 
+
+#76 x"*1" e"." p" (" P")"
+#t{ "</td><td>" }
+#90 +#99 ,"_L__" ,"_s_ / _" e" =" e"" p" : "
+#90 $L P" / "
+#90 $s
+#99 e0
+
+#t{ "</td>" }
+#+#
+
+
+#-T
+#20 e":" u " (" P")"
+#+#
+
+  *******************************************************************
+
+ Code-Umwandlungen
+
+  Folgende Zeile deaktivieren, wenn intern UTF-8 !
+ tad-utf   ad-utf.Xpt laden.
+  Alternative, wenn man intern Win-Code hat
+ taw-utf   aw-utf.Xpt  
+
+   Fuer HTML-Ausgabe noetig:
+p < "&lt;"
+p > "&gt;"
+p & "&amp;"
+
+  Steuerzeichen, die nicht rauskommen sollen
+
+p .1 1
+p .2 1
+p .3 1
+p .4 1
+p .5 1
+p .6 1
+p .7 1
+

@@ -1,0 +1,232 @@
+  BANK.API : Index-Parameter
+  2003-05-14
+  Enthaelt die Vorschrift, welche Felder in welche Register einzuordnen sind,
+  und in welcher Weise.
+  Wichtig: Zeilen mit Leerzeichen am Anfang bewirken nichts
+    zwei oder mehr Leerzeichen in einer Zeile bedeuten: Rest ist Kommentar.
+
+  1. ak-Zeilen: Welche Felder sollen indexiert werden?
+     Fuer jedes zusaetzlich zu indexierende Feld muss ein ak-Befehl
+     nach diesem Muster eingefuegt werden:
+
+  Primaerschluessel (= der erste ak-Befehl)
+ak=00+@
+
+  Alle Titel verstichworten:
+ak=2.." "+A
+
+  Titelanfang:
+ak=2..+B
+
+  Sachbegr.
+ak=3..+C
+ak=3.." "+A
+
+  Namen:
+ak=4..+D
+ak=4.."[ -]"+A
+
+  Gesamttitel:
+ak=5..+E
+
+  Orte u. Verlage:
+ak=6..+F
+ak=60"[ ;]"+A
+
+  Beschreibung:
+ak=70+G
+
+  Versch.:
+ak=8..+H
+
+  Sign.:
+ak=9..+I
+
+  Erfassungsdatum:
+ak=99n+J
+
+  Sonderfaelle: Kurzzeile (STL-Datei) und Restriktionen (RES-Datei):
+ak=zz+0
+ak=00+/
+
+  2. Verarbeitungsteil
+     Abschnitte fuer die einzelnen Schluessel
+     Beispiel:
+     ak=20+B springt zu #-B, Inhalt von #20 steht dann in Variable !u1
+
+  Hier wird einfach #2XX ins Reg. 2 sortiert, #3XX in 3 usw.
+  und einige werden fuer Reg. 1 "verstichwortet": #2XX, #3XX, #4XX und #6XX
+  (s.dazu oben die ak-Befehle, die zu den folgenden Abschnitten hinfuehren:)
+
+
+#-A             Sachtitelwoerter -> Reg. 1
+#t{ "|1" }
+!u1 f"<`" F">"
+!u1 b"-" y2 F">" p{ 8 "|1" }
+#+#
+
+
+#-1
+#-2
+#-3
+#-4
+#-5
+#-6
+#-7
+#-8
+!u1
+#+#
+
+#-B             Titelanfang
+!u1 u e" : " p"|2"     u = Nichtsortierwoerter rausnehmen
+#+#
+
+#-C
+!u1 p"|3"
+#+#
+
+#-D
+!u1 p"|4"
+#+#
+
+  Gesamttitel ;    Nr
+#-E
+!u1 u e";" F" " p"|5"
+!u1 b";" x"*1" e"." r5 p" ; "
+#+#
+
+#-F
+!u1 p"|6"
+#+#
+
+#-G
+!u1 p"|7"
+#+#
+
+#-H
+!u1 p"|8"
+#+#
+
+#-I
+!u1 p"|9"
+#+#
+
+#-J
+!u1 p"|9N"
+#+#
+
+
+  Primaerschluessel kommt ins Reg. 9, ohne Umcodierung:
+#-@
+#u1 y0 p"|9"
+#+#
+
+   3. Abschnitt fuer die Kurzanzeige
+      Kann beliebig zusammengesetzt werden. Hier nur #20
+#-0
+#t{ "|0" }
+#10 +#20 x"*1" e4 P"  "
+#t{ "o.J.  " }
+#20 +# U e"[]"  
+#t{ "zz ohne Titel" }
+#+#
+
+  4. Abschnitt f.d. Restriktionen
+#-/
+#t{ "|/" }
+#10 +# x"*1" e4
+#t{ "ohne Jahr" }
+#+#
+
+
+  	 -----------------------------------------
+   4. Sonderbefehle fuer Index
+
+   4.a Ueberschriften der Register
+
+|1="Wortregister"
+|2="Titel (die ersten 80 Zeichen)"
+|3="Namen der beteiligten Personen"
+|4="Datumsregister"
+|5="IdNummern"
+
+|a="                         'allegro'-Unicode-Demo"
+
+
+   4.b Laengen
+il=128    Indexzeilen sollen max. 128 Zeichen lang sein
+i0=120    Kurzzeile (Erg.Menge in a99) soll max. 120 Zeichen lang sein
+
+   4.c Restriktion: soll max. 4 Zeichen lang sein
+ir=4
+
+   4.d Namen der symbolischen Register (fuer Abfragen)
+
+I ALL 1 "Wortregister"
+I TAF 2 "Titelanfang"
+I SCW 3 "Schlagw."
+I PER 4 "Personennamen"
+I GTI 5 "Gesamttitel"
+I VOJ 6 "Verl/Ort/Jahr"
+I NTN 7 "Notationen"
+I DTE 8 "Erfassungsdatum"
+I IDN 9 "IdNummern"
+I SPR 7 "Sprache"
+
+  Restriktions-Hilfszeilen  V15
+R PYR r1 "Erscheinungsjahr"
+
+
+   5.  Allgemeines
+   ------ Notwendige Einstellungen, nicht aendern: ---------------------------
+zl=0           kein Zeilenumbruch
+zm=0           keine Seiteneinteilung
+ad=0           Wenn keiner der "Koepfe" (ak) vorkommt, dann keine Eintragung
+ag=0           Hierarchische Untereinheiten ebenfalls fuer Index behandeln
+   ---------------------------------------------------------------------------
+
+ic=1   Umcodierung der Nutzereingaben gewuenscht
+
+   6. Spezialzeichen:
+i1=21 39 58 62      §':>
+               Wenn der Anfang eines Schluessels, bis zu einem dieser Zeichen,
+               ein Stopwort ist, wird der Schluessel ignoriert
+
+i2=32 39 45 61 62 96    '-=>
+               Indexeintraege, die mit einem dieser Zeichen anfangen,
+               werden ignoriert
+
+i3=46 45 44 93 32 34 39 58 8    ".,-] "
+               diese Zeichen sollen am Ende eines Schluessels beseitigt werden
+
+
+   7.  Tabellen
+tiu   iu.apt = Zeichenkonvertiertabelle Index UTF->ASCII (mit Umlaut -> ae ...
+
+
+p .33 1
+q .34 1
+
+p .39 1
+q .39 1
+
+q .46 1
+
+p .96 1
+q .96 1
+
+
+
+to    o.apt (UTF8<->ANSI 1:1 fuer Anzeige der UTF-Daten in a99 in Auswahlfeld, Index, Kurzliste)
+               zeigt NICHT die "richtigen" Zeichen an, sondern nacktes UTF
+             Wichtig auch f.d. ViewListen, die in ASCII codiert sind
+
+tstop   Stopwoerter
+
+  u-Tabelle: Nur sehr wenige Codes, es ist ja intern schon UTF-8
+  (Wird nur wirksam beim Einordnen von Fremddaten und Daten aus dem externen Editieren in Notepad)
+u 000
+u 194 182 020        PILCROW SIGN (Absatzende)
+u 226 150 188 031    BLACK DOWN-POINTING TRIANGLE
+
+

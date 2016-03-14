@@ -1,0 +1,35 @@
+  DCINPUT.FLX : Eingabe von DC-Metadaten
+  2001-02-07
+  Mit "new" wird zugl. der aktuelle Satz in den Hintergrund kopiert
+new
+sho rec
+var ""
+ins #uw8
+  #8e aus dem Hintergr. holen und in #uw8
+tra #8e
+ins #uw8
+  wenn da was war, dann :a
+if #uw8 jump a
+  Sonst als Vorgabe nur http://
+var "Identifier:=http://"
+jump b
+:a
+  #uw8 als Vorgabe
+var "Identifier:=" #w8
+:b
+  Abfragen
+ask 
+if "" end
+  Eingabe in #8e
+ins #8e
+sho rec
+disp
+
+  Formular "DC" zeigen
+form DC
+  Fragen:
+yesno Sofort speichern? (Nein=weiter bearbeiten, Abbruch=verwerfen)
+  Verwerfen: Satz ist noch NEW, verschwindet dann:
+if cancel erase
+if y put
+

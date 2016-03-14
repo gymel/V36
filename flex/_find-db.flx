@@ -1,0 +1,179 @@
+  _FIND-DB.FLX : Finde alle allegro Datenbanken und katalogisiere sie
+  2001-02-05   Es wird fuer jede Datenbank ein Sondersatz in die DEMO-Bank eingetragen!
+
+var m
+if ="alc" end
+
+var "Empfohlen wird eine andere Funktion:" n "'Datei / Weitere Datenbank öffnen'" n "Vielleicht wollen Sie lieber die benutzen?" n "Nein: doch registrieren"
+yes
+if can end
+if no jump lw
+exec _otherdb
+
+
+:lw
+  Laufwerk abfragen
+var D
+ins #uwL
+var #uwL(0,1)
+ins #uwL
+var "Welches Laufwerk soll nach Datenbanken abgesucht werden? (C,D,...)=" #uwL
+ask
+if cancel end
+if no end
+var (F": ")
+  nichts? Ende
+if "" end
+  Lw. in #uwL ablegen
+ins #uwL
+
+
+var n "Jetzt wird auf " #uwL ": nach Datenbanken gesucht, bitte warten ..."
+sho IV
+open x org.bat
+if no jump error
+wri "@echo off" n
+
+wri "dir /s %1:\\*.?dx >_liste" n
+close x
+
+get env comspec
+ins #uwC
+var #uwC " /c org.bat " #uwL 
+  ausfuehren. Es entsteht die Datei _LISTE
+
+cAll 
+  Fenster wieder aktivieren (falls anderes aktiviert wurde)
+activate
+  _liste oeffnen und 1. Zeile lesen
+open _liste
+get iV
+  Konnte gelesen werden? sonst -> :error
+if no jump error
+if can jump error
+
+  iz auf 0 setzen (Zaehler)
+z = 0  
+
+  Schleife beginnt hier
+:line
+  Kommt :\ vor?  dann -> :verz
+if %:\\% jump verz
+  Kommt "dx" vor? -> :db
+if %~dx% jump db
+  Sonst -> :readnxt  (Zeile nicht relevant)
+jump readnxt
+
+  Zeile beginnt mit "Verz"
+:verz
+  Inhalt -> #uwD
+ins #uwD
+  Teil hinter "von " nehmen
+var #uwD(b"von ")
+  und in #uwD ablegen
+ins #uwD
+  naechste Zeile aus liste lesen
+:readnxt
+get iV
+  nichts: ende
+if no jump ende
+  Datei zu ende: error
+if canc jump ende
+  Schleife (naechste Zeile)
+jump line
+
+  In der Zeile kommt "DX " vor
+:db
+  Zeile in #uwB ablegen, Teil hinter dem letzten " " isolieren
+ins #uwB
+  Demo-DB nicht mit katalogisieren
+var #uwD
+if %~demo2% jump readnxt
+
+var #uwB(T" ")
+ins #uwB
+  Teil hinter "."
+var #uwB(b".") 
+ins #uwK
+  und davon das erste Zeichen (Konfig.Buchstabe!)
+var #uwK(0,1) 
+  in #uwK speichern
+ins #uwK
+
+  den Namen erneut nehmen, bei "." abschneiden
+var #uwB(e".")
+ins #uwB
+  Namen der TBL zusammensetzen
+var #uwD "\\" #uwB ".tbl"
+  pruefen, ob es sie gibt
+fsize
+  Nein, oder kleiner als 7 Byte
+if no jump readnxt
+if <7 jump readnxt
+
+  Schauen, ob diese Datenbank schon katalogisiert ist:
+  muss dann im Reg. 9 eingetragen sein unter "db DbDir"
+var "|9 db " #uwD "\\" #uwB
+find
+  wenn mehr als 0 Saetze mit diesem Schluessel: weiterlesen
+if g0 jump readnxt
+
+  Zaehler erhoehen
+z + 1  
+
+  Neuen Datensatz anlegen
+new 0
+  Kategorie #00 dbnnnn   
+var "db?4"
+ins #00 
+  Kategorie #uwK -> #30 
+var "cfg" #uwK
+ins #30
+  #20 Db=name -- CFG=K -- Pfadname"
+var "Db=" #uwB " -- CFG=" #uwK " -- " #uwD
+ins #20
+  #8e Pfad\Name
+var #uwD "\\" #uwB
+ins #8e 
+
+jump readnxt
+
+:ende
+del _liste
+
+if z=0 jump null
+var "Anzahl gefundene Datenbanken auf Platte " #uwL ": " z n "Sie sehen gleich die Liste"
+mes
+
+choose offline
+var "Soll die Liste in der DEMO-Datenbank gespeichert werden?" n
+var +"Dann k”nnen Sie anschlieáend alle Datenbanken von der DEMO aus aufrufen!"
+ansi
+yesno
+  Wenn ja: Offline-Datei speichern
+if no end
+if canc end
+
+save offline
+
+  #uw! bewirkt, dass in der Startseite dann "Eigene Datenbanken benutzen" steht
+#uw!Eigene Datenbanken benutzen
+help !
+mes Datenbanken sind jetzt im Register 4 unter 'db' zu finden"
+index |4db
+end
+
+:null
+var "Auf Platte " #uwL ": wurde" n "keine unkatalogisierte Datenbank gefunden"
+mes
+help cat
+end
+:error
+mes Die Liste konnte nicht erstellt werden. Kein Schreibrecht?
+end
+
+  Variablen
+  #uwL  : Laufwerksbuchstabe
+  #uwK  : Konfigurationsbuchstabe
+  #uwD  : Verzeichnisname (DbDir)
+  #uwB  : DatenBank-Name (DbName, z.B. CAT)

@@ -1,0 +1,50 @@
+  ASCII-Datei mit Kategorienummern einlesen
+  Weiterentwickelte Version: Siehe KAT00.AIM
+  KAT.AIM   940615
+
+  Die einzulesende Datei muss so aussehen:
+
+  2mal Zeilenvorschub (13 10) zwischen zwei Aufnahmen,
+
+  Kategorien mit mit Nummer ("#kk" oder "kk") am Anfang
+    beginnen immer auf neuer Zeile,
+
+  lange Kategorien sind zeilenweise umbrochen mit 13 10 am Ende
+    und 4 Leerzeichen am Anfang der n„chsten Zeile.
+
+  Beispiel:
+
+  #00
+  #20 ªDerª Name der Rose
+  #22 ªIlª nome della rosa <dt.>
+  #31 Kriminalroman / Mittelalter
+  #40 Eco, Umberto
+  #71 6. Aufl.
+  #74 Mnchen
+  #75 Hanser
+  #76 1982
+  #77 655 S.
+  #80 Orig. Ausg. 1980
+  #87 3-446-13363-1        
+
+  #00
+  #20 šber Gott und die Welt
+  #31 Zeitkritische Essays
+  #40 Eco, Umberto
+  #74 Mnchen
+  #75 Hanser
+  #76 1985
+  #77 303 S.
+  #87 3-446-13933-8
+
+re=13 10 13 10     Satzende: 2x Zeilenumbruch
+                   („ndern, falls andere Begrenzung)
+fe=13 10           Feldende: 1x Zeilenumbruch  (evtl. „ndern)
+
+_ 13 10 "    "     ersetze den Zeilenumbruch durch ein Leerzeichen
+_ " "                (evtl. „ndern)
+
+
+##     Pauschalimport
+  N      aktivieren, wenn Nichtsortierzeichen noch fehlen
+

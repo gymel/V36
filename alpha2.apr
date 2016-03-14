@@ -1,0 +1,63 @@
+  alpha2.apr : Printed index production, 2nd run
+  1996-02-14  collocation of equal lines (after sorting)
+
+  alpha2 is INDEPENDENT of the configuration used;
+         it should always be run with A.CFG ! (using only #u1 and #u2)
+
+  Purpose : collocate all equal names with the page numbers or record numbers
+            after the sort run with ASORT
+            (#99z being used to transport the numbers)
+
+  input :  #u2 contains a name, #99z a page number or record number
+
+  output:  just one #u2 for every different name, all page numbers or record
+           numbers chained up in #99z
+
+pn="alphabetic index - step 2"
+
+  --------- Constants  (don't change) ----------------------------
+zl=0 	    no line breaking
+
+zm=0        no page breaking (we produce a continuous file)
+
+fl=0        no form arrangement
+
+  -----------------------------------------------------------------
+
+  no ak commands required. We have only one output per record,
+  all input records are structured identically (#u1, #u2, #99z)
+  For the comparison, we use #u1, for the printing, #u2
+
+  ************* field list ****************************************
+
+#u1 =nm+A e0
+    compare #u1 with #unm. 
+    if equal: go to #-A
+    if not  : save it in #unm for the next comparison
+              and do nothing, go to next line
+
+  we had a different #u1, so we'll start a new export record:
+#u2 p{ 0 13 10 1 "u2 " }  
+        the p{ ... } explicitly ends the completed record and starts
+                    the new one
+        (we must do it this way because we must collocate several records
+        with identical sort parts into one export record.)
+
+#99z dsn f" " p{ 0 "99z" }     write #99z unchanged, it transports the number
+        The 0 code marks the end of #u2!
+        #99z is not closed with a 00h here, for there may be more records
+             coming with the same #u1 content, these must be added 
+
+#99z asn
+        save #99z value in #usn, for maybe this repeats itself in the next
+        record (a name may occur several times on the same page in the main
+        part of the bibliography. We then have repeating values in #99z)
+#+#     end for this record
+
+#-A     we get here if the name is the same as in the last record
+
+        Compare page number with #usn : if equal: do nothing
+#99z =sn+# f" " p", "     if not equal: append it with ", "
+        the f" " command removes leading spaces
+#+#
+

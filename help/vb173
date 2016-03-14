@@ -1,0 +1,51 @@
+
+Verlautbarung 173 der Entw.Abt.                             2004-01-07
+-------------------------------
+
+V24 : Neue Funktionen
+---------------------
+
+1. Datensatz -> Reservespeicher kopieren
+----------------------------------------
+Was in PRESTO mit Shift+F5 geht, das Kopieren des aktuellen Satzes in
+den Hintergrundspeicher, das geht nun in a99 mit dem FLEX-Befehl
+copy reserve     kurz:  cop res
+Sinnvoll ist das vor allem, weil man anschliessend in einem Formular
+(auch in der Abfrageliste) einen Punkt eingeben kann, um das betr. 
+Feld aus dem kopierten Satz zu uebernehmen.
+
+Tip: Shift+F5 kann man nicht belegen, aber F3 oder F4. Waehlt man F4,
+     dann muss man einen FLEX namens onf4.flx schreiben, in dem nur
+     steht:
+   copy reserve
+   var "Erledigt, Daten des aktuellen Satzes sind im Reservespeicher"
+   sho iv
+
+2. Globale Ersetzung
+--------------------
+Wie schon immer bei PRESTO, so kann auch in a99 jetzt die Globale
+Ersetzung auch auf den aktuellen Satz angewendet werden. 
+Das Definieren der Ersetzungen ist folgerichtig auch dann moeglich,
+anders als bisher, wenn gerade keine Erg.Menge vorliegt.
+Probieren Sie es aus, dann sehen Sie schon, wie's jetzt laeuft.
+Dazu war eine Aenderung der Zeile 379 in uifeger und uifeeng noetig.
+
+3. Loeschung von #u-Variablen per FLEX
+--------------------------------------
+Bisher konnte man nur einzelne #u-Variablen loeschen, z.B.
+durch
+var ""
+ins #uxy
+Jetzt kann man eine ganze Gruppe loeschen, und zwar alle, die
+mit #ux beginnen:
+var ""
+ins #uv~
+loescht #uv0, #uv2, ... #uvz.
+Also analog zum M-Befehl  dv~  in der Exportsprache.
+
+4. Internes Arbeitsspeicherproblem behoben
+------------------------------------------
+Beim Loeschen eines Satzes wurden jeweils 36K interner Arbeitsspeicher
+verbraucht und nicht wieder freigegeben. Dadurch konnte es, wenn viele
+Saetze geloescht wurden, zu einem Haengen oder Programmabbruch kommen.
+Dieses Problem wurde ausgemerzt.

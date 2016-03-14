@@ -1,0 +1,72 @@
+  a35erg.apr : Ausgabe als UTF-8-Datei mit Kategorie-Nummern
+  2012-08-29
+
+pn="Ausgabe f. a35 Kurzliste"
+
+  Gibt Daten in UTF-8 aus
+  --------- Konstanten --------------------------------------------
+
+zl=0 	    Zeilenlaenge
+
+zi=0	    4 Zeichen Einrueckung bei Folgezeilen
+zm=0        kein Seitenumbruch (fortlaufende Ausgabe)
+ae=""       kein Zeilenvorschub am Aufnahme-Ende
+fl=0        Listenstruktur (keine Karten)
+
+  -----------------------------------------------------------------
+#hi +- e0
+
+  ak=zz+Z
+      Aufbereitung der Kurzzeile 
+  >>> cfg-spezifisch! Modifizieren, wenn nicht a.cfg genutzt wird
+
+#-Z
+  #da         Akzente vertauschen (hinter den Buchstaben)
+
+#t{ '<td><a href="javascript:reqLink(' }
+#nr
+#t{ ')">' }
+
+#20 +a U ,"_ _. _" E70 F";.-: "
+#84 U ,"_ _. _" E60 F";.-: "
+#09 b"+" e"=" e8 ". "
+
+#-a
+#t{ '</a></td><td>' }
+#40
+#t{ "</td><td>" }
+#10 x"*1" e"." p" (" P")"
+#t{ "</td><td>" }
+#90 +#99 ,"_L__" ,"_s_ / _" e" =" e"" p" : "
+#90 $L P" / "
+#90 $s
+#99 e0
+#t{ "</td>" }
+#+#
+
+
+  *******************************************************************
+
+ Code-Umwandlungen
+
+  Folgende Zeile deaktivieren, wenn intern UTF-8 !
+  tad-utf   ad-utf.apt laden.
+
+
+   Fuer HTML-Ausgabe noetig:
+   Nur in e-unicod.apr
+  p .020 "<br>"
+p < "&lt;"
+p > "&gt;"
+p & "&amp;"
+
+  Steuerzeichen, die nicht rauskommen sollen
+
+p .1 1
+p .2 1
+p .3 1
+p .4 1
+p .5 1
+p .6 1
+p .7 1
+

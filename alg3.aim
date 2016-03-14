@@ -1,0 +1,39 @@
+  ALG3.AIM : importiere .cLG-Daten unver„ndert nach .cLG, 
+  940615  ABER: fge ein Leerzeichen vor dem Kategorietext ein
+
+  Fr jede .CFG geeignet:
+  Kopieren Sie diese Datei auf ALG3.PIM, wenn Sie P.CFG verwenden...
+
+
+fh=1      1 Zeichen am Dateianfang muss bergangen werden
+
+re=0 13 10 1      Ende eines Satzes, zugl. Anfang des n„chsten
+
+fe=0
+
+y .2 256     Hierarchie-Indikatoren beim Einlesen ausblenden
+y .3 256
+y .4 256
+y .5 256
+y .6 256
+
+   hier k”nnten auch noch globale Ersetzungen oder Umcodierungen stehen
+
+   das folgende wird fr jeden eingelesenen Satz durchgefhrt:
+
+##      Pauschalbefehl: importiere alle Felder hintereinander
+          aber jedes soll wie folgt bearbeitet werden:
+Khh     Text in #uhh zwischenspeichern
+l3      und zuerst nur 3 Zeichen bertragen
+kuhh    dann #uhh zurckholen
+}3      die ersten 3 Zeichen berspringen
+w" "    und ein Leerzeichen davorsetzen
+        (dann kommt automatisch das n„chste Feld)
+
+   Hier k”nnten noch Paragraphen fr einzelne Kategorien folgen, die
+   noch individuell behandelt werden sollen, z.B.
+
+  #123   in der #123 soll X durch Y ersetzt werden
+  k123   hiermit wird die #123 aus der eben gerade umgewandelten
+  _ "X"  Aufnahme entnommen
+  _ "Y"

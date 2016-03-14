@@ -1,0 +1,421 @@
+{\rtf1\ansi\ansicpg1253\deff0\deflang1033{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\froman\fprq2\fcharset0 Times New Roman;}{\f2\froman\fprq2 Garamond;}{\f3\froman\fprq2\fcharset0 Garamond;}{\f4\fmodern\fprq1\fcharset161{\*\fname Courier New;}Courier New Greek;}{\f5\fmodern\fprq1 Courier New;}{\f6\fmodern\fprq1\fcharset0 Courier New;}{\f7\fnil\fprq2\fcharset2 Wingdings;}{\f8\froman\fprq2\fcharset161{\*\fname Times New Roman;}Times New Roman Greek;}{\f9\fswiss\fprq2\fcharset0 Univers;}}
+{\colortbl ;\red0\green0\blue255;}
+\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f0\fs20 
+\par \f1  \f0 `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` 
+\par \pard 
+\par \pard\fi-658\li658\tx350\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f2\fs36 10.4\tab\f3 Exportparameter-\f2 Beispiele: Prototypen\b0\fs20 
+\par \pard\tx350\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0 
+\par \f1 Zu den in 10.0 beschriebenen 10 Typen von Exporten werden ausf\'fchrlich kommentierte Beispieldateien mitgeliefert. Sie finden diese nach der Installation \f0 
+\par \pard\fi-349\li349\tx350\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 a)\tab vom \lang1033\b\i CockPit\lang1031\b0\i0\f1  aus : im Men\'fc "Dateien / Export-Parameter" unter dem Kennbuchstaben des Typs\f0 
+\par \tab (Tastenfolge: z.B.\b\f4  \'ecd e <umschalten> s\b0\f1  f\'fcr den Typ S. Die Prototyp-Datei S-0 steht ganz oben.)\f0 
+\par b)\tab mit DOS-Befehl auf dem Verzeichnis ALLEGRO: 
+\par \tab z.B.\b\f5   dir s-*\b0\f1   f\'fcr die S-*.APR-Dateien.\f0 
+\par \pard\tx350\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1 Ein vollst\'e4ndiger Abdruck aller Prototyp-Dateien hier im Handbuch ist aus Platzgr\'fcnden nicht zu vertreten. Um aber f\'fcr das theoretische Studium denen, die die Software selbst nicht besitzen, Material an die Hand zu geben, finden Sie im folgenden 5 der Prototypen, und zwar zu den Typen Display, Sort, Print,  Extern und Result, jeweils mit Hinweisen zu ihrem Einsatz. Au\'dferdem INDX.API als knappes, aber komplettes Beispiel einer Index-Parameterdatei.\f0 
+\par 
+\par \b\f2\fs28 10.4.1  Typ Display 
+\par \b0\f1\fs20 Es ist m\'f6glich, f\'fcr die drei Plattformen DOS, Windows und HTML eine einzige, einheitliche Anzeigeparameterdatei zu erstellen. Dazu werden zur Wahl die Vorlagen D-S.APT und D-K.APT mitgeliefert. Das zweite w\'e4hlt man nur, wenn man verkn\'fcpfte S\'e4tze hat. Diese Datei ist die einzige, die man modifizieren mu\'df. Sie enth\'e4lt ausreichende Kommentare. F\'fcr die drei Plattformen w\'e4hlt man als eigentliche Parameter dann die Datei D-SDOS.APR, D-SRTF.APR, D-SHTM bzw. D-KDOS.APR, D-KRTF.APR und D-KHTM.APR, in die man aber nicht einzugreifen braucht. Wenn man nicht mit A.CFG arbeitet sondern mit x.CFG, kopiert man die gew\'e4hlten Dateien nur um auf z.B. D-SRTF.xPR usw. 
+\par Anwendung findet dieses Konzept auch f\'fcr die Anzeigeparameter des ab 2006 neuen Neutralformats N.CFG.\f0 
+\par \b\f2\fs28 
+\par D-0.APR\f3  : Einfachstes Beispiel\b0\f0\fs20 
+\par \f1 Diese Datei zeigt die charakteristischen Eigenschaften, die eine f\'fcr die Bildschirmanzeige geeignete Parameterdatei haben mu\'df. Sie l\'e4\'dft sich leicht ausbauen. Erheblich umfangreicher ist D-1.APR, da sie alle Satztypen ber\'fccksichtigt und au\'dferdem die M\'f6glichkeiten der Satzverkn\'fcpfungen nutzt. Weil viele Finessen und Spezialf\'e4lle eingebaut   sind, ist sie schwer \'fcberschaubar. Die vergleichsweise primitive D-0.APR eignet sich viel besser als Grundlage f\'fcr den Einstieg.\f0 
+\par \f1 F\'fcr die Kommentare in den Beispielen wurde eine andere, kleinere Schriftart gew\'e4hlt, damit sich Parameter und Kommentare besser voneinander abheben.\f0 
+\par 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\f6   Parameterdatei f\'fcr Bildschirmanzeige UND Ausgabe in Form von Katalogkarten\f5 
+\par \f6   Prototyp f\'fcr den Exporttyp DISPLAY\f5 
+\par 
+\par pn="DISPLAY Prototyp" 
+\par   --------- \b Konstanten\b0  -------------------------------------------- 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 zl=65       \lang1031\f0\tab\f1 Zeilenl\'e4nge\lang1033\f5 
+\par fl=14       \lang1031\f0\tab Anzahl Zeilen je Karte\lang1033\f5 
+\par fm=2        \lang1031\f0\tab\f1 Modus: Einzelkarten f\'fcr alle B\'e4nde (1 = keine Einzelkarten)\lang1033\f5 
+\par fb=13 10 10 10\lang1031\f0\tab\f1 Formular-Bruch: 3 Zeilenvorsch\'fcbe zwischen zwei Karten\lang1033\f5  
+\par tPRINTER   \lang1031\f0\tab\f1 den vom CockPit gew\'e4hlten Druckertreiber laden, er hei\'dft PRINTER.APT (= Kopie eines P-*.APT) (enth\'e4lt die Zwischenteile 79-99 f\'fcr die Schriftarten)\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par   ======== \b Kopfbefehle\b0  ============================================= 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274      \lang1031\f0\tab (jede der folgenden Kategorien erzeugt einen Ausgabesatz, falls sie existiert)\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f0      Haupteintragung:\lang1033\f5 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 ak=zz+H   \lang1031\f0\tab\f1 (diese Zeile wird IMMER ausgef\'fchrt, bei Sprungmarke #-H beginnt der Aufbau der "Einheitskarte"\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f1      Zusatzeintr\'e4ge: (Nebeneintragungen)\lang1033\f5 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 ak=40."; "+V  \lang1031\f0\tab alle Verfasser kriegen eine\lang1033\f5 
+\par          \lang1031\f0\tab\f1 (#40, #402..., #40a..., auch #40 Name; Name; Name...  ist m\'f6glich)\lang1033\f5 
+\par \pard\fi-1933\li1933\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 ak=85.+G       \lang1031\f0\tab Serientitel (#85, #85a, #85b...)\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   ================================================================== 
+\par 
+\par   ....... \b Zwischenteil-Definitionen\b0 : (nach Bedarf erweitern) ....... 
+\par \pard\fi-3073\li3073\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 4=C\lang1031\f0     Zeilenvorschub\tab (die Zwischenteile 79-99 stecken in PRINTER.APT !\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   .................................................................. 
+\par  
+\par   ******* \b Kategorieliste\b0  ******************************************* 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   \lang1031\f0\tab = Hauptteil der Parameterdatei\lang1033\f5 
+\par #hi +Z e0   \lang1031\f0\tab Unteraufnahme -> Sprungmarke #-Z\lang1033\f5 
+\par         \lang1031\f0\tab\f1 die Unters\'e4tze werden nicht \'fcber ak-Befehle gesteuert, sondern die Verarbeitung beginnt am Anfang der Kategorieliste, nachdem die Hauptaufnahme verarbeitet ist. Mit diesem Befehl kann man zu einem Abschnitt springen, der die Aufbereitung der Unters\'e4tze regelt, hier #-Z (#hi existiert nur, wenn ein Untersatz verarbeitet wird)\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #-V\lang1031\f1      Verfasser-Eintr\'e4ge\lang1033\f5 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #t99    \lang1031\f0\tab Fettschrift ein\lang1033\f5 
+\par #u1 +- i3,\lang1031\f0\tab\f1 wenn #40, dann kein zus\'e4tzlicher Zettel, denn #40 bekommt bereits den Einheitszettel bei #-H\lang1033\f5 
+\par #u1    \lang1031\f0\tab\f1 der durch ak=40.";"+V jeweils ausgew\'e4hlte Name\lang1033\f5 
+\par #t98    \lang1031\f0\tab Fett aus\lang1033\f5 
+\par \pard\fi-3073\li3073\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #90 p"Signatur: " R \lang1031\f0\tab\f1 Signatur rechtsb\'fcndig\lang1033\f5 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #t4     \lang1031\f0\tab Zeilenvorschub\lang1033\f5 
+\par #+h     \lang1031\f0\tab weiter wie bei der Haupteintragung\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par #-G\lang1031\f0      Serienzettel\lang1033\f5 
+\par #t99 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #u1 e" ; " \lang1031\f0\tab zuerst nur der Serientitel\lang1033\f5 
+\par \pard\fi-3073\li3073\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #u1 b" ; " p"-- " C\lang1031\f0\tab\f1 dann die Z\'e4hlung auf neuer Zeile, mit "--" davor\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #t98 
+\par \pard\fi-3073\li3073\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #90 p"Signatur: " R\lang1031\f0\tab\f1 Signatur rechtsb\'fcndig\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #t4 
+\par #+h 
+\par 
+\par #-H\lang1031\f0      Hauptzettel-Produktion beginnt hier (Einheitskarte)\lang1033\f5 
+\par \pard\fi-3073\li3073\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #90 "Signatur: " R\lang1031\f0\tab\f1 Signatur rechtsb\'fcndig\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #t4 
+\par 
+\par #-h 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #40 P":" P4\lang1031\f0\tab "Name:"    dann neue Zeile (Postfix P4)\lang1033\f5 
+\par #20  \lang1031\f0\tab Titel\lang1033\f5 
+\par #39 " / "  \lang1031\f0\tab Verf.Angabe\lang1033\f5 
+\par #-A   \lang1031\f0\tab Einsprung hier von der Bandbearbeitung aus (s.u.)\lang1033\f5 
+\par #71 ". - " \lang1031\f0\tab Ausgabe\lang1033\f5 
+\par #74 ". - " \lang1031\f0\tab Ersch.Ort mit ". - " angeschlossen\lang1033\f5 
+\par   #74 C "   "\lang1031\f0\tab\f1 wenn Ort auf neuer Zeile einger\'fcckt erscheinen soll\lang1033\f5 
+\par #75 ": " \lang1031\f0\tab Verlag mit ": " dahinter\lang1033\f5 
+\par #76 ", " \lang1031\f0\tab\f1 Jahr mit ", " angeh\'e4ngt\lang1033\f5 
+\par #77 ". - " \lang1031\f0\tab Umfang mit ". - " abgetrennt\lang1033\f5 
+\par \pard\fi-1933\li1933\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #85 C p"(" P")"\lang1031\f0\tab Serie auf neuer Zeile in Klammern\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #83 C "[Kongr.:] " 
+\par #87 C e11 p"ISBN " 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #+#     \lang1031\b\f0\tab Ende\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0 
+\par #-Z\lang1031\f0    Unteraufnahme beginnt hier\lang1033\f5 
+\par 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #hi1 C C P". "\lang1031\f0\tab Bandnummer, 2x Zeilenvorschub\lang1033\f5 
+\par #t\{ #250 \} \lang1031\b\f0\tab\f1 Einr\'fcckung\b0\f0  an der Position hinter der Bandnummer festsetzen\lang1033\f5 
+\par #90 R\lang1031\f0\tab\f1 Signatur rechtsb\'fcndig\lang1033\f5 
+\par #19 \lang1031\f0\tab Bandbezeichnung\lang1033\f5 
+\par #20\lang1031\f0\tab Bandtitel\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #41 " / " P" [Hrsg.]" 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #+A\lang1031\f0\tab weiter wie bei der HA\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par   +++++++ \b Codierungen\b0  ++++++++++++++++++++++++++++++++++++++++++++++ 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f6 p \'ac 1 \lang1031\f0\tab Nichtsortierzeichen nicht mit anzeigen\lang1033\f5 
+\par p @ 1\lang1031\f0\tab Nicht-Stoppzeichen auch nicht 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f2\fs28 10.4.2  Typ Sort : S-0.APR\b0\f0\fs20 
+\par Das Herstellen sortierter Listen ist ein mindestens dreistufiger Vorgang (genaueres siehe Kap. 6). Der erste Schritt ist immer die Produktion einer \b\f1 sortierf\'e4higen\b0\f0  Datei. Diese hat die Struktur einer \lang1033\b\i allegro\lang1031\b0\i0 -Grunddatei (-\f7\'d8\f0  0.3), aber jedem Satz geht eine besondere Kategorie voran:\b\f5  #u1\b0\f0  , das Sortierfeld. Es kann noch\b\f5  #u2\b0\f0  hinzutreten und eine Druckform des Sortierfeldes enthalten;\b\f5  #u1\b0\f1  eignet sich nicht f\'fcr den Ausdruck, weil es computergerecht sortierf\'e4hig sein mu\'df, und das bedeutet, da\'df es vollst\'e4ndig in Kleinbuchstaben, mit aufgel\'f6sten Umlauten und weggelassenen Akzenten geschrieben ist. Wenn\b\f5  #u2\b0\f1  dann den Sortierkopf in druckf\'e4higer Form enth\'e4lt, kann f\'fcr den (nach dem Sortieren) dritten Schritt, die Druckformatierung, die Kategorie\b\f5  #u2\b0\f1  als Kopf benutzt werden. Der Vorteil ist: die Parameterdatei f\'fcr die Druckgestaltung (Typ PRINT) kann unabh\'e4ngig davon gestaltet werden, welche K\'f6pfe konkret vorliegen, ob es also eine Schlagwort-, Titel- oder Verfasserliste oder noch etwas anderes ist.\f0 
+\par Die mitgelieferten Dateien \b S-*.APR\b0  und \b P-*.APR\b0\f1  sind alle auf diese Weise gestaltet und k\'f6nnen daher beliebig miteinander kombiniert werden. Im Kap. 6 ist beschrieben, wie die konkrete Produktion von Listen vom \lang1033\b\i\f0 CockPit\lang1031\b0\i0\f1  noch zus\'e4tzlich unterst\'fctzt wird.\f0 
+\par Hier folgt nun der Prototyp \b S-0.APR\b0\f1  f\'fcr die Erstellung einer sortierf\'e4higen Datei mit Kategorien\b\f5  #u1\b0\f0  und\b\f5  #u2\b0\f0 . Nach diesem "Strickmuster" arbeiten alle Dateien dieses Typs. 
+\par 
+\par \lang1033\f6   Sortierf\'e4hige .ALG-Datei erstellen  Beispiel: Person/Jahr\f5 
+\par \f6   Prototyp f\'fcr den Exporttyp SORT\f5 
+\par 
+\par pn="Prototyp SORTiervorbereitung" 
+\par 
+\par \lang1031\f0   Ziel: eine .ALG-Datei mit Sortierkopf und Druckkopf. Struktur:\lang1033\f5 
+\par \lang1031\f1   #u1 sortierkopf: Verfasser (#40) oder Urheber (#60) oder Sachtitel (#20)\'b6Jahr\lang1033\f5 
+\par \lang1031\f0   #u2 Druckform derselben Angaben\lang1033\f5 
+\par \lang1031\f0   #... die gesamte Aufnahme in .ALG-Struktur\lang1033\f5 
+\par 
+\par \lang1031\f0   anschliessend mit ASORT zu sortieren und mit einer der PRINT-Param. auszudrucken.\lang1033\f5 
+\par 
+\par   --------- \b Konstanten\b0  -------------------------------------------- 
+\par 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 zl=0        \lang1031\f0\tab\f1 Zeilenl\'e4nge unbegrenzt (kein Umbruch)\lang1033\f5 
+\par ks=1   \lang1031\f0\tab Beginn des Ausgabetextes beim ersten Zeichen hinter #\lang1033\f5 
+\par ke=0   \lang1031\f0\tab Kategorie-Ende = Code 0 (wegen .ALG-Struktur)\lang1033\f5 
+\par        \lang1031\f0\tab (unten steht  "#zz 0" in jeder Zeile, die NICHT automatisch diese Null am Ende bekommen soll.)\lang1033\f5 
+\par as=""    \lang1031\f0\tab Aufnahme-Start: keine Angabe (wird mit #t gemacht)\lang1033\f5 
+\par ae=13 10  \lang1031\f0\tab\f1 Aufn.Ende: 13 10  (n\'f6tig f\'fcr das Sortieren)\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 tS      \lang1031\f0\tab\f1 l\'e4dt die Zeichenumwandlungstabelle S.APT f\'fcr das Sortieren\lang1033\f5 
+\par dx=1  \lang1031\f0\tab\f1 an sich nicht n\'f6tig, aber zum Testen n\'fctzlich (mit ATEST S-0 kann man am Bildschirm sehen, wie die Ergebnisse, d.h. die Sortiers\'e4tze, aussehen)\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 am=1      \lang1031\f0\tab maximal 1 Ausgabesatz\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   -------------------------------------------------------------- 
+\par 
+\par   ========= Kopfbefehle ====================================== 
+\par   ================== werden nicht gebraucht ================== 
+\par 
+\par   ********* \b Kategorieliste\b0  ************************************* 
+\par 
+\par \pard\fi-1933\li1933\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #hi +b e0 #zz 0\lang1031\f0\tab wenn es eine Unteraufnahme ist: Sprung nach #-b\lang1033\f5 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274            \lang1031\f0\tab\f1 (wird dann an die bereits ausgegebene Hauptaufnahme angeh\'e4ngt.)\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \lang1031\f1       Normale S\'e4tze gehen hier los\lang1033\f5 
+\par #-a 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274     \lang1031\f0\tab\f1 Umwandlung der !-Felder \'fcber Alternativtabelle:\lang1033\f5 
+\par     \lang1031\f0\tab der Sortierbegriff wird zusammengesetzt und als #u1 ausgegeben\lang1033\f5 
+\par      \lang1031\f0\tab (Name  Sachtitel   bzw.   Verfasser   Sammlungsvermerk)\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #t\{ 1 \}  \lang1031\f0\tab\f1 1 = Startcode f\'fcr "Hauptaufnahme"\lang1033\f5 
+\par \pard\fi-5634\li5634\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 !40 +s e"[;=]" b3 u F" " p"u1 " #zz 0 \lang1031\f0\tab Verfasserwerk\lang1033\f5 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   \lang1031\f0\tab Kopfkategorie als Sortierfeld, Ende bei ";" oder "="\lang1033\f5 
+\par     \lang1031\f0\tab b3 heisst: Beginn beim 4. Zeichen = 1. Textzeichen\lang1033\f5 
+\par  \lang1031\f0\tab\f1 (wegen ks=1 w\'fcrde sonst die Kategorienummer mit ausgegeben,\lang1033\f5 
+\par   \lang1031\f0\tab\f1 (bei 3stelligem Schema mu\'df es b4 hei\'dfen)\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 !60 +s e"[;=]" b3 u F" " p"u1 " #zz 0\lang1031\f0     Urheberwerk\lang1033\f5 
+\par !20 e" : " b3 u u[] p"u1 " #zz 0\lang1031\f0          Sachtitelwerk\lang1033\f5 
+\par 
+\par #-s 
+\par \f6 !76 b"1" e3 p"\'b6" #zz 0\f5 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274         \lang1031\f0\tab\f1 zweites Element: "\'b6Jahr"  (\'b6 sorgt f\'fcr richtige Sortierung: k\'fcrzere Titel vor l\'e4ngeren)\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #t\{ 0 \}   \lang1031\f0\tab\f1 als Abschlu\'df von #u1 (ASCII-Code 0 ausgeben)\lang1033\f5 
+\par       \lang1031\f0\tab\f1 Ergebnis:   #u1 name\'b6rscheinungsjahr\\0\lang1033\f5   
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \lang1031\f0      Die Druckform des Sortierfeldes: Produktion als #u2\lang1033\f5 
+\par \lang1031\f1      (genauso wie #u1, nur ohne Umcodierung, dann f\'fcr den Druck verwertbar!)\lang1033\f5 
+\par 
+\par \pard\fi-5634\li5634\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #40 +d e"[;=]" b3 u F" " p"u2 " #zz 0\lang1031\f0\tab Verfasserwerk\lang1033\f5 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274         \lang1031\f0\tab Kopfkategorie als Sortierfeld, Ende bei ";" oder "="\lang1033\f5 
+\par         \lang1031\f0\tab\f1 b3 hei\'dft: Beginn beim 4. Zeichen = 1. Textzeichen\lang1033\f5 
+\par         \lang1031\f0\tab\f1 (wegen ks=1 w\'fcrde sonst die Kategorienummer mit ausgegeben,\lang1033\f5 
+\par         \lang1031\f0\tab\f1 (bei 3stelligem Schema mu\'df es b4 hei\'dfen)\lang1033\f5 
+\par \pard\fi-5634\li5634\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #60 +d e"[;=]" b3 u F" " p"u2 " #zz 0 \lang1031\f0\tab Urheberwerk\lang1033\f5 
+\par \pard\fi-5633\li5633\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #20 e" : " b3 u u[] p"u2 " #zz 0   \lang1031\f0\tab\tab Sachtitelwerk\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par #-d 
+\par \f6 #76 b"1" e3 p"\'b6 #zz 0\f5 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274      \lang1031\f0\tab\f1 zweites Element: "\'b6Jahr"  (\'b6 erm\'f6glicht, es f\'fcr den Druck ausseinanderzunehmen)\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #t\{ 0 \}     \lang1031\f0\tab\f1 als Abschlu\'df von #u2\lang1033\f5 
+\par            \lang1031\f0\tab\f1 Ergebnis:  #u1 Name, Vorname\'b6Erscheinungsjahr\\0\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #-P 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 ##         \lang1031\f0\tab jetzt alle Kategorien hintereinander (Pauschalexport)\lang1033\f5 
+\par  tSELECT    \lang1031\f0\tab statt dessen, wenn nur eine bestimmte Kategorieauswahl in\lang1033\f5 
+\par   \lang1031\f0\tab\f1 die Sortierdatei gelangen soll (Auswahl \'fcber den CockPit-\lang1033\f5 
+\par             \lang1031\f0\tab\f1 Men\'fcpunkt "Optionen / Vollst\'e4ndigkeit")\lang1033\f5 
+\par #nr b3 p"99z" \lang1031\f0\tab\f1 und die interne Datenbank-Satznummer am Schlu\'df als #99z\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #+#\lang1031\f0     Ende der Hauptaufnahme\lang1033\f5 
+\par 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #-b   \lang1031\f0\tab\f1 Sprungmarke b: hier geht es bei untergeordneten S\'e4tzen los\lang1033\f5 
+\par #t \{ h0 \}  \lang1031\f0\tab\f1 Hierarchiecode (= 2 f\'fcr Stufe #01 usw.)\lang1033\f5 
+\par #+P\lang1031\f0\tab Zum Pauschalexport, wie bei Hauptaufnahme 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f2\fs28 10.4.3  Typ Print : P-0.APR\b0\f0\fs20 
+\par 
+\par Das Drucken erfordert einen \b Zeilenumbruch\b0  und evtl. auch einen \b Seitenumbruch\b0\f1 . F\'fcr diese Aufgaben gibt es Parameter, die sonst nicht gebraucht werden.\f0 
+\par 
+\par \pard\tx9413   Allgemeines Listenformat mit oder ohne Seitenumbruch \tab\f1 (verk\'fcrzt, siehe Datei P-0.APR)\f0 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   P-0.APR       940602\lang1033\f5 
+\par \lang1031\f0   --------- Konstanten --------------------------------------------\lang1033\f5 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 zl=72 \lang1031\f0\tab\f1 Zeilenl\'e4nge\lang1033\f5 
+\par zi=5\lang1031\f0\tab\f1 Einr\'fcckung ab 2. Zeile des Satzes\lang1033\f5 
+\par fl=0\lang1031\f0\tab\f1 Formularl\'e4nge 0, d.h.: kein Formulardruck\lang1033\f5 
+\par ae=13 10\lang1031\f0\tab Zeilenvorschub am Aufnahmeende\lang1033\f5 
+\par zm=62 \lang1031\f0\tab\f1 max Zeilen je Seite, oder: (f\'fcr Nachbearbeitung mit Textprogramm)\lang1033\f5 
+\par   zm=0\lang1031\f0\tab dann kein Seitenumbruch, sondern fortlaufende Ausgabe\lang1033\f5 
+\par z1=0    \lang1031\f0\tab Titel am Seitenende nicht unterbrechen (bei zm=0 unwirksam)\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 tPRINTER  \lang1031\f0\tab Druckertreiber laden  (PRINTER.APT)\lang1033\f5 
+\par \lang1031\f0\tab\f1 Entsteht bei Auswahl \'fcber CockPit \f8\'eco d  als Kopie einer der Dateien P-*.APT, z.B. P-EPSON.APT.  PRINTER.APT kann auch die oben gesetzten Werte a\f0 ndern! 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   ......... ZWISCHENTEILE ..........................................\lang1033\f5 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 4=C  \lang1031\f0\tab Zeilenvorschub\lang1033\f5 
+\par 13=C C    \lang1031\f0\tab 2x Zeilenvorschub\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 20="--  " 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \lang1031\f0\tab\f1 die Nummern 79-99 sind in PRINTER.APT definiert, z.B: 99 f\'fcr Fett ein, 98 f\'fcr Fett aus\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f0   ********* Kategorieliste ************************************ 
+\par   Das folgende ist zu ersetzen durch die eigene Gestaltung 
+\par \lang1033\f5 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #t\{ &0 \}   \lang1031\f0\tab\f1 an den Zeilenanfang gehen (wichtig bei Unters\'e4tzen, damit sie wieder am Anfang der Zeile beginnen)\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #hi1 +#20 p"  " P". "\lang1031\f0     wenn's ein Untersatz ist: Bandbezeichnung (#hi wird aus #01...#05 gebildet)\lang1033\f5 
+\par \pard\fi-2232\li2232\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #t99    \lang1031\f0\tab\tab fett ein\lang1033\f5 
+\par \pard\fi-2233\li2233\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #u2 e": " =ti,20 \lang1031\f0\tab wenn vorher derselbe Name, "-- " statt dessen\lang1033\f5 
+\par \pard\fi-2232\li2232\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #u2 +#20 e0\lang1031\f0\tab\tab wenn es eine Sortierdatei ist: #u2 = Sortierbegriff\lang1033\f5 
+\par #40 P": "     \lang1031\f0\tab\tab sonst wird #40 zuerst ausgegeben\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #20 p98 
+\par #74 p". - " 
+\par #75 p": " 
+\par #76 p", " 
+\par #77 p". - " 
+\par #85 C p"(" P")" 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #t88  \lang1031\f0\tab kursiv ein\lang1033\f5 
+\par #90 e"?" R  \lang1031\f0\tab\f1 Signatur rechtsb\'fcndig\lang1033\f5 
+\par #t87\lang1031\f0\tab kursiv aus\lang1033\f5 
+\par #t4    \lang1031\f0\tab Zeilenvorschub am Ende eines Satzes\lang1033\f5 
+\par #+#\lang1031\f0\tab Export des Satzes beendet\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #- E\lang1031\f0\tab\f1 Endabschnitt: wird ganz am Ende der Liste ausgef\'fchrt\lang1033\f5 
+\par .....\lang1031\f0\tab Text des Endabschnitts\lang1033\f5 
+\par K \lang1031\f0\tab\f1 Kopfabschnitt (Ausf\'fchrung am Seitenanfang)\lang1033\f5 
+\par .....\lang1031\f0\tab (Hier kann ein eigener Abschnitt folgen, s. Datei P-0.APR)\lang1033\f5 
+\par F \lang1031\f0\tab\f1 Fu\'dfabschnitt (Ausf\'fchrung am Seitenende)\lang1033\f5 
+\par .....\lang1031\f0\tab (Hier kann ein eigener Abschnitt folgen, s. Datei P-0.APR) 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f2\fs28 10.4.4  Typ Extern : E-0.APR\b0\f0\fs20 
+\par 
+\par Um \lang1033\b\i allegro\lang1031\b0\i0\f1 -Daten mit anderen Programmen verarbeiten zu k\'f6nnen, mu\'df man sie in der Regel in eine Form bringen, die \b\f0 Feldbezeichnungen\b0\f1  und Zeilenumbr\'fcche enth\'e4lt. Dieser Prototyp zeigt, welche Einstellungen dazu n\'f6tig sind:\f0 
+\par \f1 (Weiteres wichtiges Beispiel: E-W.APR f\'fcr extern editierbare, mit \lang1033\b\i\f0 avanti\lang1031\b0\i0  und VPW wiedereinlesbare Dateien) 
+\par 
+\par   Ausgabe als ASCII-Datei mit Kategorie-Nummern und Zeilenumbruch 
+\par \f1   Prototyp f\'fcr den Exporttyp EXTERN\f0 
+\par \lang1033\f5 
+\par pn="EXTERN Prototyp" 
+\par 
+\par \lang1031\f0   Gibt Daten als ASCII-Datein aus, jede Kategorie mit Nummer auf neuer Zeile, 
+\par \f1   l\'e4ngere Kategorien werden bei 66 Zeichen umgebrochen und auf der Fortsetzungszeile einger\'fcckt.\f0 
+\par \lang1033\f5 
+\par   --------- \b Konstanten\b0  -------------------------------------------- 
+\par 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 zl=66    \lang1031\f0\tab\f1 Zeilenl\'e4nge\lang1033\f5 
+\par zi=4\lang1031\f0   \tab\f1 4 Zeichen Einr\'fcckung bei Folgezeilen\lang1033\f5 
+\par  zi=5       \lang1031\f0\tab\f1 bei 3stelligem Schema  (einzige \'c4nderung!!!)\lang1033\f5 
+\par zm=0    \lang1031\f0\tab kein Seitenumbruch (fortlaufende Ausgabe)\lang1033\f5 
+\par ae=13 10    \lang1031\f0\tab Zeilenvorschub am Aufnahme-Ende\lang1033\f5 
+\par fl=0 \lang1031\f0\tab Listenstruktur (keine Karten)\lang1033\f5 
+\par ks=0\lang1031\f0\tab Startpos. 0  (= Zeichen '#') innerhalb jeder Kategorie\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   ks=1\lang1031\f0   setzen, wenn '#' wegfallen soll)\lang1033\f5 
+\par   ks=4\lang1031\f0   wenn nur der Text, nicht die Kategorienummer auszugeben ist (ks=5 bei 3stell. Schema)\lang1033\f5 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 ke=C        \lang1031\f0\tab Kategorie-Ende: Zeilenvorschub\lang1033\f5 
+\par dx=1        \lang1031\f0\tab damit man beim Testen auch die Steuerzeichen auf dem 
+\par             \tab\f1 Bildschirm sieht. (Ansonsten nicht n\'f6tig)\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   ----------------------------------------------------------------- 
+\par 
+\par   ********* \b Kategorieliste\b0  **************************************** 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\b\f0\tab Entweder\b0 :\lang1033\f5 
+\par ## \lang1031\f0\tab\f1 s\'e4mtliche Kategorien ausgeben in interner Reihenfolge\f0 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274         \tab\f1 falls nicht alle gebraucht oder gew\'fcnscht werden:\f0 
+\par         \tab\f1 Weglassungen m\'f6glich: Kategorienummern mit / hier anf\'fcgen, z.B.\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   /89\lang1031\f0    dann wird #89 weggelassen\lang1033\f5 
+\par   /9..\lang1031\f0   dann wird die ganze Gruppe #9 weggelassen\lang1033\f5 
+\par 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\b\f0\tab oder\b0 : falls nur ganz bestimmte gebraucht werden: hier eine Liste der auszugebenden Kategorien eintragen (dann  ##  beseitigen!) 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274         z.B.\lang1033\f5 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   #20\lang1031\f0\tab\f1 Hat man oben ks=4 (bzw. ks=5), dann mu\'df man hier geeignete Pr\'e4fixe\lang1033\f5 
+\par   #40\lang1031\f0\tab\f1 vor die Kategorien setzen lassen. Das k\'f6nnte z.B. so aussehen:\lang1033\f5 
+\par   #74\lang1031\f0\tab #40 "AU: "   bzw.   #20 "TI: "\lang1033\f5   
+\par   #75\lang1031\f0\tab\f1 Je nach L\'e4nge dieser Pr\'e4fixe m\'fc\'dfte man oben den Wert ki heraufsetzen.\lang1033\f5 
+\par   #87\lang1031\f0\tab\f1 damit Fortsetzungszeilen bei l\'e4ngeren Kategorien richtig einger\'fcckt werden.\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   #90 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274         \lang1031\f0\tab dann werden nur diese Kategorien ausgegeben\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   ******************************************************************* 
+\par 
+\par \f9   Code-Umwandlungen: p-Befehle bei Bedarf hier anf\'fcgen oder mit Befehl t hinzuladen\lang1031\f0 
+\par 
+\par \b\f2\fs28 10.4.5  Typ Result : R-0.APR\b0\f0\fs20 
+\par 
+\par Dieses Beispiel zeigt zugleich das Verfahren, wie man rechnerische \b Auswertungen\b0\f1  durchf\'fchrt. Ergebnismengen oder auch eine gesamte Datenbank werden, um z.B. eine Summierung mit Durchschnittsberechnung vorzunehmen, durchgearbeitet wie bei einem Export, nur da\'df die Exportparameterdatei die einzelnen Datens\'e4tze nicht in eine Ausgabedatei schreibt, sondern lediglich Berechnungen anstellt. Erstens kommen also \b\f0 Rechenbefehle\b0  (-\f7\'d8\f0  10.2.6.6) zum Einsatz. Zweitens braucht man Anwendervariablen (-\f7\'d8\f1  10.2.6.3), um Zahlen von einem Datensatz zum n\'e4chsten aufbewahren und immer weiter verrechnen zu k\'f6nnen. Am Ende dann wird auch noch etwas ausgegeben, aber kein Datensatz, sondern eben die in den Anwendervariablen erzeugten Rechenwerte. Wie das im einzelnen aussieht, zeigt der Prototyp R-0.APR, der die Seitenzahlen und Erscheinungsjahre aller B\'fccher summiert und am Ende die Durchschnittswerte ausrechnet. Unsinn? In den Beispieldaten, und an denen k\'f6nnen Sie es ja zun\'e4chst nur ausprobieren, sind keine anderen Zahlenangaben zu finden. Die \'dcbertragung auf andere Kategorien, die sich f\'fcr sinnvolle Berechnungen eignen, f\'e4llt mit Hilfe dieses Prototyps nicht schwer.\f0 
+\par \lang1033\f5 
+\par   Summierung und Durchschnittsbildung von Kategorieinhalten 
+\par \f6   Prototyp f\'fcr den Exporttyp RESULT\f5 
+\par 
+\par pn="Seitensumme, Prototyp RESULT" 
+\par 
+\par \lang1031\f1   Gibt nichts aus, sondern addiert nur. Erst der Fu\'dfabschnitt f\'fchrt eine Ausgabe durch, siehe unten\lang1033\f5 
+\par 
+\par   --------- \b Konstanten\b0  -------------------------------------------- 
+\par \pard\fi-1900\li1900\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 ff=2     \lang1031\f0\tab\f1 um Kopf- und Fu\'dfabschnitte zu aktivieren\lang1033\f5 
+\par zm=0\lang1031\f0\tab\f1 damit der Fu\'dfabschnitt erst ganz am Ende ausgef\'fchrt wird\lang1033\f5 
+\par \pard\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274   ----------------------------------------------------------------- 
+\par \pard\tx317\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-316\li316\tx317\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \lang1031\f0\tab\f1 Es sollen die Seitenzahlen addiert werden, wobei F\'e4lle mit weniger als 10 Seiten nicht mitgerechnet, sondern getrennt gez\'e4hlt werden  (z.B. kann dabei sowas wie #77 Vol.1-5  vorkommen, was also keine Seitenzahl ist! Unteraufnahmen werden mit verarbeitet!)\f0 
+\par \tab\f1 Ferner soll die kleinste und die gr\'f6sste Seitenzahl ermittelt und der Durchschnitt berechnet werden.\f0 
+\par \tab Die Erscheinungsjahre sollen ebenfalls addiert und ihr Durchschnitt ausgegeben werden.\lang1033\f5 
+\par \pard\tx317\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par   !!!!!!!!!!!!!!!!!!!!!   \b\f6 Anpassungen f\'fcr andere Zwecke :\b0\f5  !!!!!!!!!!!!!!!!!!! 
+\par \f6   !  Setzen Sie f\'fcr #76 und #77 die Kategorien ein, die Sie addieren wollen.!\f5 
+\par   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+\par   
+\par \lang1031\f0    ak-Befehle: keine\lang1033\f5 
+\par   ************* \b Kategorieliste\b0  ************************************ 
+\par 
+\par #76 x">1449" x"+ej" =ej 
+\par #76 x">1449" x"=1" x"+nj" =nj 
+\par \pard\fi-1900\li1900\tx317\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274      \lang1031\f0\tab wenn >1449, dann Ersch.Jahr addieren,   #uej = #uej + #76\lang1033\f5 
+\par    \lang1031\f0\tab\f1 und #unj um 1 erh\'f6hen  #unj = #unj + 1\lang1033\f5  (nur dann, wenn #76 existiert!) 
+\par \pard\tx317\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-1900\li1900\tx317\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274      \lang1031\f0\tab\f1 Der Befehl  Z  bewirkt, da\'df die Zeilen jeweils nur ausgef\'fchrt werden, aber keine Ausgabe bewirken. D.h. es werden nur die Anwendervariablen bedient, die Zwischenergebnisse aber nicht ausgedruckt.\lang1033\f5 
+\par      \lang1031\f0\tab (Z macht dasselbe wie e0)\lang1033\f5 
+\par \pard\tx317\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-2233\li2233\tx317\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #77 +M x"<10" Z\lang1031\f0\tab\tab\f1 Sprung nach #-M, wenn Sonderfall #77 < 10 (Z mu\'df sein, weil sonst der Inhalt von #77 ausgegeben wird, wenn der Vergleich zutrifft; Z unterdr\'fcckt das. Bei den folgenden Anweisungen ist Z nicht n\'f6tig, denn der Befehl '=' macht nur eine Zuweisung und beendet dann die Anweisung ohne Ausgabe des Textes)\lang1033\f5 
+\par #77 x"+su" =su  \tab Seitenzahl addieren:   #usu = #usu + #76 , 
+\par #unr x"+1" =nr  \lang1031\f0\tab\f1 #unr um 1 erh\'f6hen\lang1033\f5 
+\par #77 x">gw" =gw  \lang1031\f0\tab\f1 wenn gr\'f6\'dfer als bisheriger gr\'f6\'dfter Wert:    #ugw=#77\lang1033\f5 
+\par #77 x"<kw" =kw  \lang1031\f0\tab wenn kleiner als bisheriger kleinster Wert: #ukw=#77\lang1033\f5 
+\par \pard\tx317\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #+# 
+\par 
+\par \pard\fi-2232\li2232\tx317\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #-M\lang1031\f0\tab\tab\f1 Z\'e4hlung der Sonderf\'e4lle\lang1033\f5 
+\par \pard\fi-2233\li2233\tx317\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #uk1 x"+1" =k1  \lang1031\f0\tab\f1 #uk1 um 1 erh\'f6hen\lang1033\f5 
+\par \pard\tx317\tx1901\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #+# 
+\par 
+\par   *********** \b\f6 Kopf- und Fu\'dfabschnitte\b0\f5  ********************************* 
+\par 
+\par   \lang1031\b\f0 Kopfteil:\b0   Initialisierung der Variablen\lang1033\f5 
+\par \pard\fi-2232\li2232\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031\f0\tab\tab #dt wird als nur Hilfskategorie benutzt, weil sie immer existiert\lang1033\f5 
+\par \pard\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 K 
+\par \pard\fi-2233\li2233\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #dt x"=0" =su  \lang1031\f0\tab\f1 #usu f\'fcr Summe der Seitenzahlen\lang1033\f5 
+\par     \lang1031\f0\tab das bedeutet: nimm den Inhalt vom #dt als Variable, weise ihr den Wert 0 zu und speichere diesen in #usu   (etwas indirekt, aber nur so geht es)\lang1033\f5 
+\par             \lang1031\f0\tab Variablen:\lang1033\f5 
+\par #dt x"=0" =nr  \lang1031\f0\tab\f1 #unr f\'fcr Z\'e4hler der tats\'e4chlich addierten F\'e4lle\lang1033\f5 
+\par #dt x"=0" =ej  \lang1031\f0\tab\f1 #uej f\'fcr Summe der Ersch.jahre\lang1033\f5 
+\par #dt x"=0" =nj  \lang1031\f0\tab\f1 #unj f\'fcr Anzahl der addierten Erscheinungsjahre\lang1033\f5 
+\par #dt x"=0" =gw  \lang1031\f0\tab\f1 #ugw f\'fcr gr\'f6\'dften Wert\lang1033\f5 
+\par \pard\fi-3073\li3073\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #dt x"=99999" =kw  \lang1031\f0\tab\f1 #ukw f\'fcr kleinsten Wert\lang1033\f5 
+\par \pard\fi-2233\li2233\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #dt x"=0" =k1  \lang1031\f0\tab\f1 #uk1 f\'fcr Anzahl der F\'e4lle kleiner als 10\lang1033\f5 
+\par \pard\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par   ************************************************************************* 
+\par 
+\par    \b\f6 Fu\'dfteil:    \lang1031\b0\f0  Ausgabe der Ergebnisse\lang1033\f5 
+\par \pard\fi-2233\li2233\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274          \lang1031\f0\tab\f1 (Kontrolle mit Befehl #a im Editor m\'f6glich!)\lang1033\f5 
+\par \pard\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 F 
+\par #t\{ "Ergebnisse: " \} 
+\par \pard\fi-4513\li4513\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #usu C e"." r7 p"Summe:  " \lang1031\f0\tab\tab e"." schneidet den Dezimalteil ab\lang1033\f5 
+\par #unr C e"." r7 p"Anzahl: "\lang1031\f0\tab\tab\f1 r7 f\'fcllt links mit Blanks auf 7 Stellen\lang1033\f5 
+\par \pard\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-4513\li4513\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f6 #ugw C C x"*1" e"." r6 p"gr\'f6\'dfte:  "\lang1031\f0\tab x"*1" wird gemacht, weil die Werte\lang1033\f5 
+\par #ukw C x"*1" e"." r6 p"kleinste:"\lang1031\f0\tab\f1 noch Buchstaben enthalten k\'f6nnten, die werden dadurch beseitigt\lang1033\f5 
+\par \pard\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #uk1 C e"." r6 p"unter 10:" 
+\par #usu C C x"/nr" x"r2" r9 p"Durchschnitt: " 
+\par \lang1031\f0      nimm Inhalt von #usu, teile durch #unr, runde auf 2 Stellen\lang1033\f5 
+\par #uej C C x"/nj" e"." r6 "durchschn. Ersch.Jahr: " 
+\par \lang1031\f0 
+\par \b So arbeitet man damit\b0 
+\par \f1 Jetzt zeigen wir noch, wie man mit so einer Parameterdatei umgeht, d.h. wie man denn die Berechnung wirklich durchf\'fchrt. Am schnellsten l\'e4\'dft es sich so ausprobieren:\f0 
+\par Geben Sie auf dem Verzeichnis C:\\ALLEGRO den Befehl 
+\par 
+\par \b\f5 srch -f4 -dbeispiel -er-0/liste -v0 -m0 -s"berlin/muenchen"\b0\f0 
+\par 
+\par \f1 Es erscheint die Liste der CAT_*.ALD-Dateien. Setzen Sie '+' vor CAT_1 und CAT_2 und dr\'fccken Sie <Enter>. Nun lehnen Sie sich bequem zur\'fcck. Bald darauf kommt die Vollzugsmeldung. Mit dem Befehl\f0 
+\par \b\f5 v liste\b0\f0 
+\par sehen Sie die Ergebnisse. Der Suchbegriff\b\f5  -s"berlin/muenchen"\b0\f1  kann durch jeden anderen ersetzt werden. In diesem Fall wurden also diejenigen B\'fccher summiert, in deren Datens\'e4tzen die W\'f6rter Berlin oder M\'fcnchen vorkommen. So sieht die Ergebnisliste aus:\f0 
+\par \lang1033\f5 
+\par Ergebnisse: 
+\par Summe:    17253 
+\par Anzahl:      52 
+\par 
+\par \f6 gr\'f6\'dfte:    1218\f5 
+\par kleinste:    46 
+\par unter 10:     6 
+\par 
+\par Durchschnitt:    331.79 
+\par 
+\par durchschn. Ersch.Jahr:   1971 
+\par \lang1031\f0 
+\par \f1 F\'fcr Auswertungen, die man regelm\'e4\'dfig durchf\'fchren will, stellt man ein Batchfile zusammen, dessen Kern ein SRCH-Aufruf wie der gerade gezeigte ist. Angebunden an das \lang1033\b\i\f0 CockPit\lang1031\b0\i0\f1  reduziert sich dann die Auswertung auf die Wahl eines Men\'fcpunktes.\f0 
+\par 
+\par Und so macht man es im Schnellzugriff: 
+\par \pard\fi-316\li316\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 1.\tab\f1 Parameterdatei laden: mit <Shift+F4> im Anzeigemen\'fc sucht man sich die R-0.APR und l\'e4\'dft sie laden, als Exportdatei gibt man NUL, weil man keine Ausgabedatei zu schreiben hat.\f0 
+\par 2.\tab Ergebnismenge bilden, die verrechnet werden soll 
+\par \pard\fi-318\li318\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 3.\tab Von irgendeiner Titelanzeige aus \b F4\b0  geben, um die Ergebnismenge durchrechnen zu lassen. 
+\par \pard\fi-316\li316\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 4.\tab Wenn "erledigt" kommt: \b F2 3 F\b0  eingeben: Ergebnisse werden angezeigt. 
+\par \pard\fi-360\li360\tx360 1.\tab Mit \b F2 3 K\b0  setzt man die Werte wieder auf 0 (Kopfabschnitt wird durchgearbeitet), und ein neuer Durchlauf mit anderer Ergebnismenge kann beginnen. 
+\par \pard 
+\par \pard\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par Wenn Sie nun eigene Auswertungen programmieren wollen, gehen Sie so vor: 
+\par \pard\fi-316\li316\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 1.\tab Vom \lang1033\b\i CockPit\lang1031\b0\i0\f1 -Men\'fc "Dateien / Export-Parameter" suchen Sie sich die Datei R-0.APR.\f0 
+\par 2.\tab\f1 Das Untermen\'fc hat einen Punkt "neue Version erstellen". Diesen w\'e4hlen Sie an.\f0 
+\par 3.\tab\f1 Die Frage nach dem Namen f\'fcr die neue Datei beantworten Sie mit einem neuen Namen, der mit\b\f5  R-\b0\f1  beginnen sollte, damit die Zugeh\'f6rigkeit zum Typ RESULT immer sofort ersichtlich ist.\f0 
+\par 4.\tab Eine Kopie von R-0.APR wird zum Bearbeiten vorgelegt. Wenn es nur um Summierungen und Durchschnittsbildungen, aber mit anderen Kategorien geht, ist nicht viel zu tun. Abweichende Aufgaben erfordern evtl. einige Kenntnisse des Parametrierens, besonders der Rechenbefehle (-\f7\'d8\f0  10.2.6.6). 
+\par 5.\tab Die neue Parameterdatei kann nun auf dieselbe Weise wie oben gezeigt benutzt werden. 
+\par \pard\tx317\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i 
+\par Hinweis:\i0\f1  F\'fcr \b\i\f0 a99\b0\i0  gibt es als Teil des ORDA-Paketes auch Beispiele, wie man mit der FLEX-Technik Ergebnismengen durchrechnen kann. Man startet die DEMO-Datenbank und gibt im Schreibfeld den Befehl \f5  h orda \f1 . Es erscheint ein Men\'fc, auf dem man "Kontingent-Berechnung" (kont.flx) oder "Bestellungen eines Lieferanten" (lief.flx) w\'e4hlt.\f0 
+\par 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` 
+\par \pard 
+\par ?Vorangehender Teil=h ac10-12 
+\par ?Fortsetzung=h ac10-14 
+\par 
+\par }
+ 

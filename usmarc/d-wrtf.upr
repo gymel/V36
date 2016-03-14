@@ -1,0 +1,517 @@
+ alcarta Online catalog display of MARC records
+ Internal display at mark #-(
+ D-WRTF.UPR    981208
+
+pn="alcarta display" 
+
+zl=72	    line length
+zm=0        no page breaking
+  
+ae=""       no particular record end controls
+ 
+fl=0      form length : nr of lines per card
+ ff=2        2 foot lines
+fb=""
+ fb=13 10 10 10   3 additional line feeds at end of card
+
+  for continuation cards (overlong records)
+ fa=" ..." $ &66 K ")"     put card# to position 66, followed by ")" 
+
+   ke=""  don't use this for Windows.
+
+dx=1
+
+_?UNAUTHORIZED__
+_UNAUTHORIZED__
+
+td-rtf
+td
+
+
+
+4=C
+
+
+#-A
+#153 +C e0
+
+#dt dhd e0     clear #uhd
+
+   call#
+
+ #050 { %11 } b"a" ,"_?_ _"     LC Class    for the call#, we set line width to 12
+ #050 b C           Cutter
+
+ #050 p{ %76 $ #13 &14 } e0   line width 76, goto 1st line, indentation 13, pos 14
+
+#050 a p99 p71      call# in boldface (99) red (71)
+#050 b p" "
+#t98
+#t76
+#t4
+  now the text
+
+#uhd F"," P{ C C }       if we have #uhd, it is an added entry heading
+#100 a p99 F",. " P":" P98
+
+#110 a p99 P98
+#111 a p99 P98
+
+#t4     new line
+
+#130 a p99 p"[" P"]" P{ t98 C }     uniform title
+#240 +#240 a F".," p"["              uniform title
+#100 t p"[" P"]" 
+#100 f p" (" P")" 
+#100 t p4 e0
+#240 m F"," p", "
+#240 n F"," p", "
+#240 r F"," p", "
+#240 p F",." p" <" P">"      part
+#240 l p" (" P")"      language
+#240 p"] " e2 P4
+#>M
+
+#400 b"a" C ,"_v_ ; _" e"=" ,"_t_: _" ,"_?_ / _" ,"_; ;_;_" p"(" P")"
+#440 b"a" C ,"_v_ ; _" e"=" ,"_?_ / _" ,"_; ;_;_" p88 p"(" P")" P87
+#490 b"a" C ,"_v_ ; _" e"=" ,"_?_ / _" ,"_; ;_;_" p"(" P")" p88 P87
+
+#020 C B"a" B"z" "ISBN " e5
+#020 >I               hyphenation
+#020a p" = " e3
+#020a >I              same for 2nd ISBN
+
+#500 ++ a p4 m". "
+#504 C a
+#505 +#505X I6,  I6,1 e0
+#505 ++ C m{ C } a "CONTENTS: " { &4 }
+#t4
+#+V
+
+#505X
+#505 ++ >V m>v
+
+#t4        1 new line
+#-V
+#001 +@ c"," e"," |90     upload main rec, if this is a subrec
+ #787 +@ w B")" f" " |90        link may also be in 787
+#+B
+
+#-@    we got a main rec now
+#uY0 dY~ dZ~ e0    delete all #uZ and #uY
+
+#nr p"This is contained in:!" e"!" =Y0 
+#uY0 p{ " " t97 t74 t99 } P{ t98 t76 t96 " " C }
+#001 e"," e" " p"f ctn " =Z0
+
+#>M
+#</    unload main rec
+#t4
+#-B
+#t{ C &0 #0 }
+
+#dt p"1" e1 drn arn   set counters
+#dt p"1" e1 dan aan
+
+  Subject headings (arabic numerals)
+#600 +#600 p{ t88 "[Subjects:]" t87 } e0
+#610 +#610 p{ t88 "[Subjects:]" t87 } e0
+#650 +#650 p{ t88 "[Subjects:]" t87 } e0
+#600 ++ >P m>P
+#610 ++ >S m>S
+#650 ++ >T m>T
+
+#</     in case we have an uploaded main rec
+
+#700. +#700x e0
+#710. +#700x e0
+  #240. { C &0 } p"[Added entries:]!" e"!" 
+#001 +#700y e" " P"," |98     are there subrecords? simple type
+#001 +#700y e" " P"_" |98     type nnn_t,v    t=type  v=vol#
+
+#+R
+#700x
+#t{ C &0 t88 "[Involved:]" t87 }
+
+
+  added entries (roman numerals)
+#700. ++ >A m>A
+#710 ++ >B m>B
+
+#711 ++ >B m>B
+ #245 i5,1 >r
+ #245 i5,1 p"Title. " e7
+
+#nr dsu e0
+
+#700y
+
+#001 +#700z e" " P"," |92     are there subrecords?
+#001 +#700z e" " P"_p" |92
+
+#+R
+
+#700z
+#uan x"=1" e"." =an
+#t{ C C &0 t88 "[Contains these parts:]" t87 }
+
+#-Q
+#nr dsr e0
+#787 +#100 v F"." P". " asr
+  #001 b"," P". " asr
+#100 P"t" Asr
+#240 +q B"a" e"?UN" Asr
+#245 +q a F"/:. " Asr
+#245 b F"/: " Asr
+
+#-q
+#260 a F": ." p". - " Asr
+#300 a F": ." p". - " Asr
+#t{ C &0 }
+#001 c"," >b e0
+#usr e""
+#usr b"a" e"d" e"w" e"=" ,"_,__" ,"_e_ [_" ,"_?_ -- _" F".,"
+#usr d p" (" P")"
+#usr b"d" e"=" e"w" b"?" p" -- " ,"_e_ [_" ,"_,__" ,"_?_ -- _"
+#urn x"=1" e"." =rn
+#700. ++ >A m>A
+
+#710 ++ >B m>B
+
+#711 ++ >B m>B
+
+#001 c"," e"," P"," =su e0
+#787 w B")" f" " P"_p" =su e0
+#<
+  #</    fuer WWW!
+
+#usu +Q |93     more subrecs? then loop
+
+
+#-R    show relationships
+#t{ &0 #0 }
+#787. ++ >R m>R
+
+
+
+  Show subordinate relations
+#001 f" " e" " P"_0" |98
+#ux9 c"_0" { C t78 "There are equivalent items" t76 } e0
+#001 f" " e" " P"_2" |98
+#ux9 c"_2" { C t78 "There are later editions" t76 } e0
+#001 f" " e" " P"_9" |98
+#ux9 c"_9" { C t78 "There are translations" t76 } e0
+#001 f" " e" " P"_4" |98
+#ux9 c"_4" { C t78 "There are amplifications" t76 } e0
+#001 f" " e" " P"_5" |98
+#ux9 c"_5" { C t78 "There are adaptations" t76 } e0
+#001 f" " e" " P"_6" |98
+#ux9 c"_6" { C t78 "There are records of performances" t76 } e0
+#001 f" " e" " P"_6" |98
+#ux9 c"_p" { C t78 "There are parts" t76 } e0
+
+#+#
+
+  Classification record
+
+#-C
+#153 dtb dx7 a { t78 "Class: " t76 } 
+#153 c " - "
+#153 C b"h" e"j" ,"_h_ / _"
+#153 C b"j" " -- "
+
+#763 ++ p>C m>D
+
+#761 y =tb 
+#761 z e"," p" T " Atb
+#utb |78
+
+#-7
+#t{ C }
+#ux7 b" T " b" " x"*1" F"0" F"." =h7
+#153 a x"+h7" F"0" F"." { &7 #35 }
+#ux7 +8 b" T " b" " b"-" x"*1" F"0" F"." =h7
+
+#ux7 b" T " b" " f" " b" " p"  "
+#utb +7 |79
+
+#-8
+#153 a x"+h7" F"0" F"." p"-"
+#ux7 b" T " b" " f" " b" " b" " p"  "
+#utb +7 |79
+
+
+#680 ++ i { C &0 #0 } m"; "
+
+#+#
+  ****** END of MAIN PART *******
+
+  ****** special headings *******
+
+#-P
+#u1 a =hd
+#+B
+
+#-S
+#u1 a =hd
+#+B
+
+
+#-T      title added entry
+#u1 +- I5,1 e0         if pos. 5 = 1: nothing
+#u1 a U =hd           only if indic 1 is 1, store it to #uhd, then -> #-A
+#+B
+
+
+
+
+#-`    Flips
+#u1 +0 i7,0 e0
+#u1 +1 i7,1 e0
+#u1 +2 i7,2 e0
+#+#
+
+
+#-0
+#uxb p"|" =pr e0    for switching back 
+#uxa Apr
+#001 +# c"," e"," p"|9"
+#787 w B")" f" " p"|9"
+#+#
+
+#-1
+#upr 
+#+#
+
+#-2       Index 2
+!100 a y2 p"?|2"
+!240 a u p": "
+#+#
+
+
+   Subroutines
+
+#(C   Subarrangement of class
+#t{ C t78 "Internal subarrangement: " t76 }
+#(D
+#t4
+ #cc b"8" e""
+#cc 56
+#cc i " - "
+#cc a f"." ". "
+#cc j "  "
+
+#)D
+#)C
+
+#(M      ISBD matter
+#245 B"a" e"c" e"h" F":=/. " ,"_b_ : _" ,"_. : _ : _" ,"_ : :_ :_" ,"_?_ _"
+#245 h f"[" p" [" F" :/]" P"]"
+ #245 +#245X c"=" p" = " e3
+ #245 b p" : " e3
+#245X
+  #wh                      breakpoint for continuation cards
+ #245 b F"./ "
+#245 c " / " F". "
+#wh
+#t{ "." }                put a "." after all the title stuff
+#250 a " - "            edition statement
+  the imprint is a bit tricky:
+
+#uim dim e0
+#260 y0 b2 =im
+#uim C ,"_a_ ; _" ,"_; ;_;_" ,"_b_ : _" ,"_ : :_ :_" ,"_c_, _" ,"_,, _, _" ,"_, ,_,_" 
+              this means: replace "a" by " ; "
+#300 a p" - " F" :;"
+#300 b " : " F", ;"
+#511 a E70 C
+#511 a b70 p"..." e3   if longer than 70 chars
+#)M
+
+#(P
+#>a    numeral
+#cc b"a" e"d" e"=" ,"_e_ [_" ,"_?_ -- _" F",. " ,"_, -_ -_" =pn
+#upn p{ " " t99 t74 } P{ t76 t98 " " }
+#upn =Y~
+#upn p"?|1" =Z~
+#cc d F"." p" (" P")"
+#cc b"d" e"=" b"?" p" -- " ,"_e_ [_" ,"_?_ -- _"
+#)P
+ 
+#(S     Subj headings
+#>a
+#cc b"a" e"=" F"." ,"_e_ [_" ,"_,__" ,"_?_ -- _" 
+#)S
+ 
+#(T     Subj headings
+#>a
+#cc b"a" e"=" F"., " ,"_e_ [_" ,"_,__" ,"_?_ -- _" =pn
+#upn p{ " " t99 t74 } P{ t76 t98 " " }
+#upn =Y~
+#upn p"?|3" =Z~
+
+#)T
+ 
+
+#(A    added entries persons
+#>r
+#cc B"a" e"" F",. " =pn
+#upn p{ " " t99 t74 } P{ t76 t98 " " }
+#upn =Y~
+#upn p"?|1" =Z~
+#cc d p" (" P")"
+#cc B"a" B"d" e"=" e"w" b"?" p" -- " ,"_e_ [_" ,"_,__" ,"_?_ -- _"
+#)A
+ 
+#(B    Corp bodies
+#>r
+#cc B"a" e"=" e"w" ,"_e_ [_" ,"_,__" ,"_?_ -- _" F",. " =pn
+#upn p{ " " t99 t74 } P{ t76 t98 " " }
+#upn =Y~
+#cc a p"?|6" =Z~
+#)B
+ 
+
+#(a    Arabic numerals output for subject tracings
+#t{ C #8 &0 }
+  #uan x">1" p". " e2
+#uan P". "
+#uan x"+1" e"." =an
+#)a
+
+#(b
+#uan r2 P". "
+#uan x"+1" e"." =an
+#)b
+
+#(r    Roman numerals output for added entries
+ #urn x">1" p". " e2     write ". " if number > 1
+#t{ C #8 &0 }
+#urn x"==1" p"I. +" e"+" r8
+#urn x"==2" p"II. +" e"+" r8
+#urn x"==3" p"III. +" e"+" r8
+#urn x"==4" p"IV. +" e"+" r8
+#urn x"==5" p"V. +" e"+" r8
+#urn x"==6" p"VI. +" e"+" r8
+#urn x"==7" p"VII. +" e"+" r8
+#urn x"==8" p"VIII. +" e"+" r8
+#urn x"==9" p"IX. +" e"+" r8
+#urn x"==10" p"X. +" e"+" r8
+#urn x"==11" p"XI. +" e"+" r8
+#urn x"==12" p"XII. +" e"+" r8
+#urn x"==13" p"XIII. +" e"+" r8
+#urn x"==14" p"XIV. +" e"+" r8
+#urn x"==15" p"XV. +" e"+" r8
+#urn x"==16" p"XVI. +" e"+" r8
+#urn x"==17" p"XVII. +" e"+" r8
+#urn x"==18" p"XVIII. +" e"+" r8
+#urn x"==19" p"XIX. +" e"+" r8
+#urn x"==20" p"XX. +" e"+" r8
+#urn x"==21" p"XXI. +" e"+" r8
+#urn x"==22" p"XXII. +" e"+" r8
+#urn x"==23" p"XXIII. +" e"+" r8
+#urn x"==24" p"XXIV. +" e"+" r8
+#urn x"==25" p"XXV. +" e"+" r8
+#urn x"==26" p"XXVI. +" e"+" r8
+#urn x"==27" p"XXVII. +" e"+" r8
+#urn x"==28" p"XXVIII. +" e"+" r8
+#urn x"==29" p"XXIX. +" e"+" r8
+#urn x"==30" p"XXX. +" e"+" r8
+#urn x"==31" p"XXXI. +" e"+" r8
+#urn x"==32" p"XXXII. +" e"+" r8
+#urn x"==33" p"XXXIII. +" e"+" r8
+#urn x"==34" p"XXXIV. +" e"+" r8
+#urn x"==35" p"XXXV. +" e"+" r8
+#urn x"==36" p"XXXVI. +" e"+" r8
+#urn x"==37" p"XXXVII. +" e"+" r8
+#urn x"==38" p"XXXVIII. +" e"+" r8
+#urn x"==39" p"XXXIX. +" e"+" r8
+#urn x"==40" p"XL. +" e"+" r8
+#urn x"+1" e"." =rn
+#)r
+
+#(R    relationship
+#cc +r i6,5 w B")" f" " p{ C t78 "Adaptation of: " t76 } |90
+#cc +r i6,6 w B")" f" " p{ C t78 "Performance of: " t76 } |90
+#cc +r i6,p w B")" f" " p{ C t78 "Is part of: " t76 } |90
+#)R
+
+#-r
+#100 a
+#240 +s a p": [" P"]"
+#245 +s a p": [" P"]"
+#100 t p": [" P"]"
+#100 f p" (" P")"
+#-s
+#260 c p" (" P")"
+#</
+#)R
+
+    here comes one annoyingly tricky part:
+
+#(I     ISBN hyphenation subroutine
+       the #0201, #0202 ... just serve as jump labels
+#cc a e1 P"-"     1st digit
+#cc +#0201 a b1 e1 c"0" e0    length of 2nd part dependes on 2nd digit
+#cc +#0201 a b1 e1 c"1" e0    so we check this out
+#cc +#0202 a b1 e1 c"2" e0
+#cc +#0202 a b1 e1 c"3" e0
+#cc +#0202 a b1 e1 c"4" e0
+#cc +#0202 a b1 e1 c"5" e0
+#cc +#0206 a b1 e1 c"6" e0
+#cc +#0206 a b1 e1 c"7" e0
+#cc +#0206 a b1 e1 c"8" e0
+#cc +#0209 a b1 e1 c"9" e0
+
+#cc +^ a b1 e9
+
+#0201
+#cc a b1 e2 P"-"
+#cc a b3 e6 P"-"
+#cc a b9 e1
+#)I
+
+#0202
+#cc a b1 e3 P"-"
+#cc a b4 e5 P"-"
+#cc a b9 e1
+#)I
+
+#0206
+#cc a b1 e4 P"-"
+#cc a b5 e4 P"-"
+#cc a b9 e1
+#)I
+
+#0209
+#cc a b1 e6 P"-"
+#cc a b7 e2 P"-"
+#cc a b9 e1
+#)I
+
+#(V   vol. 505
+#t{ C &5 "VOLUMES: " }
+#cc v F". " P". "
+#cc a 
+#)V
+
+#(v
+#t4
+#cc v F". "
+#cc a p". "
+
+#)v
+
+
+#-(
+#t{ s0 &0 #7 %66 "{ \f1 \fs16 " C }   font 1, 8 point
+##
+#t{ C }
+
+#+#
+
+
+
+p © " flat"
+
+q A/Z a

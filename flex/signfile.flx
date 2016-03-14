@@ -1,0 +1,42 @@
+  SIGNFILE.FLX : Signalfile lesen und schreiben
+  2001-03-18
+  Wenn diese Datei mit "1" beginnt, kommt kein a99/alcarta mehr rein
+
+var m
+if ="alc" end
+
+var D B ".sgf"
+  oeffnen
+open 
+  1 Zeile lesen und wieder schliessen
+get iV
+close
+  beginnt es mit 1 ? Dann --> :zu
+if "1" jump zu
+  nein
+yesno Zugang zur Datenbank momentan FREI. Sperren?
+  Sperre gewuenscht? dann --> :sperr
+if yes jump sperr
+end
+
+:zu
+yesno Zugang zur Datenbank momentan GESPERRT. Freigeben?
+if yes jump frei
+end
+
+:sperr
+var D B ".sgf"
+open x
+wri "1 Momentan kein Zugang, sorry"
+jump schluss
+
+:frei
+var D B ".sgf"
+delete
+    oder weniger gut:
+  open x
+  wri "0 FREI"
+
+:schluss
+close x
+h org

@@ -1,0 +1,93 @@
+
+Verlautbarung 140 der Entw.Abt.                             2000-12-04
+-------------------------------
+
+FLEXen ohne Ende
+----------------
+Zwar ist es der falsche Weg, mit FLEX wiederum eine neue Sprache 
+eingefuehrt zu haben. Besser waere, man haette alles auf XML und
+die nutzerseitige Programmierung auf Perl oder Python umgestellt,
+ferner konsequente Client/Server-Technik mit relationaler Daten-
+bankgrundlage und nutzungsseitig nur noch browser-basierte 
+Schnittstellen.
+Das erwies sich als kurz- bis mittelfristig nicht durchfuehrbar,
+wie schon berichtet und auf dem Expertentreffen dargestellt:
+   http://www.allegro-c.de/allegro/ex2000f.htm
+
+Wir mussten daher zuerst einmal die FLEX-Technik samt Doku soweit
+vervollkommnen, dass man damit moeglichst weit kommt und die
+Exportsprache als dickster Classico-Stolperstein in vielen Faellen 
+umgangen werden kann.
+Jetzt ist es soweit, dass wir empfehlen koennen, sich als
+Einsteiger zuerst mit dem FLEXen zu befassen. Erst wenn man
+da an Grenzen stoesst, wird man parametrieren lernen muessen. 
+Fuer das Indexieren gilt das allerdings allemal.
+
+FLEX-Verbesserungen und neue Doku
+---------------------------------
+
+1. Rechenbefehle
+----------------
+   Es wird jeweils die Zahl aus dem Arbeitstext extrahiert, auch wenn
+   andere Zeichen davor und dahinter stehen.
+   Mit "var Z" werden nun die Nullen am Ende abgeschnitten, und wenn 
+   es eine ganze Zahl ist, auch der Punkt.
+   Mit "var Zk" dagegen erhaelt man stets genau k Stellen nach dem 
+   Komma, auch wenn es Nullen sind.
+
+2. *.vw
+-------
+   View-Dateien koennen jetzt am Anfang der Zeile auch den Namen 
+   einer  Hilfedatei enthalten, und zwar mit "h " vorweg.
+   (Bisher passiert nichts, wenn da etwas anderes als eine 
+   Satznummer steht)
+   Das sieht so aus:
+
+   h flex | FLEX-Befehle
+
+   Wird diese Zeile ausgewaehlt, erscheint die Hilfedatei FLEXGER.RTF,
+   so als ob man "h flex" im Schreibfeld gegeben haette.
+
+Anwendungsbeispiel:
+Laden Sie sich HELP.LZH herunter, und entpacken Sie es auf 
+C:\allegro\help,
+desgleichen FLEXHELP.ZIP. 
+Dann das aktualisierte Paket a99.lzh auf c:\allegro.
+
+Dann in a99 eingeben:  h flex
+und "Funktionsuebersicht" waehlen.
+Es erscheint die View-Datei flex.vw, und Sie bemerken dann 
+unmittelbar,
+was passiert.
+
+Erweiterte, verbesserte Dokumentation
+-------------------------------------
+Es gibt knapp 80 neue RTF-Dateien, deren Namen jeweils mit "flexl" 
+beginnen. (Sie stecken in flexhelp.zip)
+Diese hat mit viel Fleiss Kollege R. Bartling (Schleswig) erstellt.
+Wir haben daran noch etwas Kosmetik und einige Ergaenzungen 
+vorgenommen.
+Die Uebersichtsliste flex.vw stammt von Kollegin A. Tews, die auch
+noch Beispiele beigesteuert hat.
+Die drei bisherigen FLEX*.RTF-Dateien haben wir inhaltlich mit den
+neuen Dateien abgeglichen und abgestimmt. Die neuen sind 
+ausfuehrlicher und enthalten mehr Beispiele, die alten sind fuer 
+einen zusammenhaengenden Ausdruck besser. In vielen Faellen 
+muessen aber noch Beispiele ergaenzt werden. Da kann jeder mitmachen! 
+Senden Sie uns Vorschlaege dafuer, ebenso andere 
+Verbesserungsvorschlaege. Am besten senden Sie gleich eine 
+entsprechend ueberarbeitete Datei! Aber zuerst an mich, denn die 
+Liste soll nicht mit allerhand Zwischenmeldungen ueberfrachtet 
+werden. Wir fassen die Dinge dann zusammen.
+
+TiP: Wenn man FLEXt, oeffne man sich ein eigenes a99-Fenster, z.B. 
+mit der Demo-Datenbank, nur zu dem Zweck, darin die Doku zu benutzen.
+Dann geht einem das nicht durcheinander mit dem Testen an der 
+eigentlichen Datenbank.
+
+TiP zum Bearbeiten von Hilfedateien:
+Geben Sie ein:
+5 var X ".rtf"\help
+Dann koennen Sie, wenn eine Hilfedatei angezeigt ist, mit Alt+5
+sofort die RTF-Datei zum Bearbeiten laden lassen.
+

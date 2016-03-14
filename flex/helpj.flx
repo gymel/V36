@@ -1,0 +1,143 @@
+  helpj.flx : Hilfetext mit JanaS zeigen
+  2012-08-09  gedacht fuer alte txt-Dateien, die fuer die MessageBox zu breit sind
+  Aufruf:  X helpj <name>,  z.B. X helpj he_ix
+  Sollte stets funktionieren. Erfordert  ad-aw.@pr und ad-aw.@pt
+
+
+  Name am Leerzeichen abschneiden, +in $ht kopieren
+var (e" ")
+ins $ht
+
+// falls P = ".\", dann ist W = ProgDir (Ausnahme)
+
+var P "*"
+if ".\\*" var W "\\*"
+var (F"*")
+ins $p
+
+// in $p steht jetzt ProgDir
+
+  Datei in iV einlesen
+var "F" $p "help\\" $ht
+var
+if not "" jump htm
+
+var "F" $p "help\\" $ht "ger"
+var
+if not "" jump htm
+
+var "Die Datei " $ht " gibt's nicht"
+mes
+end
+
+:htm
+
+  nach ANSI wandeln (sonst stellt JanaS nicht korrekt dar)
+perf ansi
+  in $tx speichern
+ins $tx
+
+  Datei mit gleichem Namen im html-Ordner anlegen
+ var $p "html\\" $ht
+var W "\\helptext" 
+open x
+  und Text reinschreiben
+wri $tx
+close x
+
+if $Jn jump jn
+if $Np jump np
+
+yesno Mit Janas? (Nein: Notepad)
+
+if no jump np
+if can end
+
+var "1"
+ins $Jn
+
+:jn
+if $Js jump jo
+
+  Erste Oeffnung in dieser Sitzung
+var SIZE
+
+// Position fuer das untere rechte Viertel des Display ausrechnen
+
+ins $sz
+
+var $sz (b" " e" ")
+ins $sr
+eval $sr /2
+var (e".")
+ins $sl
+
+var $sz (b" " b" " b" " e" ")
+ins $sb
+// Die Taskleiste unten ist 40 Pixel hoch
+eval $sb /2 -40
+var (e".")
+ins $st
+eval $sb -40
+ins $sb
+
+// und fuer Janas festlegen
+
+var "size " $sl " " $sr " " $st " " $sb
+
+janas
+
+var "1"
+ins $Js
+
+:jo
+  Datei mit JanaS oeffnen
+  var "file:///" $p "html\\" $ht
+  auf html u.U. kein Schreibrecht, deshalb lieber auf W
+var "file:///" W "\\helptext"
+janas
+end
+
+:np
+var "1"
+ins $Np
+  Datei mit notepad oeffnen
+  var "notepad " $p "html\\" $ht "."
+var "notepad " W "\\helptext."
+Call
+
+end
+
+//  UP zum Laden der Param, falls noetig, fuer das Umcodieren der Texte
+:ansi
+// Text umcodieren
+ins $t
+
+// Falls  o.apt  eingebunden, dann -> :asci
+var "„”"
+ansi
+if "äöü" jump asci
+
+// sonst ad-aw.@pr als Exp.Param laden
+
+set dow 2
+var e
+if not "ad-aw" exp p ad-aw
+if no jump pfehler
+
+var $t
+xcode xp
+
+set dow 1
+return
+
+:asci
+var $t
+ansi
+return
+
+:pfehler
+
+mes Parameter ad-aw.@pr mit ad-aw.@pt fehlen
+end
+

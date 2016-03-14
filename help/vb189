@@ -1,0 +1,168 @@
+
+Verlautbarung 189 der Entw.Abt.                          2006-03-26
+-------------------------------
+
+                        V26.2
+                        =====
+           Nur echt mit dem blauen Besenstiel!
+
+1. Hierarchische Untersaetze per FLEX erkennen
+2. Bunte Daten
+3. FLEX: Neuer set-Befehl (UIF-Zeile aendern)
+4. F8 kann hierarchische Saetze trennen
+5. Normal-/Sicherungskopie
+6. Check: Liste der geloeschten Saetze
+7. Index: Fensterschliessung
+8. Find-Befehlsprobleme behoben
+9. Illustrierte Anleitung aktualisiert
+10. Besenstiel jetzt blau
+
+=======================================================================
+
+1. Hierarchische Untersaetze
+----------------------------
+... kann man jetzt per FLEX erkennen:
+if hs <command>
+Voraussetzung ist, dass in dem Moment links der Datensatz
+angezeigt ist und der Auswahlbalken innerhalb eines solchen
+Untersatzes steht.
+Damit wird es dann moeglich, bei Druck auf [Form] das zum
+hierarchischen Untersatz gehoerige Formular aufzumachen.
+Dazu wurde  onforms.flx  verbessert.
+Ferner:
+Verhindert wird jetzt die Eingabe einer Kategorie #00, wenn
+der Balken gerade in einem hierarchischen Untersatz steht. Das
+konnte naemlich zu Fehlern fuehren, genauer gesagt zum Wegfall
+von Untersaetzen beim Speichern.
+
+2. Bunte Daten
+--------------
+Im Neutralpaket:
+   http://www.allegro-c.de/doku/neutral
+kann man studieren, wie es geht, innerhalb der Daten andere
+Farben und Schriftarten einzuschalten:
+#100 Titel ... #Owichtige Woerter#o ...
+
+Zum Einsatz kommt hier die Texel-Technik, siehe Vb163.
+Die Codes sind aufgelistet in Datei  n.cfg (am Ende), die
+RTF-Befehle bzw. HTML-Befehle stehen in  d-rtf.npt bzw. d-htm.npt
+Die Methode funktioniert also sowohl fuer a99 wie avanti in
+derselben Weise. Die Indexierung stoert es nicht, weil in den
+Indexparametern steht
+p # 2
+
+Damit wird das Zeichen # mitsamt dem nachfolgenden Zeichen beim
+Indexieren ignoriert. Wahlweise kann dies auch bei jedem Export
+verwendet werden, um die Texel-Befehle auszublenden.
+Die Codes wurden weitgehend mnemonisch gewaehlt, z.B.:
+
+#B ... #b   fett (bold)
+#I ... #i   kursiv (italic)
+#G ... #g   Gruen
+#O ... #o   rOt
+#A ... #a   BlAu
+
+
+3. FLEX: Neuer set-Befehl
+-------------------------
+Mit   set BiText  kann man einer UIF-Nummer i einen neuen Text
+zuweisen. Nicht fuer alle UIF-Zeilen hat das einen Effekt!
+Mehr dazu:  h xset=set bi
+
+
+4. F8 kann hierarchische Saetze trennen
+---------------------------------------
+Das F8-Menue wurde in V26.1 erstmals eingefuehrt. Hier nur der
+Hinweis, dass es bei hierarchischen Saetzen auch die Funktion
+"t : Hierarchischen Satz trennen"
+enthaelt. Dieser loest den FLEX a-trenn.flx aus, der dann
+verknuepfte Saetze erstellt und sogar zur Wahl stellt, dies fuer
+die gesamte Datenbank durchzufuehren!! [s.a. Vb186]
+Die frueher fuer den Zweck noetige TRENN.APR wird nicht obsolet,
+sondern sie wird hier klammheimlich benutzt! Darin steht ein
+Kommentar, was man evtl. zu tun haette, wenn man nicht der
+A-Konfiguration arbeitet.
+ONF8.FLX wurde auch sonst noch etwas erweitert und verbessert,
+Sie pruefen es am besten selber mit Druck auf F8.
+Interessant u.a. die Funktionen + und - zum Hinzufuegen bzw.
+Wegnehmen des aktuellen Satzes zur bzw. aus der Erg.Menge. Am
+schnellsten geht das nun also mit  F8 + Enter  bzw.  F8 - Enter.
+
+
+5. Normal-/Sicherungskopie
+--------------------------
+Mit  h backp  erhaelt man das Menue zum Anfertigen einer Datenbankkopie
+als Normal- oder Sicherungskopie. Gestartet wird letztendlich der
+Batch  _backup.bat - wenn er denn gefunden wird! Damit dies klappt,
+wird nun im FLEX _backup.flx das ProgDir vor den Aufruf gesetzt.
+Desgleichen in _restore.flx.
+Nun allerdings KANN es passieren, dass der gesamte Aufruf zu lang wird,
+dann funktioniert es auch nicht... (DOS-Aufrufe gehen nur bis zu einer
+Befehlslaenge von  128 Zeichen.
+
+
+6. Check: Liste der geloeschten Saetze
+--------------------------------------
+Das check-Menue (h check) umfasst jetzt auch einen Punkt
+                   Alle geloeschten Saetze
+Damit erhaelt man eine ViewListe, die anhand der Eintraege mit //
+im Reg. 1 erstellt wird. Diese Eintraege hat man damit auch
+als Ergebnismenge. Sind es sehr viele, kann man einen bestimmten
+Satz mit Hilfe der Volltextsuche in dieser Erg.Menge finden: man
+gibt in der Suchbefehlszeile ein:  +suchwort
+oder im Fernglas-Formular das Suchwort ganz unten links in das
+Eingabefeld.
+Tip: Die Viewliste heisst  del.vw. Wenn man die aus Versehen
+zugeklappt hat, bringt der Befehl  V del  sie wieder hervor,
+einzugeben im Schreibfeld.
+
+
+7. Index: Fensterschliessung
+----------------------------
+... mit Alt+F4 oder Rotkreuz-Button hatte bisher zur Folge, dass eine
+gerade laufende Aktion noch zu Ende gefuehrt wurde - was manchmal
+nicht erwuenscht sein duerfte - wie z.B. der langdauernde Aufbau der
+Registerliste bei starker Trunkierung. Jetzt wird dieser Vorgang sofort
+abgebrochen, das Fenster bleibt aber noch offen bis zum zweiten Alt+F4
+oder Esc.
+
+
+8. Find-Befehlsprobleme
+-----------------------
+Es konnte bei bestimmten Kombinationen im Fernglasmenue zu
+Abstuerzen kommen, weil die Klammern, Anfuehrungszeichen, Frage-
+zeichen und das & nicht immer alle korrekt gesetzt wurden. Dies
+wurde behoben.
+Ist ein Findbefehl nicht erfolgreich, klappt jetzt der Sprung
+ins Register besser als bisher - Sonderzeichen werden beseitigt.
+
+
+9. Illustrierte Anleitung
+-------------------------
+Diese wurde aktualisiert und ist im Paket enthalten: Datei alca99.htm
+auf dem HTML-Verzeichnis. Sie ist auch unter
+  http://www.allegro-c.de/alcarta/alca99.htm
+Von dort kann man auch eine DOC-Version herunterladen und diese dann
+mit Word selber bearbeiten. Tip: Darin stehen auch die Namen der
+FLEXe, die mit diversen Buttons und Menüpunkten verknüpft sind.
+Ausserdem wurden wieder viele normale Hilfetexte aktualisiert und
+verbessert. Die Handbuchtexte ebenfalls, das gedruckte Handbuch
+braucht leider noch etwas laenger ...
+
+
+10. Besenstiel jetzt blau
+-------------------------
+Haben Sie nicht auch bemerkt, dass gruene Besenstiele
+aus der Mode sind? Sie wirken billig. Unterschwelliges
+Unbehagen bis hin zu latenter Irritation ist die ungute Folge, wenn man
+ständig Dinge wahrnimmt, die in irgendeinem Punkt verquer zur Lebens-
+wirklichkeit stehen, und im wirklichen Leben sind nun halt die Besen-
+stiele blau. Zwar sehen wir durchaus, dass es immer mal angezeigt ist,
+einem Abgleiten des Alltagsdenkens in bequeme, aber gesellschaftlich
+schaedliche Schablonen durch gezielten Einsatz von Verfremdungseffekten
+(B. Brecht) vorzubeugen! An dieser Stelle geben wir nun aber doch der
+Faktizitaet Raum (immerhin wechselt sogar die Polizei von gruen zu blau!)
+und sehen das nicht so spitzfindig. Der Stiel ist jetzt blau und basta!
+
+
+

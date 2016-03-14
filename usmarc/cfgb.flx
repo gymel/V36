@@ -1,0 +1,115 @@
+  CFGB.FLX : Anzeigefeld-Inhalt nehmen und in den Datensatz ueberfuehren
+  2004-09-09   (Anzeige kommt durch cfga.flx zustande!)
+                 Version N.CFG (3stellige Nummern)
+
+set c1
+  Anzeige speichern in Datei nnn
+  Eingabedaten sind ANSI:
+file nnn
+set c0
+  zaehler auf 0
+var "0"
+z=
+set e0   // Editor-Fehlermeldungen aus
+
+  diese Datei zum Einlesen oeffnen
+open nnn
+if no mes Datei nnn nicht gefunden;end
+  erste Zeile in iV einlesen
+get
+:loop
+  womit beginnt die Zeile?
+if "#" jump feld
+if "   " jump tf
+  if not "" jump ff
+  Zeile ist leer oder Kommentar, naechste lesen
+get
+  keine mehr?
+if can jump exit
+jump loop
+
+  Zeile ist ein Teilfeld:
+:tf
+
+var (b"²")
+ins $ueT
+
+var $ueT
+
+if not %·% jump getf
+
+var (b"·")
+ins $ueI
+
+  Subfield einbauen (Feldnummer steht in $ueF)
+  ACHTUNG: bei 3stell. Schema hier (0,5) !
+var $ueT (0,1)
+ins $uet
+var $ueF (0,5)
+ins $uef
+var "$" $uet "-" $uef $ueI
+ins
+
+get
+if can jump exit
+jump loop
+  Es ist ein Datenfeld (beginnt mit #)
+:feld
+  Zaehler erhoehen
+z+1
+
+if not %²% jump nosf
+var (e" ")
+ins
+ins $ueF
+:getf
+get
+if can jump exit
+jump loop
+:nosf
+if not %·% jump getf
+ins $ueK
+var $ueK (e" ")
+ins $uek
+var $ueK (b"·")
+ins $ueb
+var "$$-" $uek " " $ueb
+ins
+  Feldnummer in $ueF bereitlegen
+var $uek "   x"
+ins $ueF
+jump getf
+  Es ist eine Fortsetzungszeile (beginnt nicht mit #):
+:ff
+  zwischenspeichern
+ins $ueG
+  Befehl basteln, um das vorige Feld wieder in die iV zu bringen
+  (5 bei 3-stelligem Schema (MAB, MARC, N)! Bei a.cfg ist es 4)
+var $ueF (0,5)
+ins $uef
+var '"' $uef '" ' $uef
+  und diesen Befehl ausfhren
+var
+  dann $ueG hinten anh„ngen
+var +$ueG (e" ·")
+  und das ganze in den Datensatz einsetzen
+ins
+jump getf
+:exit
+close
+ delete nnn
+ set c0   // ASCI-Modus wieder einschalten
+set e1   // Editor-Fehlermeldungen wieder ein
+sho rec
+disp
+  wenn eine Zeile gewesen ist:
+var z
+if not "0" Put;end
+
+var "Diese Funktion ist nur sinnvoll, wenn man vorher mit Alt+1 die Datenanzeige" n
+var +"aufgerufen und dann im Anzeigefeld Daten editiert hat. Dann werden diese aus" n
+var +"der Anzeige heraus wieder in den Datensatz kopiert und man kann ihn mit den" n
+var +"Änderungen abspeichern"
+mes
+
+

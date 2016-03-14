@@ -1,0 +1,60 @@
+  Very simple Index parameter file  (just for demonstration purposes)
+
+  BASE.SPI     960123                ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+                                     ³ You are using the X editor now.        ³
+                               ÄÄÄÄÄ³ Press "x" (exchange) or "i" (insert)   ³
+                                     ³   to get into the "write" mode.        ³
+                               ÄÄÄÄÄ³ To save the file after making changes, ³
+                                     ³    press <ESC> q s (Quit and Save).    ³
+                                     ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+
+  ----- Standard commands (leave the first 4 unchanged!) -----------------
+zl=0           no line breaking  
+zm=0           no page breaking     
+ad=0           no entry if ak commands fail
+ag=0           index parts of hierarchical records too
+
+i0=72          max length of short title display lines
+il=72          max length of index entries
+  ------------------------------------------------------------------------
+
+ Heading commands:
+ each such command copies the respective field into variable #u1,
+ then jumps to a "label" where it will be processed:
+
+ak=100+A          copy #100 into #u1 and go to label #-A for processing
+ak=700.+A          do the same for every #700 (#700. means "every #700")
+ak=245+B          copy #245 into #u1 and go to label #-B
+
+ak=zz+0           standard command to generate the short title list 
+
+ Field list:  every line begins with a '#'
+
+#-A               Label A; coming here, #u1 contains the text of field #100
+#u1 a p"|1"      Subfield a goes to index 1 (prefix p"|1" does that)
+#+#               end of paragraph
+
+#-B               Label B; coming here, #u1 contains the text of field #100
+#u1 a u p"|4"    Subfield a goes to index 4; u eliminates the article
+#+#               end of paragraph
+
+
+#-0               Standard label for the short title list (.STL file)
+#t{ "|0" }        Standard prefix for short title list
+#245 a y0        y0: this command prevents coding commands
+#t{ &50 }         go to position 50
+#100 a p" / " y0    and place the main heading name there
+
+#+#
+
+  Headlines for the indexes and short title listing:
+
+|1="1 : Name index           [press Alt+4 for title index]"
+|4="4 : Title index          [press Alt+1 for name index]"
+|<="       Title / author"
+|a="                       This is your library's OPAC"
+
+ti                load table i.spt   (converts all entries to small letters)
+
+tstoplist         load stoplist.spt  (eliminates stopwords)
+

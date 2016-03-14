@@ -1,0 +1,64 @@
+  D-W0.APR : Anzeige eines Datensatzes mit Kategorie-Nummern und Zeilenumbruch
+  980202  Muster. Funktioniert fuer jede Konfiguration!!
+
+pn="simple display for a99"
+
+zl=92       ZeilenlÑnge (fuer Times-Schrift gut, nach Bedarf zu aendern)
+
+ze=13 10
+zi=7        7 Zeichen EinrÅckung der Folgezeilen
+fl=0        kein Kartendruck
+ke=C &0     Kategorieende: neue Zeile, Aufsetzen am Anfang
+fm=0        Modus: keine Einzelausgabe fÅr die Untersaetze (2 = Einzelkarten)
+zm=0        kein Seitenumbruch
+
+i4=4
+dx=1
+
+   zwei sehr wichtige Zeilen:
+
+to       ASCII <-> ANSI  1:1 fuer Bearbeitungsfenster, Kurzanzeige etc.
+td-rtf
+
+tad-aw   a99 Umcodierung fuer Anzeigefenster, aber:
+
+p  255   neue Zeile bei , sonst:
+ p  1     ausblenden, oder
+ p  182   normal anzeigen
+ p  3     Sub.Code + nachf. Zeichen durch 1 Leerz. ersetzen (korrekt bei MARC)
+          aktivieren, wenn gewuenscht
+ 
+
+ab=""
+as=""
+
+  ********* Kategorieliste ****************************************
+
+  Die naechsten 3 Zeilen ersetzen durch etwas Besseres, wenn die Anzeige
+  z.B. in ISBD-Format erfolgen soll. Hier kann etwa der Hauptteil der
+  eigenen D-1.cPR einkopiert werden
+
+#>H
+#t{ s0 }    ausgeben ab Position 0
+          #u01 = erste Kategorie des Satzes
+##          alle Kategorien
+
+#t{ "}" }
+
+#+#
+
+   -----------------------------------------------------------------
+   Abschnitt fuer die Alternativ-Anzeige
+   (wenn auf den Button [Anzeige] gedrueckt wird)
+
+
+#-(       Sprungmarke muss sein, wird automatisch angesprungen
+#>H
+
+#L        Anzeige aller Felder mit Label aus der CFG (NEU!)
+ #t{ "}" }
+#+#
+
+#(H
+    moeglicher Kopfabschnitt
+#)H

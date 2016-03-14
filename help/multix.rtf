@@ -1,0 +1,168 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss\fcharset0 Arial;}{\f1\fmodern\fprq1\fcharset0 Courier New;}{\f2\fmodern\fprq1\fcharset0 Courier;}{\f3\fmodern\fcharset0 Courier New;}{\f4\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;\red220\green0\blue0;}
+\viewkind4\uc1\pard\qc\cf1\b\i\f0\fs32 
+\par  allegro-C \i0 
+\par MultiX  f\'fcr  GigaBanken\cf0\b0\fs20 
+\par \b  Mehrere Indexdateien statt nur einer 
+\par ab V27.2 
+\par \b0 
+\par \pard Vor V25.5 ist es so gewesen: Jede Datenbank hat eine, aber nur eine Indexdatei. Diese kann bis zu 11 separate Register besitzen, mehr jedoch nicht. Man kann mit den Windows-Programmen und mit acon die 11 physischen Register in bis zu 100 logische Abteilungen zerlegen, denen man beliebige (aber immer dreibuchstabige) symbolische Namen zuteilt. Zum Beispiel \f1 DIS\f0  f\'fcr die Abteilung im Register 1, deren Eintr\'e4ge mit D und Leerzeichen beginnen: 
+\par \f1 I DIS 1D. "Dissertationen: Ort,Jahr"\f0 
+\par Mit a99 und acon (also auch avanti) kann man seit `\cf2\ul\b V26.6\cf0\ulnone\b0 ` in den logischen Registern so bl\'e4ttern als seien es physische, d.h. man sieht es ihnen nicht an, weil das Pr\'e4fix dann nicht zu sehen ist. Im Indexfenster, oben in der Dropdown-Liste, findet man zur Auswahl neben den numerierten (physischen) Registern auch die Namen der symbolischen. 
+\par  
+\par Damit kommt man zwar sehr weit, es gab aber bislang eine un\'fcberschreitbare Grenze: die gesamte Indexdatei konnte als Datei nur bis zu \b zwei Gigabyte\b0  gro\'df werden. Das ist nicht eben wenig! Erstmals erreicht wurde diese Grenze mit der alten VK-Datenbank, als versucht wurde, deren 15 Mio. S\'e4tze zus\'e4tzlich zu allem anderen auch noch mittels Phrasentechnik zu indexieren. 
+\par Hoher Platzbedarf im Index ergibt sich vor allem aus folgenden f\'fcnf Anforderungen: 
+\par 
+\par \pard\fi-568\li568\tx568 1.\tab\i Phrasenindexierung\i0 , wie schon genannt 
+\par 2.\tab Zus\'e4tzlicher \i ALL-Index\i0  (s\'e4mtliche W\'f6rter fast aller Datenfelder) 
+\par 3.\tab\i Linkstrunkierungs-Index\i0   (alle Teilw\'f6rter enthaltend, die durch Abschneiden von links her entstehen) 
+\par 4.\tab Indexierung von \i Abstracts\i0  oder anderen Textpassagen 
+\par 5.\tab Besondere Register mit sehr langen Eintr\'e4gen, z.B. als eine Art zus\'e4tzliche Kurztitelliste oder bei der sog. \i Register-Maskerade\i0 , bei der jeder Eintrag aus zwei Teilen besteht: dem Sortierteil und dahinter dem Anzeigeteil. 
+\par \pard 
+\par Da nun einmal bibliothekarische Datenbanken zu unabl\'e4ssigem Wachstum neigen und au\'dferdem die Erwartungen gleichfalls wachsen, was man denn wie abfragen oder pr\'e4sentieren k\'f6nnen sollte, sind die 2 GB keine gar so astronomische Zahl mehr. Wenn man bedenkt, da\'df heute bereits die billigsten Aldi-PCs mit wenigstens 80 GB Plattenspeicher daherkommen, f\'e4nde auch niemand etwas dabei, wenn die Indexdatei 10 GB beanspruchte - wenn sie das denn k\'f6nnte. Die vermeintlich gro\'dfz\'fcgige Grenze wird also zu einer durchaus \'e4rgerlichen Schranke. Datenbanken, die an dieser Barriere bisher gescheitert w\'e4ren, nennen wir \b\i GigaBanken\b0\i0 , der Betreiber einer solchen hei\'dft \i GigaBanker\i0 . 
+\par 
+\par Die 2 GB sind nur leider aus Granit. Eine Art "Aufbohrung", wie sie ja f\'fcr die Gesamtzahl der S\'e4tze gelungen war, konnte aus technischen Gr\'fcnden nicht gelingen. Als Ausweg aus dem Dilemma bot sich aber an: Statt nur \i einer\i0  Indexdatei k\'f6nnte man \i mehrere\i0  erm\'f6glichen. Der Weg zur Umsetzung dieser Idee wurde schon auf dem Expertentreffen 2005 skizziert, doch erst auf dem Treffen 2007 konnte mit V27.2 die fertige L\'f6sung freigegeben werden. 
+\par 
+\par Am `\cf2\ul\b Ende dieses Textes\cf0\ulnone\b0 ` findet der eilige Leser die zwei h\'e4ufigsten Szenarien beschrieben und ganz knapp die wenigen Handgriffe, die dabei zu erledigen sind. Hier folgt zun\'e4chst noch eine detaillierte Beschreibung des Konzepts f\'fcr neugierige Experten. 
+\par 
+\par \b "Transparenz" 
+\par \b0 Schon immer konnte der Endnutzer nicht erkennen, ob die Register alle in einer Datei stehen oder in mehreren! Der OPAC-Nutzer bemerkt deshalb von der Erweiterung nichts. Es gibt keine zus\'e4tzlichen Buttons oder Men\'fcpunkte, sondern nur vielleicht einen neuen symbolischen Registernamen, wenn ein neues Register hinzukommt. Der Endnutzer dr\'fcckt nur auf die Kn\'f6pfe und das System \'f6ffnet die richtigen Dateien. Man k\'f6nnte im Extremfall jedem Register eine eigene Datei geben. Empfohlen wird das aus Gr\'fcnden der Leistung beim Speichern neuer S\'e4tze zwar nicht, doch bei der Katalogbenutzung w\'fcrde man davon nichts merken. 
+\par 
+\par \b Einfachheit der Einrichtung\b0 
+\par Ganz ohne zus\'e4tzliches Wissen und Tun kommt der Systemverwalter zwar nicht aus, aber der Aufwand ist minimal. 
+\par F\'fcr den Einrichter sieht die L\'f6sung auf den ersten Blick so aus: Es gibt nicht mehr nur die eine Indexdatei \b\f1 cat.adx\b0\f0 , sondern es k\'f6nnen weitere hinzukommen, deren Namen dann  \f1 cat.a\cf1 z\cf0 x\f0  lauten m\'fcssen. F\'fcr \cf1 z\cf0  kann man jeden Buchstaben und auch jede Ziffer einsetzen mit Ausnahme von d, denn die \f1 cat.adx\f0  gibt es ja schon. Zwischen Gro\'df- und Kleinbuchstaben kann jedoch nicht unterschieden werden. Damit ergibt sich eine theoretische Gesamtzahl von 36 Indexdateien. Mit potentiellen 72 GB sollte nun jeder Anwender f\'fcr eine lange Weile wieder ruhig schlafen k\'f6nnen! 
+\par Empfohlen wird jedoch, nicht gleich 10 oder mehr Indexdateien anzulegen, sondern sich erst einmal mit \i einer\i0  weiteren zu begn\'fcgen, in die man nichts weiter als das umfangreichste Register verlagert, um die alte Indexdatei zu entlasten. Jede der weiteren Indexdateien kann auch wiederum 11 Register umfassen. (Man sieht, wie sinnvoll die Unterscheidung der Begriffe "Index" und "Register" ist.) 
+\par 
+\par Der bisherige Index, z.B. \b\f1 cat.adx\b0\f0 , bleibt bestehen und wird \b\i Prim\'e4rindex\b0\i0  genannt. An seiner Parametrierung braucht man nichts zu \'e4ndern. Er beh\'e4lt unter den Indexdateien eine Vorrangstellung, siehe unten Punkt 7. 
+\par 
+\par F\'fcr die weiteren Indexdateien wird \b keine zus\'e4tzliche Parameterdatei\b0  angelegt, die Schl\'fcssel werden vielmehr alle in die bisherigen Parameter zus\'e4tzlich eingebaut. 
+\par 
+\par Oft wird es ja so sein, da\'df man bestimmte Schl\'fcssel nicht mehr im Prim\'e4rindex haben will, sondern in einem anderen - aus welchen Gr\'fcnden auch immer, es m\'fcssen nicht unbedingt Platzgr\'fcnde sein. Das ist leicht zu erreichen: 
+\par 
+\par \b 1. Indexparameter\b0 
+\par Als Indexpr\'e4fix setzt man statt "\f1 |1\f0 " den Wert "\f1 ~z1\f0 ", wenn ein Schl\'fcssel nicht in den Prim\'e4rindex soll, sondern in das Reg. 1 der Indexdatei z. 
+\par \i Hinweis:\i0  "\f1 ~d1\f0 " statt "\f1 |1\f0 " funktioniert nicht. 
+\par 
+\par \b 2. Indexproduktion\b0 
+\par INDEX.EXE und QRIX.EXE sind darauf eingerichtet, die neuartigen Indexpr\'e4fixe korrekt zu verarbeiten, also die Dateien \f1 cat.adx\f0  und eventuelle \f1 cat.azx\f0  im selben Durchlauf zu erzeugen. Man braucht dazu keine besondere Option zu setzen noch sonst irgendetwas zu tun. 
+\par \b Selektiv indexieren:\b0  Will man z.B. nur die Indexdatei  \f1 cat.a\b e\b0 x\f0   neu erzeugen, startet man  \f1 index.exe\f0   mit den Optionen  
+\par \f1 -fi0 -Z\b e\b0  -@2 \f0 . 
+\par Der Befehl, um der Demo-Datenbank den Index e hinzuzuf\'fcgen, sieht so aus: 
+\par \f1 index -fi0 -Ze -@2 -n0 -m0 -ka -d*DEMO2\\CAT_* -eCAT/c:\\ALLEGRO\\DEMO2 
+\par \f0 (Zu starten auf c:\\allegro in der Standard-Installation, \i nachdem\i0  man den unten im Beispiel gezeigten Abschnitt eingebaut hat in \f1 cat.api\f0 ). 
+\par \i Hinweis:\i0  Bisher hat das Programm INDEX.EXE die Indexdatei unmittelbar selber hergestellt, wenn es sich um eine kleine Datenmenge handelte und deshalb nur eine Zwischendatei \b\f1 ii1\b0\f0  entstanden w\'e4re. Das war Luxus und nur auf den ganz fr\'fchen, sehr langsamen PCs brachte es einen geringen Zeitgewinn. Jetzt wird in jedem Fall diese Zwischendatei erstellt und stets durch QRIX.EXE die Indexdatei angefertigt. INDEX.EXE ist dadurch kleiner geworden, was sich positiv auf die Anzahl der Zwischendateien auswirkt, und dieser Effekt macht sich bei gro\'dfen Datenmengen bemerkbar, was sehr viel sinnvoller ist. 
+\par 
+\par \b 3. Symbolische Register\b0  
+\par Wenn man eine Indexdatei  \f1 cat.aex\f0   hat und deren Register 1 soll die symbolische Bezeichnung \f1 WFR\f0  (Wortfragmente) haben, Register 2 soll \f1 PHR\f0  (Phrasenindex) hei\'dfen, so kann man in den Indexparametern schreiben: 
+\par \f1 I WFR e1 "Wortfragmente" 
+\par I PHR e2 "Phrasenindex" \f0 
+\par Wenn der Buchstabe fehlt, gilt \f1 d\f0  (f\'fcr \f1 .adx\f0 ) - also der bisherige Standard. 
+\par Mehr als 100 logische Register kann es insgesamt auch weiterhin nicht geben. Mehr als drei zus\'e4tzliche Indexdateien mit je 11 Registern w\'e4ren also derzeit nicht sinnvoll, man k\'f6nnte aber durchaus mehr Indexdateien mit nur je einem oder zwei Registern machen, was aus Effizienzgr\'fcnden aber nicht ratsam ist. 
+\par 
+\par \b 4. Zuordnung der 10 Registerbuttons\b0  
+\par Die 10 Buttons des Indexfensters sind im Normalfall den Registern der prim\'e4ren Indexdatei zugeordnet. Man kann aber jeden Button auch einer anderen Indexdatei zuordnen. Das geschieht mit dem neuen Befehl \f1 ix=...\f0 
+\par Soll z.B. bei Druck auf Button 3 bzw. 5 nicht das Register 3 bzw. 5 der prim\'e4ren Indexdatei erscheinen, sondern jeweils dasjenige der \f1 e\f0 -Datei, so schreibt man in die Indexparameter: 
+\par \b\f1 ix=ddededddddd\b0  
+\par \f0 Dies wurde deshalb so eingerichtet, damit man bei Bedarf jedes der numerierten Register in eine andere Indexdatei auslagern kann, ohne da\'df der Nutzer etwas merkt. Die \'c4nderung der Indexparameter ist dann mininal: 
+\par -- wo bisher "\f1 |3\f0 " steht, schreibt man "\f1 ~e3\f0 " , 
+\par -- dann die \f1 ix\f0 -Zeile mit dem e an der dritten Position und 
+\par -- den Buchstaben e in die symbolischen Namen der Register einbauen (siehe 3.). 
+\par -- Dann Index erneuern - und das war's. 
+\par (Es w\'fcrde, wenn's schnell gehen soll, gen\'fcgen, zuerst einmal nur selektiv die Indexdatei e zu erstellen, siehe 2.) Wenn die prim\'e4re Datei dann immer noch andere Eintr\'e4ge in Reg. 3 bzw. 5 hat, kann man diese nur noch \'fcber symbolische Namen dieser Register erreichen. 
+\par 
+\par Der Parameter \b\f1 ix\b0\f0  wirkt sich auch aus auf die FLEX-Befehle \b\f1 find\b0\f0 , \b\f1 qrix\b0\f0  und \b\f1 index\b0\f0 , wenn dabei ein Zugriff per \b\f1 |i\b0\f0  gemacht wird statt \'fcber symbolische Register. 
+\par Die \b\'dcberschriftszeilen\b0  f\'fcr die Register 3 und 5, also die mit \f1 |3\f0  und \f1 |5\f0  beginnenden Zeilen in den Indexparametern, m\'fcssen nicht ver\'e4ndert werden, es sei denn man \'e4ndert etwas am Gehalt der betr. Register. 
+\par \i Hinweis:\i0  Das \b Indexpr\'e4fix\b0  eines Registers beh\'e4lt seine Bedeutung. Wenn man in den Indexparametern \f1 p"|3"\f0  schreibt, ist damit immer das Register 3 des Prim\'e4rindex gemeint, mit \f1 p"~e3"\f0  immer das Reg. 3 des  \f1 e\f0 -Index. M.a.W.: \b ix\b0  hat hier keine Wirkung, sondern nur f\'fcr die Nutzung. 
+\par Was man aber \i nicht\i0  machen kann: z.B. den Button 3 dem Register 5 einer anderen Indexdatei zuordnen. 
+\par  
+\par Die manchmal so wichtige \b Umcodierung\b0  der Nutzereingabe passiert in jedem Fall z.B. bei der Sprungmarke 
+\par \f1 #-3\f0 , wenn ein Register 3 benutzt wird - egal welche Indexdatei es ist. 
+\par Allerdings gibt es eine neue Sondervariable \b\f1 #ax\b0\f0 , in der der Buchstabe der aktuellen Indexdatei steht und an zweiter Stelle die Nummer des aktuellen Registers, also z.B. \f1 d4\f0  oder \f1 e1\f0 . Damit hat man alle M\'f6glichkeiten, die Nutzereingabe entsprechend zu behandeln. 
+\par 
+\par \b 5a. a99 / alcarta\b0 
+\par Mit dem FLEX-Befehl  \f2 index\f0  \i sym abc\i0   kann man den bei \i abc\i0  beginnenden Abschnitt des Registers \i sym\i0  anzeigen lassen, das gilt auch f\'fcr die neuen Indexdateien, sobald man deren Registern symbolische Namen gegeben hat (wie in  3 gezeigt.) 
+\par Mit \f2 index\f1  |3 \i\f0 abc\i0  erh\'e4lt man aber das Register 3 der Datei \f1 cat.aex\f0 , wenn man die oben gezeigte ix-Zeile angelegt hat. Dasselbe gilt f\'fcr den Befehl \f1 qrix\f0 . Mit 
+\par \f2 index\f1  ~zi \i\f0 abc\i0           bzw.        \f2 qrix\f1  ~zi \i\f0 abc \i0  
+\par kann man gezielt jedes einzelne Register \f1 i\f0  in jeder Indexdatei \f1 z\f0  ansprechen. 
+\par 
+\par \b 5b. a99, acon (also auch in Web-Katalogen)\b0  
+\par In beiden Programmen kann man mit \f1 find\f0  und \f1 qrix\f0  auf alle realen und symbolischen Register zugreifen. 
+\par Beide erzeugen beim Schreiben die korrekten Eintr\'e4ge in den richtigen Registerdateien bzw. l\'f6schen Eintr\'e4ge, wo es n\'f6tig ist. 
+\par Wenn man PHPAC als Web-Schnittstelle einsetzt, mu\'df an den Skripten und Parametern \b nichts\b0  ge\'e4ndert werden, falls man zus\'e4tzliche Indexdateien anlegt. 
+\par 
+\par \b 6. PRESTO, APAC\b0  und \b UPDATE\b0 
+\par Die DOS-Programme PRESTO und UPDATE werden gleichfalls mit den zus\'e4tzlichen Indexdateien fertig, d.h. PRESTO kann sie anzeigen und beide k\'f6nnen die n\'f6tigen Ver\'e4nderungen beim Speichern darin vornehmen. Wer will, kann also auch eine V27.2-Datenbank noch mit PRESTO benutzen - nat\'fcrlich nur mit einer Ausf\'fchrung ab V27.2. 
+\par Das Umschalten in PRESTO geht so: Im Registerbildschirm z.B.   \f1 ~e4\f0  \i Enter\i0   eingeben, um in die Indexdatei  \f1 cat.aex\f0   zu schalten. Es erscheint deren Register 4, und zwar an der entsprechenden Stelle. Hat man eine \b ix\b0 -Zeile, wie oben in 4. gezeigt, wird auch in PRESTO und APAC mit Alt+3 bzw. Alt+5 auf die Register des Index e umgeschaltet. 
+\par Ganz so komfortabel wie in a99 ist dies nicht, da man im Bedarfsfall um die Existenz der zus\'e4tzlichen Indexdateien und ihrer Register wissen mu\'df - PRESTO kennt weiterhin keine symbolischen Register. Jedoch wird man kaum weiterhin alle Arbeiten nur mit PRESTO machen wollen... 
+\par 
+\par \b\i 7. Wichtige Hinweise\i0  \b0 
+\par Die sekund\'e4ren Indexdateien sind nicht in jeder Hinsicht dem Hauptindex gleichwertig: 
+\par 1. Die Prim\'e4r-, L\'f6schkontroll- und SR-Schl\'fcssel m\'fcssen alle im Hauptindex liegen 
+\par 2. Das Nachladen beim Export und die V14-Ersetzungen k\'f6nnen nur aus dem Hauptindex erfolgen 
+\par 3. Die Pr\'e4fixtechnik erm\'f6glicht schon lange, da\'df man dem Nutzer weit mehr als 10 symbolische Register anbieten kann! Hier liegt also kein Grund, eine zus\'e4tzliche Indexdatei anzulegen. Auch in der zus\'e4tzlichen Indexdatei kann man jedoch Pr\'e4fixe verwenden! 
+\par 
+\par \b M\'f6gliche Vorteile\b0 
+\par \pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-294\li294\i Zu empfehlen\i0  ist, eine zus\'e4tzliche Indexdatei haupts\'e4chlich als Entlastung des Hauptindex zu verstehen, damit dieser die 2GB nicht \'fcberschreitet. 
+\par \i{\pntext\f4\'B7\tab}Bequem\i0  ist ein zus\'e4tzlicher Index auch dann, wenn er nur tempor\'e4r gebraucht wird. Irgendwann l\'f6scht man den Zusatzindex und den/die ak-Befehle sowie den ix-Befehl in den Indexparametern - fertig. 
+\par \i{\pntext\f4\'B7\tab}G\'fcnstig\i0  kann es auch sein, wenn man m\'f6glicherweise \'f6fter zu erneuernde Register in einen Zusatzindex legt. Diesen kann man selektiv erneuern, siehe 2., was bei gro\'dfen Sub-Giga-Datenbanken schon ein Zeitvorteil sein kann. 
+\par {\pntext\f4\'B7\tab}Der Zusatzindex \i kann\i0  au\'dferdem dazu dienen, dienstliche Register anzulegen, die ein Nutzer auf keinen Fall sehen soll (falls man f\'fcrchtet, das Register 11 des Prim\'e4rindex zu \'fcberfrachten). Auch in diesem Fall wird man wohl kaum mehr als eine zus\'e4tzliche Indexdatei anlegen m\'fcssen. Je mehr Indexdateien, das ist klar, umso langsamer ist das Speichern neuer S\'e4tze! 
+\par \pard Sonstige echte Vorteile gibt es nicht. 
+\par 
+\par 
+\par \cf1\b Anhang : Die zwei h\'e4ufigsten Szenarien\cf0\b0 
+\par ... und die wenigen Handgriffe, die dazu n\'f6tig sind 
+\par Die unten gezeigten INDEX-Aufrufe kann man normalerweise automatisch erledigen lassen: Der Men\'fcpunkt 
+\par `\cf2\b `\ul Index erneuern\ulnone `\cf0\b0 ` 
+\par `auf dem ORG-Men\'fc wurde daf\'fcr erweitert! Es kommt ein Zwischenmen\'fc mit der Auswahl, ob man eine Gesamt-Neuindexierung m\'f6chte (die bisherige Funktion) oder gezielt die Erstellung einer der zus\'e4tzlichen Indexdateien, 
+\par 
+\par \b Szenario 1. Einzelne Register auslagern\b0 
+\par \i Beispiel:\i0  Man will das Reg. 3 (Stich- und Schlagw\'f6rter) des Standardsystems in eine Indexdatei \f1 cat.aex\f0  auslagern. 
+\par \pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-360\li360 In die Indexparameter diese Zeile einf\'fcgen: 
+\par \pard\f1\tab ix=ddedddddddd\f0 
+\par \pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-360\li360 Das symbolische Register \f1 TIT\f0  so \'e4ndern: 
+\par \pard\tab\f1 I TIT e3 "Titelw\'f6rter, Schlagw\'f6rter"    \f0 [also \f1 e3\f0  statt \f1 3\f0  ]\f1 
+\par \pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-360\li360\f0 An den Stellen, wo bisher \f1 |3\f0  steht, daf\'fcr \f1 ~e3\f0  einsetzen, au\'dfer in der \'dcberschriftszeile, die mit \f1 |3=\f0  beginnt. 
+\par \pard Ist das geschehen, Index erneuern. Anschlie\'dfend hat man einen kleineren CAT.ADX und einen neuen CAT.AEX. Ansonsten ist nichts zu \'e4ndern, weder in in Parametern noch z.B. in FLEXen. 
+\par Wenn die Datenbank sehr gro\'df ist, kann es schneller gehen, keine Index-Gesamterneuerung zu machen, sondern 
+\par 1. Selektiv den Index \f1 cat.aex\f0  zu erstellen: 
+\par \tab\f1 index -fi0 -Ze -@2 -n0 -m0 -ka -d*DEMO2\\CAT_* -eCAT/c:\\ALLEGRO\\DEMO2 \f0 
+\par 2. ... und dann das Register 3 aus dem Index \f1 cat.adx\f0  zu entfernen: 
+\par    \tab\f1 qrix -fc -W3 -dDEMO2 -eCAT/c:\\ALLEGRO\\DEMO2 
+\par \f0 
+\par \b Szenario 2. Ein ganz neues Register schaffen und in eine Indexdatei \f1 cat.axx\f0  packen\b0 
+\par Das neue Register soll Wortfragmente der Titelw\'f6rter enthalten. Anders gesagt: ein Linkstrunkierungs-Index. So k\'f6nnte das aussehen: 
+\par 
+\par \f1 ak=20"[ -]"+\'f4     #20 bei Spatium und - auseinandernehmen 
+\par ... 
+\par #-\'f4 
+\par #u1 y2 =u9 e0 
+\par #-\'f2 
+\par !uu9 y0 u>> p\{ 8 "~x1" \} 
+\par #uu9 +\'f2 y0 b1 =u9   Schleife: immer vorn ein Zeichen wegnehmen 
+\par #+# 
+\par \f0 Hier ist angenommen, da\'df man eine `\cf2\ul\b zweite Stoppwortliste\cf0\ulnone\b0 ` eingebaut hat, die mit \b\f1 u>>\b0\f0  gepr\'fcft wird. Eintragung im Register 1 der zus\'e4tzlichen Indexdatei  \b\f1 cat.axx\b0\f0   erfolgt dann nur, wenn das Wort nicht in jener Liste steht. (Der Code 8 wird hier gebraucht, wie auch sonst, um die in der Schleife entstehenden Eintr\'e4ge voneinander zu trennen.) 
+\par Au\'dferdem wird nur noch eine weitere Zeile gebraucht: 
+\par 
+\par \f1 I WFR x1 "Wortfragmente der Titelw\'f6rter" 
+\par \f0 
+\par Anschlie\'dfend braucht man den Index \f1 cat.adx\f0  nicht zu erneuern, sondern nur den neuen zu erstellen - das geht schneller. Man macht das mit diesem Befehl: 
+\par 
+\par \f1 INDEX -fi0 -@2 -Ze -ka -d*c:\\ALLEGRO\\demo2\\cat_* -ecat/c:\\ALLEGRO\\demo2 
+\par \f0 
+\par In \b PRESTO\b0  kann man dieses Register dann nur erreichen, wenn man im Indexfenster \f1  ~x1\f0   eingibt. 
+\par In \b a99\b0  erscheint WFR in der Liste der symbolischen Register (Auswahlliste oben im Indexfenster). 
+\par 
+\par \i Tip:\i0  Auf der Seite "Datenbank-Information" sieht man unten die Liste der symbolischen Register. Dort erkennt man auch, welche zus\'e4tzlichen Indexdateien in den Parametern eingerichtet sind. Wenn da z,B. diese Zeile steht: 
+\par \cf3\f3\fs18 PHR f1=Phrasen\cf0\f0\fs20 
+\par dann wei\'df man: Es ist eine zus\'e4tzliche Indexdatei \f1 cat.afx\f0  definiert. 
+\par 
+\par 2005-05-25 / 2007-03-28 
+\par 
+\par ?zweite Stoppwortliste=h ac10-3#294 
+\par ?V26.6=h vb193 
+\par ?Ende dieses Textes=h =Anhang 
+\par ?Index erneuern=X inxprod 
+\par  
+\par 
+\par }
+ 

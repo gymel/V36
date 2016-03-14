@@ -1,0 +1,263 @@
+
+
+Verlautbarung 261 der Entw.Abt.                              2014-07-22
+-------------------------------
+
+V34.4 ist da  [diesmal mit korrekter Versionsnummer]
+------------
+Am Ende des sehr aufwendigen Projekts zur Einfuehrung der neuen "Hoch-
+Frequenz-Mehrfachfelder (HFM)" wurde es leider versaeumt, die Versions-
+nummer der Programme a99/alcarta und acon zu aktualisieren. Diese
+lautete zur Irritation einiger Nutzer noch immer V34.2. Wir bitten
+das zu entschuldigen. Funktionale Maengel ergaben sich dadurch nicht.
+
+
+FLEX Neu: xcode clower  und  xcode cupper  [auch fuer acon]
+-----------------------------------------
+Gelegentlich will man eine Buchstabenfolge insgesamt in Klein- oder
+Grossbuchstaben umwandeln. Bisher konnte man hilfsweise den Befehl
+"xcode iq" oder "xcode ip" dafuer heranziehen - wenn man sicher war,
+dass die Indexparameter die Buchstaben in der Weise behandeln (und nicht
+etwa umgekehrt oder gar nicht). Man konnte auch mit "xcode xq" oder
+"xcode xp" die Exportparameter nutzen - wenn die in dem Moment fuer
+den Zweck die geeignete Tabelle enthielten. Gelegentlich kann man aber
+einen Befehl brauchen, der nicht auf Parametertabellen angewiesen waere.
+Die Sprache C z.B. hat dafuer die Funktionen tolower() bzw. toupper().
+In FLEX wollen wir fuer den Zweck nicht zwei neue Funktionen schaffen,
+sondern in der gegebenen Logik bot sich an, diese Moeglichkeiten im
+Befehl "xcode" mit unterzubringen:
+   xcode cl[ower]  bzw.  xcode cu[pper]
+sind die neuen Unterfunktionen. Sonderzeichen bleiben unveraendert,
+dies ist bei Parametertabellen nicht immer der Fall.
+UTF-8-Codes bleiben alle unberuehrt!
+Wenn man allerdings auch Umlaute und Diakritika beruecksichtigt haben
+will, bleibt nur der Weg ueber die Exportparameter, die man sich fuer
+den Fall zurechtzulegen hat!
+
+
+
+acon-Verbesserungen
+===================
+
+
+Neue Datenbank anlegen mit acon
+-------------------------------
+Die Quadriga-Programme (srch, import, index, qrix) zusammen mit acon
+ermoeglichen bereits ein von Windows unabhaengiges Arbeiten unter Linux.
+Dabei gibt es zwar kein Pendant zu a99/alcarta, aber diese Rolle kann
+zu grossen Teilen schon von der browserbasierten Oberflaeche a35
+ausgefuellt werden. Eine wichtige Funktion, die noch auf das Windows-
+Programm a99 angewiesen war, ist das Anlegen einer neuen, leeren
+Datenbank mit Indexdatei und den Dateien .TBL, .STL und .RES.
+Dies kann nunmehr auch acon erledigen, und zwar sehr leicht:
+[ >>> aber am leichtesten mit dem neuen  al.job, s.unten <<< ]
+
+1. Einen Ordner  abc  anlegen und darin evtl. die datenbankspezifischen
+   Dateien, z.B. Konfiguration x.cfg und Indexparameter ndb.xpi
+   Der Ordner kann leer sein, wenn alle Dateien im ProgDir liegen.
+
+2. Im ProgDir (wo acon liegt) eine Jobdatei  newbase.job  anlegen, in
+   der nur steht:
+     #20 TestTitel   [oder eine andere, in der CFG definierte Kategorie]
+     put
+
+3. acon so aufrufen:
+     acon -jnewbase -kx -dabc -bndb   [Default fuer x ist a]
+
+4. Anschliessend liegen im Ordner abc die neu erstellten Datenbank-
+   dateien, die man nun mittels acon mit Daten befuellen kann. Den
+   einzigen dort schon befindlichen Datensatz (mit #20 TestTitel)
+   sofort loeschen.
+
+5. Wenn neben dem Index  ndb.xdx  in den Indexparametern weitere
+   Indexdateien spezifiziert sind, z.B. ndb.xex, dann entstehen
+   diese nicht automatisch, sondern erst bei einer Neuindexierung.
+   Diese sollte man deshalb nach Einspeisung einiger Daten schnell
+   mal machen.
+
+
+Neues Potential : acon kann Sie jetzt auch was fragen
+-----------------------------------------------------
+Der FLEX-Befehl "ask" wurde bewusst aus acon herausgehalten, denn acon
+sollte sich als reines Konsolprogramm verstehen, ohne Interaktion
+mit dem Nutzer.
+Der Befehl ist jedoch denkbar leicht zu implementieren und kann in
+bestimmten Faellen durchaus nuetzlich sein! Es sollte in der
+Entscheidung des Anwenders liegen, ob er diese Moeglichkeit nutzt;
+ihm soll nicht vom Entwickler vorenthalten sein.
+Nun also kann man schreiben:
+
+ask Ihr Suchwort:
+
+und acon wird an dieser Stelle auf der Konsole schreiben:
+
+Ihr Suchwort:
+
+und innehalten, bis der Nutzer etwas eingegeben hat (mit Enter
+beendet). Diese Eingabe steht dann in der iV zur weiteren Verwendung.
+Hinweis: Den Job dann nur mit  acon -j...  starten, nicht acon <...
+sonst klappt's nicht.
+
+Kaum war dies entschieden, kam die Idee auf, damit ein altes Konzept
+neu aufzugreifen: vor 19 Jahren gab es einmal ein Programm namens VP
+(VersuchsProgramm), mit dem die damals neue Klassenbibliothek auf
+die Probe gestellt wurde:
+
+  http://www.allegro-c.de/news/acn954.htm#xtocid1674
+
+Als ersten Ansatz liefern wir im GP V34.4 einen neuen Job aus,
+jedoch  al.job  genannt (intuitiv leichter zu merken):
+
+
+Neuer Job: al.job : Endlich Hilfe auch fuer den Linux-Admin
+=================
+                   ACHTUNG: Alpha-Version 0.0.1!
+                (aber kaputt kann nichts gehen...)
+
+Zuerst schnell mal ausprobieren? Dann einfach eingeben
+
+  al     (in einem DOS-Fenster auf c:\allegro bzw. Ihrem ProgDir)
+         Wenn das nicht klappt, dann  al.bat
+
+Unter Linux:  ./al  [nach Download der neuen Dateien acon, al, al.job]
+
+In al.bat steckt ein Aufruf von acon, um  al.job  auszufuehren.
+Was der tut, sehen Sie dann. Die Anwendung greift auf die Demo-
+Datenbank zu. Beschreibung weiter unten.
+
+Dasselbe mit der eigenen Datenbank, die  kat  heisst und auf
+d:\daten\katalog liegt, mit Konfiguration n.cfg? Dann:
+
+  al d:\daten\katalog kat n
+
+
+al.job realisiert als FLEX-Anwendung die Idee - nicht den Funktions-
+umfang - des alten VP, das damals mit C++ programmiert war. (FLEX
+entstand erst nach 1995 mit avanti!)
+
+Man startet  al  mit dem neuen  al.bat:
+
+  al DbDir Dbn Konfig
+
+     gleichwertig waere:  acon -jal -dDbDir -bDbn -kKonfig
+
+mit diesen Defaults:  al demo2 cat a
+Einfach mal versuchen! Eine INI-Datei o.ae. wird nicht gebraucht.
+
+Unter Windows ist "al" eine ueberfluessige Sache, unter Linux aber ganz
+sinnvoll, weil man da keine Entsprechung zu a99 hat. Dann ist "al"
+einigermassen brauchbar, um schnell mal eben eine Datenbank in
+Augenschein zu nehmen und gewisse Routinesachen zu erledigen, wie
+etwa eine Indexierung. Oder auch eine neue, leere Datenbank anzulegen.
+Als Endnutzer- wie auch als Bearbeiterzugang ist unter Linux nur a35 zu
+empfehlen, die neue browserbasierte Oberflaeche.
+
+Keine Missverstaendnisse jetzt, deshalb nochmal:
+Das Ziel bei  al  ist keineswegs eine neue Nutzungsoberflaeche, sondern
+nur ein kleines Werkzeug zum Hineinschauen in eine Datenbank, fuer
+wenig mehr als gewisse Admin-Funktionen, dies aber voellig plattform-
+unabhaengig - damit auch ein allegro-unkundiger Admin ein paar wichtige
+Dinge schnell mal eben machen kann. Ausbau- und anpassungsfaehig ist es
+immerhin ohne jeden Eingriff auf C-Ebene, sondern ein .job wie jeder
+andere, kein Vogel-friss-oder-stirb-Programm.
+
+Der al.job tut's auch unter Linux, der al.bat natuerlich nicht.
+Es fehlte die Zeit, ein shellscript zu machen. Doch der Aufruf ohne
+solches ist schon einfach genug:
+   ./acon -jal -dDbDir -bDbn -kKonfig
+mit den o.g. Defaults. Und einfach reinschauen - es sind Kommentare
+drin - wenn man Lust auf's Modifizieren hat.
+Das Neuanlegen einer Datenbank, eine Unterfunktion von al, wird
+von dem ebenfalls neuen Job  newdb.job  erledigt.
+
+Linux-Freigabe erfolgt naechste Woche, es sind noch Testarbeiten
+notwendig!
+
+
+"katlist" jetzt auch in acon
+----------------------------
+Diesen Befehl gab es fue?r acon noch nicht. Er schreibt die Liste der
+Feldbezeichnungen (Kategorienummern) und deren Namen in die iV,
+die Zeilen getrennt durch Code 10 getrennt. (Anders als in a99, wo
+die Liste in eine Datei namens katlist.asy geschrieben wird.)
+
+
+Codeumwandlungstabellen im Gesamtpaket
+--------------------------------------
+Hinweise:
+Viele qualitativ hochwertige Tabellen bei T. Berger auf www.gymel.org
+Zeichencodes nachschlagen:  www.unicode.org
+     oder  http://www.allegro-c.de/db/unicode
+
+Die ersten allgemein verwendbaren Dateien wurden schon vorgestellt
+in  Vb.203+204.
+Alle werden eingebunden in eine Param.Datei mit  tname, z.B.  tad-aw
+
+ad-aw.@pt     DOS-OstWest -> Win-OstWest (frueher: d.apt, asciansi.apt)
+aw-ad.apt     Win-OstWest -> allegro-OstWest (Umkehrung von o.apt)
+
+ad-dos.apt                -> DOS CP850
+ad-asc.apt                -> DOS CP437
+asc-ad.apt    DOS IBM-PC CP437 -> allegro-OstWest DOS
+ad-win.apt                -> Win 1252 (Windows-Standard)
+win-ad.apt    Win1252 -> DOS-OstWest
+
+utf-rtf.apt   UTF-8 -> RTF (f. a99/alcarta zur Anzeige von UTF-8-Daten)
+
+ad-lt1 : Umwandlung DOS OstWest -> ISO8859-1 (UNIX)
+ad-utf : Umwandlung DOS OstWest -> UTF-8 (Unicode)
+ad-htm : Umwandlung DOS OstWest -> HTML4, Entitaetencodes
+ad-rtu : DOS-OstWest -> RTF mit \u-Notierung
+         (einsetzbar statt ad-aw.apt, dann auch z.B. Verdana moeglich!)
+
+Index- oder Anzeigeparameter f.a99 und alcarta
+o.apt    1:1 Zuordnung zw. DOS-OstWest und Win-OstWest
+             o-Befehle, nicht p oder q
+     Gedacht f. korrekte Datenanzeige!
+
+Indexparameter
+i.apt    fuer Indexierung von DOS-OstWest-Daten (p- und q-Befehle)
+iu.apt   fuer Indexierung von Utf-8-Daten  (P- und Q-Befehle)
+
+s.apt    Sortiertabelle f. DOS-OstWest-Daten, zur Erstell. v.
+         sortierten Listen
+
+   u-Befehle:
+ucodes.apt   UTF-8 -> DOS-OstWest f. Import und fuer "xcode u" in FLEX
+ucodes.npt   UTF-8 -> Win-OstWest
+
+
+Import-Parameter
+y-Tabellen mit p-Ersetzungen von Doppelcodes in
+
+marc21.aim   Umwandl. von Original-MARC21-Codierung (nicht UTF-8)
+z39.aim      Win-ANSI -> DOS-OstWest
+
+UTF-8-Umwandlung bei IMPORT:  ucodes.apt einbinden in die Export-
+Parameter, die IMPORT dann benutzt, also z.B. eine modifizierte 
+i-1.apr wie in i-pica.apr  bei dem Aufruf
+  import -d... -ipica -ei-pica/neudat.alg
+
+
+Falsche Umcodierung in Verbindung mit UTF-8
+-------------------------------------------
+
+Einem Anwender in Polen fiel auf, dass es bei Woertern, die im Poln.
+nicht rar sind, wie 
+  ksiÞþe    (das heisst "Buecher")  oder
+  ksißþyc   (das heisst "Mond")
+in einem Titel ein Problem gibt mit der Kurzanzeige: da werden dann die
+drei bzw. zwei Sonderbuchstaben verfaelscht.
+Stehen die Zeichen einzeln, tritt kein Problem auf.
+
+Es liegt an einer Sonderbehandlung, die man bei Einsatz von UTF-8
+in den internen Daten braucht, die hier aber nicht gegeben ist:
+Wenn zwei oder mehr Codes oberhalb 191 direkt aneinanderstossen,
+soll keine Umcodierung per o-Tabelle erfolgen - wenn man intern
+UTF-8 hat, was aber dort eben nicht der Fall ist - d.h. diese Zeichen
+muessen in jedem Fall umcodiert werden. WENN man UTF-8 intern hat, dann
+sollte in der CFG die Zeile stehen
+CU
+welche dem Programm diesen Fakt signalisiert: daraufhin wird es solche
+Zeichenkombinationen eben nicht per o-Tabelle umcodieren.
+Wir haben das korrigiert.

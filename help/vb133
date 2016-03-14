@@ -1,0 +1,92 @@
+
+Verlautbarung 133 der Entw.Abt.                                2000-07-03
+-------------------------------
+
+The show must go on : WinCockPit Teil 1 etc.
+--------------------------------------------
+
+Ein wichtiger Teil der CockPit-Arbeit ist das Bearbeiten der 
+Parameterdateien, besonders derjenigen, die zur aktuellen Datenbank gehoeren.
+Fuer a99 wurde jetzt ein Satz von Hilfedateien und FLEXen geschaffen, die
+genau das leisten, aber auf neue, schnellere Art: 
+Per FLEX direkt aus dem Programm heraus die aktuellen, waehrend der
+Sitzung benutzten Parameterdateien etc. bearbeiten UND dann sofort laden
+und die Sitzung damit fortsetzen. Und das nicht nur fuer die 
+Anzeigeparameter, sondern auch fuer die CFG, die Indexparameter, 
+Druckparameter UND Formulardatei. 
+            Das bedeutet: Merseburger Zauberschleife mal fuenf!
+Die Indexparameter koennen nun also auch im fliegenden Wechsel
+ausgetauscht werden. Aber die CFG? Zwar nicht direkt, aber a99 
+kann sofort gestoppt und neu gestartet werden, schlicht durch 
+die FLEX-Sequenz
+
+var "a99 " V
+  starten (V ist der Name der INI-Datei!)
+call
+    und aktuelles Programm stoppen
+STOP
+
+Auch fuer die Formulardatei wird das so gemacht. So kann man 
+immer verfahren, wenn a99 fuer die Dauer einer Aktion, bis hin 
+zur Datenbank-Erneuerung, gestoppt und dann wieder gestartet 
+werden muss.
+
+Wenn man ins WinCockPit umsteigen will, muss man folgendes tun:
+
+1. aktuelles a99 holen  (auf ac20/update )
+
+2. Paket flex.lzh  auf c:\allegro\flex  entpacken
+   (genau gesagt, auf ProgDir\flex )
+
+3. Paket help.lzh auf c:\allegro\help entpacken, darin sind die
+   benoetigten neuen Hilfedateien neben den anderen, aelteren
+   (genau gesagt, auf ProgDir\help )
+
+4. Datei dbinfo.apr auf c:\allegro kopieren (ist in a99.lzh mit drin)
+   (Wenn man nicht a.cfg hat, Kopie  dbinfo.cpr  machen)
+
+Dann: waehrend des Programmlaufs in das Schreibfeld eingeben:
+
+h admin
+
+Alles weitere sieht man dann, erklaerende Texte sind enthalten.
+
+Die FLEXe moegen ferner als Beispiele fuer andere, eigene Vorhaben taugen,
+denn es werden ziemlich viele Register gezogen, aber alles ist kommentiert.
+Tip: Wenn man einen anderen Editor statt X benutzen will: Befehl Editor=
+     in der INI-Datei eintragen.
+(Nebenbei passieren Dinge wie: wenn die Anzeigeparameter bearbeitet werden 
+und sie liegen auf dem ProgDir, werden sie anschliessend auf das DbDir
+kopiert. Und beim naechsten Start natuerlich automatisch von dort geladen.)
+
+Damit alles das klappt, mussten weitere FLEX-Verbesserungen her.
+Die vielleicht wichtigste wurde aber gar nicht fuer die CockPit-Zwecke 
+genutzt:
+
+phrase i text
+   Hier kann jetzt die Angabe "i text" fehlen, dann wird der Inhalt der iV
+   genommen. So koennen Phrasen datenabhaengig gesetzt werden. Fehlt
+   "text", wird Phrase i geloescht.
+   Aber was wuerde das nuetzen, gaebe es nicht auch dieses:
+
+var ... vi
+write ... vi
+   Damit wird Phrase i in den Ausgabetext eingebaut. (i=1 ... 255)
+
+Damit kann man nun die Phrasen 128 bis 255 beliebig als Variablen nutzen, 
+die bisher gar nicht zugaenglich waren. 
+Noch besser: diese Werte werden in PHRASE.A99 aufbewahrt zur naechsten 
+Sitzung...
+
+Die Liste der Sondervariablen, die man bei den Befehlen "var" und "write"
+benutzen kann, wurde aber noch weiter verlaengert. Man findet sie am Ende
+von FLEXGER.RTF (enthalten in HELP.LZH) Jetzt sind alle wichtigen Namen von
+Dateien etc. ansprechbar, und genau diese werden in den neuen FLEXen 
+gebraucht.
+
+Erneuert wurde auch RUCKZUCK.LZH, das Paket der fuer RuckZuck erforderlichen
+Dateien. Die Ungereimtheiten, die es noch mit 3- und 4-stelligen Kategorie-
+systemen gab, sollten damit ausgeraeumt sein. In Kiel wurde insbesondere
+mit dem 4stelligen Pica-Schema getestet. Die wichtige Hilfs-Parameterdatei
+D-H0.APR funktioniert ohne Aenderung fuer alle Konfigurationen.
+

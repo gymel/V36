@@ -1,0 +1,1804 @@
+// al.job : allegro console utility; requires  acon  program
+// 2014-07-22 / 2015-10-28  Works under Win and Unix alike
+// Author: B.Eversberg, Braunschweig Univ. Libr.,  b-eversberg@gmx.de
+
+// For convenience under Windows, start al.bat like this:
+//   al dbDir dbname conf;  e.g.:  al demo2 cat a
+//   equivalent:   acon -jal -ddemo2 -bcat -ka
+
+// Unix/Linux:
+//      ./acon -jal    to use demo database in subfolder  demo2
+// Or:  ./acon -jal -d/var/data/catalog -bcat -ka
+//                     to use database cat in /var/data/catalog, Konfig a.cfg
+
+// If options -d -b -k  not given, they are taken from [avdemo] in avanti.con
+
+// The briefest (3-letter) format of FLEX command words is used in most cases.
+// The start or main menu is at :Menu
+// See at the end: List of variables used in this job
+
+
+// -----------------------------------------------------
+// **** 0. BEGIN ***************************************
+// Do the preliminary settings (located under :SETT) 
+
+Wri n "Administration of your allegro database" n
+perform SETT
+
+// after that, we get back here:
+
+// -----------------------------------------------------
+// *** 4. Menu : Choose main function ******************
+// The command "Wri" writes to the console;
+//     whereas "wri" writes to the file last opened with  exp f name
+
+:Menu
+Wri n "FUNCTIONS (Enter '-' to step back at any point, or 'x' back to main menu)" n
+Wri "1 : Index   2 : Record       3 : Find   4 : Review" n
+if $nSets Wri "b : Browse latest result set again" n
+Wri "a : Admin   p : Properties"
+if tbl Wri "   u : Unlock"
+if not tbl Wri "   l : Lock"
+Wri n
+Wri "h : Help    m : Make a note             x : Exit" n
+
+:M1
+// ask and wait for user input
+ask Your choice: >
+:M2
+// Examine user input from Menu
+// if 1 was entered, then go to  :1
+if "1" jump 1
+// and so further:
+if "2" jump 2
+if "3" jump 3
+if "b" jump 3s
+if "4" jump 4
+if "p" jump prop
+if "a" jump Admin
+if "x" jump END
+if "h" jump HELP
+if "m" jump Note
+if "l" set tbl lock;jump Menu
+if "u" set tbl fre;jump Menu
+// None of those? then ask again
+jump M1
+
+
+// -----------------------------------------------------
+// *** 5. MAIN FUNCTIONS *******************************
+
+// *** Index **************************************
+:1
+// Select an index: (name goes to $ixN)
+perf CHIND
+
+Wri "Index selected: " $ixN n
+ask Start at:>
+
+if "" jump Menu
+if "" jump 1
+if "-" jump 1
+if "x" jump Menu
+ins $ixDn
+
+// browse down
+:bdown
+var $ixN " " $ixDn
+// get 21 lines from index
+qri n 21
+Qri
+// Replace separator code 20  by 10 (newline)
+ins _^T_^J_
+ins $ixPag
+// Index page is now in $ixPag
+// last line for 'down':
+var $ixPag (T"^J" f" " f"1234567890" f" ") "z"
+ins $ixDn
+// first line for 'up':
+var $ixPag (e"[^J^M]" f" " f"1234567890" f" ")
+ins $ixUp
+
+:prind
+// prepare index display, raw data is in $ixPag
+perf INDISP
+// formatted display is in $ixShow, show it
+Wri $ixShow
+
+Wri n "...." n
+Wri "Enter=down / u : up / - : Exit " n "Number : show records / word = begin at that word >"
+ask
+if "" jump Menu
+// attach [ to end of the reply in iV
+var +"["
+// Was there no input? Then browse down
+if "[" jump bdown
+
+if "-[" jump Menu
+if "u[" jump bup
+if "d[" jump bdown
+
+// is it a line number?
+if >0 if <22 jump indline
+
+// word
+var (f"[")
+ins $ixDn
+jump bdown
+
+// a number was entered, get records from that index line
+:indline
+eval
+var +"."
+ins #uXX
+var $ixShow (b"#uXX" e"[^J^M]" f" " f"0123456789" f" ")
+ins $xx
+var $ixN " " $xx
+ins $findCom
+jump 3s
+
+// browse up
+:bup
+// get 21 lines reverse from index
+qri n 21
+qri -
+var $ixN " " $ixUp
+Qri
+ins _^T_^J_
+ins $ixPag
+// last line for 'down':
+var $ixPag (T"^J" f" " f"1234567890" f" ") "z"
+ins $ixDn
+var $ixPag (e"[^J^M]" f" " f"1234567890" f" ")
+ins $ixUp
+jump prind
+
+
+// *** Record ***********************************************
+//     Load any record and do something
+
+:2
+ask Enter Rec#:>
+var (f"^M^J- ")
+if "" jump Menu
+:2g
+ins $recNr
+
+// get rec nr. $recNr and find that record
+:get
+var "#" $recNr
+find
+
+
+if no Wri n " *** No record under number " $recNr "! ***" n "(There are no more than " t ")" n n;jump Menu
+
+// load this record (it is the last in the current result set)
+last
+
+:get2
+// Rec is now loaded, save nr in $recNr
+var i
+ins $recNr
+var kr
+// code changes for display (see param  e-w0.@pr)
+// if $ux ansi
+xcode xp
+ins $kr
+Wri n "  [Rec# " $recNr "]" n $kr n
+if Lock Wri "THIS REC. IS LOCKED!" n
+if del  Wri "THIS REC. IS INACTIVE (deleted or otherwise)!" n
+
+
+// *** Functions for the current record  ************************************
+
+:get3
+Wri "e:Edit  1:first  2:next  3:prev  4:last  n:nr  i:index  k:keys  L:lock"
+if not Lock if not del Wri "  d:del"
+Wri n " >"
+ask
+
+if "1" first #;jump get2
+if "4" last #;jump get2
+
+if "2" jump next
+if "3" jump prev
+
+if "m" exp t ad-aw;jump get2
+if "o" exp p e-w0;jump get2
+if "n" jump 2
+if "l" list recnum;jump 2
+if "i" jump prind
+if "k" Wri sk;jump get3
+if "L" jump rlock
+if "d" jump delete
+if "x" jump Menu
+
+if "e" jump edit
+
+
+jump 2
+
+:next
+next #
+if cancel Wri "no next rec, " i " is last" n
+jump get2
+
+:prev
+prev #
+if cancel Wri "no prev rec, " i " is first" n
+jump get2
+
+// *** Record Edit function *************************************************
+
+
+:edit
+
+// write rec to edit.adt using $editPar
+
+set dow 1
+exp f edit.adt
+
+var "#" $recNr
+find
+last
+
+exp
+// now close  edit.adt
+exp f stdout
+
+// call the editor
+var $editor " edit.adt"
+call
+// read the edited file back into iV
+var Fedit.adt
+
+// set ; between fields instead of line feeds
+// The record text must begin with a #
+ins _^M__
+ins _^J#_;#_
+
+// some massaging to remove initial spaces and stuff
+if " " var (b";")
+if not "#" var (b";")
+// Code is ANSI, change to ASCII (external to internal)
+asci
+
+// ready for inserting into current record
+ins
+
+// display it again, after editing
+Wri "Rec# " i n kr
+// and ask if it is right for saving
+ask Save? y/n >
+if not "y" set unlock;jump Menu
+
+put
+if yes jump edy
+
+// put failed, prepare error message
+var Err
+ins $err
+
+Wri "Save failed!!!" n
+
+Wri $err " ERROR" n
+if del Wri "Record was deleted" n
+if Lock Wri "Record is locked" n
+if tbl Wri ".TBL is locked" n
+ask Try again? >
+if "y" jump edit
+jump Menu
+
+:edy
+Wri "DONE" n
+jump Menu
+
+// *** delete current rec   ****
+:delete
+ask are you sure? >
+if not "y" jump 2
+erase
+if no Wri "no luck deleting this record" n;jump 2g
+Wri "Record " i " was deleted" n
+ask
+var i
+jump 2g
+
+
+// *** rec lock/unlock curr rec *********
+:rlock
+// prepare the question
+var "free. Lock? y/n"
+if Lock var "locked. Unlock? y/n"
+ins $xx
+// Put the question
+Wri "Record is currently " $xx n
+ask >
+if no jump get2
+if not "y" jump get2
+
+// Answer was yes
+if Lock set unlock;jmp get2
+
+// set lock
+var i
+set lock #
+var sL
+ins $lockStat
+if "0" jump get2
+Wri "Status: " $lockStat n
+jump get2
+
+
+// *** Find ****************************************************
+//     Enter a find command, get the result set and do something
+:3
+ask Find command: >
+var (f" -x^M^J")
+if "" jump Menu
+ins $findCom
+
+:3s
+// Show list
+perf SHOWLIST
+
+
+// Add new result set to list of previous ones
+// $findCom is the command and is used as the name of result list!
+//   raise counter
+eval $nSets +1
+var (0,r3)
+ins $nSets
+// Title of new Set
+var $rSets n $nSets ". " l " : " $findCom
+ins $rSets
+
+// *** Functions for current result set
+:3f
+Wri "RESULT SET FUNCTIONS" n
+ask Enter nr. to see record   e = Export   o = Other set   - = Back >
+
+var (f" ")
+if "e" jump expset
+if "o" jump 4
+if "x" jump Menu
+if =0 jump 3
+ins $recNr
+var "r" $recNr
+// Load the chosen record
+find
+jump get2
+
+
+// *** export result set **********************************
+:expset
+// first: choose export parameters from dbDir
+var D "*." K1 "pr"
+dir
+// prepare the list for choosing
+perf DIRLIST
+Wri $dirList n
+:ex1
+Wri "Which parameters? [" $exParam "]  ? for more. Same as before: Just press Enter" n
+ask Enter the name>
+if "?" jump ex1a
+// same name as before? (nothing was entered)
+if not "" jump ex2
+if $exParam jump ex3
+
+// other parameters are wanted, show those that are on progDir
+:ex1a
+var $progDir "e-*." K1 "pr"
+dir
+perf DIRLIST
+Wri $dirList n
+Wri "Which parameters?  ? back to the other list" n
+ask Enter the name>
+if "?" jump expset
+// none chosen?
+if "-" jump 3f
+if "x" jump Menu
+if "" jump Menu
+// name is in iV
+:ex2
+ins $exParam
+:ex3
+set dow 2
+var $exParam
+exp p
+// param was not loadable?
+if no jump 3f
+
+// second: enter file name
+Wri "File name? [" $exFil "]"
+ask >
+if "" var "stdout"
+ins $exFil
+exp f
+
+// now export the entire set
+export set
+
+exp f stdout
+set dow 1
+
+Wri "Set was exported to " $exFil n n
+jump 3f
+
+// *** Review *** (recall result sets) ***************************************
+//     go back to one of the earlier result sets
+:4
+if not $rSets Write "No results yet in this session ..." n;ask >;jump Menu
+Wri n "Result sets in this session: " n n
+Write $rSets n
+Wri "Which number? (0 = none)"
+ask >
+if =0 jump Menu
+eval
+var +"."
+ins #uXX
+Wri n
+// get the chosen line from $rSets
+// and extract the command
+var $rSets (b"#uXX" e"^J" F"^M" f" " f"01234567890" f": ")
+ins $findCom
+perf SHOWLIST
+jump 3f
+
+
+// ---------------------------------------------------------------
+// *** 6. Admin functions ****************************************
+
+:Admin
+Wri n n "ADMIN" n
+Wri "1 : Index rebuild   2 : Address table rebuild (.tbl file)" n
+Wri "c : CFG editing     i : Index param   o : Other files" n
+Wri "n : New database    a : Another instance of this job" n
+Wri "p : Properties      s : Settings (extended list)" n
+Wri "l : List of data elements (as defined in CFG)" n
+Wri "k : Copy database   b : Look for other databases" n
+Wri "e : Exchange rates  h : Help" n
+
+:Admin-a
+ask Your choice:>
+
+if "1" jump inxReb
+if "2" jump tblReb
+if "c" jump edcon
+if "p" jump prop
+if "e" jump exch
+if "s" jump sett
+if "n" jump newdb
+if "i" jump ixparam
+if "a" jump insta
+if "o" jump otherfiles
+if "b" jump look
+if "k" jump dbcopy
+if "h" jump ADMHELP
+if not "l" jump Menu
+
+// l : List of data elements
+
+exp f elemlist.txt
+katlist
+wri iV
+exp f stdout
+Wri n "File  elemlist.txt  now contains the list! Do you want to see it? y/n" n
+ask >
+if not "y" jump Menu
+var $editor " elemlist.txt"
+call
+jump Menu
+
+jump Menu
+
+
+// Create another instance of  al.job  with same database
+
+:insta
+// start acon again with the same command line
+var $progDir "acon " cl
+call
+ask >
+jump Menu
+
+
+// CREATE A NEW DATABASE
+// Which structure (for Option -k)
+:newdb
+
+Wri n "This function requires some knowledge of the basic components." n
+Wri "First, choose a configuration file (*.cfg)" n
+Wri "(It contains some basic settings and the list of field tags)" n
+var "*.cfg"
+dir
+ins _.cfg__
+ins _.CFG__
+ins _$__
+ins _artikel__
+ins _    _  _
+wri iV n
+Wri "Which of these configurations (if not a)?" n
+ask Just enter the letter or name (or - to quit) >
+
+if "-" jump Admin
+if "" var "a"
+ins $cfg
+// Where to put it? (for Option -d)
+:ord
+ask Folder name? (or - to quit) >
+if "-" jump Admin
+if "" jump ord
+ins $dbDir
+// Name of database (for Option -b = Name of index params!)
+var $cfg (0,1)
+ins $k
+var "*." $k "pi"
+dir
+Wri iV n
+Wri n "Index parameters specify the content and structure of the index" n
+ask Which index parameter file (if not default = cat)? >
+if "" var "cat"
+var (e".")
+ins $dbName
+
+var $dbDir "\\" $dbName ".tbl"
+fsize
+if not no jump exist
+
+// this calls acon via al.bat with the three options and "new"
+var "al.bat new " $dbDir " " $dbName " " $cfg
+call
+end
+
+//  edit config
+:edcon
+// Name may be with or without $, in DbDir or ProgDir
+var D "$" K ".cfg"
+ins $cfg
+fsize
+if not no jump edc1
+var $progDir "$" K ".cfg"
+ins $cfg
+fsize
+if not no jump edc1
+var D K ".cfg"
+ins $cfg
+fsize
+if not no jump edc1
+
+var $progDir K ".cfg"
+ins $cfg
+
+
+:edc1
+var $editor " " $cfg
+call
+
+jump Admin
+
+:ixparam
+var D B "." K1 "pi"
+ins $ixPar
+fsize
+if not no jump ixp1
+
+var $progDir B "." K1 "pi"
+ins $ixPar
+
+:ixp1
+var $editor " " $ixPar
+call
+
+// Does this work?
+// ask Load the changes? >
+// if not "y" jump Admin
+
+var $ixpar (e".")
+index p
+jump Menu
+
+:otherfiles
+Wri "Name or pattern? [" $otf "]"
+ask >
+if "" var $otf
+if "" jump Menu
+ins $otf
+
+Wri "Looking for " $otf n
+
+var $otf (b".")
+ins $otyp
+
+var $otf
+dir
+
+perf DIRLIST
+Wri $dirList n
+
+ask Which file? >
+if "" jump Menu
+ins $otfn
+
+var $editor " " $otfn "." $otyp
+call
+
+jump Admin
+end
+
+
+// **** Rebuild functions **************************************+
+
+// *** Index Rebuild ***
+:inxReb
+
+// open an output file  org.bat
+
+if $dbnix var "-f70 -n1 -d" D "*." K1 "lg"
+if not $dbnix var "-fi0 -n0 -d" D B "_*." K1 "ld"
+ins #uXX
+
+exp f org.bat
+
+//  Do we need 2 index runs?
+if v14 jump ixr2
+if res jump ixr2
+
+// No, just one
+write $progDir "index " #uXX " -m0 -k" K " -e" B "=" D n
+jump ixr3
+
+:ixr2
+write $progDir "index " #uXX " -@1 -m0 -k" K " -e" B "=" D n
+write $progDir "qrix -fq0 -k" K " -d" D " -e" B "=" D " -x9999" n
+write $progDir "index -fi1 -@2 -n0 -m0 -k" K " -d" D B "_*." K1 "ld -e" B "=" D n
+
+:ixr3
+#uXX
+
+write $progDir "qrix -fq1 -k" K " -d" D " -e" B "=" D " -x9999" n
+
+//  Final run of index, if we have v14
+if v14 write $progDir "index -fa1 -d" D B "_*." K1 "ld -e" B "=" D " -k" K n
+
+if $ux jump inUse
+//   Manchmal bleiben gewisse temporaere Dateien uebrig. Loeschen:
+write "echo off" n
+write "if not exist " D "vd*.tmp goto eende" n
+write "del " D "vd*.tmp" n
+write ":eende" n 
+write cl n
+write "echo Index ok, press Enter to continue or Strg+c to abort" n "pause" n
+
+:orgbat
+exp f stdout
+Wri "Script org.bat was created. Now enter command 'org.bat' to run it! " n
+
+// This won't work because index file is open: (Therefore we need to end this job!)
+// call org.bat
+// Wri "Done!" n
+
+end
+
+// *** .tbl rebuild ****
+:tblReb
+
+// open an output file  org.bat
+
+exp f org.bat
+write "echo off" n
+write $progDir "index -ft -k" K " -d" D B "_*." K1 "ld -e" B "=" D n
+write "echo Address table ok (" B ".tbl), press Enter to continue or Strg+c to abort" n "pause" n
+write cl n
+jump orgbat
+
+
+:inUse
+exp f stdout
+if use Wri "Attention: Db is currently in use!" n "Before starting org.bat, make sure no one is in." n "Then:" n
+ask Enter y to confirm, n to abort ...
+if not "y" jump Admin
+Wri "Now enter command 'org.bat' to run it!" n
+end
+
+
+// *** Note (persistent variables in special index file) ***************
+:Note
+Wri "This is just to test and to demonstrate the 'persistent variables'" n
+Wri "You enter a Keyword first and then your note. " n
+Wri "Any note will persist beyond this session, until you delete it." n
+// do we have the 'special' index file *.?zx
+var D B "." K1 "zx"
+fsize
+
+if no set &d;
+// *.?zx not found, use regular index *.?dx for the pv, section 11 (; means 11)
+//        e.g.,  cat.adx, index 11
+
+:Note2
+ask Keyword? >
+// remove leading spaces and cut the keyword at first space
+var (f" " e" ")
+if "" jump Menu
+if "-" jump Menu
+ins $kywd
+// retrieve it
+var "&" $kywd
+var
+// display it
+ins $xx
+Wri $kywd "=" $xx n "Now enter your note (enter -- to delete the note)" n
+ask >
+var (f" " F" ")
+if "" jump Note2
+if "--" var ""
+if '-' jump Note
+// restrict length to 200, remove trailing spaces
+var (0,200 F" ")
+ins $note
+
+// Prepare the string  &key=value
+var "&" $kywd "=" $note
+// and save it into the index (i.e., "value" into &key)
+ins
+jump Menu
+
+
+// *** Db properties ***************************************
+:prop
+
+var D B ".log"
+fsize
+if no var "0"
+ins $logSize
+var $logSize " Bytes";ins $logSize
+
+if $ux jump uxtime
+jump wintime
+
+:uxtb
+// deleted records?
+find |1 _//?
+var l
+ins $ndl
+
+// Check write permission on dbDir by opening an export file there
+var "Write permit"
+ins $wrp
+var D "test.txx"
+exp f
+if no var "No write permit";ins $wrp
+exp f stdout
+
+// delete the test file
+if not $ux var "del " D "test.txx";call
+if $ux var "rm " D "test.txx";call
+
+
+// Check lock status
+var B ".tbl is not locked"
+if tbl var B ".tbl is locked"
+ins $tbl
+
+Wri n n n n "About this database" n n
+
+// is there a $a.cfg or just a.cfg? On DbDir, or on ProgDir
+var ""
+ins $xx
+var D "$" K ".cfg"
+fsize
+if not no $xx=$;jump pcfg
+
+var "$" K ".cfg"
+fsize
+if not no $xx=$
+
+
+:pcfg
+var $xx K ".cfg"
+ins $xx
+
+// now display the properties
+
+Wri #dts(6,2 f"0") "." #dts(4,2 f"0") "." #dts(0,4) ", " #dts(9,0) n n
+Wri 'DbDir:    ' D "   Access: " A  "   (" $wrp ")" n
+Wri 'Config.:  ' $xx  "    Coding: " $cs "    t/k=" Kk 
+
+// "AufbohrFaktor" - size factor of data files, default 1
+var D B ".tbl"
+open
+fetch b
+// it is the 2nd byte of .tbl, -2
+fetch b
+Z =
+Z -2
+var Z
+if >1 ins $szf
+close
+if $szf Wri "    sizeFactor=" $szf
+var ""
+ins $szf
+Wri n
+
+Wri 'DbName:   ' B ', ' $tbl n
+Wri 'DbTitle:  ' T n
+Wri 'Size:     ' t ' (of which ' $ndl ' deleted or unused numbers)' n
+Wri 'LogFile:  ' B ".log, Size: " $logSize ", Time: " $logTime n
+Wri 'date n/e: #' cn " / #" ce n
+if $recNr Wri 'curr.Rec.: ' $recNr " (Prim. key is " p ")" n
+
+Wri 'ProgDir:  ' $progDir "    DisplParam: " e "    Editor: " $editor n
+
+ask Enter (to see list of indexes) ... >
+
+if "-" jump Menu
+
+// Show list of indexes
+Wri n 'Indexes:  ' n
+// Names of indexes
+var I
+// replace separator code 20 by ||
+ins _^T_||_
+ins $xx
+//   the format of the list in $xx is now:
+// ALL e1=ALL Words||PER 1=Persons||...
+//   out of this, create this:
+// ALL : e1=ALL Words
+// PER : 1=Persons
+
+:iloop
+var $xx (e" ")
+ins $yy
+Wri $yy
+
+Wri " : "
+
+var $xx (e"||" b" ")
+ins $yy
+Wri $yy
+
+Wri n
+
+var $xx (b"||")
+ins $xx
+if $xx jump iloop
+
+
+ask Enter (to see list of restrictions) ... >
+if "-" jump Menu
+
+// Sho list of Restrictions
+var R
+if "" jump Menu
+ins _^T_----_
+ins #uXX
+// format in #uXX is:
+// PYR=Year----TYP=Doc type
+
+Wri n 'Restrictions:  ' n
+:rloop
+Wri '          ' #uXX(e'----') n
+var #uXX(b'----')
+ins #uXX
+var #uXX(f" ")
+if not "" jump rloop
+ask back to menu >
+jump Menu
+
+
+// *** Look for other databases, recursively under $datapath
+:look
+Wri "Where are your databases? (Enter pathname, Default = " $progDir ")" n
+ask
+if "-" jump Admin
+if "" var "."
+ins $datapath
+var ""
+ins $Bas
+z=1
+// for UNIX, differently
+if $ux jump uxlook 
+var $datapath (F"\") 
+ins $datapath
+
+var "dir /b /s " $datapath "\*.?dx" 
+// execute the dir cmd and read its results
+pipe
+if no jump nodir
+
+// windows
+:dbloop
+// next line
+get
+// no more data
+if cancel jump dlist
+ins $xx
+var $Bas z ". " $xx n
+ins $Bas
+z+1
+jump dbloop
+
+// unix 
+:uxlook
+var "find " $datapath " -name *.?dx"
+// execute the find cmd and read its results
+pipe
+:uloop
+get
+if cancel jump dlist
+ins $xy
+var $xy "UU"
+if not %dxUU% jump uloop
+
+var $Bas z ". " $xy n
+ins $Bas
+z+1
+jump uloop
+
+:dlist
+// show the numbered list and ask for nr
+Wri $Bas
+ask Which number? (0 for none) >
+z=
+if <1 jump Menu
+
+var z "."
+ins #uXX
+// get the chosen line
+var $Bas (b"#uXX" e"^J" f"^M")
+ins _\_/_
+ins $oB
+var $oB (f" " t"/")
+ins $d
+var $oB (T"/" f"/")
+ins $b
+var $b (T"." f"." 0,1)
+ins $k
+var $b (e".")
+ins $b
+
+Wri "1 : Look at that database"
+if not $ux Wri "    2 : Create INI file for it"
+Wri "    a : Admin" n
+ask
+if "" jump Menu
+if "a" jump Admin
+if "-" jump Admin
+if "x" jump Menu
+if "2" jump crini
+
+:ld
+// We want to look, prepare the call:
+var $progDir "acon -jal -d" $d " -b" $b " -k" $k
+if not $ux ins _/_\_
+ins $cal
+Wri $cal
+var $cal
+// Now apply the al.job there
+call
+
+// After we close the other database
+Wri P " Continue with database " B " on " D "? y/n"
+ask
+if "n" end
+jump Admin
+
+// Copy database
+:dbcopy
+Wri "Enter a path name to which you want to copy the files" n
+ask Path? 
+if "" jump Admin
+if "-" jump Admin
+if "x" jump Menu
+
+ins $copypath
+set tbl lock
+
+Wri "Copying to " $copypath n
+var $cp D B "_*." K1 "ld " $copypath
+call
+var $cp D B "." K1 "?x " $copypath
+call
+var $cp D B ".tbl " $copypath
+call
+var $cp D B ".stl " $copypath
+call
+var $cp D B ".res " $copypath
+call
+var $cp D B "." K1 "pi " $copypath
+call
+
+// log file name_date
+var #dts
+ins _/__
+ins _:__
+ins $xx
+var $copypath $sep B ".log" _" $xx
+ins $xx
+var $cp D B ".log " $xx
+call
+// remove log
+var $rm " " D B ".log"
+call
+set tbl free
+jump Admin
+
+
+// Euro Exchange rates (uses Web service by European Central Bank)
+:exch
+
+ask Which currency? (??? list of available currencies)
+var (f" " F" ")
+if "-" jump Admin
+if "x" jump Menu
+// If ??? was entered, $cu will be empty:
+if "???" var ""
+// set input to uppercase
+xco cu
+
+// curr code in upper.
+ins $cu
+
+// build the string to look for in the response
+var "currency='" $cu "' rate='"
+// e.g.:  currency='USD' rate='
+ins #uXX
+
+//  Call the ECB service, it sends a list with all the rates
+
+var "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml
+get I
+// For testing:
+//var Fecb.txt
+ins $xx
+
+if "ERROR" jump exerr
+
+// is $cu empty?
+if not $cu jump exchlist
+
+// The response from ECB is now in $xx
+//  extract the line for the rate using the string prepared for it
+
+var $xx (b"#uXX" e"'")
+if "" jump exch
+// the rate is now in iV
+perf CRATE
+// display the results
+Wri n "Current rate of ECB: " n "    1 " $cu " = " $xy " EUR" n "    1 EUR = " $xx " " $cu n n
+
+jump Menu
+
+:CRATE
+// put the rate value to $xx, filled up by spaces to 8 characters
+var (0,8)
+ins $xx
+
+// and calculate the reverse value
+eval 1 / $xx
+// make it 8 spaces
+var (0,8)
+ins $xy
+return
+
+:exchlist
+var $xx
+// the list comes unsorted, sort alphabetically!
+// (There are other lines of text, which doesn't matter)
+sort a0
+ins $xz
+:exch2
+var $xz
+// extract the next code
+var (b"<Cube currency='" e"'")
+ins $cu
+// no further value in the list
+if "" Wri n;end
+var $xz
+// and the rate
+var (b"rate='" e"'")
+
+// calc the reverse
+perf CRATE
+
+// and print both
+Wri n "    1 " $cu " = " $xy " EUR   /   1 EUR = " $xx " " $cu
+// next line begins somewhere after "/>"
+var $xz (b"/>")
+ins $xz
+// loop, if there was sthg left
+if $xz jump exch2
+Wri n n
+end
+
+:exerr
+Wri n "No Internet connection? ..." n
+ask
+jump Admin
+
+
+:nodir
+Wri n "directory function error" n
+ask
+jump Admin
+
+:nolook
+Wri n "function not available under UNIX" n
+ask
+jump Admin
+
+// *** Subroutines ***  (called with:  perform name) ******************
+
+// Choose index
+
+:CHIND
+if $ixList jump chind
+// $ixList must first be set up
+
+// Create a numbered list
+var I
+ins _^T_/-/_
+
+ins #uXX
+
+// $ixList will hold the list
+var ""
+ins $ixList
+
+z=1
+
+:Cloop
+
+var $ixList n z ". " #uXX(e" ") " " #uXX(e"/-/" b"=")
+ins $ixList
+z+1
+
+var #uXX(b"/-/")
+ins #uXX
+
+var #uXX(f" ")
+if not "" jump Cloop
+
+var z
+ins $zn
+
+:chind
+// present the list for choice
+Wri $ixList n "------------------" n
+
+:an
+// Now ask for number
+ask Number? >
+
+var (f" ." F". ")
+if <1 jump Menu
+var +"."
+ins #uXX
+
+eval #uXX
+if =0 jump an
+
+eval $zn -#uXX
+if <1 jump an
+
+
+var $ixList (b"#uXX" 1,3)
+ins $ixN
+
+return
+// end :CHIND
+
+
+// *** Prepare index page display, raw data is in $ixPag ********************
+:INDISP
+var ""
+ins $ixShow
+// vorher noch kein Indexzugriff
+if not $ixPag jump 1
+var $ixPag
+// first save index lines to $ixCop
+ins $ixCop
+z =1
+:qloop
+var $ixPag (e"^J")
+ins $xx
+var z
+var (0,r2)
+ins $xy
+var $ixShow n $xy ". " $xx
+ins $ixShow
+z +1
+var $ixPag (b"^J")
+ins $ixPag
+if $ixPag jump qloop
+// restore $ixPag for re-display of same page, calling :INDISP
+var $ixCop
+ins $ixPag
+return
+// end INDISP
+
+
+// *** Show result set ********************************
+:SHOWLIST
+// exec find command
+var $findCom
+find
+if l1 jump nix
+
+if not g1 var i;jump 2g
+
+z=1
+first
+
+// Show numbered list
+:floop
+Wri z ". " s n
+z+1
+next
+if yes jump floop
+Wri "---------" n n
+
+return
+// end SHOWLIST
+
+// There was no result
+:nix
+Wri "Sorry, " $findCom " found nothing!" n
+ask >
+jump 3
+
+
+
+// Sort file list and display it. List is already in iV!
+:DIRLIST
+
+// names are separated by "  ", we need ^M^J for sorting (13 10 = 0d 0a)
+ins _  _^M^J_
+// sort ascending from pos 0
+sort a0
+
+ins $ls
+
+var ""
+ins $dirList
+
+// arrange the names more orderly, without .xpr, 10 bytes per name
+:dloop
+var $ls (e"." 0,10)
+ins $xx
+var $dirList $xx
+ins $dirList
+var $ls (b"^M^J")
+ins $ls
+if $ls jump dloop
+// Now, list is in $dirList
+return
+// end DIRLIST
+
+
+
+// -----------------------------------------------------
+// *** 7. Error messages *******************************
+
+:exist
+Wri "Sorry, database  " $dbName "  in  " $dbDir "  exists!" n
+end
+
+:testrec
+Wri "Waiting to be implemented (Label :testrec in al.job)" n
+jump Menu
+end
+
+:experr
+wri "Parameter file " $editPar " not found or faulty" n
+wri "Maybe an .apt file is missing" n
+end
+
+// -----------------------------------------------------
+// *** 8. The End **************************************
+
+:END
+ask Exit? y/n
+// only y will end this (or Ctrl+c)
+if not "y" jump Menu
+
+// loop back 5 times
+Wri n m ' .. Goodbye' n
+z=2
+:ende5
+Wri "."
+sleep 500
+z-1
+if z>0 jump ende5
+Wri n n
+end
+
+// ------------------------------------------------------
+
+:SETT
+
+//  call =  acon -jal name.ina  ?
+var cl
+var (b"-jal " f" " F" ")
+ins $cl
+if "" jump opti
+
+if "-" jump opti
+
+if %.ina% jump ina
+if %.ini% jump ina
+var +".ina"
+ins $cl
+jump ina
+
+:opti
+if "-h" jump SHELP
+
+// Normal call: acon -jal -d... -b... -k.
+
+var cl (b" -d" e" -" f" ")
+ins $dbd
+
+var cl (b" -b" e" -" f" ")
+ins $dbn
+
+// Warnings if called without -d and/or -b
+// Defaults taken from  avanti.con, section  [avdemo]
+if not $dbd wri "Option -d is missing, DEFAULT is " D n
+if not $dbn wri "Option -b is missing, DEFAULT is " B n
+
+// -----------------------------------------------------
+// *** 1. Settings *************************************
+
+// load last rec; having no record loaded may cause trouble
+last #
+
+// if Unix/Linux, then set $ux (so for Win', we can say:  if not $ux ...)
+var m
+if not %ac-w% var "x";ins $ux
+
+// Att.: set C value in your CFG if not using DOS code:  CW=Win (ANSI)  CU=UTF-8
+// Use "Wri" (capital W) for output to console - "write" writes to export file
+// Export files are opened with  exp f filename
+
+
+// We want no automatic code changes in input or output:
+set c0
+
+// Editor for records or files (set the one you prefer)
+
+if $ux var "vi"
+if not $ux var "WinVi32"
+ins $editor
+
+if $ux var "cp "
+if not $ux var "copy "
+ins $cp
+
+if $ux var "rm "
+if not $ux var "del "
+ins $rm
+
+var "mkdir " 
+ins $mkd
+
+
+// param for editing
+// Export param. e-w0.apr, converts ASCII to ANSI (internal to external codes)
+var "e-w0"
+ins $editPar
+
+var $editPar
+exp p
+if no jump experr
+
+// Prog directory
+:progdir
+if $ux jump uxp
+var P
+if "" var ".\"
+if "\" var ".\"
+ins $progDir
+var "\" 
+ins $sep
+jump set2
+
+:uxp
+var P
+ins $progDir
+if "/" var "./";ins $progDir
+var "/" 
+ins $sep
+return
+
+// *** 2. On startup, show some information about database *******
+
+:set2
+echo off
+var cs
+if "U" var "UTF-8"
+if "W" var "Win (ANSI)"
+if "D" var "DOS (ASCII)"
+ins $cs
+
+Wri n "Database " D B ", Config: " K ".cfg" n
+
+// show statistics
+var t
+// put total nr of records into internal number Z
+Z =
+
+// are there unused numbers? They have a key  /[  in index 1
+find |1 _/[?
+var l
+z =
+var l
+Z -
+
+// are there invalid records? They have a key  //nnnnn  in index 1
+find |1 _//?
+var l
+Z -
+
+// stats are ready for display:
+
+
+Wri "Content: " t " records (of which valid: " Z ", invalid: " l ", unused: " z ")" n
+Wri "Internal coding: " $cs n n
+Wri "ProgDir=" $progDir "      acon Version : " m n
+
+var D B "." K1 "dx"
+fsize
+
+$dbnix=1
+// If index not existing, then create database from .alg (!)
+if <3000 Wri n "ATTENTION: File " D B "." K1 "dx does not exist or too small!" n "  Enter  a  and then  1  to create it" n;jump prep
+var ""
+ins $dbnix
+
+var D B ".tbl"
+fsize
+if <3 Wri "File " D B ".tbl does not exist! Enter  a  and then  2  to create it" n
+
+:prep
+// -----------------------------------------------------
+// *** 3. More Preparations? ***************************
+// insert your own here
+
+// Scroll up cmd window (clear the console display area)
+Wri n n n n n n n n n n n
+
+// end of "perf SETT" - back to :Menu
+return
+
+// --- End 2. Startup -----------------------------------------
+
+
+// *** H. HELP **********************************
+// For main menu
+:HELP
+Wri n n n "This is meant as a tool that works under Win and Unix in the same way." n
+Wri "The most important functions are these: " n
+Wri "[Enter the digit or letter, then press Enter to activate the function]" n n
+
+Wri "1 : Index  -  Browse the alphanumeric indexes of the database" n
+Wri "2 : Record -  Retrieve a record, see it displayed and edit it in a text editor" n
+Wri "3 : Find   -  Enter a find command (like 'per shakesp?') and see the result set" n
+Wri "4 : Review -  Go back to result lists retrieved earlier in the session" n
+Wri "a : Admin  -  A submenu with diverse functions" n
+Wri "p : Prop.  -  Get the basic facts about this database" n
+
+Wri "m : Make a note  -  Test the 'persistent variable' function" n
+
+Wri "Whenever you see a '>' with a flashing cursor, your input is required!" n
+Wri "At any point, enter a '-'  to go one step back, or 'x'  to return to main menu." n
+
+ask Now make your choice: >
+jump M2
+
+
+:ADMHELP
+// For Admin menu
+Wri Fal-help.txt
+
+jump Admin-a
+return
+
+// Create ini file for a99, database $d $b $k
+:crini
+var $d "/" $b ".ini"
+if not $ux ins _/_\_
+ins $ini
+var $ini
+fsize
+if not no jump inir
+var $ini
+exp f 
+if no Wri $ini " cannot be opened" n;end
+wri "[General]" n n
+wri "# Name der CFG-Datei" n
+wri "Konfiguration=" $k n n
+wri "# Name der Indexparameterdatei" n
+wri "DbName=" $b n n
+wri "# Zugriffsberechtigung" n
+wri "access=9" n n
+wri "# Vor dem Speichern eines Satzes immer fragen:" n 
+wri "SaveAsk=1" n n
+wri "# Externes Editieren zulaessig" n
+wri "Extern=yes" n n
+wri "# Externer Editor (Empf.: WinVi)" n
+wri "Editor=Notepad" n n
+wri "# Name des Bearbeiters" n
+wri "Operator=op" n n
+wri "# Groesse und Position des Fensters in INI speichern" n
+wri "SetSize=1" n
+close x
+
+:inir
+Wri "INI file is ready: " $ini n  "Start command: " $progDir "a99 " $ini n 
+ask Try it?
+if not "y" jump Admin
+var $progDir "a99 " $ini
+call
+jump Admin
+end 
+
+
+// Show values of the special "cstring" variables (= current settings or properties)
+:sett
+// write it all into the file "settings.txt", i.e., open that file for writing
+exp f settings.txt
+
+write "Values of special FLEX variables:" n
+write "---------------------------------" n n
+write "A : Access mode of current session : " A n
+write "B : Name of database : " B " (Index parameters: " B "." K1 "pi)" n
+write "D : Database pathname (includes terminating slash) : " D n
+write "E : Name of current export file : " E n
+write "G : Name of .log file (if not equal to default = " D B ".log) : " G n
+var H
+asci
+ins #uXX
+write "H : List of index headlines (from | lines in the index parameters) : " n "    " #uXX(0,50) "..." n
+var I
+asci
+ins #uXX
+write "I : Index list : Symbolic index names (I lines in the index parameters) : " n "    " #uXX(0,50) "..." n
+write "K : Name of Configuration file : " K ".cfg" n
+write "K1: first letter thereof : " K1 n
+write "Kk: Values k and t from CFG : " Kk n
+
+write "M : Environment Variable TEMP (User has write access there!) : " M n
+write "N : Number of data file (" B "_N." K1 "ld) for new records : " N n
+
+write "P : Name of program directory (with terminating slash) : " P n
+var R
+asci
+ins #uXX
+write "R : Restrictions : Symbolic names (R lines in index param)  : " n "    " #uXX(0,50) "..." n
+write "    (Separataor code for I and R is 20 ( ^T ))" n
+write "S : Short title headline (from line |<=... of index parameters) : " n "    " S n
+write "T : Title of database (from line |a=... of index parameters) : " n "    " T n
+
+if v14 wri "V14 : Authority IdNr replacement mode : " V14 n
+
+var '1'
+=
+write "Z : Value of the internal number variable iZ : " Z " (capital Z)" n
+write "Z2: the same, rounded to 2 decimal places (k=0...9) : " Z2 n n
+
+write "b : Width of field tags , Position of field text : " b n
+write 'cn: Date of Input of current record : #' cn n
+write 'ce: Date of latest edit in current record : #' ce n
+write 'cg: Field for automatic IdNumber : #' cg n
+write 'ci: structure of the id nr: ' ci n
+write 'cf: Number of filler characters for every new record : ' cf n
+
+write 'cN: Line N of UIF file, e.g., c175 : "' c175 '"' n
+write 'cl: Command line that started this run of acon : ' cl n
+write "ca: Workstore dimensions in bytes/Max.size//Number of fields/Max nr. : " ca n
+write "cr: Background dimensions in bytes/Max.size//Number of fields/Max nr. : " cr n
+write "cp: Phrase store size/Max size//Number of phrases,max number : " cp n
+write "cs: Internal Coding (D = DOS, W = Win, U = UTF-8)        : " cs n
+write "e : Name of current export parameters (DOS: Option -e) : " e n
+
+write "i : internal nr. of curr. record : " i n
+write "j : Number of ." K1 "ld file of curr. record : " j n
+write "k0: Number of fields of current record : " k0 n
+var k0
+if "0" jump nof
+write "k_1: First field of curr. record : " k_1 n
+write "k_2: Next field : " k_2 n
+write "k_2: Next field : " k_2 n
+write "k_3: Last field : " k_3 n
+:nof
+write "l : Size ('length') of curr. result set : " l n
+write "m : Name of program and version (z.B. acon ac-w v34.5) : " m n
+write "n : new line, equivalent: 13 10 : " n n
+write "p : Primary key of curr. record : " p n
+write "pid : PID of curr. program (acon): " pid n
+write "pvs : persistent variables store: " pvs n
+write "r : relative Number of current rec in curr. result set : " r n
+write "s : Short line of curr. record " i " (from .STL file) : " n "    " s n
+write "t : Total number of records in database : " t n
+write "u : Date and time : " u n
+z = 1001
+write "z : Value of the internal counter : " z n
+exp f nul
+
+Wri n "File  settings.txt  now contains the list! Do you want to see it? y/n" n
+ask >
+if not "y" jump Menu
+// show list in editor
+var $editor " settings.txt"
+call
+
+jump Menu
+
+end
+
+// date/time of log file, win and ux differently
+:wintime
+var "dir /s " D B ".log >dirr" 
+call
+var Fdirr
+ins $fd
+var $fd (t"^J" t"^J" t"^J" t"^J" t"^J" t"^J" T"^J")
+ins _.__ 
+ins _  _/_
+var (e"//")
+ins $fd
+
+var $fd (b"/")
+ins $u
+var $fd (4,4)
+ins $y
+var $fd (2,2)
+ins $m
+var $fd (0,2)
+ins $t
+
+var $y $m $t "/" $u 
+ins $logTime
+
+var "del dirr"
+call
+jump uxtb
+
+:uxtime
+var "ls --full-time " D B ".log"
+pipe
+get
+var (b" " b" " b" " b" " b" ")
+ins $tm
+var $tm (e" ")
+ins _-__
+ins $day
+var $tm
+var (b" " e".")
+ins $tm
+var $day "/" $tm
+ins $logTime
+
+jump uxtb
+
+// read .ina file, name is in $cl
+:ina
+
+perf progdir
+
+var "F" $cl
+var (F" ")
+var
+xco clow
+ins $ina
+
+var $ina (b"konfiguration=" e" " e"[^M^J]")
+ins $cfg
+if not $cfg $cfg=a
+
+var $ina (b"dbdir=" e" " e"[^M^J]")
+ins $dbd
+if not $dbd var $cl (t"\" t"/");ins $dbd
+
+var $ina (b"dbname=" e"[^M^J]")
+if "" var "cat"
+ins $dbn
+
+var $progDir "acon -jal -k" $cfg " -d" $dbd " -b" $dbn
+call
+
+end
+
+:SHELP
+if $ux jump hux
+Wri "If you have a database  cat  in K:\data\base, with config. c.cfg," n
+Wri "then start like this:" n
+Wri n "  acon -jal -dk:\data\base -bcat -kc" n
+end
+
+:hux
+Wri "If you have a database cat in /var/data/base, with config. c.cfg," n
+Wri "then start like this:" n
+Wri n "  acon -jal -d/var/data/base -bcat -kc" n
+end
+
+// --------------------------------------------------------------------
+// What follows is documentation: VARIABLES used in this job
+
+ #u variables: (don't change to $ vars)  There's only one:
+
+ #uXX   local auxiliary
+
+ $ variables:
+
+ $   the 2nd iV
+ $Bas       List of databases
+ $cfg       file name of cfg (def.: a.cfg)
+ $cp        copy command
+ $cs        code system (C line in CFG: "CU" for UTF-8)
+ $copypath  Path name for database copy
+ $datapath  Root path for database folders
+ $dbDir     database directory  [def.: demo2]
+ $dbnix     if set: database not existing, has to be created
+ $dbName    database name [def.: cat]
+ $dirList   formatted dir list (list of filenames created from $ls)
+   $ls      Result from call of ls (or dir) command: list of files
+ $editPar   export param f. editing
+ $editor    editor name
+ $err       error msg of certain commands
+ $exFil     export file last used
+ $exParam   export param last used
+ $findCom   most recent find command
+ $ixDn      index line for next "page down" (s.a. $ixUp)
+ $ixUp      index line for "page up"
+ $ixList    List of index names to choose from (under 1:)
+ $ixN       current index name (ALL, PER, ...)
+ $ixPag     index page for display, raw data
+ $ixCop     Copy of $ixPag
+ $ixShow    formatted index page for display, prepared from $ixPag
+ $ixPar     index param filename
+ $kywd      keyword for note
+ $lockStat  lock status of curr rec
+ $logSize   size of logfile (bytes)
+ $ls    see $dirList
+ $ndl       nr. deleted rec
+ $nSets     nr. res. sets
+ $note      Text of note
+ $otf       other file name pattern
+ $otfn      other file name
+ $otyp      other file type
+ $progDir   program directory (location of acon)
+ $recNr     current rec#
+ $rm        remove command
+ $rSets     result sets list
+ $sep       Separator char. (/ or \)
+ $szf       Size factor of data files (value ii in .api)
+ $tbl       message "tbl [not] locked"
+ $ux        this flag is set if the platform is UNIX/Linux, else not
+ $wrp       message "write permit"
+ $xx        local short range auxiliary var
+ $xy        same
+ $zn        nr of symb. indexes
+
+// How does the "Exchange rates" function work?
+// Currency list from ECB comes like this:
+
+
+ <gesmes:Envelope xmlns:gesmes="http://www.gesmes.org/xml/2002-08-01" xmlns="
+ ://www.ecb.int/vocabulary/2002-08-01/eurofxref">
+        <gesmes:subject>Reference rates</gesmes:subject>
+        <gesmes:Sender>
+                <gesmes:name>European Central Bank</gesmes:name>
+        </gesmes:Sender>
+        <Cube>
+                <Cube time='2014-08-25'>
+                        <Cube currency='USD' rate='1.3200'/>
+                        <Cube currency='JPY' rate='137.13'/>
+                         ...
+                        <Cube currency='ZAR' rate='14.1174'/>
+                </Cube>
+        </Cube>
+ </gesmes:Envelope>
+
+

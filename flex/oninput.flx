@@ -1,0 +1,38 @@
+  ONINPUT.FLX : Bei Druck auf [Neusatz]
+  2002-02-22    Hierzu gehoert eine ViewDatei input.vw !
+                Diese startet dann bei Bedarf einen anderen FLEX input.flx
+  Empfehlung: Datenspez. Kopie auf DbDir legen
+
+  Ist es alcarta?
+var m
+if "alc" end
+
+  Ueberschriftszeilen setzen:
+set i7Neuen Datensatz erfassen
+var "i9W„hlen Sie aus diesem Men den gewnschten Satztyp:"
+ansi
+set
+var "i8 "
+set
+
+  Liegt  input.vw  auf dem DbDir?
+var D "input.vw"
+View
+if no jump help
+jump exit
+
+:help
+var P "help\\input.vw"
+View
+if no jump normal
+jump exit
+:normal
+new
+h onnew
+
+:exit
+ Ueberschriften ruecksetzen:
+set i7
+set i8
+set i9
+activate 1

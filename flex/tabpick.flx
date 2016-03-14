@@ -1,0 +1,204 @@
+  TABPICK.FLX : Tabellenstruktur waehlen
+  2001-02-06  (d.h. eine Datei T-*.cPR
+
+var m
+if "alc" end
+
+if #uqT jump bearb
+
+:pick
+  Dateiauswahl
+  eine evtl. offene Viewdatei abschliessen: (bei wiederholter Anwendung!)
+close view
+   Editor name -> #uwX
+var x
+ins #uwX
+  Stapeldatei PARMBAT.BAT anlegen:
+open x parmbat.bat
+write "echo **Datenverzeichnis: " D " >parm " n
+
+write "dir /on /a-d " D "t-*." K1 "pr >> parm" n
+write "dir /on /a-d " D "q-*." K1 "pr >> parm" n
+
+perf datprg
+if #uwV jump progdir
+jump stdir
+
+:progdir
+write "echo **Programmverzeichnis: " P " >>parm " n
+write "dir /on /a-d " P "t-*." K1 "pr >> parm" n
+write "dir /on /a-d " P "q-*." K1 "pr >> parm" n
+
+:startdir
+perf stprg
+if #uwV jump stdir
+jump go
+:stdir
+write "echo **Startverzeichnis: " W " >>parm " n
+
+write "dir /on /a-d t-*." K1 "pr >> parm" n
+write "dir /on /a-d q-*." K1 "pr >> parm" n
+
+:go
+close x
+get env comspec
+ins #uwC
+
+   Jetzt in Datei parm die Liste der Dateien aufbauen
+var #uwC " /c parmbat.bat"
+
+   Das DOS-Fenster wird nicht sichtbar! (cAll)
+cAll
+
+  Datei parm durcharbeiten, parmf draus machen
+open parm
+if no jump error
+open x parmf
+if no jump error
+
+get
+
+:line
+
+if =" " jump next
+if ="" jump next
+if ="**" ins #uwP
+if ="**" write "  " #uwP n
+if ="**" jump next
+if %.% jump do
+  kein Punkt? keine datei
+jump next
+:do
+ins #uwL
+var #uwL(0,4)
+
+  Wenn ganz vorn ein . vorkommt, ist es NT
+if %.% jump NT
+  sonst Win95/98
+write #uwP(0,3) "|" #uwL n
+jump next
+
+:NT
+var #uwL(T" ")
+ins #uwM
+write #uwP(0,3) "|" #uwM(0,13)
+write "  " #uwL(t" ") n
+:next
+  naechste Zeile lesen
+get
+
+  es gab noch eine:
+if yes jump line
+  nein: Datei schliessen
+close
+  Exportdatei auch
+close x
+
+:view
+  Falls das Fenster nicht im Vordergrund ist:
+activate
+  die erstellte Liste anzeigen als View:
+set i9 Folgende Strukturen stehen zur Auswahl:
+View parmf
+set i9
+  nichts gewaehlt - Schluss
+if no end
+if canc end
+  ausgewaehlte Zeile steht in iV
+  Zeile in #uwD kopieren
+ins #uwD
+if " " jump dos
+var #uwD(b"|")
+  #uwE ist jetzt die dir-Zeile
+ins #uwE
+  #uwD enthaelt vorn die Angabe **D, **P oder **W
+  Der Bearbeitungsbefehl wird zusammengebaut:
+  zuerst der Pfadname der ausgewaehlten Datei
+var #uwD
+if "**S" var ""
+if "**P" var P
+if "**D" var D
+if "**T" var M
+
+  Pfadname -> #uwF
+ins #uwF
+
+  Jetzt der Dateiname
+var #uwE(0,12)
+  Kommt vorn ein . vor? Dann ist es NT
+if %.% jump DNT
+  sonst Win'95/98, Dateiname:
+var #uwF #uwE(e" ") "." #uwE(9,3)
+ins #uwN
+jump ccc
+
+:DNT
+  NT-Dateiname:
+var #uwF #uwE(e" ")
+ins #uwN
+
+:ccc
+var #uwN
+ins #uFN
+  Editorbefehl
+var #uwC " /c " #uwX " " #uwN
+ins #uwE
+
+  ViewDatei schliessen
+close view
+:seeview
+var #uwN
+
+  gewaehlter Dateiname: hinteren Teil abschneiden
+ins #uqD
+ins #uwU
+var "\\" #uqD
+ins #uqT
+
+var #uqT(T"\\")
+ins #uqT
+  Damit der Name sichtbar wird: table.rtf neu anzeigen
+  (#uq0 ist da eingebettet:)
+var #uqT(B"~t-" B"~q-" e".")
+ins #uq0
+ins #uqQ
+#uqV
+help table
+
+var #uqT " sofort anwenden? (Nein = bearbeiten)"
+yes
+if can end
+if no exec tabedit
+exec tabprod
+
+:bearb
+var "Struktur " #uqT(e".") " bearbeiten? (Nein: andere ausw„hlen)"
+ansi
+yes
+if yes exec tabedit
+if can end
+jump pick
+
+  Variablen
+  #uqT   T-xyz.cPR
+  #uqD   vollst. Name incl. Pfad
+
+  Unterprogramme
+:datprg
+  ist DbDir = ProgDir?
+var "~" D "x"
+ins #uwV
+var P "x"
+if =#uwV var ""
+ins #uwV
+return
+
+:stprg
+  ist Lokal = ProgDir?
+var "~" P "x"
+ins #uwV
+var W "x"
+if =#uwV var ""
+ins #uwV
+return
+

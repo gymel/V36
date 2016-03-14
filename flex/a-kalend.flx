@@ -1,0 +1,160 @@
+  A-KALEND.FLX : Kalendersatz fuer aLF anlegen
+  2005-05-26     und Kalendersatz dann speichern
+
+  Wenn Flag #uaK besetzt ist, dann soll gespeichert werden
+    (und zwar die Daten, die in der Anzeige stehen!)
+var #uaK
+if "1" jump kasp    // neuer Kalendersatz
+if "2" jump ksp2    // alter Kalendersatz
+  Sonst #uaK loeschen
+#uaK
+  Jahreszahl abfragen
+ask Welches Jahr?
+if "" end
+if <2000 jump fehler
+if >2099 jump fehler
+ins #uaY
+
+var "Kalendersatz für " #uaY " anlegen? " n "(Nein: Feiertagsliste zeigen)"
+yes
+if can end
+if yes jump anlegen
+var "Notieren Sie sich dann die Daten der beweglichen Feste!"
+var +n "Danach die Kalendersatz-Funktion neu aufrufen"
+mes
+var "holidays " #uaY
+exec
+
+:anlegen
+#uaM01
+#uamJanuar
+
+var "0"
+z=
+open x kal.txt
+if no jump flerr
+
+wri #uaY n "$Januar" n
+var "Samstags ge”ffnet?"
+ansi
+yes
+if yes #uaS
+if not yes #uaS0
+
+:loop
+var #uaY #uaM "01+" z
+Day
+var (b" = " t" ")
+ins #uaW
+var #uaW(b". ")
+if =#uam jump goon
+   Anderer Monat? nein -> goon
+   sonst den Namen in #uam
+ins #uam
+if ="Jan" jump schluss
+wri "$" #uam n
+:goon
+var #uaW
+if "So" wri "%" n;jump zu
+if "Sa" if #uaS jump zu
+if % 1. Jan% jump zu
+if %24. De% jump zu
+if %25. De% jump zu
+if %26. De% jump zu
+if %31. De% jump zu
+if % 1. Ma% jump zu
+if %3. O% jump zu
+wri "1 : " #uaW n
+jump weiter
+:zu
+wri "0 : " #uaW n
+
+:weiter
+z+1
+var z
+if not >365 jump loop
+:schluss
+  Datei schliessen und anzeigen
+close x
+h kal.txt
+var "Im Anzeigefeld sehen Sie nun die Kalenderdaten." n n
+var +"Jetzt k”nnen Sie noch Korrekturen vornehmen, " n "d.h. die Schlieáungstage mit 0 markieren" n "Dann Alt+9 zum Speichern!"
+ansi
+mes
+sho iV
+
+var "x #uaK1\\exec a-kalend"
+ins #uX9
+end
+
+:fehler
+mes Es geht nur im Zeitraum 2000-2099
+end
+:flerr
+var "Datei kal.txt kann nicht ge”ffnet werden"
+ansi
+mes
+end
+
+:ksp2   //  bearb. Kal.Satz wieder speichern
+:kasp
+  Kalendersatz speichern
+  Daten stehen in Anzeigefeld!
+  Erst #uaK wieder loeschen
+file kal.txt   // Daten aus Anzeige speichern
+:opk
+open kal.txt   // Und Datei zum Lesen oeffnen
+if no jump Flerr
+
+set c0
+  Hilfsdatei
+open x kld
+
+wri "R"
+get #uzz
+wri #uzz 31 "Januar"
+get
+:lop
+get
+if can jump ende
+ins #uzz
+var #uzz
+if ="$" wri #uzz;jump lop
+if ="%" wri "%"; jump lop
+wri #uzz(0,1)
+jump lop
+
+:ende
+close x
+var #uaK
+if "1" new
+var Fkld
+ins #9A
+sho rec
+disp
+ del kld
+yes Das ist der neue bzw. bearbeitete Kalendersatz. Speichern?
+if yes jump spei
+end
+:spei
+  #00 mit - ergaenzen, damit keine #00 erzeugt wird!
+if not #00 #00 -
+put
+#uaK
+
+end
+
+:Flerr
+mes Datei kal.txt gibt's nicht
+end
+
+ u-VARIABLEN in a-kalend.flx
+ #uX9 (1)  x #uaK1\\exec a-kalend
+ #uaK (5)  flag zur Speicherung
+ #uaM (2)  Zaehler fuer Nummer des Monats
+ #uaS (3)  Wenn nicht besetzt, dann Samstags geoeffnet
+ #uaW (6)  Teile des Datums
+ #uaY (5)  Jahreszahl  #uaY #uaM = JJJJMM
+ #uam (4)  Name des Monats
+ #uzz (6)  Zeile beim Einlesen der bearbeiteten Daten (nach Alt+9)
+

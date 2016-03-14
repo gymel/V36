@@ -1,0 +1,71 @@
+  TILG.FLX : Darlehen-Tilgungsplan
+  20070203   Beispiel fuer ein Rechenprogramm
+
+  Zuerst 3 Fragen, dabei jeweils die vorigen Werte wieder vorlegen
+
+ask Darlehen=#usk
+if "" end
+ins #usk
+
+ask Zinssatz=#uzs
+if "" end
+ins #uzs
+
+ask Monatliche Zahlung=#uzm
+if "" end
+ins #uzm
+
+  Anfangswerte setzen, Z=Jahreszaehler
+Z=1
+
+var "Darlehen " #usk ", Zinssatz " #uzs ", Mtl. Belastung " #uzm n n
+sho IV
+
+eval #uzs /12
+ins #uzS
+
+  Erster Zwischenwert = Darl.Gesamtwert
+var #usk
+ins #uzw
+
+  Zinsfaktor = (Zinssatz/12 + 100) /100
+eval #uzS +100 /100
+ins #uzf
+
+eval #uzf *#uzw -#uzm
+if >#usk mes Mtl. Zahlung zu niedrig!;end
+
+z=0
+#ujjMonat
+
+:loop
+  naechster Zwischenwert = Zinsfaktor *voriger Zw. - Zahlung
+eval #uzf *#uzw -#uzm
+ins #uzw
+  Meldung fabrizieren
+var "nach " Z " " #ujj ": " #uzw(e".") n
+  und als neue Zeile an die Anzeige anhaengen
+sho +IV
+  Zaehler
+Z+1
+  Plural in #ujj setzen
+#ujj Monaten
+  ein Jahr weniger abzuarbeiten
+var #uzw
+  wenn noch >0, dann weiter
+if >0 jump loop
+
+  Schlussmeldung
+var Z
+z=
+z%12
+
+Z/12
+var Z
+var (e".")
+Z=
+
+var n "Endwert: " #uzw(e".") " nach " Z " Jahren, " z " Monaten
+sho +IV
+mes
+

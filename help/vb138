@@ -1,0 +1,175 @@
+
+Verlautbarung 138 der Entw.Abt.                            2000-11-14
+-------------------------------
+
+Verbesserungen der HELP-Technologie
+-----------------------------------
+
+Es waren unerquickliche Detailprobleme mit den RTF-Hilfedateien
+aufgetreten.
+Im Prinzip ist es schon richtig, dass RTF als proprietaeres und den
+meisten PC-Anwendern voellig unbekanntes Textformat ein zweifelhaftes
+Instrument ist. Jedoch ist das heutzutage naheliegende Instrument
+HTML oder gar XML aus mehreren Gruenden nicht oder noch nicht fuer
+den Zweck geeignet. Zum Glueck gibt es Tools, mit denen RTF in XML 
+verwandelt werden kann, d.h. man ist, auf laengere Sicht betrachtet,
+mit RTF nicht in einer Sackgasse.
+
+Kurzfristig kann aber nur so vorgegangen werden:
+
+-- Analyse und Behebung der Detailprobleme, so dass RTF vorerst 
+   beibehalten werden kann.
+
+-- Verbesserung der Bearbeitungsmoeglichkeiten, um RTF-Kenntnisse 
+   weit gehend unnoetig zu machen und mit weniger Handgriffen 
+   auszukommen.
+
+-- Bereitstellung von gut durchdachten und getesteten Beispielen, die
+   fuer neue Aufgaben als Vorlage herangezogen werden koennen.
+   (Diese findet man in dem Paket HELP.LZH)
+
+Ziel: Hilfetexte sollen uneingeschraenkt mit WordPad erstell- und 
+      bearbeitbar sein. Es soll keine undurchschaubaren 
+      Verfaelschungen oder Fehlfunktionen von Sonderzeichen, 
+      noch dazu unsichtbaren, geben.
+      Die Bearbeitung soll auch direkt im Anzeigefenster moeglich 
+      sein, ohne die bisherigen irritierenden Probleme.
+      Existierende RTF-Dateien sollen weiter funktionieren, ohne dass
+      man eingreifen muss. (\'a0 und \~ sollen weiter funktionieren,
+      es sei denn, \~ macht Probleme auf dem betr. System.)
+
+Zwar koennen RTF-Texte auch mit WinWord bearbeitet werden. Dies steht 
+auch jedem frei, zu empfehlen ist aber, den fertigen Entwurf dann mit
+WordPad oder a99 einmal einzulesen und wieder zu speichern - denn 
+WinWord ueberfrachtet die Datei mit vielen unnoetigen Elementen, die 
+Wordpad bzw. a99 dann beseitigt.
+
+Empfehlung:
+-----------
+Holen Sie sich nun zuerst a99.lzh und alcarta.lzh sowie help.lzh,
+letzteres ist zu entpacken auf  c:\allegro\help.
+Ueberarbeitet wurde insbes. die Datei HELP.RTF
+
+**********************************************************************
+
+Zu den Detailproblemen und ihren Loesungen
+------------------------------------------
+Insgesamt scheint es, dass jetzt ein robuster Zustand erreicht ist, 
+der frei ist von uneleganten Kompromissen und nur wenig Lernaufwand 
+voraussetzt.
+
+1. Markierung der Flips im Text
+   ----------------------------
+   Das "unsichtbare Leerzeichen", Code 160, ist schlecht, denn Wordpad
+   speichert es, aus unbekanntem Grund, manchmal als \~ und manchmal 
+   als normales Leerzeichen. Beim Einlesen kann es ebenfalls 
+   passieren, dass ein solches Zeichen im Anzeigefeld als normales 
+   Leerzeichen landet - den Unterschied sieht man nicht.
+   In solchen Faellen funktioniert der Flip dann nicht mehr.
+   Ein unsichtbares Funktionszeichen ist in jedem Fall etwas sehr
+   missliches und problemtraechtiges, das ist klar.
+   Loesung:
+   a) Bisher schon moeglich: [...] zur Markierung des Flips verwenden.
+   b) Jetzt neu: `...` (Den accent grave verwenden) Dieser wird als 
+      solcher derart selten gebraucht, dass wir ihn kurzerhand 
+      fuer diesen Zweck entfremden. (Die Akzentbuchstaben mit diesem 
+      Akzent sind davon unberuehrt!!)
+   Dieses Zeichen wird von Wordpad und Winword unveraendert 
+   eingelesen und gespeichert. Nur a99 macht jetzt beim Einlesen 
+   daraus den Code 160,
+   beim Herausschreiben aber wieder einen ` . Jetzt sieht man immer 
+   beim Bearbeiten sofort, wo die Zeichen sitzen und ob sie richtig 
+   sitzen.
+
+   Empfehlung: eine Hilfedatei zuerst mit "h name.rtf" einlesen, dann
+   mit "Datei | Anzeige speichern als ..." sofort wieder speichern,
+   dann werden die Codes 160 durch ` ersetzt.
+   Geben Sie zum Vergleich einmal "h super" ein und dann 
+   "h super.rtf". Schon sehen Sie die Unterschiede.
+   (Ohne .rtf wird der Code ` nicht sichtbar - dafuer aber wirksam)
+   Oder "h help" und "h help.rtf" Bei Eingabe mit ".rtf" wird 
+   ausserdem der Hintergrund gelblich, man sieht also: Achtung,
+   Bearbeitungszustand.
+
+2. Die Flip-Zeilen fuer die Verknuepfungen
+   --------------------------------------
+   Diese stehen am Ende des Hilfetextes und beginnen jeweils auf 
+   eigenener Zeile mit "?".
+   Beim Abspeichern machen manche WordPad-Versionen daraus "\par ?",
+   andere dagegen haengen hinten ein "\par" an und das "?" steht dann
+   am Zeilenanfang.
+   Loesung:
+   a99 wird jetzt mit beiden Varianten fertig: Wenn die Zeile mit 
+   einem ? beginnt, wird sie genauso als Flipzeile interpretiert 
+   wie wenn sie mit  "\par ?" beginnt. Ausserdem wird "\par" am 
+   Ende der Zeile weggenommen, um den eigentlichen Flip-Inhalt 
+   nicht zu veraendern.
+   Weiterer Vorteil: Das Zeichen ` ist so breit wie ein Leerzeichen, 
+   deshalb wird das Erscheinungsbild des Textes dadurch nicht ver-
+   aendert, d.h. man sieht auch in WordPad den Hilfetext genauso, wie
+   er dann in a99 erscheinen wird.
+
+3. Backslash in Flip-Zeilen
+   -----------------------
+   Bisher musste man einen Backslash in einer Flip-Zeile doppelt 
+   setzen.
+   Das funktioniert weiterhin.
+   Wordpad kommt sonst nicht klar, wenn eine Flipzeile einen \ 
+   enthaelt. 
+   Es interpretiert immer das, was hinter einem \ folgt, als RTF-
+   Befehl, und wenn's keiner ist, entfaellt alles bis zum 
+   naechsten Leerzeichen.
+   Es gibt jetzt noch eine zweite Loesung:
+   In Flip-Zeilen statt \ das Zeichen ` (accent grave) verwenden.
+   Auch in Flips hat der ` bisher keine Bedeutung und duerfte hoechst
+   selten vorkommen. Die unter 1. beschriebene Funktion kommt in einer
+   Flip-Zeile logischerweise nicht vor, deshalb kann hier der ` eine
+   andere Wirkung haben, das macht nichts aus. Beim Einlesen ersetzt
+   a99 den ` durch \.
+   Wenn ein \ in einem Pfadnamen gebraucht wird: zweimal ` setzen.
+
+4. Umlaute in Flip-Zeilen (und andere Sonderzeichen oberhalb 127)
+   ----------------------
+   Wordpad speichert z.B.  \'fc statt ue, gebraucht wird aber das 
+   ASCII-ue, weil innerhalb des a99-Arbeitsspeichers mit ASCII
+   gearbeitet wird. (Daran ist vorlaeufig nichts zu aendern!)
+   Bisher muss man, umstaendlich, nach Bearbeiten einer RTF-Hilfe-
+   datei mit einem DOS-Editor per Hand die Umlaute in den Flip-
+   zeilen in ASCII-Codes umsetzen. 
+   Loesung: Ein neues, internes Unterprogramm.
+   Jetzt entfaellt der manuelle Eingriff.
+   Die Umsetzung ANSI->ASCII macht das Programm selber. 
+   Allerdings vorerst nur fuer die deutschen Umlaute und ss. 
+
+Die Bearbeitung von RTF-Dateien mit WordPad sollte nun keine Probleme 
+mehr bereiten. 
+Aber man kann jetzt unbesorgt die Dateien auch im Anzeigefenster
+bearbeiten und wieder speichern (ueber Menue "Datei | Anzeige 
+speichern als... "). Man braucht nur die Datei mit vollem Namen 
+aufzurufen, also z.B.  "h adm.rtf"  statt "h adm". Dann sieht man 
+auch die Flip-Zeilen, die dann auch beim Abspeichern korrekt erhalten 
+bleiben. Dort schreibt man die Umlaute ganz normal hin, das Programm 
+kuemmert sich um die korrekte Codierung. Zur weiteren Unterstuetzung 
+hat das Kontextmenue des Anzeigefensters ein paar neue Punkte 
+erhalten. Insbesondere das Anlegen eines neuen Flips wird dadurch nun 
+zu einem Klacks: 
+    den intendierten Flip-Text markieren, rechte Maustaste, f .
+
+Tip: Braucht man andere Schriftattribute als die, die man mit den 
+Mitteln des Anzeigefensters erstellen kann, dann kurz WordPad starten,
+den gewuenschten Text mit den gewuenschten Attributen dort schreiben, 
+dann mit Cut-and-Paste kopieren.
+
+Aber VORSICHT: zum Bearbeiten immer die Datei mit .rtf aufrufen, UND
+waehrend der Bearbeitung nicht F1 oder F5 o.ae. druecken - dann ist
+der Text auf einmal wieder weg. 
+Und noch was: WENN der Text mit ".rtf" geladen wurde, ist der 
+Hintergrund jetzt hellgelb, man erkennt also sofort, dass man 
+sozusagen im Bearbeitungsmodus ist.
+
+--------------------------------------------------------------------
+Zum Schluss nochmal zur Terminologie:
+Es heisst "Hilfetexte", nicht "Hilfstexte".
+HilfEtexte sind solche, die dem Nutzer HilfE bieten, HilfSdateien sind 
+welche, die dem Programm helfen.
+

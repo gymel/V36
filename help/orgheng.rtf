@@ -1,0 +1,115 @@
+{\rtf1\ansi\ansicpg1250\deff0\deflang1031{\fonttbl{\f0\fscript\fprq2 Comic Sans MS;}{\f1\fswiss\fprq2 MS Sans Serif;}{\f2\froman\fprq2 Times New Roman;}{\f3\froman\fprq2 allegro New Roman;}{\f4\fswiss\fprq2 Arial;}{\f5\fswiss\fprq2\fcharset238{\*\fname Arial;}Arial CE;}{\f6\fswiss MS Sans Serif;}{\f7\fswiss\fprq2\fcharset0 Arial;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue0;\red0\green0\blue255;\red0\green128\blue0;}
+\viewkind4\uc1\pard\qc\cf1\b\i\f0\fs28 Reorganising the Database\cf2\i0\fs26 
+\par \b0\f1\fs20 `\cf3\ul\b About the Database\cf0\ulnone\b0\f0\fs24 ` 
+\par \pard\qr\f1\fs20 `\cf4\ul\b Briefly\cf0\ulnone\b0 ` 
+\par _5 Sorry, kein Zugriff 
+\par \pard\cf2\f2\fs24 This is a collection of functions occasionally needed by anybody running a database. 
+\par A database consists of several files serving various functions. "Reorganising" means different things for each of these files. What exactly it is and when it is necessary, is described in handbook Chap. 0.11.2. Under normal circumstances it doesn't happen often that one needs to use this menu. In-depth descriptions are contained in `\cf3\ul\b Chapter 7\cf2\ulnone\b0 ` of the handbook. 
+\par If one of these functions needs to be activated, no user must be working on the database. Unlike the DOS CockPit, this program will check first whether there's no one active, and will do nothing in that case. 
+\par \pard\qr `\cf3\ul\b Hints for the Sysop\cf2\ulnone\b0 ` (Novell Server) 
+\par \pard\tx3969\f3 Lets say the name of your database is MARC and you are using the configuration U.CFG. 
+\par 
+\par `\cf3\ul\b\f1 Index Recreation\cf2\ulnone\b0 ` 
+\par \pard\li568\tx3969\f4\fs18 The Index file MARC.UDX contains all the alphanumeric indexes. A database cannot function without this file. It has to be recreated if it cannot be accessed or if it is obviously corrupt. Also, if changes have been made in the index parameters. Such changes are not automatically executed for the database as a whole but will affect new records only. In the process or Index recreation, all records are indexed from scratch and all parameter changes will thus take effect globally. At the same time, the brief display file, restrictions file and the address table are all newly created whether they exist or not at that moment. The time it takes depends on the number of records and the speed of the computer and network.\f1 
+\par \pard\tx3969  
+\par \fs20 `\cf3\ul\b Address Table Recreation\cf2\ulnone\b0 `\tab 
+\par \pard\li568\tx3969\lang1033\f4\fs18 The MARC.TBL file will be refreshed. You need this only if it was accidentally erased or if you get an error message like  "no access to this record" , which is a rare event. The file might then have been damaged by external influences. It is a very fast function. 
+\par (The address table contains the physical addresses of records in the .xLD files while the index contains only logical record numbers instead.)\lang1031\f5 
+\par \pard\tx3969\f1\fs20 
+\par `\cf3\ul\b Brief Display Recreation\cf2\ulnone\b0 ` 
+\par \pard\li568\tx3969\f5 Only the MARC.STL file (the index 0) is produced by this function. This file contains the lines you see in a result set window. One line per record. Much faster than index recreation. \f1 
+\par \pard\tx3969 
+\par `\cf3\ul\b Restriction File Recreation\cf2\ulnone\b0 ` 
+\par \pard\li568\tx3969\lang1033\f4 The MARC.RES contains the data for the q\lang1031 ualifiers, like dates, with which a result set may be made smaller.\lang1033  (if the index parameters contain such specifications, see `\cf3\ul\b Chap. 10.2.9\cf2\ulnone\b0 `). Works quite as fast as the previous function.\lang1031  
+\par \f1\fs18 
+\par \pard\tx3969\fs24 `\cf3\ul\b\fs20 Index Compaction\cf2\ulnone\b0\fs24 `\fs20 
+\par \pard\li568\tx3969\lang1033\f4 After a while and many transactions, the index file MARC.UDX becomes bigger than it would have to be, due to deletions and changes; it may also become a bit slower because of that. This function is a lot faster than "Index recreation" because the entries themselves need not be recreated from the records! Before starting this there should be as much free space as the index file takes up at that moment. It will become smaller, but how much smaller is not possible to estimate.  \lang1031\f1 
+\par \pard\tx3969  
+\par \pard\fs24 `\cf3\ul\b\fs20 Recreate Entire Database\cf2\ulnone\b0\fs24 `\b\f3\fs22 
+\par \pard\tx3976\b0\f1\fs20  \fs18 (all files it consists of)\f6\fs20 
+\par \pard\li568\lang1033\f4 MARC.UDX, .TBL, .STL and .RES files are all deleted, the .ULD files are then processed and all records contained therein written into new files, skipping deleted records, keys are produced, TBL, STL and RES files recreated. All records receive new internal numbers, the \lang1031\i file numbers\i0 , however\lang1033 , are preserved if there is more than one file of .ULD type. Subsequently, the old .ULD files are still in existence but renamed into .U\lang1031\f7 8\lang1033\f4 D. After you have made sure everything is OK with the new database, delete these old files. 
+\par \lang1031\i Attention for free disk space:\i0  Before starting this, there has to be double the amount of the current database size.\f1 
+\par \i\f4 Attention "Old files":\i0  If old .U\f7 8\f4 D files remain from an earlier activity, you'll get the message 
+\par \tab There are old files: <name> 
+\par \f1\tab Are you sure these can be deleted? 
+\par If the database worked alright up to this moment, answer [Yes]. But if you had encountered faulty records before this, copy the old files to some other secure place, just to make sure you lose nothing. 
+\par \pard\tx3976 
+\par \fs24 `\cf3\ul\b\fs20 Number-faithful Recreation\cf2\ulnone\b0\fs24 `\fs20 
+\par \fs18  (internal numbers will be preserved)\f6\fs20 
+\par \pard\li568\lang1033\f4 The same as before, but the old internal record numbers remain unchanged. 
+\par \i For your information: \i0 There will be unused record numbers after this (belonging to deleted records which no longer physically exist after recreation). These numbers are registered under the special key /[0] in Index 1 but will be reused subsequently as the database keeps growing. 
+\par \lang1031\i Attention "Old files":\i0  The same as above applies here. 
+\par \f6 
+\par \pard\tx3969\f1\fs24 
+\par `\cf3\ul\b\fs20 Reclaim Wasted Space\cf2\ulnone\b0\fs24 `\fs20 
+\par \pard\fs18  \cf0 (remove deleted and unused record storage space)\cf2\f6\fs20 
+\par \pard\li568\lang1033\f4 The MARC_nnn.ULD files are read and then written into new files, a number of filler characters (as specified in the U.CFG) is added to each record. Internal record numbers remain unchanged. For deleted records and unused record numbers the same applies as described under "Number-faithful Recreation". This "reclaiming"  requires only a fraction of the time needed for Entire Database Recreation. There hast to be as much free space as taken ub by the .ULD files. The new files will be somewhat smaller in any case.\lang1031\f6 
+\par \i\f4 Attention "Old files":\i0  The same as above applies here. 
+\par \pard\f6 
+\par \f1\fs24 `\cf3\ul\b\fs20 Same, but selected files only\cf2\ulnone\b0\fs24 `\f6\fs20 
+\par \pard\li568\lang1033\f4 If the database has several .ULD files (there can be as many as 255) you may reclaim them selectively. The system manager can apply this, to save time. for very large databases when knowing that there are many deleted records in this or that file. \lang1031\f6 
+\par \i\f4 Attention "Old files":\i0  The same as above applies here. 
+\par \pard\f6 
+\par \cf0 `\cf3\ul\b Last Message List\cf0\ulnone\b0 ` 
+\par \pard\li568\cf2\lang1033\f4 All of the above functions are ececuted by the DOS programs INDEX and QRIX. Each of these write a log file, called PROTOK and PROTOQ, resp. In case of trouble one may look at these lists. Consult chapter 7 in cases of trouble with any function on this menu!\lang1031\f6 
+\par \pard 
+\par \cf0\f1 `\cf3\ul\b Database Copy\cf0\ulnone\b0 `\cf2\f6 
+\par \cf0\f1\fs18  (in particular, backup copy) 
+\par \pard\li568\cf2\lang1033\f4\fs20 All of the files mentioned above will be copied to a directory of the user's choice, including CFG, help files and some others. This copy may subsequently be used as an independent database, for example for testing purposes. This procedure can also serve for backup copies. For this, it is strongly recommended that the other directory be on another physical disk. 
+\par \lang1031\f6 
+\par \pard\cf0\f1 `\cf3\ul\b Database Export\cf0\ulnone\b0 `\cf2\f6 
+\par \cf0\f1\fs18  (Copy data in a different format) 
+\par \pard\li568\cf2\f4\fs20 There will be a choice of different formats for copying the data. 
+\par The export language, however, provides for unlimited variety! Not without a price, though. The system handbook documents the export system in \cf3\ul chapter 10\cf2\ulnone . 
+\par \pard\f6 
+\par \f1\fs24 `\cf3\ul\b\fs20 Lock Current Record / Unlock it\cf2\ulnone\b0\fs24 `\fs20 
+\par \pard\tx3969\fs18  (for write access) 
+\par \pard\li568\fs20 The DOS program PRESTO.EXE locks a record while someone is working on it. Other users can read it meanwhile but not enter the editing mode. (For good reasons, the Windows programs and avanti use a different method!) This function can be used to intentionally lock the current record to prevent its editing. Read accss remains unimpeded. Use this again to revert the lock! 
+\par By the menu command "Extras | Database | Locked records" all locked records in the database can be found as well as freed. This is useful because permanently locked records may occur, for example, after a power outage at the moment of editing.\b\f3\fs22 
+\par \pard\b0\f1\fs20 
+\par \fs24 `\cf3\ul\b\fs20 Lock/Unlock Database\cf2\ulnone\b0\fs24 `\fs20 
+\par \pard\tx3969  \fs18 (\cf0 for all write activities\cf2 ) 
+\par \pard\li568\tx3969\fs20 In certain situations the administrator wants to prevent all write access. This may be effected by locking the MARC.TBL file. Read accss is still possible, but nobody may save a record. Activate this again to unlock.\fs18 
+\par \pard\tx3969 
+\par \pard\fs24 `\cf3\ul\b\fs20 Total Lock Set / Reset\cf2\ulnone\b0\fs24 `\fs20 
+\par \fs18  (prevent all accesses)\fs20  \b\f3\fs22 
+\par \pard\li568\b0\f6\fs20 The recreation functions described above should be done at times when nobody is using the database, not even in reading mode. Obviously, when the index is being recreated, it cannot be used at the same time. A so-called  "signal file" may be placed on the data directory, containing nothing but a digit 1 in the first byte and a comment following it. When this file is there, nobody can access the database using a99 or alcarta. (The DOS programs are unaffected!) This menu function checks for the presence of a signal file. If it exists, you may choose to remove it, if it does not exist, to set it. 
+\par \pard 
+\par \pard\tx3976\cf0 
+\par \f1 `\cf1\ul\b Sniffer\cf0\ulnone\b0 `\f6 
+\par \pard\f1\fs18  (Tool for database analysis)\cf2\b\f4\fs20 
+\par \pard\li568\b0\f6 This tool detects faulty record numbers and addresses. To repair such damage, one will usually have to recreate the data files, index file, address file etc. No software is immune against damage from external sources! Sniffer can find such damage, which is better than nothing at all. \b\f4 
+\par \pard 
+\par Novell Flag Command : Hint for the system manager\b0\f6 
+\par A Novell file system requires a flag to be set on every newly created file that is supposed for multi-user access. The Novell "flag" command exists for this purpose. This command is contained in the  `\cf3\ul\b ORG.FLX\cf2\ulnone\b0 `  file which is invoked in most of the functions in this menu. There is a comment in the ORG.FLX telling you what to do. 
+\par \cf0 
+\par \cf2 
+\par \cf0 
+\par ?Index Recreation=x var "iIndex recreation"\\ins #uxO\\exec X org.flx 
+\par ?Address Table Recreation=x var "tAddress table recreation"\\ins #uxO\\exec X org.flx 
+\par ?Brief Display Recreation=x var "sBrief display recreation"\\ins #uxO\\exec X org.flx 
+\par ?Restriction File Recreation=x var "xRestr. file recreation"\\ins #uxO\\exec X org.flx 
+\par ?Index Compaction=x var "cIndex compaction"\\ins #uxO\\exec X org.flx 
+\par ?Recreate Entire Database=x var "7Entire database rebuild"\\ins #uxO\\exec X org.flx 
+\par ?Number-faithful Recreation=x var "nNumber faithful rebuild"\\ins #uxO\\exec X org.flx 
+\par ?Same, but Selected Files Only=x var "rSelected file reclaim"\\ins #uxO\\exec X org.flx 
+\par ?Reclaim Wasted Space=x var "RWasted space reclamation"\\ins #uxO\\exec X org.flx 
+\par ?Briefly=h org 
+\par ?Lock Current Record / Unlock it=X reclock.flx 
+\par ?Lock/Unlock Database=X tbllock.flx 
+\par ?Total Lock Set / Reset=X signfile.flx 
+\par ?About the Database=X dbinfo.flx 
+\par ?Database Copy=X _backup.flx 
+\par ?Database Restoration=X _restore.flx 
+\par ?Export=X _dbxport.flx 
+\par ?Last Message List=x var "INDEX-Protokoll?" n " (Nein = QRIX-Protokoll)"\\yes\\if yes help protok\\if no help protoq 
+\par ?Sniffer=x get env comspec\\ins #uvC\\var #uvC " /c " P "sniffer.exe -x"\\call 
+\par ?CockPit=X cockpit.flx 
+\par ?Chapter 7=h ac7-1 
+\par ?Kap. 10.2.9=h ac10-12 
+\par ?Handbuchkapitel 7=h ac7-1 
+\par ?ORG.FLX=h org.flx 
+\par 
+\par }
+ 

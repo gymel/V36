@@ -1,0 +1,73 @@
+  MEDIC.AIM : MEDLARS --> A   und   Current Contents on Diskette --> A
+  940615  (bei Current Contents muss man das MEDLARS-Format w„hlen)
+
+  zu kombinieren mit den Ausgabeparametern  PA.APR  !!!
+  zwecks Erstellung von korrekten "allegro"-Daten
+
+re=13 10 "UI"  ein Datensatz endet mit dieser Zeichenfolge
+rs=13 10 "UI"  (eigentlich ist es der Anfang des n„chsten!)
+   mit diesen Angaben kann das Programm bereits die Datens„tze einlesen.
+
+
+  Vor der Bearbeitung eines Datensatzes folgende Ersetzungen:
+
+_ " " 13 10       ersetze Blank Zeilenende durch Zeilenende
+_ 13 10
+
+_ 13 10 "      "   ersetze Zeilenende/6 Blank
+_ " "                durch ein Blank
+
+fe=13 10    die noch verbliebenen Zeilenvorschbe (13 10) markieren jetzt
+            das Feldende
+
+   (statt  fe=13 10  h„tte man auch diese Angabe machen k”nnen:
+    _ 13 10            ersetze Zeilenvorschub
+    _ 0                  durch 0  (wirkt dann automatisch als Feldende)
+
+
+
+  und jetzt gehts los
+    Hier beginnen die Feldbeschreibungen:
+    jeweils zuerst die NMN-Kategorienummer, dann ein Suchbefehl,
+    (z.B. s "TI  - " heisst: suche die Zeichenfolge "TI  - ")
+    dann evtl. Vorbearbeitungsbefehle
+
+#00        Ident-Nr. (bei Hauptaufnahmen)
+s "- "     steht sofort am anfang
+
+#20       Hauptsachtitel: TI
+s "TI  - "
+n         Nichtsortierwort am Anfang markieren
+
+#33M      MESH-Schlagwort
+s "MH  - "
+w "MESH : "
+m""
+
+#40
+s "AU  - "
+m"; "       kann mehrfach vorkommen, dann mit "; " aneinanderh„ngen
+
+#40a            Hilfskategorie "beteiligte Person"
+s "PS  - " 
+m
+
+#37
+s "LA  - "   Language
+_ "English"
+_ "ENG"
+_ "French"
+_ "FRE"
+_ "German"
+_ "GER"
+
+#31a           DI = discipline (kommt bei Current Contents on Diskette vor)
+s "DI  - "
+
+#85
+s "SO  - "
+
+#98
+s "AB  - "
+
+

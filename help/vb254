@@ -1,0 +1,114 @@
+
+Verlautbarung 254 der Entw.Abt.                              2013-09-10
+-------------------------------
+
+
+V33.4 ist da
+============
+
+
+Sperrproblematik
+----------------
+
+Es gab voriges Jahr mal eine enorme Auseinandersetzung ueber die
+Fragen und Probleme des Sperrens und Freigebens, und zwar mit
+Schwerpunkt auf acon, wenn damit mehr als ein Prozess gleichzeitig
+gestartet wird und konkurrierende Zugriffe auf dieselben Daten
+dabei vorkommen koennten.
+
+Kollege Eger berichtete ueber einen Extremfall, der ganz sicher keinen
+Normalanwender betrifft, aber doch behandelt werden muss. Dabei
+ging es um a99, wenn dieses auf mehr als einem Platz laeuft und
+gleichzeitig ein und dieselbe Eregebnismenge veraendernd per FLEX
+bearbeitet wird.
+
+Die Kernfrage ist folgende:
+Was kann schiefgehen, wenn man im FLEX schreibt:
+
+...
+next
+set lock
+....[irgendwelche Aktionen]
+put
+
+Im Einzelplatzsystem ist das kein Problem, denn waehrend der FLEX laeuft,
+kann der Anwender nichts anderes tun, was irgendwie stoeren koennte.
+Der Befehl "set lock" ist dann sogar entbehrlich.
+
+Schwierig KANN es werden, wenn mehrere Endgeraete Schreibzugriff haben,
+egal ob mit a99, acon oder gar PRESTO. Denn:
+
+Mit "next" oder auch einem  find u.a.  wird ein Satz geladen, aber noch
+nicht gesperrt. Das soll dann mit  set lock  geschehen. Wenn's aber der
+Teufel, oder wer immer, will, dann ist im Moment dieses Befehls gerade
+ein anderer Prozess zugange, genau diesen Satz zu aendern, und HAT ihn
+sich zu dem Behufe schon gesperrt. Auf das Lesen wirkt sich das nicht
+aus, d.h. "next" oder "find" etc. klappen, laden aber u.U. den noch
+*nicht* veraenderten Satz. Erst "set lock" merkt dann, dass der Satz
+gesperrt ist, wartet eine Sekunde, probierts nochmal usw,, bis der
+Satz frei ist, um dann die Sperre zu setzen, woraufhin die eigenen
+Aenderungen dann erfolgen.
+Allerdings kann es sein, dass der andere Prozess, der den Satz wieder
+freigegeben hat, daran eine Aenderung gemacht hat.
+Diese ist im Arbeitsspeicher unseres Prozesses aber noch nicht
+vorhanden! Erst wenn wir unsererseits speichern wollen, wird das
+Programm den Zeitstempel vergleichen und dann die Meldung ausgeben,
+"sorry, jemand anders war schneller". Denn der Zeitstempel ist noch
+der alte, VOR der aenderung durch den anderen Prozess.
+Was nun? Bei acon haben wir den Befehl  "set getlock on", der zur
+Folge hat, dass "next" u.a. zuerst sperrt und dann liest - dann
+ist alles ok.
+Aber a99 hat den Befehl nicht. Warum? Das fuehrt jetzt hier zu weit.
+Wichtiger ist die Frage: Was tun? Die Befehlsfolge etwas umschreiben:
+
+next
+var "#" i
+ins $i
+set lock
+var $i
+f1nd
+...
+put unlock
+
+Der Trick ist, nach dem Sperren den Satz *nochmals* zu lesen, und zwar
+mit  "f1nd", weil dann die Erg.Menge unberuehrt bleibt. Wenn also
+das Sperren eine Weile gedauert hat, weil ein anderer Prozess an
+dem Satz zugange war, dann wird der von jenem anderen geaenderte Satz
+geladen, d.h. also die aktuelle Fassung, und wir aendern dann
+diese, und die fatale Zwickmuehle ist entschaerft.
+
+NICHT zu machen braucht man das, wenn in dem FLEX keine Aenderungen
+und Speicherungen passieren, sondern z.B. nur Exporte oder eine
+Summierung o.a. Je nun, werden Sie sagen, man will aber doch bei
+solchen Prozessen auch die jeweils aktuelle Fassung des Satzes,
+nicht eine gerade eben veraltete! Ja, aber u.U. wird es ja so sein,
+dass der andere Prozess seine Aenderung erst etwas spaeter macht,
+dann kriegt der eigene Prozess das sowieso nicht mit!
+M.a.W.: Aendernde Prozesse, die irgendwelche Ergebnismengen
+bearbeiten, wollen gut bedacht sein. Evtl. informiert man die
+betroffenen Anwender, dass eine groessere Menge Daten so und so
+geaendert werden sollen, und man sich tunlichst ueberlege, ob man
+eine Exportproduktion o.a. erst danach durchfuehren sollte, um
+dann den aktuellen Status zu haben.
+
+Und gut ueberlegt sein will es besonders auch, wenn man mehr als
+einen Prozess gleichzeitig laufen laesst, die beide irgendwelche
+Aenderungen machen, und zwar an derselben Erg.Menge oder an
+zweien, die eine nichtleere Schnittmenge haben. Es kann sein,
+dass die Reihenfolge nichts ausmacht (z.B. wenn Prozess A eine
+#31 einfuegt, Prozess B eine #81), es kann aber auch problematisch
+sein (A aendert #31, B ebenfalls, aber auf andere Weise).
+Das kann auf der logischen Ebene unerwuenschte Resultate zeitigen,
+auf der technischen gibt es immerhin keine Datenschaeden.
+
+Summa summarum bleibt die Frage, ob wir nicht auch fuer a99 den
+Befehl  set getlock on  realisieren sollten. Damit waere das
+Thema vom Tisch. Aufzupassen waere jedoch ganz penibel, dass ein
+danach geladener Satz wieder freigegeben wird oder gespeichert
+(wobei automatisch Freigabe erfolgt), damit nicht lauter
+gesperrte Saetze zurueckbleiben nach einer Aktion mit einer
+Ergebnismenge! Man hat z.B. zu bedenken, dass ein laufender
+FLEX, der eine Erg.Menge verarbeitet, u.U. abgebrochen wird,
+und der dann gerade geladene Satz sollte auch in dem Falle
+nicht gesperrt zurueckbleiben!
+

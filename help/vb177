@@ -1,0 +1,194 @@
+
+Verlautbarung 177 der Entw.Abt.                           2004-04-20
+-------------------------------
+
+V24.4 : Die definitive V24
+==========================
+
+Gegenueber der V24.3x wurden noch eine Anzahl von kleineren
+Korrekturen ausgefuehrt, fuer die ein Bedarf sich manifestiert
+hatte - hilfreich war wieder einmal Bergers Notizendatenbank.
+Fuer Inhaber von Gross- und Mittelbanken nuetzlich: Punkt 10.
+
+
+1. XML
+------
+Dazu steht alles Noetige in
+http://www.allegro-c.de/axml.htm
+Oder nach Installation: x jan axml.htm
+
+Der neue Befehl, xml, ist auf die uebliche Art dokumentiert
+(d.h., man gibt  h xxml  ein) Da gibt's auch Flips zum sofortigen
+Ausprobieren und Betrachten der Ergebnisse.
+
+Wer sofort zur Probe exportieren will:
+Eine universelle XML-Ausgabeprozedur ist in das Exportmenue unter
+"Komfort-Methoden" eingebaut.
+
+2. FLEX-Befehle var und if : Kleinere Verbesserung
+--------------------------------------------------
+
+Jetzt geht   var #nn. und sogar var #n..
+Damit erhaelt man den Inhalt der ersten Kategorie, deren Nummer mit nn
+bzw. mit n anfaengt.
+Ausserdem geht auch  if #nn.  und sogar if #n..
+Die Bedingung ist wahr, wenn es eine Kategorie #nnx bzw. #nxx gibt.
+
+3. FLEX-Befehl  if z<n
+----------------------
+Diese Bedingungspruefung ergab immer WAHR. Das wurde korrigiert.
+
+4. FLEX-Befehl qrix
+-------------------
+Es kam bisher als erstes die Registerzeile heraus, die unmittelbar VOR 
+der zutreffenden Zeile steht. Das wurde korrigiert.
+Ausserdem: wenn mit  qrix N ind abc<xyz  zwei Registerstellen angegeben werden, dann wird auch
+die Stelle xyz der Umcodierung unterworfen.
+Statt < kann funktionsgleich @ verwendet werden. Das ist dann nuetzlich, wenn
+im Index auch das Zeichen < vorkommen kann.
+WENN @ vorkommt, dann wird dieses genommen! Nur wenn es nicht vorkommt,
+wird < genommen.
+
+5. find : jetzt auch mit Mehrfachspatien
+----------------------------------------
+Der find-Befehl tat es nicht, wenn in einem Suchbegriff mehr als ein
+Spatium hintereinander vorkam. Das geht jetzt uneingeschraenkt.
+(Zeitweise wurden intern Spatien durch ! ersetzt, es wurde aber eine
+andere Loesung gefunden, die an der Oberflaeche nicht sichtbar wird,
+Registereintraege koennen auch ein ! enthalten.
+
+6. Aktuelle Position in Erg.Menge
+---------------------------------
+Es kam vor, besonders nach FLEX-Ablaeufen, dass beim erneuten Oeffnen
+der Erg.Menge nur der letzte Satz zur Anzeige kam. Jetzt kommt immer
+derjenige, mit dem das Erg.Fenster vorher geschlossen worden war.
+
+7. Find-Menue
+-------------
+Es gab Fehler, wenn in einem Suchbegriff " : " vorkam (Spatium
+Doppelpunkt Spatium). Das wurde behoben. Anfuehrungszeichen sind
+nicht hilfreich.
+
+8. Loeschen per FLEX
+--------------------
+Es konnte passieren, dass modifizierte Saetze nicht geloescht wurden,
+wenn im FLEX ein erase-Befehl kam. Behoben.
+
+9. Ergeb.MengenAufbewahrung
+---------------------------
+Jetzt wird zuverlaessig immer, wenn unter "Option" die Zeile
+"Ergebnisse aufbewahren" angekreuzt ist, die Liste der
+Ergebnismengen gespeichert.
+Und: Wenn beim Ausstieg aus a99 noch ungespeicherte Saetze vorhanden
+sind, kommt die Frage
+"Sollen die neuen und bearbeiteten (noch nicht gespeicherten)"
+"Daten gespeichert werden?"
+"Abbruch = Ungespeicherte Sätze sichten"
+Die dritte Zeile ist hinzugekommen: damit man sofort sehen kann,
+um was fuer Saetze es sich handelt. [Abbruch] druecken, dann
+kommen sie.
+
+10. Neue Aufbohrung: Grosse Ergebnismengen in a99
+-------------------------------------------------
+PRESTO hatte immer noch die Nase vorn, wenn es um das Kombinieren
+von grossen Mengen ging. Bei "+" und "-" im Index konnte die
+zweite und weitere Menge beliebig gross sein, denn die resultierende
+Menge wird ja auf jeden Fall hoechstens so gross wie die erste, mit
+der die zweite bzw. dritte zu kombinieren ist. Diese Mechanik war
+in a99/alcarta noch nicht zum Durchbruch gekommen. Dem wurde jetzt
+abgeholfen. Nicht nur das: einzelne Ergebnismengen koennen jetzt bis
+zu 256.000 Saetze gross werden. Damit sieht PRESTO nun alt aus.
+Ist eine Erg.Menge dennoch mal zu gross, kommt jetzt die
+informative Meldung "Sorry, set is too large".
+
+11. Blaettern in Registerfolge
+------------------------------
+Etwas fuer Connaisseure!
+Mit Alt++ und ALt+- soll man in Registerfolge vor- und zurueckblaettern
+koennen. Das klappte nicht mehr korrekt. Jetzt geht's wieder. Dabei
+wird Zeile fuer Zeile weitergeschaltet und jeweils nur der erste Satz
+zu jeder Zeile gezeigt! Im Schreibfeld sieht man jeweils, in welchem
+Register und an welcher Stelle man ist.
+Bei PRESTO ist es etwas anders: mit Cursor-runter bzw. Cursor-rauf
+wird satzweise, nicht zeilenweise im Index geblaettert.
+
+12. Glob. Manip.
+----------------
+Hat man eine ausgefuehrt, wird jetzt bei nochmaliger Anwahl des
+Menuepunkts vorher gefragt, ob man dieselbe Parameterdatei wieder
+verwenden will.
+Hinweis: anders als bei PRESTO muss man dafuer sorgen, dass
+irgendwas ausgegeben wird, WENN eine Aenderung am Satz erfolgt
+ist. Ein Zeichen genuegt, etwa
+#t{ "ok" }
+denn nur dann wird vom Programm der Satz als veraendert markiert
+und im Arbeitsspeicher untergebracht - sonst passiert nichts.
+
+13. "Einsammeln" von Indexeintraegen (a99/alcarta)
+--------------------------------------------------
+In Verbindung mit der Moeglichkeit, im Index durch Druck auf / eine
+Anzahl Zeilen "einzusammeln" und damit eine Ergebnismenge zu bilden,
+entstanden manchmal allzu lange Namen der Erg.Menge, die hernach zu
+internen Speicherbereichsueberschreitungen fuehren konnten und damit
+zum Absturz. Das wurde behoben.
+Ausserdem: der erste Druck auf / konnte zur ungewollten Anzeige der
+Ergebnisliste der betr. Zeile fuehren, Das wurde abgestellt.
+(Es passierte nur dann, wenn vorher Alt+e gemacht wurde)
+
+14. Neue Menuepunkte
+--------------------
+In a99 gibt es auf dem Menue "Global" jetzt die zwei neuen
+Punkte:                    und dahinter steckt:
+Re-Organize                h org
+Datenbank-Information      X dbinfo
+Denn wir haben erlebt, dass 1. das Org-Menue nicht gefunden wird und
+dass 2. die Frage, wieviele Daten man denn habe, oftmals
+gestellt wird - der entspr. Punkt im Fuellhorn auch nicht
+gefunden wird, und 3. ueberhaupt anscheinend das Fuellhorn
+unbekannt ist. Also was soll man machen!?
+
+15. Kontextmenue
+----------------
+Im Anzeigefeld kam das Kontextmenue zu weit rechts heraus, wenn das Fenster
+nach rechts verschoben war. Jetzt sollte es fast immer so sein, dass der
+Mauszeiger auf dem Menue sitzt.
+
+16. "Geht nicht, keine Parameter"
+---------------------------------
+Diese Meldung kam immer, wenn der FLEX-Befehl 
+xport p ...
+erfolglos verlief. Das ist gegen das FLEX-Konzept: man muss bei
+solchen Befehlen immer abpruefen, mit "if no ...", ob der Befehl
+gelungen ist, und dann entsprechend reagieren. Die automatische
+Meldung ist dann aergerlich, weil das Programm dann anhaelt.
+Daher wurde sie ausgebaut. (Beispiel: dbinfo.flx. Der klappt
+jetzt bei jeder CFG ohne Meldung.) Nr. 432 in UIFE ist damit obsolet.
+
+17. Fehlermeldungen in FLEX
+---------------------------
+Bei manchen Befehlen koennen interne Fehlermeldungen entstehen,
+wie z.B. bei  xport p name 
+Den Text dieser Meldung erhaelt man mit  var Err
+Die Meldung zuruecksetzen kann man mit   set Err
+Normalerweise begnuegt man sich, mit "if no ..." das
+Auftreten eines Fehlers abzufangen! Wenn allerdings eine
+Fehlermeldung uebrigbleibt, kommt am Ende des FLEXes eine
+Message-Box mit dieser Meldung. "set Err" verhindert dies.
+
+18. Export-Param.: Lokale Ersetzung
+----------------------------------
+Ersetzungen der Form  ,"_xyz??????_abc_" konnten zum Absturz fuehren,
+weil intern das Kategorieende nicht beachtet wurde. Behoben.
+Betraf a99, PRESTO, SRCH etc.
+
+19. SRCH : Zahlenvergleich
+--------------------------
+Eine Suche der Form  #nnnGzahl  oder  #nnnSzahl (groesser bzw. kleiner)
+lieferte oft falsche Ergebnisse. Behoben.
+
+20. Signalfile: PRESTO/APAC
+---------------------------
+Die DOS-Programme beendeten sich kommentarlos, wenn im Signalfile
+die 1 steht. Jetzt geben sie die Meldung aus und warten dann
+auf eine Taste, damit man die Meldung zur Kenntnis nehmen kann.
+

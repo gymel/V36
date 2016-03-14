@@ -1,0 +1,88 @@
+  OAIDC.APR : Daten im Format  oai_dc  (Dublin Core) ausgeben
+  20081126
+
+  Erzeugt den gesamten von OAI spezifizierten <record>
+  Das sonstige Drumherum wird am besten per FLEX gemacht.
+
+zl=0 
+zi=8
+zm=0
+
+tad-utf
+
+p .170 1
+
+i4=1
+
+10=""    IdNr der "Agentur"
+  z.B. 10="84:"
+
+pa=181 182 183 184 189 190 198 199 207 208 209 210 211 212 219 222 223 232 
+
+#da     Akzente vertauschen
+
+#t{ "<record>" C "<header>" C "<identifier>" }
+#00 p10 P{ "</identifier>" C }
+
+#t{ "<datestamp>" }
+#dts e4
+#dts b4 e2 "-"
+#dts b6 e2 "-" 
+#t{ "</datestamp>" C }
+
+#uds dds e0
+#30a +s =ds
+#+m
+#-s
+
+#uds e" " { "<setSpec>" } P{ "</setSpec>" C }
+#uds +s b" " =ds
+
+#-m
+#t{ "</header>" C &0 "<metadata>" C &0 }
+#t{ " <oai_dc:dc" C }
+#t{ '  xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" ' C }
+#t{ '  xmlns:dc="http://purl.org/dc/elements/1.1/"' C }
+#t{ '  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' C } 
+#t{ '  xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/' C } 
+#t{ '  http://www.openarchives.org/OAI/2.0/oai_dc.xsd">' C &0 }
+
+#87 p{ " <dc:identifier>ISBN " } P{ "</dc:identifier>" C &0 }
+#88 p{ " <dc:identifier>ISSN " } P{ "</dc:identifier>" C &0 }
+
+#20 p{ " <dc:title>" } P{ "</dc:title>" C &0 }
+#40 p{ " <dc:creator>" } P{ "</dc:creator>" C &0 }
+
+#402 >C
+#403 >C
+#41 >C
+
+#76 p{ " <dc:date>" } e0
+#76 e4
+#76 b4 e2 "-"
+#76 b6 e2 "-" 
+#76 P{ "</dc:date>" C &0 } e0
+
+#37 p{ " <dc:language>" } P{ "</dc:language>" C &0 }
+#75 p{ " <dc:publisher>" } P{ "</dc:publisher>" C &0 }
+#81 p{ " <dc:description>" } P{ "</dc:description>" C &0 }
+#31 p{ " <dc:subject>" } P{ "</dc:subject>" C &0 }
+
+#85 p{ " <dc:relation>" } P{ "</dc:relation>" C &0 }
+
+#t{ "</oai_dc:dc>" C &0 }
+#t{ "</metadata>" C &0 }
+
+   about section
+
+#t{ "</record>" C &0 C &0 }
+
+#dA    Akzente zurueck
+
+#+#
+
+#(C
+#cc p{ " <dc:contributor>" } P{ "</dc:contributor>" C &0 }
+#)C
+
+

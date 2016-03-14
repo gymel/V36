@@ -1,0 +1,192 @@
+
+Verlautbarung 241 der Entw.Abt.                              2011-07-31
+-------------------------------
+
+Nebenwirkungen bereinigt
+------------------------
+V31.6 hatte einige unerfreuliche Nebenwirkungen, die aus Bereinigungen
+der Quelltexte resultierten. Diese wurden eliminiert. Eine davon war,
+dass das Neuanlegen einer Datenbank ueber das Fuellhorn (h newdb)
+nicht mehr klappte.
+
+
+Weitere Verbesserungen
+======================
+
+Indexfenster mit grossen Schriften
+----------------------------------
+Bei Einstellung grosser Schriften unter Win'7 wurde das Indexfenster 
+nicht so recht zufriedenstellend angezeigt. Behoben.
+
+Formulare
+---------
+Wenn im FLEX mehr als ein Formular hintereinander aufgemacht wurde,
+kam es zu Fehlleistungen: der Befehl "end" wurde scheinbar ignoriert
+und es ging mit dem naechsten Befehl weiter; konkret ging im FLEX
+onforms.flx dann das naechste Formular auf. Behoben.
+
+FLEX: Offizielle Form der Befehle
+---------------------------------
+Nicht die Langform der Befehlswoerter ist "amtlich", sondern nur die
+3buchstabige kuerzestmoegliche Form, das sog. "Trigramm". Darauf sei
+hier nochmal, quasi fuer das Protokoll, hingewiesen. Das mag man
+aus diversen Gruenden unerfreulich finden, ist aber unabaenderlich.
+
+
+FLEX-Doku komplett ueberarbeitet
+--------------------------------
+Die Hilfetexte x*.rtf wurden kritisch gelesen, auf Vollstaendigkeit und
+Korrektheit geprueft, wo noetig ergaenzt sowie in Formalien und
+Formulierungen mit dem Ziel besserer Verstaendlichkeit und Klarheit
+ueberarbeitet. Hinzu kamen einige weitere Beispiele und Flips zum 
+direkten Ausprobieren.
+Diese Massnahme war vor allem deshalb noetig, weil mit der Freigabe des
+Konsolprogramms  acon  diese Texte einen wichtigen Bestandteil der
+Dokumentation bilden. Im Kern von acon steht der Befehlsinterpreter,
+eine Funktion namens  DoJob()  im Quelltext  avjob.cpp, wo die
+Abarbeitung der FLEX-Befehle erfolgt. 
+Tip: Man findet z.B. die Stelle, an der der Befehl "export" verarbeitet
+wird, indem man sucht nach  "case EXP". Stets ist in diesen Abschnitten
+das Argument des Befehls in der Variablen "tsk". Diese Dinge sind im
+Quelltext alle kommentiert.
+Neu im Paket ist die Gesamtliste der Befehlswoerter mit Kurzhinweisen:
+  h xal
+die mit den anderen relevanten Texten verlinkt ist, z.B.  h flex.
+Unter
+
+  http://ftp.allegro-c.de/aktuelle-version/flexhelp.zip
+
+ist jetzt das Paket aller 106 ueberarbeiteten FLEX-Dokudateien.
+
+
+FLEX flow
+---------
+Diese Befehl tat nicht das Erwartete. Jetzt tut er's. Es ist zu 
+empfehlen, jeweils  flow 2  vor und  flow 0  hinter eine
+kritische Stelle im zu testenden FLEX zu schreiben und dann die
+Ergebnisse im Anzeigefeld zu beobachten.
+
+
+FLEX eval
+---------
+Jetzt sind auch in acon $-Variablen beim Rechnen moeglich!
+Also etwas wie
+  eval $Kapital /100 *#uzi
+  ins $Zinsen
+  wri "Zinsen in 1 Jahr: " $Zinsen
+
+wobei zu Anfang das Kapital in $Kapital steht und der Zinssatz in #uzi,
+z.B.  #uzi 2,3.
+
+
+Akzentverschiebungen
+--------------------
+Bisher konnte man mit  export a / export A  nur im gesamten Datensatz
+plus Hintergrundspeicher alle Akzentzeichen nach rechts bzw. nach links
+schieben lassen. Jetzt geht das auch mit dem iV-Inhalt:
+export ai  :  aus  ^e  wird  e^
+export Ai  :  aus  e^  wird  ^e
+
+
+Umcodierungsbefehl y
+--------------------
+xcode y  in a99 und acon identisch
+Beispiel: Will man eine Umwandlung in Minuskeln auf einfachste Weise
+hinkriegen (es gibt keinen Befehl "lower"), dann geht das so:
+
+y A/Z a    // zur Vorbereitung
+              und dann irgendwann waehrend der Sitzung:
+var ...
+xcode y
+
+
+Akzentverschiebung
+------------------
+Der Befehl zur Verschiebung von diakritischen Zeichen nach rechts
+bzw. links,  export a / A, wirkt auf den gesamten aktuellen Datensatz
+UND den Hintergrundspeicher (#u-Variablen, nicht $-Var.)
+Das war leicht unbefriedigend, weil man so nicht den iV-Inhalt
+unmittelbar behandeln konntem und meistens jongliert man ja mit
+diesem herum, nicht mit dem gesamten Datensatz. Dem wurde abgeholfen:
+
+export ai / Ai
+wirkt NUR auf den iV-Inhalt.
+
+
+get I http://...  und bei a99 auch  open http://...
+---------------------------------------------------
+Dieser Befehl kann nun mit  if cancel abgetestet werden, d.h. der FLEX
+oder Job bricht dann auch nicht mehr, wie vorher, ohne weitere Aktion 
+einfach ab, sondern kann kontrolliert in eine Fehlerbehandlung gehen.
+Wenn der Server zwar antwortet, die Datei aber nicht kennt, dann kommt
+die bekannte Antwort, in der steht  "Error 404"
+Es sind daher zwei Tests noetig:
+
+get I http://....
+if cancel jump Abbruch
+if %Error 404% jump KeineDatei
+...   // Verarbeitung der Datei
+
+In acon aber:
+if ="ERROR"   statt   if cancel
+
+
+Schema-Codes
+------------
+Hier nochmal die im Forum verbreitete Liste der Schema-Codes, die uns
+bekannt sind:  [GP] heisst: die CFG ist im Gesamtpaket mit drin
+
+a - Konsolidiertes allegro-Format  [GP]
+b - User-Datenbank [PHPAC]  (fruehere B.CFG: UB Bonn)
+c - Formatebank
+d - DB-MAB Konfiguration  [GP]
+e   ***FREI***
+f - Unimarc, auch ehemals Freiburger Format
+g - (Goettingen, von Herrn Fischer erwaehnt)
+h - Hans
+i   ***FREI***
+j - Chronik-Datenbank
+k   ***FREI***
+l - Oxford chinesisch
+m - ALLEGRO-NW  [GP]
+n - Neutralformat  [(GP)]
+o - OEB (Lueneburger Format)
+p - pica  [GP]
+q   ***FREI***
+r - RAK-Regelwerksbank, RDA, GG
+s - expex Experimentierformat
+t   ***FREI***
+u - USMARC / MARC21  [GP]
+v - VD16 (obsolet) 2002
+w   ***FREI***
+x - PLZ-Datenbank (obsolet) 1994
+y - Unicode-Datenbank
+z - Adressenbank (UB Braunschweig intern)
+
+Diese Liste hat allerdings keinerlei Verbindlichkeit, etwa dergestalt, 
+dass die Nutzung irgendeines "belegten" Buchstabens nun nicht mehr 
+"erlaubt" oder zu empfehlen waere! Das Gegenteil ist der Fall. Jeder 
+"darf" jeden Buchstaben zu jedem erdenklichen Zweck neu nutzen. 
+Notwendig ist nur, dass man sowohl die CFG, also etwa eine ganz neue,
+eigene $a.cfg, sowie alle zugehoerigen Parameter und etwaigen Hilfetexte
+auf das eigene Datenverzeichnis legt und nicht auf das Programm-
+verzeichnis, wo ja die "amtliche" $a.cfg und viele .apr usw. liegen.
+Wird das sorgfaeltig beachtet, entstehen keine Konflikte und haben wir
+auch nichts dagegen.
+
+
+IMPORT.EXE Unterprogramm u6
+---------------------------
+Jetzt wird neue ISBN in beiden Varianten korrekt geprueft.
+
+XML-Import per FLEX
+-------------------
+Als Beispiel wird  bl.flx  mitgeliefert. Er wandelt die von der British
+Library freigegebenen Daten der BNB um in das A-Format. Hier kann man
+sie herunterladen:
+  http://www.archive.org/details/BritishLibraryRdf  
+Alles weitere steht als Kommentar im  bl.flx  drin. Es kommen allerhand
+interessante Einzelheiten dabei vor.
+Wir veroeffentlichen in Kuerze eine DemoBank mit den umgewandeltsn
+BNB-Datei unter a30. Drei Millionen Stueck.
+

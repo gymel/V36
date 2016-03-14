@@ -1,0 +1,79 @@
+  unzap.flx : eine .zap-Datei recodieren;  X.zap -> X
+  2014-11-13  Aufruf:  X unzap dateiname.zap
+  Mehr dazu siehe  zap.flx
+
+ins $file
+open 
+if no jump error
+
+ins $d
+var $d (t".")
+ins $n
+
+
+var $n 
+fsize
+if no jump do
+var "Datei " $n " existiert, ueberschreiben?"
+yes
+if no ask Neuer Name?;if can end;ins $n
+
+  Datei zum Schreiben oeffnen
+:do
+var $n
+open x
+
+z=0
+
+  Zeilen uebergehen, die mit )) anfangen
+  (Es scheint aeusserst unwahrscheinlich, dass eine Datei so anfaengt!)
+
+:gl
+  Lesepos. merken
+fetch p
+ins $pos
+get
+  Kommentarzeile?
+if not "))" jump gs
+  ja, dann naechste
+jump gl
+
+:gs
+  Leseposition ruecksetzen
+var "Pos.=" $pos
+mes
+var $pos
+fetch m
+  Nun ist Zeiger auf erstem Zeichen
+
+  Schleife verarbeitet die Datei zeichenweise
+:zloop
+  naechstes Zeichen holen
+fetch b
+if cancel jump zende
+z=
+if z<32 jump zloop
+if not z=94 var z;var;wri;jump zloop
+fetch b 
+z=
+
+if z=126 wri '^';jump zloop
+var z
+var
+ins $a
+var '^' $a
+wri ^
+jump zloop
+
+
+
+:zende
+close
+mes erledigt
+end
+
+:error
+var "Die Datei " $file " gibt's nicht"
+mes
+end
+

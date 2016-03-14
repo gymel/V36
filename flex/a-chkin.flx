@@ -1,0 +1,455 @@
+  A-CHKIN.FLX : aLF-Rueckgabefunktionen
+  2004-10-21
+  Flag #uqQ muss gesetzt sein, wenn Quittungen gewuenscht
+  Achtung:
+  Diese Datei wird auch eingebunden in  A-BATCH.FLX , ->:rckg
+       (Stapelverarb. aus Datei  batch.txt, Notverbuchung)
+
+  Wenn mit ... 0 gestartet, dann keine Rueckgabeschleife, sondern nur
+   das aktuelle Exemp. rueckbuchen (Statusaenderung!) Aufr. von a-func.flx
+ins $md
+
+  Gewisse Variablen muessen gesetzt sein, sonst zuerst a-init.flx:
+if not #ua? jump init
+  (in #ua? die Jahreszahlen der geladenen Kalendersaetze)
+  Quittungsdaten loeschen
+#uaQ
+#uAR
+
+var "#" i
+ins $expl
+  Sonderfall Expl. aus Gesch.gang:
+var #9DG
+if "g" jump freig
+
+if not #9DH jump begin
+  Statusaenderung gewuenscht? (aus a-func.flx)
+if not $md jump begin
+var #9DG
+  Vormerksatz
+if "V" jump begin
+  Warteregal
+if "W" #uAR 1;jump resauf
+ // if "W" jump freig
+
+:gg
+  In der Anzeige steht ein ausgel. Exempl. Deshalb fragen:
+var "angezeigtes Exemplar (Barcode " #9DG$a ") zurÅckbuchen?"
+ansi
+yes
+if not yes jump begin  //  nicht rueckbuchen
+  Rckg. gewuenscht
+var #9DG$a
+jump rckg
+
+  Hauptschleife des Rueckgabevorgangs
+
+:begin
+var "RöCKGABE: Barcode eingeben oder scannen:"
+ansi
+ask
+
+  Rueckgabe. In iV steht der Barcode
+  zugl. Unterprog (Aufruf aus batch.flx)
+:rckg
+if "" jump quitt
+if "-" exec a-chkout
+ins #uaB
+  Exemplarsatz zu diesem Barcode suchen und laden
+var "|: E" #uaB
+f1nd
+  Nichts gefunden - Vielleicht ist es eine Signatur?
+if no var "|8 " #uaB;f1nd
+if no jump nobar
+
+:freig
+var #9DG
+  Expl.Satz noch "im Gesch.gang"? (also nicht ausgel.)
+if "g" var "0";ins $$-#9DG;jump wsp
+  Warteregal
+if "W" #uAR 1;jump resauf 
+  wenn kein #9DH, dann ist das Ex. nicht verbucht!
+if not #9DH jump noo
+
+:intn
+  interne Nummer dieses ExplSatzes wird noch gebraucht:
+var "#" i
+ins #uaI
+ins $expl
+
+  ein paar Angaben werden gebraucht: (evtl. f. Gebuehren)
+var #9DF     // TitelId
+ins #uAF
+var #9DH$C   // Leserklasse d. Entl.
+ins #uAE
+var #9DH$u   // LeserId
+ins #uAU
+var #9DG$a   // Barcode
+ins #uAA
+var #9DG$m   // Medientypcode
+ins #uAM
+
+  Status in #9DG auf 0 setzen
+$$-#9DG0
+  Leihdaten kopieren in #9DI, dann #9DH loeschen
+var #9DH
+ins #9DI
+#9DH
+  Rckg.Datum (= heute)
+var #dts(0,8)
+ins $r-#9DI
+var ""
+ins $m-#9DI
+ins $M-#9DI
+ins $Z-#9DI
+var #9DF$X
+if %~provisor% mes Provisorische Titelaufnahme!
+  bereinigten Expl.Satz wieder speichern
+:wsp
+put
+if no mes
+disp
+sho rec
+var $md
+if "0" mes Erledigt;end
+
+
+if not #uqQ jump noq
+  Quittungsdaten in #uaQ ansammeln
+var ""
+if #uaQ var #uaQ "///"
+var +"L:" #9DI$u " - B:" #uAA " (T:" #uAF ") R:" #9DI$r
+ins #uaQ
+
+:noq
+var "#" i
+ins $expl
+
+  wird Verzugsgeb. erhoben? Wenn nicht -> :vrm
+eval $Avgeb
+if <0.1 jump vrm
+
+  Frist abgelaufen? Dann $r > $R in #9DI ($r = Rckgabetag = heute)
+var #9DI$r "-" #9DI$R
+Days
+if <1 jump belast    // ok, kein Verzug
+  Verzug, aber wieviele Oeffnungstage?
+z=1      Wenn keine Verz.Geb. gewuenscht
+  z=     Wenn die gerade ausgerechnete Zahl genommen werden soll
+
+:vlo
+var z
+if >100 jump long
+ var #dts(0,8) "-" z
+var "-" z
+WDay
+ins #uaV
+var #uaV "-" #9DI$R
+Day
+if >0 z+1;jump vlo
+
+:long
+var z
+ins $days
+Z=
+   Test:
+ var "!Verzug: " Z " Tage!"
+ if Z>0 mes
+
+  kommt ex. aus Gesch.gang? Dann keine Gebuehr!
+if not #9DI$u jump vorm
+  Hier muss Gebuehr noch ermittelt werden! Nutzersatz holen
+var "|: B" #9DI$u
+f1nd
+if no var "Leser " #9DI$u " unbekannt!";mes;jump vorm
+   test:
+ var #9B$n " hat " z " Tage Åberzogen"
+ ansi
+ mes
+
+var #9B$k
+  Dieselbe Leserklasse wie vorher
+if =#uAK jump gebhr
+ins #uAK
+
+
+  Leserkl.daten aus $Aclas entnehmen
+var #9B$k
+if "" var "1"
+ins #uaL
+var "///C" #uaL
+ins #uaL
+if not #uaL #uaL1
+var $Aclas (b"#uaL" e"///")
+if ="" jump mtyp
+ins #uaK
+var #uaK$u
+ins #uAG
+if #uAG jump gebhr
+
+
+:mtyp
+  in $Amtyp sind die ganzen Medientypdaten, mit /// getrennt
+var $Amtyp
+  kopieren in #uAY
+ins #uAY
+var #uAM "B" #uAE   // medTypsatzcodeBLeserklasse
+ins #uAS
+  zugehoerigen Abschnitt in #uAY suchen
+var #uAY(b"#uAS" e"///")  // Abschnitt mit den Bedingungen des Typs
+ins #uAY
+  Darin enthaelt $u die Angaben kulanz/intervall/gebhr
+if #uAY$u var #uAY$u(e"/") "/" #uAY$u(b"/" e"/") "/" #uAY$u(T"/");ins #uAG
+if not #uAY$u var $Aklnz "/" $Aintvl "/" $Avgeb;ins #uAG
+
+:gebhr
+var #uAG(b"/" e"/")
+
+if "0" jump vorm  // Keine Gebuehr (Intervall=0)
+  Z ist immer noch die Anzahl Verzugstage
+var #uAG(e"/")  // Kulanztage abziehen
+Z-
+var #uAG(b"/" e"/")   // teilen durch Intervall
+if >0 Z/
+var #uAG(T"/")   // mal Verz.geb.
+Z*
+  Jetzt haben wir die Gebuehr in Z
+
+var Z
+  Evtl. ist Verzugsgeb. 0 - dann kein Geb.Satz
+if not >0 jump belast
+  GebSatz anlegen, GebTyp 1 = versp.Rueckg.
+new 0
+#00 -
+var "0G0B" #uAU "K" #uAE "D" #dts(0,8) "O" #op
+ins #9GF
+
+Z*100
+  Gebuehr muss in Cent angegeben werden
+var "S" Z0 "E" #uAA "T" #uAF "d" $days
+ins #9GG
+  Gebuehrensatz speichern
+put
+if no mes
+sho rec
+dis
+var "GebÅhren sind angefallen"
+if #9GG$d var +n "Verzug: " #9GG$d " Tage"
+ansi
+mes
+jump vorm
+
+:belast
+  Reg. 11 GT0/usrnr kontrollieren
+var "|; GT0/" #uAU "?"
+f1nd
+  keine Belastungen -> :vorm
+if no jump vorm
+var "Es gibt Belastungen (" #uAU ")"
+mes
+
+  Und jetzt noch checken, ob es Vormerkungen gibt:
+:vorm
+  Expl.Satz zurueckholen
+var $expl
+find
+
+:vrm
+ Liegt Vormerkung vor? (Exempl. oder Titel!)
+var #9DF$$
+if #9DG$L var +"'" #9DG$L
+ins $v1
+var ":E" #9DG$e(0,r3)
+ins _ _0_
+ins $v2
+var $v1 $v2
+ins #uaW
+
+  Suchschluessel ExplVm erstellen, dann nachsehen
+var "|: " #uaW " V?"
+
+f1nd
+  was gefunden? -> :exvor  (ExplVm)
+var #9DG
+if "V" jump exvor
+
+  keine ExplVm, aber Titelvorm.?
+var #9DF$$
+ins #uaW
+  Schl. "TitelId V" in Reg.10?
+var "|: " #uaW " V?"
+f1nd
+  wenn ja, dann -> :extv
+var #9DG
+if "V" jump extv
+
+  keine Vorm., zurueck zum Start
+#uaW
+  War es "Reservierung aufheben?" Dann nicht in die Schleife
+if #uAR #uAR;mes Reservierung aufgehoben;disp;sho rec;end
+return     // von :rckg
+jump begin
+
+
+  aLF war noch nicht initialisiert, nachholen
+:init
+#uaC2   // Flag f. Ruecksprung
+exec a-init
+
+:nobar
+var "!Den Barcode " #uaB " gibt's nicht!"
+mes
+  Wenn als UP aufgerufen (a-batch)
+return
+jump begin
+
+:noo
+var #9DG
+if "v" jump verlust
+if "0" jump noleih
+$$-#9DG0
+put
+if no mes
+sho rec
+disp
+return
+jump begin
+
+  Reservierung aufheben (ExplSatz mit W ist geladen)
+:resauf
+sho rec
+dis  
+var "angezeigtes Exemplar (Barcode " #9DG$a ") freigeben? (Ist im Wartezustand)"
+ansi
+yesno
+if not yes jump begin
+
+var "#" i
+ins #uaI
+ins $expl
+  Status in #9DG auf 0 setzen
+$$-#9DG0
+  #9DH weg
+#9DH
+put
+if no mes
+sho rec
+disp
+  nun zur normalen Vormerk-Pruefung
+jump vrm
+
+:exvor
+#uvV Exemplar-Vormerkung
+
+  zurueckgegebenes Expl. auf Wartezustand setzen
+  momentan ist aber Vormerksatz geladen!
+:warte
+  Vormerkangaben retten
+var #9DH
+ins #uaH
+   Vormerksatz loeschen
+erase
+close res
+  Exemplarsatz wieder laden und aendern
+var #uaI
+find
+   W = Warte
+var "W" #9DG(1,0)
+ins #9DG
+  Vormerkangaben in ExplSatz kopieren
+var #uaH
+ins #9DH
+#uaH
+  und einige Aenderungen: $V raus
+var ""
+ins $V-#9DH
+  Datum der Einstellung ins Warteregal
+var #dts(0,8)
+ins $w-#9DH
+  Wartefrist 5 Arbeitstage von heute
+Wday +5
+var (0,8)
+ins $W-#9DH
+  Wartesatz speichern
+put
+if no mes
+  und anzeigen, dann Meldung
+sho rec
+disp
+var "!Bitte zum Warteregal," n "es gibt eine " #uvV " fÅr Leser " #9DH$u
+ansi
+mes
+
+var "|9 " #9DF(e"+")
+find 
+sho rec
+dis
+
+#uvV
+return
+end
+
+:extv
+#uvV Titel-Vormerkung
+jump warte
+
+  Quittungsdaten anzeigen. Aufbereitung hier auf Wunsch aendern
+  Form: L:Leserbarcode - B:Buchbarcode (T:TitelID) R:Rueckgabedatum
+:quitt
+if not #uaQ jump quend
+var "Quittung f. " #uAU n
+sho IV
+:quit2
+var #uaQ(e"///") n
+sho +IV
+var #uaQ(b"///")
+ins #uaQ
+if #uaQ jump quit2
+yes Drucken?
+if yes print
+:quend
+  falls als UP aufgerufen: (sonst return wirkungslos)
+return
+  ***ENDE DER RUECKGABESCHLEIFE**+
+  Nach RÅckgabeende zum letzten Entleiher springen! (2008-02-22)
+var "|: B" #9DI$u
+  var "|: B" #9DI$u "?"
+find
+sho rec
+disp
+end
+
+:noleih
+mes War nicht verbucht!
+jump begin
+
+:verlust
+mes Verlustiges Exemplar wieder da!
+jump begin
+
+ u-VARIABLEN in a-chkin.flx
+ #uAA (2)  Exp.Barcode
+ #uAC (1)  Flag f. a-init.flx
+ #uAE (3)  Leserklasse d. Entleihers
+ #uAF (2)  TitelId d. Exemp.
+ #uAG (8)  Kulanz/Intervall/Gebuehr aus Leserkl.satz
+ #uAK (2)  Leserklasse
+ #uaK      Leserklassendaten aus $Aclas
+ #uAM (2)  Medientypcode
+ #uAR (3)  Flag "Reservierung tilgen"
+ #uAS (1)  Medientypdaten
+ #uAU (2)  Entleiher-Barcode
+ #uAY (8)  Medientyp-Bedingungen f. d. Leserkl.
+ #ua? (1)  Flag von a-init.flx (Jahreszahlen d. Kalender)
+ #uaB (3)  Exempl.Barcode f. Rueckgabe
+ #uaC (1)  Leserkl. d. Entleihers
+ #uaH (3)  Vormerkangaben
+ #uaI (2)  interne Nr. d. Expl.satzes
+ #uaQ      Quittungsdaten
+ #uaV (2)  Datum f. Verzugsberechnung
+ #uaW (5)  Schl. f. Exempl.Vormerkung
+ #uqQ      Wenn belegt, dann Quittungserstellung
+
+ $Aclas    Daten aller Leserklassen, Trennung ///
+ $days     Anz. Verzugstage
+ $expl     interne Nr. d. Expl.Satzes

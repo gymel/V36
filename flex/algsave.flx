@@ -1,0 +1,42 @@
+  ALGSAVE.FLX : Bearbeitete Grunddatei wieder speichern
+  2005-09-07    wird normalerweise mit Alt+9 ausgeloest
+                d.h. man hat  #uX9 X algsave (gesetzt in algedit.flx)
+                Der Name sollte in #ub! stehen, wenn nicht, wird er abgefragt
+
+
+if #ub! jump bereit
+
+ask Dateiname?
+if not "" jump dname
+mes Ohne Name keine Speicherung!
+ask Dateiname?
+if "" end
+:dname
+ins #ub!
+
+:bereit
+set dow 2
+  Exp.Param i-1.apr laden (Export im Internformat)
+xpo p i-1
+if no mes Datei i-1.apr nicht gefunden;end
+  Hilfsdatei aufmachen
+xpo f ___.alg
+if no mes Hilfsdatei ___.alg konnte nicht ge”ffnet werden;end
+  Offlinedatei alle raus in die Datei
+dow off
+set dow 1
+  Aeltere Backup-Version loeschen
+var #ub!(t".") ".bak"
+del
+  Originaldatei -> <name>.bak
+var #ub! " " #ub!(t".") ".bak"
+rename
+
+  Hilfsdatei -> Name der Originaldatei
+var "___.alg " #ub!
+rename
+
+  Nutzer informieren
+var "Datei " #ub! " ist bearbeitet."
+var +n "Die unveränderte alte Datei liegt unter " #ub!(t".") ".bak"
+mes

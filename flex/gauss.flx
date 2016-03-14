@@ -1,0 +1,155 @@
+  GAUSS.FLX : Osterdatums mit Gauss-Algorithmus berechnen
+  2005-02-25  Aufruf entweder mit Jahreszahl, oder ohne, dann wird eine abgefragt
+       Dieser FLEX soll die Nutzung des Unterprogramms :gauss zeigen
+  
+  Wurde eine Zahl uebergeben? dann -> :go
+if not "" jump go
+
+  Jahr abfragen
+:frage
+ask Welches Jahr? (1700-2199)
+if "" end
+
+:go
+  Jahreszahl steht jetzt in der iV
+  Unterprogramm ausfuehren, Ergebnis steht danach in iV
+perform gauss
+if "Sorry" message; jump frage
+
+  Antwort steht in der iV, mit ins #uxy kann man sie speichern!
+  hier wird sie nur angezeigt:
+ var (e" (")   // aktivieren, wenn nur die Textmeldung gewuenscht ist!
+message
+end
+
+  ********
+  Dieses Unterprogramm kann man anhaengen an jeden eigenen FLEX
+  Aufruf erfolgt mit "perf gauss", wobei Jahreszahl in der iV steht
+  Hilfsvariablen: #u!X  werden alle wieder geloescht
+  Antwort kommt in iV zurueck, die Form sieht man beim Ausprobieren.
+:gauss
+ins #u!j
+if <1700 jump ErroR
+if >2199 jump ErroR
+if "17" var "23";ins #u!M;var "3";ins #u!N;jump GsS
+if "18" var "23";ins #u!M;var "4";ins #u!N;jump GsS
+if "19" var "24";ins #u!M;var "5";ins #u!N;jump GsS
+if "20" var "24";ins #u!M;var "5";ins #u!N;jump GsS
+if "21" var "24";ins #u!M;var "6";ins #u!N;jump GsS
+  ungueltige Eingabe
+:ErroR
+var "Sorry, das Jahr " #u!j " liegt nicht im Bereich von 1700 bis 2199"
+#u!j
+return
+
+  Hier geht die Berechnung los
+:GsS
+  zuerst z und Z sichern
+var z
+ins #u!z
+var Z
+ins #u!Z
+var #u!j
+z =
+z %19
+var z
+ins #u!A
+
+var #u!j
+z =
+z %4
+var z
+ins #u!B
+
+var #u!j
+z =
+z %7
+var z
+ins #u!C
+
+var #u!A
+z =
+z *19
+var #u!M
+z +
+z %30
+var z
+ins #u!D
+
+var #u!B
+z =
+z *2
+var #u!C
+Z =
+Z *4
+var Z
+z +
+var #u!D
+Z =
+Z *6
+var Z
+z +
+var #u!N
+z +
+z %7
+var z
+ins #u!E
+
+var "3"
+ins #u!m
+
+var "22"
+z =
+var #u!D
+z +
+var #u!E
+z +
+var z
+ins #u!t
+
+var #u!t
+if <32 jump EndE
+
+z =
+z -31
+var z
+ins #u!t
+var "4"
+ins #u!m
+
+var #u!t
+if ="26" var "19"; ins #u!t
+var #u!t
+if not ="25" jump EndE
+var #u!D
+if not ="28" jump EndE
+var #u!A
+if not >"10" jump EndE
+var "18"
+ins #u!t
+
+
+:EndE
+  Die Normalform JJJJMMTT zusammensetzen:
+var #u!j #u!m(0,r2) #u!t(0,r2)
+ins _ _0_
+  und in #u!d hinterlegen
+ins #u!d
+
+#u!wwird
+var #dts(0,4)
+if >#u!j var "wurde";ins #u!w
+  z und Z restaurieren
+var #u!z
+z =
+var #u!Z
+Z=
+  Antwort zusammenstellen
+var "Im Jahre " #u!j " " #u!w " Ostern am " #u!t "." #u!m ". gefeiert. (" #u!d ")"
+
+ Hilfsvar. beseitigen
+#u!~
+
+return
+  ********* Ende Unterpgrogramm gauss
+

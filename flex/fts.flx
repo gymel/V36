@@ -1,0 +1,111 @@
+  FTS.FLX : Full Text Search, Ergebnisse dann als a99-Ergebnismenge
+  2000-08-28
+            SRCH mit -f4, Export als Nummernliste
+            OBSOLET! Abgeloest durch  fulltext.flx
+  Alle Hilfs- und Zwischendateien werden auf dem TEMP-Verzeichnis angelegt
+
+  aktuelle Exp.param und Exp.datei sichern
+var e
+ins #uwe
+var E
+ins #uwE
+
+var "Das Programm fr die Volltextsuche l„uft in einem DOS-Fenster." n "Wenn es beendet ist, erhalten Sie die Ergebnisse aber so," n "als w„re die Ergebnismenge mit a99 erstellt worden!"
+var +n n "Wollen Sie eine Suche ausfhren?"
+ansi
+yesno
+if no jump exit2
+if canc jump exit2
+
+ask Suchbegriff
+if can end
+
+ins #uxS
+
+ins #u
+   TEMP\fts.bat  zusammenbasteln
+var M "fts.bat"
+xport f
+wri "@echo off" n
+
+wri "set -P=" P n
+   wenn die zu durchsuchenden Dateien ausgewaehlt werden sollen:
+ wri "set -D=" D n
+   wenn automatisch alle Dateien durchsucht werden sollen:
+ wri "set -D=*" D n
+wri "set -B=" B n
+wri "set -K=" K n
+wri "set -K1=" K1 n
+  In dieser Zeile * wegnehmen, wenn Dateiauswahl angeboten werden soll
+wri P "srch -f4 -efts+" M "fts.set -m0 -v0 -d*" D B " -s" #uxS
+
+  Name der Exportdatei
+var M "fts.set"
+xport f
+  Parameter fts.apr laden (= Ausgabe als Nummernliste)
+  (nur um zu pruefen, ob sie existiert! gebraucht wird sie nur von SRCH)
+var "fts"
+xport p
+  wurde diese Datei gefunden?
+if no jump error
+  User soll einen Namen fuer die Erg.Menge eingeben
+var "Sie k”nnen hier zuerst der Ergebnismenge einen Namen geben:"
+ansi
+ask
+if no jump exit2
+  Leereingabe: dann als Name "Volltextsuche" nehmen
+if "" var "Volltextsuche"
+  den Titel als erste Zeile in die Exportdatei schreiben
+wri
+wri n
+close x
+var M "fts.set"
+fsize
+ins #ufG
+var "+" M "fts.set"
+open x
+
+  Jetzt die Batchdatei starten
+get env comspec
+ins #uwC
+var #uwC " /c " M "fts.bat"
+  DOS-Prog aufrufen und auf Ende warten
+call
+  anschliessend existiert Datei FTS.SET auf TEMP
+  aktuelle exp.param und exp.datei wiederherstellen
+perf exit
+
+  Nummernliste FTS.SET auf Existenz pruefen
+
+var M "fts.set"
+fsize
+if no jump nix
+if not >#ufG jump nix
+  Nummernliste FTS.SET einlesen als Erg.Menge
+var M "fts.set"
+read set
+  und anzeigen
+sho list
+
+  Parameter fts.xpr existieren nicht
+:error
+var "Parameterdatei FTS." K1 "PR existiert nicht" 13 10 "Machen Sie eine Kopie von FTS.APR!"
+mes
+jump exit2
+:nix
+var "Keine Ergebnisse"
+mes
+
+:exit2
+#ufG
+
+  Exportparam und -datei wiederherstellen
+:exit
+var #uwe
+xport p
+var #uwE
+xport f
+  Variablen loeschen
+#uwe
+#uwE
+return

@@ -1,0 +1,70 @@
+
+Verlautbarung 190 der Entw.Abt.                          2006-04-20
+-------------------------------
+
+ViewListe als Hilfe im Formular
+-------------------------------
+Wenn an ein Formular eine ViewListe angebunden wird, gab es
+ein Problem in den Faellen, wo eine ViewListen-Zeile mit einer
+Zahl beginnt: Dann hat a99 den zu der Zahl gehoerigen Datensatz
+geladen - vollkommen unerwuenscht. Jetzt ist das unterbunden.
+
+
+Fernglas-Komfort
+----------------
+Eingabe nur im zweiten oder/und dritten Feld des Fernglas-Formulars
+(und nicht im ersten) fuehrte bisher zum kommentarlosen Abbruch.
+Sehr zum Missfallen nichtmitdenkender Nutzer. Jetzt tun wir diesen
+den Gefallen, die Eingaben entsprechend hochzuziehen und dann den
+Auftrag dennoch auszufuehren. Ob er dann so und nicht anders gemeint
+gewesen ist, erfordert weiterhin kritische Vernunft.
+
+
+ORG-Funktionen
+--------------
+Abgesichert wurde der Fall, dass auf dem Datenverzeichnis evtl.
+noch eine Datei namens  cat.alg  liegt, damit sie nicht mit
+indexiert wird, wenn man eine Datenbank-Gesamterneuerung macht.
+In der Batchdatei org.bat, die dabei entsteht, kann der Kenner
+sehen, dass die Option -d erweitert wurde um  \cat_*, damit wird
+dann eine Datei cat.alg ausgeblendet.
+[Eine Datei cat.alg entsteht z.B. durch das Programm log2alg.exe,
+das die LOG-Datei in eine Grunddatei umwandelt. Wurde diese beim
+Neuaufbau mit indexiert, hatte man Dubletten.]
+Auch dem CockPit wurde dasselbe beigebracht.
+
+
+"Eigenschaften"
+---------------
+Im Kontextmenue des Anzeigefeldes (rechte Maustaste) gibt es drei
+neue Punkte:
+  Anzeige ausdrucken
+  Anzeige speichern als...
+  Eigenschaften
+Die ersten zwei sind auch auf dem Menue "Datei".
+Der dritte aktiviert einen FLEX namens  onprop.flx
+Wir liefern keinen solchen mit!!! Man muss ihn sich selber machen,
+wenn an der Stelle was passieren soll. Es ist ein Angebot, eigene
+Funktionen anzuknuepfen. Man koennte etwa die Datei onf8.flx
+kopieren auf onprop.flx und onf8 dann evtl. anders zu fuellen, oder
+auch umgekehrt.
+Das Wort "Eigenschaften" steht unter Zeile 162 in der UIF und darf
+natuerlich auch geaendert werden. Man koennte etwa STOP hinschreiben
+und in die onprop.flx dann nur das Wort "STOP". Oder Google und
+in die onprop.flx dann diesen Befehl:
+Dos start http://www.google.de
+
+
+Doku des Befehls "find"
+-----------------------
+Weil es in avanti einige Besonderheiten gibt, wurde die Doku
+des FLEX-Befehls "find" um einen eigenen Abschnitt fuer den
+avanti-Server ergaenzt.
+Damit sollte die FLEX-Dokumentation nun auch den vollen
+Umfang der Moeglichkeiten von avanti umfassen.
+
+Sicherheitsluecke gestopft
+--------------------------
+In a99 konnte man #u-Variablen eingeben und aendern, auch wenn
+access=0 war. Damit koennte theoretisch ein Hacker einen 
+gefaehrlichen FLEX einschleusen. Diese Luecke wurde gestopft.

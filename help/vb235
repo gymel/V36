@@ -1,0 +1,72 @@
+
+Verlautbarung 235 der Entw.Abt.                              2011-01-19
+-------------------------------
+
+
+PHPAC ueberarbeitet
+-------------------
+
+Bereitgelegt: http://ftp.allegro-c.de/aktuelle-version/avanti/phpac.zip
+
+
+Das PHP-Paket fuer den Web-OPAC wurde aktualisiert. 
+Groessere Aenderungen sind folgende, z.T. nicht ganz neu:
+
+
+1. Aufbereitung der Indexanzeige
+--------------------------------
+Dies wird nun nicht mehr von den Exportparametern h-php.apr erledigt,
+sondern in  av_page.php. Es war unguenstig, diese komplexe Aufgabe in
+eine ueberaus kryptische Parameterdatei auszulagern. Die FLEX-Sprache
+war laengst genuegend maechtig, das mit uebernehmen zu koennen. So
+wird es nun doch etwas leichter, in dieser Funktion Anpassungen
+vorzunehmen.
+
+
+2. ALL-Register
+---------------
+Wenn es ein ALL-Register gibt, dann zeigt  detail.php  oben eine
+zusaetzliche Eingabezeile dafuer. Damit wird die immer wieder gern
+geforderte "Einschlitz-Suchtechnik" nun auch an der Web-Oberflaeche
+realisiert.
+Ausgeloest wird, erfolgt dort eine Eingabe, das Skript  all.php, das
+seinerseits dann  av_all.php einbindet, worin sich die eigentliche
+Funktion befindet. In diese muss man nicht eingreifen, sondern allen-
+falls in  all.php  fuer evtle. Oberflaechengestaltungen. Diese Funktion
+sucht nun auch automatisch trunkiert (jedes einzelne eingegebene Wort),
+falls beim ersten Versuch nichts rauskommt. Das macht die Sache noch
+komfortabler: z.B. Eingabe von  "shakesp interpret"  genuegt, dann
+wird, weil's nicht klappt, auch  "shakesp? interpret?" versucht, und
+Sachen gefunden, in denen "Shakespeare" und "Interpretationen" oder
+"interpretations" vorkommt.
+
+
+3. Oberflaechengestaltung
+-------------------------
+Bisher war der CSS-Teil mit in  av_ini.php. Das war weniger guenstig.
+Nun gibt es  css.php, das bei Bedarf zusaetzlich zu  av_ini.php  einzu-
+binden ist.
+Die Skripte wurden daraufhin durchgesehen und geaendert.
+Es entfaellt damit die Notwendigkeit einer getrennten  av_mini.php,
+die sich nur durch das Fehlen des CSS-Teils unterschied.
+
+
+4. OPAC-Selbstbedienung  (a-o*.php, a-o*.job)
+-----------------------
+Die Funktionen der Kontoanzeige und Verlaengerung wurden in einzelnen
+Punkten verbessert. Vor allem die Fristberechnung der Verlaengerung
+und die Kontrolle, ob dies noch zugelassen werden sollte, sind
+verbessert worden. 
+
+
+5. Dokumentation
+----------------
+Durchgesehen, aktualisiert, erweitert und besser gestaltet wurde die
+bebilderte Gesamtbeschreibung zu PHPAC:
+
+   http://www.allegro-c.de/doku/phpac/
+
+Diese ist nun erst einmal inhaltlich aktuell, wird in den naechsten
+Tagen aber nochmals formal verbessert werden. Das geben wir dann
+bekannt, sobald erledigt.
+

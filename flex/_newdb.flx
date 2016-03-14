@@ -1,0 +1,360 @@
+  _NEWDB.FLX : Neuanlage einer Datenbank mit ausgewaehlten Parametern
+  2000-12-19
+
+  Variablen #uwB und #uwK werden in dbnew.rtf gesetzt,
+  bevor dieser FLEX aufgerufen wird.
+  #uwE: erweitertes Standardmodell
+
+var m
+if ="alc" end
+
+var #uwS
+if "d" jump newdemo
+if "n" jump newneu
+if #uwS jump standard
+if #uwB jump start
+  Wenn #uwB nicht besetzt: Hilfetext zeigen
+h newdb
+end
+
+:start
+if #uwE var "Eine neue Datenbank mit dem erweiterten Schema  " #uwB "  zur Konfiguration  " #uwK ".CFG  soll angelegt werden." n
+if #uwE jump start2
+var "Eine neue Datenbank mit dem Schema  " #uwB "  zur Konfiguration  " #uwK ".CFG  soll angelegt werden." n
+:start2
+var +"Zuerst mÅssen Sie einen Namen fÅr das Verzeichnis wÑhlen, auf dem dann Ihre Datenbank liegen soll." n
+var +"Dieses Verzeichnis kann auch auf einer anderen Platte liegen." n "Es folgt also jetzt die Eingabe eines Pfadnamens." n
+var +"Wenn Sie z.B. einfach 'Katalog' eingeben, wird dieses als Verzeichnisname an Ihr Arbeitsverzeichnis angehÑngt." n
+var +"Sonst geben Sie einen vollstÑndigen Pfadnamen, z.B. 'D:\\Datenbanken\\Katalog'"
+ansi
+mess
+
+:verz
+  Nutzer soll einen Verzeichnisnamen geben
+var "Name fÅr das Datenverzeichnis?"
+ansi
+ask
+  hat [Esc] oder exit gedrueckt
+if no jump exit
+if canc jump exit
+if "" end
+  Name -> #uwD
+ins #uwD
+  Kommt ein \ vor? (Pfadname)
+if %\\% jump path
+  Sonst Name des Arbeitsverz. davorsetzen
+var W "\\" #uwD
+ins #uwD
+jump path
+
+:standard
+var W "\\katalog"
+ins #uwD
+var "Es wird eine Datenbank auf " #uwD " angelegt." n "Korrekt?"
+yesno
+if yes jump anlegen
+ask Dann einen anderen Pfadnamen bitte=#uwD
+if "" end
+ins #uwD
+
+:anlegen
+var "cat"
+ins #uwB
+var "a"
+ins #uwK
+ins #uwE
+
+:path
+  Name des Shell-Programms
+get env comspec
+ins #uvC
+  mkdir Befehl:
+var #uwD
+mkdir
+if no jump error
+
+  ist #uwE besetzt? dann erweitertes Modell
+var #uwB
+if "cat" jump demo
+if "bol" jump bol
+open x org.bat
+wri "copy %1I.apt %2\\i.%3pt" n
+wri "copy %1D.apt %2\\d.%3pt" n
+wri "copy %1O.apt %2\\o.%3pt" n
+wri "copy %1S.apt %2\\s.%3pt" n
+wri "copy %1d-rtf.apt %2\\d-rtf.%3pt" n
+wri "copy %1e-1.apr %2\\e-1.%3pr" n
+wri "copy %1i-1.apr %2\\i-1.%3pr" n
+wri "copy %1e-w.apr %2\\e-w.%3pr" n
+wri "copy %1stoplist.apt %2\\stoplist.%3pt" n
+close x
+
+
+var #uwB
+if "mab" jump mab
+if "marc" jump marc
+if "pica" jump pica
+jump nix
+
+:demo
+if #uwE jump erweit
+  Dateien cat.api und d-1.apr kopieren auf neues Verz.
+var P "cat.api " #uwD "\\cat.api"
+fcopy
+var P "d-1.apr " #uwD "\\d-1.apr"
+fcopy
+jump acti
+
+:erweit
+var P "demo2\\cat.api " #uwD "\\cat.api"
+fcopy
+var P "demo2\\d-1.apr " #uwD "\\d-1.apr"
+fcopy
+jump acti
+
+:bol
+var P "bol.api " #uwD "\\bol.api"
+fcopy
+var P "d-bol.apr " #uwD "\\d-1.apr"
+fcopy
+var P "d-wbol.apr " #uwD "\\d-wrtf.apr"
+fcopy
+jump acti
+
+:mab
+var #uvC " /c " P "org " P " " #uwD " d"
+cAll
+jump acti
+
+:marc
+var #uvC " /c " P "org " P " " #uwD " u"
+cAll
+jump acti
+
+:pica
+var #uvC " /c " P "org " P " " #uwD " p"
+cAll
+jump acti
+
+
+:acti
+  Fenster wieder aktivieren
+activate
+  Name der INI-Datei aus dem Pfadnamen ableiten
+var #uwD "\\" #uwB ".ini"
+ins #uwI
+
+  INI-Datei schreiben
+xport f
+wri "[General]" n
+wri "DbName=" #uwB n
+wri "# Den Titel koennen Sie selber hier eintragen:" n
+wri "DbTitle=" #uwD "   (dieser Name steht in der Datei " #uwD "\\" #uwB ".ini )" n
+
+wri "Konfiguration=" #uwK n
+wri "access=31" n
+wri "Phrase=" #uwB ".a99" n
+  schliessen
+close xport
+   einen StartFLEX anlegen
+var P "flex\\_initial.flx " #uwD "\\_start.flx"
+fcopy
+
+  Startbefehl fuer a99 zum Oeffnen der neuen Datenbank
+get env comspec
+ins #uwC
+
+var m
+ins #uwM
+
+var #uwC " /c " P #uwM(e" " F"b") " " #uwI
+ins #uvC
+var "Nun kann's losgehen!" n
+var +"Ihre neue Datenbank hei·t " #uwB ", liegt auf " #uwD ", " n "und kann in Zukunft mit dem Befehl" n
+var +P "a99  " #uwI "    geîffnet werden." n
+var +"(Legen Sie am besten gleich eine VerknÅpfung mit diesem Befehl an.)" n
+var +"Die Datei " #uwI ", die dafÅr neu angelegt wurde, kînnen Sie fÅr Ihre Zwecke anpassen." n
+var +"Jetzt aber mu· zuerst mindestens ein Datensatz eingegeben werden!"
+ansi
+mess
+  Jetzt Datenbank noch in der DEMO registrieren
+  falls das hier von der DEMObank aus gestartet wurde!)
+var D
+if %~demo% jump regist
+jump a99
+:regist
+new
+var "db?4"
+ins #00
+var "Db=" #uwB " -- CFG=" #uwK " -- " #uwD
+ins #20
+var "cfg" #ufc
+ins #30
+var #uwD "\\" #uwB
+ins #8e
+put
+sho rec
+disp
+var "Eigene Datenbanken benutzen"
+ins #uw!
+:a99
+var #uvC
+  Start von a99 (Inhalt von #uvC ist der Befehl)
+Call
+sleep 10000
+  INI-Datei neu schreiben, jetzt access=9
+  Name der INI-Datei aus dem Pfadnamen ableiten
+var #uwD "\\" #uwB ".ini"
+ins #uwI
+  INI-Datei schreiben
+xport f
+wri "[General]" n
+wri "DbName=" #uwB n
+wri "# Den Titel koennen Sie selber hier eintragen:" n
+wri "DbTitle=" #uwD "   (dieser Name steht in der Datei " #uwD "\\" #uwB ".ini )" n
+
+wri "Konfiguration=" #uwK n
+wri "access=9" n
+wri "Phrase=" #uwB ".a99" n
+  schliessen
+close x
+var "+" #uwD "\\_start.flx"
+xport f
+wri n "help start" n
+close x
+
+
+  Variablen bereinigen
+:exit
+#uwS
+#uwB
+ ins #uvC
+ ins #uwE
+end
+
+:error
+var "Verzeichnis " #uwD " konnte nicht angelegt werden!" n
+var +"Es existiert wohl schon." n
+var +"Geben Sie einen gÅltigen Namen, der noch nicht existiert."
+ansi
+mess
+jump verz
+
+  Neue Kopie der DemoBank
+:newdemo
+  Nutzer soll einen Verzeichnisnamen geben
+var "Name fÅr das eigene Datenverzeichnis?"
+ansi
+ask
+  hat [Esc] oder exit gedrueckt
+if not yes jump exit
+if "" jump exit
+  Name -> #uwD
+ins #uwD
+  Kommt ein \ vor? (Pfadname)
+if %\\% jump pth
+  Sonst Name des Arbeitsverz. davorsetzen
+var W "\\" #uwD
+ins #uwD
+
+:pth
+  Name des Shell-Programms
+get env comspec
+ins #uvC
+  mkdir Befehl:
+var #uwD
+mkdir
+if no jump derr
+
+  Original-DEMO auf \allegro\demo
+var "copy " P "demo\\*.* " #uwD
+dos
+var "Auf " #uwD " liegt jetzt eine Kopie der DemoBank" n
+var +"Legen Sie am besten eine Verkn¸pfung an. Darin sollte stehen:" n
+var +P "allegro.exe " #uwD "\\cat.ini"
+sho iV
+var +n n "Diese Mitteilung steht auch unten im Schreibfeld!"
+var +n "(zum Kopieren f¸r die Verkn¸pfung!)
+mes
+
+
+jump exit
+
+:derr
+var "Verzeichnis " #uwD " konnte nicht angelegt werden!" n
+var +"Es existiert wohl schon." n
+var +"Geben Sie einen gÅltigen Namen, der noch nicht existiert."
+ansi
+mess
+jump newdemo
+
+  Neue Kopie der NeutralBank
+:newneu
+  Zuerst pruefen: Gibt es die Neutral-DemoBank?
+var P "nbase\\bank.npi"
+fsi
+if no jump nnix
+
+  Nutzer soll einen Verzeichnisnamen geben
+var "Name fÅr das neue Datenverzeichnis?"
+ansi
+ask
+  hat [Esc] oder exit gedrueckt
+if not yes jump exit
+if "" jump exit
+  Name -> #uwD
+ins #uwD
+  Kommt ein \ vor? (Pfadname)
+if %\\% jump npth
+  Sonst Name des Arbeitsverz. davorsetzen
+var W "\\" #uwD
+ins #uwD
+
+:npth
+  Name des Shell-Programms
+get env comspec
+ins #uvC
+  mkdir Befehl:
+var #uwD
+mkdir
+if no jump nerr
+
+  Original-DEMO auf \allegro\demo
+var "copy " P "nbase\\*.* " #uwD
+dos
+var "Auf " #uwD " liegt jetzt eine Kopie der Neutral-DemoBank" n
+var +"Legen Sie am besten eine Verkn¸pfung an. Darin sollte stehen:" n
+var +P "allegro.exe " #uwD "\\bank.ini"
+sho iV
+var +n n "Diese Mitteilung steht auch unten im Schreibfeld!"
+var +n "(zum Kopieren f¸r die Verkn¸pfung!)
+mes
+
+jump exit
+
+:nerr
+var "Verzeichnis " #uwD " konnte nicht angelegt werden!" n
+var +"Es existiert wohl schon." n
+var +"Geben Sie einen gÅltigen Namen, der noch nicht existiert."
+ansi
+mess
+jump newneu
+
+:nix
+mes Keine der angebotenen Strukturen wurde ausgewaehlt
+end
+
+:nnix
+var "Die Neutral-DemoBank ist nicht vorhanden, d.h. das Neutralpaket wurde noch nicht installiert" n "Sie finden es auf der allegro-Download-Seite"
+mes
+end
+
+  Variablen
+  #uvC   comspec
+  #uwE   "erw"
+  #uwB   Name (cat, pica, mab...)
+  #uwI   INI-Dateiname
+  #uwD   Pfadname (ohne \ am Ende)
+  #uwS   d = Demo, sonst Schnellverfahren
+
+

@@ -1,0 +1,91 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss\fprq2\fcharset0 Verdana;}{\f1\fswiss\fcharset0 Arial;}{\f2\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;\red255\green128\blue0;\red0\green176\blue0;}
+\viewkind4\uc1\pard\f0\fs18 
+\par \pard\qc\cf1\b\f1\fs28 AJAX3 : Die Entdeckung der Leichtigkeit \cf0\b0\fs24 
+\par \pard\f0\fs18 
+\par Aus modernen Web-Anwendungen ist die `\cf2\ul\b AJAX-Technik\cf0\ulnone\b0 ` inzwischen nicht mehr wegzudenken. 
+\par Es gibt aber einen Pferdefu\'df: Man mu\'df in mindestens \b vier Sprachen\b0  reden, und in jeder davon \'fcber andere Themen: 
+\par 
+\par 1. \b HTML\b0  - ohne das geht ja einfach nichts im Web, denn was der Endnutzer sieht, da hat immer HTML die Finger drin. Untrennbar dazu geh\'f6rt heute CSS, wenn man ein flexibles, pflegeleichtes Erscheinungsbild will. 
+\par 
+\par 2. \b JavaScript\b0  f\'fcr den Browser: Das ist das \b J\b0  in AJAX. Die dynamischen Vorg\'e4nge, um die es bei AJAX geht, sind auf Programme angewiesen, die \i im Browser\i0  ablaufen, und daf\'fcr gibt es nichts anderes als JavaScript. (Na gut, Java t\'e4te es auch, aber wenn sie fragen, welches von beiden leichter zu lernen und schneller anzuwenden ist ...) 
+\par \i Nebenbei:\i0  Das X am Ende von AJAX steht f\'fcr XML, denn man dachte zuerst, da\'df XML dabei was bringen k\'f6nnte. Es geht aber sehr gut ohne. 
+\par 
+\par 3. Eine \b Skriptsprache\b0  auf dem WebServer. In Betracht kommen \b PHP\b0 , Perl, Python und ASP. Wir empfehlen PHP. Damit mu\'df man \i dem Server\i0  sagen, was zu tun ist. Denn AJAX fragt immer unter der Oberfl\'e4che vom Server was ab. Das geht so, da\'df JavaScript Auftr\'e4ge sendet an ein PHP-Skript im Server, und dieses schickt dann Ergebnisdaten an den Browser zur\'fcck, die am Ende JavaScript in die HTML-Seite einf\'fcgt. 
+\par 
+\par 4. Eine \b Datenbanksprache\b0 . Im Internet ist das meistens SQL (i.d.R. in PHP eingebettet, das \'e4ndert daran aber nichts). Bei allegro-Anwendungen ist es \b FLEX\b0 , und zwar in der \i avanti/acon\i0 -Variante. Man formuliert damit, was f\'fcr Daten man der Datenbank entnehmen m\'f6chte und wie man sie manipulieren und ausgeben will. Was PHP eigentlich tut, das ist nur, dem \b\i avanti\b0\i0  eine in FLEX geschriebene Jobdatei zu geben und die Resultate umgehend wieder an JavaScript zu senden. 
+\par 
+\par In den fr\'fchen Web-Anwendungen kam noch f\'fcnftens und erschwerend hinzu, da\'df man sich mit der Exportsprache auskennen mu\'dfte. Dieser Umstand ist inzwischen so gut wie entfallen, es kommen h\'f6chstens ein paar fertige und allgemeing\'fcltige Parameterdateien zum Einsatz, an denen man nichts tun mu\'df. 
+\par 
+\par Die vier Sprachen haben allesamt, wie "nat\'fcrliche" Sprachen, ihre Eigenheiten und Komplexit\'e4ten. Das Entwickeln, das Testen, das Fehlersuchen und das sp\'e4tere \'c4ndern und Erweitern von Web-Anwendungen sind deswegen alles andere als ein Zuckerschlecken, sondern nichts f\'fcr schwache Nerven. 
+\par Deshalb sind l\'e4ngst zahlreiche Toolkits, Frameworks und Entwicklungsumgebungen entstanden, die das Erstellen von Web-Anwendungen kinderleicht machen sollen. Leider neigen solche Hilfsmittel unweigerlich zu Opulenz und \'dcberfrachtung, d.h. sie verlagern den Lernaufwand nur, statt ihn im Ganzen zu reduzieren, und es leidet mitunter auch die Effizienz und Geschwindigkeit wegen des unsichtbaren "Overhead". 
+\par 
+\par Diesen \'c4rger f\'fchlbar abzumildern war ein Anliegen der \i allegro\i0 -Entwicklung: Die ganze Sache sollte entschieden leichter zu handhaben sein. 
+\par 
+\par Die neue L\'f6sung AJAX3 \b halbiert den Aufwand\b0 , und zwar sowohl den f\'fcrs Lernen wie den f\'fcrs Entwickeln und Pflegen von Anwendungen. 
+\par Die Idee dahinter ist einfach genug: zwei \b Standard-Skripte\b0  wurden geschrieben, eins in JavaScript und eins in PHP, dank derer man nun in diesen zwei Sprachen selber nichts mehr zu sagen braucht. Unverzichtbar sind HTML und FLEX, ganz klar, nun aber braucht man wirklich \i nur\i0  noch diese zwei. FLEX kann vieles, was auch PHP tun k\'f6nnte, daher braucht man PHP nur f\'fcr die Kommunikation zu verwenden, und diese Aufgaben haben wir standardisiert. 
+\par Um die neue Methodik zu nutzen, sind in HTML nur einige wenige, sehr einfache und in keiner Weise einengende Regeln einzuhalten. Ansonsten ist HTML+CSS in vollem Umfang anwendbar. Alles andere wird in FLEX gemacht. Wer zudem JavaScript schon gut kennt, kann zwanglos damit auch weiterhin eigene Oberfl\'e4chenfunktionen programmieren, z.B. Plausibilit\'e4tskontrollen u.\'e4. 
+\par 
+\par \b Welche Dateien und wohin damit?\b0 
+\par Die Standard-Skripte hei\'dfen \cf3\b\f2 ajax3.js\cf0\b0\f0  und \cf3\b\f2 ajax3.php\cf0\b0\f0 , sie ben\'f6tigen keinerlei Anpassungen. Lediglich in einer  \cf3\b\f2 ajax3.ini\cf0\b0\f0   stellt man ein paar Grundwerte f\'fcr die eigene Anwendung ein; es handelt sich um eine abgespeckte  \b\f2 av_ini.php\b0\f0 . Man kopiert diese drei Dateien in jedes der Datenbank-PHPAC-Verzeichnisse des WebServers. 
+\par 
+\par \b Beispiel 
+\par \b0 f\'fcr eine HTML-Datei mit Formular, die die neue Technik nutzt. Farbig hervorgehoben die Teile, auf die es ankommt.  Nur die wichtigen Dinge sind gezeigt, alles andere ist beliebig! 
+\par 
+\par \f2 <html><head> 
+\par <script src="\cf3\b ajax3.js\cf0\b0 " language="JavaScript"></script> 
+\par ...<body> 
+\par 
+\par \b <form action="javascript:;"> 
+\par   Geben Sie etwas ein: <input name="\cf4 Vuin\cf0 "> 
+\par   <input type="hidden" name="JOB" value="\cf2 hw\cf0 "> 
+\par   <input type="hidden" name="DIV" value="\cf1\b0 reply\cf0\b "> 
+\par 
+\par   <input value="Send" onclick="javascript:ajax3(this.form);" type="button"> 
+\par                 <!--  wenn Enter-Taste auch abschicken soll: type="submit"  --> 
+\par </form> ... 
+\par <div id="\cf1\b0 reply\cf0\b "> </div>\b0 
+\par ...</body> 
+\par 
+\par \b\f0 Was bedeutet und wie funktioniert das?\b0  
+\par Aktionen gehen meistens von einem Formular aus. Auf Attribute kann ein Formular ganz verzichten. 
+\par Im Formular sind vier verschiedene Dinge wichtig: 
+\par 
+\par 1. \cf4\b Eingabe-Elemente\cf0\b0 , deren Werte dann in FLEX-Variablen zu \'fcbertragen sind. Die Namen der Variablen sind im name-Attribut anzugeben, und zwar immer in der Form  V\i nnn\i0 , V_\i annn\i0  bzw. Vu\i xy - \i0 beliebig viele in einem Formular. 
+\par Daraus werden dann in FLEX die Felder #\i nnn\i0 , #\i nnn\i0 $\i a\i0  bzw. #u\i xy\i0 . 
+\par Im Beispiel ist es nur ein einziges Eingabefeld mit dem Namen \cf4\b\f2 Vuin\cf0\b0\f0 , woraus demnach die #u-Variable \cf4\b\f2 #uin\cf0\b0\f0  entsteht. 
+\par Als Eingabe-Elemente k\'f6nnen auch <textarea> und <select> zum Einsatz kommen und was es sonst noch in Formularen geben kann. 
+\par 
+\par 2. Die Angabe, \cf2\b welcher FLEX-Job\cf0\b0  auszuf\'fchren ist, um den Formularinhalt zu verarbeiten, hier also der FLEX \cf2\b\f2 hw.job\cf0\b0\f0  
+\par     Stets in dieser Form  \b\f2   <input type="hidden" name="JOB" value="\cf2 jobname\cf0 "> \b0\f0 
+\par 
+\par 3. Die Angabe, an \cf1\b welcher Stelle\cf0\b0  das Ergebnis, d.h. der Output des FLEX-Jobs erscheinen soll: hier im <div>-Feld "\cf1\b\f2 reply\cf0\b0\f0 ". 
+\par \b\f2   \b0\f0 Stets in dieser Form  \b\f2   <input type="hidden" name="DIV" value="\cf1\b0 div-id\cf0\b "> 
+\par \b0\f0 
+\par 4. Dazu passend braucht's deshalb ein  \f2 <div id="\cf1\b reply\cf0\b0 ">\f0   mit dem in 3. gesetzten Namen. 
+\par 
+\par Und so k\'f6nnte der komplette Job  \cf2\b\f2 hw.job\cf0\b0\f0   aussehen: 
+\par 
+\par \f2 wri "Sie haben folgendes eingegeben: <b>" \cf4\b #uin\cf0\b0  "</b>" n 
+\par wri "<br>Die Datenbank " D B " hat " t " Datens&auml;tze" n 
+\par 
+\par \f0 Das ist alles, die zweite Zeile ist sogar nur eine Zugabe, damit man sieht, da\'df auf die Datenbank zugegriffen werden kann. 
+\par  
+\par Der JOB ist so kurz, weil man sich um drei Dinge gar nicht k\'fcmmern mu\'df: 
+\par \b A.\b0  um die Herbeiholung und Belegung der Variablen: Das Transportieren der Inhalte vom Formular in den Job erledigen eben die Standard-Skripte. Im Beispiel: aus \cf4\b\f2 Vuin\cf0\b0\f0  wird \cf4\b\f2 #uin\cf0\b0\f0 . 
+\par \b B.\b0  um den R\'fccktransport der Ergebnisse: Was der Job ausgibt, mittels \f2 write\f0  und \f2 export\f0 , erscheint von selbst im Feld \cf1\f2 reply\cf0\f0 .  Ansonsten bleibt die Seite unver\'e4ndert, und das ist ja gerade der Punkt: Es mu\'df keine weitere Seite neu geladen werden, sondern die AJAX-Technik l\'e4\'dft die gew\'fcnschten Angaben an einer daf\'fcr vorgesehenene Stelle in der aktuellen, ansonsten unge\'e4nderten Seite erscheinen. 
+\par \b C.\b0  Welche Datenbank eigentlich gemeint ist - das steht in \cf3\b\f2 ajax3.ini\cf0\b0\f0 . 
+\par 
+\par In einer solcherma\'dfen pr\'e4parierten HTML-Datei kann man beliebig viele Formulare haben und ebenfalls beliebig viele, beliebig verteilte und beliebig formatierte \b\f2 <div>\b0\f0 -Felder, in denen Ergebnisse erscheinen k\'f6nnen. Zwei Formulare k\'f6nnen auch dasselbe \b\f2 <div>\b0\f0  ansteuern. 
+\par 
+\par Es funktioniert alles mit den Browsern Firefox, IE7/8 und Chrome. 
+\par 
+\par \b Und warum AJAX3?\b0 
+\par AJAX1 w\'e4re das alte Konzept, bei dem man noch JavaScript und PHP beherrschen mu\'df. 
+\par AJAX2 w\'fcrde zu stark nach Web 2.0 riechen, solche Andeutungen wirken inzwischen erm\'fcdend. 
+\par Also bleibt nur 3. 
+\par 
+\par ?AJAX-Technik=~start http://www.allegro-c.de/doku/phpac/ajaxt.htm 
+\par 
+\par }
+ 

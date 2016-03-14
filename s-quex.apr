@@ -1,0 +1,372 @@
+  S-QUEX :  Sortierdatei erstellen
+  960416  Die Ergebnisdatei muss zuerst sortiert, dann mit P-QUEX.APR exportiert werden   
+                                                     +------------------------+
+                                                     |Stellen fuer Anpassungen|
+                                                     |sind markiert mit  $$   |
+  S-QUEX.APR       960416                            +------------------------+
+
+  Output : Sortierbare Saetze, die nur die Sortierkategorie und die
+           interne Satznummer enthalten. Diese Saetze muessen sortiert 
+           und dann mit SRCH und P-QUEX.APR exportiert werden. Dabei werden
+           die eigentlichen Saetze dann geladen und ausgegeben.
+
+  Zweck  : Diese Kombination von Parameterdateien ermoeglicht einen
+           schnellen und einfachen Export, der fuer viele Zwecke reicht,
+           ohne dass man in die Parameterdateien eingreifen muss.
+
+  Batch  : QUEX.BAT            fragt die variablen Dinge ab!
+           SRCH oder PRESTO werden dann aufgerufen 
+           mit -Uc1nnn [-Uc2x] [-Uc3j] [-Uc4k] [-Uc8m] [-Uc5a] [-Uc9nn]
+
+                   nnn=N1,N2,N3,N4       auszuwertende Kategorien
+                            x= ;  b          Trennzeichen (b for blank)
+                                    j=1,2       1=nur teil 1, 2=alles
+                                           k=1,..    Anzahl auszugeb. Saetze
+                                    m=1,2           Negativmodus
+                                    a=1,2,8,9   Sortiermodus
+                                   nn    Nummern der weiteren Kategorien
+                                        (genutzt wird nur die erste)
+
+  Variationen: mit $$ sind Stellen markiert, wo man sinnvolle Varianten
+               programmieren kann.
+
+  Diese Parameterdatei produziert Datensaetze in dieser Form:
+
+  #u1 sortierbegriff (in Kleinbuchstaben und ohne Sonderzeichen)
+                     (dafuer wird s.apt benutzt!)
+
+  #u2 Satznummer;Sortierkopf in Druckform
+                 (Dieser kann hinterher zum Drucken benutzt werden)
+ 
+  2. Phase  : ASORT sortiert die Ergebnisdatei
+  3. Phase  : SRCH exportiert die sortierte Datei  mit P-Xi.APR
+
+  #u-Variablen:
+     #ua1 : enthaelt alle Sortierfelder, getrennt durch '#'
+     #uaz : Zaehler, default 1
+     #uc1 ... #uc4  s.o.
+
+
+
+  --------- Konstanten  ---------------------------------------------
+
+zl=0        Kein Zeilenumbruch
+i4=1        V14 Ersetzungen sollen stattfinden
+ad=1        Wenn keine der Sortierkategorien besetzt ist, DefaultAusgabe
+            0 setzen, wenn in solchem Fall keine Ausgabe gewuenscht
+  -------------------------------------------------------------------
+
+   Die Kopfbefehle beziehen sich nicht auf bestimmte Kategorien,
+   denn diese werden von aussen (per Option -Uc1 usw.) vorgegeben!
+   Bei Sprungmarke #-A sehen Sie, was damit gemacht wird.
+
+   ======== Kopfbefehle ==========================================
+
+ak=zz+A        Bei #-A wird #ua1 fabriziert aus #uc1, 
+               in #ua1 wird '#' als Trennzeichen benutzt,
+               alle gewuenschten Kategorien stehen dann da drin!
+
+  Wenn keine der gewuenschten Kategorien gefunden wurde, ist #ua1
+  nicht vorhanden, und folgende Zeile wird nicht ausgefuehrt:
+  (sondern dann der Abschnitt gleich darunter)
+  
+ak=ua1"#"+B    Alle Bestandteile von #ua1 auf gleiche Art verarbeiten
+               (Zerlegung an dem Zeichen '#')
+   ===============================================================
+
+   ******** Kategorieliste ***************************************
+
+ Hier kommt man nur hin, wenn keiner der ak-Befehle ausfuehrbar ist,
+ wenn es also keinen Sortierkopf gibt.
+ (#ua1 war leer, oder keine der Kategorien wurde gefunden)
+
+#uc8 +C c"0!" e0      wenn #uc8 eine dieser Angaben enthaelt,
+#uc8 +C c"z~" e0      dann bei #-C fortfahren
+                   andernfalls nichts ausgeben:
+#+-
+
+#-C         Default-Ausgabe, wenn kein Sortierkopf
+!uc8 y0 p{ 1 "u1 " }      es steht 0!0! oder z~z~ drin, d.h. die Saetze
+                            kommen an den Anfang oder ans Ende
+!uc9 e"," w e":" p"  "         zweite Sortierkat.
+!uc9 b"," e"," w e":" p"  "    dritte Sortierkat.
+#t{ 0 }
+#nr p{ "u2    " } P";"    Leerzeichen, damit es bei 3- und 4-stelligen
+                               Kategorien funktioniert!
+#uc8 
+#t{ 0 C }
+#+#
+
+
+  Hier wird der output produziert:
+  Fuer jeden Bestandteil erzeugen wir #u1 und #u2 :
+#-B
+
+#uaz +- x"==0" e0      Maximum fÅr diesen Satz erreicht, nichts mehr ausgeben
+
+#uaz x"-1" =az         #uaz um 1 vermindern
+
+#t{ 1 "u1 " }   Es wird Code <01h> und "u1 " an den Anfang gesetzt
+
+#uc5 +1 c"1" e0
+#uc5 +2 c"2" e0
+#uc5 +8 c"8" e0
+#uc5 +9 c"9" e0            $$
+
+   Wenn z.B. noch eine andere Sortiervorbereitung gebraucht wird,
+   ist hier noch ein weiterer Modus einzurichten
+   (Dasselbe muss dann unten fuer #u2 passieren)
+   z.B.
+     !u1 x            Nur x als Sortierkopf nehmen
+
+      Modus 1 ist zugleich Default:
+      Achtung: einige Abschneidungen!
+#-1
+!u1 +: e" : " e" = " e"; " u u[] y2 f" ." F" "
+   #u1 enthaelt den zu sortierenden Text $$
+   dann ist die Datei nach dem Sortieren per srch nochmals verarbeitbar.
+
+#-2                  Pica-Namensumwandlung
+!u1 b"@"             Nachname
+!u1 +: e"@" p", "    Vorname
+
+#-8    negative Zahlen muessen umgedreht werden:
+#u1 +* x"*1" e"." c"-" x"+999999999" e"." r9,0 p"-"       numerische Auswertung
+#u1 x"*1" e"." r9,0
+#-*
+#u1 +: x"*1" b"." p"."
+
+
+#-9
+#u1 y0    Modus 9 = "unveraendert ausgeben"
+
+#-:
+!uc9 e"," w e":" p"  "         zweite Sortierkat.
+!uc9 b"," e"," w e":" p"  "    dritte Sortierkat.
+#t{ 0 "u2    " }          Feldende : Code 00h
+  
+#nr P";"                  #u2 SatzNr;
+
+#uc5 +! c"1" e0
+#uc5 +@ c"2" e0
+#uc8 +( c"8" e0
+#uc5 +) c"9" e0           $$ bei Bedarf erweitern (s.o.)
+
+#-!       evtl. sind diese Abschneidungen nicht erwÅnscht:  $$
+#u1 +; e" : " e" = " e"; " U u[] f". " F" "
+                hier wird dasselbe Feld in druckbarer Form aufbereitet
+                          und als #u2 ausgegeben
+#-@
+#u1 b"@" 
+#u1 +; e"@" p", "
+
+#-(
+#u1 +; f".,({[$abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+#-)
+#u1 y0    Modus 9 = "unveraendert ausgeben"
+
+#-;
+#t{ 0 }                   Feldende : Code 00h
+
+   Wird mehr als #u1 und #u2 gebraucht, hier ergaenzen.  $$
+   immer mit Kategorienummer am Anfang und #t{ 0 } am Ende
+
+#t{ C }                   Satzende : Codes 13 10
+#+#                       C erzeugt 13 10, bei UNIX nur 10
+
+
+  **************************************************************
+
+  ak=zz+A fuehrt hierher:
+  (Im folgenden Abschnitt wird nichts ausgegeben, sondern eine Variable
+   #ua1  erzeugt, die alle benoetigten Bestandteile enthaelt, in jedem
+   Fall getrennt durch das Zeichen '#' 
+   Danach wird mit  ak=ua1"#"+A  die wirkliche Ausgabe veranlasst, s.o.
+
+#-A
+#ufo +Ñ e0   flag
+
+ts-quex      read s-quex.apt (contains #uc1 ... #uc9 settings)
+
+#nr afo      set flag
+#-Ñ
+#uc3 +a e0              #uc3 war von aussen gesetzt
+#nr p"2" e1 =c3         wenn nicht, auf 2 setzen als default
+#-a
+#uc4 +b e0              #uc4 war von aussen gesetzt
+#nr p"1" e1 =c4         wenn nicht, auf 1 setzen als default
+
+#-b
+#uc4 =az                #uaz = Anzahl auszugebender Saetze, normal=1
+#uc4 x"==0" x"-1" e"." =az   -1 : beliebig viele
+#dt da1 e0 
+#dt dvs e0      
+#uc1 f"," F"," =tt                Kopiere #uc1 in #utt
+
+  Jetzt:  #utt nn1,nn2,nn3      die auszuwertenden Kategorien
+
+  Trennzeichen: #uc2  =   ; b - / . , ( * ' :  =  (nur eines davon)
+  welches ist es?
+#uc2 +M c"" e0          ist das Trennzeichen
+#uc2 +N c";" e0         ;
+#uc2 +O c"b" e0         blank
+#uc2 +P c"-" e0         -
+#uc2 +Q c"/" e0         /
+#uc2 +R c"." e0         .
+#uc2 +S c"," e0         ,
+#uc2 +T c"(" e0         (
+#uc2 +U c"*" e0         *
+#uc2 +V c"'" e0         '
+#uc2 +W c":" e0         :
+#uc2 +X c"" e0         
+#uc2 +Y c"=" e0         =
+
+  $$ (hier evtl. noch andere Trennzeichen einbauen)  $$
+
+  Default: keine Trennung (#uc2 nicht gesetzt oder anderes Zeichen)
+
+  Wir erzeugen #ua1 : Alle Komponenten werden hintereinander 
+                      gehaengt, getrennt durch '#'
+
+#-L
+#utt e"," f"#" w P"#" Aa1         Befehl w interpretiert den Arbeitstext
+                                  als Kategorienummer und macht dann diese
+                                  Kategorie zum Arbeitstext
+#utt +L b"," dtt att              naechste Kategorie
+#ua1 F"#" =a1      
+#+-
+
+  Die folgenden Abschnitte sind bis auf das Trennzeichen identisch:
+  (die Stellen sind mit ^ markiert)
+  $$ evtl. noch entsprechende weitere Abschnitte oder Aenderungen
+     an den Trennzeichen
+#-M
+#utt e"," f"#" w P"#" Avs     Befehl w sucht die Kategorie!
+#uc3 +m c"2" e0                     #uc3 = 1?
+#uvs e"" F" #" P"#" =vs            dann Ende bei  (nur Anfang gewuenscht)
+#-m    ^                            wenn 2, dann hier weiter:
+#utt +M b"," dtt att                noch eine Kategorie? dann -> #-M
+      ^                                (#utt wird vorn verkuerzt)
+#uvs F"#" ,"__#_" =a1              ersetze  durch # in #uvs, speichere
+             ^                         das Ergebnis in #ua1,
+#+-                                    #ua1 wird dann zerlegt am '#'
+
+#-N
+#utt e"," f"#" w P"#" Avs      
+#uc3 +n c"2" e0      
+#uvs e";" F" #" P"#" =vs       
+#-n
+#utt +N b"," dtt att           
+#uvs F"#" ,"_;_#_" =a1         
+#+-
+
+#-O
+#utt e"," f"#" w P"#" Avs      
+#uc3 +o c"2" e0              
+#uvs e" " F" #" P"#" =vs       
+#-o
+#utt +O b"," dtt att       
+#uvs F"#" p"))" ,"_ _#_" f"))" =a1         Sonderfall ' ' 
+#+-
+
+#-P
+#utt e"," f"#" w P"#" Avs      
+#uc3 +p c"2" e0             
+#uvs e"-" F" #" P"#" =vs       
+#-p
+#utt +P b"," dtt att           
+#uvs F"#" ,"_-_#_" =a1         
+#+-
+
+#-Q
+#utt e"," f"#" w P"#" Avs      
+#uc3 +q c"2" e0             
+#uvs e"/" F" #" P"#" =vs       
+#-q
+#utt +Q b"," dtt att           
+#uvs F"#" ,"_/_#_" =a1         
+#+-
+
+#-R
+#utt e"," f"#" w P"#" Avs      
+#uc3 +r c"2" e0             
+#uvs e"." F" #" P"#" =vs       
+#-r
+#utt +R b"," dtt att           
+#uvs F"#" ,"_._#_" =a1         
+#+-
+
+#-S
+#utt e"," f"#" w P"#" Avs      
+#uc3 +s c"2" e0             
+#uvs e"," F" #" P"#" =vs       
+#-s
+#utt +S b"," dtt att           
+#uvs F"#" ,"_,_#_" =a1         
+#+-
+
+#-T
+#utt e"," f"#" w P"#" Avs      
+#uc3 +t c"2" e0             
+#uvs e"(" F" #" P"#" =vs       
+#-t
+#utt +T b"," dtt att           
+#uvs F"#" ,"_(_#_" =a1         
+#+-
+
+#-U
+#utt e"," f"#" w P"#" Avs      
+#uc3 +u c"2" e0             
+#uvs e"*" F" #" P"#" =vs       
+#-u
+#utt +U b"," dtt att           
+#uvs F"#" ,"_*_#_" =a1         
+#+-
+
+#-V
+#utt e"," f"#" w P"#" Avs      
+#uc3 +v c"2" e0             
+#uvs e"'" F" #" P"#" =vs       
+#-v
+#utt +V b"," dtt att           
+#uvs F"#" ,"_'_#_" =a1         
+#+-
+
+#-W
+#utt e"," f"#" w P"#" Avs      
+#uc3 +w c"2" e0             
+#uvs e":" F" #" P"#" =vs       
+#-w
+#utt +W b"," dtt att           
+#uvs F"#" ,"_:_#_" =a1         
+#+-
+
+#-X
+#utt e"," f"#" w P"#" Avs      
+#uc3 +x c"2" e0             
+#uvs e"" F" #" P"#" =vs       
+#-x
+#utt +X b"," dtt att           
+#uvs F"#" ,"__#_" =a1         
+#+-
+
+#-Y
+#utt e"," f"#" w P"#" Avs      
+#uc3 +x c"2" e0             
+#uvs e"=" F" #" P"#" =vs       
+#-x
+#utt +X b"," dtt att           
+#uvs F"#" ,"_=_#_" =a1         
+#+-
+
+   ****************************************************************
+
+   Codetabelle laden:
+   $$ fuer Aenderungen an der Sortierung muss man S.cPT aendern
+ts     lade S.cPT fuer die Sortiercodierung
+       (enthaelt q-Befehle, die dann auf  !u1 wirken
+        Zur Erinnerung:  #xx wird von den p-Befehlen codiert
+                         !xx wird von den q-Befehlen codoert
+pn="S-QUEX : Sortiervorbereitung"
+

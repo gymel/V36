@@ -1,0 +1,120 @@
+Verlautbarung 155 der Entw.Abt.                          2002-05-10
+-------------------------------
+
+Version 22.0 Bereitstellung
+---------------------------
+
+Bereitgelegt:
+Gesamtpaket       inst-all.exe
+NewDesign Normal  a99b.lzh
+NewDesign Minimal a99a.lzh
+
+Im Gesamtpaket ist letztmalig das alte Design von a99.exe, jedoch
+mit allen neuen Funktionen, d.h. funktional sind alle drei gleich!
+Bald wird a99b dann an die Stelle von a99 treten.
+
+Himmelfahrtskommando des Jahres: qrix
+-------------------------------------
+Eine entscheidende Verbesserung harrte noch ihrer Realisierung. Zum
+Expertentreffen war noch nichts spruchreif, daher wurde striktes 
+Stillschweigen bewahrt.
+An der Oberflaeche lautet das Problem: Kann man eine Liste exportieren,
+in der die Saetze genau in der Folge erscheinen, wie sie durch eines
+der Register (egal welches) vorgegeben ist? Die Register sind ja,
+bei Lichte besehen, eine bislang brachliegende Ressource zum Erstellen 
+sortierter Listen! Mit diesem Missstand ist es nun vorbei.
+
+Sofort einleuchtend ist die Fragestellung, wenn man an eine Standort-
+liste denkt: diese soll in der Reihenfolge der Signaturen geordnet sein.
+Eine Inventarliste nach Reihenfolge der Zugangsnummern.
+Das laesst sich sonst nur durch einen 2stufigen Prozess erreichen, bei
+dem die Sortierung des Registers genau nachgebildet wird.
+Aber auch manche anderen Listen liessen sich dann leicht erstellen, ohne
+dass ein Sortierprozess notwendig ist! 
+
+Grundidee: Jeder beliebige Abschnitt aus jedem Register soll entweder
+in eine Ergebnismenge oder in eine ViewListe verwandelt werden koennen,
+wobei die Datensaetze genau in der Reihenfolge des Registers stehen.
+Bisher war die Reihenfolge jeder Ergebnismenge entweder die interne
+Satznummernfolge (bei PRESTO ging nichts anderes) oder eine Ordnung
+nach einem Kriterium der Kurzliste.
+
+Es geht dabei im Kern um den FLEX-Befehl qrix/Qrix. Dieser liefert eine
+Liste von Registereintraegen. Im Normalfall genau das, was man im Index-
+fenster sieht. "avanti" konnte aber schon mehr: es konnte die zugehoerigen
+Satznummern mit ausgeben. Das, und noch einiges andere, kann jetzt auch
+a99/alcarta.
+Eingebaut ist das Ganze in den FLEX qrix.flx, der gruendlich ueber-
+arbeitet wurde. Erreichbar auf dem ebenfalls renovierten Exportmenue:
+    Fuellhorn | Export: Listen, Views, Tabellen | Registerabschnitt
+
+Bei der Anwendung sind zwei Dinge zu tun (in qrix.flx zu sehen)
+
+1. Es muss eine Funktionsweise eingestellt werden:
+
+qrix f <function>
+   Der Wert <function> ist 0,1,3 oder 4:
+   (Die Einstellung gilt nur bis zum Ende des FLEXes!)
+   0 : Registerzeilen genau so, wie sie sind  (default)
+   1 : Satznummern hinzugefÅgt, getrennt durch :
+       Allgemeine Form:  RegZeile:nn:nn:nn
+   3 : gleichfalls, aber fÅr jede Satznummer eine eigene Zeile:
+       Allgemeine Form:  nn|RegZeile
+       Diese Form kann sofort als ViewListe verwendet werden!
+   4 : Sonderfall: Schreibt in die Exportdatei nur die Satznummern.
+       Diese kann dann wie eine PRESTO-Ergebnismenge eingelesen
+       werden (read set name; dabei wird nicht automatisch sortiert!)
+   Der Wert 2 wie bei avanti wurde nicht realisiert (RegZeile TAB nn:nn...)
+
+2. Dann kommt der eigentliche Befehl
+
+qrix N reg start<ende   (und dasselbe mit Qrix)
+   Normalerweise wird man Qrix verwenden: es schreibt in die aktuelle
+   Exportdatei, waehrend qrix in die interne Variable schreibt.
+   Die Zahl N ist die maximal auszugebende Zahl von Registerzeilen.
+   Wenn man eine Angabe  <ende  hat, tritt N ausser Kraft.
+
+Nutzt man qrix.flx, erhaelt man wahlweise eine ViewListe oder eine
+Ergebnismenge, beide sind in Registerfolge geordnet. Per Export kann
+gleich anschliessend daraus z.B. eine Tabelle fabriziert werden.
+
+Versionserkennung im FLEX
+-------------------------
+Mit "var m" kann man sich die Versionsbezeichnung geben lassen.
+Fuer V22.0 bedeutet das:
+  a99a v22.0   Version ohne Buttons
+  a99b v22.0   Version mit Buttons
+  a99 v22.0    bei der Normalversion
+  alc v22.0    bei alcarta
+Das kann man nutzen, um in einem FLEX versionsspezifisch zu agieren:
+
+var m
+if "alc" jump alcarta
+if not "v22" jump altversion
+if "a99a" jump a99a
+...
+
+Hinweis: Obsolete FLEXe
+-----------------------
+Im DEMO-Verzeichnis oder im FLEX-Verzeichnis moegen noch diese
+inzwischen veralteten Dateien liegen: (wenn ja, dann loeschen)
+   bestell.flx
+   invent.flx
+   zeitraum.flx
+   kont.flx
+   kontue.flx
+   lief.flx
+   heute.flx
+
+Classico: INDEX
+---------------
+Weitere kleinere Verbesserungen. Es wird nicht mehr bei je 100 Saetzen
+der Durchschnittswert (Schluessel je Sekunde) ausgerechnet, sondern 
+bei 1000 Saetzen. Die heutigen Rechner schaffen oft 100 Saetze in
+weniger als 1 Sekunde...
+
+Die DEMO-Bank im Gesamtpaket wurde hinsichtlich EUR umgestellt.
+Wer jetzt damit beginnt, muss also keine Umstellung mehr machen.
+Wer eine cat.frm oder eine orda.rtf auf dem DEMO2-Verzeichnis hat,
+loesche sie.
+

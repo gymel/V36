@@ -1,0 +1,165 @@
+
+Verlautbarung 197 der Entw.Abt.                              2007-01-17
+-------------------------------
+
+Das neue Gesamtpaket steht bereit: (auch N-Version und DemoPaket)
+   http://www.allegro-c.de/newvers.htm
+
+
+27.1 - Keine runde Zahl, aber eine abgerundete Version
+------------------------------------------------------
+
+SuperTip: Alles sofort ausprobieren:  Menue "Finden / Volltextsuche"
+
+Die V27.0 hat in den ersten zwei Wochen einige Haertetests durchstehen
+muessen. Wie das immer so ist, zeigten sich in realen Situationen
+noch eine Anzahl von Kleinigkeiten, Randerscheinungen allzumal, die
+sich leicht bereinigen liessen. Die meisten Korrekturen waren in
+FLEXen und Hilfetexten zu taetigen, nicht in den Programmen, doch auch
+diese erfuhren noch Verbesserungen. So konnte es bei hierarchischen
+Saetzen zu Fehlern beim Suchen kommen, wenn die Datenbank mit V14-
+Verknuepfungen arbeitet - Woerter in Untersaetzen wurden dann nicht
+immer gefunden.
+Erheblicher Aufwand wurde jedoch investiert in die 5 neuen FLEXe, mit
+denen das Potential der RegEx-Suche ausgebeutet wird. Diese
+beschreiben wir weiter unten. Sie sollen als brauchbare Werkzeuge so
+vielseitig und zuverlaessig sein wie nur irgend moeglich, aber auch
+bequem zu nutzen.
+
+Komplexe Fertig-FLEXe
+---------------------
+Es gibt fuenf FLEXe fuer komplette Anwendungen mit der RegEx-
+Technik. Diese eignen sich auch als Anregungen, und sie enthalten
+ausfuehrliche Kommentare.
+
+Der neuen Menuepunkt "Finden / Volltextsuche" gewaehrt jetzt die
+Auswahl unter diesen Funktionen und startet sie (bis auf GREP):
+
+FTR.FLX
+  Volltext-RegEx-Suche in der Gesamtdatenbank
+
+RSFSR.FLX
+  "Result Set Fulltext Search RegEx"  (Oder was dachten Sie?)
+  Durchsucht die aktuelle Erg.Menge mit RegEx. (Besser als die Funktion
+  im Fernglas-Menue, die aus Gruenden der Kompatibilitaet noch nicht
+  geaendert wurde, und weil sie u.U. etwas schneller ist.)
+  Verwendet rsfsr.inc fuer die eigentliche REGEX-Funktion, s.u.
+
+ALGSRCH.FLX
+  Volltextsuche in allen, mehreren oder einer ausgewaehlten
+  Grunddatei mit RegEx.
+  Verwendet algsrch.inc, siehe unten
+
+XGREP.FLX
+  Erweiterte Version von GREP. Es erscheint eine Ergebnisliste, in der
+  man jeweils einen Flip "Show" fuer jede Fundstelle hat. Klick auf
+  ein "Show" blaettert die Datei genau an der Fundstelle auf.
+  Wahlweise werden die verschiedenen Arten von Parametern, CFG,
+  Hilfetexten etc. durchsucht. In mancher Hinsicht besser als
+  die bisherige Verlautbarungs-Volltextsuche, die aber auch noch
+  da ist.
+
+GREP.FLX   fuer manuellen Aufruf
+  Durchsuchen von Textdateien nach Textmustern. Der Aufruf ist
+  X grep textmuster dateinamensmuster
+
+Alle fuenf koennen auch mit  X name ?  aufgerufen werden, um Hilfe zu
+erhalten. Alle fuenf sind voellig gefahrlos, es wird nichts in
+die Datenbank gschrieben - einem spielerischen Ausprobieren steht
+mithin nichts im Weg. Beginnen Sie mit  X xgrep ? , waehlen Sie
+aus der Liste die Zeile "Verlautbarungen" und dann geben Sie
+als Suchbegriff ein:  isbn + 13  oder  fuellhorn.
+
+
+Folgende Einzelheiten scheinen ausserdem mitteilenswert:
+
+0. Der neue Menuepunkt "Finden / Volltextsuche" startet jetzt
+   fulltext.flx, nicht mehr ftr.flx
+
+1. display z<num>   NEU
+   Positioniert den Text im Anzeigefeld auf die Zeile <num>
+
+2. Befehl  xchg  geaendert in  xcode
+   Der bis dahin noch nicht in StandardFLEXe eingebaute neue Befehl
+   dient dazu, den momentanen Inhalt der iV mittels einer der
+   Exporttabellen umzucodieren. Doku: h xxcode
+
+3. set q<num>  NEU
+   Damit springt man im Offline-Speicher zum Satz mit der laufenden
+   Nummer <num>. Die Zaehlung beginnt mit 0, also set q0.
+   Bisher konnte man nur auf den ersten oder letzten Satz
+   positionieren (first off / last off) und dann vor- bzw.
+   rueckwaerts mit  next off / prev off.
+            set q0  ist also dasselbe wie  first off.
+   Mit  var o  (das gab es schon) kann man sich die laufende
+   Nummer des aktuellen Offline-Satzes besorgen, diese irgendwo
+   speichern und dann spaeter zu diesem Satz zurueckkehren:
+   var o
+   ins #uno
+   ...
+   var "q" #uno
+   set
+
+4. Hilfetext  xsrx.rtf  fuer den neuen Befehl  srx
+   Dieser wurde deutlich vergroessert. Er enthaelt jetzt Rezepte
+   fuer vier Situationen, in denen eine RegEx-Suche nuetzlich sein kann
+   - Suche im aktuellen Datensatz
+   - Volltextsuche in der Gesamtbank
+   - Volltextsuche in einer Grunddatei
+   - RegEx-Suche in Textdateien
+   Die Rezepte bestehen aus wenigen Zeilen, die man direkt abkupfern
+   kann. Zwei einbindbare Unterprogramme, die ihre eigene Dokumentation
+   enthalten, sind dafuer noetig. Man braucht sie aber weder zu
+   verstehen noch anzupassen:
+     ftr.inc     : Suche in der Gesamtbank
+     algsrch.inc : Suche in einer ALG-Datei
+     rsfsr.inc   : Suche in der aktuellen Ergebnismenge
+   Muehelos kann man damit nun einige hochkomplexe Funktionsablaeufe
+   in eigene FLEXe einbinden. Insbesondere kann man dadurch auf
+   Batchdateien verzichten, die man bisher brauchte, um Exporte mit
+   SRCH.EXE in eigene Prozeduren einzubauen.
+
+5. Die Befehlsuebersichten xa.rtf und xaf.rtf sowie die ViewListe
+   flex.vw wurden aktualisiert, ebenso ftr.rtf, die umfassende
+   Darstellung des RegEx-Konzepts. Geben Sie ein:  h ftr
+
+
+
+Und noch 4 Kleinigkeiten
+------------------------
+
+1.
+Zu den Befehlen ansi/asci kommen noch ANSI/ASCI
+Jeder dieser Befehle leistet eine Umcodierung des iV-Inhalts:
+ansi : Tabelle o der Indexparameter von rechts nach links
+asci : dieselbe umgekehrt
+ANSI : Tabelle o der Anzeigeparameter von rechts nach links
+ASCI : umgekehrt
+
+Wenn also in den Indexparametern steht
+o .132 228
+dann wird durch  ansi  der Wert 132 in 228 verwandelt, durch
+asci aber 228 in 132.
+
+2.
+Indexeintraege mit -> bewirken, dass umgeblaettert wird auf das,
+was dahinter steht. Dies klappte nicht korrekt, wenn darin ein
+Sonderzeichen vorkam, Umlaute o.a. Jetzt geht das.
+
+3.
+Beim Befehl  if %...%  kam es zu einem Fehler, wenn zwischen %...%
+ein Spatium auftrat. Ebenso war es bei if _..._
+Die Ursache wurde an der Wurzel gepackt, das Aergernis ausgemerzt.
+
+4.
+Bekanntlich kann man in das Schreibfeld mehrere Zeilen mit
+je einem Datenfeld eingeben oder kopieren, bis hin zu ganzen
+Datensaetzen (copy&paste). Nur bei hierarchischen Saetzen klappte
+das nicht, sie vermischten sich dann recht unerquicklich.
+Dies wurde behoben.
+
+5.
+Mit  var V14  erhaelt man jetzt die Werte i5 und i6 der Index-
+parameter, z.B.  _9 oder _:  falls _ das Steuerzeichen i5 ist
+und 9 bzw. 10 die Registernummer i6.
+

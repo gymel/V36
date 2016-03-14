@@ -1,0 +1,149 @@
+  D-KDOS.APR : a99-Anzeige incl. verkn. Satzstrukturen, tabellarisch
+  2002-02-15  Plus Nachladungen von ber- und untergeordneten S„tzen
+  Wenn keine hierarchischen oder verknuepften Saetze vorkommen,
+  dann genuegt einfaches Modell  D-SHTM.APR  
+
+pn="Hierarchie-Export DOS"
+
+  Fllen Sie die Bereiche zwischen den mit <<<<<<<<<  und >>>>>>>>>
+  markierten Zeilen mit Ihren Exportbefehlen aus!
+  Meistens reicht es, den Abschnitt unter Sprungmarke #-Z anzupassen!
+  (siehe ganz unten)
+
+  Der aktuelle (anzuzeigende oder auszugebende) Satz wird PRIMRSATZ genannt.
+  Dabei handelt es sich um entweder
+
+  A.  einen Hauptsatz
+      wenn er unabh„ngig gespeicherte Unters„tze hat, muss die
+      Kategorie #00 mit  einer eindeutigen IdNr X besetzt sein.
+      In der Anzeige sollen unter dem auptsatz alle untergeordneten
+      S„tze erscheinen.
+      Die untergeordneten S„tze haben dann in #00 IdNummern der Form  X+n
+      mit einer Bandnummer n :
+
+  B.  einen Untersatz
+      dann enth„lt #00 die IdNr des Hauptsatzes PLUS eine Bandnummer
+      z.B.  #00 123456+005=Vol.5
+      (hinter '='  kann eine Bandnummer in Textform folgen, sonst wird
+      die auf '+' folgende Nummer genommen, fhrende Nullen werden beseitigt)
+      In der Anzeige sollen stufenf”rmig die unmittelbar bergeordneten, 
+      aber nicht die nebengeordneten S„tze erscheinen.
+
+  C.  beides, auch "Mittelsatz" genannt: der Prim„rsatz ist einerseits
+      einem anderen untergeordnet, besitzt aber auch selbst Unters„tze.
+      In der Anzeige soll fr die untergeordneten S„tze nach A, fr die
+      bergeordneten nach B verfahren werden.
+
+
+  Es kann bis zu 5 untergeordnete Stufen geben (theoretisch noch mehr).
+  Jede weitere Stufe enth„lt in der #00 oder #09 ein weiteres '+' . 
+  Dieses wird fr den Nachladevorgang ausgewertet.
+
+  *********** Grundparameter, nicht ohne Grund aendern: ***************
+td-dos   Anzeige-Steuerbefehle
+
+
+zl=75    Zeilenl„nge
+zi=15 
+
+zb=" -"   Umbruch bei Leerz. und Bindestrich
+zm=0      keine Seitenschaltung
+dx=1      Umcodierung einschalten
+
+i4=1    V14-Ersetzungen ausfuehren
+
+
+  <<<<<<<<<<<<    Raum fr Ihre Zwischenteile (Textkonstanten)
+  Empfehlung: Nummern 30 bis 59
+  >>>>>>>>>>>>    Ende der anwendungsspezifischen Textkonstanten
+4=C      
+
+  Tabellen-Parameter                  erste Spalte:
+18=""
+19=""
+99=""
+98=""
+88=""
+87=""
+
+20=C &0 t88      Neue Tabellenzeile
+21=t87 &16       zwischen zwei Tab.Spalten
+22=""              Ende der Tab.Zeile (bei RTF und DOS nichts)
+23=C
+    nur bei HTML:
+  29="<pre>"
+  28="</pre>"
+
+
+
+p ª 1     Nichtsortierzeichen ausblenden
+      Absatzende
+p  255    
+
+td-k      d-k.apt laden
+
+
+#(c
+#cc ,"_s_: _" ,"_L__" e"" p{ t20 "Signatur:    " t21 t71 } P{ t76 t22 }
+
+#)c
+
+   <<<<<<<<< Unterprogramme hier anfgen, wenn man welche hat <<<<<<<
+   Unterprogramm fuer URL
+#(U
+#t{ t20 "URL: " t21 }
+#cc +#8eZ i5,: e0
+#cc e"" p"start " =Z~
+#cc B"?" =Y~
+#cc B"?" p69 P68
+#)U
+#8eZ
+#cc e"" p"X _access!" e"!" =Z~
+#cc B"?" =Y~
+#cc B"?" p69 P68
+#)U
+
+#(t
+#t{ " --- " }
+#(T
+
+ #t{ '<a href="event:a30get.php?urN="' }
+ #nra
+ #t{ '">Titel:</a>' t66 }
+
+#cc a e":" |92
+#20
+#8n " (" P")"
+#</
+#t{ t98 t22 }
+#cc a b":" p{ t20 "Abo:" t21 t66 } P{ t98 t22 }
+#udt ddt e0
+#cc d p{ t20 "R.Datum:" t21 t66 } =dt
+#udt b6 e2 f"0"
+#udt b4 e2 f"0" "."
+#udt e4 "."
+#t{ t98 t22 }
+#udt ddt e0
+#cc D p{ t20 "Eingang:" t21 t66 } =dt
+#udt b6 e2 f"0"
+#udt b4 e2 f"0" "."
+#udt e4 "."
+#t{ t98 t22 }
+#cc Y p{ t20 "Band:" t21 t66 } P{ t98 t22 }
+#cc p =bT e0
+#cc t =bT e0
+#cc c p{ t20 "W„hrung:" t21 t66 } P{ t98 t22 }
+#cc +#99z q e0
+#cc p p{ t20 "GesamtBetrag:" t21 t66 } P{ t98 t22 }
+#99z e0
+#cc q p{ t20 "GesamtBetrag EUR:" t21 t66 } P{ t98 t22 }
+#cc +#99z u e0
+#cc t p{ t20 "TeilBetrag:" t21 t66 } P{ t98 t22 }
+#99z e0
+#cc u p{ t20 "TeilBetrag EUR:" t21 t66 } P{ t98 t22 }
+#cc x p{ t20 "Extrakosten:" t21 t66 } P{ t98 t22 }
+#ubT x"+bt" =bt
+#)T
+#)t
+
+   >>>>>>>>> Ende der Unterprogramme >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

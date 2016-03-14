@@ -1,0 +1,82 @@
+  A-KALX.FLX  : aLF-Kalendersatz in bearbeitbarer Form im Anzeigefeld anzeigen
+  2005-07-12    Nach Bearbeitung mit  a-kalend.flx  wieder speicherbar
+
+  Ist aktueller Satz ein Kalendersatz?
+var #9A
+if not "R" jump error
+
+  Inhalt steht hinter , speichern in #uaJ
+var #9A(b"")
+ins #uaJ
+
+  Hilfsdatei aufmachen fuer die bearbeitbare Form
+open x kal.txt
+wri #9A(e"" 1,0) n "$" #uaJ(e"1" e"0") n
+
+  Die Buchstaben am Anfang wegnehmen
+var #uaJ(f"Janur%$")
+ins #uaJ
+
+z=0
+
+:schl
+if not #uaJ jump ende
+var #uaJ
+if "$" jump ende
+  Zaehler z auf den 1.1. addieren
+var #9A(1,4) "0101+" z
+  Tag ausrechnen
+Day
+ins #uaD
+z+1
+var z
+  366 Tage sind verarbeitet? Dann -> :ende
+
+if "367" jump ende
+wri #uaJ(0,1) " : " #uaD(b" = " t" ") n
+var #uaJ(1,0)
+ins #uaJ
+var #uaJ
+if "%" wri "%" n
+if "%" var #uaJ(1,0);ins #uaJ;jump schl
+if "$" wri #uaJ(e"1" e"0" e"%") n
+var #uaJ
+
+if #uaJ if not "$" jump schl
+  den Abschnitt des naechsten Monats hernehmen, Buchstaben am Anfang weg
+var (b"$" e"$" f"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz„")
+ins #uaL
+var #uaJ(b"$" b"$")
+ins #uaM
+var #uaL "$" #uaM
+ins #uaJ
+if "%" wri "%" n;var #uaJ(1,0);ins #uaJ
+
+jump schl
+
+  Alles abgearbeitet, Datei schliessen und anzeigen
+:ende
+close x
+help kal.txt
+  Alt+9 vorbereiten: Aufruf von a-kalend.flx mit #uaK2 als Flag
+#uX9x #uaK2\\exec a-kalend
+var "Kalenderdaten bearbeiten, dann mit Alt+9 speichern" n "1 = ge”ffnet, 0 = geschlossen!"
+ansi
+sho iv
+mes
+end
+
+:error
+mes Das ist kein Kalendersatz!
+
+
+
+ u-VARIABLEN in a-kalx.flx
+ #uX9 (1)  fuer Alt+9
+ #uaD (2)  Datum (in Schleife)
+           Jahr, Monat, usw.
+ #uaJ (19) Inhalt von #9A (Ziffernstring m. Steuerz.)
+ #uaK (1)  Flag 2 f. a-kalend.flx (vorh. Kalendersatz) 
+ #uaL (2)  Abschnitt von #uaJ, beginnend mit Ziffern  
+ #uaM (2)  Abschnitt hinter naechstem $
+

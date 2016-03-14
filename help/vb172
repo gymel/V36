@@ -1,0 +1,246 @@
+
+Verlautbarung 172 der Entw.Abt.                             2004-01-07
+-------------------------------
+
+JanaS : a99 in HTML programmieren
+---------------------------------
+
+Bisher konnte a99:  (Bis Version 23.6)
+------------------
+o  eine Datenbank zugaenglich machen zum Suchen, 
+   Lesen, Schreiben und Exportieren
+
+o  Textdateien im RTF-Format anzeigen und darin eingebaute 
+   Makros (FLEXe) ausfuehren 
+
+o  externe Programme starten, z.B. auch einen Browser, die dann 
+   aber voellig unabhaengig laufen 
+
+o  Von aussen kann man a99 mit FLEXen fernsteuern - a99 als Server  
+
+
+Neu bei V24:   (Erste Freigabe im Januar 2004)
+------------
+Es gibt ein Zusatzprogramm namens JanaS, das aus nichts anderem 
+als einem Browser-Fenster besteht. So sieht es aus:
+
+   http://www.allegro-c.de/janas
+
+
+Janas kann zwei Dinge:
+
+o  Im Internet surfen, also u.a. HTML-Dateien anzeigen (Beispiel: doku.htm)
+
+o  a99 wieder aktivieren und ihm Befehle und Daten zusenden. 
+   (Im Beispiel: hinter jedem Link steckt ein Befehl fuer a99)
+
+
+JanaS laeuft zwar als getrenntes Programm, aber 
+
+-- a99 und JanaS koennen Nachrichten und Daten austauschen. 
+-- In HTML-Dateien koennen nun ebenfalls FLEXe eingebaut sein. 
+   Beispiel: doku.htm ("Fuellhorn")
+
+HTML-Formulare sind nutzbar, um Daten zu erfassen oder zu bearbeiten. 
+Beispiel: htmform.flx 
+In Formularen kann Unicode (UTF-8) verwendet werden, im Gegensatz zu den 
+Formularen, die in a99 eingebaut sind. Damit wird die Unicode-Eingabe und 
+-Bearbeitung nun auch ohne avanti moeglich.
+
+Grafik, Tabellen, JavaScript, CSS - alle diese Mittel kann man ebenfalls 
+alle einsetzen.
+
+Um Missverstaendnisse zu vermeiden:
+JanaS hat nichts mit avanti zu tun und braucht keinen Web-Server. Es dient nicht 
+dazu, eine Datenbank ins Netz zu stellen, sondern unterstuetzt die Arbeit mit a99 
+auf dem PC. Anders gesagt: JanaS und a99 muessen auf dem selbem PC laufen, sonst 
+koennen sie nicht zusammenarbeiten.
+
+Beschreibung 
+------------
+
+a99 startet janas mit FLEX-Befehl  janas 1   
+    Das Programm janas.exe wird gestartet und zeigt standardmaessig die 
+    Datei %TEMP%\j.htm
+    Normales Vorgehen:
+    Zuerst eine Datei  a.htm  auf %TEMP%  bereitstellen,
+    Dann a als Kennbuchstabe einstellen mit Aufruf  janas a  
+    und Start mit dem Befehl  janas 1  (dann wird a.htm gezeigt)
+    Der Kennbuchstabe ist ohne Vorbereitung standardmaessig j.
+    Der Kennbuchstabe bleibt waehrend der Sitzung erhalten, bis ein anderer 
+    Befehl  janas b  kommt.
+    Mit Befehl janas 1 wird danach das Fenster geoeffnet und die 
+    Datei b.htm gezeigt.
+
+JanaS macht dann folgendes::
+    es liest  a.htm
+       Aber: wenn darin nur steht "http://..." oder "file:///c:/... dann wird die
+       damit bezeichnete Datei gelesen, sonst die Datei a.htm selbst angezeigt.
+    Wenn in der geladenen Datei ein "besonderer Link" geklickt wird: 
+       a.flx auf %TEMP% schreiben, 
+       Signal an a99, dass  a.flx  ausgefuehrt werden soll
+
+
+"Besondere Links" sehen so aus:
+   href="flex:x befehlsfolge" oder href="flex:X flexname"  Start eines FLEX
+   oder             
+   href="flex:h dateiname"    a99 soll die Hilfedatei  dateiname.rtf  zeigen
+
+Ein Beispiel aus der oben erwaehnten "Fuellhorn"-Seite:
+   <a href="flex:h fremd">IMPORT</a>
+
+
+   janas stellt dann automatisch auf TEMP den FLEX  a.flx bereit, in dem steht
+         befehlsfolge
+    bzw.
+         exec flexname
+    bzw.
+         help dateiname
+
+Anmerkungen fuer Systemverwalter: 
+--------------------------------
+
+o  "Besondere Links" koennen auch in HTML-Seiten eingebettet sein, die nicht 
+   auf dem PC des Nutzers liegen, sondern irgendwo im Internet! 
+   D.h. man kann geeignete HTML-Seiten sonstwo bereitstellen, die Wirkung 
+   der FLEXe erfolgt aber stets nur im lokalen System des a99-Nutzers. 
+   (Wer einen solchen Link in einem normalen Browser anklickt, erhaelt 
+   eine Fehlermeldung wie z.B.  "flex is not a registered protocol".) 
+   Weil das eine potentielle Gefahr ist, muss der Nutzer dann die Ausfuehrung
+   des FLEXes bestaetigen,
+
+o  janas.exe kann man auch von Hand starten, aber nicht mit  "janas url"  
+   sondern mit:
+      janas dateiname   
+   in der Datei dateiname muss dann nur die eigentliche URL stehen, die der 
+   Browser anzeigen soll, also z.B. http://www.allegro-c.de
+
+
+Zusammenfassung zum neuen FLEX-Befehl:
+(So steht es auch im Hilfetext  xjanas.rtf)
+
+janas a    a wird zum Kennbuchstaben fuer nachfolgende Aktionen gemacht
+           Sonst passiert nichts!  janas.exe muss zu diesem Zeitpunkt nicht laufen. 
+           Default ist j. Dieser Befehl ist nur notwendig, wenn man mehr als 
+           ein a99 am Laufen hat und diese hinsichtlich JanaS nicht durch-
+           einander geraten sollen.
+
+Bei den naechsten drei Befehlen wird automatisch janas.exe gestartet, 
+falls es noch nicht laeuft:
+
+janas 1     Die Datei x.htm (mit dem eingestellten Kennbuchstaben also) 
+            wird (erneut) angezeigt
+
+janas url  Die Web-Adresse url wird angesteuert und angezeigt
+
+janas file:///c:/allegro/abc/xyz.htm
+           So laesst man eine irgendwo im lokalen System liegende HTML-Datei anzeigen. 
+           Man beachte
+           den Dreifach-Schraegstrich hinter "file:"
+
+janas dateiname
+           Die Datei  dateiname  (ohne Pfadangabe) muss auf dem HTML-Verzeichnis 
+           liegen (unterhalb des ProgDir) und wird dann im Browser angezeigt.
+
+janas        Inhalt der iV wird als URL etc. genommen, d.h. vorher vorbereiten, sonst kommt 
+                  "Die Seite kann nicht angezeigt werden"
+
+
+janas 0    Wenn janas.exe laeuft, wird es beendet, das Fenster beseitigt.
+                   Einbau in _endflx.flx ist zu erwaegen.
+
+Ausserdem kann man diesen Befehl geben:
+Call janas.exe     janas.exe wird gestartet und liest standardmaessig die 
+                   Datei %TEMP%\j.htm
+
+
+Formulare im HTML-Text
+----------------------
+Wenn man ein HTML-Formular gebaut hat, muss man diejenigen Input-Felder, die in 
+bestimmten Kategorien oder #u-Variablen landen sollen, so angeben:
+
+<form name="formularname" action="flex:X xyz" method=GET/POST>
+Feld x: <input name="nnn">
+
+wobei nnn eine gueltige Kategorienummer oder uxy sein kann. Beides ohne #.
+Diese Felder werden dann zuerst belegt, bevor der FLEX xyz.flx ausgefuehrt wird, 
+d.h. man muss sich darum nicht selber kuemmern! (Genau gesagt, der FLEX j.flx wird 
+mit den betreffenden Befehlen gefuellt und am Schluss steht  exec X xyz . In diesem 
+FLEX muss dann z.B. Put stehen, wenn der Satz gespeichert werden soll.
+
+
+Begleitende Massnahmen
+---------------------
+_door.flx : Ausgeloest durch Schaltflaeche "Tuer" : Umschalten zu JanaS
+   
+   janas http://www.allegro-c.de
+      oder z.B. Datei doku.htm von HELP:
+      janas doku.htm
+
+onerror.flx : Ausgeloest durch ungueltige Eingabe im Schreibfeld
+   Pruefen, ob Eingabe mit "http:" oder "file:" anfaengt, dann uebergeben an JanaS
+
+if "www" jump www
+if "http:" jump http
+if "file:" jump http
+...
+
+:www
+var "http://" #uxE
+janas
+var ""
+end
+:http
+var #uxE
+janas
+var ""
+end
+
+
+
+Beispiel fuer einen FLEX, der ein komplettes HTML-Formular erzeugt 
+und dann JanaS aktiviert:
+(Die HTML-Datei mit dem Formular wird zunaechst ins Help-Verz. geschrieben)
+Zum Ausprobieren eine etwas bessere Version. 
+var "help\\test.htm" 
+open x
+  Vorbereitung fuer write-Befehle
+xport p e-u
+dow wX
+dow a
+
+wri "<html><head>" n
+
+wri '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">' n
+wri "</head><body>" n
+
+wri '<form action="flex:x sho rec' 92 92 'disp" method=GET>' n
+
+wri '<input type="submit" value="SEND">' n
+
+wri 'Titel: <input name="20" size=60 maxlength=120 value="' #20 '"><br>' n
+wri 'Signatur: <input name="90" size=30 maxlength=120 value="' #90 '"><br>' n
+wri 'Verfasser: <input name="40" size=60 maxlength=120 value="' #40 '"><br>' n
+wri 'Jahr: <input name="76" size=20 maxlength=20 value="' #76 '"><br>' n
+
+wri '</form></body></html>'
+dow A
+
+close x
+    Und nun die praeparierte Datei von JanaS anzeigen lassen 
+janas test.htm 
+
+
+Und in der Datei e-u.apr steht nur drin:
+
+  E-U.APR : Einen Feldinhalt nach UTF-8 wandeln
+  2004-01-04  insbes. wirkt sich dies auf den FLEX-Befehl "write" aus
+
+zl=0
+
+  Wenn "write" gegeben wird, steht der Inhalt in #u1
+#-X
+#u1
+  ASCII -> UTF-8 Tabelle laden
+td-utf8
+

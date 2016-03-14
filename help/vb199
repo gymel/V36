@@ -1,0 +1,87 @@
+
+Verlautbarung 199 der Entw.Abt.                              2007-06-24
+-------------------------------
+
+Das Paket V27.4 liegt bereit: http://www.allegro-c.de/newvers.htm
+
+1. Die Schiller-Raeuber-Schluessel (auch bekannt als "satzueber-
+----------------------------------
+greifende Suche") klappten nach der MultiX-Reform nicht mehr.
+Das wurde behoben. Sie sind jetzt nicht mehr am Ende des betr.
+Registers (Befehl i7) zu finden, sondern zwischen Ziffern und
+Buchstaben, genauer: zwischen ; und = (falls diese Zeichen
+in dem Register als erste Zeichen ueberhaupt auftreten).
+
+2. FLEX xcode : Verbesserungen
+==============================
+
+a) Drucker- und Zeichenfolgenersetzung
+--------------------------------------
+Die Ersetzungen des Typs
+p x "abc"
+p x .n n n
+also Ersetzung eines Einzelzeichens durch eine Zeichenfolge
+in der normalen und in der ASCII-Code-Variante (im Export
+als "Drucker-Ersatzdarstellung" bezeichnet (S. 184), klappten
+bei xcode noch nicht. Jetzt tun sie es.
+
+b) xcode kann jetzt auch u-Tabelle anwenden
+-------------------------------------------
+Mit  xcode u  kann man jetzt veranlassen, dass die iV gemaess
+der in die Indexparameter eingebauten u-Befehle umcodiert wird.
+(Man kann keine separaten u-Befehle nur in die Exportparameter
+einbauen. Anders gesagt: sie sind global und fuer alle geladenen
+Parameter gueltig, wirksam aber bisher nur beim Befehl
+"insert" und nur bei Datenfeldern, nicht bei u-Variablen.
+Sie sind also etwas ganz anderes als die p- oder q-Befehle!
+Anders als bei "insert" muss die Umcodierung nicht mit einem
+Befehl  set U1/U0 ein- und ausgeschaltet werden!
+Jetzt kann man schreiben:
+var #uxy
+xcode u
+ins #uxy
+
+3. write per Exportparameter
+----------------------------
+Es kam nichts raus, wenn man mit "exp wX" (frueher "dow wX")
+umgeschaltet und dann einen "write"-Befehl ohne Argument gegeben
+hatte. Dann soll der iV-Inhalt (vorher mit "var ..." praepariert)
+so ausgegeben werden, dass vorher der Abschnitt #-X der Export-
+parameter ausgefÅhrt wird. Jetzt geht das. Die Wichtigkeit dieser
+Methode ist freilich durch den neuen xcode-Befehl relativiert.
+
+4. ExFLEX
+---------
+Es unterbleibt die Fehlermeldung, wenn ein laufendes a99 ein
+ExFLEX-Signal aufgefangen hat und den betr. FLEX nicht finden kann.
+a99 sucht den ExFLEX auf seinem Startverzeichnis. Hat man mehrere
+a99-Fenster offen, die jeweils ein anderes Startverzeichnis
+haben, kann der ExFLEX nur von demjenigen a99 ausgefÅhrt werden,
+auf dessen Verzeichnis der FLEX liegt. Die anderen zeigten dann
+eine Fehlermeldung, jetzt entfaellt sie.
+
+5. INDEX.EXE : Stoppwoerter
+---------------------------
+In den neuen MultiX-Indexdateien wurde die Stoppwortliste nicht 
+ausgewertet. Behoben.
+Das Register 10 wurde in einem "neuen" Index u.U. nicht angelegt.
+Ebenfalls behoben.
+
+6. FLEX: Bei "if <#uxy" und "if >#uxy" beschraenkte sich der 
+--------------------------------------
+Zahlenvergleich auf ganze Zahlen. Jetzt kann in #uxy auch
+eine Zahl mit Komma oder Punkt stehen und wird dann als
+Dezimalzahl mit der iV verglichen. Besonders wichtig kann das 
+natÅrlich bei GeldbetrÑgen sein.
+
+7. FLEX "new 0": jetzt korrekte Statusanzeige
+---------------------------------------------
+Beim FLEX-Befehl "new 0" wurde der Status nicht auf NEU gesetzt,
+sondern blieb auf ONL stehen.
+
+8. Hinweis: INDEX ruft immer QRIX auf
+-------------------------------------
+... auch wenn nur eine Zwischendatei entstanden ist. Frueher
+erstellte in dem Fall INDEX selber die .ADX, jetzt macht
+das in jedem Fall QRIX. Der Zeitgewinn war nicht mehr messbar,
+deshalb wurde dies so geaendert.

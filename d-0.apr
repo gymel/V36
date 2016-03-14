@@ -1,0 +1,115 @@
+  a-0.apr : prototyp fr Bildschirmanzeige UND Ausgabe in Form von Katalogkarten
+  940602
+  Prototyp fr den Exporttyp DISPLAY  [ohne Nachladung]
+pn="DISPLAY Prototyp"
+  Anderes einfaches Beispiel:  D-SIMP.APR
+  Beispiele MIT Nachladung: KOMPLEX.APR (allgemeines Schema)
+                            D-1.APR     (voll ausgearbeitete Datei)
+                            D-WRTF.APR  (fr a99/alcarta)
+
+  --------- Konstanten --------------------------------------------
+
+zl=65       Zeilenl„nge
+
+fl=14       Anzahl Zeilen je Karte
+fm=2        Modus: Einzelkarten fr alle B„nde (1 = keine Einzelkarten)
+
+fb=13 10 10 10    Formular-Bruch: 3 Zeilenvorschbe zwischen zwei
+                     Karten (muá evtl. angepaát werden!)
+i4=1
+
+  ======== Kopfbefehle =============================================
+
+  (jede der folgenden Kategorien erzeugt einen Ausgabesatz (eine Karte),
+   falls sie existiert)
+
+  Haupteintragung:
+ak=zz+H           (diese Zeile wird IMMER ausgefhrt, bei Sprungmarke #-H
+                   beginnt der Aufbau der "Einheitskarte"
+  Zusatzeintr„ge: (Nebeneintragungen)
+ak=40."; "+V      alle Verfasser kriegen eine
+         (#40, #402..., #40a..., auch #40 Name; Name; Name...  ist m”glich)
+ak=85.+G          Serientitel (#85, #85a, #85b...)
+
+  ==================================================================
+
+  ....... Zwischenteil-Definitionen: (nach Bedarf erweitern) .......
+
+4=C
+          die Zwischenteile 79-99 stecken in PRINTER.APT !
+  ..................................................................
+
+  ******* Kategorieliste *******************************************
+  = Hauptteil der Parameterdatei
+
+#hi +Z e0   Unteraufnahme -> Sprungmarke #-Z
+        die Unters„tze werden nicht ber ak-Befehle gesteuert, sondern
+        die Verarbeitung beginnt am Anfang der Kategorieliste, nachdem
+        die Hauptaufnahme verarbeitet ist. Mit diesem Befehl kann man
+        zu einem Abschnitt springen, der die Aufbereitung
+        der Unters„tze regelt, hier #-Z
+        (#hi existiert nur, wenn ein Untersatz verarbeitet wird)
+
+#-V     Verfasser-Eintr„ge
+#t99    Fettschrift ein
+#u1 +- i3,     wenn #40, dann kein zus„tzlicher Zettel, denn #40 bekommt
+               bereits den Einheitszettel bei #-H
+#u1            der durch ak=40.";"+V jeweils ausgew„hlte Name
+#t98    Fett aus
+#90 e"" p"Signatur: " R            Signatur rechtsbndig
+#t4     Zeilenvorschub
+#+h     weiter wie bei der Haupteintragung
+
+#-G     Serienzettel
+#t99
+#u1 e" ; "            zuerst nur der Serientitel
+#u1 b" ; " p"-- " C   dann die Z„hlung auf neuer Zeile, mit "--" davor
+#t98
+#90 e"" p"Signatur: " R            Signatur rechtsbndig
+#t4
+#+h
+
+#-H     Hauptzettel-Produktion beginnt hier (Einheitskarte)
+#90 e"" "Signatur: " R          Signatur rechtsbndig
+#t4
+
+#-h
+#40 P":" #zz 4   Name:  dann neue Zeile
+#20              Titel
+#39 " / "        Verf.Angabe
+
+#-A           Einsprung hier von der Bandbearbeitung aus (s.u.)
+#71 ". - "       Ausgabe
+#74 e"" ". - "  Ersch.Ort mit ". - " angeschlossen
+  #74 C "   "       wenn Ort auf neuer Zeile eingerckt erscheinen soll
+#75 ": "         Verlag mit ": " dahinter
+#76 ", "         Jahr mit ", " angeh„ngt
+#77 ". - "       Umfang mit ". - " abgetrennt
+#85 C p"(" P")"      Serie auf neuer Zeile in Klammern
+#83 C "[Kongr.:] "
+#87 C p"ISBN "
+
+
+#+#              Ende
+
+#-Z              Untersatz beginnt hier
+
+#hi1 C C P". "   Bandnummer, 2x Zeilenvorschub
+#t{ #250 }       Einrckung an der Position hinter der Bandnummer festsetzen
+#90 e"" R       Signatur rechtsbndig
+#19              Bandbezeichnung
+#20              Bandtitel
+#41 " / " P" [Hrsg.]"
+#+A              weiter wie beim Hauptsatz
+
+
+  +++++++ Codierungen ++++++++++++++++++++++++++++++++++++++++++++++
+
+p ª 1      Nichtsortierzeichen nicht mit anzeigen
+p @ 1      Entstoppungszeichen auch nicht
+
+tad-aw     Tabelle ASCII -> ANSI (Dos-Codes -> Windows-Codes)
+
+ tPRINTER   den vom CockPit gew„hlten Druckertreiber laden,
+           er heiát PRINTER.APT (= Kopie eines P-*.APT)
+           (enth„lt die Zwischenteile 79-99 fr die Schriftarten)

@@ -1,0 +1,48 @@
+
+Verlautbarung 162 der Entw.Abt.                          2003-01-06
+-------------------------------
+                                   Bereitgelegt:
+                                   ac21/avanti-w/avanti-w.lzh 
+
+avanti-w : Problem mit Speicherbedarf umgangen
+----------------------------------------------
+Das unangenehme Problem mit dem Windows-avanti war bisher, dass
+mit jedem Job einige K Arbeitspeicher belegt und nicht wieder
+freigegeben wurden.
+Das Problem liess sich eingrenzen, aber bisher nicht endgueltig
+loesen: Es muss, das ist nun sicher, im Bereich der Socket-
+Datenverwaltung liegen, und damit leider wohl ausserhalb unserer
+Kontrolle. Der Gesamtbereich der eigentlichen allegro-Funktionen,
+also insbes. das Job-Abarbeitungsprogramm procav.exe, hat
+nichts damit zu tun: zum Test wurde es voellig deaktiviert und
+trotzdem trat das Problem unveraendert auf. Und: Die Abarbeitung
+von Jobs ueber die "Zentrale Auftragsdatei (ZAD)" ist ebenfalls
+unproblematisch.
+
+Die jetzt, nach umfangreichen Bemuehungen, gefundene Umgehung 
+arbeitet so:
+          (nur das normale Programm, noch nicht der Systemdienst!)
+Das Serverprogramm avanti-w.exe zaehlt die abgearbeiteten Jobs.
+Sind 20 erledigt und steht momentan kein weiterer an, beendet
+sich avanti-w und startet sich sofort neu. Steht ein weiterer an,
+d.h. ist ein neuer Thread schon in Bearbeitung, wird dieser
+noch abgearbeitet und dann erneut geprueft. Der Abbruch/Neustart
+sollte somit zu "ungefaehrlichen" Zeitpunkten erfolgen.
+
+Die Zahl 20 ist vorerst mal fest eingestellt, evtl. kann sie
+auf 100 oder mehr eingestellt werden, das bleibt abzuwarten.
+Es duerfte sicherer sein, diese Zahl nicht zu hoch zu setzen!
+Die Maximalzahl von Threads war bisher auf 4 gesetzt, dies
+wurde versuchsweise auf 8 geaendert. Mit dem Problem als solchem
+hat das aber nichts zu tun.
+Wir stellen anheim, dieses neue Serverprogramm versuchsweise
+einzusetzen und ueber die Erfahrungen damit zu berichten.
+Im Windows-Taskmanager kann man das Verhalten des Servers,
+insbes. seine Speicherbelegung, ueberwachen. 
+(Strg+Alt+Entf bei XP oder NT)
+
+Ausserdem: die Texte der Jobs werden nun nicht mehr in die Logfiles
+kopiert.
+
+MfG B.E.
+

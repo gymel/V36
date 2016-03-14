@@ -1,0 +1,958 @@
+// dnx.flx : Daten von der DNB holen via "portal.dnb.de"
+// 20120612/20120725/20140317: Basis HTML der Web-Anzeige
+// 20150713: Umstellung auf Basis MARCXML, Noch ohne GND
+
+// Zum Testen:
+// a) Wenn gestartet mit  X dnx xyz, dann wird Datei xyz gelesen und direkt verarb.
+// b) Um nach Aenderung dieser FLEX-Datei nochmal denselben Satz zu testen:
+//    mit  X dnx 0 starten. (wenn a99 vorher nicht neu gestartet!)
+
+
+  Abschalten der automat. Umcodierungen UTF-8 oder ANSI ->ASCII beim "insert"
+set c0
+set U0
+set e0
+
+// Mit Argument 0 oder Dateiname gestartet zum Testen?
+
+if "0" jump TEST
+// denn der XML-Text steht dann noch in $, geht dann viel schneller
+// XML anzeigen lassen:  x var $\sho IV
+
+//  X dnx dateiname
+//  (wenn man sich einen XML-Text  unter dateiname (z.B. via Portal) gespeichert hat)
+if not "" jump datei
+
+// Normaler Anfang (Start mit  X dnx  ohne Argument)
+
+// Wenn man nicht das A-Schema verwendet, geht's nicht!
+var K1
+xco clower
+if not "a" help fremd;end
+
+jump einstieg
+// Damit wird :SF uebersprungen; (steht hier oben, weil's oft gebraucht wird)
+// Enorm WICHTIG: UP fuer Isolierung eines <subfield> aus einem <datafield>
+// Nutzung z.B. mit  var "245a"\perf SF
+// d.h. iV enthaelt z.B.  245a
+:SF
+ins #uSF
+
+//  z.B. entsteht hier  var $ (x'd t="245"' x's c="a"')
+var "$ (x'd t=" 34 #uSF(0,3) 34 "' x's c=" 34 #uSF(3,1) 34 "')"
+// hiermit wird der so fabrizierte Befehl ausgefuehrt:
+var
+
+// Inhalt des subfield ist nun in iV
+return
+
+
+// Nutzer zur Eingabe auffordern
+:einstieg
+z=0
+
+ask ISBN oder Stichwörter (evtl. gnd dazu, falls Normsatz gesucht)=#uis
+if cancel end
+if "" end
+
+  Eingabe mit "ask" ist ANSI, intern soll es ASCII sein
+asci
+ins _ _+_
+ins _-__
+ins #uis
+
+  Umcodierung der Eingabe mit Hilfe der Indexparameter
+  und zwar mit p oder q, je nachdem, bei welchem Kleinbuchstaben rauskommen
+  
+var "Ä"
+asci
+xco iq
+  q ist nicht richtig, dann p:
+if not "ae" var #uis;xco ip;jump b
+var #uis
+
+// Umcodieren in Kleinschrift
+xco iq
+
+  Umcodierte Eingabe fertig
+:b
+// Bindestriche eliminieren
+ins _-__
+ins #uis
+
+
+var "Sende Suchauftrag an DNB"
+sho IV
+
+// Befehl zusammenbauen
+var "Fhttps://portal.dnb.de/opac.htm?query=" #uis "&method=simpleSearch"
+// und absenden, d.h. die Daten in Frankfurt abholen.
+var
+// Antwort jetzt in der iV, normalerweise Ergebnisliste
+
+jump anfang
+
+// Aufruf war mit Dateiname
+:datei
+ins $xyz
+var "F" $xyz
+// Datei xyz in iV einlesen:
+var
+if "" var "Datei " $xyz " nicht gefunden";mes;end
+
+// Inhalt umcodieren per u-Tabelle
+
+xcode u
+
+perf umwa
+jump TEST
+
+// In der iV stehen die Daten vom portal bzw. aus der Datei
+:anfang
+ins $
+// utf-8 -> ASCII
+
+// Wenn Wortfolge %...% vorkommt, ist es eine Liste:
+if %class="number"% jump mehrere
+
+  Sonst ein Satz, aber in Portal-HTML-Form!
+:anfang2
+
+  Nummer isolieren
+var (b"MARC21-XML" b"info/" e"/a")
+ins $dnbnr
+
+  und damit die MARCXML-Form anfordern
+var n n "Rufe XML-Daten ab für " $zeile
+sho +IV
+var "Fhttp://d-nb.info/" $dnbnr "/about/marcxml"
+var
+
+ins $ 
+
+if not %leader% jump fehlanzeige
+
+ var $ (b"http://d-nb.info/" e'"' e"<")
+
+ // Es kommt kein solcher Link vor, dann ist das kein Datensatz
+ if "" jump fehlanzeige
+
+var n n "Daten empfangen, Umwandlung"
+sho +IV
+
+// Neuen Datensatz anlegen, vorher Nr. des aktuellen sichern
+var "#" i
+ins $idnr
+
+:TEST
+new 0
+  *** Satz verarbeiten ***
+
+// Inhalt des Fremdsatzes jetzt in $
+var $
+
+// Verbositaet minimieren: <datafield tag="...">...</datafield> wird zu <d t="...">...</d>
+ins _<datafield tag_<d t_
+ins _<subfield code_<s c_
+ins _<controlfield tag_<c t_
+ins _</datafield_</d_
+ins _</subfield_</s_
+ins _</controlfield_</c_
+// Statt jedesmal nach "<datafield" zu suchen, etc., dann nur noch "<d", "<s" und "<c". 
+// Das kann vorkommen!
+
+  UTF-8 -> ASCII
+xcode u
+
+  Kombinationen Buchstabe+Diakritikum umsetzen
+   fuer die in OstWest definierten Zeichen
+  Diaerese
+ins _a½_„_
+ins _o½_”_
+ins _u½__
+ins _A½__
+ins _O½_™_
+ins _U½_š_
+ins _e½_‰_
+ins _i½_‹_
+ins _y½_˜_
+
+  Akut
+ins _aµ_ _
+ins _eµ_‚_
+ins _iµ_¡_
+ins _oµ_¢_
+ins _uµ_£_
+ins _Eµ__
+ins _yµ_­_  
+ins _nµ_õ_  
+ins _Nµ_ô_  
+
+  Gravis
+ins _a¶_…_
+ins _e¶_Š_
+ins _i¶__
+ins _o¶_•_
+ins _u¶_—_
+
+  Circonflex
+ins _a·_ƒ_
+ins _e·_ˆ_
+ins _i·_Œ_
+ins _o·_“_
+ins _u·_–_
+
+  Tilde
+ins _nè_¤_
+ins _Nè_¥_
+
+  Cedille
+ins _cÓ_‡_
+ins _CÓ_€_
+ins _sÓ__
+ ins _tÓ_ê_
+
+  breve
+ins _a¾_ä_
+ins _g¾__
+
+  Ringel [Statt dessen kommt ø=Grad vor]
+ins _aÏ_†_
+ins _AÏ__
+ins _uÏ__
+ins _uø__
+ins _UÏ_Ÿ_
+
+  Doppelakut
+ins _oÆ__
+ins _uÆ__
+
+  Ogonek
+ins _aÒ_î_
+ins _eÒ_ï_
+ins _uÒ__
+
+  hacek
+ins _eÇ__
+ins _cÇ_§_
+ins _CÇ_¦_
+ins _rÇ_¨_
+ins _RÇ_©_
+ins _sÇ_¬_
+ins _SÇ_«_
+ins _zÇ_¯_
+ins _ZÇ_®_
+
+  Nichtsort.z.
+ins _&#152;_ª_
+ins _&#156;_ª_
+ins _&lt;_<_
+ins _&gt;_>_
+ins _&amp;_&_
+
+  >> <<   (fehlt in ucodes.apt)
+ins _Â»_"_
+ins _Â«_"_
+
+  restliche Akzente von rechts nach links
+dow Ai
+  das ist nun der Ausgangstext fuer alles
+ins $
+
+  HAUPTTEIL : Die eigentliche Umwandlung
+
+    Unterprog. :SF (s.o.) holt einen Unterfeldinhalt, z.B. 020$a:
+var "020a"
+perf SF 
+hyp
+ins #87
+
+var "022a"
+perf SF 
+ins #88
+
+var "773w"
+perf SF
+var (b")")
+if "" jump 100
+ins $w
+var "773q"
+perf SF
+ins $q
+var $w "+" $q
+ins #09
+var ""
+ins $w
+ins $q
+
+
+:100
+var "100a"
+perf SF 
+ins $a
+
+var "100d"
+perf SF 
+ins $d
+
+var $a
+if $d var +" ª<" $d ">"
+ins #40
+var ""
+ins $a
+ins $d
+
+  Inhaltstyp
+var "336b"
+perf SF
+ins #0cc
+
+ Medientyp (337) ist redundant
+
+  Datentraegertyp
+var "338b"
+perf SF
+ins #77c
+
+var "041a"
+perf SF
+ins _^T^T_, _ 
+ins #37
+
+var "110a"
+perf SF 
+ins $a
+var $a
+ins #60
+
+var "730a"
+perf SF
+ins $a
+var "730g"
+perf SF
+ins $g
+var $a
+if $g var +" <" $g ">"
+ins #22
+var ""
+ins $a
+ins $g
+
+var "245a"
+perf SF
+ins $a
+
+var "245b"
+perf SF
+ins $b
+
+var "245c"
+perf SF
+ins $c
+
+var "245n"
+perf SF
+ins $n
+
+var "245p"
+perf SF
+ins $p
+
+  sonstige unterscheidende Eig. v. Werk od. Expr.
+var "381a"
+perf SF
+ins $s
+
+var $a " : " $b
+var (F" :")
+if $n var +", " $n
+if $p var +" " $p
+if $s var +" [" $s "]"
+ins #20
+
+  Beilagen, noch zu vervollst.
+var "770a"
+perf SF
+ins #26
+
+
+var $c
+ins #39
+
+var ""
+ins $a
+ins $b
+ins $c
+ins $n
+ins $p
+ins $s
+
+var $
+  this must not occur:
+  (it is used as a separator if a command (x'...') finds mult. occurrences)
+ins _^T^T__
+ins $
+
+  Beteiligte Personen
+var (x'd t="700"')
+ins $v
+
+:v40
+
+var $v (x's c="a"' e"^T")
+ins $a
+var $v (x's c="d"' e"^T")
+ins $d
+var $v (x's c="4"')
+ins _^T^T_, _
+if "aut" jump aut
+if "edt" jump edt
+if "cmp" jump cmp
+if "ilu" jump ilu
+if "ant" jump ant
+if "trl" jump trl
+if %cnd% jump cnd
+
+if "ctb" var ""
+ins $r
+
+var $a 
+if $r var +" ª[" $r "]"
+ins #42~
+
+
+:v40m
+var ""
+ins $a
+ins $d
+var $v (b"^T^T")
+ins $v
+if $v jump v40
+jump 260a
+
+:aut
+var $a 
+if $d var +" ª<" $d ">"
+ins #40~
+jump v40m
+
+:cmp
+var $a 
+if $d var +" ª<" $d ">"
+ins #52~
+jump v40m
+
+:cnd
+var $a 
+if $d var +" ª<" $d ">"
+ins #57d
+jump v40m
+
+:trl
+var $a 
+if $d var +" ª<" $d ">"
+ins #47
+jump v40m
+
+:edt
+var $a 
+if $d var +" ª<" $d ">"
+ins #41~
+jump v40m
+
+:ilu
+var $a 
+if $d var +" ª<" $d ">"
+ins #50~
+jump v40m
+
+:ant
+var $a 
+if $d var +" ª<" $d ">"
+ins #44~
+jump v40m
+
+  Ort
+:260a
+var ""
+ins $a
+ins $d
+ins $r
+
+var "260a"
+perf SF
+ins _^T^T_ ; _
+ins #74
+
+  Verlag
+var "260b"
+perf SF
+ins _^T^T_ ; _
+ins #75
+
+  Jahr
+var "260c"
+perf SF
+ins #76
+
+  Neu: 264 (noch unvollst.)
+var "264a"
+perf SF
+ins _^T^T_ ; _
+ins $a
+
+  Verlag
+var "264b"
+perf SF
+ins _^T^T_ ; _
+ins $b
+
+  Jahr
+var "264c"
+perf SF
+ins $c
+
+if $a var $a
+if $b var +" : " $b
+if $c var +", " $c
+if not "" ins #73
+
+if $a if not #74 var $a;ins #74
+if $b if not #75 var $b;ins #75
+if $c if not #76 var $c;ins #76
+
+var ""
+ins $a
+ins $b
+ins $c
+
+
+  Umfang
+var "300a"
+perf SF
+ins #77
+
+  Umfang
+var "250a"
+perf SF
+ins #71
+
+  DNB Id
+var $ (x'c t="001"')
+ins #89D
+
+
+var "500a"
+perf SF
+ins #81
+
+var "502a"
+perf SF
+ins #818
+
+var #818(b": " e",") ":" #818(T", ")
+if not ":" ins #819
+
+
+//  490 mehrfach -> #85
+// Problem: $v kann fehlen
+
+var $ (x'd t="490"')
+ins $x
+
+:490
+
+var $x (b'c="a">' e'</s>')
+ins $a
+var $x (b'c="v">' e'</s>')
+ins $v
+
+var $a
+if $v var +" ; " $v
+ins #85~
+
+
+// Noch eine Serie?
+var $x (b'c="a">' b'c="a">')
+if "" jump 71
+ins $x
+var '  <s c="a">' $x
+ins $x
+jump 490
+var ""
+ins $a
+ins $v
+
+:71
+//  710 mehrfach -> #61
+
+var $ (x'd t="710"')
+ins $x
+
+:710
+var $x (b'c="a">' e'</s>')
+ins #61~
+
+// noch eine 710?
+var $x (b'c="a">')
+ins $x
+if $x jump 710
+
+var "711a"
+perf SF
+ins $a
+var "711n"
+perf SF
+ins $n
+var "711c"
+perf SF
+ins $c
+var "711d"
+perf SF
+ins $d
+
+var $a
+if $n var +" ; " $n
+if $c var +" (" $c ")"
+if $d var +" : " $d 
+ins #83
+var ""
+ins $a
+ins $c
+ins $d
+ins $n
+
+
+var "520a"
+perf SF
+ins #98
+
+var ""
+ins $x
+
+var "082a"
+perf SF
+ins _^T^T_ ; _
+var (e" ; B")
+ins #32B
+
+var "650a"
+perf SF
+ins _^T^T_ ; _
+ins #330
+
+var "651a"
+perf SF
+ins _^T^T_ ; _
+ins #331
+
+var "652a"
+perf SF
+ins _^T^T_ ; _
+ins #332
+
+var "610a"
+perf SF
+ins _^T^T_ ; _
+ins #31c
+
+var "610t"
+perf SF
+ins _^T^T_ ; _
+ins #31t
+
+
+
+
+ // in 653 steht Sammelsurium von Termen. ONIX?
+var "653a"
+perf SF
+ins _^T^T_ ; _
+  VLB-Codes u.a. wegnehmen
+var (u() f")")
+ins _Paperback / softback__
+ins _2947: Taschenbuch__
+ins _TN000__
+ins _)Paper over boards__
+ins _Sachbcher/__
+ins _/_ ; _
+ins _1772: Hardcover, Softcover__
+ins _BC: Paperback__
+ins _Hardback__
+ins _Hardcover, Softcover__
+
+
+ins _; ;_;_
+var (f" ;/(	" F"; ")
+ins #33
+
+var "655a"
+perf SF
+ins _^T^T_ ; _
+ins #33D
+
+
+
+ // GND-SW, provisorisch
+var "689a"
+perf SF
+ins _^T^T_ ; _
+ins #33G
+
+  // Mehrere URLs, noch nicht definitiv
+
+var $ (x'd t="856" ind1=" " ind2="0"' x's c="u"' e"&amp;" e"")
+ins $u
+var $ (x'd t="856" ind1=" "' x's c="x"' e"")
+ins $z
+if $z var $u 31 "z" $z
+if not $z var $u
+ins #8e
+
+var $ (x'd t="856" ind1="4" ind2=" "' x's c="u"' e"&amp;" e"")
+ins $u
+var $ (x'd t="856" ind1="4" ind2=" "' x's c="x"' e"")
+ins $z
+if $z var $u 31 "z" $z
+if not $z var $u
+ins #8e1
+
+var $ (x'd t="856" ind1="4" ind2="2"' x's c="u"' e"&amp;" e"")
+ins $u
+var $ (x'd t="856" ind1="4" ind2="2"' x's c="3"' e"")
+ins $z
+if $z var $u 31 "z" $z
+if not $z var $u
+ins #8e2
+
+var $ (x'd t="856" ind1="4" ind2="0"' x's c="u"' e"&amp;" e"")
+ins $u
+var $ (x'd t="856" ind1="4" ind2="0"' x's c="x"' e"")
+ins $z
+if $z var $u 31 "z" $z
+if not $z var $u
+ins #8e4
+
+var ""
+ins $u
+ins $z
+
+
+  *** Satz fertig, anzeigen ***
+
+:Display
+sho rec
+disp
+// gleich das geeignete Formular aufmachen
+
+yes Bearbeiten und Speichern? (Abbruch = Vergessen)
+if cancel jump forget
+if no end
+
+exec onforms
+set e1
+end
+
+// ACHTUNG: Noch nicht bearb! Aus dem alten dnb.flx
+// Es ist ein Normsatz aus GND
+// (Umwandlung noch zu erweitern, hier nur Person und Koerp.)
+:gnd
+
+// In #00 soll vorn nicht gnd/ stehen wg. V14-Problem
+var #00(b"/")
+ins #00
+
+var $ (b"Name</strong>" b">" b">" e"<")
+
+ins #4n
+
+var $ (b"Person</strong>" b">" b">" e"<")
+
+if not "" ins #4n
+
+var $ (b"Organisation</strong>" b">" b">" e"<")
+
+ins #6n
+
+var $ (b"Zeit</strong>" b">" b">" e"<" B"Lebensdaten: ")
+ins #4nd
+
+var $ (b"Andere Namen</strong>" b">" b">" e"<")
+ins _ -- _ ; _
+
+if #4n ins #4na
+if #6n ins #6na
+
+var $ (b"Weitere Angaben</strong>" b">" b">" e"<")
+ins _ -- _ ; _
+
+if #4n ins #4nz
+if #6n ins #6nz
+
+
+jump Display
+
+:fehlanzeige
+// ist es eine Liste mit mehreren Titeln?
+
+var $
+if %class="number% jump mehrere
+
+ins $Fehl
+sho IV
+
+var "Fehlanzeige mit " #uis "!" n "Neuer Versuch?"
+yesno 
+
+if yes jump einstieg
+set e1
+end
+
+:mehrere
+z+1
+var (b'class="number')
+perf umwa
+xco u
+ins _^T__
+ins _<br>_ / _
+
+ins $LIST
+
+var $LIST (b'class="number' b'=0">' e"<")
+ins _^M^J__
+ins $ti
+var $LIST (b'"amount">' b" von " e"<")
+ins $anz
+ 
+// var "Da gibt's " $anz " Stück, z.B. " n $ti
+// mes
+// Ende abschneiden bei </table>, Dann Links zur naechsten Seite etc, nicht mehr da!
+// var $LIST (b"Details zu diesem Datensatz" e"/table")
+var $LIST (b"Details zu diesem Datensatz")
+ins $LIST
+var $LIST
+
+// in $LIST gibt es Elemente, die so anfangen:
+
+//   /opac.htm?method=showFullRecord&currentResultId=...
+//  z.B.
+//   /opac.htm?method=showFullRecord&currentResultId=hofstadter+douglas+escher%26any&currentPosition=3
+
+//  Davor muss man setzen:
+//    https://portal.dnb.de
+
+open x erg.lst
+wri "Es gibt " $anz " Ergebnisse, die nächsten 10 sind:" n
+
+  Schleife Kurzanzeige
+:schlk
+
+var $LIST (b"showFullRecord" e'"' t"=")
+ins _&amp;_&_
+ins $co
+
+wri z ". " 
+var $LIST (b'>' e"</") 
+ANSI
+var (f" ")
+ins $li
+wri $li n
+
+var $LIST
+if not %Details zu diesem Datensatz% jump lend
+  
+var (b"Details zu diesem Datensatz")
+ins $LIST
+z+1
+
+if $LIST jump schlk
+
+:lend
+
+var $LIST (b"method=showNextResultSite" e'"')
+ins _&amp;_&_
+ins $np
+
+var $anz
+if >10 wri "Die nächsten 10" n n
+wri n n n n n n n "ABBRUCH" n
+close x
+  Auswahlliste anzeigen, ?1 heisst ANSI Code 
+Aresqa ?1erg.lst
+
+  Welche Zeile wurde gewaehlt?
+if "" end
+
+ins $zeile
+  die letzte, zum Weiterschalten
+if "Die n" jump Next
+
+var $zeile
+var (e".")
+ins $nu
+eval $nu -1
+ins $nu
+var $zeile (e" --")
+ asci
+ xcode iq 
+ins $zeile
+
+var n n "Rufe HTML-Daten ab für " $zeile 
+sho +iV
+var "Fhttps://portal.dnb.de/opac.htm?method=showFullRecord" $co "=" $nu
+
+var
+
+// Satz in HTML-Portalform ist in iV
+
+jump anfang2
+
+:Next
+var n "Abruf weiterer Daten"
+sho +iV
+var "Fhttps://portal.dnb.de/opac.htm?method=showNextResultSite" $np
+
+var
+
+jump anfang
+
+
+
+// Es war ein Irrtum
+:forget
+erase
+var $idnr
+find
+sho rec
+disp
+set e1
+end
+
+// hier iV-Inhalt (HTML!) umwandeln: tab, cr, lf weg
+:umwa
+
+ins _^I__
+ins _^M__
+ins _^J__
+ins _^T__
+// Zeilenvorschuebe durch " -- " ersetzen
+ins _<br/>_ -- _
+ins _<br>_ --  _
+
+ins _&amp;_&_
+//  ins _&lt;_<_   nicht global, nur bei den Feldern, wo es auftreten kann, sonst andere Probl.
+
+// einige Kombinationen kontrahieren
+// treten manchmal auf (z.B. ä als Kombination aus a und Trema)
+ins _u½__
+ins _o½_”_
+ins _a½_„_
+ins _A½__
+ins _O½_™_
+ins _U½_š_
+
+// Akzente ansonsten vertauschen von rechts nach links
+dow Ai
+return
+
+

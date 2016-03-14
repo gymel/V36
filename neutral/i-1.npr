@@ -1,0 +1,32 @@
+  Ausgabe im Original-"allegro"-Format             frher: PA.APR
+  d.h. eine sog. "Grunddatei", Typ .cLG
+  I-1.APR       940613
+pn="allegro-Grunddatei"
+
+   Diese Parameterdatei erzeugt Daten im allegro-Format,
+   also eine identische Kopie der Daten wie sie in der Datenbank stehen,
+   nur ohne die Satznummern
+
+  !!! diese Datei funktioniert fr alle Konfigurationen !!!
+      wenn Sie sie fr P.CFG ben”tigen:
+      mit  COPY I-1.APR I-1.PPR  eine Kopie machen
+
+   -------- Konstanten ----------------------------------------------------
+                                          dieser Teil muss bleiben
+zl=0        Zeilenl„nge unbegrenzt (kein Umbruch)
+
+ks=1        Beginn des Ausgabetextes beim ersten Zeichen hinter #
+
+ke=0        Kategorie-Ende = Code 0
+
+as=h0       Aufnahme-Start: Hierarchiekennung + 0
+                    Hauptaufnahme        : Code 01  als Startzeichen
+                    Unteraufnahme Stufe 1:      02  ...
+ae=13 10    Aufnahme-Ende: Carriage Return / Line Feed
+              bei hierarchischer Aufnahme: nur am Ende
+
+   -------- Anweisungsteil --------------------------------------------------
+
+##          Pauschalexport : alle Kategorien hintereinander ausgeben
+                             jeweils mit  ke  abschlieáen
+

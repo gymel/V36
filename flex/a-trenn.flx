@@ -1,0 +1,137 @@
+  A-TRENN.FLX : Hierarchischen Satz in Verknuepfte Saetze wandeln
+  2005-02-08    Wahlweise aktuellen Satz / Erg.Menge / Gesamtbank
+  Aus einem hierarch. Satz mit n Untersaetzen entsteht ein
+  Hauptsatz (mit derselben #00!) und n verkn. Untersaetze, diese
+  erhalten je eine eigene #00 und die Verkn. zum Hauptsatz in #09
+
+  ExportParam sichern
+var e
+ins #uwE
+  trenn.alg zur Sicherheit loeschen
+del trenn.alg
+  Parameter trenn.apr laden
+export p trenn
+if no jump error
+  Updatemodus setzen
+set u011
+  Zaehler auf Null
+z=0
+  Ausgabedatei:
+open x trenn.alg
+
+  Menue praeparieren
+  (je nachdem, was gerade moeglich ist!)
+var ""
+if hier var "Nur den aktuellen Datensatz" n
+if not empty var +"Ergebnismenge durcharbeiten" n
+var +"Gesamte Datenbank abarbeiten"
+  Menue zeigen und warten
+Aresqa
+  Welche Zeile wurde gewaehlt?
+if "" jump ex2
+if "Nur" jump aktuell
+if "Erg" jump erg
+
+  Gesamtbank wurde gewaehlt: lieber nochmal fragen
+yesno Im Ernst?
+if not yes jump ex2
+first #
+:gloop
+perf trenn
+:gn
+keychk
+  Wurde [Esc] gedrueckt? Wenn ja und Nachfrage mit ja beantwortet,
+  dann -> :exit
+if yes mes Abruch;jump exit
+
+next #
+if can jump exit
+jump gloop
+
+  Nur aktueller Satz
+:aktuell
+perf trenn
+jump exit
+
+  Erg.Menge wurde gewaehlt
+:erg
+first
+:eloop
+perf trenn
+:en
+next
+if no jump exit
+if del jump en
+jump eloop
+
+
+  Unterprogramm
+:trenn
+  Ist dieser Satz ein hierarchischer?
+if del return
+if hier jump do
+return
+  Dann ausfuehren:
+:do
+if not #00 jump noid
+
+:trnn
+  Satz anzeigen
+disp
+  Satz zerteilt in trenn.alg ausgeben
+export
+  hierarchisches Original loeschen
+erase
+  zaehlen
+z+1
+
+return
+
+  Keine IdNr vorhanden? eine erzeugen, indem einfach der Satz nochmal gespeichert wird.
+:noid
+put
+jump trnn
+
+:exit
+close x
+fsize trenn.alg
+if no mes Keine hierarchischen Sätze gefunden;jump ex1
+
+var z " hierarchische Sätze sind jetzt gelöscht," n
+if ="1 " var "Ein hierarchischer Satz ist gelöscht worden," n
+var +"nun werden die daraus erzeugten, verknüpften Sätze neu eingemischt." n
+var +"(Diese Daten sind jetzt ausgelagert in eine Datei namens  trenn.alg)" n n
+var +"OK drücken, dann geht das Einmischen los." n
+var +"Dann warten, auf keinen Fall unterbrechen!"
+mes
+upload trenn.alg
+mes erledigt!
+jump ex1
+
+:ex2
+close x
+  Exp.Param wiederherstellen
+:ex1
+var #uwE
+export p
+end
+
+:error
+var K1
+if not ="~a" jump nota
+var "Parameterdatei trenn." K1 "pr existiert nicht" n
+var +"TRENN.APR gehoert zum Standardpaket und sollte vorhanden sein!" n
+mes
+end
+
+:nota
+var "Sie verwenden nicht die Standardkonfiguration A.CFG, sondern " K ".CFG" n
+var +"Zum Auftrennen der hierarchischen Sätze muß es eine Parameterdatei" n
+var +"namens  TRENN." K1 "PR geben. Als Muster dafür kann man TRENN.APR nehmen"
+mes
+
+
+ u-VARIABLEN in a-trenn.flx
+ #uwE (2)  Exp.Parameter (Sicherung)
+
+

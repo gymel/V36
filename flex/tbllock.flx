@@ -1,0 +1,29 @@
+  TBLLOCK.FLX : Schreibsperre fuer gesamte Datenbank setzen/loeschen
+  2004-04-20
+
+var m
+if ="alc" end
+
+  Nur fuer die Anzeige von org.rtf:
+var "frei"
+if Loc var "gesperrt"
+ins #uvR
+
+if tbl jump fre
+yesno Schreibzugriff momentan frei. Sperren?
+if not yes end
+set tbl loc
+if no jump notfree
+#uvGgesperrt
+h org
+end
+:fre
+yesno Schreibzugriff momentan gesperrt. Freigeben?
+if not yes end
+set tbl fre
+if tbl jump notfree
+#uvGfrei
+h org
+end
+:notfree
+mes nicht gelungen

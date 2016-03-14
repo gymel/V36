@@ -1,0 +1,148 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fmodern allegro Letter Gothic;}{\f1\fswiss\fprq2\fcharset0 Verdana;}{\f2\fmodern\fprq1\fcharset0 Courier New;}{\f3\fmodern\fcharset0 allegro Letter Gothic;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;\red224\green0\blue255;\red0\green0\blue0;\red0\green64\blue128;}
+\viewkind4\uc1\pard\qc\f0\fs24         \par
+\cf1\b\f1\fs28 Wir bauen ein neues Datenfeld ein! \par
+\cf0\b0\fs20 Einstieg in das Database Engineering \b\fs28\par
+\pard\b0\fs18\par 
+Hier ist alles zusammengestellt, was zu tun und zu beachten ist, wenn man ein neues Feld (oder mehrere) in der eigenen Datenbank braucht. \par
+\i Zu empfehlen\i0  ist zwar immer, zuerst die existierenden Felder durchzusehen (`\cf2\ul\b Formatdokumentation\cf0\ulnone\b0 `), ob nicht ein geeignetes schon dabei ist. Aber was tun, wenn nicht? \par
+Das Ganze wird an einem konkreten, direkt nachvollziehbaren Beispiel vorgef\'fchrt. Der eine oder die andere kann vielleicht sogar genau dieses Beispiel unmittelbar gebrauchen: \par
+\par
+Wer sich schon mit allegro auskennt, braucht nur eine `\cf2\ul\b Kurzform\cf0\ulnone\b0 `, die in der Fortbildung beschrieben ist.\par
+\par
+\b\i\fs20 Konkrete Aufgabe:\b0\i0  \par
+Ein neues Feld  \b Sonderschlagwort\b0   einrichten, und zwar soll es die Feldnummer \b #34\b0  bekommen. \par
+\i Sinn:\i0  Beliebige W\'f6rter und Ausdr\'fccke eingebbar machen, nach denen dann auch gesucht werden kann. \par
+Anwendbar w\'e4re das z.B. f\'fcr \par
+  -- Ausstellungen \par
+  -- Literaturliste f\'fcr bes. Zwecke \par
+  -- Angaben zur Provenienz oder Lizenz \par
+  -- Zustand des Buches \par
+  -- Hinweise wie "Verlust", "Buchbinder" u.a. \par
+  -- \i usw. usf.\i0  \par
+Die Wahl der Bezeichnungen f\'fcr alle diese Dinge w\'e4re selbstredend v\'f6llig frei. Damit k\'f6nnte man hernach beliebige Ergebnismengen f\'fcr eigene Zwecke bilden. F\'fcr alles, was man sich mal bei bestimmten B\'fcchern irgendwie merken will, k\'f6nnte man immer schnell ein Sonderschlagwort erfinden und in #34 eingeben. Das neue Feld sollte deshalb mehrfach belegbar sein. Auch Mehrfacheingabe \i innerhalb\i0  des Feldes sollte m\'f6glich sein, mit Semikolon als Trennung. \par
+(\i Anm.:\i0  Im S\'fcdwestverbund erf\'fcllte lange das sog. "Abrufzeichen" eine \'e4hnliche Funktion.) \b\par
+\par
+Was ist wo zu tun und warum?\b0\par
+An der DemoBank kann man alles v\'f6llig gefahrlos durchf\'fchren! Die Beschreibungen unten beziehen sich alle auf die Standard-Einrichtung der DemoBank; f\'fcr die eigenen Zwecke kann man es modifizieren. \par
+Statt \b #34\b0  ist jede andere noch unbelegte Nummer verwendbar! Z.B. k\'f6nnten Sie ein Feld #94 mit dem Inhalt "Provenienz" wollen - dann machen Sie dasselbe wie hier gezeigt, nur mit #94 statt #34 und "Provenienz" statt "Sonder-SW". \par
+\i Tip 1:\i0  Die zweite Ziffer der Kategorienummer darf auch ein Buchstabe sein, z.B. #7k. Arbeitet man mit einem anderen Schema als  \f2 $a.cfg\f1 , wird man vermutlich sowieso eine andere Feldnummer w\'e4hlen und alles entsprechend \'e4ndern wollen. \par
+\i Tip 2:\i0  Zum Ausprobieren an der eigenen Datenbank empfiehlt es sich, eine `\cf2\ul\b Kopie\cf0\ulnone\b0 ` der ganzen Datenbank zu machen, und alles an dieser Kopie durchzuf\'fchren und zu testen. Klappt es, braucht man hinterher nur die Parameterdateien alle auf das echte Datenverzeichnis zu kopieren und die kopierte Datenbank zu l\'f6schen. \par
+\par
+In der folgenden Beschreibung sind die einzuf\'fcgenden Zeilen \cf3\b farbig hervorgehoben\cf0\b0 .  Die Funktionen zur Bearbeitung der Dateien stehen auch auf dem `\cf2\ul\b Admin-Men\'fc\cf0\ulnone\b0 .` Der Text hinter `\cf2\ul\b HILFE..HILFE..HILFE\cf0\ulnone\b0 ` erkl\'e4rt dort genauer, was es mit den einzelnen Funktionen des Men\'fcs auf sich hat. Noch einfacher ist es, unten gleich auf die blauen Flip-W\'f6rter zu klicken, dann kommt die Bearbeitungsfunktion f\'fcr die jeweilige Datei. Als Editor wird der mitgelieferte `\cf2\ul\b X-Editor\cf0\ulnone\b0 ` verwendet. Wenn Sie lieber den  \f2 edit\f1   von Microsoft wollen, dann setzen Sie zuerst in Ihre INI-Datei die Zeile \par
+\f2 Editor=edit \par
+\f1 Es mu\'df ein Editor sein, der im DOS-Zeichensatz arbeitet. M\'f6glich ist auch  \f2 WinVi\f1   (frei im Netz erh\'e4ltlich), denn man kann ihn leicht umschalten zwischen Windows und MS-DOS. \par
+\par
+\i Achtung:\i0  Beim Einf\'fcgen der Zeilen darf nichts einger\'fcckt werden, d.h. es darf kein Leerzeichen am linken Rand stehen! So ist es deshalb hier auch gezeigt, man sollte die Zeilen also mit Copy&Paste direkt und unver\'e4ndert von hier entnehmen. F\'fcgen Sie auch keine weiteren Leerzeichen oder Tabstopps in diese Zeilen ein, sonst klappt's nicht. \par
+\par
+1. Feld \b eingebbar\b0  machen:  \par
+\pard\fi-710\li710    \tab\b `\cf2\ul Konfiguration\cf0\ulnone `\b0  erweitern (sonst kommt beim Eingeben von #34 nur "Ung\'fcltige Eingabe") \par
+\pard\li710 Man f\'fcgt dazu eine Zeile ein in die Datei  \b\f2 $a.cfg\b0\f1 , und zwar zwischen die mit # beginnenden Zeilen, denn diese Zeilen definieren die erlaubten Datenfelder: \par
+\pard\cf3\b\f2 #34"Sonderschlagwort"\f1  \par
+\pard\fi-852\li852\cf0\b0       \tab Diese Zeile mu\'df nicht zwischen #33 und #35 stehen, nur unterhalb von #06! \par
+\pard\fi-710\li710\tab Sie kann genau da stehen, wo man die #34 in der Auswahlliste (links) sehen will. Z.B. \'fcber der Zeile  \f2 #99"Datum"\f1  , also weit unten.\par
+  \tab Die Position darf man sp\'e4ter jederzeit \'e4ndern, ohne sonstwo etwas \'e4ndern zu m\'fcssen! \par
+    \tab Hat man dies gemacht, kann man die #34 schon eingeben. Und sie wird auch gespeichert, aber mehr passiert noch nicht. \par
+\pard\par
+Was folgt, braucht man nicht alles zu machen, sondern nur das, was man w\'fcnscht. Mindestens die Indexierung (Punkt 5) wird man aber bestimmt wollen. \par
+\par
+2.  \b `\cf2\ul Formulare\cf0\ulnone `\b0  \b erweitern\b0  (Datei  \f2 cat.frm\f1   erg\'e4nzen) \par
+\pard\li710 Am besten im Formular "Buch, Teil 2" unter #31: (aber jedes andere ist m\'f6glich, auch Einbau in mehrere Abschnitte)\par
+\pard\cf3\b\f2 #34 "Sonderschlagwort: "|3\f1  \b0\par
+\pard\li710\cf0 Damit wird die Eingabe schon etwas bequemer, aber sonst passiert noch nichts. Beim Eingeben, z.B. im Formular, kann man Alt+i dr\'fccken und es erscheint der Index 3 zum Suchen, ob das Gew\'fcnschte schon darin vorhanden ist. Das wird durch die Angabe  \f2 |3\f1   erreicht.\par
+\pard  \par
+\pard\fi-710\li710 3. Feld \b indexieren\b0 : \b `\cf2\ul Indexparameter\cf0\ulnone `\b0  um drei neue Dinge erg\'e4nzen (Datei \f2 cat.api\f1 ) \par
+\pard    a) \b Zuordnung zu einem Register\b0\par
+\pard\li568 Eine neue ak-Befehlszeile einf\'fcgen, irgendwo unterhalb der Zeile  \f2 ak=zz+0\f1 : \par
+\pard\cf3\b\f2 ak=34.";"+s\f1\par
+\pard\li568\cf0\b0 Dann wird jede #34 indexiert und ihr Inhalt am ; getrennt. Die eigentliche Bearbeitung soll an der Sprungmarke #-s stattfinden. Die kommt in cat.api noch nicht vor, wir bauen sie ein: \par
+\pard\tx568    b)\tab\b Abschnitt #-s f\'fcr die Ausf\'fchrung\b0  \par
+\pard\fi-568\li568\tx568\tab (Einf\'fcgen irgendwo genau unter einer Zeile #+# . Solche Zeilen kommen an vielen Stellen vor, sie bedeuten einfach nur, da\'df das Programm an der Stelle nicht weitermachen soll, es ist ein Unterprogramm-Endebefehl. Darunter kann man beliebig neue Unterprogramme einf\'fcgen, wie dieses hier:) \par
+\pard\cf3\b\f2 #-s \par
+!u1 f" " p"|3zz" \par
+#+#\cf0\b0\par
+\pard\tx568\f1    c)\tab\b Symbolischer Registername\b0  (f\'fcr Find-Befehle!) \par
+\pard\li568 Es gibt Zeilen, die mit I beginnen, z.B. I PER 1 "Personennamen". In diesem Bereich diese Zeile einf\'fcgen: \par
+\pard\cf3\b\f2 I SSW 3zz "Sonder-SW"\f1  \par
+\pard\li568\cf0\b0 Indexparameterdatei nach diesen \'c4nderungen schlie\'dfen (speichern). \par
+\i Dann:\i0  Test mit F7! Der Inhalt von #34 m\'fc\'dfte mit |3zz davor in der Liste der Registereintr\'e4ge zu sehen sein, wenn der aktuelle Datensatz eine #34 enth\'e4lt. \par
+\pard\fi-568\li568\tx568\tab\i Tip:\i0  Lassen Sie zz an beiden Stellen b) und c) weg, wenn die Eintr\'e4ge direkt zwischen  allen anderen Eintr\'e4gen im Register stehen sollen. Sonst bilden die Eintr\'e4ge einen eigenen Registerabschnitt, in dem alle Zeilen mit zz beginnen. \par
+\pard\li568 Dann `\cf2\ul\b Index erneuern\cf0\ulnone\b0 ` - aber das ist nur n\'f6tig, falls (nach Schritt 1) schon Daten eingegeben wurden. Von nun an neu eingegebene Daten werden in jedem Fall ab dem n\'e4chsten Programmstart richtig indexiert. \par
+\pard\par
+4. Feld soll \b in der Titelanzeige sichtbar\b0  sein? \par
+\pard\li568 Dann \b `\cf2\ul Anzeigeparameter\cf0\ulnone `\b0  bearbeiten. \par
+In der Datei  \f2 d-wrtf.apr\f1   neue Zeile unter #35: \par
+\pard\cf3\b\f2 #34 ++ p\{C t72 "Sonder-SW : " #250 t76\} m\{C\}\f1  \par
+\pard\li568\cf0\b0 Im Auswahlfeld links und bei der F5-Anzeige wird aber die #34 automatisch sichtbar. Vielleicht gen\'fcgt einem das ja schon! \par
+Tip: Falls man f\'fcr den OPAC andere Parameter verwendet, kann man die #34 nat\'fcrlich entsprechend auch in diese einbauen, falls gew\'fcnscht. \par
+\pard\cf3     \par
+\cf0 5. Feld auch mit \b ausdrucken\b0 ? \par
+\pard\li568 Dann \b `\cf2\ul Druckparameter\cf0\ulnone `\b0  bearbeiten (Datei  \f2 p-w.apr\f1 ) \par
+Z.B. darin unter der Zeile  \f2 #30t\f1   diese Zeile einsetzen: \par
+\pard\cf3\b\f2 #34. ++ C p\{ &0 t88 "Sonder-SW: " t87 " : "\} m\{C\}\f1\par
+\pard\li568\cf0\b0 oder, wenn nur die erste #34 im Druck erscheinen soll: \par
+\pard\cf3\b\f2 #34 C p\{ &0 t88 "Sonder-SW: " t87 " : "\}\f1\par
+\b0\par
+\cf4 Was bedeuten diese kryptischen Befehle? Es sind \b Manipulationsbefehle\b0  der Exportsprache. Sie werden in einer `\cf2\ul\b Tabelle\cf4\ulnone\b0 ` im Kapitel 10 des Handbuchs erkl\'e4rt. Die Exportsprache selbst wird in einer `\cf2\ul\b Einf\'fchrung\cf4\ulnone\b0 ` verst\'e4ndlicher gemacht. Wenn Sie dar\'fcber weiter nichts wissen wollen, kopieren Sie die Zeilen exakt so, wie sie hier stehen. \par
+\par
+\pard\fi-568\li568\cf0 6. \b Hilfetext\b0  (optional): Neue Datei namens  \b\f2 h34\b0\f1   anlegen (nicht  \f2 h34.txt\f1  !) \par
+\pard\li568 So wird das gemacht: F\'fcllhorn, "Neue Textdatei schreiben" , dann den folgenden, blauen Text in das leere Anzeigefeld kopieren: \par
+\pard\f3\fs18\par
+\cf5\b\f2  Kategorie-Gruppe #34 : Sonder-Schlagwort \par
+ ---------------------------------------- \par
+ #34 SSw1; SSW2; SSW3;... \par
+ Kategorie ist wiederholbar. Man kann \'fcberlegen, ob man #34a, #34b usw. \par
+ f\'fcr bestimmte Zwecke einsetzt, oder ob man alle Sonder-Schlagw\'f6rter \par
+ in die #34 schreibt, mit ; (Semikolon) getrennt. \par
+ Indexiert werden alle Eintr\'e4ge im Reg. 3 im Abschnitt zz, d.h. man \par
+ findet dort Zeilen, die mit zz beginnen, z.B. \par
+ zzabc \par
+ wenn man  #34 abc  eingegeben hatte. \par
+ In Find-Befehlen kann man schreiben  ssw abc, wenn man das \par
+ Sonderschlagwort abc sucht.\cf0\b0\f0\par
+\f1\fs20\par
+\tab\i Dann:\i0  \par
+\tab Speichern mit Alt+s, Dateiname  \f2 h34\f1  (Verzeichnis c:\\allegro\\demo2) \par
+          Der Hilfetext erscheint, wenn im Schreibfeld #34 ... steht oder in \par
+          einem Formularfeld der Cursor in einer Zeile mit der #34 steht, und \par
+\tab dann \b F1\b0  gedr\'fcckt wird. \par
+\par
+7. \b Daten erfassen\b0  \par
+    a) Globale Einsetzung \par
+    \tab Wenn man in einer Ergebnismenge jeden Satz mit dem \par
+\tab Sonderschlagwort  \f2 abc\f1   versehen will, dann tr\'e4gt man \par
+\tab in die "Globale Ersetzung" ein (im Men\'fc "Global"): \par
+\cf3 #34 abc \par
+\cf0     \tab und zwar unter "Ersetze durch", und nichts in die anderen Felder! \par
+\par
+    b) Bearbeitung mit Hilfe von FLEX \par
+\pard\fi-710\li710     \tab Manchmal will man nicht in \i s\'e4mtliche\i0  S\'e4tze einer Ergebnismenge \par
+\tab genau dasselbe Schlagwort einsetzen, sondern in jeden \par
+\tab Satz ein anderes. Das ist eine Aufgabe, die mit FLEX gut zu l\'f6sen ist. \par
+\tab In der `\cf2\ul Online-Fortbildung\cf0\ulnone ` wurde dazu eine ausf\'fchrliche Lektion \par
+\tab geboten, in der genau beschrieben ist (Lektion 13.3) , wie man das macht. \par
+\tab Machen Sie sich z.B. eine FLEX-Datei namens  \f2 e34.flx\f1 . \par
+ \tab Die k\'f6nnen Sie dann bei Bedarf mit  \f2 X e34\f1   (im Schreibfeld) aufrufen. \par
+\fs18\par
+\pard\par
+\i Zuletzt:\i0  Alle ge\'e4nderten Dateien: (\f2 $a.cfg, d-wrtf.apr, p-w.apr, cat.api, cat.frm, \fs20 e34.flx\f1\fs18 )  auf das eigene Datenbankverzeichnis kopieren, falls sie da nicht sowieso schon liegen. Dann sind sie vor k\'fcnftiger \'dcberschreibung durch eine neue Version aus Braunschweig gesichert. Keine Sorge, die neuen Programme der n\'e4chsten Versionen werden immer damit funktionieren.\par
+\i Hinweis: \i0 Ein Neustart des Rechners ist in keinem Fall n\'f6tig. Nach dem \'c4ndern einer der genannten Dateien ist jeweils nur a99 neu zu starten, das besorgen aber die Prozeduren schon selber, wenn man das Admin-Men\'fc nutzt.\par
+\par
+?HILFE..HILFE..HILFE=h admin \par
+?Formatdokumentation=x jan  http://www.allegro-c.de/doku/form2004/ \par
+?Online-Fortbildung=x jan  http://www.allegro-c.de/fb/ \par
+?Kopie=h backp \par
+?Admin-Men\'fc.=h adm \par
+?Konfiguration=X cfgedit \par
+?Indexparameter=X iparedit \par
+?Anzeigeparameter=X aparedit \par
+?Druckparameter=X dparedit \par
+?Formulare=X formedit \par
+?Tabelle=h ac10-6 \par
+?Einf\'fchrung=x janas expar.htm \par
+?Index erneuern=h org \par
+?X-Editor=h acd \par
+?Kurzform=x janas http://www.allegro-c.de/fb/allegrofb-Kap9.4.htm\par
+\par
+}
+ 

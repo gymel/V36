@@ -1,0 +1,72 @@
+  INXPROD.FLX : Index erneuern
+  20070413
+
+var "|" D B "." K1 "?x"
+fnam
+  Nur eine Indexdatei? Dann kommt | nicht vor
+if not %|% jump gesamt
+  Mehr als ein Index? (Multix) Dann kommt | vor
+op x wh
+wri "Gesamt-Neuindexierung (alle Register)" n n
+var ">" D B "." K1 "?x"
+fnam
+wri n "Andere Indexdatei (neuer Kennbuchstabe)"
+clo x
+Are wh
+    ACHTUNG: Diese Zeile war in V30 falsch und muss raus:
+  del wh
+if "" end
+if "And" jump andere
+if "Ges" jump gesamt
+var (b" -- " e" ")
+ins #uwX
+
+var #uwX " erneuern?"
+yes
+if not yes end
+
+var #uwX(b"." 1,1)
+ins #uwX
+
+:org
+var #uwX
+if "D" jump gesamt
+if "d" jump gesamt
+open x org.bat
+
+wri "@echo off" n "cls" n "set -k=" K n "set -K1=" K1 n
+wri "set -l=" L n 
+wri P "index.exe -fi0 -@2 -Z" #uwX " -d" D B "_*." K1 "ld -k" K " -e" B "/" D n
+wri P "qrix -fq0 -k" K " -Z" #uwX " -d" D " -e" B "/" D " -x9999 -P" P n
+clo x
+close d
+
+var "Bitte warten..." n "(Mit Alt+Tab auf das Meldungsfenster umschalten!")
+sho iv
+
+cAll org.bat
+open d
+  a99 wieder in den Vordergrund bringen
+activate
+  und Focus auf Auswahlliste
+var "Erledigt"
+sho iv
+mes
+act 1
+help protok
+end
+
+:andere
+ask Kennbuchstabe? (Wie in Index-Parametern vorbereitet)
+if "" end
+var (0,1)
+ins #uwX
+jump org
+
+:gesamt
+var "iIndex erneuern"
+ins #uxO
+exec X org.flx
+
+
+

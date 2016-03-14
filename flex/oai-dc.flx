@@ -1,0 +1,158 @@
+  OAI-DC.FLX : XML-Daten einer OAI-Abfrage umwandeln
+  2008-12-08   Format oai_dc
+
+  Aufruf:  X oai-dc filename
+
+  Auch als UPRO aufrufbar. Dann diese Datei mit include einbinden
+                           und  var "dateiname"
+                                perform oaumw
+:oaumw
+ins $d
+if "" var "oai-lr.xml";ins $d
+
+var $d
+  Datei liegt auf WorkDir als  oai-lr.xml (aus oai.flx)
+open
+if no var "Datei " $d " nicht gefunden";mes;end
+
+  sog. "resumption token"
+var ""
+ins $ResT
+
+fetch 5000
+if not %<record% mes Keine Daten vorhanden;close;jump schluss
+
+var "0"
+fetch m
+
+  Pseudo-Export initialisieren
+set dow 2
+  Parameter nur fuer die VS-Sequenzen!
+exp p utf-ad
+open x nul
+dow
+
+var "<record"
+fetch e
+if %<resumptionToken% var (x"resumptionToken" e"");ins $ResT
+
+:loop
+var "<record"
+fetch e
+if "" jump ende
+  Es kommt <dc:title> vor, aber auch <title>
+ins _dc:__
+  Es kommen Zeilenschaltungen mitten im Wort vor.
+ins _^M__
+ins _^J__
+  Solche Dinge muessen weg:
+ins _<![CDATA[__
+ins _]]>__
+
+  Echte & sind manchmal falsch dargestellt:
+ins _&amp;_&_
+
+  UTF-Codes umwandeln in ASCII (u-Befehle in der .API)
+xcode u
+  Sequenzen umcodieren (&gt; -> > usw., laut Index der Datenbank!)
+xcode xp
+
+  Satz ist jetzt ASCII, nun Umwandlung moeglich
+  Mit var (x...) werden XML-Felder extrahiert
+     Dabei werden Mehrfachfelder durch  getrennt (2x Code 20)
+ins $rec
+
+var $rec
+if %<resumptionToken% var (x"resumptionToken" e"");ins $ResT
+
+  Neuer Satz
+new 0
+ 
+var $rec (x"title")
+ins #20
+
+var #20(b"")
+ins __ ; _
+ins ___
+ins #23
+
+var #20(e"")
+ins ___
+ins #20
+
+var $rec (b'header status="del')
+if not "" #20 DELETED
+
+  Die Qualitaet der Verfasserangabe ist sehr gemischt
+var $rec (x"creator")
+ins _; _ ª/ _
+ins __ ; _
+ins ___
+ins #40
+
+  Contributor noch schlechter, Personen UND Koerperschaften
+var $rec (x"contributor")
+ins _; _ ª/ _
+ins __ ; _
+ins ___
+ins #61
+
+var $rec (x"subject")
+ins __ ; _
+ins #31
+
+var $rec (x"publisher")
+ins __ ; _
+ins #75
+
+var $rec (x"datestamp" F"Z")
+ins _-__
+ins _T_/_
+ins #99n
+
+var $rec (x"language")
+ins #37
+
+var $rec (x"source")
+ins #85
+var #85(f" ")
+ins #85
+
+var $rec (x"identifier")
+ins $t
+
+var $t (e"http://" e"")
+ins #89
+
+var ""
+ins $u
+var $t (b"http://" e"")
+ins $u
+if $u var "http://" $u ;ins #8e
+var $rec (x"date" e"" e"T" )
+ins #76
+var $rec (x"description" 0,10000)
+ins #98
+var #98(f" ")
+ins ___
+  z.B. aus &#xD; ist /// geworden
+ins _///__
+ins #98
+jump loop
+:ende
+close
+close x
+set dow 1 1
+last off
+disp
+sho rec
+var "im Offline-Speicher: " o " S„tze (Besichtigung mit Alt+q)"
+ansi
+  Falls es als UP aufgerufen wurde!
+return
+mes
+end
+
+:schluss
+help oai
+end

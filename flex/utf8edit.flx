@@ -1,0 +1,53 @@
+  UTF8EDIT.FLX : Externes Editieren des Satzes mit Notepad in UTF-8
+  2003-07-07     Nur unter XP/Win'7! Nur, wenn man intern UTF-8 hat!
+
+  Exportparam sichern
+var e
+ins #uwe
+
+  Satz mit e-w0 ausgeben in notep.txt
+xport p e-w0
+
+var M "e.adt"
+open x 
+   Steuerzeichen fuer Notepad, damit es UTF-8 anzeigt:
+wri 239 187 191 n
+dow
+close x
+
+  Zeitstempel der Datei festhalten in #uev
+var M "e.adt"
+ftime
+ins #uev
+
+  Notepad aufrufen (*)
+var "notepad " M "e.adt"
+call 
+
+  Zeitstempel der Datei vergleichen mit vorher
+var M "e.adt"
+ftime 
+  unveraendert? dann -> :unv
+if =#uev jump unv
+
+  sonst Satz wieder einlesen, falls veraendert
+  dabei die UTF-Codes wandeln, undefinierte so belassen
+set U2
+var M "e.adt"
+read rec
+set U0
+
+:unv
+disp
+sho rec
+#uev
+
+  Exportparam wiederherstellen
+var #uwe
+xport p
+set b
+
+  (*)
+  Wenn man notepad++ einsetzen will, dann z.B.:
+
+  call C:\\Programme\\Notepad++\\notepad++.exe -noPlugin -multiInst e.adt

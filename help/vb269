@@ -1,0 +1,248 @@
+
+
+Verlautbarung 269 der Entw.Abt.                              2015-05-15
+-------------------------------
+
+V35.5 ist da
+------------
+
+
+a99: ViewListen und Ergebnislisten
+----------------------------------
+Es kamen Fehler vor beim Eingeben von Suchwoertern:
+Zwar sprang der Balken auf die richtige Zeile, aber bei Druck auf
+Enter kam die falsche Zeile raus. Unangenehm auf war das gefallen
+bei ViewListen fuer die Verwendung in Formularen mit  Alt+i.
+Behoben.
+
+a99: Ergebnislisten: Eintraege loeschen
+---------------------------------------
+Im Kurzlistenfenster kann man ja Eintraege mit der "Entf"-Taste
+loeschen. Dann erscheint zuerst "DEL" vor der betr. Zeile.
+(Mit nochmals "Entf" verschwindet das wieder.)
+Beim Verlassen wird dann gefragt:
+  Markierte Saetze aus der Liste entfernen?
+und dabei konnte es leider zum Stillstand kommen.
+Behoben.
+(Entfernt werden uebrigens nur die Zeilen aus der Liste, d.h.
+aus der Ergebnismenge. Die Datensaetze bleiben unberuehrt, die
+kriegt man so nicht weg.)
+
+a99 FLEX: "erase" mit Rueckfrage
+--------------------------------
+Faelschlich kam bei "erase" eine Rueckfrage, die nur bei "Erase"
+kommen soll.
+Behoben.
+
+a99 FLEX: "read set"
+--------------------
+Es funktionierte nicht der Check mit "if no ...", wenn das Einlesen
+der Erg.Menge scheiterte.
+Behoben.
+
+
+aLF / ORDER : Exemplarauflistung
+--------------------------------
+Im jeweiligen Menue (Alt+3 bzw. Alt+7) gibt es die neue Funktion
+"Exemplardaten zu diesem Titel"
+Diese tut es auch, wenn's mal mehr als 200 Exemplarsaetze sind,
+dann klappt's mit der anklickbaren Auflistung in der Titelanzeige
+leider nicht mehr. (Dahinter steckt der neue  a-expl.flx.)
+
+
+Import : Fehlerbehebung
+-----------------------
+Es kam zu Fehlleistungen in der Umwandlung, wenn innerhalb eines
+Unterprogramms  (X  weitere Positionierungsbefehle standen, z.B.
+
+s "..."   oder   g"..."
+oder auch
+kuxy
+
+und diese dann erfolglos waren, d.h. nichts dabei rauskam, und
+das Unterprogramm mitsamt dem aufrufenden Paragraphen deshalb 
+abzubrechen war. In dem Fall wurde der Zeiger zurueck in den 
+Paragraphen nicht geloescht, wie es bei normaler Beendigung an einer
+Zeile  )X  geschehen wuerde, wodurch es an der naechsten mit ')'
+beginnenden Zeile zu einer Fehlsteuerung kam und damit zu Fehlern
+in den Ergebnisdaten kommen konnte - wenn auch nicht zu Abstuerzen.
+Behoben.
+
+
+Umwandlung Pica3 -> a.cfg mit Beruecksicht. v. RDA
+--------------------------------------------------
+Es hatten sich in den zusammengehoerigen Parametern pica.aim und 
+i-pica.apr viele Ungereimt- und Unschoenheiten angesammelt.
+Nun wurd's Zeit, da mal wieder dranzugehen, zumal etliche Neuer-
+und Veraenderungen hinsichtlich RDA Gestalt angenommen haben.
+In der Datei  i-pica.apr  sind zwei Stellen, mit **** kommentiert,
+wo man je drei Zeilen deaktivieren oder aktivieren muss, wenn
+Exemplarsaetze erzeugt werden sollen bzw. nur fuer Zeitschriften
+solche gewuenscht sind. Geliefert wird die letztere Einstellung.
+Liste der Veraenderungen im ANHANG.
+
+
+DemoBank mit RDA-Beispielen 
+---------------------------
+Wer sich Beispieldaten anschauen will, in denen RDA-Dinge zu
+sehen sind:
+
+  http://www.allegro-c.de/db/rdademo/a35-pc.php
+
+Es handelt sich um die Beispiele aus dem Wiesenmueller-Lehrbuch.
+(wie im Forum berichtet)
+
+
+Interne Verbesserungen des Quellcodes
+-------------------------------------
+Die Arbeiten hinsichtlich vor allem Vermeidung von Missbrauch der
+Aerror-Variablen wurden abgeschlossen. Weitere Verbesserungen sind
+geplant. Das nuetzt nur denen, wie z.B. uns selber, die sich mit dem
+C++-Quellcode von a99 abzuplagen haben.
+
+
+JanaS bleibt bei Ende von a99 jetzt offen
+-----------------------------------------
+Es hatte sich rausgestellt, dass ein noch offenes JanaS-Fenster 
+beim Beenden von a99 dazu fuehren konnte, dass letzteres haengenblieb.
+Daher bleibt jetzt das JanaS-Fenster offen und muss vom Nutzer
+selber geschlossen werden.
+
+
+ANHANG
+======
+
+RDA-bedingte Aenderungen in pica.aim / i-pica.apr
+-------------------------------------------------
+Siehe dazu eine von DNB publizierte Tabelle:
+  Mapping RDA - MARC21 - Pica ...
+  https://wiki.dnb.de/pages/viewpage.action?pageId=106039241
+
+Die genannten Parameter zur Umwandlung von Pica3 ins a-Format sind
+in Kombination zu benutzen, z.B. so, wenn download.txt die Datei
+ist, die man in der IBW mittels  dow sN d  gewonnen hat: (N = Nr. der
+Erg.Menge)
+
+  import -ddownload.txt -ipica -ei-pica=download.alg
+
+Die Parameter  i-pica.apr  machen einige Dinge, die in der Import-
+sprache nicht gut gehen.
+
+Aenderungen:
+
+4000:  --> #20
+  $d --> " : "
+  e"$h"
+
+4000:  " / " oder $h --> #39
+  
+
+321x:  (Einheitstitel - Werktitel)
+  #22 mehrfach moeglich
+
+4010:  (enthaltenes Werk)
+  #26 mehrfach moeglich
+
+
+3000   (Verfasserl)
+  #40
+  $c -> " "
+  $P -> ""
+  @ --> " = "
+
+
+3010
+  --> #60 (= MARC 110, Koerp. als G.S.);
+      wenn aber $g, dann -> #83 (=MARC 111)
+
+1100
+  $n --> " = "
+
+4060
+  --> #77
+  "Seiten" -> "S."
+
+4204
+  -> #818  $d  eigentl. Hochschulschriftenvermerk
+  -> #819, Wort "Universität" übergehen, nur Ort:Jahr
+
+424X       in Bez. stehendes Werk
+  -> #81B
+    !...! beruecksicht., aber mit _... an das Ende
+
+42xx  andere Fussnoten
+  alle -> #81, Trennung "; "
+  $l -> ", "
+  $p -> " "
+
+Wenn in den Pica-Daten eine GND-Verknuepfungsnummer steht, wird diese
+an das allegro-Feld hinten angehaengt mit '_', z.B. so:
+  #61 Staat Braunschweig. Bau-Direction_gnd/117139-2
+Die Verknuepfung koennte dann aber innerhalb allegro-Datenbanken nur
+klappen, wenn der GND-Stammsatz auch vorhanden waere und dieser einen 
+geeigneten Ersetzungsschluessel produzierte. Das wird nicht 
+standardmaessig der Fall sein. Ausserdem muesste der Modus i5 auf 
+i5=__ gestellt sein, also mit zwei '_', und in den Titeldaten haette
+NUR die Nr. zu stehen, in der Form _gnd/117139-2_. D.h. diese Loesung
+ist noch keineswegs eine ganz zufriedenstellende. War aber bisher auch
+nicht. [Die Pica-Lokalsysteme haben einen aufwendigen Prozess, der
+dafuer sorgt, die notwendigen verknuepften Saetze zu den neuen Titel-
+daten automatisch heranzuholen.]
+
+Spaeter ausbaufaehig:
+0501 -> #0c.1   Inhaltstyp  (nur der Code)
+0503 -> #77.1   Datentraegertyp  (Nur der Code)
+Der Medientypcode (0502) wird ignoriert, weil er identisch ist mit
+dem ersten Buchstaben von 0503. Wenn spaeter andere Lieferanten andere
+Medientypcodes sich ausdenken, kommen die in #77.2. Man wird dann 
+wissen: Aha, #77.2 fehlt, dann gilt der erste Buchstabe von #77.1.
+Wer zwingende Gruende hat, kann's natuerlich anders machen. Wir
+schreiben das nicht verbindlich so vor. Zunaechst mal passiert auch
+noch gar nichts damit! Man hat ja zu bedenken, dass alle aelteren
+Daten solche Codes nicht haben und diese sich auch nicht zuverlaessig
+retrospektiv erzeugen lassen. Ihr Wert wird daher begrenzt sein, jeden-
+falls z.B. als Restriktions- oder gar Indexkriterium. Allenfalls in der
+Titelanzeige kann man was draus machen, das waere unschaedlich.
+
+
+Noch unter Vorbehalt:
+Es gibt 3 neue Felder zusaetzlich zum Ersch.vermerk
+Im GBV vorerst noch nicht zu sehen, aber schon spezifiziert:
+  https://wiki.dnb.de/display/RDAINFO/Festlegungen+zum+Erscheinungsvermerk
+
+4046 $a$b$c -> #73.1 (Entstehung)   
+4034 $a$b$c -> #73.2 (Vertrieb)
+4045 $a$b$c -> #73.3 (Herstellung)
+
+4030 Ort : Verlag -> #74 / #75   (unveraendert)
+
+
+ANHANG
+======
+
+a99: Fehler bei FLEX "next"
+---------------------------
+Durch fehlende Ruecksetzung eines Flags (im C++-Quellcode) wurde der
+Befehl "next" zum Laden des naechsten Satzes einer Erg.Menge nicht
+ausgefuehrt, d.h. der Satz nicht geladen. Das macht natuerelich manche
+dysfunktional.
+Behoben.
+
+
+ORDER: Neuer FLEX o-stat
+------------------------
+Auf dem ORDER-Menue findet sich eine neue Funktion "Statistik",
+neben "Erg.Menge durchrechnen".
+Er arbeitet nur, wenn die aktuelle Erg.Menge aus Bestellsaetzen
+besteht. Der Anwender hat dann die Wahl:
+
+Auftraggeber
+Lieferant
+Kontingent
+Waehrung
+
+Damit wird dann die Ergebnismenge durchgerechnet und nach dem
+jeweiligen Kriterium aufgeschluesselt, d.h. welche Summen z.B.
+fuer die einzelnen Kontingente aus der Erg.Menge sich ergeben.
+
+

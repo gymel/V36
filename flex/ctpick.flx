@@ -1,0 +1,55 @@
+  CTPICK.FLX : Zaehlungsstruktur waehlen
+  2001-02-06  (d.h. eine Datei C-*.?CT)
+
+var m
+if "alc" end
+
+if #uwQ jump bearb
+
+:pick
+var "Vorhandene Z„hl- und Auswertstrukturen|" P "c-*." K1 "ct"
+ansi
+  Dateiauswahl
+fnam
+  nichts gewaehlt - Schluss
+if no end
+if canc end
+  gewaehlter Dateiname: in #ucU kopieren
+ins #ucU
+  und die Datei als Hilfetext anzeigen
+help
+  In #uwQ soll nur der eigentliche Name stehen:
+ins #uwQ
+var #uwQ(T"\\")
+ins #uwQ
+var #uwQ(b"-")
+ins #uwQ
+var #uwQ(e".")
+ins #uwQ
+
+var "Wollen Sie die Struktur >" #uwQ "< anwenden? (Nein = bearbeiten)"
+yes
+if can end
+if no jump ctedit
+help ct
+end
+
+:bearb
+var "Struktur " #uwQ(e".") " bearbeiten? (Nein: andere ausw„hlen)"
+ansi
+yes
+if yes jump ctedit
+if can end
+jump pick
+
+:ctedit
+var "c-" #uwQ "." K1 "ct"
+ins #ucU
+mes Bearbeiten, dann wieder mit Alt+9 speichern
+#uX9X ctstart
+var #ucU
+help
+end
+  Variablen
+  #uwQ   C-xyz.bat
+  #ucU   vollst. Name incl. Pfad

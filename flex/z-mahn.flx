@@ -1,0 +1,136 @@
+  Z-MAHN.FLX : Mahnfunktionen
+  2008-07-22   u.a. Erstellung einer CSV-Datei f. Word-Serienbrief
+
+  Flag fuer Bandmahnung? (o-func.flx) wenn aktueller Satz Bandsatz
+if #uzM jump bandmahn
+
+  sonst Mahnfaelle erst mal auflisten
+
+var #dts(e"/") "z"
+ins $ze
+  alle F„lle bis zum heutigen Datum
+var "|: ZM2000---ZM" $ze
+find
+if empty jump nix
+  Kurzliste zeigen (zeigt Titel der Zeitschr.!)
+choose *
+if cancel end
+ins $mf
+  den gewaehlten Satz laden
+load
+disp
+sho rec
+  Was soll geschehen?
+var "Mahnung zu " $mf " anzeigen" n "Mahndatei erstellen" n "Ende"
+Aresq
+if "" end
+if "Mahnung zu" jump bandmahn
+if "Ende" end
+
+  Mahndatei f. Word erstellen
+set dow 2
+exp p zmahn
+  Dateityp .tab wichtig: CSV-Struktur dann von Word erkannt
+exp f zmahn.tab
+set dow 1
+  Flag f. zmahn.apr
+#uzz
+first
+:loop
+perform bandmahn
+set dow 2
+exp
+set dow 1
+next
+if yes jump loop
+var "Datei " W "\\ ZMAHN.TAB ist erstellt und" n "kann zur Serienbrief-Erstellung mit zmahn.doc genutzt werden"
+mes
+end
+
+
+:nix
+var "momentan keine Mahnf„lle"
+ansi
+mes
+
+  ad-hoc Mahnung des naechsten Hefts zum aktuellen Band
+:bandmahn
+  Flag aus
+ if not #9DB$O mes Kein Mahntermin eingetragen;return;end
+#uzM
+var #dt(b", ")
+ins #uM3
+
+var #9DB$O
+var (B"/")
+ins #uM6
+var #uM6 " (" #9DG$Y ")"
+ins #uM6
+  Suchbef. f. Abo vorbereiten
+var "|9 " #9DA$J
+ins $abo
+
+  Titelsatz
+var "|9 " #9DA$T
+set obj 2
+f1nd
+if not no jump zti
+var "... ohne Titel ..."
+ins #uM4
+jump zlief
+
+:zti
+if #8n var #8n
+if not #8n var #20(e" : ")
+ins _ª__
+ins #uM4
+  Lieferantencode im Titelsatz?
+var #9DB$j
+ins $zlcod
+set obj 1
+
+:zlief
+if $zlcod jump zlget
+if #9DB$j var #9DB$j;ins $zlcod;jump zlget
+
+  AboSatz holen
+var $abo
+set obj 2
+f1nd
+var #9DB$j
+ins $zlcod
+var #9DB$L
+ins #uM5
+set obj 1
+
+  Lief.Satz holen
+:zlget
+set obj 2
+var "|; _SYSL" $zlcod
+f1nd
+if no var "Kein Lieferant";ins #uM1;jump brief
+var #9A$n
+ins #uM1
+  Sprache
+var #9A$p
+ins $spr
+  Adresse
+var #9A$a
+set c-
+  Zeilenschaltungen
+ins __\\par _
+ins _, _\\par _
+ins #uM2
+if #9A$k var "- " #9A$k " -\\par " #uM2;ins #uM2
+set obj 1
+
+return
+
+:brief
+  Mahnbrieftext in der betr. Sprache anzeigen
+var $spr
+if "~eng" help zmahneng
+if "~deu" help zmahndeu
+if "" help zmahndeu
+
+

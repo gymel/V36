@@ -1,0 +1,671 @@
+  O-FUNC.FLX : Funktionen von ORDER/ZAboM, die momentan moeglich sind,
+  2005-01-31/2008-04-03     d.h. mit dem gerade geladenen Satz
+
+  Kurzlisten-Ueberschr. ruecksetzen
+set i3
+  Welche Situation liegt vor? (Was fuer einen Satz haben wir vor uns?)
+var #9DB
+if "A" jump zband
+if "B" jump zband
+if #9DA$J jump zband
+if #9DA jump bestell
+if #8n. jump zs
+if #88 jump zs
+if #20 jump titel
+if #9R jump rech
+if #9A jump SYS
+if #9B jump mita
+var #9DG
+if "V" jump fvor
+if #9DF jump exemp
+  in allen anderen Faellen: Formular
+exec onforms
+
+  Ein Band- oder Abo-Satz
+:zband
+var #9DA
+if "V" jump heft
+var #9DB
+if "A" set aAbo-Funktionen;var "Heftzugang" n "Banddaten" n "Neuer Band" n "Umlaufende Hefte" n "Bestellzettel drucken";jump ad
+if "B" set aBand-Funktionen;var "Heftzugang" n "Banddaten bearb." n "Abodaten" n "Umlaufende Hefte" n "Heft in Umlauf geben" n "Einzelheftausleihe" n "Bandstatus" n "Mahnung (fällig " #9DB$O(e"/") ")" n "Mahntermin neu setzen";jump ad
+var "Umlaufende Hefte"
+:ad
+var +n "Titeldaten" n "Neue Rechnung hierzu" n "Teilbetrag zu anderer Rechn." n "Letzte Rechnung" n "Alle Rechnungen hierzu" n "Externe Datei"
+  Was will der Nutzer?
+Ares
+set a...
+if "" end
+  er hat gewaehlt:
+if "Abo" var "|9 " #9DA$J;find;sho rec;disp;end
+if "Titel" var "|9 " #9DA$T;find;sho rec;disp;end
+if "Neue Rech" exec o-rech
+if "Teilb" exec o-rech teil
+if "Heft in Uml" jump huml
+if "Einzel" jump einz
+if "Heft" exec z-heft
+if "Bandstat" exec o-status
+if "Bestellz" exec o-bzett
+if "Letzt" jump ral
+if "Alle" jump raa
+
+if "Umlauf" jump au
+if "Banddaten bearb" jump bbearb
+if "Neuer B" exec z-nband
+if "Band" jump bada
+if "Ext" exec z-exdat
+if "Mahnt" jump mahnt
+if "Mahn" var "1";ins #uzM;exec z-mahn
+end
+
+  Umlaufende Hefte finden, vom Abo oder Titel ausgehend
+:au
+var "|: u-" #00 "/?"     //  Titelsatz
+var "|: u-" #9DA$T "/?"  //  Abosatz oder Bandsatz
+:uf
+find
+if l1 mes Keine Hefte im Umlauf;end
+
+order d13
+sho list
+end
+
+  Banddaten suchen
+:bada
+var #00
+if "u-" var "|9 " #00(b"u-" t",");find;ord d13;sho list;end
+var "|: " #00 "-bl?"
+:bf
+find
+if l1 mes Keine Bandangaben registriert;end
+ord d0
+sho list
+end
+
+  Monogr. Bestellfunktionen zum Titel
+:titel
+if #20 var "Neue Bestellung zu " #20(0,30) "...";ins _ª__
+if not #20 var "Neue Bestellung"
+var +n "Neues Exemplar"
+var +n "Bestellungen zu diesem Titel"
+var +n "Vormerken
+var +n "Exemplardaten zu diesem Titel"
+var +n "Abgeschlossene Bestellungen zu diesem Titel"
+var +n "Neue Rechnung hierzu"
+var +n "Teilbetrag zu anderer Rechnung"
+var +n "Letzte Rechnung hierzu"
+var +n "Alle Rechnungen"
+var +n "Externe Datei"
+Aresqa
+if "Neue Be" jump neube
+if "Neues" exec a-exemp
+if "Vorm" jump vormerk
+if "Best" jump alle
+if "Abgesch" jump abg
+if "Neue Rechn" exec o-rech
+if "Teilb" exec o-rech teil
+if "Letzte" jump rtl
+if "Alle" jump rta
+if "Ext" exec z-exdat
+if "Exem" exec a-expl
+end
+
+  Zeitschr.-Bestellfunktionen zum Titel
+:zs
+set aTitelsatz-Funktionen
+var "Heftzugang"
+var +n "Abos zu dieser Zs"
+var +n "B„nde zu dieser Zs"
+var +n "Umlaufende Hefte"
+var +n "Heft weitergeben"
+var +n "Neues Abo"
+var +n "Neuer Band"
+var +n "Neue Rechnung hierzu"
+var +n "Teilbetrag zu anderer Rechnung"
+var +n "Letzte Rechnung hierzu"
+var +n "Alle Rechnungen"
+var +n "Externe Datei (bearb. bzw. anlegen)"
+ansi
+Aresqa
+set a...
+if "Neue Rechn" exec o-rech
+if "Teilb" exec o-rech teil
+if "Heftzu" exec z-heft
+if "Uml" jump tum
+if "Heft" exec z-heft wg
+if "Neues Abo" exec z-nabo
+if "Neuer Band" exec z-nband
+if "Letzte" jump rtl
+if "Alle" jump rta
+if "Abos" jump fabo
+if "B" var "|: " #00 "-b?";jump bf
+if "U" var "|: u-" #00 "/?";jump uf
+if "Ext" exec z-exdat
+end
+
+  Abos zu dieser Zs
+:fabo
+var "|: " #00 "-a?"
+find
+if l1 mes Kein Abo;end
+choose *
+if cancel end
+load
+disp
+sho rec
+jump zband
+
+  Allre Rechn.
+:alle
+var "|: t " #00 "?"
+find
+if empty yes Es liegen keine vor! Eine neue anlegen?;if yes jump neube
+if empty end
+sho list
+end
+
+:fvor   // Vormerkung
+yes Vormerkung aufheben
+if yes erase;disp;mes Vormerkung aufgehoben
+end
+
+:abg
+var "|: tz " #00 "?"
+find
+if empty mes Es liegen keine vor!;end
+sho list
+end
+
+:bestell
+set a Bestelldaten-Funktionen
+var #9DB
+if "" jump heft
+if "1" var "Bestellen"
+if "2" var "Bestellen"
+if "3" var "Inventarisieren"
+if "4" var "Stornieren"
+if "5" var "  "
+if "7" var "  "
+if "8" var "Bestellen"
+if "9  var "  "
+if "6" var "Abschluss dieser Bestellung"
+if "A" var "Banddaten"
+
+var +n "Ver„nderung der Bestelldaten"
+var +n "Bestellstatus „ndern"
+var +n "Bestellzettel drucken"
+var +n "Neue Rechnung zu dieser Bestellung"
+var +n "Weitere Bestellung anlegen zum selben Titel"
+ansi
+Aresqa
+set a
+if "Weite" jump neube
+if "Invent" exec o-invent
+if "Ver" jump modif
+if "Absch" jump absch
+if "Neue R" exec o-rech
+if "Bestellz" exec o-bzett
+if "Beste" exec o-status
+if "Band" var "|: " #00 "-b?";if #9DA$T var "|: " #9DA$T "-b?";Find;if l1 mes Keine vorhanden
+end
+
+:heft
+set aHeft-Funktionen
+var "Heft weitergeben"
+var +n "Banddaten"
+var +n "Abo-Daten"
+var +n "Titeldaten"
+Aresq
+set a...
+if "H" exec z-heft wg
+if "B" var "|9 " #00(b"u-" e",");find;sho rec;disp;end
+if "A" var "|9 " #9DA$J;find;sho rec;disp;end
+if "T" var "|9 " #9DA$T;find;sho rec;disp;end
+end
+
+  Uml. Hefte zur Zeitschr.
+:tum
+var "|: u-" #00 ?"
+find
+if l1 mes Keine im Umlauf;end
+ord d13
+sho list
+end
+
+
+:neube
+exec o-bestel
+
+:modif
+form Bestell
+if ca end
+  Abschnitt #-D in den Anzeigeparametern!
+depos D
+var #ubs
+ins #9DB
+yesno Speichern?
+if yes put
+if cancel undo
+
+:exemp
+set aExemplar-Funktionen
+var "Exemplar „ndern"
+var +n "Exemplarstatus „ndern"
+var +n "L”schen"
+var +n "Weiteres Exemplar erfassen"
+var +n "Alle Exemplardaten"
+ansi
+Aresqa
+set a...
+if "" end
+if "Exemplarstat" exec a-status
+if "Exemplar " jump Exemp
+if "Weite" exec a-exemp
+if "Alle" exec a-expl
+  Loeschen gewaehlt:
+yes Wirklich?
+if yes erase
+end
+
+:Exemp
+form Exempl
+if ca end
+  Falls man die Bestelldaten mit ins Exemplar nehmen will: (sinnvoll?)
+   var #ubs
+   ins #9DB
+yesno Speichern?
+if yes put
+if cancel undo
+end
+
+:vormerk
+var #00
+new
+ins #9DF
+sho rec
+#9DGVOALF
+ask |:Nutzerkennung?=#uaU
+if "" erase;end
+ins #uaU
+ins $u-#9DH
+var #dts(0,8)
+ins $D-#9DH
+Day +120
+var (0,8)
+ins $V-#9DH
+
+sho rec
+disp
+yes Speichern?
+if no end
+if can erase
+if yes put
+end
+
+  Es ist ein Systemsatz
+:SYS
+var #9A
+   B/S/Z : Nummerngeneratoren
+if "B" jump bgen
+if "S" jump sgen
+if "Z" jump zgen
+if "V" jump uml
+if "W" jump whrg
+if "L" jump lief
+
+exec onforms
+end
+
+  Bestellnummern
+:bgen
+var "Bearbeiten" n "Testen"
+set aNummerngenerator
+Are
+if "" end
+if "Tes" jump stest
+form ZGen
+if no addform alf.frm;form ZGen;if no end
+if can end
+jump stest
+
+  Signaturen
+:sgen
+var "Bearbeiten" n "Testen" n "Ausw„hlen"
+set aNummerngenerator
+ansi
+Are
+if "" end
+if "Tes" jump stest
+if "Ausw" var #9A$$;ins $Sgen;help order;end
+form ZGen
+if no addform alf.frm;form ZGen;if no end
+if can end
+jump stest
+
+   Zugangsnummern
+:zgen
+var "Bearbeiten" n "Testen"
+set aNummerngenerator
+Are
+if "" end
+if "Tes" jump stest
+form ZGen
+if no addform alf.frm;form ZGen;if no end
+if can end
+
+  Nummernvergabe testen!
+:stest
+exec o-gentst
+end
+
+:absch  // Bestellung abschliessen
+  Fragen, ob endgueltiger Abschluss gewuenscht
+var "Bestellung ganz abschlieÐen?"
+  dann Status 7
+noyes
+if not yes end
+form Absch
+if cancel end
+$$-#9DB7
+eval #9DB$i
+Z=
+var Z2
+ins $i-#9DB
+  AbschlDatum
+var #dts
+var (0,8)
+ins $A-#9DA
+
+var #9DB$R
+if not %.% jump schreib
+var #9DB$R(b"." b".") #9DB$R(b"." e"." 0,r2) #9DB$R(e"." 0,r2)
+ins _ _0_
+ins $R-#9DB
+
+:schreib
+put
+sho rec
+disp
+mes Bestellung abgeschlossen
+end
+
+:bbearb
+form ZsBand
+Put
+end
+
+  Heft in Umlauf geben
+:huml
+ask Heftnummer?
+ins #uzH
+if "" end
+exec X z-heft um
+end
+
+  Einzelausl. eines Hefts
+:einz
+ask Heftnummer?
+ins #uzH
+if "" end
+exec X z-heft ei
+end
+
+
+:whrg
+var A
+if <5 mes Berechtigung reicht nicht!;end
+yes Kurse bearbeiten?
+if yes exec o-kurse
+end
+
+  Umlaufliste
+:uml
+var "Liste bearbeiten" n "Laufzettel zu dieser Liste" n "Liste sortieren" n "Liste manuell neu ordnen"
+Are
+if "" end
+if "Liste s" perf z-sort;end
+if "Liste m" perf z-mord;end
+if "Li" exec z-numl ed
+if "La" exec z-numl lz
+end
+
+  Rechnungen
+:rech
+var "Abo bzw. Bestelldaten anzeigen" n "Titeldaten anzeigen" n "Teilbetr„ge eintragen" n "Rechnungsdaten bearbeiten"
+ansi
+Are
+if "Abo" var "|9 " #9R$a(b":");f1nd;dis;sho rec;end
+if "Tit" var "|9 " #9R$a(e":");f1nd;dis;sho rec;end
+  RechnungsId in #uRR sichern f. Teilbetr.Funktion in o-rech.flx
+if "Tei" var i;ins #uRR;mes Erst Titel-, Abo- oder Bestellsatz suchen, dann Alt+7;end
+if "Rec" exec o-rech edit
+end
+
+  Letzte Rechnung zum Titel
+:rtl
+var "-2 |: rz " #00 "zz"
+qrix
+var (e"^T" f" " b" " f" ")
+ins #uoz
+var #uoz(b"rz " e":")
+if "" mes keine gefunden;end
+
+if not =#00 mes Keine gef.!;end
+var "|: " #uoz
+f1nd
+sho rec
+disp
+end
+
+  alle Rechnungen zum Titel
+:rta
+var "|: rz " #00 "?"
+find
+if l1 mes Keine gefunden
+sho list
+end
+
+  Letzte Rechn. zum Abo
+:ral
+var "-2 |: ra " #00 "zz"
+qrix
+var (e"^T" f" " b" " f" ")
+ins #uoz
+var #uoz(b"ra " e"-")
+if "" mes keine gefunden;end
+var "|: " #uoz
+f1nd
+sho rec
+disp
+end
+
+  alle Rechn. zum Abo
+:raa
+var "|: ra " #00 "?"
+find
+if l1 mes Keine gefunden!
+sho list
+end
+
+  Lieferantensatz
+:lief
+set aLieferanten-Funktionen
+var "Daten des Lief. bearbeiten" n "Rechnungen von " #9A$n n "Abos bei " #9A$n
+ansi
+Are
+if "" end
+if "D" form Lief;if not canc Put;end
+  Suche nach Rechn. bzw. Lieferanten mit oder ohne Umcodierung?
+  if "R" var "DIE rl " #9A$$(1,0) "?";xco iq;Find;end
+  if "A" var "DIE _abo " #9A$$(1,0) "?";xco iq;Find;end
+if "R" var "DIE rl " #9A$$(1,0) "?";Find;end
+if "A" var "DIE _abo " #9A$$(1,0) "?";Find;end
+end
+
+  Mitarb.Satz
+:mita
+set aMitarb.-Funktionen
+var "Daten des Mitarb. bearbeiten" n "Hefte, die " #9B$n " momentan hat" n "bzw. noch erh„lt" n "Alle Verteilerlisten, auf denen " #9B$n " steht
+ansi
+Are
+if "" end
+if "Date" exec onforms;end
+if "Hefte" jump alleh
+if "bzw" jump whefte
+
+  Listenmitgliedschaft feststellen
+  Erg.Menge: Verteilersaetze, in denen #9B Mitglied ist
+  Aktueller Satz ist #9B ...
+  Kuerzel oder IdNr -> #umb
+var #9B$i
+if "" var #9B$$(1,0)
+ins #umb
+var ";" #umb
+ins #umb
+
+  Hilfsdatei
+open x mem.lst
+wri "Listenmitgliedschaft von " #9B$n n
+
+  Listen als Erg.Menge
+find |; SYSV?
+ord a10
+  Schleife
+:loopm
+  Die Namensliste stehtin #9A$e
+var ";" #9A$e "!!"
+ins _; _;_
+  jetzt ist ein ; vor jedem Namenszeichen, auch vor #umb
+  kommt #umb vor im iV-Text?
+var (b"#umb")
+  Ja, dann Nummer in Hilfsdatei
+if not "" wri i n
+next
+if yes jump loopm
+close x
+close res
+  Hilfsdatei als Erg.Menge lesen
+read set mem.lst
+  und loeschen
+delete mem.lst
+show list
+end
+
+:whefte
+  umlaufende Hefte, auf die  #9B  noch wartet
+  Aktueller Satz ist #9B ...
+  Kuerzel oder IdNr -> #umb
+var #9B$i
+if "" var #9B$$(1,0)
+ins #umb
+var "," #umb
+ins #umb
+
+  Hilfsdatei
+open x mem.lst
+wri "umlaufende Hefte, auf die " #9B$n " noch wartet" n
+
+  Erg,Menge aller uml. Hefte
+find |9 _u-?
+ord a14
+var #umb
+
+  Schleife
+:loopw
+  Die Namensliste stehtin #9DU$m, mit , getrennt
+var "," #9DU$m "!!"
+if ",!!" jump nxm
+ins _, _,_
+
+  jetzt ist ein ; vor jedem Namenszeichen, auch vor #umb
+  kommt #umb vor im iV-Text?
+var (b"#umb")
+  Ja, dann Nummer in Hilfsdatei
+if not "" wri i n
+:nxm
+next
+if yes jump loopw
+close x
+close res
+  Hilfsdatei als Erg.Menge lesen
+read set mem.lst
+  und loeschen
+delete mem.lst
+show list
+end
+
+
+
+:alleh
+var #9B$n
+ins #umB
+var #9B$i
+if "" var #9B$$(1,0)
+ins #umb
+var "+du" #umb
+ins #umb
+  Erg,Menge aller uml. Hefte
+find |9 _u-?
+var #umb
+find
+if no mes Keine;end
+var "RHefte, die " #umB " momentan hat"
+set
+close r-
+find s0
+ord a14
+sho list
+end
+
+  Empfaengerliste manuell ordnen
+:z-mord
+var #9A$e
+ins _;_^M^J_
+Aresqa
+if "" return
+var Faresqa.lst
+ins _^M^J_; _
+var (F" ;")
+ins $e-#9A
+sho rec
+dis
+return
+
+  Empfaengerliste sortieren
+:z-sort
+var #9A$e
+ins _; _;_
+ins _;_^M^J_
+sort a0
+if "" return
+ins _^M_; _
+ins _^J__
+var (F"; ")
+ins $e-#9A
+sho rec
+dis
+return
+
+  Mahntermin neu setzen
+:mahnt
+var #9DB$O(e"/")
+ins $mt
+var "Neuer Termin=" $mt
+ask
+if "" end
+ins $mt
+var $mt "/" #9DB$O(b"/")
+ins $O-#9DB
+put
+end
+
+
+ u-VARIABLEN in o-func.flx
+ #uaU (2)   Nutzerkennung f. Vormerkung
+ #ubs (2)   Inh. von #9DB nach Preisumrechung in d-wrtf.apr #-D
+ #uuK       Waehrungsdaten. Wird in d-wrtf.apr bei der ersten Anzeige gesetzt
+
+ $Sgen      Signaturgenerator. benoetigt in o-invent.flx
+
+
+
+

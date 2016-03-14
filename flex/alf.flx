@@ -1,0 +1,273 @@
+  ALF.FLX : Ausleihfunktion in Gang setzen
+  2004-09-09/2005-03-02   zuerst den Nutzer waehlen
+
+   #uaC noch nicht gesetzt? -> a-init.flx
+if not #uaC jump init
+var #uaU
+  Startpunkt im Index, wenn #uaU noch unbesetzt:
+if "" var "a"
+ins #uaU
+
+  Nutzer abfragen
+ask |:AUSLEIHE: Nutzerkennung? (Mit Alt+i im Register suchen!)=#uaU
+if "" end
+if "-" exec a-chkin
+ins #uaU
+if %_% var #uaU(f"_" e"=");ins #uaU
+if %=% var #uaU(B"=");ins #uaU
+
+  Gibt es diesen Nutzer? (im Reg. 10 nachschauen)
+var "|: B" #uaU
+f1nd
+if no jump nouser
+  ja, Nutzersatz anzeigen
+disp
+sho rec
+#uaF   // StandardFrist wegnehmen
+
+var $Uaf
+  Praesenzbestand: auch Ausl. mit Ausnahmefrist
+ins #uaf 28
+
+:gilt
+var #9B$a    // Mitgl.gueltigkeit
+ins #uAg
+z=
+var #dts(0,8)
+z-
+  Mitgl. noch nicht zu Ende? dann alles klar
+if z>0 jump ak
+
+var "Mitgliedschaft ist abgelaufen! Verl„ngern?"
+ansi
+yes
+if not yes end
+
+    Mitgl.schaft aus Leserkl.Satz errechnen (wie a-newusr.flx)
+  Klassensatz laden
+var #9B$k
+if "" var "1"
+ins #uaL
+var "///C" #uaL
+ins #uaK
+var $Aclas (b"#uaK" e"///")
+if ="" jump pauschal
+ins #uaK
+var #uaK$X
+ins $Amax
+
+  Gueltigkeit entnehmen
+  da steht z.B. @2 = 2 Jahre, *40 = 40 Tage, oder JJJJMMTT
+var #uaK$A
+  und zwischenlagern
+ins #uaX
+
+   Alt: Klassensatz laden
+ var "|; SYSC" #9B$k
+ set obj 2
+ f1nd
+ if no set obj 1;jump pauschal
+  Max.Zahl Entleihungen
+ var #9A$X
+ ins $Amax
+  Gueltigkeit entnehmen
+  da steht z.B. @2 = 2 Jahre, *40 = 40 Tage, oder JJJJMMTT
+ var #9A$A
+
+
+  Gueltigkeit: entweder
+  Datum  JJJJMMTT
+  @ziffer   Jahre
+  *tage
+if "*" jump tage
+if not "@" jump user
+  z.B. @2 : 2 Jahre, auf aktuelles Jahr draufrechnen
+var #uaX(1,0)
+z=
+var #dts(0,4)
+z+
+var z #dts(4,4)
+
+ins #uaX
+jump user
+
+:tage
+var (1,0)
+Day
+var (0,8)
+ins #uaX
+
+:user
+ set obj 1
+var #uaX
+ins $a-#9B
+jump dbestaet
+
+:pauschal
+   Mitgliedschaft pauschal fuer 1 Jahr
+set e0
+Day +365
+var (e"/")
+ins $a-#9B
+
+  Daten noch bestaetigen
+:dbestaet
+form Benutz
+if cancel undo;end
+form Benutzer/Leser 2
+put
+set e1
+  Leser jetzt wieder berechtigt, -> :gilt
+jump gilt
+
+
+:ak
+var #9B
+if "1" jump sperr
+if "2" jump abgem
+
+:klass
+#ual
+#uak
+  NEU: Klassendaten aus $Aclas nehmen, statt nachladen
+  Leserklasse -> #uaL
+var #9B$k
+if "" var "1"
+ins #uaL
+var "///C" #uaL
+ins #ual
+  Name
+var #9B$n
+ins #uan
+
+  NEU-TEST:
+  Wieviele eingetroffene Vormerkungen gibt es?
+var "1 |; B" #uaU " W?"
+qrix  
+   z.B.  2 Bae001 W
+ins $ai
+eval
+ins $aw
+var $ai (b" B" e" ")
+  Nummer vergl. mit #uaU, wenn ungl. dann $aw=0
+if not =#uaU $aw=0
+if >0 var "Es liegen " $aw " Vormerkungen bereit";mes
+
+  Wieviele Ausleihen momentan? -> $Anow
+var "1 |; B" #uaU " 2?"
+  eine (trunkierte) Zeile wird geholt aus Reg. 11
+qrix
+ins $anow
+eval
+  Die Zeile beginnt mit der Anzahl
+ins $Anow
+  aber: ist es derselbe Nutzer? (evtl. hat er keine Ausl.!)
+var $anow (f" " b" " f" " 1,0 e" ")
+if not =#uaU var "0";ins $Anow
+
+var $Aclas (b"#ual" e"///")
+if ="" jump cr
+// Angaben der Leserklasse
+ins #uaK
+  Standard-Frist der Nutzerklasse -> #ual -> #uaF (a-chkout)
+  ($L eigentlich nicht definiert)
+var #uaK$L
+   Wenn es die nicht gibt, ist #ual leer!
+ins #ual
+  Kurz-Frist der Nutzerklasse -> #uak
+var #uaK$K
+ins #uak
+  Mahnfrist default fuer Leserklasse
+var #uaK$N
+ins #umL
+  MaxZahl Entleihungen
+var #uaK$X
+ins $Amax
+
+ ALT:
+ var "|11 SYSC" #uaL   // leserklassensatz holen
+ f1nd
+ if no jump cr
+   Standard-Frist der Nutzerklasse -> #uaF
+  ($L eigentlich nicht definiert)
+ var #9A$L
+   Wenn es die nicht gibt, ist #uaF leer!
+ ins #ual
+ var #9A$N   //   Mahnfrist default fuer Leserklasse
+ ins #umL
+
+:cr
+  Gibt's Forderungen?
+var "|; GB" #uaU
+f1nd
+if no jump ausg
+var "Es gibt Forderungen, trotzdem entleihen?"
+ansi
+noyes
+if no end
+
+:ausg
+   Funktion 1 = Checkout
+#uaC1
+   Eigentliche Ausleihfunktion aktivieren
+exec a-chkout
+
+:nouser
+var #uaU
+ins #uaN
+var "Dieser Leser (" #uaN ") ist noch nicht bekannt. Neu registrieren?"
+yes
+if yes exec a-newusr
+end
+
+:init
+  erst mal initialisieren, u.a. $Amtyp und $Aclas anlegen
+#uaC0
+exec a-init
+
+:sperr
+  #9B beginnt mit 1 = gesperrt
+yes Nutzer ist gesperrt! Freigeben?
+if not yes end
+:freig
+set e0
+var "0" #9B(1,0)
+ins #9B
+set e1
+var #9B$R
+ins #uaR
+ask Bemerkung=#uaR
+ins $R-#9B
+
+sho rec
+disp
+put
+jump klass
+
+:abgem
+yes Nutzer ist abgemeldet! Reaktivieren?
+if not yes end
+jump freig
+
+  Variablen:
+  Die aLF-FLEXe verwenden folgende Variablen: (X = Grossb., Y = beliebig)
+  #uaX : eigentliche aLF-Funktionen
+  #uAY : weitere
+  #umX : Mahnungsfunktionen
+
+ u-VARIABLEN in alf.flx
+ #uAg (1)   Mitgl.Gueltigkeit
+ #uaC (3)   zeigt an, von wo aus alf.flx aufgerufen wurde
+ #uaF (1)   Standard-Frist der Nutzerklasse
+ #uaK (7)   Daten des Leserklassensatzes (aus #9A)
+ #uaL (4)   Leserklasse, default 1
+ #uaR (2)   Sperr-Bemerkung
+ #uaU (10)  Nutzername, aus Index gewaehlt
+ #uaX (5)   Zwischenwert fuer Gueltigkeit d. Ausweises
+ #ual (2)   Hilfswert f. Normalfrist
+ #uak (1)   Hilfswert f. Kurzfrist
+ #uan (1)   Lesername
+ #umL (1)   Mahnfrist default fuer Leserklasse
+ $Aclas (2)  Leserklassendaten (Inhalt aller Stammsaetze)
+ $Amax (1)   Maximale erlaubte Anz. Ausl. des Lesers
+

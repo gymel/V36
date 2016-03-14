@@ -1,0 +1,160 @@
+  A-CLAS.FLX : Leserklassen, Medientypen etc. sichten (Start aus alf.rtf)
+  2004-11-01   es wird eine ViewListe produziert
+  gewuenschter Typ ist bei Start in #uaS (C,D,E)
+  Wenn Start mit N, dann -> :clada
+
+close view
+
+if "N" jump clada
+
+var i
+ins #uaI
+
+var #uaS
+  C : Leserklassen zur Auswahl
+  D : Medientypsaetze zur Auswahl
+  E : Medientypstammsaetze zur Auswahl
+  r : nur Liste der Leserklassen zeigen
+if "r" var "C"
+if "" var "C"
+ins #uaG
+  Saetze des Typs finden
+var "|; SYS" #uaG "?"
+find
+if l1 jump nocla
+ord a0
+#uaG
+  Hilfsdatei zum Schreiben oeffnen
+open x a-clas.vw
+first
+  fuer jeden Satz eine Zeile:  Satznummer|typ = Benennung
+:loop
+var #uaS
+if "r" jump reader
+var i
+ins #uaJ
+wri #uaJ(0,8) "|"
+var #uaS
+if "D" jump syse
+var #9A(1,1) " = " #9A$C
+ins #uaZ
+wri #uaZ(0,20) n
+jump nxt
+  Typ D = Medientypsatz  Medium,Leser
+:syse
+var #9A(1,1) " = " #9A$C " / Leserkl. " #9A$B
+ins #uaZ
+wri #uaZ(0,40) n
+jump nxt
+  Typ r = Nur Leserklassenliste
+:reader
+var "A|" #9A(1,1) " = " #9A$C
+ins #uaZ
+wri #uaZ(0,30) n
+  naechster Satz der Erg.Menge
+:nxt
+next
+if yes jump loop
+  keiner mehr
+close x
+  Hilfsvar. loeschen
+#uaJ
+#uaZ
+  ViewListe zeigen
+:vw
+var #uaS
+if "r" var "i9Nutzerklassen"
+if "C" var "i9Nutzerklassen"
+if "D" var "i9Medientypsatz: Typ / Leserklasse"
+if "E" var "i9Medientyp-Stammsatz"
+set
+View a-clas
+if "" end
+ins #uaZ
+var #uaS
+if "r" jump rend
+  ausgewaehlten Satz anbieten
+var "Datensatz " #uaZ(b"|") n "Bearbeiten?"
+ansi
+yesno
+if yes jump cfga
+jump vw
+end
+
+:cfga
+var "Der Datensatz wird gleich mit allen Unterfeldern gezeigt."
+var +n "Im Anzeigefeld bearbeiten, dann mit Alt+8 wieder speichern!"
+mes
+flip 8&8: Speich.=X cfgb
+exec cfga
+
+:nocla
+var "Bisher sind keine solchen Systemdaten vorhanden!" n
+var +"Wollen Sie jetzt solche S„tze anlegen?"
+ansi
+yes
+if yes jump clada
+#uaG
+end
+
+:rend
+var "#" #uaI
+find
+end
+
+:clada   // Klassendaten anlegen
+flip 8&8: Speich.=X cfgb
+var #uaS
+if "C" jump lkla
+if "D" jump mtsatz
+if "E" jump mtstam
+end
+
+:lkla
+new
+#00 -
+#9A CcodeCklassennameA20060803b2.00a3.00c1.00L20K10E20V40R40N10M10f0.00e0.00v1.00n0.50m0.50u5/5/1.00p1.00G5.00X100Y2Z10S2
+sho rec
+Day +365
+var (0,8)
+ins $A-#9A
+sho rec
+exec X cfga
+end
+
+:mtsatz
+new
+#00 -
+#9A DcodeCnameB1L20K10E20V40R40N10M10f0.00e0.00v1.00n0.00m0.00u5/4/1.00X10Y2U2
+sho rec
+exec X cfga
+end
+
+
+:mtstam
+new
+#00 -
+#9A MnummerCsymbolBName
+sho rec
+ask Nummer des Typs?
+ins #uaM
+var "M" #uaM
+ins $$-#9A
+ask Symbol (z.B. CDA für Audio-CD)
+ins $C-#9A
+ask Bezeichnung (Klartext, z.B. Audio-CD)
+ins $B-#9A
+sho rec
+exec X cfga
+end
+
+
+ u-VARIABLEN in a-clas.flx
+ #uaG (4)  C, D, E
+ #uaI (2)  Nummer des akt. Satzes gesichert
+ #uaJ (3)  Satznummer f. ViewListe
+ #uaM (2)  Typnummer f. Medientyp-Stammsatz
+ #uaS (6)  C, D, E (Startargument)
+ #uaZ (9)  Zeile f. ViewListe
+
+

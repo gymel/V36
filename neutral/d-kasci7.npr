@@ -1,0 +1,97 @@
+  D-KASCI7.APR : a99-Anzeige incl. verkn. Satzstrukturen, tabellarisch
+  Plus Nachladungen von ueber- und untergeordneten Saetzen
+  2002-02-15
+  Wenn keine hierarchischen oder verknuepften Saetze vorkommen,
+  dann genuegt einfaches Modell  D-SANSI.APR  
+
+pn="Hierarchie-Export ANSI"    (Windows Code)
+
+  Fllen Sie die Bereiche zwischen den mit <<<<<<<<<  und >>>>>>>>>
+  markierten Zeilen mit Ihren Exportbefehlen aus!
+  Meistens reicht es, den Abschnitt unter Sprungmarke #-Z anzupassen!
+  (siehe ganz unten)
+
+  Der aktuelle (anzuzeigende oder auszugebende) Satz wird PRIMRSATZ genannt.
+  Dabei handelt es sich um entweder
+
+  A.  einen Hauptsatz
+      wenn er unabh„ngig gespeicherte Unters„tze hat, muss die
+      Kategorie #00 mit  einer eindeutigen IdNr X besetzt sein.
+      In der Anzeige sollen unter dem auptsatz alle untergeordneten
+      S„tze erscheinen.
+      Die untergeordneten S„tze haben dann in #00 IdNummern der Form  X+n
+      mit einer Bandnummer n :
+
+  B.  einen Untersatz
+      dann enth„lt #00 die IdNr des Hauptsatzes PLUS eine Bandnummer
+      z.B.  #00 123456+005=Vol.5
+      (hinter '='  kann eine Bandnummer in Textform folgen, sonst wird
+      die auf '+' folgende Nummer genommen, fhrende Nullen werden beseitigt)
+      In der Anzeige sollen stufenf”rmig die unmittelbar bergeordneten, 
+      aber nicht die nebengeordneten S„tze erscheinen.
+
+  C.  beides, auch "Mittelsatz" genannt: der Prim„rsatz ist einerseits
+      einem anderen untergeordnet, besitzt aber auch selbst Unters„tze.
+      In der Anzeige soll fr die untergeordneten S„tze nach A, fr die
+      bergeordneten nach B verfahren werden.
+
+
+  Es kann bis zu 5 untergeordnete Stufen geben (theoretisch noch mehr).
+  Jede weitere Stufe enth„lt in der #00 oder #09 ein weiteres '+' . 
+  Dieses wird fr den Nachladevorgang ausgewertet.
+
+  *********** Grundparameter, nicht ohne Grund aendern: ***************
+tp-asci7
+
+
+zl=96    Zeilenl„nge
+zi=15 
+
+zb=" -"   Umbruch bei Leerz. und Bindestrich
+zm=0      keine Seitenschaltung
+dx=1      Umcodierung einschalten
+
+i4=1    V14-Ersetzungen ausfuehren
+
+
+  <<<<<<<<<<<<    Raum fr Ihre Zwischenteile (Textkonstanten)
+  Empfehlung: Nummern 30 bis 59
+  >>>>>>>>>>>>    Ende der anwendungsspezifischen Textkonstanten
+4=C      
+
+  Tabellen-Parameter                  erste Spalte:
+18=""
+19=""
+99=""
+98=""
+88=""
+87=""
+
+2="; "      Trennung zw. gleichartigen Feldern
+
+20=C &0 t88      Neue Tabellenzeile
+21=t87 &16       zwischen zwei Tab.Spalten
+22=""              Ende der Tab.Zeile (bei RTF und DOS nichts)
+23=C
+
+
+      Absatzende
+p  255    
+
+#t{ C "--------" C }
+
+td-k      d-k.apt laden
+
+
+   <<<<<<<<< Unterprogramme hier anfgen, wenn man welche hat <<<<<<<
+   Unterprogramm fuer URL
+#(U
+#t{ t20 "URL: " t21 }
+#cc B"?" 
+#)U
+
+   >>>>>>>>> Ende der Unterprogramme >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+p | .13 10 9 9
+
+

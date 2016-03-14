@@ -1,0 +1,90 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman Times New Roman;}{\f1\fmodern\fprq1 Courier New;}{\f2\froman\fprq2 Times New Roman;}{\f3\froman\fprq2\fcharset0 Times New Roman;}{\f4\fmodern\fprq1\fcharset0 Courier New;}{\f5\froman\fcharset0 Times New Roman;}}
+{\colortbl ;\red0\green0\blue255;\red0\green176\blue0;\red255\green0\blue0;\red0\green0\blue0;}
+\viewkind4\uc1\pard\qr\f0\fs24   \fs18   `\cf1\ul\b Register\cf0\ulnone\b0 ` 
+\par \pard\cf2\b\f1\fs20 open\cf0  \b0\i\f2 name\f3   \b\i0\f1 
+\par \pard\li709\b0\f2 Die Datei \i name \i0\f3 wird zum Lesen ge\'f6ffnet. Anschlie\'dfend kann mit \b\f1 `\cf1\ul get\cf0\ulnone `... \b0\f2 oder  \b\f1 `\cf1\ul fetch\cf0\ulnone `...\b0\f2  daraus gelesen werden. \f3  \f2 
+\par \i name\i0\f3   kann ein \b normaler Dateiname\b0  sein (dabei \f4 /\f3  statt \\ m\'f6glich; wenn man \\ verwendet, dann verdoppeln!). 
+\par \i\f2 name\i0\f3   kann aber auch eine \b URL\b0  der Form  \f4 http://...\f3  oder \f4 ftp://...\f3  oder \f4 file:///...\f3  sein.    \cf3\i Nicht bei acon\cf0\i0 . 
+\par URL-Dateien kann man mit \f4 get\f3  lesen, also zeilenweise, aber auch blockweise mit \f4 fetch\f3 , also z.B. jeweils 1000 Zeichen. Mehr dazu in einem Text \'fcber die `\cf1\ul\b aiaqs-Technik\cf0\ulnone\b0 ` (ab V28.3).\f2 
+\par Am Ende des FLEX wird die Datei automatisch geschlossen, wenn man sie nicht vorher mit \b\f1 `\cf1\ul close\cf0\ulnone `\b0\f3  schlie\'dft. \f2 
+\par Fehlt \i name, \i0 wird die `\cf1\ul\b iV \cf0\ulnone\b0 `genommen. 
+\par Mit  \b\f1 `\cf1\ul if yes/no\cf0\ulnone ` \b0\f3  kann man checken, ob das \'d6ffnen gelungen ist oder nicht. 
+\par Bei URLs jedoch liefert der Webserver, so er existiert und erreichbar ist, stets Daten, die dann z.B. die Fehlermeldung 404 enthalten! Ob der Webserver gar nicht existiert, nicht erreichbar ist oder keine Netzverbindung besteht, kann man mit  \f4 if cancel ...\f3  abfangen. (Siehe auch  \f4 `\cf1\ul\b get I url\cf0\ulnone\b0 `\f3  )\f2 
+\par \f3 Zu einem Zeitpunkt kann stets nur \b eine\b0  Datei zum Lesen und \b zwei\b0  zum Schreiben ge\'f6ffnet sein (ab V25), siehe Hinweis weiter unten. 
+\par \i Hinweis (auch f\'fcr acon):\i0  Mit  \f4 `\cf1\ul\b get I url\cf0\ulnone\b0 `\f3   kann man eine nicht zu gro\'dfe Internetdatei ohne \f4 open ...\f3  direkt in die iV holen, mit \f4 var ... F\i name\i0\f3  ... eine Datei in einen  cstring  einbauen.\f2 
+\par \pard\f0\fs18 
+\par \cf2\b\f1\fs20 open x\cf0  \b0\i\f2 name\i0\f3     \i     \i0 [\i  \cf3\b\f5\fs18 acon\cf0\b0\i0\f3\fs20    ab V35.9; vorher nur mit \f4 export f ...\f3  ]\b\f1 
+\par \pard\li709\b0\f2 Die Datei \i name \i0\f3 wird zum Schreiben bereitgestellt, falls vorhanden wird sie gel\'f6scht. 
+\par \f2 Fehlt \i name, \i0 wird d\f3 er Inhalt der\f2  `\cf1\ul\b iV \cf0\ulnone\b0 `\f3  als Dateiname \f2 genommen. 
+\par \f3\fs18 Steht  ?  statt  \i name\i0 , wird interaktiv eine Dateiauswahl angeboten.\f2\fs20 
+\par \f3 Anschlie\'dfend kann mit \b\f1 `\cf1\ul write\cf0\ulnone `... \b0\f2 oder  \b\f1 `\cf1\ul\f4 export\cf0\ulnone\f1 `...\b0\f2  hineingeschrieben werden. \f3  \f2 
+\par Der Befehl ist gleichwertig  mit \b\f1  `\cf1\ul\f4 ex\f1 port f\cf0\ulnone ` \b0\i\f2 name. \i0\f3 Wie dort kann man ein + vor den Namen setzen, dann wird die Datei verl\'e4ngert, nicht \'fcberschrieben. \f2 
+\par Mit  \b\f1 `\cf1\ul if yes/no\cf0\ulnone ` \b0\f3  kann man pr\'fcfen, ob die Datei angelegt werden kann oder nicht (z.B. wegen falschem Pfad oder ung\'fcltigem Namen). \f2 
+\par Die Datei \i name\i0  tritt an die Stelle der vorher eingestellten Ausgabedatei (INI-Befehl OutputFile=...\f3   und Sondervariable E,  d.h. \f4 var E\f3  \f2 ). 
+\par Mit \cf2\b\f1  \cf4 close x\cf0\b0\f3   wird wieder die in der INI-Datei mit \f4 OutputFile\f3  angegebene Datei zur Ausgabedatei gemacht.  Diese Mechanik macht es sehr einfach, zwischendurch mal etwas in eine Datei zu schreiben, ohne die eigentliche Download-Datei damit zu beeintr\'e4chtigen. 
+\par \i Hinweis:\i0   Der \i\f2 name\i0\f3  kann keine URL sein, d.h. das Schreiben von Dateien auf Webservern ist nicht m\'f6glich.  Ein Dateiname darf keines der folgenden Zeichen enthalten:    \\ / : * ? " < > |.  Relative Pfade (wie z.B. \f4 ../myDir/filename.txt\f3 ) sind hihngegen m\'f6glich 
+\par 
+\par \pard\i\f5\fs18\'dcbrigens: \i0 Die Ausgabedatei ist immer nur unmittelbar w\'e4hrend eines Schreibvorgangs wirklich ge\'f6ffnet. Zu allen anderen Zeiten kann man also ohne weiteres von au\'dfen die Datei lesen, kopieren, \'e4ndern oder sogar l\'f6schen (dann wird sie beim n\'e4chsten Schreibvorgang neu angelegt). \f0 
+\par \cf2\b\f4\fs20 
+\par pipe\cf0\f1  \b0\i\f3 programmn\f2 ame\f3      \cf3\b\f5\fs18 acon\cf0\i0\f1\fs20 
+\par \pard\li709\b0\f3 Hiermit wird keine Datei ge\'f6ffnet, sondern ein Programm gestartet. Mit dem Befehl  \f4 get\f3   bekommt man danach zeilenweise das, was das gestartete Programm \'fcber seine Standard-Ausgabe ausgibt. 
+\par Mit  \f4 if cancel\f3   gleich nach dem  \f4 pipe\f3   oder nach einem  \f4 get\f3   pr\'fcft man, ob das Programm sich beendet hat und somit nichts mehr ausgeben wird. 
+\par Wenn \i programmn\f2 ame\i0\f3  fehlt, wird der iV-Inhalt genommen. 
+\par \i Beispiel\i0  f\'fcr UNIX: 
+\par \f4 pipe pwd 
+\par get 
+\par ins $pfad\f3 
+\par Dann steht in  \f4 $pfad\f3   der aktuelle, komplette Pfadname, wo das Programm arbeitet, valls  \f4 var P\f3   nicht korrekt ist.\f2 
+\par \pard\f0\fs18 
+\par 
+\par \cf2\b\f1\fs20 open \f4 d\cf0\f1  \cf4\b0\f2  \f3 (ab V28)\cf0\b\f1 
+\par \b0\f2 Die \f3 Datenbank wird wieder ge\'f6ffnet, nachdem man sie mit  \f4 `\cf1\ul\b close d\cf0\ulnone\b0 ` \f3 geschlossen hatte. So etwas kann n\'f6tig sein, um Vorg\'e4nge wie eine Index-Erneuerung auszuf\'fchren, bei denen die Dateien alle geschlossen sein m\'fcssen. 
+\par \i Wahlweise:\i0  (und genauso schnell) 
+\par \f4 var P "a99 " V 
+\par STOP\f3 
+\par Das ist besser, wenn inzwischen vielleicht eine \'c4nderung an den Indexparametern gemacht wurde.\f2 
+\par \f0\fs18 
+\par \i\f5 Hinweis:\i0  Ab V25 kann man \b zwei Ausgabedateien\b0  gleichzeitig haben. Zwischen beiden schaltet man um mit dem Befehl \f4 `\cf1\ul\b switch download\cf0\ulnone\b0 `\f5 .\f0 
+\par 
+\par \cf3\b\i\f5 acon\cf0\b0\i0 
+\par Standardm\'e4\'dfig schreibt \i\f3 acon\i0\f5  mit \f4 write\f5  und  \f4 export\f5  (fr\'fcher \f4 download\f5 ) in die Standardausgabe. Eine Ausgabedatei kann man so anlegen und beschreiben: 
+\par 
+\par \f4 switch dow 2 
+\par export file \i dateiname   \i0\f5     // hier geht auch  +\i\f4 dateiname\i0 
+\par write ... 
+\par (export param \i dateiname\i0 
+\par  export ... ) 
+\par switch dow 1 
+\par \f5 Die Datei entsteht dann auf dem Arbeitsverzeichnis von acon, falls kein Pfad im Dateinamen angegeben ist. Ein Befehl zum Schlie\'dfen ist unn\'f6tig, die Datei wird am Ende des Jobs automatisch geschlossen, auch bei erneutem Befehl \f4 export file ...\f5  im selben Job. 
+\par \f0 
+\par \cf3 Beispiel\f5  1\f0 :\cf4 
+\par \f5 Der Datensatz soll mit einer \'dcberschrift in eine Datei XYZ geschrieben werden, aber soll keine Auswirkung auf die eingestellte Exportdatei haben: \f0 
+\par 
+\par \f1 open x XYZ 
+\par \f4 wri "\'dcberschrift... " n \f1 
+\par \f4 export\f1  
+\par close x\cf0 
+\par \f5 
+\par \cf3\f0 Beispiel\f5  2\f0 :\cf4 
+\par \cf0\f5 Eine Internet-Datei \'f6ffnen.  (Nicht bei \i acon\i0 ) 
+\par \f4 x open http://webservices.bermilabs.com/exchange/eur/usd\\if cancel mes Geht nicht;end\\get\\mes\f5 
+\par Es erscheint eine Message-Box mit dem aktuellen Dollarkurs. Gelesen wird dieser aus der "Datei", die hinter der angegebenen URL steckt - in Wirklichkeit ein Web-Service, aber auch solche sehen aus der Sicht von a99 wie eine Datei aus und lassen sich wie eine solche lesen! 
+\par 
+\par ?get=h xget 
+\par ?fetch=h xfetch 
+\par ?close=h xclose 
+\par ?close d=h xclose=close d  
+\par ?iV =h xiv 
+\par ?if yes/no=h xif 
+\par ?export f=h xexport 
+\par ?write=h xwrite 
+\par ?export=h xexport 
+\par ?Register=h xa 
+\par ?write=h xwrite 
+\par ?export=h xexport 
+\par ?switch download=h xset=switch dow 
+\par ?aiaqs-Technik=h aiaqs 
+\par ?get I url=h xget=get I url 
+\par \f0 
+\par }
+ 

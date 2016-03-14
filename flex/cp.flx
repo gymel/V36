@@ -1,0 +1,120 @@
+  CP.FLX : Datei CP.OPT in ein RTF-Menue wandeln
+  2005-09-28 ("Eigene Routinen" als Menue)
+
+var "cp.opt"  // Liegt cp.opt auf StartDir?
+fsize
+if no var P "cp.opt";jump op1   // Nein, dann auf ProgDir?
+var "cp.opt"
+:op1
+  Dateiname steht jetzt in iV, oeffnen zum Lesen:
+ins #ucO
+open
+if no jump cperr  // keine CP.OPT
+var #ucO
+  Backslash im Pfadnamen verdoppeln
+ins _\\_\\\\_
+ins #uco
+  RTF-Menue-Datei erstellen
+open x cpopt.rtf
+wri "{\\rtf1\\ansi\\deff0{\\fonttbl{\\f0\\fswiss\\fprq2\\fcharset0 Verdana;}}" n
+wri "{\\colortbl ;\\red0\\green64\\blue255;}" n
+wri "\\viewkind4\\uc1\\pard\\lang1031\\f0\\fs28 " n
+wri "\\par \\f0 \\qc\\b Eigene Routinen\\b0 " n
+wri "\\par \\qc \\fs18 (Aus Ihrer \\i CockPit\\i0 -Datei `\\cf1\\ul " #uco "\\ulnone\\cf0`)\\par " n
+wri "\\pard\\fs20\\par " n
+wri "\\par \\f0 " n
+
+:loop
+  naechste Zeile aus cp.opt lesen
+get
+if cancel jump lend1
+ins #ucZ
+  womit beginnt die Zeile?
+if "d" var #ucZ(2,0 e" ");ins #ucD;jump loop
+if "P" var #ucZ(2,0 e" ");ins #ucP;jump loop
+if "k" var #ucZ(2,0 e" ");ins #ucK;jump loop
+if "l" var #ucZ(2,0 e" ");ins #ucL;jump loop
+if "b" var #ucZ(2,0 e" ");ins #ucB;jump loop
+
+  Weder R noch S, dann naechste
+if not "R" if not "S" jump loop
+  R-Zeile?
+if "R" jump R
+
+  Nein, S-Zeile. Menuezeile draus machen
+ins #ucS
+var "  *  \\f0 \\b `\\cf1\\ul " #ucS(2,0 e",") "\\cf0\\b0 \\ulnone `\\f0 : " #ucS(b"," b",") "\\par " n
+jump wr
+
+  R-Zeile
+:R
+ins #ucR
+wri "\\par " n
+var #ucR(b"," f" ")
+  Wenn & hinter dem ersten Komma, dann kein Programmaufruf in dieser Zeile,
+if "&" jump hd
+
+var "\\b `\\cf1\\ul " #ucR(2,0 e",") "\\cf0\\ulnone `\\b0  : " #ucR(b"," b",") "\\par "n
+jump wr
+  sondern nur Ueberschrift fuer ein Untermenue
+:hd
+var "\\fs22 \\b  " #ucR(2,0 e",") "\\b0  \\fs20  (" #ucR(b"," b"," f" ") ")\\par "n
+
+:wr
+  Zeile in ANSI wandeln und rausschreiben
+ansi
+wri
+jump loop
+
+  Erster Durchlauf fertig, Text der Datei ist fertig
+:lend1
+  cp.opt schliessen
+close
+
+  Zweiter Durchlauf zum Erstellen der Flip-Zeilen
+var #ucO
+  cp.opt erneut oeffnen
+:op2
+open
+wri "\\par " n
+
+  zweite Schleife
+:lp2
+get
+if cancel jump lend2
+if not "R" if not "S" jump lp2
+if "R" jump R2
+  S-Zeile:
+ins _?_ _
+ins #ucS
+var "\\par ?" #ucS(2,0 e",") "=X cpstart " #ucS(b"," f" " e"," F" ") n
+wri
+jump lp2
+
+  R-Zeile:
+:R2
+ins _?_ _
+ins #ucR
+var #ucR(b"," f" ")
+  fuer &-Zeilen keine Flipzeile erzeugen
+if "&" jump lp2
+
+var "\\par ?" #ucR(2,0 e",") "=X cpstart " #ucR(b"," f" " e"," F" ") n
+wri
+jump lp2
+
+:lend2
+var "\\par ?" #uco "=h " #uco n
+wri
+  Flipzeilen fertig, Datei cpopt.rtf abschliessen
+wri "\\par }" n
+close x
+  und anzeigen
+help cpopt
+  Das weitere uebernimmt dann cpstart.flx, wenn auf eine Routine geklickt wird
+end
+
+:cperr
+mes Keine Datei cp.opt vorhanden
+end
+

@@ -1,0 +1,108 @@
+  E-UNIHTM.APR : Ausgabe als UTF-8-Datei mit Kategorie-Nummern
+  2004-01-27 / 2009-06-23 : Version mit Ergzg f. HTML
+  Alle Felder in der internen Reihenfolge ausgeben 
+  bzw. einzelne Felder per FLEX-befehl "write", dann vorher  exp wX
+  used in  a35get.job  etc.
+
+pn="Ausgabe UTF-8"
+
+  Gibt Daten in UTF-8 aus, jede Kategorie mit Nummer
+  auf neuer Zeile.
+  ACHTUNG: Kommentar bei $$$$
+
+  --------- Konstanten --------------------------------------------
+
+zl=0 	    Zeilenlaenge
+zi=0	    4 Zeichen Einrueckung bei Folgezeilen
+zm=0        kein Seitenumbruch (fortlaufende Ausgabe)
+ae=""       kein Zeilenvorschub am Aufnahme-Ende
+fl=0        Listenstruktur (keine Karten)
+ke=60 "br" 62 "   " C 
+
+  -----------------------------------------------------------------
+20=C "<tr><td valign=top><i>"     Neue Tabellenzeile
+21="</i></td><td>"                zwischen zwei Tab.Spalten
+22="</td></tr>" C                 Ende der Tab.Zeile
+23="<br>"                     Vorschub innerhalb Tab.Zelle
+
+  ********* Kategorieliste ****************************************
+  Wenn #u1 besetzt ist, dann -> #-X
+#u1 +X e0
+
+
+#-(
+#bp .35 35    Texel
+#bp & &    V23
+#bi5=0
+#bi4=0
+
+#t{ s0 }
+#t{ "<table>" }
+
+  ##        oder diese 5 Zeilen:
+
+#u01 dnz anz e0
+#-[
+#unz b4 e4 p20 P21
+#unz b8 P22
+#u02 +[ =nz e0
+
+#t{ "</table>" }
+
+#bp .35 8
+#bi5=95
+#bi4=1
+#t{ s4 }       oder 5 statt 4 wenn 3stelliges Schema!
+
+#+#
+
+
+
+        falls nicht alle gebraucht oder gewuenscht werden:
+        Weglassungen: Kategorienummern mit / hier anfuegen, z.B.
+  /89   dann wird #89 weggelassen
+  /9..  dann wird die ganze Gruppe #9 weggelassen
+        oder: hier eine Liste der auszugebenden Kategorien eintragen (statt ##)
+        z.B.
+
+   After  exp wA or exp wX, write output is done here:
+#-A
+#-X
+#bke=""
+#hi +- e0      sonst Aerger mit hierarch. Saetzen!
+#u1 
+#+#
+
+#-Y
+#hi +- e0      sonst Aerger mit hierarch. Saetzen!
+#u1 B"` "
+#+#
+
+  *******************************************************************
+
+ Code-Umwandlungen
+
+
+
+   Fuer HTML-Ausgabe noetig:
+  p .020 "<br>"    Absatz-Endezeichen, falls es als solches wirken soll
+p < "&lt;"
+ p > "&gt;"
+p & "&amp;"
+p .34 "&quot;"     Sonst ' und " in input-Feldern nicht gleichzeitig moeglich
+
+p .20 .194 182       PILCROW SIGN (Absatzende)
+p .31 .226 150 188   BLACK DOWN-POINTING TRIANGLE
+
+
+  Steuerzeichen, die nicht rauskommen sollen
+
+p .1 1
+p .2 1
+p .3 1
+p .4 1
+p .5 1
+p .6 1
+p .7 1
+p .29 1
+

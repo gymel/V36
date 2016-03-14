@@ -1,0 +1,176 @@
+
+
+Verlautbarung 271 der Entw.Abt.                              2015-07-28
+-------------------------------
+
+V35.7 ist da
+------------
+
+dnx.flx : Besserer Ersatz fuer dnb.flx
+--------------------------------------
+Wie schon berichtet, wurde ein neuer FLEX dnx.flx geschaffen, der von
+DNB die Daten nun im MARCXML-Format abruft. Was bis dato nur fuer die
+etwas aelteren Daten ging. Das ist besser als die Umwandlung der 
+oberflaechlichen Anzeige, wie sie im Portal erscheint.
+
+
+Zum Thema "Unicode intern"
+--------------------------
+
+Es soll mit V35.8 eine neue DemoBank geben, die intern in UTF-8 codiert
+ist, was auch bisher schon ging, nun aber mit etwas mehr Unterstuetzung
+in einigen wichtigen Funktionen.
+Was weiterhin und auch in Zukunft NICHT gehen wird, ist die Anzeige von
+UTF-Daten im Auswahlfeld, Schreibfeld, Befehlszeile und in den 
+Formularen, vom Index gar nicht erst zu reden. Die dafuer notwendigen 
+Umstellungen der Kernprogramme sind nicht zu leisten, wie wir schon
+frueher definitiv festgestellt hatten, um unrealistische Hoffnungen
+gar nicht aufkommen zu lassen.
+Im Anzeigefeld kann dagegen UTF-Text korrekt erscheinen, weil dies
+ein RTF-Feld ist, und ein solches ermoeglicht die Anzeige, wenn die 
+Daten in bestimmter Weise codiert sind, siehe unten 6..
+
+VERSUCHSWEISE koennen Neugierige schon mal ihre A-Datenbank in eine
+Version mit UTF-8 intern umwandeln. Keine Angst, die eigenen Daten
+bleiben unangetastet, es wird ein neuer Ordner angelegt.
+Starten Sie mit  X unify, dann wird nach dem Ordnernamen gefragt.
+Dann wird alles nach dort exportiert in UTF-8, und indexiert.
+Die noetigen Parameter werden in V35.7 mitgeliefert im Verzeichnis
+ProgDir\uparam. Die werden dann mit zur Datenbank kopiert.
+Haben Sie etwa den Ordner  d:\daten\unikat  gewaehlt, dann starten
+Sie die neue Datenbank mit  a99 d:\daten\unikat\cat
+(die cat.ini ist auch in uparam mit dabei)
+Wie gesagt: VERSUCHSWEISE! Es ist noch nicht alles definitiv, Sie
+sollen sich nur schon mal ein Bild machen koennen. Arbeiten Sie
+dann vorerst unbesorgt weiter mit Ihrer unveraenderten Datenbank.
+
+Zum Ausprobieren ist dann auch folgendes interessant:
+
+
+NEU...NEU...NEU
+===============
+a99 : Bearbeitung von UTF-8-Daten im Anzeigefeld
+------------------------------------------------
+Nur fuer Datenbanken mit UTF-8 als interner Codierung!
+ACHTUNG: Klappt nicht mit arabischen und hebraeischen Zeichen. Dazu
+taugt weiterhin nur  X utf8edit.
+Ein neuer FLEX namens  allers.flx  ermoeglicht es, im Anzeigefeld 
+Datensaetze zu bearbeiten, die intern im UTF-8-Code vorliegen. Das ist
+der Fall bei der Unicode-Variante der DemoBank. Diese wird in 
+aktualisierter Form neu bereitgestellt.
+Der FLEX heisst so, weil ein wesentliches UP vom Kollegen Heinrich 
+Allers geschrieben wurde, der am 14.8.2013 tragisch ums Leben kam. 
+Wir wollen damit seine Verdienste um allegro noch einmal wuerdigen.
+
+Wie ist vorzugehen?
+
+1. Datensatz mit F5 in Kategorieform anzeigen lassen,
+2. im Anzeigefeld bearbeiten,
+3. mit  X allers  wieder einlesen in den Arbeitsspeicher,
+     Satz wird mit den Korrekturen erneut angezeigt.
+4. Falls noch nicht ok, Vorgang ab 1. wiederholen
+5. Falls ok, speichern.
+
+Voraussetzungen in den Parametern etc.:
+
+1. o.apt: Nur die folgenden zwei Zeilen drin, sonst nichts:
+   o .31 178   Unterfeld-Dreieck
+   o .178 31   und umgekehrt
+
+2. INI-Datei: diese Zeile
+   Phrase=unicode.a99
+
+3. Datei unicode.a99 kann zunaechst eine Kopie sein von phrase.a99
+   Dann, falls Code 20 gewuenscht wie in Standardversion,
+   in  unicode.a99  diese 2 Zeilen:
+   20 = ^t
+   ¶
+   Dann ist mit Strg+t Eingabe des Absatzendezeichens ¶ moeglich
+
+4. d-krtf.apr  aus dem demou-Ordner als Anzeigeparameter nehmen,
+   Oder in den Anzeigeparametern muss der Abschnitt stehen, 
+        der in d-krtf.apr unter #-( steht (Intern-Anzeige).
+   Nur die Zeile  tad-aw  muss raus, weil die Daten fuer die
+   Anzeige gar nicht umcodiert werden muessen, denn:
+
+5. Die Datei disphead.rtf mit \urtf1 versehen in das DbDir
+      kopieren; sorgt fuer korrekte Anzeige der UTF-8-Codes.
+
+Fuer Interessierte:
+allers.flx speichert die Anzeige als RTF-Datei mit "file record.rtf".
+Darin kann man sehen, dass die Unicode-Zeichen nicht als UTF-8
+gespeichert werden, sondern in der RTF-Codierung, also z.B.
+\u1057?  fuer das kyrillische C statt der 2 Bytes  D0 A1 
+Der allers.flx muss deshalb die Zahl 1057 wieder umrechnen in D0 A1. 
+(Genau das hatte Allers seinerzeit programmiert.)
+Jedoch: Die im RTF-zeichensatz vorhandenen Zeichen werden beim
+Speichern nicht so codiert, sondern in der Notation  \'hh  mit zwei 
+Hex-Ziffern, z.B. \'80 fuer den Euro und \'e4 fuer das ae.
+Dies war zusaetzlich zu programmieren, d.h. daraus beim Einlesen wieder
+die UTF-Codes C3 A4 fuer das ae zu machen. Der allers.flx ist sehr
+ausfuehrlich kommentiert. Wir haben damit erreicht, dass man fuer 
+diesen Zweck keine Drittmittel wie etwa Perl einzusetzen braucht, denn
+so etwas wollen wir grundsaetzlich nicht dem Endanwender zumuten.
+
+***********************************************************************
+
+
+FLEX : Neuer Befehl  export Px ...  [a99 und acon]
+----------------------------------
+Jetzt ist es moeglich, die meisten Werte in den momentan geladenen
+Parametern fuer Anzeige, Export und Indexierung schnell mal eben
+im laufenden Betrieb zu aendern. Und zwar betrifft das Grundparameter
+und Tabellenwerte, nicht die eigentlichen Exportbefehle, die mit #
+oder ! beginnen.
+x steht fuer   i=Index, d=Anzeige, x=Export   [d nur in a99]
+              [wie der Wert a beim Befehl xcode]
+und anstelle von ... schreibt man die Befehlszeile genau so, wie sie
+in einer Parameterdatei aussehen wuerde.
+Will man z.B. zwischendurch mal fuer den Export eines oder mehrerer
+Saetze den Ausgabewert des Zeichens '&' auf "und" aendern, so schriebe
+man wie folgt:
+
+export Px p & "und"
+export
+...
+  Ruecksetzung:
+export Px p & &
+
+Das wird ausgenutzt in allers.flx, wo das Zeichen 31 (Dreieck) sonst
+ein unloesbares Problem bereiten wuerde. Hier ist aber die o-Tabelle
+zu aendern, und zwar in den Indexparametern.
+Solche Aenderungen bleiben gueltig bis zum Sitzungsende oder bis zur
+naechsten Aenderung an derselben Sache, je nachdem was zuerst kommt.
+
+Eine Parameterdatei als solche wird dadurch nicht veraendert, sondern
+nur ihre geladene Praesenz innerhalb des Programms. Es ist dann, als
+sei der betr. Befehl in der Datei tatsaechlich dringewesen. 
+Tip: Wenn's nur um Tabellenwerte geht, und um mehr als nur einige
+     wenige, kann man allerdings auch die betr. Tabelle komplett 
+     austauschen mit z.B.  disp tab <dateiname>.
+
+
+getfile.flx : Dateigroesse jetzt 4MB
+------------------------------------
+Der  getfile.flx  konnte nur Dateien bis zu einer Groesse von 64999
+Byte herbeiholen. Das ist die Maximalgroesse der $-Variablen. Eine
+Ausnahme ist aber die Variable $, auch iV2 genannt, die bis 4 MB gross
+werden kann. Der FLEX wurde darauf umgestellt.
+
+
+a99: Kleiner Fehler
+-------------------
+Mit 
+
+ins $a-#mmm
+
+kann der iV-Inhalt in das Unterfeld $a von #mmm uebertragen werden. 
+Dabei trat eine kleine, unschaedliche Ungenauigkeit auf: Wenn in dem 
+Moment #mmm noch nicht belegt war wurde es zwar neu erzeugt, aber vor
+dem Inhalt $a... stand dann noch das erste Zeichen m.
+Aufgefallen war das bei der aLF-Funktion "Exemplar vormerken".
+Obzwar nur ein Irritat ohne Nebenwirkung, haben wir's denn doch 
+gerichtet.
+
+
+

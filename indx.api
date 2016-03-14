@@ -1,0 +1,161 @@
+  INDX.API : Index-Parameterdatei : allgemeines Beispiel
+  000427
+
+pn="einfache Indexparameterdatei"
+
+  die folgenden Zeilen gelten fr jede Index-Parameterdatei, nicht „ndern!
+-------------- Konstanten ------------------------------------------------
+
+zl=0           kein Zeilenumbruch
+zm=0           keine Seiteneinteilung
+ad=0           Wenn keiner der "K”pfe" (ak) vorkommt, dann keine Eintragung
+ag=0           Hierarchische Untereinheiten ebenfalls fr Index behandeln
+
+-------------- spezifische Index-Parameter -------------------------------
+
+il=72          maximale Schlssell„nge (72 ist optimal)
+i0=72          Kurzregister von gleicher L„nge gewnscht (.STL-Datei)
+
+i2="<> "      Indexeintragungen sollen nicht mit einem dieser Zeichen anfangen
+i3=".,:]- "    diese Zeichen sollen am Ende eines Schlssels beseitigt werden
+
+         Die Stopwortliste SWL1.APT wird hinzu geladen
+         (sie k”nnte anders heissen, aber .APT muss sein!)
+
+  Namen der Register:
+
+|1=1 : Namen von Personen , Titel (Kreuzregister)
+|2=2 : K”rperschaften
+|3=3 : W”rter aus Titeln, Schlagw”rter
+
+|9=9 : ISBN  (mit 'i' davor, also z.B. i3-512-02341-7)
+  und fr die Kurzanzeige:
+|<=úúúúúúTitelúúúúúúúúúúúúúúúúúúúúúúúúúúúúúúúúúúúúúúúúúVerf.úúúúúúúJahrúúSign.
+  Kopfzeilen: (= die fr Index-Eintragungen heranzuziehenden Kategorien)
+
+  Das Programm nimmt hintereinander die folgenden Angaben (z.B. ak=4."; "+A ),
+  sucht die zugeh”rigen Kategorien (z.B. alle #4er Kategorien), nimmt sie
+  (wenn gewnscht) auseinander (hier bei der Zeichenfolge "; ") und arbeitet
+  den zugeh”rigen Abschnitt der Kategorieliste durch (hier den bei #-a
+  beginnenden Abschnitt)
+  Wenn Sie einen neuen Schlssel definieren wollen: Fgen Sie eine neue
+  ak-Zeile hinzu und w„hlen Sie den geeigneten Bearbeitungsabschnitt oder
+  definieren Sie einen neuen (==> Kap.10.2)
+
+  ISBN: (Prim„rschlssel) : Sprungmarke #-I
+ak=87+I
+  Personennamen: separieren bei "; " : Sprungmarke #-a
+ak=4."; "+A 5."; "+A
+  K”rperschaftsnamen: genauso separieren
+ak=6.+B
+  Sachtitel: W”rter auseinandernehmen bei Leerzeichen und Apostroph
+ak=20"[ ']"+C 22"[ ']"+C 23."[ ']"+C 24."[ ']"+C 28."[ ']"+C
+  und dann nochmal am Bindestrich
+ak=20"\-"+h 22"\-"+h 23."\-"+h 24."\-"+h
+  Sammlungsvermerke:
+ak=21+s
+  Serientitel und Tagungstitel:
+ak=85.+d
+ak=83.+T
+
+  Schlagwort
+ak=31."; "+S
+
+  Kurztitelregister
+ak=zz+0     (Standard fr diesen Zweck!)
+
+
+
+  Hauptteil: Kategorieliste
+  ----------
+  in den folgenden Befehlen wird fr #u1 jeweils die oben in den ak-Zeilen
+  stehende Kategorie eingesetzt, z.B. #40 etc. bei Sprungmarke #-A.
+  (siehe oben: #4."; "+A )
+
+  Die Sprungmarke #-# existiert nicht, daher wirkt #+# als Endezeichen.
+  (#+# muss am Ende jedes Abschnitts stehen, sonst wird der n„chste auch
+  noch ausgefhrt und es wrden unsinnige, unerwnschte Schlssel entstehen!)
+
+#-A   hier beginnt die Bearbeitung fr die #4. und #5.-Kategorien
+!u1 B" = " e60    Kopfform beginnt hinter " = " , 60 Zeichen,
+#+#                      d.h. z.B. #40 Vorlageform = Ansetzungsform !
+
+#-B   K”rperschaften (#6.) werden so behandelt:
+!u1 u e60 p"|2"    Artikel am Anfang beseitigen
+#+#
+
+#-C   Sachtitelw”rter
+!u1 u p"|3"
+#+#
+
+#-h   Sachtitelw”rter
+!u1 u e"-" p"|3"      Index 3
+#+#
+
+#-d                            Serie: zuerst der Titel, dann die Z„hlung
+!u1 u e" ; " e52
+#u1 b" ; " e"-" e" : " B" " r5 3     mit 5 Zeichen rechtsbndig wegen der Sortierung
+#+#                            Beginn hinter " ; " und ". "
+
+#-T                            Kongresstitel
+!u1 u e" ; " e60
+#+#                            Beginn hinter " ; " und ". "
+
+#-f              Schlagw”rter: gem„ss Alternativtabelle q umwandeln (s.u.)
+!u1 e60 #zz 7
+#+#
+
+
+#-g              Dewey: unver„ndert einordnen mit DY: davor
+#u1 e60 15
+#+#
+
+ #-G    Sachgruppen-Klassifikation      nur bei CIS
+ #u1 10
+ #t6            schreibe " : " dahinter
+ !20a e""      und dann das erste Zusatzstichwort
+ #+#
+
+#-I          ISBN
+!u1 e13 p"|9"   kommt in Index 9
+#+#
+
+#-n     Verweisung auf Doppelnamen
+!u1 +] e", " b"-"      nur wenn "-" vorkommt, geht's weiter!
+#+-
+#-]
+!u1 b", " p", "
+!u1 e"-" p" " P"-"
+!u1 e30 p" -> "
+#+#
+
+#-s
+!40 e40      Verf.Name :
+#u1 e20 6    Sammlungsvermerk
+#+#
+
+#-S    Schlagwort-Eintragung
+!u1 e58
+#t{" *" }
+#+#
+
+#-0     Erzeugung des Kurzregisters (muss #-0 sein!)
+#20 e" : " U f'"' y0 e55 "|0"
+#40 +#76 { &47 } u y0 "/" e11
+#41 { &47 } u y0 "/" e11   wenn kein Verf., dann Hrsg.
+#76 { &60 } x"*1" e"." s4
+#90 { &66 } y0
+#+#
+  so entstehen Eintr„ge der Form
+  "Titel                                        /Person      Jahr  Signatur"
+
+  ******** Codierungsbefehle *************************************
+
+
+ti      Tabelle I.APT laden
+
+tswl1   Stopwortliste SWL1.APT laden
+
+to     Tabelle DOS <-> ANSI
+
+

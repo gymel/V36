@@ -1,0 +1,402 @@
+
+Verlautbarung 196 der Entw.Abt.                              2007-01-09
+-------------------------------
+
+               V27 "BlueChyp" : Erstes Vorab-Release
+               http://www.allegro-c.de/newvers.htm
+
+Als Erkennungszeichen hat V27 erstmals ein blaues W auf dem Button
+mit der Tuer. Der interne, bisher geheime Arbeitstitel "BlueChyp"
+erinnert an den Boersenterminus "Blue Chip": er steht fuer eine sichere,
+gewinnbringende Investition.
+
+Wer erstmal nur die neue Volltextsuche nutzen will:
+Neuer Menuepunkt "Volltextsuche" unter "Finden".
+Gestartet wird dann  ftr.flx. Wenn man es sehr oft braucht, setzt man
+zusaetzlich dies in seine _start,flx:
+
+flip 7&7: Volltext=X ftr
+
+und kann es nun mit  Alt+7  jederzeit ausloesen.
+Wer mehr (wissen) will, liest hier weiter.
+
+
+Regulaere Ausdruecke (engl. "regular expressions")
+--------------------
+Dieses Konzept ist jedem Programmierer bekannt, vor allem in den
+Skriptsprachen Perl und Python, und in der UNIX-Welt ganz allgemein.
+Weiter unten steht kurz beschrieben, wie solche Ausdruecke aussehen.
+Im allegro-System wird die Verwendung von regulaeren Ausdruecken vor
+allem fuer die Volltextsuche gewuenscht, aber auch allgemein als ein
+maechtigeres Werkzeug zum Durchsuchen von Zeichenfolgen, das ueber
+einen schlichten Byte-fuer-Byte-Vergleich hinausgeht.
+Mit V27.0 wird gleich ein neuer FLEX zur Volltextsuche bereitgestellt,
+der schneller ist als das DOS-Programm und der mit regulaeren
+Ausdruecken arbeiten kann.
+Gestartet wird er durch den neuen Menuepunkt "Volltextsuche" im
+Menue "Finden". Dafuer neue UIF-Zeile 323.
+
+Hinweis fuer Kenner
+Man verwendet ueblicherweise frei verfuegbare Unterprogramme, die man
+im Netz leicht finden kann, auch fuer C++. Fuer "allegro" wurde eine
+kompakte Implementierung von Ozan S. Yigit gewaehlt:
+http://www.cse.yorku.ca/~oz/regex.bun
+Die Versionen von Perl und Python sind z.B. noch maechtiger, aber nicht
+alles, was dort moeglich ist, waere im allegro-Kontext brauchbar.
+Etliche Modifikationen waren jedoch noetig, um den Besonderheiten von
+allegro-Daten gerecht zu werden.
+
+
+Neuer FLEX-Befehl srx - die Grundlage
+-------------------------------------
+
+srx <suchausdruck>
+
+sucht in der iV nach dem <suchausdruck>, wobei dies ein
+sog. "regulaerer Ausdruck" sein kann, im einfachen Fall ein
+schlichtes Wort.
+Mit  if yes  stellt man fest, dass der Ausdruck in der iV vorkommt.
+
+Wenn hinter srx nichts steht, wird als Suchwort nicht der Inhalt
+der iV benutzt (denn diese soll ja durchsucht werden!), sondern
+die Variable  #u!! . Man wuerde deshalb schreiben
+
+var ...suchbegriff...
+ins #u!!
+var ... zu durchsuchender Text...
+srx
+if cancel mes;end    // formaler Fehler im Suchbegriff!
+
+Dieses scheinbar umstaendliche Verfahren wurde gewaehlt, weil
+man damit die hoechstmoegliche Flexibilitaet in der Anwendung hat.
+Durchsucht wird also jeweils der Text in der iV. Deren maximale
+Laenge ist 256K.
+Beispiel: Feststellen, ob in der Textdatei abc.txt das Wort
+"ViewListe" vorkommt. Dafuer genuegen 4 Zeilen:
+
+     // zuerst den Suchbegriff in die Variable #u!! setzen
+#u!! viewliste
+var Fabc.txt         // Text der Datei abc.txt in die iV einlesen
+srx                  // darin suchen nach Inhalt von #u!!
+if yes mes ja, kommt vor!!
+
+
+Komplette Anwendungen
+---------------------
+1. Volltextsuche in der Gesamtbank
+----------------------------------
+Der neue FLEX  ftr.flx  leistet eine Volltextsuche in der gesamten
+Datenbank oder einer ausgewaehlten Datendatei. Darin kann man das
+Verfahren studieren. Er wird aufgerufen durch den Menuepunkt
+"Volltextsuche" im Menue "Finden".
+Tip: Wenn ein Suchbegriff mehrfach (u.U. sehr oft) zur Anwendung
+kommt, kann man ihn vorher formal pruefen, damit das "if can"
+nicht bei jeder Anwendung auszufuehren ist. Das geht so:
+  var "abcd"
+  srx
+  if cancel mes;end
+Mit "mes" wird dann die Fehlermeldung angezeigt. In Regulaeren
+Ausdruecken kann man jede Menge irregulaere Fehler machen ...
+Danach kann man  srX  statt  srx  schreiben, mit grossem X also,
+und es wird der vorher verifizierte Ausdruck benutzt, so oft
+man will. Vorteil: es geht schneller.
+
+ftr.flx  nutzt einen weiteren neuen Befehl:
+fetch r
+Dieser holt einen ganzen Datensatz aus der Datendatei in die iV.
+Er wird weiter unten genauer beschrieben.
+
+2. Unterprogramm zur bequemstmoeglichen Verwendung
+--------------------------------------------------
+Die Datei  ftr.inc  kann eingebunden werden und leistet dann
+mit einem einzigen Befehl, perform ftr, eine Duchsuchung der
+Gesamtbank! Kommentare darin erklaeren, wie es geht.
+
+3. Durchsuchen und evtl. Exportieren von Grunddateien
+-----------------------------------------------------
+Dafuer wird der Muster-FLEX  algsrch.flx  bereitgestellt. Er bindet
+ein Unterprogramm  algftr  ein, es steckt in der Datei algftr.inc.
+Mit include kann man es in eigene FLEXe einbinden.
+Kommentare darin zeigen, wo und wie man modifizieren kann, um
+eigene Anwendungen damit zu erstellen.
+
+4. Durchsuchen von Textdateien (grep)
+-------------------------------------
+Der FLEX grep.flx kann normale Textdateien durchsuchen. Die Syntax
+wird Programmierern bekannt vorkommen:
+
+X grep suchbegriff dateinamensmuster
+
+Versuchen Sie es mal mit
+
+X grep aresqa c:\allegro\help\vb*.
+Man erhaelt die Liste aller Zeilen aus den Verlautbarungen, in denen
+das Wort "aresqa" vorkommt.
+
+Fuer Einsteiger: Die nachfolgende Bescheibung wirkt sehr komplex.
+Wenn man nur ganz normale Woerter sucht, ist es aber einfach!
+Z.B. kann man eingeben:  goethe + faust  oder
+goethe + schiller - lessing! Ganz aehnlich also wie beim DOS-
+Programm SRCH.EXE, nur mit Spatium vor und hinter + - / .
+Siehe auch:  http://www.allegro-c.de/bluechyp/regex.htm
+  Dort findet man eine Liste ganz einfacher Beispiele, unter
+  denen meistens fuer die Praxis ein passendes dabei sein wird.
+
+
+Grundregeln fuer Regulaere Ausdruecke
+-------------------------------------
+Ein Ausdruck dieser Art muss bei der Anwendung in #u!! stehen, der
+zu durchsuchende Text in der internen Variablen.
+Die Punkte 2 und 3 sind allegro-spezifisch modifiziert, 1 gibt es
+im gaengigen Standard nicht, 15 bis 17 auch nicht.
+Die Regeln lassen sich alle sinnvoll miteinander kombinieren.
+Der gesamte Ausdruck darf bis zu 1000 Zeichen lang sein.
+[Dieser Text wird auch als ftr.rtf mitgeliefert und kommt als Hilfe,
+wenn man den FLEX  ftr.flx  startet]
+
+ 1. Unterstrich an erster Position: Exaktheit
+    _abc  oder  abc
+    Exakte bzw. umcodierte Suche
+    Setzt man einen _ vor den Suchbegriff, wird dieser exakt gesucht,
+    d.h. mit Eingabe von  _MÅll  findet man nur MÅll, nicht Muell oder
+    muell oder mÅll.
+    Ohne _ wird der Datentext umcodiert, der Suchbegriff selbst
+    aber nicht! Man muss also  muell  eingeben, um MÅll, Muell und
+    muell und mÅll mit einer einzigen Suche zu finden.
+    Man wird meistens umcodiert suchen wollen, deshalb fordert diese
+    Variante kein Steuerzeichen. Wichtig: Dann nur Kleinbuchstaben
+    ohne Akzente eingeben, Umlaute aufgeloest, ss statt ·!
+    (Der _ hat nur in der ersten Position diese Wirkung, sonst keine.)
+    Zur Umcodierung werden die p- oder q-Befehle in den Indexparametern
+    verwendet, und zwar diejenigen, die A in a wandeln.
+    Achtung: _ empfiehlt sich, wenn Sonderzeichen gesucht werden, die
+             bei der Umcodierung verschwinden.
+    Es gibt aber noch weitere Alternativen. Mehr dazu
+    am Ende: Befehl  set xm
+    Hinweis: SRCH.EXE arbeitete mit einer Tabelle namens s1.asp.
+
+ 2. Zirkumflex auf erster Position: Feldanfang
+    ^abc  findet  abc  nur, wenn es an einem Feldanfang steht.
+    Dabei gilt der Anfang des Feldtextes, ohne die Kategorienummer.
+    Also:  _^Shakesp  findet  #40 Shakespeare und #31 Shakespeare
+    Wenn aber der zu durchsuchende Text (der iV-Inhalt) nicht mit '#'
+    beginnt, gilt das erste Zeichen als Textanfang.
+
+ 3. Dollar an letzter Position: Feldende
+    abc$  findet  abc  nur, wenn es am Ende eines Feldes steht.
+    Wenn der zu durchsuchende Text (der iV-Inhalt) nicht mit '#'
+    beginnt, gilt nur das Ende des gesamten iV-Textes.
+
+ 4. Punkt ist Joker (engl. "wildcard")
+    AB.D  findet jedes ABxD, mit beliebigem Zeichen x
+    Mehrere Punkte innerhalb eines Suchbegriffs moeglich, jeder Punkt
+    steht dann fuer genau ein Zeichen.
+
+ 5. Stern: Keins, eins oder mehrere
+    ABc*D  findet ABD, ABcD, ABccD, ABcccD .. (d.h. c darf ganz fehlen)
+
+ 6. PunktStern: Binnentrunkierung (Kombination aus 4 und 5)
+    AB.*CD  findet  ABxyzCD  mit beliebiger Folge xyz, aber im selben
+       Datenfeld, nicht irgendwo weiter hinten im Datensatz!
+       Das entspricht  AB,CD  im Programm SRCH
+
+ 7. Plus: wie Stern, aber mindestens ein Vorkommnis notwendig
+    ABx+D  findet ABxD, ABxxD, ...  (d.h. mind. ein x muss vorkommen)
+
+ 8. Eckige Klammern: Variantensuche
+    AB[pq]Z   findet  ABpZ und ABqZ
+    AB[c-f]Z  findet  ABcZ, ABdZ, ABeZ, ABfZ
+    Die Angabe [c-f] deutet also an, dass eines der Zeichen im
+    Bereich c-f an der Stelle vorkommen muss.
+    [^c-f] bedeutet Negation, d.h. Zeichen c-f sollen an der Stelle
+    nicht auftreten
+    Eine Angabe [c-fp-y] verlangt, dass ein Zeichen aus dem Bereich
+    c-f oder p-y vorkommt.
+    Beispiel: ele[ck]tri  findet electri und elektri
+
+ 9. Kombinationen [...]* und  [...]+
+    * und + koennen auch hinter ] auftreten und beziehen sich dann auf
+    die in [...] angegebenen Zeichen, d.h.
+    AB[c-f]*XY  findet z.B.  ABXY, ABcXY, ABdXY, ABceXY, ABcdcdfXY, etc
+    AB[c-f]+XY  findet aber ABXY nicht, nur die anderen wie bei *
+    Beispiele: theat[er]+  findet Theater und theatre
+               i[sz]abel+a findet Isabella, Izabella, Izabela, Isabela
+
+10. Steuerzeichen finden : Dabei hilft \
+    AB\xCD   findet ABxCD
+    Das Zeichen x soll vorkommen. Man setzt \ vor solche Zeichen,
+    die sonst eine Steuerfunktion haben, also [ ] \ + . * $ ^
+    sowie auf der allerersten Position die Zeichen _ und -
+    Sonderfall: Die Zeichen < bzw. > findet man mit << bzw. >>
+                (wegen 11., 12. und 15.)
+    Beispiele: mit \. findet man einen echten Punkt
+               mit <<dresden>> findet man <Dresden> (Ordnungshilfe)
+
+11. \< : Wortanfang suchen
+    \<abc   findet abc, aber nur wenn es an einem Wortanfang steht.
+    Ein "Wort" beginnt mit Buchstabe oder Ziffer, d.h. es geht
+    irgendein anderes Zeichen oder kein Zeichen voran, z.B. auch -
+
+12. \> : Wortende suchen
+    abc\>   findet abc, aber nur wenn es an einem Wortende steht.
+    Hinter c soll also im Text ein Sonderzeichen oder nichts folgen.
+    10 und 11 sind kombinierbar, damit ist exakte Wortsuche moeglich.
+
+13. \(...\) : Wiederholung eines Ausdrucks
+    \(AB\)xyz\1   findet ABxyzAB
+    \(AB\).*\1    findet AB...AB
+                  mit beliebiger Zeichenfolge zwischen den beiden AB.
+    Es koennen weitere Ausdruecke \(...\) auftreten, die danach mit \2,
+    \3 etc. im selben Gesamtausdruck wiederholt werden koennen.
+
+14. Sonderwerte
+    Mit \w innerhalb jedes reg.Ausdr. kann man Positionen markieren, an
+    denen ein Buchstabe vorkommen soll:
+    \w  sucht nach einem beliebigen Buchstaben oder Unterstrich
+        #90.*[123]\w     bedeutet:
+        Kommt in #90 eine Ziffer 1,2 oder 3 und dann ein Buchstabe vor?
+    \s  sucht nach einem blank (Spatium). Meistens kann man einfach ein
+        normales Spatium eingeben! Am Ende des Suchbegriffs aber nicht,
+        es wuerde bei der Zwischenspeicherung in #u!! verschwinden.
+        Nuetzlich, wenn man z.B. die Zeichenfolge " + " sucht! Dann
+        also \s+\s verwenden.
+
+15. Groesser/Kleiner/Gleich-Suche
+    Hiermit wird ein Zahlenvergleich ausgefÅhrt.
+    abc>nnn
+    findet zuerst abc und vergleicht dann die erste, im selben Feld
+    hinter abc folgende Zahl mit nnn. Treffer, wenn diese
+    groesser als nnn ist.
+    Wenn abc mehrfach vorkommt, werden alle Vorkommnisse geprueft!
+    Beispiel:   #77 >100
+                 findet Eintraege, wo in #77 eine Zahl >100 steht
+                #77 <100
+                 findet Eintraege, wo in #77 eine Zahl <100 steht
+                #76 =2000
+                 findet Eintraege, wo in #76 die Zahl 2000 steht
+    Hinweis: Der Zahl duerfen andere Zeichen vorangehen! Der Vergleich
+    beginnt bei der ersten Ziffer bzw. Minuszeichen.
+    Achtung: Wuerde man hier schreiben:  #77>100, dann wuerde auch ein
+             Feld #77a etc. geprueft werden
+    Tip: _ anwenden, um Probleme mit dem Punkt zu verhueten, also
+         eingeben:  _#77 >50  statt  #77 >50, bes. bei Geldbetraegen!
+    Beispiel: Preisangaben stehen in #9DB$p. Um alle Bestellsaetze mit
+              Preis >20 EUR zu finden, kann man geben:
+              _#9DB.*$p>20    (Aber statt $ das Dreieck, AltGr+2)
+    Alpha-Vergleich: Wenn hinter > bzw. < keine Zahl, sondern eine
+        Buchstabenfolge angegeben wird, findet ein alphabetischer Vergleich statt.
+        Beispiel:  _#74 >A + #74 <D
+              findet Eintr‰ge, wo #74 mit A,B oder C beginnt
+
+16. Negative Suche
+    Wenn man ein Minuszeichen an den Anfang eines Ausdrucks setzt,
+    und zwar ohne ein Leerzeichen dahinter!,
+    wird alles gefunden, was NICHT dem Ausdruck entspricht.
+
+17. Logische Kombinationen
+    Reg.Ausdruecke haben "von Natur aus" keinen Mechanismus fuer
+    boolesche Kombinationsbefehle. Eine Loesung wurde programmiert.
+    Damit kann man mehrere nach den Regeln 1-16 gebildete Ausdruecke
+    A1, A2 ... logisch miteinander kombinieren, bis zu 100 Stueck:
+    A1 / A2 + A3 - A4 ...
+    Die Abarbeitung erfolgt von links nach rechts:
+    Am Anfang: Status S=0
+    A1 richtig: S=1
+     / A2 : Wenn A2 richtig: S=1
+     + A3 : Wenn A3 falsch: S=0
+     - A4 : Wenn A4 richtig: S=0
+     ...
+     Ende: S ist das Ergebnis
+    Achtung: Leerzeichen vor und hinter dem Operator! (Anders als beim
+    DOS-Programm SRCH, wo das nicht klappt.)
+    Klammerung geht (noch) nicht! Allerdings kann man durch geschickte
+    Nutzung der [..]-Optionen sowie + * . auf manche Oder-Ausdruecke
+    verzichten, die sonst nicht ohne Klammerung zu machen waeren!
+
+Andere als die hier beschriebenen Sonderzeichen haben keine Sonder-
+wirkung, d.h. sie duerfen in Suchbegriffen vorkommen - vorausgesetzt,
+sie werden in den Indexparametern nicht ausgefiltert. Dann findet man
+sie nur mit _ am Anfang des Ausdrucks.
+
+
+Neue FLEX-Befehlsoption:  fetch r
+---------------------------------
+Damit holt man aus einer geoeffneten allegro-Datendatei einen
+kompletten Datensatz in die iV, wobei die Felder dann durch
+LF # getrennt sind (das sind die Codes 10 und 35)
+Das hat zur Folge, dass man mit nachfolgendem  insert  den
+ganzen Datensatz an den Arbeitsspeicher uebergeben kann, wo die
+Felder in den aktuellen Satz eingemischt werden.
+Wenn  fetch r  gegeben wird, muss zu dem Zeitpunkt aber der
+Lesezeiger in der Datei auf dem ersten Zeichen des naechsten
+Satzes stehen, normalerweise also auf der 0 von #00 (in den
+Dateien sind die # nicht mitgespeichert).
+Das stellt man sicher, indem man direkt vorher gibt
+fetch b      // erstes Byte holen
+fetch b4     // Satznummer holen
+Der zweite Befehl entfaellt, wenn man eine Grunddatei (Typ .ALG)
+geoeffnet hat. Nach dem  fetch r  steht der Lesezeiger genau auf
+dem Steuerbyte des naechsten Satzes (Code 1, 8 oder 9).
+Beispiel zur Anwendung:  ftr.flx
+
+Neuer set-Befehl:  set xab
+--------------------------
+Hiermit kann man einen Modus fuer die RegEx-Suche setzen.
+Ohne diesen Befehl werden zur Umcodierung des zu durchsuchenden Textes
+die Tabellen der Indexparameter benutzt, und zwar dienenigen, die
+das A in a umcodieren. Bei $A.CFG is das die q-Tabelle, bei N.CFG aber
+die p-Tabelle - das wird automatisch ermittelt.
+Mit  set xxp bzw. set xxq  setzt man die p- bzw. q-Tabelle der
+Exportparameter fuer diesen Zweck ein, wozu auch die P- bzw. Q-Befehle
+fuer die UTF-8-Codierung gehoeren.
+Mit  set xdp bzw. set xdq  setzt man die p- bzw. q-Tabelle der
+Anzeigeparameter, mit  set xip  bzw.  set xiq die der Indexparameter.
+Die Setzung bleibt bis zum Ende der Sitzung erhalten, kann aber
+mit einem neuen  set xab  auch geaendert werden.
+Wirksam ist diese Setzung auch fuer  if %...%  und fuer den Befehl
+find _..._  bzw.  find ,..., zur Volltextsuche im aktuellen Satz.
+Bisher konnte man dafuer nur, wie gesagt, automatisch die Tabellen
+der Indexparameter nutzen, hatte also darueber wenig Kontrolle.
+Jetzt kann man in die Exportparameter z.B. eine Tabelle einbauen,
+die nicht ae fuer Ñ und é einsetzt, sondern a.
+
+Neuer Befehl zum Umcodieren:  xcode  (auch xchg moeglich)
+-----------------------------------
+Mit  ascii  bzw.  ansi  kann man schon lange den Text in der iV
+vom ANSI- in den ASCII-Code verwandeln bzw. umgekehrt. Dabei kommen die
+o-Befehle in den Anzeigeparametern (!) zum Einsatz. Deshalb muss darin
+der Befehl  to  stehen, um die Tabelle  o.apt  einzubinden, sonst
+sieht man im Auswahl-, Schreib- und Kurzlistenfeld falsche Umlaute.
+Nun kann man noch mehr machen: Die p- und q-Tabellen in den Index-,
+Anzeige- und Exportparametern liegen ja die meiste Zeit brach! Nun
+kann man sie alle direkt im FLEX verwenden, um Text damit nach Lust
+und Laune umzucodieren.
+An die Seite von  ansi / ascii  treten nun diese Befehle:
+
+xcode  ip / iq / dp / dq / xp / xq
+
+Der Text in der iV wird dann genommen und mit den p- bzw. q-Befehlen
+in den Index-, Anzeige- bzw. Exportparametern umcodiert.
+Damit ist es nun auch kein Problem mehr, eben mal schnell einen
+Text von ASCII oder ANSI in UTF-8 zu verwandeln oder einfach die
+Umcodierung mal zu testen.
+Der Unterschied zu  ascii/ansi ist dieser: die o-Befehle sind
+ein-eindeutig, daher umkehrbar. Das ist bei den anderen Tabellen nicht
+der Fall, daher kann man z.B. die Index-Codierung oder UTF-8 nicht
+mit derselben Tabelle rueckgaengig machen.
+
+
+Und noch einige Kleinigkeiten
+-----------------------------
+
+Mit  var kn  kann man den gesamten Datensatz in die iV kopieren,
+Felder getrennt durch Code 10, mit  var kr  kriegt man 13 10.
+
+Mit  show Stat  kann man jetzt den iV-Inhalt im Statusfeld
+anzeigen lassen, dem Feld also, wo sonst die interne Satznummer
+und Dateinummer angezeigt wird.
+
+Statt "xport" kann man nun auch "export" schreiben.
+Datei xa.rtf wurde upgedatet, include steht jetzt auch drin.
+(Nicht jeder findet flex.vw ...)
+

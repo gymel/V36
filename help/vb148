@@ -1,0 +1,133 @@
+
+Verlautbarung 148 der Entw.Abt.                          2001-03-06
+-------------------------------
+
+Wer mit dem bisherigen Stand der Dinge zufrieden ist, braucht 
+nichts zu tun und nicht weiterzulesen!
+Nur wer immer auf der Suche nach neuen Moeglichkeiten ist ...
+
+1. On-FLEXe  /  2. RuckZuck verbessert
+--------------------------------------
+
+Bereitgelegt:   nhelp.lzh
+auf ac21        nflex.lzh
+                onerror.lzh       (s.u.)
+                ruckzuck.lzh
+                a99.lzh            Gesamtpaket noch unveraendert!!!
+                alcarta.lzh
+
+
+1. Zuerst zu den neuen, sog. "On"-Flexen.
+-----------------------------------------
+In der Verlautbarung 136 wurde der PV-Flex vorgestellt. 
+Mit dem Befehl
+
+SaveAsk=X flexname
+
+konnte man bewirken, dass beim Druck auf [Speichern] zuerst ein
+FLEX ausgefuehrt wurde.
+Das wird nicht abgeschafft, aber etwas veraendert. Jetzt muss
+man SaveAsk=2 setzen, und der FLEX muss  ONPUT.FLX heissen.
+Der wird also ausgefuert, STATT des internen "put"-Befehls,
+wenn man auf [Speichern] drueckt,
+und wenn ONPUT.FLX existiert, muss "put" drinstehen!
+SaveAsk=0 speichert ohne, SaveAsk=1 mit Rueckfrage, wie bisher,
+ohne Beruecksichtigung des FLEXes.
+
+Diese Aenderung hat folgenden Grund:
+Es gibt noch andere Punkte im Programm, wo es wuenschenswert ist,
+dass man ein Ereignis mit dem Aufruf eines FLEX verbinden koennte.
+Das Speichern eines Satzes ist eines von diesen Ereignissen, ein 
+anderes ist das Loeschen, aber auch das Neuanlegen eines Satzes.
+Ein weiterer Punkt ist das Eingeben eines nicht definierten Befehls
+im Schreibfeld! Bislang kommt dann die Fehlermeldung 
+"Ungueltige Eingabe"
+und es passiert weiter nichts. Dabei liegt hier die Chance einer
+nutzerseitig programmierbaren Erweiterung. Das wird nun Realitaet.
+
+Aus diesen Ueberlegungen ergab sich das folgende Konzept:
+Es gibt 5 neue FLEXe mit festgelegten Namen, die an festgelegten
+Punkten in Aktion treten, wenn sie existieren - wenn nicht, dann
+passiert einfach nichts. D.h. wer diese Dinge nicht braucht,
+kann alles so lassen wie es ist.
+
+Die fuenf festgelegten FLEX-Namen sind diese, jeweils beginnend mit
+"on", um anzuzeigen, dass sie an definierten Punkten aktiv werden:
+(Anklang an JavaScript)
+
+Name         Ereignis
+--------------------------------------------------------------
+onnew.flx    Anlegen eines neuen Satzes per Button [Neusatz]
+             "new" soll NICHT drinstehen.
+             Wenn nicht existent, wird der Hilfetext ONNEW.RTF 
+             angezeigt.
+
+oncopy.flx   Anlegen einer Satzkopie per Button [Neusatz]
+             "copy" soll NICHT drinstehen.
+             Wenn nicht existent, wird der Hilfetext ONCOPY.RTF 
+             angezeigt.
+
+onerase.flx  Loeschen per Menuepunkt "Loeschen"
+             Wenn am Ende dieses FLEXes der Wert "NO" in die iV 
+             gesetzt wird, unterbleibt das Loeschen. 
+             "erase" soll NICHT drinstehen.
+
+onput.flx    Speichern per [Speichern]
+             Wird nur ausgefuehrt, wenn in INI SaveAsk=2 gesetzt ist. 
+             Wenn es diesen FLEX gibt, MUSS "put" darin vorkommen,
+             sonst wird nicht gespeichert.
+
+onerror.flx  Undefinierte Eingabe im Schreibfeld.
+             Dazu gehoeren auch undefinerte Kategorienummern, also alles,
+             was sonst die Meldung "Ungueltige Eingabe" bewirken wuerde.
+
+Was in diesen FLEXen steht, ist voellig dem Anwender ueberlassen.
+Diese FLEXe werden NICHT aktiv, wenn die entsprechenden Befehle in
+einem FLEX stehen, also "new", "copy", "put", "erase", sondern nur,
+wenn die Funktionen per Button ausgeloest werden! Denn innerhalb
+eines FLEXes kann man die Dinge dann ja auch mit einbauen, die dann
+passieren sollen.
+Potentiell das maechtigste ist wohl "onerror.flx".
+
+Wer sich keinen dieser FLEXe anlegt, fuer den ist alles wie bisher.
+Neu sind aber die Hilfetexte onnew.rtf und oncopy.rtf, die dann
+einiges ueber die moeglichen Aktionen verraten, wenn man einen neuen
+Satz angelegt hat. Bisher war da nur ein leeres Anzeigefeld.
+
+Eine Anwendung fuer onerror.flx ist folgende, die mit zu der Idee
+beigetragen hat:
+Es gab im DOS-Programm PRESTOG die Editorfunktion B. Wenn man B81
+eingab, wurde Feld #81 in eine Datei geschrieben und der X-Editor
+aufgerufen. Bei Rueckkehr wurde die Datei wieder eingelesen. Damit
+konnte man laengliche Kategorien extern bearbeiten. Sonderfunktion
+war dabei, dass eine Leerzeile zum Einfuegen eines Absatzzeichens
+in den Text fuehrte (DOS-Code 20, Strg+t).
+Dieses laesst sich nun nachbilden! D.h. wenn man B81 im Schreibfeld
+eingibt, kann etwas ganz aehnliches ausgeloest werden. Dazu haben
+wir in ein Sonderpaeckchen  onerror.lzh  diese Dateien eingepackt:
+
+onerror.flx
+bedit.flx
+e-e.apr
+
+Wenn man  Bnnn  eingibt, wird also "onerror.flx" aufgerufen. Die
+Kommentare in den drei Dateien sind ausreichend fuer das 
+Verstaendnis, wenn man das Verfahren anwenden will, daher muss
+hier nicht alles nochmals beschrieben werden.
+
+-----------------------------------------------------------------
+
+2. RuckZuck verbessert
+----------------------
+Vor allem die FLEXe wurden ueberarbeitet und die Kommentare verbessert.
+Die Online-Dokumentation (ruckzuck.rtf) ist ergaenzt worden um eine
+genaue Beschreibung der Einbettung von FLEX-Befehls-Links in HTML.
+
+Auch D-HTML.APR wurde verbessert. Jetzt kommen die hierarchischen
+Saetze auch richtig raus.
+Ferner gibt es eine Link "Familie", wenn der angezeigte Satz ein
+verknuepfter ist. Man erhaelt als Ergebnis-Kurzliste die Liste der
+zusammengehoerigen Saetze.
+
+Paket ruckzuck.lzh liegt auf ac21.
+

@@ -1,0 +1,228 @@
+	
+
+Verlautbarung 168 der Entw.Abt.                             2003-07-09
+-------------------------------
+
+1.  Unicode: Bearbeitung von UTF-8-Daten mit Notepad
+2.  Sniffer-Funktionen
+3.  Neue FLEX-Sondervariablen jp, Kk, zn
+4.  FLEX-Befehle: fetch erweitert um diverse Sonderfunktionen
+5.  get adr nnn : Adresse von Satz Nr. nnn ermitteln
+6.  if 'xyz' geht jetzt auch
+7.  activate verbessert
+8.  Formularfenster : mini/max-Button; Satzstatus
+9.  Indexfenster unerklaerlich minimal
+10. Hilfetexte: Jetzt Bookmarks moeglich
+11. Programmname auf dem Icon: nicht mehr "a99" vor dem Titel
+
+
+1. Unicode: Bearbeitung von UTF-8 mit Notepad
+---------------------------------------------
+Unter XP kann das Windows-Prograemmchen "Notepad" mit UTF-8 umgehen!
+Das laesst sich nutzen, wenn man innerhalb der Datenbank UTF-8
+verwendet (sog. "Verfahren 2"). Die direkte Bearbeitung in a99
+ist ja dann schwierig bis unmoeglich. Abhilfe also: externes
+Editieren mit notepad.
+Was ist zu tun? Nur der neue FLEX utf8edit.flx wird gebraucht. Er
+wurde durch Abwandlung von notepad.flx gewonnen. Im Notepad
+hat man dann den Datensatz in Kategorienform vor sich und alle Zeichen
+sind "richtig" sichtbar und bearbeitbar. Nach dem Abspeichern werden
+sie auch richtig wieder eingelesen.
+Wer das routinemaessig nutzen will, hat 3 Moeglichkeiten:
+
+1. In der INI-Datei folgendes eintragen:
+MyMenu=Notepad
+MyFlex=X utf8edit
+   Ausloesung dann allerdings nur mit Maus.
+
+2. Belegung eines Flip-Buttons: im  _start.flx  schreiben:
+flip 7&7: NP=X utf8edit
+   Ausloesung dann mit Alt+7
+   
+3. Belegung einer Strg-Taste: im Schreibfeld z.B. eingeben
+p ^e X utf8edit
+   Ausloesung dann mit Strg+e
+
+
+2. Sniffer-Funktionen
+---------------------
+Ein paar neue FLEXe wurden geschrieben, mit denen Dateipruefungen
+durchgefuehrt werden koennen. Dazu gibt es das neue Menue "Checking",
+erreichbar von org.rtf (h org  eingeben).
+Auf diesem Menue steht auch: "Datendatei als Ergebnismenge". Dabei kann
+man eine der vorhandenen .xLD-Dateien auswaehlen und erhaelt die darin
+enthaltenen Datensaetze in der Reihenfolge der Datei als Erg.Menge.
+Ebenso kann man die in derselben Datei enthaltenen Leersaetze 
+(geloeschte und durch Verlagerung ungueltig gewordene) als
+Erg.Menge erhalten.
+
+
+3. Neue FLEX-Sondervariablen
+----------------------------
+
+jp : Position des aktuellen Satzes in der .xLD-Datei (beginnt bei 0)
+     Das ist also die Position des ersten Zeichens des Satzes,
+     normalerweise steht dort der Code 1, bei geloeschten 9.
+
+zn : Nummer der aktuellen Zeile (wo sich die Schreibmarke befindet)
+
+Kk : Die Werte t und k der CFG, normalerweise  2/4
+
+
+4. Neue FLEX-Befehle
+--------------------
+
+fetch
+  Ergaenzung: Vorgesetztes + bewirkt, dass gelesene Zeichen an den
+    Inhalt der iV angehaengt werden statt ihn zu ueberschreiben.
+    D.h.:  fetch +number   bzw.   fetch +^code
+
+fetch b  bzw.  fetch c
+   Es wird nur 1 Byte gelesen und zwar als Zahl in der iV abgelegt.
+   Im Falle von  c  geht der Lesezeiger nicht auf das naechste Byte
+   ueber, sondern bleibt stehen. Das kann man nutzen, um z.B. schon
+   VOR einem 'get' oder 'fetch' zu checken, mit was fuer einem
+   Zeichen die Datei weitergeht.
+
+fetch b2 / b3 / b4
+   Es werden 2 bzw. 3 bzw. 4 Bytes gelesen und als hexadezimale
+   Zahl interpretiert.
+   Das Ergebnis steht dann als Dezimalzahl in der iV.
+
+fetch p
+   Die Position ("offset") des Lesezeigers in der geoeffneten Datei
+   wird festgestellt und steht dann als Zahl in der iV.
+   Wenn keine Datei zum Lesen geoeffnet ist, gilt Bedingung "if no"
+   Der Wert ist 0, wenn vorher noch nichts gelesen wurde.
+
+fetch m
+   Der Zahlenwert in der iV wird genommen und der Lesezeiger in der
+   geoeffneten Datei auf diese Position gesetzt.
+   Wenn man direkt anschliessend dieses schreibt:
+   fet c
+   if "-1" ...
+   kann man checken, ob es geklappt hat, denn wenn -1 herauskommt,
+   ist die Datei entweder nicht geoeffnet oder zu kurz.
+
+fetch T^code  oder   fetch A^code
+   Es wird nur Text (nicht die Codes 13 10) bzw. nur allegro-Text
+   (ohne die Codes <11 und 13, 26 und 27) gelesen.
+   Die Code-Umwandlung in ^X findet dann bei Codes unter-
+   halb 32 nicht statt.
+   Hinter dem T bzw. A kann auch noch + stehen, also
+   fetch T+^code  oder   fetch A+^code
+
+
+5. get adr nnn
+--------------
+get adr nnn
+   Die Adresse des Satzes mit der Nummer nnn wird ermittelt.
+   In der iV steht anschliessend
+   dn / pos
+   wobei dn die Dateinummer ist (1...255) und pos die Position des Satzes
+   innerhalb der Datei.
+
+Fuer  get  gilt jetzt (bisher nicht!):
+   Steht hinter "get" nur #, adr, env, phr oder view, wird der
+   Inhalt der iV hinzugenommen.
+
+
+qrix
+   Bisher wurde, wenn vorher der Index noch nicht benutzt worden war,
+   bei einem qrix-Befehl automatisch das Indexfenster geoeffnet.
+   Das ist unguenstig und wurde abgestellt.
+
+
+6. if 'xyz' geht jetzt auch
+---------------------------
+if
+   Bisher ging nur  if "xyz", jetzt geht auch if 'xyz'
+   um zu checken, ob der Inhalt der iV mit xyz beginnt. Nun kann
+   also auch gecheckt werden, ob ein " vorkommt.
+
+Tip: Nach dem Befehl "yesno" gibt es ja drei Werte, die man eigentlich
+---- pruefen muesste. Wenn man nur wissen will, ob NICHT mit yes 
+     geantwortet wurde, kann man auch schreiben;
+     if not yes ...
+
+
+7. activate verbessert
+----------------------
+activate
+   Bisher wird das Fenster, wenn es maximiert war, auf Normalgroesse 
+   zurueckgestaucht. Das passiert nicht mehr. Wenn man es minimiert hat,
+   wird es dafuer aber auch nicht sichtbar, sondern das Icon blinkt
+   dann. Vermutlich ist das sinnvoller.
+
+------------------------------------------------
+
+8. Formularfenster:
+-------------------
+  Dieses hatte einen Minimier/Maximier-Button, der nicht sinnvoll ist.
+  Wurde beseitigt.
+  Ferner wurde durch Druck auf [Ende] der Satzstatus auf EDT gesetzt, dies
+  jedoch nicht angezeigt. Das passierte auch bei Druck auf [Enter] ohne
+  Veraenderung und anschliessendem Verlassen mit [Esc]
+
+-----------------------------------------------------
+
+9. Indexfenster:
+----------------
+  Nach dem Ablauf eines externen Programms, z.B. auch beim
+  externen Editieren, konnte es zu einem unerklaerlichen
+  Phaenomen kommen: das Indexfenster oeffnete sich nicht,
+  sondern erschien nur unten links als Icon. Aergerlich!
+  Die Ursache dieser Anomalie konnte nicht bis zu ihrer
+  Wurzel im tiefsten Innern des Windows-Apparatismus verfolgt
+  werden, wo sie zweifelsfrei liegt. 
+  (Die eigentlich faellige Meldung nach Redmond unterlassen wir,
+  Onkel Bill hat auch so genug zu tun...)
+  Es war jedoch moeglich, diese Situation am
+  Entstehen zu hindern. Was geschehen ist. In solchen
+  Faellen erscheint das Fenster dann wieder an dem Ort, wo
+  es beim Start erscheint, und nicht da, wohin man es evtl.
+  verschoben hatte. Diese geringfuegige Irritation ist
+  in Kauf zu nehmen.
+--------------------------------------------------------------
+
+10. Hilfetexte : jetzt Bookmarks moeglich
+-----------------------------------------
+Steht ein Hilfetext in der Anzeige, macht jetzt der "Neues Lesez."-
+Button folgendes: er fragt nach einem Titel fuer den Text und
+ergaenzt eine Zeile zu der Datei bookmark.vw (die er anlegt, wenn
+sie noch nicht existiert). 
+Der Button "Zeige Lesez." zeigt dann, wenn eine Hilfeseite zu sehen
+ist, diese ViewListe.
+Die Datei bookmark.vw wird auf dem Arb.Verz. angelegt. Sie kann frei
+bearbeitet werden, mit x-editor oder was immer. Nur drauf achten:
+die Zeilen sollten nicht laenger als 80 Zeichen sein, mehr ist nicht
+sinnvoll.
+Neu belegt wurde die UIF-Zeile 466 in UIFEGER:
+466 "HTxt&Bkmk"      Hilfetext-Bookmark
+Bei Bedarf bitte aendern.
+Tip: Vorher auf eine bestimmte Zeile klicken, dann wird in der
+bookmark-vw genau diese Zeile registriert und beim Wiederaufruf
+erscheint sie ganz oben.
+
+
+11. Damit sich's aber lohnt, noch ne Kleinigkeit:
+In der Liste der Symbole der aktiven Programme, ganz unten auf dem
+Bildschirm, steht bislang fuer ein aktives a99 bzw. alcarta neben
+dem Icon der Programmname a99 bzw. alcarta und dann erst der Daten-
+banktitel. Das wurde umgedreht, damit man, wenn sehr viele Programme
+aktiv sind und die Schaltflaechen deshalb sehr schmal, immer noch
+auseinanderhalten kann, was fuer Datenbanken man da geoeffnet hat.
+Jetzt muss man nur noch darauf achten, dass der Datenbanktitel
+(Eintrag DbDitle=... in der INI-Datei) mit einem signifikanten
+Wort beginnen.
+
+
+NEUE DATEIEN:
+
+ald-erg.flx
+ald-chk.flx
+bookmark.flx
+utf8edit.flx    Notepad mit UTF8 aktivieren
+check.rtf       Menue fuer das Checking
+dateien.rtf     "Was sind eigentlich Dateien? Grundlagen."
+

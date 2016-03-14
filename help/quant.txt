@@ -1,0 +1,319 @@
+
+QUANT : Universelle QUANTitative Auswertungsmethodik
+----------------------------------------------------
+
+"Im Prinzip geht das mit 'allegro', man muesste NUR ein paar Parameter-
+dateien schreiben..."
+
+Wer kennt die Situation nicht: man weiss instinktiv, dass eine Aufgabe
+mit "allegro" im Prinzip zu loesen ist - aber in der Praxis fehlt einem
+die Zeit, es zu parametrieren. Statistische Auswertungen fallen in diesen
+Bereich. Neben dem Aufgabenbereich der rechnerischen Auswertungen (Export-
+typ R) gibt es die zahlenmaessigen Auswertungen von Kategorieinhalten.
+Nur um diese soll es hier gehen. Die typische Situation ist doch, dass der
+Chef ruft: "Schnell, Frau Schneckler, ich brauche eine Liste der am meisten
+vergebenen Signaturgruppen!" oder: "Ich muss wissen, welche 20 Komponisten
+in unserer Musikdatenbank am haeufigsten vertreten sind!"
+Was dann? Dem Mann erzaehlen, dass das nicht so einfach ist?
+
+Versuchen kann man, wenn das auzuwertende Kriterium indexiert ist,
+im Register geeignet zu trunkieren und mit <Strg>+F10 dann einen
+negativen Schwellenwert einzustellen. Nicht immer kommt man so zum Ziel.
+Im Namensregister z.B. sieht man i.d.R. nicht, ob eine Person Komponist 
+oder sonst etwas ist.
+
+Bisher wurde mit dem Exporttyp C und der Stapeldatei COUNT.BAT
+nur das minimalste Gerippe fuer solche Auswertungen angeboten. Deshalb
+wurden schon vielerorts eigene Parameter entwickelt - oder eben nicht, 
+weil die Zeit nicht reichte, und wichtige Fragen blieben unbeantwortet. 
+Das soll ein Ende haben.
+
+Verwandt mit dieser Thematik ist die von H. Allers erfundene Kategorien-
+besetzungsstatistik, die ja sogar als Spezialregister angelegt und dann
+staendig online benutzt werden kann. Fuer manche Zwecke ist das ok oder 
+sogar ausserordentlich hilfreich, aber es gibt drei Nachteile:
+
+--  Die Registereintraege sind alphabetisch geordnet, nicht nach der
+    Haeufigkeit
+ 
+--  Es ist viel "Overhead" damit verbunden (Platz, Indexierzeit)
+
+--  Mehrfach besetzte Kategorien erschweren den Ueberblick oder machen
+    ihn unmoeglich.
+
+
+Das Ziel war, eine universelle Methodik zu entwickeln, und zwar
+
+ o  beliebige Kategorien sollen auswertbar sein, auch mehrere verschiedene 
+    in einem Durchlauf,
+
+ o  Mehrfachbesetzungen innerhalb einer Kategorie sollen zerlegt werden
+    koennen,
+
+ o  oder wahlweise nur der Anfangs- oder Endteil einer Kategorie beruecksich-
+    tigt werden, bis zu oder ab einem bestimmten Trennzeichen.
+
+ o  Es soll unterschiedliche Sortierweisen geben, u.a. auch numerisches
+    Sortieren (fuer Felder, die Zahlen enthalten).
+
+ o  Als Ergebnis soll auch eine nach Haeufigkeit geordnete Liste moeglich sein,
+    wahlweise auf- oder absteigend.
+
+ o  Schwellenwerte sollen vorgebbar sein ("nur Faelle mit mindestens N
+    oder hoechstens M Eintraegen sollen in der Liste stehen")
+    (D.h. nur die ganz grossen oder die ganz kleinen Werte, oder aber
+    die mittleren.)
+
+ o  Ausserdem soll die Methode weitestgehend unabhaengig vom Kategoriesystem
+    sein, d.h. die Parameterdateien sollen fuer jede CFG funktionieren.
+
+Die letzte Forderung bedeutet, dass in den Parametern keine spezifischen
+Kategorien stehen duerfen. Die einzigen unspezifischen, die in jeder
+Konfiguration vorkommen, sind aber #u1 und #u2 und die #u-Variablen! 
+Wie also soll das gehen?
+
+Zum Einsatz kommen: 
+
+ -- die Option -U : damit kann man beim Programmaufruf (presto oder srch)
+    Inhalte fÅr Nutzervariablen vorgeben. Ein solcher Inhalt kann z.B.
+    eine Liste von Kategorienummern sein! 
+
+ -- der Manipulationsbefehl w : damit kann man einen Arbeitstext als
+    Kategorienummer interpretieren lassen, und die betreffende Kategorie
+    wird automatisch zum Arbeitstext gemacht, den man wiederum in eine
+    #u-Variable kopieren kann,
+
+ -- ak-Befehle mit #u-Variablen statt echten Kategorien.
+
+****  Fuer den eiligen Leser  *****************************************
+
+Wer sich mit der Theorie nicht lange aufhalten will, braucht nur dieses
+zu wissen:
+
+Es gibt drei wichtige Dateien:
+
+QUANT.BAT     steuern den gesamten Ablauf, zu starten vom CockPit
+              (QUANTitative Auswertung)
+
+C-FI.APR      erstellt im ersten Durchlauf (per presto oder srch) die
+              sortierfaehige Datei QUANT, mit asort wird daraus  QUANT.ALG
+              In QUANT.BAT wird automatisch kopiert, z.B. 
+                 copy C-FI.APR C-FI.PPR 
+              wenn man mit P.CFG arbeitet.
+
+COUNT2.APR    Nach dem Sortieren mit A-SORT wird hiermit die Liste
+              erstellt. Dieses laeuft immer mit A.CFG ab.
+              (Die sortierte Datei, also QUANT.ALG, enthaelt nur #u1 und #u2).
+
+Gebraucht werden ferner S.APT und Q4.APT. Je nach Antwort auf Frage 3 (s.u.)
+wird die eine oder die andere verwendet und auf  QUANT.cPT  kopiert.
+Wenn man nicht mit dem Zeichensatz OSTWEST.FON arbeitet, muss man diese
+Dateien anpassen.
+Vorsicht: A.CFG oder $A.CFG muss unbedingt vorhanden sein, auch wenn man
+ansonsten nicht mit A arbeitet. Der zweite Verarbeitungsschritt klappt 
+sonst nicht.)
+
+Zwecks Anwendung baut man sich folgende Zeilen bei den "Eigenen Routinen"
+in die .OPT-Datei ein:
+
+R Quantitative Auswertungen, QUANT.BAT , Haeufigkeits-Auswertungen von Kategorieinhalten oder Teilfeldern
+
+Heraus kommt eine Datei QUANT, in der die ausgewerteten Inhalte alpha-
+betisch stehen, und wahlweise eine Datei QUANTS, in der sie aufsteigend
+oder absteigend nach Anzahl geordnet stehen. Ausserdem die Gesamtsumme 
+und die Anzahl der unterschiedlichen Eintraege.
+
+****  Ende fuer eilige Leser  *****************************************
+
+Wer es genauer wissen will, kann hier weiterlesen:
+
+Der Ablauf, gesteuert von QUANT.BAT, sieht so aus:
+Zuerst sind einige Fragen zu beantworten:
+(Die Fragen erscheinen immer in grÅn, die Antworten in gelb. Bei der
+NT-Version geht das allerdings nicht.)
+
+0. Wollen Sie 
+   1 : Alles mit der Hand eingeben?
+   2 : FrÅhere Einstellungen Åbernehmen?
+   Wenn 1 gewaehlt wird, geht es bei 1. weiter.
+   Wird 2 gewaehlt, kann man aus vorher gespeicherten Auswertungen 
+   eine auswaehlen. Es handelt sich um Dateien des Typs C-*.BAT, in 
+   denen die notwendigen SET-Befehle stehen. (Solche Dateien kann man
+   auch von Hand erstellen und sie dann an dieser Stelle auswaehlen!)
+
+1. Welche Kategorien sollen ausgewertet werden?
+   (Geben Sie eine oder mehrere Kategorien an, getrennt durch Kommas:)
+
+   Man gibt eine oder mehrere Kategorienummern, getrennt durch Komma,
+   also z.B. (bei A.CFG)  #40,#402,#403   
+   wenn man die Verfasser (bis zum dritten) auswerten will.
+   Es kann leider nicht eine Gruppe von Kategorien hier mit einer
+   einzigen Angabe wie etwa "#40." oder "#40?" zusammengefasst werden.
+   (Das Zeichen '#' kann entfallen, also auch 40,402,403 ist moeglich)
+   Daraus wird zunaechst  %C1%  gemacht.
+   Will man Teilfelder auswerten, fuegt man z.B. $c fuer Teilfeld c an
+   die Kategorienummer an:   #260$c
+
+1. Minimalwert?         Daraus wird %MIN%
+   Maximalwert?         Daraus wird %MAX%
+
+   Beide Fragen koennen mit <Enter> uebergangen werden, dann gelten die
+   Werte 0 bzw. 1000000, d.h. keine Schwellen.
+   Es muss MIN < MAX sein, sonst kommt nichts heraus.
+   Die Fragen beziehen sich darauf, wie haeufig ein Feldinhalt vorkommt,
+   nicht auf den Inhalt selbst - bei Zahlen als Inhalten koennte man
+   das verwechseln!
+
+3. Sind Stammsatz-Ersetzungen notwendig (Methode V14)?  j/n
+   (Wenn nicht, geht es bis zu 50% schneller! )
+   (Wenn Sie nicht sicher sind: Antwort j)
+   Antwort 'j' ist nur dann zu geben, wenn die auszuwertenden Kategorien
+   Stammsatznummern enthalten koennen (z.B. Namen oder Schlagwoerter),
+   die mit V14-Methode ersetzt werden muessen. Das braucht etwas mehr
+   Zeit, deshalb ist 'n' zu empfehlen, wenn es nicht der Fall ist.
+   Die Antwort wird in %C6% hinterlegt.
+   Bei Antwort 'n' wird S.APT, bei 'j' wird Q4.APT umkopiert auf QUANT.cPT
+   (wobei c = %-K1% ist). Der Unterschied ist nur der Befehl i4=0, der 
+   nur in Q4.APT vorkommt.
+
+4. Welches Zeichen ist das Trennzeichen?
+   Moeglichkeiten: eines der Zeichen  ; - / . , ( * ' : $ =   
+                   oder  b = Leerzeichen
+                   oder  x = keine Trennung
+                  (Wenn Eingabe nicht klappt, t davorsetzen, z.B. t; )
+   Eines der dreizehn Zeichen    ; b - / . , ( * ' : $ =
+   kann man eingeben. Wenn ein anderes gewuenscht wird, muss man 
+   in C-FI.APR eingreifen. Die Stellen sind kommentiert.
+   '$' ersetzt das Teilfeldzeichen '', weil man dieses nicht eingeben kann.
+   Wenn die Eingabe nicht funktioniert: ein 't' davorsetzen.
+   Am gewaehlten Zeichen werden die Kategorien zerlegt. Nur ein Zeichen
+   ist moeglich, das fuer alle Kategorien benutzt wird.
+   Daraus wird zunaechst  %C2% 
+
+5. Auswertungsmodus:
+   Waehlen Sie: 1 = nur den Anfangsteil auswerten (Ende beim Trennzeichen)
+                2 = jeden Teil auswerten (auch Teile zwischen den Trennzeichen)
+                3 = nur Teil hinter dem Trennzeichen
+   Dies laesst sich nur mit 1, 2, 3 beantworten, was in %C3% gespeichert wird.
+
+6. Sortiermodus:
+     1 = Normal (Umlaute aufloesen, Nichtsortierwoerter beseitigen)
+     2 = Pica-Namensmodus (Vorname@Nachname)
+     8 = Numerisch sortieren
+     9 = Keine Umcodierung - unveraendert sortieren
+   Man gibt eine der moeglichen Ziffern; sie wird in %C5% gespeichert.
+   Sonderservice:
+   Wenn man 8 waehlt, wird am Ende zusaetzlich die Gesamtsumme und
+   der Durchschnittswert ausgegeben. (siehe COUNT2.APR)
+
+Jetzt kommt eine Kontroll-Anzeige, wo man nochmal sieht, was jetzt als
+Vorgabe benutzt wird. Wenn irgendwas nicht stimmt, antwortet man mit 'n',
+und es geht nochmal bei 1. los.
+Wenn man 'j' gesagt hat:
+
+7. Sollen diese Einstellungen aufbewahrt werden? j/n
+   Wenn man 'j' antwortet, muss man einen Namen eingeben (bis zu 6 Zeichen).
+   Es wird dann eine Datei C-*.BAT erstellt. Darin stehen die Einstellungen
+   als SET-Befehle. Spaeter kann man sie erneut benutzen (siehe oben 0.)
+
+8. Wie soll die Auswertung erfolgen?
+       1 : mit Volltextsuche  
+       2 : als Ergebnismenge (Export mit F4)
+   Bei 1 wird srch aufgerufen, dann muss man einen Volltext-Suchbegeiff
+   eingeben, bei 2 wird presto aufgerufen, dann muss man eine Ergebnismenge
+   bilden und sie per F4 exportieren. Wenn man hintereinander mehrere 
+   Erg.mengen exportiert, braucht man keine Duplikate zu befuerchten.
+   Beim Aufruf wird   -Uc1%C1% -Uc2%C2% -Uc3%C3% -Uc5%C5% mitgegeben, 
+   d.h. es entstehen die Uservariablen #uc1 , #uc2 , #uc3, #uc5.
+   Diese werden in C-FI.APR verwertet.
+
+9. Es entsteht die Datei QUANT, mit  ASORT  wird sie sortiert. 
+   Das Ergebnis ist dann QUANT.ALG, QUANT wird geloescht.
+
+10.SRCH verarbeitet QUANT.ALG zu der Ergebnisliste  QUANT.
+   Verwendet wird dazu immer COUNT2.APR. Darin werden Duplikate eliminiert
+   (#u1 enthaelt zusaetzlich die Satznummer, sonst wuerde das nicht gehen!)
+   Dabei werden mit  -Umi%min% -Umx%max%   die Schwellenwerte dem
+   Programm uebergeben.
+
+11.Es wird gefragt: 
+     Nach Anzahl sortieren? a = aufsteigend
+                            b = absteigend
+                            u = unsortierte Liste nochmals anzeigen
+                            x = Ende
+
+   Antwort 'a' oder 'b' bewirkt, dass  QUANT  nach Haeufigkeit sortiert wird. 
+   Die Anordnung ist so, dass dann eine auf-/absteigend nach Zahlen sortierte 
+   Liste QUANTS entsteht, waehrend QUANT alphabetisch geordnet ist.
+   Die nach Zahlen sortierte Liste wird dann auch noch angezeigt, und die
+   Frage 9. wird wiederholt, damit man evtl. nochmals andersrum sortieren
+   kann. (Es kommt zum absteigenden Sortieren MSDOS-SORT zum Einsatz)
+
+12.Beide Listen sind ASCII-Textdateien, die man beliebig weiterverwerten
+   kann.
+
+Schematischer Ablauf von QUANT.BAT :
+
+   Abfragen      Export mit           asort             Export mit
+   vom        ----------------> QUANT -----> QUANT.ALG ------------> QUANT
+   Benutzer      C-FI.APR                               COUNT2.APR
+                 (srch/presto)                          (srch)
+                                  asort
+   wahlweise dann noch    QUANT ---------> QUANTS
+                                oder sort
+
+Bei sehr grossen Datenbanken muss man sich natuerlich ein paar Gedanken
+machen, wenn man die Volltextsuche einsetzt. Die Zwischendateien QUANT
+und QUANT.ALG werden dann u.U. reichlich gross: man muss bedenken, dass
+die Schwellenwerte erst beim zweiten Durchlauf greifen koennen, wenn
+das Material sortiert ist! Wichtig ist dann auch, den V14-Modus auf 'n'
+zu setzen (= keine Ersetzungen), wenn tatsaechlich die auszuwertenden
+Kategorien keine Stammdaten enthalten koennen.
+
+Moeglich ist natuerlich auch, den etwas primitiven Dialog (der nur aus
+DOS-Batchbefehlen besteht) durch Einsatz eines "Batch-Enhancers" oder
+anderer Mittel gewaltig zu verbessern.
+
+-------------------------------------------------------
+
+Was aber muss Frau Schneckler tun, um die Signaturenliste zu produzieren?
+Das kommt drauf an, ob ihre Signaturen ein geeignetes Trennzeichen haben,
+sonst muss sie zuerst einen Eingriff in C-FI.APR machen.
+Aber nehmen wir mal an, die Signaturen haben ein Leerzeichen hinter
+der Gruppenbezeichnung. Dann sind die Fragen so zu beantworten:
+
+1.  90,902,903,904,905     wenn bis zu 5 Signaturen vorkommen koennen
+    (oder 90,90a,90b,...   wenn Buchstaben statt Ziffern verwendet werden)
+
+2.  Minimum   [Enter]     oder eine sinnvolle, nicht zu grosse Zahl
+    Maximum   [Enter]
+
+3.  n     (V14-Modus: keine Ersetzungen notwendig)
+
+4.  b     (Leerzeichen ist Trennzeichen)
+
+5.  1     (Nur Anfangsteil auswerten)
+
+6.  1     (Sortiermodus 1)
+
+8.  1     (Volltextsuche)
+          Als Suchwort 0 oder #90 eingeben
+
+Dann heisst es nur noch abwarten, bis die Liste fertig ist.
+
+Tips:
+
+ o  Bei jeder Abfrage laesst sich die Prozedur mit Strg+C abbrechen.
+
+ o  Wenn der Bildschirm nach einem Abbruch eine unerwuenschte Farbe
+    hat: QUANT.BAT nochmals starten und mit x abbrechen.
+
+Anmerkung:
+Wenn Sie die COFI-COSU-Dateien installiert hatten, loeschen Sie diese Dateien,
+denn sie werden nicht mehr gebraucht:
+COFI.BAT
+COSU.BAT
+COFI.TXT
+C-SU.APR
+
+

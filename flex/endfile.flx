@@ -1,0 +1,65 @@
+  ENDFILE.FLX : Show end of file - Ende einer Datei anzeigen
+  2008-05-20    Wird z.B. von  dir.flx  aufgerufen
+
+  Aufruf: X endfile <dateiname> <laenge>
+          wenn ohne <laenge>, dann nur letzte Zeile zeigen
+
+ins $fil
+
+var $fil (b" ")
+if not "" jump fe
+
+var $fil
+perf lastline
+mes
+end
+
+:lastline
+  Name steht in iV
+fsize
+if no var "DATEI " $fil " NICHT GEFUNDEN";return
+ins $flen
+var $fil
+open
+  Dateilaenge minus -1000
+eval $flen -1000
+  positionieren
+fetch m
+   1000 Bytes holen (d.h. gesamten Rest der Datei)
+      laenger wird die letzte Zeile ja wohl nicht sein?
+fetch 1000
+  13 10 durch {{{ ersetzen (fetch macht ^ und M aus Code 13)
+  Wenn man aber das Zeichen ^ suchen und ersetzen will,
+  dann muss man  ^~  angeben
+ins _^~M^~J_{{{_
+var (F" {" T"{{{")
+close
+return
+
+  ***************************
+
+:fe   // file end
+ins $lg
+var $fil (e" ")
+ins $fil
+
+  Name steht in iV
+fsize
+if no var "DATEI " #upA " NICHT GEFUNDEN";mes;end
+ins $flen
+var $fil
+open
+  Dateilaenge minus -$lg
+eval $flen -$lg
+  positionieren
+fetch m
+  Daten holen, mehr als 255000 geht nicht!
+fetch 255000
+  Zeilenenden wieder korrigieren, d.h. aus ^M Code 13 machen
+ins _^~M^~J_^M^J_
+sho IV
+close
+end
+
+
+

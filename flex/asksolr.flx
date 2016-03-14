@@ -1,0 +1,45 @@
+  ASKSOLR.FLX : Suchbefehl f. Solr aufbereiten und Ergebnisse holen
+  2010-05-13
+
+ask Suchw”rter eingeben!=#uwo
+mes
+if "" end
+asci
+ins #uwo
+
+  Umcodieren mit den q-Befehlen in den Indexparametern (cat.api)
+  (Das entspricht dann dem, was expsolr.flx an Solr geliefert hat, um die
+   Indexdaten aufzubereiten)
+xcode iq
+  Leerzeichen durch + ersetzen
+ins _ _+_
+  ? mit * ersetzen (Trunkierungszeichen von Solr)
+ins _?_*_
+ins $Uwo
+    wahlweise Datei fuer externe Erg.Menge oeffnen
+//open x solr.set
+//wri "Solr " #uwo n
+
+  Suchbefehl erstellen (8983 = Portnummer, mit der Solr arbeitet)
+      statt "localhost" evtl. der Name des Servers, auf dem Solr laeuft)
+var "Fhttp://localhost:8983/solr/catalog/select/?q=" $Uwo "&start=0&rows=100&fl=id&q.op=AND"
+  und mit "var" ausfuehren, Ergebnis (= Liste von Satznummern) landet in iV
+      maximal 100 Eintraege; wenn mehr gewuenscht:  "rows=100" aendern.
+var
+    Hier zum Testen aktivieren
+  sho IV
+  mes So sieht das Ergebnis aus
+
+  Wir brauchen nur den Inhalt der id-Felder
+var (x'str name="id"')
+if "" mes Nichts gefunden;end
+  Satznummern stehen in iV hintereinander, Trennung ist , das ist egal
+  Hiermit wird daraus eine Erg.Menge gemacht: (So geht das am schnellsten)
+find @
+  Titel der Erg.Menge setzen
+var "RSolr: " #uwo
+ansi
+set
+  und Liste im Kurzlistenfenster zeigen (ist nun ganz normale Erg.Menge!)
+sho list
+

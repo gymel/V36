@@ -1,0 +1,56 @@
+  A-BATCH.FLX : Entleihungen und Rueckgaben aus einer Datei verarbeiten
+  2007-08-25
+
+  Es wird eine Datei eingelesen. Darin stehen Zeilen, die nur aus einem
+  Barcode bestehen mit einem Buchstaben davor:
+
+  Lbarcode   : Lesernummer
+  Ebarcode   : Entleihung
+  Rbarcode   : Rueckbuchung
+
+  Auf eine Zeile mit B koennen beliebig viele mit E folgen, die dann
+    alle fuer Entleihungen an denselben Leser gelten.
+  R-Zeilen sind keinem Leser zugeordnet! Bei normaler Rueckbuchung wird
+    ja auch kein Leserausweis gebraucht.
+
+  Eingebunden werden a-chout.flx und a-chkin.flx, also die normalen
+  Prozeduren fuer Ausleihe und Ruecknahme. Es wird aber ein Flag #uab 
+  gesetzt, damit diese Prozeduren "wissen", dass sie als UP genutzt werden.
+
+
+
+
+open batch.txt
+if no mes Sorry, Datei  batch.txt  existiert nicht;end
+
+yes Datei mit den Notbetriebsdaten einspeisen?
+if not yes end
+
+  Flag f. a-chkin und a-chkout
+#uab 1
+
+:bloop
+get
+if cancel jump bend
+  Leser? Barcode -> #uaU fuer  :leih
+if "L" var (1,0);ins #uaU;jump bloop
+  Entleihung:
+if "E" var (1,0);perf leih;jump bloop
+  Rueckbuchung:
+if "R" var (1,0);perf rckg
+jump bloop
+
+:bend
+close
+  Flag ruecksetzen
+#uab
+mes erledigt
+end
+
+  Einbindung der Unterprogramme
+
+include a-chkin.flx
+include a-chkout.flx
+
+
+

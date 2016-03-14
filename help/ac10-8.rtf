@@ -1,0 +1,175 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\froman\fprq2 Times New Roman;}{\f2\froman\fprq2 Garamond;}{\f3\froman\fprq2\fcharset0 Garamond;}{\f4\froman\fprq2\fcharset0 Times New Roman;}{\f5\fmodern\fprq1 Courier New;}{\f6\fnil\fprq2\fcharset2 Wingdings;}{\f7\fmodern\fprq1\fcharset0 Courier New;}{\f8\fswiss\fprq2 Univers;}{\f9\fswiss\fprq2\fcharset0 Univers;}}
+{\colortbl ;\red0\green0\blue255;}
+\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs24 
+\par \f1\fs20  `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` 
+\par \pard\fi-658\li658\tx864\tx1440\tx2160\tx2376\tx2880\b\f2\fs28  
+\par 10.2.6.4  \f3 Export: \f2 Steuerbefehle\b0\fs20  
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\f1  
+\par \f4 Zwischen den Anweisungszeilen, die jeweils f\'fcr die Ausgabe einer bestimmten Kategorie sorgen, k\'f6nnen in der Kategorieliste auch \b\f1 Steuerbefehle\b0\f4  stehen. Diese erweitern die M\'f6glichkeiten der Verarbeitung. \f1 
+\par \f4 Jeder Steuerbefehl mu\'df auf einer eigenen Zeile stehen und ebenfalls mit '#' beginnen. \f1 
+\par  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f5 #tz\b0\f1\tab\b\f4 Unbedingte Texteinf\'fcgung\b0\f1  
+\par \b\f5 #t\{CS\}\b0\f1\tab\f4 z mu\'df die Nummer eines `\cf1\ul\b Zwischenteils\cf0\ulnone\b0 ` sein (\f5 -\f6\'d8\f4  10.2.0), CS  eine `\cf1\ul\b Steuerzeichenkette.\cf0\ulnone\b0 ` Statt einer Kategorie wird dann an dieser Stelle die betreffende Zeichenkette ausgegeben. Dies ist n\'fctzlich, weil man sonst Textteile nur \'fcber die Pr\'e4- und Postfixe, abh\'e4ngig von den vorkommenden Kategorien, einbringen kann - und diese werden nicht ausgegeben, wenn die Kategorie nicht belegt ist. \f1 
+\par \i\tab Beispiele:\i0  
+\par \pard\fi-2880\li2880\tx864\tx1440\tx2160\tx2376\tx2880\f5\tab #t4\f1  \tab\tab\tab\tab Zwischenteil 4 ausgeben 
+\par \f5\tab #t\{ C "xyz: " \}\f1  \tab Neue Zeile, dann "xyz: " schreiben. 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f5 #Tk\b0\f1\tab\f4 Hier ist f\'fcr k nur eine Nummer erlaubt; Zwischenteil k wird nicht ausgegeben, sondern das Programm merkt sich diese Nummer f\'fcr den Fall, da\'df w\'e4hrend der Ausgabe einer Kategorie pl\'f6tzlich ein \b\f1 Seitenumbruch\b0\f4  f\'e4llig wird und die Kategorie dadurch unterbrochen werden mu\'df. Der Seitenumbruch wird dann ausgef\'fchrt, und vor dem Weiterdrucken wird Zwischenteil k ausgegeben. Sinnvollerweise enth\'e4lt  k  eine Druckersteuerung, mit der die Schriftart der unterbrochenen Kategorie vor dem Weiterdrucken wieder neu eingestellt wird. Es kann sich bei k aber auch um einen Unterprogrammaufruf handeln.  \i\f1 Beispiel:\i0  
+\par \pard\fi-2376\li2376\tx864\tx1440\tx2160\tx2376\tx2880\f5\tab #T70\f1\tab\tab\f4 Zwischenteil 70 f\'fcr Seitenumbruch festlegen\f5  
+\par \tab #98 ....\f1\tab\tab\f4 wenn w\'e4hrend Ausgabe von #98 ein Seitenbruch passiert, 70 ausgeben!\f5  
+\par \tab #T0\f1\tab\tab\tab Dadurch gilt\f5  #T70\f4  nur, w\'e4hrend #98 ausgegeben wird. \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f5 #i\b0\f1\tab\b Indikator-Aktion\b0  : hiermit kann man auf bestimmte Zeichen an bestimmten Positionen reagieren. Der Befehl bezieht sich immer auf die Kategorie\b\f5  #cc\b0\f1  (also die zuletzt benutzte, \f5 -\f6\'d8\f4  10.2.6.2). Zu beachten ist, da\'df diese innerhalb von Unterprogrammen konstant gleich der zuletzt vor dem Aufruf des UP benutzten Kategorie ist. F\'fcr die \'dcberpr\'fcfung von Zeichen im aktuellen Arbeitstext gibt es den Manipulationsbefehl "Indikatorpr\'fcfung" (\f5 -\f6\'d8\f1  10.2.6.3). 
+\par \tab Die allgemeine Form der Indikatoraktion lautet: 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\b\f5 #ik,x A\b0\f1  
+\par \pard\fi-1440\li1440\tx864\tx1440\tx2160\tx2376\tx2880\tab mit\tab k = Positionsnummer 
+\par \tab\tab x = Zeichen 
+\par \tab\tab A = Aktion (Zwischenteil-Nummer oder UP-Aufruf) 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab\f4 Wirkung: Aktion A wird ausgef\'fchrt, wenn in der aktuellen Kategorie  #cc (\f5 -\f6\'d8\f1  10.2.6.2) an der Position k das Zeichen x steht. Sonst passiert nichts. Sehr zu empfehlen, wenn eine ganze Serie von Alternativen abzuarbeiten ist. 
+\par \tab\f4 Die Zeichenz\'e4hlung beginnt mit der ersten Ziffer der Kategorienummer, das 4. Zeichen ist dann also das erste Textzeichen der Kategorie. Z.B. w\'fcrde\f5   #i4,3 >U\f4   bedeuten, da\'df das 4. Zeichen der gerade vorher angesprochenen Kategorie gepr\'fcft wird. Ist es das Zeichen '3', dann wird Unterprogramm U ausgef\'fchrt. Insbesondere ist der Befehl n\'fctzlich, wenn man mit Indikatoren arbeitet, d.h. Steuerzeichen, die immer an einer bestimmten Position der Kategorie stehen. \f1 
+\par \tab\f4 Wenn man Bedingungen pr\'fcfen will, die aus mehr als einem Zeichen bestehen, arbeitet man mit dem Manipulationsbefehl\b\f5  cX\b0\f1  oder mit "Anwendervariablen" (\f5 -\f6\'d8\f1  10.2.6.3). 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f5 #wh\f1\tab Wiederholung des Kopftextes\b0  auf Fortsetzungskarte. Der bis zu diesem Zeitpunkt produzierte Text wird wiederholt (mit Parameter\b\f5  fa\b0\f1  dahinter, \f5 -\f6\'d8\f4  10.2.2), wenn eine Fortsetzungskarte gedruckt werden mu\'df. Relevant ist dies nur bei Kartendruck (fl>0).  \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\b\f5 #\f7 b\b0\i\f4 bef\b\i0\f1\tab\f4 Basisparameter \'e4ndern.\b0\f1  \f4 Die Basisparameter (\f1  \f5 -\f6\'d8\f4  10.2.1-5) sind Konstanten, die w\'e4hrend der gesamten Arbeitszeit des Programms gelten, nachdem die Parameter geladen sind. Dieser Befehl erm\'f6glicht es aber, w\'e4hrend der Abarbeitung, mittendrin zwischen zwei Exportbefehlen, Basisparameter beliebig oft zu \'e4ndern. Ob dies aber sinnvoll ist, mu\'df man sich gut \'fcberlegen! Brauchbar ist der Befehl z.B., um den Basisparameter \b\f7 ke\b0\f4  ab- oder wieder einzuschalten:  \b\f5 #\f7 bke=""\b0\f4   w\'fcrde ihn abschalten. Sinnvoll w\'e4re auch, zwischendurch ein anderes Maskierungszeichen ein- und wieder abzuschalten: \b\f5 #\f7 b?=%%\b0\f4  w\'fcrde das %% einschalten, \b\f5 #\f7 b?=?\b0\f4  w\'fcrde wieder das Fragezeichen einschalten (siehe \f5 -\f6\'d8\f4  10.2.6.3 Typ 3).\f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880  
+\par \b\f5 #q\{ "\i fragetext\i0 " \}\b0\f1      [nur in PRESTO, APAC usw. sinnvoll, nicht in SRCH oder IMPORT] 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab\b Frage an den Benutzer\b0  : Der \i fragetext\i0\f4  erscheint am Bildschirm \'fcber einem Eingabefenster, und das Programm wartet auf eine Benutzereingabe. Erst danach wird die Parameterdatei weiter abgearbeitet. Die Antwort steht dann in\f5  #uxq\f1  und kann beliebig ausgewertet werden. In \i a99 \i0 und \i alcarta\i0  geht man anders vor, um dem Nutzer eine Frage zu stellen: man nutzt die FLEX-Methode. 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \pard\fi-792\li792\tx792\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 #dV\b0\f4  \tab Ausf\'fchren der Steuersequenzen (definiert mit p x 9) im ganzen aktuellen Satz.  Siehe `\cf1\ul\b Vb.164\cf0\ulnone\b0 `\f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880 
+\par \f4 Und noch zwei ganz besondere Befehle f\'fcr die Unicode-Gemeinde (ab V29.3):\f1 
+\par \pard\fi-792\li792\tx792\tx1368\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f7 #u&# ; 
+\par #dU\b0\f4  \tab Umrechnen von UTF-8-Codes im ganzen Satz in Entit\'e4tennummern der Gestalt  &#E; f\'fcr HTML. Schiebt man  \b\f7 #dV\b0\f4   noch nach, kann man damit UTF-Codes indexf\'e4hig machen.\f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880  
+\par Ein besonderer Steuerbefehl ist der \b Schaltbefehl\b0 , der mit den Nachladebefehlen in engem Zusammenhang steht. Siehe dazu 10.2.6.7. 
+\par  
+\par \pard\fi-658\li658\tx864\tx1440\tx2160\tx2376\tx2880  
+\par \b\f2\fs28 10.2.6.5\tab\tab\f3 Spr\'fcnge, Unterprogramme\b0\f2\fs20  
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\f1  
+\par \pard\fi-1440\li1440\tx864\tx1440\tx2160\tx2376\tx2880\b\fs24 10.2.6.5.1\tab Sprungbefehle und Sprungmarken\b0\fs20  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab\f4 Sprungbefehle der Form "+m" mit einem einzelnen alphanumerischen Zeichen oder Sonderzeichen 'm' k\'f6nnen, wie schon beschrieben, in Kopfbefehlen (\f5 -\f6\'d8\f1  10.2.1) und als bedingter Sprung in Exportbefehlen vorkommen (\f5 -\f6\'d8\f1  10.2.6.1). 
+\par \tab Aber es gibt auch eine Art GO TO-Befehl: eine Befehlszeile der Form 
+\par \b\f5 #+m\b0\f1\tab\f4 in der Kategorieliste hei\'dft \b\f1 Unbedingter Sprungbefehl\b0\f4 , denn er wird bedingungslos ausgef\'fchrt, wenn die Abarbeitung der Kategorieliste an diese Stelle kommt. \f1 
+\par \i\tab Empfehlung:\i0  Kleinbuchstaben (im Gegensatz zu den ak-Sprungbefehlen), erlaubt sind aber alle druckbaren Zeichen. Nicht erlaubt sind die ASCII-Werte 0-15, 26, 27,34,("), 35 ('#'),39('), 45 ('-'), 255. 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab Die \b Sprungmarke\b0\f4 , zu der ein Sprungbefehl hinf\'fchren soll, mu\'df so aussehen: \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2880\b\f5 #-m\b0\f1  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2880\tab\f4 Die Anf\'fchrungszeichen ' und " sind f\'fcr m nicht erlaubt. \f1 
+\par \tab\f4 z.B. k\'f6nnte innerhalb der Kategorieliste diese Sequenz stehen: \f1 
+\par \pard\fi-2941\li2941\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\f5\tab #39 +y #72 8\lang1033\f8\tab\f9 hei\'dft: wenn #39 vorkommt, weiter bei Sprungmarke #-y\lang1031\f5  
+\par \tab #40 e" = " \lang1033\f8\tab\tab\f9 wenn nicht: #40 ausgeben, Pr\'e4fix\lang1031\f5  " = " 
+\par \tab #+w            \lang1033\f8\tab Dann Sprung nach #-w\lang1031\f5   
+\par \tab #-x            \lang1033\f8\tab Sprungmarke x, zu der von anderswo gesprungen wird\lang1031\f5  
+\par \tab #...         \lang1033\f8\tab weitere Exportbefehle\lang1031\f5  
+\par \tab #-w        \lang1033\f8\tab\tab Sprungmarke w\lang1031\f5  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\tab #... 
+\par \pard\fi-2941\li2941\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\tab #-y         \lang1033\f8\tab Sprungmarke y\lang1031\f5  
+\par \tab #71 \lang1033\f8\tab\tab\tab hier geht es weiter nach Sprung auf y: #71 wird ausgegeben\lang1031\f5   
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\f1\tab\f4 Eine Sprungmarke beeinflu\'dft selbst den Ablauf nicht, wenn das Programm bei der sequentiellen Bearbeitung auf eine solche Zeile st\'f6\'dft. Das Programm macht dann mit der n\'e4chsten Zeile weiter. \f1 
+\par \tab\f4 Man beachte, da\'df Sprungmarken nur einzelne Zeichen sein k\'f6nnen - im Gegensatz zum Import, wo l\'e4ngere Bezeichnungen erlaubt sind (\f5 -\f6\'d8\f4  11.2.3.6). Der Grund ist die Optimierung: beim Export ist Tempo wichtig, denn z.B. die Bildschirmanzeige soll so schnell wie m\'f6glich gehen. Leider kann man dadurch aber nur etwa 220 Sprungmarken in einer Parameterdatei haben. Man beachte, da\'df man bei den bedingten Spr\'fcngen (\f5 -\f6\'d8\f1  10.2.6.1) oft ohne Sprungmarke auskommen kann. 
+\par \i\tab Vorsicht\i0\f4  ist geboten, wenn man R\'fcckspr\'fcnge (Marke oberhalb des Befehls) programmiert. Dadurch entsteht eine Schleife, die nur endet, wenn es einen Aussprung gibt, der auch garantiert erreicht wird. \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2942\tx3600  
+\par \b\f4 Sonderf\'e4lle von Sprungbefehlen\b0\f1  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\tab\f4 Die zwei hier beschriebenen F\'e4lle gelten sowohl f\'fcr bedingte wie f\'fcr unbedingte Spr\'fcnge: \f1 
+\par \b\f5 #+#\b0\f1\tab\b Ende\b0  
+\par \tab Am Ende der gesamten Kategorieliste braucht kein Endebefehl zu stehen. Wenn aber mittendrin aufgrund einer Bedingung die Ausgabe des aktuellen Satzes enden soll, ist dies der Endebefehl, d.h. die Bearbeitung endet an dieser Stelle, der aufbereitete Satz gilt als fertig und wird ausgegeben. Eine Sprungmarke\f5   #-#\f4   kann deshalb nicht mit einem Sprungbefehl erreicht werden. Statt dessen ist sie reserviert f\'fcr die "Globale Manipulation" (S.200): sie leitet den daf\'fcr vorgesehenen Abschnitt ein. \f1 
+\par \b\f5 #+-\b0\f1\tab\b Abbruch\b0  
+\par \tab\f4 Dieser Sprungbefehl bewirkt einen Abbruch der Verarbeitung. Der Rest des aktuellen Exportsatzes wird nicht ausgegeben. Sinnvoll ist das nur nach einer Bedingungspr\'fcfung (vgl. "Anwendervariable" in 10.2.6.3 und "Indikatoraktion" in 10.2.6.4). Auch\f5   #--\f1   kann deshalb nicht als Sprungmarke vorkommen. 
+\par \tab\i Empfehlung:\i0\f4  Pr\'fcfungen auf Exportw\'fcrdigkeit des Satzes ganz oben ansiedeln, bevor schon irgendein Inhalt ausgegeben wird. \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2942\tx3600  
+\par \b Reservierte und empfohlene Sprungmarken\b0  
+\par \pard\fi-1440\li1440\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\b\f5 #-1 ... #-9\b0\f1\tab Wenn\b\f5  ic=1\b0\f4  gesetzt wurde, benutzt das Programm diese Sprungmarken zur Umcodierung der Benutzereingabe in den Registern 1 bis 9 (f\'fcr 10 ist\f5   #-:\f4   m\'f6glich). \f1 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\b\f5 #-0\b0\f1\tab\f4 Hier wird die Kurztitelzeile aufbereitet. Dazu geh\'f6rt ein Befehl\b\f5  ak=zz+0\b0\f1  . 
+\par \b\f5 #-@\b0\f1\tab\f4 Prim\'e4rschl\'fcssel-Aufbereitung: F\'fcr die Identifikationsnummer zu benutzen, wenn man mehrb\'e4ndige Werke verkn\'fcpft speichern will. Dann ist es m\'f6glich, in der Titelanzeige mit 'B' und 'b' vor und zur\'fcckzuschalten. (Vgl. als Beispiele die entsprechenden Abschnitte in CAT.API) \f1 
+\par \b\f5 #-/\b0\f1\tab\f4 Restriktionsschl\'fcssel, mit V15 neu eingef\'fchrt (\f5 -\f6\'d8\f1  10.2.9) 
+\par \b\f5 #-.\b0\f1\tab\f4 sog. SR-Schl\'fcssel f\'fcr die "Satz\'fcbergreifende Suche" (\f5 -\f6\'d8\f1  10.2.6.9) 
+\par \b\f5 #-``\b0\f1\tab (Gravis!) Flip-Aufbereitung: anwendungsspezifische Umschaltungen in der Bildschirmanzeige ( 10.2.7) 
+\par \tab (nur bei DOS wichtig) 
+\par \f5 #-#\f1\tab Globale Manipulationen (in Anzeige- oder Exportparametern; (\f5 -\f6\'d8\f1  1.5.4, PRESTO-Funktion Strg+F10) 
+\par \b\f5 #--\b0\f1\tab\f4 L\'f6schkontrolle (\f5 -\f6\'d8\f1  10.2.6.8) 
+\par \b\f5 #-_\tab\b0\f4 Nach F4, am Ende einer Ergebnismenge, f\'fchrt PRESTO diesen Abschnitt aus. \f1 
+\par \lang1033\b\f5 #-(\tab\b0\f4 Abschnitt f\'fcr Anzeige des Internformats in \b\i\f1 a99/alcarta\b0\i0   (sonst kommt bei F5 nichts). Beispiel in d-wrtf.apr.\b\f5  
+\par \lang1031 #- E\b0\f1\tab\f4 (Leerzeichen vor dem E!) Endabschnitt f\'fcr Listenproduktion (\f5 -\f6\'d8\f4  10.2.6.5.3); auch bei Beendung von PRESTO wird dieser Abschnitt ausgef\'fchrt. \f1 
+\par \b\f5 H\b0\f1\tab\f4 Hilfsabschnitt f\'fcr "Programmierte Validierungen" (\f5 -\f6\'d8\f1  10.2.8) in den Indexparametern 
+\par \tab\f4 Hierhin wird nicht mit Sprungbefehl gesprungen, sondern automatisch bei jeder Kategorieeingabe und einigen anderen Ereignissen, z.B. wenn F10 gedr\'fcckt wird zum Speichern.  \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2942\tx3600  
+\par \pard\fi-1440\li1440\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\b\fs24 10.2.6.5.2\tab Unterprogramme:\b0\fs20  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\tab\f4 Beginn und Ende eines Unterprogramms werden durch \'f6ffnende und schlie\'dfende runde Klammern markiert. Auch diese Zeilen beginnen mit '#'. \f1 
+\par \tab An beliebiger Stelle in der Kategorieliste, jedoch \b unterhalb des Aufrufs\b0 , kann folgendes stehen: 
+\par \b\f5 #(P\lang1033\b0\f8\tab Beginn des Unterprogramms P\lang1031\f5  
+\par #...\lang1033\f8\tab Text des Unterprogramms:\lang1031\f5   
+\par \pard\fi-1440\li1440\tx864\tx1440\tx2160\tx2376\tx2942\tx3600 #...\lang1033\f8\tab\tab beliebige Exportbefehle u.a.\lang1031\f5  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\b #)P\lang1033\b0\f8\tab Ende des Unterprogramms P\lang1031\f5  
+\par \f1\tab\f4 Dabei kann f\'fcr P jeder Buchstabe und jede Ziffer stehen. \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2942\tx3600  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\tab Die Endemarke\b\f5  #)P\b0\f1  darf mehrfach vorkommen und kann auch oberhalb\b\f5  #(P\b0\f4  stehen. Das ist n\'fctzlich, wenn im UP Spr\'fcnge vorkommen. \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2942\tx3600  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\tab Das UP wird dann mit seinem "Label" P von beliebiger Stelle aus so aufgerufen: 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2942\tx3600  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\b\f5 #>P\f1\tab Aufruf: \b0\f4 F\'fchre das Unterprogramm P aus \f1 
+\par \tab\f4 d.h. '>' ist das Befehlszeichen f\'fcr Unterprogramm-Aufruf. \f1 
+\par \tab\f4 Der Aufruf kann nicht nur anstelle eines Exportbefehls stehen, wie hier gezeigt, sondern auch als Manipulationsbefehl (anstatt Pr\'e4fix) oder anstelle einer Postfix-Nummer. \f1 
+\par \tab Wenn man einen UP-Aufruf als Manipulationsbefehl benutzt, bewirkt die Zeile selbst keine Ausgabe; die Kategorie kann aber innerhalb des UP an beliebiger Stelle als Sonderkategorie #cc (\f5 -\f6\'d8\f1  10.2.6.2) angesprochen werden. 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2942\tx3600  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\tab\f4 Hier ein formales Beispiel f\'fcr den Aufruf von Unterprogrammen aus Exportbefehlen:  \f1 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2942\tx3600  
+\par \b\f5 #xxf +c p>Q #kt1 >R #kt2 >S #zz 1  
+\par #ya ... 
+\par #yb ... 
+\par #yc ... 
+\par #-c 
+\par #za ...\b0\f1  
+\par  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\tab Das bedeutet: 
+\par \pard\fi-1440\li1440\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\tab 1.\tab\f4 W\'e4hle Kategorie #xx mit Folgezeichen f. Wenn sie existiert, f\'fchre Unterprogramm Q aus. Darin kann #xxf unter dem Namen #cc angesprochen und ausgegeben werden.  \f1 
+\par \tab 2.\tab\f4 Gehe anschlie\'dfend (ohne #xxf weiter zu bearbeiten oder auszugeben!) zum Sprungziel #-c . \f1 
+\par \tab 3.\tab\f4 Wenn die n\'e4chste tats\'e4chlich vorkommende Kategorie (das mu\'df nicht #ya sein, die kann fehlen; es kann #yb oder #yc, #za oder noch eine weitere sein) kleiner oder gleich #kt1 ist, f\'fchre Prozedur R aus, wenn sie gr\'f6\'dfer als #kt1, aber kleiner oder gleich #kt2 ist, Prozedur S, sonst gib Zwischenteil 1 aus (wenn die n\'e4chste Kategorie gr\'f6\'dfer als #kt2 ist). \f1 
+\par \tab 4.\tab\f4 Wenn Kategorie #xxf aber in der aktuellen Aufnahme gar nicht vorkommt, fahre mit der n\'e4chsten Zeile  (\f5 #ya ...\f1 )  fort. 
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\tab\f4 Nochmals: Innerhalb der Unterprogramme #(Q, #(R und #(S kann man auf die zuletzt vor dem Aufruf benutzte Kategorie zur\'fcckgreifen: sie steht unter der Sonderkategorie #cc (\f5 -\f6\'d8\f4  10.2.6.2). Und zwar enth\'e4lt sie den unvorbehandelten Text von #xxf. Bei verschachtelten Aufrufen bleibt aber nur der erste Text in #cc erhalten. Andere Texte, die man braucht, kann man vor dem Aufruf in Anwendervariablen unterbringen (\f5 -\f6\'d8\f1  10.2.6.2/3). 
+\par \pard\tx864\tx1440\tx2160\tx2376\tx2942\tx3600  
+\par \pard\fi-864\li864\tx864\tx1440\tx2160\tx2376\tx2942\tx3600\i\tab Beispiel:\i0  
+\par \tab In #40, #40a, #40b ... sollen die Namen von Verfassern stehen. In einer Liste sollen sie in der Form "Vorname Name; Vorname Name; Vorname Name ..."  erscheinen, also in der nicht-invertierten Form. Das erreicht man so:  (wobei 3="; "  und 8 =". - " ) 
+\par \pard\fi-864\li864\tx864\tx3284\tx4320\f5\tab #40. ++ p>K m>K #40z 3 #zz 8\f4    vor jeder #40x wird Unterprogramm #(K ausgef\'fchrt\f5  
+\par \pard\fi-3283\li3283\tx864\tx3284\tx4320\tab #+v\lang1033\f8\tab wenn abgearbeitet: weiter bei #-v\lang1031\f5  
+\par \tab #(K\f1\tab hier beginnt Unterprogramm K, es invertiert Namen\f5  
+\par  \tab\tab (#cc\f4  enth\'e4lt dann den Text von\f5  #40...) 
+\par \tab #cc b", " #zz 0\f1\tab nimm zuerst den Teil hinter dem\lang1033\f8  ", "\lang1031\f5  
+\par \tab #cc e"," p" " #zz 0\f1\tab dann nimm den Teil vor ", " und setze " " davor ein\f5  
+\par \tab #)K      \f1\tab Ende des UP\f5  
+\par \tab #-v\f1\tab Sprungmarke: hier geht's weiter, wenn keine #40 mehr 
+\par \pard\fi-864\li864\tx864\tx3284\tx4320\tab\f4 Wenn der erste Verfasser anders behandelt werden soll, k\'f6nnte man hinter p auch ein anderes UP angeben, z.B.\f5  p>E\f1 .  In den Parameterdateien D-1.APR und P-KARTE.APR wurde diese Technik auf alle Personennamen angewendet, wobei mittels weiterer Unterprogramme auch die Funktionsbezeichnungen automatisch erzeugt werden. 
+\par \pard\tx864\tx3284\tx4320  
+\par  
+\par \b\f4\fs24 10.2.6.5.3  Sonderteile: Kopf-, Fu\'df- und Endabschnitt\b0\f1\fs20  
+\par \f4 Unter dem Ende der Kategorieliste kann man noch zwei separate Listen und einen Sonderabschnitt anf\'fcgen, die die Angaben f\'fcr den Kopf- bzw. Fu\'dfabschnitt enthalten. Diese Abschnitte stellen praktisch auch Unterprogramme dar, die aber bei Bedarf automatisch aufgerufen werden. Bei Kartendruck kommen diese Angaben dann oben bzw. unten auf die Karte, bei Listendruck oben bzw. unten auf die Seite (hier sind dann die Sonderkategorien\b\f5  #p0..#p2\b0\f1  sinnvoll). Wenn ohne Seitenumbruch ausgegeben wird (\f5 zm=0\f4 , z.B. ASCII-"download"-Datei), dann werden diese Abschnitte nur am Dateianfang bzw. -ende ausgef\'fchrt. Vor allem ist es wichtig, da\'df man dadurch einen Dateikopf erzeugen kann (s.a. 1 10.2.4, Parameter di), wie es f\'fcr diverse Fremdsoftware bzw. f\'fcr die Druckerinitialisierung notwendig ist. Man braucht solche Abschnitte auch f\'fcr Rechenaktionen, und zwar f\'fcr die Initialisierung der Variablen bzw. f\'fcr die Ausgabe der Ergebnisse. \f1 
+\par \pard\fi-864\li864\tx864\tx3284\tx4320\lang1033\b\f5 H\b0\tab\f4 Hilfsabschnitt, nur in Indexparametern. F\'fcr "programmierte Validierungen" (\lang1031\f5 -\f6\'d8\lang1033\f4  10.2.8), mit denen jede Dateneingabe sofort \'fcberpr\'fcft werden kann.\f5  
+\par \b K\b0\tab\f4 leitet die Liste f\'fcr den \b\f1 Kopf\b0 abschnitt (Vorspann) ein und beendet zugleich den Hauptteil, bzw.\f5  
+\par \b F\b0\tab\f4 die Liste f\'fcr den \b Fu\'df\b0\f1 abschnitt (Nachspann).  
+\par \b\tab\b0 In den \b Index\b0\f4 parametern: Abschnitt f\'fcr beliebige Umwandlung der Variablen\f5  \b #u1\b0 . \f1 Der erzeugte Output wird in \i a99/alcarta\i0\f4  statt der tats\'e4chlichen Registerzeile gezeigt. Dadurch kann man dem Nutzer vorspiegeln, der Index s\'e4he anders aus als er wirklich aussieht. Was man im einzelnen mit\f5  \b #u1\b0  \f4 macht, ist v\'f6llig beliebig. Die Variable\f5  \b #u1\b0  \f4 enth\'e4lt die umzuwandelnde Registerzeile, und zwar die Nummer\f0  \f5 (1 ... 9 : ;) \f4 auf der ersten Position vor dem Text. Ausgef\'fchrt wird dies nur im Moment der Indexanzeige, nicht w\'e4hrend der Indexierung! Mehr dazu in `\cf1\ul\b Vb.149b\cf0\ulnone\b0 `\f5 
+\par \f1  
+\par \f4 F\'fcr Listen- und Dateiexport gibt es au\'dferdem noch:\f5  
+\par \b #- E\b0\tab\f4 Endabschnitt f\'fcr Listenproduktion (ein Leerzeichen vor dem E!) Wird automatisch am Ende eines Exportlaufs (\b\f1 Dateiende\b0\f4 ) vom Programm SRCH und auch von PRESTO ausgef\'fchrt, damit man z.B. Rechenergebnisse ausgeben kann. Wichtig bei zm>0, denn der Abschnitt F wird dann an jedem \b\f1 Seitenende\b0\f4  ausgef\'fchrt!\f5  
+\par \b #-_\tab\b0\f4 Diesen Abschnitt f\'fchrt PRESTO am Ende jeder Ergebnismenge aus, wenn mit F4 exportiert wurde.\b\f5  
+\par \pard\tx864\tx3284\tx4320\lang1031\b0\f1  
+\par Wenn \b K\b0  und \b F\b0\f4  beide auftreten, mu\'df man die Reihenfolge einhalten. Es mu\'df au\'dferdem\b\f5  ff=2\b0\f1  gesetzt sein, damit diese Abschnitte wirksam werden (\f5 -\f6\'d8\f1  10.2.2). Das Ende dieser Unterprogramme wird automatisch durch den Beginn des anderen bzw. durch das Ende der gesamten Parameterdatei markiert.  
+\par \i Wichtig:\i0\f4  Die Sprungmarken der Abschnitte K, F und H sind unabh\'e4ngig von denen des Hauptteils, d.h. man mu\'df hier keine R\'fccksicht auf dort schon vergebene Marken nehmen.  \f1 
+\par \f4 Ansonsten k\'f6nnen diese Listen alles enthalten, was in der Hauptliste vorkommen kann. Die K-Liste mu\'df bei Kartendruck insbesondere den Befehl #wh enthalten (s.o.), wenn Fortsetzungskarten richtig funktionieren sollen. Jedoch: man benutzt Kopf- und Fu\'dfabschnitte in der Regel nur beim Listendruck f\'fcr Seitenkopf und -Fu\'df. Beim Kartendruck ist es praktischer, die oft sehr unterschiedlichen K\'f6pfe f\'fcr verschiedene Eintragungstypen mit Sprungbefehlen von den ak-Zeilen aus zu steuern (\f5 -\f6\'d8\f1  10.2.1). In den Parameterdateien P-KARTE.APR und P-NORMAL.APR sind beide Methoden der Kopfgestaltung zu sehen.  
+\par \f4 Sehr wichtig sind Kopf- und Fu\'dfabschnitte auch in Verbindung mit Rechenbefehlen, siehe n\'e4chster Abschnitt.  \f1 
+\par \f4 In Indexparametern machen Kopf- und Fu\'dfabschnitte keinen Sinn. Es gibt dort als separaten Abschnitt den sog. \b\f1 Hilfsabschnitt\b0\f4 , in dem die "Programmierten Validierungen" (Eingabepr\'fcfungen) programmiert werden k\'f6nnen. Siehe dazu 10.2.8 \f1 
+\par \pard  
+\par \pard\tx864\tx3284\tx4320 Es gibt die FLEX-Befehle \f5 `\cf1\ul\b download Head/Foot\cf0\ulnone\b0 `\f4  zur direkten Ausf\'fchrung der Abschnitte. \f1 
+\par \pard  
+\par  
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` 
+\par \pard  
+\par ?Vorangehender Teil=h ac10-7 
+\par ?Fortsetzung=h ac10-9 
+\par ?Vb.164=h vb164 
+\par ?download Head/Foot=h xdownloa=h download Head 
+\par ?Steuerzeichenkette.=h ac10-2=Steuerzeichenketten 
+\par ?Zwischenteils=h ac10-2=10.2.0  Zwischenteil 
+\par ?Vb.149b=h vb149b=Vorspiegelungen
+\par \f1 
+\par }
+ 

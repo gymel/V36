@@ -1,0 +1,119 @@
+  FNAM.FLX : Verzeichnisse und Dateien zur Auswahl anzeigen
+  2004-02-09   Zeigt Anwendung von   fnam >...  und ViewListe
+               Startet  files.flx  zur Auswertung der gewaehlten Datei
+
+var m
+if "alc" end
+
+  Wenn #uvZ gesetzt, letzte Dateiliste wieder anzeigen 
+  (bei Rueckkehr aus files.flx)
+if #uvZ jump vf
+  Wenn #uvY gesetzt, damit starten
+if #uvY jump vorgabe
+  Sonst ist Ausgangspunkt: ProgDir
+var P
+ins #uvD
+jump start
+
+:vorgabe
+var #uvY
+ins #uvD
+#uvY
+
+:start
+#uvZ
+  Datei fuer ViewListe oeffnen
+open x pfiles.vw 
+  Ueberschriften dafuer setzen
+set i8Anzeige von Unterverzeichnissen an:
+var "i9        " #uvD
+set
+  Viewliste beschreiben
+wri "DOS-Fenster" n
+wri "absteigen zu Verz. " #uvD(F"\\" t"\\") n
+wri "Dateiliste von " #uvD " zeigen" n
+  Jetzt die Liste der Verzeichnisse reinschreiben
+var ">." #uvD "*.*" 
+fnam 
+  Es gab nichts
+if no jump exit 
+clo x
+  ViewListe zeigen
+View pfiles.vw
+clo v
+  Esc
+if "" jump endesc
+  Welche Zeile wurde gewaehlt?
+if ="DOS-Fenster" jump ended
+if ="Dateiliste von" jump showf
+if ="absteigen zu Verz. " jump down
+ins #uvF
+  var "Ihre Wahl war: " #uvF(B"-- " e" --")
+  mes
+var #uvD #uvF(B"-- " e" --") 92
+ins #uvD
+jump start
+
+:showf
+   Dateien auf #uvD zeigen
+open x pfiles.vw 
+wri "Ende            " n
+wri "Verzeichnisse zeigen" n
+var ">" #uvD "*.*"
+fnam 
+if no jump exit
+clo x
+:vf
+  Var. #uvZ loeschen
+#uvZ
+set i8Anzeige von Dateien auf diesem Verzeichnis:
+var "i9" #uvD
+set
+View pfiles.vw
+clo v
+if "" jump endesc
+if ="Ende   " jump endef
+if ="Verzeichnisse zeigen" jump start
+ins #uvF
+var #uvD #uvF(B"-- " e" --")
+ins #uvZ
+   var "Ihre Wahl war: " #uvZ
+   mes
+  files.flx untersucht, was fuer eine Datei es ist:
+exec X files.flx
+jump vf
+
+:down
+  Eine Etage tiefer gehen
+var #uvD(F"\\" t"\\") "\\"
+ins #uvD
+jump start
+
+:exit
+clo x
+:endef
+  "Ende" in Dateiliste gedrueckt
+help pfiles.vw
+#uX9x var zc\\ins #uvH\\var #uvD #uvH(B"-- " e" ")\\ins #uvH\\mes
+var "Schreibmarke in Zeile setzen, dann Alt+F9: Aktion"
+sho iv
+act 4
+jump endesc
+
+:ended
+  "Ende" in Verzeichnisliste gedrueckt
+perform endesc
+jump dos
+end
+:endesc
+set i9
+set i8
+return
+end
+
+:dos
+     DOS-Fenster auf dem Verz. #uvD oeffnen
+get env comspec
+ins #uwC
+var #uwC " /c " P 'comm.bat "' #uvD '" ' #uvD(0,2)
+Call

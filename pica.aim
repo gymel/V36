@@ -1,0 +1,7367 @@
+  PICA.AIM   PICA3-download -> allegro-Standard-Internformat
+  951019 / 20131212 / 20150420 Zahlreiche Aenderungen, Kommentar "rda"
+       mit Zeitschriften und Sekundaerausgaben
+
+  1. Download muss in UTF-8 vorliegen (wichtig wg. der Akzente, s.u.)
+  2. nachgeschalteter Export mit I-PICA.APR  muss noch 
+     einige Zeichen ersetzen, u.a. @ durch ' ' und | durch $ 
+
+  Serien: 4180 kann wahlweise auch ausgewertet werden, s.u. #85
+
+re="SET: S"
+fm=2     Mehrfachfeldkennung (z.B. #83, #832, ...)
+
+ $$   Dollarverweisungen aufloesen (gibt's nicht mehr)
+S    Mehrfachspatien beseitigen
+
+_ 13 10 " "
+_ " "      Zeilenumbruch bei langen Kat.
+
+_ 13 10    Kategorie-Enden durch 0 ersetzen
+_ 0
+
+_ " $ "
+_ " | "    temporaer! weil $-Zeichen Sonderfunktion hat
+
+_ 0 "51??  "     Sonderfall: RSWK-Ansetzungsketten
+_ " / "
+
+_ 0 "51?8 "
+_ 0 "PPPP "    // Permutationsmuster
+
+_ 0 "51?9 "
+_ 0 "SSSS "    // Sachgruppen
+
+  Exemplardaten
+_ 0 "70"    um die liste der Exemplare besser abarbeiten zu koennen
+_ 0 "ex"    wird zuerst 70xx durch exxx ersetzt
+
+_ 0 "7"    dann die Feldendezeichen vor den 7er und 8er Kategorien
+_ "7"     weggenommen, durch  ersetzt.
+            Dann haengen alle zu einem Expl gehoerigen Angaben zusammen
+_ 0 "0248 "
+_ " "
+
+_ 0 "8"     in einer Kategorie EXxx
+_ "8"      (Problem ist, dass ja z.B. 7109 nicht immer vorkommt!)
+
+_ 0 "67"
+_ "67"   lokale SE
+
+_ 0 "68"   lokale SE
+_ "68"
+
+_ 0 "480"
+_ "480"
+
+_ 0 "2080 ZDB"
+_ 0 "2110 B"
+
+_ 0 "2080 AB"
+_ 0 "ABLA AB"
+
+ _ 0 "2080 "          die erste 2080 ist die NEUE ZsSign
+ _ 0 "zsig "
+
+_ 0 "2080 9"     Keine Signatur, sondern Datum
+_ 0 "nnnn 9"
+
+_ 0 "ABLA AB"
+_ 0 "2080 AB"
+
+_ 0 "4243"
+_ 0 "HORI"    Horiz.Verkn.
+
+_ 0 "4230"
+_ 0 "KONK"    Titelkonkord.
+
+_ "u. d. T."
+_ "u.d.T."
+
+
+  Zeichenumwandlungstabelle
+  y-Befehle entfallen, weil jetzt Unicode (ucodes.apt in i-pica.apr eingebunden!)
+         $$2013-11-18
+  ausser:
+y { 256
+y } 256
+
+  NUR f. RDA-Demodaten von Wiesenmueller
+
+ #00
+ s"sp=" 
+ e":"   rda-test
+
+
+ #90
+ s"sp=" 
+ e":"   rda-test
+ w"hw"
+ +anfang
+
+#999
+j0
+C "005 Tp"
+qPerson
+
+C "005 Tb"
+qK”rperschaft
+C "005 Tk"
+qBasisklass        muss noch gemacht werden!
+C "005 Ts"
+qSchlagwort
+q
+
+#99a
+j0
+l0
+C"7120 "    Zeitschrift
+q00
+q2080
+
+
+-00
+#00 
+s "0100 "
+C "0500 ?b"
+(
+w"z"
++anfang
+)
+C "0500 ?d"
+(
+w"z"
++anfang
+)
+C 0 "2110"
+w"z"
+C 0 "2195"
+w"z"
++anfang
+
+-2080
+#00
+s "0100 "
+C 0 "4004 "   wenn 4004, dann nicht NMN-Id nehmen fuer #00
+q0100
+C "0500 ?b"
+w"z"
+C "0500 ?d"
+w"z"
++anfang
+
+-0100
+#00
+s "0100 "
+C 0 "4004 "
++anfang
+C "0500 ?b"
+(
+w"z"
++anfang
+)
+C "0500 ?d"
+(
+w"z"
++anfang
+)
+C 0 "2110"
+(
+w"z"
++anfang
+)
+C 0 "2190"
+w"z"
++anfang
+ z"zzz"    ZZZ ersetzen durch zPPN
+ (
+ l0
+ s "0100 "
+ w"z"
+ )
+
+
+-anfang
+
+-09
+#09           Verkn.Nr nach oben
+s0 "4004"     nur wenn 4004 besetzt
+l0
+s 0 "4000 "
+b"!"
+e"!"
+_ "X"
+_ "x"
+s 0 "4000 "
+i 35
+e 35
+w"+"
+s 0 "4004 "
+i 42
+e"*"
+e"@"
+w"="
++TITEL   neue MBW-Struktur
+
+#09           Verkn.Nr nach oben
+s 0 "4160 "   wenn 4160 vorkommt, zuerst die PPN
+b"!"
+e"!"
+_ "X"
+_ "x"
+  dann mit +BdNr anhaengen
+s 0 "4160 "
+i 35
+e 35
+w"+"
+  Dann Zaehlung in Vorlageform mit = dran
+s 0 "4150 "
+c ";"
+/
+l0
+< ";"
+i32
+e";"
+e"#"
+c"$l"
+B"$l"
+w"="
+
+#999
+j0
+qTITEL
+
+   Aab-Saetze!
+
+#99a
+j0
+C 0 "0500 Aab"
+qAab
+C 0 "0500 Avu"
+qAab
+qTITEL
+
+-Aab
+#09
+s 0 "4180 "
+b"!"
+e"!"
+w"z"
+s 0 "4180 "
+b"#"
+e"#"
+w"+"
+
+-TITEL
+
+#20
+s 0 "4004"  Banddtitel
+c"@"    nur wenn '@' vorkommt, ist es ein richtiger Bandtitel
+(
+B"*"
+B"*"
+i 32
+i 64
+_ "@"
+_ " "
+n
+e" / "
+e" ;; "
++25
+)
+q     sonst nur so etwas wie "A - G" oder "Textband" ...
+
+-19
+#19
+s 0 "4004 "  Banddtitel
+B"*"
+B"*"
+= " ;;"
+q25
+= " / "
+q39
+e" / "
+e" ;; "
+
+
+-25
+#25
+s 0 "4004 "  Banddtitel
+B"*"    z.B. *enth.*Titel 
+B"*"
+b";; "
++84
+
+-39
+#39
+s 0 "4004 "  Banddtitel
+B"*"
+B"*"
+b" / "
+e"!"
+
+   koennte eigentlich entfallen:
+-84
+#84   Titel des uebergeordn.WerkesZaehlung
+s 0 "4000 "
+b"!"
+b"!"
+i 64
+_ "@"
+_ ""
+N     Artikel
+s 0 "4004 "
+i 42
+B"*"
+w"; "
+
+#84
+s 0 "4150"
+i 42
+N
+_ "$h"
+_ " / "
+_ "$l"
+_ " ; "
+
+#84~
+s 0 "4151"
+e " / "
+w " "      
+i 42
+N
+_ "$h"
+_ " / "
+_ "$l"
+_ " ; "
+
+#18
+s 0 "3481 "
+i 64
+_ "@"
+_ ""
+
+#19
+s 0 "3480 "
+i 64
+_ "@"
+_ ""
+
+#20
+s 0 "3220 "
+= "{"    Wenn es mit '{' anfaengt, uebergehen
+q
+e"{"
+x
+
+ #8e 
+ s 0 "3220 "
+ c"URL"
+ /
+ q
+ b"{"
+ e"}"
+ x
+
+#28
+s 0 "3220 "
+b"{"
+e"}"
+
+-20
+#20
+s 0 "4000 "
+C 0 "4004 "   4000 nicht verwerten, wenn 4004 existiert
+q
+= "@ /"   kein Titel!
+q
+
+(N
+= "@"   Nichtsortiermodus behandeln
+/
+(
+c"@"
+w"ª"
+_ " @"
+_ "ª "
+_ "@"
+_ "ª "
+)
+i64
+)N
+
+_ "$d"      rda
+_ " : "
+_ " // "
+_ ". "    Koerp.Ergaenzung
+e " / "
+e" = "
+e" ;; "
+e"$h"     rda
+s 0 "4005 "    Unterreihentitel
+w". "
+
+ 
+
+-21
+#21
+s 0 "3200 "
+
+#22
+s 0 "321? "
+_ "!PPN!"   rda  Demodaten
+_ ""
+_ "$a"
+_": "
+_ "$g"
+_ " ["
+e"$"
+>N
+m    rda: #22 wdh.
+
+#26   rda: #26 wdh.
+s 0 "4010 "
+>N
+_ "$d"
+_" : "
+_ "$h"
+_" : "
+m" ; "
+
+#39g
+s 0 "4011 "
+
+#23  Nebent.
+s 0 "326? "
+C " = $326"    nicht, wenn es in 4000 vorkommt
+q
+>N
+m1
+
+#23v   Kurzt.
+s 0 "3232 "
+m" ; "
+
+#24   Parallelt.  RDA
+s 0 "4002 "
+_ "d"
+_ " : "
+e " / "
+>N
+m1
+
+ #24
+ k24
+ >N
+
+ #24   Parallelt.
+ s 0 "4000 "
+ b" = "
+ _ " // "
+ _ "  "
+ e " / "
+ >N
+ e" = "
+ e" ;; "  
+
+ #24
+ k24
+ >N
+
+
+ #242       2. Parallelt.
+ s 0 "4000 "
+ b" = "
+ b" = "
+ _ " // "
+ _ "  "
+ >N
+ e " / "
+ e" = "
+ e" ;; "
+
+#25
+s 0 "4000 "
+b " ;; "
+e " / "
+e" = "
+
+
+#37
+s0 "1500 "
+        rda: /? entfaellt, anachron.
+_ "/?"
+_ " "
+
+
+#39a        Verf.Ang. ($-Verw. wird automatisch aufgeloest!)
+s 0 "4000 "
+C 0 "4004 "   nicht wenn 4004
+q40
+_"$h"     rda: Verantw.Angabe
+_" / "
+b " / "
+e";;"
+
+  = "$"
+  q
+
+#39a
+k39a
+_"g.] [Hrsg.]"    Fktnsbez kann verdoppelt sein
+_"g.]"              (NMN-Altdaten)
+_"rs.] [šbers.]"
+_"rs.]"
+_"b.] [Mitarb.]"
+_"b.]"
+_"b.] [Bearb.]"
+_"b.]"
+
+#39b   #39aName1!PPN1!Name1Ansetzung ; Name2!PPN2!Name2Ansetzung ; usw
+k39a       -----                    --------                    ---
+e" ; "    nur die unterstrichenen Teile sollen bleiben
+e"!"
+
+k39a
+b" ; "
+e"!"
+w" ; "
+
+k39a
+b" ; "
+b" ; "
+e"!"
+w" ; "
+
+#20
+k20
+C"3100 "
+(
+s 0 "4000 "
+b" / "
+l0
+w" / "
+k39b
++40
+)
+q
+
+#39
+k39b
+
+#39a
+k20
+e" : "
+s0 "4005 "     Abteilung muss VOR den Zusatz
+w" / "
+
+#20 
+k39a
+k20
+b" : "
+w" : "
+
+#99
+s0
+q40
+
+  Name mit !IdNr!
+(R
+e";"
+Kpn    nach #upn kopieren
+b"!"
+b"!"  wenn !PPN!, dann den Teil dahinter nehmen
+e " %"   AACR abschn.
+e " $"   PND-Nummer abschneiden
+e " ;"   PND- o.a. Nummer abschneiden
+
+_ 34     Fuerstenname endet mit "
+_ ""
+_ "$c"   rda
+_ " "
+_ "$P"   rda
+_ ""
+Knm
+l0
+kunm
+% "*"
+_ " ª<"
+% "*"
+_ "> "
+ e "*"
+e 91
+e" %"
+e" / "
+_ "$B"
+_ " ª["
+)R
+
+
+  3010 Patrick@Madan [printer.]
+  --> Madan, Patrick [printer.]
+  3010 Thomas@Condie [bookseller.]*1775?-1814*
+  --> Condie, Thomas ª<1775?-1814> [bookseller]
+(Q
+c"!"
+l0
+Knm
+  Nachname
+b"@"
+e"*"
+e" ["
+  Vorname
+kunm
+e"@"
+e " / "
+_ "/"    praefix
+_ " ª"
+% "#"
+_ 170     Namenszusaetze mit Nichtsort. kennzeichnen
+% "#" 
+_ 32
+w", "
+
+kunm
+c"*"    Lebensdaten?
+(
+b"*"
+w" ª<"
+e"*"
+W">"
+)
+l0
+ Das klappt nicht:!
+  Zusatz
+ kunm
+ b"["
+ e"]"
+ w" ["
+ W"]"
+
+)Q
+
+
+
+  Verfasser
+-40
+  z.B. 3000 Kurt Otto@Seidel!658470698!Seidel, Kurt Otto *1941-* ; ID: gnd/1011408694
+  oder 3010 Francis@Bailey [printer.]*1735?-1815*
+
+#40
+s 0 "3000 "
+x
+    Unterprog. Q und R werden fuer alle Personen benutzt
+c"!"
+>R
+
+c"@"    Form Vorname@Nachname
+>Q
+
+
+#402
+s0 "300? "
+c"@"
+>Q
+c"!"
+>R
+m1    #403
+
+
+-personen
+#56~          ~ bedeutet: erste freie Folgekategorie benutzen,
+              wenn also #56x noch nicht existiert, wird #56 produziert,
+              wenn #56a schon da ist, wird #56b gemacht ...
+s0 "301? "
+c" [Hrsg"
+qhrsg
+c"BHer"
+qhrsg
+c" [Mitarb"
+qmitarb
+c" [Bearb"
+qbearb
+c" [Begr"
+qbegr
+c" [Samml"
+qsamml
+c" [Text"
+qtext
+c" [šber"
+queber
+c" [Ill"
+qill
+c" [Komm"
+qkomm
+c" [Komp"
+qkomp
+c" [Pr„s"
+qpraes
+c" [Resp"
+qresp
+c" [Vorr"
+qvorr
+c" ["
+/
+qmitarb
+
+x
+c"@"
+>Q
+c"!"
+>R
++personen
+
+#99
+j0
+l0
+qgefp
+
+-hrsg
+#41~
+s0 "301? "
+e" ["
+x
+c"@"
+>Q
+c"!"
+>R
+
++personen
+
+-mitarb
+#42~
+s0 "301? "
+e" ["
+x
+c"@"
+>Q
+c"!"
+>R
++personen
+
+-bearb
+#43~
+s0 "301? "
+e" ["
+x
+c"@"
+>Q
+c"!"
+>R
+
++personen
+
+-begr
+#44~
+s0 "301? "
+e" ["
+x
+c"@"
+>Q
+c"!"
+>R
++personen
+
+-samml
+#45~
+s0 "301? "
+e" ["
+x
+c"@"
+>Q
+c"!"
+>R
+
++personen
+
+-text
+#46~
+s0 "301? "
+e" ["
+x
+c"@"
+>Q
+c"!"
+>R
++personen
+
+-ueber
+#47~
+s0 "301? "
+e" ["
+x
+c"@"
+>Q
+c"!"
+>R
++personen
+
+-ill
+#50~
+s0 "301? "
+e" ["
+x
+c"@"
+>Q
+c"!"
+>R
++personen
+
+-komm
+#51~
+s0 "301? "
+e" ["
+x
+c"@"
+>Q
+c"!"
+>R
++personen
+
+-komp
+#52~
+s0 "301? "
+e" ["
+x
+c"@"
+>Q
+c"!"
+>R
++personen
+
+-praes
+#53~
+s0 "301? "
+e" ["
+x
+c"@"
+>Q
+c"!"
+>R
++personen
+
+-resp
+#54~
+s0 "301? "
+e" ["
+x
+c"@"
+>Q
+c"!"
+>R
+
++personen
+
+-vorr
+#55~
+s0 "301? "
+e" ["
+x
+c"@"
+>Q
+c"!"
+>R
++personen
+
+
+-gefp
+#59~
+s 0 "304? "
+x
+c"@"
+>Q
+c"!"
+>R
++gefp
+
+-sonstig
+#58~
+s 0 "305? "
+x
+c"@"
+>Q
+c"!"
+>R
++sonstig
+
+#58v    zusaetzliche Namenseintraege fuer Register (sporadisch)
+s0 "309"
+b"+"
+b"+"
+c"@"
+>Q
+c"!"
+>R
+m"; "
+
+#60
+s 0 "310? "
+c"$g"   rda
+q83
+e"_"
+
+
+_ " ; ID: "
+_ "_"
+
+ >N
+
+(K          UP K fuer Koerperschaften
+B"!"   PPN uebergehen
+B"!"
+_"$n"
+_", "
+_"$d"
+_"."
+_"$c"
+_", "
+_ "$g"
+_ ". "
+_ "$b"
+_ ". "
+e"$B"
+e"$4"
+>N
+)K    Ende UP
+
+m1  wiederholen, dann entsteht #602...
+
+-83   rda
+#83
+s 0 "310? "
+>K
+
+  z.B.
+  3120 !100315860!Mülltechnisches Seminar$n9$d1985$cMünchen ; ID: gnd/2088082-0
+
+
+#61
+s 0 "312? "
+B"!"
+B"!"
+_ " ; ID: "
+_ "_"
+>N
+_ "$n"
+_ " ; "
+_ "$d"
+_ ". "
+_ "$c"
+_ ". - "
+_ "$b"
+_ ". - "
+_ "$g"
+_ ", "
+ >K
+ s 0 "312? "
+ c"!"
+ >L
+ l0
+m1
+
+
+#71
+s 0 "4020 "
+.
+
+#72
+s 0 "4021 "
+.
+
+
+#74
+s 0 "403? "    EDISS
+e" : "
+e"$n"
+i64   @ vorne wegnehmen
+.
+_";*"
+_" ; "
+ s 0 "1700 "
+ } 2
+ _ "/2"      mehrere: Trennung durch " "
+ _ " "
+ @G     Geocode umwandeln, bei Bedarf aktivieren
+ e" "
+ w"g"   Ersch.Land  anhaengen  (Konkordanz G)
++75
+
+ #74     kein Ort, nur Land angegeben
+ s 0 "1700 "
+ l0
+ w"g"   Ersch.Land  anhaengen
+ s 0 "1700 "
+ } 2
+ _ "/2"      mehrere: Trennung durch " "
+ _ " "
+ @G   Geocode umwandeln, bei Bedarf aktivieren
+ e" "
+
+-75
+#75
+s 0 "403? "    EDISS
+B" : "
+B"$n"
+.
+
+#75d    Drucker
+s 0 "4045 "
+
+#76           Pica:    Jahr1-Jahr2 = UrJahr $ Vorlagejahr
+s 0 "1100 "
+_ " = " 
+_ " ("        allegro: Jahr1-Jahr2 (UrJahr) = Vorlagejahr
+_ " | "
+_ " = "
+_ "$n"     rda: Copyrightjahr
+_ " = "
+c" ("
+(
+c" ="
+_ " ="
+_ ") ="
+)
+c" = "
+/
+(
+c" ("
+W")"
+)
+
+#76
+k76
+C 0 "2110"
+B" = "     bei zeitschr.
+
+#76p           Ersch.Verlauf (Zss)
+s 0 "4025 "
+
+#77k
+s 0 "4026 "    Massstab
+
+#77         Seitenzahl: Punkt ergaenzen
+s 0 "4060 "
+_ "Sp"
+_ "sp"
+% " Seiten"   rda-Betulichkeit
+_ " S"
+% " S"
+_ " S."
+
+_ " pla"   'plates' nicht durch 'S.lates' ersetzen
+_ " Pla"
+% " p"
+_ " p."
+_ " Pla"
+_ " pla"
+_ "sp"
+_ "Sp"
+_ ".."
+_ "."
+
+#77    Ill.Vermerk anhaengen
+k77
+s 0 "4061 "
+w" : "
+
+#77
+k77
+s 0 "4062 "
+w " ; "
+
+#77
+k77
+s 0 "4063 "
+w " & "
+
+#77d
+s 0 "4068 "    Dateigroesse  EDISS
+
+-409
+#8e~
+s "409? "
+b"=A "
+i115
+_ " =X "
+_ "x"
+_ " =Z "
+_ "z"
+e ""
+e" ="
+e "-Q--"
+s "409? "
+x
+b 91
+e 93
+w"t"
++409
+
+#8e~
+s 0 "4225 "
+b"URL:"
+
+#8e~
+s "7133 "
+b"=A "
+i115
+_ " =X "
+_ "x"
+_ " =Z "
+_ "z"
+e ""
+e" ="
+e "-Q--"
+s "7133 "
+b 91
+e 93
+w"t"
+
+#8e
+k8e
+s 0 "408? "
+x
+q819
+  wenn 7133, dann 4085 unschaedlich machen
+
+-408           URL EDISS
+#8e~
+s 0 "408? "
+b" =A "
+i115
+_ " =X "
+_ "x"
+_ " =Z "
+_ "z"
+e ""
+e" ="
+e "-Q--"
+
+s 0 "408? "
+x
+b 91
+e 93
+w"t"
++408
+
+-819
+#819        DissVerm. kann auch in 4201 stehen
+s 0 "4201 "
+z"diss"         wenn weder diss
+/
+c"Hab"          noch HabSchrift, dann -81h
+/
+q81h
+B"ugl.: "
+B". - "
+i 32
+i 64
+_ "@"
+_ ""
+e","
+e" i"   Freiburg i...
+e" a"   Frankfurt a..
+e" ("   Muenster (Westf
+e"<"
+e"/"
+s 0 "4201 "
+c" 1"
+(
+b" 1"
+l3
+w":1"
++81h
+)
+l0
+k76
+l4
+w":"
+
+-81h
+#819             DissVermerk  Ort:Jahr
+s 0 "4204 "
+c"@"
+b"@"
+B"ugl.?"
+B". - "
+B"t„t "   rda: Wort Universit„t in #819 uebergehen
+_ "$f"
+_ ":"
+i 32
+e", "
+e" i"   Freiburg i...
+e" a"   Frankfurt a..
+e" ("   Muenster (Westf
+e"<"
+e"/"
+c":"
++inhalt
+
+s 0 "4204 "
+c " : "
+(
+b " : "
+l4
+w":"
++inhalt
+)
+l0
+c", 1"
+(
+b", 1"
+l3
+w":1"
++inhalt
+)
+l0
+k76
+l4
+w":"
+
+
+-inhalt
+
+#819
+k819
+_ " :"
+_ ":"
+
+#81b
+s 0 "4710 "
+x
+
+#93   Inhaltsangabe
+s 0 "4222 "   (MARC)
+x
+
+#818         Hochschulschr.Vermerk
+s 0 "4204 "
+x
+_ "@"
+_ ""
+B"$d"  rda
+_"$e"
+_", "
+_"$f"
+_", "
+
+#98   Abstract
+s 0 "4207 "   (MARC)
+x
+
+        $$940722 neu: 4261
+#20
+s 0 "4261 "    Sekundaerausgabe!
+B"!"
+B"!"
+i64
+e" / "
+c", "
+(
+c". "
+b". "
+)
+N
+_ " @"
+_ " "
+
+#40
+s 0 "4261 "    Sekundaerausgabe!
+b" / "
+e", 1"
+
+#76
+s 0 "4261 "
+C 0 "1100"
+q
+b" / "
+b" 1"
+l3
+w"1"
+
+#818
+k818
+q81b
+
+#818
+s 0 "4261 "
+b" / "
+b". - "
+
+#81v
+s 0 "4261 "
+x
+b"!"
+e"!"
+w"Sekund„rausg. zu_"
+
+#81v          provisorisch
+s 0 "4236 "
+x
+b"!"
+e"!"
+w"Sekund„rausg. zu_"
+
+-81b
+#80
+s 0 "4202 "
+
+#81b
+s 0 "4211 "
+m"; "
+
+#81c
+s 0 "4212 "
+m"; "
+
+#81d
+s 0 "4213 "
+m"; "
+
+#81e
+s 0 "4214 "
+m"; "
+
+#81f
+s 0 "4215 "
+m"; "
+
+#81g
+s 0 "4216 "
+m"; "
+
+#81h
+s 0 "4217 "
+m"; "
+
+#81i
+s 0 "4218 "
+m"; "
+
+#81j
+s 0 "4219 "
+m"; "
+
+#81k
+s 0 "4220 "
+m"; "
+
+#81l
+s 0 "4221 "
+x
+
+#81o
+s 0 "4224 "
+x
+
+#81p
+s 0 "4225 "
+x
+
+#81q
+s 0 "4226 "
+m"; "
+
+-81B
+#81B   Beil.
+s 0 "4242 "
+x
+Kbl
+l0
+kubl
+c" !"
+/
+q81B
+e" !"
+w"ª"
+W"ª "
+kubl
+B"!"
+B"!"
+B"#"
+B"#"
+c"@"
+(
+w"ª"
+_ " @"
+_ "ª "
+)
+kubl
+b"!"
+e"!"
+w"_"
+
+-81Bw
+#81B
+k81B
+s 0 "4242 "
+x
+c" !"
+/
+q81Bw
+w""
+Kbl
+l0
+kubl
+e" !"
+w"ª"
+W"ª "
+kubl
+B"!"
+B"!"
+B"#"
+B"#"
+c"@"
+(
+w"ª"
+_ " @"
+_ "ª "
+)
+kubl
+b"!"
+e"!"
+w"_"
+
++81Bw
+
+
+-81P
+#81P   Frueher/spaeter
+s 0 "4244 "
+x
+Kbl
+l0
+
+kubl
+c" !"
+/
+(
+_ ": "
+_ ":ª "
+w"ª"
++81P
+)
+e" !"
+w"ª"
+W"ª "
+kubl
+B"!"
+B"!"
+B"#"
+B"#"
+c"@"
+(
+w"ª"
+_ " @"
+_ "ª "
+)
+kubl
+b"!"
+e"!"
+w"_"
+
+
+-81Pw
+#81B
+s 0 "424? "    rda  Bezugswerk
+x
+_ "$l"
+_ " "
+_ "$t"
+_ ": "
+_ "@"
+_ ""
++81t
+x
+c" !"
+/
+q81Pw
+w""
+Kbl
+l0
+kubl
+e" !"
+w"ª"
+W"ª "
+kubl
+B"!"
+B"!"
+B"#"
+B"#"
+c"@"
+(
+w"ª"
+_ " @"
+_ "ª "
+)
+kubl
+B"!"    rda
+e"!"
+w"_"
+
++81Pw
+
+-81t
+#81t
+s 0 "4241 "
+ _ "!?????????!"
+ _ ""
+
+m"; "
+
+#70
+k81t
+b"!" 
+b"!"
+e". -"
+
+#704
+s 0 "4070"
+b"/v"
+e"/"
+
+#708
+s 0 "4070"
+b"/p"
+e"/"
+
+
+
+
+#81v    Fussnote zum Bestand
+s 0 "4715 "
+
+#81v
+s 0 "4261 "
+b"!"
+e"!"
+w"Sekund„rausg. zu_"
+
+
+
+  Weitere Fussnoten summarisch in #81
+
+ #81          Fussnoten
+ s 0 "42?? "     alle anderen Fussnoten in #81
+ _ "  "
+ _ " "
+ _ " @"
+ _ ""
+ i 64
+ e"|b"
+      wirklich alle? Dann aktivieren:
+ m"; "
+
+ #81 
+ k81    muss sein wg. Dollarverw.
+ _ " @"
+ _ " "
+ _ "$l"    rda Unterfeldcodes
+ _ ",  "
+ _ "$p"
+ _ " "
+
+
+
+#77m      Mikroformen
+  C"0500 E"
+k81
+z"mi?rof"
+/
+q
+e"rof"
+W"rof"
++23u
+
+#77m
+k77
+z"mi?rof"
+/
+q
+e"rof"
+W"rof"
++23u
+
+#77m
+k77
+z"mf"
+/
+q
+e";"  
+e"."
+e","
++23u
+
+#77m
+k81
+z"mf"
+/
+q
+e";"  
+e"."
+e","
+
+
+-23u    solche Titel sind i.d.R. unter 3260!
+ #23~        z.B. #81 ... u.d.T.:] Name: Titel
+ s"u.d.T.:"    dieser Titel soll nach #23
+ i 93
+ i 32
+ i 64
+ _ "@"
+ _ ""
+ B": "
+ B"!?????????!"
+ c "$3"   nicht wenn es eine $-Verw. ist
+ q83
+
+-83
+#83
+s 0 "316? "
+i 64
+_ "@"
+_ ""
+N
+c" ; "
+/
+_ " ("
+_ " ; ("
+_ ";,"
+_ ";"
+m1
+
+#85
+s 0 "417? "
+_ " | "
+_ " : "
+_ " // "
+_ " / "
+_ "#"
+_ ". "
+>N
+_ "-"
+_ " "       Bindestriche raus, da inkonsistent
+m1
+
+ -4180     Wenn 4170 NICHT verwendet wird, sondern nur 4180
+ #85~
+ s 0 "418? "
+ b"!"
+ b"!"
+ e". - "
+ s 0 "418? "
+ x
+ < " ; "
+ w" ; "
+ +4180
+
+#97
+s 0 "6100 "
+i 32
+i 37
+i 32
+
+   Identnummern
+#87   ISBN
+s 0 "200? "
+e"*"
+e" : "
+e" ("
+_ "|o|"
+_ ""
+_ "|p|"
+_ ""
+_ "="
+_ " = "
+c"-"    wenn schon "-" vorkommt, dann keine mehr einsetzen
+/
+u6         ISBN  Bindestriche einsetzen
+m" = "
+
+#87 
+k87
+_"= ="
+_"="
+_"= ="
+_"="
+i32
+i61
+i32
+
+#88    ISSN
+s 0 "201? "
+e "*"
+B"|"
+B"|"
+
+#88c        CODEN
+s 0 "2200 "
+m";"
+
+#89L        LC-Nummer
+s 0 "2040 "
+
+#89D        DNB-Nummer
+s 0 "2065 "
+c"ááá"
+q
+
+#89B
+s 0 "2030 "
+
+#89Z        ZDB-Nr.
+s 0 "2110 "
+e" <"
+ W"@@@@@@@"
+
+ #89Z   Hinten 1 Stelle abschneiden
+ k89Z
+
+ l8
+ c"@@@@@@"
+ l1
+ c"@@@@@"
+ l2
+ c"@@@@"
+ l3
+ c"@@@"
+ l4
+ c"@@"
+ l5
+ c"@"
+ l6
+
+#89N        NMN-Id hier zusaetzlich
+s 0 "2080 8"
+{ 1
+u12
+_ "/"
+_ ""
+l6
+C 0 "4004"
+(
+s 0 "4000 "
+b"#"
+e"#"
+w"+"
+)
++89P
+
+#89N        wenn keine "2080 8..."
+s 0 "2080 "
+z "zk"
+q
+C 0 "0500 ?b"   nicht bei Zss
+q
+C 0 "0500 ?d"   nicht bei Zss
+q
+u12
+_ "/"
+_ ""
+z"zdb"   ZDBnr des Lokalsatzes
+/
+l6     NMN auf 6 stellen kuerzen, zdb nicht
+e"-"
+C 0 "4004"
+(
+s 0 "4000 "
+b"#"
+e"#"
+w"+"
+)
++89P
+
+#89N        wenn keine "2080 ..."
+s 0 "2190 "
+u12
+_ "/"
+_ ""
+l6
+C 0 "4004"
+(
+s 0 "4000 "
+b"#"
+e"#"
+w"+"
+)
+
+-89P
+#89z
+s 0 "2195 "   NZN
+
+#89S
+s 0 "2185 "   SwetsNr
+w"Sw"
+
+ #89n
+ s 0 "2199 "   Konkordanznummer
+
+ #89x
+ s "7800 "   Pica-ExemplarsatzNummer EPN
+
+#89P
+s "PPN: "
+l9
+ C "0500 ?a"    wenn es ein einbaendiges Werk ist
+ +330
+ C 0 "2110"    wenn es eine Zs ist
+ +330
+ q 
+
+-330
+#30N   Zeitschr? dann 6000 -> #30N
+j0
+C"7120"
+q30N
+q
+
+#30D   sonst -> #30D
+s 0 "600? "
+m" ; "
+
+
+-30N
+#30N
+s 0 "600? "
+m" ; "
+
+#30x
+s 0 "67?? "
+m" ; "
+
+#31a
+s 0 "65?? "
+m" ; "
+
+#30h
+s 0 "51?? |z| Geschichte "
+
+
+#330       1. SW-Kette
+s 0 "5100 "
+   z.B. 5100 |s| !105749222!Spitzentechnologie
+ (Y
+ B"| "
+ B"!"
+ B"!"
+ _ " ; ID: "
+ _ "_"
+ W " -- "
+ )Y
+  PROBLEM: altes >S verfaelschte Exemplardaten, Ursache unbekannt
+
+ s 0 "5101 "
+ >S
+ s 0 "5102 "
+ >S
+ s 0 "5103 "
+ >S
+ s 0 "5104 "
+ >S
+ s 0 "5105 "
+ >S
+
+#330
+k330
+W"X"
+
+#330
+k330
+e " --X"
+
+#331       2. SW-Kette
+s 0 "5110 "
+B"| "
+B"!"
+B"!"
+_ " ; ID: "
+_ "_"
+s 0 "5111 "
+>S
+s 0 "5112 "
+>S
+s 0 "5113 "
+>S
+s 0 "5114 "
+>S
+s 0 "5115 "
+>S
+
+#331
+k331
+W"X"
+
+#331
+k331
+e " --X"
+
+
+
+ #331
+ k331
+ s0 "5118 "
+  w"P" 
+
+#332       3. SW-Kette
+s 0 "5120 "
+>S
+s 0 "5121 "
+>S
+s 0 "5122 "
+>S
+s 0 "5123 "
+>S
+s 0 "5124 "
+>S
+s 0 "5125 "
+>S
+
+
+ #332
+ k332
+ s 0 "5128 "
+  w"P" 
+
+#333       4. SW-Kette
+s 0 "5130 "
+>S
+s 0 "5131 "
+>S
+s 0 "5132 "
+>S
+s 0 "5133 "
+>S
+s 0 "5134 "
+>S
+s 0 "5135 "
+>S
+
+
+ #333
+ k333
+ s 0 "5138 "
+  w"P" 
+
+-noswk
+
+   Die Einzelschlagwoerter werden ihren Kategorien zugeteilt:
+
+#31g
+s 0 "51?? |g| "
+e" ;"
+B "| "
+B "!"
+B "!"
+_ "^"
+_ "ª"
+_ "$g"
+_ ". "
+m"; "
+
+#31k
+s 0 "51?? |k| "
+e" ;"
+B "| "
+B "!"
+B "!"
+_ "^"
+_ "ª"
+m"; "
+
+#31c
+s 0 "51?? |c| "
+e" ;"
+B "| "
+B "!"
+B "!"
+_ "^"
+_ "ª"
+m"; "
+
+#31t
+s 0 "51?? |p| "
+e" ;"
+c " / "
+/
+q
+x
+B "| "
+B "!"
+B "!"
+_ "^"
+_ "ª"
+_ " / "
+_ ": "
+
+m"; "
+
+#31p
+s 0 "51?? |p| "
+e" ;"
+B "| "
+B "!"
+B "!"
+_ "^"
+_ "ª"
+_ "$c"
+_ " "
+_ "$P"
+_ " "
+_ "$l"
+_ ", "
+_ "*"
+_ "ª"
+
+m"; "
+
+#30h     Zeitschlagwort -> Zeitcode
+s 0 "51?? |z| "
+e" ;"
+B"Geschichte"
+B"Prognose"
+i 32
+x
+
+
+  5100 |s| !123456789!Schlagwort$gOrt ; ID: gnd/1234567-5
+
+#31s
+s 0 "51?? "
+
+c "|z|"     Zeit-SW nicht
+l0 
+c "|f|"     Form-SW auch nicht
+l0  
+L2 "8"      Permut.Muster
+l0
+c"-Q--"
+l0
+B"|?|" 
+
+_ "$"
+_ "|"
+
+c"; ID: gnd"
+(
+_ " ; ID: "
+_ "_"
+)
+
+B "| "
+B "!"
+B "!"
+_ "^"
+_ "ª"
+ es koennte mit # beginnen - ungeklaerte Ursache
+i35
+
+
+m"; "
+
+#31s
+k31s
+i59
+_ "|a"
+_ "; "
+_ "|p"
+_ ". "
+_ "|g"
+_ ". "
+
+
+#0c
+s 0 "1110 "    Formschluessel
+m" "
+
+#0c
+k0c
+q33L
+
+  wenn 1110 nicht vorkommt, gib'ts vielleicht ein Form-SW:
+
+
+#0c      Form-SW
+s 0 "51?? |f| "
+@F    Tabelle noch ausarbeiten
+
+-33L
+#33L   LCSH
+s 0 "5500 "
+_ "|a|"
+_ " "
+_ "|?|"
+_ " -- "
+B "> --"
+i45
+i32
+i45
+m"; "
+
+
+#33B   British Libr
+s 0 "5520 "
+b "|a| "
+e "|?|"
+B "> --"
+s 0 "5520 "
+b "|a| "
+c "|a|"
+(
+b "|a| "
+e "|?|"
+w"-- "
+/  
+)
+l0
+m"; "
+
+-33Bneu
+#33B   British Libr   neue Art
+s 0 "5540 "
+b "|a| "
+_ "|a|"
+_ " -- "
+e "|?|"
+m"; "
+
+#33d   DB vor 1986 
+s 0 "5530 "
+_ "^"
+_ "ª"
+m"; "
+
+#31     Einzel-SW
+s 0 "5550 "
+e" ;"
+e"-Q"
+B"!"
+B"!"
+_ "^"
+_ "ª"
+_ "|f|"
+_ ""
+_ "|g|"
+_ ""
+_ "$c"
+_ " "
+_ "$g"
+_ ". "
+_ "$P"
+_ ""
+_ "$l"
+_ " "
+e "-Q--"
+s 0 "5550 "
+x
+c"!"     evtl vorhandene PPN dahinter setzen
+(
+b"!"
+e"!"
+w"_"
+W ""
+)
+l0
+
+-wsw
+#31
+k31
+s 0 "5550 "
+e" ;"
+B"!"
+B"!"
+_ "^"
+_ "ª"
+_ "|f|"
+_ ""
+_ "|g|"
+_ ""
+_ "$c"
+_ " "
+_ "$g"
+_ ". "
+e "-Q--"
+w"; "
+s 0 "5550 "
+x
+c"!"     evtl vorhandene Lemmanummer dahinter setzen
+(
+b"!"
+e"!"
+w"_"
+W ""
+)
+l0
++wsw
+
+#32B
+s 0 "5010 "
+e "-Q"
+e"$2"
+
+#32B
+k32B
+g 0 "5010 "
+e "-Q"
+e"$2"
+w" "
+
+#32B
+k32B
+g 0 "5010 "
+e "-Q"
+e"$2"
+w" "
+
+#32B
+k32B
+_ "[2?] "
+_ " "
+_ [23????] "
+_ ""
+_ "[2?/ger] "
+_ "" 
+
+  Konkord @@B: DDC -> allegro
+#32b
+s 0 "5010 "
+B"] "
+@B
+m" "
+
+#32L
+s 0 "5030 "
+c"PROCESS"
+q
+_" " 
+_ ""
+
+#32L
+k32L
+g 0 "5030 "
+_" "
+_""
+w" "
+
+#32L
+k32L
+g 0 "5030 "
+_" "
+_""
+w"; "
+
+#32Z    ZDB-Sachgr
+s 0 "5080 "
+
+#30a    ZDB-Sachgr
+k32Z
+e" ;"
+@Z
+k32Z
+b" ; "
+e" ;"
+w" "
+@Z
+k32Z
+b" ; "
+b" ; "
+w" "
+@Z
+
+#96
+s 0 "3540 "
+x
+
+#20p          PI-Kopf in #20p
+s 0 "3549 "
+x
+
+-27
+
+#27~      lokale Koepfe nach #27, #27a ...
+s 0 "354"
+}2
+e" "
+W" "
+s 0 "354"
+b" "
+b" "
+e" / "
+c"@"   wenn @ vorkommt, Name invertieren
+(
+c "//"
+w"\"
+_"//"
+_""
+b"@"
+e" ["
+s 0 "354"
+e" / "
+b" "
+b" "
+e"@"
+i 47
+w", "
+s 0 "354"
+e" / "
+c" ["
+b" ["
+e" / "
+c"]"
+w" ["
+c"]"
+/
+l0
+/
+)
+_"//"
+_"\"
+s 0 "354"
+b" "
+b" "
+b" / "
+w ""
+
+#99x
+s 0 "354?"   gibt es noch ne 354x ? dann zurueck nach -27
+x
+q27
+
+#90       Signatur
+s 0 "4712 "
+
+
+#99n    Datum d. letzten bearb.
+s"0210:????:"
+e" "
+Kda
+b"-"
+b"-"
+l2
+kuda
+b"-"
+l2
+kuda
+l2
+kuda
+b"; "
+w""
+
+#99n    statt dessen Erfassungsdatum
+s0 "4901 "
+e" "
+Kda
+b"-"
+b"-"
+l2
+kuda
+b"-"
+l2
+kuda
+l2
+kuda
+b"; "
+w""
+s "7901 "
+b"; "
+w""
+e""
+e"/"
+
+#99n    statt dessen Datum d. letzten bearb., wenn angegeben
+s "7901 "
+Kda
+b"-"
+b"-"
+l2
+kuda
+b"-"
+l2
+kuda
+l2
+kuda
+b"; "
+e""
+e"/"
+w""
+
+
+#99n
+k99n
+= "0"
+w"20"
+= "1"
+w"20"
+= "2"
+w"20"
+
+ rda NEU: #0c.1 und #77.1
+#0c.1
+s 0 "0501"
+b"$b"
+
+#77.1
+s 0 "0503"
+b"$b"
+
+#73.1        rda
+s 0 "4040 "
+x
+
+
+  Signaturkategorien: die PICA-Struktur ist  folgende
+
+  70xx Datum : SelSchluessel       Beginn eines neuen EX
+   ( 7001 bis 7099 )
+  4801 Expl.Komment
+  7100 !Standort!Signatur   
+  7101 !Standort!Signatur   
+  7109 Magazinsign 
+  8100 Zugangsnr
+  8200 VerbuchNr
+  8700 ExProdNr (EPN)  [wird nicht  mit importiert]
+  solche Bloecke koennen also theoretisch bis zu 99 untereinander stehen
+  durch die Vorbehandlung (globale Ersetzungen) ist jeder Block jetzt
+  ein Feld mit der Pseudokategorie EXxx
+  Aus jeder 70xx wird eine #90 mit Unterfeldern
+
+
+-signaturen
+#90~
+
+s "7100 "    !xx ergaenzen    Nur dieses SIGEL wird dann beruecksichtigt!
+x
+
+ ="!"
+ /
+ w"s"
+
+% "!"
+_ "L"
+
+% "!  @ i"
+_ ""
+
+% "!"
+_ "s"
+
+  Bestandsang. mit - am Ende
+_ "-"
+_ ";ff"
+
+
+  s "ex?? "
+  x     ungueltig machen
+  C "710"
+  /
+  w"000"    Keine Signatur!!!
+
+  +sige
+
+Kda
+    7903 14-12-93 10:22:00.424
+     Datumsangaben aus Exemplarsatz beseitigen
+_ "7903 ???????? ??:??:??.???"
+_ ""
+_ "790? ????????; ????/????"
+_ ""
+_ "790? ????????; ??/????"
+_ ""
+_ "790? ????????; ????"
+_ ""
+_ "790? ????????; ??"
+_ ""
+_ "790? ????????"
+_ ""
+_ "7800 "
+_ "P"
+_ "8595 ?-??-???? mib"
+_ ""
+_ "8595 ??-??-???? mib"
+_ ""
+_ "8596 ???-????-??-??????_?"
+_ ""
+_ "' "
+_ "'"
+
+_ "'"
+_ ""
+
+_ "'"
+_ ""
+ 
+_ "- @"
+_ ";ff "
+_ "-"
+_ ";ff"
+
+c "7121"
+/
+c "7120"
+(
+_ "7120 "    Bestand!
+_ "H"
+
+_ "7121 "    Bestand!
+_ "h"
+
+_ "/s"
+_ "ª"
+
+_ "/v"
+_ "`"
+
+_ "/k"
+_ "` "
+
+_ "/V"
+_ "`-"
+
+_ "/b"
+_ "`."
+
+_ "/E"
+_ "`."
+
+_ "/K"
+_ "` : "
+
+_ "/A"
+_ "`,"
+
+_ "/a"
+_ "`,"
+
+_ "/j"
+_ " ("
+
+_ "/J"
+_ ")"
+
+_ " @ "
+_ "`n"
+
+
+)
+
+
+c"`."  wenn kein . :
+/
+_ "H"
+_ "H."
+
+
+  Alte Signatur hinten anhaeng
+_ "7109 "
+_ " = "
+
+_ " @ "
+_ "n"
+
+_ "$"
+_ "|"
+
+_ "*KAT*"
+_ ""
+
+_ "8100 "
+_ "z"
+
+_ "8200 "
+_ "a"
+
+_ "8596 "
+_ "Z"      ZDB-Nummer?
+
+_ "4801 Bestandsfehler: "
+_ "H"
+
+_ "4801 "
+_ "n"
+
+_ "4802 "   Erwerb.kommentar neu 9411
+_ "e"
+
+_ "7133"
+_ "I"
+
+ kuda
+ b"-" 
+ b"-"
+ l2
+ w"d"
+ kuda
+ b"-"
+ l2
+ kuda
+ l2 
+
+-sige
+#9x
+s "7100 "      !xx ergaenzen 
+qsignaturen
+
+
+-9x
+#99x
+s "7100 "    !xx ergaenzen   kommt EX nochmals vor? noch'n Exemplar!
+qsignaturen
+
+ #92
+ k90
+ b"H"
+
+#90
+k90
+ e"H"
+B"LS ?'"
+
+#90
+k90
+_ "n = "
+_ " = "
+
+        nur fuer UB BS Zeitschriften
+ #90Z
+ s 0 "zsig "    NEUE ZsSign.
+
+
+
+   ***********************************************************************
+   Hier beginnen bibliotheksspezifische Teile
+   (hier: Sachgruppenzuordnung der UB Braunschweig)
+   d.h. alles folgende kann fuer die allgemeinen Aufgaben entfallen
+#32l
+s 0 "5030 "
+@A
+m" " 
+
+-32d
+#32d
+s 0 "5050 "
+e" ; "
+ @C         DB-Sachgr., bis zu 3 stueck
+
+#32d
+k32d
+s 0 "5050 "
+b" ; "
+e" ; "
+w" "
+ @C
+
+
+#32D     DB Dewey
+s 0 "5051 "
+e "-Q--"
+
+
+#32d
+s 0 "5051 "
+e" ; "
+@Q         DB-DeweySachgr., bis zu 3 stueck
+
+#32d
+k32d
+s 0 "5051 "
+b" ; "
+e" ; "
+w" "
+@Q
+
+#32d
+k32d
+s 0 "5051 "
+b" ; "
+b" ; "
+e" ; "
+w" "
+@Q
+
+#30k     Sachgruppen (BK)
+s 0 "530? "
+B"!"
+B"!"
+e" "
+e"$"
+m" "
+
+  Konk.Liste @@K anwenden auf die ersten 4 BK
+#32k
+k30k
+@K        BKN->Sachgrp
+k30k
+b" "
+w" "
+@K
+k30k
+b" "
+b" "
+w" "
+@K
+k30k
+b" "
+b" "
+b" "
+w" "
+@K
+
+#30h
+s 0 "531? "
+B" # "
+m"; "
+
+#30a     nichts machen, wenn 2080 besetzt (NMN-Nummer mit 8
+            denn dann ist im "allegro"-Katalog schon eine Sachgruppe
+j0
+C 0 "4004"    wenn 4004 besetzt, hier nicht schluss machen
+/
+(
+C 0 "2080 8"
+q30k
+)
+q
+
+-30k
+#30a   vorbesetzen, damit es unten immer klappt
+j0
+l0
+w"!!"
+
+        alle Sachgruppen unter #30a zusammenfassen
+-sachgr
+#30a
+k30a
+k32k
+w" "
++sachgrp
+
+#30a
+k30a
+k32a
+_ "[22] "
+_ ""
+w" "
+
+  Konk @@C waere noetig: (alte DB-Sachgr.)
+ #30a
+ k30a
+ k32d
+ w" "
+
+
+#30a
+k30a
+k32l
+w" "
+
+#30a
+k30a
+k32b
+w" "
+
+#30a
+k30a
+k32x
+w" "
+
+#30a
+k30a
+b "!!?"  ist was zusammengekommen?
+qsachgrp
+
+#30a  keine Sachgr da
+j0
+l0
+Z"drug"
+(
+w" üPM"
++sachgrp
+)
+Z"pharm"
+(
+w" üPM"
++sachgrp
+)
+C"osmeti"
+(
+w" üPM"
++sachgrp
+)
+Z"homüopa"
+(
+w" üPM"
++sachgrp
+)
+Z"farma"
+(
+w" üPM"
++sachgrp
+)
+Z"arzne"
+(
+w" üPM"
++sachgrp
+)
+Z"apothe"
+(
+w" üPM"
++sachgrp
+)
+Z"müdiüamen"
+(
+w" üPM"
++sachgrp
+)
+Z"müdiüati"      medication
+(
+w" üPM"
++sachgrp
+)
+C"ntibiot"
+w" üPM"
+Z"toxi"
+w" üMEM"
+C"athemat"
+w" üMA"
+Z"DataüBeck"
+(
+w" üCS"
++sachgrp
+)
+C"3-88745"
+(
+w" üCS"
++sachgrp
+)
+C"3-89319"
+(
+w" üCS"
++sachgrp
+)
+C"3-89362"
+w" üCS"
+C"omput"
+w" üCS"
+C"nformatik"
+w" üCS"
+Z"data proc"
+w" üCS"
+C"nformatiq"
+w" üCS"
+C"iüroproüe"       miüroproüessor
+w" üCS üELK"
+C"ntellig"
+(
+C"stlich"
+(
+w" üCS-PS"
++sachgrp
+)
+C"rtfic"
+(
+w" üCS"
++sachgrp
+)
+)
+Z"fernmelde"
+w" üELG"
+C"leütroni"
+(
+w" üELK"
++sachgrp
+)
+C"ircuit"
+(
+w" üELK"
++sachgrp
+)
+C"leütrote"
+(
+w" üEL"
++sachgrp
+)
+C"Datenbu"
+(
+w" üELK"
++sachgrp
+)
+C"emicondu"
+w" üELK üPY"
+C"albleit"
+w" üELK üPY"
+Z"diode"
+w" üELK"
+C"olid üta"
+w" üPY"
+C"upralei"
+w" üPY"
+C"estk”rp"
+w" üPY"
+C"sych"
+w" üPS"
+C"eophys"
+(
+w" üAG"
++sachgrp
+)
+C"eochüm"
+(
+w" üGW"
++sachgrp
+)
+C"hysic"
+w" üPY"
+C"hysik"
+w" üPY"
+Z"speütrosüo"
+w" üPY üCH"
+Z"alkali"
+w" üCH"
+Z"cataly"
+w" üCH"
+Z"kataly"
+w" üCH"
+C"rystal"
+w" üPY üMTB"
+Z"magnet"
+w" üPY üEL"
+Z"laser"
+w" üPY üELK"
+Z"ammoniu"
+w" üCH"
+Z"aromat"
+w" üCH"
+Z"tetra"
+w" üCH"
+C"eitgesch"
+(
+w" üGEH"
++sachgrp
+)
+Z"geschich"
+w" üGE"
+Z"histor"
+w" üGE"
+Z"mittelalter"
+w" üGE"
+Z"germanist"
+w" üSL/ger"
+Z"anglist"
+w" üSL/eng"
+Z"shakespe"
+w" üSL/eng"
+Z"gedichte"
+w" üSLQ"
+Z"literaturw"
+w" üSL"
+Z"litteratur"
+w" üSL"
+Z"linguis"
+w" üSLL"
+Z"philol"
+w" üSL"
+C"echtswis"
+w" üRE"
+C"euerrec"
+w" üRE üNW"
+C"Jur"
+w" üRE"
+C"jur"
+w" üRE"
+Z"zivilrec"
+w" üRE"
+C"rivatrec"
+w" üRE"
+Z"strafrec"
+w" üRE"
+Z"militür"
+w" üGEN"
+C"3-407-"
+w" üPB"
+C"rzieh"
+w" üPB"
+Z"robot"
+w" üTEC"
+C"rankheit"
+(
+w" üME"
++sachgrp
+)
+C"erkrank"
+w" üME"
+C"isease"
+w" üME"
+C"herap"
+w" üME"
+C"eilkund"
+(
+w" üME"
++sachgrp
+)
+C"hirurg"
+w" üME"
+C"„rzt"
+(
+w" üME"
++sachgrp
+)
+C"Žrzt"
+(
+w" üME"
++sachgrp
+)
+C"Med."
+w" üME"
+Z"immuno"
+(
+w" üME üBTC"
++sachgrp
+)
+Z"immunsy"
+(
+w" üME üBTC"
++sachgrp
+)
+C"ozialarb"
+w" üPBL"
+Z"publizis"
+w" üPK"
+C"ozialwi"
+w" üSW"
+C"llschaftsw"
+w" üSW
+Z"frauen"
+w" üSW"
+Z"women"
+w" üSW"
+Z"kinderb"
+w" üSLH"
+Z"rchen"
+w" üSLH"
+Z"kirche"
+w" üRT"
+C"dagog"
+w" üPB"
+Z"bioc"
+(
+w" üBTC"
++sachgrp
+)
+Z"amino"
+w" üBTC"
+C"mwelt"
+w" üGSB"
+C"nvironm"
+w" üGSB"
+Z"chemi"
+w" üCH"
+Z"oxid"
+w" üCH"
+Z"oxy"
+w" üCH"
+Z"chimi"
+w" üCH"
+C"olymer"
+w" üCH"
+Z"reaktivit"
+w" üCH"
+Z"medizin"
+w" üME"
+Z"bacteri"
+(
+w" üBEF"
++sachgrp
+)
+Z"bakteri"
+(
+w" üBEF"
++sachgrp
+)
+Z"cell "
+(
+w" üBED"
++sachgrp
+)
+Z"cells"
+(
+w" üBED"
++sachgrp
+)
+Z"nucleic"
+(
+w" üBEE üBTC"
++sachgrp
+)
+C"DNA"
+(
+w" üBEE"
++sachgrp
+)
+C"eneti"
+(
+w" üBEE"
++sachgrp
+)
+Z" gen "
+(
+w" üBEE"
++sachgrp
+)
+Z" gene "
+(
+w" üBEE"
++sachgrp
+)
+Z" genes "
+(
+w" üBEE"
++sachgrp
+)
+Z"miürob"
+(
+w" üBEF"
++sachgrp
+)
+Z"miüroorg"
+(
+w" üBEF"
++sachgrp
+)
+Z"Biol"
+(
+w" üBL"
++sachgrp
+)
+Z"pflan"
+(
+w" üBLK"
++sachgrp
+)
+Z"plant"
+(
+w" üBLK"
++sachgrp
+)
+Z"phyt"
+(
+w" üBL"
++sachgrp
+)
+Z"flora"
+(
+w" üBL"
++sachgrp
+)
+Z"fauna"
+(
+w" üBLM"
++sachgrp
+)
+Z"soüiol"
+w" üSW"
+C"rch„ol"
+w" üGED"
+C"rcheol"
+w" üGED"
+Z"altertu"
+w" üGE"
+C"stronom"
+(
+Z"gastro"
+/
+w" üAG"
+)
+C"etriebsw"
+w" üBW"
+C"nternehm"
+w" üBW"
+Z"versicher"
+w" üBW"
+C"anagemen"
+w" üBW"
+Z"Metall"
+(
+w" üMT"
++sachgrp
+)
+Z"mat‚riaux"
+(
+w" üMT"
++sachgrp
+)
+Z"alloy"
+(
+w" üMT"
++sachgrp
+)
+Z"legieru"
+(
+w" üMT"
++sachgrp
+)
+Z"materialpr"
+w" üMT"
+Z"jazz"
+w" üMK"
+Z"musik"
+w" üMK"
+Z"music"
+w" üMK"
+Z"theat"
+w" üSLG"
+Z"th‚ƒt"
+w" üSLG"
+C"eteorol"
+w" üAGG"
+Z"politi"
+w" üPL"
+C"iotec"
+(
+w" üBT"          damit nicht noch "techn" ausgewertet wird
++sachgrp
+)
+C"nzym"
+(
+w" üBTC"
++sachgrp
+)
+C"rotein"
+w" üBTC"
+C"etaboli"
+w" üBTC"
+C"offwechs"
+w" üBTC"
+C"cular bio"
+w" üBEE"
+C"kularbio"
+w" üBEE"
+C"bioengin"
+w" üBT"
+Z"botan"
+w" üBLK"
+Z"zool"
+w" üBLM"
+C"™kol"
+w" üBLP üGSB"
+C"”kol"
+w" üBLP üGSB"
+Z"ecolog"
+w" üBLP üGSB"
+Z"life sci"
+w" üBL"
+C"hromoso"
+w" üBEE"
+C"Q3"
+w" üSL"
+C"nergy"
+(
+w" üEN"
++sachgrp
+)
+C"nergie"
+(
+w" üEN"
+Z"eleütr"
+w" üEL"
++sachgrp
+)
+C"ernforsc"
+(
+w" üEN"
++sachgrp
+)
+C"solar"
+(
+w" üEN"
++sachgrp
+)
+C"Solar"
+(
+w" üEN"
++sachgrp
+)
+Z"sport"
+(
+C"ransport"          um "Transport" auszuschliessen
+/
+w" üST"
+)
+C"t„dteba"
+w" üARF"
+C"andschaftsg"
+w" üARF"
+C"aumordn"
+w" üARK"
+C"auingenieu"
+(
+w" üBA"
++sachgrp
+)
+C"eb„ud"
+w" üBAC"
+C"austoff"
+(
+w" üBAN"
++sachgrp
+)
+Z"beton"
+(
+Z"betonun"
+/
+(
+w" üBAN"
++sachgrp
+)
+)
+C"aubetr"
+(
+w" üBAN"
++sachgrp
+)
+C"tahlba"
+(
+w" üBAN"
++sachgrp
+)
+Z"vermess"
+(
+w" üBAP"
++sachgrp
+)
+Z"geod„"
+(
+w" üBAP"
++sachgrp
+)
+Z"geolog"
+w" üGW"
+Z"gestein"
+w" üGW"
+C"eowiss"
+w" üGW"
+C"rdwiss"
+w" üGW"
+C"bfall"
+w" üGSB"
+C"bf„ll"
+w" üGSB"
+C"bwass"
+w" üGSB"
+C"ollution"
+w" üGSB"
+C"ecycling"
+w" üGSB"
+C"erkstof"
+(
+w" üMTB"
++sachgrp
+)
+C"aterials üci"
+(
+w" üMTB"
++sachgrp
+)
+C"erospa"
+(
+w" üFAL"
++sachgrp
+)
+C"umfahr"
+(
+w" üFAL"
++sachgrp
+)
+C"uftfah"
+(
+w" üFAL"
++sachgrp
+)
+C"ahrzeug"
+(
+w" üFA"
++sachgrp
+)
+Z"eisenbah"
+w" üFAG"
+C"useum"
+w" üGEC"
+Z"mus‚e"
+w" üGEC"
+C"ergbau"
+w" üGWG"
+C"aschinenb"
+(
+w" üMS"
++sachgrp
+)
+C"anical engi"
+(
+w" üMS"
++sachgrp
+)
+C"erkzeugma"
+(
+w" üMS"
++sachgrp
+)
+C"aschinenw"
+(
+w" üMS"
++sachgrp
+)
+C"ertigung"
+(
+w" üMS üBW"
++sachgrp
+)
+Z"geogr"
+w" üGG"
+C"erkehr"
+(
+w" üBAG"
++sachgrp
+)
+Z"bauwes"
+(
+C"rchite"
+/
+w" üBA"
+)
+Z"bauin"
+w" üBA"
+Z"bauwi"
+w" üBA"
+Z"wasserfach"
+w" üBAH"
+Z"wasserg"
+w" üBAH"
+Z"nkwasser"
+w" üBAH"
+C"andeskun"
+w" üGG"
+C"alerei"
+w" üBK"
+C"ntelligen"
+w" üPS"
+C"IBM"
+(
+w" üCS"
++sachgrp
+)
+C"PC"
+w" üCS"
+Z"UNIX"
+w" üCS"
+C"icrosoft"
+w" üCS"
+Z"softw"
+(
+w" üCS"
++sachgrp
+)
+Z"perating syst"
+(
+w" üCS"
++sachgrp
+)
+C"grar"
+w" üAW"
+C"artenbau"
+w" üAW"
+C"andwirt"
+w" üAW"
+C"gricul"
+w" üAW"
+C"orstw"
+w" üAW"
+Z"veterin"
+(
+w" üAWE"
++sachgrp
+)
+Z"tiermed"
+(
+w" üAWE"
++sachgrp
+)
+C"ier„rz"
+(
+w" üAWE"
++sachgrp
+)
+C"pproxim"
+w" üMA"
+C"aturw"
+w" üNAX"
+C"aturfors"
+w" üNAX"
+C"VDI"
+w" üTE"
+C"DIN"
+w" üTE"
+C"ESA"
+w" üFAL"
+
+C"VDE"
+w" üEL"
+C"IAEA"
+w" üEN"
+C"rgonomi"
+w" üTE"
+C"DNA"
+w" üBEE"
+C"RNA"
+w" üBEE"
+Z"virus"
+w" üBEF"
+C"rogrammi"
+w" üCS"
+Z"softwar"
+w" üCS"
+Z"Theol"
+w" üRT"
+Z"religi"
+w" üRT"
+Z"kirche"
+w" üRT"
+C"ozialw"
+w" üSW"
+C"irtschaftsw"
+w" üNW üBW"
+C"arktwirts"
+w" üNW"
+C"olkswirts"
+w" üNW"
+C"ebensmit"
+(
+w" üCTL"
++sachgrp
+)
+Z"technol"
+(
+w" üTEX"
++sachgrp
+)
+Z"hrichtentec"
+(
+w" üELG"
++sachgrp
+)
+Z"technik"
+(
+w" üTEX"
++sachgrp
+)
+C"rchiteüt"
+(
+C"omput"
+/
+(
+C"echner"
+/
+w" üAR"
+)
+)
+Z"kunststof"
+w" üCT"
+Z"kunstfas"
+w" üCT"
+Z"kunst"
+w" üBK"
+Z" art "
+w" üBK"
+Z" artü "
+w" üBK"
+W"ZZZ"
+
+#30a
+k30a
+c"ü"
+qsachgrp
+W"?00"
+
+-sachgrp
+#30a
+k30a
+e"-Q"
+e " ["
+_"ZZZ"
+_""
+i 33      ! am Anfang beseitigen
+i 32      Leerzeichen am Anfang beseitigen
+u12       alles in Kleinbuchstaben wandeln
+C "/ediss/"
+w" ediss "
+
+
+-sprache
+
+#30a
+k30a
+e " ["
+_"/???"  Sprachcode wieder wegnehmen
+_""
+
+#30g      geogr Codes
+k30x
+="ZZZ"
+qzzzzzzzz 
+
+
+-32k    wenn 5301 besetzt
+#30b
+k32k
+e " ["
+
+-ENDE
+
+#999
+j0
+l0
+qzzzzzzzzzzzz    Ende
+
+    **********
+    Stamms„tze
+    **********
+
+-Person
+#00
+s"PPN: "
+l9
+w"p"
+
+#4n 
+s"100 "
+_ "$c"
+_ " ª"
+e"$"
+c" ª"
+W"ª"
+
+
+#4na
+s"400 "
+_ "$c"
+_ " ª"
+_ "$v"
+_ "v"
+c"@"
+>Q
+c"!"
+>R
+
+c" ª"
+W"ª"
+m"; "
+
+#4nd
+s 0 "548 "
+_ "$b"
+_ "-"
+e "$"
+
+#4nz
+s 0 "678 "
+b"$b"
+
+#89g
+s 0 "035"
+B"/"
+
+#999
+j0
+l0
+qzzzzzzzzzzzz    Ende
+
+-K”rperschaft
+#00
+s 0 "020 "   GKD-Nr
+l9
+w"g"
+
+#89P
+s"PPN: "
+l9
+
+#6ng
+s 0 "007 /1"
+_ "/1"
+_ " "
+
+#6n
+s0 "150 "
+
+#6na
+s 0 "250 "
+m"; "
+
+#6na
+k6na
+s 0 "251 "
+w"; "
++6nd
+
+#6na
+s 0 "251 "
+
+-6nd
+#6nd
+s 0 "300 "
+
+#6nr
+s 0 "440 "
+>K
+
+#6nf
+s 0 "450 frher:"
+>K
+m"; "
+
+#6ns
+s 0 "450 sp„ter:"
+>K
+m"; "
+
+#6nz
+s 0 "450 zeitweise:"
+>K
+m"; "
+
+#6nz
+k6nz
+s 0 "901 "
+w"; "
++zzzzzzzz
+
+#6nz
+j0
+l0
+C 0 "901 "
+s 0 "901 "
+C 0 "310 "
+(
+s 0 "310 "
+w"; "
+)
+
+#999
+j0
+l0
+qzzzzzzzzzzzz    Ende
+
+-Schlagwort
+#00
+s 0 "021 "
+l9
+w"s"
+
+#89P
+s"PPN: "
+l9
+
+#3n
+s"800 "
+e""
+}1
+w"s"
+_ "| "
+_ " "
+C "80? |t"
+(
+}1
+w"t"
+)
+
+#3n
+k3n
+s "801 "
+e""
+_ "|?| "
+_ ""
+w" / "
+
+#3n
+k3n
+s "802 "
+e""
+_ "|?| "
+_ ""
+w" / "
+
+#3n
+k3n
+s "803 "
+e""
+_ "|?| "
+_ ""
+w" / "
+
+#3n
+k3n
+_ "^"
+_ "ª"
+="st"
+_ " / "
+_ ": "
+
+
+#95A
+s"820 "
+e""
+}4
+
+#95A
+k95A
+s "821 "
+e""
+_ "|t| "
+_ ": "
+_ "|?| "
+_ " / "
+
+#95A
+k95A
+s "822 "
+e""
+_ "|?| "
+_ ""
+w" / "
+
+#95A
+k95A
+s "823 "
+e""
+_ "|?| "
+_ ""
+w" / "
+
+#95A
+k95A
+_ "^"
+_ "ª"
+
+#3na
+s "830 "
+e""
+_ "^"
+_ "ª"
+_ "|?| "
+_ ""
+m"; "
+
+#3na
+k95A
+k3na
+w"; "
+
+#3ng
+s "811 "
+e""
+@L
+
+#95A   SACHGR
+s "810 "
+e""
+e" "
+@H
+
+#95A
+k95A
+s "810 "
+e""
+b" "
+e" "
+@H
+w"ú"
+
+#95A
+k95A
+s "810 "
+e""
+b" "
+b" "
+e" "
+@H
+w"ú"
+
+#95A
+k95A
+q3n
+
+#95A
+j0
+q95r
+
+-3n   nur wenn #95A existiert!
+#3n
+k3n
+e" "
+k95A
+k3n
+b" "
+w" "
+
+
+-95r
+#95r   vorbesetzung
+j0
+w"á"
+l0
+
+#95r
+s "860 "
+e""
+} 4         860 faengt mit einem (unnoetigen) Steuerzeichen an
+u9
+  N
+m"; "
+
+#95b   vorbesetzung
+j0
+w"á"
+l0
+
+#95b     broader terms
+s "850"
+e""
+} 5
+u9
+  N
+w"á;b"
+m";b"
+
+
+#95s   vorbesetzung
+j0
+w"á"
+l0
+
+#95s     sp„tere begr.
+s "870"
+e""
+} 5
+u9
+  N
+w"á;s"
+m";s"
+
+#95f   vorbesetzung
+j0
+w"á"
+l0
+
+#95f     fruehere begr.
+s "880"
+e""
+} 5
+u9
+  N
+w"á;f"
+m";f"
+
+#95n   vorbesetzung
+j0
+w"á"
+l0
+
+#95n     neuer begr.
+s "890"
+e""
+} 5
+u9
+  N
+w"á;n"
+m";n"
+
+#95a   vorbesetzung
+j0
+w"á"
+l0
+
+#95a     alter begr.
+s "891"
+e""
+} 5
+u9
+  N
+w"á;a"
+m";a"
+
+
+#3nz
+s "808 "
+e""
+_ "| "
+_ ""
+_ "|"
+_ ""
+
+m""
+
+#3nr
+k95r
+i59
+i225
+i59
+k95b
+i225
+k95f
+i225
+k95s
+i225
+k95n
+i225
+k95a
+i225
+
+#999
+j0
+l0
+qzzzzzzzzzzzz    Ende
+
+
+-Basisklass
+
+#00 
+s"PPN: "
+l9
+
+#3n
+s 0 "009 ??"
+l1
+w"b"
+s 0 "170 "
+s 0 "500"
+
+#3na
+s 0 "510 "
+m"; "
+
+#3na
+k3na
+s 0 "540 "
+w"; "
+m""
+
+#3na
+s 0 "540 "
+m"; "
+
+#3nr
+s 0 "600 "
+_ "siehe: "
+_ " -> "
+e " ("
+
+#3nz
+j0
+l0
+C 0 "530 "
+s 0 "530 "
+C 0 "900 "
+(
+s 0 "900 "
+w"; "
+)
+
+#3nz
+k3nz
+i59
+i32
+
+#999
+j0
+l0
+qzzzzzzzzzzzz    Ende
+
+
+
+
+  ******************
+  Konkordanztabellen
+  ******************
+
+     1. fuer LC-Klassifikation
+@@A
+
+"AZ"
+"GK" 0
+
+"AE"
+"EB" 0
+
+"AS"
+"WH" 0
+
+"A"
+"AL" 0
+
+"BF"
+"PS" 0
+
+"BA"
+"PH" 0
+
+"BB"
+"PH" 0
+
+"BC"
+"PH" 0
+
+"BD"
+"PH" 0
+
+"BH"
+"PH" 0
+
+"BJ"
+"PH" 0
+
+"B"
+"RT" 0
+
+"CC"
+"GED" 0
+
+"C"
+"GEC" 0
+
+"D"
+"GE" 0
+
+"E"
+"GE" 0
+
+"F"
+"GE" 0
+
+"G10"
+"GG" 0
+
+"GB"
+"GGE" 0
+
+"GC"
+"GW" 0
+
+"GF"
+"GGG" 0
+
+"GN"
+"MEC" 0
+
+"GR"
+"GKH" 0
+
+"GV1"
+"SLG" 0
+
+"GV"
+"ST" 0
+
+"G"
+"GG" 0
+
+"HA"
+"NWP" 0
+
+"HB"
+"NW" 0
+
+"HC"
+"GEK" 0
+
+"HD"
+"GEK" 0
+
+"HE"
+"BW" 0
+
+"HF"
+"BW" 0
+
+"HG"
+"NW" 0
+
+"HJ"
+"NW" 0
+
+"HN49"
+"PK" 0
+
+"HN"
+"GEK" 0
+
+"HV"
+"PBL SW" 0
+
+"H"
+"SW" 0
+
+"JX"
+"RE" 0
+
+"J"
+"PL" 0
+
+"K"
+"RE" 0
+
+"LAW"
+"RE" 0
+
+"L"
+"PB" 0
+
+"M"
+"MK" 0
+
+"NA"
+"AR" 0
+
+ "NB"
+ "BK" 0 
+
+ "NC"
+ "BK" 0
+
+ "ND"
+ "BK" 0
+
+ "NE"
+ "BK" 0
+
+ "NF"
+ "BK" 0
+
+ "NK"
+ "BK" 0
+
+"N"
+"BK" 0
+
+"PA"
+"SLD" 0
+
+"PC"
+"SLL/roa" 0
+
+"PD"
+"SLL/gem" 0
+
+"PE"
+"SLL/eng" 0
+
+"PF"
+"SLL/ger" 0
+
+"PQ"
+"SL/roa" 0
+
+"PR"
+"SL/eng" 0
+
+"PS"
+"SL/eng" 0
+
+"PT"
+"SL/ger" 0
+
+"PZ7"
+"SLH" 0
+
+"PZ"
+"SLQ" 0
+
+    mass media
+"P96"
+"PK" 0
+
+"PC"
+"SL/roa" 0
+
+"PR"
+"SL/eng" 0
+
+"PS"
+"SL/eng" 0
+
+"PF"
+"SL/ger" 0
+
+"PQ"
+"SL" 0
+
+"PN"
+"SL/eng" 0
+
+"P"
+"SL" 0
+
+"QA76"
+"CS" 0
+     artificial intelligence, cybernetics ...
+"Q3"
+"CS" 0
+
+"QA"
+"MA" 0
+
+"QB"
+"AG" 0
+
+"QC"
+"PY" 0
+
+"QD"
+"CH" 0
+
+"QE"
+"GW" 0
+
+"QH4"      Genetik
+"BEE" 0
+
+"QH54"     Oekologie 
+"BLP" 0
+
+"QH57"     Zellbiologie 
+"BED" 0
+
+"QH58"      
+"BED" 0
+
+"QH59"      
+"BED" 0
+
+"QH5"      Genetik, Molekularbiologie
+"BEE" 0
+
+"QH6"      Zellbiologie
+"BED" 0
+
+"QH"
+"BL" 0
+
+"QK"
+"BLK" 0
+
+"QL"
+"BLM" 0
+
+"QM"
+"MEC" 0
+
+"QP1"
+"BLE" 0     Physiologie
+
+"QP2"
+"BLE" 0   
+
+"QP3"
+"BLE" 0
+
+"QP4"
+"BLE" 0   
+
+"QP5"
+"BTC" 0     Biochemie
+
+"QP6"
+"BTC" 0     
+
+"QP7"
+"BTC" 0
+
+"QP8"
+"BTC" 0    
+
+"QP9" 
+"BTC" 0
+
+"QR"
+"BEF" 0
+
+"Q"
+"ME" 0
+    gesundheitswesen
+"RA"
+"MEP" 0
+
+"RC"
+"PM" 0
+
+"RD"
+"ME" 0
+
+"RM"
+"PM" 0
+
+"RS"
+"PM" 0
+
+"R"
+"ME" 0
+
+"SB"
+"AW" 0
+
+"SF"
+"AWE" 0
+
+ "SH"         fisheries
+ "AWP" 0
+
+"S"
+"AW" 0
+
+     materials
+"TA4"
+"MTB" 0
+
+"TA"
+"TE BA" 0
+
+"TC"
+"MS" 0
+
+"TD"
+"BAG" 0
+
+"TE"
+"BAG" 0
+
+"TF"
+"FAG" 0
+
+"TG"
+"BAG" 0
+
+"TH"
+"BAC" 0
+
+"TJ"
+"MS" 0
+
+"TK5105"
+"CS" 0
+
+"TK51"
+"ELG CS" 0
+
+"TK7"
+"ELK" 0
+
+"TK"
+"EL" 0
+
+"TL"
+"FA" 0
+
+"TN"
+"GWG" 0
+
+   biotechnol 
+"TP248"
+"BT" 0
+
+"TP"
+"CT" 0
+     manufactures, Fabrikbetrieb
+"TS"
+"TE" 0
+
+     handicrafts, arts&crafts
+"TT"
+"BKL" 0
+
+
+"TX"
+"HG" 0
+
+"T"
+"TE" 0
+
+"UNC"
+"ZZZ" 0
+
+"U"
+"GEN" 0
+
+"VM"
+"FAH" 0    Seefahrt
+
+"VK"
+"FAH" 0    Seefahrt
+
+"V"
+"GEN" 0
+
+       electronic publishing
+"Z2"
+"CS SB" 0
+
+          Buchwesen ...
+"Z"
+"SB" 0
+
+@
+
+
+@@B      2.   Konkordanz Dewey -> DB
+
+"001.4"
+"CS" 0
+"001"
+"GK" 0
+"003"
+"CS" 0
+"004"
+"CS" 0
+"005"
+"CS" 0
+"006"
+"CS" 0
+
+"01"
+"BG" 0
+
+"02"
+"SB" 0
+
+"03"
+"EB" 0
+
+"05"
+"AL" 0
+
+"06"
+"WH" 0
+
+"07"
+"PK" 0
+
+"100"
+"PH" 0
+
+"159.9"
+"PS" 0
+
+"15"
+"PS" 0
+
+"1"
+"PH" 0
+
+"2"
+"RT" 0
+
+"302.2"
+"PK" 0
+
+"30"
+"SW" 0
+
+"31"
+"NWP" 0
+
+"32"
+"PL" 0
+
+"331"
+"BW" 0
+
+"33"
+"NW" 0
+
+"34"
+"RE" 0
+
+"355"
+"GEN" 0
+"356"
+"GEN" 0
+"357"
+"GEN" 0
+"358"
+"GEN" 0
+"359"
+"GEN" 0
+"35"
+"PL" 0
+
+"363.6"
+"BAG" 0
+
+"363.7"
+"GSB" 0
+
+"36"
+"PBL" 0
+
+"37"
+"PB" 0
+
+"384"
+"PK SLG" 0
+
+"385"
+"BAG" 0
+
+"386"
+"BAG" 0
+
+"387"
+"BAG" 0
+
+"388"
+"BAG" 0
+
+"380.8"
+"GG" 0
+
+"38"
+"BW" 0
+
+"39"
+"?BW" 0
+
+"40"
+"SL" 0
+"41" 
+"SL" 0
+"42"
+"SLL/eng" 0
+"43"
+"SLL/ger" 0
+"44"
+"SLL/fre" 0
+"45"
+"SLL/roa" 0
+"46"
+"SLL/spa" 0
+"47"
+"SLL/lat" 0
+"48"
+"SLL/grc" 0
+
+"49"
+"SLL/zzz" 0
+
+"50"
+"NA" 0
+
+"51"
+"MA" 0
+
+"526.9"
+"BAP" 0
+
+"52"
+"AG" 0
+
+"53"
+"PY" 0
+
+"54"
+"CH" 0
+
+"551.4"
+"GG" 0
+
+"55"
+"GW" 0
+
+"56"
+"GWP" 0
+
+"574.192"
+"BTC" 0     Biochemie
+
+"574.5"
+"BLP" 0
+
+"574.8"
+"BED" 0     Zellbiologie
+
+"574.9"
+"BLP" 0    
+
+"575"
+"BEE" 0
+
+"576"
+"BEF" 0
+
+"577.4"
+"BL" 0
+
+"577"
+"BL" 0
+
+"57"
+"BL" 0
+
+"58"
+"BLK" 0
+
+"59"
+"BLM" 0
+
+"602"
+"TEG" 0
+
+"604"
+"GSB" 0
+
+"615.9"
+"MEM" 0   Toxikologie
+
+"615"
+"PM" 0
+
+"619"
+"AWE" 0
+
+"61"
+"ME" 0
+
+"620.1"
+"MTB" 0
+
+"620"
+"TE" 0
+
+"621.39"
+"CS" 0
+
+"621.381"
+"ELK" 0
+
+"621.382"
+"ELG" 0
+
+"621.383"
+"ELK" 0
+
+"621.384"
+"ELG" 0
+
+"621.385"
+"ELG" 0
+
+"621.388"
+"ELG" 0
+
+"621.389"
+"ELG" 0
+
+"621.38"
+"ELK" 0
+
+"621.3"
+"EL" 0
+
+"621.04"
+"EN" 0
+
+"621.4"
+"EN" 0
+
+"621"
+"MS" 0
+
+"622"
+"GW" 0
+
+"623.8"
+"FAH" 0
+
+"623"
+"GEN" 0
+
+"624.1"
+"BAG" 0
+
+"624.2"
+"BAG" 0
+
+"624"
+"BAC" 0
+
+"625.1"
+"FAG" 0
+
+"625.7"
+"BAG" 0
+
+"627"
+"BAH" 0
+
+"628"
+"BAG" 0
+
+"629.1"
+"FAL" 0
+
+"629.2"
+"FAF" 0
+
+"629.4"
+"FAL" 0
+
+"629.8"
+"TEC" 0
+
+"629"
+"FA" 0
+
+"62"
+"TE" 0
+
+"636"
+"AWE" 0
+
+ "639"     Fisheries
+ "AWP" 0
+
+"63"
+"AW" 0
+
+"64"
+"HG" 0
+
+"65"
+"BW" 0
+
+"660'.6"
+"BT" 0
+
+"664"
+"CTL" 0     Lebensmittel
+
+"669"
+"MT" 0
+
+"66"
+"CT" 0
+
+"67"
+"BW" 0
+
+"686"    Druck
+"SB" 0
+
+"68"     Handwerk
+"TE" 0
+
+"691"
+"BAN" 0
+
+"690"
+"BAC" 0
+
+"69"
+"BA" 0
+
+"701"
+"BK-PH" 0
+
+"70"
+"BK" 0
+
+"71"
+"ARF" 0
+
+"72"
+"AR" 0
+
+"737"
+"GEC" 0
+
+"73"
+"BK" 0
+
+"745.6"
+"SB" 0
+
+"74"
+"BKL" 0
+
+"75"
+"BK" 0
+
+"76"
+"BK" 0
+
+"772"
+"TED" 0
+
+"778"
+"TED" 0
+
+"77"
+"BK" 0
+
+"78"
+"MK" 0
+
+"7"
+"BK" 0
+
+"801"
+"SL-PH" 0
+
+"81"
+"SL/eng" 0
+
+"82"
+"SL/eng" 0
+
+"83"
+"SL/ger" 0
+
+"84"
+"SL/fre" 0
+
+"85"
+"SL/ita" 0
+
+"86"
+"SL/spa" 0
+
+"87"
+"SL/lat" 0
+
+"88"
+"SL/grc" 0
+
+"8"
+"SL" 0
+
+"901"
+"GK" 0
+
+"913"
+"GED" 0
+
+"91"
+"GG" 0
+
+"92"
+"EB" 0
+
+"93"
+"GEE" 0
+
+"94"
+"GE" 0
+
+"95"
+"GE" 0
+
+"96"
+"GE" 0
+
+"97"
+"GE" 0
+"98"
+"GE" 0
+
+"9"
+"GE" 0
+
+@
+
+
+
+@@F      6. Form-SW Tabelle
+"Aufg"
+"a3" 0
+
+"Atl"
+"al"
+
+"Aufg"
+"a3" 0
+
+"Aufs"
+"ag" 0
+
+"Aus"
+"at" 0
+
+"Aut"
+"ah" 0
+
+"Beis"
+"bi" 0
+
+"Bes"
+"bo" 0
+
+"Bri"
+"bn" 0
+"Bibliog"
+"bl" 0
+
+"Bildb"
+"b6" 0
+
+"Biog"
+"bm" 0
+
+"Einf"
+"e4" 0
+
+"Enzy"
+"ej" 0
+
+"Erleb"
+"ei" 0
+
+"Falls"
+"fi" 0
+
+"Formel"
+"fq" 0
+
+"F"
+"fj" 0
+
+"Int"
+"ic" 0
+
+"Karte"
+"ka" 0
+
+"Katalo"
+"kb" 0
+
+"Komm"
+"kq" 0
+
+"Kongre"
+"kn" 0
+
+"Konk"
+"kj" 0
+
+"Lehr"
+"le" 0
+
+"No"
+"tm"
+
+"Pro"
+"do" 0
+
+"Que"
+"q6" 0
+
+"Rat"
+"rf" 0
+
+"Tabel"
+"tg" 0
+
+"Tag"
+"tc" 0
+
+"Verz"
+"vc" 0
+
+"W"
+"we" 0
+
+@F
+
+@@G     7. Geocodes DIN
+"at"
+"e-au"
+
+"au"
+"u-at"
+
+"be"
+"e-be"
+
+"bg"
+"e-bu"
+
+"br"
+"s-br"
+
+"ca"
+"n-cn"
+
+"cd"
+"e-cs"
+
+"ch"
+"e-sz"
+
+"cl"
+"s-cl"
+
+"cn"
+"a-cc"
+
+"co"
+"s-ck"
+
+"cs"
+"e-cz"
+
+"cz"
+"e-cz"
+
+"dd"
+"e-ge"
+
+"de"
+"e-gx"
+
+"dk"
+"e-dk"
+
+"d"
+"e-gx"
+
+"ee"
+"e-ee"
+
+"es"
+"e-sp"
+
+"fi"
+"e-fi"
+
+"fr"
+"e-fr"
+
+"gb"
+"e-uk"
+
+"gr"
+"e-gr"
+
+"hr"
+"e-ci"
+
+"hu"
+"e-hu"
+
+"id"
+"e-io"
+
+"ie"
+"e-ie"
+
+"il"
+"a-il"
+
+"in"
+"a-ii"
+
+"is"
+"e-ic"
+
+"it"
+"e-it"
+
+"jp"
+"a-ja"
+
+"lb"
+"a-le"
+
+"li"
+"e-lh"
+
+"lt"
+"e-lt"
+
+"lv"
+"e-lv"
+
+"lu"
+"e-lu"
+
+"mx"
+"n-mx"
+
+"nl"
+"e-ne"
+
+"no"
+"e-no"
+
+"nz"
+"u-nz"
+
+"pe"
+"s-pe"
+
+"pk"
+"a-pk"
+
+"pl"
+"s-pl"
+
+"ro"
+"e-rm"
+
+"ru"
+"e-ru"
+
+"se"
+"e-sw"
+
+"sv"
+"e-sw"
+
+"sl"
+"e-sl"
+
+"sg"
+"a-sg"
+
+"sk"
+"e-sl"
+
+"su"
+"e-ur"
+
+"th"
+"a-th"
+
+"tr"
+"a-tu"
+
+"ua"
+"e-ur-un"
+
+"us"
+"n-us"
+
+
+@
+
+@@H       8. SWD-Sachgruppen
+
+"00"
+"al" 0
+
+"2.3"
+"pk" 0
+
+"4.2"
+"ph-ge" 0
+
+"5.1b"
+"ps-ge" 0
+
+"5"
+"ps" 0
+
+"6.2b"
+"pb-ge" 0
+
+"6.2"
+"pb" 0
+
+"6.5"
+"wh" 0
+
+"6.7"
+"sb" 0
+
+"6.8"
+"sb" 0
+
+"6.1"
+"gk" 0
+
+"6.4"
+"pb" 0
+
+"6.3"
+"xx" 0
+
+"6.6"
+"wh" 0
+
+"6.5"
+"wh" 0
+
+"6.7"
+"sb" 0
+
+"6.8"
+"sb" 0
+
+
+
+"7.2"
+"re-ge" 0
+
+"7"
+"re" 0
+
+"8.4"
+"gen" 0
+
+"8"
+"pl" 0
+
+"9.4"
+"?bw" 0
+
+"9.1"
+"gek" 0
+
+"9"
+"sw" 0
+
+"10.2"
+"nw" 0
+
+"10.3"
+"plk" 0
+
+"10.5"
+"plk" 0
+
+"10.6"
+"bwp" 0
+
+"10.7"
+"ark" 0
+
+"10.8"
+"ba" 0
+
+"10.9"
+"bwp" 0
+
+"10.11"
+"bw" 0
+
+"10.10"
+"bw" 0
+
+"10.12"
+"bw" 0
+
+"10.13"
+"bwp" 0
+
+"10.14"
+"bwp" 0
+
+"10.1"
+"gek" 0
+
+"10"
+"nw" 0
+
+"11"
+"sll" 0
+
+"12"
+"sl" 0
+
+"13"
+"bk" 0
+
+"14"
+"mk" 0
+
+"15"
+"slg" 0
+
+"16"
+"ge" 0
+
+"17" 
+"ggt" 0
+
+"18"
+"na" 0
+
+"19.1"
+"gg" 0
+
+"19.2"
+"gg" 0
+
+"19.4"
+"gw" 0
+
+"19.3"
+"gw" 0
+
+"19.5"
+"agg" 0
+
+"1"
+"al" 0
+
+"20"
+"ag" 0
+
+"21"
+"py" 0
+
+"22"
+"ch" 0
+
+"23.2"
+"btc" 0
+
+"23.3"
+"bef" 0
+
+"23"
+"bl" 0
+
+"24"
+"blk" 0
+
+"25"
+"blm" 0
+
+"26"
+"mec" 0
+
+"27.8"
+"pm" 0
+
+"27"
+"me" 0
+
+"28"
+"ma" 0
+
+"29"
+"nwp" 0
+
+"30"
+"cs" 0
+
+"31.1c"
+"teg" 0
+
+"31.10"
+"ct" 0
+
+"31.11"
+"ctl" 0
+
+
+
+"31.1d"
+"mt" 0
+
+"31.1e"
+"te-ge" 0
+
+"31.3"
+"ar" 0
+
+"31.4"
+"gwg" 0
+
+"31.5"
+"en" 0
+
+"31.6" 
+"ms" 0
+
+"31.7"
+"fa" 0
+
+"31.8"
+"ms" 0
+
+"31.9b"
+"elk" 0
+
+"31.9"
+"el" 0
+
+"31"
+"te" 0
+
+"32"
+"aw" 0
+
+"33"
+"hg" 0
+
+"34"
+"st" 0
+
+"35"
+"st" 0
+
+"36"
+"bkl" 0
+
+"2"
+"sb" 0
+
+"3"
+"rt" 0
+
+"4"
+"ph" 0
+
+
+
+
+@
+
+
+@@K       9. Basisklass.
+"01.1"
+"BG" 0  
+
+"01.2"
+"EB" 0
+
+"01.3"
+"EB" 0
+
+"01"
+"AL" 0
+
+"02.13"
+"WH" 0
+
+"02.14"
+"WH" 0
+
+"02.15"
+"WH" 0
+
+"02.16"
+"WH" 0
+
+"02.20"
+"WH" 0
+
+"02.3"
+"GKf"
+
+"02.4"
+"GET" 0
+
+"02"
+"WH GK" 0
+
+"05"
+"PK" 0
+
+"06"
+"SB" 0
+
+"08"
+"PH" 0
+
+"10"
+"GK" 0
+
+"11"
+"RT" 0
+
+"15.2"
+"GEC" 0
+
+"15.3"
+"GED" 0
+
+"15.40"
+"GED" 0
+
+"15.10"
+"GEC" 0
+
+"15.11"
+"GEC" 0
+
+"15.12"
+"GEC" 0
+
+"15.13"
+"GEC" 0
+
+"15.14"
+"GEC" 0
+
+"15.1"
+"GED" 0
+
+"15"
+"GE" 0
+
+"17.7"
+"SL" 0
+
+"17.8"
+"SL" 0
+
+"17.9"
+"SL" 0
+
+"17"
+"SLL" 0
+
+"18.09"
+"SLQ" 0
+
+"18"
+"SLL" 0
+
+"20"
+"BK" 0
+
+"21.4"
+"TED" 0
+
+"21.6"
+"AR-GE" 0
+
+"21.7"
+"AR-GE" 0
+
+"21.8"
+"BKL" 0
+
+"21"
+"BK" 0
+
+"24.2"
+"SLG MK"
+
+"24.00"
+"SLG MK" 0
+
+"24.0"
+"SLG" 0
+
+"24.1"
+"SLG" 0
+
+"24.3"
+"SLG PK" 0
+
+"24"
+"MK SLG" 0
+
+"30.1"
+"NA CS" 0
+
+"30"
+"NA" 0
+
+"31.81"
+"PY MA" 0
+
+"31" 
+"MA" 0
+
+"33"
+"PY" 0
+
+"35.01"
+"CH-GE" 0
+
+"35.7"
+"BTC" 0
+
+"35" 
+"CH" 0
+
+"38.09"
+"GO" 0
+
+"38.95"
+"GO" 0
+
+"38.20"
+"GWP" 0
+
+"38.21"
+"GWP" 0
+
+"38.22"
+"GWP" 0
+
+"38.23"
+"GWP" 0
+
+"38.24"
+"GWP" 0
+
+"38.73"
+"BAP" 0
+
+"38.50"
+"GWG" 0
+
+"38.51"
+"GWG" 0
+
+"38.52"
+"GWG" 0
+
+"38.54"
+"GWG" 0
+
+"38.5"
+"gw" 0
+
+"38.7"
+"AGG" 0
+
+"38.80"
+"AGG" 0
+
+"38.81"
+"AGG" 0
+
+"38.82"
+"AGG" 0
+
+"38.84"
+"AGG" 0
+
+"38"
+"gw" 0
+
+"39"
+"AG" 0   ???
+
+"42.01"
+"BL-GE" 0
+
+"42.13"
+"BEE" 0
+
+"42.15"
+"BED" 0
+
+"42.17"
+"BLE" 0
+
+"42.20"
+"BEE" 0
+
+"42.2"
+"BL" 0
+
+"42.31"
+"BTC" 0
+
+"42.3"
+"BEF" 0
+
+"42.43"
+"BEE BLK" 0
+
+"42.44"
+"BLK BLP" 0
+
+"42.49"
+"BEF" 0
+
+"42.4"
+"BLK" 0
+
+"42.50"
+"BEF" 0
+
+"42.5"
+"BLK" 0
+
+"42.6"
+"BLM" 0
+
+"42.7"
+"BLM" 0
+
+"42.88"
+"MEC" 0
+
+"42.8"
+"BLM" 0
+
+"42.99"
+"BL" 0
+
+"42.9"
+"BLP" 0
+
+"42"
+"BL" 0
+
+"43.31"
+"BLR" 0
+
+"43"
+"GSB" 0
+
+"44.01"
+"PM-GE" 0
+
+"44.07"
+"ME PS" 0
+
+"44.1"
+"MEP" 0
+
+"44.31"
+"ME PY" 0
+
+"44.32"
+"ME MA" 0
+
+"44.33"
+"MEE" 0
+
+"44.34"
+"MED" 0
+
+"44.38"
+"PMH" 0
+
+"44.39"
+"MEM" 0
+
+"44.40"
+"PM" 0
+
+"44.41"
+"PMD" 0
+
+"44.42"
+"PMF" 0
+
+"44.45"
+"BTC ME" 0
+
+"44.52"
+"MEY" 0
+
+"44.5"
+"MEX" 0
+
+"44.70"
+"ST-ME" 0
+
+"44.72"
+"ME-RE" 0
+
+"44.7"
+"MEG" 0
+
+"44.8"
+"MEG" 0
+
+"44.98"
+"PMM" 0
+
+"44.99"
+"ME" 0
+
+"44.9"
+"MEG" 0
+
+"44"
+"ME" 0
+
+"46"
+"AWE" 0
+
+"48.20"
+"MS" 0
+
+"48.6"
+"AWE" 0
+
+"48"
+"AW" 0
+
+"49"
+"HG" 0
+
+"50.20"
+"TEC" 0
+
+"50.21"
+"TEG" 0
+
+"50.22"
+"ELP" 0
+
+"50.25"
+"TEC" 0
+
+"50.36"
+"TEB" 0
+
+"50.37"
+"TED" 0
+
+"50.31"
+"MSM" 0
+
+"50.3"
+"MS PY" 0
+
+"50.7"
+"EN" 0
+
+"50.15"
+"MSC" 0
+
+"50"
+"TE" 0
+
+"51.5"
+"MTD" 0
+
+"51"
+"MTB" 0
+
+"52.5"
+"EN" 0
+
+"52.77"
+"MTK" 0
+
+"52.78"
+"MTH" 0
+
+"52.7"
+"MSN" 0
+
+"52.87"
+"TEF"
+
+"52"
+"MS" 0
+
+"53.3"
+"ELD" 0
+
+"53.5"
+"ELK" 0
+
+"53.7"
+"ELG" 0
+
+"53.8"
+"ELG" 0
+
+"53"
+"EL" 0
+
+"54"
+"CS" 0
+
+"55.2"
+"FAF" 0
+
+"55.3"
+"FAG" 0
+
+"55.4"
+"FAH" 0
+
+"55.5"
+"FAL" 0
+
+"55.6"
+"FAL" 0
+
+"55.85"
+"FAG" 0
+
+"55.86"
+"FAH" 0
+
+"55.88"
+"FAL" 0
+
+"55.8"
+"FAF" 0
+
+"55"
+"FA" 0
+
+"56.1"
+"BAC" 0
+
+"56.2"
+"BAG" 0
+
+"56.3"
+"BAH" 0
+
+"56.45"
+"BAN" 0
+
+"56.6"
+"AR" 0
+
+"56.8"
+"AR" 0
+
+"56.99"
+"BA" 0
+
+"56.9"
+"AR" 0
+
+"56"
+"BA" 0
+
+"57"
+"GWG" 0
+
+"58.28"
+"PMC" 0
+
+"58.34"
+"CTL" 0
+
+"58.3"
+"BT" 0
+
+"58.41"
+"MTD" 0
+
+"58.5"
+"GSB" 0
+
+"58.99"
+"CT GS" 0
+
+"58"
+"CT" 0
+
+"70"
+"SW" 0
+
+"71"
+"SW" 0
+
+"73"
+"GGT" 0
+
+"74.6"
+"ARF ARK" 0
+
+"74.7"
+"ARK ARF" 0
+
+"74.8"
+"SW" 0
+
+"74"
+"GG" 0
+
+"76"
+"ST" 0
+
+"77"
+"PS" 0
+
+"79"
+"PB SW" 0
+
+"80"
+"PB" 0
+
+"81.80"
+"WH" 0
+
+"81"
+"PB" 0
+
+"83.01"
+"GEK" 0
+
+"83.08"
+"GEK" 0 
+
+"83.09"
+"GEK" 0
+
+"83"
+"NW" 0
+
+"85.5"
+"?bw" 0
+
+"85.6"
+"?bw" 0
+
+"85"
+"BW" 0
+
+"86.56"
+"PM-RE" 0
+
+"86"
+"RE" 0
+
+"88"
+"PLK" 0
+
+"89.8"
+"GEN" 0
+
+"89.4"
+"PLC" 0
+
+"89.7"
+"PLF" 0
+
+"89.8"
+"GEN" 0
+
+"89.9"
+"PLF" 0
+
+"89"
+"PL" 0
+
+@
+
+@@L  10. L„ndercodes der DB (SWD)
+"aa"
+"e-gx" 0
+
+"ar"
+"s-ar"
+
+"ba"
+"e-gw" 0
+
+"bb"
+"e-gx-bw" 0
+
+"bc"
+"e-gx-by" 0
+
+"be" 
+"e-gx-be" 0
+
+"bf" 
+"e-gx-hb" 0
+
+"bg"
+"e-gx-hh" 0
+
+"bh"
+"e-gx-he" 0
+
+"bn"
+"e-gx-nd" 0
+
+"bo"
+"e-gx-nw" 0
+
+"br"
+"e-gx-rp" 0
+
+"bs"
+"e-gx-sl" 0
+
+"bw"
+"e-gx-sh" 0
+
+"ca"
+"e-ge" 0
+
+"cb"
+"e-gx-br" 0
+
+"cl"
+"s-cl" 0
+
+"cm"
+"e-gx-mv" 0
+
+"cs"
+"e-gx-sc" 0
+
+"ct"
+"e-gx-sa" 0
+
+"cy"
+"e-gx-th"
+
+"da"
+"e-gx-ed"
+
+"ea"
+"e" 0
+
+"ec"
+"e-aa" 0
+
+"ee"
+"e-an" 0
+
+"eg"
+"eb" 0
+
+"ei"
+"e-be" 0
+
+"ek"
+"e-bn" 0
+
+"el"
+"e-bu" 0
+
+"ep"
+"a-tu-zz" 0
+
+"er"
+"e-dk" 0
+
+"es"
+"e-er" 0    Estland
+
+"fo"
+"e-lv" 0     Lettland
+
+"et"
+"e-fi" 0
+
+"ev"
+"e-fr" 0
+
+"ex"
+"e-gx-zz" 0
+
+"ez"
+"e-gr" 0
+
+"fc"
+"e-uk" 0
+
+"fe"
+"e-ie" 0
+
+"fg"
+"e-ic" 0
+
+"fi"
+"e-it" 0
+
+"fl"
+"e-yu" 0
+
+"fn"
+"e-cr" 0
+
+"fo"
+"e-lv" 0
+
+"fp"
+"e-lh" 0
+
+"fq"
+"e-li" 0   Litauen
+
+"fr"
+"e-lu" 0
+
+"fs"
+"e-xn" 0    Makedonien
+
+"ft"
+"e-mm" 0
+
+"fv"
+"e-mc" 0
+
+"fw"
+"e-mo" 0
+
+"fx"
+"e-ne" 0
+
+"fz"
+"e-no" 0
+
+"gc"
+"e-au" 0
+
+"ge"
+"e-pl" 0
+
+"gg"
+"e-po" 0
+
+"gi"
+"e-it-zz" 0
+
+"gl"
+"e-rm" 0
+
+"gn"
+"e-sm" 0
+
+"gp"
+"e-sw" 0
+
+"gr"
+"e-sz" 0
+
+"gt"
+"e-se" 0
+
+"gv"         Sorben: Teilgebiet von Sachsen
+"e-gx-scs" 0
+
+"gx"
+"e-ur" 0
+
+"gz"
+"e-sp" 0
+
+"gu"
+"e-sl"    Slowakei
+
+"ha"
+"e-cz"    Tschechei
+
+"hc"
+"e-cs" 0
+
+"he" 
+"e-hu" 0
+
+"hg"
+"e-vc" 0
+
+"hi"
+"e-cy" 0
+
+"hk"
+"e-mv" 0   Moldawien
+
+"hm"
+"e-ru"     Russland
+
+"ho"
+"e-un" 0   Ukraine
+
+"hq"
+"e-bw" 0   Belorussland
+
+"ia"
+"a" 0
+
+"ic"
+"a-af" 0
+
+"ig"
+"aw-zz" 0
+
+"ii"
+"ar" 0
+
+"il"
+"a-ba" 0
+
+"in"
+"a-bg" 0
+
+"ip"
+"a-bt" 0
+
+"iq"
+"a-bx" 0
+
+"ir"
+"a-br" 0
+
+"mm"          Myanmar, frueher Birma
+"a-br" 0
+
+"it"
+"a-ce" 0
+
+"iv"
+"a-cc" 0
+
+"ix"
+"a-hk" 0
+
+"iz"
+"a-ii" 0
+
+"kc"
+"a-io" 0
+
+"ke"
+"a-iq" 0
+
+"kg"
+"a-ir" 0
+
+"ki"
+"zm" 0
+
+"kl"
+"a-is" 0
+
+"kn"
+"a-ja" 0
+
+"kp"
+"a-ye" 0
+
+"kr"
+"a-jo" 0
+
+"kt"
+"a-cb" 0
+
+"kv"
+"a-ga" 0
+
+"kx"
+"a-kr" 0
+
+"kz"
+"a-ku" 0
+
+"lc"
+"a-ls" 0
+
+"le"
+"a-le" 0
+
+"lg"
+"a-my" 0
+
+"li"
+"i-xc" 0
+
+"ll"
+"a-mp" 0
+
+"ln"
+"a-np" 0
+
+"lp"
+"a-mk" 0
+
+"lr"
+"a-pk" 0
+
+"lt"
+"a-is-pa" 0
+
+"lv"
+"a-ph" 0
+
+"lx"
+"a-su" 0
+
+"mc"
+"a-si" 0
+
+"me"
+"a-sy" 0
+
+"mf"
+"a-ch" 0
+
+"mg"
+"a-th" 0
+
+"mi"
+"a-cc-ti" 0
+
+"ml"
+"a-tu" 0
+
+"mn"
+"a-ts" 0
+
+"mp"
+"a-vt" 0
+
+"mq"
+"a-ai" 0    Armenien
+
+"mr"
+"a-aj" 0    Aserbeidschan
+
+"ms"
+"a-ax" 0    abchasien
+
+"mt"
+"a-kz" 0    Kasach
+
+"mu"
+"a-kg" 0   Kirgis
+
+"mv"
+"a-ta" 0   Tadschiki
+
+"mw"
+"a-tk" 0   Turkmenistan
+
+"mx"
+"a-uz" 0   Usbekistan
+
+"na"
+"f" 0
+
+"nc"
+"f-ua" 0
+
+"nd"
+"f-eg" 0
+
+"ne"
+"f-et" 0
+
+"ng"
+"f-ae" 0
+
+"ni"
+"f-ao" 0
+
+"nn"
+"f-tg" 0
+
+"nr"
+"f-bs" 0
+
+"nt"
+"f-bd" 0
+
+"nx"
+"f-ft" 0
+
+"nz"
+"f-iv" 0
+
+"oa"
+"f-ea" 0    Eritrea
+
+"oc"
+"f-go" 0
+
+"oe"
+"f-gm" 0
+
+"og"
+"f-gh" 0
+
+"oi"
+"f-gv" 0
+
+"oj"
+"f-gvb" 0
+
+"ol"
+"f-cm" 0
+
+"on"
+"lncv" 0
+
+"op"           Karthago, heute Tunesien
+"f-ti-zz" 0
+
+"or"
+"f-ke" 0
+
+"ot"
+"i-cq" 0
+
+"ov"
+"f-cf" 0
+
+"ox"
+"f-lo" 0
+
+"oz"
+"f-lb" 0
+
+"pc"
+"f-ly" 0
+
+"pe"
+"f-mg" 0
+
+"pg"
+"f-mw" 0
+
+"pi"
+"f-ml" 0
+
+"pl"
+"f-mr" 0
+
+"pn"
+"f-mu" 0
+
+"pp"
+"f-mf" 0
+
+"pr"
+"f-mz" 0
+
+"pt"
+"f-sx" 0
+
+"pv"
+"f-ng" 0
+
+"px"
+"f-nr" 0
+
+"pz"
+"f-bf" 0
+
+"qe"
+"f-rw" 0
+
+"qg"
+"fd" 0
+
+"qi"
+"f-za" 0
+
+"ql"
+"f-sf" 0
+
+"qn"
+"f-sg" 0
+
+"qp"
+"f-se" 0
+
+"qr"
+"f-sl" 0
+
+"qs"
+"f-rh" 0
+
+"qt"
+"f-so" 0
+
+"qv"
+"f-sj" 0
+
+"qx"
+"f-sa" 0
+
+"qz"
+"f-sq" 0
+
+"rc"
+"f-tz" 0
+
+"re"
+"f-tg" 0
+
+"ri"
+"f-cd" 0
+
+"rl"
+"f-ti" 0
+
+"rn"
+"f-ug" 0
+
+"rp"
+"f-cg" 0
+
+"rr"
+"f-cx" 0
+
+"sa"
+"b" 0
+
+"sb"
+"nw" 0
+
+"sc"
+"s-ag" 0
+
+"se"
+"nwbf" 0
+
+"sg"
+"nwbb" 0
+
+"sh"
+"ncbh" 0
+
+"si"
+"lnbm" 0
+
+"sl"
+"s-bo" 0
+
+"sn"
+"s-bl" 0
+
+"sp"
+"s-cl" 0
+
+"sr"
+"nccr" 0
+
+"ss"
+"nw" 0
+
+"st"
+"nwdr" 0
+
+"sv"
+"s-ec" 0
+
+"sx"
+"nces" 0
+
+"sz"
+"nwgd" 0
+
+"tc"
+"ncgt" 0
+
+"te"
+"s-gv" 0
+
+"tg"
+"nwht" 0
+
+"ti"
+"ncho" 0
+
+"tl"
+"nwjum" 0
+
+"tn"
+"n-cn" 0
+
+"tp"
+"s-ck" 0
+
+"tr"
+"nwcu" 0
+
+"ts"
+"nwxk" 0
+
+"tt"
+"n-mx" 0
+
+"tv"
+"ncnq" 0
+
+"tx"
+"ncpn" 0
+
+"tz"
+"s-py" 0
+
+"uc"
+"s-pe" 0
+
+"ue"
+"nwpr" 0
+
+"uf"
+"nwsk" 0
+
+"ug"
+"s-sr" 0
+
+"ui"
+"nwtr" 0
+
+"ul"
+"s-uy" 0
+
+"un"
+"s-ve" 0
+
+"up"
+"n-us" 0
+
+"uv"
+"nwsv" 0
+
+"wa"
+"u" 0
+
+"wc"
+"u-at" 0
+
+"we"
+"pofj" 0
+
+"wf"
+"pogn" 0
+
+"wg"
+"ponu" 0
+
+"wi"
+"u-nz" 0
+
+"wl"
+"a-pp" 0
+
+"wn"
+"posn" 0
+
+"wp"
+"posh" 0
+
+"wr"
+"poto" 0
+
+"wt"
+"pogn" 0
+
+"wv"
+"ponn" 0
+
+"wx"
+"i-xc" 0    Marschallinseln
+
+"wy"
+"pott" 0    Mikronesien
+
+"wz"
+"po" 0
+
+"xa"
+"r" 0
+
+"xc"
+"l" 0
+
+"xe"
+"i" 0
+
+"xg"
+"p" 0
+
+"xi"
+"t" 0
+
+"ya"
+"w" 0
+
+"yi"
+"a-is-zz" 0
+
+"za"
+"f-sa"
+
+@
+
+
+
+@@Q     DeweyDB -> allegro
+
+"K"
+"slh" 0
+
+"B"
+"slq" 0
+
+"000"
+"al" 0
+
+"004"
+"cs" 0
+
+"010"
+"bg" 0
+
+"020"
+"sb" 0
+
+"030"
+"eb" 0
+
+"050"
+"al" 0
+
+"060"
+"al" 0
+
+"070"
+"pk" 0
+
+"080"
+"sb" 0
+
+"090"
+"sb" 0
+
+"100"
+"ph" 0
+
+"130"
+"es" 0
+
+"150"
+"ps" 0
+
+"2"
+"rt" 0
+
+"300"
+"sw" 0
+
+"310"
+"nwp"
+
+"320"
+"pl"
+
+"330"
+"nw-ge"
+
+"340"
+"re"
+
+"350"
+"plk"
+
+"355"
+"gen"
+
+"360"
+"sw"
+
+"370"
+"pb"
+
+"380"
+"nw"
+
+"390"
+"ggt"
+
+"400"
+"sll"
+
+"420"
+"an"
+
+"43"
+"gm"
+
+"440"
+"rm"
+
+"450"
+"rm"
+
+"460"
+"rm"
+
+"470"
+"rm"
+
+"480"
+"sld"
+
+"490"
+"sll"
+
+"500"
+"na"
+
+"510"
+"ma"
+
+"520"
+"ag"
+
+"530"
+"py"
+
+"540"
+"ch"
+
+"550"
+"gw"
+
+"560"
+"gwp"
+
+"570"
+"bl"
+
+"580"
+"blk"
+
+"590"
+"blm"
+
+"600"
+"te"
+
+"610"
+"me"
+
+"620"
+"ms"
+
+"630"
+"aw"
+
+"640"
+"hg"
+
+"650"
+"bw"
+
+"660"
+"ct"
+
+"670"
+"bw"
+
+"690"
+"bac"
+
+"700"
+"bk"
+
+"710"
+"ark"
+
+"720"
+"ar"
+
+"730"
+"bk"
+
+"740"
+"bk"
+
+"741.5"
+"bk"
+
+"750"
+"bk"
+
+"760"
+"bk"
+
+"770"
+"bk"
+
+"780"
+"mk"
+
+"790"
+"slg"
+
+"791"
+"slg"
+
+"792"
+"slg"
+
+"793"
+"sp"
+
+"796"
+"st"
+
+"800"
+"sl"
+
+"810"
+"an"
+
+"820"
+"an"
+
+"830"
+"gm"
+
+"840"
+"rm"
+
+"850"
+"rm"
+
+"860"
+"rm"
+
+"870"
+"sld"
+
+"880"
+"sld"
+
+"890"
+"sl"
+
+"900"
+"ge gg"
+
+"910"
+"gg"
+
+"914.3"
+"gg"
+
+"920"
+"ge"
+
+"930"
+"ged"
+
+"94"
+"ge"
+
+"950"
+"ge"
+
+"960"
+"ge"
+
+"970"
+"ge"
+
+"980"
+"ge"
+
+"990"
+"ge"
+
+@
+
+    12. ZDB-Sachgruppen
+@@Z
+
+"100"
+"al"
+
+"110"
+"bg"
+
+"120"
+"eb"
+
+"125"
+"wh"
+
+"130"
+"pk"
+
+"13"
+"sb"
+
+"140"
+"gk"
+
+"150"
+"wh"
+
+"160"
+"blp"
+
+"170"
+"sld"
+
+"180"
+"sld"
+
+"200"
+"ph"
+
+"210"
+"ph"
+
+"260"
+"ps"
+
+"280"
+"pb"
+
+"2"
+"rt" 0
+
+"305"
+"gec"
+
+"310"
+"ged"
+
+"320"
+"ged"
+
+"335"
+"geh"
+
+"390"
+"ggt"
+
+"3"
+"ge" 0
+
+"470"
+"bk"
+
+"480"
+"mk"
+
+"490"
+"slg"
+
+"4"
+"sll" 0
+
+"5"
+"re" 0
+
+"600
+"sw"
+
+"601"
+"swp"
+
+"605"
+"gek"
+
+"615"
+"sw"
+
+"620"
+"sw"
+
+"63"
+"nw" 0
+
+"64"
+"nw" 0
+
+"65"
+"nw" 0
+
+"66"
+"bw" 0
+
+"67"
+"aw" 0
+
+"68"
+"pl" 0
+
+"695"
+"ge"
+
+"70"
+"na" 0
+
+"710"
+"ag"
+
+"720"
+"bl"
+
+"725"
+"blk"
+
+"730"
+"blm"
+
+"740"
+"ch"
+
+"746"
+"bl"
+
+"76"
+"gw"
+
+"76"
+"gw"
+
+"76"
+"gg"
+
+"77"
+"py" 0
+
+"790"
+"ma" 0
+
+"79"
+"cs" 0
+
+"88"
+"awe" 0
+
+"89"
+"pm" 0
+
+"8"
+"me" 0
+
+"90"
+"te" 0
+
+"910"
+"ms" 
+
+"92"
+"el" 0
+
+"930"
+"fa"
+"935"
+"fal"
+
+"940"
+"ct"
+
+"945"
+"gwg"
+
+"950"
+"mtb"
+
+"960"
+"ba ar"
+
+"970"
+"en"
+
+"980"
+"st"
+
+"981"
+"ab"
+
+"98"
+"al" 0
+
+@

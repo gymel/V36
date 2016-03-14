@@ -1,0 +1,115 @@
+
+Verlautbarung 174 der Entw.Abt.                             2004-02-09
+-------------------------------
+
+V24 : Weitere Verbesserungen
+----------------------------
+
+1. Abhandengekommene Dateien
+----------------------------
+Das Schicksal kann es wollen, dass beim Start eine der wichtigen
+Dateien nicht vorhanden ist: .TBL, .ADX, .STL oder *.ALD
+Was soll a99 dann machen? Nun, ausser bei .ALD (da muss man auf eine
+Sicherungskopie zurueckgreifen) koennte a99 wenigstens den Hinweis
+geben, was zu tun waere, naemlich ueber das ORG-Menue den betr.
+Wiederherstellungsvorgang zu starten. Im Falle .TBL war es besonders
+unerfreulich: a99 startete gar nicht erst, man konnte dann nur ueber
+das "Organisieren"-Menue des CockPit gehen - nicht jeder kommt da
+gleich drauf.
+NEU: Wenn .TBL, .STL oder .ADX fehlt, gibt a99 den richtigen Hinweis
+und laedt dazu das ORG-Menue, so dass man nur noch richtig klicken
+muss. Im Falle .ALD kommt der Hinweis, man solle eine Sicherungs-
+kopie herbeiholen.
+Fehlen alle vier, geht a99 davon aus, dass man gerade eine neue
+Datenbank anlegt und zeigt die Seite new.rtf. Das ist der Fall,
+wenn ueber  newdb.rtf  eine neue Datenbank angelegt wird.
+   Hinweis: neue UIF-Zeilen: 92,93,96.
+
+
+2. Rechtsbuendiges Zurechtruecken mit FLEX
+------------------------------------------
+Mit  var #nnn(0,m)  kann man, wenn m groesser als der Inhalt von #nnn
+ist, erreichen, dass der Text rechts mit Leerzeichen aufgefuellt wird.
+Entsprechendes fuer die linke Seite geht jetzt mit
+  var #nnn(0,rm)    bzw.   wri #nnn(0,rm)
+Beispiel:
+      var #76(0,r10)
+      fuellt das Erscheinungsjahr links auf 10 Zeichen auf, oder
+      anders gesagt, stellt den Inhalt von #76 rechtsbuendig in
+      ein Feld mit 10 Zeichen
+
+
+3. Datei- und Verzeichnislisten per FLEX
+----------------------------------------
+Etwas heikel ist es bislang, den Nutzer per FLEX eine Datei aus-
+waehlen zu lassen, noch schwieriger: ein Verzeichnis.
+Jetzt wurde dazu der Befehl "fnam" stark erweitert:
+
+fnam |typ     bzw.    fnam |.typ
+fnam >typ     bzw.    fnam >.typ
+
+Alle zum Namensmuster  typ  passenden Dateinamen werden in 
+die iV geschrieben, getrennt durch | ,
+bzw. bei > in die Ausgabedatei, jeweils als neue Zeile.
+Die erste Form eignet sich fuer die Anzeige in einer
+select-Box (siehe Beispiel 1),
+Die zweite eignet sich als ViewListe (siehe Beispiel 2).
+Setzt man einen . hinter | bzw. >, werden statt Dateinamen die Namen der
+Verzeichnisse gezeigt (die sonst entfallen).
+Wenn hinter fnam nichts steht, wird der Inhalt der iV genommen,
+die also dann mit | bzw. > beginnen muss.
+Mit `if no` kann man checken, ob es keine solchen Dateien gibt,
+mit `if cancel`, ob es zu viele sind. Die Grenze ist aus
+internen Gruenden bei | eine Gesamtlaenge von 2.000 Zeichen,
+bei > gibt es keine Grenze.
+
+
+Beispiele: Muster, die man in jeden FLEX einbauen kann
+Ein ausfuehrliches Beispiel liegt auf "aktuelle-Version" als
+Datei namens  "fnam.flx"!
+
+1. Die auf dem Datenverzeichnis liegenden Export-Parameterdateien,
+   also Dateien vom Typ *.ap? sollen gezeigt und zur Auswahl
+   als select-Liste angeboten werden:
+
+var "|" D "*.ap?"
+fnam
+if no end
+if can mes Zu viele!
+ins #uvB
+var "Parameterdateien=" #uvB
+select
+ins #uvF
+var "Ihre Wahl war: " #uvF
+
+2. Die auf dem Programmverzeichnis liegenden Export-Parameterdateien,
+   also Dateien vom Typ *.ap? sollen als ViewListe gezeigt werden:
+
+open x pfiles.vw
+var ">" P "*.ap?"
+fnam
+clo x
+if no end
+View pfiles
+ins #uvF
+var "Ihre Wahl war: " #uvF(B"-- " e" ")
+close view
+mes
+
+3. Die am Programmverzeichnis h„ngenden Unterverzeichnisse 
+   sollen als ViewListe gezeigt werden: 
+   (Auch diesen Abschnitt kann man in jeden FLEX einbauen)
+
+open x pfiles.vw 
+var ">." P "*.*" 
+fnam 
+clo x 
+if no end 
+View pfiles.vw 
+ins #uvF 
+clo v 
+var "Ihre Wahl ist: " #uvF 
+mes
+
+
+

@@ -1,0 +1,86 @@
+
+
+Verlautbarung 203 der Entw.Abt.                              2008-01-25
+-------------------------------
+
+V28.1 bereitgestellt
+====================
+
+Die V28.1 ist eine bereinigte V28.0 ohne grossartige neue
+Funktionalitaeten.
+Die inzwischen angefallenen Verbesserungen von aLF, ORDER
+und ZAboM sind aber ebenfalls drin.
+
+Mit drin sind einige neue Codetabellen, ohne dass diese
+schon konsequent eingebunden waeren oder dass alte, in etwa
+gleichwertige schon entfielen:
+
+1. ad-aw.apt     DOS-OstWest -> Win-OstWest (d.apt, asciansi.apt)
+2. ad-dos.apt                -> DOS CP850
+3. ad-asc.apt                -> DOS CP437
+4. ad-win.apt                -> Win 1252 (Windows-Standard)
+5. win-ad.apt    Win1252 -> DOS-OstWest
+
+Die Nr. 5 ist z.B. auch nutzbar bei Importen von Daten aus
+Office-Software: man bindet sie dann in die Exportparameter ein!
+2.,3. und 4. schliessen klaffende Luecken im Angebot. Wenn man sie
+für Exporte verwendet, sollte man am besten zuerst schauen, ob
+man irgendwelche Zeichen in besonderer Weise verwendet hat, und
+den zugeordneten Wert dann in der Datei noch aendern.
+
+
+FLEX if =$abc ...
+-----------------
+Wie mit #u-Variablen kann man nun auch mit $-Variablen testen,
+ob deren Inhalt mit dem der iV uebereinstimmt:
+var #20
+if =$titel mes Das ist ja derselbe Titel wie vorhin!
+
+
+FLEX first off / last off / prev off
+------------------------------------
+Die FLEX-Variable i war in diesen Faellen 0, nur bei next off
+stimmte sie mit der internen Satznummer ueberein, wie es sein
+sollte. Das wurde berichtigt.
+
+
+WICHTIG: Neuer Sicherheitscheck
+===============================
+Wenn man a99 nach einer Datenbank-Wiederherstellung startet,
+kann es sein, dass Datensaetze in der Offline-Datei nicht mehr
+mit denen in der Datenbank uebereinstimmen. Auch aus anderen
+Ursachen koennen an den Offline-Daten Unstimmigkeiten entstehen,
+denn sie sind als Dateien so leicht veraenderbar wie jede Datei.
+Und es kann ja auch sein, dass auf einem bestimmten PC, der lange
+nicht benutzt wurde, noch Offline-Daten einer frueheren Sitzung liegen,
+die laengst nicht mehr stimmen und/oder anderweitig veraendert wurden.
+Damit kein Satz hernach falsch gespeichert wird und z.B. einen
+ganz anderen ueberschreibt, der nun z.B. die interne Nummer des
+offline-Satzes erhalten hat, sollte am besten beim Start eine
+Pruefung stattfinden, ob die Daten noch stimmig sind.
+Wir haben dafuer einen FLEX  offcheck.flx  geschrieben, der in
+V28.1 mitgeliefert wird.
+Er nimmt die Saetze der offline-Datei her und prueft in jedem
+Fall, ob seine interne Nummer und sein Primaerschluessel mit
+dem dazu in der Datenbank zu findenden Satz uebereinstimmen
+oder ob es in der Datenbank gar keine Entsprechung (mehr)
+gibt. Geloeschte und neue Saetze sind unkritisch, denn sie kriegen
+beim Speichern neue Nummern. Und auch solche werden nicht geprueft,
+die bereits nach Korrektur gespeichert worden waren, also gruen sind!
+M.a.W.: es geht nur um die gelben.
+Im Fall einer Unstimmigkeit wird die off-Line-Datei geloescht,
+nicht ohne sie zuvor als ALG-Datei zu speichern und den
+Nutzer zu informieren. Die Datei  off.alg  kann er sich dann mit
+"Datei / weitere offline-Datei laden" heranholen und pruefen,
+evtl. einzelne Saetze als neu speichern oder sonst etwas, aber
+das Ueberschreiben falscher Saetze ist damit ausgeschlossen.
+Diesen FLEX sollte man am besten mittels
+
+exec offcheck
+
+an den  _start.flx  anhaengen. Wir werden dies fuer die
+Standardversion tun. 
+Wer einen weiteren FLEX am Ende von  _start.flx  starten will, kann 
+diesen nun mit einem  exec ...  an das Ende von  offcheck.flx  haengen.
+
+

@@ -1,0 +1,122 @@
+  Bildschirmanzeige mit der Moeglichkeit, Saetze nachzuladen
+  Mit Ergaenzungen fuer "capriccio"
+  D-1.APR     960102
+  1. a) Baende von mehrbd. Werken (hierarchisch #01...#05)
+     b) Verknuepfungen per #09 IdNr+xxx  (1stufig aufwaerts, Pica)
+     c) Verknuepfungen per #00 IdNr+xxx+xxx+...  (mehrstufig)
+  2. Stammsaetze von Zeitschriften fuer Aufsatzdaten (#70)
+         ueber Kuerzel, ISSN, oder CODEN (Index 5, Abschnitt _ )
+  3. Aufsaetze aus Sammelbaenden (#84) ueber  Id.Nr.
+  4. Serientitel (#85) ebenfalls ueber Kuerzel per Index 5
+  5. Stammsaetze Sacherschliessung (#3n ...)
+  6. MUSIK : #52 / #22 als Kopf der Einheitskarte
+  evtl. anpassen: Signatur-Unterprogramm #(S
+pn="Anzeige fuer WWW"
+
+zl=120       Zeilenlaenge (nach Bedarf zu kuerzen)
+zi=0        keine Einrueckung
+fl=0        Anzahl Zeilen je Karte
+fm=0        Modus: keine Einzelkarten fuer die Baende (2 = Einzelkarten)
+zm=0
+dx=1        =0, wenn Farbe nicht gewuenscht
+i4=1
+ab=""
+as=""
+
+#t{ "INTERN" }
+
+#uII +( e0
+
+#+@    Einheitskarte wird bei #-@ erzeugt
+  ********* ZWISCHENTEILE  1 - 78  *************
+1=". "      Interpunktion
+2=", "
+3="; "
+4="<br>" C
+5=" : "
+6="<br>" C "<br>" C
+7=" = "
+8=". - "
+9=" / "
+10="("
+11=")"
+12="<br>" C "<br>" C "<br>" C
+13="<br>" C "   "
+14=". - ("
+15="." "<br>" C "   "
+
+20=C "<tr><td valign=top><i>"     Neue Tabellenzeile
+21="</i></td><td>"                zwischen zwei Tab.Spalten
+22="</td></tr>" C                 Ende der Tab.Zeile
+23="<br>"                     Vorschub innerhalb Tab.Zelle
+
+
+
+30="<br>" C "Kongr.: "
+60=#250     Einrueckung auf momentaner Position festsetzen
+61=#0       Einrueckung auf 0 setzen
+62=&0       Sprung auf Pos. 0
+
+    ******  Hauptteil : Konstr. der "Einheitskarte" ****
+    ** Durchlauf ab hier fuer Hauptsatz und Untersaetze **
+#-@
+
+                                    mit der internen Satznummer belegt.
+#t{ "<p>" C }
+
+#20 "Titel: "
+
+#t13
+
+#40 "Urh.: "
+
+#t13
+
+#10 "Jahr: "
+
+#t13
+
+#80B p'URL: <a href="' y0
+#80B
+#80B p{ '">British Library</a>' } e0
+
+#+#
+
+#-(
+#bp .35 35    Texel
+#bp & &    V23
+#bi5=0
+#bi4=0
+
+#t{ s0 }
+#t{ "<table>" }
+
+  ##        oder diese 5 Zeilen:
+
+#u01 dnz anz e0
+#-[
+#unz b4 e4 p20 P21
+#unz b8 P22
+#u02 +[ =nz e0
+
+#t{ "</table>" }
+
+#bp .35 8
+#bi5=95
+#bi4=1
+#t{ s4 }       oder 5 statt 4 wenn 3stelliges Schema!
+
+#+#
+
+
+   ******** Sonderzeichen ***********
+td-htm
+
+p < "&lt"
+p > "&gt"
+p & "&amp"
+p  255    Absatz
+ p ª 1
+ q ª 1
+q a/z A
+

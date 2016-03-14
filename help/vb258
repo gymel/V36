@@ -1,0 +1,435 @@
+
+Verlautbarung 258 der Entw.Abt.                              2014-03-31
+-------------------------------
+
+Das GesamtPaket V34.1 liegt bereit, desgl. das a35-Paket.
+
+
+a99 Index-Marginalia
+--------------------
+Es konnte passieren, und zwar beim Umschalten auf ein Register einer
+anderen Indexdatei sofort nach dem Start (z.B. cat.aex), ohne zuerst
+ein "normales" Register (in cat.adx) aufzublaettern, dass es zu einer
+Endlosschleife kam und a99 nur ueber den Task-Manager noch zu 
+beseitigen war. Das konnte behoben werden.
+
+Ferner war aufgefallen, dass beim Bewegen des Balkens zeilenweise nach
+unten mit der Cursortaste am Ende der Seite das Weiterschalten nicht
+funktionierte - es kam dann immer dieselbe Zeile. Dies zwar nur in den
+symbolischen Registern (mit Praefix), aber gleichwohl war's untragbar
+und wurde behoben.
+Im Webkatalog klappte das Blaettern nicht, wenn die letzte Zeile in der
+Registeranzeige zufaellig ein + enthielt (PHPAC und a35). Behoben.
+
+
+cat.api : Jetzt mehr drin im ALL-Register
+-----------------------------------------
+Ein Disput auf dem Forum hat uns bewogen, das ALL-Register noch weiter
+auszuweiten:
+1. Bindestrichwoerter: Nun sind nicht nur die Einzelteile drin, sondern
+   auch die Zusammensetzungen mit und ohne -, bei mehr als zwei Teilen
+   alle Teile mit und ohne, also fuer "A-B-C" nicht nur abc und a-b-c,
+   sondern auch  b-c, bc  und die Einzelteile  a, b, c
+   (Das ist Abschnitt  #-Z  in cat.api)   
+2. Die Liste der Stopwoerter wurde zusammengestrichen, wenn auch fuer
+   manche Geschmaecker vielleicht nicht rabiat genug (Datei swl1.apt).
+   Aber wer will, kann sie ganz rausnehmen - wie schon immer.
+Auswirken tut sich das vor allem bei der automatischen Allwort-Suche,
+die	hinter "Schnelle Suche" steckt, wenn man dort irgendwelche Woerter
+einwirft. Und beim Webkatalog (PHPAC und a35) entsprechend.
+
+
+FLEX avanti: first r, next r, ...  jetzt auch in acon
+-----------------------------------------------------
+Diese in a99 schon lange existierenden Befehle gibt es nun auch in
+acon. Damit bewegt man sich in einer Ergebnismenge zu einem anderen
+Datensatz, ohne dass dieser selbst geladen wird. Statt dessen wird
+nur die Kurzzeile aus der STL in die iV geholt und die Satznummern-
+variable i (aber nicht die interne Satznummer des aktuellen Satzes!)
+auf die Nummer des zugehoerigen Satzes gesetzt. Nutzbar ist dies, wenn
+man z.B. fuer einen Webkatalog eine Erg.Menge nur mittels der 
+Kurzzeilen praesentieren will - dazu braucht man nicht jeden einzelnen 
+Satz in einer Schleife zu laden und abzuarbeiten.
+Ausgenutzt wird das im a35-Job  a35erg.job, falls dieser die Parameter
+a35erg.Xpr nicht findet. Er nutzt dann die neutralen (fuer jede CFG
+funktionierenden) Parameter  a35ers.@pr.
+Dies erleichtert den Einstieg in a35, weil man nicht zuerst eine eigene
+Parameterdatei a35erg.Xpr machen muss, sondern man bekommt auch ohne
+diese sofort eine brauchbare Ergebnis-Kurzliste. (Empfohlen wird 
+natuerlich, fuer eine aussagekraeftigere Kurzliste eine a35erg.Xpr
+zu erstellen, doch erfordert dies Exportkenntnisse.)
+
+
+
+Exportparameter:  i4   (siehe Handbuch Kap. 10.2.6.8)
+--------------------
+Nur wichtig, wenn die Datenbank mit V14-Technik arbeitet, also mit
+Normdatensaetzen fuer Namen, Schlagwoerter etc.
+Den Wert i4 kann man in den Exportparametern auf einen der Werte 
+1 bis 5 setzen, um unterschiedliche Arten der Ersetzung von IdNummern
+einzuschalten (sog. V14-Ersetzungstechnik).
+Insbes. muss der Wert in den Indexparametern gesetzt werden, damit
+statt der Nummern die Namen bzw. Schlagwoerter etc. im Klartext im
+Index erscheinen. Der sinnvolle Wert ist dann  i4=1.
+Bei einem Export dagegen kann es noetig sein, eine andere Art der
+Ersetzung vorzunehmen oder aber keine - um die Nummern als solche
+erscheinen zu lassen und sonst nichts. Um das letztere zu erreichen,
+setzt man i4 in den betr. Parametern NICHT ein. Nur dann macht das
+Programm *keine* Ersetzung. Intern hat i4 dabei den Wert -1. Das war 
+bisher allenfalls intimen Kennern der Quellprogramme bekannt.
+Ein Problem entstand, als die Moeglichkeit geschaffen wurde, mit
+#bi4=n   (n=1...5)    siehe 10.2.6.8
+innerhalb einer Parameterdatei den Wert zu veraendern. Hieraus kann
+der Wunsch erwachsen, die Ersetzungen auch mal abschalten zu koennen,
+waehrend der Laufzeit eines Exportes.
+Kann das jedoch, so wird man fragen, ueberhaupt eine Wirkung haben?
+Denn das Programm arbeitet so: Es fuehrt die V14-Ersetzungen und die
+globalen Ersetzungen (falls vorhanden) aus, bevor es beginnt, die Daten
+auszugeben, also bevor es zum ersten Ausgabebefehl schreitet (d.h. zur
+ersten Zeile, die mit # oder ! beginnt). Zu dem Zeitpunkt sind also
+die Ersetzungen gelaufen und sind auch nicht waehrend der Bearbeitung
+des aktuellen Satzes in fliegendem Wechsel wieder rueckgaengig zu 
+machen oder auf eine andere Art zu aendern. Es ist, klarer gesagt,
+von daher unmoeglich, einfach mittendrin  #bi4=-1  zu sagen und dann
+zu erwarten, dass ab der naechsten Zeile keine Ersetzung mehr
+stattfindet - denn die Ersetzungen sind alle schon erledigt, basta.
+Aber auch  #bi4=1  bewirkt nichts, wenn vorher kein i4 gesetzt war.
+Denn der gesetzte Wert wirkt sich erst dann aus, wenn der *naechste*
+Satz exportiert werden soll, d.h. bevor's dann neu von vorn losgeht
+mit der Abarbeitung der Parameter fuer den naechsten Satz.
+Noch anders gesagt: Alle Befehlszeilen des Exports finden die Daten
+des Satzes bereits im ersetzten Zustand vor, sie werden nicht einzeln,
+feldweise, erst waehrend des Exports der Ersetzung unterworfen.
+Es wurde dennoch jetzt die Moeglichkeit geschaffen,  #bi4=-1  zu
+schreiben. Aus wirkt sich das dann eben nur ab dem naechsten Satz, denn
+fuer den aktuellen ist in dem Moment die Ersetzerei schon getan! Es sei
+denn - Export-Experten ahnen es - man macht eine Nachladung, d.h. man 
+holt eben diesen Satz nochmals frisch in den Arbeitsspeicher, dann
+liegt ab der naechsten Parameterzeile der Satz wieder unveraendert vor. 
+Wirklich? Nein, tut er nicht, direkt nach dem Nachladen erfolgt ganz
+automatisch die V14-Ersetzung mit dem eingestellten Modus i4. Also:
+VOR dem Nachladen des Satzes i4 umstellen! Und hier kommt NEU hinzu
+der Befehl  i4=-1,  um V14 unwirksam zu machen.
+Braucht man hernach wieder ein Datenfeld mit vollzogener Ersetzung:
+rueckschalten mit  #<  und bei Bedarf mit  #<^ wieder den unbehandelten
+Satz einschalten. Im Prinzip nicht wirklich kompliziert also. Fuer den
+Experten! Welcher weiss, dass ein nachgeladener Satz den eingestellten 
+Ersetzungen unterzogen wird, bevor die naechste Exportzeile ausgefuehrt
+wird.
+
+Mit FLEX hat man nun deutlich leichteres Spiel, da ist der fliegende
+Wechsel gar kein Problem! Denn da gibt es die Moeglichkeit, den 
+aktuellen Satz VOR dem Export mit
+copy obj 1 2  in das Objekt 2 zu kopieren. Da liegt er dann und aendert 
+sich nicht, egal was mit dem Objekt 1 angestellt wird. 
+Mit  copy obj 2 1  holt man ihn zurueck ins Objekt 1, falls man darin
+was veraendert hatte - und hat ihn wieder im Originalzustand vor sich. 
+Eine FLEXsequenz kann demnach so aussehen:
+
+copy obj 1 2
+... irgendwelche Aenderungen am Satz
+export
+copy obj 2 1   // Originalsatz wieder hervorholen
+... irgendwelche Aktionen mit dem unveraenderten Satz,
+..  z.B. write- oder export-Befehle
+copy obj 2 1   // das Original nochmals hervorholen
+... 
+
+Aber in den Parametern, das ist ganz wichtig, *keinen* Befehl i4=...
+(Der Wert in den INDEXparametern war und ist in den EXPORTparametern
+ohne Wirkung!) Aber wie kriegt man die Ersetzungen hin?
+Nun, die V14-Ersetzungen macht man explizit im FLEX, das gehoert dann
+zu "irgendwelche Aenderungen", und zwar mit dem Befehl
+
+set a1    // um die Ersetzungen im Modus 1 *auszufuehren*
+          // (nicht, um den Wert i4 in den Parametern zu *setzen*)
+Dies geht nun auch in a99, wo man bislang nur mit  export R  die
+Ersetzungen im i4-Modus 1 vornehmen konnte. Dieses sehr alte Konstrukt
+war wenig gluecklich, bleibt aber bestehen (Bestandswahrung).
+
+Aber aufgepasst: Wenn man nach einem  set aN  ein put folgen laesst!
+Dann waeren im gespeicherten Satz die IdNummern alle weg und durch die
+Klartexte ersetzt. Aber a99 und acon verhindern dann das Speichern.
+Uebrigens: Beim Export ist nichts zu befuerchten, denn nach dem Export
+eines Satzes mit Befehl "export" sind die IdNummern wieder da. Das ist
+eine eingebaute Automatik, die schon in PRESTO gegeben war.
+Grundregel also: "set aN" erst *nach* einem put-Befehl, falls man z.B.
+in einem FLEX gewisse Aenderungen an Datensaetzen machen will, damit
+kombiniert aber auch irgendwelchen Output mit spezifischen V14-
+Ersetzungen, ohne dabei mit Exportparametern zu arbeiten. Es ist also
+nebenbei erreicht worden, die Notwendigkeit der kryptischen Export-
+sprache weiter zu reduzieren.
+
+
+Offline-Speicher abschalten?
+----------------------------
+Es ist die Meinung geaeussert worden, der Offline-Speicher sei eher
+problematisch denn hilfreich. Als Desiderat wurde darob dessen
+Abschaltbarkeit vorgeschlagen. Die Machbarkeit wurde geprueft. Das
+Ergebnis ist negativ. Eine gaenzliche Abschaffung waere leichter,
+kommt jedoch nicht in Betracht, weil es auch Anwender gibt, die 
+keinesfalls darauf verzichten wollen und die eine Entmuendigung
+darin saehen, auf eine lineare Arbeitsweise mit striktem "Eins nach
+dem andern" festgelegt zu werden.
+Es gibt Betreuer, die den Offline-Speicher als grossen Unsicherheits-
+faktor sehen und sich damit behelfen, in ihren FLEXen an allen nur
+denkbaren Stellen den Befehl "erase off" einsetzen. Das ist von der
+Sache her unproblematisch (sonst haetten wir den Befehl besser nicht
+schaffen sollen), praktisch aber doch aufwendig. 
+Wir haben hier aber im Grunde den alten Konflikt zwischen Freiheit und
+Verantwortung aufseiten des Anwenders, sowie zwischen Gaengelung und 
+Vertrauen auf den Verstandesgebrauch aufseiten des Betreuers, der
+seinen Anwendern nichts Nuetzliches vorenthalten moechte. 
+Was wir nun probehalber, fuer die Wagehaelse unter den Betreuern und
+Anwendern, einfach mal eingebaut haben, ist folgendes:
+
+set k1     (das bedeutet: komplette Unterbindung der Offlinefunktion)
+
+Damit wird das Speichern von Saetzen in den Offline-Speicher komplett
+verhindert. Mit 
+
+set k0     (0 ist natuerlich Default)
+
+schaltet man es wieder ein.
+Man bedenke jedoch: Das schlichte Nebenbei-waehrend-des-Editierens-
+eines-Satzes-schnell-mal-eben-im-Index-nachschauen-und-den-einen-
+oder-anderen-Satz-betrachten,-um-daraus-vielleicht-was-zu-kopieren,
+das hat dann zur Folge, dass der gerade bearbeitete Satz wieder weg
+ist, die bereits erfolgten Aenderungen spurlos beseitigt. Doch diese
+Moeglichkeit des Zwischendurch-schnell-mal-eben-nachschauens, die
+laesst sich technisch *nicht* unterbinden - und wer wollte das auch
+wirklich fordern!?
+Aber gut, wer will, der kann es *auch* als Entmuendigung empfinden,
+die Moeglichkeit des Verzichts auf die Offline-Speicherung *nicht*
+geboten zu bekommen. Zumal jetzt, in der Fastenzeit.
+Sei's drum - der Einsatz von "set k1" ist eigener Verantwortung 
+anheimgegeben. Jeder bedenke fuer sich die moeglichen Folgen und 
+teste alle denkbaren Szenarien durch. Sinnvoll erscheint k1 innerhalb
+von FLEXen, in denen z.B. Hilfsdatensaetze erzeugt und sofort
+gespeichert werden, die im Offline-Speicher den Nutzer irritieren
+koennten, ohne ihm was zu bringen.
+"Warum nicht umgekehrt?" wird womoeglich jetzt gefragt, d.h. Offline-
+Speicherung NUR nach expliziter Einschaltung. Erstens, weil das die
+Kontinuitaet braeche, aber zweitens, weil die europaeische Aufklaerung
+schon 300 Jahre waehrt und wir deshalb auf keinen Fall eine Einstellung 
+zum Default machen koennen, die den eigenstaendigen Verstandesgebrauch 
+aufseiten des Nutzers als hoheitlich zu gewaehrenden Ausnahmefall 
+erscheinen laesst. Von daher ist es wohl nicht zuviel verlangt vom 
+Betreuer, den Befehl "set k1" in den _start.flx  zu setzen, FALLS er
+denn nach gewissenhafter Abwaegung zu der Ansicht gelangt, dies
+vertreten zu koennen. Ohne natuerlich seine Pflicht zu versaeumen, die
+Nutzer ueber diese Beschneidung ihrer Moeglichkeiten aufzuklaeren, sie
+zum Mitdenken zu ermutigen, ihr Verstaendnis der Dinge zu foerdern
+sowie eine Funktion bereitzustellen, mit der sie den Befehl "set k0" 
+ausloesen koennen.
+Hinweis: Wenn externe Daten eingelesen werden (Menue "Datei / Externe
+Daei laden" oder "Weitere Offline-Datei laden"), dann wird die
+Offline-Speicherung eingeschaltet - andernfalls koennte die Sache nicht 
+funktionieren - und bleibt dann bis zu einem  set k1  eingeschaltet.
+
+
+Dateinamen mit Leerzeichen
+--------------------------
+... sind problematisch und von der Sache her nicht notwendig, kommen
+aber vor, und Anwender koennten solche Dateien mit Fremddaten oder
+irgendwelchen sonstwie zu verwendenden Daten aus anderen Kontexten
+erhalten und dann verarbeiten wollen. 
+FLEX sollte daran also nicht scheitern. Das tut es nun auch
+nicht mehr. Alle Dateifunktionen: rename, fcopy, delete, open und
+open x, koennen jetzt mit mehrteiligen Dateinamen umgehen. So einen
+Namen braucht man nur in "..." einzuschliessen. Das Zeichen " als
+solches darf nicht in einem Dateinamen vorkommen. Selbst Microsoft
+Office macht das nicht moeglich; dazu sagt der "Explorer":
+   Ein Dateiname darf keines der folgenden Zeichen enthalten:
+      \ / : * ? " < > | 
+
+
+acon: Befehl "fetch" war mangelhaft
+-----------------------------------
+Bei dem Befehl "fetch rec", der einen Datensatz aus Dateien der
+Typen .ald, .alg, .adt und .log einliest, fielen UTF-8-codierte Zeichen
+einfach weg, wenn auch nur in der Linux-Version. Dieser Befehl kommt
+vor in den Jobs  update.job  und  srch.job, und zumindest der erste
+ist aeusserst wichtig, weil er das alte Programm "update" ersetzt.
+Der Fehler wurde beseitigt.
+
+
+acon: Jetzt auch  ixadd  und  ixdel
+-----------------------------------
+Das direkte Speichern und Loeschen von Indexeintraegen ist nun
+nicht mehr allein a99 vorbehalten, sondern auch acon kann es.
+
+
+dnb.flx  und  srugbv.flx  verbessert
+------------------------------------
+In den DNB-Daten hatte es eine Veraenderung bei den Schlagwoertern
+gegeben, wodurch sie nicht mehr herauskamen. Dasselbe passierte beim
+Gesamttitel.
+Der GBV-FLEX liefert nun die Ergebnis-Kurzlisten in 10er statt nur 
+in 6er Schritten.
+(Es kommt vom GBV in Wahrheit keine Kurzliste, anders als bei DNB,
+sondern es kommen komplette Aufnahmen. Deshalb erscheint der aus der
+Kurzliste gewaehlte Datensatz dann immer verzoegerungsfrei.)
+
+
+aLF : Notbetrieb jetzt mit auf dem Menue
+----------------------------------------
+Die Funktionen fuer den Notbetrieb sind jetzt mit auf dem aLF-Menue,
+Bislang war da nur der Doku-Text verlinkt (Datei  alf-gau.txt).
+Nun gibt es "Notbetrieb" (in rot) zum Starten der Aufzeichnung, und
+"Daten aus dem Notbetrieb einspeisen" (in blau), um die waehrend des
+Notbetriebs aufgezeichneten Entleihungen und Ruecknahmen einzuspeisen
+(das macht  a-batch.flx).
+
+
+a99: Kleiner Endlosfehler
+-------------------------
+Der FLEX-Befehl  spaces  fuehrte zur Endlosschleife, wenn der iV-Inhalt
+mit einem = endete. Dem wurde ein Ende gesetzt.
+
+
+NEUERUNG DES JAHRES
+===================
+
+Der PersistenzSpeicher oder auch PowerStore (PS)
+------------------------------------------------
+
+Zum persistenten (sitzungsuebergreifenden) Speichern von Inhalten, die
+ein allegro-Betrieb braucht, eignen sich bisher mehrere Methoden, die
+in ihrer Gesamtheit aber eben doch kein komplettes Leistungsspektrum 
+fuer eine universelle Persistenzspeicherung bieten:
+
+1. ViewListen (vornehmlich Auswahllisten fuer die Dateneingabe)
+2. Schlichte Textdateien (mit aresqa oder "var Fdateiname" zu nutzen)
+3. $-Variablen: Speichern und Rueckholen mit 
+    $0>dateiname : die kleinen Variablen speichern
+    $1>dateiname : die grossen Variablen speichern
+    X dateiname  : einen Satz Variablen laden
+4. Mit  ixadd  kann man Zeichenfolgen auch in jedem beliebigen
+   Register der Indexdatei speichern, mit ixdel loeschen.
+
+Die Methode 4 birgt wohl schon ein gewisses Potential, weil man im
+Index groessere Mengen Daten fuer einen gezielten, schnellen Zugriff
+bereitstellen kann. Der enorme Nachteil von "ixadd" ist jedoch, dass 
+die so gespeicherten Daten nach einer Index-Erneuerung weg sind. Diese
+Art der Aufbewahrung kann man also keinesfalls "persistent" nennen. 
+Immerhin haben wir aber die Moeglichkeit, mehrere Indexdateien einer
+Datenbank zuzuordnen, und es koennte doch - so der neue und eigentlich
+verblueffend einfache Denkansatz - eine oder mehrere davon fuer andere
+Inhalte vorgesehen werden statt nur fuer die Suchkriterien der 
+Datensaetze! Und nur Indexdateien sind praedestiniert fuer das Speichern
+und schnelle Auffinden von vielen Millionen textuellen Angaben.
+
+Wir haben deshalb die Methode 4 ein wenig aufgewertet und ihre
+Nutzung mittels FLEX stark vereinfacht.
+Dazu braucht man zuerst eine speziell praeparierte, leere Indexdatei
+namens  cat.azx, die man schlicht in das eigene DbDir kopiert. Sie wird
+im Ordner DEMO2 mitgeliefert und natuerlich stets frisch auch per FTP 
+beziehbar sein.
+Man kopiert sie auf den Namen  kat.bzx, wenn man z.B. mit b.cfg und 
+kat.bpi statt mit a.cfg und cat.api arbeitet. Sofort danach steht die
+neue Methodik in a99 (V34.1) bereit, sogar ohne Neustart.
+
+Die Nutzung erfolgt genau wie bei den $-Variablen, man setzt in die
+Befehle nur das Zeichen & ein statt des $. Eine "PersistenzVariable"
+(PV) kann jeden beliebigen Namen tragen. Ohne Leer- und Sonderzeichen,
+wie sich wohl von selbst versteht; wir wollen ja nicht die Fehler der
+Betriebssystemfuersten wiederholen.
+Die gesamte Laenge einer PV (Name+Inhalt) ist auf 254 Zeichen begrenzt -
+das liegt an den grundsaetzlichen Eigenheiten der Indexspeicherung. 
+Braucht man mehr, teilt man den Inhalt geschickt auf mehrere PV auf.
+
+Und so geht man um mit dem PS:
+(nochmals, man braucht sich nur zu merken: & statt $)
+
+
+1. Variable belegen
+var "xyz"    oder    var "&abc xyz"
+ins &abc             ins
+
+speichert die Zeichenfolge "xyz" in der PersistenzVariablen abc. (Falls
+die schon existiert, wird sie ueberschrieben - wie bei den $-Var.)
+Auch manuell geht es: Ins Schreibfeld z.B. eingeben
+
+&Oktoberfest=20.9.2014   oder   x var "20.9.2014"\ins &Oktoberfest
+  oder auch  oder   x var "&Oktoberfest=20.9.2014"\ins
+
+2. Variable nutzen
+var &abc   kopiert "xyz" in die iV.
+
+Innerhalb eines var- oder write-Befehls kann man &-Variablen
+genauso verwenden wie $-Variablen, d.h. zwanglos einbauen in ganz
+beliebige Zeichenfolgen, z.B.:
+
+x var "Das Oktoberfest ist am " &Oktoberfest "!"\mes
+
+ODER mal schlicht ins Schreibfeld eingeben:
+
+&Oktoberfest
+und schon erscheint das Datum
+
+
+3. Variable loeschen
+var ""
+ins &abc
+
+ODER ins Schreibfeld eingeben:   &abc=
+
+
+Und so geht man vor, wenn der PV-Name seinerseits in einer
+Variablen steht, z.B. in $AV (oder sogar &AV), und der Wert in #uxy
+
+1. Belegen
+var "&" $AV "=" #uxy      oder    var "&" &AV "=" #uxy
+ins
+
+2. Nutzen
+var "&" $AB
+var
+
+3. Loeschen
+var "&" $AB
+ins
+
+
+Genutzt wird automatisch das Register 1 der Indexdatei  cat.azx.
+Natuerlich kann man auch hineinschauen, wie in jedes Register:
+
+x ind ~z1
+
+Oder sich einen Auszug zeigen oder ausgeben lassen:
+
+x qrix 100 ~z1\show IV
+
+Wenn man nun aber gerne mehrere persistente Speicher haette?
+Dann z.B. Register 2 einschalten mit  set &z2
+Von dem Moment ab spielen sich alle PS-Aktionen mit dem 
+Register 2 der cat.azx ab. Bis der naechste Befehl  set &  kommt.
+
+Und Sie erraten es: Mit  set &y1  kann man auch auf eine
+weitere Indexdatei  cat.ayx  ausweichen. Auch diese braucht nur 
+vorher als Kopie der leeren  cat.azx  bereitgestellt zu werden.
+
+Mit guten FLEX-Kenntnissen malt man sich leicht aus, wie man im
+PS nun z.B. auch grosse, dynamische Auswahllisten unterbringt und
+verfuegbar macht, oder variable Fakten aller Art, die etwa im
+_start.flx automatisch aktualisiert werden koennen, gern mit
+Nutzung von Web-Inhalten.
+
+Was aber tun, diese Frage wird kommen, wenn man eine Index-Erneuerung
+macht? Vorher den Sonder-Index in Sicherheit bringen und hernach
+wieder herbeiholen? Nicht noetig! Eine Indexdatei, fuer die die Parameter
+keine Eintraege erzeugen (nur dafuer hat man theoretisch Sorge zu tragen)
+bleibt automatisch unberuehrt. 
+Was ist mit der Datensicherung? Dabei werden alle Dateien des Typs 
+*.a?x gesichert, auch dafuer braucht man keinen Finger zu kruemmen. 
+Kann man gelegentlich mal kompaktieren? Ja, das funktioniert mit jeder 
+Indexdatei, auch wenn sie mit den Parametern nichts zu tun hat.
+
+
+Und das war's schon! Anreiz genug, wie wir denken, nun doch fuer 2014
+zu abonnieren, wenn das noch nicht geschehen ist ...
+
+
+
+

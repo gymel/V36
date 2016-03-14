@@ -1,0 +1,51 @@
+  LEAPYEAR : Ist das Jahr ein Schaltjahr? Klappt fuer Jahre 1 bis 9999
+  20050331
+
+:frage
+ask Jahr?
+if "" end
+  Unterprog durchfuehren (Jahr ist jetzt in iV)
+perf schalt
+  Ergebnis anzeigen
+mes
+jump frage
+
+  Unterprog liefert "Schaltjahr" bzw. "Kein Schaltjahr" in iV
+  Variablen #u|x werden alle wieder geloescht!
+:schalt
+  Jahr speichern
+ins #u|r
+z=
+  Ist es ein Jahrhundert?
+z%100
+var z
+  Ja
+if ="0" jump cent
+var #u|r
+z=
+z%4
+jump four
+
+:cent
+var #u|r
+z=
+if >1500 z/100    // vor 1500 war jedes 00-Jahr ein Schaltjahr
+  Ist die Jahrh.Zahl durch 4 teilbar?
+z%4
+:four
+var z
+  nein
+if not ="0" var "0";jump cn
+  ja
+var "1"
+:cn
+ins #u|y
+jump ende
+
+  In #u|y steht 0 oder 1
+:ende
+var #u|y
+#u|~
+if "1" var "Schaltjahr"; return
+var "Kein Schaltjahr"
+return

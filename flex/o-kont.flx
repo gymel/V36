@@ -1,0 +1,188 @@
+  O-KONT.FLX : Kontingente (einzeln oder alle) neu durchrechnen (ORDA)
+  2000-01-10/2001-03-21  Aufruf aus O-KONTUE.FLX
+
+  Nummer des aktuellen Satzes in #uoI sichern
+var "#" i
+ins #uoI
+  Kontingent #uoJ ist schon gesetzt (aus o-KONTUE.FLX)
+var #uoJ
+if "alle" jump a1
+if #uoJ jump start
+
+  Kontingent auswaehlen, wenn #uoJ nicht besetzt
+  Oder mehrere oder alle durchrechnen lassen
+yes Mehrere oder alle Kontingente durchrechnen? Nein = nur eines
+if no jump wahl
+:a1
+#uoM1
+var ""
+ins #uoC
+var D "kont.vw " D "kont.xxx"
+fcopy
+var #uoJ
+is "alle" jump a2
+var "Bitte die Liste der Kontingente bearbeiten, die jetzt erscheint." n "Alle Zeilen lîschen, die NICHT berechnet werden sollen" n "Dann Liste wieder speichern"
+ansi
+mes
+var "notepad " D "kont.xxx"
+call
+:a2
+var D "kont.xxx"
+open
+get
+:loopk
+get #uoE
+  Zeile beginnt mit Leerz.? ungueltig
+if can jump proc
+var #uoE
+if " " jump loopk
+var #uoC "%" #uoE(e"|")
+ins #uoC
+jump loopk
+
+:proc
+close
+var #uoC(f"%")
+ins #uoC
+  in #uoC steht jetzt die Liste der Kontingente  kon1%kon2%kon3...%konN
+var #uoC(e"%")
+ins #uoJ
+var #uoJ " wird bearbeitet..."
+sho iV
+keycheck
+if yes jump exit
+  Kontingent #uoJ bearbeiten:
+perf start
+var #uoC(b"%")
+ins #uoC
+  wenn noch was da ist, weiter mit der Schleife
+if #uoC jump proc
+jump exit
+
+:wahl
+var ""
+#uoM
+View kont.vw
+if no jump nokont
+clo v
+if "" end
+if can end
+ins #uoJ
+var #uoJ(e"|")
+ins #uoJ
+
+  Beginn der Berechnung (zugl. Unterprogramm)
+:start
+  Suchbefehl zusammensetzen:
+var "|: _K " #uoJ "? or |: ra ?" 
+
+  In der internen Variablen steht jetzt "|: K xyz?"
+  Bilde damit Ergebnismenge der Bestellungen:
+find
+if empty jump leer
+  ExportParam sichern
+var e
+ins #uvE
+var ""
+  interne Whrgsliste loeschen (wird neu geladen)
+ins #uuK
+ins #uSU
+
+  Lade Parameter KONT.APR
+xport p kont
+if no jump error
+  Datei fuer Ergebn. ist ERGEBNIS
+xport f ergebnis
+  Ergebnismenge verarbeiten
+var "xx"
+  Kopfteil verarbeiten (Initialisierung)
+ins #uoH
+download
+var ""
+ins #uoH
+  Gesamte ErgMenge verarbeiten
+down set
+  #uSU mit "xxx"  besetzen (Flag)
+var "xxx"
+ins #uSU
+  Endabschnitt fuer Ergebnisse ausfuehren!
+down
+  ExportParameter wieder laden
+var #uvE
+xport p
+
+if #uoM jump erneuern
+  Ergebn. anzeigen:
+help ergebnis
+noyes Neu berechneten Kontingentsatz speichern?
+if no jump exit
+if c jump exit
+
+:erneuern
+var "|; SYSK" #uoJ "?"
+find
+var #us1
+ins $R-#9A
+var #us2
+ins $E-#9A
+var #us3
+ins $B-#9A
+var #us6
+ins $A-#9A
+
+put
+// Wenn nur 1 Kont., dann Ende (perf start)
+if #uoM return
+
+
+:exit
+  Satz zurÅckholen und wieder anzeigen
+var #uoI
+if not ="#0" find
+show rec
+disp
+  Var. loeschen
+var ""
+ins #uoI
+ins #uoM
+ins #uvE
+ins #us1
+ins #us2
+ins #us3
+ins #us4
+ins #us5
+ins #us6
+end
+
+:leer
+var "F¸r Kontingent " #uoJ " liegen keine Bestellungen vor"
+mes
+//  perf start  beendet
+return
+jump exit
+
+:error
+mes Datei kont.apr nicht gefunden
+jump exit
+:nokont
+mes Keine Kontingentliste, diese wird zuerst eingerichtet
+exec X o-mkview
+
+
+ u-VARIABLEN in o-kont.flx
+ #uSU (2)   Flag f. KONT.APR: Summen ausgeben
+ #uoC (9)   Liste der zu berechnenden Kontingente, mit % getrennt
+ #uoE (3)   Name eines Kontingents (Zeile)
+ #uoH (2)   Flag f. KONT.APR: Kopf ausgeben
+ #uoI (3)   Titel IdNr aktueller Satz
+ #uoJ (11)  KontingentCode
+ #uoM (5)   Wenn besetzt, dann mehrere oder alle berechnen
+ #us1 (2)   Summen, die in kont.apr ausgerechnet werden
+ #us2 (2)   1,2,3.. = Bestellstatus
+ #us3 (2)
+ #us4 (1)
+ #us5 (1)
+ #us6 (2)
+ #uuK (1)  interne Waehrungsliste
+ #uvE (3)  Exp.Parametername, gesichert
+

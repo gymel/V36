@@ -1,0 +1,71 @@
+  AV-UTF8.APR : Ausgabe als UTF-8-Datei mit Kategorie-Nummern
+  2004-01-27
+  Alle Felder in der internen Reihenfolge ausgeben 
+  bzw. einzelne Felder ohne
+pn="Ausgabe UTF-8 fuer avanti"
+
+  Gibt Daten in UTF-8 aus, jede Kategorie mit Nummer
+  auf neuer Zeile.
+
+  --------- Konstanten --------------------------------------------
+
+zl=0 	    Zeilenlaenge
+zi=0	    4 Zeichen Einrueckung bei Folgezeilen
+
+zm=0        kein Seitenumbruch (fortlaufende Ausgabe)
+ae=""       kein Zeilenvorschub am Aufnahme-Ende
+fl=0        Listenstruktur (keine Karten)
+
+  -----------------------------------------------------------------
+
+  ********* Kategorieliste ****************************************
+  Wenn #u1 besetzt ist, dann -> #-X
+#u1 +X e0
+
+#nr f"#x0" p"#nr   " P{ C }
+#bks=0  Startposition fuer Feldausgabe: 0 (d.h. mit # und Nummer)
+#t{"xxx" }
+##        saemtliche Kategorien ausgeben in interner Reihenfolge
+
+   Alternative: Kategorien mit Labels statt Nummern (entnommen aus CFG)
+        die Form ist dann:  Label:� xText     x = Mehrfachcode
+ #bks=3
+ #L
+#+#
+
+        Abschnitt fuer die Ausgabe eines einzelnen Feldes
+#-X     Sprungmarke fuer einzelne Felder (FLEX-Bef. "write #nnn" )
+#hi +- e0     hierarch. Untersaetze nicht beruecksichtigen
+#u1 e0    Sonst u.U. kein Output
+#u1 f"#" w          (in #u1 steht eine Feldnummer, hole den Feldtext!)
+#+#
+
+#-Y
+#u1
+#+#
+
+        falls nicht alle gebraucht oder gewuenscht werden:
+        Weglassungen: Kategorienummern mit / hier anfuegen, z.B.
+  /89   dann wird #89 weggelassen
+  /9..  dann wird die ganze Gruppe #9 weggelassen
+        oder: hier eine Liste der auszugebenden Kategorien eintragen (statt ##)
+        z.B.
+
+  *******************************************************************
+
+ Code-Umwandlungen
+
+  Folgende Zeile deaktivieren, wenn intern UTF-8 !
+tad-utf   ad-utf.apt laden.
+  
+   aber diese Zeilen muessen dann bleiben :
+ p .020 "¶"    
+ p .021 "§"    Paragr.Zeichen
+ p .031 "▼"   Teilfeld-Dreieck
+ p .170 "¬"    Nichtsortierzeichen
+
+p .020 "<br>"
+
+p < "&lt;"
+p > "&gt;"
+p & "&amp;"

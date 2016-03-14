@@ -1,0 +1,95 @@
+  O-ZG.FLX  : Was waere die naechste ZgNummer?
+  2005-07-19  Nummernvergabe-Unterprogramm
+
+  in #uoz steht der Name  Code des Nummerngenerator-Satzes,
+  dieser muss dann im Reg. 11 unter  SYSZabc  stehen und im
+  Systemsatz in der Kategorie #9A hinter dem Z! (s.u.)
+
+
+set obj 2
+  Finde den Nummerngen.Satz im Reg. 11
+var "|; SYSZ" #uoz
+f1nd
+if no jump exit
+
+if not #9A jump exit
+if #9A var #9A;if not "Z" jump exit
+
+var "-2 " #9A$r " " #9A$j #9A$y
+  2 Zeilen holen, wo die hoechste Nummer stehen muesste
+qrix
+  gefundene Zeile bearbeiten
+var (f" " b" " e"")
+  und die Zeile mit der letzten Nr in #uzn sichern
+ins #uzn
+  jetzt hat man die Registereintragung ermittelt
+  nun noch die Zahl herausloesen, sie steht hinter dem Praefix:
+var #9A$j
+ins #uoJ
+var #uzn(b"#uoJ")
+  in iV steht jetzt die Nr., 1 drauf:
+z=
+z+1
+var z
+ins #uzo
+
+set obj 1
+end
+:exit
+var "Generator " #uoz " nicht gefunden
+mes
+end
+
+
+  Inhalt von #9A in einem Nummerngenerator-Satz (s. alf.frm)
+  Zabc                  Code abc, dieser steht dann
+                             in Reg. 11 hinter SYSZ
+  $N "Name"             Klartext-Name! (keine Funktion)
+  $r "Registername"     z.B.  NUM oder |9
+  $j "PrÑfix"           (was im Register vor der Nummer steht!)
+  $y "max. Nummer"      was ist mit der Anzahl Stellen?
+  $Z "letzte Nr."       Zuletzt vergebene Nummer (nur bei DOS!)
+
+  Die Teilfelder r,j,y  gab es im DOS-System noch nicht!
+
+  Logik der Nummernvergabe
+  Es ist zu unterscheiden zwischen
+  a) Nummer, wie sie im Datensatz steht, z.B.  Z05-123
+     Diese kommt durch direkte Eingabe oder FLEX zustande
+  b) Nummer, wie sie im Index steht, z.B. z2005-00123
+     Die Form b) kommt durch die Aktion der Indexparameter zustande,
+                 wodurch sie aus der Form a) abgeleitet wird
+
+  Wenn z.B. im Datensatz steht  #9DG ...$zABC456
+  koennte im Register N dafuer die Zeile  abc-00456  stehen (N=1...9,:,;)
+    wenn das in den Indexparametern so programmiert ist.
+  Es geht bei der Nummernvergabe darum, eine naechste laufende
+  Nummer zu bestimmen. Vorzugeben ist dabei, in welchem Register
+  und mit welchem PrÑfix die schon vorhandenen Nummern zu suchen sind, denn es
+  muss die hoechste bisher vorhandene Nummer gefunden werden, auf die dann 1
+  zu addieren ist.
+  Was mit der vergebenen Nummer dann geschieht, ist Sache des Anwenders:
+  -- in welches Datenfeld oder Teilfeld kommt die Nummer (CFG, FLEX)
+     und welches Praefix erhaelt sie dort,
+  -- wird sie korrekt indexiert? (Indexparameter)
+  Das Entstehen einer fortlaufenden Nummernfolge haengt somit davon
+  ab, dass diese Einzelheiten korrekt organisiert sind. Per FLEX allein
+  kann dies nicht alles gewaehrleistet werden!
+
+
+  Fuer CAT.API gilt: Zugangsnummern stehen in
+  #91     im Titelsatz
+  #9DG$z  im Exemplarsatz
+  #9DB$z  im inventarisierten Bestellsatz
+          (entsteht bei Inventarisierung in CAT.API)
+  Im Bestellsatz sollte sie allerdings nicht indexiert werden, wohl aber
+  im Exemplarsatz. Dies ist noch zu korrigieren. Ob sie ueberhaupt im
+  Bestellsatz stehen sollte, ist fraglich, aber sie wird beim Vorgang
+  "Inventarisierung/Abschluss der Bestellung" gebildet, weil dies der
+  logisch dafÅr sinnvollste Zeitpunkt ist. Wenn man die abgeschlossenen
+  Bestellsaetze irgendwann archiviert, kann es nicht schaden, wenn sie
+  neben der Titel-IdNr auch die Zugangsnummer enthaelt, die dem
+  erworbenen Exemplar zugeteilt wurde.
+
+
+

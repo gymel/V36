@@ -1,0 +1,226 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss\fprq2\fcharset0 Verdana;}{\f1\fscript\fprq2 Comic Sans MS;}{\f2\fscript\fprq2\fcharset0 Comic Sans MS;}{\f3\froman\fprq2 Garamond;}{\f4\froman\fprq2\fcharset0 Garamond;}{\f5\fswiss\fprq2\fcharset0 Verdana;}{\f6\froman allegro New Roman;}{\f7\froman\fprq2 allegro New Roman;}{\f8\fmodern\fprq1 Courier New;}{\f9\fmodern\fprq1\fcharset0 Courier New;}{\f10\fswiss\fprq2 Arial;}{\f11\fswiss\fprq2\fcharset0 Arial;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue0;\red0\green0\blue255;\red0\green0\blue220;}
+\viewkind4\uc1\pard\qc\f0\fs24 
+\par \cf1\b\i\f1\fs28 allegro 
+\par \i0\f2 Hintergr\'fcnde \f1 
+\par \i\fs26 
+\par \cf2\i0\f3\fs28 Warum ist das alles so? 
+\par Mu\f4\'df\f3  man wissen, was dahintersteckt?\cf1\i\f1\fs26 
+\par \pard\cf2\b0\i0\f0\fs20 
+\par \pard\qr `\cf3\ul\b Was sind eigentlich Dateien?\cf2\ulnone\b0 ` 
+\par \pard 
+\par Ist nicht eine Software einfach out, die nicht \b alle\b0\f5  Funktionen intuitiv erfa\'dfbar und durch wenige Mausklicks erreichbar macht, und f\'fcr die man sogar manchmal noch ein `\cf3\ul\b\f0 Systemhandbuch\cf2\ulnone\b0\f5 ` ben\'f6tigt? \f0 
+\par \f5 Man mu\'df wohl n\'fcchtern feststellen, da\'df komplexe Werkzeuge ohne Kenntnisse und ohne Einarbeitung nicht angemessen genutzt werden k\'f6nnen - Intuition hat ihre Grenzen. Dies gilt auch f\'fcr Windows im Allgemeinen, f\'fcr Word und Excel im Besonderen, auch wenn es nicht jedem bewu\'dft wird und die Industrie diese Erkenntnis nicht f\'f6rdert. Aber das ist hier nicht das Thema. \f0 
+\par \i Zuerst eine allgemeine Bemerkung.\i0\f5  Bibliotheken sammeln und bewahren das aufgezeichnete Wissen der Welt aus allen Zeiten und Regionen und zu allen Themen und machen es verf\'fcgbar. Zu erwarten, der Umgang damit und das Zurechtfinden darin k\'f6nne ganz einfach sein oder eine Software (also eine Maschine) k\'f6nne es ganz einfach machen, ist naiv. Und wer die M\'fche scheut, sich Kenntnisse anzueignen und mitzudenken, kann kein m\'fcndiger Anwender werden, sondern wird abh\'e4ngig bleiben und die Software (jede Software) nur zu einem Bruchteil nutzen k\'f6n\f0 nen. 
+\par \f5 Was Daten, Dateien und Verzeichnisse (Ordner) eigentlich genau sind, k\'f6nnen wir in diesem Text nicht von Grund auf vermitteln, man sollte es aber in jedem Fall wissen, egal was man mit dem PC macht. Wer sich da unsicher ist, sollte unbedingt zu einem einschl\'e4gigen Lehrbuch greifen, z.B. so etwas wie "PCs f\'fcr Dummies" von Dan Gookin,  "Einsteigerseminar PC und EDV" von Franken oder "Einf\'fchrung in die PC-Grundlagen" von Ortmann - Ihre Buchh\'e4ndler ber\'e4t Sie gern. Ein `\cf3\ul\b\f0 kleiner Einstieg\cf2\ulnone\b0\f5 ` ist aber auch hier als weiterer Hilfetext verf\'fcgbar. \f0 
+\par \f5 Die sch\'f6nen B\'fccher erkl\'e4ren andererseits meistens nicht so genau, was denn eine "Datei" nun \i\f0 wirklich\i0  ist. Deshalb hier ein Versuch: 
+\par \tab Dateien sind eigentlich etwas sehr einfaches: \i jede\i0  Datei besteht nur aus einer Folge von Bytes, das sind Zahlen zwischen 0 und 255. Was diese Zahlen aber bedeuten und bewirken, das ist kompliziert und mu\f5\'df\f0  auf mehreren Ebenen betrachtet werden. Mehr dazu in einem Kapitel des Standardwerks "Was sind und was sollen bibliothekarische Datenformate": `\cf3\ul\b http://www.biblio.tu-bs.de/allegro/formate/kap1.htm#daten\cf2\ulnone\b0 ` 
+\par 
+\par In diesem Text wird ein Versuch gemacht, die Grundlagen von \b\i allegro\b0\i0  in neuer Weise zu vermitteln. Wer bereits als "Nur-Anwender" mit dem System arbeitet, hat sicher dabei den einen oder anderen Aha-Effekt, aber auch Systemverwalter, die nur mit anderen Datenbanken vertraut sind und  \b\i allegro \b0\i0\f5 als exotisch empfinden, k\'f6nnen hoffentlich profitieren. \f0 
+\par \b Zielgruppe \b0\f5 dieses Textes sind ungef\'e4hr alle, denen das Wort "Parametrierung" noch nicht viel sagt. Nicht alles wird "ankommen" oder "h\'e4ngen bleiben", aber wer wird das bei solcher Materie erwarten. Auch wenn die Windows-Programme sehr viele Funktionen an der Oberfl\'e4che auf Mausklicks reduzieren, ist ein Wissen um einige Hintergr\'fcnde immer noch sinnvoll und n\'fctzlich. Es sei denn, man m\'f6chte mit einer Black Box arbeiten - dann ist \i\f0 allegro\i0  nicht das richtige System. 
+\par 
+\par \b\fs24 Daten kann man nicht sehen, das ist das Problem. 
+\par \b0\f5\fs20 Sonst w\'e4re es viel leichter, dar\'fcber zu reden. \f0 
+\par \fs18 Aber man sieht sie doch auf dem Bildschirm? Da sieht man nur Leuchtspuren eines kompliziert herumschwirrenden Elektronenstrahls, weiter nichts, hervorgerufen durch den Ablauf von Programmen. Das \i sind\i0  nicht die Daten. 
+\par \fs20 
+\par Das Bild, das man auf dem Schirm erblickt,  \b\i ist\b0\i0  nicht die Datenbank. Das Bild wird gezeichnet von einem Programm, das auf die Datenbank zugreift. Das Bild auf dem Windows-Schirm (Programme \b\i a99\b0\i0  oder \b\i alcarta\b0\i0\f5 ) sieht ganz anders aus als das DOS-Bild (Programm PRESTO; w\'e4hlen Sie einmal den Men\'fcpunkt "Datei / DOS-Programm", wenn Sie es noch nie gesehen haben).  Hier ein Beispiel, wie ein Datensatz auf dem Windows-Bildschirm aussehen kann: \f0 
+\par 
+\par \tab `\cf4\ul\b\f6\fs22 Schulz, Klaus-Peter:\cf2\ulnone\b0 `\b                                     Signatur: RM 31 \b0 
+\par 
+\par \pard\fi-710\li710\b\tab Kurt Tucholsky in Selbstzeugnissen und Bilddokumenten\b0  / Klaus-Peter Schulz. - 36.-43. Tsd. 
+\par \pard    \tab Reinbek : Rowohlt, 1964. - 184 S.\i 
+\par \tab (Rowohlts Monographien ; 31)\i0  
+\par \f7  \tab\i Pers.Schlagw.:\i0  Tucholsky, Kurt 
+\par \f6 
+\par \f0\fs20 Die DOS-Version und die Windows-Version, das sind jedoch \i nicht\i0  zwei verschiedene Datenbanken! Es sind nur zwei verschienene \i Programme\i0 , die auf den Bildschirmen gleichzeitig unterschiedliche Bilder vom selben Objekt erscheinen lassen. 
+\par Noch anders gesagt: die Daten sind \i nicht\i0  irgendwie \i im Programm\i0\f5  gespeichert oder damit fest verbunden (auch solche Ansichten hat man schon geh\'f6rt!), sie stehen in Dateien, die von den Programmen v\'f6llig getrennt sind. Eben deshalb k\'f6nnen ja verschiedene Programme gleichzeitig zugreifen. Deshalb kann man auch eine neuere Programmversion einfach \'fcber die alte kopieren, ohne den Daten zu schaden. \f0 
+\par 
+\par Was  \b\i ist\b0\i0   nun aber wirklich gespeichert in der Datenbank? Im Fall unseres Beispiels sieht das ganz anders aus als das Bild oben: 
+\par \f8 
+\par 20 Kurt Tucholsky in Selbstzeugnissen und Bilddokumenten 
+\par 40 Schulz, Klaus-Peter 
+\par 31p_tucho 
+\par 71 36.-43. Tsd. 
+\par 74 Reinbek 
+\par 75 Rowohlt 
+\par 76 1964 
+\par 77 184 S. 
+\par 85 Rowohlts Monographien ; 31 
+\par 90 RM 31 
+\par \f0 
+\par Das ist ein \b Datensatz\b0\f5  im internen "Format". Mehr wurde nicht eingegeben und mehr steht da nicht drin, auch unter Windows nicht. Diesen Datensatz k\'f6nnen Sie in der Demo-Datenbank besichtigen. \f0 
+\par     Eine Besonderheit: Im Feld 31p (Personenschlagwort) steht "\f8 _tucho\f5 ". Das ist eine Verkn\'fcpfung zu einem Namensstammsatz, in dem der tats\'e4chliche Name steht: "Tucholsky, Kurt". Statt des K\'fcrzels "\f8 _tucho\f5 " k\'f6nnte da auch eine Nummer stehen. Unten im Anzeigebild sieht man, wie das Programm diesen Namen automatisch einblenden kann; gespeichert ist er nur im Stammsatz. \f0 
+\par     Ein Datensatz ist noch keine \b Datei\b0 , sondern er ist (bei \i allegro\i0\f5 ) zusammen mit vielen anderen Datens\'e4tzen in einer Datei enthalten - so wie ein Katalogzettel mit vielen anderen in einer Schublade oder ein Formular mit vielen anderen in einem Ordner. Die Schublade oder der Ordner, \i\f0 das\i0  ist die Datei. (Im Englischen ist das leichter zu verstehen: das Wort "file" bedeutet sowohl "Datei" wie auch "Ordner", aber auch "Kartei".) 
+\par Man sieht vom Datensatz aber eben normalerweise andere Bilder, siehe das Beispiel oben.\f7\fs22 
+\par \f0\fs20 Oder man sieht z.B. eine Zeile im Register: 
+\par 
+\par \f8\fs18    1  kommunale sozialpolitik in vergleichender perspektive 
+\par    1  konfliktverarbeitung und staatsstruktur 
+\par    1  kontaminationssensibilitaet wasserwirtschaftlich wichtiger grundwasser 
+\par \b    \fs20 1\fs18   \fs20 kurt tucholsky in selbstzeugnissen und bilddokumenten 
+\par \b0\fs18    1  laermmesspraxis 
+\par    1  landwirtschaft 
+\par    1  language of shakespeare 
+\par    1  lebenswege von frauen im ancien regime 
+\par \f0\fs20 
+\par \f5 Auch dies machen alles nur die Programme. Diese Bilder sehen sehr viel anders aus als der Datensatz mit den Nummern, deshalb fragt man sich am Anfang doch, wo sie herkommen. Wie "wei\'df" das Programm, da\'df bei der Nummer 85 ein Serientitel steht? Wie wei\'df es, wo dieser in den anderen Bildern hingeh\'f6rt, und da\'df er in Klammern geh\'f6rt - denn z.B. die Klammern stehen gar nicht im Datensatz? Wie kommen die Eintragungen in den Registern zustande? Sind diese Einzelheiten alle fest in ins Programm eingebaut? Kei\f0 neswegs! Die \i Programme\i0\f5 , ob DOS oder Windows, "wissen" solche Dinge \'fcberhaupt nicht. Die Programme k\'f6nnen aber gewisse \i\f0 Vorschriften\i0\f5  ausf\'fchren, in denen z.B. steht, da\'df die Nummer 85 "Serientitel" bedeutet und da\'df dieser im Anschlu\'df an die Nummer 77 (die bedeutet "Umfangsangabe") ausgegeben werden mu\'df, auf neuer Zeile und in runden Klammern. \f0 
+\par 
+\par \f5 Wir m\'fcssen daher drei verschiedene Dinge auseinanderhalten: \f0 
+\par \pard\fi-360\li360\tx360 1.\tab Die eingegebenen \b Daten\b0\f5   (Datens\'e4tze in Form von Listen mit numerierten Angaben) \f0 
+\par 2.\tab Die \b Programme\b0\f5 , die darauf zugreifen und verschiedenste Bilder davon anzeigen: mal mit, mal ohne die Nummern! Auch ein Register ist ein Bild, das Teile von Datens\'e4tzen zeigt, nicht die S\'e4tze selbst. \f0 
+\par 3.\b\tab Vorschriften\b0 , die den Programmen sagen, \b wie \b0 sie das alles machen sollen. 
+\par \pard 
+\par \f5 Die Programme sind also neutral. Mit den nackten Datens\'e4tzen allein k\'f6nnen die Programme nichts anfangen, sie brauchen die Vorschriften dazu, und jede Datenbank kann ihre eigenen Vorschriften haben. So ist es m\'f6glich, da\'df mit denselben allegro-Programmen Datenbanken betrieben werden, die ganz verschieden aussehen, bis hin zu Daten mit chinesischen und japanischen Schriftzeichen, obwohl die allegro-Entwickler von diesen Sprachen nichts verstehen. Die Vorschriften sind das wahre Geheimnis des Systems, da\f0 s wichtigste Konzept von allegro : erst dadurch wird es flexibel. 
+\par \i\f5 F\'fcr Systemleute:\i0\f0  hinter oder unter \b\i allegro\b0\i0  steckt kein `\cf3\ul\b relationales Datenbanksystem\cf2\ulnone\b0 `, sondern es ist ein eigenes, andersartiges Konzept. 
+\par \i Jedes\i0\f5  Datenbanksystem verf\'fcgt \'fcber ein System von Vorschriften f\'fcr den Umgang mit konkreten Daten, nur werden sie nie "Vorschriften" genannt, auch bei \i\f0 allegro\i0\f5  nicht. Man findet die verschiedensten Namen, z.B. "Syntaxtabellen" oder "Skripte" oder "Schablonen" oder "Parameter". Nur nicht "Vorschriften", obwohl das ein genau passendes Wort w\'e4re. \f0 
+\par Eine \i allegro\i0 -Datenbank braucht mehrere Arten von Vorschriften: 
+\par 
+\par \pard\fi-360\li360\tx360\b 1.\b0\tab\f5 F\'fcr die \b\f0 Datenstruktur\b0  : die \b Konfiguration\b0\f5 , das ist eine Datei vom Typ CFG; darin steht haupts\'e4chlich, welche Felder ein Datensatz haben kann. Die meisten Anwender benutzen die Konfigurationsdatei `\cf3\ul\f0 A.CFG\cf2\ulnone\f5 ` (oder $A.CFG). In der Konfiguration steht aber nichts \'fcber die Register oder \'fcber die Bildschirmanzeige, das machen andere Vorschriften: \f0 
+\par \pard 
+\par \f5 Die anderen drei Arten von Vorschriften m\'fcssen nat\'fcrlich auf die Konfiguration abgestimmt sein: \f0 
+\par \pard\fi-360\li360\tx360\b 
+\par 2.\tab Datenausgabe\b0\f5 : solche Vorschriften hei\'dfen \b\f0 Exportparameter\b0\f5 . Dazu geh\'f6rt auch die Bildschirmanzeige von Datens\'e4tzen, wie oben zu sehen. Solche Dateien sind vom Typ .APR, wenn man A.CFG verwendet, vom Typ .BPR, wenn man B.CFG verwendet, usw. F\'fcr die Exportparameter gibt es eine `\cf3\ul\b einfache Einf\'fchrung\cf2\ulnone\b0 `!\f0 
+\par \b 3.\tab Register\b0\f5 : Vorschriften f\'fcr den Index hei\'dfen \b\f0 Indexparameter\b0\f5  und stehen in einer Datei vom Typ .API (bzw. .BPI, wenn man B.CFG verwendet, usw.) Darin steht, was f\'fcr Register die Datenbank haben soll, welche Datenfelder indexiert werden sollen, und alle Einzelheiten, wie das gemacht werden soll. \f0 
+\par \b 4.\tab Fremddaten-Umwandlung\b0\f5 : F\'fcr jedes Fremdformat braucht man eine eigene Vorschrift, die man \b\f0 Importparameter\b0  nennt. Das sind Dateien vom Typ .AIM (bzw. .BIM, wenn man B.CFG verwendet, usw.) 
+\par \pard 
+\par Das ist alles \b noch viel zu abstrakt\b0\f5 ? Dann m\'fcssen wir uns eine Abschweifung leisten. Vielleicht wird es mit einem Denkmodell klarer, das ohne Elektronik auskommt. Das Modell arbeitet mit besonderen Formularen. Eine leeres Formular sieht so aus: \f0 
+\par \pard\li709 
+\par \pard\f8 Feld         W   Inhalt 
+\par ____________ ___ _______________________\f0 _____ 
+\par \f8 ____________ ___ _______________________\f0 _____ 
+\par \f8 ____________ ___ _______________________\f0 _____ 
+\par \f8 ____________ ___ _______________________\f0 _____ 
+\par \f8 ____________ ___ _______________________\f0 _____ 
+\par \f8 ____________ ___ _______________________\f0 _____ 
+\par \f8 ____________ ___ _______________________\f0 _____ 
+\par \f8 ____________ ___ _______________________\f0 _____ 
+\par \tab\tab\tab 
+\par \tab\tab 
+\par \f5 In die Spalte links tr\'e4gt man Feldbezeichnungen ein, in die ganz schmale Spalte kommt eine Wiederholungsziffer, wenn ein Feld mehrfach auftritt, um es von anderen, gleichnamigen Feldern zu unterscheiden. Man beachte: vorgedruckt ist nichts, und zwar damit man die Felder alle ausnutzen kann. Ein Formular mit fest vorgegebenen Feldern h\'e4tte in der Praxis immer irgendwelche leeren Felder, weil nicht jedes Datenfeld jedesmal gebraucht wird, viele sogar sehr selten! Ein ausgef\'fclltes Formular sieht so aus: (M\f0 ehrfachbelegung kommt hier nur bei "Verf." vor) 
+\par 
+\par \pard\li709 
+\par \pard IdNr\tab\tab 123456\tab 
+\par Titel\tab\tab Die Geschichte der Shakespeare-Rezeption\tab 
+\par Verf.\tab\tab Steiger, Klaus-Peter\tab 
+\par Verf.\tab 2\tab\f5 G\'fcnther, Alfred\f0\tab 
+\par Ort\tab\tab Stuttgart\tab 
+\par Verlag\tab\tab Kohlhammer\tab 
+\par Jahr\tab\tab 1987\tab 
+\par Umfang\tab\tab 230 S.\tab 
+\par Serie\tab\tab Sprache und Literatur ; 123\tab 
+\par ISBN\tab\tab 3-17-009426-2\tab 
+\par Sign.\tab\tab SH-4321\tab 
+\par ....\tab\tab ....\tab 
+\par \pard\li709 
+\par \pard\i\f5 F\'fcr Systemleute:\i0  hier liegt ein ganz gro\'dfer Unterschied zu relationalen Datenbanken; die haben feste, vorgedruckte Formulare. Abgesehen vom Platzverbrauch hat man dabei immer gro\'dfe Probleme mit Feldl\'e4ngen, mit selten belegten Feldern, Mehrfachfeldern, interner Struktur von Feldern u.a., aber auch mit der Indexierung von Feld\i\f0 bestandteilen\i0\f5  und Stichw\'f6rtern. F\'fcr \b\i\f0 allegro\b0\i0  alles kein Thema. 
+\par 
+\par \f5 Ein anderes Formular k\'f6nnte so aussehen: (hier ist "Schlagw." dreifach belegt) \f0 
+\par \pard\li709 
+\par \pard IdNr.\tab\tab 987654\tab 
+\par Titel\tab\tab Das Zeitalter der Extreme : Weltgeschichte des 20. Jahrhunderts\tab 
+\par Original\tab\tab The age of extremes : The short twentieth century 1914-1991\tab 
+\par Verf.\tab\tab Hobsbawm, Eric\tab 
+\par \f5\'dcbers.\f0\tab\tab Badal, Yvonne\tab 
+\par Ort\tab\tab\f5 M\'fcnchen\f0\tab 
+\par Verlag\tab\tab Hanser\tab 
+\par Jahr\tab\tab 1995\tab 
+\par Schlagw.\tab Zeitgeschichte 20. Jahrhundert\tab 
+\par Schlagw.  2\tab Kalter Krieg\tab 
+\par Schlagw.  3\tab Weltgeschichte\tab 
+\par Umfang\tab\tab 783 S.\tab 
+\par Sign.\tab\tab GE-5678\tab 
+\par \pard\li709 
+\par \pard\f5 Man sieht: es k\'f6nnen unterschiedliche Felder auftreten, es bleibt aber kein Feld leer, h\'f6chstens am unteren Ende; das kostet in der Realit\'e4t keinen Speicherplatz. Die Feldbezeichnungen nennen wir kurz "Kategorien".  Der Ordnung halber m\'fcssen wir uns eine Liste der erlaubten Kategorien aufstellen; ein sehr wichtiges Dokument. \f0 
+\par \f5 Aber halt! Man merkt sehr schnell: es ist unn\'f6tig m\'fchsam, immer die Feldbezeichnungen im Klartext hinzuschreiben, au\'dferdem erschwert es die Benutzung durch Personen, die nicht Deutsch k\'f6nnen. Eleganter ist es, schlichte Nummern zu verwenden. Dann k\'f6nnte das zweite Formular so aussehen, wenn man z.B. 20 f\'fcr "Titel", 74 f\'fcr "Ort" festlegt usw.: \f0 
+\par \pard\li709 
+\par \pard 00\tab\tab 987654\tab 
+\par 20\tab\tab Das Zeitalter der Extreme : Weltgeschichte des 20. Jahrhunderts\tab 
+\par 22\tab\tab The age of extremes : The short twentieth century 1914-1991\tab 
+\par 40\tab\tab Hobsbawm, Eric\tab 
+\par 47\tab\tab Badal, Yvonne\tab 
+\par 74\tab\tab\f5 M\'fcnchen\f0\tab 
+\par 75\tab\tab Hanser\tab 
+\par 76\tab\tab 1995\tab 
+\par 31\tab\tab Zeitgeschichte 20. Jahrhundert\tab 
+\par 312\tab\tab Kalter Krieg\tab 
+\par 313\tab\tab Weltgeschichte\tab 
+\par 77\tab\tab 783 S.\tab 
+\par 90\tab\tab GE-5678\tab 
+\par \pard\li709 
+\par \pard\f5 Man hat nun weniger zu schreiben, aber keinen Verlust an Pr\'e4zision. \f0 
+\par \f5 In unsere Liste der erlaubten Kategorien schreiben wir die Bedeutung dieser Nummern. Dann braucht man nur die Liste zu \'fcbersetzen, damit anderssprachige Nutzer mit dem Katalog umgehen k\'f6nnen. \f0 
+\par \f5 Die Liste der erlaubten Kategorien enth\'e4lt auch Angaben, welche Nummern mehrfach auftreten d\'fcrfen, wie z.B. 40 oder 31, und andere Angaben. Um einen Begriff zu haben, wollen wir die Liste \b\f0 `\cf3\ul Konfiguration\cf2\ulnone `\b0\f5  nennen, und sie k\'f6nnte ungef\'e4hr so aussehen: (die vollst\'e4ndige Liste findet man in der Konfigurationsdatei $A.CFG) \f0 
+\par \f8 #00 "Identifikationsnummer" 
+\par #20 "Titel" 
+\par #22 "Originaltitel (Einheitstitel)" 
+\par #31 "Schlagwort" (M) 
+\par #40 "Verfasser" (M23) 
+\par #41 "Herausgeber" (M) 
+\par \f9 #47 "\'dcbersetzer" \f8 
+\par #74 "Erscheinungsort" 
+\par #75 "Verlag" 
+\par #76 "Erscheinungsjahr" 
+\par #77 "Umfangsangabe" 
+\par #85 "Serie" 
+\par #90 "Signatur" (M) 
+\par \f5 M23 bedeutet, es k\'f6nnen ein zweites und ein drittes Feld vorkommen und in die Wiederholungsspalte mu\'df dann 2 bzw. 3; ein schichtes M hei\'dft: beliebige Wiederholung m\'f6glich (Wiederholungszeichen dann 2,3,...., A,B,C,...). \f0 
+\par Was soll das Zeichen \b #\b0\f5  ? Es ist praktisch, die Nummern mit einem besonderen Zeichen zu markieren, damit man es in jedem Zusammenhang sofort erkennt, wenn von diesen Nummern die Rede ist. Meistens wird dazu das Doppelkreuz # benutzt. (Daher kommt es \'fcbrigens, da\'df das \i\f0 allegro\i0\f5 -Logo ein gro\'dfes Doppelkreuz ist.) \f0 
+\par Warum sollte man diese Dinge so penibel genau vorgeben? Dazu kommen wir jetzt. 
+\par \f5 Wir stellen uns dazu mal vor, wir h\'e4tten zwar keinen Computer, aber daf\'fcr billiges, flei\'dfiges, nur nicht besonders intelligentes Personal. Der ideale Bibliotheksknecht kann lesen, abschreiben und alphanumerisch sortieren (Zeichen f\'fcr Zeichen), braucht aber vom Inhalt der B\'fccher nichts zu verstehen. Er mu\'df nur Vorschriften ausf\'fchren k\'f6nnen. Diese Vorschriften m\'fcssen einfach deshalb sehr genau sein, damit er nichts falsch machen kann, auch wenn er vom Sinn der Dinge nichts kapiert. \f0 
+\par \f5 Der Betrieb l\'e4uft dann so: wir schreiben selber die Formulare, aber alles andere sollen die Knechte machen. Sie sollen die Formulare schlicht in der Reihenfolge der Nummern in Ordnern (= Dateien) abheften. Zum Benutzen des Katalogs wollen wir nicht immer in den Raum wandern m\'fcssen, wo dieser steht. Die Knechte sollen uns jedes Mal diejenigen Bl\'e4tter heraussuchen und bringen, die von Interesse sind. Was wir daf\'fcr nur brauchen, sind gute Register. Im Register sollen die Nummern der Bl\'e4tter stehen, so da\'df ein Knecht dann diese Seiten holen kann.. Oder noch besser (der Mann ist ja billig): er soll die Bl\'e4tter lieber drin lassen (denn sonst k\'f6nnte in der Zwischenzeit jemand anders sie nicht finden, und man m\'fc\'dfte sie jedes Mal zur\'fccksortieren) und soll nur diejenigen Einzelheiten abschreiben, die wir dann brauchen. \f0 
+\par \f5 Wir m\'fcssen f\'fcr unsere Knechte also mindestens zwei Vorschriften ausarbeiten: eine f\'fcr das \b\f0 Anlegen der Register\b0\f5  und eine f\'fcr das \b\f0 Aufschreiben der Einzelheiten\b0\f5 , die wir jeweils sehen wollen, wenn wir einen Auftrag geben, etwas aus dem Katalog zu holen. Diese Vorschriften k\'f6nnen, weil wir das Nummernschema haben, sehr einfach und trotzdem pr\'e4zise aussehen, d.h. wir m\'fcssen nicht viele Worte machen. Gen\'fcgen w\'fcrde eine Liste wie zum Beispiel diese:  \f0 
+\par \pard\tx2977\f8 |1="Personennamen" \f0   \tab Das bedeutet: Register 1 hat den Titel "Personennamen" 
+\par \f8 |4="Titel" 
+\par \f9 |3="Schlagw\'f6rter" \f8 
+\par |6="Verlage" 
+\par #20 \lang1024 "|4"\lang1031          \tab\f5 das hei\'dft: sortiere den Inhalt von #20 ins Register 4 \f0 
+\par \f8 #22 \lang1024 "|4"\lang1031\f0          \tab und den von #22 ebenfalls 
+\par \lang1024\f8 #31. "|3"\f0                  \tab\f5 #31. hei\'dft: wenn mehrere #31 vorkommen, alle gleich behandeln \f0 
+\par \lang1031\f8 #40. \lang1024 "|1"\f0         \tab genauso geht's mit der #40 und Register 1 
+\par \f8 #47 "|1" 
+\par #41. "|1" 
+\par #75 "|6" 
+\par \lang1031\f5 Statt "Registervorschrift" k\'f6nnen wir auch sagen: \b\f0 Indexparameter\b0\f5 . Die meisten Anwender nutzen die Index-Parameterdatei CAT.API. Da steht allerdings SEHR viel mehr drin, denn es gibt sehr viele Sonderw\'fcnsche f\'fcr die Register. \f0 
+\par \f8 
+\par \pard\f5 Und nun zur Vorschrift f\'fcr die Titelaufschreibung, oder vornehmer: \b\f0 Anzeigeparameter\b0 : 
+\par \f8 #40 P": " 
+\par #20 
+\par #41 p" / hrsg. von: " 
+\par \f9 #47 p" (\'fcbers. von:" P")" \f8 
+\par #74 C 
+\par #75 p" : " 
+\par #76 p", " 
+\par #77 p". - " 
+\par #31 C p"Schlagwort: " 
+\par #90 C p"Signatur: " 
+\par \f0 
+\par \f5 Der Knecht wei\'df, wie man diese Vorschrift lesen mu\'df: die hier angegebenen Kategorien sollen in dieser Reihenfolge vom Formular abgeschrieben werden, also \f0 
+\par #40, #20, #22, .... 
+\par \f5 Dabei soll er noch ein paar verschl\'fcsselte Regeln anwenden: C bedeutet "neue Zeile", \f8 p"`:`" \f5  hei\'dft, da\'df \i\f0 vor\i0  das Element die Interpunktionszeichen "\f8 `:`\f0 " zu setzen sind, und  \f8 P")" \f0  bedeutet., es soll eine Klammer da\i hinter\i0\f5 . (Das kleine p soll hei\'dfen "davor", das gro\'dfe P hei\'dft "dahinter"!)  \f0 
+\par \f5 Mit diesen Regeln kommt f\'fcr das zweite Beispiel folgendes heraus:\f0\fs18 
+\par \pard\li709\f10 
+\par \f11 Hobsbawm, Eric: Das Zeitalter der Extreme : Weltgeschichte des 20. Jahrhunderts (\'fcbers. von Badal, Yvonne) \f10 
+\par \f11 M\'fcnchen : Hanser, 1995. - 783 S. \f10 
+\par Schlagwort: Weltgeschichte 20. Jahrhundert 
+\par Signatur: GE-764 
+\par \pard\f0 
+\par \f5\fs20 Solche Vorschriften k\'f6nnte sogar ein Gehilfe ausf\'fchren, der \'fcberhaupt nicht richtig lesen, sondern der nur Buchstaben und Ziffern vergleichen und kopieren kann. (Wie z.B. ein Computer.) \f0 
+\par 
+\par \f5 Solche Vorschriften, das ist ein weiterer ganz gro\'dfer Vorteil, k\'f6nnen leicht ge\'e4ndert werden, ohne da\'df man die Daten oder die Formulare \'e4ndern mu\'df. \f0 
+\par 
+\par \f5 Warum hat nie eine Bibliothek in dieser Weise gearbeitet? Weil menschliche Arbeitskraft daf\'fcr eben doch immer zu teuer und zu langsam war. Mit Computern aber kann man genau so (aber auch kaum anders) arbeiten, denn ihre Leistung ist konkurrenzlos billig. Und Zeichen vergleichen, kopieren und sortieren k\'f6nnen sie fehlerlos und astronomisch schnell - mit Verst\'e4ndnis lesen dagegen \'fcberhaupt nicht. Deshalb sind die h\'fcbsch einfach aussehenden Vorschriften in Wirklichkeit noch nicht gen\'fcgend genau. Etwa die Vorschrift, die Titel ins Register 4  zu sortieren. Dabei w\'fcrde der Titel "Das Zeitalter der Extreme" unter D landen, ziemlich weit weg von Z, wo man ihn gewohnheitsm\'e4\'dfig suchen w\'fcrde. Eine Vorschrift "Artikel \'fcbergehen" kann man f\'fcr Knechte ohne h\'f6heres Sprachverst\'e4ndnis aber nicht formulieren, zumal manchmal ein wie ein Artikel aussehendes Wort gar kein Artikel ist. Hier hilft nur, die Daten von vornherein genauer aufzuschreiben, und zwar den Artikel eindeutig zu kennzeichnen. Wenn man das so macht: \f9  \'acDas\'ac Zeitalter der Extreme\f5 , dann kann weder ein Knecht noch ein Computer etwas falsch machen, wenn man ihm sagt: was zwischen \'ac...\'ac eingeschlossen ist, wird nicht mitsortiert! In der Kurzschrift der Parameter sieht das dann so aus (das '\b\f0 u\b0\f5 ' ist die Anweisung, die Teile zwischen \'ac...\'ac  wegzulassen): \f0\fs18  
+\par \b\f8 #20 e" : " u p"|4"\f0  \b0 . 
+\par \fs20 Hier ist gleich noch eine Vorschrift eingebaut: die Angabe \b\f8 e" : "\b0\f0   bedeutet: Ende der Registerzeile bei  "Spatium Doppelpunkt Spatium". Der Titelzusatz soll also nicht mit ins Register, nur der Haupttitel. 
+\par \f5 Diese wenigen \'dcberlegungen lassen erahnen, da\'df man die Vorschriften f\'fcr die Register, aber auch f\'fcr die Anzeige, noch stark erweitern mu\'df, wenn alle Eventualit\'e4ten ber\'fccksichtigt werden sollen. Nicht nur bei allegro, sondern bei jedem System, das mit Bibliotheksdaten hantiert, findet man irgendwo solche Vorschriften; manchmal sind sie sehr verborgen und unzug\'e4nglich, aber es mu\'df sie geben. Die Beispiele oben sind formuliert in der sog. Exportsprache des \i\f0 allegro\i0\f5 -Systems; diese Sprache gilt nat\'fcrlich nur f\'fcr \i\f0 allegro\i0 . 
+\par \f5 
+\par ?Systemhandbuch=h handbuch 
+\par ?A.CFG=h acb-1 
+\par ?Konfiguration=h aca-1 
+\par ?relationales Datenbanksystem=~start http://www.allegro-c.de/a-r.htm 
+\par ?http://www.biblio.tu-bs.de/allegro/formate/kap1.htm#daten=~start http://www.biblio.tu-bs.de/allegro/formate/kap1.htm#daten 
+\par ?Was sind eigentlich Dateien?=h dateien 
+\par ?kleiner Einstieg=h dateien 
+\par ?einfache Einf\'fchrung=x ja expar.htm 
+\par \f0 
+\par }
+ 

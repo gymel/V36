@@ -1,0 +1,294 @@
+  FTR.FLX : Full Text search with Regular expressions
+  20061218/20101221
+  Der regulaere Ausdruck (=Suchbegriff) muss in #u!! stehen
+  der zu durchsuchende Text in der iV
+  Achtung: V14-Nummern werden expandiert! Wenn das nicht
+    gewuenscht ist, muss eine Zeile deaktiviert werden, siehe
+    Kommentar "V14"
+  Hieraus abgeleitet, aber unabhaengig:
+     ftr.inc   UP zur Einbindung in eigene FLEXe, die einen FTS machen sollen
+
+ if "?" jump help
+:begin
+  DeAktivieren, wenn auch in alcarta gewuenscht:
+var m
+if "alc" mes Sorry, das geht in diesem Programm nicht;end
+
+  zuerst Hilfetext zeigen
+h ftr
+jump anfang
+
+:start
+  Wenn grav. Fehler im Suchbegr. #u!!, dann diesen loeschen
+if %Fehler: *+ g% #u!! 
+
+:anfang
+   Bei Bedarf aktivieren:
+   Umcodierung der Suchbegr. soll erfolgen per Indexparameter p (iq ist default)
+ set xip   // Tabelle p macht Umandlung A -> a ...
+
+  Nur damit der aktuelle Satz in den Reservespeicher kommt, falls veraendert
+  (sonst ist er hinterher weg)
+if diff next #;prev #
+  Eingabe anfordern, vorheriger Wert wird vorgeben
+var "Suchen mit Reg. Ausdrücken - Geben Sie einen Suchbegriff ein=#u!!"
+ask
+if cancel end
+if "?" jump help
+  Eingabe ist ANSI, in ASCII wandeln und in #u!! setzen
+asci
+  (darauf greift  srx  automatisch zu!)
+ins #u!!
+
+  Korrektheit des regEx checken mit beliebigem Text
+var "abcxyz"
+srx
+  Bedingung "cancel" zeigt Unkorrektheit, Meldung steht in iV
+if can mes;jump start
+
+  Datendateien anzeigen, evtl. Auswahl
+perf dir
+  es wurde keine Datei gewaehlt?
+if not #u!D jump ENDE
+  In #u!D steht die Liste der Dateien, mit ; getrennt
+
+  Datei fuer "externe Erg.Menge" oeffnen
+open x ftr.set
+  und den Suchgebriff als erste Zeile reinschreiben
+wri "ftr " #u!! n
+  Zaehler
+Z=0
+  Zahl im Statusfeld zeigen
+var Z
+sho Stat
+
+var "Volltextsuche nach " #u!! n "Datei          Summe" n
+ins #uIV
+  Anzeige der Meldung im Anzeigefeld
+ansi
+sho IV
+
+set e0
+  aeussere Schleife: Dateien einzeln abarbeiten
+:auswert
+var D #u!D(e";")
+open
+if not yes jump nix
+
+  Zwischenmeldung aktualisieren
+var #u!D(b";")
+if not "" var "momentan wird gesucht in " #u!D(e";") " (Abbruch mit Esc)" n "remaining: " #u!D(b";")
+if "" var "momentan wird gesucht in " #u!D(e";") " (Abbruch mit Esc)"
+  im Schreibfeld zeigen, welche gerade durchsucht wird
+sho iV
+
+  Zaehler fuer die Tastaturabfrage. Diese soll nur bei jedem
+  500sten Satz erfolgen - aus Zeitgruenden
+z=500
+
+  innere Schleife: Durcharbeitung einer Datei
+:loop
+z-1
+if z<0 jump kc
+jump weiter
+
+:kc
+z=500
+  Tastatur: wurde Esc gedrueckt? Dann beenden
+keychk
+if not yes jump weiter
+
+yes Suchbegriff aendern?
+if no jump weiter
+if can jump exit
+
+:aendern
+
+var "Bitte ändern=#u!!"
+ask
+if "" jump ENDE
+  Eingabe ist ANSI, in ASCII wandeln und in #u!! setzen
+asci
+ins #u!!
+  Korrektheit des regEx checken mit beliebigem Text
+var "abcxyz"
+srx
+  Bedingung "cancel" zeigt Unkorrektheit, Meldung steht in iV
+
+if can mes;jump aendern
+
+:weiter
+  Steuerbyte einlesen
+fet b
+  Datei zu ende?
+if "-1" jump datend
+ins #usb
+  4 Byte Satznummer lesen, in #usn
+fet b4
+ins #usn
+  Nur damit der Satz auch mit  \n#00 gefunden wird
+var "#u1 X" 10 "#"
+  Der einzulesende Satz wird daran angehaengt! (Erstes Feld ohne #)
+  Satz einlesen (Feldende 0 wird dabei zu 2 Byte 10 und #)
+fetch +rec
+  Dateiende erreicht? -> :datend
+if cancel jump datend
+
+  Den Satztext durchsuchen (Suchbegr. ist in #u!! )
+   (hier srX, denn der Suchbegriff ist oben schon geprueft worden)
+  V14-Ersetzungen durchfuehren, falls noetig:
+    (dadurch wird's aber langsamer!)
+  Folgende if-Zeile deaktivieren, wenn nicht gewuenscht
+    Achtung: wenn nicht _ das Steuerzeichen ist, dann aendern!
+    Und  set a4  statt  set a1, wenn die V14-IdNr stehenbleiben soll, zusaetzlich zum Klartext er Ersetzung
+
+if v14 if %_% set obj 2;erase main;ins;set a1;var kn;erase main;set obj 1
+
+  Jetzt ist in iV alles ersetzt! Suche kann stattfinden
+
+   Aktivieren, wenn der gesamte Satz eine einzige Zeichenfolge
+     sein soll (sonst gilt Code 10 als Feldende!), damit die
+     Maskierung  .*  von Anfang bis Ende des Satzes wirkt.
+ ins _^J_@_
+
+srX
+
+  Treffer? -> :hit
+if yes jump hit
+jump loop
+
+  Treffer. Hier koennte man Modifikationen einbauen zur
+   Auswertung des gefundenen Satzes
+:hit
+var #usb
+if "9" jump loop   // ungueltiger Satz (geloescht)
+
+  gueltig, zaehlen
+Z+1
+  und Satznummer in die Datei
+wri #usn n
+var Z
+sho Stat    // Trefferzahl im Statusfeld zeigen
+jump loop
+
+:datend
+  Datei zu
+close
+
+  Liste der schon ausgewerteten Dateien
+var #uIV n #u!D(e";" 0,13) " ... " Z
+ins #uIV
+ansi
+sho IV
+
+  Liste der noch auszuwertenden Dateien
+var #u!D(b";")
+ins #u!D
+  Falls noch eine geblieben, -> :auswert
+if #u!D jump auswert
+  Ende der aeusseren Schleife
+:exit
+set e1
+  Schreibdatei schliessen
+close x
+
+  Es gab keinen Treffer?
+if Z<1 mes nichts gefunden;jump start
+
+  Trefferliste als externe Erg.Menge einlesen
+read set ftr.set
+del ftr.set      // datei loeschen
+  den Namen setzen
+var "R ftr " #u!!
+ansi
+set
+activate 1
+var Z " Treffer. Sofort anzeigen?"
+yesno
+  ErgListe zeigen
+if yes sho list
+end
+
+  ------------------------
+
+:nix
+var "Datei " D #u!D(e";") " kann nicht geöffnet werden"
+mes
+end
+
+
+  Unterprog zum Sammeln der auszuwertenden Dateien in #u!D
+:dir
+del aresqa.lst
+op x dbdl
+wri "   Datenbankdateien. Die nicht gewünschten mit [Entf] beseitigen" n "   Sonst werden sie alle durchsucht" n
+
+var D "*." K1 "ld"
+dir
+ins _^T_^M^J_
+ins $dl
+wri $dl
+close x
+var "Alle Dateien der Datenbank? (Nein: einzelne Datei auswählen)"
+
+yes
+if yes jump dir:abc
+if cancel jump ENDE
+  Datei dbdl zeigen (enth. Liste der Dateien)
+aresqa dbdl
+  Wurde was veraendert? Dann geaenderte Liste in aresqa.lst
+fsize aresqa.lst
+if no jump dir:abc
+  dann die veraenderte Liste auf dbdl kopieren
+var "aresqa.lst dbdl"
+fcopy
+del aresqa.lst
+
+  Dateiliste einlesen, Namen in #u!D sammeln, mit ; getrennt
+:dir:abc
+#u!D
+open dbdl
+  erste Zeile ist nur Ueberschrift
+get
+
+  Schleife
+:dir:dirl
+  Zeile lesen
+get
+if can jump dir:de
+if " " jump dir:dirl
+ins #u!d
+var #u!D ";" #u!d
+
+ins #u!D
+jump dir:dirl
+
+:dir:de
+close
+  Dateinamensliste loeschen
+del dbdl
+  Zeichen ; vorn wegnehmen
+var #u!D(f";")
+ins #u!D
+  Jetzt ist #u!D = Liste der zu verarbeitenden Dateien
+  Hilfsvariable weg
+#u!d
+  UP beenden
+return
+
+:help
+help ftr
+var "Mit dieser Funktion können Sie die gesamte Datenbank durchsuchen lassen," n
+var +"also alle Datenfelder, nach jeder beliebigen Zeichenfolge. " n
+var +"Im Hintergrund sehen Sie den Hilfetext, der die Möglichkeiten erklärt" n
+var +"Möchten Sie sofort eine eigene Suche ausführen?" n
+var +"Nein = Erst die Anleitung lesen" n
+yes
+
+if yes jump begin
+if no mes OK, starten Sie dann diese Funktion einfach neu
+
+:ENDE
+mes Ende
+activate 1
+

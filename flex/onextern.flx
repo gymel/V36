@@ -1,0 +1,49 @@
+  ONEXTERN.FLX : Bei Alt+t wird dieser FLEX gestartet
+  2002-07-09     wenn er nicht existiert, dann die eingebaute Funktion
+
+  Eine Datei oeffnen
+open x exx.xxx
+  Exportparam sichern
+var e
+ins #uwe
+  Den Satz exportieren mit e-w.apr
+  mes param e-w.apr laden
+export p e-w
+if no jump fehler
+  mes done
+dow
+  Datei schliessen
+close x
+
+  Externen Editor auf die Datei loslassen
+get env comspec
+ins #uwC
+  Die Variable x ist der Editor-Name (Editor=... in der INI)
+var #uwC " /c " x " exx.xxx"
+call
+
+  Fragen ob wieder einlesen
+yesno Bearbeiteten Satz wieder einlesen?
+if not yes jump exit
+  Wenn ja, Speichern mit Rueckfrage
+  (set c1 besagt, dass exx.xxx im Windows-Code ist) 
+set c1
+read rec exx.xxx
+sho rec
+disp
+Put
+
+:exit
+  Aufraeumen
+var #uwe
+xport p
+var ""
+ins #uwC
+ins #uwe
+end
+
+:fehler
+var "Parameter e-w0." K1 "pr wurden nicht gefunden" n "Sie k”nnen diese als Kopie der Datei e-w0.apr erstellen"
+mes
+var #uwe
+exp p

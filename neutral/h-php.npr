@@ -1,0 +1,244 @@
+  Sonder-Routinen fuer PHPac, Funktioniert fuer jede Konfiguration!!
+  H-PHP.APR  2001-10-24
+  KEIN ANPASSUNGSBEDARF
+
+pn="PHPAC extra functions"
+
+zl=0       Zeilenlaenge 
+
+zi=1        1 Leerzeichen Einrueckung
+fl=0        kein Kartendruck
+
+fm=0        Modus: keine Einzelausgabe fuer hierarch. Untersaetze
+zm=0        kein Seitenumbruch
+zb=" "      moegliche Stellen fuer Zeilenbruch: nur Spatium
+as=""
+ab=""
+ae=""
+ze="" 
+
+i4=1
+dx=1
+
+
+  p .31 47   Teilfeldzeichen -> /
+p .34 "&quot;"
+p / "&#x2f;"
+p .60 "&lt;"
+ p & "&amp;"
+
+p  255   neue Zeile bei Absatzzeichen. Andere Moeglichkeiten:
+ p  1     ausblenden, oder
+ p  182   normal anzeigen
+ 
+
+ab=""
+as=""
+ae=""
+
+   ------------- RuckZuck -----------------
+            4 Sprungbefehle. Muessen ganz oben stehen
+            Fuer diverse Sonderfunktionen
+     Im FLEX werden die Variablen #utZ etc. gesetzt, dann Download
+     hier ist der Sprungverteiler dafuer:
+#utY +~ e0         Text fuer input-Textfeld in HTML
+#utZ +' e0         Text fuer input-Zeile in HTML
+#uII +: e0      Indexzeilen aufbereiten
+#ukt +_ e0     
+#utX +A e0      Registerueberschrift
+#+#
+
+#-A
+!utX e""
+#utX dtX e0
+
+#+#
+
+#-'   Text fuer input-Zeile in HTML ausgeben (aus EDREC.PHP)
+       #utZ enthaelt eine Kategorienummer. 
+         Ausgegeben wird dann der Inhalt der betr. Kategorie.
+         z.B.  #utZ 20  -->  #20 wird ausgegeben
+#bze=" "
+ #bp .170 "Â¬"    Nichtsortierzeichen
+ #bp .31 "â–¼"   .226 150 188     Teifeld-Dreieck
+#utZ w 
+   #t{ '">' }     als Abschluss
+#utZ dtZ e0   variable wieder loeschen
+#+#
+
+#-~   Text fuer Textfeld in HTML ausgeben
+       #utY enthaelt eine Kategorienummer. 
+         Ausgegeben wird dann der Inhalt der betr. Kategorie.
+         z.B.  #utY 98  -->  #98 wird ausgegeben
+#bze=" "
+ #bzl=60
+#bp .170 "Â¬"    Nichtsortierzeichen
+
+#utY e"[[]" e" " P" " w 
+   #t{ '">' }     als Abschluss
+#utY dtY e0   variable wieder loeschen
+#+#
+
+
+  Sonderabschnitt fuer RuckZuck-Funktionen (Aenderung nur durch Experten)
+  ----------------------------------------
+
+    Anzeige eines Registerabschnitts (aus PAGE.FLX)
+    Die Zeilen stehen alle in #uII, getrennt durch 
+#-:
+#bze=""
+#t{ #0 }
+
+#t{ 13 10 '<form name="liste" action="javascript:ixlist();">' 13 10 }
+    Zuerst die Links fuer das Blaettern
+  #t{ '<div id="box1" style="border: 2px solid blue; background: transparent none repeat scroll 0% 50%; ">Box1<br>' }
+  #t{ '</div>' 13 10 }
+
+#t{ '<b><i><a' C ' href="page.php?urG=' }
+#urG y0 e" "
+   Flag fuer Rueckwaerts
+#urA +#uII f"-" p'&urA=-'
+#t{ "&urA=-18" }
+
+  #uwD y0 e" " p"&uwD=" 
+
+#uII y0 b"" e"" e" ->" e"	:" f" " f"0123456789" p"XXX" ,"_+_%2B_" ,"_ _+_" ,"_<_%3C_" ,"_&_%26_" f"X 	" p"&urS=_"
+#t{ '">' C 'Eine Seite zur&uuml;ck</a>' 13 10 }
+
+#t{ ' / <a' C ' href="page.php?urG=' }
+#urG y0 e" "
+
+#urA +#uII f"-" p'&urA='
+  #t{ "&urA=18" }
+
+  #uwD p"&uwD="
+
+#uII y0 t"" T"" b1 e" ->" e"	:" f" " f"0123456789" p"XXX" ,"_+_%2B_" ,"_ _+_" ,"_<_%3C_" ,"_&_%26_" f"X 	" p"&urS=_"
+#t{ '">' C 'Eine Seite weiter</a></b></i>' #5 C }
+  #t{ 13 10 '&nbsp;&nbsp;&nbsp;<input type="submit" value="Angekreuzte Daten zeigen"><p>' 13 10 }
+
+#t{ 13 10 '&nbsp;&nbsp;/&nbsp;&nbsp;<a href="javascript:ixlist();">Angekreuzte Daten zeigen</a><p>' 13 10 }
+
+  Letzte Eintragung in #uII beginnt hinter dem letzten 
+
+  Jetzt die Registerzeilen
+
+#t{ '<font face="Verdana">' #0 C 13 10 }
+#t{ '<table style="width: 100%; text-align: left;" border="0" cellpadding="2" cellspacing="2">' }
+#t{ '<tr><td style="width: 50%; vertical-align: top; text-align: left;">' 13 10 }
+#t{ '<table style="width: 100%;">' }
+#nr "0" e1 =uI
+#uII +™ c"" e0
+#+-
+
+#-™
+   Einleitung des Hyperlink
+
+   Ist es eine Verweiszeile?
+#uII +“ e"" c" ->" e0 
+#t{ '<tr><td WidtH="4%">' }
+#t{ '<input type="checkbox" name="ck"> ' }
+#t{ '</td>' }
+
+  Diesen Abschnitt aktivieren, wenn requesT gewuenscht
+ #t{ '<td width="5%">' }
+ #t{ '<img src="a99.ico" onmouseover="javascript:requesT(
+ #uII b"	:" e""
+ #t{ ')"> </td>' }
+
+#t{ '<td style="margin-left:50px;"><a id="lk' }
+#uuI
+#uuI x"+1" e"." =uI 
+#t{ C '" href="' }
+  Nur 1 Treffer? Dann Satz einlesen in extra Fenster
+#uII +r x"==1" p"javascript:requesT('urG=!" e"!"
+ #uII +t x"==1" b"	:" e"" p"javascript:requesT('" 
+#t{ 'find.php?urG=' }
+  in #urG steht Name des Registers, z.B. "per"
+#urG y0
+#t{ "&urS=_" }
+#+s
+
+#-r
+#urG y0
+
+#t{ "&urS=_" }
+
+    Ersetze Leerzeichen durch ! (um Mehrfach-Leerzeichen zu erlauben)
+#-s
+#uII e"" e"	:" f"	 " f"0123456789" f" " p"XXX" ,"_+_%2B_" ,"_ _!_" ,"_<_%3C_" ,"_&_%26_" f"X "
+ #uII e"" 
+
+#-t
+#uII +I x"==1" e0
+#+J
+
+#-I
+#t{ '' 39 ')' }
+#-J
+#t{ '"' C ">" }
+   // der sichtbare Teil des Hyperlink:
+#uII e"" e"`" e"	:" f"	" f"0123456789" f" " ,"_<_&lt;_" 
+
+#t{ "</a>" }
+#uII e"" f" " e"[ 	]" x">1" p"  (" P")"    Anzahl nur wenn >1
+#t{ " </td></tr>" 13 10 }
+#uII +™ F"" b"" =II
+#-K
+#t{ '</table></td>' }
+  AJAX-Feld fuer die Titelanzeige:
+#t{ '<td id="ajax" valign="top" bgcolor="#f0f0f0">&nbsp; </td></tr></table>' }
+#t{ "</font>" }
+#t{ "</form>" }
+#+#
+#uIi e0
+   Behandlung der Verweiszeilen
+
+#-“
+  wenn requesT, dann diese Zeile:
+ #t{ '<tr><td>&nbsp;</td><td>&nbsp;</td><td>' }
+  sonst diese:
+#t{ '<tr><td>&nbsp;</td><td>' }
+#uII e"->" e"`" P" -> " f" " f"0123456789"
+#uII b" ->" y1 p'<a href="page.php?urA=18!' e"!"
+#uII +#uII e"" b"->" b"|" e1 "&urG=|"    wenn | vorkommt
+#uxb F" " y0 p"&urG=|"     wenn nicht, dann selbes Register (in #uxb)
+#uII e"" b" ->" B"|?" y0 f"	 " e"	:" p"&urS=_"
+
+#t{ '">' }
+   // der sichtbare Teil des Hyperlink:
+#uII e"" b"->" c" |" b2 e1 "Reg. " P", "
+#uII e"" b"->" f" " e"	:" B"|?" ,"_<_&lt;_" p"XXX" ,"_ _ _" f"X" 
+
+#t{ "</a></td></tr>" 13 10 }
+#uII +™ F"" b"" =II
+#+K
+
+  Eine Kurzzeile vorbereiten (steht in #ukt)
+  Wird nicht gebraucht, wenn  p-brief.xpr  eingesetzt wird!
+#-_
+#ukt e0
+#hi +- e0
+   < durch &lt; ersetzen
+#ukt ,"_<_&lt;_" =kt
+#+#
+  ----------- Ende RuckZuck ---------------
+
+td-utf8    es soll UTF-8 rauskommen
+            aktivieren, wenn intern ASCII und Anzeige UTF-8 sein soll
+  xxx
+  tasciansi    falls nicht UTF-8
+
+q # "%23" 
+q < "%3C" 
+  Diese werden nur gebraucht, damit die Ueberschriften und die
+  Select-Zeilen richtig rauskommen:
+
+q .129 "Ã¼"   ue
+q .132 "Ã¤"   ae
+q .148 "Ã¶"   oe
+q .142 "Ã„"   Ae
+q .153 "Ã–"   Oe
+q .154 "Ãœ"   Ue
+q .225 "ÃŸ"   ss
+

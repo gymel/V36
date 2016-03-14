@@ -1,0 +1,88 @@
+
+Verlautbarung 130 der Entw.Abt.                               2000-04-25
+-------------------------------
+
+Allerletzter Stand der Dinge vor Festschreibung der V20
+-------------------------------------------------------
+
+Nur Kleinigkeiten waren noch zu richten. Zeitaufwendig waren die
+Arbeiten an der Zusammenstellung der Disketteninhalte, und nicht 
+zuletzt an den Install-Routinen. Mehr dazu kommt noch gesondert.
+
+Die FLEX-Sprache musste noch zwei minimale Erweiterungen erfahren:
+   (Dokumentation FLEXGER.RTF wurde aktualisiert)
+
+1. Vor-FLEX
+   Ein weiterer Auto-FLEX. Er wird ausgefuehrt unmittelbar VOR der 
+   Erstellung einer Anzeige, also vor Ausfuehrung der Anzeigeparameter.
+   Man muss ihn speichern in der Variablen #uX= , das genuegt.
+   Das kann z.B. auch im Start.FLX geschehen, damit gleich bei der
+   ersten Anzeige der Vor-FLEX schon da ist!
+   Der Vor-FLEX kann natuerlich auf die Elemente des aktuellen Satzes
+   zugreifen, denn dieser ist es ja, der gerade fuer die Anzeige 
+   aufbereitet werden soll.
+
+2. Neue Befehle
+
+   a)  fnam <bezeichnung>|<typ>
+          bringt eine Dateiauswahl-Box hervor. Der ausgewaehlte
+          Dateiname ist dann als vollstaendiger Pfadname in der iV
+          In <typ> steht so etwas wie *.APR, wenn man alle Parameterdateien
+          sehen will, die <bezeichnung> ist ganz beliebig.
+          Fehlt beides, wird der Inhalt der iV genommen (wie immer).
+
+   b)  fsize <name>
+          Die Groesse der Datei <name> ist anschliessend in der iV
+          Mit  if no ...  kann man checken, ob die Datei nicht existierte.
+          Fehlt <name>, wird ...
+   
+   c)  fcopy <name1> <name2>
+          Datei <name1> wird auf <name2> kopiert (Syntax wie beim DOS-Befehl)
+          D.h. <name1> kann auch sowas wie xyz*.?p? sein und <name2>
+          ein Verzeichnisname.
+          Fehlen beide, wird der Inhalt der iV genommen.
+
+   d) Bei den Manipulationsbefehlen des "write"-Befehls wurde ergaenzt:
+      #nnn(t"xyz")
+      Dann wird der Inhalt der Kategorie #nnn ausgegeben, aber nur der Teil
+      hinter dem letzten vorkommenden "xyz".
+      Wenn z.B. in #nnn ein Pfadname steht, kann man mit
+      #nnn(t"\\") den Teil ab dem letzten \ abzwacken, bzw. mit
+      #unn(T"\\") genau dieses EndstÅck hinter \ ausgeben.
+      Das entspricht (nicht ganz) den M-Befehlen t/T der Exportsprache:
+      dort bleibt bei T der Teil "xyz" erhalten.
+      Bei T gilt: existiert xyz nicht, kommt nichts heraus, bei t dagegen
+      bleibt der Inhalt unveraendert. Beides muesste der Erwartung entsprechen.
+
+3. Und noch ne Kleinigkeit:
+   F7 geht jetzt wie bei PRESTO. Und die Schluessel erscheinen sortiert.
+   Das waere ja sonst das naechste gewesen, wo der Finger drauf gelegt
+   worden waere ...
+
+Und zu guter Letzt:
+
+   Von der Datei CAT.API existieren zwei Versionen: mit und ohne aLF/ORDER-
+   Zusaetze. Beide wurden ueberarbeitet. Nicht nur galt es, das Jahr-2000-
+   Problem rueckstandsfrei auszumerzen, auch die Indexierung selbst musste
+   hier und da aktualisiert werden. Wichtiger Punkt: Bindestrich-Behandlung.
+   Dieses letzte Wort wurde bislang so indexiert, wenn es in einem
+   Titel vorkam:
+     bindestrich-behandlung
+     behandlung
+   Jetzt wird das, uebereinstimmend mit den kommenden Empfehlungen der
+   KfR fuer RAK, so gemacht:
+     bindestrich
+     bindestrichbehandlung
+     behandlung
+   Im Hinblick auf Find-Befehle ist das besser: mit "find tit bindestrich"
+   wuerde man im ersten Fall den Titel nicht erwischen. Im Register sieht
+   man's, und da ist die neue Regel eher irritierend, aber die Register 
+   finden manche ja ueberhaupt verwirrend und wollen sie am liebsten vor
+   den Nutzern ganz verstecken. (Dass und warum das ein Irrweg waere, haben 
+   wir oft genug behandelt.)
+   Noch ein Punkt: Doppelindexierung der Umlaute : Ñ als a und ae
+   Fuer Personennamen aktiviert, fuer Titelwoerter nicht, aber angelegt.
+   (Also "muller" und "mueller", "roemer" und "romer" im Reg. 1)
+   (Kommentar in CAT.API: "Doppelindexierung")
+
+

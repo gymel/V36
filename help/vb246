@@ -1,0 +1,337 @@
+
+Verlautbarung 246 der Entw.Abt.                              2012-06-01
+-------------------------------
+2., ueberarb. u. angereich. Ausg.
+
+V32.4 ist da
+============
+
+32bit-Programme. ACHTUNG: zur Zeit noch  srch32.exe  statt  srch.exe
+----------------
+Die "Quadriga"  srch/import/index/qrix  besteht inzwischen aus 32bit-
+Programmen, die auch unter Windows 7'64 laufen. Nur das Programm
+srch.exe wird noch in der 16bit-Variante ausgeliefert, die 32bit-
+Variante liegt als  srch32.exe  im Gesamtpaket. Das geschieht aus
+Vorsicht, weil srch ein sehr stark genutztes Programm ist und es
+u.U. noch kleinere Ungenauigkeiten gibt, die sich bei komplizierteren
+automatisierten Prozessen auswirken koennten. Alle gefundenen Diskre-
+panzen wurden beseitigt, aber bitte testen.
+Aber ACHTUNG: Wer die 64bit-Variante von Win'7 einsetzt, muss das
+alte srch.exe loeschen und das neue srch32.exe in srch.exe umbenennen.
+Diese Besonderheit wird wohl mit V32.5 entfallen.  
+
+
+Expertentreff 2012 : Thema OpenSource
+-------------------------------------
+Mit gewichtigem Schwerpunkt auf der Programmierung und "OpenSource"
+im Fokus soll am Do.+Fri, dem 28.+29.6.2012, ein Expertentreff
+stattfinden.
+Zum Teilnehmen ermuntern wollen wir neben Programmierern und solchen,
+die es werden wollen, auch Anwender, die
+- einige Erfahrung haben mit allegro,
+- erwarten, noch laengere Zeit damit zu arbeiten,
+- offene Wuensche/Anforderungen/Ideen mit sich tragen,
+- und ueber all das mit gestandenen Entwicklern reden und sich in deren
+  Gedankenaustausch einklinken wollen.
+Denn wem sonst, wenn nicht der Anwenderschaft und deren Klientel,
+gilt und galt "am Ende des Tages" und der Jahrzehnte der ganze Aufwand?
+Naeheres siehe Mail-Ankuendigung am 4.5.12.
+
+
+OpenSource : Umstellung auf VisualC++ 10
+----------------------------------------
+Die bisher genutzte Entwicklungsumgebung Visual C++ 6  datiert von
+1998. Es wird nun auf die Version 10 umgestiegen, die 2010 heraus-
+kam, und deren "Express Edition" frei erhaeltlich ist. Zwar nur mit
+Registrierung, aber kostenlos. Damit ist auch kuenftig unter Windows
+ein freies Kompilieren der Programme moeglich, nicht nur unter
+Linux und UNIX mit dem C++ der GNU-Initiative.
+Erfolgreich kompiliert wurde bereits die gesamte "Quadriga" (s.o.),
+um zunaechst die richtigen Einstellungen zu finden. Diese wurden
+gefunden, wobei die bisherigen Quellprogramme an keiner Stelle
+geaendert werden muessen. Schwieriger wird es vielleicht mit den
+Programmen a99/alcarta/a99a, und zwar wegen der graphischen Ober-
+flaeche, die (fuer Kenner) auf den Windows Foundation Classes (WFC)
+beruht. Diese sind laut Microsoft auch in VC10 enthalten, aber wohl nur
+in der kostenpflichtigen "Professional edition". Bis zum Expertentreff 
+im Juni hoffen wir, in diesem Punkt Klarheit schaffen zu koennen.
+Mitgeliefert werden aber im Gesamtpaket noch die Kompilate, die
+unter VC 6.0 enstanden sind. Sie tun es unter Win XP, Win 7/32 und /64.
+Niemand braucht demnach zur Stunde die neuen Kompilate. Wir sind und
+bleiben aber da dran und wollen auch acon und a99 mit VC10 erstellen,
+um das Paket dann zu komplettieren. Fuer den Einsatz unter Linux/UNIX
+hat dies keine Folgen, aber a99 wird weiterhin exklusiv Windows 
+bleiben. Diesbezuegliches Nachbohren haette keine Aussicht auf Erfolg.
+
+
+Weitere Nachrichten aus anderen Ressorts
+
+
+a99/alcarta : Schriftgroesse in der Anzeige
+-------------------------------------------
+Die Funktionen  Option / Anzeigeschrift +-  tun es jetzt. Jedenfalls
+ueberall da, wo der Anzeigetext keine eigenen Definitionen der
+Schriftgroesse enthaelt (RTF: { \fs.. ... }). Es mag daher sein,
+dass die Funktionen bei anderen als den Standarddateien (disphead.rtf
+und d-wrtf.apr) nicht wie erwartet arbeiten. 
+Hinw. zu RTF: Einstellungen mit \fs.., die nicht in {...} 
+eingeschlossen sind, wirken bis zum naechsten solchen Befehl bzw. bis
+zum Ende des Textes, wenn keiner mehr kommt!
+
+
+a99 UIF-Datei : neue Zeilen
+---------------------------
+In die fuer a99/alcarta zustaendige UIF-Datei  uifeger/uifeeng  wurden
+neue Zeilen eingebracht:  127-148 (ein paar waren schon da); die Texte
+standen bisher direkt im Programm. Es handelt sich um Meldungen, die
+eher selten auftreten. ACHTUNG: Eigene (z.B. anderssprachige) UIF-
+Dateien muessen um entsprechende Zeilen ergaenzt werden. Es kann auch
+sein, dass Anwender eine veraenderte uifeger auf ihr Datenverzeichnis
+gelegt haben. Dann muessen darin die Aenderungen nachvollzogen werden.
+Es ist jedoch nicht so, dass a99 sonst nicht arbeiten oder gar
+abstuerzen koennte, es wuerden "nur" ein paar seltene Meldungen fehlen,
+und darin laege natuerlich Irritationspotential.
+
+
+Export : Kopf- und Fussabschnitte
+---------------------------------
+Damit gab es gewisse Detailprobleme, die nun verbessert wurden.
+Jedoch sind diese Funktionen sehr alt und urspruenglich nur fuer den
+KARTENdruck gedacht gewesen, nicht fuer Listen- und Dateiproduktion. 
+Man sollte sie bei neuen Parametrierungen lieber nicht verwenden,
+sondern Kopf- und Fussabschnitte in Exporten, gedacht als Anfang und
+Ende ganzer Exportdateien, mit FLEX machen, das ist ja auch viel
+weniger kryptisch. 
+Die Verbesserungen dienen nur dazu, alte Parameter fuer die 
+Listenproduktion besser funktionieren zu lassen, wenn man sie
+innerhalb a99 oder im neuen srch32 fuer Listenexporte einsetzt.
+Andererseits kann man mittels der FLEX-Funktion  exp -X  auch gezielt
+einen Abschnitt  #-X  in den Exportparametern ausfuehren lassen, man
+ist also nicht auf die Kopf- und Fussabschnitte angewiesen. Kurz: sie
+werden nicht abgeschafft, vom Einsatz wird aber eher abgeraten.
+
+
+acon: Satzsperren  (komplette Beschreibung siehe  "set lock" in h xset)
+-----------------  [Achtung: *Nur acon*, nicht a99!]
+
+Die Befehle  get edit first, get edit next, get edit last,
+get edit prev taten nicht ganz so, wie sie sollten. Nun sperren sie den
+jeweiligen Satz und legen eine Kopie seiner aktuellen Registereintraege
+an. Nun kann man sich Zeit lassen ...
+Das passiert auch mit  f1nd ..., wobei ja ein bestimmter Satz geladen
+wird.
+Dies wurde eingerichtet, damit man ganz sicher gehen kann, dass 
+zwischen dem Laden und Speichern kein anderer Prozess denselben Satz
+veraendert speichern kann.
+Nach jedem dieser Befehle koennen beliebige Aenderungen an dem Satz
+folgen, und:
+Mit simplem "put" speichert man ihn am Ende; dabei wird mittels der
+vorher kopierten Indexeintraege ermittelt, welche Schluessel geaendert
+werden muessen in der Indexdatei, und diese Aenderungen werden
+ausgefuehrt, der Satz bei der Speicherung wieder freigegeben.
+Soll das Speichern jedoch entfallen, muss man nun nicht mehr 
+ausdruecklich "set unlock" geben, bevor man den naechsten find- oder
+get-Befehl absetzt. Frueher blieb der Satz sonst gesperrt, jetzt wird
+er automatisch wieder freigegeben. [acon hat keinen Offline-Speicher
+wie a99, es ist jeweils nur ein Satz geladen.]
+
+Manchmal will man es etwas anders: (nur in acon)
+NEU:  set getlock on   [gilt bis zum Ende des Jobs]
+Setzt *jedesmal* Satzsperre, wenn ein Satz geladen wird. Dann ist
+die Angabe  edit  in den get-Befehlen unnoetig. Und
+      set getlog off
+schaltet die Setzung wieder ab.
+
+NORMALERWEISE aber braucht man sich gar nicht mehr um's Sperren zu
+bekuemmern! Man nimmt einen Satz her, aendert was, speichert ihn mit
+"put", und weiter zum naechsten! Was passieren kann, ist nur, aber 
+ganz sicher hoechst selten, dass waehrend des Aenderns jemand anders
+denselben Satz geaendert und gespeichert hat. Dies jedoch erkennt 
+acon dann am geaenderten Zeitstempel. Direkt an das "put" braucht
+man nur eine Zeile "if no ..." einzufuegen, um die Problemsituation
+zu erkennen und darauf zu reagieren.
+Das bisherige "set lock" und "get edit" kann man sich also auch
+sparen, es funktioniert aber weiterhin, d.h. Aenderungen an "alten"
+Jobs sind nicht noetig.
+
+Alles Wichtige in Kurzuebersicht:
+---------------------------------
+Ziel war, auszukommen mit einem Minimum an Betulichkeiten und zu
+wissenden Besonderheiten, ohne die Funktionsfaehigkeit vorhandener
+Jobs zu beeintraechtigen.
+
+get edit first/next  und  f1nd #...
+bewirken nun, dass der fragliche Satz zuerst gesperrt und dann geladen
+wird.
+Anschliessend macht man sich, ohne weiteres und ohne Zeitdruck, daran
+zu schaffen. Dann, nach Verrichten alles am Satz zu Verrichtenden:
+
+entweder: mit "put" speichern und dies mit "if no ... " checken
+
+oder: ohne weiteres zum naechsten Satz uebergehen - die Freigabe des
+      vorher geladenen erfolgt selbsttaetig.
+
+
+NEU: Mit  set getlock on/off  kann man ein-/ausschalten, dass bei jedem
+Laden eines Satzes dieser vor dem Laden gesperrt wird, d.h. statt
+get edit ...
+sagt man schlicht  get ..., mit gleicher Wirkung.
+
+NEU: Bei ganz normalem  find ... und  get first/next  kann man dennoch
+auf das bisher noetige  set lock  verzichten. Beim "put" erfolgt Check
+des Zeitstempels und Verweigern der Speicherung bei Ungleichheit,
+was mit "if no ..." checkbar ist.
+
+NEU:  if Lock #nummer
+      wobei die Nummer fehlen darf und dann der iV entnommen wird
+
+NEU:  set lock #nummer
+      set unlock #nummer
+      wobei die Nummer fehlen darf und dann der iV entnommen wird
+
+NEU:  var sL
+      letzter Lock-Status. Am besten auswerten, wenn  if no  gilt
+      (Auch nach  get edit ..., if Lock  und  set lock)
+      if "0" ...     korrekt
+      if "-" ...     irgendein Fehler
+
+Die Werte sind insgesamt folgende:
+   0 = OK, Sperren hat geklappt bzw. Satz ist gesperrt (if Lock) 
+  -1 = lock geht nicht (TBL gesperrt) 
+  -2 = .TBL-Eintrag falsch  (dann .tbl erneuern)
+  -3 = .ALD-Datei oeffnet nicht 
+  -4 = Falsches Byte am Satzbeginn (Datei- oder .tbl-Fehler)
+  -6 = Keine Schreibberechtigung 
+  -8 = Satznummer <0 oder zu gross
+   1 = Satz ist nicht gesperrt (nach if Lock) 
+   8 = Satz ist gesperrt (nach if Lock)
+   9 = Satz ist geloescht (Sperren geht dann nicht) 
+
+
+update.job  angepasst  [s. Vb.245]
+---------------------
+Wegen der Aenderungen beim Locking mussten ein paar Punkte im
+update.job  aktualisiert werden. Das ist geschehen. Das Pruefen
+auf Gesperrtheit entfiel, statt "find" steht nun "f1nd".
+Ein wenig gefeilt wurde auch noch an den Meldungen, die auf
+der Konsole bzw. in der Protokolldatei "upro" erscheinen.
+Die Anwendung dieses wichtigen Jobs (er ersetzt das alte update.exe)
+wurde in der Vb.245 dargestellt, daran hat sich nichts geaendert.
+
+
+Saetze sperren, ohne sie zu laden  (a99 und acon)
+---------------------------------
+Neue Zusatzfunktion: Hinter die Befehle  set lock  und  set unlock 
+kann man noch  #Num  setzen, mit einer internen Satznummer  Num . 
+
+z.B.  set lock #1   sperrt Satz 1,  bzw.  set unlock #1  fuer Freigabe
+
+Fehlt Num, wird der iV-Inhalt genommen, d.h man kann z.B. schreiben,
+wenn in  $nummer  die Satznummer steht: 
+  var $nummer\set lock # 
+Ist jedoch der Satz bei  set lock  bereits gesperrt, dauert es eine
+Weile, aber es passiert nichts, er bleibt gesperrt. 
+
+
+Satzsperre pruefen, ohne den Satz zu laden (a99 und acon)
+------------------------------------------
+Auch das geht, und zwar analog (was sich nicht von selbst versteht!):
+
+if Lock #Num ...
+
+und wenn Num fehlt, dann iV-Inhalt. (Auch das versteht sich nicht
+von selbst.)
+Auch  if not Lock ...  klappt.
+
+
+acon : Qrix und Reg. 11
+-----------------------
+Die Einschraenkung wurde abgeschafft, dass acon bei  access<3  nicht
+mit Qrix auf Reg. 11 zugreifen konnte. Es ist ja extrem unwahrschein-
+lich, dass etwa ein Saboteur sich ausreichend kundig macht UND Zugang
+zu der Moeglichkeit gewinnt, einen Job mit solcherlei Befehl auszu-
+fuehren. Dies waere zwar wegen Datenschutz potentiell kritisch, aber
+Datenschaeden koennten so nicht entstehen. [Es ist nicht moeglich,
+einen Job als Teil eines HTTP-Aufrufs an die Datenbank zu senden,
+d.h. es koennen nur Jobs gestartet werden, die auf dem Server liegen.
+Der administrative Zugang zu diesem muss aber eh und je abgesichert
+werden gegen Hacker. Das sog. "code injection" (Job-Code von aussen
+einschleusen) ist seit langem unterbunden.]
+
+Sondervariablen A und b 
+-----------------------
+Mit den var- und write-Befehlen sind ja so manche internen Setzungen
+zugaenglich. Bisher nur unter a99 konnte man sich per  var A  die
+Berechtigung geben lassen und mit  var b  die Werte k und t der CFG
+(Ergebnis: 2,4 bei $A.CFG). Nun sind diese Werte endlich auch
+unter acon zugaenglich.
+Ferner gehen schon seit einer Weile auch die j-Variablen.
+Siehe Doku:  h xcstring
+
+
+
+ORDER
+-----
+Die ORDER-FLEXe  o-kont.flx  und  o-kontue.flx  wurden verbessert.
+Noetig war das fuer den sog. "Jahresuebergang", der beim Eintritt
+in ein neues Haushaltsjahr anfaellt - falls man mit Kontingenten
+arbeitet, die sich auf Haushaltsjahre beziehen. Wie dann vorzugehen
+ist, beschreibt ein neuer Text:  h o-jue
+
+Des weiteren verbessert wurden  o-bdruck.flx (Bestelldruck) und
+die zugehoerigen Parameter  p-orda.apr. Der FLEX fragt nun auch, ob
+man Einzelbestellungen moechte (d.h. ein Blatt je Titel, komplett mit 
+Lieferantendaten und allem) oder alle zu einem Lieferanten gehoerigen 
+Bestellungen zusammengefasst in einer numerierten Liste.
+
+
+GND-Umwandlung
+--------------
+Neu im Gesamtpaket:
+gnd.aim + i-gnd.apr   zur Umwandlung von GND-Daten in $A.CFG.
+GND-MARC21-Normdaten kann man hiermit umwandeln in die hergebrachte
+Normdatenstruktur des A-Formats, also Saetze mit den Feldern
+  #2n, #3n, #4n, #6n  etc.
+Sagen wir,  g:\daten\gnddat.mrc  sei die MARC21-Datei, die
+ausschliesslich solche Saetze enthaelt. Dann koennte ein Startbefehl,
+auf c:\allegro gegeben, so lauten, um eine Ausgabedatei  norm.alg
+zu erzeugen:
+
+  import -dg:\daten\gnddat.mrc -ignd -ei-gnd/norm.alg
+
+ACHTUNG: In  i-gnd.apr  steht, markiert mit "ACHTUNG", eine 
+eingerueckte Zeile
+
+ #99.   Diese Zeile aktivieren nur zur Kontrolle waehrend Test
+ 
+Aktiviert man diese, so erhaelt man automatisch Felder #99X  mit den
+Inhalten der nicht umgewandelten MARC21-Daten, beginnend mit  #990:
+    Struktur:  #99X(tag)MARC-Feldinhalt ohne Indik,
+          z.B. #992(005) 0330120102.0
+Zur Kontrolle der Umwandlung kann das ganz nuetzlich sein.
+  
+
+Gesperrte Saetze (.ALD)
+-----------------------
+Dieser letzte Punkt im Menue "Extras" von a99 findet alle gesperrten
+Saetze der Datenbank. Zu empfehlen ist, zuerst die Ergebnismenge der
+"Vorher angezeigten Daten" leerzumachen, denn dort werden die 
+gesperrten Saetze dann angesammelt. 
+Verbessert wurde, dass diese spezielle Erg.Menge dann auch sofort
+angezeigt wird bzw. die Meldung "No records locked" kommt, wenn es
+keine gesperrten Saetze gibt.
+
+
+JanaS: Startverbesserung
+------------------------
+Unter Win'7/64 kam es zum Versagen (a99 blieb haengen), wenn JanaS
+aufgerufen wurde. Behoben.
+
+
+FLEX set c in a99
+-----------------
+Kleine Korrektur: Default ist  set c1, nicht set c0. Als normal
+betrachtet wird also, dass Eingabedaten in ANSI codiert sind, nicht im
+DOS-ASCII. Die Doku (xset.rtf) sagte bisher das Gegenteil, nur fuer
+acon stand's richtig drin (da ist es ebenfalls 1).
+

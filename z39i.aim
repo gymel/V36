@@ -1,0 +1,298 @@
+  Z39I.AIM : ZACK MARC international --> A  Minimalversion
+  2001-02-10 / 2005 : mit unimarc des SWB
+
+  zu kombinieren mit den Ausgabeparametern  I-1.APR  !!!
+  zwecks Erstellung von korrekten "allegro"-Daten
+
+re="###"    wird als Begrenzung zwischen  2 S„tzen genommen
+
+
+  Vor der Bearbeitung eines Datensatzes folgende Ersetzungen:
+
+  Umcodierung ANSI -> ASCII
+  Codes bis 127 sind identisch
+  127 bis 160 sind bei ANSI unbenutzt oder uneinheitlich
+
+y .013 0      ersetze Zeilenvorschub
+y .010 0       durch 0  (wirkt dann automatisch als Kategorie-Ende)
+
+y .161 173    umgek. !
+y .162 155    cent
+y .163 156    Brit. Pfund
+y .164 216    Waehr.Symb.
+y .165 157    Yen
+y .166 124    senkr.Strich
+y .167 021    Paragraph
+y .168 189   *Trema
+y .169 214   *Copyright 
+y .170 166    hochgestelltes a
+y .171 174    <<
+y .172 170    Nichtsortierzeichen
+y .173 222   *diakr. Mittelstrich
+y .174 215   *R in Kreis
+y .175 208   *Ueberstrich
+y .176 207   *Ringel (diakrit)
+y .177 241    +-
+y .178 253    Exponent 2
+y .179 252    Exponent 3 -> Exponent n
+y .180 181   *' akut
+y .182 020    Absatzzeichen
+y .183 250   *Punkt in der Mitte !! mue
+y .184 211   *Cedille
+y .185 176   *tuerk. i 
+y .186 248   *Gradzeichen       !!  hochgest. o = 167
+y .187 220   *Pfeil nach rechts   >>
+y .188 172    1/4
+y .189 171    1/2
+y .190 "3/4"  3/4
+y .191 168    umgek. ?
+y .192 "¶A"   `A
+y .193 "µA"   'A
+y .194 "^A"   ^A 
+y .195 "~A"   ~A
+y .196 142    Ae
+y .197 143    A mit Ringel
+y .198 146    AE Ligatur
+y .199 128    C mit cedille
+y .200 "¶E"   `E
+y .201 144    'E
+y .202 "^E"   ^E
+y .203 "½E"   E mit trema
+y .204 "¶I"   `I
+y .205 "µI"   'I
+y .206 "^I"   ^I
+y .207 "½I"   I mit trema
+y .208 "ÞD"   -D
+y .209 165    ~N
+y .210 "¶O"   `O
+y .211 246   *'O
+y .212 "^O"   ^O
+y .213 "~O"   ~O
+y .214 153    Oe
+y .215 88     Kreuz
+y .216 "ÛO"   /O
+y .217 "¶U"   `U
+y .218 "µU"   'U
+y .219 "^U"   ^U
+y .220 154    Ue
+y .221 "µY"   'Y
+y .222 177   *grosses Thorn
+y .223 225    scharfes s
+y .224 133    `a
+y .225 160    'a
+y .226 131    ^a
+y .227 "~a"   ~a
+y .228 132    ae
+y .229 134    a mit Ringel
+y .230 145    ae Ligatur
+y .231 135    c mit cedille
+y .232 138   `e
+y .233 130   'e
+y .234 136   ^e
+y .235 137    e mit Trema
+y .236 141   `i
+y .237 161   'i
+y .238 140   ^i
+y .239 139    i mit Trema
+y .240 "Þd"  -d serbokr.
+y .241 164   ~n
+y .242 149   `o
+y .243 162   'o 
+y .244 147    ^o
+y .245 "~o"   ~o
+y .246 148    oe
+y .247 223   *diakr. Unterstrich
+y .248 237    daenisches oe
+y .249 151   `u
+y .250 163   'u
+y .251 150   ^u
+y .252 129    ue
+y .253 173   *'y
+y .254 178   *kleines Thorn
+y .255 152    y mit trema (Problem?)
+
+
+y Î 170   in Nichtsort.Zeichen wandeln
+y { 256   ZDB-Stichwortkennung? wird nicht gebraucht, beseitigen
+
+
+  Hier beginnen die Feldbeschreibungen: ("Paragraphen")
+    jeweils zuerst die NMN-Kategorienummer, dann ein Suchbefehl,
+    (z.B. s 0 "335 " heisst: suche die Zeichenfolge 0 "335 ")
+    dann kommen evtl. Vorbearbeitungsbefehle
+
+
+#ccc
+j0
+C 0 "210"
+qunimarc
+q
+
+-haupt
+
+#40~
+s 0 "100 "
+b "$a "
+e "$"
+
+-42
+#42~
+s 0 "700 "
+b"$a "
+e"$"
+
+
+#20
+s 0 "245?"
+b"$a "
+_ "$b"
+_ " "
+e " / "
+e"$"
+N
+
+#39
+s 0 "245 "
+b"$c"
+e"$"
+
+#88c       CODEN
+s 0 "376b"
+
+#87
+s 0 "020 "
+b"$a "
+_ " "
+_ ""
+_ "-"
+_ ""
+u6
+e"$"
+
+#71
+s 0 "250 "
+b"$a "
+e"$"
+
+#74
+s 0 "260 "
+b"$a "
+e"$"
+
+#75
+s 0 "260 "
+b"$b "
+e"$"
+
+#76
+s 0 "260 "
+b"$c "
+e"$"
+
+
+#77
+s 0 "300 "
+b"$a "
+_ "$b"
+_ ""
+_ "$c"
+_ ""
+
+
+-61
+#61
+s 0 "110 "
+e"$"
+N
+
+
+#61~
+s 0 "710?"
+b"$a"
+e"$"
+m
+
+#85
+s 0 "490?"   Serientitel
+b"$a "
+_ "$v"
+_ ""
+e"$"
+
+#85~
+s 0 "440?"   Serientitel
+b"$a "
+_ "$v"
+_ ""
+_ "$n"
+_ ""
+e"$"
+
+#37
+s 0 "041 "
+b"$a "
+l3
+
+#81     Fussnote (bibliogr.)
+s 0 "500 "
+b"$a"
+e"$"
+
+#23~
+s 0 "246?"
+B"$a"
+N
+e"$"
+
+qENDE
+
+-unimarc
+#20
+s 0 "200    $a "
+_ " $e "
+_ " : "
+e"$"
+N
+
+#39
+s 0 "200"
+b" $f "
+e"$"
+
+
+#77
+s 0 "215    $a "
+_ " $e "
+_ " : "
+
+#74
+s 0 "210    $a "
+e"$"
+
+#75
+s 0 "210"
+b " $c "
+e"$"
+
+#76 
+s 0 "210"
+b" $d "
+e"$"
+
+-pers
+#40
+s 0 "700"
+b"$a "
+_ " $b "
+_ ", "
+x
+e "$"
+m
+
+#85
+s 0 "225"
+e "$9"
+_ " $v "
+_ " ; "
+N
+

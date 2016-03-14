@@ -1,0 +1,101 @@
+  a35fts.apr : Ausgabe Kurzliste bei Volltextsuche (a35fts.job)
+  2013-04-03   [Doku Volltextsuch-Verfahren:  a35fts.txt ]
+
+pn="Ausgabe f. a35 Volltextsuche Kurzliste"
+   (a35fts.job  schreibt Ergebnisse in die Datei  fts.erg
+    und zeigt diese Datei dann in "ERG")
+
+  --------- Konstanten --------------------------------------------
+
+zl=0 	    Zeilenlaenge
+
+zi=0	    4 Zeichen Einrueckung bei Folgezeilen
+zm=0        kein Seitenumbruch (fortlaufende Ausgabe)
+ae=""       kein Zeilenvorschub am Aufnahme-Ende
+fl=0        Listenstruktur (keine Karten)
+
+
+#hi +- e0
+
+#uCT +Z e0    (nach dem ersten Satz ist #uCT belegt, dann hier Sprung)
+
+
+#t{ 'Volltextsuche mit: &nbsp; <font color="red">' }
+#urF 
+#t{ "</font><br>" C }
+#t{ "<table>" }
+
+  Counter: vor dem ersten Satz mit 0 vorbelegen
+#nr p"0" e1 =CT e0
+
+       Aufbereitung der Kurzzeile ACHTUNG:
+         kann man i.d.R. sinngemaess aus  a35erg.apr  uebernehmen!
+       **** ACHTUNG **********************************************
+   >>> cfg-spezifisch! Modifizieren, wenn nicht a.cfg genutzt wird
+       ***********************************************************
+#-Z
+#da      alle Akzente vertauschen (d.h. hinter den Buchstaben schieben, s.u. pa=...)
+
+#uCT x"+1" e"." =CT e0
+#t{ '<tr><td>' }       neue Tabellenzeile
+#uCT P". " 
+#t{ '<a href="javascript:reqLink(' }
+#nr
+#t{ ')">' }
+
+  Ein Feld #utx aufbauen mit dem Titeltext (ohne Umcodierung)
+#utx dtx e0
+#20 U ,"_ _. _" y0 e50 F";.-: " atx
+
+  Titelfeld ausgeben, nun mit Umcodierung
+#utx
+#t{ '</a></td><td>' }
+#10 x"*1" e"." p" (" P")"
+#t{ "</td><td>" }
+#90 +b ,"_L__" ,"_s_ / _" e" =" e"" p" : "
+#90 $L P" / "
+#90 $s
+#-b
+#t{ "</td></tr>" C }   Ende Tab.zeile
+#+#
+
+       ****** Ende cfg-spezif. Teil ******************************
+
+  Endabschnitt: Tab. beenden und Anz. d. Erg. ausgeben
+  (fuehrt  srch.exe  autom. am Ende der Suche aus, ab V33!)
+
+#- E
+
+#t{ "</table>" C } 
+
+  Feld mit  id="URF"  wurde in  a35fts.job  erzeugt als Kopfteil von  fts.erg
+#t{ '_!_FTS<font color="red">' }
+
+#uCT 
+#uMH x"-CT" x"==0" p" oder mehr!" e"!"
+
+#t{ '</font> Erg. bei ' C }
+
+#+#
+
+  *******************************************************************
+  Code-Umwandlungen
+
+  Akzentzeichen ASCII  (relevant bei Befehl  #pa)
+  pa=181 182 183 184 189 190 198 199 207 208 209 210 211 212 219 222 223 232 
+  -----------------------------------------------------------------
+  bzw. diese, wenn Windows-Code (ANSI):
+  pa=180 145 136 149 168 166 227 179 186 175 215 171 184 191 161 173 247 150
+
+
+  Folgende Zeile deaktivieren, wenn intern UTF-8 !
+ tad-utf   ad-utf.apt laden.
+  oder:
+ taw-utf   aw-utf.apt laden, wenn intern ANSI-Windows-Code.
+
+  Fuer HTML-Anzeige noetig:
+p < "&lt;"
+p > "&gt;"
+p & "&amp;"
+
+

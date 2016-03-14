@@ -1,0 +1,313 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\fswiss\fprq2 Arial;}{\f2\fswiss\fprq2 Verdana;}{\f3\fswiss\fprq2\fcharset0 Verdana;}{\f4\fmodern\fprq1 Courier New;}{\f5\fmodern\fprq1\fcharset0 Courier New;}{\f6\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red168\green23\blue23;\red0\green0\blue0;\red255\green0\blue0;\red0\green0\blue255;}
+\viewkind4\uc1\pard\qc\f0\fs24   \cf1\f1\fs32 Export/Import\cf2\f0\fs24 
+\par \cf3\b\i\f2\fs28 aresqa : allegro relational 
+\par \cf2\b0\i0\fs22 Sinnvolle Koexistenz\fs28 
+\par \pard\qr\fs20 `\cf4\ul\b Kurzbeschreibung mit Beispielen\cf2\ulnone\b0 `\fs28 
+\par \pard\b\fs20 Worum geht es?\b0 
+\par Es gibt viele Unterschiede zwischen \i allegro\i0\f3  und Relationalen Datenbanksystemen (RDBS) - sonst w\'e4re \i\f2 allegro\i0\f3  \'fcberfl\'fcssig. Dazu erschien eine ausf\'fchrliche, vergleichende und begr\'fcndende Gegen\'fcberstellung: \f2 
+\par 
+\par \pard\qc `\cf4\ul\b\f4 http://www.allegro-c.de/a-r.htm\cf2\ulnone\b0\f2 `\f4 .\f2 
+\par \pard 
+\par Weder kann \i allegro\i0\f3  ungef\'e4hr dasselbe, was ein relationales System kann, noch umgekehrt. Heutige RDBS sind ohne Frage in ihrem Aufgabenbereich au\'dferordentlich m\'e4chtige Instrumente, mit denen \i\f2 allegro\i0\f3  in mancher Hinsicht \'fcberhaupt nicht konkurrieren k\'f6nnte, das sollte schon deutlich ausgesprochen werden. Doch es geht nicht um Konkurrenz, denn die Aufgabengebiete sind unterschiedlich. \f2 
+\par Ein wichtiges Werkzeug ist das `\cf4\ul\b aresqa-Listenfenster\cf2\ulnone\b0 `. 
+\par  
+\par \b\f3 St\'e4rken von \i\f2 allegro\b0\i0\f3  sind die folgenden Eigenschaften, die ein RDBS selten oder nie braucht oder auf welche die meisten RDBS-Anwendungen gut verzichten k\'f6nnen: \f2 
+\par  
+\par \pard{\pntext\f6\'B7\tab}{\*\pn\pnlvlblt\pnf6\pnindent294{\pntxtb\'B7}}\fi-294\li294\f3 Funktionsreiche Indexdateien: Sichtbare Register zum Bl\'e4ttern u.a. \f2 
+\par \f3{\pntext\f6\'B7\tab}Geschwindigkeit bei sehr gro\'dfen Datenmengen auf relativ kleinen Maschinen \f2 
+\par {\pntext\f6\'B7\tab}Geringer Plattenplatzbedarf 
+\par \f3{\pntext\f6\'B7\tab}Jedes Feld darf beliebig oft mehrfach auftreten (RDBS m\'f6gen das nicht) \f2 
+\par {\pntext\f6\'B7\tab}Diffizile Feldstrukturierung mit Unterfeldern (RDBS-Datenfelder sollen "atomar" sein) 
+\par {\pntext\f6\'B7\tab}Hierarchische Satzstrukturen 
+\par {\pntext\f6\'B7\tab}Unterschiedliche Satztypen in derselben Datei 
+\par \f3{\pntext\f6\'B7\tab}Export-und Importsprachen von hoher Leistung und M\'e4chtigkeit \f2 
+\par \f3{\pntext\f6\'B7\tab}FLEX-Skriptsprache f\'fcr die Programmierung interaktiver Vorg\'e4nge. FLEX ist im Gegensatz zu SQL eine prozedurale Sprache, kann also z.B. Daten satzweise verarbeiten. \f2 
+\par \pard\fi-294\li294 
+\par \pard\f3 Deshalb w\'e4re es noch immer wenig aussichtsreich, ein Bibliothekssystem mit SQL entwickeln zu wollen, um damit \i\f2 allegro\i0\f3  letztlich abschaffen zu k\'f6nnen. Das bedeutet, \i\f2 allegro\i0  wird schon noch eine Weile brauchbar und in einigen Projekten gar unentbehrlich bleiben. 
+\par 
+\par \f3 Warum aber, so fragt man sich immer mal wieder, k\'f6nnte man nicht die \b\f2 Vorteile\b0  beider Welten miteinander \b kombinieren\b0 ? 
+\par Das fragen insbesondere solche Anwender oder Systemverwalter, die sich gut mit RDBS auskennen, aber mit \i allegro\i0\f3  \'fcberhaupt nicht. Denn die \'e4rgern sich immer wieder, wenn sie nicht "schnell mal eben", wie sie es mit SQL gew\'f6hnt sind, eine SELECT-Auswertung und/oder ein UPDATE machen k\'f6nnen. \b\f2 aresqa\b0\f3  soll genau das m\'f6glich machen, und zwar ohne jede \i\f2 allegro\i0 -Kenntnis, insbes. ohne Parametrierung. 
+\par 
+\par \b Aber wie soll das gehen?\b0 
+\par Es \i gibt\i0\f3  ja schon einen Schritt in diese Richtung: das Men\'fc `\cf4\ul\b\f2 Tabellen erstellen\cf2\ulnone\b0 !` Eine erstellte Tabelle (manche sprechen von einer CSV-Datei,  CSV= \b C\b0 omma \b S\b0 eparated \b V\b0\f3 alues) kann man mit Word oder Excel weiterverarbeiten, aber auch in ein RDBS \'fcbernehmen. \f2 
+\par \f3 Den zweiten, noch gr\'f6\'dferen Schritt soll \b\f2 aresqa\b0\f3  machen! So arbeitet es, und so erkl\'e4rt sich auch sein Name: \f2 
+\par 
+\par \b   a\b0   \tab\b a\b0\f3 llegro-Daten ausgeben in Tabellenform, geeignet zur \'dcbernahme durch ein \f2 
+\par \b     re\b0  \tab   \b re\b0 lationales Datenbanksystem, darin Anwendung von 
+\par \b       sq\b0  \tab     \b SQ\b0\f3 L zur beliebigen Bearbeitung der Tabelle, dann R\'fcckgabe an \f2 
+\par \b          a\b0         \b a\b0 llegro : Wiedereinspeisung in die Datenbank 
+\par 
+\par Die von einer \b aresqa\b0\f3 -Aktion betroffenen S\'e4tze k\'f6nnen auf Wunsch w\'e4hrend der Aktion in der \i\f2 allegro\i0 -Datenbank alle gesperrt werden. 
+\par Hauptinstrument, das wird hier schon klar, bleibt die \i allegro\i0\f3 -Datenbank. Das RDBS wird als Bearbeitungs- und Auswertungsinstrument genutzt, nicht f\'fcr permanente Datenhaltung. Eine Art Tandem-Betrieb mit verteilten Aufgaben ist hier nicht angestrebt. Aber anders als bei der bisherigen Tabellen-Methode k\'f6nnen nun Tabellen auch vom RDBS nach \i\f2 allegro\i0  transportiert werden: 
+\par \b\i 
+\par Zugabe 1:\b0\i0\f3  Es ist auch m\'f6glich, die letzten drei Schritte ohne den ersten zu machen! Falls man in einer relationalen Datenbank einen eindeutigen Schl\'fcssel f\'fcr eine \i\f2 allegro\i0\f3 -Datenbank hat, kann man derselben auch Daten zum Einmischen \'fcbergeben, die man vorher nicht als Tabelle von ihr erhalten hatte. Diese Daten k\'f6nnen dann in vorhandene S\'e4tze eingef\'fcgt oder als neue S\'e4tze gespeichert werden. (Mit der IMPORT-UPDATE-Methode ging das immer schon, aber die \'dcbergabe RDB -> \i\f2 allegro\i0  wird nun stark erleichtert.) 
+\par \b\i 
+\par Zugabe 2:\b0\i0\f3  Neue Datens\'e4tze via Tabelle erzeugen! Wenn die erste Tabellenspalte nichts als die Ziffer 0 enth\'e4lt, dann wird aus der Zeile ein neuer \i\f2 allegro\i0\f3 -Datensatz gemacht, in welchem die Tabellenspalten gem\'e4\'df der .STR-Datei in Datenfelder verwandelt werden. \f2 
+\par 
+\par \b\i Zugabe 3:\b0\i0\f3  Die Tabellenerzeugung ist abgestimmt mit der bisherigen Methode "Tabellen erstellen". Eine f\'fcr aresqa erstellte Strukturdatei (s.u.) kann in eine Parameterdatei umgewandelt werden, mit der man in der schon bekannten Weise Tabellen f\'fcr Office-Programme u.\'e4. erzeugen kann. (Die Unterschiede liegen nur in der \'dcberschriftszeile und der optional m\'f6glichen Vorsortierung der Tabelle [bisherige Methode] sowie der Satznummern oder Prim\'e4rschl\'fcssel in der ersten Tabellenspalte [aresqa].) \f2 
+\par 
+\par \i Hinweis:\i0\f3  Die dem RDBS oder einer Tabelle \'fcbergebenen Daten stellen nie den gesamten Umfang einer Datenbank dar, sondern immer eine Auswahl bestimmter Felder oder Unterfelder aus einer Ergebnismenge oder auch aus der Gesamtbank. (Das ist schon deshalb klar, weil man mit SQL gar nicht den gesamten Datenbestand modellieren \i\f2 kann\i0\f3 .) Denn die Aufgaben, die man evtl. mit SQL l\'f6sen will, beziehen sich vermutlich nie auf die kompletten S\'e4tze und alle Satztypen mit allen Bestandteilen, sondern eben auf bestimmte Felder. Vorzugsweise werden dies Felder sein, in denen Zahlen, Geldbetr\'e4ge, Datumsangaben, Codes, Adressen oder sonstige simple Zeichenfolgen stehen, denn damit k\'f6nnen RDBS ganz exzellent jonglieren. Die "Zielgruppe" sind also nicht Katalogdaten (bibliographische Daten) im engeren Sinne, sondern in erster Linie Gesch\'e4ftsgangs\f2 daten. 
+\par 
+\par \i Vermutung:\i0\f3  In den meisten F\'e4llen wird man wohl im RDBS nur "schnell mal eben" die \'fcbergebene Tabelle in irgendeiner Weise bearbeiten und nach R\'fcckgabe wieder l\'f6schen - also gar keine eigentliche Datenbankarbeit veranstalten. Dazu reicht auch die Verwendung eines Tabellen-Editors, der CSV-Dateien einlesen und ausgeben kann.\f2 
+\par 
+\par \i Die Voraussetzung\i0\f3  f\'fcr \b\f2 aresqa\b0\f3  ist also ein vorhandenes RDBS oder wenigstens ein Tabelleneditor. Mit dem weit verbreiteten MySQL kann man diese Voraussetzung in weniger als einer Stunde auf einem normalen PC kostenlos und bequem herstellen. \f2 
+\par Man braucht: 
+\par 
+\par \pard\fi-852\li852\b MySQL Server\b0  : \f4 `\cf4\ul\b www.mysql.de\cf2\ulnone\b0 `\f2   "Downloads", \i oder\i0  von Firma MySQL AB: 
+\par \tab\f4 `\cf4\ul\b dev.mysql.com/tech-resources/articles/4.1/installer.html\cf2\ulnone\b0 `\f2 
+\par \f3\tab oder das Rundum-Paket XAMPP, in dem Apache und MySQL enthalten sind: 
+\par \tab\f4 `\cf4\ul\b www.\f5 apachefriends\f4 .\f5 org\cf2\ulnone\b0\f4 `\f2 
+\par 
+\par \pard\b Client\b0  : Konsolprogramm \f4 mysql.exe\f2  (im Serverpaket enthalten!)  
+\par \pard\tx852\tab\i oder\i0   SQLyog (\i empfohlen\i0 ) \tab `\cf4\ul\b www.webyog.com\cf2\ulnone\b0 `  
+\par \tab\i oder\i0   MySQL-Front:  \tab\f4 `\cf4\ul\b www.mysqlfront.de/download.html\cf2\ulnone\b0 `\f2 
+\par \pard 
+\par \f3 Ist nur MySQL verwendbar - was ist mit anderen Systemen? MySQL ist kostenlos und deshalb \'fcberall einsetzbar, das ist besonders f\'fcr viele allegro-Anwender ein entscheidender Punkt. Es hat zudem einen Leistungsstand erreicht, mit dem es f\'fcr die hier interessierenden Aufgabenbereiche hinter keinem anderen System zur\'fccksteht. Gleichwohl, wer \b\f2 aresqa\b0  mit einer anderen \i Engine\i0\f3  einsetzen will, etwa Oracle oder DB2, k\'f6nnte dies tun, denn die Kommunikation zwischen \i\f2 allegro \i0\f3 und RDBS erfolgt \'fcber standardm\'e4\'dfige SQL-Skripte bzw. CSV-Dateien, wie sie jedes RDBS verarbeiten kann. \f2 
+\par 
+\par 
+\par \b Dateien, die aresqa braucht 
+\par \b0 
+\par Strukturdatei \tab\b\f4 q-xyz.str\b0    \f2\tab Struktur der Tabelle (welche Felder...) 
+\par FLEXe\tab\tab\f4 aresqa1.flx\f2   \tab erstellt ein SQL-Skript und eine Tabelle, s.u. 
+\par           \tab\f4 aresqa2.flx\f2   \tab liest die Tabelle (nach Bearbeitung) wieder ein 
+\par Skript   \tab\f4 q-xyz.sql   \f2\tab\f3 Skript f\'fcr MySQL zur \'dcbernahme der Tabelle \f2 
+\par Tabelle \tab\f4 q-xyz.tab   \f2\tab Die Tabelle selbst, die vom SQL-Skript geladen wird 
+\par 
+\par Die Namen der Dateien (nicht der FLEXe) beginnen also mit  \b\f4 q- \b0\f2 . So kann man sie leicht erkennen. 
+\par \f3 Der Nutzer hat nur die Strukturdatei anzulegen, was einfach ist und von a99 unterst\'fctzt wird. \f2 
+\par \f3 So sieht die \'fcbergebene Tabelle q-xyz.tab aus: \f2 
+\par 
+\par \f4 inn1\f2 [tab]\f4 feld1\f2 [tab]\f4 feld2\f2 [tab]...[tab]\f4 feldN\f2 
+\par \f4 inn2\f2 [tab]\f4 feld1\f2 [tab]... 
+\par ... 
+\par 
+\par wobei \f4 nn1, nn2...\f3  die internen Satznummern sind, ODER geeignete eindeutige Schl\'fcssel: dann steht nicht ein \f4 i\f2  am Zeilenanfang, sondern ein | und die Registernummer. 
+\par 
+\par \f3 Die wichtigste Komponente ist die Strukturdatei. Sie ist denkbar einfach konstruiert. So sieht eine Strukturdatei f\'fcr 4 Felder aus: \f2 
+\par 
+\par \f4 #kk1     Name des Feldes #kk1 
+\par &kk2     Name des Feldes #kk2 
+\par #kk3$s   Name des Teilfelds $s von #kk3 
+\par #kk4$t   Name des Teilfelds $t von #kk4 
+\par 
+\par \f3 Das Feld #kk2 soll dem RDBS \'fcbergeben werden, also in der Tabelle auftauchen, bei der R\'fcckgabe an allegro aber nicht mit \'fcbernommen werden. Deshalb beginnt die Zeile mit & statt #. \f2 
+\par $s und $t sind Teilfeldcodes. Der Inhalt von feld1 wird also aus #kk1 entnommen, feld2 aus #kk2, feld3 aus dem Teilfeld s von #kk3, Feld 4 aus dem Teilfeld t von #kk4 ... 
+\par 
+\par \f3 Die Strukturdatei wird zuerst gebraucht, um die Tabellendatei zu erstellen, aber dann auch hinterher, wenn die Tabelle zur\'fcckgeholt werden soll, um die Spalten dann wieder den Feldnummern und Teilfeldern zuzuordnen (denn in der Tabelle selbst stehen ja diese Angaben nicht drin).  \f2 
+\par 
+\par \b Vorgang 
+\par 
+\par \b0 FLEX \b\f4 aresqa1.flx\b0\f2  erstellt eine Tabelle mit Hilfe der Strukturdatei \b\f4 q-xyz.str\b0\f2  : 
+\par 
+\par   Ergebnismenge bilden 
+\par      \f4 aresqa1.flx\f3  ausf\'fchren: \b\f4 q-xyz.tab\b0\f2  und \b\f4 q-xyz.sql\b0\f2  entstehen 
+\par \pard\fi-1988\li1988          MySQL Client aktivieren 
+\par             Skript \f4 q-xyz.sql\f2  starten (\f4 q-xyz.tab\f2  wird geladen, darin steckt die Ergebnismenge als Tabelle) 
+\par \pard             Aktionen mit SQL... 
+\par          \f4 q-xyz.tab\f2  wieder ausgeben 
+\par      \f4 aresqa2.flx\f3  ausf\'fchren: \f4 q-xyz.tab\f2  wieder einlesen (mit Hilfe von \f4 q-xyz.str\f2 ) 
+\par \f3   Ergebnismenge ist ver\'e4ndert \f2 
+\par 
+\par \i\f3\'dcbrigens, wie oben schon angedeutet:\i0\f2  \f4 aresqa2.flx\f2  kann auch eine Tabelle einlesen, die vorher \i nicht\i0  mit \f4 aresqa1\f2  erstellt wurde, sondern die man mit anderen Mitteln selber produziert hat, die aber in Form, Feldfolge und -inhalten der Strukturdatei zu entsprechen hat. 
+\par 
+\par 
+\par \b Mehr zu den Dateien 
+\par \b0 Nun die genauere Beschreibung der Strukturdatei, der Tabelle und des sql-Skripts:\b 
+\par 
+\par \f4 q-xyz.str   (\b0\f2 Strukturdatei\b\f4 )\b0\f2 
+\par \f3    Das ist die Liste der Felder (Nummer und Name), aus denen die Tabelle zu bilden ist. Die erste Tabellenspalte darf nur ein eindeutiger Schl\'fcssel sein. Im einfachsten Fall ist es automatisch die interne Satznummer, mit dem Buchstaben  \b\f4 i\b0\f2   davor. 
+\par \f3 Man kann aber einen anderen Schl\'fcssel verlangen, indem man die .STR-Datei mit einem p-Befehl beginnt (kleines p!): \f2 
+\par    \b\f4 pX\b0  \f3 = eindeutiger Schl\'fcssel (Erzeugung bei Sprungmarke X in den Indexparametern), \f2 
+\par \tab Sonderfall \b\f4 p@\b0\f3  : Prim\'e4rschl\'fcssel \f2 
+\par      Weitere Zeilen beginnen mit # oder & 
+\par \f4   #FeldNr1     Feldname1 
+\par   #FeldNr2$x   Feldname2 
+\par   ... 
+\par   &FeldNr\i n\i0 (mb) Feldname\i n\i0  \f2   Feld\i n\i0\f3  nur in MySQL anzeigen, bei R\'fcckf\'fchrung ignorieren! \f2 
+\par \f4   #FeldNrN     FeldnameN\f2  
+\par 
+\par Die Feldname-Angaben bilden dann die Spaltennamen der MySQL-Tabelle! Vor Feldname\cf3\i\f4 n\cf2\i0\f2  (n=1...N) hat jeweils mindestens ein Leerzeichen zu stehen, kein TAB-Zeichen. 
+\par \f3 Die erste Spalte aber ist etwas besonderes: sie enth\'e4lt im Normalfall (ohne p-Befehl) die interne Satznummer, mit Buchstabe \cf3\f4 i\cf2\f2  davor. 
+\par \i Alternativ\i0\f3  ist die erste Spalte ein eindeutiger Schl\'fcssel, der durch den p-Befehl deklariert wird. \f2 
+\par Folgen kann eine Zeile, die mit \b\f4 |r xy\b0\f3  beginnt. Sie besagt: die erste Spalte ist ein Schl\'fcssel, der im Register r steht und dort das Pr\'e4fix xy hat. Beim Zur\'fccklesen der Tabelle wird dann jeweils der Inhalt der ersten Spalte genommen, mit xy vorn erg\'e4nzt und im Register r gesucht, um den zugeh\'f6rigen Satz zu finden. \f2 
+\par Jede Zeile, die mit # beginnt oder mit &, entspricht einer Tabellenspalte. 
+\par \f3 Zeilen, die mit & statt # beginnen, erzeugen (in aresqa1.flx) eine Tabellenspalte in genau derselben Weise wie die #-Zeilen, aber diese Tabellenspalten werden bei R\'fcckf\'fchrung der Tabelle (in aresqa2.flx) nicht \'fcbernommen. Sie dienen nur dazu, die Tabelle dem menschlichen Bearbeiter im RDBS leichter verst\'e4ndlich zu machen. Z.B. kann ein Name darin stehen, der als solcher nicht ver\'e4ndert werden soll. Manipulationsbefehle (\f4 mb\f3 ) sind nur bei solchen Feldern anwendbar. D.h. die \'fcbergebenen und zur Bearbeitung vorgesehenen Feld- und Teilfeldinhalte m\'fcssen vollst\'e4ndige, unver\'e4nderte Inhalte sein. \f2 
+\par 
+\par Wenn UTF-8 zum Einsatz kommen soll: Als Hilfe zur Umcodierung nach UTF-8 wird die Parameterdatei \f4 p-unicod.apr\f3  gebraucht. Diese kann unver\'e4ndert f\'fcr andere Konfigurationen benutzt werden. (Kopie machen: p-unicod.bpr, wenn eine B.CFG im Einsatz ist.) \f2 
+\par \i 
+\par Hinweis\i0  zum p-Befehl: 
+\par \f3 Wenn man mit dem p-Befehl einen anderen eindeutigen Schl\'fcssel w\'e4hlt (der auch bei jedem Satz auftritt!), darf bei der Sprungmarke X  kein #u1 vorkommen, m.a.W. dort darf nur mit echten Kategorienummern gearbeitet werden. \f2 
+\par 
+\par \b\f4 q-xyz.tab\b0\f2    [Codierung in dieser Datei normalerweise ANSI, wahlweise UTF-8] 
+\par    Diese Datei wird von aresqa1.flx automatisch erstellt. 
+\par \f3    Die erste Spalte enth\'e4lt einen eindeutigen Schl\'fcssel der allegro-Datenbank: \f2 
+\par    \f4 iInterneNummer 
+\par    \f2   ODER   \f4 Schluessel\f3     eindeutiger Schl\'fcssel, dessen Pr\'e4fix im |-Befehl der Strukturdatei steht \f2 
+\par \f4    \f2   ODER   |\f4 rSchluessel\f3     r=1...9,:,;  eindeutiger Schl\'fcssel im Reg. r \f2 
+\par    Inhalt von #feld1 
+\par    Inhalt von Teilfeld $x aus #feld2 
+\par    Inhalt von ... #feldN 
+\par \f3 Diese Inhalte bilden pro Satz jeweils nur eine Zeile, die Datenfelder sind durch TAB (ASCII-Code 09) getrennt. Das ist die allgemein \'fcbliche Struktur einer CSV-Datei, aber eben nicht mit Komma, sondern TAB als Trennung. \f2 
+\par 
+\par \b\f4 q-xyz.sql\b0\f2 
+\par \f3    Auch dieses Skript wird von aresqa1.flx automatisch erstellt. Es enth\'e4lt die f\'fcr MySQL n\'f6tigen Befehle, um die Datenbank und deren Tabelle anzulegen (beide hei\'dfen immer "aresqa") und sodann das Laden der q-xyz.tab zu veranlassen. So sieht das Skript aus: \f2 
+\par 
+\par \f4 /* 
+\par   Skript zum Erstellen und Einlesen einer \b aresqa\b0 -Tabelle 
+\par   2004-11-13 
+\par 
+\par \f5 Ausf\'fchren: \f4 
+\par   C:\\Programme\\MySQL\\MySQLServer4.1\\bin>mysql <skriptdatei 
+\par   danach ist die Datenbank aresqa vorhanden, sie hat nur 
+\par   1 Tabelle, und die heisst "aresqa". Wenn sie schon existierte, 
+\par \f5   wird sie gel\'f6scht! \f4 
+\par */ 
+\par 
+\par CREATE DATABASE IF NOT EXISTS `aresqa`; 
+\par 
+\par USE `aresqa`; 
+\par 
+\par DROP TABLE IF EXISTS `aresqa`; 
+\par 
+\par /* Die Tabellendefinition muss jeweils erstellt werden! */ 
+\par /* Die Feldauswahl ergibt sich aus aresqa1.flx und Strukturdatei */ 
+\par 
+\par CREATE TABLE `aresqa` ( 
+\par    `Id` varchar(25) NOT NULL, 
+\par    `ISBN` varchar(255) default NULL, 
+\par    `Signatur` varchar(255) default NULL, 
+\par    `jahr` varchar(255) default NULL,                                                                                                                                                                                                                                           
+\par    `verlag` varchar(255) default NULL, 
+\par    PRIMARY KEY  (`Id`) 
+\par  ) ; 
+\par 
+\par /* Die Datei aresqa.tab wird auch von aresqa1.flx erstellt, 
+\par   darin stehen die Datenzeilen, ANSI- oder UTF-8 codiert mit TAB als Trenner! 
+\par */ 
+\par 
+\par LOAD DATA CONCURRENT LOCAL 
+\par  INFILE "c:/allegro/q-xyz.tab" 
+\par  INTO TABLE aresqa 
+\par  FIELDS TERMINATED BY '\\t' 
+\par  LINES TERMINATED BY "\\r\\n" 
+\par  ; 
+\par 
+\par \f5 /* Die R\'fcckgabe erfolgt dann sp\'e4ter mit: */ \f4 
+\par use aresqa 
+\par SELECT * from aresqa INTO OUTFILE "c:/allegro/q-xyz.tab" 
+\par \f3 Statt c:\\allegro hat hier das Arbeitsverzeichnis des Nutzers zu stehen, auf dem a99 l\'e4uft. \f2 
+\par \f4 
+\par \i\f2 Tip:\i0 
+\par Diese zwei Befehle kann man auch in eine Datei out.sql schreiben und dann mit dem Aufruf 
+\par \f4 mysql <out.sql 
+\par \f2 von der Konsole aus starten. 
+\par \f3 Mit dem Clientprogramm SQLyog macht man es so: 
+\par SQLyog starten, Server localhost anw\'e4hlen, dann 
+\par Men\'fc Tools / Import from SQL Dump 
+\par und dann im Feld "File to execute" die entstandene *.sql  angeben. Mit F9 die neu entstandene Datenbank namens "aresqa" links im "object browser" sichtbar. Anw\'e4hlen, darin die Tabelle namens "aresqa" anw\'e4hlen, und rechts im unteren Bereich mit "Table Data" die Daten sichtbar machen. 
+\par Daten in der Tabelle editieren: F11. 
+\par F\'fcr weitere M\'f6glichkeiten konsultiere man die \f2 
+\par 
+\par \b Arbeitsweise in \i a99\b0\i0 
+\par \f3 Man startet auf dem Export-Komfortmen\'fc die Funktion: "Tabellen erstellen". \f2 
+\par Dort gibt es ab V25 die Wahl zwischen "Office" und "SQL" - einfach anklicken. 
+\par \f3 Dann die Funktion w\'e4hlen: "Neue Tabellenstruktur einrichten" \f2 
+\par \f3 Im Anzeigefeld erscheint eine kurze Erkl\'e4rung, wie man eine Strukturdatei einzugeben hat. Man gibt die n\'f6tigen Zeilen ein, dann Alt+9. Damit startet aresqa1.flx, speichert die Strukturdatei und produziert die Tabellendatei zur aktuellen Ergebnismenge bzw. zur Gesamtbank. \f2 
+\par \f3 Nach dem Bearbeiten dieser Tabelle im RDBS holt man sie zur\'fcck mit dem Aufruf von aresqa2.flx. Daf\'fcr gibt es den Men\'fcpunkt "Tabellendatei einlesen". Erwartet wird dann in der Nutzervariablen #uqQ  der Name der Struktur, die Tabellendatei hat auf dem Arbeitsverzeichnis des Anwenders zu liegen,  Strukturdatei und Tabelle m\'fcssen sich selbstverst\'e4ndlich entsprechen. \f2 
+\par 
+\par \b Hilfsfunktion: Listen-Viewer und -Editor\b0 
+\par Mit der FLEX-Funktion `\cf4\ul\b aresqa\cf2\ulnone\b0 ` kann man fast alle Textdateien betrachten und bearbeiten, auch Tabellendateien.  
+\par Schnell ausprobieren?  Geben Sie im Schreibfeld mal ein \b d\b0  ein, mehr nicht. 
+\par \f4 
+\par 
+\par \b\f2 Beschreibung der Funktionen\b0  
+\par \f3 Die Cursor-Tasten funktionieren, wie man es erwartet. Mit Tab-Taste springt man zwischen der Liste und dem Eingabefeld "Find" hin und her.  Die Gr\'f6\'dfe des Fensters kann man frei variieren. \f2 
+\par 
+\par Im Feld "\b Find\b0 " kann man eingeben: 
+\par 
+\par -- eine #Zeilennummer, um zu der betreffenden Zeile zu springen 
+\par \f3      (wenn es eine gr\'f6\'dfere Liste ist), also z.B. #1001 f\'fcr Zeile 1001. \f2 
+\par Oder  (das kennt man vom ViewListen- und Kurzlistenfenster) 
+\par \pard\fi-426\li426\f3 -- ein Suchwort (beliebige Zeichenkombination) wobei Gro\'df-Kleinschreibung gleich \f2 
+\par \pard\f3      wertig ist, auch Umlaute k\'f6nnen als solche oder aufgel\'f6st eingegeben werden. \f2 
+\par \pard\fi-426\li426      Mit [\b +\b0 ] und [\b -\b0\f3 ] springt man zum n\'e4chsten / vorigen Vorkommnis des Suchworts. \f2 
+\par \pard      \i Sonderf\f3\'e4\f2 ll\f3 e\f2 :\i0  
+\par \f3\tab\f2 Setzt man ^ vor das Suchwort, wird nur am Zeilenanfang gesucht. 
+\par \f3\tab Wenn eine Kategorienummer zu suchen ist: \\ vor das # setzen\f2 
+\par \pard\fi-426\li426      \b Suchen und Ersetzen:\b0   (!) 
+\par \tab Mit _abc_xyz_ bzw. ,abc,xyz, wird die Zeichenkette abc durch xyz ersetzt. 
+\par \pard 
+\par Mit [\b Code\b0 ] wird die Anzeige zwischen ASCII (DOS) und ANSI (Windows) umgeschaltet. 
+\par \f3 Wenn die Umlaute falsch erscheinen, dr\'fccken Sie auf diesen Knopf. (Nicht immer kann das Programm korrekt erkennen, welche Codierung die Datei hat.) \f2 
+\par 
+\par \f3 [Enter]-Taste zeigt die ausgew\'e4hlte Zeile in einem Eingabefeld, wo man sie \'e4ndern kann. \f2 
+\par 
+\par \f3 [Einfg]-Taste erm\'f6glicht das Eingeben einer neuen Zeile. Sie wird VOR die \f2 
+\par \f3    momentan markierte Zeile eingef\'fcgt. \f2 
+\par 
+\par \f3 [Entf]-Taste l\'f6scht die markierte Zeile. \f2 
+\par 
+\par [\b Add\b0\f3 ] Erm\'f6glicht die Eingabe neuer Zeilen, die ans Ende geh\'e4ngt werden. Man gelangt in \f2 
+\par    eine Eingabeschleife, damit man bequem mehrere Zeilen hintereinander eingeben kann, 
+\par \f3    bis man das Eingabefeld mit [Esc]-Taste schlie\'dft. \f2 
+\par 
+\par [\b Copy\b0 ] Kopiert die markierte Zeile in das Eingabefeld. Der bearbeitete Text wird dann als 
+\par \f3     neue Zeile unter der markierten Zeile eingef\'fcgt. \f2 
+\par 
+\par [\b Undo\b0\f3 ] Macht die letzte Editier-Aktion r\'fcckg\'e4ngig. \f2 
+\par 
+\par [\b Redo\b0 ] Umgekehrt. Beides geht mehrfach hintereinander! Die Markierung springt jeweils auf 
+\par \f3    diejenige Zeile, wo die \'c4nderung sich ausgewirkt hat. Diese Funktionen arbeiten zeilen- \f2 
+\par    bezogen, nicht zeichenweise. Ist man am Anfangs- bzw. Endpunkt der aufgezeichneten 
+\par    Aktionen angekommen, wird der Undo- bzw. Redo-Button grau, damit man sieht: mehr 
+\par    geht nicht. 
+\par 
+\par Mit Maus kann man eine einzelne Zeile verschieben. Sie wird dann \i vor\i0  diejenige 
+\par \f3 Zeile geschoben, auf der man die linke Maustaste freigibt. \f2 
+\par \i Anm.:\i0\f3  Ein Markieren und Kopieren oder L\'f6schen mehrerer Zeilen auf einmal ist nicht vorgesehen. \f2 
+\par \f3 Denn dies w\'fcrde die Funktionen [Undo] und [Redo] sehr erschweren. \f2 
+\par 
+\par [\b Save\b0\f3 ] schreibt, ohne das Fenster zu schlie\'dfen, die Tabelle in die Datei  aresqa.lst. \f2 
+\par \f3 Was damit geschieht, wenn man das Fenster schlie\'dft, ist Sache des FLEXes, in den \f2 
+\par der aresqa-Aufruf eingebaut ist. Nach erfolgter Speicherung wird der Button inaktiv 
+\par \f3 (grau), aber die n\'e4chste \'c4nderung aktiviert ihn wieder. \f2 
+\par \i Beispiele:\i0  onerror.flx, aq.flx 
+\par In welchem Code gespeichert wird, sieht man in dem Feld unter dem Save-Button. 
+\par Mit dem Button x daneben kann man den Speichercode umschalten. So ist es ganz 
+\par einfach, eine ASCII-Datei in ANSI zu wandeln und umgekehrt. 
+\par 
+\par \f3 Mit Taste # erh\'e4lt man die vollst\'e4ndige Anzeige der ausgew\'e4hlten Zeile. N\'fctzlich, wenn diese sehr lang ist. Mit Taste [Enter] sieht man auch die ganze Zeile, aber zum Bearbeiten. \f2 
+\par 
+\par \f3 Das Statusfeld (\'fcber [Code]) zeigt zwei Zahlen: die Nummer der markierten Zeile und die Gesamtzahl der Zeilen. \f2 
+\par \f3 Bei Bearbeitungen \'e4ndern sich diese Zahlen entsprechend. \f2 
+\par 
+\par Hinweis zu \i alcarta:\i0  Darin (und auch in \i a99\i0\f3 , wenn die Berechtigung unter 5 liegt) fehlen die Buttons unter dem Statusfeld, also alle Bearbeitungsfunktionen. In a99 kann man zus\'e4tzlich das Bearbeiten ganz verhindern, wenn man die Funktion mit dem FLEX-Befehl \b\f4 A\b0 resqa\f2  statt \b\f4 a\b0 resqa\f2  aufruft. 
+\par 
+\par [\b OK\b0 ] und [\b Esc\b0\f3 ] schlie\'dfen das Fenster. In beiden F\'e4llen wird, wenn \'c4nderungen noch nicht gespeichert sind, zur Entscheidung aufgefordert. Die Originaldatei wird nicht \'fcberschrieben, siehe [Save], es entsteht nur die Datei aresqa.lst. \f2 
+\par \f3 Der Unterschied ist nur: bei OK steht anschlie\'dfend die zuletzt markierte Zeile in der "internen Variablen" (iV) und kann dann im FLEX ausgewertet werden, nach Esc dagegen ist die iV leer. \f2 
+\par 
+\par \b Sonderfunktionen bei ViewListen\b0 
+\par Hat man eine Datei vom Typ .vw vor sich, dann gilt: 
+\par 1. Zeilen, die mit h beginnen, bewirken sofortige Anzeige des Hilfetextes 
+\par 2. Zeilen, die mit \b\f4 i\b0\i\f2 nummer\i0  oder \i nummer\i0\f3  beginnen, bewirken direkte Anzeige des zugeh\'f6rigen \f2 
+\par     Satzes. 
+\par \f3 3. Beim Speichern werden die Zeilen auf gleiche L\'e4nge gebracht, damit die Datei dann sofort \f2 
+\par \f3     die korrekte Struktur hat. Dazu wird die l\'e4ngste Zeile ermittelt und die anderen auf diese \f2 
+\par \f3     L\'e4nge aufgef\'fcllt. \f2 
+\par Die Punkte 1 und 2 entsprechen dem, was man von den ViewListen kennt. Hier jedoch sind die vor dem | stehenden Befehle bzw. Nummern auch zu sehen. So kann man schon beim Bearbeiten einer ViewListe sehen, ob sie funktioniert! 
+\par \f4 
+\par  
+\par 
+\par ?http://www.allegro-c.de/a-r.htm=x jan http://www.allegro-c.de/a-r.htm 
+\par ?Tabellen erstellen!=h table 
+\par ?www.mysql.de=x jan http://www.mysql.de 
+\par ?www.webyog.com=x jan http://www.webyog.com 
+\par ?dev.mysql.com/tech-resources/articles/4.1/installer.html=x jan http://dev.mysql.com/tech-resources/articles/4.1/installer.html 
+\par ?www.mysqlfront.de/download.html=x jan http://www.mysqlfront.de/download.html 
+\par ?aresqa=h xaresqa 
+\par ?Kurzbeschreibung mit Beispielen=h aq 
+\par ?aresqa-Listenfenster=h =Hilfsfunktion 
+\par 
+\par }
+ 

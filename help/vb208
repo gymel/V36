@@ -1,0 +1,86 @@
+
+Verlautbarung 208 der Entw.Abt.                              2008-07-21
+-------------------------------
+
+V28.7 : Nebenwirkungen und Risiken beseitigt
+============================================
+
+Volltextsuche: unerfreuliche Nebenwirkung beseitigt
+---------------------------------------------------
+Wenn man bei der Volltextsuche in der Gesamtbank einen Suchbegriff
+eingibt, der die Zeichenfolge  \.  enthaelt (d.h. es soll ein
+Punkt gefunden werden, gibt es eine Nebenwirkung, die schwer zu
+verstehen ist: im Reservespeicher stehen anschliessend viele
+Saetze, die nur aus einer #99e (bzw. dem Feld fuer das letzte
+Aenderungsdatum) bestehen. Aber nur, wenn der aktuelle Satz
+(im Moment, wo die Suche gestartet wird) eine #99e enthaelt.
+Diese Nebenwirkung wurde ausgemerzt.
+
+
+Sicherheitsrisiken entschaerft
+------------------------------
+Kollege Berger hatte einige denkbare Sicherheitsluecken beschrieben,
+die im FLEX-System bestehen koennten, z.B. mit geschickt eingebetteten
+FLEXen in kenntnisreich selbstgebauten Hilfetexten. Ueber das Internet
+koennten diese Luecken alle nicht ausgenutzt werden, nur in lokalen 
+Systemen, d.h. wenn es da einen gewieften Saboteur gaebe. Das ist zwar
+kaum wahrscheinlich, aber ausmerzen sollte man solche Potentiale
+schon. Das ist geschehen.
+
+
+aLF
+---
+Mehrere kleinere Verbesserungen wurden auf Anregungen von Frau
+Panski (Berlin) und Herrn Schleifenbaum (Kiel) in die FLEXe
+eingebaut. Letzterer hat uebrigens auﬂerhalb der Liste viele
+Verbesserungen eingebracht und hat alles modifiziert zum
+Einsatz mit dem Pica-Format.
+
+
+Anzeigefeld oben oder unten ergaenzen  [nicht neu, aber kaum bekannt]
+-------------------------------------
+So etwas geht seit 2001 (s. Vb149a), die Beschreibung war aber seitdem
+etwas schwer zu finden. Sie steht in xccopy.rtf, dem Text fuer die
+Zwischenablage-Funktionen. Man geht so vor:
+
+   1. Text in die iV schreiben und in die Zw.Abl. kopieren
+var ...
+ccopy
+
+   2. Zw.Abl.-Inhalt ins Anzeigefeld kopieren.
+      Dafuer gibt es drei Moeglichkeiten:
+cpaste d    // an der Schreibmarkenposition einfuegen
+cpaste d+   // unten anhaengen
+cpaste d0   // oben druebersetzen (!)
+
+   3. Sonderfall: Anzeigeinhalt komplett ersetzen
+var ""
+ins IV
+cpaste d
+
+Hinweis: Mit  h +dateiname  kann man auch einen Dateiinhalt unten
+         an den angezeigten Text anhaengen. Es kann sich bei der
+         Datei um .TXT oder um .RTF handeln.
+Beispiel: Man will zwei Zeilen oben einfuegen.
+
+var "ACHTUNG" n "WICHTIGE INFORMATION" n
+ccopy
+cpaste d0
+
+
+Aktualisierte Dokumentationen
+-----------------------------
+
+http://www.allegro-c.de/doku/avanti/
+   Bei avanti hatten sich ja einpaar Dinge veraendert, deshalb wurde
+   die Doku fuer die Installation aktualisiert.
+
+http://www.allegro-c.de/grenzen.htm
+   Grenzen - Schranken - Barrieren
+   Einige Zahlen stimmten nicht mehr oder waren unvollstaendig,
+   der Text wurde ferner in einigen Details ueberarbeitet.
+   Dieser Text wird auch als Teil von V28.7 mitgeliefert und
+   kommt auf das HTML-Unterverzeichnis zu liegen. Man erhaelt
+   ihn angezeigt ueber die Quick-Liste, wo es eine Zeile
+   mit "Grenzen, ..." gibt.
+

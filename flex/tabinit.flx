@@ -1,0 +1,54 @@
+  TABINIT.FLX : Neue Tabellenstruktur einrichten
+  2001-02-07    (aufruf aus table.rtf)
+
+  Datei zum Schreiben oeffnen:
+open x tab.str
+
+
+  Diese Zeilen in die Datei ausgeben
+wri "     Tabellenstruktur einrichten" n
+wri "     ---------------------------" n
+wri "  1. Machen Sie zuerst, was unter ACHTUNG steht (weiter unten)" n n
+wri "  2. Sehen Sie sich ganz unten die Feldliste an: Nehmen Sie alle Zeilen" n
+wri "     heraus, die Sie nicht in der Tabelle haben wollen! Sie k”nnen die" n
+wri "     Zeilen auch beliebig umordnen!" n
+wri "     Zwischen Feldnummer und Bezeichnung muessen 2 oder mehr Blanks sein!" n
+wri "         (also z.B.   #20  Titel )" n
+wri "     Diese Feldbezeichnungen kommen dann in die Tabellen-šberschrift" n n
+wri "  3. Mit  Alt+9  nach Bearbeitung die Struktur speichern (nicht Alt+F9!)" n
+wri "          =====" n
+wri "  ACHTUNG - diese 4 Zeilen bearbeiten:" n
+wri "T-xyz   <-- Tragen Sie hier statt  xyz  einen eigenen Namen ein, m”gl. kurz, ohne Blank" n n
+
+wri "ANSI    <-- Diese Zeile wegnehmen, wenn Ausgabe in DOS-ASCII gewnscht." n
+wri "TEXT    <-- Setzen Sie NUM statt TEXT ein, wenn das Sortierfeld eine Zahl ist!" n
+wri "!nnn    <-- Tragen Sie hier statt nnn die Nummer Ihres Sortierfeldes ein" n
+wri "           Sie k”nnen eine oder mehrere Feldnummern einsetzen" n
+wri "           (dann mehrere Zeilen mit ! am Anfang)" n
+wri "           Die Tabelle wird dann nach diesen Feldern sortiert," n
+wri "           und zwar nach dem ersten davon, das im Satz jeweils vorkommt" n
+wri "           Wenn in einem Satz keins davon vorkommt, wird er nicht ausgegeben" n n n
+wri "   Und jetzt die Liste aller Felder der Datenbank (zu Punkt 2.)" n
+wri "   Nehmen Sie alle weg, die nicht in der Tabelle stehen sollen," n
+wri "   Die Reihenfolge kann ge„ndert werden, die Feldbezeichnungen auch." n
+wri "   Aber nicht die Nummern! Zwischen Nummer und Feldbezeichnung " n
+wri "   mindestens zwei Leerzeichen." n
+wri "   Wenn nur ein Teilfeld gewnscht ist, z.B. u von #90, dann schreiben Sie" n
+wri "   #90$u " n n
+
+
+  Liste der Kategorien aus CFG in katlist.asy schreiben
+katlist
+  und diese Datei an die offene Datei tab.str anhaengen
+wri Fkatlist.asy
+  tab.str schliessen
+close x
+  Hilfsdatei weg
+del katlist.asy
+  und als Hilfetext anzeigen. Muss dann bearbeitet werden
+help tab.str
+
+  FLEX fuer Alt+9 vorbereiten
+var "X tabstart"
+ins #uX9
+

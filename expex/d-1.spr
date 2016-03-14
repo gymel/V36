@@ -1,0 +1,120 @@
+ Online catalog display of MARC records, ISBD arrangement
+ --------------------------------------------------------
+
+ D-1.SPR    960205
+
+ll=72	  line length
+  
+dx=1      color codes enabled
+
+4=C       new line (a useful "texel")
+
+   Color settings:  (remove these lines if not wanted)
+   (numbers 71 to 78 are widely used for colors yet one could use others) 
+71=27 91 48 59 51 49 59 52 55 109          red
+72=27 91 49 59 51 50 59 52 55 109          green
+73=27 91 48 59 51 51 59 52 55 109          yellow
+74=27 91 48 59 51 52 59 52 55 109          blue
+75=27 91 48 59 51 53 59 52 55 109          magenta
+76=27 91 48 59 51 48 59 52 55 109          normal
+77=27 91 49 59 51 54 59 52 55 109          cyan
+78=27 91 48 59 51 55 59 52 55 109          white
+       (the figures  ^^^^^^^^  stand for a white background)
+
+    first set the counters for the added entries to 1:
+                         (for arabic and roman numerals!)
+#dt p"1" e1 drn arn      #dt used as auxiliary here
+#dt p"1" e1 dan aan      now #uan and #urn are "1"
+
+  First, the call#
+
+#050 { %12 } a     LC Class    for the call#, we set line width to 12
+#050 b C           Cutter
+
+#t{ %76 $ #13 &14 }    line width 76, goto 1st line, indentation 13, pos 14
+
+  Call number is finished,
+  now the text of the record:
+
+#t74     turn BLUE on for author's name  (try other colors)
+#100 a F", " P":"
+#t76     turn normal color on
+
+#t4     new line  (texel 4, see above)
+
+#240 a p"["              uniform title
+#240 l p" "             language
+#240 m F"," p" "         instrument
+#240 k F"," p" "         subdivision
+
+#240 p"]" e1 P4      postfix for #240
+
+#245 a F" :/"
+#245 h p" " F" :/"
+
+#245 b " : " F"./ "
+#245 c " / " F". "
+#t{ "." }                put a "." after all the title stuff
+
+  the imprint is a bit tricky:
+
+#260 C b"a" ,"_a_ ; _" ,"_; ;_;_" ,"_b_ : _" ,"_ : :_ :_" ,"_c_, _" ,"_,, _, _" p"    " F". " P"."
+             
+             this means: replace  "a"  by  " ; "
+
+
+
+  added entries (roman numerals)
+#t4
+
+#700 ++ >A m>A
+#245 i5,1 >r
+#245 i5,1 p"Title. " e7    added entry tracing for title
+
+ 컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴
+ What follows is explanatory, and not part of the experiment. Do not change.
+#t{27 91 49 59 51 48 59 52 55 109}
+#t{C C C "�"*56 C "Using parameter file D-1.SPR" C "This is a full ISBD catalog card-like display "}
+#t{C "A more complete version, for full USMARC, is in D-1.UPR"}
+
+
+
+#+#    end of display
+
+  --------- Subroutines -------------------------------
+
+#(A    added entries persons
+#>r    generate next Roman numeral
+#cc b"a" e"d" ,"_e_ [_" ,"_?_ -- _"
+#cc d p" (" P")"
+#cc b"d" b"?" p" -- " ,"_e_ [_" ,"_?_ -- _"
+#)A
+ 
+
+#(r     generate next Roman numeral (for added entries)
+#urn x">1" p". " e2     write ". " if number > 1
+#t73   switch yellow on for the Roman numeral
+#urn x"==1" p"   I. !" e"!"   This method of adding a unique character ('!')
+#urn x"==2" p"II. !" e"!"       to the end of the prefix and then using e"!"
+#urn x"==3" p"III. !" e"!"      to cut at this position saves us from 
+#urn x"==4" p"IV. !" e"!"       having to count the prefix characters
+#urn x"==5" p"V. !" e"!"
+#urn x"==6" p"VI. !" e"!"
+#urn x"==7" p"VII. !" e"!"
+#urn x"==8" p"VIII. !" e"!"
+#urn x"==9" p"IX. !" e"!"
+#urn x"==10" p"X. !" e"!"
+#urn x"==11" p"XI. !" e"!"
+#urn x"==12" p"XII. !" e"!"
+#urn x"==13" p"XIII. !" e"!"
+#urn x"==14" p"XIV. !" e"!"
+#urn x"==15" p"XV. !" e"!"
+#urn x"==16" p"XVI. !" e"!"
+#urn x"==17" p"XVII. !" e"!"
+#urn x"==18" p"XVIII. !" e"!"
+#urn x"==19" p"XIX. !" e"!"
+#urn x"==20" p"XX. !" e"!"
+#t76    return to normal color
+#urn x"+1" e"." =rn
+#)r
+

@@ -1,0 +1,82 @@
+  HTMFORM.FLX : Beispiel fuer HTML-Formular fuer JanaS
+  2003-12-03    Davon kann man sich beliebig viele Varianten machen, um
+                die Bearbeitung und Eingabe in JanaS zu erledigen
+
+  HTM-Datei wird auf dem TEMP-Verz. angelegt:
+var M "form.htm"
+open x
+
+  Als Kopf wird die Datei  r1.ht  hineinkopiert: (liegt auf ProgDir\html)
+  Hier kann man einen eigenen Kopf gestalten...
+var P "html\\r1.ht"
+wri F
+
+  Die Parameter e-u.apr werden gebraucht fuer "write", s.u.
+xport p e-u
+  Das eigentliche Formular aufbereiten
+
+  Bei "action" kann ein eigener FLEX angegeben werden!
+  Hier jax.flx: Erledigt die Rueckgabe und das Speichern, unabhaengig vom
+                Inhalt des Formulars
+wri '<form action="flex:X jax@" method=POST>' n
+  Der Button f. das Absenden des Formulars:
+wri '<input type="submit" value="SEND">' n
+  Ausgewaehlte Felder als Tabelle praesentieren
+wri '<table>'
+  Vorbereitende Befehle, die sich auf "write" auswirken
+  Sprungmarke #-X fuer den write-Befehl (Auswirkung: Umwandlung nach UTF-8)
+  !!! Achtung: wenn intern UTF-8, dann die folgenden 2 Befehle nicht!!!
+dow wX
+  Akzente vertauschen
+dow a
+
+  Jetzt die Datenfelder als Formularfeld-Inhalte, name="nn" wichtig fuer die Rueckgabe
+
+wri '<tr><td>Titel:</td><td> <input name="20" size=90 maxlength=520 value="' #20 '"></td></tr>' n
+wri '<tr><td>Verfasser:</td><td> <input name="40" size=40 maxlength=120 value="' #40 '"></td></tr>' n
+wri '<tr><td>Jahr:</td><td> <input name="76" size=40 maxlength=120 value="' #76 '"></td></tr>' n
+wri '<tr><td>Ort:</td><td> <input name="74" size=40 maxlength=120 value="' #74 '"></td></tr>' n
+  Beispiel f. ein Unterfeld
+wri '<tr><td>Land (Code):</td><td> <input name="$g-#74" size=40 maxlength=120 value="' #74$g '"></td></tr>' n
+wri '<tr><td>Signatur:</td><td> <input name="90" size=40 maxlength=120 value="' #90 '"></td></tr>' n
+wri '<tr><td>Anmerk.:</td><td> <input name="81" size=90 maxlength=120 value="' #81 '"></td></tr>' n
+  Hier evtl. weitere Felder
+
+  Tebelle beenden
+wri "</table>"
+
+  Textarea fuer weitere Felder, mit Kategorienummer(!)
+   hier dann auch beliebige Eingabe anderer Felder moeglich
+   oder auch Unterfelder, dann in der Form  $x-#nnn Inhalt
+wri '<textarea name="uDA" cols="120" rows="10">  Weitere Felder:' n
+if #77 wri "#77 " #77 n
+if #85 wri '#85 ' #85 n
+if #71 wri "#71 " #71 n
+if #818 wri "#818 " #818 n
+if #819 wri "#819 " #819 n
+if #87 wri "#87 " #87 n
+wri "</textarea><br>" n
+  jax.flx braucht das Befehlswort in #uJI, hiermit wird es uebergeben:
+wri '<input type="hidden" name="uJI" value="Speichern">' n
+wri '<input type="hidden" name="uxx" value=""/>'
+wri '</form>'
+
+  Zusaetzlich (nicht unbed. erforderlich)
+  Datensatz als HTML-Tabelle ausgeben mit d-khtm.apr
+xport p d-khtm
+wri "<table>" n
+dow
+wri "</table><hr>" n
+
+  Fuer die Formularzeilen wird e-u.apr genommen
+wri '</body></html>'
+
+close x
+  Akzente zuruecksetzen
+dow A
+
+  Datei form.htm ist fertig, kann mit JanaS angezeigt werden:
+janas 0
+var "file:///" M "form.htm"
+janas
+  Darin ist ein Button, mit dem man die bearb. Daten zuruecksendet

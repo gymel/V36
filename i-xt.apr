@@ -1,0 +1,27 @@
+ I-XT.APR :  Ausgabe im Original-"allegro"-Format
+ 950626     abgeleitet von I-1.APR
+
+ Eingabe: .ALG-Datei mit lauter "#00 interne Nr."
+pn="Extrakt im Internformat"
+   Diese Parameterdatei erzeugt Daten im allegro-InternFormat,
+
+  !!! funktioniert fÅr alle Konfigurationen !!!
+      wenn Sie dasselbe fÅr P.CFG benîtigen:
+      mit  COPY I-XT.APR I-XT.PPR  eine Kopie machen
+
+   -------- Konstanten ----
+zl=0
+ks=1
+ke=0
+as=h0
+ae=13 10
+   -------- Anweisungsteil -
+
+
+  Die einzige zu exportierende Kategorie ist #00:
+
+#00 b3 |01 #zz 0    Datensatz laden (in #00 steht seine interne Nr!)
+ #000 b5 |01 #zz 0    z.B. fÅr MAB oder MARC
+ #0100 b6 |01 #zz 0     bei PICA
+
+##   Pauschalexport

@@ -1,0 +1,131 @@
+  FTF.FLX : Volltextsuche gesamte Datenbank per FLEX
+  2003-05-18
+  Zugleich Muster, wie man die gesamte Datenbank per FLEX durcharbeiten kann
+  Verfahren: die Saetze werden einzeln mit find #nnn fortlaufend geladen,
+  dann mit dem Befehl  find _xyz_  untersucht.
+  Die Satznummer wird in eine Datei ftf.set ausgegeben, diese wird
+  am Ende dann als externe Ergebnismenge geladen. So kann die Menge
+  gefahrlos sehr gross werden.
+
+
+  Nummer des aktuellen Satzes sichern
+var i
+ins #usI
+
+  Frage nach dem Suchwort:
+ask Suchwort (Suche erfolgt im gesamten Datensatz)
+
+if "" end
+var +"~"
+ins #usW
+var #usW
+asci
+ins #usW
+  Modus loeschen
+#usM
+  Suchwort fuer den Volltext-Vergleich praeparieren:
+var #usW
+
+if "-" #usMx
+if "-" var #usW(1,0)
+ins #usW
+   wenn _ vorkommt, wird find ,xyz, gemacht!
+if %_% var "," #usW(F"~") ","
+if not %_% var "_" #usW(F"~") "_"
+ins #usX
+
+  Externe Erg.datei auf dem Temp-Verz. anlegen
+var M "ftf.set"
+  Datei loeschen, falls vorh., dann neu anlegen
+delete
+open x
+  Ueberschrift reinschreiben
+wri "FTF " #usW n
+  Zaehler fuer die Treffer auf 0 setzen
+Z = 0
+
+  Meldung im Schreibfeld auswerfen:
+var "Verarbeitung im Gange, Abbruch mit Esc"
+sho iv
+
+  Abarbeitung der Gesamtbank, z als Zaehler fuer die Satznummern
+  ersten Satz holen, Zaehler auf 1 setzen
+var "1"
+z=
+first #
+if del jump naechst
+
+  ---- Schleifenbeginn ----
+:loop
+  V14-Nummern aufloesen! (sonst wird Tucholsky nicht gefunden,
+     wenn _tucho drinsteht...)
+    Rausnehmen, wenn nicht benoetigt - dann schneller
+if v14 dow Ref
+  Nun der Volltext-Vergleich: (Zeichenfolge steht in #usX)
+var #usX
+find
+if #usM if yes jump naechst
+if not #usM if not yes jump naechst
+  wenn positiv, dann Satznummer ausgeben
+Z + 1
+wri i n
+var Z
+sho iv
+  (Statt dieser 4 Befehle kann man hier eine beliebige Pruefung
+  und Reaktion einbauen.)
+
+
+  naechsten Satz
+:naechst
+  Tastatur pruefen: wenn Esc gedrueckt, dann Nachfrage und Ende
+keychk
+if yes jump schluss
+  Naechste Satznummer, zaehler hochsetzen (falls next nicht geht!)
+var "1"
+z+
+next #
+  kein Satz mehr, Ende erreicht
+if cancel jump schluss
+  der Satz ist geloescht
+if del jump naechst
+  es gab noch einen Satz? dann -> :loop
+jump loop
+   --- Schleifenende ---
+
+:non
+var "#" z
+find
+if cancel jump schluss
+jump naechst
+
+
+:schluss
+close x
+
+  Wurde was gefunden? Dann ist Z>0 (Anzahl treffer)
+var Z
+ins #uZZ
+if <1 jump nix
+
+
+  Nummernliste FTF.SET einlesen als Erg.Menge
+var M "ftf.set"
+read set
+  Variablen loeschen
+#usW
+#usX
+  und Ergebnisliste anzeigen
+sho list
+jump exit
+
+:nix
+var "Keine Ergebnisse"
+mes
+  Ausgangssatz zurueckholen
+var "#" #usI
+find
+sho rec
+disp
+
+:exit
+end

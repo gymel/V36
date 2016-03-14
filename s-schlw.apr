@@ -1,0 +1,80 @@
+  S-SCHLW.APR : Sortieren nach Schlagwort / Jahr  (#31. / #76)
+  950515  Je Schlagw. ein Eintrag, wenn kein Schlagwort: keine Ausgabe
+pn="Sortierformat #31. / #76"
+
+  die folgenden Angaben mÅssen so bleiben
+  damit die fÅr die Weiterverarbeitung nîtige .ALG-Form entsteht
+  --------------------------------------------------------------
+zl=0        ... ZeilenlÑnge unbegrenzt
+ks=1        ... Beginn beim ersten Zeichen hinter #
+ke=0        ... Kategorie-Ende = 0
+as=""       ... Aufnahme-Start: wird unten als PrÑfix gemacht
+ae=""       ... Aufn.Ende: CR LF
+ ze=""
+ts          ... lÑdt die Zeichenumwandlungstabelle S.APT fÅr das Sortieren
+dx=1
+am=0        ... alle AusgabesÑtze produzieren, die mîglich sind
+ am=1            nur einen
+ ---------------------------------------------------------------
+
+ak=31."[;]"+a    alle #31er Kategorien ausgeben
+ak=3n+Z
+
+  folgende Zeile aktivieren, wenn auch Fremdschlagwîrter gewÅnscht
+ ak=33.";"+a
+
+  ******************************************
+  Beginn der Verarbeitung von Unteraufnahmen
+  ******************************************
+
+#hi +b e0 #zz 0        wenn es eine Unteraufnahme ist: Sprung nach #-b
+
+  ******************************************
+  Beginn der Verarbeitung von Hauptaufnahmen
+  ******************************************
+ 
+#+-   kein Eintrag, wenn kein Kopf
+
+        hier beginnt es
+        Umwandlung der !-Felder Åber Alternativtabelle:
+        der Sortierbegriff wird zusammengesetzt und als #u1 ausgegeben
+
+#-a
+#u1 +- i3,u e0 #zz 0      #31u nicht verarbeiten
+
+!u1 u b3 f" " F" " e"_" p{ 1 "u1 " } #zz 0   #40 oder #20 als Sortierfeld, Ende bei "; "
+!76 b3 x"*1" e"." s4,. p"" #zz 0   zweites Element: Jahr
+      b3 heisst: Beginn beim 4. Zeichen (3+ks)
+
+#-s
+#t{ 0 }     als Abschluss des Sortierfeldes
+
+     Die Druckform des Sortierfeldes: Produktion als #u2
+     (genauso wie #u1, nur ohne Umcodierung, dann fÅr den Druck verwertbar!)
+
+#u1 b3 f" " F" " e"_" p"u2 " #zz 0   Kopfkategorie (#40 oder #60) als Sortierfeld, Ende bei "; "
+!76 b3 x"*1" e"." s4,. p"" #zz 0   zweites Element: Jahr
+
+
+#-d
+#t{ 0 }     als Abschluss des Druckfeldes
+#+e
+
+#-b            Sprungmarke b: bei untergeordneten SÑtzen
+#t { h0 }
+#-e
+tselect     Select.APT nachladen
+            diese Tabelle enthÑlt die auszugebenden Kategorien
+            (S-KURZ, S-MITTEL, S-LANG, S-VOLL)
+#t{ 13 10 }
+#+#
+
+#-Z    Sachgr.Stammsatz
+#3n +- I4,s e0 #zz 0   nur fuer Typ s was machen!
+#t{ 1 }
+!3n b4 b" " p"u1 " F"#" P""
+
+#3n b4 b" " F"#" p"u2 "
+##
+#t{ 13 10 }
+#+#

@@ -1,0 +1,55 @@
+  COCKPIT.FLX : CockPit fuer die aktuelle Datenbank starten
+  2000-12-19
+
+  Wenn alcarta, dann kommentarlos beenden
+var m
+if "alc" end
+  Hier 4 Zeilen wegnehmen, wenn die Frage nicht kommen soll:
+var "CockPit ist ein DOS-Programm. M”chten Sie es starten?" n
+var +"(Achtung: Unter Win'7 mit 64bit geht es nicht.)" n
+var +"Sie k”nnen, w„hrend es l„uft, st„ndig zwischen a99 und CockPit wechseln!" n
+var +"Es ist kein Risiko damit verbunden!" n
+if usr var +"(Bemerkung: Die Datenbank wird gerade von anderer Seite benutzt)"
+ansi
+yesno
+if no end
+if canc end
+  Datei CP.PRE erstellen (wird von acp.exe gelesen)
+var P "cp.pre"
+xport f
+if no jump batch
+wri "b " B n
+var D
+ins #uDD
+var #uDD(t"\\")
+ins #uDD
+wri "d " #uDD n
+wri "k " K n
+
+:batch
+  Batchdatei erstellen
+xport f org.bat
+
+wri "@echo off" n "cls" n
+var P
+ins #uxP
+var #uxP(t"\\")
+ins #uxP
+wri "set -P=" #uxP n
+wri #uxP(e":") ":" n
+wri "cd " P n
+wri "call " P "cp.bat" n
+
+  Am Ende von ORG.BAT: erneuter a99-Start
+  wri P "a99 " V n
+  org.bat schliessen
+close xport
+
+  Aufruf von ORG.BAT vorbereiten
+get env comspec
+ins #uwC
+var #uwC " /c org.bat"
+  C = Selbstaendig starten
+Call
+end
+

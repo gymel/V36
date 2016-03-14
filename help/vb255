@@ -1,0 +1,187 @@
+
+Verlautbarung 255 der Entw.Abt.                              2013-11-11
+-------------------------------
+
+
+V33.5 ist da
+============
+
+
+Neuer FLEX fuer Datenuebernahme aus GBV
+---------------------------------------
+Ab 1.1.2014 gibt es beim GBV den alten Z39.50-Zugang nicht mehr, damit
+wird es der beliebte FLEX  zc.flx  nicht mehr tun. Ganz sicher ist dies
+zur Stunde zwar noch nicht, aber man sinnt besser auf Alternativen.
+Als Ersatz wird eine SRU-Schnittstelle angeboten, die viel mehr
+Optionen hat. Fuer a99 und acon wird eine neue FLEX-Prozedur gemacht,
+die per SRU Datensaetze abrufen kann. Einen Prototyp der acon-Variante
+kann man schon sehen und in a35 testen:
+
+  http://www.allegro-c.de/db/demo2/a35-pc.php
+
+Dann den Menüpunkt "Bearbeiten / Datensatz vom GBV abrufen"
+Es kommt die Aufforderung zur Eingabe einer ISBN oder
+praegnanter Woerter. Nach einer Eingabe Ihrer Wahl sehen Sie schon,
+was dann passiert. Die Daten kommen aus dem GVK, besorgt von dem
+Job  srugbv.job.
+
+
+
+a99 FLEX : set getlock
+----------------------
+In Vb.254 stand:
+
+"Summa summarum bleibt die Frage, ob wir nicht auch fuer a99 den
+Befehl  set getlock on  realisieren sollten. Damit waere das
+Thema vom Tisch. Aufzupassen waere jedoch ganz penibel, dass ein
+danach geladener Satz wieder freigegeben wird oder gespeichert
+(wobei automatisch Freigabe erfolgt), damit nicht lauter
+gesperrte Saetze zurueckbleiben nach einer Aktion mit einer
+Ergebnismenge! Man hat z.B. zu bedenken, dass ein laufender
+FLEX, der eine Erg.Menge verarbeitet, u.U. abgebrochen wird,
+und der dann gerade geladene Satz sollte auch in dem Falle
+nicht gesperrt zurueckbleiben!"
+
+Das ist geschehen. In der Doku (xset.rtf) steht nun:
+
+set getlock on/off  [nicht perm]   avanti   ab V32.4,  a99 ab V33.5
+    Das Sperren geschieht bei  on  dann automatisch genau VOR dem
+    tatsaechlichen Laden des naechsten Satzes.
+Nach dieser Setzung sind in avanti  get edit  und  set lock  unnoetig
+(wenn auch unschaedlich).
+Dies ist aus Sicherheitsgruenden so eingerichtet: damit zwischen Laden
+des Satzes und Sperren keine zeitliche Luecke entstehen kann. Das kann
+in kritischen Situationen, wenn man ganz sicher gehen will, schon mal
+erwuenscht sein. Datenschaeden sind jedoch auch sonst nicht zu
+befuerchten, es kann nur - sehr selten - mal sein, dass zwischen dem
+Laden und dem Speichern jemand anders einen Satz veraendert hat. Dann
+gibt sowohl a99 wie acon eine Meldung aus, jemand anders sei schneller
+gewesen, und der Satz wird nicht gespeichert. Besonders in  acon  wird
+man solche Situationen gern vermeiden wollen.
+Wichtig: Nach einem  set getlock on  unbedingt darauf achten, einen
+geladenen Satz mit  put unlock  abzuspeichern oder aber mit  set free
+wieder ausdruecklich freizugeben, denn von selber passiert das nicht.
+
+
+a99: Globale Ersetzung mit $
+----------------------------
+Die Zeichenfolge abc, die man in das linke Feld einträgt, kann mit $ 
+enden. Dann wird nach abc gesucht, und der darauf folgende gesamte Rest
+des Feldes entfaellt bei der Ersetzung. Soll aber ein $-Zeichen ersetzt
+werden, stellt man ein $ an den Anfang des Eingabefelds "Suche nach", 
+dann die Zeichenfolge, die ein $ enthält. Der $ am Beginn schaltet
+die Wirkung des $ als "Abzwack-Operator" ab.
+Spezialfall:  $$, um ueberall im Satz den  $  durch was anderes zu
+ersetzen.
+ 
+
+Lokaler Ersetzungsbefehl (a99 und acon)
+---------------------------------------
+Der FLEX-Befehl "insert" hat eine Sonderfunktion. Er kann im Inhalt
+der internen Variablen Ersetzungen ausfuehren:
+
+insert _abc_XYZ_   insert ,abc,XYZ,   avanti
+Im Inhalt der internen Variablen wird  abc  durch  XYZ  ersetzt.
+Wenn  abc  mehrfach vorkommt, wird jedes Vorkommnis ersetzt.
+Nachfolgendes  ins #nnn  kopiert dann den veränderten Inhalt in eine
+Kategorie oder eine #u-Variable.
+Zu beachten:
+...
+o  Steuerzeichen (control codes) können so angegeben werden:
+   z.B.  ^M^J  für 13 10
+   sowohl in abc wie in XYZ.
+   D.h. ^A steht für Code 1 usw., ^T für Code 20 = ¶ [ab V27.6]
+   Für das Zeichen ^ selbst ist  ^~  anzugeben, z.B. ^~U statt ^U
+
+und jetzt NEU:
+
+o  Jedes Zeichen, ob druckbar oder nicht, kann man auch in der Form
+   ^NNN angeben, mit genau drei Dezimalziffern NNN, also z.B.
+   ^013^010  statt ^M^J,  oder ^170 fuer das Nichtsortierzeichen.
+   Folgen auf ^ keine drei Ziffern und kein Grossbuchstabe, gelten
+   die Zeichen als normale Zeichen, z.B.  ^u .
+   Das gilt für beide Teile des Befehls, (abc und XYZ).
+
+
+Korrektur in xcstring.rtf : Indikatorwerte
+------------------------------------------
+Die Sache mit dem Indikator stimmte nicht. Korrigiert. So sieht's aus:
+... Wenn man also schreibt:
+var #nnn(i0,1), dann ergibt sich genau der Indikator des Feldes #nnn.
+Will man den zweiten Indikator oder das Zeichen hinter dem ersten, dann
+var #nnn(i1,1).
+
+
+a99: Fehler bei Mehrfeld-Eingabe
+--------------------------------
+In dem (sehr seltenen) Fall, dass eine aus mehreren Feldern bestehende
+Eingabe in das Schreibfeld erfolgt (etwa per Copy&Paste) UND das erste
+der Felder an der Wiederholposition ein ~ hat, entstand im Datensatz
+dann das erste dieser Felder doppelt. Das ist behoben.
+Beispiel:  Eingegeben war
+#98~Text 1
+#98~Text 2
+Daraus wurde
+#98 Text 1
+#982Text 2
+#983Text 1
+Sinn und Zweck des ~ ist, dass ein vorhandenes #98 erhalten bleibt und 
+(in diesem Fall) aus  #98~Text 1  dann automatisch  #982Text 1  wird.
+Ist im Datensatz dagegen noch kein #98, entsteht  #98 Text 1.
+Weil dies offenbar in der Praxis ein äußerst spezieller Spezialfall
+ist, wurde das Problem erst jetzt entdeckt. Dank an Kollegen Fischer
+für die nachvollziehbare Meldung.
+
+
+a99: _start.flx
+---------------
+Bevor der Nutzer etwas tun kann, wird der  _start.flx  ausgefuehrt.
+Wenn darin kein Datensatz ausdruecklich geladen wird, dann laedt das
+Programm automatisch den Satz #1. Dagegen kann man nichts tun. Es ist
+wegen der Sicherheit, damit nichts Unvorhergesehenes passieren kann
+aufgrund des Nichtvorhandenseins von Daten im Arbeitsspeicher.
+Wer als erstes lieber den zuletzt erfassten Satz sehen will, baut 
+sich diese Sequenz in den eigenen  _start.flx  ein:
+
+last #
+:lox
+if del prev #;jump lox
+if cancel jump nix
+disp
+sho rec
+:nix
+
+Dabei ist beruecksichtigt, dass der Satz mit der hoechsten Nummer
+auch ein ungueltiger sein kann. Es kommt der gueltige mit der hoechsten
+internen Nummer.
+
+
+
+acon: Variable Jd ging nicht
+----------------------------
+Wenn man schreibt
+var "..." Jd
+(also Jd am Ende der var-Zeile! Nicht  var Jd  auf der naechsten Zeile)
+hat das in a99 eine Sonderwirkung: in der iV stehen dann die Dezimalwerte
+der Zeichencodes, die sich aus "..." ergeben, d.h. 
+aus "ABC" wird  65 66 67
+Das ging in acon, entgegen der Doku, nicht. Funktion wurde ergaenzt.
+
+
+acon+a99:  C:\ALLEGRO  abgeschafft
+----------------------------------
+Die uralte Vorbesetzung des ProgDir mit C:\ALLEGRO hat ausgedient.
+Diese Setzung befindet/befand sich in  allegro.hpp, fuer Unix/Linux
+steht dort  /usr/allegro. Beides war schon lange nicht sinnvoll und
+wurde ersatzlos gestrichen. Das gilt genauso fuer a99.
+Ist aber die erste Zeile des acon-Jobs eine &-Zeile, z.B.
+& f:\abc, dann gilt  ProgDir=f:\abc\
+was sich nicht geaendert hat! Ist dies nicht der Fall, gilt:
+Option -P und nachrangig die Umgebungsvariable -P sind fuer die Setzung
+zustaendig, andernfalls gilt das Startverzeichnis als ProgDir. 
+Oder besser gesagt, wenn der Start erfolgt mit  c:\xyz\acon, dann ist
+ProgDir="c:\xyz\",
+Startet man direkt auf c:\xyz mit "acon" bzw auf /usr/xyz mit "./acon", 
+dann ist ProgDir="" bzw. ProgDir="./".
+
+

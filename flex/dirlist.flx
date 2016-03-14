@@ -1,0 +1,100 @@
+  DIRLIST.FLX : Uebersicht der Dateien eines Typs erstellen
+  2007-08-09    mit Groesse, Umfang, erste drei Zeilen
+
+  #udS : wenn gesetzt, dann auch Unterverz.
+  #udE : Liste soll bearbeitbar sein
+  Die Listendatei heisst dann aresqa.lst
+
+open x liste
+
+wri "     Dateitypen" n
+wri " --------------" n
+wri "Exportparameter (." K1 "pr)" n
+wri "Importparameter (." K1 "im)" n
+wri "Indexparameter (." K1 "pi)" n
+wri "Eportparameter-Hilfstabellen (." K1 "pt)" n
+wri "FLEXe (Makros) (.FLX)" n
+wri "FLEX-Unterprogramme (.INC)" n
+wri "INI-Dateien (.INI)" n
+wri "ASCII-Texte (.TXT)" n
+wri "ViewListen (.VW)" n
+wri "Hilfetexte (.RTF)" n
+wri "Anderer Typ (...)"
+close x
+Aresqa liste
+if "" end
+var (b"(." e")")
+if "" end
+ins $typ
+
+  Liste soll bearbeitbar sein: dann #udE 1 setzen
+#udE
+yes Soll die Dateiliste bearbeitbar sein?
+if yes #udE 1
+  Unterverzeichnisse mit einbeziehen: #udS 1 setzen
+#udS
+yes Sollen Unterverzeichnisse mit einbezogen werden?
+if yes #udS 1
+
+var $typ
+if ".." ask Namensmuster;if "" end;jump erstell
+  Namensmuster in iV vorbereiten, z.B. c:\allegro\*.apr
+var P "*." $typ
+
+ var P "flex\\*.flx"
+:erstell
+ins _/_\\_
+ins $nam
+var "Zum Namensmuster " $nam " wird jetzt die Dateiliste erstellt." n "Wenn sie erscheint, mit OK best„tigen, dann wird sie verarbeitet"
+ansi
+mes
+  Dateiliste dazu erstellen
+var $nam
+perf dirlist
+  Ersten Namen in iV kopieren
+perf firstname
+if "" mes Abbruch oder keine Datei gefunden;end
+
+open x overview
+  Schleife
+:lp
+
+  Hier einfuegen, was mit der Datei passieren soll
+ins #udn
+ftime
+ins #udt
+var #udn
+fsize
+ins #uds
+var #udn
+open
+  die ersten drei nichtleeren Zeilen ausgeben
+z=3
+wri #udn "  (" #udt ", " #uds " byte)" n
+:l1
+get
+if cancel jump l2
+var (f" ")
+if "" jump l1
+ins #udn
+z-1
+  100 Zeichen der Zeile ausgeben
+wri "  " #udn(0,100) n
+if z>0 jump l1
+:l2
+wri n
+  naechsten Namen in iV kopieren
+perf nextname
+if "" jump ende
+jump lp
+:ende
+close x
+help overview
+#uX9x var zc\\var (e" (")\\ins $dn\\var "X filefunc " $dn\\exec
+mes Zeile anklicken, Editor mit Alt+9 starten
+
+end
+  Unterprogramm einbinden
+include dirlist.inc
+
+

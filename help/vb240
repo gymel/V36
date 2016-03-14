@@ -1,0 +1,58 @@
+
+
+Verlautbarung 240 der Entw.Abt.                              2011-07-22
+-------------------------------
+
+Konsolprogramm acon jetzt OpenSource
+------------------------------------
+
+Die Klassenbibliothek als Grundlage fuer alles war schon freigegeben worden,
+und damit zusammen ein kleines Demo-Programm  osdp, mit dem man die
+Anwendung der Klassen in cpp-Programmen sehen und ausprobieren kann.
+(Siehe Vb.239)
+
+Nach demselben Schema ist  acon  angelegt, nur wesentlich umfang-
+und funktionsreicher. Weil acon das Arbeitspferd ist fuer alle Offline-
+Prozesse UND fuer alls Web-Anbindungen, ist die nunmehrige Freigabe
+der Quellen vielleicht die wichtigste Etappe auf dem Weg zum kompletten
+OpenSource-System:
+
+  http://svn.allegro-c.de/svn/acon
+
+Das Repositorium ist neu angelegt, also frei von allem historischen
+Ballast, den nachzuvollziehen jetzt, nach gruendlicher Ueberarbeitung,
+kaum noch was bringen könnte und vom Zeitbedarf her unrealistisch waere.
+
+Der Einsteiger wird sich zunaechst mit Hilfe von 2 Dateien orientieren
+wollen:
+
+ABLAUF : skizziert, wie eine Jobverarbeitung ablaeuft
+
+README : listet die Quelldateien auf und wozu sie da sind.
+
+Zum Kompilieren gilt dasselbe GNU-Verfahren, wie es im README von osdp
+beschrieben ist.
+
+Der wichtigste Teil von acon ist in  avjob.cpp  zu finden: der FLEX-
+Interpreter, konzentriert in der Funktion  DoJob().
+Fast alle FLEX-Funktionen werden dort unmittelbar abgehandelt, in einer
+langen switch-Liste. Nur die sehr umfangreichen, wie find, qrix,
+get Ihttp..., und srx, sind in eigene Dateien ausgelagert, einige andere
+haben eigene Funktionen innerhalb avjob.cpp.
+Das Erkennen der Befehlswörter, wichtiger Teil des Parsing, erfolgt
+in avaddit.cpp, die Konstanten fuer die internen Befehlsnummern stehen
+in  defines.h.
+
+Dieser Zustand ist gewiss immer noch kritik- und verbesserungswuerdig,
+aber soll ja nicht als letztgueltiger hingestellt sein. Er entstand aus
+vielen aelteren Zustaenden und ging durch etliche Revisionen, und so ein
+langer Prozess fuehrt nicht zwangslaeufig zu optimaler Klarheit, will
+man abrupte Brueche der Kontinuitaet vermeiden. Auch ist zeitlich gar nicht
+alles zu schaffen, was man sich als wuenschenswert vorstellen mag.
+
+Genug der Worte. Der Zugriff ist ab sofort freigegeben fuer den Nutzer
+ac11, den ganz normalen Lizenzinhaber.
+
+
+
+

@@ -1,0 +1,211 @@
+
+Verlautbarung 215 der Entw.Abt.                              2009-03-29
+-------------------------------
+
+a99 : Globale Ersetzung
+-----------------------
+Wenn man eine globale Ersetzung gemacht hat, wird das ja zunaechst im
+Offlinespeicher ausgefuehrt, und das Speichern muss dann noch aus-
+druecklich veranlasst werden. So hat man Gelegenheit, das Ergebnis
+erst noch zu begutachten. Das wurde vielfach als meistens unnoetig
+empfunden. Jetzt wird nach der Ersetzung sofort gefragt, ob das
+Speichern gleich ausgefuehrt werden soll. Die Meldung 299 in UIFEGER
+wurde dazu erweitert um die Zeile
+"Sofort ausfuehren? (Nein: Erst mal schauen...)"
+und bei Antwort Ja wird dann eben spornstreichs gespeichert.
+
+
+Alle Programme : Typfreie Parameterdateien jetzt moeglich
+--------------
+Die Programme gehen nunmehr so vor: Zuerst wird geschaut, ob eine
+angeforderte Parameterdatei auf den ueblichen Verzeichnissen zu
+finden ist. Wird sie nicht gefunden, dann wird hernach, ganz neu,
+auch noch nach einer gleichnamigen Datei mit dem Typ .@pt gesucht.
+Das passiert auch, wenn in einer Parameterdatei steht
+
+txyz  // Tabelle  xyz.apt  hinzuladen
+
+Es gibt ja eine Reihe von Parameterdateien, insbesondere Code-Tabellen,
+wie etwa ad-utf.apt oder auch o.apt, die unabhaengig sind von der
+Konfiguration.
+Jetzt kann man diese umbenennen: o.@pt statt fuer ein anderes Schema
+wie z.B. N.CFG noch zusaetzlich eine o.npt bereitstellen zu muessen.
+In Zukunft werden dann allgemeingueltige Parameterdateien mit @ statt
+mit a hinter dem Punkt bereitgestellt. Aber auch so etwas wie die
+i-1.apr,  viewgrup.apr  oder  ct.apr  sind Kandidaten. Man muesste
+die Dateien daraufhin mal durchforsten...
+
+
+a99 und avanti
+==============
+
+Noch mehr Unicode-Unterstuetzung
+--------------------------------
+Wir stuetzen Unicode schon so stark, dass es kaum mehr
+zusammenbrechen kann, aber wir setzen noch eins drauf:
+
+xcode Uvor nach
+  Interpretiert den iV-Inhalt als UTF-8 und wandelt die UTF-Codes in
+  Entitaetencodes der Form  vorEnach , wobei E die dezimale Unicode-
+  Zahl ist.
+    Default, wenn  vor  und  nach  fehlen, ist  U\u ? . Das ist die
+    Darstellung fuer RTF. Fuer HTML gibt man:  xcode U&# ; 
+  Test:  x var Fad-utf.apt\xcode U\show IV
+  Wenn hier  xcode U  weggelassen wird, sieht man den echten Text der
+  Datei ad-utf.apt. Darin steht naemlich die Liste der UTF-RTF-Codes
+  aller OstWest-Sonderzeichen.
+
+Will man dies fuer den Export eines Datensatzes nutzen, dann
+hilft folgender 4zeiliger Trick, mit dem der aktuelle Satz im
+Arbeitsspeicher nach Unicode umcodiert werden kann - ganz ohne
+Exportparameter:
+
+ ... Satz ist geladen
+var kn
+   ins _^J_;_   // nur bei acon, nicht bei a99
+xcode U&# ;
+ins
+  ... Satz ist umcodiert, kann exportiert werden oder mit "write"
+      ausgegeben
+
+Und beim Export?
+Zusaetzlich gibt es auch eine Moeglichkeit beim Export, und zwar den
+neuen Manipulationsbefehl y4. Der leistet das Umwandeln des aktuellen
+Arbeitstextes in derselben Weise. Soll das Ergebnis dann fuer XML
+(HTML4) sein, dann noch zusaetzlich diesen Befehl einsetzen:
+
+u&# ;
+sonst kommt die RTF-Version mit  \u ?  raus.
+Noch bequemer: Der Exportbefehl
+#dU
+kodiert den gesamten aktuellen Datensatz entsprechend um, so dass
+nachfolgende Befehle nicht mit y4 behandelt werden muessen.
+
+Was an Algorithmik dahintersteckt ist dokumentiert in
+
+http://www.allegro-c.de/unicode/#anhang
+
+In einen FLEX  utf-ent.flx  umgesetzt wurden diese Berechnungen
+von Heinrich Allers.
+
+SonderTip:
+Was man statt alledem auch machen kann, ist, in die Datei
+disphead.rtf vorn die Angabe  {\urtf1  statt  {\rtf1  einzubauen.
+Dann klappt die Anzeige von UTF-8 ohne irgendwelche weiteren
+Umstaende, sofern man darueber hinaus die Schrift "Arial Unicode"
+installiert und in die disphead.rtf eingetragen hat.
+Soll das nur bei einer bestimmten Datenbank so sein,
+legt man die veraenderte  disphead.rtf  auf das betreffende
+Datenverzeichnis.
+
+
+acon
+====
+ACHTUNG: Statt uifsGER wird jetzt uifsger von den Programmen verwendet!
+Das ist die Datei mit den Meldungstexten. Also die Datei umbenennen
+oder kopieren - sonst laeuft ploetzlich nix.
+
+Es ist jetzt sichergestellt, dass alle typischen Dateien auf den
+bekannten Verzeichnissen tatsaechlich gesucht werden. Es kam bei
+diversen lokalen Konstellationen von Verzeichnissen und Aufrufen
+immer wieder vor, dass bestimmte Dateien einfach ganz stur nicht
+gefunden wurden. Hier klipp und klar die Reihenfolge, in der die
+Verzeichnisse nach CFG- und .?P?-Dateien abgesucht werden:
+
+1. DbDir, wo die Datenbank liegt
+
+2. Verzeichnis, wo acon arbeitet ("Ausfuehren in ...")
+
+3. ProgDir (wo die Datei acon liegt) bzw. STATT DESSEN:
+   WENN &-Zeile im Job angegeben: der darin stehende Pfad
+
+
+JanaS : Formularbearbeitung verbessert u.a.
+===========================================
+Endlich kann man unter dem Menuepunkt "Datei / Oeffnen" nun eine URL
+eingeben, um dorthin zu surfen. Dadurch wird JanaS ein ganz klein wenig
+mehr als eigenstaendiger Browser einsetzbar. Das ist nicht sein
+Anspruch, aber wenn man schon im JanaS-Fenster ist, kann man nun auch
+schnell mal eben eine andere Web-Adresse anfahren.
+
+Aber wichtiger: Die Methodik der Datenbearbeitung im JanaS-Fenster ist
+ueberarbeitet und korrigiert. Jetzt kann im Formular auch eine
+<textarea> erscheinen mit mehreren Kategorien, und man kann auch darin
+weitere eintragen, die noch fehlen. Etwas fuer fortgeschrittene
+Erfasser. Einfach mal in der Demo-Bank geben:  X htmform
+und sich dann den  htmform.flx  anschauen. Beim Abschicken des
+Formulars werden die Inhalte an  jax.flx  uebergeben, an dem man aber
+nichts zu aendern braucht. Fuer eigene Zwecke muss man sich nur den
+htmform.flx modifizieren und geeignet aufrufbar machen, das ist alles.
+Sollte auch klappen, wenn man intern UTF-8 hat. Weil das JanaS-Fenster
+dann auf UTF-8 eingestellt ist, bestehen keine Probleme hinsichtlich
+des Zeichenumfangs.
+
+Alle relevanten Texte zu JanaS wurden aktualisiert, insbes.
+  http://www.allegro-c.de/janas/
+
+Im FLEX  htmform.flx  kann man jetzt auch Unterfelder in ein Formular
+einbauen. Wie es geht, ersieht man aus Kommentar und Beispiel darin.
+Damit wird JanaS zu einer erfreulichen Alternative fuer das Arbeiten
+mit Unicode innerhalb einer allegro-Datenbank.
+Und noch eine Kleinigkeit: Bei t3,k5 entfiel ein Leerzeichen am
+Feldanfang bei der Rueckgabe aus dem JanaS-Formular an a99. Erledigt.
+
+
+Sonstiges
+=========
+
+V14-Ersetzungen jetzt praeziser
+-------------------------------
+Wenn das Zeichen i5 (meistens _) vorkommt, wird bei gesetztem i4 in
+den Exportparametern im Index i6 nachgesehen, ob die Zeichenfolge
+hinter dem _ mit einem Eintrag uebereinstimmt. Dann wird die
+auf _ folgende Zeichenfolge mit derjenigen ersetzt, die im Register
+hinter = in der betr.Zeile steht. Dies arbeitete unpraezise, wie
+man an der DemoBank sehen kann: Mal irgendwo in einem Datensatz
+_t xyz eingegeben und man erhaelt "Tucholsky, Kurt" an der Stelle.
+Weil es ja die Zeile gibt, in der steht "tucho=|2Tucholsky, Kurt".
+Dieses Problem wurde behoben. Nun erfolgt die Ersetzung nur dann,
+wenn die Uebereinstimmung exakt ist, also im Beispiel: wenn man
+_tucho im Datensatz zu stehen hat.
+Alle betroffenen Programme sind entsprechend berichtigt.
+
+
+Nebenwirkung beseitigt bei Sequenzen-Methodik (2003, -->  h vb164)
+----------------------
+Wenn im Datensatz eine Zeichenfolge vorkommt, die von & und ; einge-
+schlossen ist, dann wird diese Zeichenfolge im Index gesucht und in
+den Text das eingesetzt, was gefunden wird. Wird nichts gefunden,
+kommt die Zeichenfolge unveraendert, also ohne Umcodierung, in den
+Export. Umlaute kommen also falsch raus. Das wurde behoben. Dass es
+erst jetzt erstmals bemerkt wurde (von Frau Liebmann, Berlin), ist
+schon ein erstaunliches Faktum...
+
+CFL-Datei
+---------
+Der FLEX cfga.flx zeigt den Datensatz mit Feld- und Unterfeld-
+bezeichnungen - falls man zur eigenen Konfiguration X eine Datei
+x.CFG hat, in der diese Bezeichnungen stehen.
+Es ist nicht verpflichtend, dass darin jede Kategorie mitsamt
+allen Teilfeldern nur eine Zeile belegen darf, sondern man kann
+auch alle Teilfelder untereinander schreiben, was die Sache doch
+uebersichtlicher macht. Es wurden leichte Verbesserungen an
+cfga.flx gemacht sowie die A.CFL entsprechend geaendert. Jetzt ist
+sie leichter handhabbar.
+
+
+qrix.exe : Indexdatei komprimieren (vermutlich selten verwendet)
+--------
+Das Komprimieren einer zusaetzlichen MultiX-Indexdatei klappte nicht.
+Es wurde immer nur  cat.adx  komprimiert, nicht cat.aex oder
+eine andere. D.h. die Aufrufoption -Z wurde nicht beachtet, wenn
+man die Funktion  -fc  benutzte.
+Das wurde repariert. Ein Aufruf zum Komprimieren der cat.stx
+hat damit so auszusehen, um zu funktionieren:
+
+qrix -fc -dkatalog -ekat/katalog -ks -Zt -x9999
+
+Die Angabe -x9999 soll nur das Anzeigen allzuvieler
+Zwischenmeldungen unterbinden.
+
+

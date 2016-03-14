@@ -1,0 +1,710 @@
+  CAT.AIM : importiere .ALG-Daten nach .ALG, Konsolidiertes Format $A.CFG
+  940629/970627   vorher: mit PREPARE.APR exportieren 
+      enthalten in KONSOL.BAT
+
+fh=3      3 Zeichen am Dateianfang muss bergangen werden
+
+re=0 13 10 1      Ende eines Satzes, zugl. Anfang des n„chsten
+
+fe=0
+
+
+
+_ "ª ª"   Aus "ªDieª ª5.ª [fnfte] Kolonne"  wird "ªDie 5.ª [fnfte] Kolonne"
+_ " "
+
+_ "ªª"
+_ "ª"
+
+   Mehrfachkategorien: #40a -> #402 ...
+
+_ 0 "40a"
+_ 0 "402"
+
+_ 0 "40b"
+_ 0 "403"
+
+_ 0 "40c"
+_ 0 "404"
+
+_ 0 "41a"
+_ 0 "412"
+
+_ 0 "83a"
+_ 0 "832"
+
+_ 0 "83b"
+_ 0 "833"
+
+_ 0 "85a"
+_ 0 "852"
+
+_ 0 "85b"
+_ 0 "853"
+
+_ 0 "23a"
+_ 0 "232"
+
+_ 0 "23b"
+_ 0 "233"
+
+_ 0 "24a"
+_ 0 "242"
+
+_ 0 "24b"
+_ 0 "243"
+
+_ 0 "59a"
+_ 0 "592"
+
+_ 0 "59b"
+_ 0 "593"
+
+_ 0 "59c"
+_ 0 "594"
+
+_ 0 "61a"
+_ 0 "612"
+
+_ 0 "76 19."
+_ 0 "JJJ"     #76 19.. soll raus
+
+_ 0 "30y 1?.."
+_ 0 "ZZZ"
+
+  Umzuwandelnde Kategorien
+
+_ 0 "6np"    frherer K”rpName
+_ 0 "6nf"
+
+_ 0 "6nl"    sp„terer K”rpName
+_ 0 "6ns"
+
+  _ 0 "20p"
+  _ 0 "PPP"    PI-Ordnungswort zu #20
+
+_ 0 "30a"
+_ 0 "NNN"    tempor„r
+
+_ 0 "74E"
+_ 0 "EEE"
+
+_ 0 "33l"
+_ 0 "33L"
+
+_ 0 "33b"
+_ 0 "33B"
+
+_ 0 "33d"
+_ 0 "33D"
+
+_ 0 "89d"
+_ 0 "ddd"
+
+_ 0 "81"
+_ 0 "FF"
+
+_ 0 "FFh"   #81h -> #819
+_ 0 "819"
+
+##        Globalbefehl: importiere alle Felder
+
+
+        folgende Kategorien mssen nachbearbeitet werden:
+#89D
+s 0 "ddd"
+C 0 "89D"
+q
+
+-20
+#20
+k20
+_" ; "
+_". "
+  s 0 "PPP"
+  w" P"     PI-Ordnungswort anh„ngen
+
+#37
+k37 
+q22
+
+#37
+k22
+b" <"
+e">"
+@S        Sprache umwand
+
+-22
+#22
+k22
+_",<"
+_"<"
+
+_" <"
+_" ª<"
+_", ª"
+_" ª"
+
++38
+
+#37
+k20
+b" : <"
+e">"
+@S        Sprache umwand
+
+#20
+k20
+_" : <dt.>"
+_ ""
+
+_ " : <deutsch>"
+_ ""
+
+
+-38
+#30b
+k30b
+u12    Kleinbuchstaben
++3na
+
+#30a
+s 0 "NNN"
+  u12    Kleinbuchstaben
++3na
+
+
+
+-3na
+
+#3na
+k3na
+i59
+i32
+
+#3nr    Syntax „ndern
+k3nr
+C "3n s"    nur bei Schlagworts„tzen
+/
+q
+_ ";"
+_ ""
+_ "; "
+_ ";"
+_ ";"
+_ "r"
+
+= ""
+/
+w"r"
+
+#23 
+k23
+c"["
+/
+q
+_ "ª["
+_ "["
+= "["
+(
+w "ª"
+_ "ª"
+_ ""
+_ "]"
+_ "]ª"
+)
+
+#232
+k232
+c"["
+/
+q
+_ "ª["
+_ "["
+= "["
+(
+w "ª"
+_ "ª"
+_ ""
+_ "]"
+_ "]ª"
+)
+
+#233
+k233
+c"["
+/
+q
+_ "ª["
+_ "["
+= "["
+(
+w "ª"
+_ "ª"
+_ ""
+_ "]"
+_ "]ª"
+)
+
+
+#74       Ort und Land zusammenziehen
+k74
+s 0 "EEE"
+w"g"
++75
+       wenn #74 nicht vorkommt:
+#74
+s 0 "EEE"
+w"g"
+
+
+-75
+
+#818
+s 0 "FF"
+c "Diss"
+(
+x
+} 1
++888
+)
+c "Hab"
+(
+x
+} 1
++888
+)
+l0
+g 0 "FF"
+c "Diss"
+(
+x
+} 1
++888
+)
+c "Hab"
+(
+x
++888
+)
+l0
+
+g 0 "FF"
+c "Diss"
+(
+x
++888
+)
+c "Hab"
+(
+x
++888
+)
+l0
+
+
+-888    restliche #81er
+#81
+s 0 "FF"
+} 1
+m"; "
+
+#819      Diss kategorie bereinigen
+k819
+e":"
+e"<"
+e"/"
+e"("
+e" a"
+e" i"
+e","
+k819
+b":"
+w":"
+
+#819
+k819
+_ " :"
+_ ":"
+
+#83    Struktur „ndern:
+   vorher: Tagungsname ; Z„hlung, Ort, Datum
+  nachher: Tagungsname ; Z„hlung (Ort) : Datum
+k83
+Kkg
+(K
+= ";"
+w"... "
+e" ;"
+kukg
+b"; "
+w" ; "
+e", "
+= "1"
+W" "
+= "2"
+W" "
+= "3"
+W" "
+= "4"
+W" "
+= "5"
+W" "
+= "6"
+W" "
+= "7"
+W" "
+= "8"
+W" "
+= "9"
+W" "
+l0
+kukg
+b"; "
+= "1"
+b","
+= "2"
+b","
+= "3"
+b","
+= "4"
+b","
+= "5"
+b","
+= "6"
+b","
+= "7"
+b","
+= "8"
+b","
+= "9"
+b","
+e", "
+e" a"
+e" i"
+e" ("
+i32
+w"("
+W")"
+kukg
+<", "
+w" : "
+i44
+i32
+i58
+i32
+
+)K
+
+#832
+k832
+Kkg
+>K
+
+#833
+k833
+Kkg
+>K
+
+
+
+#99n
+k99n
++330
+
+-99x
+#sww    dummyzeile, nur um Unterprog definieren zu k”nnen
+j0
+(S
+kusw    1.Glied
+} 2
+e""
+c"!"
+b"!"
+c"!"
+b"!"
+kusw
+b"!"
+e"!"
+w"_"
+)S
+
+
+-330
+
+#330     !PPN!SW  umdrehen  zu  SW!PPN
+k330
+KsW    SWKette zwischenspeichern
+Ksw    SW und nochmal
+l2
+>S
+kusW    2.Glied
+}2
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+kusW   3.Glied
+}2
+b""
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+kusW   4.Glied
+}2
+b""
+b""
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+kusW   5.Glied
+}2
+b""
+b""
+b""
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+kusW   6.Glied
+}2
+b""
+b""
+b""
+b""
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+********** Ende 1. SWK *****************
+
+#331     !PPN!SW  umdrehen  zu  SW!PPN
+k331
+KsW    SWKette zwischenspeichern
+Ksw    SW und nochmal
+l2
+>S
+kusW    2.Glied
+}2
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+kusW   3.Glied
+}2
+b""
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+kusW   4.Glied
+}2
+b""
+b""
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+kusW   5.Glied
+}2
+b""
+b""
+b""
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+kusW   6.Glied
+}2
+b""
+b""
+b""
+b""
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+
+
+********** Ende 2. SWK *****************
+
+#332     !PPN!SW  umdrehen  zu  SW!PPN
+k332
+KsW    SWKette zwischenspeichern
+Ksw    SW und nochmal
+l2
+>S
+kusW    2.Glied
+}2
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+kusW   3.Glied
+}2
+b""
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+kusW   4.Glied
+}2
+b""
+b""
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+kusW   5.Glied
+}2
+b""
+b""
+b""
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+kusW   6.Glied
+}2
+b""
+b""
+b""
+b""
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+
+
+********** Ende 3. SWK *****************
+
+#333     !PPN!SW  umdrehen  zu  SW!PPN
+k333
+KsW    SWKette zwischenspeichern
+Ksw    SW und nochmal
+l2
+>S
+kusW    2.Glied
+}2
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+kusW   3.Glied
+}2
+b""
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+kusW   4.Glied
+}2
+b""
+b""
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+kusW   5.Glied
+}2
+b""
+b""
+b""
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+kusW   6.Glied
+}2
+b""
+b""
+b""
+b""
+b""
+e""
+{ 1
+Ksw
+l2
+>S
+
+
+********** Ende 4. SWK *****************
+
+#99
+j0
+qENDE
+
+
+
+
+@@S      fr die Sprachbez. d. Originaltitels
+"dt"
+"de" 0
+"deu"
+"de" 0
+"eng"
+"en" 0
+"fr"
+"fr" 0
+"russ"
+"ru" 0
+"tr"
+"tr" 0
+"spa"
+"es" 0
+"ita"
+"it" 0
+"gri"
+"el" 0
+"nied"
+"nl" 0
+"rum"
+"ro" 0
+"fin"
+"fi" 0
+
+"lat"
+"la" 0
+
+@
+

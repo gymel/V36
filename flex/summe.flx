@@ -1,0 +1,146 @@
+  SUMME.FLX  Summierung einer Kategorie ueber die Ergebnismenge
+  2001-01-30   oder auch ueber die gesamte Datenbank!
+  Auch geeignet als Vorlage, wenn man eine andersartige Auswertung machen
+  will, und zwar wahlweise fuer die Erg.Menge oder die Gesamtbank.
+
+
+  Wenn mit Argument aufgerufen, dann ist das die Sprungmarke, zu der
+  zu springen ist. [Rueckruf aus x-summe.flx mit Argum. erg -> :erg!]
+
+if not "" jump
+
+  Anzeige loeschen
+var "Summierung" 13 10 13 10 "Zu jedem Datenfeld, in dem Zahlen stehen, kann man sich die Summe"
+var +" ausrechnen lassen, und zwar ber eine Ergebnismenge oder auch ber die gesamte Datenbank."
+var +n "Geben Sie die Nummer des gewnschten Datenfeldes ein:"
+var +n "(Auch Teilfeld m”glich! Form:  #123$x fr Teilfeld x von Feld #123)
+ansi
+sho IV
+sho cfg
+
+:anfang
+
+ask Welches Feld soll summiert werden? Geben Sie die Nummer ein:=#usF
+mes
+  Alternativ: die auswertbaren Felder als Select-Liste vorgeben:
+  select Summierung=770=Typ 0|771=Typ 1|775=Typ 5|776=Typ 6|779=Typ 9
+
+if cancel jump exit
+if "" jump exit
+ins #usF
+  nun z.B.  #usF = "#77"
+var "#" #usF(f"#")
+ins #usF
+  iZ auf 0 setzen
+Z = 0
+
+if empty jump gesamt
+
+yesno Ergebnismenge verarbeiten? (Nein = gesamte Datenbank)
+if no jump gesamt
+
+  Ergebnismenge verarbeiten. Umfang in #uvZ speichern
+
+var "X x-summe " #usF ";summe;erg"
+exec
+
+  Hierher springt dann x-summe.flx zurueck mit  exec summe erg:
+
+:erg
+  Ergebnis steht in #uvS
+var #uvS
+Z=
+  Anzahl Saetze
+var #uvZ
+  dividieren
+Z /
+var n n "Ergebnismenge " f n "Summe des Datenfeldes " #usF " = " #uvS n
+var +#uvZ " S„tze verarbeitet,"
+var +n "Durchschnittswert: " Z n
+ansi
+sho +IV
+mes
+  interne Zahl auf 0 setzen (da wird die Summe gebildet)
+Z = 0
+jump anfang
+
+
+:gesamt
+var "Wirklich die gesamte Datenbank?" n "(Mit Esc kann man mittendrin abbrechen!)"
+yesno
+if no jump exit
+if cancel jump exit
+  Anzahl in #uvZ setzen
+var t
+ins #uvZ
+  interne Zahl auf 0 setzen:
+Z = 0
+  Gesamtbank verarbeiten
+  ersten Satz holen (interne Nummer 1), Zaehler auf 1
+var "1"
+z=
+first #
+  falls #1 geloescht oder Nummer nicht besetzt: naechste
+if del jump naechst
+  Jeder Satz wird in dieser Schleife verarbeitet:
+:schleife
+var #usF
+  in iV steht jetzt die Kategorienummer!
+eval
+  und nun deren Inhalt,
+  addiere ihn zur internen Zahl:
+Z +
+keycheck
+if yes jump erg
+
+  Naechsten Satz holen (interne Nummernfolge), Zaehler hoch
+:naechst
+next #
+  kein Satz mehr, Ende erreicht
+if cancel jump gerg
+
+var "1"
+z+
+
+  der Satz ist geloescht
+if del jump naechst
+  es gab noch einen Satz? dann -> :schleife
+if yes jump schleife
+
+:non
+var "#" z
+find
+jump naechst
+
+
+  GesamtErgebnis
+:gerg
+  Ergebnis in #uvS sichern (steht in der iZ)
+var Z
+ins #uvS
+  Anzahl Saetze
+var #uvZ
+  dividieren
+Z /
+var n n "Gesamtbank ausgewertet, " t " Datens„tze." n "Summe des Datenfeldes " #usF " = " #uvS n
+var +#uvZ " S„tze verarbeitet,"
+var +n "Durchschnittswert: " Z n
+ansi
+sho +IV
+mes
+  interne Zahl auf 0 setzen (da wird die Summe gebildet)
+Z = 0=
+jump anfang
+
+
+:exit
+  Anzeige wiederherstellen
+sho rec
+
+#uX9h exprt
+var n "   " n "Mit Alt+9 zurck zum Exportmen"
+ansi
+sho +IV
+
+
+

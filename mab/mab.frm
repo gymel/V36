@@ -1,0 +1,13 @@
+[Standardaufnahme]
+#100 b"Verfasser  "
+#331  "Haupttitel "
+#335  "Zus„tze    "
+#359  "Verf.Angabe"
+#403  "Ausgabe    "
+#410  "Ersch.Ort  "
+#412  "Verlag     "
+#425  "Jahr       "
+#451  "Gesamttitel"
+#501  "Fussnote   "
+#540  "ISBN       "
+#544  "Signatur   "

@@ -1,0 +1,52 @@
+  Anzeige eines Datensatzes mit Kategorie-Nummern und Zeilenumbruch
+  Muster. Funktioniert fuer jede Konfiguration
+  D-W0.APR  980202
+
+pn="simple display for EBOX"
+
+zl=72       ZeilenlÑnge (nach Bedarf zu aendern)
+
+ze=13 10
+zi=7        7 Zeichen EinrÅckung der Folgezeilen
+fl=14       Anzahl Zeilen je Karte
+ke=C &0     Kategorieende: neue Zeile, Aufsetzen am Anfang
+fm=0        Modus: keine Einzelausgabe fÅr die Untersaetze (2 = Einzelkarten)
+zm=0        kein Seitenumbruch
+
+
+dx=1
+
+   zwei sehr wichtige Zeilen:
+
+td    EBOX Umcodierung fuer Anzeigefenster 
+
+to    EBOX ASCII <-> ANSI  1:1 fuer Bearbeitungsfenster, Kurzanzeige etc.
+
+p  255   neue Zeile bei , sonst:
+ p  1     ausblenden, oder
+ p  182   normal anzeigen
+
+ab=""
+as=""
+
+  ********* Kategorieliste ****************************************
+
+  Die naechsten 4 Zeilen ersetzen durch etwas Besseres, wenn die Anzeige
+  z.B. in ISBD-Format erfolgen soll. Hier kann etwa der Hauptteil der
+  eigenen D-1.cPR einkopiert werden
+
+#-@     muss sein, wird automatisch angesprungen!
+#t{ s0 }
+##
+ #+#
+
+   -----------------------------------------------------------------
+   Abschnitt fuer die Intern-Anzeige 
+   (wenn auf den Button [Anzeige] gedrueckt wird)
+
+
+#-(    muss sein, wird automatisch angesprungen
+#L      alle Kategorien mit Label anzeigen
+#+#
+
+

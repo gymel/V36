@@ -1,0 +1,279 @@
+  INPUT.FLX : Auswahl des Satztyps, Start des Formulars
+  2002-02-15  In  #utY steht Kennwort aus  input.vw
+              Aufruf mit z.B.  X input Buch, dann ist  #utY Buch
+  
+ins #utY
+
+  aktuelle Satznummer in #utI sichern
+var i
+ins #utI
+  
+  aktuelle .ALD-Dateinummer in #utN sichern
+var N
+ins #utN
+  Ueberschriften des View-Fensters ruecksetzen
+set i7
+set i8
+set i9
+   Typ H: dann -> :Hier, I dann :Inve
+var #utY
+if "H" jump Hier
+if "I" jump Inve
+  Sonst: Wenn aktueller Satz veraendert wurde, erst speichern
+if diff put
+
+  Neuen Satz anlegen
+var #utY
+  Typ Verkn. Untersatz (bezieht sich auf aktuellen Satz!)
+if "Verk" jump Verk
+
+new
+sho rec
+  Welcher Typ? #utY=Buch, dann -> :Buch
+var #utY
+jump
+
+  Wenn man weitere Satzarten hat, hier entspr. Spruenge einbauen (s.o.)
+  und dazu entspr. Abschnitte:
+
+:Buch
+form Buch
+form Buch: Teil 2
+jump isbn
+
+:Aufs
+form Aufs
+jump check
+
+:Klas
+form Klas
+input 251
+jump check
+
+:DC-M
+form DC
+jump check
+
+:Hier  // Hierarch. Untersatz
+var #41
+ins #u41
+var #76
+ins #u76
+first sub
+#01 ---
+sub #01 ---
+var #u41
+ins #41
+#u41
+var #u76
+ins #76
+#u76
+   sho rec    // das geht nicht!
+form Hier
+form Signa
+
+jump check
+
+:Inve   // Inventarsatz
+var #00
+ins #uDF
+new
+var #uDF
+ins #9DF
+var ""
+ins #uDF
+sho rec
+form Besta
+var k0
+if ="0" jump ex
+input 240
+jump check
+
+:Koer   // Koerp.
+form K
+input 252
+jump check
+
+:Pers
+form Pers
+input 252
+jump check
+
+:Simp
+form Simp
+jump check
+
+:Thes
+form Thesa
+input 251
+jump check
+
+:Them
+form Themen
+jump check
+
+:Verk
+if fam jump Fam
+var #00(e"+")
+ins #uv0
+ask Nummer des neuen Bandes?
+ins #uv1
+
+new
+:verk
+  hier evtl. #00 statt #09, wenn Untersaetze keine eigene #00 haben sollen
+var "#09 " #uv0 "+" #uv1
+ins
+sho rec
+form Verk
+var k0
+if ="0" jump ex
+jump check
+
+:Fam
+if #09 var #09(e"+")
+if not #09 var #00(e"+")
+ins #uv0
+fam
+last
+copy
+ask Bandnummer?
+ins #uv1
+jump verk
+
+:Zeit
+form Zeit
+input 100
+jump check
+
+:Benu
+form Benutzer
+input 241
+jump check
+
+:check
+  Wurde irgendwas eingegeben? Wenn nicht, ist k0=0, dann -> :ex
+var k0
+if ="0" jump ex
+jump speich
+
+  Verweisung (Sonderfall)
+:Verw
+ask In welchem Register soll die Verw. stehen? (1,2,...,10,11)
+if <1 jump v
+if >11 jump v
+if "10" var ":"
+if "11" var ";"
+ins #uvI
+
+ask Von wo soll verwiesen werden? (Schreibweise wie im Register!)
+ins #uvV
+
+ask Wohin soll verwiesen werden?
+ins #uvW
+
+#uv_
+yesno Im selben Register?
+if no perf anderes
+
+var "|" #uvI #uvV " -> "
+if #uv_ var +"|" #uv_
+var +#uvW
+yesno Siehe-Verweisung? (Nein: Siehe-auch-Verw.)
+if yes ins #9s;jump dsp
+ins #9sa
+:dsp
+disp
+sho rec
+#uvI
+#uvV
+#uvW
+#uv_
+jump check
+
+  anderes Reg.
+:anderes
+ask welches? (1,...,11)
+ins #uv_
+var #uv_
+if <1 jump anderes
+if >11 jump anderes
+if "11" var ";"
+is "10" var ":"
+ins #uv_
+return
+
+:speich
+disp
+sho rec
+yesno Speichern? (Nein=weiter bearbeiten, Abbruch=verwerfen)
+if can jump ex
+if no jump ende
+if y put
+disp
+sho rec
+jump ende
+
+  Escape ohne Speich, zurueck zum aktuellen Satz
+:ex
+var #utY
+if ="Hier" jump exh
+erase
+var #utI
+if "0" jump ende
+var '#' #utI
+find
+sho rec
+disp
+
+jump ende
+
+  ISBN korrigieren (Striche und Prfz.)
+:isbn
+if not #87 jump check
+
+var #87(f"ISBN: ")
+ins #87
+var #87(e" ")
+ins $i1
+var #87(b" ")
+ins $i2
+
+var $i1
+ins _-__
+hyp
+ins $i
+
+var $i
+if b var Err;ins $e;jump b
+var $i
+jump k
+
+:b
+var $i "Y"
+var (e"?Y")
+ins $i
+var $e (0,1)
+ins $e
+var $i $e " " $i2
+
+:k
+
+ins #87
+
+jump check
+
+  Wenn es Typ "Hier" ist, wurde kein neuer Satz angelegt!
+   mit "undo" wird der unveraenderte wiederhergestellt
+:exh
+undo
+
+:ende
+  Dateinummer fuer neue Saetze wiederherstellen
+var #utN
+input
+var ""
+ins #utN
+ins #utY
+ins #uvV
+ins #uvW

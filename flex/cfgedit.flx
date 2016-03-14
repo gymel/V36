@@ -1,0 +1,141 @@
+  CFGEDIT.FLX : Bearbeiten der Konfigurationsdatei
+  2002-07-09
+  Zuerst nach $A.CFG suchen,
+
+var m
+if ="alc" end
+
+var x
+if "x" jump xed
+var "Sie k”nnen jetzt die Konfiguration  " K ".cfg  bearbeiten." n "Das geschieht in einem DOS-Fenster mit dem Editor " x
+jump edit
+:xed
+var "Sie k”nnen jetzt die Konfiguration  " K ".cfg  bearbeiten." n "Das geschieht in einem DOS-Fenster mit dem X-Editor"
+var +n "Wenn Ihnen das nichts sagt, schauen Sie sich zuerst die Beschreibung dieses Editors an!" n
+var +"Wollen Sie jetzt bearbeiten? (Nein: Editor-Beschreibung sehen)"
+:edit
+ansi
+yes
+if yes jump start
+if no jump acd
+end
+
+:acd
+var x
+if "x" help acd
+end
+
+:start
+get env comspec
+ins #uwC
+
+  Reihenfolge:  DbDir, ProgDir, Arbeitsverz.
+  Zuerst wird nach $A.CFG gesucht
+  Name wird zusammengesetzt (Pfad DbDir)
+var D "$" K ".cfg"
+ins #upI
+  Groesse wird geprueft (um Existenz festzustellen!)
+fsize
+  Kein Ergebnis, d.h. Datei nicht auf DbDir -> :d2
+if no jump d2
+var #upI
+ftime
+ins #upT
+  Befehl zum Bearbeiten
+var #uwC " /c " x " " #upI
+  ausfuehren
+call
+jump frage
+
+:d2
+var P "$" K ".cfg"
+ins #upI
+fsize
+  nicht auf ProdDir? -> :d3
+if no jump d3
+var #upI
+ftime
+ins #upT
+var #uwC " /c " x " " #upI
+call
+var #upI " " D "$" K ".CFG"
+fcopy
+jump frage
+
+:d3
+var "$" K ".cfg"
+ins #upI
+fsize
+  nicht auf Arb.Verz? -> :d4
+if no jump d4
+var #upI
+ftime
+ins #upT
+var #uwC " /c " x " " #upI
+call
+jump frage
+
+  $A gibt's nicht, dann nach A.CFG suchen, selbe Reihenfolge
+:d4
+var D K ".cfg"
+ins #upI
+fsize
+if no jump d5
+var #upI
+ftime
+ins #upT
+var #uwC " /c " x " " #upI
+call
+jump frage
+
+:d5
+var P K ".cfg"
+ins #upI
+fsize
+if no jump d6
+var #upI
+ftime
+ins #upT
+var #uwC " /c " x " " #upI
+call
+var #upI " " D K ".CFG"
+fcopy
+jump frage
+
+:d6
+var K ".cfg"
+ins #upI
+fsize
+if no jump d7
+var #upI
+ftime
+ins #upT
+var #uwC " /c " x " " #upI
+call
+
+:frage
+var #upI
+ftime
+if =#upT jump ende
+
+  Informieren:
+mes Veraenderungen werden erst bei der naechsten Sitzung wirksam!
+  Fragen:
+yes Neue Sitzung sofort starten?
+if yes jump neu
+jump ende
+
+  Nutzer will neu starten:
+:neu
+  Befehl
+var m
+ins #uwM
+var P #uwM(e" " F"b") " " V
+
+  und aktuelles Programm stoppen
+STOP
+
+:d7
+var "Datei " K ".CFG nicht gefunden!"
+:ende
+act 1

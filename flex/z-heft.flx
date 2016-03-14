@@ -1,0 +1,428 @@
+  Z-HEFT.FLX : Neues Zeitschriftenheft
+  2007-06-21   Zweitfunktion: Weitergabe im Umlauf
+
+  Funktion Weitergabe? (Aufruf:  X z-heft wg)
+if "wg" jump weiterg
+  Funktion "Heft in Uml. geben" (dann #uzH HeftNr)
+if "um" jump uml
+  Funktion "Einzelheftausleihe" (dann #uzH HeftNr)
+if "ei" jump ei
+
+var i
+ins $Inn
+
+:start
+  Aktueller Satz ist
+  a) Zeitschriftentitelsatz -> :zta
+var #9C
+if %abo% jump zta
+  keine laufende, aber doch eine Zs? Dann gibt es #8n
+if #8n jump zta
+
+var #9DB
+  b) Abo-Satz -> :zab
+if "A" jump zab
+  c) aktueller Bandsatz (u.U. eben neu angelegt) -> :aktbd
+if "Bl" jump aktbd
+  d) Heftsatz
+var #9DA
+if "V" jump nheft
+  e) nichts davon
+mes Bitte zuerst die Zeitschrift oder das Abo aufsuchen!
+index lfz a
+end
+
+:zta
+var #20
+ins #uZt
+var "|: " #00 "-al?"
+find
+  mehrere?
+if g1 jump zsmu
+  if l1 mes Kein Abo zu dieser Zs!;end
+
+  Abo-Satz liegt vor oder nicht, egal, Bandsatz suchen!
+:zab
+  laufenden Bandsatz holen
+var "|: " #00 "-bl?"
+find
+if l1 jump keinband
+if g1 choose *;load;prev #;next #
+
+  Band geladen, hier ist das Heft einzutragen
+:aktbd
+disp
+sho rec
+  Neues Heft eintragen in #9DN
+#uzP
+  naechste Nummer errechnen
+var #9DN(e";")
+  oder Sortierung 1 ... n:
+  var #9DN(T";")
+if not "" var (e"/" e"." e",")
+z=
+z+1
+var z
+ins #uzH
+
+  Heftnummer bestaetigen lassen (Nutzer kann aendern):
+var 'Heftnummer (neues Heft zu Bd.' #9DG$Y(B"/") ')=#uzH'
+ask
+if "" end
+ins #uzH
+var #9DN
+ins #uzN
+  #uzH muss in #uzN eingeordnet werden
+var #uzN
+  noch keins da? -> :hdone
+if "" var #uzH "/" #dts(0,8);jump hdone
+  Vorhandene Hefte durchgehen, vergleichen
+:hloop
+  neues Heft groessere Nummer? -> :hgr
+  Sortierung 1 ... n
+  if <#uzH jump hgr
+  Sortierung n ... 1
+if >#uzH jump hgr
+  hier muss das neue Heft zwischen
+var #uzP ";" #uzH "/" #dts(0,8) ";" #uzN
+
+:hdone
+var (f";")
+ins #9DN
+dis
+sho rec
+
+  Mahntermin bestimmen!
+  Termin f. naechstes Heft vorbereiten in #9DB$O
+  Anzahl Tage von heute bis zum rechnerischen Lieferdatum
+                  +Karenzzeit (Tage) s. zabom.inc
+
+  Nur bei Kaufzeitschriften mahnen! Dann k in #9DC$k
+var #9DC$k
+  Ist es "Kauf"? sonst -> :speich
+  (in zabom.inc wird  $Mahnt k  gesetzt - oder nicht!)
+if =$Mahnt jump mhn
+var $Mahnt
+if "A" jump mhn
+jump speich
+
+:mhn
+  Wenn keine Frequenz gesetzt, dann keine Mahnung vorbereiten
+if not #9DC$w jump speich
+  Anzahl der Tage errechnen
+eval 366 / #9DC$w +$Mahnk
+  und auf das aktuelle Datum addieren
+Day
+  Uhrzeit abschneiden
+var (e"/")
+ins $mt
+  Nummer des neuen Heftes +1 = naechste Heftnummer
+var #9DN(e"/") " +1"
+eval
+ins $mn
+
+var "Heft " $mn " wird gemahnt am " $mt " - OK? (Nein: Datum ändern, Abbruch: nicht mahnen)
+yes
+if cancel jump speich
+if yes jump mahn
+var "Heft=" $mn
+ask
+if not "" ins $mn
+var "Mahndatum=" $mt
+ask
+if not "" ins $mt
+
+:mahn
+var $mt "/" $mn
+ins $O-#9DB
+
+  Bandsatz nun speichern
+:speich
+put
+disp
+sho rec
+var #00
+ins #uzB
+  neue Nummer ist eingeordnet, anzeigen
+
+  Umlauf?
+if not #9DU end
+var "In Umlauf (" #9DU ") geben?"
+yesno
+if not yes jump hexit
+jump uml
+
+  naechster Abschnitt hinter ; = naechstes Heft
+:hgr
+var #uzP ";" #uzN(e";")
+ins #uzP
+var #uzN(b";")
+ins #uzN
+if not "" jump hloop
+var #uzP ";" #uzH "/" #dts(0,8)
+jump hdone
+
+  Heftumlaufsatz erzeugen (Bandsatz ist geladen)
+:uml
+var #00
+ins #uzB
+var i
+ins $Inn
+  Verteilercode sichern und #9DA
+var #9DU
+ins #uDU
+var #9DA
+ins #uDA
+var #9DG$Y
+ins #uDY
+  Verteilersatz holen
+set obj 2
+var "|; SYSV" #uDU
+f1nd
+  den Inhalt in #u9A sichern
+var #9A
+ins #u9A
+set obj 1
+
+var "|9 u-" #uzB "," #uzH
+f1nd
+if no jump heftsatz
+sho rec
+disp
+
+yes Heft ist schon im Umlauf! Neu beginnen?
+if not yes end
+#9DU
+#9DG
+jump neuuml
+
+:heftsatz
+new 0
+  IdNr anlegen: u-<BandId>,<HeftNr>
+var "u-" #uzB "," #uzH
+ins #00
+
+:neuuml
+var #uDA
+ins #9DA
+var "V" #uDU
+ins $$-#9DA
+var #uDY
+ins $Y-#9DG
+  Liste der Empf.
+var #u9A$e
+ins _; _;_
+ins _;_,_
+  Liste der Empf. jetzt in #9DU$m
+ins $m-#9DU
+  zur Heftweitergabe
+jump w3
+
+
+  Heftweitergabe
+:weiterg
+var i
+ins $Inn
+  Welche Satzart? (Suchschl. ergibt sich daraus)
+var #00
+if "zabo" jump wabo
+if "zbnd" jump wband
+if "u-zbnd" jump w3
+
+if not #88 if not #8n if not #20 jump nix
+  Es ist ein Titelsatz
+var "|: u-" #00 "/?"
+jump w2
+  Es ist ein Abosatz
+:wabo
+var "|: u-" #00 ",?"
+jump w2
+:wband
+var "|: u-" #9DA$J ",?"
+
+:w2
+  Suchschl. jetzt in iV,
+  damit Heftuml.Satz/Saetze finden
+find
+if l1 jump keine
+if l2 jump w3
+  Mehr als eins: waehlen
+choose *
+if cancel end
+load
+prev #
+next #
+
+  jetzt haben wir den Heftumlaufsatz
+:w3
+var #9DA$$
+if "V000" mes Umlauf beendet!;end
+  Liste der Empf. ist in #9DU
+var #9DU$m
+  ist in $m noch was? Nein -> Ende
+if "" jump uend
+  Den aktuellen Inhaber nach $p setzen
+var #9DU$p "," #9DU$$
+var (F"," f",")
+ins $p-#9DU
+
+:anfang
+  $9a = Anfang
+  $9m = Mitte
+  $9r = Rest von #9DU$m
+var ""
+ins $9a
+var #9DU$m(e",")
+ins $9m
+var #9DU$m(b",")
+ins $9r
+  in #9DU$m war nur noch einer? dann $9r leer
+if not "" jump anzei
+var "Der n„chste und letzte ist: " $9m
+var (e"%")
+ansi
+mes
+jump naechster
+
+:anzei
+
+var "N„chster Empf„nger " $9m
+var (e"%") "?"
+ansi
+yesno
+if yes jump naechster
+if cancel undo;jump hexit
+  rotieren und naechsten Empf. anzeigen
+  Wenn $9r leer, Ende erreicht, wieder vorn beginnen!
+var $9r
+if "" jump anfang
+var $9a "," $9m
+var (f",")
+ins $9a
+
+var $9r
+var (e",")
+ins $9m
+var $9r
+var (b",")
+ins $9r
+
+jump anzei
+
+end
+
+:naechster
+  der gewaehlte ist jetzt in $9m
+var $9m
+var (e"%")
+var +"/" #dts(0,8)
+ins $$-#9DU
+  Rest der noch wartenden ist in $9a und $9r
+var $9a "," $9r
+var (f"," F",")
+ins $m-#9DU
+if NEW jump laufzett
+put
+:done
+last off
+var "#" $Inn
+f1nd
+sho rec
+dis
+end
+
+:laufzett
+put
+yes Laufzettel?
+if not yes jump done
+var "|; SYS" #9DA$$
+f1nd
+  Funktion Laufzetteldruck ist in z-numl.flx
+exec z-numl lz
+
+
+:uend
+  den letzten Empf. zur $p ergaenzen
+var #9DU$p "," #9DU$$
+var (f"," F",")
+ins $p-#9DU
+var ""
+ins $$-#9DU
+sho rec
+  Umlaufkennung durch 000 ersetzen (zum Suchen der erledigten Hefte!)
+var "V000"
+ins $$-#9DA
+put
+dis
+var "Umlauf beendet!"
+ansi
+mes
+end
+
+  Auswahl aus mehreren Abos
+:zsmu
+set i3Neues Heft - zu welchem Abo?
+choose *
+set i3
+if cancel set i3;end
+load
+  Vorsichtsmassnahme:
+prev #
+next #
+set i3
+jump zab
+
+  Noch kein Band angelegt
+:keinband
+yes aktueller Band existiert nicht, Bandsatz anlegen?
+if yes exec z-nband
+end
+
+:nheft
+var "|: " #00(b"-" e",")
+f1nd
+jump start
+
+
+:ei
+var #00
+ins #uzB
+var #9DA
+ins #uDA
+var #9DG
+ins #uDG
+ask |:Mitarbeiter?
+if "" end
+ins #unU
+new 0
+var "u-" #uzB "," #uzH
+ins #00
+var #uDA
+ins #9DA
+var "V000"
+ins $$-#9DA 
+var #unU
+ins #9DU
+var #uDG
+ins #9DG
+put
+disp
+sho rec
+end
+
+
+:nix
+mes Falscher Satztyp f. diese Aktion
+jump hexit
+
+:keine
+mes Kein Umlaufsatz gefunden
+end
+
+:hexit
+last off
+var "#" $Inn
+f1nd
+disp
+sho rec
+end

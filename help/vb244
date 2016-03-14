@@ -1,0 +1,96 @@
+
+Verlautbarung 244 der Entw.Abt.                              2011-12-15
+-------------------------------
+
+Das Projekt "OpenSource" soll nicht nur - so wichtig das auch ist - das
+System allegro-C im Endeffekt aus der Abh„ngigkeit von "Braunschweig" 
+l”sen. Es soll auch sein Potential vergr”áern, indem damit anderen
+Entwicklern eine Plattform gegeben wird, auf der Neues und Besseres
+aufgebaut werden kann. Fr allegro-Anwender bedeutet dies ein Mehr an 
+Zukunftssicherheit, aber ferner die Chance, fr die eigenen Zwecke dann
+auch an neuen Entwicklungen teilhaben zu k”nnen, mit denen vorhandene
+Datenbanken neuen Verwendungen zug„nglich werden k”nnen, und das ohne
+schwierige und kostspielige Migration.
+
+Quelltexte zum Kernsystem - Was sollen/k”nnen sie bringen?
+----------------------------------------------------------
+
+Die zentralen Quellcodes fuer das allegro-Kernsystem werden in
+Krze offengelegt. Es wird dazu einen README-Text geben, der
+den šberblick schafft und den Einstieg untersttzen soll.
+Erreicht ist jetzt, daá sich die Quellen mit dem GNU-System
+kompilieren lassen sowie fr Windows mit Visual C++.
+
+Vor der Freigabe wollen wir an dieser Stelle schon mal auf einige
+entscheidende Punkte hinweisen.
+
+Es gibt nach aller Erfahrung zwei Arten von Situationen, die zu
+Eingriffen ins Kernsystem motivieren oder zwingen k”nnen:
+(einmal abgesehen von gr”áeren Umbrchen auf der Systemebene,
+wie ganz neue Plattformen oder Compiler)
+
+1. Es treten Probleme auf, die sich vermutlich nur in den
+   Kernfunktionen l”sen lassen. Z.B. Fehler bei der Abarbeitung
+   bestimmter Exportbefehle oder beim Zugriff auf bestimmte
+   Dateien.
+   Dazu gibt es eine Liste der Quelldateien mit Angaben, welche
+   Aufgaben sie erfllen. Zwar ist jetzt ein vergleichsweise
+   bersichtlicher Zustand erreicht, aber man wird daran noch 
+   weiter arbeiten mssen, um die Durchschaubarkeit noch zu
+   verbessern - die Quellen sind z.T. sehr alt.
+
+2. Man will eine Funktionsweise ver„ndern oder ausbauen.
+   Das weitaus Interessanteste Objekt drfte das Volltext-Such- und
+   Exportprogramm  srch  sein (zun„chst srch32 genannt). Die
+   16bit-Version ist bis heute ein unverzichtbares "Arbeitspferd".
+   srch32 liest Datenbank- und Externdateien (.ald und .alg),
+   wendet einen Suchbefehl an (Option -s oder -r) und gibt
+   im Positivfall den Datensatz mit ausgew„hlten Exportparametern
+   (also in einer gewnschten Struktur) aus.
+   Hier wird es nun an mehreren Punkten m”glich, die eingelesenen 
+   Daten vor dem Ausgeben zu behandeln und ihren Status als "Treffer"
+   oder "Niete" zu ver„ndern. Das bisher bestehende und seit
+   langer Zeit intensiv genutzte Potential dieses Konsolprogramms
+   wird damit stark erweitert. Das entscheidende Quellmodul heiát
+   srchs.c  und ist intern ausfhrlich kommentiert.
+
+Fr den vermutlich wichtigsten und h„ufigsten Fall, daá man das
+Programm  srch  als Grundlage fr eigene Aufgaben heranziehen und
+modifizieren will, ist damit auf der C-Ebene ein denkbar einfacher
+Einstieg geschaffen, der ohne besondere Kenntnisse der internen
+Algorithmen und Datenstrukturen auskommt. Man k”nnte z.B. so weit
+gehen, hier einen ganz anderen Suchalgorithmus einzubinden oder
+ganz andersartige Exportfunktionalit„t oder Datenmanipulationen
+im weitesten Sinne, mit eigener Konfigurierschnittstelle.
+
+Nicht neu ist, aber es bleibt wichtig: Wenn eine Aufgabe nicht in
+einem Durchlauf mit srch erledigt werden kann, weil z.B. eine
+Sortierung zwichendurch n”tig ist, kann man mehrere Durchl„ufe in
+einem Batch oder Shellscript kombinieren. Dabei kann natrlich auch
+acon mit ins Spiel kommen, wenn es sich fr eine Teilaufgabe besser
+eignet.
+
+Wenn man bedenkt, welches umfangreiche Spektrum das schon existierende
+Konsolprogramm  acon  mit der Skriptsprache FLEX bietet, mag man sich
+fragen, ob denn eigene C-Erweiterungen des Programms  srch  tats„chlich
+der Mhe wert sein k”nnten. Nun, einerseits gestattet die C-Ebene mehr
+und diffizilere Eingriffe als die FLEX-Ebene, und andererseits ist 
+das Programm  srch  als reines C-Programm viel schneller als  acon  mit
+einem FLEX-Job (wie z.B. srch.job) wirklich sein kann. 
+Dazu ein Vergleich: 
+Zum Durchsuchen von 53 Dateien mit 684MB Daten (1.4 Mio Datens„tze)
+brauchte
+
+  acon+srch.job     336 Sek.
+  srch16            142
+  srch32             23
+
+Alles auf einem PC mit Win'7/32, bei exakt gleicher Suche und Ergebnis.
+Das neue srch ist damit gut 6fach schneller als das alte, gut 14fach
+schneller als acon mit srch.job. Das Zeitverhalten in konkreten F„llen
+h„ngt stark vom System ab, vor allem vom Speichersystem, auch von der
+Komplexit„t des jeweiligen Exports (Nachladungen!), doch die Botschaft
+ist damit klar.
+
+
+

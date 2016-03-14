@@ -1,0 +1,93 @@
+  S-SACHGR.APR : Sortieren nach Sachgruppe / Jahr  (#30./ #76)
+  950515   mit Ersatzcode "zzz", wenn keine Sachgruppe
+pn="Sortierformat #30. / #76"
+
+  die folgenden Angaben mÅssen so bleiben
+  damit die fÅr die Weiterverarbeitung nîtige .ALG-Form entsteht
+  --------------------------------------------------------------
+zl=0        ... ZeilenlÑnge unbegrenzt
+ks=1        ... Beginn beim ersten Zeichen hinter #
+ke=0        ... Kategorie-Ende = 0
+as=""       ... Aufnahme-Start
+ae=13 10    ... Aufn.Ende: CR LF
+
+ts          ... lÑdt die Zeichenumwandlungstabelle S.APT fÅr das Sortieren
+
+am=0        ... alle AusgabesÑtze, die mîglich sind
+  am=1             nur einer
+dx=1
+ ---------------------------------------------------------------
+
+ak=30a" "+Y   Zerlegung am Leerzeichen
+ ak=30k" "+Y   wenn Basisklassifikation
+ ak=30d" "+Y   wenn DK
+ak=3n+Z       Stammsaetze
+
+  ******************************************
+  Beginn der Verarbeitung von Unteraufnahmen
+  ******************************************
+
+
+#hi +b e0 #zz 0        wenn es eine Unteraufnahme ist: Sprung nach #-b
+
+  ******************************************
+  Beginn der Verarbeitung von Hauptaufnahmen
+  ******************************************
+ 
+
+#-N
+#+-   Nichts, wenn keine Sachgr vorkommt! 
+  Alternativ:
+#t{ 1 "u1 zzz" }   wenn keine Sachgr., zzz als ersatz
+!76 b3 x"*1" e"." s4,. p"" #zz 0   zweites Element: Jahr
+#t{ 0 }     als Abschluss des Sortierfeldes
+#t{ "u2 zzz" }
+#76 b3 x"*1" e"." s4,. p"" #zz 0   zweites Element: Jahr
+#t{ 0 }     als Abschluss des Druckfeldes
+#+S  
+
+#-Y
+        hier beginnt es
+        Umwandlung der !-Felder Åber Alternativtabelle:
+        der Sortierbegriff wird zusammengesetzt und als #u1 ausgegeben
+        (Verfasser  Jahr ...)
+#t{ 1 }
+!u1 b3 e" " p"u1 " #zz 0
+!76 b3 x"*1" e"." s4,. p"" #zz 0   zweites Element: Jahr
+      b3 heisst: Beginn beim 4. Zeichen (3+ks)
+#t{ 0 }     als Abschluss des Sortierfeldes
+
+     Die Druckform des Sortierfeldes: Produktion als #u2
+     (genauso wie #u1, nur ohne Umcodierung, dann fÅr den Druck verwertbar!)
+#u1 b3 e" " p"u2 " #zz 0
+#76 b3 x"*1" e"." p"" #zz 0   zweites Element: Jahr, wenn fÅr Druck gewÅnscht
+#t{ 0 }     als Abschluss des Druckfeldes
+#+S
+
+#-b            Sprungmarke b: bei untergeordneten SÑtzen
+#t{ h0 }    Hierarchiecode
+
+#-S
+tselect     Select.APT nachladen
+            diese Tabelle enthÑlt die auszugebenden Kategorien
+            (S-KURZ, S-MITTEL, S-LANG, S-VOLL)
+
+#nr e0 #zz 0      nur wg indir Postfix
+#+#
+
+#-Z    Sachgr.Stammsatz
+#3n +- I4,c I4,d I4,k e0 #zz 0   nur typen c,k,d
+#t{ 1 }
+!3n i4,c b4 e" " p"u1 " P"" #zz 0
+!3n i4,k b5 e" " p"u1 " P"" #zz 0
+!3n i4,d B"^" B"^" e" " p"u1 " P"" #zz 0
+!3n b4 b" " p"" #zz 0
+#t{ 0 }
+
+#3n i4,c b4 p"u2 " #zz 0
+#3n i4,k b5 p"u2 " #zz 0
+#3n i4,d B"^" B"^" p"u2 " #zz 0
+#t{ 0 }
+
+##
+#+#

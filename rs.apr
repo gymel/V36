@@ -1,0 +1,22 @@
+  RS.APR : Ergebnismenge als Nummernfolge ausgeben
+  980824 / 040215  mit selbstgew„hltem Namen am Anfang
+
+pn="RS.SET"     Name wichtig! PRESTO dann viel schneller
+
+zm=0    kein Seitenumbruch
+ae=""   kein Satzende-Steuerzeichen
+fl=0    Listenmodus (kein Kartenmodus)
+
+#hi +- e0    nichts machen bei hierarchischen Untersaetzen?
+             (sonst hat man mehrfach dieselbe Nummer)
+
+#ufg +A e0        Flag ist belegt, weiter bei #-A
+     nur vor dem ersten Datensatz:
+#q{ "Wie soll die Ergebnismenge heissen?" }   Name wird abgefragt
+#uxq      und ausgegeben
+#t{C } 
+#dt afg #zz 0     Flag #ufg belegen
+
+#-A
+#nr r7,0     Satznr ausgeben
+#t{ C }  neue Zeile

@@ -1,0 +1,131 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman\fprq2\fcharset0 Times New Roman;}{\f1\froman\fprq2 Times New Roman;}{\f2\fswiss MS Sans Serif;}{\f3\fswiss\fcharset0 MS Sans Serif;}{\f4\fmodern\fprq1\fcharset0 Courier New;}{\f5\fswiss\fprq2\fcharset0 Verdana;}{\f6\fmodern\fprq1 Courier New;}{\f7\fmodern\fprq1 Courier;}{\f8\fmodern\fprq1\fcharset0 Courier;}{\f9\froman Times New Roman;}}
+{\colortbl ;\red0\green0\blue255;\red0\green176\blue0;\red255\green0\blue0;\red0\green0\blue0;\red0\green64\blue64;\red128\green0\blue255;\red0\green64\blue0;}
+\viewkind4\uc1\pard\qr\f0\fs18\tab    \f1 `\cf1\ul\b Register\cf0\ulnone\b0 `\cf2\b\fs20 
+\par \pard 
+\par \cf0\f2 Das Rechnen in der FLEX-Sprache\f3 , Teil 1\cf2\f1        \cf3\i acon\cf4\b0\i0 
+\par 
+\par \f0 Die FLEX-Sprache ist nicht geschaffen und daher nicht geeignet f\'fcr wissenschaftliches Rechnen. Zuerst wurden lediglich Hilfsfunktionen f\'fcr die Grundrechenarten geschaffen. Diese Hilfsfunktionen sollten dazu dienen, Summen, Produkte und Durchschnittswerte auszurechnen, W\'e4hrungsbetr\'e4ge umzurechnen sowie einen Z\'e4hler f\'fcr Schleifen zu erm\'f6glichen. 
+\par  
+\par \cf5\i Hinweis auf  \cf3 Teil 2\cf5 :\i0  Mit \cf6\b V27.2\cf7\b0  kam der bequeme Befehl \cf4\f4 `\cf1\ul\b eval\cf4\ulnone\b0 `\f0  \cf7 zum Auswerten arithmetischer Ausdr\'fccke, mit dem man jeden Feld- und Unterfeldinhalt in Rechenbefehle einbauen und diese dann ausf\'fchren lassen kann. Damit sind die in diesem Kapitel beschriebenen Befehle nicht mehr \i besonders\i0  wichtig, bleiben aber g\'fcltig und sind sogar mit den neuen M\'f6glichkeiten kombinierbar. Viele der StandardFLEXe benutzen diese Variablen sehr ausgiebig! Mindestens als Schleifenz\'e4hler sind die Variablen z und Z immer noch sehr brauchar (s. Beisp. 5). 
+\par 
+\par \i Sonderfall:\i0  Funktionen zur `\cf1\ul\b Datumsberechnung.\cf7\ulnone\b0 `\cf4 
+\par \f1 
+\par \b\f5 Interne Zahl und interner Z\'e4hler\f1 
+\par \b0\f0 
+\par Es gibt zwei besondere Variablen f\'fcr das Rechnen: die "\b\f1 interne Zahl\b0 " und den "\b\f0 internen Z\'e4hler\b0\f1 ". Ansonsten lassen sich Zahlenwerte in den #u-Variablen \f0 und in den $-Variablen \f1 speichern. Dann sind es ganz normale Zeichen\f0 folg\f1 en\f0 , die nur beim Rechnen automatisch als Zahlen interpretiert werden.\f1  
+\par \f0 Wir verwenden f\'fcr die Beschreibungen folgende Abk\'fcrzungen: \f1 
+\par \cf2\b 
+\par \cf0 iZ\cf2\f2  =\cf0  \cf2\f3 interne Zahlenvariable / \cf0\f1 iz\cf2\f3  = interner Z\'e4hler\cf0\f1 
+\par 
+\par \b0\f0 Mit beiden Werten kann man auf gleiche Weise umgehen, der Unterschied ist nur, da\'df \b\f1 iZ\b0  als Dezimalzahl, \b iz\b0  aber als ganze Zahl behandelt wird. 
+\par \i Achtung:\i0  in den Befehlen \f0 ist immer\f1  nur\f0  \f1  \b Z\b0  bzw. \b z\f0  \b0  zu schreiben,\f1  nicht  iZ bzw.  iz ! 
+\par 
+\par \f0 Nach jedem Rechenbefehl ist das Ergebnis dann wieder in der internen Zahlenvariablen bzw. im Z\'e4hler - nicht in der iV!  Um z oder Z in die iV zu kriegen, mu\'df man  \f4 var z\f0   bzw.  \f4 var Z\f0   sagen. Erst dann kann man die Zahl mit  \f4 ins\f0    in ein Datenfeld oder eine #u-Variable kopieren. 
+\par Wichtig: Das Ende des FLEXes \'fcberleben beide Zahlen nicht. Zu Beginn eines neuen FLEX sind sie stets 0.\f1 
+\par 
+\par \f0 Nochmals zur \f1 Verwertung der \f0 Zahlenv\f1 ariablen: 
+\par Mit \b\f6  `\cf1\ul var Z\cf0\ulnone ` \b0 bzw.\b  var z\b0\f0   kann man die Zahl bzw. den Z\'e4hler in die `\cf1\ul\b\f1 iV\cf0\ulnone\b0\f0 ` kopieren und dann f\'fcr alle denkbaren Zwecke verwenden. Z und z k\'f6nnen in jedem "`\cf1\ul\b\f1 cstring\cf0\ulnone\b0\f0 `" an jeder beliebigen Stelle vorkommen, d.h. man k\'f6nnte z.B. auch schreiben \f1 
+\par \f6 wri "Ergebnis: " Z 
+\par \cf4\b\f7 
+\par \cf0\b0\f1 Und so sehen die Rechenbefehle aus (jeweils auf eigener Zeile):\cf4\b\f7 
+\par 
+\par \pard\fi-1420\li1420\cf0 Z = N   N\b0\f1   bzw.\b\f7  \f1 iV \b0 in Zahl umwandeln (andere Zeichen fallen dabei weg) und in \b iZ\b0  speichern\f0 . 
+\par \tab\tab\b\f7 N\b0\f0   kann eine Dezimalzahl mit Punkt oder Komma sein, auch Exponentialschreibweise ist m\'f6glich: 1E3 = 1000\b\f7 
+\par \pard Z + N   N\b0\f1   bzw.\b\f7  \f1 iV \b0 in Zahl umwandeln und zu \b iZ \b0 addieren, bzw. \b  \b0  \b\f7 
+\par Z - N   iZ-N\b0\f1   bzw.\b\f7  \f1 iZ - iV \b0 bilden, bzw. \b\f7 
+\par 
+\par Z * N   iZ*N\b0\f1   bzw.\b\f7  \f1 iZ * iV\b0  das Produkt aus beiden, bzw.\f7 
+\par \b Z / N   iZ/N\b0\f1   bzw.\b\f7  \f1 iZ / iV  \b0 ausrechnen\f0  (wenn N=0, dann n=1E-22)\f1 , bzw.\b  \f7 
+\par 
+\par z \f8 %% \f7 N   iz\f8 %%\f7 N\b0\f1   bzw.\b\f7  \f1 iz \f0 %%\f1  iV  (Divisionsrest) \b0 ausrechnen \f0  (s. `\cf1\ul\b Beisp. 7\cf0\ulnone\b0 `)\f1 
+\par 
+\par Wenn \b\f7 N\b0\f1  fehlt, wird jeweils der Wert der iV genommen: 
+\par d.h. es wird dann iZ bzw. iz  mit dem Inhalt der iV verrechnet, wobei diese zuerst in eine Zahl verwandelt wird. 
+\par Wenn in der iV vor der Zahl noch andere Zeichen stehen, macht das nichts aus, es wird die reine Zahl daraus extrahiert! 
+\par \cf3\i\f0 
+\par \cf0\i0 Leerzeichen vor und hinter dem Operatorzeichen werden ab V27.2 nicht mehr gebraucht.\f1 
+\par \f0 
+\par F\'fcr den Z\'e4hler gilt dasselbe, nur mit \b\f1 z\b0  statt \b Z\b0 . Den Divisionsrest gibt es jedoch nur bei \b z\b0 . 
+\par \f0 F\'fcr den Z\'e4hler, weil ganzzahlig, wird bei  / das Ergebnis ganzzahlig \b ab\b0 gerundet, d.h. am Komma abgeschnitten. \f1 
+\par \f0 Beide internen Variablen k\'f6nnen in  \cf1\ul\b Bedingungspr\'fcfungen\cf0\ulnone\b0   verwendet werden, und zwar so: \f1 
+\par \f0 
+\par \b\f7 if z>\b0\i\f1 n\b\i0\f7  \b0\f1  \i command\i0 
+\par \b\f7 if z=\b0\i\f1 n\b\i0\f7  \b0\f1  \i command\i0 
+\par \b\f7 if z<\b0\i\f1 n\b\i0\f7  \b0\f1  \i command\i0 
+\par \f0 
+\par und dasselbe gilt f\'fcr \b\f7 Z\b0\f1 . Beim Vergleichen werden alle Zahlen als Dezimalzahlen behandelt. 
+\par \i Tip:\i0  Statt  \b\f7  if z>=\b0\i\f1 n  \i0  (was nicht funktioniert!) kann man schreiben   \b\f7 if not z<\b0\i\f1 n\i0 . 
+\par 
+\par \f0 F\'fcr Programmierer: die m\'f6glichen Werte f\'fcr Ganzzahlen liegen zwischen \f9\fs24 -2,147,483,648 und 2,147,483,647\f1\fs20  ("long integers")\f9\fs24 
+\par \f0\fs20 Die Werte f\'fcr Dezimalzahlen zwischen   \f6 +/-\fs24 1.7E+/-308 \f9  \f1\fs20 (sog. "double"-Werte)\f9\fs24 
+\par \f0\fs20 Man kann also z.B. schreiben:  Z = 2E-4 (f\'fcr 2/10000). \f1 
+\par 
+\par \i\f0 Hinweis:\i0  Eine Besonderheit sind die Funktionen f\'fcr `\cf1\ul\b Datumsberechnungen\cf0\ulnone\b0 `. \f1 
+\par 
+\par \cf3 Beispiel \f0 1\f1 :\cf0  \f0 Der im Teilfeld a von \f1  \f6 #\f4 123\f1  \f0  \f1 steh\f0 ende\f1  \f0 Wert soll um 1 erh\'f6ht werden:\f1  
+\par \f6 var #\f4 123$a\f6  
+\par \f4 z\f6 = 
+\par \f4 z+1 
+\par var z 
+\par ins $a-#123\f6  
+\par \f1 
+\par \cf3 Beispiel \f0 2\f1 :\cf0  In \f6 #udm\f1  steht ein DM-Betrag, der durch 1.95583 geteilt und dann in\f6  #ueu\f1  gespeichert werden soll, \b\f0 gerundet auf 2 Kommastellen\b0\f1  (Umrechnung DM ->Euro), das Ergebnis soll auch angezeigt werden. Das geht so: 
+\par 
+\par \f6   DM-Betrag steht in #udm, iZ auf diesen Wert setzen: 
+\par var #udm 
+\par Z= 
+\par   Dann multiplizieren (Ergebnis steht dann wieder in iZ) 
+\par \f4   F\'fcr das Umgekehrte: statt / ein * einsetzen (Multiplikation) \f6 
+\par Z/ 1.95583 
+\par var #udm " DM sind umgerechnet: " Z2 " Euro" 
+\par mes 
+\par var Z2 
+\par ins #ueu 
+\par \f1 
+\par \cf3 Beispiel \f0 3\f1 :\cf0  `\cf1\ul\b EURO.FLX\cf0\ulnone\b0 `  `\cf1\ul\b\f0 ausf\'fchren\cf0\ulnone\b0\f1 ` 
+\par 
+\par \cf3 Beispiel \f0 4\f1 :\cf0  `\cf1\ul\b SUMME.FLX\cf0\ulnone\b0\f0 ` Summieren einer Kategorie \'fcber die Ergebnismenge oder die gesamte Datenbank. (Siehe `\cf1\ul\b Komfortmen\'fc\cf0\ulnone\b0 ` f\'fcr Export)\f1 
+\par 
+\par \cf3 Beispiel \f0 5\f1 :\cf0  \b\f0 Schleifenz\'e4hler\b0 . \f1 Wenn man eine Schleife 100mal abarbeiten will, geht man so vor: 
+\par \f6 z=0 
+\par :loop 
+\par ...   \f1 Befehle\f6 
+\par z+1 
+\par if z<100 jump loop 
+\par ...\f1  
+\par Dasselbe funktioniert mit Z statt z, d.h. man kann auch zwei Schleifen ineinander verschachteln. 
+\par 
+\par \cf3 Beispiel \f0 6\f1 :\cf0\f0  Man will pr\'fcfen, ob der Wert in Feld #77 gr\'f6\'dfer als der in #uwx ist. Wenn ja, soll "Stimmt" ausgegeben werden. \f1 
+\par Das geht so:   (denn dann ist #77 - #uwx > 0 ) 
+\par  
+\par \f6 var #77 
+\par Z= 
+\par var #uwx 
+\par Z- 
+\par    in der iZ steht jetzt die Differenz #77 - #uwx 
+\par if Z>0 mes Stimmt 
+\par \f0 
+\par \cf3\f1 Beispiel \f0 7\f1 :\cf0  \b\f0 Divisionsrest\b0 . In #77 steht eine ganze Zahl, in #uxy eine andere. \f1  \f0 Was ist der Divisionsrest von #77 / #uxy?\f1 
+\par \f4 var #77 
+\par z =\f6  
+\par \f4 var #uxy 
+\par z %% 
+\par var "Der Div.Rest ist " z\f6 
+\par \f0 
+\par ?var Z=h xvar 
+\par ?iV=h xiV 
+\par ?Register=h xa 
+\par ?EURO.FLX=h euro.flx 
+\par ?ausf\'fchren=x help euro\\exec X euro 
+\par ?SUMME.FLX=h summe.flx 
+\par ?Sonderfunktion.=h xsonder 
+\par ?Bedingungspr\'fcfungen=h xif=if z>n 
+\par ?cstring=h xcstring 
+\par ?Datumsberechnungen=h xdate 
+\par ?eval=h xeval 
+\par ?Beisp. 7=h =Beispiel 7 
+\par ?Datumsberechnung.=h xdate 
+\par ?Komfortmen\'fc=h exprt
+\par 
+\par }
+ 

@@ -1,0 +1,134 @@
+  FILE-ZER.FLX : ASCII-Datei zeilenweise lesen + schreiben, 
+  2002-03-28     zerlegen in Dateien nach Anfangsbuchstabe
+  (Muster zum Variieren)  (Die Datei braucht nicht sortiert zu sein!)
+  Leerzeichen am Zeilenende verschwinden, am Anfang nicht!
+  Position des Startzeichens muss evtl. gesetezt werden,
+  siehe Kommentar unten bei xxx
+
+var m
+if "alc" end
+
+  Zuerst eine Datei auswaehlen lassen
+
+var "Dateiverarbeitung. Die ausgewÑhlte Datei wird zeilenweise" n "gelesen und geschrieben" n
+var +"Die Ausgangsdatei bleibt unverÑndert!" n "Es entsteht je eine Datei fÅr jeden Anfangsbuchstaben"
+ansi
+mes
+fname W‰hlen Sie die zu behandelnde Datei:|*.*
+    alternativ:  hier z.B. wuerden nur Dateien des Typs *.?pr gezeigt
+  fnam W‰hlen Sie eine Datei|*.?pr
+if "" end
+
+  den gewaehlten Namen in #uFN speichern
+ins #uFN
+  zum Lesen oeffnen (Name steht noch in iV)
+open
+if not yes end
+:neuname
+  Fragen, wie die neue Datei heissen soll
+ask Neuer Name f¸r die Datei?
+if "" end
+  den eingegebenen neuen Namen in #uNN speichern
+ins #uNN
+   checken, ob sie schon existiert
+ fsize
+ if no jump start
+ noyes Datei existiert! Ueberschreiben?
+ if not yes jump neuname
+ del
+
+:start
+
+  Anfangsbuchstabe vorbelegen
+var "?"
+ins #ufA  
+
+  ZeilenZaehler (iz = interner Zaehler) auf 0 setzen (optional)
+z = 0  
+
+
+  erste Zeile lesen (X davor setzen wegen Leerzeichen am Anfang
+var "X"
+get +iV
+ins #uZL
+
+  ^^^^^^^^^^^^^^^^^ Beginn der Schleife
+:loop
+  Wurde Esc gedrueckt und Abbruch bestaetigt?
+
+keychk
+if yes jump abbruch
+
+  gelesene Zeile steht in #uZL, mit X davor
+  (sonst wuerden fuehrende Leerzeichen verschwinden...)
+
+  
+  Welches ist das zu vergleichende Zeichen? (0 ist das erste!)
+         xxxx
+var #uZL(14,1)
+if =#ufA jump write
+ins #ufA
+
+close x
+var "+" #uNN #ufA
+open x 
+
+:write
+  ***************************************
+  Hier kann man Manipulationen einbauen!
+    z.B. auch einen Exportvorgang: (wo dann #uZL verarbeitet wuerde!)
+  download
+    oder z.B. Ausgabe mit Zeilennummer, dann diese Zeile:
+  wri Z0 ". " #uZL(1,0)
+    oder z.B. die Zeile von ASCII nach ANSI umcodieren:
+  ansi
+  ***************************************
+  Ausgabe (ohne Zeilennummer), mit Zeilenvorschub:
+  (falls nicht durch Export anders ausgegeben, s.o.)
+wri #uZL(1,0)
+wri n
+  Zaehler iz um 1 hochzaehlen
+z + 1
+
+:nowri
+  naechste Zeile lesen
+var "X"
+get +iV
+  war noch eine Zeile da? dann Schleife
+if no jump abbruch
+if canc jump abbruch
+
+ins #uZL
+jump loop
+  ^^^^^^^^^^ Ende der Schleife
+
+:abbruch
+  Ende, Exportdatei schliessen (indem eine neue namens "nul" geoeffnet wird)
+xport f nul
+  internen Zaehler nach #uZZ kopieren:
+var z
+ins #uZZ
+  Meldung aufbereiten und in #uME speichern
+var #uFN " verarbeitet, Neue Datei " #uNN 13 10 #uZZ " Zeilen"
+ins #uME
+
+  Variablen loeschen
+var ""
+ ins #uZL
+ ins #uZZ
+ ins #uFN
+
+  EndeMeldung ausgeben (ins Schreibfeld)
+var #uNN
+fsize
+ins #uNZ
+var #uME ", " #uNZ " Bytes"
+
+mess
+ show iv
+
+  Neue Datei anzeigen
+var #uNN
+help
+var ""
+ins #uNN

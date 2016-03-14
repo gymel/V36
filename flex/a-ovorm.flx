@@ -1,0 +1,151 @@
+  A-OVORM.FLX : OPAC-Vormerkung
+  2009-01-19
+
+  Nummer des Titelsatzes (aus dem Aufruf)
+ins #unR
+
+  Nummer des Satzes, der momentan geladen ist
+var i
+ins $i
+
+var "|: " #unR ":?"
+find
+if l1 mes Keine ausleihbaren Exemplare gefunden;jump abbruch
+
+#ueL
+  Liste der Entleiher aller Exemplare ermitteln
+:eloop
+var #ueL #9DH$u P"/"
+ins #ueL
+next
+if yes jump eloop
+
+var #9DG
+ins #uaG
+if #9DF var #9DF
+ins #uDF
+
+close res
+  letzte Erg.Menge wieder aktivieren
+find s0
+
+  Vormerksatz ist ein eigener Datensatz!
+    eigentl. Vormerkfeld #9DG, vorn mit V
+var "VOALF"
+    Wenn man Exemplarvormerkung wuenscht, dann:
+  var "Ve" #uaG$e "a" #uaG$a "OALF"
+  if #uaG$L var +"L" #uaG$L
+
+ins #uDG
+:welcher
+ask @Ihre Lesernummer und Paﬂwort bitte!
+if "" jump abbruch
+if "=" jump abbruch
+ins #unp
+var #unp(e"=")
+ins #uaU
+var #unp(b"=")
+ins #upW
+if "" mes Ohne Paﬂwort geht es nicht!;jump welcher
+
+var #upW
+crypt
+ins #ucW
+
+  Gibt es diesen Nutzer? (im Reg. 10 nachschauen)
+set obj 2
+var "|: B" #uaU
+f1nd
+
+if no mes Nummer unbekannt!;jump welcher
+
+  Ist #uaU in #ueL enthalten? 
+  (#ueL wird in d-krtf.apr angelegt, wenn die Exe aufgelistet werden)
+var #ueL(b"#uaU")
+if not "" mes Sie haben von diesem Titel schon ein Exemplar entliehen!;jump abbruch
+
+// |;LKV<uaU>/<titelID>   checken
+
+// Pw.pruefen
+
+#uCw
+#uPw
+
+var #9B$d
+ins #uPw
+// Es gibt ein codiertes Pw?
+var #9B$g
+ins #uCw
+
+var #ucW
+if =#uCw jump weiter
+
+if #uCw var "Sorry, Paﬂwort stimmt nicht!";mes;jump abbruch
+
+var #upW
+if =#uPw jump weiter 
+
+var "Sorry, Paﬂwort stimmt nicht!" 
+mes
+jump abbruch
+
+:weiter
+
+
+var #uaU "/" #uDF
+ins #ucK
+
+qri n 1
+var "|; LKV" #uaU "/" #uDF
+qrix
+ins #uck
+var #uck(b"LKV" e":")
+ins #uck
+
+var #ucK
+if =#uck mes Diesen Titel haben Sie schon vorgemerkt!;jump abbruch
+
+
+  Leserklasse aus Lesersatz nehmen
+set obj 2
+var "|: B" #uaU
+f1nd
+var #9B$k
+ins $nu
+set obj 1
+
+  Vormerksatz anlegen
+new 0
+#00 -
+var #uDF
+ins #9DF
+var #uDG
+ins #9DG
+var #uaU
+ins $u-#9DH
+var $nu
+ins $C-#9DH
+var #dts
+ins $D-#9DH
+  120 Tage
+Day +120
+var (0,8)
+ins $V-#9DH
+
+yes OK, Vormerkung eintragen?
+if no jump abbruch
+if cancel erase;jump abbruch
+put
+if not no mes erledigt;jump abbruch
+  put hat nicht geklappt, Fehler steht in Err
+var Err
+mes
+:abbruch
+set obj 1
+var "#" $i
+f1nd
+disp
+sho rec
+end
+
+

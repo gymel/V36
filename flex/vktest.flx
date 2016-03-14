@@ -1,0 +1,31 @@
+  VKTEST.FLX : Demonstration und Test der aiaqs-Technik
+  2008-05-23   startet auf dem Webserver  vktest.php
+  Aufruf:  X vktest <isbn>
+
+  Die eingegebene ISBN in $num sichern
+ins $num
+
+  Dies ist die Basis-URL
+$URL=http://www.biblio.tu-bs.de/db/vk/
+
+  Fehler abfangen
+if $num jump begin
+mes Ohne ISBN geht's nicht
+end
+
+:begin
+  dynamische URL zusammenbasteln,
+    vktest.php ist aufzurufen mit der ISBN als Wert
+
+var $URL "vktest.php?isb=" $num
+  und die Daten abrufen
+get I
+  Wenn nicht gefunden, dann kommt die Zeichenfolge "E130>" vor
+if %E130>% mes ISBN im VK nicht gefunden;end
+
+  Output des Auftrags steht jetzt in iV
+  Codierung ist ASCII, zwecks Anzeige umcodieren
+ansi
+message
+
+

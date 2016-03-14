@@ -1,0 +1,134 @@
+
+Verlautbarung 216 der Entw.Abt.                              2009-04-21
+-------------------------------
+
+                     V29.4 vorfristig fertiggeworden
+
+Fuer die jetzt bereitstehende Version sind einige interne Umstellungen
+erfolgt, von denen aber der Anwender nichts merken duerfte. Was es an
+funktionalen, also interessanten, Neuerungen gibt, folgt unten.
+Die internen Umstellungen haben hauptsaechlich mit unserer Verwaltung
+der Quellcodes zu tun. Da gab es bisher immer noch Unterschiede
+zwischen a99 und acon hinsichtlich der Index-Kernfunktionen. Diese sind
+nun zu 100% ausgemerzt. (Diese Kernfunktionen sind seit 1988 nach und
+nach alle neu geschrieben worden, ohne aber ihre Wirkung zu aendern.)
+In der Folge ist z.B. acon.exe ploetzlich etwas kleiner geworden, was
+aber an seinen Ergebnissen nichts aendert.
+Alle anderen Teile der Klassenbibliothek waren schon lange vereinheit-
+licht. Die nun wirklich gemeinsame Codebasis hilft uns sehr bei der
+effizienten Erstellung von neuen Versionen, wird aber auch eine
+wichtige Grundlage sein fuer die geplante OpenSource-Initiative.
+Das Auf- und Umraeumen eines SVN-Repositoriums ist nicht gerade ein
+Sonntagsspaziergang, aber nun ist auch das geschafft. Das Erstellen
+neuer UNIX/Linx-Versionen erleichterte sich damit weiter.
+NICHT vereinheitlicht sind leider, weil es auch gar nicht vollstaendig
+ginge, die Unterschiede zwischen a99-FLEX und der acon-Variante.
+Es kann weitere Annaeherungen geben, eine glatte Verschmelzung aber
+nicht.
+
+
+Hier nun aber die interessanten Neuerungen:
+
+a99 : V14-Ersetzungen
+---------------------
+Fehler gab es im Fall i4=5: Die Ersetzung fand nicht statt, wenn hinter
+dem Kuerzel das Feld zu Ende war.
+Behoben, das Verhalten entspricht dem frueheren Zustand.
+
+Weitere Offlinedatei laden
+--------------------------
+Der Vorgang blieb haengen, wenn die .ALG-Datei kein ordentliches Ende
+hatte, d.h. keinen Code 0 hinter dem letzten Feld.
+Behoben. (Kommt aber wohl nur vor, wenn Daten der Struktur .ALG nicht
+mit allegro selbst, sondern von anderer Software erstellt wurden.)
+
+order/aLF
+---------
+Mit denselben FLEXen, die bei ORDER schon existieren, um Ergebnismengen
+aus Bestellsaetzen in Titellisten zu verwandeln, kann man jetzt auch
+Exemplarsaetze verarbeiten. Die beiden FLEXe  o-titel.flx  und
+o-tliste.flx  erkennen am Vorhandensein von #9DA bzw. #9DF, um was fuer
+eine Satzart es sich handelt. Wer also in aLF eine Ergebnismenge aus
+Exemplarsaetzen hat, kann sich mit  X o-titel  bzw.  X o-tliste
+schnell mal eben dazu die Titel anzeigen lassen.
+
+
+acon
+----
+Jetzt geht, wie bei a99, auch "if empty ...", um die Leerheit der
+Ergebnismenge zu testen. (Bisher musste man "if l1 ..." sagen.)
+
+Der Job  update.job  wurde verbessert, damit eine exakte Ubereinstim-
+mung mit den Funktionen des alten UPDATE.EXE erreicht wird. Ebenfalls
+verbessert ist die Beschreibung, siehe  h acon
+
+
+Aber nun der Knaller:
+
+a99/alcarta : Menuepunkte ergrauen lassen
+=========================================
+Immer wieder erhob sich die Forderung, alle Menuepunkte und Buttons
+und sowieso ueberhaupt einfach ALLES muesse konfigurierbar gemacht und
+so dem muendigen Anwender das kompromiss- und grenzenlose Umgestalten
+des ja ueberaus eigenwilligen und gar nicht so recht intuitiven, viel
+zu bizarren Programms gaenzlich an die Hand gegeben werden. Auf dem
+langen Marsch zu diesem Fernziel ist jetzt ein weiterer Schritt getan:
+Wenigstens "ausgrauen" kann man nun jeden Menuepunkt, auf dass er dem
+so leicht fehltretenden Endnutzer wenigstens keine Irritation mehr
+zumute. Und das geht so:
+Sagen wir mal, man will den Menuepunkt "Volltextsuche" im Menue
+"Finden" unschaedlich machen. Dessen Titel findet man in der UIF-Zeile
+323 (in der Datei uifeger). Diese Nummer braucht man und gibt damit
+nun in einem FLEX diesen Befehl:
+
+set B323-
+
+Schwupps ist die Zeile grau und kraftlos. Mit set B323+, so werden
+Sie sogleich erraten (obwohl es keineswegs so sein muesste, sondern die
+irrationale Macht des Analogieschlusses zwingt Sie dazu, dieses zu
+erwarten), wird die Vergrauung wieder aufgehoben. Ergo kann man auch
+temporaer den einen oder anderen Menuepunkt zwischendurch mal seiner
+Wirkung berauben und so mehr Dynamik ins Programm bringen.
+Setzungen mit  set B  gelten nur bis zum Sitzungsende, in der Regel
+wird man sie also im  _start.flx  unterbringen.
+"Aber ganz rausnehmen, wie geht das denn?" lautet die vorhersehbare
+Nachfrage. Antwort: Nicht, aber einen anderen Titel verpassen, das geht
+ja schon lange. Wenn man also jetzt in der uifeger schreibt
+263 "..."
+und sodann im _start.flx den Befehl   set B263-, dann sind anstelle der
+ominoesen Zeile 'DOS-Programm' im Menue "Datei" nur noch drei graue,
+unwirksame Puenktchen, die nicht weiter auffallen. Ganz nach Geschmack
+kann man statt dessen auch "obsolet" erscheinen lassen, oder ";-)" oder
+"for future use" oder was sonst das Befremden des Nutzers lindern
+koennte.
+Profis wissen aber:
+Einige Menuepunkte kann man, statt sie weg- oder grau zu machen, nicht
+nur mit anderem Titel, sondern auch mit anderer Funktion versehen, denn
+es stecken FLEXe dahinter, so z.B.  _rs.flx  hinter dem "DOS-Programm".
+Welche das sind, und welche FLEXe, das steht in der "Illustrierten
+Anleitung":
+   http://www.allegro-c.de/alca99/alca99.htm
+Und auch auf einige Buttons trifft das ja zu. Reizt man alles weidlich
+aus, kann man sich aus a99 schon fast ein ganz anderes Programm machen
+und denen da oben in Braunschweig mal zeigen, was eine Harke ist.
+
+Abgesehen haben wir noch davon, einen set-Befehl zu schaffen, der auf
+einen Schlag ALLE Menue-Unterpunkte von ihrer Funktion und damit ihrem
+Irritationspotential befreien, dieses also insgesamt auf ein Minumum
+absenken wuerde. Auf dem Zettel steht da noch ein Fragezeichen dran.
+
+Anm. und Hinweis, weil die Frage todsicher kommen wird: Der neue set-
+Befehl wirkt nur auf die Unterpunkte der Menues, nicht auf die Titel.
+Auch nicht auf Buttons usw., d.h. nicht auf jede der Nummern in der
+UIF-Datei. Sorry, das ist leider m-Stufe 8.
+
+
+Neuer Setzungsbefehl:  set M    [Nutzwert unbekannt]
+----------------------------
+set M xyz    [perm]
+  Das Temp-Verzeichnis (%temp% oder DbAux aus der INI-Datei) wird auf
+  xyz gesetzt. Wenn xyz fehlt, wird der Inhalt der iV genommen.
+  Auf diesem Verzeichnis kommen die Hilfsdateien zu liegen, die sich
+  das Programm fuer die Erg.Mengen anlegt.
+
+

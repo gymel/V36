@@ -1,0 +1,120 @@
+
+
+Verlautbarung 153 der Entw.Abt.                          2002-02-02
+-------------------------------
+
+Minor Release V21.6                Bereitstellung: Montag, 4.2.2002
+-------------------
+
+Keine staunenswerten Neuerungen, aber zahlreiche kleinere Details,
+besonders in puncto Verwirrungspotenzialsverminderung, die einzeln
+aufzuzaehlen ermuedend waere. Nicht nur in den Programmen, auch
+in den Hilfetexten und StandardFLEXen wurde an vielen Stellen
+etwas getan: Formulierungen verbessert, neue Links eingebaut,
+(z.B. in param.rtf), Fehlbedienungsgefahren abgefangen usw. usf.
+Oder etwa in den ADMin-Funktionen: wenn die Datei nicht bearbeitet 
+wurde (Datum/Uhrzeit unveraendert), kommt keine Frage, ob man 
+sie sofort aktivieren wolle.
+
+Nur wenige Punkte verdienen ausdrueckliche Hervorhebung:
+
+FLEX
+****
+Neuer Befehl "button":
+----------------------
+button f
+  Das Find-Menue erscheint. Der FLEX endet!
+  Es wird ausdruecklich nicht empfohlen, aber hiermit KANN man auch
+  direkt beim Start sofort das Find-Menue erscheinen lassen. Dazu muss
+  nur als Minimum im START.FLX stehen:  but f
+
+button i  : Index 1 oeffnen
+button j  : Index 2 oeffnen
+  jeweils an der zuletzt benutzten Stelle. FLEX endet!
+  (Wenn FLEX weitergehen soll: Befehl "index ..." benutzen)
+
+
+Neues beim Befehl "set":
+------------------------
+set wm : Fenster auf Maximalgroesse setzen
+
+set wn : Fenster auf Normalposition und -groesse setzen
+
+
+Sonderfunktionen fuer View
+--------------------------
+
+View 0 name   : Nur View-Anzeige, keine Ausloesung der Help- und
+                  exec-Funktionen
+
+View 1 name   : Edit-Funktion: Zeilen der View-Datei koennen
+                  bearbeitet werden (Enter: Zeile in Editierfeld).
+                  Das kann bei sehr grossen ViewListen nuetzlich sein,
+                  um schnell mal kleinere Aenderungen zu machen.
+
+Beides geht auch mit "again" statt name, um die letzte ViewListe an 
+derselben Stelle erneut zu oeffnen.
+NEU: Mit dem Befehl  v  bzw.  v 0  bzw.  v 1  kann man die Anzeige
+der ViewListe auch vom Schreibfeld aus veranlassen.
+Beim Befehl "view name" kann man auch das .vw weglassen, es wird ergaenzt.
+
+first view   kurz: fir v
+next view          nex v
+   Damit kann man die erste bzw. naechste Zeile der aktuellen ViewListe
+   in die iV laden. Mit "if no" kann man pruefen, ob es geklappt hat.
+
+save view
+   Der Inhalt der iV wird in die ViewListe geschrieben, und zwar in die
+   aktuelle Zeile, die sich aus dem letzten Zugriff ergibt (siehe first v
+   und next v)
+
+
+
+Find-Menue
+----------
+   Die automatische Klammersetzung funktioniert jetzt so:
+   Wenn mehr als ein Suchwort eingegeben wurde, werden die ersten
+   zwei in Klammern gesetzt, z.B. sieht das dann so aus:
+   (PER shakesp? or PER goethe?) and TIT drama?
+   Die schliessende Klammer fehlte bisher.
+
+
+INI : Ein neuer Befehl
+----------------------
+DbTitle=Titel der Datenbank
+        Der hier angegebene Titel wird dann der Zeile |a aus der 
+Index-
+        Parameterdatei vorgezogen
+        Vorteil: Ueberschrift per INI individualisierbar
+
+HELP-Dateien
+------------
+Integriert wurde der "Spickzettel" in doku.rtf (= Fuellhorn)
+Die Datei heisst "spick.rtf" und bietet eine Uebersicht mit dem
+Aspekt, wie man alle wichtigen Funktionen mit der Tastatur aktivieren
+kann.
+
+
+avanti-PHP
+----------
+phpac.zip wurde neu bereitgestellt, die Doku phpac.rtf verbessert.
+
+
+Classico
+--------
+Manip.Befehl w hatte einen Fehler bei hierarchischen Untersaetzen:
+es wurde dann die gewuenschte Kategorie aus der Hauptaufnahme
+entnommen. SRCH und PRESTO sind erneuert, auch fuer SUN und Linux.
+Auch in a99/alcarta wurde das Problem beseitigt.
+(Es tritt sehr selten auf! Nur bei hierarchischen Saetzen und nur wenn
+man den Manipulationsbefehl in einem Export verwendet. Datenfehler
+koennen dabei nicht passieren.)
+
+a99/alcarta/avanti: Nachladefehler behoben.
+In nachgeladenen Saetzen wurden beim Export die V14-Ersetzungen
+durchgefuehrt, auch wenn kein i4-Befehl gesetzt war. Das machten
+die classico-Programme nicht. Behoben.
+
+ASORT : Es gab gewisse, sehr seltene Probleme, wenn die Sortierposition
+nicht der Satzanfang war (Option -c). 
+Jetzt sollte das nicht mehr vorkommen.

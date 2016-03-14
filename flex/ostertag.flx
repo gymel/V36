@@ -1,0 +1,151 @@
+  OSTERTAG.FLX : Ostertermine 1700 bis 2199
+  2005-03-29
+
+z=1700
+
+open x ostern
+wri "Ostertermine von 1700 bis 2199" n n
+
+:loop
+var z
+perf gauss
+ins #uYt
+
+wri z " : " #uYt(b"am " e" ") n
+z+1
+var z
+if not >2199 jump loop
+
+close x
+h ostern
+ Hilfsvar. beseitigen
+#uYt
+#uYp
+#u|~
+
+end
+
+
+:gauss
+ins #u|j
+if <1700 jump Error
+if >2199 jump Error
+if "17" var "23";ins #u|M;var "3";ins #u|N;jump Eb
+if "18" var "23";ins #u|M;var "4";ins #u|N;jump Eb
+if "19" var "24";ins #u|M;var "5";ins #u|N;jump Eb
+if "20" var "24";ins #u|M;var "5";ins #u|N;jump Eb
+if "21" var "24";ins #u|M;var "6";ins #u|N;jump Eb
+  ungueltige Eingabe
+:Error
+var "Sorry, das Jahr " #u|j " liegt nicht im Bereich von 1700 bis 2199"
+#u|j
+return
+
+  Hier geht die Berechnung los
+:Eb
+var z
+ins #u|z
+var Z
+ins #u|Z
+var #u|j
+z=
+z%19
+var z
+ins #u|A
+
+var #u|j
+z=
+z%4
+var z
+ins #u|B
+
+var #u|j
+z=
+z%7
+var z
+ins #u|C
+
+var #u|A
+z=
+z*19
+var #u|M
+z+
+z%30
+var z
+ins #u|D
+
+var #u|B
+z=
+z*2
+var #u|C
+Z=
+Z*4
+var Z
+z+
+var #u|D
+Z=
+Z*6
+var Z
+z+
+var #u|N
+z+
+z%7
+var z
+ins #u|E
+
+var "3"
+ins #u|m
+
+var "22"
+z=
+var #u|D
+z+
+var #u|E
+z+
+var z
+ins #u|t
+
+var #u|t
+if <32 jump Ende
+
+z=
+z-31
+var z
+ins #u|t
+var "4"
+ins #u|m
+
+var #u|t
+if ="26" var "19"; ins #u|t
+var #u|t
+if not ="25" jump Ende
+var #u|D
+if not ="28" jump Ende
+var #u|A
+if not >"10" jump Ende
+var "18"
+ins #u|t
+
+
+:Ende
+  Die Normalform JJJJMMTT zusammensetzen:
+var #u|j #u|m(0,r2) #u|t(0,r2)
+ins _ _0_
+  und in #u|d hinterlegen
+ins #u|d
+
+#u|wwird
+var #dts(0,4)
+if >#u|j var "wurde";ins #u|w
+var #u|z
+z=
+var #u|Z
+Z=
+
+  Antwort zusammenstellen
+var "Im Jahre " #u|j " " #u|w " Ostern am " #u|t "." #u|m " gefeiert. (" #u|d ")"
+
+return
+
+
+

@@ -1,0 +1,121 @@
+  LOG.FLX : Aufbereitung und Anzeige der LOG-Datei
+  2000-10-07/2001-05-06
+  Kompliziert, weil viele Randbedingungen!
+  Bedingung:  LOG.APR muss vorhanden sein auf ProgDir
+
+find edit
+if l1 jump start1
+var "Der Offline-Speicher ist nicht leer" n
+var +"Es gibt S„tze, die sich noch in Bearbeitung befinden" n
+var +"Speichern Sie zun„chst alles, dann starten Sie neu"
+ansi
+mes
+end
+
+:start1
+find new
+if l1 jump start2
+var "Der Offline-Speicher ist nicht leer" n
+var +"Es gibt ungespeicherte neue S„tze" n
+var +"Speichern Sie zun„chst alles, dann starten Sie neu"
+ansi
+mes
+end
+
+:start2
+  Offline-Speicher leer machen
+erase off
+  existiert ueberhaupt eine LOG-Datei?
+  (Variable G ist besetzt, wenn es nicht der normale Name ist!)
+var G
+  nicht besetzt? dann der normale Name
+if "" var D B ".log"
+fsize
+if no jump nix
+
+var "Wirklich?" 13 10 "Vorsicht, hinterher nicht die Offline-Daten speichern!" 13 10 "(Denn das sind dann die Daten der LOG-Datei," 13 10 "man hätte also dann lauter Dubletten)"
+
+yesno
+if no end
+if cancel end
+
+  Fuer Programmaufrufe:
+get env comspec
+ins #uwC
+
+  alte Kopie der LOG-Datei loeschen
+var D "xxx.log"
+delete
+
+var D "xxx." K1 "lg"
+delete
+
+open x org.bat
+wri "copy " D B ".log " D "xxx.log" n
+close x
+var #uwC " /c org.bat"
+cAll
+  falls existiert, dann loeschen: (entsteht nur bei Unterbrechung)
+delete xxx.aut
+
+var #uwC " /c " P "log2alg " D "xxx"
+  alt:
+  var #uwC " /c log2alg " D "xxx"
+cAll
+  jetzt ist xxx.alg entstanden, es muss aber .K1lg sein und auf DbDir liegen
+var D "xxx.alg " D "xxx." K1 "lg"
+rename
+if no jump rerr
+
+  Ist es A.CFG? dann bei :start3 weiter
+var K1
+if ="~a" jump start3
+  sonst kopieren: LOG.APR -> LOG.K1PR
+ open x org.bat
+ wri "copy " P "log.apr " P "log." K1 "pr" n
+ close x
+ var #uwC " /c org.bat"
+ cAll
+  Parameter umkopieren
+var P "log.apr " P "log." K1 "pr"
+fcopy
+
+:start3
+  alt:
+     var #uwC " /c srch -f6 -m0 -v0 -d" D "xxx -elog/xxx.adt -k" K
+var #uwC " /c " P "srch -f6 -m0 -v0 -d" D "xxx." K1 "lg -elog/xxx.adt -k" K " -P" P
+cAll
+var D "xxx." K1 "lg"
+delete
+
+set u010
+
+activate
+read file xxx.adt
+  update xxx.adt
+
+var "Liste wird jetzt gezeigt. ACHTUNG: nicht speichern!" n
+var +"Tip:" n
+var +"Mit den Buttons [>>] und [<<] kann man die Anzeige" n
+var +"nach rechts und links verschieben. Ferner:" n
+var +"Im Feld 'Find' kann man mit \\nn eine Kategorienummer einstellen!"
+var +n "Mehr Tips:" n
+var +"Volltextsuche: im unteren Abschnitt des Find-Menues" n
+var +"Eingabe 'X dispedit': Komfortable Anzeige erlaubt Cut&Paste nach Alt+9" n
+var +"Eingabe 'x find new': Offline-Datei via 'Liste der Ergebnismengen' (Alt+e) reaktivierbar"
+ansi
+mes
+sho iv
+Find offline
+end
+
+:nix
+mess keine LOG-Datei vorhanden
+end
+
+:rerr
+ins $u
+var "Umbenennung " $u " hat nicht geklappt"
+mes
+end
+

@@ -1,0 +1,20 @@
+  OHIO.FLX : Umwandlung der im Anzeigefeld stehenden OHIO-Datensaetze
+  20070212  MARC -> A.CFG
+
+  Zeichen aendern: (wird durch xcode y erreicht)
+y .13 256
+y .10 96
+
+  Anzeigetext speichern (ANSI-Code)
+set c1
+file ohiodata.
+set c0
+  Dann Routine oh: aufrufen, den Dateinamen uebergeben:
+var "ohiodata."
+perf oh
+  und Anzeige der Datensaetze (offline-Speicher)
+sho off
+end
+  Umwandlungsroutine einbinden (oh: steckt da drin)
+include oh.inc
+

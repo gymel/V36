@@ -1,0 +1,84 @@
+  D-RTF.NPT : Textausgabe im RTF-Format ohne Seitenumbruch
+  2005-11-17  geeignet fuer Nachbearbeitung mit Textsoftware
+               z.B. auch WORD
+
+   	RTF = Rich Text Format von Microsoft ist ein allgemeines Format,
+	das fuer den Austausch von Dokumenten gedacht ist.
+
+   Basisparameter
+dx=1            Umcodierung einschalten
+zt=" "          zwecks Umbruch nur am Leerz. trennen
+zm=0            Zeilenmaximum ist Null (kein Seitenumbruch)
+z1=0		Minimale Zeilen vor dem Umbruch entfaellt, siehe zm
+z2=0		maximaler Ueberlauf ueber zm entfaellt ebenfalls
+ze="\par "      Zeilenende. \par ist der eigentliche RTF-Befehl fuer
+		eine feste Zeilenschaltung. 13 10 bewirkt nur eine
+		Formatierung der RTF-Datei, bewirkt im Endprodukt aber
+		nichts, z.B. bei der Anzeige oder im Druck
+fl=0		formularlaenge 0 (Endlosliste)
+ae=13 10 "\li0\fi0 "    Satzende: Einrückung rücksetzen
+
+p .031 178   Subfield Code = AltGr+2 (Dreieck Spitze unten)
+p ` 1        Nichtsort.Zeichen weglassen
+
+  Besondere Zwischenteile (Texel)
+
+  Achtung: was folgt, ist anders als bei a.cfg!
+           Keine Einrückungen am Zeilenanfang! Zeile wird dann ungültig
+
+         Spezielle Druckarten 
+         (Bedeutung der Nummern steht in n.cfg)
+66="\b "     #B Fettschrift
+98="\b0 "    #b Fettschrift aus
+73="\i "     #I Kursiv ein
+105="\i0 "   #i Kursiv aus
+85="\ul "    #U Unterstreichen ein
+117="\ul0 "  #u Unterstreichen aus
+83="\up12 "  #S Hochstellen
+115="\up0 "  #v aus
+74="\dn12 "  #s Tiefstellen
+106="\dn0 "  #w aus
+75="\fs18 "  #K Klein ein
+107="\fs20 "   #k aus
+76="\fs22 "
+77="\fs24 "
+78="\fs26 "
+110="\fs20 "
+84="\par "
+116="\par "
+82="\par \tab "
+65="\cf2 "
+67="\tab " 
+70="\f1 "
+102="\f0 "
+  Flip-Markierungen links und rechts
+  160 ist das unsichtbare Leerzeichen! Sinnvolle Alternative: 183
+72=160 123 t65 t85 t66    Flip ein: 65=blau, 85=unterstrichen, 66=fett
+104=125 160               und aus
+
+69=9         #E Einrueckung zur naechsten TAB-Marke
+
+97=""                    #a wird nur bei HTML gebraucht: </a>
+
+
+  Farben: Reihenfolge ergibt sich aus der color-Liste im RTF-Vorspann
+  (Datei disphead.rtf)
+111="\cf0 \b0 "   schwarz fett aus
+79="\cf6 "        rot
+71="\cf4 \b "     gruen fett
+65="\cf2 "        blau
+89="\cf7 \b "      gelb fett
+86="\cf5 "        magenta
+67="\cf3 \b "      cyan fett
+103="\cf15 "      grau
+
+70="\f1 "
+102="\f0 "
+
+  RTF-spezifische Zeichen (sonst Probleme mit RTF):
+p .092 "\\"
+p .123 "\{"
+p .125 "\}" 
+q .092 "\\"
+q .123 "\{"
+q .125 "\}"

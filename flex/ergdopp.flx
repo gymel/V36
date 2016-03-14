@@ -1,0 +1,34 @@
+  ERGDOPP.FLX : Verdopplung der Erg.Menge
+  20070209
+
+if empty mes Keine Erg.Menge;end
+
+set e0   // EditorFehlermeldungen verhindern
+first
+
+:loop
+  Satz als Ganzes in iV kopieren
+var kn
+  leeren Neusatz anlegen
+new 0
+  iV einspeisen - d.h. Satz kopieren
+insert
+  Falls hierarchischer Satz: auf Hauptsatz schalten
+first sub
+  Feld #00 geeignet belegen
+#00 dopp?5
+  Datumsfelder beseitigen
+#99e
+#99n
+  Duplikat speichern (wenn man das weglaesst, werden die
+    Sätze erst mal nur im OfflineSpeicher gestapelt)
+ put
+
+next
+if yes jump loop
+
+:exit
+set e1
+var "Erg.Menge ist verdoppelt. Mit Alt+q anzeigen lassen!" n "Mit  x erase off  wieder beseitigen" n 
+var +" oder mit 'Datei / Offline-Datei -> Datenbank' die Duplikate abspeichern"
+mes

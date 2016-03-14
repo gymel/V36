@@ -1,0 +1,116 @@
+  P-0.APR : PRINT Prototype : to prepare a PRINTABLE file with page head and foot
+  960214
+
+  Output : ASCII text, possibly with control characters for printing
+           This file is responsible for the arrangements of field texts
+           and for the line width, punctuation, page breaking and such.
+           The printer controls are taken from an P-*.APT file
+           which is selected from CockPit by menu "Options / Print format"
+
+  Purpose: To turn database files or basic files into printable files
+           In most cases, the first step is an export in sortable form,
+           then comes the sorting with ASORT, then this as the last step.
+           This means there will be a #u2 containing the print header
+           for each record. This is used below.
+
+  See also  s-0.apr        for comments on production
+
+
+  Batches: PR-LIST.BAT    for complete batch production examples
+           SR-LIST.BAT
+           SORTLIST.BAT
+
+pn="Prototyp for PRINT"
+
+  What follows is largely application specific.
+
+  ~~~~~~~~~ Constants ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+zl=72       Line length of printout
+zi=5        Indention: 5 characters from 2nd line of record
+fl=0        Form length 0, that means no form printing, rather page formatting
+ae=13 10    record end: add a line feed
+zm=62       max number of lines per page. OR:
+  zm=0       continuous output without page breaks, better suited as input
+             for word processors
+z1=0        don't break records at page boundaries
+
+i4=0        enable V14 links
+
+tprinter    load printer driver  (PRINTER.APT)
+            this is one of the P-*.APT files, selected from CockPit
+               by menu  "Options / printer"
+  --------------------------------------------------------------
+
+  ......... Text elements ..........................................
+4=C         new line (Carriage return+line feed)
+13=C C      2 new lines
+20="--  "
+            PRINTER.APT  contains numbers 79 to 99
+            examples:  99 = bold on
+                       98 = bold off
+                       88 = italics on
+                       87 = italics off
+  ..................................................................
+
+  ********* Field list ****************************************
+
+#hi +#20 p"  " P". "   if the current record is a subrecord, print
+                        its volume designation (#hi is taken from #01...#05)
+    goto #20 after this
+    But for main records, #hi does not exists. Then we continue here:
+#t99    boldface on
+
+     This is a tricky command that employs a "user variable" #uti
+
+#u2 e"" =ti,20 P" : "  if first part of #u2 is the same as before,
+                          print text element 20 instead (20="-- ", see above)
+                        if not, save this part in #uti for next record
+                          AND print #u2 out as a heading for this record
+
+#t98    boldface off
+#20                    Title is first element after heading
+#74 p". - "            Place,      prefixed with ". - "
+#75 p" : "             Publisher,  prefixed with " : "
+#76 p", "              Year,       prefixed with ", "
+#77 p". - "            Pagination, prefixed with ". - "
+#85 C p"(" P")"        Series, on new line and enclosed in brackets
+#t88                   italics on
+#90 R                  Call number, right justified
+#t87                   italics off
+#t4                    new line at end of record
+
+  *******************************************************************
+
+  ********  Page head and foot for single-faced print ***************
+
+H     Header
+!u2 +# E15 R P13         if there's #u2, 15 characters, right justified
+#40 +# E15 e"," R P13    else #40 (Author's last name) 15 char., right
+#20 U E15 R P4           and if not even #40 exists, then #20
+
+F     Footer
+#p2 "- " P" -" R P4      "- page number -"   right justified
+
+  ******************************************************************
+
+  *******  Page head and foot for both-faced print  ****************
+  (activate this section on demand, then deactivate the above one)
+
+ H        Header
+ #p1 +u e0              if page number odd: go on at label #-u
+ !u2 +# E15 P13
+ #40 +# E15 e"," P13    author's last name... (as above)
+ #20 U E15 P4
+ #+#
+
+ #-u                    for odd page numbers, the same elements
+ !u2 +# E15 R P13          go to the right
+ #40 +# E15 e"," R P13
+ #20 U E15 R
+
+ F      Footer
+ #t{ C &0 }             New line, go to start of line (&0)
+ #p1 p"- " P" -" R      odd page number to the right
+ #p0 p"- " P" -"        even number at the left
+

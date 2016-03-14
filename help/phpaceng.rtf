@@ -1,0 +1,196 @@
+{\rtf1\ansi\ansicpg1252\deff0\deftab720{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\froman\fcharset2 Symbol;}{\f2\fswiss Arial;}{\f3\froman Times New Roman;}{\f4\fswiss\fprq2 Verdana;}{\f5\fswiss Arial;}{\f6\fmodern\fprq1 Courier New;}{\f7\fmodern\fprq1 Courier Allegro;}{\f8\froman\fprq2 Times New Roman;}{\f9\fswiss\fprq2 MS Sans Serif;}{\f10\fswiss\fprq2 Arial;}{\f11\fmodern\fprq1 Courier 10cpi;}}
+{\colortbl\red0\green0\blue0;\red255\green0\blue0;\red0\green0\blue255;\red0\green128\blue0;\red0\green176\blue0;\red128\green128\blue128;\red255\green0\blue255;}
+\deflang1031\pard\plain\f2\fs24 
+\par \pard\qc\plain\f4\fs24\cf1\b WWW access to \plain\f4\fs24\cf1\b\i allegro \plain\f4\fs24\cf1\b databases\plain\f2\fs24\cf0 
+\par \pard\plain\f4\fs24\cf0\b 
+\par \pard\qc\plain\f2\fs24\cf0 `\plain\f2\fs24\cf2\b\ul PHP files needed for RuckZuck\plain\f2\fs24\cf0\ul0 `\plain\f2\fs24\cf0    `\plain\f2\fs24\cf2\b\ul Construction of PHP files\plain\f2\fs24\cf0\ul0 `\plain\f2\fs24\cf0 
+\par \pard\plain\f4\fs24\cf0 
+\par \pard\qc\plain\f2\fs24\cf0 (Engl. Translation by David Helliwell, Oxford. Jan.2003)\plain\f2\fs24\cf2 
+\par \pard\plain\f2\fs24\cf0\b 
+\par \plain\f10\fs28\cf0\b Installation requirements\plain\f2\fs24\cf0\b 
+\par \plain\f2\fs24\cf0 The basic demo setup assumes that Avanti-W will be installed on the c: drive in \plain\f6\fs24\cf0 c:\\avanti-w\plain\f2\fs24\cf0 , and that it will address the Avanti-W-Demo database in \plain\f7\fs24\cf0 c:\\avanti-w\\avdemo\plain\f2\fs24\cf0 .
+\par \plain\f8\fs24\cf0 
+\par \plain\f10\fs24\cf0 PHP version 4.0.6 or higher must be installed (downloadable from\plain\f6\fs24\cf0  \plain\f7\fs24\cf0 http://www.php.net). 
+\par \plain\f10\fs24\cf0 Note: PHP must relate to the "correct" Web-server (Apache, Xitami, IIS &v.)! I\plain\f2\fs24\cf0 f using PHP 4.2.3, set the  \plain\f6\fs24\cf0 register_globals\plain\f2\fs24\cf0  value in the configuration file php.ini to "off".
+\par 
+\par \plain\f4\fs24\cf0 A\plain\f2\fs24\cf0  Web-server \plain\lang2057\f2\fs24\cf0\i  must\plain\lang2057\f2\fs24\cf0  \plain\f2\fs24\cf0 be installed. The simplest option is Xitami, well tried and tested with other \plain\lang2057\f2\fs24\cf0\i allegro\plain\lang2057\f2\fs24\cf0  applications.\plain\f2\fs24\cf0  For those who work with Windows 2000, it would be appropriate to use the IIS-Web-Server which comes with the package, thus avoiding the need to install a separate Web-Server (such as Xitami).
+\par \plain\lang2057\f2\fs24\cf0 The \plain\f2\fs24\cf0\i avanti\plain\f2\fs24\cf0 -server must be running on the same machine as the database, which can be a different machine from the one where the Web server runs. The IP address of the \plain\lang2057\f2\fs24\cf0\i avanti\plain\lang2057\f2\fs24\cf0  machine must appear in the file \plain\f2\fs24\cf0  \plain\f6\fs24\cf0\b av_ini.php\plain\f2\fs24\cf0  (see below).\plain\f2\fs24\cf2 
+\par 
+\par 
+\par \plain\f10\fs28\cf0\b Where should the files be put?\plain\f2\fs24\cf0\b 
+\par \plain\f2\fs24\cf0\i Note:\plain\f2\fs24\cf0  all filenames must be written completely in lower case, in conformity with mode 8.3, in order to avoid any problems when copying them back and forth between DOS and Unix. When you unpack the self-extracting archive PHPAC.EXE, three directories will be created:
+\par 
+\par \plain\f2\fs24\cf0\b doku:\plain\f2\fs24\cf0 
+\par \plain\f6\fs24\cf0\b phpaceng.rtf\plain\f2\fs24\cf0 : the text that you are now reading. Also part of the full \plain\lang2057\f2\fs24\cf0\i allegro\plain\lang2057\f2\fs24\cf0  package\plain\f2\fs24\cf0  ("Gesamtpaket") and readable as a help file in a99 (copy it to the "help" directory and input   \plain\f6\fs24\cf0 h phpac\plain\f2\fs24\cf0 ).
+\par 
+\par \plain\f2\fs24\cf0\b php: \plain\f2\fs24\cf0 
+\par \plain\f6\fs24\cf0\b php\plain\f2\fs24\cf0  and \plain\f6\fs24\cf0\b htm\plain\f2\fs24\cf0  files, also \plain\f6\fs24\cf0\b ruckzuck.gif\plain\f2\fs24\cf0 : to be put into the appropriate subdirectory for the database, eg. \plain\f6\fs24\cf0 /catalog,\plain\f2\fs24\cf0  on the htm directory of the Web server  ( \plain\f6\fs24\cf0 htdocs\plain\f2\fs24\cf0  in Apache, \plain\f6\fs24\cf0 webpages\plain\f2\fs24\cf0  in Xitami).
+\par 
+\par \plain\f2\fs24\cf0\b param:
+\par \plain\lang2057\f2\fs24\cf0 Parameter files (\plain\lang2057\f6\fs24\cf0\b .apr\plain\f2\fs24\cf0 , \plain\lang2057\f6\fs24\cf0\b .apt\plain\f2\fs24\cf0 ): to be put in the database directory (\plain\f6\fs24\cf0 DbDir\plain\f2\fs24\cf0  - rename \plain\f6\fs24\cf0\b .xpr\plain\f2\fs24\cf0  for configuration \plain\f6\fs24\cf0\b x.cfg\plain\f2\fs24\cf0 ). In the case of the Avanti-W demo database this will be \plain\f6\fs24\cf0 c:\\avanti-w\\avdemo\plain\f2\fs24\cf0 . If the \plain\f6\fs24\cf0\b php\plain\f2\fs24\cf0  and \plain\f6\fs24\cf0\b htm\plain\f2\fs24\cf0  files (also \plain\f6\fs24\cf0 ruckzuck.gif\plain\f2\fs24\cf0 ) are in  \plain\f6\fs24\cf0 .../htdocs/katalog\plain\f2\fs24\cf0  for example, the address for external access will be:
+\par \plain\f6\fs24\cf0 http://www.lib.oxbridge.org/katalog/detail.php
+\par \plain\f10\fs24\cf0 or for a simple search:\plain\f8\fs24\cf0  
+\par \plain\f6\fs24\cf0 http://www.lib.oxbridge.org/katalog/br.htm
+\par \plain\f10\fs24\cf0 or just:\plain\f8\fs24\cf0 
+\par \plain\f6\fs24\cf0 http://www.lib.oxbridge.org/katalog/\plain\f2\fs24\cf0 
+\par \plain\f10\fs24\cf0 if you have either renamed the file\plain\f8\fs24\cf0  \plain\f6\fs24\cf0 br.htm\plain\f8\fs24\cf0  \plain\f6\fs24\cf0\b index.htm\plain\f8\fs24\cf0   \plain\f9\fs24\cf0 or created your own start page with the name \plain\f6\fs24\cf0\b index.htm\plain\f9\fs24\cf0 .\plain\f2\fs24\cf0 for a stand-alone PC withouth any internet access:
+\par \plain\f6\fs24\cf0 http://127.0.0.1/catalog/detail.php
+\par \plain\f10\fs24\cf0 or for a simple search:\plain\f8\fs24\cf0 
+\par \plain\f6\fs24\cf0 http://127.0.0.1/catalog/br.htm
+\par \plain\f9\fs24\cf0 
+\par 
+\par \plain\f9\fs28\cf0\b What is in the files and what do they do?\plain\f2\fs24\cf0 
+\par \plain\f2\fs24\cf0\b PHP files\plain\f2\fs24\cf0 
+\par \plain\f10\fs24\cf3\b These must go into their own subdirectory of the Web server's document directory.\plain\f2\fs24\cf0 
+\par \plain\f10\fs24\cf0 The start page is  \plain\f6\fs24\cf0\b br.htm\plain\f8\fs24\cf0  \plain\f10\fs24\cf0 or\plain\f8\fs24\cf0  \plain\f6\fs24\cf0\b detail.php\plain\f10\fs24\cf0 , as specified in\plain\f8\fs24\cf0  \plain\f6\fs24\cf0\b av_ini.php\plain\f8\fs24\cf0 .
+\par 
+\par \plain\f6\fs24\cf0\b av_ini.php \plain\f2\fs24\cf0\b contains the variables\plain\f2\fs24\cf0  which will need to be adjusted. These include the IP number of \plain\f2\fs24\cf0\i avanti\plain\f2\fs24\cf0 , the database name, the user name and password, the title and various other pieces of information, such as $Startpage, $TI ... (a tip\plain\f2\fs24\cf0\i : avanti\plain\f2\fs24\cf0  can run on another machine!), a couple of sub-routines are contained in \plain\f6\fs24\cf0\b av_ini.php\plain\f2\fs24\cf0 , to be precise, the ones that are needed for each job. This avoids the need to create an additional file for this purpose. If you need access to several databases, copy all these files to their own subdirectories. You can also do this if you need several different types of access to the same database.
+\par Files with the prefix \plain\f6\fs24\cf0\b av_\plain\f8\fs24\cf0  \plain\f10\fs24\cf0 are not independent, but are called up from within other files. \plain\f10\fs24\cf1 Red\plain\f10\fs24\cf0  is used for the names of files that you will need to configure.
+\par \plain\f8\fs24\cf0 
+\par \pard\li2272\fi-2272\tx2272\plain\f6\fs24\cf1\b av_ini.php\plain\f10\fs24\cf0 \tab the initialisaion file for a given database, containing basic information about it 
+\par \plain\f6\fs24\cf0\b br.htm\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 the start page, simply (with link to \plain\f6\fs24\cf0\b detail.php\plain\f8\fs24\cf0 )
+\par \tab \plain\f2\fs24\cf0\i Recommendation:\plain\f2\fs24\cf0  copy to  \plain\f6\fs24\cf0\b index.htm\plain\f10\fs24\cf0   so it will come up as the default\plain\f8\fs24\cf0 
+\par \plain\f6\fs24\cf0\b detail.php\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 start page for a detailed search, calls up (when the user has input something):\plain\f8\fs24\cf0 
+\par \plain\f6\fs24\cf0\b find.php\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 execution of a detailed search, immediately starts one of the two following operations:
+\par \plain\f6\fs24\cf0\b page.php\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 display of an index excerpt, or:
+\par \plain\f6\fs24\cf0\b rset.php\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 display of a result-set, according to what the user has clicked; then:
+\par \plain\f6\fs24\cf0\b grec.php\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 display of a record ("get record"), started by clicking "Bearbeiten" (= "Edit");
+\par \pard\li2268\fi-2268\tx2272\plain\f6\fs24\cf1\b edrec.php\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 preparation of a record for editing, or display of en empty form for the creation of a new record, which will then start \plain\f6\fs24\cf0\b write.php\plain\f10\fs24\cf0  by clicking on "Speichern" (= "Save"):
+\par \pard\li2272\fi-2272\tx2272\plain\f6\fs24\cf1\b write.php\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 save the edited or newly-created record (password needed!)
+\par \plain\f6\fs24\cf0\b del.php\plain\f6\fs24\cf0 \tab \plain\f10\fs24\cf0 delete the record (password needed!); started from \plain\f6\fs24\cf0\b grec.php\plain\f10\fs24\cf0  by clicking on "L\'f6schen" (= "Delete").
+\par \pard\tx2272\plain\f8\fs24\cf0 
+\par \pard\li2272\fi-2272\tx2272\plain\f10\fs24\cf0 The following three files are automatically called up:
+\par \plain\f6\fs24\cf0\b av_page.php\plain\f10\fs24\cf0 \tab basic functions of \plain\f6\fs24\cf0\b page.php\plain\f8\fs24\cf0\b  \plain\f10\fs24\cf0\b  \plain\f10\fs24\cf0 (preparation of an index excerpt)
+\par \plain\f6\fs24\cf0\b av_rset.php\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 and of \plain\f6\fs24\cf0\b rset.php\plain\f10\fs24\cf0  (preparation of a result-set)
+\par \plain\f6\fs24\cf0\b av_grec.php\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 and of \plain\f6\fs24\cf0\b grec.php\plain\f10\fs24\cf0  (getting and displaying a record)
+\par \pard\plain\f10\fs24\cf0 For write functions you will need to configure the files \plain\f6\fs24\cf0\b edrec.php\plain\f8\fs24\cf0  \plain\f10\fs24\cf0 and\plain\f8\fs24\cf0  \plain\f6\fs24\cf0\b write.php\plain\f10\fs24\cf0 . The things that you will need to change are marked with "xxx". They concern the fields which are specific to the database that is being edited. The package also includes:
+\par \pard\li2272\fi-2272\tx2272\plain\f11\fs24\cf0\b tellme.htm\tab \plain\f10\fs24\cf0 A dummy file, which can contain any information that might be needed about the database.\plain\f2\fs24\cf0 
+\par \pard\plain\f8\fs24\cf0 
+\par \plain\f2\fs24\cf0 
+\par \plain\f2\fs24\cf0\b Parameter files\plain\f2\fs24\cf0 
+\par \plain\f10\fs24\cf3\b These must reside in the data directory.\plain\f2\fs24\cf0 
+\par \pard\tx2272\plain\f10\fs24\cf0 For the \plain\f8\fs24\cf1  \plain\f6\fs24\cf1\b a.cfg\plain\f8\fs24\cf0   \plain\f10\fs24\cf0 configuration file, there is the file:\plain\f8\fs24\cf0 
+\par \pard\li2272\fi-2272\tx2272\plain\f6\fs24\cf0\b d-html.apr\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 to produce data display in HTML (based on the DOS/Windows \plain\f6\fs24\cf0\b d-1.apr\plain\f2\fs24\cf0 )
+\par 
+\par \pard\li2268\fi-2268\tx2272\plain\f2\fs24\cf0 Recommended alternatives and models for other configurations:
+\par \pard\li2272\fi-2272\tx2272\plain\f6\fs24\cf0\b d-shtm.apr\plain\f8\fs24\cf0 \tab \plain\f2\fs24\cf0 general model for display (\plain\f8\fs24\cf0 `\plain\f6\fs24\cf2\b\ul d-s.apt und d-k.apt\plain\f8\fs24\cf0 ` \plain\f10\fs24\cf1 must be adpated\plain\f10\fs24\cf0 )
+\par \pard\li2268\fi-2268\tx2272\plain\f6\fs24\cf0\b d-khtm.apr\tab \plain\f10\fs24\cf0 In\plain\f8\fs24\cf0  \plain\f6\fs24\cf0\b av_ini.php\plain\f8\fs24\cf0  \plain\f10\fs24\cf0 put either\plain\f8\fs24\cf0  \plain\f6\fs24\cf0 $Dispar=d-shtm\plain\f8\fs24\cf0   \plain\f10\fs24\cf0 or\plain\f8\fs24\cf0   \plain\f6\fs24\cf0 $Dispar=d-khtm\plain\f8\fs24\cf0 
+\par \plain\f6\fs24\cf0\b h-php.apr\plain\f6\fs24\cf0 \tab \plain\f10\fs24\cf0 Extra functions, for example the preparation of an index excerpt, universally applicable to all configurations. For example, copy the file to\plain\f8\fs24\cf0   \plain\f6\fs24\cf0\b h-php.mpr\plain\f8\fs24\cf0 
+\par \plain\f6\fs24\cf0\b h-edit.apr\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 prepares the record for editing (includes commentary)
+\par \tab \plain\f10\fs24\cf1 must be adapted: contains a list of fields that may not be edited\plain\f10\fs24\cf0 
+\par \plain\f6\fs24\cf0\b p-brief.apr\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 produces short-titles for the result set\plain\f8\fs24\cf0  (\plain\f10\fs24\cf1 must be adapted\plain\f8\fs24\cf0 )
+\par \pard\li2272\fi-2272\tx2272\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 (used in the CoOL implementation)\plain\f8\fs24\cf0 
+\par \pard\tx2272\plain\f8\fs24\cf0 
+\par \plain\f10\fs24\cf0 These three can simply be copied to\plain\f8\fs24\cf0  \plain\f6\fs24\cf0\b asciansi.mpt\plain\f10\fs24\cf0  &c.:\plain\f8\fs24\cf0 
+\par \pard\li2272\fi-2272\tx2272\plain\f6\fs24\cf0\b asciansi.apt\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 used for ASCII-->ANSI recoding  (in \plain\f6\fs24\cf0\b h-php.apr\plain\f10\fs24\cf0 , \plain\f6\fs24\cf0\b h-edit.apr\plain\f10\fs24\cf0 , \plain\f6\fs24\cf0\b p-brief.apr\plain\f10\fs24\cf0 , \plain\f6\fs24\cf0\b d-*.apr\plain\f10\fs24\cf0  )
+\par \plain\f6\fs24\cf0\b o.apt\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 code table, contains one-to-one ASCII -> ANSI equivalents; \plain\f10\fs24\cf1 must be invoked\plain\f10\fs24\cf0  by the index parameter with the command \plain\f6\fs24\cf0\b to\plain\f2\fs24\cf0 
+\par \plain\f6\fs24\cf0\b d-htm.apt\plain\f8\fs24\cf0 \tab \plain\f10\fs24\cf0 a few HTML tags (script, colours)\plain\f8\fs24\cf0 
+\par \pard\tx2272\plain\f8\fs24\cf0 
+\par \pard\plain\f2\fs24\cf0\i NB:\plain\f2\fs24\cf0  lines for index headings (beginning with |1 ..., |2 ... &c.) and for symbolic index names (such as PER or TIT) must appear in the index parameter. The same applies for any restrictions (begining with R ...) which might have been defined. (See Handbuch, 178, 179). The symbolic index names should be given in upper case, and may include numbers.
+\par 
+\par 
+\par \plain\f2\fs24\cf0\b Tips for linking the structure into your own webpages, &c.
+\par \plain\f2\fs24\cf0 There are chiefly three files that are used for this purpose:
+\par \pard\li2272\fi-2272\plain\f6\fs24\cf0\b page.php\plain\f2\fs24\cf0 \tab shows an index excerpt with pages; the name of the index and the starting point must be read in, eg:
+\par \pard\li2272\fi-2272\tx2272\plain\f2\fs24\cf0 \tab \plain\lang2057\f6\fs24\cf0 page.php?\plain\lang2057\f6\fs24\cf0\b reg\plain\lang2057\f6\fs24\cf0 =PER&\plain\lang2057\f6\fs24\cf0\b st\plain\lang2057\f6\fs24\cf0 =shakesp\plain\lang2057\f2\fs24\cf0 
+\par \plain\f6\fs24\cf0\b rset.php\plain\f6\fs24\cf0 \tab \plain\f2\fs24\cf0 creates and displays a result-set with pages; reads in the result of a "find" command, eg: \plain\f6\fs24\cf0 rset.php?\plain\f6\fs24\cf0\b ufC\plain\f6\fs24\cf0 =PER+shakesp%%3F\plain\f2\fs24\cf0 
+\par \plain\f6\fs24\cf0\b grec.php\plain\f6\fs24\cf0 \tab \plain\f2\fs24\cf0 retrieves and displays a record, eg:
+\par \tab \plain\f6\fs24\cf0 grec.php?\plain\f6\fs24\cf0\b urN\plain\f6\fs24\cf0 =12345\plain\f2\fs24\cf0  // show rec. no. 12345
+\par \tab or
+\par \tab \plain\f6\fs24\cf0 grec.php?\plain\f6\fs24\cf0\b urG\plain\f6\fs24\cf0 =NUM&\plain\f6\fs24\cf0\b urS\plain\f6\fs24\cf0 =12345678\plain\f2\fs24\cf0  // record with entry 12345678 in index NUM
+\par \plain\f6\fs24\cf0\b edrec.php\plain\f2\fs24\cf0 \tab prepares a record for editing, eg:
+\par \tab \plain\f6\fs24\cf0 edrec.php?\plain\f6\fs24\cf0\b urN\plain\f6\fs24\cf0 =12345\plain\f2\fs24\cf0  // bring rec. no. 12345 into the editing screen without a record number, ready for the creation of a new record.
+\par \pard\plain\f2\fs24\cf0 The actual functions are carried out by the files \plain\f6\fs24\cf0\b av_page.php\plain\f2\fs24\cf0 , \plain\f6\fs24\cf0  \plain\f6\fs24\cf0\b av_rset.php\plain\f2\fs24\cf0  and \plain\f6\fs24\cf0\b av_grec.php\plain\f2\fs24\cf0 , so the mechanism is transparent. In your own designs you need only take account of these three \plain\f6\fs24\cf0\b av\plain\f2\fs24\cf0  files, which are called up by the command:
+\par \plain\lang2057\f6\fs24\cf4\b include_once(av_grec.php)\plain\lang2057\f6\fs24\cf4  
+\par \plain\f2\fs24\cf0 The names of the variables are related to the internal variables (#u) of "avanti", and are therefore always in the form  uxY with x in lower case and Y in upper. The most important are:
+\par \pard\tx710\plain\lang1040\f2\fs24\cf0 urG\tab index name, eg: PER
+\par \plain\f2\fs24\cf0 urS\tab index start point, eg: \plain\lang2057\f2\fs24\cf0 shakesp
+\par ufC\tab find command,  eg: PER+shakesp%%3F
+\par urN\tab record number (ie internal record number)
+\par \plain\f2\fs24\cf0 urO\tab filing order - default is a0 (only in RSET.PHP)
+\par \pard\plain\f2\fs24\cf0 As usual, variables which are passed to PHP must be re-coded, so that a space is replaced with  + , ? with %%3F  etc. The password procedure for write functions is decribed is a supplementary file \plain\f6\fs24\cf0\b password.txt\plain\f10\fs24\cf0  which accompanies the PHP files. Only the supervisor needs to be concerned with this.
+\par Extra function: "delete a record". The script \plain\f6\fs24\cf0\b del.php\plain\f10\fs24\cf0  can be started by inputting an internal record number:
+\par \plain\f2\fs24\cf0 .../del.php?n=\plain\f2\fs24\cf0\i number\plain\f2\fs24\cf0 
+\par The record with the corresponding number is then deleted.
+\par 
+\par \plain\f10\fs28\cf0\b Writing a PHP file\plain\f2\fs24\cf0 
+\par The advantage of PHP is that you can build scripts directly into HTML files. In the PERL and Python languages on the other hand the scripts are independent files that are called up as CGI programs. Because such scripts must be put in their own directory, the way in which the structure is put together is far from clear. For this reason PHP has become very popular, especially for database applications. You can set up your own \plain\f2\fs24\cf0\i allegro\plain\f2\fs24\cf0  implementations by studying the PHPac package and using these scripts as a model.  (The phpac.exe archive is on the \plain\lang2057\f2\fs24\cf0\i allegro\plain\f2\fs24\cf0  FTP Server in the directory ac21).
+\par \plain\lang2057\f2\fs24\cf0\i Advice for PERL users:\plain\lang2057\f2\fs24\cf0  PHP is very similar to PERL. Perhaps that is more of a problem than an advantage, as it leads to confusion. You might be better off using Thomas Berger's \plain\lang2057\f2\fs24\cf0\i populo\plain\lang2057\f2\fs24\cf0  package. This comes as a single, large PERL script which enables many functions to be implemented through your own HTML scripts. It is thus very similar to the PHP concept. It \plain\f2\fs24\cf0 is important to note that the PHP files are first processed \plain\lang2057\f2\fs24\cf0\ul on the server\plain\lang2057\f2\fs24\cf0 . The user, who calls them up with a browser, does not see them, but is presented with an HTML text which they generate, but in which there is no longer any PHP. That is, it appears as just an ordinary HTML page. However, if you want to execute functions \plain\lang2057\f2\fs24\cf0\ul in the browser\plain\lang2057\f2\fs24\cf0  without first sending a request to the server, for example data validation, they are \plain\lang2057\f2\fs24\cf0\i not\plain\lang2057\f2\fs24\cf0  done with PHP (nor even with PERL or Python), but only with\plain\f4\fs24\cf0  \plain\f5\fs24\cf0\b Javascript\plain\f5\fs24\cf0 . Examples of such scripts can be seen in the files \plain\f6\fs24\cf0\b rset.php\plain\f5\fs24\cf0  and \plain\f6\fs24\cf0\b edrec.php\plain\f5\fs24\cf0 .
+\par So that you can get a better understanding of what a PHP script does, here is an example of one which incorporates an \plain\f5\fs24\cf0\i avanti\plain\f5\fs24\cf0  Job. Colours are used to differentiate the various sections:
+\par \plain\f2\fs24\cf0 
+\par \pard\li1136\plain\f6\fs24\cf2\b BLUE = HTML
+\par \plain\f6\fs24\cf3\b GREEN = PHP\plain\f2\fs24\cf0\b 
+\par \plain\f6\fs24\cf6\b LILAC = Javascript
+\par \plain\f6\fs24\cf1\b RED = FLEX
+\par \plain\f6\fs24\cf5\b\i GREY\plain\f6\fs24\cf5\b  = Commentary\plain\f6\fs24\cf0\b 
+\par \pard\plain\f2\fs24\cf0 
+\par \plain\f2\fs24\cf0\b Example of a PHP script\plain\f2\fs24\cf0 
+\par \plain\f5\fs24\cf0 Note once again: end users do not see these scripts when they view "source" in the browser! Rather, instead of the PHP they see the results of what the PHP has first produced on the server. This is the purpose of the PHP command "echo" - it outputs text which is then visible. JavaScript on the other hand is fully visible to the end-user (unless you put it in a \plain\f5\fs24\cf0\b .js\plain\f5\fs24\cf0  file).\plain\f5\fs24\cf2 
+\par 
+\par \plain\lang2057\f2\fs24\cf2 <HTML>
+\par <HEAD>
+\par \plain\lang2057\f2\fs24\cf5 <!-- \plain\lang2057\f2\fs24\cf5\i  commentary\plain\lang2057\f2\fs24\cf5   -->\plain\lang2057\f2\fs24\cf0 
+\par \plain\lang2057\f2\fs24\cf2 <TITLE>
+\par \plain\f2\fs24\cf5\i Page title, perhaps even a PHP command to show a variable title! (appears as a heading in the browser)
+\par \plain\lang2057\f6\fs24\cf5\i 
+\par \plain\lang2057\f2\fs24\cf2 </TITLE>\plain\lang2057\f2\fs24\cf0 
+\par \plain\lang2057\f2\fs24\cf5\i Optional:\plain\lang2057\f2\fs24\cf5 
+\par \plain\lang2057\f2\fs24\cf6 <script language="JavaScript">
+\par \plain\lang2057\f2\fs24\cf5\i //  Javascript functions\plain\lang2057\f2\fs24\cf0\i 
+\par 
+\par \plain\lang2057\f2\fs24\cf6 </script>
+\par \plain\lang2057\f2\fs24\cf0 
+\par \plain\lang2057\f2\fs24\cf2 </HEAD>
+\par 
+\par <BODY>
+\par \plain\lang2057\f2\fs24\cf5 <!-- \plain\lang2057\f2\fs24\cf5\i your own HTML text -->
+\par \plain\lang2057\f2\fs24\cf5 
+\par \plain\f6\fs24\cf3\b <?php\plain\f2\fs24\cf3 
+\par \plain\f2\fs24\cf5\i // start of a PHP program\plain\f2\fs24\cf5 
+\par \plain\lang2057\f6\fs24\cf3\b include_once("av_ini.php");
+\par \plain\f2\fs24\cf5\i // this executes the sendjob( ) function, which sends instructions to the database !
+\par \plain\f2\fs24\cf5 
+\par \plain\f2\fs24\cf5\i // your own PHP commands
+\par \plain\f2\fs24\cf5 
+\par \plain\f6\fs24\cf3\b $job = array(
+\par \plain\f2\fs24\cf5\i // start of a built-in avanti-Job "FLEX"\plain\f2\fs24\cf0\i 
+\par \plain\f2\fs24\cf0 
+\par \plain\f2\fs24\cf3\b "\plain\f2\fs24\cf1 FLEX command\plain\f2\fs24\cf3\b "\plain\f10\fs24\cf0\b ,\plain\f2\fs24\cf0 
+\par \plain\f2\fs24\cf3\b "\plain\f2\fs24\cf1 FLEX-command\plain\f2\fs24\cf3\b ",\plain\f2\fs24\cf0 
+\par \plain\f2\fs24\cf5\i //  if a " or \\ appear in a FLEX command, you must write  \\"  or  \\\\
+\par // all FLEX lines must be enclosed in inverted commas  "..." and end with a comma, except the last one:\plain\f2\fs24\cf5 
+\par \plain\f2\fs24\cf0 
+\par \plain\f2\fs24\cf3\b "\plain\f2\fs24\cf1 FLEX-command\plain\f2\fs24\cf3\b "\plain\f2\fs24\cf0 
+\par \plain\f6\fs24\cf3\b 
+\par );\plain\f2\fs24\cf5 
+\par \plain\f2\fs24\cf5\i // end of the FLEX job
+\par \plain\f2\fs24\cf0 
+\par \plain\f2\fs24\cf5\i // any further PHP text
+\par \plain\f2\fs24\cf0 
+\par \plain\lang2057\f2\fs24\cf5\i // send a job to avanti (the functions are in \plain\lang2057\f6\fs24\cf5\b\i av_ini.php\plain\lang2057\f2\fs24\cf5\i )\plain\lang2057\f2\fs24\cf0\i 
+\par \plain\lang2057\f6\fs24\cf3\b $k = sendjob($Server, $Port, $job, $erg);\plain\lang2057\f2\fs24\cf0 
+\par 
+\par \plain\f2\fs24\cf5\i // $k = number of lines in the output, ie contents of $erg
+\par 
+\par // alternative 1:
+\par // show only the results  (contents $erg )\plain\f2\fs24\cf0\i 
+\par \plain\lang1040\f6\fs24\cf3\b av_out($erg);\plain\f6\fs24\cf3\b 
+\par \plain\f2\fs24\cf5\i // this function is also in \plain\f6\fs24\cf5\b\i av_ini.php\plain\f2\fs24\cf5\i , and HTML text is output!\plain\f6\fs24\cf5\b\i 
+\par \plain\f2\fs24\cf0\i 
+\par \plain\f2\fs24\cf5\i // alternative 2:
+\par // process the results, ie array  $erg[ ], with PHP, in which case you use echo ...  and   printf...  to produce HTML text
+\par \plain\f2\fs24\cf0\i 
+\par \plain\f2\fs24\cf3\b ?>
+\par \plain\f2\fs24\cf5\i // end of the PHP job\plain\f2\fs24\cf0 
+\par 
+\par \plain\f2\fs24\cf5\i Any other \plain\f2\fs24\cf2\i HTML\plain\f2\fs24\cf0\i  \plain\f2\fs24\cf5\i and\plain\f2\fs24\cf0\i  \plain\f2\fs24\cf3\i PHP\plain\f2\fs24\cf5\i  sections, or even \plain\f2\fs24\cf6\i JavaScript\plain\f2\fs24\cf0 
+\par 
+\par \plain\f2\fs24\cf2 </BODY>
+\par </HTML>
+\par 
+\par ?PHP files needed for RuckZuck=h =What is in the files
+\par ?d-s.apt and d-k.apt=h vb154=Model
+\par ?Construction of PHP files=h =Writing a PHP file
+\par 
+\par }
+ 

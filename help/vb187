@@ -1,0 +1,121 @@
+
+Verlautbarung 187 der Entw.Abt.                          2005-08-16
+-------------------------------
+
+V25.9
+=====
+
+Fuellhorn-Reform
+----------------
+Statt der bisherigen Anordnung in drei Gruppen hat das Fuellhorn
+nun eine alphabetische. Die 50 Einzelpunkte sind in ihren Benennungen
+und Inhalten weitgehend unveraendert. Eine gewisse sachliche Gliederung
+wird durch Farben erreicht:
+  Blau: Text    Gruen: Menue    Gelb: Programm    Rot: Funktion (FLEX)
+
+
+Befehl d weiter verbessert
+--------------------------
+Zum Ausprobieren:  d  eingeben (im Schreibfeld).
+
+Es gibt in den Verzeichnislisten, die in aresqa-Fenstern erscheinen,
+jetzt neu den Punkt  "Nach Dateityp ordnen". Dateien desselben Typs
+werden dann nach Name geordnet.
+Hat man eine Datei ausgewaehlt, gibt es einen neuen Menuepunkt
+"Was ist das?"
+der dann eine Erklaerung zu dem Dateityp hervorbringt sowie im Hinter-
+grund den zugehoerigen Hilfetext.
+Neu: hat man eine .xLD-Datei ausgewaehlt, wird sie als Ergebnismenge
+aufbereitet, wenn man die Funktion "1. Datei oeffnen" waehlt.
+Versuchen Sie ausserdem diesen Direkt-Befehl (im Schreibfeld):
+  dir *.ap?
+
+
+DemoBank weiter entruempelt
+---------------------------
+Es waren noch veraltete und unnuetze Systemsaetze vorhanden, etwa fuer
+diverse "Nummerngeneratoren" des ORDER-Systems.
+
+
+FLEX-Befehl qrix: Trunkierung
+-----------------------------
+Wie bei avanti und wie bei der manuellen Nutzung des Registers kann man
+nun auch beim qrix-Befehl den Registereintrag mit einem ? beenden, um
+eine trunkierte Ausgabe zu erhalten. Wenn zusaetzlich ein Begrenzer
+verwendet wird:  qrix ... abc@xyz,  dann muss man das ? an das Ende
+des ersten Teils setzen:  qrix ... abc?@xyz
+Die Exportfunktion "Registerabschnitt" wurde entsprechend erweitert.
+
+
+FLEX-Befehl find #...
+---------------------
+Mit  find #n  wird der Satz mit der internen Nummer n geladen, wobei
+aber die aktuelle Erg.Menge unberÅhrt bleibt. (Dies ist in manchen
+FLEXen wichtig.)
+NEU: find #i,j,k,...  bildet eine Erg.Menge aus den Saetzen mit den
+internen Nummern i,j,k.  avanti konnte dies schon lange, doch avanti
+haengt die Saetze an die aktuelle Erg.Menge an. Das wird fuer a99 nicht
+fuer zweckmaessig gehalten, es entsteht daher eine neue.
+Ebenfalls moeglich ist  find <suchbefehl> or #i,j,k,...
+Sonderfall: will man eine Erg.Menge aus einem einzigen Satz bilden,
+der die interne Nummer m hat:  find or #m
+
+
+FLEX-Variablen sk und sK   [F7 per FLEX]
+------------------------
+In Vb.185 stand es umgekehrt; so ist es richtig:
+sK	Alle Registereintraege zum aktuellen Satz, getrennt durch == 
+sk	  dasselbe, aber getrennt durch 13 10 (Zeilenvorschub) 
+Ab sofort ist dies auch in avanti eingebaut.
+
+
+Volltextsuche in Verlautbarungen    (Geben Sie ein   v vb )
+--------------------------------
+Darin waren kleine Fehler, die Irritationen ausloesen konnten. Sie
+wurden beseitigt.
+
+
+aresqa-Direktbefehle
+--------------------
+Der Befehl  a  zum Umwandeln der Anzeige in eine Textdatei und 
+Anzeige mit aresqa klappt wieder.
+Befehle wie  a help/quick.vw  klappen jetzt auch dann, wenn das
+Arbeitsverzeichnis NICHT das Programmverzeichnis ist!
+
+
+dbinfo umgestellt
+-----------------
+Der FLEX dbinfo.flx und der Text dbi.rtf wurden umgestellt. Fast alles,
+was vorher in dbinfo.flx stand, steht jetzt eingebettet in dbi.rtf.
+Damit zeigt  h dbi  auch ohne Aufruf von dbinfo.flx alles an, bis auf
+die Berechtigung - die wird noch in dbinfo.flx festgestellt, weil sie
+in einem eingebetteten FLEX automatisch 0 ist.
+
+iu.apt
+------
+Wenn man innerhalb der Datenbank UTF8 hat, braucht man fuer die 
+Indexparameter eine Liste der P- und Q-Befehle, mittels derer z.B.
+kyrillisch in lateinisch automatisch transliteriert werden kann.
+Dafuer ist jetzt eine Datei  iu.apt  im Gesamtpaket. Kommentiert.
+
+
+Englische Doku-Texte teilweise aktualisiert
+-------------------------------------------
+Neben dem Fuellhorn (dokueng.rtf) sind auch einige andere englische
+Versionen von Texten aktualisiert worden. Von Vollstaendigkeit sind
+wir dabei allerdings noch weit entfernt...
+
+
+CockPit: Keine Pruefung der LOG-Groesse mehr
+--------------------------------------------
+Die laestige Hinweis, die LOG-Datei sei schon wieder recht gross,
+entfaellt, da nicht mehr zeitgemaess. Ausserdem erforderte die
+Pruefung einen Schreibzugriff auf die LOG, der nicht immer gegeben
+war.
+
+
+Obsolete Datei
+--------------
+Die Datei wastun.txt auf HELP kann weg. Neu ist wastun.rtf, die aus
+dem Fuellhorn mit "Fehlermeldungen" abgerufen wird. Eingebettet ist
+ein Flip auf Anhang C des Handbuchs.

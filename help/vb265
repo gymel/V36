@@ -1,0 +1,316 @@
+
+
+Verlautbarung 265 der Entw.Abt.                              2014-12-06
+-------------------------------
+
+V34.8 ist da - die "Nikolausversion"
+------------------------------------
+
+
+FLEX-Doku ueberarbeitet
+-----------------------
+Jetzt steht ueberall "acon", wo "acon" gemeint ist und nicht"avanti".
+Die Ursache lag in der Fruehgeschichte von FLEX: Es war zuerst fest
+eingebaut in ein Programm  avanti.exe. Das vereinigte in sich die
+Funktionen eines Datenbankservers und eines TCP/IP-Kommunikations-
+Programms. Der Webserver konnte diesem Programm direkt Jobs zusenden,
+avanti fuehrte die aus und gab die Resultate zurueck an den Webserver.
+Spaeter wurde das dann getrennt: "avanti" wurde auf die Kommunikation
+mit dem Webserver reduziert, ein neues "avanti-cl" (und daraus wurde
+dann "acon") entstand als eigenstaendiges Programm, welches von "avanti" 
+fuer jeden Job gestartet wird und von ihm dann ueber die Standard-Eingabe
+den Jobtext empfaengt, um dann per Standard-Ausgabe (die sonst auf der 
+Konsole erscheint) die Resultate an avanti zu geben. Die Jobsprache
+wurde in a99 uebernommen, musste aber dafuer in mancher Weise modifiziert
+und erweitert werden, vor allem um interaktive Funktionen, die in
+acon als Konsolprogramm nicht vorkamen, weil es keine Oberflaeche
+mit Nutzerdialog hat. Das meiste davon passierte bis 1999, als a99
+(daher der Name) herauskam und zu einer maechtigeren Alternative
+zu PRESTO wurde. In der damals noch mageren FLEX-Doku stand aber schon
+"avanti" an etlichen Stellen, und so blieb das dann stehen...
+Siehe allegro-news 54 "ReFLEXionen ueber FLEXibilitaet":
+  http://www.allegro-c.de/news/acn992/acn992.htm
+Darin der Abschnitt "Was ist ein FLEX?"
+
+
+Neuer FLEX-Befehl: check
+------------------------
+Mit "check" laesst man den Inhalt der iV daraufhin pruefen, ob er eine
+gueltige Kategorienummer hat. In der iV steht anschliessend eine
+Fehlermeldung, im Fall der Korrektheit der unveraenderte Inhalt.
+Wenn es eine Fehlermeldung ist, beginnt die iV mit zwei Leerzeichen,
+d.h. der Fehlerzustand ist mit  if "  "  leicht abpruefbar.
+Mit "check f" wird zusaetzlich geprueft, ob der Inhalt nur die erlaubten
+Unterfelder umfasst, wie es die CFG vorschreibt. Auch hier gibt es
+im Fehlerfall Meldungen, die mit "  " beginnen.
+Achtung: Im Fehlerfall ist der iV-Inhalt zerstoert! Man sorgt also
+besser dafuer, eine Kopie zusaetzlich in einer Variablen vorzuhalten,
+wenn man den Inhalt noch braucht.
+
+
+Auch neu: var sk  liefert Umfang der Indexeintraege des Satzes
+----------------
+Eine weitere neue Kontrollmoeglichkeit bietet jetzt  var sk.
+Damit wird seit je die Liste der Indexeintraege des aktuellen Satzes
+gebildet. Nun entsteht ganz oben eine zusaetzliche Zeile mit zwei
+Zahlen, z.B.  
+(69/1046)
+Das bedeutet: Der Satz generiert 69 Eintraege, und deren gesamte Laenge
+ist 1046 Bytes.
+Mit  var (e")" f"(")  kann man die zwei Zahlen dann bequem extrahieren.
+Schnell mal ausprobieren: Irgendeinen Satz nehmen und eingeben
+x var sk\sho IV
+Mit F7 kriegt man uebrigens diese Zeile nicht - das wuerde nur Irritation
+ausloesen.
+
+
+a99 FLEX: fetch  [a99 und acon]
+---------------
+fetch m : Lesezeiger in Datei positionieren
+In a99 und acon kann man den Lesezeiger in einer geoeffneten Datei
+mit "fetch m" auf die Position setzen, die als Dezimalzahl in der iV
+steht. Wenn man also schreibt:
+var "100"
+fetch m
+get
+dann wird der Zeiger auf die Position 100 gesetzt (Zaehlung beginnt
+mit 0) und dann wird von da an gelesen bis zum naechsten Zeilenende,
+das Ergebnis landet in der iV.
+Statt der "100" wird man i.d.R. eine Variable $x setzen, in der man
+sich vorher mittels  fetch p\ins $x  eine Position gemerkt hat, wo in
+dem Moment der Zeiger stand und zu der man der ihn zuruecksetzen will.
+Schoen und gut, aber in a99 klappte das nicht mehr. Es wurde repariert.
+
+fetch b : Naechstes Byte aus der Datei lesen
+Bisher kam mit fetch b1 kein korrektes Ergebnis, es musste fetch b
+lauten. Jetzt klappt auch fetch b1 und liefert den ASCII-Wert des
+gelesenen Zeichens, also z.B.  32  fuer das Leerzeichen.
+
+
+a99 FLEX: var q  [a99]
+---------------
+Mit  var q  bekommt man zwei Angaben  n/N, z.B.  10/13.
+Dabei ist n die Nummer der aktuellen Erg.menge in der Reihenfolge der
+momentan vorliegenden Erg.Mengen (mit Alt+e sieht man die Liste),
+und N ist deren Gesamtzahl. Nr. 1 ist immer die Bookmark-Liste,
+Nr. 2 die Liste der "Vorher angezeigten Daten".
+Ds Problem war: Wenn mit  close res  die aktuelle Erg.Menge geschlossen
+wurde (auf dem Balken erscheint dann: "Momentan keine Erg.Menge"),
+aenderte sich die Angabe n bei var q nicht, was zu einer Irritation
+fuehren konnte. Dies wurde bereinigt, der Wert n geht dann auf 0.
+
+
+getfile : a99 kann Dateien aktualisieren
+----------------------------------------
+Schon seit einer Weile konnte man z.B. mit  
+X getfile dnb.flx
+sich eine aktualisierte Version des  dnb.flx  holen, d.h. diesen vom
+Server der UB besorgen und in den eigenen FLEX-Ordner kopieren,
+um den veralteten zu ersetzen.
+Dieses Verfahren ist nun erweitert auf die sonstigen Dateien, die
+evtl. auch mal aufgefrischt werden muessen. U.U. muss man schauen,
+ob die Datei an den richtigen Ort gelangt. Es wird keine Datei in
+das eigene DbDir geschrieben, sondern Parameter- und Konfig-Dateien
+in das ProgDir, RTF- und .VW-Dateien in den HELP-Ordner.
+Was aber ist mit Programmen? Nun, normalerweise wird man die besser
+vom FTP-Server holen! Es kann aber vorkommen, dass mal ein Programm
+per getfile bereitgestellt werden soll. EXE-Dateien oder auch ZIP
+werden u.U. aber vom Sicherheitssystem beim Versuch eines Abrufs aus
+dem Internet blockiert. Dafuer wurde ein Verfahren gefunden, mit dem
+dies gefahrlos umgangen wird: 
+
+
+ZAP : Transportsicherung fuer Dateien
+------------------------------------
+Eine Datei, die an einer Firewall scheitern koennte, z.B. asort.exe,
+oder dieselbe verpackt in asort.zip, wird vor dem Bereitstellen mit
+einem FLEX namens  zap.flx  umcodiert. Wir geben in a99 hier den
+Befehl:   X zap asort.exe   bzw.  X zap asort.zip
+Es entsteht dann eine Datei  asort.exe.zap  bzw.  asort.zip.zap,
+die ein wenig groesser ist. Diese besorgt man sich mit
+X getfile asort.exe.zap  bzw.  X getfile asort.zip.zap
+Die so besorgte Datei "entzappt" man mit:
+X unzap asort.exe.zap  bzw.  X unzap asort.zip.zap
+Die Originaldatei wird dann wiederhergestellt. In Falle .zip muss man
+sie dann noch ganz normal entpacken.
+Der FLEX  unzap.flx  ist mit im GP V34.8, der zap.flx wird zunaechst
+nicht mit ausgeliefert, um Verwirrung zu verhueten - er ist ja nur zur
+Verwendung hier bei uns gedacht. 
+
+
+Gesamtexport
+------------
+Die gebotenen Optionen auf dem Menue fuer "Gesamtexport" wurden ein
+wenig erweitert:  "Gesamtexport der Datenbank" anwaehlen auf dem
+Quick-Menue (Alt+4), dann auf "mehreren Moeglichkeiten" klicken.
+
+
+update.job : "Befehl nicht korrekt geformt"
+EXCEPTION-Error (memory-access) in program "acon.exe" !!
+Druecken Sie eine beliebige Taste . . . 
+--------------------------------------------------------
+
+Solche Fehlermeldungen konnten vorkommen, wenn man mit "update ..."
+eine Grunddatei in eine Datenbank einspeisen wollte.
+
+Das war ein seltener Folgefehler. Der eigentliche Grund war: 
+Es entstanden bei einem Satz mehr als 1000 Indexeintraege.
+Der dafuer vorgesehene Platz (32.000 Byte) reichte aus: die Schluessel
+bauchten nur 24k. Aber die Zahl 1000, die war der Grund: Es wird intern
+eine Adressenliste der zum Satz gebildeten Schluessel angelegt, und die
+ist auf 1000 dimensioniert. Nachdem aber die 999 erreicht war und der
+Schluessel an die Liste angehaengt, hat das Programm in die Adresse 1000
+schon mal prophylaktisch eine 0 reingeschrieben. Weil aber die Zaehlung
+mit 0 beginnt, ist die 1000 um 1 zu gross. Ob dann wirklich was passiert,
+haengt davon ab, was im Speicher hinter diesem Adressenbereich liegt
+und mit der 0 dann ueberschrieben wird. In diesem Fall ging's zumeist
+wirklich schief. Die beobachteten Meldungen wiesen auf den eigentlichen
+Tatbestand nicht hin, das ist aber in solchen Faellen ebenso typisch wie
+tueckisch. 
+
+Anhand von Beispieldaten war das Problem reproduzierbar. Es handelte
+sich um sehr lange Datensaetze aus der ZDB, umgewandelt ins A-Format
+mit Anwendung der HFM-Technik fuer einige hochfrequente Felder.
+Es stellte sich bei den konkreten Daten heraus, dass der Titel
+"Bundesanzeiger" schuld war (ZDB 33414-5). Der will 1011 Schluessel
+generiert haben. Es entstehen korrekt nur 1000, aber die besagte
+Adresse an der Position 1000 (also 1001), die wird eben ueberschrieben...
+Auch a99 konnte Probleme mit solchen Datensaetzen kriegen, z.B. waren
+Abstuerze nach F7 dabei nicht auszuschliessen.
+
+Die Reparatur war nach dieser Diagnose kein Problem.
+Nebenbei wurde die Anzahl von Schluesseln pro Satz in a99 und acon
+hochgehebelt auf 1200. (Und die 1201 wird nicht zum Problem, d.h.
+der Knackpunkt wird nicht einfach nur verschoben, sondern ist weg.)
+
+Sowas zehrt und zerrt an den Nerven von Entwicklern und betroffenen
+Anwendern gleichermassen. Kenner zeitgenoessischer Softwareparadigmen
+fragen sich (oder sogar uns) dann, warum man nicht strikt
+objektorientiert programmiere mit C++ oder, noch besser, alles in
+Java um- oder neu schreibe. Das liegt vor allem daran, dass eine
+ausgereifte und verfuegbare Version von C++ erst 1998 erschien, und Java
+wurde erstmals 1995 vorgestellt. Die allegro-Enwicklung in C++ begann
+1985. Der Umfang der 1995/98 vorliegenden Codebasis war leider zu gross,
+bzw. die Entwicklungsressourcen zu klein.
+Ausserdem werden zeitgenoessische Entwickler schon noch ein System
+hervorbringen, vor 2020, das den genannten Vorstellungen entspricht
+und allegro in mehr als nur solcher Hinsicht hinter sich laesst. Fuer den
+Publikumsbereich (Retrieval) liegt mit VuFind schon ein Exempel vor,
+fuer andere Bereiche (Katalogisierung, Ausleihe, etc.) wohl noch nicht.
+
+Fehlermeldung bei zu grosser Schluesselzahl
+-------------------------------------------
+Zwar gibt es keinen unkontrollierten Abbruch mehr bei zu grosser oder
+zu voluminoeser Schluesselmenge eines Satzes beim Updating, aber nun
+wird auch noch eine Fehlermeldung generiert:
+  mehr als 1200 Schl. ... 
+oder 
+  Schl. brauchen zuviel Platz ...
+und dahinter jeweils die ersten zwei Felder des delinquenten Satzes,
+womit man ihn in aller Regel identifizieren kann.
+
+Ausserdem gibt es eine neue Kontrollmoeglichkeit zur Feststellung des
+Umfangs der Schluessel zu einem Satz; siehe oben unter "check".
+
+
+ald-chk.flx : Verbessertes Werkzeug
+-----------------------------------
+Die Funktion "Adressen checken" auf dem Check-Menue wird erledigt
+von dem FLEX  ald-chk.flx, der sich die .ald-Dateien einzeln oder
+insgesamt vorknoepft und die darin steckenden Satzadressen vergleicht
+mit den Eintraegen in der .tbl. Er protokolliert auch die geloeschten
+und die gesperrten Saetze. 
+Ferner ist jetzt probeweise der check-Befehl eingebaut (s.o.), der
+die Datenfelder durchprueft, ob sie alle gemaess CFG zulaessig sind.
+Wenn nicht, wird eine Meldung ausgeworfen. So lassen sich auch
+schadhafte Datensaetze finden, in denen z.B. mittendrin in einem
+Feld ein Code 0 steht oder eben hinter einem Code 0 eine falsche
+Kategorienummer.
+Dieses Werkzeug soll weiter verbessert werden. Ausserdem gibt's 
+aber noch ein neues:
+
+
+Zugabe: shrec.flx und shuft.flx
+-------------------------------
+
+Wer
+-- neugierig ist und mal sehen will, wie ein Datensatz denn ganz genau,
+   Byte fuer Byte, tatsaechlich in der Datenbank gespeichert ist,
+oder 
+----
+   darueber zwar Bescheid weiss, aber einen bestimmten Satz mal schnell
+   inspizieren will, ob damit womoeglich was faul ist, so z.B. ob ein
+   unerwuenschtes Steuerzeichen (Codes 1-10, 13, 26, 27) sich
+   mittendrin verbirgt,
+
+der kann sich seit je eines "Hex-Editors" bedienen, wie etwa WinVi,
+mit dem man Datendateien laden und dann auf die hexadezimale Anzeige
+umschalten kann. Nicht jeder hat aber ein solches Werkzeug parat
+oder weiss es sachgerecht zu handhaben UND den Anblick dann korrekt
+zu interpretieren. KEINESFALLS sollte man mit einem solchen Editor eine
+Datenbankdatei wirklich editieren, also bearbeiten und dann wieder 
+speichern!!! Es sei denn, man ist sich 100% sicher, dass nichts 
+kaputtgehen wird.
+
+Es wurde nun ein FLEX namens shrec.flx geschrieben ["show record"], der
+einen Datensatz im Anzeigefeld in zwei Spalten anzeigt: Links als
+lesbaren Text, rechts als Liste von hexadezimalen Codes.
+Schnell mal ausprobieren? Einen Satz anzeigen lassen, dann F8 und
+die letzte (neue) Funktion waehlen: "HexaDez-Anzeige des aktuellen
+Satzes". Dasselbe kriegt man mit Eingabe von  X shrec
+
+Steuerzeichen erscheinen in verfremdeter Weise, weil ihnen keine
+druckbare Gestalt entspricht. Man sieht dann links in gruener Farbe
+ein druckbares Zeichen, z.B. @ fuer den Code 0, A fuer 1, J fuer 10,
+M fuer 13 usw.
+In der rechten Spalte dagegen werden die Hex-Zahlen dieser Zeichen
+ebenfalls in gruen angezeigt.
+Unerlaubte Zeichen innerhalb von Datenfeldern (die o.g. Codes) 
+erscheinen rot.
+Das Programm checkt ferner die Satznummer und das erste Byte, und
+es zeigt die naechsten 48 byte, die auf den Satz folgen. So koennte man
+evtl. Fehler entdecken, wie man sie frueher manchmal sah: dass ein
+Satz nach Verlaengerung den Anfang des naechsten ueberschrieben hatte.
+
+Die Frage wird kommen: "Nun ja, was nutzt das schon, wenn man da einen
+Fehler findet, der sonst nicht sichtbar wird! Man sollte ihn dann
+sofort korrigieren koennen!"
+Einerseits ist es zwar denkbar, dass die angezeigte Hex-Liste nicht nur
+editierbar waere (das ist sie) sondern dann auch speicherbar! Doch 
+andererseits ginge das am Logging vorbei, und das wiederum koennte man
+nicht wuenschen. Es sei denn, man wuerde dann auch noch das Kopieren
+des solchermassen korrigierten Satzes in die log-Datei mit in den FLEX 
+einbauen. Vorstellbar ist auch das, zwingend muesste dazu aber auch
+strikte Absicherungen gehoeren, um irreparable Schaeden zu verhueten.
+
+Und es wird gefordert werden: "Das Programm muesste nicht einzelne 
+Saetze, sondern ganze Datendateien durchforsten, und dann eine Liste 
+derjenigen auswerfen, die irgendwelche Fehler enthalten." Ja, das 
+waer was.
+
+Warum aber nur Datenbankdateien, nicht auch andere? Eine Fehlerdiagnose
+fuer beliebige Dateistrukturen waere unmoeglich, aber das reine Anzeigen
+der Inhalte ist nicht weiter schwer. Dazu wurde ein kleines Tool
+namens "shuft.flx" geschrieben - "show unmodified file text". Es ist
+aber keine Frage, dass man mit Fremdwerkzeugen wie WinVi erheblich
+besser bedient ist, um Dateiinhalte auf Byte-Ebene zu studieren! 
+Und mit Programmierwerkzeugen wie Perl, um mit diesen Inhalten dann
+irgendwas anzustellen, wie Diagnostik, Auswertungen, aenderungen aller
+Art, etc. Wir koennen jedoch keine Fremdwerkzeuge im allegro-Gesamtpaket
+mitliefern und auch nicht die zu deren Nutzung noetigen Kenntnisse.
+
+Gibt man ein  X shuft
+dann kommt zuerst eine Dateiauswahlbox, in der man sich jede beliebige
+Datei an jedem Ort im Dateisystem aussuchen kann.
+Sofort wird im Anzeigefeld der Anfang der Datei (die ersten 160
+Bytes) erscheinen, angeordnet wie beim FLEX "shrec". Dies mag
+gelegentlich nuetzlich sein, um sich die innere Struktur von Fremddaten
+schnell mal eben anzuschauen.
+
+
+import : Kleinere Verbesserung
+------------------------------
+Beim Vergleichsbefehl  R  (Kap. 11.2.3.5) gab es einen selten 
+auftretenden Fehlerfall. Er wurde beseitigt.
+
+

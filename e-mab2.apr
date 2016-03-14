@@ -1,0 +1,329 @@
+  E-MAB2.APR  :   Ausgabe als MAB Datei, Struktur "MAB2"
+  940602 / 201502  mit Indikator HINTER der Kategorienummer
+
+  ACHTUNG:
+  Eine viel umfassendere und professionellere Loesung findet man hier:
+  http://svn.gymel.com/acxt/produkt/mabexpdir/README-mabexp.html
+  mitsamt ausfuehrlicher Erklaerung der Anwendung
+
+pn="Export MAB2"
+
+  fr Bildschirmanzeige:
+zl=72  Umbruch bei 72 Zeichen
+zi=4
+      fuer Dateiausgabe aktivieren:
+zl=0   kein Zeilenumbruch bei langen Kat. (Dateiausgabe)
+
+dx=1   Umcodierung einschalten (nur f. presto, srch, import wichtig)
+
+zm=0
+
+i4=1   V14-Ersetzungen vornehmen
+
+ke=C &0
+
+   Variable:
+   #unn  Z„hler fr Kat.Gruppen, z.B. fr 100, 104, 108...
+   #uln  lfd.Nr. des Datensatzes
+   #ulz  lfd.Zlg. d. Austauscheinheit
+   #usn  Satznummer innerhalb d. Austauscheinheit (0000 fr Hauptsatz)
+   #uin  Indikator (fr Pers. und K”rp.)
+
+  Keine ak-Befehle, d.h.
+  Fr jeden Satz beginnt der Vorgang hier:
+#nr x"=100" e"." =nn e0 #zz 0    Zuweisung von des Wertes 100 auf #unn
+#uln +#99x e0 #zz 0     wenn #uln noch nicht besetzt, dann:
+#dt p"1" e1 =ln e0 #zz 0     #uln = lfd.Nr. auf 1 setzen
+#dt p"0" e1 =lz e0 #zz 0     #ulz = lfd.Zlg. mit 0 besetzen
+#99x  (nur als Sprungmarke)
+
+  ********** Vorspann ************************************************
+  Hier immer #zz 0, um Ausgabe von ke zu verhindern
+  #99x wird immer als Sprungmarke verwendet, damit werden Buchstaben gespart
+
+  Feld "### " = Satzkennung:
+
+#t{ "### 00000" }
+  Pos. 0-4 : Laenge des Satzes. Wird nicht ermittelt
+  Pos. 5     Status (n=neu, c=corrigiert, p=provisorisch), 
+       6-9   M2.0 (konstant)
+       10    Indikatorlaenge '1'
+       11    Teilfeldkennungslaenge '2'
+       12-16 Datenanfangsadresse "00024" (konstant)
+       17-22 Blanks (z.Z. ungenutzte Bytes)
+
+#t { "nM2.01200024      " }
+
+  Pos.23 Satztyp  (h oder u)
+#hi +#99x p"u" e1 #zz 0
+#t{ "h" }
+#99x
+#t{ C &0 }
+
+  ****** Ende des Vorspanns ********************************************
+
+#00 "001 "
+#99n e8 "002 " 
+#dts e8 "004 "
+#00 "027 "
+#89Z "029z"
+#37 "037 "
+#31h "039 "
+
+#hi1 "089 "    Bandnr vorlageform
+#hi "090 "            ansetzungsform
+#nr " " e1 =in e0 #zz 0     #uin enth„lt den Indikator
+
+#40 >N #zz 0
+#nr "a" e1 =in e0 #zz 0     #uin enth„lt den Indikator
+#40a >N #zz 0
+#40b >N #zz 0
+#401 >N #zz 0
+#402 >N #zz 0
+#403 >N #zz 0
+
+#nr "b" e1 =in e0 #zz 0   #uin mit "b" besetzen
+#41 ++ >N m>N #zz 0
+#42 ++ >N m>N #zz 0
+#43 ++ >N m>N #zz 0
+#44 ++ >N m>N #zz 0
+#45 ++ >N m>N #zz 0
+#46 ++ >N m>N #zz 0
+#47 ++ >N m>N #zz 0
+
+#50 ++ >N m>N #zz 0
+#51 ++ >N m>N #zz 0
+#52 ++ >N m>N #zz 0
+#53 ++ >N m>N #zz 0
+#54 ++ >N m>N #zz 0
+#55 ++ >N m>N #zz 0
+#56 ++ >N m>N #zz 0
+
+#59 "f" e1 =in e0 #zz 0   #uin mit "f" besetzen
+#59 ++ >N m>N #zz 0
+
+#nr x"=200" e"." =nn e0 #zz 0    Zuweisung von des Wertes 200 auf #unn
+#nr " " e1 =in e0 #zz 0          und Indikator blank
+
+#60 >K #zz 0       Urh.
+
+#nr "b" e1 =in e0 #zz 0    Indik. "b" fr die sonstigen K”rp.
+#60a >K #zz 0
+#60b >K #zz 0
+#601 >K #zz 0
+#602 >K #zz 0
+#603 >K #zz 0
+
+#61. ++ >K m>K #zz 0
+
+#83. ++ >T m>T #zz 0     Tagungen
+
+#21 "300 "
+#22 "304 "
+
+#19 +T e0 #zz 0
+#18 +T e0 #zz 0
+
+#20 "331 " e" : " e" "      normal: #20 -> 331
+#+U
+
+#-T   wenn #18 oder #19, dann #20 -> 310
+#20 "310 " e" : " e" " uªª
+#18 "331 " uªª
+#19 "331 " uªª
+
+#-U
+
+#20 b" " e" : " p"333 "     K”rp Erg„nzung
+
+#20 +W b" : " e" " p"335 " #zz 0     Zusatz
+
+#25 +#24 p"335 "
+
+#-W
+#25 "; " #zz 0
+#25 +#24 e0
+#20 b" : " e0   nur wegen Postfix
+
+#24 "341 " uªª
+#242 "345 " uªª
+
+#39 +#23 p"359 "   wenn #39 vorkommt, wird das folgende bergangen
+#40 +#23 c";" e0 #zz 0     nicht, wenn ";" in #40 vorkommt (Aufsatz)
+
+#nr dva e0 #zz 0      VerfAngabe 359  muá zusammengebastelt werden
+                  #uva wird als Hilfskategorie genommen
+
+#40 >V e0 #zz 0
+#40a >V e0 #zz 0
+#40b >V e0 #zz 0
+#401 >V e0 #zz 0
+#402 >V e0 #zz 0
+#403 >V e0 #zz 0
+
+
+#41 >W e0 #zz 0
+
+#41a >V e0 #zz 0
+#412 >V e0 #zz 0
+
+#41 p" ª[Hrsg.]ª!" e"!" Ava #zz 0
+
+#42 b", " p". " Ava #zz 0
+#42 e", " p" " P" ª[Mitverf.]ª" Ava #zz 0
+
+  ... hier mssen noch die anderen Personentypen erg„nzt werden
+
+  dann die K”rperschaften noch an #uva anh„ngen:
+
+#60 >W e0 #zz 0
+#60a >V e0 #zz 0
+#602 >V e0 #zz 0
+#61 ++ >V m>V e0 #zz 0
+
+  und zuletzt Ausgabe der zusammengesetzten Verf.Angabe:
+
+#uva f";. " p"359 "
+
+#26 p"361 "     Beigef.Werk
+
+#23 "370 " uªª
+#23a "370 " uªª
+#232 "370 " uªª
+
+#71 "403 "
+
+#76p "405 "     Ersch.Verlauf
+
+#77k "407 "     Karten: math. Angaben
+
+#74 "410 " e""
+
+#75 "412 "
+
+#76 "425 "
+
+#77 "433 "
+
+#85 "451 " uªª
+
+#81 ++ "501 " m". - " #zz 0
+#81 e0
+
+#80 "503 "
+
+#818 +#87 "519 "
+
+#819 e":" "519 " #zz 0
+#819 b":" p", Diss., " #zz 0
+#819 e0
+
+#87 +#88 c"*" e" - " p"540bISBN "
+
+#87 "540aISBN "
+
+#88 +#90 c"*" "542b"
+#88 "542a"
+
+#90 e"" p"544 "
+
+#8e ++ p"655 " m"655 "
+
+#t{ C &0 }
+#+#
+
+   Personennamen: mssen in Feldgruppen aufbereitet werden
+   weiteres Problem: in einer Namenskat. k”nnen mehrere Namen stehen,
+   getrennt mit ";" oder "; " oder " ; "
+   Jeder Name kann von Verweisungsformen gefolgt sein, abgetrennt mit " = "
+
+#(N    Namen aufbereiten
+#cc dan aan #zz 0        gesamtes Namensfeld in #uan speichern
+#-
+#unn 0 #zz 0   KatNr (100, 104, 108 ...)
+#uin 0 #zz 0   indikator (wurde oben gesetzt)
+#unn x"+1" e"." =nn #zz 0    erh”hen  (101, 105, ... fr Verw.Formen)
+#uan e";" F" " e" = " #zz 0
+#cc +N i2,1 " ª[Hrsg.]ª!" e"!" #zz 0
+#cc +N i2,2 " ª[Mitverf.]ª!" e"!" #zz 0
+#cc +N i2,3 " ª[Bearb.]ª!" e"!" #zz 0
+#-N
+#uan e";" F" " dvw avw    Kat.-Inhalt  in #uvw zwischenspeichern
+#-P
+#uvw +O b" = " dvw avw #zz 0    sind noch verw.formen da?
+#unn x"+3" e"." =nn #zz 0      katNr um 3 erh”hen (104, 108, 112, ...)
+#uan + b";" f" " dan aan #zz 0    n„chster Name kommt dran
+#)N
+#-O   ja, wir haben Verw.Formen: abarbeiten (jeweils 101, 105, ...)
+#unn P" " #zz 0
+#uvw e" = "
+#+P    Schleife l„uft, bis #uvw leer ist
+#)N   dann UP zuende
+
+#(K    K”rpNamen aufbereiten
+#unn 0 #zz 0   KatNr (200, 204, 208 ...)
+#uin 0 #zz 0   indikator (wurde oben gesetzt)
+#unn x"+1" e"." =nn #zz 0    erh”hen  (201, 205, ... fr Verw.Formen)
+#cc e" = "
+#cc dvw avw #zz 0    Kat.-Inhalt  in #uvw zwischenspeichern
+#-M
+#uvw +#60Q b" = " dvw avw #zz 0    sind noch verw.formen da?
+#unn x"+3" e"." =nn #zz 0      katNr um 3 erh”hen (204, 208, 212, ...)
+#)K
+#60Q   ja, wir haben Verw.Formen: abarbeiten (jeweils 201, 205, ...)
+#unn P" " #zz 0
+#uvw e" = "
+#+M    Schleife l„uft, bis #uvw leer ist
+#)K   dann UP zuende
+
+
+#(T    Tagungen aufbereiten
+#unn 0 #zz 0   KatNr (200, 204, 208 ...)
+#uin 0 #zz 0   indikator (wurde oben gesetzt)
+#unn x"+1" e"." =nn #zz 0    erh”hen  (201, 205, ... fr Verw.Formen)
+#cc +#99x I4,. I5,. e0 #zz 0
+#20 +#99y e" : " #zz 0      #20 nehmen, wenn #83 mit "..." anf„ngt
+#99x
+#cc e" ; " e" = " #zz 0
+#99y
+#cc e" = " b" ; " p" <" P">" #zz 0
+#t{ C &0 }    Feldende
+#cc dvw avw #zz 0    Kat.-Inhalt  in #uvw zwischenspeichern
+#-u
+#uvw +#60Q b" = " dvw avw #zz 0    sind noch verw.formen da?
+#unn x"+3" e"." =nn #zz 0      katNr um 3 erh”hen (204, 208, 212, ...)
+#)T
+#60Q  ja, wir haben Verw.Formen: abarbeiten (jeweils 201, 205, ...)
+#unn P" " #zz 0
+#uvw e" = "
+#+u    Schleife l„uft, bis #uvw leer ist
+#)T   dann UP zuende
+
+
+#(V   Verf.Angabe zusammenbasteln , mit " ; " verbinden
+#uva P" ; " =va #zz 0    " ; " anh„ngen
+#cc e" = " b", " Ava #zz 0
+#cc e", " p" " Ava #zz 0
+#)V
+
+#(W   Verf.Angabe zusammenbasteln
+#uva P". " =va #zz 0     ". " anh„ngen , mit ". " verbinden
+#cc e" = " b", " Ava #zz 0
+#cc e", " p" " Ava #zz 0
+#)W
+
+
+
+p ª _
+
+p _ 1
+
+
+  wenn Zeichensatz 850 codiert werden soll:
+  (die Liste muá noch erweitert werden, im wesentlichen um
+   die Groábuchstaben mit den Akzenten. Bringt nicht viel)
+   Einige VGAFONT-Zeichen máte man leider ausblenden, z.B.
+   das Hacek und den polnischen Querstrich!)
+
+ _~a_Ö_
+ _~o_ä_

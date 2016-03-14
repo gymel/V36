@@ -1,0 +1,204 @@
+  UMRECH.FLX : Sammlung von Umrechnungen
+  20070226     Auch als Beispiel fuer Rechenfunktionen
+               Es wird jeweils in beiden Richtungen umgerechnet, d.h. der
+               Nutzer gibt nur eine Zahl ein und bekommt beides!
+               Ausserdem eine Liste der Werte von 1 bis 100
+:start
+  ViewListe umrech.vw zeigen zwecks Auswahl
+var "*" P "HELP\\umrech.vw"
+Aresqa
+
+  Zeile:  Einheit-a <-> Einheit-b   1:faktor
+   z.B.:  mile/h <-> m/s           1:0.44707
+          #ueA          #ueB          #uuF
+if "" end  // Abbruch mit Esc
+if "Tilg" exec X tilg
+if "Verz" exec X zins
+if "Euro" exec X euro
+if "Doll" exec X dollar
+  Kommt <-> vor? Sonst keine Auswahl
+if ="HEX" jump HEX
+if ="DEZ" jump DEZ
+if "Bas" jump zumrech 
+
+if not %<->% end
+asci
+if " C" jump temp   // Sonderfall Temperatur
+if "mpg" jump verbrauch  // Sonderfall Benzinverbrauch
+  Ausgewaehlte View-Zeile -> #uuM
+ins #uuM
+  Variablen herausziehen
+  Umrech.Faktor
+var #uuM(b":")
+ins #uuF
+  Einheit A
+var #uuM(e" <")
+ins #ueA
+  Einheit B
+var #uuM(b"->" e"  ")
+ins #ueB
+
+  Ueberschrift machen
+var #ueA(0,7) "<->" #ueB(0,r7)
+ins #ueC
+var #ueB(0,7) "<->" #ueA(0,r7)
+ins #ueD
+
+var #ueC "   |   " #ueD n n
+ansi
+  und schon mal zeigen
+sho IV
+z=1
+  Schleife: Werte 1 bis 100 auflisten
+  Bei jedem Umlauf kommt eine Zeile hinzu
+:loop
+Z=z*#uuF
+var Z3
+ins #uea
+Z=z/#uuF
+var Z3
+ins #ueb
+var z
+ins #uuz
+  Zeile aufbereiten und anzeigen
+var #uuz(0,r3) " : " #uea(0,r10) "    |   " #uuz(0,r3) " : " #ueb(0,r10) n
+sho +IV   //   haengt Zeile unten an
+  Zaehler erhoehen, wenn noch <101, dann Schleife
+z+1
+if z<101 jump loop
+
+  Schleife fertig, jetzt erst Wert abfragen und umrechnen
+  #uuE mit 1 besetzen, wenn noch unbesetzt
+if not #uuE #uuE 1
+
+:eingabe
+  Nutzereingabe abfordern
+var "Eingabe: (" #uuM(e"  ") ")=#uuE"
+ansi
+ask
+  Abbruch z.B. mit Esc
+if cancel end
+  Nichts eingegeben -> zurck zur Auswahl
+if "" jump start
+  sonst Eingabe -> #uuE
+ins #uuE
+  Eingabe verrechnen mit dem Faktor (A->B)
+eval #uuE * #uuF
+ins #uea
+  bzw. mit dem inversen Faktor (B->A)
+eval #uuE / #uuF
+ins #ueb
+  Wert ist in beiden Richtungen umgerechnet, Anzeige aufbereiten!
+var  #uuE " " #ueA " = " #uea " " #ueB n
+var +#uuE " " #ueB " = " #ueb " " #ueA
+ansi
+  und Ergebnisse als Message zeigen
+mes
+  zurck zu weiterer Eingabe
+jump eingabe
+
+  Sonderfall Temperatur
+:temp
+var " C  :    F   |   F  :   C" n n
+ansi
+sho IV
+  Anfangswert -99 setzen
+z=-99
+
+:tloop
+  Celsius -> Fahrenheit
+Z=z*1.8+32
+  mit 1 Nachkommastelle
+var Z1
+ins #uea
+  Fahrenheit -> Celsius
+Z=z-32*5/9
+var Z1
+ins #ueb
+var z
+ins #uuz
+  Zeile aufbereiten
+var #uuz(0,r3) " : " #uea(0,r5) "  |  " #uuz(0,r3) " : " #ueb(0,r5) n
+  und unten anhaengen
+sho +IV
+  Zaehler eins rauf, bei 101 Ende
+z+1
+if z<101 jump tloop
+
+:teingabe
+  Nutzereingabe abfordern
+var "(Umrechnung øC <-> øF) Bitte Zahl eingeben=#uuE"
+ansi
+ask
+if can end
+  Nichts eingegeben - zurck zur Auswahl
+if "" jump start
+  sonst Eingabe -> #uuE
+ins #uuE
+  Eingabe verrechnen
+  Wert in beiden Richtungen umrechnen!
+eval #uuE * 1.8 +32
+ins #ueA
+eval #uuE -32 *5 /9
+ins #ueB
+  Ergebnisanzeige aufbereiten
+var  #uuE "  Celsius    = " #ueA " Fahrenheit" n
+var +#uuE "  Fahrenheit = " #ueB " Celsius"
+ansi
+  und zeigen
+mes
+  Weitere Eingabe
+jump teingabe
+
+  Sonderfall Benzinverbrauch
+:verbrauch
+var "mpg : l/100km| l/100km : mpg" n n
+
+sho IV
+  Anfangswert 1 setzen
+z=1
+
+:bloop
+  mpg -> l/100km
+Z=235.2209 / z
+  mit 1 Nachkommastelle
+var Z2
+ins #uea
+ins #ueb
+var z
+ins #uuz
+  Zeile aufbereiten
+var #uuz(0,r3) " : " #uea(0,r5) "  |  " #uuz(0,r3) " : " #ueb(0,r5) n
+  und unten anhaengen
+sho +IV
+  Zaehler eins rauf, bei 101 Ende
+z+1
+if z<101 jump bloop
+
+end
+
+:HEX
+ask HexZahl
+if "" jump start
+perf hexdez
+mes
+jump HEX
+end
+
+:DEZ
+
+ask DezZahl?
+if "" jump start
+perf dezhex
+mes
+
+jump DEZ
+end
+
+:zumrech
+jump numcon:start
+
+end
+
+include numcon.inc
+

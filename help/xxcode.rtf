@@ -1,0 +1,152 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman Times New Roman;}{\f1\fmodern\fprq1\fcharset0 Courier New;}{\f2\froman\fprq2\fcharset0 Times New Roman;}{\f3\fmodern\fprq1 Courier New;}{\f4\froman\fprq2 Times New Roman;}{\f5\froman\fcharset0 Times New Roman;}}
+{\colortbl ;\red0\green0\blue255;\red0\green176\blue0;\red0\green0\blue0;\red255\green0\blue0;}
+\viewkind4\uc1\pard\qr\f0\fs18 
+\par `\cf1\ul\b Register\cf0\ulnone\b0 ` 
+\par \pard\cf2\b\f1\fs20 xchange\cf3\b0\f2  / \cf2\b\f1 xcode \cf0\b0\i   \f2       \cf4\b acon\cf2\i0\f1 
+\par \cf3\f2 
+\par Ersetzungen und Zeichenumcodierung \'fcber Tabellen \b0  (ab V27.2)\b  
+\par \b0 Beliebige Zeichenfolgen im aktuellen Datensatz k\'f6nnen durch beliebige andere Zeichenfolgen ersetzt werden. Dies entspricht der Arbeitsweise der Funktion "Globale Ersetzung" im Men\'fc "Global" und der schon fr\'fcher gesch\'e4tzten, gleichnamigen Funktion im DOS-Programm PRESTO. 
+\par Dar\'fcber hinaus kann man einzelne Zeichen durch andere Zeichen ersetzen lassen. Grundprinzip ist dabei, da\'df der momentane Text in der internen Variablen mit Hilfe einer Tabelle umcodiert wird - nicht der aktuelle Datensatz! Es gibt bei den \i classico\i0 -Programmen zwei Arten der tabellengesteuerten Umcodierung, die beim Export bzw. beim Import zum Einsatz kommen. Beide Arten k\'f6nnen ab V27.2 auch in a99 verwendet werden. 
+\par 
+\par Die Befehlsworte  \cf2\b\f1 xcode\cf3\b0\f2   und  \cf2\b\f1 xchange\cf3\b0\f2   sind gleichwertig, es kommt nur auf das an, was dahinter steht. Folgt darauf keine Angabe, wird der Inhalt der iV genommen.\cf2\b\f1 
+\par 
+\par \cf3\f2 A Suchen und Ersetzen im aktuellen Datensatz  \cf0\b0\i\f1   \f2       \cf4\b acon\cf3\i0 
+\par 
+\par \cf2\f1 xchange\cf0\b0\i\f2  \cf3\i0 _\i abc\i0 _\i xyz\i0 _\cf0\i  
+\par \tab  \cf3\i0 Im gesamten Satz "abc" durch "xyz" ersetzen\cf0\i 
+\par \cf2\b\i0\f1 xchange\cf0\b0\i\f2  *#nnn\cf3\i0 _\i abc\i0 _\i xyz\i0 _\cf0\i   
+\par \tab  \cf3\i0 Im Feld #nnn des aktuellen Satzes "abc" durch "xyz" ersetzen\cf0\i 
+\par \cf3\i0 Dies entspricht den gleichlautenden `\cf1\ul\b Sonderbefehlen\cf3\ulnone\b0 ` ohne das Wort \f1 xchange\f2  am Anfang. 
+\par Der Vorteil: man kann die Ersetzungsangabe vorher in die iV setzen und dann \f1 xchange\f2  ohne etwas dahinter schreiben. Dies erm\'f6glicht situationsabh\'e4ngige Ersetzungen im Gegensatz zu den Sonderbefehlen, die man nur fest in den FLEX hineinschreiben kann. \cf0\i 
+\par \cf3\i0 Statt '_' und '\f1 ,\f2 ' als Steuerzeichen kann man hier auch den Code 27 benutzen, der in einem Datensatz nicht vorkommen kann:
+\par \f1 var 27 #uef 27 #ugh 27
+\par xchange\cf0\i 
+\par \cf3\i0\f2 w\'fcrde im Datenatz nach dem Inhalt von  \f1 #uef\f2   suchen und diesen durch den Inhalt von  \f1 #ugh\f2  ersetzen. Es ist dann unerheblich, ob die Zeichen _ und , beide vorkommen!\cf2\b\f1 
+\par 
+\par \cf3\f2 B1. Exporttabellen  \b0 (vgl. auch Dokumentation zum Thema `\cf1\ul\b Umcodierung\cf3\ulnone\b0 `)\cf2\b\f1 
+\par 
+\par xcode\cf0\b0\f3  \i\f1 ab\i0\f4 
+\par \pard\li709\f2 Codiere den in der iV stehenden Text um, und zwar mit der Tabelle p bzw. q . Ber\'fccksichtigt werden dabei auch die sog. "Drucker-Ersatzdarstellungen" der Exportparameter ( so etwas wie   \f1 p x .mmm nnn kkk\f2 ). 
+\par Das ist auch ein Testbefehl f\'fcr Experten, \f5\fs18 zum Testen der diversen Umcodiertabellen!\f2\fs20  
+\par Folgende Werte kann man setzen: 
+\par 
+\par \i\f1 a \i0\f2 = \f1 i d x\f2    \tab Index-, Display-, Exportparameter, und darin: 
+\par \i Hinweis:\i0  F\'fcr  \cf4\i acon\cf0\i0   gelten nur i und x 
+\par \f4 
+\par \i\f1 b \i0\f2 = \f1 p q\f2   \tab p- bzw. q-Tabelle 
+\par Anschlie\'dfend steht in der iV der entsprechend umcodierte Text. 
+\par 
+\par Bei  \f1 xcode xp / xq\f2   gilt die gerade aktive Exportparameterdatei. Wenn mit \f1 `\cf1\ul\b switch dow i\cf0\ulnone\b0 `\i\f2   \i0 vorher umgeschaltet wurde, gilt die Tabelle der dadurch aktivierten Parameter.  Man kann dies nutzen, um speziell f\'fcr das Umcodieren eine Exportparameterdatei zu verwenden, die nichts weiter als p- und q-Befehle enth\'e4lt; diese schaltet man mit \f1 switch dow 2 / 1\f2  jeweils ein bzw. aus, wenn sie gebraucht wird. 
+\par 
+\par \pard\fi-710\li710\cf2\b\f1 xcode clower / cupper\cf0\b0\f2     (ab V34.4) \i      \cf4\b acon\cf0\b0\i0  
+\par \tab wandelt Gro\'dfbuchstaben in kleine bzw. umgekehrt. Dies wird nur auf Grundbuchstaben a-z angewendet, nicht auf Umlaute und Diakritika. Alle Sonderzeichen und auch UTF-8-Codes bleiben unver\'e4ndert. Will man eine in diesen Hinsichten erweiterte Variante, mu\'df man mit  \f1 xcode xp/xq\f2   arbeiten und die daf\'fcr geeigneten Exportparameter vorher laden.  
+\par \pard\cf2\b\f1 
+\par 
+\par \cf3\f2 B2.  \cf0 Spezialfall \cf4 Unicode   \cf0\b0\i\f1  \f2       \cf4\b acon\cf0\b0\i0     (ab V29)\f4 
+\par \cf2\b\f1 
+\par xcode u\cf0\b0\f2     codiert den iV-Inhalt mit Hilfe der `\cf1\ul\b u-Befehle\cf0\ulnone\b0 `, die in den Indexparametern stehen (d.h. Konvertierung UTF-8 -> Interncode) 
+\par \tab\i Tip\i0  f\'fcr das Einlesen von Unicode-Daten per FLEX, wenn die Daten in die interne Form umgewandelt werden sollen: 
+\par \pard\qj\tab\f1 set c0\f2    \tab an den Anfang der FLEX-Datei 
+\par \tab ... 
+\par         \tab\f1 xco u\f2    \tab vor jeden Befehl   \f1 ins #...\f2  
+\par \pard 
+\par \f5\fs18 
+\par \cf2\b\f1\fs20 xcode U\cf0\b0\i\f2 vor nach\i0     Interpretiert den iV-Inhalt als UTF-8 und wandelt die UTF-Codes in Entit\'e4tencodes der Form  \i vor\i0 E\i nach , \i0 wobei E die dezimale Unicode-Zahl ist. 
+\par \tab Default, wenn \i vor nach\i0  fehlen, ist  \b\f1 U\\u ?\b0\i  \f2 . \i0 Das ist die Darstellung f\'fcr RTF. F\'fcr HTML gibt man:  \b\f1 xcode U&# ;\b0  \f2 . 
+\par \tab Aus dem Euro-Code in UTF-8 wird dann  \f1\\u8364?\f2   bzw.  \f1 &#8364;\f2 
+\par 
+\par \f5\fs18 
+\par \cf3\b\f2\fs20 C. Importtabellen 
+\par \cf0\b0\f5\fs18 
+\par Ab V27.2 gibt es noch weitere M\'f6glichkeiten, Umcodierungen vorzunehmen. Diese sind besonders hilfreich beim Einlesen von `\cf1\ul\b Fremddaten\cf0\ulnone\b0 `, die ja nicht selten anders codiert sind, als man es braucht. Es wird keine Import-Parameterdatei herangezogen, aber deren Technik wird genau nachgebildet \f2\fs20 (siehe`\cf1\ul\b Handbuch Kap.11.2.2\cf0\ulnone\b0 `).\f0\fs18 
+\par 
+\par \cf2\b\f1\fs20 xcode y\cf0\b0\i   \i0\f2     \i [dahinter kommt weiter gar nichts!]\i0\f4 
+\par \pard\li709\f2 Zur Umcodierung wird eine Tabelle benutzt, die man vorher mit Hilfsbefehlen der Form  
+\par \b\f1 y \b0\i x\b\i0  ...\b0\f2  und  \b\f1 p \b0\i x\b\i0  ...\b0\f2    
+\par anlegen kann. 
+\par \pard 
+\par Die Hilfsbefehle \b gelten alle f\'fcr die gesamte Sitzung\b0 , m\'fcssen also nicht in jedem FLEX erneut gegeben werden. Sie sehen folgenderma\'dfen aus: 
+\par \f0\fs18 
+\par \cf2\b\f1\fs20 y \cf0\b0\i x u  \i0\f4 
+\par \pard\li709\f2 Ersetzt beim Befehl  \f1 xcode y\f2   jedes \i\f1 x\i0\f2  durch ein  \i\f1 u\i0\f2 . 
+\par \i Beispiel:\i0   \f1 y A a\f2   : ersetzt das gro\'dfe A durch das kleine 
+\par \pard\f0\fs18 
+\par \cf2\b\f1\fs20 y \cf0\b0\i a/z A  \i0\f4 
+\par \pard\li709\f2 Ersetzt beim Befehl  \f1 xcode y\f2   jedes \i\f1 a\i0\f2  durch ein  \i\f1 A\i0\f2 ., jedes \i\f1 b\i0\f2  durch ein \i\f1 B\i0\f2  usw. 
+\par Damit kann man ganze Zeichenfolgen mit einem Befehl definieren, falls es sich um aufeinanderfolgende Zeichen handelt. 
+\par 
+\par \pard\cf2\b\f1 y \cf0\b0\i a/z =A  \i0\f4 
+\par \pard\li709\f2 Ersetzt beim Befehl  \f1 xcode y\f2   jedes \i\f1 a\i0\f2  durch ein  \i\f1 A\i0\f2 ., jedes \i\f1 b\i0\f2   auch durch ein \i\f1 A\i0\f2  usw. 
+\par Damit kann man ganze Zeichenfolgen in denselben Code umwandeln. 
+\par 
+\par \pard\cf2\b\f1 y .\cf0\b0\i\f2 nnn mmm\f1   oder  \cf2\b\i0 y .\cf0\b0\i\f2 nnn/kkk mmm\f1    \i0\f2 [\i nnn\i0  usw. sind 3stellige Zahlen]\f4 
+\par \pard\li709\f2 Diese Variante ersetzt beim Befehl  \f1 xcode y\f2   jeden Dezimalcode \i nnn\i0  durch den Code \i mmm\i0 ., \i nnn\i0 +1 bis einschl. \i kkk  \i0 durch \i mmm\i0 +1 usw. 
+\par \i Sonderfall:\i0  256 an der Stelle von \i mmm\i0  bedeutet: Code \i nnn\i0  ignorieren. 
+\par \i Beispiel:\i0   \f1 y .13 32\f2    \i bzw.\i0   \f1 y .13 256\f2   : ersetzt Code 13 durch das Leerzeichen bzw. beseitigt ihn ersatzlos. 
+\par \pard\f0\fs18 
+\par \cf2\b\f1\fs20 p \cf0\b0\i x abc ABC  \i0\f4 
+\par \pard\li709\f2 Sog. \i Protyp-Ersetzungen\i0 . Damit kann man Doppelcodes ersetzen: wenn \i\f1 xa\i0\f2  auftritt, wird es durch \i\f1 A\i0\f2  ersetzt, \i\f1 xb\i0\f2  dagegen durch \i\f1 B\i0\f2  usw. Solche Codierungen treten z.B. in MARC-Daten auf, auch wenn diese per Z39 zum Zweck des Imports gewonnen werden. 
+\par \pard\f0\fs18 
+\par 
+\par \i\f5 Hinweise:\i0  
+\par 1. Eine andere Art der Umcodierung macht man mit den Befehlen \f1 `\cf1\ul\b asci/ansi\cf0\ulnone\b0 `\f5 . Dabei werden die umkehrbaren o-Tabellen benutzt, die in die Anzeige- oder Indexparameter eingebunden sind. Normalerweise ist dies die Tabelle \f1 o.apt\f5 . 
+\par 2. Wenn man oft mit dem \f1 write\f5 -Befehl Daten ausgibt, ist es bequemer, die automatisch Umcodierung mit \f1 `\cf1\ul\b exp wX\cf0\ulnone\b0 `\f5  einzuschalten.  Vorher die geeigneten Exportparameter laden! 
+\par 3. F\'fcr die Umwandlung von `\cf1\ul\b Unicode-Daten\cf0\ulnone\b0 ` in den Standard-DOS-Code gibt es eine weitere Methodik: sie arbeitet mit einer Tabelle, die man mit \f1 u\f5 -Befehlen in die Indexparameter einbaut. Eine komplette Liste findet man in der Datei  `\cf1\ul\b ucodes.apt\cf0\ulnone\b0 `. 
+\par 4. Ein Sonderfall ist das Umwandeln von Zeichencodes in Dezimalcodes. Das geht mit dem Sonderbefehl\f1  Jd \f5 in einem \f1 var\f5 -Befehl: 
+\par z.B. wird aus  \f1 var "abc" Jd\f5   der Inhalt "\f1 97 98 99\f5 "  (siehe `\cf1\ul\b cstring\cf0\ulnone\b0 `) 
+\par 
+\par \cf4\i Beispiel 1:\cf0  
+\par \i0 In den Exportparametern sind p-Umcodierbefehle f\'fcr ASCII -> UTF-8. Wenn nun ein ASCII-Text in \f1 #uxy\f5  steht und in UTF-8 umzuwandeln ist, macht man das so: 
+\par \f1 var #uxy 
+\par xco xp 
+\par ins #uxy 
+\par \f5 
+\par \cf4\i Beispiel 2:\cf0      `\cf1\ul\b\i0 Ausprobieren\cf0\ulnone\b0\i ` 
+\par \i0 Es soll Text in Versalien umgesetzt werden, also alle Kleinbuchstaben in gro\'dfe verwandelt. 
+\par Dazu braucht man nur einen y-Befehl, der aber eine ganze Umwandlungstabelle generiert: 
+\par \f1 y a/z A\f5      
+\par   und dann sp\'e4ter (irgendwann w\'e4hrend derselben Sitzung) 
+\par \f1 xcopy y\f5 
+\par   Wenn in der iV dann gerade  \f1 abc xyz\f5   steht, wird daraus  \f1 ABC XYZ\f5  
+\par 
+\par \cf4\i Beispiel 3:\cf0  
+\par \i0 Es soll Text wahlweise in Versalien oder in Minuskeln umgesetzt werden, also alle Kleinbuchstaben in gro\'dfe verwandelt bzw. umgekehrt. Dazu braucht man zwei Umwandlungstabellen, eingebaut in eine Export-Parameterdatei. Diese k\'f6nnte \f1 grkl.apr\f5  hei\'dfen und so aussehen: 
+\par \f1 p a/z A    // wandelt a in A, b in B usw. bis Z 
+\par q A/Z a    // umgekehrt 
+\par p \'e4 \'c4 
+\par q \'c4 \'e4 
+\par ...  \i usw.\i0 
+\par p \'df SS 
+\par ... 
+\par \f5 Die FLEX-Befehle, um diese Parameter zu nutzen, k\'f6nnten so aussehen: 
+\par   // Vorbereitung: Parameter grkl.apr als Exportparameter 2 laden 
+\par \f1 set exp 2 
+\par exp p grkl 
+\par set exp 1 
+\par \f5 ... 
+\par   // Anwendung (beliebig oft, nachdem Vorbereitung einmal in der Sitzung erledigt 
+\par \f1 var ...    \f5 // iV mit Inhalt f\'fcllen, der umcodiert werden soll 
+\par \f1 set exp 2     \f5 // Parameter-Set 2 einschalten\f1 
+\par xcode x p     \f5 // p-Befehle anwenden: klein->gro\'df, bzw.  xcode x q   f\'fcr gro\'df-<klein 
+\par \f1 set exp 1     \f5 // Parameter-Set 1 wieder einschalten 
+\par //  Verwendung des umcodierten Inhalts 
+\par 
+\par 
+\par 
+\par 
+\par ?Register=h xa 
+\par ?asci/ansi=h xansi 
+\par ?exp wX=h xexport=export wx 
+\par ?Fremddaten=h fleximp 
+\par ?Handbuch Kap.11.2.2=h ac11-1=11.2.2  Globale 
+\par ?Unicode-Daten=h unicode 
+\par ?ucodes.apt=h ucodes.apt 
+\par ?switch dow i=h xset=switch dow 
+\par ?Sonderbefehlen=h xsonder 
+\par ?u-Befehle=h unicode=u-Liste 
+\par ?cstring=h xcstring=Jd 
+\par ?Umcodierung=h codier 
+\par ?Ausprobieren=x y a/z A\\var "abc xyz"\\ins $a\\xco y\\ins $b\\var "Aus  " $a " wird " $b\\mes 
+\par 
+\par }
+ 

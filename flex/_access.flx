@@ -1,0 +1,66 @@
+  _ACCESS.FLX : Datenbanksatz auswerten, auf Db zugreifen
+  2001-02-05
+
+  In #u8e oder #8e steht die Adresse einer Datenbank! Form: DbDir\DbName
+
+  INI-Name zusammensetzen: .INI anhaengen, in #uwI speichern
+if #u8e var #u8e ."ini"
+if not #u8e var #8e ".ini"
+ins #uwI
+fsize
+  Gibt es die Datei? Nein -> newini
+if no jump newini
+  Ja, dann start
+jump start
+
+  Noch keine INI da, neue anlegen:
+:newini
+var #uwI
+open x 
+   Datei kann nicht zum Schreiben geoeffnet werden
+if no jump error
+
+wri "[General]" n
+wri "Konfiguration=" #30(b"cfg") n
+wri "DbName=" #8e(T"\\") n
+wri "access=5" n
+close x
+
+var "Es wurde eine neue INI-Datei namens " #8e ".INI  angelegt" n
+var +"Diese k”nnen Sie bei Bedarf verbessern (siehe A99.INI)"
+ansi
+mes
+
+:start
+  Startbefehl zusammensetzen
+var n "Datenbank " #8e(T"\\") " wird gestartet, Sekunde noch..."
+sho +IV 
+
+get env comspec
+ins #uwC
+
+var m
+ins #uwM
+var P #uwM(e" " F"b") " " V
+
+var #uwC " /c " P #uwM(e" " F"b") " " #uwI
+CAll
+end
+:error
+var Auf dem Verzeichnis besteht kein Schreibrecht!" n
+var +"Statt dessen alcarta starten (nur lesende Benutzung)?"
+yes
+if no end
+if canc end
+open x "org.ini"
+wri "[General]" n
+wri "Konfiguration=" #30(b"cfg") n
+wri "DbName=" #8e(T"\\") n
+wri "DbDir=" #8e(t"\\") n
+
+close x
+
+get env comspec
+ins #uwC
+var #uwC " /c " P "alcarta " #uwI
+CAll

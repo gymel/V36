@@ -1,0 +1,154 @@
+  MEMO.FLX : Finde aktuelle Termine
+  2003-06-10   Wird periodisch ausgefuehrt oder auch ad hoc
+               (Aktivierung in memo.rtf)
+
+  Zuerst aktuelle Satznummer retten
+var Q
+ins #uvQ
+var i
+ins #uvI
+
+
+  Die erste Zeile aus Reg. 10 holen, die mit Md- anfaengt
+var "1 |: Md-"
+qrix
+ins #uvM
+  Kommt wirklich Md- vor? sonst Ende - keine Terminzeile vorh.
+if not %Md-% jump nix
+  hinter Md- steht Datum/Uhrzeit, wird in #uvM gespeichert
+var #uvM(b"Md-")
+ins #uvM
+
+  aktuelles "Datum/Zeit" in #uvD kopieren
+  (fuer den Vergleich mit #uvM muessen die Anf.zeichen sein!, sonst nur numerischer Vergleich)
+var 34 #dts 34
+ins #uvD
+
+var #uvM
+  Termindatum #uvM mit aktuellem vergleichen. Wegen "..." Stringvergleich!
+  wenn kleiner: Termin ist verstrichen -> found
+
+if <#uvD jump found
+jump nix
+
+  Ein verstrichener Termin wurde gefunden
+:found
+ins #uwT
+
+  Timer abschalten, waehrend Message gezeigt wird!
+slice 0=0
+  und Fenster aktivieren, falls im Hintergrund. Frage stellen
+if not #uvJ activate
+var "!Verstrichener Termin:" n #uwT(e"-") n n #uwT(b"-") n n "Termin verschieben/l”schen?" n "Nein: bearbeiten"
+ansi
+yes
+if not yes jump ein
+
+  Yes:
+  den MemoSatz holen
+var "|: Md-" #uvM "?"
+find
+if l1 jump ende
+close res
+var "Ganz löschen?" n "Nein: aufschieben oder nur als Notiz belassen"
+yesno
+if can jump nix
+if yes jump loe
+  no: Aufschub gewuenscht
+var "+"
+ask +Wieviele Tage aufschieben? (0 : nur als Notiz belassen)=1
+if ="+0" jump dv
+  Anzahl Tage auf aktuelles Datum addieren und in #9ad
+Day
+ins #9ad
+  dann Satz speichern
+put
+sho rec
+jump weiter
+  #9ad wird in #9av verschoben, damit unwirksam als Termin
+:dv
+var #9ad
+ins #9av
+var ""
+ins #9ad
+put
+sho rec
+jump weiter
+
+:loe
+erase
+jump ende
+
+:ein
+  Timer wieder einschalten
+if can jump weiter
+var "|: Md-" #uwT(0,14) "?"
+find
+if l1 jump weiter
+close res
+disp
+sho rec
+form Memo
+if no jump ende
+if can jump ende
+put
+sho rec
+
+:weiter
+  delete memo.txt
+   Wenn #uvJ besetzt ist, Timer nicht wieder einschalten
+if #uvZ var "60000=iX memo"
+if not #uvJ var "60000=iX memo"
+if not #uvJ slice
+
+:ende
+
+  #uvJ loeschen
+#uvJ
+  Ausgangssatz wieder holen
+var "#" #uvI
+find
+jump schluss
+
+:nix
+  Timer abschalten, waehrend Message gezeigt wird!
+slice 0=0
+var "Zur Zeit " #dts(b"/") " kein verstrichener Termin"
+if #uvJ mes
+jump aufr
+
+:schluss
+if #uvJ mes
+:aufr
+if #uvZ var "60000=iX memo"
+if #uvZ slice
+var #uvQ
+ if "2" act 2
+ if "4" act 4
+if "3" act 3
+if "1" act 1
+
+#uvJ
+#uwT
+#uvI
+ #uvD
+ #uvM
+  #uvQ
+end
+
+  Variablen:
+  in memo.rtf verwendet:
+       nur eine von beiden jeweils besetzt!
+  #uvA    Termincheck abschalten
+  #uvE    einschalten
+  #uvZ   1 oder unbesetzt. Wenn 1, dann Timer einschalten
+
+       Diese werden nur hier im FLEX gebraucht:
+  #uvJ   nur besetzt, wenn Sofort-Check
+
+  #uwT   Termineintrag (stammt aus Kurzanzeige -> memo.txt)
+  #uvI   interne Satznummer des vorher geladenen Satzes
+  #uvD   aktuelles Datum/Uhrzeit fuer Vergleich mit Termindatum
+  #uvM   im Index gefundenes Termindatum
+
+

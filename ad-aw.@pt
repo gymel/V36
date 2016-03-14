@@ -1,0 +1,163 @@
+  AD-AW.APT : allegro-DOS -> allegro-Win (sog. OstWest-Code)
+  2008-01-22  (frueher ASCIANSI.APT und D.APT; aehnlich o.apt)
+  2013: analog o.apt um die DOS-Grafikcodes erweitert
+  Verwendung z.B. fuer Konvertierung A.CFG -> N.CFG und f. RTF-Dateien,
+             die a99/alcarta anzeigen soll.
+  Empfehlung: Fuer RTF-Output lieber  ad-rtu.apt verwenden.
+
+  Falls fuer Windows-RTF-Anzeige, dann ergaenzen (am Ende der .APR):
+  p .020 255      Absatzzeichen
+  p .35 8         falls Zeichen # Texel-Steuerzeichen sein soll
+  p @ 1           Entstopp.Zeichen - leider auch in #8e o.a. wg. e-Mail
+  p .152 "\'ff"   y mit trema
+  p .170 1        Nichtsortierzeichen
+  p .226 "\'98"   "[Gamma]"
+  ACHTUNG: Die sog. BOX DRAWINGS des DOS-Zeichensatzes (179...) haben in  
+           Windows keine Entsprechung! Sie werden durch 1 ersetzt (entfallen).
+           Wer solche Zeichen verwendet hat, muss hier abwandeln.
+
+  ASCI ANSI  Bedeutung          Ersatz     Unicode   hex
+p .014 130   Notenzeichen
+p .015 131   Sonne
+p .016 187   Pfeil nach rechts   >>
+p .017 132   Dreieck nach links
+p .018 137   o mit Doppelakut
+p .019 134   u mit Doppelakut
+p .020 182   Absatzzeichen
+p .021 167   Paragraph
+p .022 135   u mit ogonek
+p .023 133   g mit breve
+p .024 189   Pfeil hoch
+p .025 139   Pfeil runter
+p .028 177   Verweisungsstrich      
+p .030 165   Dreieck                 
+p .031 178   Subfield Code
+p .127 202   e mit hacek                   1  27     011B
+p .128 199   C mit cedille                 0 199       C7
+p .129 252   ue                            0 252       FC
+p .130 233  'e                             0 233       E9
+p .131 226  ^a                             0 226       E2
+p .132 228   ae                            0 228       E4
+p .133 224  `a                             0 225       E1
+p .134 229   a mit Ringel                  0 229       E5
+p .135 231   c mit cedille                 0 231       E7
+p .136 234  ^e                             0 234       EA
+p .137 235   e mit Trema                   0 235       EB
+p .138 232  `e                             0 232       E8
+p .139 239   i mit Trema                   0 239       EF
+p .140 238  ^i                             0 238       EE
+p .141 236  `i                             0 236       EC
+p .142 196   Ae                            0 196       C4
+p .143 197   A mit Ringel                  0 197       C5
+p .144 201  'E                             0 201       C9
+p .145 230   ae Ligatur                    0 230       E6
+p .146 198   AE Ligatur                    0 198       C6
+p .147 244   ^o                            0 244       F4
+p .148 246   oe                            0 246       F6
+p .149 242  `o                             0 242       F2
+p .150 251  ^u                             0 251       FB
+p .151 249  `u                             0 249       F9
+p .152 .255   y mit trema              0 255       FF
+p .153 214   Oe                            0 214       D6
+p .154 220   Ue                            0 220       DC
+p .155 162  't                             1 101     0165
+p .156 163   Brit. Pfund                   0 163       A3
+p .157 204   s mit Cedille                 1  95     015F
+p .158 195   u mit Ringel                  1 111     016F
+p .159 221   U mit Ringel                  1 110     016E
+p .160 225  'a                             0 225       E1
+p .161 237  'i                             0 237       ED
+p .162 243  'o                             0 243       F3
+p .163 250  'u                             0 250       FA
+p .164 241  ~n                             0 241       F1
+p .165 209  ~N                             0 209       D1
+p .166 208   C mit hacek                   1  12     010C
+p .167 240   c mit hacek                   1  13     010D
+p .168 194   r mit hacek                   1  89     0159
+p .169 174   R mit hacek                   1  88     0158
+p .170 172   Nichtsortierzeichen             172       AC
+p .171 138   S mit hacek                   1  96     0160
+p .172 154   s mit hacek                   1  97     0161
+p .173 253  'y                               253       FD
+p .174 219   Z mit hacek                   1 125     017D
+p .175 190   z mit hacek                   1 126     017E
+p .176 185   tuerk. i                      1  49     0131
+p .177 222   grosses Thorn                   222       DE
+p .178 254   kleines Thorn                   254       FE
+p .179 "\u9474?"     BOX DRAWINGS LIGHT VERTICAL     226 148 130 
+p .180 "\u9508?"     BOX DRAWINGS LIGHT VERTICAL AND LEFT     226 148 164 
+p .181 180   ' akut ???                      180       B4
+p .182 145   ` gravis ???                  3   0     0300
+p .183 136   ^ circumflex ???                 94       5E
+p .184 149   Punkt uebergesetzt            3   7     0307
+p .185 "\u9571?"     BOX DRAWINGS DOUBLE VERTICAL AND LEFT     226 149 163 
+p .186 "\u9553?"     BOX DRAWINGS DOUBLE VERTICAL     226 149 145 
+p .187 "\u9559?"     BOX DRAWINGS DOUBLE DOWN AND LEFT     226 149 151 
+p .188 "\u9565?"     BOX DRAWINGS DOUBLE UP AND LEFT     226 149 157 
+p .189 168   Trema/diaeresis  ???             168       A8   -> 0308 !
+p .190 166   Halbkr.ueberg/breve           3   6     0306
+p .191 "\u9488?"     BOX DRAWINGS LIGHT DOWN AND LEFT     226 148 144 
+p .192 "\u9492?"     BOX DRAWINGS LIGHT UP AND RIGHT     226 148 148 
+p .193 "\u9524?"     BOX DRAWINGS LIGHT UP AND HORIZONTAL     226 148 180 
+p .194 "\u9516?"     BOX DRAWINGS LIGHT DOWN AND HORIZONTAL     226 148 172   
+p .195 "\u9500?"     BOX DRAWINGS LIGHT VERTICAL AND RIGHT     226 148 156   
+p .196 "\u9472?"     BOX DRAWINGS LIGHT HORIZONTAL     226 148 128   
+p .197 "\u9532?"     BOX DRAWINGS LIGHT VERTICAL AND HORIZONTAL     226 148 188   
+p .198 227   Doppelakut                    3  11     030B
+p .199 179   Hacek/Caron                   3  12     030C
+p .200 "\u9562?"     BOX DRAWINGS DOUBLE UP AND RIGHT     226 149 154 
+p .201 "\u9556?"     BOX DRAWINGS DOUBLE DOWN AND RIGHT     226 149 148 
+p .202 "\u9577?"     BOX DRAWINGS DOUBLE UP AND HORIZONTAL     226 149 169 
+p .203 "\u9574?"     BOX DRAWINGS DOUBLE DOWN AND HORIZONTAL     226 149 166 
+p .204 "\u9568?"     BOX DRAWINGS DOUBLE VERTICAL AND RIGHT     226 149 160 
+p .205 "\u9552?"     BOX DRAWINGS DOUBLE HORIZONTAL     226 149 144 
+p .206 "\u9580?"     BOX DRAWINGS DOUBLE VERTICAL AND HORIZONTAL     226 149 172 
+p .207 186   Ringel                        3  10     030A
+p .208 175   Ueberstrich/Macron              175     00AF  ->   0304 !
+p .209 215   Halbkr.unter (breve)          3  46     032E
+p .210 171   Ogonek                        3  40     0328
+p .211 184   Cedille                       3  39     0327
+p .212 191   untergesetzter Punkt             35     0323
+p .213 146   MODIFIER LETTER TURNED COMMA (Ain?)     02BB 
+p .214 169   Copyright                     0 169       A9
+p .215 216  /O daenisch  (97 neu)          0 216       D8
+p .216 164   Waehr.Symb.                   0 164       A4
+p .217 "\u9496?"     BOX DRAWINGS LIGHT UP AND LEFT     226 148 152 
+p .218 "\u9484?"     BOX DRAWINGS LIGHT DOWN AND RIGHT     226 148 140   
+p .219 161   diakrit /                     3  56     0338
+p .220 129   Pfeil nach rechts            33 146     2192
+p .221 128   Euro-Symbol (neu 97)         32 160     20A0
+p .222 173   diakr. Mittelstrich           3  54     0336
+p .223 247   diakr. Unterstrich            3  49     0331
+p .224 151   "[alpha]"                     3 177     03B1
+p .225 223   scharfes s                    0 223       DF
+p .226 152   "[Gamma]"                     3 147     0393
+p .227 153   "pi"                          3 192     03C0
+p .228 188   a mit breve                   3 163     03A3
+p .229 155   "[sigma]"                     3 195     03C3
+p .230 181   "[mue]" (mikro-Zeichen)       0 181       B5
+p .231 177   "[gamma]"                     3 179     03B3
+p .232 150   diakr. Tilde                  3   3     0303
+p .233 157   I mit Punkt                   1  48     0130
+p .234 144   t mit cedille                 1  99     0163
+p .235 147   "[delta]"                     3 180     03B4
+p .236 148   "[unendlich]"                34  30     221E
+p .237 248  /o daenisch                   0 248       F8
+p .238 170   a mit ogonek                  1   5     0105
+p .239 200   e mit ogonek                  1  25     0119
+p .240 206  'C                             1   6     0106
+p .241 205  'c                             1   7     0107
+p .242 217  /L                             1  65     0141
+p .243 218  /l                             1  66     0142
+p .244 213  'N                             1  67     0143
+p .245 245  'n                             1  68     0144
+p .246 211  'O                             0 211       D3
+p .247 192  'S                             1  90     015A
+p .248 176   Gradzeichen                   1 176     00B0
+p .249 193  's                             1  91     015B
+p .250 183   Punkt in der Mitte            0 183       B7
+p .251 212  'Z                             1 121     0179
+p .252 210  'z                             1 122     017A
+p .253 203   Z mit Punkt oben            a 1 123     017B
+p .254 207   z mit Punkt oben            a 1 124     017C
+  p .255 255  [unbenutzbar]

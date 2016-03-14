@@ -1,0 +1,283 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss\fprq2\fcharset0 Verdana;}{\f1\fmodern\fprq1\fcharset0 Courier New;}{\f2\fmodern\fprq1\fcharset0 allegro Lucida Console;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;\red0\green128\blue0;}
+\viewkind4\uc1\pard\qc\cf1\b\f0\fs32 
+\par Nummernvergabe per FLEX\cf0 
+\par \pard\b0\fs20 
+\par Es ist keine leichte Sache, fortlaufende Nummern automatisch zu erzeugen, z.B. Zugangsnummern, Bestellnummern, Signaturen oder andere Identnummern. Das ging bis V25.8 nur auf zwei Wegen: 
+\par 
+\par \pard\fi-568\li568\b Datensatz-Identnummern:\b0  Befehle  \b\f1 ci / cg\b0\f0   in der CFG (Handbuch Anh.A.1.3): Damit erzeugt man genau eine Nummer pro Datensatz, und zwar beim Abspeichern, wenn das in \b\f1 cg\b0\f0  angegebene Feld (z.B. #00, wenn cg00 gesetzt ist) zu dem Zeitpunkt nichts enth\'e4lt oder eine Angabe, in der ein Fragezeichen vorkommt - an dessen Stelle tritt dann die Nummer, und ihre Gestalt wird bestimmt durch das, was im Befehl \b\f1 ci\b0\f0  steht. Recht einfach eigentlich, aber eben begrenzt auf genau eine Identnummer pro Satz, also nicht geeignet f\'fcr zus\'e4tzliche Nummern wie Bestellnummern, Zugangsnummern, Signaturen etc. 
+\par \b 
+\par Andere laufende Nummern:\b0  PV-Routine in den Indexparametern (Handbuch 10.2.8, aber nur im Abschnitt f\'fcr den Modus N). Dieses nutzereigene Unterprogramm wird ebenfalls beim Speichern eines Satzes ausgef\'fchrt und kann auf beliebige, im Datensatz vorliegende Bedingungen reagieren. Eine schwierige Methode, denn man mu\'df die Exportsprache recht gut beherrschen. 
+\par \pard 
+\par Beides funktioniert zwar in gleicher Weise auch im DOS-Programm PRESTO, es kam aber die Idee auf, f\'fcr das Windows-System eine komfortablere Methode der Nummernvergabe zu entwickeln, die man bei Bedarf in FLEX-Routinen einsetzen kann.  
+\par Daraus entstand ein universelles FLEX-Unterprogramm \b\f1 nextnum\b0\f0 , das weiter unten vorgestellt wird. Es liefert die n\'e4chste Nummer, egal f\'fcr welchen Zweck. 
+\par 
+\par \i Hinweis:\i0  Im `\cf2\ul\b Anhang 2\cf0\ulnone\b0 ` wird angedeutet, wie man laufende Nummern auch \i nachtr\'e4glich\i0  vergeben kann, und zwar f\'fcr alle S\'e4tze einer Datenbank oder f\'fcr eine Ergebnismenge. 
+\par 
+\par Ein paar Dinge mu\'df man freilich wissen, um es anzuwenden, und darum geht es jetzt: 
+\par 
+\par \b Eindeutigkeit!\b0 
+\par Eine grunds\'e4tzliche Schwierigkeit gilt es zu bedenken. Jede automatische Nummernvergabe hat daf\'fcr zu sorgen, da\'df keine Nummer doppelt vergeben wird. Wenn zwei verschiedene Datens\'e4tze (von zwei Arbeitspl\'e4tzen aus) gleichzeitig gespeichert werden, entsteht dieses Problem, wie man leicht einsieht: irgendwo mu\'df ja die zuletzt vergebene Nummer stehen, damit das Programm sich daraus die n\'e4chste errechnen kann. Und wenn zwei PCs gleichzeitig feststellen: "Aha, die letzte Nummer war 999!", dann w\'fcrden beide die Nummer 1000 vergeben. Dies gilt es zu verhindern. 
+\par \fs18 [\i Anmerkung f\'fcr Kundige:\i0  a99 ist kein Client-Programm. Das bedeutet: die Speichervorg\'e4nge werden nicht von einem Serverprogramm f\'fcr alle angeschlossenen Clients zentral erledigt, sondern jedes laufende a99 macht alles selber. Deshalb kann die letzte Nummer nicht als Variable im Programm stehen, sie mu\'df in einer Datei stehen.] 
+\par \fs20 
+\par \b Wo findet man die letzte vergebene Nummer?\b0  Sie \i k\'f6nnte\i0  grunds\'e4tzlich an drei Stellen stehen: 
+\par \pard\fi-284\li284\b a) in der Indexdatei:\b0  Ganz klar, denn man wird ja mit den Nummern zugreifen wollen, also m\'fcssen sie indexiert werden, also kann man im Index nachschauen, welche die letzte war. Das Eintragen der neuen Nummer in den Index mu\'df dann aber unmittelbar beim Speichern eines Satzes passieren, nicht irgendwann sp\'e4ter. Diese Bedingung ist erf\'fcllt. 
+\par \b b) in einer anderen Datei:\b0  Das einfachste w\'e4re eine ganz kleine Datei nur f\'fcr diesen einen Zweck, in der nichts anderes st\'fcnde als die letzte Nummer. Diese Datei w\'fcrde man einfach jedesmal mit der um 1 erh\'f6hten Nummer \'fcberschreiben. Das w\'e4re recht simpel, w\'fcrde aber Schreibrecht aller Beteiligten an der betreffenden Datei voraussetzen. Dieses m\'fc\'dfte man separat erteilen, w\'e4hrend es f\'fcr die Indexdatei sowieso schon gegeben sein mu\'df. Und: verschwindet die Datei oder wird sie verf\'e4lscht, versagt die Nummernvergabe. 
+\par \b c) in einem eigenen Datensatz\b0 : So war es bei der alten Methode des ORDER-Systems. Ein Datensatz vom Typ "Z: Zugangsnummern-Generator", "B: Bestellnummerngenerator" oder "S: Signaturgenerator" enthielt die zuletzt vergebene Nummer des betreffenden Typs. Diese Methode ist anf\'e4llig gegen willk\'fcrliche \'c4nderungen, denn der Generatorsatz k\'f6nnte manipuliert oder gar gel\'f6scht werden; au\'dferdem ist dann jede Speicherung eines neuen Satzes verbunden mit dem Laden und erneuten Speichern des Generatorsatzes - ein nicht ganz geringer Aufwand. 
+\par \pard 
+\par Wegen der genannten Probleme von b) und c) wurde f\'fcr das FLEX-Unterprogramm die Methode a) gew\'e4hlt. Aber: \'e4ndert man die Indexierung, mu\'df man auch an die Nummerngenerierung denken, was bei b) und c) nicht n\'f6tig w\'e4re. 
+\par 
+\par Geht man \'fcber den Index, um die letzte Nummer zu finden, m\'fcssen zwei Dinge bekannt sein: 
+\par \pard\fi-284\li284 1. \b In welchem Register\b0  stehen die Nummern? Grunds\'e4tzlich sollte daf\'fcr jedes der 11 Register w\'e4hlbar sein, und es sollte nicht f\'fcr jeden Nummerntyp dasselbe Register sein m\'fcssen. 
+\par 2. \b Welche Zeichen\b0  stehen im Register \b vor\b0  der Nummer? Jedes beliebige "Pr\'e4fix" sollte m\'f6glich sein. D.h. im Register soll  xyz-123  stehen k\'f6nnen oder AB00123 oder auch ganz andere denkbare Formen, statt einfach nur 123. 
+\par \pard 
+\par \b Nicht m\'f6glichst kurz, aber b\'fcndig!\b0 
+\par Zu bedenken ist ein weiteres Problem: Im Index m\'fcssen alle Nummern desselben Typs, also z.B. alle Zugangs- oder Bestellnummern, dieselbe L\'e4nge haben. Die L\'e4nge kann man frei w\'e4hlen, aber die Nummern m\'fcssen dann rechtsb\'fcndig auf diese Stellenzahl ausger\'fcckt sein. F\'fchrende Nullen sind nicht zwingend, auch Leerzeichen sind m\'f6glich, dann aber einheitlich. Wenn diese Bedingung nicht eingehalten wird, klappt die Ordnung im Register nicht:  Nummer 10 k\'e4me z.B. vor Nummer 2, und so k\'f6nnte man die h\'f6chste vergebene Nummer nicht per Programm feststellen. 
+\par 
+\par Jetzt wissen wir, was man alles beachten mu\'df. Daraus ergibt sich, wie man vorgeht, wenn eine neue Art von Nummer eingef\'fchrt werden soll. Mehrere Dinge sind daf\'fcr zu \'fcberlegen und zu entscheiden: 
+\par 
+\par \b 1. Im Datensatz\b0 
+\par \pard\li284 In welchem Feld oder Unterfeld soll die Nummer im Datensatz stehen und bei welchen Satztypen soll sie vergeben werden? Soll die Nummer schon im Datensatz eine bestimmte Stellenzahl haben (rechtsb\'fcndig mit f\'fchrenden Nullen), und soll schon im Datensatz ein bestimmtes Pr\'e4fix davorstehen (xyz- oder AB oder 2007/ oder 07- oder was auch immer)? 
+\par In dieser Frage besteht v\'f6llige Freiheit. Bestellnummern geh\'f6ren nur in Bestells\'e4tze, und dort werden sie ein ganz anderes Feld belegen als eine Signatur in einem Exemplar- oder Titelsatz. Zugangsnummern werden oft im Datensatz z.B. eine Jahrszahl als Pr\'e4fix haben sollen, Bestellnummern vielleicht nicht, aber eine feste Stellenzahl mit f\'fchrenden Nullen. Jeder Nummerntyp kann seine eigenen Eigenschaften im Satz und andere Eigenschaften im Index haben. Damit zusammen h\'e4ngt die Anforderung 2: 
+\par \pard 
+\par \b 2. Im Index\b0 
+\par \pard\li284 Wie soll die Nummer indexiert sein? Auch dies ist weitgehend freigestellt: Welches Register man w\'e4hlt, welches Pr\'e4fix vor die Nummer soll (das kann ein anderes sein als im Datensatz, oder in Klein- statt Gro\'dfbuchstaben), mit welcher Stellenzahl die eigentliche Zahl (rechtsb\'fcndig!) darzustellen ist, das alles unterliegt keiner Einschr\'e4nkung. Man mu\'df es aber parametrieren, also in die Indexparameter einbauen, das ist das Hauptproblem. Wir geben deshalb unten im Anhang ein `\cf2\ul\b Rezept\cf0\ulnone\b0 ` an, wie man dies auf einfachste Weise bewerkstelligt. 
+\par \i Wichtig, deshalb nochmal:\i0  Nur im Index kommt es auf Stellenzahl und Pr\'e4fix an. Im Datensatz darf die nackte Nummer ohne sonstige Zutaten stehen, oder mit anderen Zutaten, denn die Indexparameter k\'f6nnen und m\'fcssen alles richten, was im Index gebraucht wird. 
+\par \pard 
+\par \b 3. Definition der Nummerntypen\b0 
+\par \pard\li284 Wenn man mehrere unterschiedliche Nummerntypen zu vergeben gedenkt, mu\'df irgendwo stehen, wie sie aussehen. Das Unterprogramm braucht ja die Information, wo es nachschauen soll nach der zuletzt vergebenen Nummer. Die dazu n\'f6tigen Angaben sind Register und Pr\'e4fix. Zum Speichern dieser Angaben dient ein Nummern-Definitionssatz, das ist ein Systemsatz des Typs B, S oder Z, wie schon beim alten ORDER-System. 
+\par Ein solcher Satz sieht so aus (er besteht nur aus einem Feld #9A ): 
+\par \f1\fs24 #9A Ztyp\f2\'b2\f1 N\i name\i0\f2\'b2\f1 R\i register\i0\f2\'b2\f1 P\i pr\'e4fix\i0\f0\fs20 
+\par also z.B. 
+\par \f1\fs24 #9A ZZGN\f2\'b2\f1 NZugangsnummer\f2\'b2\f1 RNUM\f2\'b2\f1 P2007-\f0\fs20 
+\par oder 
+\par \f1\fs24 #9A ZZGN\f2\'b2\f1 NZugangsnummer\f2\'b2\f1 R|9\f2\'b2\f1 PX2007-\f0\fs20 
+\par (wenn \f1\fs24 NUM\f0\fs20  die Abteilung \f1\fs24 X\f0\fs20  im Register 9 ist, sind diese beiden Formen gleichwertig) 
+\par Das Pr\'e4fix im Unterfeld \f2\fs24\'b2\f1 P\f0\fs20  kann somit jederzeit leicht ver\'e4ndert werden. 
+\par Optional kann hinzukommen: \f2\fs24\'b2\f1 F\f0\fs20  als Pr\'e4fix f\'fcr das Feld im Datensatz 
+\par Existiert noch kein Eintrag mit dem angegebenen Pr\'e4fix, ist das Ergebnis der Wert 1. 
+\par Solche Nummern-Definitionss\'e4tze werden in den Standard-Indexparametern cat.api im Register 11 indexiert unter  SYSZ, dieses Beispiel w\'fcrde also unter SYSZZGN erscheinen. 
+\par \pard\b 
+\par \pard\li284 Einfachere Alternative:\b0  Im eigenen FLEX vor dem Aufruf des Unterprogramms die Nutzervariablen  #uoR und #uoP besetzen, und zwar so: 
+\par \f2\fs24 #uoR \i register\i0\f0\fs20   \tab z.B.  #uoR|9  oder  #uoR|:  oder  #uoRPPN (d.h. Reg.Nummer oder symbolischer Name m\'f6glich)\f2\fs24 
+\par #uoP \i pr\'e4fix  \i0\f0\fs20\tab z.B.  #uoPZ  oder  #uoPe  oder  #uoPab-   (Wenn symbol. Reg.Name, dann hier nur ein nicht dazu geh\'f6riges Pr\'e4fix) 
+\par \f2\fs24 #uoF \i feldpr\'e4fix  \i0\f0\fs20\tab z.B.  #uoF2007/  oder  #uoFZn-  Pr\'e4fix im Datensatzfeld [optional] 
+\par Dann wird das Unterprogramm diese Angaben nehmen, statt nach einem Definitionssatz zu suchen. 
+\par Zwischen Pr\'e4fix und Nummer darf im Index auch ein Leerzeichen stehen. Das macht nichts: in #uoP setzt man aber ein # hinter das Pr\'e4fix. 
+\par \b\i Achtung:\b0\i0  Soll am Ende des \i Feld\i0 pr\'e4fixes ein Leerzeichen stehen, mu\'df man es mit einem # andeuten, sonst wird im Datensatz die Nummer unmittelbar hinter das Feldpr\'e4fix gesetzt. 
+\par \pard 
+\par \b 4. Durchf\'fchrung der Vergabe 
+\par \pard\li284\b0 Das eigentliche Vergeben einer neuen Nummer soll nun also in einem FLEX passieren. Dieser FLEX mu\'df dann so eingerichtet werden, da\'df er nicht nur die Nummer vergibt, sondern unmittelbar danach auch den Satz speichert. Dazwischen darf nicht im Netzwerk eine andere Speicheraktion eines anderen Nutzers m\'f6glich sein. 
+\par \i L\'f6sung:\i0  Einbau des FLEX-Unterprogramms in den eigenen FLEX  \f1 onput.flx\f0 . Dieser wird automatisch gestartet, wenn man [Speichern] dr\'fcckt. Bedingung ist, da\'df in der INI-Datei steht: 
+\par \f1 SaveAsk=2\f0     [Beschreibung dazu in der Datei  a99.ini ] 
+\par Soll die Vergabe nur in besonderen F\'e4llen passieren, die man mit eigenen FLEXen kontrolliert: Einbau des Unterprogramms in die eigenen FLEXe, evtl. mit eigenen Modifikationen. In so einem FLEX mu\'df dann ebenfalls gleich nach der Nummernvergabe der Befehl  \f1 put\f0   stehen. 
+\par \pard 
+\par Das Unterprogramm sieht man unten zwischen den mit ****** markierten Zeilen. Man kopiert es in einen eigenen FLEX oder bindet es ein mit 
+\par \f1   include nextnum.flx\f0 
+\par 
+\par \b So nutzt man das Unterprogramm\b0  
+\par Zuerst mu\'df man zwei F\'e4lle unterscheiden: 
+\par 
+\par \b   A) \i MIT\i0  Generator-Datensatz  \b0  (siehe 3.) 
+\par \pard\li426 In  #uoZ  setzt man den Code  ABC  des Nummerngenerator-Satzes, 
+\par und davor B, S oder Z, je nach Typ (Bestellnr., Signatur, Zugangsnr.) 
+\par dieser Satz mu\'df im Reg. 11 unter  SYSBABC, SYSSABC bzw. SYSZABC  stehen und im 
+\par Systemsatz in der Kategorie #9A hinter dem B, S bzw. Z! (s.u.) 
+\par 
+\par \pard\b   B) \i OHNE\i0  Generator-Datensatz\b0 
+\par \pard\li426 In #uoR den Registernamen (oder -nummer) und in #uoP das Pr\'e4fix angeben, also die Zeichenkombination, hinter der im Register die Nummern stehen. 
+\par \pard 
+\par \pard\li426 Es entsteht in beiden F\'e4llen:  in  \b\f1 #uoY\b0\f0   die n\'e4chste Nummer, vor der Nummer steht 
+\par \tab der Inhalt von \b\f1 #9A$F\b0\f0  bzw. \b\f1 #uoF\b0\f0 , sonst nur die Nummer, und zwar ohne f\'fchrende Nullen. 
+\par \pard 
+\par \cf1\b Muster f\'fcr den Aufruf des Unterprogramms\cf0\b0   
+\par (Dieses Muster in eigene FLEXe kopieren und modifizieren) 
+\par 
+\par \f1 #uoZ <code>    // Fall A), z.B.  #uoZ ZSTD : Systemsatz #9A ZSTD... 
+\par      \i alternativ z.B.  (Fall B)\i0 
+\par   #uoR |9           // Register 9 
+\par   #uoP X2005-       // Praefix X2005-, d.h. Nr. steht dahinter
+\par   #uoF 05-          // Praefix 05-  fuer das Feld im Datensatz [optional] 
+\par set tbl loc           // .TBL blockieren, damit keiner speichern kann 
+\par \cf3\b perf nextnum\cf0\b0           // ermittelt die Nummer, liefert sie in #uoY 
+\par if ="-1" jump fehler  // Nummernermittlung nicht gelungen 
+\par var "praefix" #uoY    // <praefix = eigenes, gew\'fcnschtes Pr\'e4fix im Datensatz 
+\par ins #nnn              // nicht im Index! #nnn = Feld im Datensatz 
+\par put free        // Satz speichern, zugl. TBL freigeben (erst ab V25.9) 
+\par     \i Vor V25.9:\i0 
+\par   set tbl fre   // TBL freigeben 
+\par   put           // und Satz speichern 
+\par 
+\par \f0 Die Indexparameter stellen aus \f1 #nnn\f0  die Form im Register her. Das passiert dann beim Speichern, d.h. es ist Teil des Vorgangs, der mit "put" ausgel\'f6st wird, FLEX hat nichts damit zu tun. 
+\par 
+\par Und hier folgt das eigentliche Unterprogramm. Wie gesagt, man mu\'df es in den eigenen FLEX einkopieren (hinten anh\'e4ngen) oder aber mit dem Befehl 
+\par \cf3\b\f1 include nextnum.flx\cf0\b0\f0 
+\par einbinden. Wenn man nach dem Muster vorgeht, braucht man den Inhalt von \f1 nextnum.flx\f0  nicht zu kennen oder gar zu verstehen! 
+\par 
+\par   ********************** Beginn des Unterprogramms   [ nextnum.flx ]\f1 
+\par :nextnum 
+\par 
+\par var i 
+\par ins $n:oi 
+\par 
+\par 
+\par   Steht eine Vorgabe in  #uoR ? Dann keinen Generatorsatz suchen 
+\par if #uoR jump nUMVER 
+\par 
+\par var #uoz 
+\par   derselbe Code wie beim letzten Mal? Dann muss er nicht geladen werden 
+\par if =#uoX jump nUMVER 
+\par   Finde den NummerngeneratorSatz im Reg. 11 
+\par var "|; SYS" #uoz 
+\par f1nd 
+\par if no jump gEXIT 
+\par 
+\par if not #9A jump gEXIT 
+\par var #9A 
+\par if not "Z" if not "B" if not "S" jump gEXIT 
+\par var #9A 
+\par 
+\par if #9A$R if #9A$P jump iNX 
+\par jump gERR 
+\par 
+\par :iNX 
+\par   Inhalt von #9A nach #uoX fuers naechste Mal 
+\par ins #uoX 
+\par 
+\par   Eigentliche Nummernvergabe 
+\par :nUMVER 
+\par if not #uoR var "-2 " #uoX$R " " #uoX$P "999999999999A" 
+\par if #uoR var "-2 " #uoR " _" #uoP "999999999999A" 
+\par 
+\par   nur zur evtl. Kontrolle 
+\par ins #uAA 
+\par 
+\par   die 2 Zeilen holen, wo die hoechste Nummer stehen muesste 
+\par 
+\par qrix 
+\par 
+\par   gefundene Zeile bearbeiten 
+\par var (f" " b" " e"\'14") 
+\par   und die Zeile mit der letzten Nr in #uzn sichern 
+\par 
+\par ins #uzn 
+\par   jetzt hat man die Registereintragung ermittelt 
+\par   nun noch die Zahl herausloesen, 
+\par   sie steht hinter dem Praefix #uoP bzw. #uoY: 
+\par if #uoR var #uzn(b"#uoP");jump aDD 
+\par   Praefix fuers Datenfeld, falls gesetzt 
+\par var #uoX$F 
+\par ins #uoF 
+\par 
+\par var #uoX$P 
+\par ins #uoY 
+\par if not #uoR var #uzn(b"#uoY") 
+\par 
+\par :aDD 
+\par   in iV steht jetzt die Nr., also 1 draufaddieren: 
+\par z= 
+\par   (wenn im Index noch keine Zeile mit dem Praefix existiert, ergibt sich z=1) 
+\par z+1 
+\par var #uoF z 
+\par   # ist Platzhalter fuer Blank, ersetzen: 
+\par ins _#_ _ 
+\par ins #uoY 
+\par jump resto2 
+\par   #uoY  enthaelt die naechste Nummer, davor #uoX$F 
+\par 
+\par :gERR 
+\par var "Es fehlt ein Teilfeld in " #9A n 
+\par var +"$R und $P  muessen vorkommen" 
+\par ansi 
+\par mes 
+\par jump resto1 
+\par end 
+\par 
+\par :gEXIT 
+\par var "Generator " #uoz " nicht gefunden" 
+\par mes 
+\par 
+\par :resto1 
+\par var "-1" 
+\par ins #uoY 
+\par 
+\par :resto2 
+\par   Den anfangs geladenen Satz zurueckholen, weil evtl. nicht mehr da 
+\par       oder er wird sonst nicht gelb angezeigt 
+\par var "#" $n:oi 
+\par f1nd 
+\par return 
+\par end 
+\par \f0   ******************  ENDE UP 
+\par 
+\par   Verwendete Variablen im Unterprogramm: 
+\par   Vorgaben beim Start: 
+\par   #uoZ   Code des zu verwendenden Generators   ODER: 
+\par   #uoR   enthalten die Vorgaben f\'fcr Register und Pr\'e4fix, wenn 
+\par   #uoP      kein Num.Generator verwendet werden soll 
+\par 
+\par   #uoX   Speicherung der Nummerngenerator-Daten (Feld #9A) 
+\par   #uoY   Ergebnis: naechste Nummer 
+\par 
+\par   Inhalt von #9A in einem Nummerngenerator-Satz (s. alf.frm) 
+\par   #9A ZABC              Code ABC, dieser Code steht dann 
+\par                              in Reg. 11 hinter SYSZ, dort steht also  SYSZABC 
+\par   $N  Name              Klartext-Name des Generators (hat keine Funktion) 
+\par   $R  Registername    symbolisch oder direkt,  z.B.  NUM oder |9 oder |: (f\'fcr Reg. 10) 
+\par   $P  Praefix            was im Register vor der eigentlichen Nummer steht! 
+\par   $Z  letzte Nr.        Zuletzt vergebene Nummer (nur bei DOS-Prog. ORDER) 
+\par 
+\par   Die Teilfelder R  und P  gab es im DOS-System noch nicht! 
+\par 
+\par 
+\par \b\i Anhang 1 
+\par \i0 Indexierung einer Nummer in die Indexparameter einbauen\b0 
+\par 
+\par Sagen wir, die Nummer steht im Datenfeld #072, und dort steht immer "AB " davor, z.B.  \b\f1 #072 AB 99\b0\f0 . 
+\par Die Nummer soll 6-stellig im Register 10 auftauchen mit dem Pr\'e4fix cd-, also z.B.  \b\f1 cd-000099\b0\f0 
+\par Gebraucht wird eine in den Indexparametern noch nicht vorkommende Sprungmarke. 
+\par Ein Beispiel in  CAT.API  ist der Buchstabe z. 
+\par 
+\par 1. Neue ak-Zeile einbauen (unter den schon vorhandenen ak-Zeilen) 
+\par 
+\par \f1 ak=072+z\f0 
+\par 
+\par 2. Abschnitt  \f1 #-z\f0   einbauen (irgendwo genau unter einer Zeile  #+# . Es gibt viele solche Zeilen, und es ist egal, welche man w\'e4hlt.) 
+\par 
+\par \f1 #-z 
+\par #t\{ "|9cd-" \}    wenn es Register 9 sein soll und Praefix cd- 
+\par     (In #u1 steht in diesem Moment der Inhalt von #072, das 
+\par      bewirkt der ak-Befehl) 
+\par #u1 f"AB " r6,0 
+\par     Die Nummer entnehmen (AB vorne wegnehmen) und 6-stellig 
+\par     mit fuehrenden Nullen ausgeben 
+\par #+# 
+\par \f0 
+\par \i Hinweise\i0 
+\par   F\'fcr die Standardparameter $A.CFG / CAT.API gilt: Zugangsnummern stehen in 
+\par   #91     im Titelsatz (falls man das Bestellwesen nicht mit allegro macht) 
+\par   #9DG$z  im Exemplarsatz (wichtig f\'fcr die Ausleihe) 
+\par   #9DB$z  im inventarisierten Bestellsatz (nur f\'fcr Bestellwesen wichtig) 
+\par           (entsteht bei Inventarisierung in CAT.API) 
+\par   Im Bestellsatz sollte die ZgNr allerdings nicht indexiert werden, wohl aber 
+\par   im Exemplarsatz. Dies wurde f\'fcr V25.9 korrigiert. Ob sie \'fcberhaupt im 
+\par   Bestellsatz stehen sollte, ist fraglich, aber sie wird beim Vorgang 
+\par   "Inventarisierung/Abschlu\'df der Bestellung" gebildet, weil dies der 
+\par   logisch daf\'fcr sinnvollste Zeitpunkt ist. Wenn man die abgeschlossenen 
+\par   Bestells\'e4tze irgendwann archiviert, kann es nicht schaden, wenn sie 
+\par   neben der Titel-IdNr auch die Zugangsnummer enth\'e4lt, die dem 
+\par   erworbenen Exemplar zugeteilt wurde. 
+\par 
+\par 
+\par \b\i Anhang 2\b0 
+\par \i0 
+\par \i Achtung: \i0 Das Programm  \f1 index\f0   kann nur indexieren, aber keine Nummern vergeben. Das geht nur mit a99 oder acon. 
+\par 
+\par \i Sonderfall\i0 
+\par Wenn man \b nachtr\'e4glich\b0  Nummern vergeben will, dann in das Nummernregister z.B. x000000 einstellen, wenn etwa x?6  das IdNummernschema der CFG w\'e4re (d.h.  \f1 ci9x?6\f0   in der CFG). Dann in einer FLEX-Schleife mit  \f1 first # / next #\f0   alle S\'e4tze nacheinander laden und sofort mit  \f1 put\f0   (oder mit  \f1 if not #00 put\f0  falls es schon einige S\'e4tze eine #00 haben) wieder speichern.  Denn dabei merkt a99 oder acon, da\'df der Satz noch keine IdNummer hat und vergibt eine. 
+\par 
+\par ?Rezept=h =Indexierung einer Nummer 
+\par ?Anhang 2=h =Sonderfall 
+\par 
+\par }
+ 

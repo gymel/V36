@@ -1,0 +1,144 @@
+
+Verlautbarung 252 der Entw.Abt.                              2013-07-09
+-------------------------------
+
+
+V33.3 ist da
+============
+
+
+Unicode Mini-Demo
+-----------------
+Mit im Paket ist die schon in vb251 erwaehnte Mini-UTF-8-Datenbank,
+und zwar im Ordner "datuni" parallel zu "demo2". Sie ist gedacht als
+1. Anschauungs- und Testobjekt
+2. Vorlage für eigene Versuche: Kopieren und die vorhandenen Saetze,
+   loeschen, bevor oder nachdem man eigene Daten eingibt.
+Tip: Im Reg. "Schriftart" findet man die Beispielsaetze in den div.
+     Originalschriften.
+Die Datenbank ist auch mit a35 im Netz:
+     http://www.allegro-c.de/db/demo/a35start.php
+Es kann immer noch Stellen geben, an denen falsche Zeichen erscheinen!
+Jedoch nur z.B. in Hilfetexten und ViewListen, nicht in den Daten.
+
+Start: z.B. mit dem Befehl  a99 datuni\dat
+
+ODER vom Startbild der DemoBank, wo man einen Flip dafuer vorfindet.
+
+Versuchen Sie mit a99 und a35 auch die Suche z.B. nach "brodski" oder
+"aristotel", um originalschriftlich kyrillische bzw. griechische
+Saetze mittels der automatischen Transliteration zu finden. 
+Man soll aber auch originalschriftlich suchen können? In a35 geht auch
+das, in a99 kann's nicht gehen, weil da die Eingabe in kyr. bzw. 
+griech. nicht klappt.
+
+
+a35 ist auch da
+---------------
+Alles, was man dazu braucht (außer den Programmen), ist im SVN:
+(Zugang jetzt frei fuer die Kennung ac13)
+
+  https://svn.allegro-c.de/svn/a35/trunk/
+
+Der Text  a35install.txt  ist notwendige Lektuere, falls man zum
+Ziel gelangen will. Stolpersteine bitte sofort melden!
+
+Ausserdem eine neue Demo mit anderem Oberflaechendesign:
+  http://www.allegro-c.de/db/katalog/a35_katalog.htm
+
+
+Genannt seien ansonsten noch folgende Punkte:
+
+
+Mehrfachkennungen  (a99 und acon)
+-----------------
+In  xcstring.rtf  liest man, gueltig fuer die Befehle var und write:
+
+  	#nn:  	Letztes Datenfeld, das mit #nn anfaengt
+  	#n::  	Letztes Datenfeld, das mit #n anfaengt
+
+und dasselbe mit  _  statt #, um den Feldinhalt samt Feldnummer
+zu erhalten.
+
+Unguenstigerweise kann aber : auch als Mehrfachkennung auftreten.
+Daher wurde diese Syntax so geaendert, dass die Tilde an die
+Stelle des Doppelpunkts tritt. (Sie kann ja nicht selber als Mehrfach-
+code auftreten, sondern bewirkt an der Stelle, dass ein neues Feld
+mit dem naechstmoeglichen Code angelegt wird.)
+Damit gilt nun dieses und nur noch dieses:
+
+  	#nn~  	Letztes Datenfeld, das mit #nn anfaengt
+  	#n~~  	Letztes Datenfeld, das mit #n anfaengt
+
+und dasselbe mit  _  statt #
+
+
+Falsche Umlaut-Anzeige
+----------------------
+Im Datentext direkt aufeinanderfolgende deutsche Sonderzeichen incl.
+scharfem s wurden falsch angezeigt. Es lag ein Fehler vor in den
+Umcodierfunktionen, hineingeraten im Zuge der UTF-8-Implementierung.
+Dieses Problem ist behoben.
+
+
+Endedialog a99
+--------------
+Wenn beim Ausstieg noch ungespeicherte Neusaetze vorlagen, sonst aber
+keine noch zu speichernden Saetze, kam nicht die Frage 418:
+   Sollen die neuen und bearbeiteten (noch nicht gespeicherten)
+   Daten gespeichert werden? Wenn unsicher, dann [Abbrechen] druecken!
+   [Nein] = Nichts mehr speichern
+   [Abbrechen] = Ungespeicherte Sätze noch sichten
+Das wurde behoben. Sonst verloere man u.U. Neudaten.
+
+
+
+Suchen im Offline-Speicher
+--------------------------
+Was es damit eigentlich auf sich hat, erfaehrt man mit  h off.
+Hier nur der Hinweis, wie man darin suchen kann.
+Man gibt in der Befehlszeile ein:
+
+?Suchwort
+
+und erhaelt als Erg.Menge alle Saetze im Offline-Speicher, die
+das exakte Suchwort enthalten.
+
++Wort
+
+Damit wird die Offline-Erg.Menge nach dem Wort "Wort" exakt
+durchsucht und es entsteht die entsprechende, zumeist kleinere
+Erg.Menge.
+Mehr dazu:   h commd
+      oder   F1  mit Schreibmarke in Befehlszeile
+In dem dann erscheinenden Text: Abschnitt "b) Offline-Suchbefehl"
+Dort wird auch verraten, wie man feldspezifisch suchen kann (5.)
+und wie man sogar im Offline-Speicher Suchen und Ersetzen kann (6.).
+Und das ist schon derartig lange so, dass es viele gar nicht mehr
+wissen, falls sie es je wussten. Es geht zurueck auf die allererste
+a99-Version, die noch gar nicht auf einen Index zugreifen konnte,
+sondern nur Grunddateien bearbeiten. So eine Grunddatei stand dann
+natuerlich im Offline-Speicher, und da war das denn alles ganz
+nuetzlich.
+
+
+show cmd
+--------
+Mit diesem Befehl kann man nun auch den Inhalt der iV, also einen
+beliebigen Text, in der Befehlszeile erscheinen lassen.
+Auslesen kann man den Inhalt der Befehlszeile auch;  var cm
+(Die Doku-Texte  xshow.rtf  und  xcstring.rtf  sind ergaenzt.)
+
+
+Programm  srch.exe  (Volltextsuche)
+-----------------------------------
+Das alte 16bit-Programm hat eine unvollstaendige Option -d selber
+ergaenzt. Wenn es lautete  -dxyz, dann hat es draus  -dxyz*.al?, um
+die gemeinte Datei, falls ohne Typ angegeben, doch noch zu finden.
+Dies tat das neue 32bit-Programm zunaechst nicht. Woraufhin dann
+etliche alte Batchdateien versagten. Der vormalige Zustand wurde nun
+auch im neuen  srch  hergestellt.
+Ferner hat a99 bei der alten Prozedur  fts.flx, die eine Volltextsuche
+mit dem Programm srch organisiert, den Namen der Exportdatei u.U.
+verfaelscht. fts.flx wurde in diesem Punkt korrigiert.
+

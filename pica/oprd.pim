@@ -1,0 +1,74 @@
+ Dateiname:        PICA.PIM
+ Inhalt:           Import-Parameterdatei fÅr Pica3-Download-Daten nach
+                   Allegro-Pica3
+ 17.10.95: Erstellung (A. Gereke)
+
+
+
+   -------- Konstanten ----------------------------------------------------
+
+pn="Import von PICA3-Download-Daten nach Allegro-PICA3"
+
+rs="SET: S"        Record Start
+
+re="SET: S"        Recort End
+                   Mit re=13 10 "SET: " werden Mehrfach-Kategorien am Satz-
+                   ende nicht korrekt importiert!
+
+
+   ----- Globale Konvertierungsbefehle: -----------------------------------
+
+_ 13 10 " "        Zeilenumbruch innerhalb der Kategorien beseitigen
+_ " "
+
+_ 13 10 "0100"     damit diese beim Pauschalimport keine Probleme macht
+_ 13 10 "oooo"     (sie steht nÑmlich nicht am Anfang, sondern die 0200!)
+
+_ 13 10 "0200:"
+_ 13 10 "0200 "
+
+_ "  0210:"
+_ 13 10 "0210 "
+
+_ "  0230:"
+_ 13 10 "0230 "
+
+_ 13 10 "70"       statt 7001, 7002, ...
+_ 0 "70XX "        jetzt 70XX 01, 70XX 02, ...
+
+_ 13 10            sonstige Zeilenenden in allegro-Endezeichen 0 umwandeln
+_ 0
+
+
+
+   ----- Kategorieliste: --------------------------------------------------
+
+#0100              diese zuerst importieren,
+s "PPN: "          (StammsÑtze haben in der Download-Datei keine Kat. 0100)
+l 9
+_"x"
+_"X"
+
+#0200              dann die 0200, danach alle anderen:
+s "SEITE???" 13 10 13 10
+                   (StammsÑtze haben in der Download-Datei keine Kat. 0200)
+
+##                 Pauschalimport der eingelesenen Daten
+                   Jede Kategorie wird wie folgt bearbeitet:
+R 3 " "            Ist die Kategorienr. 3stellig (Leerzeichen auf Pos. 4),
+(
+Krr                dann zunÑchst in #urr zwischenspeichern
+l 0
+kurr               #urr als Arbeitstext nehmen,
+e " "              aber zuerst nur die Nummer
+kurr               #urr nochmals nehmen,
+b " "              jetzt Teil hinter " "
+w "*£"             und "*£" davor setzen,
+)                  d. h. nÑchste Wiederholungskennung benutzen
+
+
+   Zeichen-Umwandlungen werden nicht durchgefÅhrt, weil davon ausgegangen
+   wird, da· vor dem Aufruf der allegro-Datenbank der Pica-Zeichensatz mit
+   dem Programm VGAFONT bzw. FONTLOAD aktiviert wird.
+
+

@@ -1,0 +1,30 @@
+  P-UNICOD.APR : Zur Erzeugung korrekten Unicode-Outputs mit FLEX
+  2003-03-24     wird wirksam beim Befehl "write ..."
+
+  Diesen Abschnitt kann man auch einbauen in andere Exportparameter.
+  Im FLEX muss dann stehen  dow wX, sonst wird er nicht wirksam.
+
+zl=0       kein Zeilenumbruch
+dx=1       damit Umcodierung ausgefuehrt wird
+tad-utf    Tabelle ad-utf.apt laden
+
+  Folgender Befehl ist normalerweise eingebaut in die Indexparameter:
+  pa=181 182 183 184 189 190 198 199 207 208 209 210 211 212 219 222 223 232 
+  Nur aktivieren, wenn nicht der Fall.
+
+  Sonst evtl. Mehrfach-Ausgabe bei hierarch. Saetzen!
+#hi +# e0
+  Der eigentlich wichtige Teil: (darauf bezieht sich "dow wX")
+#-X          Sprungmarke
+#u1          die von write erzeugte Zeichenkette ausgeben  
+#+#          Ende
+
+  Der Befehl "dow wX" selbst bewirkt keine Ausgabe! Wenn er gegeben
+  wurde, dann wird die Ausgabe mit "write ..." ueber diesen Parameter-
+  abschnitt umgeleitet, und dadurch erfolgt die Umcodierung.
+  Mit "dow w0" schaltet man diese Umleitung im FLEX wieder ab.
+  Zu Beginn jedes FLEXes ist die Umleitung abgeschaltet, d.h. 
+  "dow wX" bezieht sich auf den FLEX, nicht auf die ganze Sitzung.
+
+p  "<br>"   Zeichen  soll Zeilenvorschub ausloesen
+             (Nur fuer HTML-Ausgabe!)

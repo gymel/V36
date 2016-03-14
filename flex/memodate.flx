@@ -1,0 +1,81 @@
+  MEMODATE.FLX : Liste der Memos oder Termine anzeigen
+  2003-06-10
+
+var ""
+ins #uvI
+del dates.vw
+if #uvM jump memos
+  Termine stehen im Reg.10 unter Md
+var "|: Md" #op "-? or |: Md-?"
+find
+if l1 mes Keine Termine
+if l1 end
+  Aufsteigend ordnen (frueheste Termine dann oben)
+ord a0
+close v
+   Aktuelles Datum/Uhrzeit in #uvD ablegen, in "..." eingeschlossen!
+var 34 #dts 34
+ins #uvD
+  Eine ViewListe anlegen
+open x dates.vw
+first
+var s
+if <#uvD jump loop
+wri "Ausstehende Termine" n
+
+:loop
+var s
+if <#uvD jump verstrich
+:weiter
+
+wri i "|" #9ad(0,4) "-" #9ad(4,2) "-" #9ad(6,0 e"=") " - " #9a(e";") " / " #9at(0,25) n
+next
+if yes jump loop
+close x
+close res
+set i7Terminliste
+set i8Auswahl, dann Satz evtl. bearbeiten
+set i9
+  ViewListe anzeigen (automatisch erscheinen die zugehoerigen Saetze)
+View dates
+clo v
+end
+
+:verstrich
+if #uvI jump weiter
+  beim zweiten Mal ist #uvI besetzt, d.h. Zwischenueberschrift
+     kommt nur vor dem ersten verstrichenen Termin
+#uvI 1
+
+wri "-------------------------------------------" n
+wri "Verstrichene Termine:" n
+jump weiter
+
+:memos
+  Memos stehen im Reg.10 unter "M "
+var "|: M ? not |: Md?"
+find
+if l1 mes Keine Memos
+if l1 end
+  Aufsteigend ordnen
+ord a0
+close v
+  Eine ViewListe anlegen
+open x memos.vw
+first
+
+:moop
+wri i "|" s n
+next
+if yes jump moop
+close x
+close res
+set i7Memos
+set i8Auswahl, dann Satz evtl. bearbeiten
+set i9
+  ViewListe anzeigen (automatisch erscheinen die zugehoerigen Saetze)
+View memos
+clo v
+
+end
+

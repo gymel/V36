@@ -1,0 +1,49 @@
+  D-KURZ.APR :   Ausgabe als ASCII-Datei mit Feldbezeichnungen und Zeilenumbruch
+  940604  alternatives Beispiel fÅr ein DISPLAY und PRINT
+
+pn="Kurzanzeige mit Feldbezeichnungen"
+
+  Sehr knappe Anzeige mit sprechenden Feldbezeichnungen
+
+  --------- Konstanten --------------------------------------------
+
+zl=66	    ZeilenlÑnge
+zi=11	    11 Zeichen EinrÅckung bei Folgezeilen
+zm=0        kein Seitenumbruch
+  
+ae=C C      2x Zeilenvorschub am Satzende
+ 
+ fl=0       aktivieren wenn es fÅr Listendruck benutzt werden soll
+fl=16       wenn es fÅr DISPLAY benutzt werden soll
+ 
+ke=C &0     Kategorie-Ende: Zeilenvorschub und Sprung auf Position 0
+                das &0 ist nîtig, weil sonst auf der neuen
+                Zeile die EinrÅckung wirksam wird (zi=11)
+                (d.h. neue Kategorie beginnt wieder am Zeilenanfang)
+            soll das ausnahmsweise wegfallen, mu· man in der Anweisung
+            den Postfixbefehl #zz 0 geben, siehe unten bei #75
+
+  --------------------------------------------------------------------
+
+  ......... Zwischenteile ..................................................
+
+13=C &0     Zeilenvorschub mit Beginn am Zeilenanfang (macht dasselbe wie ke)
+  ..........................................................................
+ 
+  ********* Kategorieliste *************************************************
+
+#01 "     BAND: " p13          nur bei Unteraufnahmen: noch'n Zeilenvorschub
+#40 "Verfasser: "
+#20 "    Titel: "
+#74 "   E.-Ort: " e"" #74 0 #75 13 #76 0 #zz 13
+#75 "   Verlag: " #zz 0        der Befehl #zz 0 bedeutet: kein Postfix ausgeben,
+                               hier soll also  ke  entfallen
+#74 +J e0 #zz 0
+
+#76 +#77 "  E.-Jahr: "         wenn kein Verl. vorkommt
+#-J
+#76 p" (" P")"                 E.-Jahr wird in Klammern hinter Verlag gesetzt
+
+#77 "   Umfang: "
+#85 "    Serie: "
+#90 e"" " Signatur: "

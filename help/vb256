@@ -1,0 +1,242 @@
+
+Verlautbarung 256 der Entw.Abt.                              2013-12-02
+-------------------------------
+
+Der $ in lokalen Ersetzungen der Exportparameter
+================================================
+ 
+ In der Vb255 wurde, wegen Termindrucks ohne vorherige Diskussion und
+ AnkÅndigung, eine u.U. wichtige énderung beschrieben. Auf GrÅnde und
+ mîgliche Auswirkungen wurde noch nicht eingegangen. Das wird hiermit
+ nachgeholt, mit der notwendigen erschîpfenden GrÅndlichkeit.
+ (Es mochte wie eine klammheimliche Nachbesserung aussehen, was
+ natÅrlich grober Unfug wÑre.)
+
+ Der Kern ist: Auch das $-Zeichen ist nun ersetzbar, aber existierende
+ Parameter arbeiten ohne énderung, au·er in unlogischen FÑllen. Dies
+ erzwingt leider eine eigenwillige Syntax, sollen bestehende Parameter
+ nicht entwertet werden. Abhilfe kînnte evtl. ein neuer Befehl bringen.
+
+ ACHTUNG:
+ Standard-Anwender, die nicht selber parametrieren, brauchen nicht
+ weiterzulesen, sie sind nicht betroffen. 
+
+
+ **********************************************************************
+
+ Vor allem ist wichtig: Die geÑnderte Wirkung ist vorerst nur in
+ a99/alcarta und acon eingebaut, noch nicht in srch, import und index.
+ Letzteres soll noch kommen. Sollte sich aber massiver und begrÅndeter
+ Widerstand regen, dann nicht. Eigentlich hÑtte man dies vor der Fest-
+ schreibung der V33.5 tun sollen, nur war dafÅr keine Zeit.
+
+ Hinzuweisen ist ferner auf die Mîglichkeiten der FLEX-Sprache,
+ die im "Trick 74" ausfÅhrlich behandelt sind:
+   http://www.allegro-c.de/tricks.htm#74
+ Au·erdem gibt es schon beim Import eine eigene Mîglichkeit, mit 
+ dem $ umzugehen, siehe dazu den Fall 3. unten und in a99:  h ac11-3 
+
+
+ NUN ZUR SACHE SELBST, und zwar in zwei Fassungen:
+ (Vorausgesetzt werden Kenntnisse der Exportparametrierung.
+  Alle Beispiele wurden mit V33.4 und V33.5 verifiziert.)
+ 
+***********************************************************************
+
+ A. Kurzfassung der neuen Mîglichkeiten
+ --------------------------------------
+ Regel: Der $ am Anfang, also ,"_$..._..._" hatte bisher gar keine
+        Wirkung, jetzt schaltet er die bekannte Wirkung ab. 
+
+I.
+ Ersetzung des $ durch X:    ,"_$$_X_"    (X = beliebige Zeichenfolge)
+
+ Sonderfall X =   Unterfeld-Dreieck (DOS-Code 31 / Win 178):
+                             ,"_$$__"
+
+ Einzelfall: $x durch x:    ,"_$$x_x_"
+
+II.
+ Ersetzung von $x durch $y:  ,"_$$x_$y_"
+
+
+III.
+ Ersetzung von A$B durch AXB:  ,"_$A$B_AXB_"
+ mit beliebigen Zeichenfolgen A, X und B
+
+ Hinweis:
+ Was im Export, anders als mit FLEX, (noch) nicht geht, ist die
+ Schreibweise  ^031  statt des Dreiecks.
+
+***********************************************************************
+
+ B. Langfassung, falls jemand *alles ganz genau* wissen will
+ -----------------------------------------------------------
+ (incl. womîglich nie aufgetretener FÑlle)
+
+ Vorrede
+ -------
+ In einem Manipulationsbefehl ,"_abc_XYZ_" war und bleibt das $-Zeichen
+ in XYZ ohne Sonderwirkung, in abc dagegegen hatte es eine Funktion,
+ aber NUR an der Position c, also z.B.  ,"_ab$_XYZ_"  Dann wurde "ab"
+ und alles, was noch folgte, durch XYZ ersetzt, d.h. der Rest des 
+ Feldes wurde abgezwackt, im Beispiel also incl. "ab".
+ Ein $ an anderer Stelle innerhalb  abc  war schlicht nicht vorgesehen,
+ die Wirkung war zwar nicht undefiniert, aber unlogisch.
+ Zur der Zeit, als das Unterprogramm entstand, kam der $ innerhalb von
+ DatensÑtzen wohl kaum vor, wie auch immer. Daraus ergab sich:
+ Stand hinter dem $ noch etwas, also ,"_abc$d_XYZ_", dann hatte der $
+ keine funktionale Wirkung, sondern der Befehl Ñnderte am Text nichts.
+ Insbes. konnte man leider mit der lokalen Ersetzung den $ als solchen
+ nicht ersetzen (s. dazu unten Fall 3. und oben Fall I.).
+
+ Desiderat war deshalb, das Zeichen $ auch als solches mittels lokaler
+ Ersetzung wie jedes andere Zeichen ersetzen zu kînnen. Jedoch sollte 
+ sich das Verhalten Ñlterer Parameter nicht Ñndern.
+
+ Viel besser als das hier beschriebene Verfahren wÑre es natÅrlich,
+ das ist zuzugeben, man hÑtte z.B. ein exakt dem Vorbild der regulÑren
+ AusdrÅcke entsprechendes Paradigma. Dies kînnte in die Exportparameter
+ leider kaum eingebaut werden, sondern allenfalls in FLEX. Vorerst
+ wird man mit dem nicht fÅr jeden befriedigenden status quo noch eine
+ unbestimmte Weile leben mÅssen. SOLLTE sich eine énderung realisieren
+ lassen, dann sicher nicht so, da· die bisherigen Befehle geÑndert
+ wÅrden, denn dadurch wÑren dann bestehende Parameter entwertet, die
+ KontinuitÑt also gebrochen. Nur ein *neuer* Befehl kînnte hier 
+ *theoretisch* Abilfe schaffen. Und warum wurde nicht von vornherein
+ mit regulÑren AusdrÅcken gearbeitet? Nun, wir kannten das damals nur
+ unter UNIX existierende Konzept gar nicht, als der Export 1986 in der
+ ersten und noch heute kompatiblen Fassung unter MS-DOS programmiert
+ wurde. Ein vollkalibriges grep ist u.U. gar nicht notwendig. Es gibt
+ eine sehr knappe, Ñu·erst gute Implementierung der fÅr uns wichtigen
+ Teilfunktionen [1], die als Neuerung begrÅ·enswert wÑre. DarÅber
+ kann man noch diskutieren, und eigentlich kînnte das auch mal, die
+ Quellen sind ja offen, jemand anders machen.
+
+
+ Wie sieht es nun also aus ab V33.5?
+ -----------------------------------
+ Als Beispiel nehmen wir dieses Datenfeld:
+
+ #81 Text$Hinweis$ENDE
+
+ und wollen das $-Zeichen Ñndern und evtl. auch noch, was davor und
+ dahinter steht.
+ Was ist dabei zu beachten?
+ Wir schauen uns 7 verschiedene FÑlle an, die alles umfassen, was in
+ den Parametern erwÅnscht sein kînnte. In einigen FÑllen war bisher
+ das Ergebnis unerwartet oder so gut wie sinnlos, und die énderung
+ des $ selbst war, wie gesagt, nicht mîglich. Das sollte sich Ñndern.
+
+ In den Beispielen ist /// statt XYZ gesetzt, denn es spielt ja keine
+ Rolle, was da steht, und so wird die Wirkung besser sichtbar.
+
+ Parameter          bis V33.4           V33.5
+-----------------------------------------------------------------------
+1.
+ #81 ,"_t$_///_"    Tex///              Tex///
+        Ersetzt t und den ganzen Rest des Feldinhalts durch ///
+     Diese Hauptfunktion des $ am Ende von abc Ñndert sich nicht.
+     
+
+2.
+ #81 ,"_$_///_"     Text///E            Text$Hinweis$ENDE
+        Bis V33.4 unlogische Wirkung  /  Ab V33.5 Keine Aktion
+     Hier kînnte man erwarten, da· der Feldinhalt insgesamt nicht 
+     ausgegeben wird, sondern ///.
+     Das jedoch erreicht man leichter mit  #81 p"///" y0 e3
+     Bis V33.4 wurde nach dem $ gesucht und dieser mitsamt dem Rest
+     des Feldes beseitigt, nur das letzte Zeichen nicht. Das war 
+     unlogisch und nicht sinnvoll. Wenn diese spezielle Variante
+     bisher vorkam, hatte sie also eine unerwÅnschte Wirkung. Das
+     *einzige* Beispiel fand sich in  pica3a.ppt, eingebunden nur in
+     d-1.ppr, die Anzeigeparameter fÅr Pica-Daten in PRESTO. Und
+     in diesem Fall ist es nun wohl besser als vorher, wenngleich
+     ebenfalls unrichtig.
+     Tip fÅr Parametrierer: Wenn Sie das Hilfsprogramm grep haben,
+     kînnen Sie mit  grep _\$ *.?p?  Ihre Parameter nach solchen
+     Fehlern absuchen. Siehe auch 7a.
+
+3.
+ #81 ,"_$$_///_"    Text///             Text///Hinweis///ENDE
+        Unlogische Wirkung  / Ersetzt jedes $ durch ///  
+     Hier passiert also ab V33.5, was man im Fall 2. eigentlich wollte:
+     Die Wirkung bis V33.4 war wohl kaum sinnvoll.
+     Dies ist ein Spezialfall des neuen Falles 7., s.u., insbes. 7b.
+     Aus bisheriger Sicht ist dies der interessanteste Fall, weil
+     man mit lokaler Ersetzung den $ als solchen nicht ersetzen konnte,
+     z.B. durch das Unterfeld-Dreieck. Nun kann man das leicht machen,
+     indem man nur _$$_^031_ setzt statt _$_?_
+     (Mit p- oder q-Befehl konnte man das hilfsweise meistens lîsen:
+      p $ "///"   bzw.   q $ "///") Oder auch, wenn es sich um Import
+     handelte, mit  y $ 31, um schon beim Einlesen den $ durch Code 31
+     zu ersetzen. Die lokale Ersetzung in den *Importparametern*
+     klappte dagegen schon immer, der $ hatte dabei keine Sonder-
+     funktion.  (FÅr Programmierer: Funktion cfind() in import.c)
+
+4.
+ #81 ,"_t$$_///_"   Text$Hinweis$ENDE   Text$Hinweis$ENDE
+        Nach wie vor ohne Wirkung, aber auch entbehrlich!
+     Die Erwartung, die Zeichenfolge t$ samt Rest wÅrde ersetzt durch
+     ///, erfÅllte und erfÅllt sich nicht! Nur mit exakt *einem*  $
+     am Ende klappt das. Es gibt andere Mîglichkeiten:
+     Um die Zeichenfolge  t$$  samt Rest zu ersetzen durch /// :
+     z.B.   ,"_$t$$_///%%%_" e"%%%"    aber NUR ab V33.5, siehe 7.
+     Oder aber:   e"t$$" P"///"    was auch bis V33.4 schon ging.
+
+5.
+ #81 ,"_t$$H_///_"  Text$Hinweis$ENDE   Text$Hinweis$ENDE
+        Nach wie vor ohne wirkung, aber ebenfalls entbehrlich!
+     Eine Ersetzung der Zeichenfolge  t$$H  war vorher unmîglich,
+     jetzt aber geht es mit
+     ,"_$t$$H_///_" (Spezialfall von 7.)
+
+6.
+ #81 ,"_t$H_///_"  Text$Hinweis$ENDE    Text$Hinweis$ENDE
+        Nach wie vor ohne wirkung. Aber ab V33.5 s. 7.!
+     Bis V33.4 hÑtte man denken kînnen, da· nach t gesucht wird, wie 
+     ersten Fall, und dieses samt Rest verschwÑnde, ohne Wirkung des H.
+     So war's aber nicht, und das hat sich nicht geÑndert. Diesen
+     Fall kînnte man immer noch etwas unglÅcklich finden, er wird aber
+     entschÑrft durch 7, mit dem man eine definierte und bisher
+     nicht vorgesehene Wirkung erreicht:
+
+7.
+ #81 ,"_$t$H_///_"  Text$Hinweis$ENDE   Tex///inweis$ENDE
+        Wirkungslos    /   ersetzt t$H durch ///
+     Bis V33.4 hatte ein $ am Anfang von "abc" keine Wirkung, 
+     d.h. der Ersetzungsbefehl tat einfach nichts.
+     Das sollte nicht so bleiben.
+     Nun hat der $ an der ersten Position  die Bedeutung: 
+     Suche nach der Zeichenfolge t$H und ersetze diese durch ///. 
+     Soll der Rest hinter  t$H verschwinden, mu· man ergÑnzen:
+     ,"_$t$H_///_" e"///"  
+     Bisher hatte dies gar keine Wirkung, es sei denn, im Text
+     des Feldes kam schon /// vor.
+
+7a. 
+ #81 ,"_$t_///_"    Text$Hinweis$ENDE   Tex///$Hinweis$ENDE
+        Bis V33.4 keine Wirkung, weil $ am Anfang nicht vorgesehen.
+     Ab V33.5 wird jedes  t  durch /// ersetzt; der $ am Anfang ist
+     wirkungslos!
+     Falls in alten Parametern so eine Kombination auftritt, ergibt 
+     sich jetzt eine Wirkung, wo vorher keine war. Solche FÑlle
+     sind aber gerade deswegen Ñu·erst unwahrscheinlich und hÑtten
+     von der Sache her erst gar nicht vorkommen dÅrfen, d.h. sie
+     waren lÑngst und sind jetzt definitiv korrekturbedÅrftig.
+
+7b.
+ #81 ,"_$$H_$x_"    Text$Hinweis$ENDE   Text$xinweis$ENDE
+       Unterfeldcode $H wird durch $x ersetzt
+     Neben 3. ist dies die zweithÑufigst erwÅnschte Wirkung, die 
+     bisher nicht mîglich war.
+
+-----------------------------------------------------------------------
+
+[1] Brian Kernighan: A regular expression matcher.
+    In: Beautiful Code / Ed. by Andy Oram and Greg Wilson. -
+    O'Reilly, 2007, S. 1-9.
+    Online:
+      http://www.cs.princeton.edu/courses/archive/spr09/cos333/beautiful.html
+
+

@@ -1,0 +1,196 @@
+  CP.OPT : Vorgabendatei fuer allegro CockPit (DOS-System)
+  2001-02-01
+  Alle Zeilen, die mit Leerzeichen beginnen, sind Kommentare
+  Diese Datei wird von den Windows-Programmen nicht beachtet.
+
+  In die folgende Zeile tragen Sie Ihr DATENVERZEICHNIS ein:
+  falls es nicht beim Aufruf mit Option -d  angegeben wird
+
+d C:\ALLEGRO\DEMO2
+  ------------------
+     Es koennen bis zu 2 weitere Datenverzeichnisse angegeben werden,
+     dann incl. Datenbankname, z.B.
+   d f:\daten\katalog\cat
+     Zwischen diesen Datenbanken kann hernach im PRESTO umgeschaltet werden
+     (mit Alt+a)
+  PRESTO Berechtigungen (bis zu 3 Ziffern fuer 3 Datenbanken)
+a 310
+  CockPit Berechtigung
+A 3
+
+  Konfiguration
+ka
+
+  Hier MUSS die Sprachangabe stehen:
+l ger
+
+  und in die naechste das PROGRAMMVERZEICHNIS:
+  Diese Zeile kann entfallen, wenn Option -P beim Aufruf angegeben wird
+ P C:\ALLEGRO
+ ------------
+   Die Angabe wird dann in die Environment-Variable -P kopiert
+
+C %-P%\CP   d.h. CP.BAT ist die Aufruf-Batchdatei
+
+    Man startet CockPit mit dem Befehl  <ProgVerz>\CP
+    --------------------------------------
+    Kommentar fuer MS-DOS-Kenner:
+    (CP.BAT  ist ein Batch-File, in dem ACP.EXE aufgerufen wird.
+     Wenn man ACP direkt aufruft, werden die angewaehlten Programme
+     nicht gestartet, sondern es entsteht ein neues Batch-File
+     namens CCC.BAT, in welchem der Programmaufruf mit den gewaehlten
+     Optionen steht. Am Ende dieser Batchdatei steht dann ein Aufruf
+     von cp.bat, d.h. CockPit erscheint wieder.)
+
+   ACHTUNG:
+   Die Funktionen zum Loeschen, Regenerieren etc. sind nur verfuegbar, wenn
+   man ACP mit Option -a3 startet. Die ausgelieferte CP.BAT enthaelt das!
+
+
+  ALLGEMEINE OPTIONEN:
+  (diese erscheinen in den 2 Fusszeilen)
+
+  a = Zugriffsberechtigung
+      (Default: a0 , dann entfaellt Menue FUNKTIONEN)
+  b = Name der Default-Datenbank (= Name der .API-Datei)
+  d = Datenbank-Pfad
+  k = Konfiguration (Default: A)
+  l = Sprache (Default: GER)
+  n = Dateinummer fuer neue Daten in PRESTO (default: 1)
+  p = Programm-Pfad (Default: C:\ALLEGRO )
+
+  Defaults fuer die Beispiel-Datenbank:
+
+b cat
+
+k a     ist default
+
+m 0     aktivieren, wenn es auf Einzelplatz sonst nicht klappt
+p D-1   Anzeigeparameter fuer PRESTO
+ q karte    Druckparameter
+n 1     Dateinr. fuer neue Saetze
+
+
+E x    Editor-Name (Programm x.exe)
+
+  Editor-Aufruf fuer die Parameterdateien etc.
+  (schreiben Sie z.B.  E WP , falls Sie WordPerfect benutzen wollen)
+  (Default ist sonst das mitgelieferte X.EXE)
+
+V v    c.com ist der View
+
+  Viewer-Aufruf
+  (falls Sie ein besonderes Programm zum Betrachten der Dateien
+  benutzen wollen - Default ist sonst das mitgelieferte V.COM)
+
+B A:
+
+  fuer das Backup kann hiermit ein Laufwerk vorgegeben werden
+  (default ist A:)
+
+H PRINT
+
+  zum Ausdrucken von Parameterdateien etc. kann man eine
+  HARDCOPY-Funktion vorgeben. Default ist PRINT
+  Evtl. hier DRUCK.BAT angeben und geeignete Batchdatei anlegen
+
+  Achtung: wenn man PRINT benutzt, muss man vor Start von ACP wenigstens
+  einmal den Befehl PRINT geben, damit der residente Teil geladen ist.
+  Man koennte auch  H TYPE  geben, dann wuerde die angewaehlte Datei
+  am Bildschirm erscheinen!
+
+L 1400000
+  maximale Logfile-Groesse
+  wenn die Datei .LOG groesser wird, informiert CockPit Sie bei jedem Start
+  darueber, dass eine Sicherung sinnvoll waere.
+
+ ***************************************************************************
+ * Ausserdem koennen Sie eine Anzahl eigene Menuepunkte ins CockPit einbauen: *
+ ***************************************************************************
+
+   Die eigenen Menuepunkte werden an das Menue ROUTINEN angehaengt.
+   Die dafuer noetigen Zeilen beginnen mit R oder S
+
+  R MenuItem, Batch?Frage, InfoLine        Hauptpunkt, bis zu 6 Stueck
+  S MenuItem, Batch?Frage, InfoLine        Submenue-Punkt, bis zu 10 je Hauptpunkt
+
+
+    mit:
+        MenuItem  =  Bezeichnung des Menuepunkts
+        Batch     =  Name des aufzurufenden Batch-Files / Befehls
+                     (Batch-Files muessen auf dem aktuellen Verzeichnis liegen)
+                     bei R KANN hier '&' stehen, dann MUESSEN S-Zeilen folgen
+        Frage     =  Frage an den AUfrufer, die Antwort kann innerhalb der
+                      Batchdatei dann als %1 verwendet werden
+        InfoLine  =  dieser Text erscheint auf der Hilfszeile, sobald der
+                     Menuepunkt aktiviert wird.
+
+  Das folgende sind nur Beispiele, die demonstrieren sollen,
+  wie die Struktur aussehen muss. Vergleichen Sie dazu, wie die Menuepunkte
+  im Menue 2 "Routinen" erscheinen.
+
+
+R OPAC, opac.bat, Online-Katalog
+
+R ALFA, alfa -ddemo2 , Ausleihprogramm
+
+R Windows-Programme, &, a99 und alcarta
+S a99 (Katalogisieren), a9start.bat, Windows-Katalogisierprogramm
+S alcarta (OPAC), alcstart.bat, Windows-OPAC und Datenbank-Browser "alcarta"
+
+R Neue Datenbank, &, Erstellen einer neuen Datenbank
+S Normal, dbnorm.bat, Ohne Ausleih- und Erwerbungs-Satztypen
+S Erweitert, dbspec.bat, Mit besonderen Ausleih- und Erwerbungs-Satztypen
+S Manuell, pronto.bat, Eigener Struktur-Entwurf (Mit Menuefuehrung)
+
+R Aktionen, &, besondere Routinen
+S Indexparameter, edit-ixp.bat, Indexparameter-Datei bearbeiten
+S Anzeigeparameter, edit-d1.bat, Bearbeitung der Parameter fuer die Bildschirmanzeige
+S Konfiguration, edit-cfg.bat, Bearbeitung der CFG-Datei (Kategorienschema, Abfrageliste, ...)
+
+R Auswertungen, & , Quantitative und alphabetische Listen
+S Quantitative Auswertungen, quant.BAT, Statistik, Zaehlen von Feldinhalten
+S Quick & Easy Export, QUEX.BAT, QUEX : QUick and Easy eXport - Einfache Listenproduktion
+
+R MS-DOS Exkursion, COMM.BAT, Ausstieg in's MS-DOS - Rueckkehr mit EXIT
+
+R Import-Aktionen, &, Fremddaten-Import und Einarbeitung in eigene Datenbanken
+S DEUTSCHE BIBLIOTHEK (MAB2), dbdisk.bat, DB-Diskettendaten importieren
+S Pica-Daten, pica.bat, Download-Daten aus einem Pica-System (Pica3-Format)
+S VLB-Daten, vlbkonv.bat, Daten aus dem Verzeichnis Lieferbarer Buecher
+S MARC-Daten, marc21.bat, Daten in MARC21, z.B. von OCLC
+
+R Exportieren lernen, expex\expex.bat, Lektionen in der Exportsprache (Kap.10)
+
+  ************************************************************
+  *  Voreinstellungen fuer die einzelnen "allegro"-Programme  *
+  ************************************************************
+
+  Hier koennen fuer die einzelnen Programme eigene Optionen stehen,
+  die dann im Menuepunkt 1 "Funktionen" benutzt werden.
+  Hinter einer Zeile mit der Kennziffer des Programms folgen
+  Zeilen mit dem Optionsbuchstaben und dem zuzuordnenden Wert:
+
+
+1   presto
+p D-1
+ q karte
+d c:\allegro\demo2
+e i-1/kkk
+s p
+
+4   srch
+
+d c:\allegro\demo2
+m 1
+e xxx/c:\allegro\demo2
+
+7
+e xxx/c:\allegro\demo2
+
+
+
+5  import
+m 0
+v 0
+

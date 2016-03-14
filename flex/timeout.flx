@@ -1,0 +1,34 @@
+  TIMEOUT.FLX : Ende der Sitzung, falls x Sekunden nichts gemacht
+  2002-08-05
+  Anwendung der slice-Funktion
+  Start mit:  sli 360000=iX timeout, z.B. in _START.FLX eingebaut
+              Das waere eine Timeout-zeit von 6 Minuten
+
+  Wenn #uzT schon besetzt: -> :A
+if #uzT jump A
+  Beim ersten Mal noch nicht, dann besetzen mit:
+  Interne Satznummer, Name der Erg.Menge, Groesse, Anz. Kategorien
+var i U l k0
+ins #uzT
+end
+
+:A
+var i U l k0
+  Vergleich mit den neuen Werten, wenn gleich: :out
+  Wenn sich einer dieser Werte veraendert hat, wird angenommen, dass
+  seit dem letzten Mal etwas gemacht wurde.
+if =#uzT jump out
+ins #uzT
+end
+
+:out
+  Warnung: in 20 Sekunden ist Schluss
+var "20,Gleich wird die Sitzung beendet!" 13 10 "Esc drcken, um das zu verhindern" 13 10
+ansi
+Mes 
+if no end
+var ""
+  Wenn es sein kann, dass Daten bearbeitet wurden, 
+  dann diesen Befehl aktivieren:
+    save edit
+STOP

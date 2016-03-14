@@ -1,0 +1,127 @@
+  UMINDEX.FLX : Umindexieren einer Ergebnismenge
+  20071029
+
+  Erg.Menge umindexieren. Grund: Aenderung der Parameter wirkt sich
+    nur auf eine Erg.Menge aus - dann muss nicht die Gesamtbank 
+    neu indexiert werden
+    SEHR WICHTIG:
+        Parameter il muss in alten und neuen Parametern gleich sein
+
+  ACHTUNG:
+  Statt *** muss hier ein gueltiger Parameterdateiname stehen!
+            Und zwar der Name der neuen Parameter.
+#uni ***
+
+  Aktuelle (alte) Indexparameter laden
+        (kann entfallen, wenn beim Start sowieso geladen)
+var B
+index p
+ 
+  Hilfsdatei f. die alten und neuen Schluessel anlegen
+open x keychg.dat
+
+first
+  Erg.Menge durcharbeiten, um die alten Schl. zu erzeugen
+:loop1
+perf altkey
+next
+if yes jump loop1
+
+  Neue Indexparameter laden
+var #uni
+index p
+if no jump perror
+
+first
+  Erg.Menge durcharbeiten, um die neuen Schl. zu erzeugen
+:loop2
+perf newkey
+next
+if yes jump loop2
+close x
+
+  Aktuelle Parameter wieder laden
+  Kann evtl. entfallen. 
+index p cat
+
+var "Vorbereitungen erledigt, jetzt die Einträge austauschen?"
+yes
+
+if not yes end
+
+  -----------------------
+  Hilfsdatei verarbeiten: Jede Zeile ist ein Schluessel der Gestalt
+     ixadd/ixdel |iTEXT   oder   ixadd/ixdel ~ziTEXT  (Hilfetext: h ixadd )
+  (Hinweis: Die Hilfsdatei koennte auch mit  exec keychg.dat  als FLEX
+   ausgefuehrt werden! Da sie aber u.U. zu gross ist, wird sie hier
+   zeilenweise eingelesen und ausgefuehrt)
+open keychg.dat
+  TBL blockieren, dann kann auch keiner in der Zeit in den Index speichern
+set tbl loc
+:loop3
+  Zeile lesen
+get
+if cancel jump ende
+if "ixdel" var (b" ");ixdel;jump loop3
+if "ixadd" var (b" ");ixadd
+jump loop3
+:ende
+close
+  Physische Speicherung der Indexdaten ausloesen
+close index
+  TBL wieder freigeben
+set tbl free
+var "Erledigt. Jetzt evtl. die neuen Parameter aktivieren, bevor weitergearbeitet wird!"
+end
+
+  -----------------------------------------------------------------
+  Die "alten" Schluessel des aktuellen Satzes in die Hilfsdatei
+         jede Zeile beginnt mit "ixdel"
+:altkey
+var sK
+ins #uAA
+  um die Schlüssel zu löschen
+:dloop
+var #uAA(e"==")
+if "|/" jump dnx
+if "|0" jump dnx
+
+wri "ixdel " i " " #uAA(e"==") n
+
+:dnx
+var #uAA(b"==")
+ins #uAA
+if #uAA jump dloop
+return    // ende :altkey
+  ------------------------------------------------------------------
+
+  U.P.
+  Die "neuen" Schluessel des aktuellen Satzes in die Hilfsdatei
+         jede Zeile beginnt mit "ixadd"
+:newkey
+var sK
+ins #uAA
+
+  Um die Schlüssel einzuspeisen
+:nloop
+var #uAA(e"==")
+if "|/" jump anx
+if "|0" jump anx
+
+wri "ixadd " i " " #uAA(e"==") n
+
+:anx
+var #uAA(b"==")
+ins #uAA
+if #uAA jump nloop
+
+return   // ende :newkey
+  -----------------------------------------------------------------
+
+:perror
+var "Die angeforderten Indexparameter " #uni " existieren nicht"
+mes
+var B
+index p
+end
+

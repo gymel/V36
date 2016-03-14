@@ -1,0 +1,38 @@
+  DOPPFIND.FLX : Duplikate finden
+  20081126
+
+  Aufgabe: In einem Reg. alle Doppel- und Mehrfacheintraege finden
+           und auflisten
+
+ask In welchem Register? (1,2,...,11)
+if "" end
+if "10" var ":"
+if "11" var ";"
+
+ins $r
+
+ask Anfangspunkt? (Enter : erste Zeile des Reg.)
+if "" var "¶"
+ins $v
+
+ask Endpunkt? (Enter : letzte Zeile des Reg.)
+if "" var zzzzz
+ins $b
+
+  Hilfsdatei aufmachen
+open x dopplist
+  Funktion 4 : Liste der Satznummern
+qrix f 4
+  t 1 bedeutet: alle Eintraege mit mehr als 1 Datensatz
+qrix t 1
+  Trennsymbol ist ---
+qrix d---
+  Befehl vorbereiten
+var "1000000 |" $r " _" $v "---_" $b
+  und ausfuehren
+Qrix
+close x
+  Nummernliste als Erg.Menge einlesen
+read set dopplist
+del dopplist
+

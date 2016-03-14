@@ -1,0 +1,311 @@
+
+Verlautbarung 198 der Entw.Abt.                              2007-05-07
+-------------------------------
+
+Das neue Gesamtpaket steht bereit: http://www.allegro-c.de/newvers.htm
+
+
+V27.2 - Damit koennen Sie rechnen!
+----------------------------------
+
+Highlights:  http://www.allegro-c.de/bluechyp
+
+Rechnen mit FLEX
+================
+Die Rechenfunktionen, die bislang in FLEX geboten wurden, sind hoechst
+ungewoehnlich und deshalb schwer zu meistern, zudem wenig maechtig in
+ihrem Potential. Das aendert sich nun schlagartig: Leicht zu lernen,
+kompakt, effektiv und selbstverstaendlich hochFLEXibel, das ist der
+neue Befehl "evaluate". Insider schreiben nur noch "eval", "eva" oder
+gar nur "ev" - das funktioniert alles.
+
+Was braucht man denn, wenn es ans Rechnen geht? Man muss ausdruecken
+koennen, welche Zahlen mit welchen anderen in welcher Weise verrechnet
+werden sollen. Woher kommen die Zahlen? Im allegro-Kontext natuerlich
+aus Datensaetzen oder aus Nutzervariablen, also aus Datenfeldern oder
+Unterfeldern. Als Funktionen braucht man die Grundrechenarten, keine
+trigonometrischen Funktionen.
+Also nur die Operatorzeichen +  -  *  /  und ^  (Potenzieren).
+Der Befehl mit einem arithmetischen Ausdruck kann damit so aussehen:
+
+eval wert op Wert op Wert op .... op Wert
+   dann steht anschliessend das Ergebnis in der iV
+   oder als Alternative
+Z = wert op Wert op Wert op .... op Wert
+   dann wird das Ergebnis in die interne Zahl Z kopiert, die man bei
+   einem nachfolgenden var-Befehl innerhalb desselben FLEXes
+   beliebig verwenden kann. 
+
+Jeder "wert" kann ein Datenfeld #nnn oder Unterfeld #nnn$x sein, wobei
+#nnn auch eine #u-Variable sein kann, genau wie im cstring des
+var-Befehls. Jeder Wert kann andererseits aber auch eine Zahl sein,
+d.h. man muss Konstanten, z.B. Umrechnungsfaktoren, nicht zuerst
+in Variablen setzen, bevor man damit rechnen kann. Möglich sind ferner
+auch die "freien Variablen", gleichfalls optional mit Angabe eines
+Unterfeldes, also in der Form  $Abc$x
+
+Die Abarbeitung geht schlicht von links nach rechts, ohne Prioritaet
+von Operatoren!
+Klammerung? Ist noch nicht moeglich.
+
+Maximale Laenge? 250 Zeichen. Das wird natürlich unuebersichtlich,
+man teilt dann die Rechnung besser auf zwei oder mehr Zeilen auf.
+
+--> Alles (vieles!) weitere:  h xeval
+Da gibt es auch gleich oben 4 Flips zum schnellen Ausprobieren, wozu
+noch keine Kenntnisse nötig sind.
+
+
+MultiX
+======
+Das schon 2005 vorgestellte Konzept, einer Datenbank zwei oder mehr
+Indexdateien zu geben, wurde jetzt umgesetzt, und zwar auch fuer die
+DOS-Programme und avanti.
+Ausfuehrliche Beschreibung:  h multix - da steht alles drin.
+
+
+ASORT.EXE jetzt Win-Programm
+============================
+Das Sortierprogramm asort.exe ist umgestellt auf ein Windows-
+Konsolprogramm. Der Name ist derselbe und es wird in derselben
+Weise benutzt. Es ist schneller, weil es groessere Zwischendateien
+produziert (die DOS-Grenze von 640K ist nicht mehr relevant!).
+Neu: Auch Externdateien sortierbar (Typ .ADT).
+Das alte DOS-Programm ist auch noch im Paket, aber unter dem
+Namen asortd.exe, falls irgendwo noch ein PC ohne Windows laeuft...
+
+
+Grunddateien exportieren mit FLEX
+=================================
+Ein neues Unterprogramm, expi.inc, ermoeglicht das bequeme satzweise
+Lesen von Grund- und Externdateien und ihren Export. Es dient als
+Ersatz von SRCH.EXE, wo man bisher eine Batchdatei machen musste,
+um eine Grunddatei durchzuarbeiten und in anderer Form auszugeben.
+
+
+Statistikfunktionen
+===================
+Erstmals im Win-aLF umgesetzt, wird jetzt ein neues Statistik-Konzept
+moeglich gemacht. Es geht dabei nicht um das Zaehlen von Angaben, die
+in der Datenbank vorliegen (das kann man laengst machen), sondern um
+das Erfassen und Auswerten von Vorgaengen, wie etwa den Ausleihen
+und Verlaengerungen. Diese muessen erfasst werden im Moment der
+Ausfuehrung, weil die Angaben ja nicht dauerhaft gespeichert bleiben.
+Mehr dazu:  h statist
+
+
+Z39-Clientfunktion
+==================
+Direkt notwendig scheint es nicht - sonst waere die Funktion laengst
+geschaffen worden. Denn es gibt ja "Zack"...
+Trotzdem wurde ein Hilfsprogramm geschrieben, mit dem eine
+Z39-Suche ausgefuehrt und die Ergebnisse als MARC-Datensaetze in eine
+Datei geschrieben werden - diese kann man hernach umwandeln.
+Das Progamm heisst  zc.exe - "z39 command".
+Mehr dazu:  h fleximp
+Gleich ausprobieren?  X zc  eingeben, dann eine ISBN, dann ein paar
+Sekunden abwarten...
+Andere Server wählen? Die Liste steht in zc.flx.
+
+
+FLEX : Sonstiges
+================
+
+Neuer Modus beim Befehl fetch
+-----------------------------
+fetch eN
+Es wird eingelesen, bis die Zeichenfolge gefunden wird, die
+momentan in der iV steht, und zwar die ersten N Zeichen davon.
+Dadurch kann man vorher eine beliebige Zeichenkombination in
+die iV schreiben, nach der dann beim Einlesen gesucht wird.
+Der eingelesene Text, der danach in der iV steht, endet dann
+genau vor dieser Zeichenfolge, d.h. diese gehoert nicht mehr dazu.
+Wichtig ist dieser Befehl beim Einlesen von Fremddaten zwecks
+Konvertierung. Mit 'if no ...' prueft man, ob die Zeichenfolge
+nicht gefunden wurde, mit 'if "" ...', ob ueberhaupt was gelesen
+wurde (oder das Ende schon erreicht war).
+Beispiel: Es soll eine Zeile gelesen werden, und die Zeilen der
+Datei enden alle mit den Codes 13 10:
+var 13 10
+fetch e2
+
+
+Globale Ersetzung und Zeichenumcodierung per FLEX
+-------------------------------------------------
+Mit xcode oder gleichwertig xchange hat man nun maechtige Funktionen,
+um einerseits globale Ersetzungen (wie in PRESTO!) vornehmen zu
+koennen, andererseits tabellengesteuerte Zeichenersetzungen in der
+internen Variablen. Geben Sie   h xxcode
+
+
+Textteile in RTF-Datei inkludieren
+----------------------------------
+In eine RTF-Hilfedatei kann man jetzt andere Textteile einbinden.
+Man schreibt dazu an der Stelle, wo die Einbindung hin soll:
+%idateiname%.
+Dies hat seine Grenzen: Es ist nicht rekursiv, Variablen und
+FLEX-Aufrufe kann man in diese Teile nicht einbetten, die Teile
+muessen auf demselben Verzeichnis liegen wie die Hauptdatei.
+Brauchbar kann diese Technik sein, um Kopf- und Fussteile fuer eine
+Sammlung von Texten nur einmal vorhalten zu muessen. Oder um in eine
+statische RTF-Datei wechselnde Inhalte einzublenden, die sich aus
+der Situation ergeben. Aber: Das Bearbeiten der einzelnen Teile
+z.B. mit WordPad oder auch im Anzeigefenster erfordert mehr Umsicht
+oder es kann nur mit normalem Texteditor gemacht werden, was genaue
+RTF-Kenntnisse erfordert.
+
+
+Kleinere Verbesserungen
+=======================
+
+Alt+m auch im Formular!
+-----------------------
+Oft gewuenscht, immer wieder aufgeschoben, jetzt umgesetzt!
+Auch im Formular kann man nun mit Alt+m die Hilfsliste der
+Sonderzeichen aufrufen und daraus mit Alt+m einzelne
+Zeichen uebernehmen. Das Formular verschwindet nach dem
+ersten Alt+m und erscheint wieder nach dem zweiten, dann
+aber mit dem ausgewaehlten Zeichen an der Stelle des
+Cursors.
+
+
+xport, download und export jetzt gleichwertig
+---------------------------------------------
+Die Befehle xport und download wurden zusammengefasst: sie
+sind jetzt beide gleichwertig mit dem neuen Befehl "export".
+Nur diesen braucht man noch zu lernen!
+Mehr dazu:   h xexport
+
+
+NEU: xcode/xchange
+------------------
+Ersetzungen aller Art im aktuellen Datensatz. Damit kann man
+sowohl die p- und q-Tabellen in den Parametern nutzen, auch
+die y-Befehle in den Importparametern nachbilden, UND Such-
+und Ersetzungsvorgaenge mit beliebigen Zeichenfolgen durch-
+fuehren, sowohl im Gesamtsatz wie feldspezifisch. Globale
+Ersetzungen gehen nun also auch FLEX-gesteuert!
+
+
+Gezaehlte und assoziative Arrays
+--------------------------------
+Dazu gibt es einen ausfuehrlichen Beitrag:  h xarray
+
+
+Mit  var i  jetzt immer aktuelle Satznummer.
+--------------------------------------------
+Beim Kopieren und oder Speichern eines neuen Satzes
+erhielt man mit  var i  nicht die neue (in dem Moment
+neu vergebene) Satznummer. Jetzt klappt das.
+
+
+Weitere FLEX-Sondervariablen (a99, nicht avanti)
+----------------------------
+cn	Feldnummer fuer Neuerfassungsdatum  (CFG cn)
+ce	... fuer letztes Žnderungsdatum  (CFG ce)
+ci	... fuer die IdNr  (CFG cg)
+cg	Form der IdNr (CFG ci)
+
+
+Schon laenger gueltig, aber noch unbekannt:
+-------------------------------------------
+Mit "if no ..." kann man auch nach einem write-Befehl checken,
+ob er gelungen ist. Misslingen kann er, wenn die Download-
+Datei mittlerweile, vor dem write-Befehl, von einem anderen
+Programm in Besitz genommen wurde.
+
+
+Bunte Datenanzeige:
+-------------------
+In die Anzeigeparameter des N-Formats war eine sog. "Texel"-
+Methodik eingebaut worden (s. Vb.163), mit der man in
+jede Kategorie Hervorhebungen mit Farben oder Fettschrift
+oder Kursivschrift einbauen kann. Dies wurde nun auch fuer
+die A-Parameter ermoeglicht. Dazu muss man nicht nur die
+D-WRTF.APR vom Demo-Verzeichnis uebernehmen, sondern auch
+die Indexparameter, damit die Farbbefehle beim Indexieren
+ausgefiltert werden. Als Tabelle wird die neue D-RTFF.APT 
+in D-WRTF.APR eingebunden statt der aelteren D-RTF.APT. 
+Die nutzbaren Formatierungsbefehle kann man daraus
+entnehmen, z.B.
+#B...#b : Fettschrift
+#I...#i : Kursiv
+#U...#u : Unterstrichen
+#O...#z : rOt
+#G...#z : Gruen
+#A...#z : blAu
+#C...#z : Cyan
+#V...#z : Violett (magenta)
+#S...#s : Hochstellen
+#J...#j : Tiefstellen
+#H...#h : Flip ein/aus
+fuer HTML:  #H... url...#a...text...#h
+
+
+Zwei Stoppwortlisten:
+---------------------
+In der Stoppwortliste kann man mit dem Zeichen > einen
+zweiten Abschnitt einleiten. Dieser muss in sich ebenfalls,
+wie der erste, alphabetisch sortiert sein. Abgearbeitet wird
+er jedoch nicht automatisch, sondern in den Indexparametern
+muss man den Manipulationsbefehl u>> in die Zeile setzen, in der
+ein Schluessel fabriziert wird, der dieser Liste zu unterwerfen
+ist. Wenn zu dem Zeitpunkt der Arbeitstext einem der Woerter auf der
+zweiten Liste entspricht, wird der Schluessel ausgesondert. Sagen
+wir, in #usw steht ein Wort, das in das Register 5 soll. Dann:
+#usw u>> p"|5"
+Besonderheit: Die Woerter in der zweiten Liste koennen das
+Fragezeichen als "Joker" enthalten. Wenn darin z.B. steht
+untersuchung??
+wird dadurch auch das Wort "Untersuchungen" ausgeblendet.
+
+
+STOP-Befehl : Dateien nicht geschlossen
+---------------------------------------
+Es konnte passieren, dass a99 die temporaeren Dateien nicht
+schloss, wenn der STOP-Befehl kam. Insbes. beim ReOrganisieren
+ist das misslich, denn es wird danach eine neue Sitzung
+gestartet, wo a99 dann neue temporaere Dateien anlegt, mit
+einem _ vor dem Namen. Das geht nur bis zu 10mal. Dieses
+Problem wurde ausgemerzt. Man sollte auf seinem TEMP-Directory
+mal die ueberzaehligen temporaeren Dateien loeschen. Das geht so:
+del %temp%\_*cat*
+wenn man mit cat.api arbeitet.
+
+
+Laden von Parametern : Test
+---------------------------
+Wenn das Laden von Exp.parametern mit  xpo p ... nicht
+gelungen ist, kann jetzt nicht nur mit "if no ..." darauf
+reagiert werden, sondern die Fehlermeldung steht in der iV.
+Also:
+xpo p abc
+if no mes;jump perror
+
+
+Primaerschluessel
+-----------------
+Die Variable  p  lieferte stets den bei Sprungmarke #-@ gebildeten
+Schluessel. Jetzt ist es die mit  set pX  gesetzte Sprungmarke #-X.
+
+
+Stop des FLEX bei falschem Datenfeld
+------------------------------------
+Wenn per  insert #nnn  oder  #nnn...  eine falsche Feldnummer nnn
+verwendet wurde, konnte das in einem kommentarlosen Abbruch des 
+FLEXes enden, wenn  set e0  gesetzt war. 
+Behoben.
+
+
+Zeichen % in RTF-Dateien
+------------------------
+Das Zeichen % hat Steuerfunktion. Soll es als solches in einer 
+RTF-Datei stehen und sichtbar werden, wenn diese angezeigt
+wird, muss man es verdoppeln. Nur eins wird dann sichtbar.
+
+-----------------------------------------------------------------
+Obsolet sind folgende Dateien auf dem HELP-Verzeichnis: 
+Die Datei  update.txt  wurde durch  update.rtf  ersetzt.
+flex1ger.rtf und flex2ger.rtf  werden nicht mehr gebraucht, sie
+sind enthalten in der neuen, aktuelleren Datei flexk.rtf.
+

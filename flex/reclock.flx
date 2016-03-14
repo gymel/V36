@@ -1,0 +1,37 @@
+  RECLOCK.FLX : aktuellen Satz sperren/freigeben
+
+var m
+if ="alc" end
+
+  Nur fuer Anzeige von org.rtf, auch #uvR (s.u.)
+var "frei"
+if tbl var "gesperrt"
+ins #uvG
+
+if deleted jump del
+if Lock jump fre
+set rec loc
+if yes jump sperr
+if no mes nicht gelungen
+end
+:fre
+set rec fre
+if yes jump ent
+if no mes nicht gelungen
+end
+:sperr
+#uvRgesperrt
+h org
+var "Satz " i " gesperrt
+mess
+end
+:ent
+#uvRfrei
+h org
+var "Satz " i " freigegeben"
+mess
+end
+:del
+var "Satz ist gel”scht, nicht sperrbar"
+ans
+mes

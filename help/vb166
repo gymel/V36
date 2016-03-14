@@ -1,0 +1,66 @@
+
+Verlautbarung 166 der Entw.Abt.                             2003-06-11
+-------------------------------
+
+Kleinere Verbesserungen
+-----------------------
+
+Operator-Name
+-------------
+Wird mit Passwortzugang gearbeitet, dann wird die Variable #op
+durch den Nutzernamen ersetzt, der eingegeben wurde.
+Dazu ist in password.flx die Zeile 
+ins #uwN
+im letzten Abschnitt (Loeschen der Var.) rauszunehmen. Das muss man
+in der _psw.flx nachvollziehen, die auf dem eigenen Datenverz. liegt!
+
+
+FLEX-Befehl "dow" erweitert
+---------------------------
+
+Um den "wri"-Befehl aufzuwerten, wurde neu eingerichtet:
+"download Ref"       (kurz  "dow R" )
+Damit werden die V14-Ersetzungen im aktuellen Satz vorgenommen,
+wenn die Datenbank welche hat.
+In den neuen FLEX  ftf.flx  fuer die Volltextsuche wurden
+"dow R" und "dow V" eingebaut. Damit funktioniert die Volltextsuche
+auch dann, wenn man V14 und/oder VS hat. In der DemoBank wird dann
+"tucholsky" gefunden sowie "moskva".
+
+
+download brief
+  klappte nicht, wenn die Erg.Menge aus nur 1 Satz bestand. 
+  Es wurde der aktuelle Satz exportiert, und das auch, wenn gar keine
+  Ergebnismenge vorlag.
+  Behoben
+
+Hintergrundfarbe bei Aenderungen am Datensatz
+---------------------------------------------
+Wenn man PV-Routinen hat, die eine Kategorie per M-Befehl in den Satz
+einordnen, wechselt bislang die Farbe nicht, und der Button [Wechseln]
+wird nicht aktiv, wenn ausserdem mit Formular gearbeitet wird.
+Das geht jetzt. Es kann sein, dass mal der Hintergrund gelb wird
+obwohl effektiv KEINE Aenderung passiert ist! Das muss man in
+Kauf nehmen, denn es ist im Programm sehr schwierig oder sogar
+unmoeglich, praezise festzustellen, DASS eine Aenderung passiert
+ist.
+
+
+FLEX-Befehl if
+--------------
+NEU:
+if >#nnn command 
+if <#nnn command 
+	Wenn die iV  groesser bzw. kleiner als der Inhalt
+    von #nnn  ist, wird command ausgefuehrt. 
+    Wenn der Inhalt von #nnn in "..." eingeschlossen ist, 
+    wird alphanumerisch verglichen, sonst numerisch.
+    #nnn kann eine normale oder eine #u-Kategorie sein.
+
+	 
+Und zum guten Schluss:
+
+choose *   (NEU)
+   legt die aktuelle Ergebnismenge zum Auswaehlen vor, ohne sie
+   neu zu bilden.
+

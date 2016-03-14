@@ -1,0 +1,231 @@
+  ARA.FLX : Archivdatenbank anlegen bzw. einschalten
+  2008-08-04
+
+  Wurde  ara.flx  im Zugriff auf die Archivbank selbst gestartet?
+var D
+if %arc-% mes Moment, das hier ist bereits eine Archivbank! So geht das nicht...;end
+
+  Ist die A.B. bereits gestartet?
+if $@a yes Die Archivbank scheint schon aktiviert zu sein. Nochmals starten? (Kein Problem!);if not yes end;jump restart
+
+  Pruefen, ob sie schon existiert
+:start
+var D "arc-" B
+ins $arc
+
+  D ist nicht als voller Pfadname angegeben?
+if not %:% if not %//% var W "\\" D "arc-" B;ins $arc
+
+var "|." $arc
+fnam
+if "" jump gnn
+  Das Verzeichnis  W/arc-cat  existiert schon!
+  Liegt dort auch eine Indexdatei?
+var $arc "\\" B "." K1 "dx"
+fsize
+if no jump gnn
+
+  ja, dann oeffnen
+jump arop
+
+  Verz. gibt's noch nicht, dann anlegen
+:gnn
+
+var $arc
+mkdir
+if no jump err
+ 
+  Arch.Bank anlegen. Zuerst einige Dateien
+  CFG kopieren, nach Prioritaet ($a.cfg auf DbDir = Prior. 1)
+var P K ".cfg CFG"            // a.cfg auf ProgDir zuletzt
+fcopy
+var P "$" K ".cfg CFG"
+fcopy
+var D K ".cfg CFG"
+fcopy
+var D "$" K ".cfg CFG"
+fcopy
+  Jetzt ist CFG diejenige, mit der immer gearb. wird
+  CFG modifizieren: Erfass. u. Aenderungsdatum
+  z.B.  #99E statt #99e, #99N statt #99n
+var $arc "\\$" K ".cfg"
+
+open x
+  Laenge der Kat.Nrn -> $k
+var Kk (0,1)
+ins $k
+
+  CFG zeilenweise einlesen
+open CFG
+:cloop
+get
+if cancel jump cend
+
+  Die Zeilen ce und cn aendern (trickreich, $k wird gebraucht)
+if "ce" var "ce";ins $c1;var "ce (0," $k ") 'E'";var;ins $c2;wri $c1 $c2 n;jump cloop
+if "cn" var "cn";ins $c1;var "cn (0," $k ") 'N'";var;ins $c2;wri $c1 $c2 n;jump cloop
+
+ins $z
+wri $z n
+jump cloop
+:cend
+close
+close x
+
+var $arc "/" B
+ins $arcb
+
+  Indexparameter kopieren
+var P B "." K1 "pi " $arcb "." K1 "pi"
+fcopy
+var D B "." K1 "pi " $arcb "." K1 "pi"
+fcopy
+
+  Anzeigeparameter kopieren
+var P a "." K1 "pr " $arc "\\" a "." K1 "pr"
+fcopy
+var D a "." K1 "pr " $arc "\\" a "." K1 "pr"
+fcopy
+
+  Formulardatei kopieren
+var P B ".frm " $arc "\\" B ".frm"
+fcopy
+var D B ".frm " $arc "\\" B ".frm"
+fcopy
+
+  .APT-Dateien vom DbDir kopieren
+var "copy " D "*." K1 "pt " $arc
+dos
+
+  _initial.flx anlegen, nur fuer den ersten Start wichtig
+var D B
+ins _\\_/_
+ins $db
+var $arc "\\_initial.flx"
+open x
+wri n n "new 0" n
+wri '#u1   ARCHIVBANK zu ' $db ', Start am ' #dt n
+wri "#" cg " 0000" n
+wri "set cf0" n
+wri "put" n
+wri "janas r"  n
+  es loescht sich nach dem Start selbst
+wri "var D '_initial.flx'" n
+wri "delete" n
+wri "find #1" n "erase" n
+  Neu oeffnen, damit das Kopieren sofort klappt
+get env temp
+ins _\\_\\\\_
+ins $temp
+  V ist Name der INI-Datei, incl. Pfad, mit der gestartet wurde!
+wri 'var P "a99.exe " V ' n
+wri "STOP" n
+close x
+
+  _start.flx fuer die Archivbank
+var $arc "\\_start.flx"
+open x
+wri "janas r   " 47 47 " Damit JanaS-Message nicht verarb. wird" n
+wri "erase off" n
+wri "var '#' t" n "find" n "disp" n "sho rec" n "flex acti" n
+close x
+
+  Ein FLEX fuer die GrundBank
+var D "acti.flx"
+open x
+wri n "activate" n
+close x
+
+  Kleinen FLEX zum Stoppen anlegen
+var $arc "\\" B "stop.flx"
+open x
+wri "STOP" n
+close x
+
+  Den Kopierflex  arccop.flx  zur ArchivBank kopieren
+  (anderer Name, weil er als ExFlex nur bei der ArchB. wirken soll)
+     also z.B.  catcp.flx
+var P "flex\\arccop.flx " $arc "\\" B "cp.flx"
+fcopy
+var "ArchivBank wurde neu angelegt, S„tze kopieren jetzt mit F8 m”glich"
+ansi
+sho iv
+jump newop
+
+  Archivbank oeffnen, beim ersten Start arbeitet sie _initial.flx ab
+                      beim zweiten usw. _start.flx
+:arop
+var $arc "\\" B ".tbl"
+fsize
+ins $l
+eval $l -2 /4
+ins $l
+var "ArchivBank existiert schon und hat " $l " Datens„tze"
+ansi
+sho iv
+
+:newop
+  Auf TEMP ein Verz. anlegen mit Namen z.B.  arc-cat
+get env temp
+ins $env
+var "|." $env "\\arc-" B
+fnam
+  es ist schon da?
+if not "" jump ini
+
+var $env "\\arc-" B
+mkdir
+if no var "Verz. arc-" B " auf " $env " kann nicht angelegt werden";mes;end
+
+  Exp.Param e-w0.apr nur zur Sicherheit
+  (f. Externdatei; falls ProgDir sonst nicht erreichbar)
+var P "i-1.apr " $env "\\arc-" B "\\i-1." K1 "pr"
+fcopy
+
+:ini
+  INI-Datei anfertigen (jedesmal neu!)
+var $env "\\arc-" B "\\ar.ini"
+open x
+wri "[general]"
+wri n "DbName=" B
+wri n "access=9"
+wri n "LogName=nul"
+wri n "DbAux=" M "arc-" B "\\"
+wri n "DbTitle=Archiv zu " D B
+wri n "Konfiguration=" K
+wri n "DbDir=" $arc
+wri n "DisplayParameter=" a n
+wri n "redB=255" n "greB=255" n "bluB=255" n
+close x
+
+get env comspec
+ins $com
+open x org.bat
+wri "cd " M "arc-" B n
+
+var P
+if not %:% var W "\\"
+ins $pd
+
+wri $com " /c start " $pd "a99 ar.ini" n
+wri "exit" n
+close x
+Dos org.bat
+
+var "1"
+ins $@a
+
+if $ARCV sleep 1000;exec X ark
+end
+
+:err
+var "Verz. " $arc " kann nicht angelegt werden"
+end
+
+:restart
+  Vorsichtshalber  catstop.flx  ausfuehren (da steckt STOP drin)
+var B "stop"
+flex
+sleep 500
+jump start
+

@@ -1,0 +1,162 @@
+
+Verlautbarung 124 der Entwicklungsabteilung                        1999-11-22
+-------------------------------------------
+Hinweis: Diese Vb. betrifft nur Inhaber von Grossbanken! Wer weniger als 
+3 Millionen Saetze hat und sicher ist, eine solche Groesse nicht so bald 
+zu erreichen, kann sich die Zeit fuer die Lektuere sparen. 
+Wichtig und beruhigend zu wissen ist nur: Die neuen Programme arbeiten mit
+Alt- und Kleinbanken genauso wie die bisherigen, es gibt nichts zu aendern
+oder zu beachten, insbes. die Leistung ist nicht verringert und die Programme
+sind nur geringfuegig groesser geworden.
+Es wird deshalb nach einer Bewaehrungsphase nur noch die neuen Programme 
+geben, nicht etwa eine grosse und eine kleine Programmversion.
+
+
+Aufbohrung : Vergroesserung der .cLD-Dateien
+--------------------------------------------
+
+Bisher: eine Datenbankdatei, Typ .cLD, konnte bis zu 16.000.000 Byte gross
+        werden. Bis zu 255 solche Dateien bilden eine Datenbank.
+
+Jetzt:  Zwar bleibt es bei maximal 255 Dateien, aber jede davon kann groesser
+        werden als 16.000.000 Bytes. Man muss allerdings einen neuen Befehl 
+        in die Indexparameter einsetzen.
+
+Warum?  Mit 16.000.000 Byte kann man z.B. ca. 16.000 Datensaetze in einer
+        Datei speichern, wenn die durchschnittliche Laenge ca. 1000 Byte ist,
+        oder ca. 32.000, wenn ein Satz im Schnitt 500 Byte lang ist, usw.
+        (Wohlgemerkt: die durchschnittliche Laenge ist massgebend, nicht
+        die maximale, die ist unwichtig.)
+        Weil es nur bis zu 255 Dateien in einer Datenbank geben kann,
+        ist bei ca. 4 Millionen Saetzen Schluss. (Bei einer mittleren Laenge
+        von 500 Byte je Satz natuerlich erst bei 8 Millionen.)
+        Weil manche Projekte sich auf diese Gegend zubewegen, musste
+        etwas geschehen.
+
+Loesung 
+        Mit dem neuen Befehl ii in den Indexparametern kann man die 
+        moegliche Grenze der .cLD-Dateien heraufsetzen, und zwar so:
+        ii=2 : verdoppeln    (also z.B. maximal 32.000.000 Bytes je Datei)
+        ii=3 : verdreifachen                    48.000.000
+        usw.
+
+Was ist zu tun?
+
+    1.  Man holt sich die aktuellen Versionen folgender Programme
+        (vom neuen Verz. PUB/AC15/NPROG)
+
+        PRESTO.EXE (bei Bedarf auch ALFA, MENUED, GAPAC, PRESTOI, INVENT, REF)
+        APAC.EXE
+        INDEX.EXE
+        UPDATE.EXE
+        SRCH.EXE  (das alte tut es auch noch, bis auf Nachladungen)
+        ACP.EXE   (CockPit; Korrektur bei Entlueftungs-Aufruf)
+        und von  PUB/AC15/A99/NEU:   a99upd.exe und alcupd.exe
+        aLF.exe und ORDER.EXE werden folgen, desgl. dann
+        die diversen Versionen von "avanti".
+        (Die Aenderungen in der Klassenbibliothek sind erfolgt, daher
+        muss "avanti" nur noch neu kompiliert werden.)
+        Die UNIX-Programme presto, index, srch und update etwas spaeter.
+        Der Z39-Server ist nicht betroffen, da er nicht selber auf die
+        Datenbank zugreift.
+
+    2.  In die eigenen Indexparameter den neuen Befehl ii einbauen, z.B. 
+        ii=2.
+        Faustregel:  N Millionen Saetze, ii=N/4
+          also z.B. 13 Millionen, dann   ii=13/4 = 3.25, also besser 4.
+        (ausgehend von einer mittleren Laenge von 1000 Byte/Satz)
+        Empfehlung: keine unnoetig grosse Zahl waehlen. Zahlen wie 8, 16
+        oder 32 haben keinen besonderen Vorteil. Groesser als
+        124 darf die Zahl ii nicht sein. 
+
+    3.  ALD-Dateien neu aufbauen (Tips dazu siehe unten)
+
+    4.  Arbeiten wie gewohnt. Nur noch die neuen Programme verwenden.
+        In PRESTO kann man jetzt mit Alt+F7 den Wert von ii sehen.
+        Eine parallel geschaltete Datenbank braucht nicht denselben
+        Wert von ii zu haben!
+
+
+Tips zum Neuaufbau
+------------------
+ACHTUNG: Es genuegt nicht, nur die TBL-Datei zu erneuern! Vielmehr muessen
+die Datenbankdateien erneuert werden (und die .TBL damit auch).
+Anschliessend beginnt dann jeder Satz auf einer Position, die durch ii 
+teilbar ist.
+Im Schnitt werden dann ii/2 Byte je Satz mehr gebraucht, d.h. die
+ALD-Dateien werden nur ganz geringfuegig groesser.
+
+A. Entlueften
+-------------
+   Das geht am schnellsten. Der Index als solcher braucht ja nicht erneuert
+   zu werden; Entlueften erneuert .ALD und .TBL.
+   
+   Folgende Optionen verwenden, wenn z.B. die einzelne ALD-Datei nicht
+   groesser als 25 MB werden soll (bislang ist ja 16000000 das Maximum)
+
+   index -fr0 -d*ALT -ecat/ALT -ka -n1 -z25000000 
+   
+   Mit -n0 wuerden die Dateinummern erhalten bleiben, mit -n1 wird neu
+   nummeriert (beginnend mit 1) und jede Datei bis zur gewuenschten 
+   Groesse aufgefuellt.
+   Fehlt die Option -z, wird als Default  ii*16000000  genommen.
+
+
+B. Voellig neu Indexieren
+-------------------------
+Wenn man per CockPit (Menue "Organisieren") eine Datenbank neu indexiert,
+bleiben die Dateinummern erhalten. Damit ist in diesem Fall nichts gewonnen.
+Man will ja i.d.R. mehrere alte .cLD zu einer neuen zusammenfassen.
+Dann geht man so vor:
+
+0. Die Datenbank liegt auf ALT   (z.B. ALT = F:\ALLEGRO\KATALOG)
+1. Neues Verzeichnis NEU anlegen (z.B. NEU = G:\ALLEGRO\KATALOG)
+2. Alle Parameter der Datenbank dorthin kopieren, vor allem die
+   Indexparameter (z.B. xyz.api), darin ii einstellen!
+
+3. Folgenden Befehl auf dem Programmverzeichnis geben:
+
+   index -f70 -dALT -exyz/NEU -ka -n1 
+
+   Man erhaelt die Liste aller .ALD-Dateien zum markieren, man setzt '+'
+   vor alle zu indexierenden Dateien (es muessen nicht gleich alle auf
+   einmal sein, man kann in mehreren Abschnitten vorgehen. Dann bei den
+   nachfolgenden Aktionen -f71 statt -f70 und evtl. -n2 o.a.)
+
+   Hat man V14-Ersetzungen oder Schiller-Raeuber-Schluessel, muss man
+   zweistufig indexieren, das geht so:
+
+   index -f70 -@1 -dALT -exyz/NEU -ka -n1 -m0
+   index -fi1 -@2 -d*NEU -exyz/NEU -ka -m0
+
+
+C. Datenbank aus Grunddateien neu aufbauen
+------------------------------------------
+Wenn man vorher noch keine Datenbank hatte, sondern erst eine aufbauen will.
+Es liegen dann Dateien des Typs .cLG vor, i.d.R. per Import produziert.
+Wenn diese Dateien  abc*.alg  heissen und auf DATEN liegen, startet man so:
+
+Ohne V14:
+   index -f70 -dDATEN\abc -exyz/NEU -ka -n1 
+
+Mit V14:
+   index -f70 -@1 -dDATEN\abc -exyz/NEU -ka -n1 -m0
+   index -fi1 -@2 -d*NEU -exyz/NEU -ka -m0
+
+Wird eine bestimmte maximale Dateigroesse gewuenscht, kann auch hierbei
+die Option -z eingesetzt werden (nur noetig bei -f7)
+Soll der Aufbau in mehreren Etappen geschehen, muss beim zweiten und
+weiteren Vorgang -f71 statt -f70 gesetzt werden.
+
+Ist dann die Datenbank fertig, dann ist der Wert ii auch in der TBL-Datei
+verankert! Selbst wenn die Indexparameter danach versehentlich veraendert
+wuerden, funktioniert die Datenbank immer noch, denn die Programme ent-
+nehmen dann den Wert ii der TBL-Datei. Wenn man diesen natuerlich selber
+veraendert, geht nichts mehr. (Aber wer macht schon sowas!)
+
+Noch ein Hinweis
+Wenn man Fuellzeichen definiert hat (Befehl f in der CFG), dann erhaelt beim
+Neuaufbau jeder Satz mindestens diese Anzahl Fuellzeichen, dann aber 
+zusaetzlich noch soviele, dass eine Laenge erreicht wird, die durch ii
+teilbar ist. Im Schnitt sind das ii/2 Fuellzeichen zusaetzlich.
+Das gilt hinterher auch fuer Neuaufnahmen.

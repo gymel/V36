@@ -1,0 +1,63 @@
+  Z-EXDAT.FLX : Externe Datei zum Datensatz oeffnen
+  2008-02-29
+  Variablen (aus ZABOM.INC):
+  $Exdat   Pfad der Dateien, mit \ am Ende
+  $Extyp   Dateityp, Default ".doc"
+  $Exkat   Kategorienummer, wo der Name steht, defalt #97w
+
+if not $Extyp $Extyp .doc
+if not $Exkat $Exkat #97w
+
+
+  Kat.Nr f. ext. Dateinamen steht in $Exkat.
+var $Exkat
+var
+ins $exnam
+  sonst aus #00 bilden
+if "" var "d" #00;ins $exnam
+
+if not %.% var $exnam $Extyp;ins $exnam
+  Pfad + Name zusammensetzen
+var $Exdat $exnam
+ins $exnam
+
+  Jetzt steht vollst. Dateiname in $exnam
+  Gibt es die Datei? Nein -> :neudat
+fsize
+if no jump neudat
+
+  Anzeige-Inhalt in Zwischenablage
+ccopy d
+var $exnam
+Dos
+end
+
+  Datei existiert noch nicht
+:neudat
+disp
+var "Die Datei " $exnam " gibt es nicht! " n "Anlegen, Titeldaten kopieren und hineinschreiben?"
+ansi
+yesno
+if not yes end
+var $exnam (e".") ".rtf"
+ins $exnam
+
+  Den Dateinamen in den Datensatz schreiben und speichern
+var $exnam (T"\\")
+ins $en
+  Datenfeld #97w mit dem erstellten Namen belegen
+var $Exkat $en 
+ins
+put
+sho rec
+
+  Die Datei anlegen und den momentanen Inhalt der Anzeige reinschreiben
+      das ist normalerweise eine formatierte Titelanzeige 
+ccopy d
+var ""
+sho IV
+cpaste d
+var $exnam
+file
+  Datei mit Editor oeffnen (je nachdem, was fuer .rtf eingestellt ist)
+Dos

@@ -1,0 +1,219 @@
+
+Verlautbarung 141 der Entw.Abt.                          2000-12-11
+-------------------------------
+                   Vb-Texte ab 126 jetzt im Hilfepaket! Siehe unten
+
+1. Offline-Daten: Neue Moeglichkeiten
+2. FLEX-Doku-Texte ueberarbeitet (Namen geaendert!)
+3. Vb-Texte jetzt im Hilfepaket
+4. FLEX fuer Dollarkurs-Umrechnung
+5. Button [Speichern] / FLEX-Befehl "help"
+
+
+1. Offline-Daten
+----------------
+
+Etwas unkomplett waren bislang die Moeglichkeiten des Umgangs mit
+Offline-Daten.
+Was IST das ueberhaupt genau?
+Im sog. "Offline-Speicher" sammeln sich alle Datensaetze, die
+waehrend einer Sitzung bearbeitet wurden. Hinzu kommt diejenige
+Datei, die bei Start schon eingelesen wird (Befehl "Offline=..."
+in der INI) und weitere Offline-Dateien, die man innerhalb einer
+Sitzung ueber das Menue "Datei | Weitere Offline-Datei" eingelesen
+hat.
+Das kann ein huebsches Sammelsurium werden, aber das Program merkt
+sich genau, ob ein Satz zur Datenbank gehoert (Mit dem Button
+[Wechseln] kann man in solchen Faellen zwischen dem aktuellen
+(bearbeiteten) und dem gespeicherten Satz hin- und herschalten.
+Ueber das Menue "Extras" kann man sich die verschiedenen Teilmengen
+der Offline-Datei zeigen lassen, insbes. die "In Bearbeitung"
+befindlichen. Ueber "Datei | Alle bearb. Daten speichern" kann man
+gezielt diese Datensaetze speichern lassen, so dass man nicht
+in Gefahr geraet, die Uebersicht zu verlieren oder das Speichern
+korrigierter Saetze zu vergessen, denn am Sitzungsende wird
+geprueft, ob es noch solche Saetze gibt.
+
+FLEX hat bisher keine Funktionen fÅr die Offline-Daten gehabt,
+bis auf "show Q" zur Ausloesung des Buttons [Q : Daten in Bearb.]
+(gleichwertig ist "find offline", soll aber abgeschafft werden)
+Jetzt kommen folgende hinzu:
+
+first off / last off
+next off  / prev off
+
+jeweils verkuerzbar zu "fir o", "nex o" usw.
+Dann wird der betr. offline-Satz geladen (aber nicht gezeigt,
+dazu muss man "disp" ergaenzen).
+
+Und gleichfalls neu:
+
+erase off
+
+Damit wird der offline-Speicher auf Null gesetzt. Das sollte man nur
+anwenden, wenn keine in Bearbeitung befindlichen Saetze mehr
+da sind! Zur Sicherheit kann man vorher machen: (NEU)
+
+save edit
+
+um automatisch solche evtl. noch vorhandenen Daten speichern zu
+lassen.
+
+Anschliessend, nach dem "erase off", kann man mit
+
+read file <dateiname>
+eine neue Datei des Typs .alg oder .adt einlesen lassen, um diese
+dann mit den Befehlen first, next, ... durcharbeiten zu koennen etc.
+Wohlgemerkt: Die Daten werden nicht Satz fuer Satz eingelesen,
+sondern die ganze Datei auf einmal!! Nur die Durcharbeitung findet
+dann satzweise statt, eben mit "next off".
+
+Damit hat man nun Moeglichkeiten der automatisierten Durcharbeitung
+von offline-Dateien! Denn die geladenen Saetze koennen gespeichert,
+bearbeitet und exportiert werden. Am Ende einer solchen Aktion dann
+wieder "erase off", und alles ist bereinigt.
+
+Es ist auch moeglich, eine Datei mit "update <dateiname>"
+statt mit "read" einzulesen.
+Wenn man vorher "set u410" gegeben hat, werden die
+Saetze mit den zugehoerigen Online-Saetzen identifiziert,
+aber nicht gespeichert. Sie liegen dann also in der Offline-
+Datei und koennen mit den neuen Befehlen bearbeitet werden,
+etwa so, dass nur solche mit bestimmten Merkmalen wirklich
+mit "put" gespeichert werden. Oder alle zusammen mit
+
+save edit
+
+Wer bis hierher mitgedacht hat, wei· jetzt: a99 kann nun die
+Export-Aufgabe von SRCH Åbernehmen, d.h. also das Einlesen und
+exportieren von Grunddateien.
+Ganz knapp wÅrde das so aussehen:
+
+...
+  Vorher evtl. bereinigen und Datei einlesen, dann
+  ersten Satz laden
+first off
+  Ende, wenn Datei leer war
+if no end
+:schleife
+ ... evtl. Bearbeitungsbefehle
+  Satz exportieren
+down
+  naechsten Satz laden
+next off
+  Schleife, wenn es noch einen gab
+if yes jump schleife
+  Offline-Datei wieder bereinigen
+erase off
+  Exportdatei schliessen
+xport f nul
+
+Auch NEU:
+
+find new
+   Bilde die Ergebnismenge der neuen und noch nicht
+   gespeicherten SÑtze
+   (wie Menue "Extras | Neu, noch nicht gespeichert")
+
+find edit
+   Bilde die Ergebnismenge der bearbeiteten, aber noch
+   nicht wieder gespeicherten SÑtze
+   (wie Menue "Extras | IN ARBEIT befindl. SÑtze")
+
+------------------------------------
+
+2. Ueberarbeitung der FLEX-Hilfedateien
+---------------------------------------
+Die FLEX-Dokudateien wurden natuerlich aktualisiert.
+Aber:
+Es erwies sich als ungluecklich, dass einige der neuen
+Dokudateien einen zu langen Namen hatten. Auf Win'NT usw.
+klappt alles, aber wenn die Dateien auf einem aelteren Novell-
+Server liegen, der keine langen Namen kann, geht's nicht.
+Getreu unserer Devise, ohne Not keine Namen laenger als 8
+Zeichen zu verwenden, haben wir die Sammlung umgearbeitet
+(dank X-Editor ging's schnell). Statt "flexldisplay.rtf"
+heisst es jetzt "xdisplay.rtf". Das Praefix "flexl" wurde
+also durch "x" ersetzt (es gab noch keine RTF-Dateien mit x
+am Anfang). Dadurch blieben nur 3 Dateien, deren Namen
+gekuerzt werden mussten, es wurde jeweils der letzte
+Buchstabe abgeschnitten:
+
+xactivat
+xdownloa
+xtransfe
+
+Nun ist alles in Butter. Die alphab. Uebersicht heisst xa.rtf.
+Also:   h xa   eingeben, schon kommt die Uebersicht.
+z.B.    h xfind, dann kommt Beschreibung des "find"-Befehls
+Empfehlung: zuerst alle Dateien "flexl*.rtf" loeschen.
+-----------                      ----------
+Dann das neue Paket FLEXHELP.LZH entpacken.
+Denn als Nebeneffekt koennen wir jetzt auch diese Dateien
+mit LHARC packen (WinZip ist ja sehr schoen, es ist aber ein
+Riesen-Bohrhammer im Vergleich zum enorm kompakten LHARC)
+Aber wer nicht anders will, kann ja .LZH auch mit
+Winzip entpacken oder mit dem WinCommander.
+
+Tip: Das Paket FLEXHELP braucht nur der Supervisor. Dieser
+installiert es sich auf seinem HELP-Verzeichnis, aber nicht
+auf dem oeffentlichen HELP-Verzeichnis, wo die OPAC- und
+andere Endanwender zugreifen. Zwar kann es dort keinen
+Schaden anrichten, aber auch wenig Nutzen stiften.
+
+-------------------------------------------------------------
+
+3. Vb-Texte im Hilfepaket
+-------------------------
+Die Texte der Verlautbarungen ab Nr, 129 sind jetzt im Hilfepaket
+enthalten. Dazu gehoert eine ViewListe  vb.vw. Diese wird geladen
+Åber einen neuen MenÅpunkt in DOKU.RTF.
+Man braucht nur einzugeben:
+h
+dann kommt nÑmlich DOKU.RTF, und an deren Ende ist der Punkt
+"Verlautbarungen".
+
+Mîglich ist auch der Direkt-Aufruf:
+x var P "help\\vb.vw"\View
+aber wer wird das jedesmal eingeben wollen? (Man kann es auf
+einen Alt-FLEX legen).
+Nebenbei hat man hiermit noch ein neues Beispiel, wie man ein
+Menue von Hilfedateien praesentieren kann. Diese sind zudem
+gar keine RTF- sondern schlichte ASCII-Textdateien. Viel weniger
+aufwendig als ein RTF-Menue, trotzdem effektvoll.
+
+Tip:  Wer ASCII-Texte in einer anderen Schriftart sehen will,
+muss in die Datei HELPHEAD.RTF eingreifen. Die hat am Ende diese
+Zeile:
+  ... {\cb6 \deflang1031\f1 \fs18 \ql
+Die Angabe \f1 ist fuer die Schriftart verantwortlich, Sie sehen
+weiter oben in der Datei, welche anderen Schriftarten eingestellt
+werden koennen.
+Hinweis: Courier braucht mehr Platz als "allegro Letter Gothic",
+ und nur letztere hat die OSTWEST-Sonderzeichen!
+Im Allgemeinen ist eine nichtproportionale Schrift fuer
+ASCII-Texte vorzuziehen!
+
+4. Zugabe: Dollarkurs-Umrechnung
+--------------------------------
+Neben  euro.flx  gibt's seit 5.12. auch  dollar.flx. Hier ist
+zusaetzlich die beim Euro nicht notwendige Option gegeben, den
+Wechselkurs zu aendern.
+Starten Sie  X dollar
+und studieren Sie  dollar.flx und dollar.rtf, wenn Sie etwas
+Aehnliches machen wollen.
+
+5. Zu Guter Letzt
+-----------------
+Der Button [Speichern] ruft jetzt die Funktion "Anzeige speichern"
+auf (Menue "Datei"), wenn gerade eine Hilfeseite auf dem Schirm
+steht. Voraussetzung  access=5
+Das erleichtert das Bearbeiten von Hilfetexten.
+
+Der FLEX-Befehl "help" liefert jetzt den Zustand NO, wenn die
+angeforderte Hilfeseite nicht gefunden wurde, d.h. mit "if no ..."
+kann man das abfangen. Auch dann kommt NO heraus, wenn eine Suche mit
+help =... oder help >... gemacht wurde, d.h. man kann gezielt
+auf das Vorkommen oder Nichtvorkommen von Zeichenketten im
+Anzeigefeld reagieren (auch wenn da kein Hilfetext steht!)
+

@@ -1,0 +1,430 @@
+  P-DIN.APR : Bildschirmausgabe nach DIN 1505
+  941221 / 000425
+   (Lorenzen, Hamburg 16.12.91)
+             Vers. 0.1 der DIN-Exportparameter aus Allegro-Datenbanken
+pn="DIN Literaturliste fÅr A.CFG"
+
+   Mit dieser Exportdatei sollen Titelaufnahmen gemÑ· den Regeln von
+   DIN 1505, T. 2  ausgegeben werden.
+
+
+zl=65       ZeilenlÑnge
+zi=8        EinrÅckung 8 Zeichen ab 2. Zeile
+fl=0        Listendruck 
+zm=0        fortlfd. Ausgabe ohne Seitenumbruch
+
+dx=1        Bildschirm- und Dateiausgabe
+ke=""       leeres Kategorieende wg TEX
+
+
+  Zwischenteil-Definitionen:
+1=". "
+2=", "
+3=" ; "
+4=13
+5=" : "
+6=13 13
+7=" = "
+8=". - "
+9=" / "
+10=" ("
+11=") "
+12=13 13 13
+13=13 "   "
+14=". - ("
+15="." 13 "   "
+
+29=" (Veranst.)"
+
+30=13 "Kongr.: "
+31=%78 #5                    Position 5
+
+33=13 "NE: " %78 #7          
+34=13 &0 "Abstract: " %78 #250   #250 heisst: EinrÅckung auf akt. Pos. setzen         
+35=13 13                        
+36=13 &0 "("
+37=13 &1                  
+38=13 10         
+39=13 "EST: " #250
+40=13 &0      Zeilenvorschub, nÑchste Zeile beginnt auf Pos. 1
+
+42=%52 #0         
+43=": " 13
+44=": "
+45=13
+46=13             
+47=" "
+50=13 "Anm.: " #250   Fussnoten
+51=13 "In: " #250   fÅr Quellenangaben von Aufsatztiteln
+
+53="." 13 "In: " #250  wenn #84 besetzt, folgt das auf den HST Lo, 1/7/90
+
+
+60="Forschungsbericht"
+61="Firmenschrift"
+62="Losebl.-Ausg."
+63="Ma·stab "
+
+
+  ----------------------------------------------------------------------
+
+       Hier beginnt der Hauptteil (= Aufbereitung der Einheitsaufnahme)
+
+    -------------------------------------------------------------------
+  Nach DIN 1505 sollen bei TeilbandzÑhlung + Teilbd.-Titel die Angaben
+  vor dem Erscheinungsvermerk stehen. ALLEGRO (oder ich) kann das nicht! Diese
+  Angaben stehen daher am Ende der Aufnahme und mÅssen "von Hand" einge-
+  schoben werden.
+
+#hi +X { C &1 } P{ " : " } #zz 0    vorher:       #250 } #zz 0
+      Hierarchie-Angabe; PrÑfix: Zeilenvorschub, Position 1
+                         Postfix: " : " + EinrÅckung festlegen
+      wenn die aktuelle Aufn. ein Untersatz ist, geht es anschliessend 
+      bei #-X weiter
+   --------------------  Ende der Unteraufnahmenbehandlung -----------
+#t40
+  !u1 0 #zz 4     wenn es eine Sortierdatei ist, existiert #u1, was als Kopf
+                     benutzt wird
+
+
+#90 e"" R          Signatur rechtsbÅndig
+#t{ C &1 }
+#40 +m e0     wenn Verfasser vh, springe nach -m
+#+n           bei allen anderen Aufnahmen soll Hrsg. oder Kîrperschaft
+#-m           am Anfang stehen ******  wahrschl. ist das zu eng !!
+#t99
+!40 ++ m>g #u1 3 #29 44 #69 3 #zz 44     alle Verfasser u. Mitarb. schreiben
+!52 0 #u1 3 #29 44 #69 3 #zz 44     alle Verfasser u. Mitarb. schreiben
+#t98
+!84 +#58 e0    wenn Teil od. Einzelbeitr., Hrsg. d.Gesamtwerks Åbergehen     
+!41 ++ >V m>G #29 44 #69 3 #zz 44       Herausgeber, selten!
+!42 >g >F #29 44 #59 3 #zz 44            Mitarbeiter 
+!60e >V #29 44 #59 3 #zz 44  zu ergÑnzender Urheber in besonderen FÑllen
+!58 0 #29 44 #59 3 #zz 44   andere Personen
+!59 P" (Festschrift fÅr)" 0 #29 44 #zz 44  gefeierte Person
+#+A                            danach im Textteil weitermachen
+#-n
+!60 U #zz 44    Urheberwerke erhalten #60 als Kopf,
+!60e >V #29 44 #59 3 #zz 44  zu ergÑnzender Urheber in besonderen FÑllen
+!41 ++ >V m>G #29 44 #41z 3 #83 3 #zz 44      Hrsg.-werke mit #41
+!58 P" (Adressat)" 0 #29 44 #59 3 #zz 44   Adressat
+!59 P" (Festschrift fÅr)" 0 #29 44 #zz 44  gefeierte Person
+  ---------------------------- Tagungsschriften --------------------------
+#83 +#61 e0         wenn es um Tagungsschriften, Kongresse usw geht
+#+A                 sonst weiter bei #-A
+!61 ++ >V m>V #29 44 #61z 3 #69 >V #zz 44
+#20 0 #zz 0               Titel der aktuellen Tagung
+#83 p" (" P")" #77 1 #zz 1    "Dauername" der Tagungen mit ZÑhlung, 
+                                                             Ort und Datum
+
+   neu Lo, 8/12/91:
+   #77 +S c" S. " e0  Test auf Seiten (=Umfangs-)angabe; wenn "nnn S. " dann Sprung!
+   #77 1 #zz 1               Bandangabe
+                     Tagungsschriften werden auf e. bes. Weise erfasst, so da·
+#+q                  es erst bei #-q wieder weitergeht  Lo, 1/10/90
+
+                     Textteil der Einheitskarte
+#-A
+#18 +#71 40 #76 8     wenn #18 vorkommt, geht es danach mit #71 weiter
+#19 +#39 40 #69 9     wenn #19 vorkommt, geht es danach mit #39 weiter
+#21 p"[" P"]" #zz 4       [Sammlung]
+#20 e" : " #20 0 #27 5 #40 1 #69 9 #77 1 #80m 8 #zz 0   Hauptsachtitel ohne Zusatz
+#hi +#20 e0 #20 0 #27 5 #zz 0
+    bei UntersÑtzen muss #wh Åbersprungen werden:
+#wh      Wiederholungsmarke: wiederhole Kopfzeilen bis hierher bei Folgekarten
+              (automatisch wird ... dahinter gesetzt)
+#-C
+#20 b" : " 5 #27 5 #40 1 #69 9 #77 1 #80m 8   Zusatz zum HST Lo, 20/6/90
+#25 0 #21 7 #27 0 #69 9 #77 1
+#24 7 #27 0 #69 9 #77 1
+#242 7 #27 0 #69 9 #77 1
+
+#39 +#71 0 #76 8            % Sprungziel etwas fragwuerdig, siehe #18 oben
+
+#84 +j e0 #61 53 #80 0 #80m 8 #84 53 #zz 0  wenn Åbergeordn. Werk, keine Ausg.,
+#43 0 #69 >l #77 >m          "Name, Vorname"
+#44 0 #69 >l #77 >m           
+#45 0 #69 >l #77 >m           
+#46 0 #69 >l #77 >m        wenn also ein weiterer Personen- oder
+#47 0 #69 >l #77 >m           Kîrperschaftsname folgt, wird "; " als
+#50 >K #69 >l #77 >m           Postfix ausgegeben, sonst " "
+#51 >K #69 >l #77 >m
+#52 >K #69 >l #77 >m
+#53 >K #69 >l #77 >m
+#54 >K #69 >l #77 >m
+#55 >K #69 >l #77 >m
+#602 0 #69 3 #76 8
+#61 0 #69 3 #77 1 
+#+q
+#-j
+#80m P". Nebenkarte in: " 63        Unselbst. ersch. Karten + Ma·stabsvermerk
+                                    ab Vers. 11.2 steht das in #77k
+#41 ++ >G m>G #41z 3 #61z 3 #84 44 #zz 44   Hrsg.-werke mit #41 vor Gessachtit.
+#61 P" (Hrsg.)" 0 #69 3 #76 8 #84 44    neu, 18/10/90
+#84 >r #77 1      Gesamtsachtitel, evtl. mit herausgelîst. Verfasser
+#-q
+#96d +c e0            wenn Hochschulschrift, dann weiter ab #-c
+#96h +c e0
+  #83 +#71 e0       wenn Tagungsschrift, dann Bandangabe aus #77 Åbergehen
+
+  neu Lo, 8/12/91:
+#77 +P c"S." e0  Test auf Seiten (=Umfangs-)angabe; wenn "nnn S. " dann Sprung!
+#+o
+#-P         Anwendervariable st wird aufgebaut
+#77 dst ast   der Text von #77 wird in d. Anwendervar. geschr.
+    diese wird nach der Sprungmarke #-S ausgegeben; ansonsten geht es weiter
+#ust +#71 e0  wenn d. Anwendervar. gebildet wurde, weiter bei Auflagenvermerk
+
+#-o  wenn keine Seitenangabe, dann handelt es sich um Bandangaben
+#77 1 #76 1 #zz 1  Lo, bei d. Erfassung wird " S. , Bd. usw. " eingegeben!
+
+#71 1 #72 2 #73 47 #76 0   in allen anderen FÑllen geht es hier weiter
+  #71 0 #72 2 #76 47   in allen anderen FÑllen geht es hier weiter
+#72 1 #76 47 
+  #72 0 #76 47 
+#72f p"(Faks. der Ausg. " P")." 0 #76 47         vermutl.statt 0  1 setzen!
+#72n p"(Nachdruck der Ausg. " P")." 0 #76 47            -  "  -
+#73 +S #708 2 #76 0 #81 8 #85 0 #88 8 #zz 0  wenn Erscheinungsvermerk 
+                                       in Vorlageform gewÅnscht
+  Hochschulschriften erhalten von RAK abweichenden Erscheinungsvermerk
+#74 e"" 1 #75 5 #76 2            Lo 8/12/91
+   #74 p". " 0 #75 5 #76 2   PrÑfix ist neu, Lo 8/12/91
+#75 0 #76 2 #zz 0
+#70 +c e0       wenn #70 vorkommt, dann #76 Åbergehen, weiter bei #-c
+#76 0 #708 2 #81z 8 #85 0 #88 8 #zz 0
+  
+#-c
+#96d +D p". " e2            wenn HS-Schrift, weiter bei #-D
+#96h +D p". " e2            vorher wird noch ein Endepunkt ausgegeben
+#+T                   alle anderen Aufnahmen machen bei #-T weiter
+#-D
+#74 0 #76 2           auf den Erscheinungsort folgt ", "
+#75 0 #96z 2           `Verleger' ist die Hochschule, danach ", "
+#96d 0 #76 2          Dokumenttyp wird vor das Ersch.-jahr gesetzt
+#96h 0 #76 2
+#76 0 #77 8 #zz 0          Erscheinungsjahr
+#77 0 #zz 0           Umfangsvermerk  bei Hochschulschriften
+#+r                   Sprung z. Ende, damit nicht 2-mal eine Seitenzahl kommt
+  --------------------  ZeitschriftenaufsÑtze u.Ñ. ---------------------
+#-T          Test 30/6/90 PrÅfung auf unselbst./selbst. Quelle
+#70 +#85 e0
+#70i +#85 e0
+#70c +#85 e0
+#+S                    wenn #70 nicht vorkommt, wird bei #-S weitergemacht
+#85 ++ >4 m>4 #70 53 #zz 0  22/10/90
+
+#70 +#8n i4,_ e";" F" " P"  " |52    wenn #70 _kÅrzel : nachladen
+#70 +#70 e";" C p"In: "      wenn  #70 text  vorkommt, ausgeben, weiter bei #702
+#70c +#8n e5 p"_" P"  " |52        in #70c steht CODEN? 
+                       danach wird im Index 5 gesucht und der Satz geladen.
+#70i +#8n e8 p"_" P"  " |52         wenn kein CODEN, dann ISSN?
+
+#t{"!!!Nachladen gescheitert!!!"}
+
+#8n +#70 C p"In: "    der geladene Ansetzungstitel aus #8n wird genommen
+            hier #8n1... einsetzen, wenn Zitiertitel 1 u.a. gewÅnscht!
+#20 C e" :" p"In: "     wenn #8n nicht besetzt, dann #20
+#70 e0   nur als Sprungmarke
+#<               zurÅckschalten, dann die Aufsatzdaten
+
+#702 p" [" P"]" #zz 0    ELand
+#703 p" (" P") " #zz 0   EOrt
+#704 p" " #zz 0          Band
+#76 p" (" P")" 0 #709 2 #zz 0      Jahr
+#706 0 #709 2 #zz 0             Heft
+#709 +U e0     wenn ein Beilagenvermerk, dann anderer Text fÅr d. Seitenangabe
+#708 +#88 p"S. " 0 #zz 0     Seitenzahlen
+#-U                      Anwendervariable #ube wird aufgebaut, 30/10/90
+#708 dbe p"nach S. " abe    wenn Beilagenverm., dann neuer Zusatz zur Seite
+#709 p", " Abe           anschlie·end folgt die Beilagen-Angabe
+#ube 0 #70 0 #82 8 #zz 0  Ausgabe der Beilagen
+#88 p". - ISSN " 0 #70 0 #80 8 #zz 0
+  ---------------------------------------------------------------------
+#-S
+#70 +r e0
+#70i +r e0
+#70c +r e0
+#85 ++ >4 m>4 #709 2 #84 8 #85z 0 #86 1 #88 8 #zz 0    Serientit: Unterprogr.
+
+  Umfangsangaben als 'ErgÑnzende Angabe'   neu Lo, 8/12/91
+#ust 8 #81 8 #86 0 #88 8 #zz 0    gib Umfangsangabe durch Anwendervariable aus
+                 nach #99 wird st wieder frei gemacht fÅr die nÑchste Aufnahme
+
+#80 0 #88 8 #zz 0     Anmerkung, z. B. in Verbindung mit Kongressen, Lo 11/1/92
+#86 4 #88 8              Lo, 8/12/91
+    -------ISBN-----
+#87 p"ISBN " #709 2 #82 8 #zz 0
+#88 p"ISSN " #82 8 #zz 0
+#708 p"S. " 0 #709 2 #81 8 #84 0 #88 8 #zz 0   Seitenangabe nach Ges.Sachtit. 
+                                        d. Åbergeord. Werks
+#709 0 #81 8 #84 0 #88 8 #zz 0          Beilagenvermerk nach Komma, 31/10/90
+#84 +r e0                Åbergehe d. folg. Kartenma·stab, da schon ausgegeb.
+#80m 63 #87 8 #zz 0      ab Vers 11.2 stehen diese Angaben in #77k
+#-r                   
+#80f 60 #87 8 #zz 0      "Forschungsbericht" = Zwischenteil 60
+#80i 61 #87 8 #zz 0      "Firmenschrift"     =      - " -   61 
+#80l 62 #87 8 #zz 0      "Losebl.-Ausg."     =      - " -   62
+  #80 0 #87 8 #zz 0       Anmerkungen sollen bei Monogr. vor ISBN stehen, d. h.
+  -------------------------------------------
+#23 C "[Nebent.:] "
+#902 e"" 13 #zz 0
+#903 e"" 13 #zz 0
+#gt 36 #zz 11    Åbergeordneter Gesamttitel (wird nur bei StÅckaufnahmen aktiv)
+#81 4 #zz 0
+#82 33 #zz 42
+#912 R 46 #zz 0
+#T38      Vorsichtsmassnahme, falls Fortsetzungskarte innerhalb #98 beginnt!
+#98 34 #zz 42
+#T0                     RÅcksetzung
+#99 C p"[Kommentar:] "
+
+#ust dst e0       hier wird st wieder frei gemacht fÅr die nÑchste Aufnahme
+
+#+#     normalerweise ist hier Schlu·.
+
+#-X               Titeldaten zur BandauffÅhrung
+#18 +Y 0 #76 8
+#19 +Y 0 #69 9
+#20 e" : " 0 #20 0 #21 7 #25 5 #27 0 #zz 0
+#-Y
+#+C
+
+#(K         UP fÅr Personennamen
+#cc e" = " b", " #zz 0   Verweisungsformen abschneiden, hinter ", " beginnen
+#cc e", " p" " #zz 0     Text vor dem ", " nehmen, " " davorsetzen
+#)K                      in beiden FÑllen kein Postfix! (#zz 0)
+    -----------  Lo, 24/6/90------------------------------------
+#(k            hier wird der 2. und 3. Verf. anders behandelt!
+#cc e" = " b", " e1 P"." #zz 0    vom Vornamen nur 1. Initiale  
+#cc e", " p" " #zz 0              wie bei #(K
+#)k
+
+  Dieses UP gibt die Verfasser komplett wie eingegeben aus :
+#(g
+#cc 0 #zz 0
+#)g
+
+   Dieses Unterprogramm soll d. Hrsg. mit Funktionsbezeichnung ausgeben.
+#(G       UP fÅr 2., 3. Herausgeber
+#cc e" = " b0 e", " P", " #zz 0     Verweisungsform abschn., bis Nachn. les.
+#cc b", " e1 P"." #zz 0       vom Vornamen nur d. ersten Buchstaben
+#cc >F #zz 0
+#)G
+   ------------------------ Lo, 29/6/90 -----------------------------------
+
+   zwei UPs fÅr die beteiligten Personen
+
+#(l    zuerst wird ein weiteres Unterprogramm aufgerufen: 
+#>F    gib die Funktionsbezeichnung aus
+#t3    schreibe "; "
+#)l
+
+#(m    dasselbe wie #(l, bis auf das Postfix:
+#>F
+  #t47    schreibe " "
+#t1    schreibe ". "
+#)m
+
+
+  --------------------------  Lo, 1/10/90 ---------------------------------
+ 
+  UP fÅr veranstaltende Kîrperschaften bei Tagungen, Kongressen usw.
+
+#(V
+#cc 0 #zz 0
+#cc >F #zz 0
+#)V
+
+
+#(F     Funktionsbez. Ausgabe
+#i1,6 +6   erste Kategorieziffer =6: weiter bei #-6
+#i1,5 +5   erste Kategorieziffer =5: weiter bei #-L(??) ===> #-5
+        4er-Kategorien:
+#cc i2,1 p" (Hrsg.)!" e"!"
+#cc i2,2 p" (Mitarb.)!" e"!"
+#cc i2,3 p" (Bearb.)!" e"!"
+#cc i2,4 p" (Begr.)!" e"!"
+#cc i2,5 p" (Samml.)!" e"!"
+#cc i2,6 p" (Texter)!" e"!"
+#cc i2,7 p" (öbers.)!" e"!"
+#)F        Ende Unterprogramm F
+#-5           #5er Kategorien
+#cc i2,0 p" (Illustr.)!" e"!"
+#cc i2,1 p" (Komment.)!" e"!"
+#cc i2,2 p" (Komponist)!" e"!"
+#cc i2,3 p" (PrÑses)!" e"!"
+#cc i2,4 p" (Resp.)!" e"!"
+#cc i2,5 p" (Vorw.)!" e"!"
+#cc i2,8 b"[[]" p" (" e"]" P")"
+
+#)F        Ende Unterprogramm F (!)
+#-6           #6er Kategorien
+#cc i2,1 p" [Veranst.]!" e"!"
+#cc i3,e p" [Hrsg.]!" e"!"
+#)F        Ende Unterprogramm F (!)
+
+
+
+
+#(4         Unterprog. fÅr Serientitel:
+            mîgliche Eingabeform: #85 Serientitel =p Ordnungsworte ; BdNr
+#cc e" =p " e" ; " p" (" #zz 0    daraus wird gemacht:
+#cc B" =p " b" ; " p' ' #zz 0   (#85 Serientitel BdNr)
+#t{ ")" }
+#)4
+
+#(r          Unterprogr. um Verfassernamen aus Gesamtsachtitel herauszulîsen
+             Kategorie: #84
+#cc e" ; " b" / " P" : " #zz 0
+#cc e" / " b0 #zz 0
+#)r
+
+
+p  255    Absatz-Endezeichen wird aktiviert
+p ™ 1      Nichtsortierzeichen werden weggelassen
+q ™ 1
+p @ 1      Entstoppungszeichen ausblenden
+
+q a/z A
+q Ñ "AE"
+q î "OE"
+q Å "UE"
+q · "SS"
+q é "AE"
+q ô "OE"
+q ö "UE"
+
+q Ç ê
+q † A
+q ° I
+q ¢ O
+q £ U
+q Ö A
+q ç I
+q ä E
+q ï O
+q ó U
+q à E
+q É A
+q ì O
+q ñ U
+q å I
+q á Ä
+q Ü è
+q ë í
+q § •
+q ß ¶
+q ¨ ´
+q Ø Æ
+q Û Ú
+q Ó A
+q Ô E
+q Ò 
+q ı Ù
+q ˘ ˜
+q ¸ ˚
+q .254 ˝
+
+
+
+tPRINTER    aktuellen Druckertreiber laden

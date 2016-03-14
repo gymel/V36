@@ -1,0 +1,126 @@
+  BIBTEX.APR : Ausgabe in Form der BibTeX-Struktur
+  2005-03-02   (erster Entwurf war von Berger)
+
+zl=72
+
+#t{C C}                           % Start
+#818 +A p{'@phdthesis{'} e0        % Eintragstyp raten
+#70 +A p{'@article{'} e0 
+#84 +A p{'@inproceedings{'} e0
+  ...
+#nr +A p{'@book{'} e0              % Default
+
+
+#-A
+  CiteKey produzieren (sonst ist Endnote stoerrisch)
+!40 +#20 e4 F" "
+!41 +#20 e4 F" "
+!42 e4 F" "
+!20 u e4 F" "
+#76 x"*1" e4
+#t{ "," }
+
+        % jetzt ist die erste Zeile fertig.
+
+#40 p{C 'author = "'} P{'",'}
+#402 p{C 'author = "'} P{'",'}
+#403 p{C 'author = "'} P{'",'}
+#41 p{C 'editor = "'} P{'",'}
+#60 p{C 'organization = "'} P{'",'}      % ???
+#20 p{C 'title = "' } P{'",'}
+     % splitten!
+#85 e" ;" p{C 'series = "'} P{'",'}
+#85 b" ; " p{C 'volume = "'} P{'",'}
+
+   ...      % restliche Felder analog
+#70 p{C 'journal = "'} P{'",'}     % Aber vielleicht haben
+                                   % Sie verknuepft?
+#74 e"" p{C 'address = "'} P{'",'}
+#75 p{C 'publisher = "'} P{'",'}
+#76 e" = " p{C 'year = '} P{','}
+#704 p{C 'volume = '} P{','}
+#706 p{C 'number = '} P{','}
+#708 p{C 'pages = "'} P{'",'}
+   ...
+#t{C '}'}
+
+    (dies ist die Variante author = "Umfeld, Ernst", ich weiss
+    leider nicht, ob die babel-kompatibel ist und man nicht
+    author = {Umfeld, Ernst} nehmen muss, also dann
+  #40 p{C 'author = {'} P{'},'}
+
+
+  Um sauber zu bleiben, muessen Sie die Zeichenumcodierungen
+  etwas anders gestalten, als beim normalen TeX oder LaTeX,
+  hier dann also etwa
+
+
+   u.U. auch noch auf die Alternativtabelle mit q - Befehlen anwenden
+
+p - "--"       Bindestriche
+p < "$<$"      Ortsnamen in spitzen Klammern werden
+p > "$>$"      durch math. Zeichensatz erzeugt
+          p # "\#"   fÅhrt zu Stîrungen !
+p $ "\$"
+p % "\%"
+p & "\&"
+p .21 "\S"      Paragraphenzeichen
+p .170 1     Nichtsort.Zeichen
+
+   Akzentbuchstaben, einige    d.i.  IBM-Konvention !!!!
+p Ä "\c{C}"       128
+p á "\c{c}"       155
+p Ç "\'e"         130
+p É "\^a"         131
+p Ü "{\aa}"       134
+p à "\^e"         136
+p ä "\`e"         138
+p å "\^i"         140
+p ç "\`i"         141
+p è "{\AA}"       143
+p ê "\'E"         144
+p ë "{\ae}"       145
+p í "{\AE}"       146
+p ì "\^o"         147     
+p ï "\`o"         149
+p ñ "\^u"         150
+p ó "\`u"         151
+p ú "\pounds"     156
+p † "\'a"         160
+p ° "\'{\i}"      161
+p ¢ "\'o"         162
+p £ "\'u"         163
+p § "\~n"         164
+p • "\~N"         165
+p ® "?`"          168
+p ≠ "!`"          173
+
+q /A/Z a
+q Ñ a
+q î o
+q Å u
+q é a
+q ô o
+q ö u
+q · "ss"
+q Ç e
+q ê e
+
+   -----  Zeichenketten-Ersetzungsbefehl nîtig, da ALLEGRO Åber p - Befehle
+          nicht mitspielt; wichtig fÅr GERMAN.STY
+_Ñ_"a_    
+_î_"o_
+_Å_"u_
+_·_"s_
+_é_"A_
+_ô_"O_
+_ö_"U_
+
+_â_"e_
+_ã_"i_
+
+       _#_\#_   scheint nicht zu funktionieren, vgl. den p - Befehl
+
+                             Ende der TEX-Befehle
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

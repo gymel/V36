@@ -1,0 +1,199 @@
+  ONF8.FLX :  Bei F8 - Situationsabhaengig verfuegbare Funktionen
+  2005-12-13  Stellt ein Menue der momentan sinnvollen Funkt. zusammen
+
+:start
+
+  Absichern gegen leeren Prim.Schl.
+#urP
+var p "xxxx"
+var (2,2)
+if "xx" #urPxx
+
+#uxF
+  Name der letzten Hilfedatei -> #uxF, falls es eine FLEX-Datei war
+var X "x"
+if %~.flxx% var X;ins #uxF
+
+  Aresqa-Liste in der iV aufbauen (mit var-Befehlen)
+
+var " >>> Tippen Sie nur den Anfangsbuchstaben, dann Enter! <<<"
+if Help var +n "h : Hilfetext bearbeiten"
+if #uxF var +n "f : FLEX " X " bearbeiten"
+if #uxF var +n "F : FLEX " X " starten"
+var + n "f : Aktuellen Datensatzes im Formular bearbeiten"
+if diff if not New var + n "w : Satz wieder speichern"
+if New var + n "s : Satz speichern"
+if New var + n "d : Satz deaktivieren (Neusatz ungueltig machen)"
+if not New var + n "k : Satz kopieren"
+var + n "n : Satz neu anzeigen"
+if not del var + n "r : Satz beseitigen"
+if del var + n "r : Satz reaktivieren (momentan gelöscht!)"
+
+if $@a var + n "s : Satz archivieren"
+if g0 if $@a var + n "e : Erg.Menge archivieren"
+if not $@a var +n "a : ArchivBank öffnen"
+if hier var + n "t : Hierarchischen Satz trennen"
+if hier jump menu
+
+  Wenn #urP gesetzt, fehlt PrimSchl.
+if #urP jump menu
+  d.h. dann Hierarchie-Anzeige nicht moeglich!
+if fam var + n "h : Hierarchie-Anzeige"
+
+:menu
+  Wenn ein Menuepunkt nicht gewuenscht ist, dann hier
+  die betr. Zeile einruecken oder loeschen:
+var + n ">>>> Tip: Alt+h = Füllhorn <<<<"
+var + n "Aktuellen Satz als Erg.Menge nehmen (nur diesen einen!)"
+var + n "+ : Aktuellen Satz zur Erg.Menge hinzunehmen"
+var + n "- : Aktuellen Satz aus Erg.Menge herausnehmen"
+var + n "Quick-Liste"
+var + n "Kalender"
+var + n "Informationen zu dieser Datenbank"
+var + n "Systemhandbuch"
+var + n "Phrasen anzeigen"
+var + n "Hintergrundspeicher anzeigen"
+var + n "Datenfelder mit Bedeutung anzeigen"
+var + n "Ausleihfunktionen einschalten"
+var + n "Erwerbungsfunktionen"
+var + n "Zeitschriftenverwaltung"
+var + n "CockPit (DOS-Hauptprogramm)"
+ var + n "Breit/Schmal-Umschaltung (F11)"
+var + n "Tastenfunktionen-Hilfe (F12)"
+if g3 var + n "Ergebnismenge einschr. nach Ersch.Zeitraum"
+if Help var + n "Text im Anzeigefeld als Datei speichern"
+var + n "Letzter Hilfetext (" X ")"
+var + n "HexaDez-Anzeige des aktuellen Satzes"
+set aMomentan mögliche Funktionen
+
+  Menue als aresqa-Liste zeigen (Gesamter Text steht in iV)
+Aresqa
+  Auswahl (womit beginnt die gewaehlte Zeile?):
+if "n" set dn;disp;sho rec;jump start
+if "r" sho rec;dis;yes Diesen Satz wirklich Löschen?;if not yes end;erase;disp;end
+if "r" put;disp;sho rec;end
+if "w" put;disp;sho rec;end
+if "s :" exec ark
+if "e :" exec ark e
+if "a :" exec ara
+if "s" put;disp;sho rec;end
+if "d" erase;end
+if "k" copy;exec onforms
+if "f : FLEX" jump hed
+if "F : FLEX" jump flexuse
+if "f" if H dis;exec onforms
+if "t" jump Hier
+if "h : Hil" jump Help
+if "h" Fam;end
+if "Aktu" jump akterg
+if "A" help alfa;end
+if "Erg" exec pyrest
+if "E" help order;end
+if "Z" help zabom;end
+if "S" help handbuch;end
+if "D" #uX9 X cfgb;mes Die in rot erscheindenden Daten kann man bearbeiten - Aber dann mit Alt+9 speichern!;exec cfga
+if "I" exec dbinfo
+if "K" exec kalender
+if "Hin" dis res;end
+if "Hex" exec shrec
+if "P" sho phr;end
+if "Tex" var "dann bitte den Button [Speichern] benutzen";mes;end
+if "T" help he_sp;end
+if "C" exec cockpit
+if "B" set d;end
+if "L" jump lhe
+if ">>" h doku;end
+if "-" if not empty jump minus
+if "+" if empty jump one
+if "+" if not empty jump add
+  Erg.Menge leer: mit Trick eine 1-elementige Menge erzeugen:
+
+if "Q" set i8Schnellwahl aller Funktionen;View quick;set i8
+end
+
+:Hier
+exec a-trenn
+
+:one
+if new end
+var "#" i
+find
+var p
+ins #upP
+var #upP(0,2) " " #upP(2,0)
+find
+end
+
+:lhe
+var X
+help
+end
+
+:add
+var l
+ins #urL
+var U
+var (B":")
+var + "/" i
+ins #urN
+find /
+var l
+if =#urL end
+var "R" #urN
+set
+var U
+var (b" ")
+sho iV
+end
+
+:minus
+var l
+ins #urL
+var U
+var (B":")
+var + "-" i
+ins #urN
+find -
+var l
+if =#urL end
+var "R" #urN
+set
+var U
+var (b" ")
+sho iV
+end
+
+:Help
+var X
+var (e"=")
+ins #uxH
+if %.rtf% jump hed
+if %.% jump hed
+
+var #uxH ".rtf"
+help
+if no var #uxH "ger.rtf";jump hlp
+if no var #uxH "ger";jump hlp
+jump hs
+
+
+:hed
+var X
+
+:hlp
+help
+:hs
+var "Bearbeiten, dann mit Button [Speichern] wieder abspeichern
+sho iV
+act 4
+end
+
+:akterg
+var "or #" i
+find
+end
+
+:flexuse
+var "X " X
+exec
+end

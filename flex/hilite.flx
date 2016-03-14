@@ -1,0 +1,318 @@
+  HILITE.FLX : Parameterdatei lesen und mit Farben dekorieren
+  2004-01-08
+
+ins #uwP
+
+var m
+if "alc" end
+
+  Wenn Alt+9 gegeben wird, dann ist #uxx mit xxx oder yyy belegt.
+  Zuerst wird dann die Datei gespeichert, dann neu angezeigt:
+var #uxx
+if "yyy" jump sp2
+if "xxx" jump speichern
+
+  Zaehler auf 0 setzen
+z = 0
+Z = 0
+
+  #uxx war nicht besetzt, d.h. normaler Aufruf:
+  Wenn Aufruf z.B. von param.flx kommt, ist #uwN mit dem Namen besetzt
+  #uwG loeschen (Flag fuer unerlaubte Grafikzeichen)
+#uwG
+var ""
+if #uwN var #uwN
+if #uwP var #uwP
+ins #uwN
+
+  Wenn kein voller Pfadname gegeben ist (ohne \) dann Datei suchen
+  (auf DbDir, ProgDir und WorkDir)
+if #uwN if not %\\% perf findfile
+var #uwN
+ins #uwF
+  Es stand was in #uwN, dann -> :anzeige
+if not "" jump anzeige
+
+var "Bunte Anzeige von Export-Parameterdateien|*." K1 "p?"
+fnam
+if no end
+
+  den gewaehlten Namen in #uwF speichern
+ins #uwF
+:anzeige
+  Datei zum Lesen oeffnen (Name steht noch in iV)
+open
+  Fuer das spaetere Speichern: #uX9 fuer Alt+9 belegen
+var "x var 'xxx'\\ins #uxx\\exec X hilite"
+ins #uX9
+
+:start
+  An den Dateinamen "-.rtf" haengen, zum Schreiben oeffnen
+    (wegen '-' dann kein Konflikt mit evtl. existierenden Namen)
+var #uwF(e".") "-.rtf"
+open x
+  parameter hilite.apr laden (werden nur fuer "write" verwendet!)
+    machen die Umcodierung nach RTF
+var e
+ins #uvE
+xport p hilite
+if no perf nopar
+   dow
+   Kopf der rtf-Datei: (insbes. wg. d. Farben, s.u.)
+wri "{\\rtf1" n
+wri "{\\fonttbl" n
+wri "{\\f0\\fmodern allegro Letter Gothic;}" n
+wri "}{\\colortbl;\\red0\\green0\\blue0;\\red0\\green0\\blue255;\\red0\\green180\\blue180;" n
+wri "\\red0\\green176\\blue0;\\red220\\green0\\blue220;\\red255\\green0\\blue0;" n
+wri "\\red180\\green180\\blue0;\\red128\\green128\\blue128;\\red0\\green0\\blue184;" n
+wri "\\red0\\green128\\blue128;\\red0\\green128\\blue0;\\red128\\green0\\blue128;" n
+wri "\\red220\\green0\\blue0;\\red128\\green128\\blue0;}"
+    Hier die Schriftgroesse einstellen: fs20 heisst 10Punkt !
+wri "{\\f0\\fs20 "
+
+  ZeilenZaehler (iz = interner Zaehler) auf 1 setzen (falls gewuenscht)
+
+z = 1
+
+  erste Zeile lesen (X davor setzen)
+var "X"
+   get x+ : Einlese-Sonderbefehl zum Markieren des Kommentars mit //--
+get x+
+
+  ^^^^^^^^^^^^^^^^^ Beginn der Schleife
+:loop
+  gelesene Zeile (steht in iV) in #uzL speichern, mit X davor
+  (sonst wuerden fuehrende Leerzeichen bei "ins #uZK" verschwinden...)
+  Leere Zeile? (besteht nur aus X, so testet man das:) dann -> :weiter
+if not >"X" jump weiter
+  sonst in #uzL kopieren
+ins #uzL
+ansi
+if %% perf grz
+
+  ***************************************
+  Farben
+   1 = Schwarz
+   2 = blau
+   3 = cyan
+   4 = gruen
+   5 = magenta
+   6 = rot
+   7 = dunkelgelb
+   8 = grau
+   9 = dunkelblau
+  10 = cyan dunkel
+  11 = dunkelgruen
+  12 = magenta dunkel
+  13 = dunkelrot
+:zv
+  Womit beginnt die Zeile?
+var #uzL
+if "X  " jump cl
+  Farbbefehl beginnt mit:
+wri "{\\cf0"
+  und dann kommt eine Zahl, abhaengig vom Beginn der Zeile:
+if "X#" wri "2"
+  Wenn !-Zeilen auch blau sein sollen, dann 2 statt 10:
+if "X!" wri "9"
+if "X " wri "8"
+if "X	" wri "8"
+if "Xp " wri "4"
+if "Xpa" wri "10"
+if "XP " wri "10"
+if "XQ " wri "10"
+if "Xq " wri "11"
+if "Xu " wri "7"
+if "Xt" wri "3"
+if "XI" wri "13"
+if "Xi" wri "13"
+if "XR" wri "13"
+if "X|" wri "13"
+if "Xak" wri "6"
+if "X0" wri "5"
+if "X1" wri "5"
+if "X2" wri "5"
+if "X3" wri "5"
+if "X4" wri "5"
+if "X5" wri "5"
+if "X6" wri "5"
+if "X7" wri "5"
+if "X8" wri "5"
+if "X9" wri "5"
+wri " "
+jump ausg
+
+:cl
+  Zeile, die mit blank beginnt
+  Umcodierung per ExportParameter p-Liste! (frueher  dow wX)
+   bei //-- endet der Befehl und beginnt der Kommentar
+var #uzL(1,0 e"//--")
+xco xp
+ins $h 
+wri $h
+jump rest
+
+:ausg
+   bei //-- endet der Befehl und beginnt der Kommentar
+var #uzL(1,0 e"//--")
+xco xp
+ins $h 
+wri $h
+   Farbe wieder abschalten:
+wri "}"
+
+:rest
+var #uzL(b"//--")
+   Hat die Zeile einen Kommentar? --> :komm
+if not "" jump komm
+jump weiter
+
+:komm
+    Farbe grau
+wri "{\\cf8 "
+var #uzL(b"//--")
+xco xp
+ins $h 
+wri $h
+wri "}"
+
+:weiter
+wri "\\par " 13 10
+  Zaehler um 1 hochzaehlen
+z + 1
+  naechste Zeile lesen
+var "X"
+get x+
+  war noch eine Zeile da? dann Schleife
+if yes jump loop
+  ^^^^^^^^^^ Ende der Schleife und der Datei
+wri "}}"
+
+  Exportdatei schliessen
+close x
+  internen Zaehler nach #uZZ kopieren:
+var z
+ins #uZZ
+
+  RTF-Datei anzeigen, Zeilennummer hinter den Namen setzen
+var #uwF(e".") "-#" #uZv
+  Datei neu zeigen (ab der gemerkten Zeile!)
+help
+var "Das ist die Datei " #uwF 13 10 "Text kann jetzt bearbeitet werden, Speichern dann mit Alt+9"
+  Diese Meldung im Schreibfeld zeigen
+sho iv
+  und Fokus ins Anzeigefeld setzen
+act 4
+
+  Variablen loeschen
+var ""
+ins #uzL
+ins #uZZ
+ins #uZv
+  RTF-Datei loeschen, wird nach dem Einlesen nicht mehr gebraucht
+var #uwF(e".") "-.rtf"
+del
+var #uvE
+xport p
+jump exit
+   ***************************
+
+:speichern
+var ""
+if #uwG var +"!Vorsicht, " #uwG " Grafikzeichen gehen verloren!" 13 10 "Vorschlag: Datei zuerst mit anderem Editor bearbeiten und Grafikzeichen beseitigen" 13 10 13 10
+var +"Text abspeichern in " #uwF "?"
+yesno
+if not yes jump exit
+  // Speichern ohne Frage
+:sp2
+#uxx
+  Nummer der ersten sichtbaren Zeile (Variable zv) merken: (f. spaetere Neuanzeige)
+var zv
+ins #uZv
+
+  Name steht in #uwF, Speichern geht mit "file"
+  aber zuerst Kopie machen mit Typ .bak
+  und zu allererst Kopie des Originals nach ProgDir\Param machen,
+  falls dort noch keine Kopie liegt:
+var P "param/" #uwF(T"\\")
+fsize
+  Es gibt noch keine, also Original kopieren
+if no perf mkd
+  und jetzt die bak-Datei
+var #uwF " " #uwF(e".") ".bak"
+fcopy
+var #uwF
+file
+if no jum not
+  Zur Neu-Anzeige:
+jump anzeige
+:not
+mes @Speichern klappt nicht
+#uX9
+jump exit
+
+  Grafikzeichen gefunden
+:grz
+var "!Zeile " z " enth. ein Grafikzeichen:" 13 10 #uzL 13 10 "Es wird ersetzt durch 'grz'"
+mes
+var "1"
+Z+
+  Flag fuer grafikz. setzen
+var Z
+ins #uwG
+return
+
+:exit
+  Variablen loeschen (#uwF muss bleiben wg. Speichern!)
+#uwN
+#uwG
+#uzL
+#uxx
+#uwW
+var #uvE
+xport p
+end
+
+:mkd
+var P "param"
+mkdir
+var #uwF " " P "param/" #uwF(T"\\")
+fcopy
+var "Originaldatei " #uwF " wurde nach " P "param kopiert!"
+mes
+return
+
+:nopar
+  Parameter  hilite.xpr nicht gefunden (passiert, wenn nicht A.CFG)
+  Dann Kopie machen von hilite.apr
+var P "hilite.apr" " " P "hilite." K1 "pr"
+fcopy
+if no end
+return
+
+  Suchen, wo sich die Datei befindet
+:findfile
+#uwF
+var #uwN
+ins #uwW
+  auf DbDir?
+var D #uwW
+ins #uwN
+fsize
+if yes return
+  auf ProgDir?
+var P #uwW
+ins #uwN
+fsize
+if yes return
+  auf WorkDir? (Startverz.)
+var W #uwW
+ins #uwN
+fsize
+if yes return
+var "@Die Datei " #uwW " wurde nicht gefunden, sorry"
+mes
+#uX9
+jum exit
+
+return

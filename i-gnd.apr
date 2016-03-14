@@ -1,0 +1,194 @@
+  I-GND.APR   : Export nach Import mit GND.AIM
+  2012-04-01  : Unbedingt zu kombinieren!
+pn="MARC GND -> .ALG"
+
+
+   -------- Konstanten ----------------------------------------------------
+            Dieser Teil muss bleiben
+zl=0        Zeilenlaenge unbegrenzt (kein Umbruch)
+ks=1        Beginn des Ausgabetextes beim ersten Zeichen hinter #
+ke=0        Kategorie-Ende = Code 0
+as=h0       Aufnahme-Start: Hierarchiekennung + 0
+                    Hauptaufnahme        : Code 01  als Startzeichen
+                    Unteraufnahme Stufe 1:      02  ...
+ae=13 10    Aufnahme-Ende: Carriage Return / Line Feed
+
+   -------- Anweisungsteil --------------------------------------------------
+
+   #da     Akzente umdrehen (vor den Buchstaben setzen)
+        (Nein, intern wird automatisch  #dA  gemacht)
+
+
+  Vorbereitende Loeschungen von Hilfsfeldern
+#u8a d8a e0 #zz 0
+#u8b d8b e0 #zz 0
+#u8k d8k e0 #zz 0
+#u8o d8o e0 #zz 0
+#u8p d8p e0 #zz 0
+#u8q d8q e0 #zz 0
+#u8r d8r e0 #zz 0
+#u8s d8s e0 #zz 0
+#u8w d8w e0 #zz 0
+#u8g d8g e0 #zz 0
+
+
+  #3na, #3nr und #4nr aus gnd.aim nach #u8w, #u8r und #u8p
+#3na b3 =8w e0 #zz 0
+#3nr b3 =8r e0 #zz 0
+#4nr b3 =8p e0 #zz 0
+
+  Vorbereitungen beendet
+
+  Nun alle #99. abarbeiten
+    darin sind die in  gnd.aim  nicht umgewandelten MARC-Felder
+    Struktur:  #99i(tag)MARC-Feldinhalt ohne Indik, z.B. #992(005) 0330120102.0
+
+  Schleifenbeginn
+#-L
+       ACHTUNG:
+ #99.   Diese Zeile aktivieren nur zur Kontrolle waehrend Test
+          dann bleiben die #99. in den Ergebnisdaten stehen und man kann sie studieren
+
+     Wenn's noch eine #99 gibt, dann #-l
+#99. +l =9a #zz 0
+#+B
+
+  Der Inhalt der #99 ist jetzt in #u9a. Was ist es?
+#-l
+#u9a +D c"(035) (DE-101)" e0 #zz 0
+
+#u9a +N c"(150) " e0 #zz 0   Sach-SW
+#u9a +G c"(151) " e0 #zz 0   Geogr.SW
+#u9a +K c"(083) " e0 #zz 0   Dewey
+
+#u9a +E c"(670) " e0 #zz 0
+#u9a +E c"(679) " e0 #zz 0
+#u9a +R c"(550) " e0 #zz 0
+#u9a +R c"(551) " e0 #zz 0
+#u9a +S c"(510) " e0 #zz 0
+#u9a +P c"(500) " e0 #zz 0
+#u9a +O c"(400) " e0 #zz 0
+#u9a +Q c"(410) " e0 #zz 0
+#u9a +Q c"(450) " e0 #zz 0
+#u9a +Q c"(451) " e0 #zz 0   
+
+  Hier wird die verarbeitete #99.  beseitigt
+#-Z
+#u9a b3 e3 M #zz 0
+#+L     zum Schleifenbeginn
+
+  Abschnitte zur Verarbeitung der #99., d.h. der Kopie in #u9a
+  Jeweils Sprung nach #-Z, um die #99. dann zu loeschen
+
+  Hauptsach- bzw. geogr. schlagwort: #3n
+       $x und $9g: durch " / " ersetzen
+#-N
+#dt p"#3n ss!" e"!" =sg
+  Sachgruppen, auf Wunsch aktivieren
+ #30 b3 Asg
+  Dann das eigentl. Schlagw. 
+#u9a b3 b") " ,"_x_ / _" ,"_9g:_ / _" p" " Asg #zz 0
+#usg b3 M #zz 0
+#30 e3 M #zz 0
+#+Z
+
+#-G
+#u9a b3 b") " ,"_x_ / _" ,"_9g:_ / _" p"#3n sg " M #zz 0
+#+Z
+
+#-D
+#u9a b"101)" p"#89D" M #zz 0
+#+Z
+
+#-E
+#u9a b"67" b")" p"; " A8a #zz 0
+#+Z
+
+  fuer #4n :  ersetze $c durch " / "
+#-O
+#u9a b"400)" ,"_c_ / _" e"" p"" A8o #zz 0
+  #u9a b"400)" b"d" e"" p" (" A8o #zz 0       Lebensdaten nicht!
+
+#+Z
+
+  fuer #6na und #3na:  $9g: und $b durch " / " ersetzen
+#-Q
+#u9a b"410)" f" " ,"_9g:_ / _" ,"_b_ / _" ,"_f_, _" ,"_p_ / _" e"" p"" A8q #zz 0
+#u9a b"450)" f" " ,"_9g:_ / _" ,"_b_ / _" e"" p"" A8w #zz 0
+#u9a b"451)" f" " ,"_9g:_ / _" ,"_b_ / _" e"" p"" A8w #zz 0
+
+#+Z
+
+
+
+  fuer #4nr : $a ($d) /$4 0$0
+#-P
+#u9a b"500)" b"a" e"" p"" A8p #zz 0
+#u9a b"500)" b"d" e"" p" (" A8p #zz 0
+#u9a b"500)" b"4" e"" p") /" A8p #zz 0
+#u9a b"500)" b"94:" e"" p") /" A8p #zz 0
+#u9a b"500)" b"0" e"" p"0" A8p #zz 0
+ 
+#+Z
+
+  #3nr gibt es schon! Ergaenzen um die Mehrfachfelder
+#-R
+#u9a b"55?)" b"a" e"" p"" A8r #zz 0
+#u9a b"55?)" b"0" e"" p"0" A8r #zz 0
+#u9a b"55?)" b"94:" e"" p" /" A8r #zz 0
+#u8r b3 =8g e0 #zz 0
+ 
+#+Z
+
+#-S
+#u9a b"510)" b"a" ,"_9g:_ / _" e"" p"" A8s #zz 0
+#u9a b"510)" b"0" e"" p"0" A8s #zz 0
+ 
+#+Z
+
+#-K  Dewey
+#u9a +Z c"a" e0 #zz 0
+#u9a b"083)" e"" p"" A8k #zz 0
+ 
+#+Z
+
+#-B
+  Jetzt die richtigen Felder aus den #u8x bilden
+#u8a b3 f"; " p"#81 " M #zz 0
+#u8r b3 f"; " p"#3nr" M #zz 0
+#u8s b3 f"; " p"#6nr" M #zz 0
+#u8p b3 f"; " p"#4nr" M #zz 0
+#u8o b3 f"; " p"#4na" M #zz 0
+#u8q b3 f"; " p"#6na" M #zz 0
+#u8k b3 f"; " p"#32B" M #zz 0   Dewey
+#u8w b3 f"; " p"#3na" M #zz 0
+#u8g b3 f"; " p"#3ng" M #zz 0
+
+
+#ukS +#ukG P"X" c" X" e0 #zz 0
+
+  #3n muss ein Praefix kriegen, ss oder sg
+#ukS +Y b3 ,"_9g:_ / _" p"#3n ss" M #zz 0
+
+#ukG +Y P"X" c" X" e0 #zz 0
+#ukG b3 ,"_9g:_ / _" p"#3n sg" M #zz 0
+
+#-Y
+##          Pauschalexport : alle Kategorien hintereinander ausgeben
+                             jeweils mit  ke  abschlieáen
+#+#
+
+/30     Sachgr. bei ## nicht mit ausgeben
+/99.   #99x nicht ausgeben
+
+  Noch Tabellen laden f. Zeichenumcodierung
+
+  Fuer die Wandlung UTF-8 nach ASCII
+tucodes
+
+  Sonderfall: die zwei Zeichen f.d. Nichtsortierung
+u 194 152 170
+u 194 156 170
+  Glob. Ersetzungen von Doppelcodes, z.B. "a Trema" -> ae
+tutfkombi
+

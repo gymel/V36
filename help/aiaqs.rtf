@@ -1,0 +1,198 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss\fprq2\fcharset0 Verdana;}{\f1\fswiss\fprq2 Arial;}{\f2\fswiss\fprq2\fcharset0 Arial;}{\f3\fmodern\fprq1\fcharset0 Courier New;}{\f4\fmodern allegro Lucida Console;}{\f5\fmodern\fcharset0 allegro Lucida Console;}{\f6\fnil\fcharset0 Times New Roman;}{\f7\froman\fcharset0 allegro New Roman;}}
+{\colortbl ;\red0\green0\blue0;\red255\green0\blue0;\red0\green128\blue0;\red0\green0\blue255;\red0\green176\blue0;\red0\green128\blue128;}
+\viewkind4\uc1\pard\qc\cf1\i\f0\fs22 
+\par \cf2\b\f1\fs36 allegro-C\f2  V28.3\i0\f0\fs24 
+\par \pard\qc\tx6106\cf1 
+\par \cf3\fs36 aiaqs\cf1\b0\fs16 
+\par  
+\par \pard\ri-1\qc\cf4\b\fs22 
+\par \cf1\ul\i\f2\fs28 a\ulnone\f1 llegro\i0  \ul\f2 I\ulnone nternet-\ul A\ulnone brufe \ul q\ulnone uer und \ul s\ulnone chnell\f1 
+\par \pard\ri-1\b0\f0\fs16 
+\par \i\fs22 
+\par Man braucht ja immer einen griffigen Namen f\'fcr eine neue Sache... 
+\par \cf0\i0\fs20 Sie wollen zuerst mal ganz schnell wissen, um was es geht? 
+\par Dann geben Sie ein  \cf1\f3\fs22 `\cf4\ul\b X vktest 0-85527-757-2\cf1\ulnone\b0 `\cf0\f0\fs20  oder dasselbe mit einer anderen ISBN. Was Sie dann sehen, kommt quer \'fcber das Internet direkt aus der VK-Datenbank (es kann ein paar Sekunden dauern). Das ist nur ein ganz kleines Beispiel. Ein anderes: Geben Sie mal ein: 
+\par \f3 x get Ihttp://www.biblio.tu-bs.de/db/plz/gp.php?plz=.....\\sho IV\cf1\i\f0\fs22 
+\par \cf0\i0\fs20 aber mit Ihrer Postleitzahl an der Stelle, wo \f3 .....\f0  steht.\cf1\i\fs22 
+\par 
+\par \i0 Der Browser `\cf4\ul\b JanaS\cf1\ulnone\b0 ` ist eine brauchbare Erg\'e4nzung, wenn es um das direkte Anzeigen von Internet-Inhalten geht. Schwieriger wird es aber, wenn man eigentlich nicht externe Inhalte im Dialog und mit copy&paste nutzen, sondern Daten irgendwo aus dem Internet abrufen und dann sofort per FLEX verwenden will, ohne a99/alcarta zu verlassen. F\'fcr so etwas wurde schon das Protokoll Z39.50 eingesetzt, das mit einem eigenen, externen Progamm zc.exe (plus z39.dll) genutzt werden kann. Dies geschieht z.B. in dem FLEX `\cf4\ul\b zc.flx\cf1\ulnone\b0 `. Damit kann man Datens\'e4tze per ISBN abfragen, aber nur Buchdaten und  nur von Servern, die das Protokoll anbieten und eine brauchbare Ausgabe damit liefern. Diese Methodik ist zudem recht komplex. 
+\par Man w\'fcnscht sich mehr Einfachheit, aber zugleich viel mehr Funktionen und Ausbauf\'e4higkeit! Zum einen will man auch statische Dateien, z.B. simple Textdateien, statt von der eigenen Platte von fremden Servern problemlos lesen k\'f6nnen, zum andern will man beliebige Datenbankabfragen, die typischerweise \'fcber dynamische URLs laufen (z.B. mit .pl, .php oder .py) quer durchs Internet - d.h. ohne Zwischenschalten eines Browsers - direkt und schnellstm\'f6glich vereinnahmen und im FLEX weiterverarbeiten k\'f6nnen. In richtigen Programmiersprachen kann man solche Dinge l\'e4ngst mit links machen. Ab V28.3 gibt es daf\'fcr in FLEX ein paar kleine Erweiterungen bei vier Befehlen (wir wollen nicht so weit gehen und gleich ganz hochtrabend von \b Web a.99\b0  reden): 
+\par 
+\par \cf5\b\f3 get I\cf1\b0\i url\i0\f0    oder fast gleichwertig  \cf5\b\f3 var F\cf1\b0\i url\i0\f0 
+\par Das ist sehr direkt und bequem. Damit holt man sich eine Datei, die irgendwo im Internet unter einer irgendeiner URL liegt, unmittelbar in die interne Variable, als w\'e4re es eine Textdatei auf dem eigenen System (das ging ja bisher schon mit var F\i dateiname\i0 ). Am besten eignen sich daf\'fcr ASCII-Dateien, HTML weniger, .PDF und .JPG gar nicht wegen der darin enthaltenen Steuercodes. Die Gr\'f6\'dfe ist auf 4 MB begrenzt. 
+\par \pard\li48\ri144 Geben Sie zum Testen mal ein: 
+\par    \cf0\f4\fs18 x get Iftp://sun250.biblio.etc.tu-bs.de/pub/help/aoz.txt\\sho IV 
+\par \pard\ri-1\cf1\f0\fs22 oder auch: 
+\par     \cf0\f5\fs18 H\f4  \f5 marc.rtf\cf1\f0\fs22 
+\par Was Sie dann sehen, kommt vom FTP-Server aus Braunschweig. 
+\par (Eingebaut in onerror.flx ist, da\'df H ... einen Abruf der Datei vom FTP-Server macht.) 
+\par 
+\par \i Hinweis:\i0  Beim Befehl  \f3 get I\i url\i0\f0   kann man mit \f3 if no ...\f0  checken, ob die Datei zu gro\'df war, bei  \f3 var F\i url\i0\f0   geht das nicht. 
+\par Aber es gibt noch mehr: 
+\par 
+\par \cf5\b\f3 open\cf1\b0  \i url\i0  \f0  
+\par Damit \'f6ffnet man eine URL (egal ob statisch oder dynamisch) und kann 
+\par anschlie\'dfend mit  \cf5\b\f3 get\cf1\b0  \f0  zeilenweise und mit  \cf5\b\f3 fetch\cf1\b0  \i number\i0\f0   blockweise daraus lesen. 
+\par 
+\par Die Kombination von \f3 open \i url\i0\f0   und  \f3 fetch \i number\i0\f0   (in einer Schleife) macht es dann m\'f6glich, da\'df man sich beliebig gro\'dfe Dateien und Datenbankinhalte beliebigen Typs quer durchs Internet schnell mal eben auf das eigene System holen kann. Wie das genau geht, kann man in dem FLEX  \f3 `\cf4\ul\b fetchfil.flx\cf1\ulnone\b0 `\f0   studieren und f\'fcr eigene Zwecke modifizieren. Klappen sollte es mit jeder Datei, die mit einer Adresse der Form http://... oder ftp://... per Browser abgerufen werden kann, also auch PDF oder JPG usw. Man hat die Datei anschlie\'dfend sofort auf dem eigenen Arbeitsverzeichnis. Geben Sie also einfach mal ein:  
+\par \f3 X fetchfil\f0 , und dann irgendeine URL. 
+\par 
+\par \b Anwendungsbeispiel "Fernkatalog" - Zugriff aus a99 auf entfernte Kataloge 
+\par \pard\cf0\b0\fs20 Mit "Fernkatalog" (Abk. "vk") ist eine \'fcber avanti erreichbare Datenbank irgendwo im Internet gemeint. \cf1\fs22 
+\par \pard\ri-1 Damit man die M\'f6glichkeiten an Beispielen studieren kann, wurden einige ganz kleine FLEXe geschrieben, mit denen man in den Registern z.B. des VK bl\'e4ttern und Datens\'e4tze daraus abfragen kann. Dazu geh\'f6ren auch einige wenige PHP-Dateien auf seiten des Servers, die aber weitaus einfacher und viel kleiner sind, als diejenigen, die f\'fcr den normalen Browserzugriff gebraucht werden. Mit `\cf4\ul\b X vks\cf1\ulnone\b0 ` k\'f6nnen Sie die Sache sofort ausprobieren. Die vier FLEXe sind diese: 
+\par \f3 `\cf4\ul\b vks.flx\cf1\ulnone\b0 ` \f0 : Start, Wahl des Registers und Eingabe des Suchbegriffs. Ruft dann vkr.flx auf: 
+\par \f3 `\cf4\ul\b vkr.flx\cf1\ulnone\b0  `\f0 : Registerabschnitt vom VK holen und daraus eine RTF-Datei mit Flips machen, die vkf starten: 
+\par \f3 `\cf4\ul\b vkf.flx\cf1\ulnone\b0 ` \f0 : Holt Datens\'e4tze mit einem find-Befehl und zeigt sie an (avanti liefert sie im A-Format) 
+\par \f3 `\cf4\ul\b vkisbn.flx\cf1\ulnone\b0  `\f0 : Holt einen Datensatz direkt \'fcber ISBN-Abfrage 
+\par Der komplizierteste davon, aber auch nicht sehr lang, ist vkr.flx. Damit kann man nun, wesentlich einfacher als per Z39, den VK nochmal auf neue Art ausbeuten. Oder einen anderen Fernkatalog, denn die FLEXe sind universell. 
+\par 
+\par Wie gesagt, ein \b Beispiel\b0 ! Diese Sache soll nicht etwa nun als neuer, offizieller VK-Zugang etabliert und angepriesen werden, sondern exemplarisch zeigen, was man machen kann und wie es geht. Diese FLEXe und die zugeh\'f6rigen PHP-Dateien sind so einfach wie m\'f6glich gestaltet und ausf\'fchrlich kommentiert, um den Einstieg und beliebigen Ausbau zu erleichtern. 
+\par 
+\par \pard\cf0\fs20 
+\par \b Liste der Dateien\b0 
+\par 
+\par Ausbauf\'e4higes Minimalmodell einer Web-Anbindung f\'fcr Zugriff aus a99 direkt auf einen Fernkatalog ohne Browser. 
+\par Man braucht folgende Programme und Dateien 
+\par (* hei\'dft, da\'df man darin etwas anpassen mu\'df) 
+\par \pard\li48\ri144\f4\fs18 
+\par 
+\par 1. \b\f5 Webserver\b0\f4  (meistens Apache) mit PHP 
+\par 
+\par 
+\par 2. \b\f5 avanti-Server\b0\f4  
+\par  * avanti.conf   mit Eintrag fuer die Datenbank 
+\par    (darin steht, wo sich die Datenbank wirklich befindet) 
+\par 
+\par 
+\par 3. \b\f5 PHP-Skripte\b0\f4  auf einem Verz. d\f5 es\f4  Webservers 
+\par  * av_mini.php    Darin symb. Name der Datenbank wie in avanti.conf 
+\par                   sowie user/passwd (Var. $DB und $ID) \f5 und Kernfunktionen\f4 
+\par 
+\par    Die folgenden drei werden von den gleichnamigen FLEXen gestartet: 
+\par \f5          (gleicher Name nur wegen \'dcbersichtlichkeit, n\'f6tig ist es nicht)\f4  
+\par    vks.php        Liefert Liste der symb. Registernamen zur Auswahl 
+\par \f5    vkr.pgp        besorgt Ausz\'fcge aus den Registern\f4 
+\par    vkf.php        Sendet find-Befehl an Datenbank und nimmt Ergebnisse an, 
+\par                   \f5   \f4 macht Gebrauch von: 
+\par    av_find.php    Unterprog. zum Suchen und Exportieren von Ergebnissen 
+\par \f5    av_core.php    wird von av_find eingebunden 
+\par                   (av_core.php wird von allen av_*.php gebraucht)\f4 
+\par \f5 
+\par    vktest.php     Minimales Beispiel als Vorlage f. eigene Funktionen\f4 
+\par 
+\par 
+\par 4. \b\f5 FLEXe\b0\f4    auf dem DbDir von a99, wo man die Sache benutzen will 
+\par \f5  \f4 * vks.flx        hierin steht die Basis-URL (Variable $Url) der Datenbank 
+\par                   Kopieren, wenn man mehrere Fernkataloge nutzen will 
+\par                   Holt mit vks.php die Liste der Register und startet dann: 
+\par 
+\par    vkr.flx        Registerausschnitt holen, prod. vkr.rtf mit Flips 
+\par                   Jeder Flip startet dann: 
+\par    vkf.flx        find-Befehl mit Export 
+\par 
+\par    vkisbn.flx     Spezialfall von vkf: Holt Satz mit ISBN 
+\par \f5    vktest.flx     Minimales Beispiel als Vorlage f. eigene Funktionen, 
+\par                        ruft vktest.php auf\f4 
+\par 
+\par 
+\par 5. \b\f5 Parameter\b0\f4  (auf dem Datenbank-Verz., wo avanti zugreift) 
+\par  * e-alleg.xpr  (Ausgabe mit Kategorienummern, normalerweise e-1.apr) 
+\par \pard\f0\fs20 
+\par \f6 
+\par \b\f0 Vollst\'e4ndiges, kleinstm\'f6gliches Beispiel 
+\par \b0 Die Dateien vktest.flx und vktest.php sind im Paket enthalten. Hier sind sie vollst\'e4ndig abgebildet mit farblichen Hervorhebungen, damit man alle Einzelheiten \'fcberblicken kann. Diese zwei Dateien eignen sich als Vorlagen, wenn man einfache aiaqs-Anwendungen schnell zusammenstellen will. Dazu sind in der Regel nur die in \cf6\b\f3\fs22 t\'fcrkis\cf0\b0\f0\fs20   hervorgehobenen Teile durch eigene Befehle zu ersetzen. Man kann es aber auch, so wie es ist, mit dem eigenen a99 sofort testen, denn die Voraussetzungen auf Seiten der VK-Datenbank sind gegeben. Geben Sie zum Testen ein:  \cf1\f3\fs22 `\cf4\ul\b X vktest 3-464-00630-1\cf1\ulnone\b0 `\cf0\f0\fs20  oder eine andere ISBN. Etwas mehr als dies macht der FLEX \f3 vkisbn.flx\f0 .\f7 
+\par \f6 
+\par 
+\par \b\f0 vktest.flx\b0\f6 
+\par \pard\ri-1\cf1\f3\fs22   VKTEST.FLX : Demonstration und Test der aiaqs-Technik 
+\par   2008-05-23   startet auf dem Webserver  vktest.php 
+\par 
+\par   Aufruf sieht so aus: z.B.  X vktest 0-85527-757-2 
+\par   Die eingegebene ISBN in $isb sichern 
+\par \cf6\b ins $isb\cf1\b0 
+\par 
+\par   Dies ist die Basis-URL 
+\par $URL=\cf6\b http://www.biblio.tu-bs.de/db/vk/\cf1\b0 
+\par 
+\par   Fehler abfangen 
+\par \cf6\b if $isb jump begin 
+\par mes Ohne ISBN geht's nicht 
+\par \cf1\b0 end 
+\par    \cf2 Kernst\'fcck beginnt hier\cf1 
+\par :begin 
+\par   dynamische URL zusammenbasteln, 
+\par     vktest.php ist aufzurufen mit der ISBN als Wert 
+\par 
+\par var $URL \cf6\b "vktest.php?isb=" $isb\cf1\b0 
+\par   und die Daten abrufen 
+\par get I 
+\par \cf6\b   \cf2\b0 Output des Auftrags steht jetzt in iV zu beliebiger Verwendung\cf1 
+\par 
+\par   Codierung ist ASCII, zwecks Anzeige umcodieren 
+\par ansi 
+\par show IV 
+\par   Wenn nicht gefunden, dann kommt die Zeichenfolge "E130>" vor 
+\par if %E130>% mes ISBN im VK nicht gefunden;end 
+\par \f0 
+\par \pard\cf0\b\fs20 vktest.php\b0\f6 
+\par \pard\ri-1\cf1\f3\fs22 <?php  //   vktest.php : einfaches aiaqs-Beispiel 
+\par        //   2008-05-23   wird aufgerufen aus vktest.flx 
+\par 
+\par include_once("av_mini.php");  // Einstellungen, Grundfunktionen 
+\par 
+\par // Variablen uebernehmen aus dem Aufruf, z.B. 
+\par //    http://www.biblio.tu-bs.de/db/vk/vktest.php?isb=0-85527-757-2 
+\par 
+\par \cf6\b $nummer = getval('isb');   // ISBN 
+\par \cf1\b0 
+\par // ------------------ Job ------------------------ 
+\par // besteht aus FLEX-Befehlen, die ein array bilden 
+\par 
+\par $auftrag = array( 
+\par \cf6\b "switch coding 0", 
+\par "var 'isb $nummer'", 
+\par "find", 
+\par "if not error wri 'Der Titel zur ISBN $nummer ist: ' #331 n", 
+\par "end"\cf1\b0 
+\par );    // ------------------ Job ENDE ---------- 
+\par 
+\par // Job senden (jetzt enthalten in dem array $auftrag) 
+\par 
+\par $k = exjob($auftrag, $output);  //  Funktion exjob ist in av_mini.php 
+\par 
+\par   // Ergebnisse stehen jetzt als Zeilen-Array in $output, $k=Zeilenzahl 
+\par   // Nun kann man die Ergebnisse mit PHP beliebig verarbeiten 
+\par 
+\par $k=sizeof($output);  // Anzahl Zeilen 
+\par // Fehlermeldung? Dann steht "kein Erg" in der ersten Zeile 
+\par 
+\par if($k<1 || strstr($output[0],"kein Erg")) 
+\par   \{ echo "Sorry, no result!\\n" .$output[0] ."\\n"; return; \} 
+\par 
+\par // Jetzt Daten wirklich senden 
+\par 
+\par sendback($output);  //  Funktion sendback() ist in av_mini.php 
+\par ?> 
+\par 
+\par \b\f0 Manuell in a99 aufrufen\b0  
+\par Wer will, kann jedes PHP-Skript auch manuell aufrufen! Man mu\'df dazu den Befehl 
+\par \f3 get I\i url\i0\f0  
+\par verwenden und alle Variablen mit angeben. Das geht z.B. so: 
+\par \f3\fs18 
+\par x get Ihttp://www.biblio.tu-bs.de/db/vk/vktest.php?isb=0-85527-757-2\\ansi\\sho IV 
+\par 
+\par 
+\par \f0 
+\par ?zc.flx=h fleximp=ZDirect 
+\par ?fetchfil.flx=h fetchfil.flx 
+\par ?X vks=X vks 
+\par ?vks.flx=h vks.flx 
+\par ?vkr.flx =h vkr.flx 
+\par ?vkf.flx=h vkf.flx 
+\par ?vkg.flx =h vkg.flx 
+\par ?JanaS=x janas janas.htm 
+\par ?X vktest 0-85527-757-2=X vktest 0-85527-757-2 
+\par ?X vktest 3-464-00630-1=X vktest 3-464-00630-1 
+\par 
+\par }
+ 

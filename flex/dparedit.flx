@@ -1,0 +1,85 @@
+  DPAREDIT.FLX : Bearbeiten der Druckparameter
+  2001-12-14
+
+var m
+if ="alc" end
+
+var x
+if "x" jump xed
+var "Sie k”nnen jetzt die Druckparameter  " d "  bearbeiten." n "Das geschieht in einem Fenster mit dem Editor " x
+jump edit
+:xed
+var "Sie k”nnen jetzt die Druckparameter  " d "  bearbeiten." n "Das geschieht in einem Fenster mit dem X-Editor"
+var +n "Wenn Ihnen das nichts sagt, schauen Sie sich zuerst die Beschreibung dieses Editors an!" n
+var +"Wollen Sie jetzt bearbeiten? (Nein: Editor-Beschreibung sehen)"
+:edit
+ansi
+yes
+if yes jump start
+if no jump acd
+end
+
+:acd
+var x
+if "x" help acd
+end
+
+:start
+get env comspec
+ins #uwC
+
+  Zuerst auf dem DbDir nachsehen:
+var D d "." K1 "pr"
+ins #upI
+fsize
+if no jump d2
+var #upI
+ftime
+ins #upT
+  gefunden, Editorbefehl vorbereiten
+var #uwC " /c " x " " D d "." K1 "pr"
+call
+jump aktiv
+
+  Dann auf dem ProgDir
+:d2
+var P d "." K1 "pr"
+ins #upI
+fsize
+if no jump d3
+var #upI
+ftime
+ins #upT
+var #uwC " /c " x " " #upI
+call
+  Wenn die Datei auf dem ProgDir war: kopieren auf's Datenverz
+  (denn dort war sie nicht, gehoert sie aber jetzt hin)
+var #upI " " D d "." K1 "pr"
+fcopy
+jump aktiv
+
+  zuletzt auf dem Arbeitsverz.
+:d3
+var d "." K1 "pr"
+fsize
+if no end
+var d "." K1 "pr"
+ins #upI
+ftime
+ins #upT
+var #uwC " /c " x " " d "." K1 "pr"
+call
+
+:aktiv
+var #upI
+ftime
+if =#upT jump ende
+
+yesno Sofort aktivieren?
+if not yes jump ende
+
+var d
+print p
+:ende
+act 1
+end

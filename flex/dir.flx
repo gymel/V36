@@ -1,0 +1,360 @@
+  DIR.FLX : Inhaltsverzeichnis zeigen, ausgew. Datei bearbeiten
+  2005-01-17 : Aufruf:  d *  (geht ueber onerror.flx!)
+               Wenn das Verz. nicht existiert, passiert nichts
+
+  Verzeichnisname steht in iV, -> #upN und #ufX
+:start
+  wenn kein Name gegeben, dann "d" = Datenpfad
+if "" var "d"
+ins #upN
+var m
+if "alc" end
+
+  Wenn #udY besetzt, dann keine Auswahl
+if #uvY var $Fname; ins #udN;#uvY;jump what
+
+var #upN "#"
+  was wurde eingegeben? nur 1 Buchstabe?
+if "~d#" var D;jum ds
+if "~p#" var P;jum ds
+if "~h#" var P "HELP";jum ds
+if "~t#" var M;jum ds
+if "~a#" var W;jum ds
+if "~f#" var P "FLEX";jum ds
+if "~j#" var P "HTML";jum ds
+if "~v#" var P "HELP\\*.vw";jum ds
+if not "*" var #upN;jump ds
+
+  Mehr als 1 Buchstabe: Dateien eines Typs zeigen
+    dafuer gibt es einen anderen FLEX namens dirs.flx
+exec dirs
+
+:ds
+ins #ufX
+var #ufX(F"\\" F"#")
+ins #ufX
+
+  jetzt steht Pfadname in #ufX
+:dlist
+  Welche Ordnung? Wenn #ufo gesetzt dann alphab.
+  Sortierung umgekehrt chronologisch!
+open x dirlist
+if not #ufo wri '  Umordnen alphabetisch nach Name: Enter-Taste auf dieser Zeile (Jetzt ist nach Datum geordnet)' n
+if #ufo wri '  Umordnen nach Datum: Enter-Taste auf dieser Zeile (Jetzt ist alphabetisch geordnet)' n
+wri "  Nach Dateityp ordnen" n
+wri "  Diese Liste ins Anzeigefeld kopieren" n n
+close x
+if not #uvv var "dir " #ufX;ins #ufU         // fuer die Ueberschrift der aresqa-Liste
+if not #ufo var 'dir "' #ufX '" /o-dn >>dirlist'
+if #ufo var 'dir "' #ufX '" /ong >>dirlist'
+dos
+
+:showlist
+var #ufU
+set a
+  Liste ohne Bearb.Funktionen
+Aresqa ?0dirlist
+  ausgew. Zeile untersuchen
+if "" exec X dos
+if " " jump sort
+  Zeile -> #udN
+ins #udN
+  Dateiliste steht in dirlist
+op dirlist
+get
+get
+get
+get
+get
+get
+get
+get
+  achte Zeile = "Verzeichnis von " <pfad>
+ins #udZ
+var #udZ(b" von ")
+ins #udZ
+close
+  kompletten Dateinamen zusammensetzen
+var #udN
+if %<DIR>% jump dir
+
+var #udZ(F"\\") "\\" #udN(b":" f"01234567890. ")
+ins #udN
+
+:what
+:ausw
+  ausgew. Dateiname -> $Fname
+var #udN
+ins $Fname
+#uvv
+  eigentlicher Name -> #uvN
+var #udN(t"\\")
+ins #uvN
+var #udN(T"\\")
+ins $Ffile
+var "Auswahl für " #udN
+set a
+var "1. Datei öffnen (anzeigen)" n "2. Datei löschen" n "3. Datei kopieren" n "4. Datei umbenennen" n "5. Was ist das?" n "6. Ende der Datei zeigen" n "7. Exit"
+Aresqa
+if "" jump showlist
+if "1. " jump display
+if "2. " jump loeschen
+if "3. " jump coppy
+if "4. " jump name
+if "5. " jump wasdas
+if "6. " jump endfile
+
+  Wenn von dosfile.flx aufgerufen, dann ist #uvN besetzt
+if not #uvN jump showlist
+
+
+:display
+  Dateinamen untersuchen
+var #udN "!!"
+  ein paar Typen ausschliessen:
+  (einige koennte man anders behandeln, noch ausbaufaehig!)
+if %.!!" jump help
+if %~.exe!% jump gehtnich
+if %~.dll!% jump gehtnich
+if %~.com!% jump gehtnich
+if %~.dll!% jump gehtnich
+if %~dx!% jump gehtnich
+if %~ld!% jump ald
+if %~vw!% jump vw
+if %~1d!% jump gehtnich
+if %~8d!% jump gehtnich
+if %~lg!% jump gehtnich
+if %~1g!% jump gehtnich
+if %~stl!% jump gehtnich
+if %~tbl!% jump gehtnich
+if %~res!% jump gehtnich
+if %~log!% jump gehtnich
+if %~rtf!% jump help
+if %~xls!% jump gehtnich
+if %~htm!% jump showfile
+if %~doc!% jump showfile
+if %~pdf!% jump showfile
+if %~ico!% jump showfile
+if %~jpg!% jump showfile
+if %~gif!% jump showfile
+if %~png!% jump showfile
+if %~lzh!% jump gehtnich
+if %~zip!% jump gehtnich
+if %~._% jump gehtnich
+if %~pr!% jump param
+
+:anzeig
+  sonst Datei anzeigen, MIT Schreibberechtigg. (falls access>4 !)
+var "Anzeige und Bearbeitung von " #udN " im Anzeigefeld?" n "Nein: mit aresqa"
+yes
+if can end
+if yes jump thelp
+var "Datei: " #udN
+set a
+var "*" #udN
+aresqa
+  Gibt es die Datei  aresqa.lst? Dann wurde bearbeitet
+fsize aresqa.lst
+if no jump weiter
+yes Es wurde etwas bearbeitet. Original durch neue Version ersetzen?
+if not yes jump weiter
+var "aresqa.lst " #udN
+fcopy
+:weiter
+ var #ufX
+var #upN
+jump start
+
+:ald
+ins #uvD
+var "Das ist eine Datenbankdatei." n "Soll sie als Ergebnismenge gezeigt werden?"
+yes
+if yes exec ald-erg
+jump showlist
+
+  Es ist eine ViewListe: zeigen
+:vw
+var #udN
+View
+if can end
+jump showlist
+
+  files.flx aufrufen (soll Info zum Dateityp zeigen)
+:wasdas
+$Fname=
+#uvXX dir
+var #udN
+ins #uvZ
+exec files
+
+:dir
+var #udN(b"DIR>" f" ")
+if "." jump up
+
+var "Dateien auf " #udZ(F"\\") "\\" #udN(b"DIR>" T" " f" ")
+ins #ufU
+var (b"auf ")
+ins #uvN
+
+
+var #udZ(F"\\") "\\" #udN(b"DIR>" f" ")
+
+jump ds
+
+:up
+var "Dateien auf " #udZ(t"\\")
+  fuer Aresqa-ueberschrift
+ins #ufU
+  Liste neu erstellen, hinten den letzten Namen abschneiden
+var #udZ(t"\\") "\\#"
+jump ds
+
+:sort
+if "  Nach" jump styp
+if "  Diese" help dirlist;end
+var ""
+if not #ufo var "n"
+if #ufo #ufo
+ins #ufo
+jump dlist
+
+:styp
+open x dirlist
+if #ufo wri '  Umordnen alphabetisch nach Name: Enter-Taste auf dieser Zeile (Jetzt ist nach Typ geordnet)' n;#ufo;jum sT
+if not #ufo wri '  Umordnen nach Datum: Enter-Taste auf dieser Zeile (Jetzt ist nach Typ geordnet)' n;#ufo  1
+:sT
+wri "  Nach Dateityp ordnen" n
+wri "  Diese Liste ins Anzeigefeld kopieren" n n
+close x
+if not #uvv var "dir " #ufX;ins #ufU         // fuer die Ueberschrift der aresqa-Liste
+var 'dir "' #ufX '" /oen >>dirlist'
+dos
+jump showlist
+
+:gehtnich
+var "Datei: " #udN n "Dateien dieses Typs können nicht angezeigt werden"
+mes
+jump wasdas
+ var #ufX
+ jump showlist
+
+:showfile
+var #udN
+Dos
+jump showlist
+
+:lgehtnich
+var "Datei: " #udN n "Dateien dieses Typs sollten nicht einfach so gelöscht werden!"
+var +n "Wer sich auskennt, wird die Datei auf andere Weise löschen, wenn es denn sein muß."
+mes
+var #ufX
+jump showlist
+
+:ngehtnich
+var "Datei: " #udN n "Dateien dieses Typs können so nicht umbenannt werden"
+mes
+var #ufX
+jump showlist
+
+:help
+var #udN
+help
+var #ufX
+jump showlist
+
+:thelp
+var #udN
+help
+end
+
+:param
+var "Datei " #udN n "mit Editor " x " bearbeiten? " n "Nein: mit aresqa" n "Abbruch: nichts"
+ansi
+yes
+if yes jump xedit
+if no jump anzeig
+ var #ufX
+var #upN
+jump start
+
+:xedit
+get env comspec
+ins #uwC
+  Editorbefehl zusammensetzen
+  (in der FLEX-Variablen  x  steht der Name des externen Editors)
+var #uwC " /c " x " " #udN
+call
+jump weiter
+
+:loeschen
+var #udN "!"
+  ein paar Typen ausschliessen:
+  (einige koennte man anders behandeln, noch ausbaufaehig!)
+if %~.exe!% jump lgehtnich
+if %~.dll!% jump lgehtnich
+if %~.com!% jump lgehtnich
+if %~pi!% jump lgehtnich
+if %~dx!% jump lgehtnich
+if %~ld!% jump lgehtnich
+if %~stl!% jump lgehtnich
+if %~tbl!% jump lgehtnich
+if %~res!% jump lgehtnich
+var "Datei " #udN " wirklich löschen?"
+yesno
+if not yes jump showlist
+var #udN
+delete
+jump dlist
+
+
+:coppy
+var "Name für die Kopie von " #udN
+ansi
+ask
+if "" jump showlist
+ins #unN
+var #udN " " #unN
+fcopy
+jump dlist
+
+:name
+var #udN "!"
+  ein paar Typen ausschliessen:
+  (einige koennte man anders behandeln, noch ausbaufaehig!)
+if %~.exe!% jump ngehtnich
+if %~.dll!% jump ngehtnich
+if %~.com!% jump ngehtnich
+if %~pi!% jump ngehtnich
+if %~dx!% jump ngehtnich
+if %~ld!% jump ngehtnich
+if %~stl!% jump ngehtnich
+if %~tbl!% jump ngehtnich
+if %~res!% jump ngehtnich
+
+
+
+var "Neuer Name für " #udN "=" #udN(t"\\") "\\"
+ansi
+ask
+if "" jump showlist
+ins #unN
+var #udN " " #unN
+rename
+if no jump rerr
+
+jump dlist
+
+:endfile
+ask Wieviele Bytes? (Ohne Eingabe: nur letzte Zeile)
+if "" var "X endfile " #udN;exec 
+ins $lg
+var "X endfile " #udN " " $lg
+exec
+end
+
+:rerr
+ins $u
+var "Umbenennung " $u " hat nicht geklappt"
+mes
+
+

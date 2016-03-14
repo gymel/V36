@@ -1,0 +1,115 @@
+  A-EXEMP.FLX : Exemplarsatz erfassen
+  2004-10-15
+
+  Nur bei Saetzen, die eins dieser Felder enthalten:
+if #20 jump start
+if #19 jump start
+if #76 jump start
+if #9DF jump start
+jump fehl2
+
+:start
+var #00(e"=")
+  Die TitelId steckt entw. in #9DF vorne (Expl.Satz) oder in #9DAT (Bestellsatz)
+if #9DF var #9DF(e"")
+if not #9DF if #9DA var #9DA$T
+if "" jump fehl1
+ins #uaI
+  Exemplarnummer -> #uaE
+if #9DG var #9DG$e
+if not #9DG var "0"
+ins #uaE
+
+  Signatur -> #uxS
+if #9DG var #9DG$s
+if not #9DG var #90(e"")
+ins #uxS
+
+var i
+ins $idnr
+
+new
+var #uaI
+ins #9DF
+#9DG0e
+  ExplNr hochzaehlen
+var #uaE
+z=
+z+1
+var #9DG z
+ins #9DG
+var #uxS
+ins $s-#9DG
+  in #uDG steht jetzt 0e1  oder statt 1 naechste ExplNr
+disp
+sho r
+:formex
+  Formular fuer ExplSatz zeigen
+form Exemp
+if cancel jump exit
+if not #9DG$a jump exspeich
+  Pruefen, ob Barcode schon existiert (1 Zeile aus Reg. 10 holen)
+var "1 |: E" #9DG$a
+qri 
+var (B"E")
+ins #uOE
+
+var #9DG$a
+if not =#uOE jump exspeich
+
+var "Den Barcode " #9DG$a " gibt es schon!"
+mes
+jump formex
+
+:exspeich
+
+yes Speichern?
+if not yes jump exit
+put
+
+yes Noch ein Exemplar?
+if yes jump start
+
+  Variab loeschen
+#uaI
+end
+
+
+:fehl1
+var "Dieser Satz hat keine IdNummer (#00 oder #9DF)" n
+var +n "Anh„ngen eines Exemplars deshalb nicht m”glich." n
+var +n "Suchen Sie erst den Titelsatz, zu dem ein Exemplar einzugeben ist,"
+var +n "oder geben Sie diesem Satz eine IdNummer, wenn das Exemplar zu diesem"
+var +n "Satz geh”rt!
+ansi
+mes
+end
+
+:fehl2
+var "Dieser Satz ist weder ein Titel- noch ein Exemplarsatz"
+var +n "Erstellen eines neuen Exemplars deshalb nicht m”glich." n
+var +n "Suchen Sie erst den Titelsatz, zu dem ein Exemplar einzugeben ist"
+ansi
+mes
+end
+
+:exit
+erase
+var "#" $idnr
+find
+sho rec
+
+#uaI
+if #uaC help alf;if not no end
+h order
+if no h orda
+end
+
+
+
+ u-VARIABLEN in a-exemp.flx
+ #uaC (1)  Flag. Wenn gesetzt, am Ende aLF-Menue zeigen
+ #uaE (2)  ExplNr aus #9DG
+ #uaI (4)  TitelId aus d. Expl- oder Bestellsatz
+ #uxS (2)  Signatur f.d. Expl.Satz
+

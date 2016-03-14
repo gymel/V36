@@ -1,0 +1,64 @@
+  a-expl.flx : Exemplare als Erg.Menge, in Reihenfolge der Expl.Nr.
+  2015-04-09
+
+var #20 #9DF
+if "" jump nix
+
+  Ueberschr. aus d. Titelsatz bilden
+var "Exemplare zu " #20(u 0,40) 
+ins $ueb
+
+var #9DF$$
+if "" var #00
+ins $id
+
+  Registerliste aus Reg.10 erzeugen, incl. :Satznr am Ende (f5)
+  (die Expl.saetze stehen da in Reihenfolge der Expl.Nr.)
+qri f5
+  Der @ verursacht von-bis-Suche (sammelt alle Expl.Saetze ein):
+var "1000 |: " $id ":E@" $id ":F"
+qri 
+  die Zeilen stehen jetzt in iV, mit Code 20 getrennt
+  leer?
+if "" jump nex
+
+  Liste in $ex zwischenlagern
+ins $ex
+
+  Schleife arbeitet $ex ab (^T = Code 20):
+:exlo
+  Naechste Satznummer nehmen und in $n kopieren
+  (steht am Ende der Zeile hinter ':')
+var $ex (e"^T" T":")
+ins $n
+
+  und an $nn haengen
+var $nn "," $n
+ins $nn
+
+  vorderen Eintrag aus $ex wegnehmen
+var $ex (b"^T")
+ins $ex
+  noch was uebrig? --> :exlo
+if $ex jump exlo
+
+
+  , vorn wegnehmen und mit  find @  die Erg.Menge bilden
+var $nn (f",")
+find @
+
+  Titel der Ergmenge setzen
+var "R" $ueb
+set
+  und zeigen
+sho list
+end
+
+:nix
+mes Das ist kein Titel- oder Expl.satz
+end
+
+:nex
+mes Hierzu keine Exemplardaten vorhanden
+end
+

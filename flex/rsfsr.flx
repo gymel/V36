@@ -1,0 +1,54 @@
+  RSFSR.FLX : Result Set Full Text Search with RegEx
+  20070116    Volltextsuche mit RegEx in aktueller Datenbank
+  Aufruf:  X rsfsr  oder aus FLEX mit  exec rsfsr
+           Wenn zusaetzlich ein Suchwort angegeben wird:
+           X rsfsr <suchwort>  bzw.  exec rsfsr suchwort
+           dann wird keins abgefragt, sondern die Suche beginnt sofort
+           X rsfsr ?   Dann kommt zuerst Hilfe
+           Unterprogramm  RSFSR.INC  wird eingebunden.
+
+if empty mes Keine Erg.Menge;end
+  Wenn mit Suchwort gestartet, Leerzeichen vorn wegnehmen
+var (f" ")
+  Start mit  ?  als Argument?
+if "?" jump help
+:begin
+  war etwas vorgegeben? In #u!! kopieren und ohne Frage starten
+if not "" ins #u!!;jump chk
+
+  Suchbegriff abfragen, in #u!! hinterlegen
+var "Suchbegriff?=#u!!"
+  ANSI/ASCII-Wandlung, weil interner Code u.U. anders als extern
+ANSI
+ask
+if cancel end
+if "" end
+ASCI
+ins #u!!
+
+:chk
+
+perf rsfsr
+  Syntaxfehler im Suchbegriff:
+if %FEHLER% mes;end
+  Nichts
+if Z<1 mes Nichts gefunden!;end
+  Erg.Menge anzeigen
+sho list
+end
+
+:help
+var "Hiermit können Sie die momentane Ergebnismenge:" n
+var +U n
+var +"durchsuchen lassen, und zwar mit der Methode der 'regulären Ausdrücke'." n
+var +"Sie erhalten eine normalerweise kleinere Erg.Menge mit denjenigen Sätzen," n
+var +"in denen der Suchausdruck gefunden wurde." n
+var +"Möchten Sie eine solche Suche ausführen?"
+yes
+var ""
+if yes jump begin
+end
+
+include rsfsr.inc
+
+

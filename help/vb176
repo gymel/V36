@@ -1,0 +1,63 @@
+
+Verlautbarung 176 der Entw.Abt.                             2004-03-30
+-------------------------------
+
+V24.3 ist verabschiedet
+=======================
+
+Keine grossen Sachen, sondern hauptsaechlich viele kleine 
+Verbesserungen in Hilfetexten und FLEXen sind ausgefuehrt
+worden. Z.B. wurden expar.htm und view.htm auch in die
+relevanten RTF-Dateien eingebunden und werden dann also in
+JanaS angezeigt.
+
+1. Sicherheitsluecken in alcarta
+--------------------------------
+Saemtliche FLEXe, in denen der "fnam"-Befehl auftritt, um eine
+Dateiauswahl zu ermoeglichen, wurden fuer alcarta entschaerft:
+die Ausfuehrung unterbleibt dann. OPAC-Nutzer bekommen also keine
+Dateilisten zu sehen, auch nicht versehentlich.
+Siehe aber auch Punkt 3 unten!
+
+2. View-Paket ueberarbeitet
+---------------------------
+Die View-FLEXe und zugehoerige RTF-Dateien waren, da sie der
+ganz fruehen FLEX-Epoche entstammen, ueberarbeitungswuerdig.
+Ecken und Kanten wurden geglaettet, Falten glattgebuegelt.
+Neu hinzu kommt  view.htm, als aktualisierter Auszug aus 
+"news 58", wo das View-Konzept ausfuehrlich beschrieben wurde.
+
+3. Neuer On-FLEX
+----------------
+Menuepunkt "Datei / Anzeige speichern als..." loest jetzt den FLEX
+ondfile.flx aus. Wenn er existiert! Wir liefern keine solche Datei
+mit. Wer will, kann aber nun an dieser Stelle etwas anderes passieren
+lassen. Bei access=0 ist der Punkt inaktiv, sonst jedoch erscheint
+eine Dateiauswahlbox. Das kann nun auch noch verhindert werden.
+Wenn man reinschreibt:
+
+var m
+if "alc" end
+:frage
+var "Dateiname=" X 
+ask
+ins #uvX
+var "Speichern als " #uvX
+yes
+if can end
+if no jump frage
+var #uvX
+file
+mes done
+
+dann wird der Menuepunkt auch in alcarta bei access>0 nicht mehr 
+die Dateiauswahl anzeigen.
+Nun kann nebenbei, wie es angeregt wurde, der Menuepunkt auch fuer
+CD-Betrieb geeignet eingerichtet werden.
+
+4. Interferenz verringert
+-------------------------
+Wenn man mit "slice" einen regelmaessig automatisch auszufuehrenden
+FLEX einschaltet, gab es bislang stoerende Effekte, vor allem im
+Schreibfeld. Diese wurden deutlich verringert.
+

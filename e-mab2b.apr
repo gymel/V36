@@ -1,0 +1,3347 @@
+  e-mab2b.apr  Ausgabe im MAB2-Format (Berger)
+  2014-12-10  Thomas Berger
+    Original von T.Berger, mit gruendlichem Kommentar: 
+    http://svn.gymel.com/acxt/produkt/mabexpdir/README-mabexp.html
+
+
+pn="Ausgabe im MAB2-Format (Berger 34-02)"
+
+  --------- Konstanten --------------------------------------------
+
+zl=0        Zeilenlaenge endlos, weil sonst nicht immer korrekt einlesbar
+zm=0        kein Seitenumbruch (fortlaufende Ausgabe)
+fl=0        Listenstruktur (keine Karten)
+zb=" "      Zeilen nur bei Leerzeichen umbrechen
+ae=""
+
+
+98=""        Atributende
+99=""        Tagende
+
+10=""       Unterfeldanfang
+11=""       Unterfeldanfang 1. Feld
+12=31       Praefix Feldcode
+19=""       Unterfeldende
+13=""       Ende Feldcode
+
+20=""       Feldanfang
+21=""       Feldnummer Start
+22=""       Feldnummer Ende
+25=""       Indikator Start
+26=""       Indikator Ende
+28=""       Verschoenerung zwischen letztem Unterfeldende und Feldende
+29=30       Feldende
+
+30=""       Satzanfang
+33=""       Header-Einleitung
+34=""       Header-Abschluss
+39=29 10    Satzende
+
+50=""               BOM
+
+40=""               Dateianfang
+49=""       Dateieende
+
+81=124       Fuellzeichen
+82=182       Teilfeldtrennzeichen
+ 86='{'       Stichwortkennung
+ 87='}'       Stichwortkennung
+88=136       NSZ Anfang (umcodiert!)
+89=137       NSZ Ende (umcodiert!)
+
+  -----------------------------------------------------------------
+
+
+
+#hi +#ub5 Z
+#nr +#J00 Z
+#ub5 +# i4,- Z               Wurzelelement abgeschlossen, kein weiterer Export mehr moeglich
+#J00
+#ub5 c"-" db5 Z              Selbst-Reset
+
+#nr dcZ p"d|" e"|" AcZ       Zeichencodierung ISO 5426-1983
+
+#uDT +#J0Z Z
+
+#nr p"19000101|" e"|" =DT
+
+#uCZ +#J00 Z  % bereits gesetzt
+#ucZ +#J00 ACZ   % Fuer den Rest fest
+#nr p"?|" e"|" ACZ  % Zeichencodierung unbekannt???
+#J00
+
+#nr dFZ p"|" e1 AFZ  % Fuellzeichen
+
+#uMO c"b" p"x" aME  % #uMO = b impliziert #uME = x
+#uME y0 e1 dME AME
+
+#J0Z
+
+#nr dki dkn dko dwc dgM dsI dsZ Z
+#25a +#J00 Z  % expliziter GMD
+#20 +#dts e" :" e" /" e"" F32 P"|" c"]|" p" " T" [" b" [" e"]" p"|" P"|" ,"_Computerdatei_Elektronische Ressource_" AgM
+#nr +#J00 Z
+#dts p"!|Bildliche Darstellung|BildtontrÑger|Elektronische Ressource|Medienkombination|Mikroform|Spiel|TontrÑger||" B"#ugM" c"!" dgM Z
+#ugM dgM f"|" F"|" AgM
+#J00
+
+#nr did ddi dID dDI dES dMA dMB dBD Z
+#hi +#J0h Z
+
+#nr dII Z
+#>Q
+#ues AES
+#uid AID
+#uid AII  % #uID-Merker fuer hier. Untersaetze
+#udi ADI
+
+#nr dyy Z
+#uID P>9 Ayy Z
+#uyz +#J00 c"+" Z
+#uyz P"+" AMB
+#uMB +#J00 |98
+
+#mv +#uMB Z
+#nr +#nr Z
+#uMB +#J00 dMB F"+" P"." AMB
+
+#nr dMB Z
+#J00
+#nr dyy Z
+#09 +#uMA e"=" F32 AMA
+#00 e"=" F32 c"+" AMA
+#uMA +#J00 |98
+#mv +#uMA Z
+#nr +#nr Z
+#uMA +#J00 dMA F"+" P"." AMA
+#nr dMA Z
+#J00
+#nr dyy Z
+#</
+#09 +#J00 e"=" c"+" e"+" F32 |92
+#00 +#J00 e"=" c"+" e"+" F32 |92
+#nr +#J01 Z
+#J00
+#>Q
+#uid ABD
+#<
+#J01
+
+#nr +#J0a Z
+
+#J0h  % Hierarchischer Untersatz
+#nr dID dDI dMA dMB Z
+#uII ABD
+#uBD AID
+#hi p"," AID
+
+#J0a
+
+#uSE +#uID dcc p"|" P"|" Acc
+#nr +#J00 Z
+#uID +#J00 p"|" P"||" b"#ucc" Z
+#+-
+
+#J00
+
+#nr dST p"n|" AST
+
+#nr dTY p"h|" aTY
+#4n +#uTY c"===" p"x|" aTY
+#4n +#uTY p"p|" aTY
+#6n +#uTY c"===" p"x|" aTY
+#6n +#uTY p"k|" aTY
+#89s +#uTY p"x|" aTY  % EVK-Saetze
+#3n +#uTY c"===" p"x|" aTY
+#3n +#uTY i4,s p"s|" aTY
+#3n +#uTY I4,s p"x|" aTY
+#09 +#uTY p"u|" aTY
+#00 +#uTY c"+" p"u|" aTY
+#hi +#uTY p"u|" aTY
+#9DF +#uTY p"e|" aTY
+#9A +#uTY p"x|" aTY
+#9DA +#uTY p"x|" aTY
+
+#uTY +#J00 e"|" c"[pks]" Z  % benoetigt? 
+#nr +#uTY Z
+#J00
+#00 +#uTY c"[?]" dTY p"x|" ATY
+#00 +#uTY Z
+#nr +#uTY dTY p"x|" ATY
+
+#uTY dTY e"|" aTY
+
+#uMO +#J0l c"l" Z  % Titel als Lokal- und Exemplarsaetze
+#uMO +#J0b c"b" Z  % Titel als Besitzanzeige im Format MAB-Lokal
+#uMO +#J0Z ,"_t_h_" c"#uTY" Z  % stimmt ueberein
+#uMO +#J0Z ,"_h_u_" ,"_t_u_" c"#uTY" Z  % Untersaetze zu Titeln, klar
+#uMO +#J0Z ,"_h_y_" ,"_t_y_" c"#uTY" Z  % Untersaetze zu Titeln, klar
+#uMO +# Z  % Abbruch sonst
+#uTY +# c"x" Z  % ge-x-te Typen nicht abbildbar
+#nr +#J0Z Z  % #uMO nicht vorgegeben: Immer raus
+
+#J0l  % nur Lokal- und ggfls. Exemplarsaetze erwuenscht
+#uTY +# c"[pksx]" Z  % aber nicht fuer Stammsaetze und rausgeflogenes
+#nr p"l|" e"|" =TY  % ummodeln
+#nr diL dLC p"0" e1 ALC  % Lokalsatzzaehler
+#nr dmE Z  % Hauptsatz (l) oder sogar Hauptsatz (l) + Exemplarsaetze (e) erzeugen?
+#uME +#J0B c"x" Z  % nur Besitzsaetze
+
+#9DG l AsI
+#9DG z AsZ
+#9DF +#J0A Z
+
+#nr dsi dsz Z
+#uMA +#J00 |92
+#nr +#J0Y Z
+#J00
+#-Ö
+#90 p"" Asi
+#91 p"" Asz
+#uMA +Ö |97
+#<
+#J0Y
+#uMB +#J00 |92
+#nr +#J0Y Z
+#J00
+#-Ü
+#90 ,"_ ; __" p"" Asi
+#91 ,"_ ; __" p"" Asz
+#uMB +Ü |97
+#<
+#J0Y
+
+#nr dcc dcd Z
+#90 ,"_ ; __" f"" F"" Acc
+#usi p"-" E"-" AsI
+#-á
+#ucc e"" p"" P"" Acd
+#usi +#J00 p"" P"" c"#ucd" Z  % Enthalten
+#ucd dcd F"" AsI
+#J00
+#ucc +á y0 dcc dcd b"" f"" b0 Acc
+#usI dsI f"" F"" AsI
+
+#nr dcc dcd Z
+#91 ,"_ ; __" f"" F"" Acc
+#usz p"-" E"-" AsZ
+#-à
+#ucc e"" p"" P"" Acd
+#usz +#J00 p"" P"" c"#ucd" Z  % Enthalten
+#ucd dcd F"" AsZ
+#J00
+#ucc +à y0 dcc dcd b"" f"" b0 Acc
+#usZ dsZ f"" F"" AsZ
+
+#J0A
+#uME +#usI c"e" Z  % auch Exemplarsaetze
+#nr +#J02 Z  % nur Lokalsaetze
+#usI +#J0B c"" p"1|" e"|" amE    % mehrere Signaturen
+#usZ +#J0B c"" p"1|" e"|" amE    % oder mehrere Zugangsnummern
+#J02
+#usI +#J0B p"0|" e"|" amE    % nur eine Signatur
+#usZ +#J0B p"0|" e"|" amE    % oder Zugangsnummer
+
+#J0B
+#nr +#J0Z Z
+
+#J0b  % Reine Besitzsaetze (001-088) erwuenscht
+#uTY +# c"[pksx]" Z  % aber nicht fuer Stammsaetze und rausgeflogenes
+#uTY +# c"[ble]" Z  % Lokalsaetze nicht als solche (frisch aus TA generieren)
+  % nur fuer Ueberordnungen oder ZS-TA
+#uWH +#nr Z
+#+#
+
+#nr p"l|" e"|" =TY  % ummodeln
+#nr dLC p"0" e1 ALC  % Lokalsatzzaehler
+
+#nr dmE Z
+
+#J0Z
+
+
+#uTY +H c"h" Z
+#uTY +H c"u" Z
+#uTY +P c"p" Z
+#uTY +K c"k" Z
+#uTY +S c"s" Z
+#uTY +L c"[bl]" Z
+#uTY +E c"e" Z
+
+#+-
+
+#-H
+#>3
+
+ % Datenfelder ausgeben Titelsatz
+ % MAB-TITEL, Segment 089/090
+
+ %
+ % 
+
+#uTY +#J00 c"[uy]" Z          
+#nr +#J0Z Z
+#J00
+#nr dcw p"089 |" =kn
+#09 +#uTY y0 b"=" f32 b0 ,"_,__" ,"_ __" Acw
+#09 +#19 c"=" Z
+#09 b"+" f"0" ,"_+__" ,"_0000__" ,"_00__" ,"_0__" Acw
+#09 +#uTY Z
+
+#00 +#00 e"=" c"+" Z
+#hi1 +#19 Acw
+#nr +#uTY Z
+
+#00 +#uTY y0 b"=" f32 b0 ,"_,__" ,"_ __" Acw
+#00 +#19 c"=" Z
+#00 b"+" f"0" ,"_+__" ,"_0000__" ,"_00__" ,"_0__" Acw
+#nr +#uTY Z
+#19 Z             Acw
+
+#uTY +#ucw c"u" Z
+#19 p". " Acw  % y-Saetze: noch #19 und #39 anflanschen
+#39 p" / " Acw
+
+#ucw >X
+
+#nr dcw p"090 |" =kn
+#09 e"=" F32 b"+" ,"_+__" Acw
+#09 +#ucw Z
+#00 +#ucw e"=" F32 b"+" ,"_+__" Acw
+#hi ,"_,__" Acw
+#ucw >X
+
+#J0Z
+
+
+ % MAB-TITEL, Segment 1xx
+
+ %
+ % 
+#nr dkb p"100|" akb
+#nr dkp p"4|" akp
+
+#nr dkc p"  |" akc  % Indikatoren
+#40 dcc P>a acc  % 1. Verfasser
+#nr dkc p"a |" akc  % Indikatoren: zweiteilige NE
+#402 ++ dcc P>a acc  % 2. Verfasser
+#40a ++ dcc P>a acc  % 2. Verfasser alternativ
+
+
+#nr dkc p"b |" akc  % Indikatoren: einteilige NE
+#41 ++ dcc P"Hrsg." P>a acc  % Herausgeber
+#42 ++ dcc P"Mitarb." P>a acc    % Mitarbeiter
+#43 ++ dcc P"Bearb." P>a acc  % Bearbeiter
+#44 ++ dcc P"Begr." P>a acc  % Begruender
+#45 ++ dcc P"Samml." P>a acc  % Sammler
+#46 ++ dcc P"Text" P>a acc  % Texter
+#47 ++ dcc P"öbers." P>a acc  % Uebersetzer
+#48 ++ dcc P"mutma·l. Verf." P>a acc  % Mutmasslicher Verfasser
+#49 ++ dcc P"Beitr." P>a acc  % Beitraeger
+
+#50 ++ v3,Z dcc P"Ill." P>a acc   % Illustrator
+#50f dcc P"Fotogr." P>a acc  % Photograph
+#51 ++ dcc P"Komment." P>a acc    % Kommentator
+#52 ++ dcc P"Komp." P>a acc  % Komponist
+#53 ++ dcc P"Praes." P>a acc  % Praeses
+#54 ++ dcc P"Resp." P>a acc  % Respondent
+#55 ++ dcc P"Vorw." P>a acc  % Vorredner
+#56 ++ dcc P"Nachw." P>a acc  % Nachredner
+#57 ++ v3,Z dcc P"Hrsg." P>a acc  % sonst
+#57a dcc P"Red." P>a acc  % Redakteur
+#57b dcc P"Korresp." P>a acc  % Korrespondent
+#57d dcc P"Dir." P>a acc  % Dirigent
+#57f dcc P"Forts." P>a acc  % Fortsetzer
+
+#nr dkc p"e |" akc  % Indikatoren: einteilige NE
+#57i dcc P"Interpr." P>a acc  % Interpret
+
+
+#nr dkc p"f |" akc  % Indikatoren: einteilige NE
+#59 ++ dcc P>a acc  % gefeierte Person
+
+ %
+ % 
+#nr dkb p"200|" akb
+#nr dkp p"4|" akp
+
+#nr dkc p"  |" akc  % Indikatoren
+#60 dcc P>a acc  % 1. Urheber
+#nr dkc p"a |" akc  % Indikatoren: zweiteilige NE
+#602 ++ dcc P>a acc  % 2. Urheber
+#60a ++ dcc P>a acc  % 3. Urheber
+
+#nr dkc p"b |" akc  % Indikatoren: einteilige NE
+#61 ++ dcc P>a acc  % sonstige bet. Koerperschaften
+#68 ++ dcc P>a acc  % sonstige bet. Koerperschaften
+#69 ++ dcc P>a acc  % gefeierte Koerperschaften
+
+#nr +#J0Z Z
+
+#(a  % Personen MAB 100ff, Koerperschaften MAB 200ff
+#ucc dcc ,"_ ; __" Acc
+
+#-a
+#ukb dki dkn e"|" x"+0." e"." P" |" akn
+#ucc dcd e"[]" f" " F32 Acd
+#nr dse p"" E"" Ase   % Formensammler
+
+#ukc y0 e1 aki  % Indikator
+#</
+#ucd +#J02 dcw i4,_ y0 b"_" e"[ /.,-;:_!%&/(){}=?+*~#'<>|˙_]" e"]" b0 P"=" |:2
+
+#ucd e" =" e" ™[" acw   % unverknuepft: Raus und fertig
+#ucw p"" ase  % sammeln
+#ucd +#ucw b" ™[" E"]™" p" ™[" F32 Acw   % Vorliegende
+#ucc b"" p" ™[" P"]™" Acw  % Default
+#ucw p>X
+
+#nr +#J07 Z    % Adhoc-Verweise / Vorlageformen
+
+#J02
+#ucZ +#J02 c"u" Z
+#nr +#4n Z
+#J02  % falls Unicode exportiert wird
+#da
+
+#4n +#ucd p"!" B"!n" B"!p" f"!" Acw  % Ansetzung PER
+#6n Acw  % Ansetzung KOR
+#ucd y0 e" =" e" ™[" f"_" f"0123456789abcdefghijklmnopqrstuvwxyz " Acw
+#ucw p"" ase  % sammeln
+
+#ucd +#ucw b" ™[" E"]™" p" ™[" F32 Acw   % Vorliegende
+#ucc b"" p" ™[" P"]™" Acw  % Default
+#ucw p>X
+
+  % text-verknuepft: Nummer mitnehmen IDREF
+#ucw dcw dki Z
+#ukb dkn x"+2." e"." Akn
+#89. p"a|" aki
+#89T +#ucw ,"_-__" ,"_x_X_" acw
+#89G +#ucw ,"_-x_-X_" ,"_x_X_" acw
+#nr did p"c|" aki
+#ux: e"=|" P>i Aid  % Lokale Nr. aus Registerzeile
+#uid did acw
+#ucw >X
+#<   % Zurueck zum titel
+
+#J07
+#ucd +#J01 dcd b" =" ,"_ ™[__" ,"_]™_ _" u f" =" F" =" Acd
+#nr +#J09 Z
+
+#J01  % adhoc-Verweise
+#ucw dcw dki Z
+#ukb dkn x"+1." e"." Akn
+#-A
+#ucd e" =" p"" P"" =sd
+#use +#J01 b"#usd" Z  % Pleonasmus?
+#usd ase
+#ucd dcw e" =" P>X Acw
+#J01
+#ucd +A y0 dcd dsd b" =" f" =" b0 Acd
+
+#J09
+#ukb dki x"+kp" e"." dkb akb  % Inkrement
+
+#ucc +a dcc dcd dse y0 b"" f" " F" " b0 Acc  % Interne Wiederholung?
+#)a
+
+
+#J0Z
+
+ % Finis
+
+
+ % MAB-TITEL, Segment 3xx
+
+ %
+ % 
+
+#21 dki dkn p"300 |" P>x Akn
+
+#nr dki Z
+#20 p"a|" aki
+#40 p"b|" aki
+#60 p"b|" aki
+#22 dkn p"304 |" P>x Akn
+#nr dki Z
+
+
+
+#18 +#20 Z
+#19 +#20 Z
+#nr +#nr Z
+#20 dkn e" :" u ,"_ ? _ - _" p"310 |" P>x Akn
+
+#nr dcw dgm dti p"331 |" =kn
+#20 e" :" e" /" e"" F32 Ati
+#ugM +#uti Z   % Legaler GMD aus #20 war ermittelt worden, nun abschneiden
+#nr +#18 Z
+#uti y0 dti p" " t" [" f32 b0 Ati
+#18 +#J00 e" :" e" / " P>X acw
+#19 +#J00 e" :" P>X acw
+#uti +#J00 P>X acw
+
+#nr drd ard    % reduziert!
+#35 ++ P>Y Z
+#uti dcw f"|" u[] ,"_'™ _'_" ,"_™__" ,"_.. - _. - _" ,"_|_ // _" ,"_  _ _" p"[Rezension von:] " P>X Acw
+#nr drd dti Z
+#J00
+
+#nr dti p"333 |" =kn
+#20 +#J00 e" :" e" /" b" " dcw P>X acw
+#20k dcw P>X acw
+#J00
+
+#25a +#J00 dkn p"334 |" P>x Akn
+#ugM dkn p"334 |" P>x Akn  % Aus #20 extrahiert
+#J00
+
+#nr dcw p"335 |" =kn
+#nr dki p" |" aki
+#20 b" :" dki p"a|" aki            * NE oder nicht NE?
+#20 +#25 b" :" f32 Acw
+#18 +#ucw e" / " b" :" f32 Acw
+#19 +#ucw b" :" f32 Acw
+#25 p" ; " Acw
+#ucw dcw f" ;" P>X acw
+#uki dki Z
+
+#nr dkb p"340|" akb
+#nr dkp p"4|" akp
+#nr dkc p"   |" akc  % Indikatoren
+#24 ++ dcc v3,x P>b acc % Trenner auch ""?
+
+#nr p"359 |" =kn
+#39 +#J00 dcw I4,- P>X acw
+#18 dcw b" / " P>X acw
+#J00
+
+#20 e" :" b" /" e"" f32 F32 dkn p"360 |" P>x Akn
+
+#26 dkn p"361 |" P>x Akn
+
+#20g dkn p"365 |" P>x Akn
+#39g dkn p"369 |" P>x Akn
+
+#nr p"370|" =kn
+#nr dki p"a|" aki
+#40 dki p"c|" aki
+
+#23. ++ v3,a dcc P>c acc
+#nr Z
+#83 +#nr i4,. i5,. Z
+#83 +#nr i4,; Z
+#83 y0 dcc e" ;" e" (" b0 P>c acc     & Kongresstitel
+#nr dki Z
+
+
+#88c dki dkn p"376b|" P>x Akn
+#23k dki dkn p"376c|" P>x Akn
+
+
+#nr +#J0Z Z
+
+#(b  % PSTs MAB 340ff
+#-b
+#ukb dki e"|" x"+0." e"." P" |" =kn
+#ukc y0 e1 aki  % Indikator
+#ucc dcw e"" e" " e" : " c" / " P>X acw  % Ansetzungstitel
+
+#ukb dki e"|" x"+1." e"." P" |" =kn
+#ukc y0 e1 aki  % Indikator
+#ucc dcw e"" e" : " e" " ,"_ / _. _" P>X acw  % Titel
+
+#ukb dki e"|" x"+2." e"." P" |" =kn
+#ukc y0 b1 e1 aki    % Indikator
+#ucc dcw e"" b" " e" : " P>X acw  % zu erg. Urheber
+
+#ukb dki e"|" x"+3." e"." P" |" =kn
+#ukc y0 b2 e1 aki    % Indikator
+#ucc dcw e"" B" / " b" : " P>X acw  % Zusatz
+
+#ukb dki x"+kp" e"." dkb akb  % Inkrement
+#ucc +b dcc b"" acc    % intern wiederholt?
+#)b
+
+#(c  % WTs MAB 370
+#ucc +#J00 e" :" c": " Z  % mehrteilige NE: kein ST
+#ucc dcw ,"_ _ / _" ,"_  _ _" P>X acw   % sonst Ausgabe
+#J00
+#)c
+
+#J0Z
+
+
+ % MAB-TITEL, Segment 4xx
+
+ %
+ % 
+
+
+#71 dkn p"403 |" akn
+#71 dcw P>X acw
+
+#76p dkn p"405 |" akn
+#76p dcw P>X acw
+
+#77k dkn p"407 |" akn
+#77k dcw P>X acw
+
+#nr dkb p"410|" akb
+#nr dkp p"5|" akp
+#nr dcc dki p" |" Aki
+#74 e"; " p"a" Acc
+#75 e"; " p"g" Acc
+#ucc P>d Z
+
+#nr dcc dki p"a|" Aki
+#74d e"; " p"a" Acc
+#75d e"; " p"g" Acc
+#ucc P>d Z
+
+#nr dcc dki p" |" Aki
+#74 b";" e"; " p"a" Acc
+#75 b";" e"; " p"g" Acc
+#ucc P>d Z
+#nr dcc Z
+#74 b";" b"; " ,"_; _, _" ,"_ ,_,_" p"a" Acc
+#75 b";" b"; " ,"_; _, _" ,"_ ,_,_" p"g" Acc
+#ucc p>d
+
+#nr dcc dki p"a|" Aki
+#nr dcc Z
+#74d b";" e"; " p"a" Acc
+#75d b";" e"; " p"g" Acc
+#ucc P>d Z
+#nr dcc Z
+#74d b";" b"; " ,"_; _, _" ,"_ ,_,_" p"a" Acc
+#75d b";" b"; " ,"_; _, _" ,"_ ,_,_" p"g" Acc
+#ucc p>d
+
+
+#uki dki Z
+
+
+#76 dki dkn p"425 |" akn
+#76 dcw P>X acw
+#76 dki p"b|" aki
+#76 dcw f"-" c"-" e"-" x"+0." e"." x">1400" x"<2020" P>X Acw
+#76 dki p"c|" aki
+#76 dcw T"-" b"-" x"+0." e"." x">1400" x"<2020" P>X Acw
+#76 +#J00 c"-" Z
+#76 dcw dki p"a|" aki
+#76 x"+0." e"." x">1400" x"<2020" P>X Acw
+#J00
+
+
+
+#uMO +#J00 Z   % nur, falls keine Lokaldatei erzeugt wird
+#92 dkn p"427 |" akn
+#92 dcw P>X acw
+
+#J00
+#nr dcw dki Z
+#77 dkn p"433 |" akn
+#77 e" +" e" ;" e" :" c"Bd." p"a|" Aki
+#77 +#ucw e" +" e" ;" e" :" acw
+
+    % bei "echten" Aufsaetzen (erkannt an VKN) Fundstelle nicht als 433 duplizieren
+#70 +#ucw i4,_ Z
+#84 +#ucw i4,_ Z
+
+#708 dkn p"433b|" akn
+#708 Acw
+
+#ucw p>X
+
+#nr dki Z
+#77 dkn p"434 |" akn
+#77 e" +" e" ;" b" : " dcw P>X acw
+#77m dkn p"434a|" akn
+#77m dcw P>X acw
+#77 dkn p"435 |" akn
+#77 e" + " b" ; " dcw P>X acw
+#77 dkn p"437 |" akn
+#77 b" + " dcw P>X acw
+
+
+#nr dkb p"450|" akb
+#nr dkp p"10|" akp
+#85 ++ dcc P>e Acc Z
+
+
+#nr +#J0Z Z
+
+#(d  % Verlage etc.
+#ukb +#J08 dkn x">417" dki p"418 |" akn  % 418 wiederholbar
+
+#ukb dkn e"|" x"+0." e"." P" |" akn   % Ort
+#ucc dcw a f32 P>X acw
+#ukb dkn e"|" x"+2." e"." P" |" akn   % Name
+#ucc dcw g f32 P>X acw
+
+#J00
+#ukb x"+kp" e"." dkb akb  % Inkrement
+#)d
+
+#J08
+#ucc dcw P>X acw  % alles mit Unterfeldern raus
+#)d
+
+
+
+#(e  % Gesamttitel
+#ukb dki dkn e"|" x"+1." e"." P" |" akn  % #4x1 GT in Vorlageform
+
+#nr dki p"b|" aki  % Indikator "ungezaehlt"
+#ucc c" ; " dki p" |" aki  % Indikator-Override
+#ucc P" |" b" ; " c" ... " dki p"a|" aki   % Indikator-Override
+
+#ucc dcd b" ; " Acd
+#ucc +#J0v i4,_ y0 b"_" e"[ /.,-;:_!%&/(){}=?+*~#'<>|˙_]" e"]" b0 P"=" |:2  % verknuepft
+
+#ucc dcw P>X acw  % einfach so raus...
+
+#nr +#J0a Z
+
+#J0v  % nachgeladen
+#ucZ +#J0v c"u" Z
+#nr +#19 Z
+#J0v  % falls Unicode exportiert wird
+#da
+
+#19 +#ucd e" :" ,"_ / _. _" Acw
+#20 +#ucd e" :" c" " ,"_ / _ : _" ,"_ _ / _" ,"_  _ _" Acw
+#20 +#20k e" :" ,"_ / _ : _" ,"_  _ _" Acw
+#8n ,"_ / _. _" Acw
+#20k p" / " Acw
+#20a p" / " Acw
+#ucd p" ; " Acw
+#ucw dcw ,"_™__" P>X Acw
+
+#ukb dkn e"|" x"+2." e"." P" |" akn  % #4x2 Standardnummern
+#nr dki p"a|" Aki
+#88 ++ B"ISSN " e" " dcw P>X Acw
+#nr dki p"c|" Aki
+#87 ++ B"ISBN " e" " dcw P>X Acw
+#89Z dki p"z|" Aki
+#89Z i4,z dcw b1 b0 p"ZDB" P>X Acw
+
+#ukb dkn e"|" x"+3." e"." P" |" akn  % #4x3 Identifikationsnummer IDREF
+#nr dki p"r|" aki  % Default: Fortlaufend
+#ux: +#J03 b"=|" c"_" dki p"m|" aki  % monographisch
+#ucd +#J03 Z  % hat Zaehlung
+#nr +#J04 Z   % sonst verzichten
+#J03
+#ux: did e"=|" P>i Aid
+#uid did P>X Acw
+
+#J04
+#ukb dkn dry e"|" x"+4." e"." P" |" akn  % #4x4 Ansetzungsform
+#nr dki p" |" aki  % Default: unspez
+#20 dki p"c|" aki  % Sachtitelwerk
+#40 dki p"a|" aki  % Verfasserwerk
+#60 dki p"b|" aki  % Urheberwerk
+
+#20 +#20k e" :" e" " F32 Acw
+#8n Acw
+
+#20k +#60 Z
+#40 +#ury drx P>R Arx
+#60 +#ury drx P>R Arx
+#20 +#ury e" :" b" " Ary
+#20k +#ury Ary
+#20a +#ury Ary
+
+#ury P": " acw
+#ucw dcw u P>X Acw
+
+#J0v
+#<
+
+#J0a  % Hier auch die unverknuepften
+
+#ukb dkn e"|" x"+5." e"." P" |" akn  % #4x5 Bandangabe
+#ucd dcw dki P>W Acw
+
+#ukb dkn e"|" x"+6." e"." P" |" akn  % #4x6 Bandangabe in Sortierform
+#ucd +#J00 P" |" c" ... " Z
+#ucd dcw dki e"=" e" :" F32 u() ,"_[__" ,"_]__" P>W Acw
+#J00
+
+#ukb dki x"+kp" e"." dkb akb    % Inkrement
+#)e
+
+
+#J0Z
+
+
+ % MAB-TITEL, Segment 5xx
+
+ %
+ % 
+#nr dki Z
+
+#81 dcw p"501 |" =kn
+#81 p"" P"" Acw
+#ucw dcw f"" F"" ,"__. - _" P>X acw
+
+#nr dki Z
+
+
+#80 dkn p"" ,"_öbers.: __" f"" p"503|öbers. des Hauptsacht.: " ,"__. - _" P>w Akn
+
+#nr dcw p"507|" =kn
+#81d Acw
+#23z p"Titel der inh. Zsfssng.: " Acw
+#ucw dcw f"" ,"__. - _" P>W Acw
+#81f dkn p"509|" ,"__. - _" P>w Akn
+#81g dkn p"510|" ,"__. - _" P>w Akn
+#81h dkn p"511|" ,"__. - _" P>w Akn
+
+#81i dkn p"512|" ,"__. - _" P>w Akn
+
+#81j dkn p"513|" ,"__. - _" P>w Akn
+#81k dkn p"515|" ,"__. - _" P>w Akn
+
+#81f dkn p"516|" P>w Akn
+
+#nr dki p"517|" =kn
+#81m "__. - _" p"Inhalt: " P>X Acw
+#62 ++ dcc P>O Acc
+#83 ++ dcc P>O Acc
+
+
+#818 dkn p"519|" ,"__. - _" P>w Akn
+
+#81o dkn p"522|" P>w Akn
+#81p dkn p"523|" ,"__. - _" P>w Akn
+#81q dkn p"524|" ,"__. - _" P>w Akn
+#81r +#J00 dkn p"525|" ,"__. - _" P>w Akn
+#nr dcb dcc dcw dkn Z
+#81 +#84 c"Sonderabdr" dcb dcc dkn Z
+#nr +#J00 Z
+
+#84 +#J00 c"_" Z
+#70 +#J00 c"_" Z
+#84 +#ucb Acb
+#70 +#ucb Acb
+#nr +#J00 Z
+
+#ucb p"Aus:" E":" Acw
+#ucb e" ;" e" :" c": " E": " F32 dcw Acw
+#ucb e" ;" e" :" B": " p" " Acw
+#ucb e" ;" b" :" f32 p" : " Acw
+#ucb +#708 dcb b" ;" f32 p" ; " Acw
+#>h
+#ucc dcc Afs
+#706 p", " Acw
+#708 e" ;" p", " Acw
+
+#ucw p"525|" E"|" P>W Akn
+#J00
+
+#35 dcc dki p"526y|" =kn           * y - nicht reziproke Beziehung
+#35 ++ P>V Z
+
+#81P dkn p"527|" P>o Akn
+#81B dkn p"529|" P>o Akn
+#81t dkn p"530|" P>o Akn
+#81F dkn p"531|" P>o Akn
+#81Z dkn p"532|" P>o Akn
+#81S dkn p"533|" P>o Akn
+#81u dkn p"534|" P>o Akn
+
+
+ %
+ % 
+
+#87 p"540 |" =kn
+#87 dkw p"ISBN |" e"|" akw
+#87 ++ dcc ,"_ = __" P>f Acc
+
+
+#88 p"542 |" =kn
+#88 dkw p"ISSN |" e"|" akw
+#88 ++ dcc P>f Acc
+
+
+
+
+#88 p"545 |" =kn
+#88 ++ dkw dcc P>f Acc
+
+
+
+
+#nr dcc dki Z
+#8e ++ B"u" e"" ,",%5F,_," P"" acc
+#ucc dkn b"DOI" e"" p"552a|DOI" P>w Akn
+#ucc dkn b"~urn:nbn:" e"" p"552b|urn:nbn:" P>w Akn
+#ucc dcc Z
+
+
+
+
+
+
+
+ %
+ % 
+#nr dcc dfi dfs dfj Z
+#70 b"_" f"0123456789abcdefghijklmnopqrstuvwxyz" f32 b0 Acc
+#70 +#76 b"_" Z
+#84 b"_" f"0123456789abcdefghijklmnopqrstuvwxyz" f32 b0 Acc
+#84 +#708 b"_" Z
+
+#76 x"+0." e"." Afj
+#>h
+#ucc dcc Afs
+#706 p", " Afs
+#708 p", " Afs
+
+#70 Acc
+#84 dcc Acc
+
+#70 +#J07 y0 b"_" e"[ /.,-;:_!%&/(){}=?+*~#'<>|˙_]" e"]" b0 Afi
+#84 +#J08 y0 b"_" e"[ /.,-;:_!%&/(){}=?+*~#'<>|˙_]" e"]" b0 Afi
+#ucc +#J06 Z
+#nr +#J0Z Z
+
+
+#J07   % Verknuepft ZS
+#J08   % Verknuepft SW
+#</
+#ufi +#J08 P"=" |:2  % verknuepfung aufloesbar
+
+#J06   % unverknuepft
+#nr dki p"590 |" =kn
+#ucc dcw P>W Acw
+
+#nr dcw p"596 |" =kn
+#ufs f".,: " P>W Acw
+#nr +#J0Z Z
+
+
+#J08
+#ucZ +#J08 c"u" Z
+#nr +#nr Z
+#J08  % falls Unicode exportiert wird
+#da
+
+#nr dcw dkn dtd dte dtf dtg dti dtv p"590 |" akn
+    % Todo: GT-Verknuepfungen ueber #09
+#>T
+#uti ,"_.. - _. - _" P>X Acw
+#uti dti Z
+
+#nr dcw dkn drx dry p"591 |" akn
+#39 I4,- Ary
+#39 +#ury Z
+#60 ++ p". " m" ; " Arx
+#40 ++ p". " m" ; " Arx
+#urx +#J00 Z
+#41 ++ p". " m" ; " P" (Hrsg.)" Arx
+#urx +#J00 Z
+#42 ++ p". " m" ; " Arx
+#urx +#J00 Z
+#utv p". " Arx
+
+#J00
+#urx p>R % resolve to #ury
+#ury dcw f". " ,"_ / _, _" P>W Acw
+
+#20 e" :" b" /" e"" dkn f32 p"592 |" P>x Akn
+
+#71 dkn p"593 |" P>x Akn
+
+#nr p"594 |" =kn
+#74 +#nr dcw P>X Acw
+#ute dcw P>X Acw
+
+#nr p"595 |" =kn
+#ufj +#nr dcw P>X Acw
+#76 dcw P>X Acw
+
+#nr dcw p"596 |" =kn
+#ufs f".,: " P>W Acw
+
+#nr dcw drx dry p"597 |" =kn
+#85 +#ury c" ;" e" ;" P>R Arx
+#utg P>R Arx
+#ury Acw
+#85 +#utd b" ;" c"..." Z
+#85 +#ucw b" ;" p" ;" Acw
+#utd p" ;" Acw
+#ucw >W
+#nr dry Z
+
+#81e dkn e,"__. - _" p"598 |" P>w Akn
+
+#nr did dki p"599 |" =kn
+#ufi P>i Aid
+#uid did dcw P>X Acw
+#nr dki p"a|" Aki
+#88 e" = " B"ISSN " dcw P>X Acw
+#nr dki p"c|" Aki
+#87 e" = " B"ISBN " dcw P>X Acw
+#89Z dki p"s|" Aki
+#89Z y0 f"zdbZDB" ,"_-x_-X_" dcw P>X Acw
+
+#<
+
+#nr +#J0Z Z
+
+#(f  % ISBN, ISSN: Evtl. vorhandene Kategoriepraefixe werden toleriert
+ % ISSN: fuer MAB 542 ohne Unterfelder mit Praefix in #ukw
+ %       fuer MAB 545 mit Unterfeldern ohne #ukw
+#nr dki p"a|" Aki  % fuer die erste unterstellen: Formal richtig
+#-f
+#ucc dcd dcw e"" f32 F32 Acd
+
+#ukw +#J00 Z  % kein Default, nur Inhalte mit Unterfeld erlaubt
+#ucd +#J02 c"" Z  % keine Praefixautomatik, nur solche mit Unterfeldern 
+#nr +#J09 Z
+#J00
+#ucd +#J09 c"" Z  % solche mit Unterfeldern nur im Modus ohne #ukw ausgeben
+
+#ucd +#ukw I4,I Z  % ungepraefixt
+#ucd +#J02 e"[ -]" P" " c"#ukw" Z    % uebereinstimmendes Praefix
+#nr +#J09 Z
+#ukw Acw
+
+#J02
+#ucd c"*" dki p"b|" Aki
+#ucd ,"_*__" ,"_-x_-X_" P>X Acw
+#uki dki Z
+#J09
+#ucc +f dcc b"" f32 Acc
+#)f
+
+
+#(V  % Zitate #35ff fuer MAB 526
+#nr dcw dti Z
+#>Y
+#uti f"|" Acw
+#</
+#cc +#J0i i f" _" F"_ " P"=" |:2
+#uFZ P"Rezension von:" acw % Wendung wirklich nur im unverknuepften Fall erlaubt?
+#nr +#J0j Z
+
+#J0i  % #da-Umschaltung nicht notwendig
+#00 +#J0i y0 s20,  acw
+#J0i
+#<
+
+#J0j
+#ucw p>X
+#)V
+
+#(Y  % Zitatkonstruktion aus #35ff als Text
+  % #urd: Stark kuerzen fuer #331
+#nr dcc p"|" E"|" Ati
+
+#cc +#J0i i f" _" F"_ " P"=" |:2
+#cc ~i u ,"_ __" acc
+#nr +#J0a Z
+
+#J0i  % verknuepft
+#ucZ +#J0i c"u" Z
+#nr +#nr Z
+#J0i  % falls Unicode exportiert wird
+#da
+
+#nr dth Z
+#uti dti Ath
+#>T
+#cc dcd ~i u ,"_ __" acc
+#20 +#39 p"t" Acc 
+#uti p"t" Acc
+
+#39 p"v" Acc
+#60 p"c" Acc
+
+#ucc +#71 c"a" Z
+#40 ++ p"a" m"a" Acc
+#ucc +#71 c"a" Z
+#utv p"a" Acc
+
+#71 p"e" Acc
+#74 Acd
+#75 p" : " Acd
+#ucd dcd f" :" p"f" Acc 
+
+#76 +#85 p"j" Acc
+#utj p"j" Acc
+
+#85 +#8e p"g" Acc
+#utg p"g" Acc
+
+#8e p"u" u p"u" Acc
+#<
+#uti dti Z
+#uth dth ati
+
+  % Alle
+#J0a
+#ucc dcc drx dry P>R Arx
+#ury Acc
+
+#ucc b"a" e"" f32 F32 Ati
+#ucc b"a" b"a" e"" f32 F32 p"; " Ati
+#ucc b"a" b"a" b"a" e"" f32 F32 p"; " Ati
+#ucc c"a" p": " E" " Ati
+
+#ucc +#J0y t u ,"_/_. _" ,"_ _ / _" f32 Ati  %Titel
+#ucc +#J0y b Z
+#nr p"[...]" E"]" Ati
+#J0y
+
+#urd +#J0y Z
+#ucc +#J0y v f32 p" / " Ati   %/ Vorlageform
+#ucc c p" / " Ati
+
+#J0y
+#ucc e f32 p". - " Ati  %. - Ausgabe
+#ucc +#39Z f f32 p". - " Ati   %. - Ort : Verlag
+#cc +#39Z i1,7 Z
+
+  % UnselbstÑndig
+#ucc g u ,"_/_. _" ,"_ _ / _" f32 p". In: " Ati  %. In: GT
+#nr dcc Z
+#cc d f32 Acc  %, Band
+#cc j f32 p"(" P")" Acc  %      (Jahr)
+#cc m f32 p"," Acc   %Heft
+#ucc p", " Ati
+#urd +#J0z Z
+#nr +#J0s Z
+
+#39Z    % SelbstÑndig
+#ucc j f32 p", " Ati  %, Jahr
+#urd +#J0z Z
+#ucc g u ,"_/_ : _" ,"_ _ / _" f32 p". - (" Ati  %. - (GT
+#ucc d f32 p" ; " Ati  %; Zhlg.)
+#ucc g p")" E")" Ati  %)
+#ucc b"g" b"g" e"" u ,"_/_ : _" ,"_ _ / _" f32 p" - (" P")" Ati    % - (2.GT : Zhlg)
+
+#J0s
+#cc n p", " Ati %, S. Seiten
+#cc z p" [" P"]" Ati    % Kommentar
+
+#cc dcc u ,",%5F,_," p". - URL: < " P" >" Ati
+#J0z
+#)Y
+
+
+
+#(T  % Titelkonstruktion gestuft
+  % Titel ", "   Bd. x    ". "  sachl. Benennung
+#nr +#utg dnl dte dtf dtg dti dtj dtv Z
+
+#-T  % Nachladestapel kontrollieren
+#ucZ +#J00 c"u" Z
+#nr +#unl Z
+#J00  % falls Unicode exportiert wird
+#da
+
+#unl +#ute p"x|" e"|" anl
+#nr p"xy|" e"|" anl
+
+#ute +#utf Z
+#74 Ate
+#utf +#utg Z
+#75 Atf
+
+#utg +#utj Z
+#85 +#85 i4,_ e" ;" Atg    % nur verknuepfte Gesamttitel vermerken
+#nr +#utj Z
+#85 +#utj b" ;" c"..." Z
+#85 b" ;" f32 Atd
+
+#utj +#utv Z
+#76 Atj
+#utv +#nr Z
+#40 Atv
+
+#nr p", " E" " ati
+#20 +#J02 Z
+
+#19 p". " ati
+#09 +#J01 y0 b"=" f32 b0 ati
+#09 +#J01 c"=" p"[]" e"]" ati
+#09 ,"_+0000_+_" ,"_+00_+_" ,"_+0_+_" b"+" ,"_+_, _"
+#J01
+#09 +T e"+" |92
+#nr +#J00 Z  % Strange
+
+
+#J02    % Stufe mit Sachtitel: Ende der Veranstaltung
+#19 +#J00 e" :" ,"_ / _. _" ati
+#20 +#20 e" :" e" /" b" " p" / " ati
+#20k p" / " ati
+#20a p" / " ati
+#20 +#J00 e" :" e" /" e"" F32 ati
+#8n +#J00 ,"_ / _. _" ati
+
+#J00
+#uti dti f"., " F",. " Ati
+#nr +#unl Z
+
+#-ü  % Nachladestapel reduzieren
+#<
+#unl +ü c"x" dnl b1 Anl
+#)T
+
+
+#(h  % Band.Jahr(Jahr) optimieren
+#ucc +#ucc Z
+#704 +#ucc c"(" acc 
+#76 p"(" P")" Acc
+#704 +#ucc c"[ .]" acc 
+#704 +#ucc x"<1500" p"Vol. " acc 
+#704 acc 
+#ucc +#ucc dcd b"(" e")" acd  % Jahr dabei
+#nr +#J0c Z
+
+  % Zaehlung enthaelt also etwas in Klammern
+#ucc +#J0b e"(" F32 p"." T"[. ]" x"==cd" Z   % numerisch identisch!
+
+#ucc +#J0c c"." Z
+#ucc +#J0c e"(" x">1450" Z   % Verwechslungsgefahr
+#ucc ,"_(_._" ,"_)__" =cc % umformatieren
+#nr +#J0c Z
+
+#J0b
+#ucc u() =cc  % Pleonasmus raus
+
+#J0c
+#ucc dcc dcd f". " Acc
+#)h
+
+
+#(o  % Titelkonkordanz: NSZ Wendung: NSZ Titel $i ID
+ % wird zu          ID________Wendung TF Titel
+#ukn +#ucc y0 b"|" b0 dcc Acc
+#cc Acc
+
+#-o
+#ucc dcd dcw dki f"" e"" Acd
+
+#ucd +#J00 I4,™ Z
+#ucd +#J01 c"i" Z
+#ucd +#J01 c"-->™" Z
+#ucd +#J01 c"™™" Z
+#ucd +#J01 c"™ ™" Z
+#ucd +#J01 b"™" b"™" c"_" Z
+#nr +#J00 Z
+
+#J01
+#ucd b"™" e"™" P"" Acw
+#ucd dcd b"™" b"™" f32 Acd
+
+#J00
+#ucd y0 drx dry ~i f32 b0 P>R Arx
+#ury Acw
+
+#ucd i dki p"z|" Aki
+#ucd +#J00 i f32 F32 s20,  acw
+#</
+#ucd +#J0j i4,_ y0 b"_" e"[ /.,-;:_!%&/(){}=?+*~#'<>|˙_]" e"]" b0 P"=" |:2
+#nr +#J00 Z
+
+#J0j   % #da-Umschaltung nicht notwendig
+#00 +#J0j s20,  acw
+#J0j
+#<
+#nr dki p"z|" Aki
+
+#J00
+#>X
+
+#ucc +o y0 dcc dcd f"" b"" f"" b0 Acc
+#)o
+
+#(O         MAB 517 aus #62ff
+#cc +#J08 dcw drx dry i1,8 i2,3 Z
+
+  #J06
+#ucc e"" P>R Arx    % VKN aufloesen
+#ury Acw
+
+#ucc +#ucw dry f P": " acw
+#nr p"Ausst.: " E": " acw
+
+#ucw >W
+#)O
+
+#J08
+#ucc B";" b"(" e")" Acw
+#ucc B";" B")" b" : " p" : " Acw
+#ucw dcw p"Kongr.: " P>W Acw
+#)O
+
+
+#J0Z
+#ury dry Z
+
+
+#>6
+
+#>7
+
+ % MAB-TITEL, Segment 9--
+
+ %
+ %
+
+#>M  % Default-Schlagwort ermitteln
+
+#nr dse Ase
+#nr dkb p"900|" akb
+#nr dkp p"5|" akp
+#33. ++ dcc dse P>l acc  % RSWK
+#nr Z
+
+#31p dca p"p|" P>L Aca
+#31t dca p"t|" P>L Aca
+#31c dca p"c|" P>L Aca
+#31k dca p"k|" P>L Aca
+#31s dca p"s|" P>L Aca
+#31o dca p"g|" P>L Aca
+
+#36. ++ dcc dse p"p" m"p" P>l acc    % Capriccio
+#nr Z
+#uPN >S
+#nr dPK dPL dPN Z
+#use +#J00 dse Z
+#nr +#J0Z Z
+
+#J00
+#58. ++ dcc p"p" m"p" P>l acc
+#nr Z
+#uPN >S
+#nr dPK dPL dPN Z
+
+#J0Z
+#ukb +#uex dcc dki dkn c"900" p"710|" Akn  % nichts RSWK-artiges ausgegeben?
+#nr +#J0Z Z
+#uex ,"_G_ / _" b"f" p"f" P>| Acc  % Default-FSW als 710er rausschieben
+#t{s4}
+
+#J0Z
+
+
+ tmabpriv
+
+#>8
+
+#+#  % nur Titel waren auszugeben
+
+
+#-L
+#uLC x"+1." e"." r3,0 dLC ALC
+ % Datenfelder ausgeben Lokalsatz
+#nr dsi dsz p"l|" e"|" =TY  % ummodeln
+#>3
+#uME +#J1b c"x" Z  % reine Besitzanzeige (evtl. doch 09x? exportieren)
+#umE +#J00 e1 c"1" Z  % Mehrere Ex. => hier im l-Satz nichts
+
+#usI +#usZ Z
+#90 asI
+#usZ +#J00 Z
+#91 asZ
+
+#J00
+#usI y0 e"" f"-" b0 asi
+#usZ y0 e"" f"-" b0 asz
+#>1
+
+#>6
+#>7
+
+ % MAB-LOKAL, Segment 9--
+
+ %
+ %
+
+#>M  % Default-Schlagwort ermitteln
+
+#nr dse Ase
+#nr dkb p"900|" akb
+#nr dkp p"5|" akp
+#33. ++ dcc dse P>l acc  % RSWK
+#nr Z
+
+#31p dca p"p|" P>L Aca
+#31t dca p"t|" P>L Aca
+#31c dca p"c|" P>L Aca
+#31k dca p"k|" P>L Aca
+#31s dca p"s|" P>L Aca
+#31o dca p"g|" P>L Aca
+
+#36. ++ dcc dse p"p" m"p" P>l acc    % Capriccio
+#nr Z
+#uPN >S
+#nr dPK dPL dPN Z
+#use +#J00 dse Z
+#nr +#J0Z Z
+
+#J00
+#58. ++ dcc p"p" m"p" P>l acc
+#nr Z
+#uPN >S
+#nr dPK dPL dPN Z
+
+#J0Z
+#ukb +#uex dcc dki dkn c"900" p"710|" Akn  % nichts RSWK-artiges ausgegeben?
+#nr +#J0Z Z
+#uex ,"_G_ / _" b"f" p"f" P>| Acc  % Default-FSW als 710er rausschieben
+#t{s4}
+
+#J0Z
+
+
+#J1b
+#>8
+
+#umE +E x">0" Z    % zusaetzliche Exemplarsaetze noetig
+#+#
+
+#-E
+ % Datenfelder ausgeben Exemplarsatz
+#nr p"e|" e"|" =TY  % ummodeln
+
+#nr dez p"0|" e"|" aez  % Exemplarzaehler
+#usI dsI B"" asI
+#usZ dsZ B"" asZ
+
+#-e
+#usI y0 e"" f"-" b0 asi
+#usZ y0 e"" f"-" b0 asz
+#uez dez x"+1." e"." aez    % Exemplarzaehler erhoehen
+
+#>3
+#>1
+#>8
+
+#nr Att % Test auf wiederholung
+#usI c"" dtt Z
+#usZ c"" dtt Z
+#utt +# dtt Z  % keine weitere Wiederholung
+#+e
+
+#(7
+
+ % MAB-TITEL, Segment 7xx
+
+ %
+ %
+
+
+
+
+#nr dki p"710|" =kn
+#t{s3}
+ % "c"
+ % "g"
+#31g dcc P>| acc
+ % "k"
+ % "p"
+ % "s"
+#31 f32 p"s" dcc P>| acc
+#31s dcc P>| acc
+ % "t"
+ % "z"
+#31h dcc P>| acc
+ % "f"
+#31f dcc P>| acc
+#nr Z
+#t{s4}
+
+
+
+
+#nr dkb p"750|" akb
+#nr dkp p"3|" akp
+#nr dkc p"  |" akc  % Indikatoren
+#98. ++ dcc P>m acc  % Abstract
+
+#nr +#J0Z Z
+
+#(m  % Abstracts
+#ukb dki e"|" x"+0." e"." P" |" =kn
+#ukc y0 e1 aki  % Indikator
+#ucc dcw e". (" P>X acw
+
+#ukb dki e"|" x"+1." e"." P" |" =kn
+#ukc y0 b1 e1 aki    % Indikator
+#ucc dcw b". (" e")" P>X acw
+
+#ukb dki x"+kp" e"." dkb akb    % Inkrement
+#)m
+
+#J0Z
+
+#)7
+
+ % Unterprogramme MAB-Segment 9 (Titel und Lokal)
+
+#(M
+#nr dex Z  % Default-Schlagwort ermitteln
+#nr dPK dPL dPN dPn Z
+#62 +#J00 f Aex
+#62 +#J00 p"Ausstellung|" e"|" Aex
+#83 +#J01 p"Kongress|" e"|" Aex
+#nr +#J02 Z
+
+#J00
+#uex dex p"f" Aex
+
+#62 +#J00 o p"G" Aex
+#62 +#J00 e" :" b" <" e"[>]" e", " p"G" Aex
+#62 +#J00 e" :" b" <" e"[>]" b", " p" <" P">" Aex
+#62 +#J00 e" :" c" <" Z
+#62 dx: b"_" e" " P"=" |:8
+#ux: b"=|" ,"__ _" b" <" e"[>]" e", " p"G" Aex
+#ux: b"=|" ,"__ _" b" <" e"[>]" b", " p" <" P">" Aex
+#J00
+#62 b" : " e"" B".-" f"-" e"-" p"." T"." b"." p" <" P">" Aex  % Veranstaltungsjahr
+#nr +#J02 Z
+
+#J01
+#uex dex p"f" Aex
+#83 b" (" e")" e", " p"G" Aex
+#83 b" (" e")" b", " p" <" P">" Aex
+#83 b" : " e"" B".-" e"-" p"." T"." b"." p" <" P">" Aex  % Veranstaltungsjahr
+
+#J02
+#uex dex ,"_[__" ,"_]__" ,"_> <_, _" Aex
+#)M
+
+#(L  % #31er, ggfls. zu ergaenzen
+#uca dcb b"|" f32 Acb
+#uca dca dse E"|" Aca
+#-n
+#uca dcc e"|" p"" Acc
+#ucb e"" F32 P>l Acc
+#ucb +n y0 dcb b"" f" " b0 Acb
+#)L
+
+
+#(l  % RSWK-Ketten
+   % #uPK, #uPL, #uPN Parkverwaltung
+#ucc dcd b"P" ,"_P__" e"" acd % Permutationsmuster aufbewahren
+#ucc dce v Ace  % Kommentar aufbewahren
+#ucc dcc y0 ~v e"P" ,"_ /_ _" ,"_h_zGeschichte _" ,"_o_g_" ,"_x_ _" ,",u_,S_," ,"_u_ _" ,", _,A_," ,"_ __" Acc
+
+   % Test, ob alles SWD-verknuepft ist...
+#ucc dcf dcg dch dcm Acf  % #ucm: Merker auf laxere
+
+#cca +#J0f y0 b2 e1 c"[68]" Z  % #36, #38: nur FSW ergaenzen
+#cca +#J0h i6,1 y0 b3 e1 c"[cko]" Z  % #31c/k/o: Zeit und FSW ergaenzen
+#cca +#J0g i6,1 Z  % andere #31er: Geo, Zeit und FSW ergaenzen 
+#nr +#J09 Z
+
+#J0g
+#ucf +#J0h c"g" Z
+#31g e"" p"g" Acf
+
+#J0h
+#ucf +#J0f c"z" Z
+#31h e"" p"zGeschichte " Acf
+
+#J0f
+#ucf +#J08 c"f" Z    
+#31f +#J08 e"" F32 p"f" Acf
+
+#uex ,"_G_ _" Acf  % vorgeneriertes Ausstellung oder Kongress
+#nr +#J09 Z
+
+#J08  % FSW ggfls. ergaenzen, falls allerletztes Kettenglied
+#ucf +#uex T"" b"f" c"Ausstellung" Z
+#ucf +#uex T"" b"f" c"Kongress" Z
+#nr +#J09 Z
+
+#uex +#J09 G p" " Acf
+
+#J09  % Erst jetzt falsche Zeitschlagworte zu Sachschlagworten machen
+  #ucf c"z" dcf ,",zGeschichte _,A_," ,",zGeschichte Antike,S_ss4068754," Acf
+#ucf c"z" dcf ,",zGeschichte _,A_," Acf
+
+#ukb +#J0p x">949" Z  % Ueberlauf
+
+#-m
+
+#nr dct Z  % Default fuer HSW-Kennung nutzen
+#ucf y0 f"" e1 c"[S]" p"1|" Act  % HSW-Kennung "1" fuer ehem. USW
+
+#ucf +#J0c y0 f"" e1 c"[zf ]" p"" Acg  % Kopierbar im Klartext
+#ucf +#J0d y0 f"" e1 c"[cgktpsAS]" p"" Acg   % i.A. Verknuepfungszwang ("A" = Auto, "S" = Sach-USW)
+#ucc +#J0p Z
+
+#J0c    % unbedingt durch Klartext ersetzen
+#ucf y0 f"" e1 c"f" Acm    % Merke bis zum Ende: folgendes musss nicht mehr verknuepft sein...
+#ucf drx dry y0 b2 e"" P>R Arx
+#ury Acg
+#nr +#J0n Z
+
+#J0d  % Verknuepfung auswerten
+#ucf +#J0l y0 b2 e"" y0 b"_" e"[ /.,-;:_!%&/(){}=?+*~#'<>|˙_]" e"]" b0 P"=" |:2
+#ucg dcg P"!!" ,"_A!!_ _" ,"_S!!_s_" F"!" Acg  % Sonderfaelle bereinigen
+#ucf +#J0n y0 b2 e"" c"_" p"??? - " Acg
+#ucm +#J0a Z   % unverknuepft-Ausnahme (FSW schon durchgerauscht)
+#nr +#J0p Z    % unverknuepft trotz Verknuepfungszwang => Abbruch 
+
+#J0l
+#ucZ +#J0l c"u" Z
+#nr +#3n! Z
+#J0l % falls Unicode exportiert wird
+#da
+
+#3n! +#J0r Z    % Rekursiv einsetzen
+#89S +#J0b dci dck Aci  % SWD-Satz?
+#89g +#J0b dci dck p"(DE-588)" Aci  % GND-Satz allgemein?
+  % nein: Abbruch der ganzen Angelegenheit
+#<
+#nr +#J0p Z
+
+#J0r  % Rekursion
+#ucg dcg y0 t2 b0 Acg  % angefangenen SW-Typ bereinigen
+#ucf dcf f"" b"" p"" Acf  % noch nicht aufgegessenes Kettenglied bereinigen
+#3n! y0 ,"_h_zGeschichte _" ,"_o_g_" ,"_x_ _" ,"_u_s_" acf  % Aufloesung voransetzen
+#<
+#+m   % erneut probieren
+
+#J0a
+#ucf y0 b2 e"" Acg
+#nr +#J0n Z
+
+    % Satz mit #89S => #uci wurde nachgeladen
+#J0b
+#ucg +#4n P"!!" c"A!!" dcg ,"_A!!__" Acg  % Autobestimmung des Typs?
+#ucg P"!!" c"S!!" dcg ,"_S!!_s_" Acg % sonst sonstige Normierung aufs Endgueltige
+#nr +#4n1 Z
+
+#4n +#4n1 p"p|" e"|" Acg  % Person
+#3n +#3n i4,s y0 b1 e1 ,"_o_g_" ,"_h_z_" Acg
+#nr p" |" e" " Acg    % Unklar
+
+#4n1 +#J01 c" [b]" e" [b]" p"" T"" b"" Ack
+#4n +#J01 p"!" B"!n" B"!p" f"!" Ack
+
+#3n b" " ,"_/ _ _" Ack
+#uck +#ucg c"" dck p"x" Ack  % Wirklich Kette?
+#nr +#J01 Z  % Nee: Einzel-SW
+#ucg +#J00 y0 b3 p"{1 =" E"=" Acg
+#nr +#J00 p"{  =" E"=" Acg  % erstes SW der Kette
+
+#-Q
+#uck y0 e2 Acg
+#nr p"{31=" E"=" Acg
+
+#J00
+#uci p"}{" P"}" Acg
+#uck y0 b2 e"" F32 Acg
+#uck +Q y0 dck b2 b"" p"" Ack
+#<
+#nr +#J0n Z
+
+#J01  % einfach verknuepft
+#ucg +#uct y0 b3 p"{1=" e"=" Acg
+#nr dct p"{ =" e"=" Acg  % erstes SW der Kette
+#uct +#uci y0 dct e"|" e1 Acg  % HSW-Kennung " " oder "1"
+#nr p" |" e"|" Acg
+#uci dci p"=" P"}{ }" Acg
+#uck dck Acg
+#<
+  #nr +#J0n Z
+
+
+#J0n
+#ucf +m dcf f"" b"" p"" Acf   % naechstes
+#nr +#J0R Z
+
+
+#J0p   % als 710er ausgeben
+#nr dKi dKn Z
+#ukn AKn
+#uki AKi
+#nr dki p"710|" =kn
+#t{s3}
+#ucc dcc ~v ,"_A_ _" ,"_S_s_" b"" P>| Acc
+#t{s4}
+#nr dki dkn Z
+#uKn dKn Akn
+#uKi dKi Aki
+#)l
+
+
+#J0R   % RSWK-Folge ausgebbar.
+#ucg +#J0R I4, Z
+#ucg +#J0R I5,p Z
+    % Park-Kandidat: Typ p plus FSW/USW
+#ucg +#J00 y0 f"" b"" e1 c"f" Z  % FSW
+#ucg +#J0R y0 f"" c"f" Z   % FSW auf anderer Position
+#ucg +#J00 y0 f"" b"" e1 c"[s ]" Z    % USW sonst auch o.k.
+#ucg +#J0R f"" c"" Z  % es bleibt: Gar kein weiteres Kettenglied
+#nr p"x<XYZ>" E"[>]" Acg 
+
+#J00
+#ucg dcc f"" b"" Acc    % FSW merken
+    % bereits etwas geparkt?
+#uPL +#J01 c"#ucc" Z  % ja, und FSW stimmt ueberein
+#uPL +#J0c Z  % ja, aber FSW stimmt nicht ueberein
+#ucg +#J0s Ach  % nein, jetzt mit Parken beginnen
+
+#J01   % weiter merken
+#ucg f"" e"" p"" APK
+#uPN x"-1." =PN
+#uPN +#J01 x"==0." Z  % voll
+#)l
+
+#J0c  % Flush, then re-init
+#ucg dcg dch Ach  % interim
+#nr +#J01 Z
+
+#(S   % Flush
+#uPK +#ukb Z
+#)S
+#ukb +#J0p dcc x">949" Z  % Ueberlauf hatte stattgefunden
+
+#J01
+#nr dcg dce Z
+#uPK dPK dPN Acg
+#uPL dPL y0 ~x b0 Acg
+
+  % !!! Hier Ausgabe einer RSWK-Folge !!!
+#J0R
+#ukb e"|" x"+2." e"." P" |" akn  % Kettenglieder
+#ucg dcg dcw f"" Acg
+#-l
+#ucg dki y0 e1 aki   % Schlagworttyp als Indikator
+#ucg dcg y0 b1 f32 acg  % aufschieben
+
+#ucg +#J00 y0 i4,{ b"{" e"}" c"=" e"=" s2,1 e2 acw
+#ucg dcw p"11|" e"|" acw  % Kennungen unverkn. Kettenglied
+#J00
+#ucg +#J0v y0 i4,{ b"{" e"}" P" " B"=" s10,  e10 Acw    % verknuepft
+#uFZ +#J00 Acw  % unverknuepft
+
+#J0v
+#ucg +#J00 y0 e"" b"{" b"{" e"}" b0 s10,  e10 Acw  % verknuepft
+#nr y0 p"|" E"|" s11,  e10 Acw
+
+#J00
+#ucg e"" B"}" B"}" f32 F32 P>X Acw
+#ucg +l dcg b"" acg  % naechstes Kettenglied
+
+#ukb e"|" x"+3." e"." P" |" akn  % Permutationsmuster ausgeben
+#ucd dki dcd dcw f"" P>X Acw
+
+#ukb e"|" x"+4." e"." P" |" akn  % Kommentar ausgeben
+#uce p"!" c"!FSW auto" dce Z
+#uce p"!" c"!Wechselwirkung " dce Z
+#uce dki dce dcw P>X Acw
+
+#J0r
+#ukb x"+kp" e"." dkb akb    % Inkrement
+#)S
+
+#uch +#J0s Z  % Start storing current content
+#)l
+
+#J0p  % geparktes nach 710 verklappen
+#nr dKi dKn Z
+#ukn AKn
+#uki AKi
+#nr dcc p"710|" =kn
+#-ç
+#uPK dki Acc
+#uPL y0 ~x b0 Acc
+#t{s3}
+#ucc dcc u{} b"" P>| Acc
+#t{s4}
+#uPK +ç dPK f"" b"" p"" APK
+#nr dki dkn Z
+#uKi dKi Aki
+#uKn dKn Akn
+#)S
+
+#J0s
+#uch dPK dPL dPN f"" e"" p"" APK
+#uch f"" b"" p"" APL
+#nr x"=8." =PN  % nur #uPK vorbesetzt: 1 drin, 8 duerfen noch
+#uPL +#J00 ~x b"" b"" b"" x"=-3." x"+PN" =PN
+#uPL +#J00 ~x b"" b"" x"=-2." x"+PN" =PN
+#uPL ~x b"" x"=-1." x"+PN" =PN
+#J00
+#nr dcg dch Z
+#)l
+
+
+#(|
+#t{s4}
+#ucc dkj y0 e1 Akj
+#ucc +#J00 dcc ,"___" Acc
+#-|
+#ucc +#ucc i4, dcc b"" Acc
+#ukj acc  % SW-Typ immer weiter durchschieben
+#J00  % MAB 7x-Codes
+#ucc i4,h y0 dcc b1 p"zGeschichte " acc
+#ucc y0 dki e1 ,"_c_d_" ,"_g_b_" ,"_k_d_" ,"_o_b_" ,"_p_c_" ,"_s_a_" ,"_t_ _" ,"_x_ _" ,"_u_ _" Aki   % f und z bleiben
+#ukn >v
+#ucc dcx drx dry y0 b1 f32 e"" F32 P>R Arx
+#ury dry ,"_ /_ _" ,"_/ _ _" ,"_?_ / _" ,"_   _ _" ,"_  _ _" Ary  % Keine Unterfelder aus Ansetzungsketten
+#ury P>t Acx
+#t29
+
+#ucc +| y0 dcc b"" f"" b0 Acc
+#t{s3}
+#)|
+
+
+#(1
+ %
+ %
+#9DF dkn B p"090 |" P>w akn
+#9DF +#J00 dkn b p"090 |" P>w akn
+#9DF +#J00 dkn B p"090 |" P>w akn
+#J00
+
+
+ %
+ %
+#usi +#J00 dkn B"'" p"100 |" P>w akn
+#9DG s dkn p"100 |" P>w akn
+#J00
+
+#9DG +#J00 dkn X p"105 |" P>w akn
+#usi dkn c"'" e"'" p"105 |" P>w akn
+#J00
+
+#9DG +#9DG l Z
+#nr +#J00 Z
+#9DG s dkn p"107 |" P>w akn
+#J00
+
+
+#nr dcc dkn p"115 |" akn
+#usz f"" Acc 
+#-z
+#ucc dcw e"" P>W Acw
+#ucc +z y0 dcc b"" f"" Acc
+
+#9DF dkn a p"120 |" P>w akn
+
+#9DF dkn L p"123 |" P>w akn
+
+#nr dki dkn p"125 |" akn
+#9DF dcw n P>W Acw
+
+#nr dcw Z
+#92 Acw
+#9DF D p"[SchÑden:] " Acw
+#9DF I p"[UnregelmÑ·igkeiten:] " Acw
+#9DF M p"[Fehlende Seiten:] " Acw
+#ucw dki f"" p"a|" P>W Aki
+
+#ucw dcw Z
+#97 Acw
+#ucw dki p"b|" P>W Aki
+#uki dki Z
+
+
+#nr dcw dkn p"130 |" akn
+#9DF E Acw
+#9DF Y p"[Erschienen:] " Acw
+#ucw dcw f"" P>W Acw
+
+#90a dkn ,"__ ; _" p"132a|" P>w Akn
+#9DF dkn P ,"__ ; _" p"132p|" P>w Akn
+
+
+#)1
+
+#-P
+ % Datenfelder ausgeben Personen
+#>3
+
+ %
+ % 
+#>6
+
+ %
+ % 
+
+
+#nr dki p"800|" e"|" =kn
+#4n dcw p"!" B"!n " B"!p " f"!" P>X acw
+
+
+#4nz y0 B"a" e"" b0 dkn p"801 |" P>x Akn
+#4nz c dkn p"802 |" P>x Akn
+#4nz d dkn p"803 |" P>x Akn
+#4nz e dkn p"804 |" P>x Akn
+
+#4nd dki p"814|" =kn
+#4nd dca P>q Aca
+#4ne dki p"815|" =kn
+#4ne dca P>q Aca
+
+#4nw dki p"816 |" =kn
+#4nw dcw P>W Acw
+
+#4nk dki p"817 |" =kn
+#4nk dcc P>p Acc
+
+#4n1 dki p"820|" =kn
+#4n1 dca P>r aca  % Alternativansetzungen
+
+#4na dki p"830|" =kn
+#4na dcc P>p acc
+
+#nr p"860 |" =kn
+#4np p"Pseud.|" =cp
+#4np dcc P>p Acc
+
+#4nr dcc dcp P>p Acc
+
+#4nt p"Wirkl. Name|" =cp
+#4nt dcc P>p Acc
+
+#ucp dcp Z
+
+
+#nr +#J0Z Z    % UP ueberspringen
+
+#(r  % Indikator einsammeln Regelwerk 800
+#-r
+#uca dcc dcw dki f"" e"" Acc
+#ucc P"|" c"]|" e"]|" T"[[]" f"[" aki
+#ucc P"|" c"]|" dcc t"[[]" F" []" Acc
+#ucc P>p Z
+#uca +r y0 dca b"" f"" b0 Aca
+#)r
+
+#(q  % Unterfeldcode -> Indikator
+#uca dcc y0 e"" b0 P>p Acc
+#-q
+#uca +#uca y0 dca b"" b0 Aca
+#)q
+#uca y0 dki e1 Aki
+#uca y0 dcc b1 f32 e"" F32 P>p Acc
+#+q
+
+
+#(p
+   % Standardkommentare escapen, da sie nicht in Wiederholung mit Indikator v gehen
+#ucc c"™[" dcc ,"_ ™[Pseud.]™_ <™P™>_" ,"_ ™[Wirkl. Name]™_ <™W™>_" Acc
+   % #ucf - Verknuepfungen kommen vor, #uFZ nutzen
+#uFZ dcf Acf
+#ukn dvg e3 p"|" P"|" Avg
+#nr p"||814|830||x" b"#uvg" dcf Z
+#-p
+#ucf Acw  % Fuellzeichen fuer unverknuepft, wird evtl. geloescht
+#</
+#ucc +#J0v i4,_ y0 b"_" e"[ /.,-;:_!%&/(){}=?+*~#'<>|˙_]" e"]" b0 P"=" |:2    % Verknuepft
+  % unverkuepft
+#ucc +#J0i e"" c"i" ~i e" ™[" F32 f32 dcw Acw
+#J00
+#ucc e"" e" ™[" Acw
+#nr +#ucp Z
+
+#J0i
+#ucf +#J0i Z    % Verknuepfung darf gemacht werden
+#nr +#J0w Z
+#J0i
+#ucc +#J0v e"" f32 i dcw s20,  acw  % unfunktionale Verknuepfung (#4nk etwa)
+#nr +#J0w Z
+
+#J0v
+#ucZ +#J0v c"u" Z
+#nr +#4n Z
+#J0v  % falls Unicode exportiert wird
+#da
+
+#4n +#ucf dcw b" " Acw   % Klartext anhaengen
+#6n +#ucf dcw Acw  % Klartext anhaengen
+#3n +#ucf dcw b" " Acw   % Klartext anhaengen
+#ucf +#89T Z    % Verknuepfung darf gemacht werden
+#nr +#J00 Z
+#89T +#J00 y0 dcf ,"_-x_-X_" ,"_-__" s20,  acw
+#89S +#J00 y0 dcf s20,  acw
+#00 +#J00 y0 dcf s20,  acw
+#J00
+#<
+
+#J0w
+#ucf acw
+
+#ucp e"|" p" ™[" P"]™" Acw
+#ucw dcw ,"_ <™P™>_ ™[Pseud.]™_" ,"_ <™W™>_ ™[Wirkl. Name]™_" P>X Acw
+#ucc +#uki dcw dkj e"" b" ™[" t"]™" acw
+
+#ucc +p dcc y0 b"" f" " b0 Acc
+#)p
+
+#uki Akj
+#ukn e"|" c"815" p"|" E"|" acw  % 815v stets mit Fuellzeichen, da a priori unverknuepft
+#nr dki p"v|" P>X aki
+#nr dki Z
+#ukj dkj Aki
+#ucc +p dcc y0 b"" f" " b0 Acc
+#)p
+
+#J0Z
+
+#>8
+#+#
+
+#-K
+ % Datenfelder ausgeben Koerperschaften
+#>3
+
+#>6
+
+#nr dki Z
+#6n dkn p"800|" P>x akn
+
+#6nz y0 e"" b0 dkn p"801a|" P>x akn
+
+#6n1 dkn p"802|" P>x akn
+
+#6n3 dkn p"803|" P>x akn
+
+#6nd dkn p"805|" P>x akn
+
+#6ni dkn ,"_G__" p"806|" P>w Akn
+
+#nr dkb p"810|" akb
+#nr dkp p"2|" akp
+#6na dcb P>j Acb
+#J00
+#6nA dcb P>j Acb
+
+#nr dkb p"850|" akb
+#nr dkp p"3|" akp
+#6np dcb p"a" ,"__a_" P>k Acb
+#6nl dcb p"c" ,"__c_" P>k Acb
+#6nr dcb p"s" ,"__s_" P>k Acb
+
+#J00
+#6nR dcb i4, P>k Acb
+#6nR dcb I4, p"s" ,"__s_" P>k Acb
+
+
+#nr +#J0Z Z    % UP ueberspringen
+
+#(j
+#-j
+#ucb dcc f"" e"" Acc
+#ukb dkn e"|" x"+0." e"." P" |" akn
+#ucc y0 dcw e"" b0 P>X acw
+#ucc dcc b"" acc
+#-J
+#ukb dki dkn e"|" x"+1." e"." P" |" akn
+#ucc y0 e1 aki
+#ucc y0 dcw b1 e"" P>X acw
+#ucc +J dcc b"" acc
+
+#ukb x"+kp" e"." dkb akb   % Inkrement
+#ucb +j y0 dcb b"" b"" b0 Acb
+#)j
+
+
+#(k
+#-k
+#ucb dcc f"" e"" Acc
+#ukb did dki dkn e"|" x"+0." e"." P"s|" akn
+#ucc dki y0 i4, b1 e1 Aki % Originalindikator
+#ucc y0 i4, dcc b2 Acc
+#ucc y0 dcw e"" B" * " P>X acw  % Name
+
+#ukb dki dkn e"|" x"+1." e"." P" |" akn   % zus. Angaben
+#ucc y0 dcw z P>X acw
+
+#ukb dcw dki dkn e"|" x"+2." e"." P" |" akn  % IDREF 852
+#</
+#ucc +#89G i4,_ y0 b"_" e"[ /.,-;:_!%&/(){}=?+*~#'<>|˙_]" e"]" b0 P"=" |:2
+#ucc i p"a|" aki
+#ucc i Acw  % ueberreg. Identifikationsnummer
+#nr +#J00 Z
+
+#89G p"a|" Aki
+#89G +#J01 ,"_-x_-X_" acw
+#00 +#uid P>i Aid
+#uid did acw
+#J01
+#<
+
+#J00
+#ucw >X
+
+#ukb dki x"+kp" e"." dkb akb   % Inkrement
+#ucb +k y0 dcb b"" b"" b0 Acb
+#)k
+
+
+
+#J0Z
+
+#>8
+#+#
+
+#-S
+ % Datenfelder ausgeben Schlagworte
+#>3
+ tmabkonks
+#>8
+
+#+#
+
+
+#(6       Segment 610 und 650ff  fuer alle Satzarten
+
+ % Konkordanzen fuer MAB-Export
+ % Reihenfolge zielsystemfreundlich, d.h. in aufsteigender Nummernreihenfolge
+
+
+ %
+ %
+#nr dki dry Z
+#72d dkn e f32 F32 p"610|" P>x Akn
+#72d y0 dkn e"" f32 b0 p"610a|" P>x Akn
+
+#72d dkn f e" :" f32 F32 p"611|" P>x Akn
+#72d dkn f b" :" f32 F32 p"613|" P>x Akn
+
+
+#nr drx dry Z
+#72d dkn c f32 F32 P>R Arx
+#ury p"617 |" P>x Akn
+
+#72d dkn j f32 F32 p"619|" P>x Akn
+
+#72d dkn p"621|" akn
+#72d drx dry g P>R arx
+#ury P>X acw
+#ury dry Z
+#72d dkn p"622a|" akn   % ISSN
+#72d l c"ISBN" p"622c|" akn  % ISBN
+#72d l B"ISBN" f32 F32 P>X acw
+
+#nr did Z
+#72d g b"_" P>i Aid    % ZDB hier auch
+#uid did dkn p"622 |" P>x Akn
+
+
+
+#72d dkn t f32 F32 p"633 |" P>x Akn
+
+
+#72d +#77d dkn Z
+#nr +#J00 Z
+#77d +#ukn a Akn
+#77d +#J00 c"" Z
+#77d Akn
+#ukn dkn p"637 |" P>x Akn
+#J00
+
+#72d dkn b f32 F32 p"645 |" P>x Akn
+
+
+
+ %
+ % 
+#uki dki Z
+#72d +#J00 Z   % Sekundaerformen hier generell nicht
+#77d +#J00 dkn c"" p"652a|" P>x Akn  % ZDB hier auch
+#77 +#J01 Z
+#77d p"653 |b" P>x Akn % Nur #77d ohne Unterfelder belegt: Dateiumfang annehmen
+#nr +#J00 Z
+#J01
+#77d p"652a|a" P>x Akn % Auch #77 belegt: Spezifische Materialbenennung annehmen
+#J00
+
+
+#8e dkn p"655 |" akn
+#8e dko p"u|" e"|" Ako
+#8e ++ dcw ,",%5F,_," P>F acw
+
+
+
+ %
+ %
+#uki dki Z
+#23a dkn p"670 |" P>w Akn
+#28 dkn p"675 |" P>w Akn
+
+
+
+
+
+#nr +#J0Z Z
+
+#(F  % ggfls. wiederholbare Felder mit ggfls. ergaenztem Default-Unterfeld
+
+#ucw +#ucw dki i4, Z
+#uko e"|" p"" acw  % Default-Unterfeld ergaenzen
+
+#ucw +#J0X c"u" c"nbn-resolving.de" Z  % regulaer
+#ucw +#J0X c"urn:nbn" ,"_urn:nbn:_http://nbn-resolving.de/urn/resolver.pl?urn=urn:nbn:_" Acw  % URN resolven
+#ucw +#J0X c"u" Z  % regulaer
+#nr +#J0X Z
+
+#J0X
+#ucw +#J0X 2 p"h|" Aki
+#ucw +#J0X u c"http://" p"e|" Aki
+#ucw +#J0X u c"ftp://" p"b|" Aki
+#ucw +#J0X u c"mailto://" p"a|" Aki
+#ucw +#J0X u c"telnet://" p"c|" Aki
+#J0X
+#ucw >X
+#nr dki Z
+#)F
+
+
+#J0Z
+
+#)6
+
+
+
+#(3
+#nr db3 db2 db1 Z    % div. Merker rÅcksetzen
+
+#uNR dNR x"+1." e"." ANR
+#uNR +#J00 Z
+#nr p"1." e"." ANR
+#J00
+
+#nr dSL p"0" E"0" aSL       Satzlaenge als 00000 padden
+
+ % Header konstruieren und  codierte Angaben
+ % Headerkonstruktion MAB-Export: Datei- und Satzanfang
+
+ % Datei-Header
+
+#ub5 +#J00 Z  % Dateianfang noch ausgeben?
+#ub4 +#J00 Z  % Dateianfang bereits ausgegeben
+
+#uRA +#J02 c"B=1" Z  % BOM ja
+#uRA +#J01 c"B=" Z   % BOM nein
+#uRA +#J01 c"D=0" Z  % implied?
+#J02
+#t50
+#J01
+
+
+#uRA +#J00 c"C=R" Z  % Unterdrueckt: Datensatz soll Wurzelelement sein
+#uRA +#J01 c"C=hi" Z % Wurzelelement abhaengig von Hierarchie-Eigenschaft
+#nr +#J02 Z
+
+#J01  % #uMV: Datei, Sonst Datensatz
+#mv +#J02 Z
+#nr +#J00 Z
+
+#J02
+#nr p40 Ab4  % Wurzelelement
+
+#ub5 +#J00 x"+1." e"." db5 Ab5  % verbuchen
+#nr p"1." e"." Ab5
+
+#J00
+
+
+
+#nr db3 p30 Ab3
+
+#ub4 +#J01 Z    % Zaehlung haengt am Datei-Element
+#ub5 +#J01 x"+1." e"." db5 Ab5
+#nr p"1." e"." Ab5
+#J01
+
+#t33
+  != MAB2: Pos. 0-4: <-fest 00000      * Satzlaenge 
+  != MAB-Diskette Pos. 0-4: <- fortl. Satzzaehlung (Folklore)
+#uSL r5,0 e5
+  != Pos. 5: (c, d, n, p, u, v)    * Satzstatus (n/p/c/v)
+#uST e"|"
+  != Pos. 6-9 <- fest "M2.0"       * MAB-Version
+#nr p"M2.0|" e"|"
+  != Pos. 10 <- fest "1"           * Indikatorlaenge
+#nr p"1|" e"|"
+  != Pos. 11 <- fest "2"           * Teilfeldkennungslaenge
+#nr p"2|" e"|"
+  != Pos. 12-16 <- fest "24"       * Daten-Anfangsaddresse
+#nr p"24|" e"|" r5,0
+  != Pos. 17-22:                   * unused
+#nr p"|" E"|" r7,  e6
+  != Pos. 23: (h, y, u, p, k, s)   * Satztyp (p,k,s,h,u)
+#uTY
+
+#t34
+
+ % Ende
+
+ % Steuerfelder
+ % Auch 00-er Felder
+
+ %
+ % 
+
+  !=% 001-029         * Identifikationsnummern, Datums- und Versionsangaben
+  !=
+  != 001 <- #00       * Identifikationsnummer des Datensatzes
+#nr dcw p"001 |" =kn
+#uID Acw
+#9DF +#J01 Z  % Ist bereits Lokalsatz mit eigener ID
+#uTY c"l" e1 Acw  % Ausweiten fuer Lokal-
+#uTY +#uez c"e" e1 Acw   % und Exemplarsaetze
+#nr +#J01 Z
+
+#uez r3,0 Acw % Exemplarzaehler
+
+#J01
+#uTY +#J01 c"l" Z
+#ucw diL AiL  % Lokalsatz-ID merken fuer evtl. unmittelbar folgende Exemplarsaetze
+#J01
+#ucw P>X Z
+
+  !=
+  != 002  <- #099n       * Datum der Ersterfassung
+  !=         Indikator a wird fest generiert
+  !=         Indikator b kann nicht ermittelt werden
+#nr p"002a|" =kn
+#nr p"99991231|" e"|" =cw
+#99z e"" ,"_/__" ,"_:__" b"<#ucw" dcw Acw
+#99n e"" ,"_/__" ,"_:__" b"<#ucw" dcw Acw
+#^99z e"" ,"_/__" ,"_:__" b"<#ucw" dcw Acw
+#^99n e"" ,"_/__" ,"_:__" b"<#ucw" dcw Acw
+#ucw i4,9 dcw Z
+#ucw y0 dcw e14 s8,0 P>X Acw
+
+  !=
+  != 003  <- #99 diverse       * Datum der letzten Korrektur
+#nr p"003 |" =kn
+#nr p"00010101|" e"|" =cw
+#99e e"" ,"_/__" ,"_:__" b">#ucw" dcw Acw
+#99n e"" ,"_/__" ,"_:__" b">#ucw" dcw Acw
+#99z e"" ,"_/__" ,"_:__" b">#ucw" dcw Acw
+#99Z e"" ,"_/__" ,"_:__" b">#ucw" dcw Acw
+#^99e e"" ,"_/__" ,"_:__" b">#ucw" dcw Acw
+#^99n e"" ,"_/__" ,"_:__" b">#ucw" dcw Acw
+#^99z e"" ,"_/__" ,"_:__" b">#ucw" dcw Acw
+#^99Z e"" ,"_/__" ,"_:__" b">#ucw" dcw Acw
+
+  !=
+  != 004  <- aktuelle Zeit  * Erstellungsdatum des Austauschssatzes
+#dts dcw dkn e"" ,"_/__" ,"_:__" e14 s8,0 p"004 |" P>x Akn
+
+  !=
+  != 005n <- #99Z   * letzte Transaktion
+#99Z dkn e"" ,"_/__" ,"_:__" e14 s8,0 p"005n|" P>x Akn
+
+
+  !=
+  != 010  <- #09/#00 (Titel)  * Identifikationsnummer des (direkt) uebergeordneten Satzes IDREF
+  !=      <- #00 (Lokal)
+#nr dcw did p"010 |" =kn
+#uTY +#J0Z c"l" Z
+#uTY +#J0e c"e" Z
+
+#uBD P>i Aid  % zugeh. Titelsatz hoechster Stufe
+#nr +#J00 Z
+
+
+#J0e
+#uiL +#J0Z P>X Acw
+#uID P>i Z
+#uid did P"l" Aid
+  #nr +#J00 Z
+
+#J00
+#uid did P>X Acw
+
+#J0Z
+
+
+  !=
+  != 012  <- #000       * Identifikationsnummer des Titeldatensatzes
+#nr dcw did p"012 |" =kn
+#uTY +#9DF c"[ble]" Z  % nur fuer MAB-Lokal
+#nr +#J0Z Z
+
+#9DF +#uid Aid
+#uID did P>i Aid
+#uid did P>X Acw
+
+#J0Z
+
+  !=
+  != 015  <- n.a.          * Identifikationsnummer des Zielsatzes bei Umlenkungen
+  != 016  <- n.a.          * Identifikationsnummer des umgelenkten Datensatzes
+
+#uTY +#72d c"[hu]" Z  % nur fuer MAB-Titel
+#nr +#J0Z Z
+  != 020  <- n.a.          * Identifikationsnummer des Originaldatensatzes
+  != 021  <- #72d $i       * Identifikationsnummer der Primaerform IDREF
+#72d +#uid dcw did dkn i f" _" F"_ " Aid
+#nr +#J00 Z
+
+#uid P>i Z
+#uid p"021c|" Akn
+#uSG B"-" p"" Acw
+#uid did P>X acw
+#J00
+
+  != 022  <- Indexschluessel        * Identifikationsnummer der Sekundaerform IDREF
+
+#J0Z
+  != 023  <- n.a.          * Identifikationsnummer des zu korrigierenden Satzes
+
+#uLC +#J0Z Z
+  !=
+  != 025 <- #565           * Ueberregionale Identifikationsnummer
+  !=          "a"                   * DNB
+  !=          "b"                   * BNB
+  !=          "c"                   * Casalini
+  !=          "d"                   * - (DBI)
+  !=          "e"                   * - (EKZ)
+  !=          "f"                   * - (BNF)
+  !=          "g"                   * - (ZKA)
+  !=          "l"                   * LoC
+  !=          "o"                   * - (OCLC)
+  !=          "z"                   * ZDB
+#89D dkn ,"_-x_-X_" p"025a|" P>x Akn
+#89B dkn p"025b|" P>x Akn
+#89C dkn p"025c|" P>x Akn
+#89L dkn p"025l|" P>x Akn
+#89Z y0 b1 dkn ,"_-x_-X_" p"025z|" P>x Akn
+
+
+  != 026 <- #573           * Regionale Identifkationsnummer
+  !=        Belegt wird nur Indikator " " (EKI)
+#89 +#J00 dkn p"026 |" P>x Akn
+#89Z y0 i4,z b1 dkn p"026 |ZDB" P>x Akn
+#J00
+
+  !=
+  != 027 <- #00            * Lokale Identifikationsnummer IDREF
+#nr dcw ddj did p"027a|" =kn
+#uDI f"" F"" Adj
+#-@
+#udj +#J00 e"" c"[?]" Z
+#uSG B"-" p"" Acw
+#udj e"" P>i Aid  % aufbereiten
+#uid P>X acw
+#J00
+#udj +@ y0 dcw ddj did b"" f"" b0 Adj
+
+#nr +#89T Z
+
+  % Variante 027 bei Lokalsatzproduktion aus Titelsaetzen
+#J0Z  % 001 replizieren
+#nr dcw did p"027a|" =kn
+#uID P>i aid
+#uid did Acw
+#9DF +#uSG Z  % Ist bereits Lokalsatz mit eigener ID
+#uTY c"l" e1 Acw  % Ausweiten fuer Lokal-
+#uTY +#uez c"e" e1 Acw   % und Exemplarsaetze
+#nr +#uSG Z
+#uez r3,0 Acw % Exemplarzaehler
+
+#uSG B"-" p"" Acw
+#ucw P>X Z
+
+  !=
+  != 028 <- #89ff    * Identifikationsnummer von Normdaten
+  !=     a-PND / b-GKD / c-SWD
+#89T P"|" ,"_x|_X|_" ,"_-x_-X_" ,"_-__" F"|" dkn p"028a|" P>x Akn
+#3ni dkn b"G" p"028b|" P>x Akn
+#89G dkn ,"_-x_-X_" p"028b|" P>x Akn
+#89S dkn p"028c|" P>x Akn
+
+  != 029 <- n.a.         * Sonstige Identifkationsnummer
+
+
+  !=% 030-035 allg. verarbeitungstechn. Angaben
+  !=
+  != 030 <- diverse     * Codierte Angaben zum Datensatz
+#nr dcw p"030 |" =kn
+  != 030 Pos 0  <- #090     * Bearbeitungsstatus
+  !=          "a" <- "a"            * Autopsie
+  !=          "b"                   * teilweise Autopsie
+  !=          "c"                   * Uebernahme aus Nationalbibliogr.
+  !=          "d" <- "d"            * Uebernahme aus anderen Quellen
+  !=          "e" <- "e"            * konvertierte Altdaten
+  !=          "f"                   * CIP-Aufnahme
+  !=          "g"                   * vervollstaendigte CIP-Aufnahme
+  !=              <- "g"            * vervollstaendigte provisorische Aufn.
+  !=          "h"                   * ohne Autopsie
+  !=              <- "p"            * provisorische Aufn.
+  !=          "u"                   * maschinelle Umsetzung aus nicht-RAK
+  !=          "z"                   * keine Angabe
+#uTY +#00 c"[hu]" Z
+#uFZ +#ucw Acw  % nicht zutreffend
+#00 +#ucw c"bih" p"c%" Acw  % DNB
+#89Z +#ucw p"c%" Acw   % ZDB
+#00 +#ucw i5,f p"d%" Acw  % ZACK
+#00 +#ucw i5,d p"e%" Acw  % Retro
+#00 +#ucw i5,c p"u%" Acw  % Casalini
+#00 +#ucw y0 e1 c"[buv]" p"a%" Acw  % selbst erstellt
+#00 +#ucw y0 e1 c"[rz]" p"p%" Acw  % selbst erstellt (Reihen, ZS)
+#nr p"z%" Acw  % keine Angabe Auktionskataloge
+#ucw dcw e"%" Acw
+
+  != 030 Pos 1  <- fest      * Ansetzungsstatus
+#uTY +#89T c"[pks]" Z
+#uFZ +#ucw Acw  % nicht zutreffend
+#89T +#ucw p"a%" Acw
+#89G +#ucw p"a%" Acw
+#89S +#ucw p"a%" Acw
+#00 +#ucw p"c%" Acw  % lokal autorisiert
+#nr p"z%" Acw  % keine Angabe
+#ucw dcw e"%" Acw
+
+  != 030 Pos 2  <- fest      * Zeichenvorrat
+  !=               "5" = DIN 31628 Stufe 2 (hier: allegro-Ostwest)
+#nr p"5%" e"%" Acw
+  != 030 Pos 3  <-     * Zeichencode
+#uCZ Acw
+
+#uTY +#J0Z c"[ble]" Z  % fertig fuer Lokalsaetze
+  != 030 Pos 4  <-     * Regeln f. d. Formalerschliessung
+#uTY +#uFZ c"[pks]" Z  % nix fuer Stammsaetze
+#nr +#J00 p"c%" e"%" Acw  % Sonst RAK-WB
+#uFZ Acw   % nicht zutreffend
+#J00
+
+  != 030 Pos 5  <- fest        * Regeln f. d. Sacherschliessung
+  !=               "z" = Sonstiges Regelwerk
+#uTY +#J00 c"[hu]" p"z%" e"%" Acw
+#uFZ Acw   % nicht zutreffend
+#J00
+
+  != 030 Pos 6    * Regeln f. d. Normdatenansetzung
+#4n +#ucw p"l%" Acw  % Person <=> PND
+#6n +#ucw p"m%" Acw  % Koerperschaft <=> GKD
+#3n +#ucw i4,s p"n%" Acw  % Schlagwort <=> SWD
+#3n +#ucw I4,s p"z%" Acw  % Systematiklemma 
+#uFZ Acw
+#ucw dcw e"%" Acw
+
+  != 030 Pos 7  <- fest              * Transliteration
+  !=               "z" = keine Angabe
+#nr p"z%" e"%" Acw
+
+  % ab hier auch keine Normsaetze mehr
+#uTY +#J0Z c"[pks]" Z
+
+  != 030 Pos 8  <- fest              * Stichwortmechanismus      
+  !=               "c" = Stichworte in MAB 720
+#nr p"c%" e"%" Acw
+  != 030 Pos 9-10  <- fest           * Faecherstatistik
+#nr p"0%" e"%" r2,0 Acw
+
+#uTY +#J0Z c"u" Z  % ab hier keine Untersaetze mehr
+
+  != 030 Pos 11 <- #200/#240/#310   * Haupteintragungstyp
+  !=               "1" = Verfasserwerk
+#40 +#ucw p"1%" Acw
+  !=               "2" = Urheberwerk
+#60 +#ucw p"2%" Acw
+  !=               "3" = Sachtitelwerk
+#20 +#ucw p"3%" Acw
+#uFZ Acw   % nanu?
+#ucw dcw e"%" Acw
+
+  != 030 Pos 12 <- #310/#304         * Ordnungssachtitel
+  !=               "|" = Untersatz
+#18 +#ucw p"5%" Acw
+#19 +#ucw p"5%" Acw
+#20 +#ucw p"7%" Acw
+#uFZ Acw  % darf nicht
+#ucw dcw e"%" Acw
+
+#J0Z
+#ucw >X Z
+
+  != MAB 031 <- n.a.   * Angaben zum Redaktionssatz
+
+
+  !=% 036-049      * Allgemeine codierte Angaben
+#uTY +#J0Z y0 e1 c"[ble]" Z  % keine Lokalsaetze hier
+  !=
+  !=  036 <-                      * Laendercode
+  !=  036a <- #30g                * "DIN" (falsch) ISO 3166
+#30g dkn p"" ,"_ __" ,"___" ,"___" f"" p"036a|" P>x Akn
+
+  !=  037 <-                  * Sprachencode
+  !=  037b <- #503                       * ISO
+#30l +#J00 dkn p"" ,"_ __" f"" p"037b|" P>x Akn
+#37 dkn p"" ,"__ _" ,"_,_ _" ,"_;_ _" ,"_  _ _" ,"_  _ _" ,"_ __" f"" p"037b|" P>x Akn
+#J00
+
+
+  !=  038 <-                  * Sprache des Originals
+
+  !=  039 <-                  * Zeitcode
+#32h dkn p"ıııı" ,"_ __" f"ı" p"039a|" P>x Akn  % UDK
+#3nj dkn p"ıııı" ,"_ __" f"ı"  p"039c|" P>x Akn  % SWD
+
+  !=  MAB 040 <-                  * Notation fuer Normdaten
+  !=  040a  <- #32D                       * SWD-Notation
+  !=  040b  <- #32B                       * DDC-Notation
+#32D dkn p"ıııı" ,"_ __" f"ı" p"040a|" P>x Akn  % SWD
+#32B dkn p"ıııı" ,"_ __" f"ı" p"04ba|" P>x Akn  % DDC
+
+  !=  MAB 041 <- n.a.             * notationsspezifische Codierungen
+
+#J0Z
+
+
+  !=% 050-064    * veroeffentlichungs- und materialspezifische Angaben
+#uTY +#J0Z y0 e1 c"[pks]" Z  % keine Normsaetze mehr
+  !=  050 <- diverse          * Datentraeger
+  != TODO: GMD auswerten
+#nr dcw p"050 |" =kn
+
+  != 050 Pos 0  <-               * Druckschrift
+  !=               "a" = trifft zu
+#25a +#uFZ Z                     * GMD -> Keine Druckschrift
+#ugM +#uFZ Z
+#nr +#ucw p"a%" Acw
+#uFZ Acw
+#ucw dcw e"%" Acw
+
+  != 050 Pos 1  <- n.a.          * Handschrift
+  !=               "a" = trifft zu
+#uFZ Acw
+
+  != 050 Pos 2  <- n.a.          * Papierzustand
+#uFZ Acw
+
+  != 050 Pos 3  <- n.a.          * Mikroform
+  !=               "a" = trifft zu
+#25a +#ucw c"m" p"a%" Acw
+#ugM +#ucw c"Mikro" p"a%" Acw
+#77m +#ucw p"a%" Acw
+#uFZ Acw
+#ucw dcw e"%" Acw
+
+  != 050 Pos 4  <- n.a.          * Blindenschrift
+  !=               "a" = trifft zu
+#uFZ Acw
+
+  != 050 Pos 5-6 <- n.a.         * AV/Material
+#ugM +#ucw p"yy%" c"~tontr" Acw    % nicht spezifiziert
+#uFZ Acw
+#uFZ Acw
+#ucw dcw e"%" Acw
+
+  != 050 Pos 7  <- n.a.          * Medienkombination
+#25a +#ucw c"me" p"a%" Acw
+#ugM +#ucw c"Medienk" p"a%" Acw
+#uFZ Acw
+#ucw dcw e"%" Acw
+
+  != 050 Pos 8  <- n.a.          * Computerdatei
+#8e +#ucw c"://" A c"[01]" p"g%" Acw  % im Fernzugriff
+#25a +#ucw c"el" p"a%" Acw
+#ugM +#ucw c"~elektr" p"a%" Acw
+#uFZ Acw
+#ucw dcw e"%" Acw
+
+  != 050 Pos 9  <- n.a.          * Spiele
+  !=               "a" = trifft zu
+#25a +#ucw c"sp" p"a%" Acw
+#ugM +#ucw c"Spiel" p"a%" Acw
+#uFZ Acw
+#ucw dcw e"%" Acw
+
+  != 050 Pos 10 <- n.a.           * Karten
+  !=               "a" = trifft zu
+#77k +#ucw p"a%" Acw
+#uFZ Acw
+#ucw dcw e"%" Acw
+
+  != 050 Pos 11-13 <- fest 001   * Anz. Einheiten
+#uMO +#ucw c"t" Z  % nicht in reinem MAB-TITEL
+#nr p"1%" e"%" r3,0 Acw
+
+#J00
+#ucw >X Z
+
+#J0Z
+
+  != 051 <- diverse        * Angaben zu begrenzten Werken
+#uTY +#89Z c"[hyu]" Z   % nur Titelsaetze
+#nr +#J0Z Z
+#89Z +#J0Z Z
+#00 +#J0Z e"[123456789]" c"[zr]" Z
+#76p +#J0Z Z
+#70 +#J0Z Z  % USW aus fortlfd.
+
+#nr dcw p"051 |" =kn
+  != 051 Pos 0 <-       * Erscheinungsform
+#708 +#ucw p"a%" Acw  % a - Unselbstaendig
+#uMB +#J00 Z  % hat selbst Baende?
+
+#85 +#ucw c" ; " p"s%" Acw    % Stueck
+#20 +#ucw p"m%" Acw   % m - einbaendig
+#uFZ Acw  % z.B. Bandauffuehrungen
+#nr +#ucw Z
+
+
+#J00  % hat selbst Bandauffuehrungen 
+#85 +#ucw c" ; " p"t%" Acw    % MBW in Serie
+#20 +#ucw p"n%" Acw   % n - mehrbaendig
+#uFZ Acw  % z.B. was?
+
+#ucw dcw e"%" Acw
+
+  != 051 Pos 1,2,3 <- diverse        * Veroeffentlichungsart
+#nr dcd Z
+#59 p"f%" e"%" Acd  % Festschrift
+#83 p"k%" e"%" Acd  % Proceedings
+#86 p"r%" e"%" Acd  % Report
+#81 c"Sonderabdr" p"v%" e"%" Acd    % Sonderdruck
+#708 p"t%" e"%" Acd  % Aufsatz
+#818 +#uFZ c"Diss" p"y%" e"%" Acd  % Dissertation
+#818 p"u%" e"%" Acd  % Hochschulschrift
+#uFZ Acd
+#uFZ Acd
+#uFZ Acd
+#ucd y0 e3 Acw
+
+  != 051 Pos 4 <- n.a.         * Literaturtyp
+#uFZ Acw
+  != 051 Pos 5 <- n.a.         * Reprint
+#72 +#ucw p"r%" Acw
+#uFZ Acw
+#ucw dcw e"%" Acw
+  != 051 Pos 6 <- fest         * amtl. Druckschriften
+#uFZ Acw
+  != 051 Pos 7 <- fest         * FSK
+#uFZ Acw
+
+#ucw >X Z
+
+
+
+#J0Z
+#uTY +#89Z c"[hu]" Z   % nur Titelsaetze
+#nr +#J0Z Z
+  != 052   <- #8nc, sonst diverse       * fortlaufende Sammelwerke
+#89Z +#J00 Z
+#00 +#J00 e"[123456789]" c"[zr]" Z
+#76p +#J00 Z
+#70 +#J00 Z  % USW aus FSW
+#nr +#J0Z Z
+
+#J00
+#nr dcw p"052 |" =kn
+  != 052 Pos 0 <- #10, #76p            * Erscheinungsform
+#8nc +#J02 Acw  % *alles* 1:1 aus ZDB
+
+#76p +#ucw p"p%" Acw   % ZS
+#70 +#ucw p"a%" Acw    % USW
+#uFZ Acw  % z.B. was?
+#ucw dcw e"%" Acw
+
+  != 052 Pos 1-2,3-4,5-6 <- n.a.       * Veroeffentlichungsart und -inhalt
+#uFZ dcc Acc
+#ucc Acc   % 2
+#ucc Acc   % 4 
+#ucc Acc   % 8
+#70 p"au%" e"%" acc % Sonderdruck
+#83 p"ko%" e"%" acc % Proceedings
+#86 p"r%" e"%" Acd  % Report
+#70 p"au%" e"%" acc % USW
+#ucc y0 e6 Acw
+
+  != 052 Pos 7 <- #523         * Status
+#81S +#ucw p"f%" Acw
+#76p +#ucw y0 b"-" b0 p"t%" Acw
+#76p +#ucw p"a%" Acw
+#nr p"z%" Acw
+#ucw dcw e"%" Acw
+
+  != 052 Pos 8,9,10 <- n.a.         * Erscheinungsweise
+#uFZ Acw
+#uFZ Acw
+#uFZ Acw
+
+  != 052 Pos 11 <- n.a.         * Reprint
+#72 +#ucw p"r%" Acw
+#uFZ Acw
+#ucw dcw e"%" Acw
+
+  != 052 Pos 12 <- n.a.         * amtl. Druckschriften
+
+  != 052 Pos 13,14 <- n.a.      * fruehere Erscheinungsform
+#J02
+#ucw >X Z
+
+#J0Z
+
+
+  != MAB 053  <- n.a.         * Nachlaesse und Autographen
+
+  != MAB 057  <- n.a.         * Codes fuer Mikroformen
+#uTY +#25a c"[hu]" Z   % nur Titelsaetze: "Ist Feld 057 in Lokaldatensaetzen besetzt, 
+#nr +#J0Z Z  % darf es nicht in Titeldatensaetzen besetzt sein"
+
+#25a +#J00 i4,m i5,i dcw dkn p"057 |" akn
+#nr +#J0Z Z
+
+#J00
+  != 057 Pos 0 <- unbekannt         * Materialart
+#nr p"u%" e"%" Acw
+  != 057 Pos 1 <-                   * Polaritaet
+#nr p"u%" e"%" Acw
+  != 057 Pos 2 <-                   * Format
+#nr p"u%" e"%" Acw
+  != 057 Pos 3 <-                   * Verkleinerung
+  != 057 Pos 4-6 <-                 * Verkleinerungsrate
+#77 +#ucw c"24x" p"b024%" Acw
+#77 +#ucw c"48x" p"c048%" Acw
+#77 +#ucw c"72x" p"d072%" Acw
+#77 +#ucw c"96x" p"e048%" Acw
+#nr p"u%" e"%" Acw
+#uFZ Acw
+#uFZ Acw
+#uFZ Acw
+
+#ucw dcw e"%" Acw
+  != 057 Pos 7 <-                   * Farbe
+#77m +#ucw c"s/w" p"a%" Acw
+#77m +#ucw c"b/w" p"a%" Acw
+#nr p"u%" Acw
+#ucw dcw e"%" Acw
+  != 057 Pos 8 <-                   * Emulsion
+  != 057 Pos 9 <-                   * Generation
+  != 057 Pos 10 <-                  * Traegermaterial
+#ucw >X Z
+
+#J0Z
+
+  != MAB 058  <- n.a.         * Codes fuer elektronische Ressourcen
+#25a +#J00 i4,e i5,l dcw dkn p"058 |" akn
+#nr +#J0Z Z
+#J00
+  != 058 Pos 0 <- "c"         * Materialart
+#nr p"c%" e"%" Acw
+  != 058 Pos 1 <- "u"         * Spezifische Materialbenennung
+#77d +#J00 c"Diskette" p"j%" e"%" Acw
+#77d +#J00 c"DVD" p"o%" e"%" Acw
+#77d +#J00 c"ROM" p"o%" e"%" Acw
+#77d +#J00 c"Online" p"r%" e"%" Acw
+
+#8e +#J00 c"A0" c"1" p"r%" e"%" Acw
+#8e +#J00 B"u" e"" p"!" c"!urn:" p"r%" e"%" Acw
+#nr p"u%" e"%" Acw
+#J00
+  != 058 Pos 2 <-             * nicht besetzt
+  #uFZ Acw
+  != 058 Pos 3 <-             * Farbe
+  != 058 Pos 4 <-             * Abmessungen
+  != 058 Pos 5 <-             * Ton
+  != 058 Pos 6-8 <-           * Bit-Tiefe
+  != 058 Pos 9 <-             * Anzahl der Dateiformate
+  != 058 Pos 10 <-            * Messkalen
+  != 058 Pos 11 <-            * Vorgaengermedium / Quelle
+  != 058 Pos 12 <-            * Grad der Komprimierung
+  != 058 Pos 13 <-            * Qualitaet der Konversion
+#ucw >X Z
+
+
+#J0Z
+
+  !=% 065-069     * Normdatenspezifische Angaben
+  != 065            * PND
+#uTY +#J0Z I4,p Z
+#4nc +#J0Z dkn p"065 |" P>x Akn
+#nr dcw p"065 |" =kn
+  != 065 Pos 0 <- diverse       * Individualisierungskennzeichen
+  !=              "a" - individualisiert
+  !=              "b" - nicht individualisiert
+#4n +#ucw i4,p p"a%" Acw
+#4n +#ucw i4,n p"b%" Acw
+#3n +#ucw p"a%" Acw             * SWD-Hybrid => individualisiert
+#4ne +#ucw p"a%" Acw            * normiert individualisiert
+#4nz +#ucw y y0 e1 c"[ab]" P"%" Acw       * Schnittstellenvariante
+#4nz +#ucw e"" c"Tp" p"a%" Acw
+#4nz +#ucw e"" c"Tn" p"b%" Acw
+#4nd +#ucw c"" p"a%" Acw       * unnormiert differenziert =>  individualisiert
+#uFZ Acw
+#ucw dcw e"%" Acw
+  != 065 Pos 1 <- n.a.          * Geschlecht    
+#4nd +#ucw f c"m" p"m%" Acw
+#4nd +#ucw f c"w" p"w%" Acw
+#4nd +#ucw f c"f" p"w%" Acw
+#4ne +#ucw f c"m" p"m%" Acw
+#4ne +#ucw f c"w" p"w%" Acw
+#4ne +#ucw f c"f" p"w%" Acw
+#uFZ Acw
+#ucw dcw e"%" Acw
+  != 065 Pos 2 <- n.a.          * Namenstyp
+#uFZ Acw
+  != 065 Pos 3 <- n.a.          * Personentyp
+#uFZ Acw
+
+#ucw >X Z
+
+#J0Z
+  !=
+  != 066            * GKD
+#6nc +#J0Z dkn y0 e1 p"066 |" P>x Akn
+
+  != 066 Pos 0 <- fest          * Typ der Koerperschaft
+  !=              " " - nicht spezifiziert
+
+  != 066 Pos 1 <- #801/#800     * Stufe der Koerperschaft
+
+#J0Z
+
+  !=
+  != 067            * SWD
+#3nc +#J0Z dkn p"067 |" P>x Akn
+
+  != 067 Pos 0 <- fest          * Schlagwortkategorie
+
+  != 067 Pos 1-6 <- fest        * Permutationskennungen
+
+  != 067 Pos 7 <- n.a.          * Hinweissatz
+#J0Z
+
+  !=
+  != 068            * SWD
+#3nm dkn ,"_; __" p"068 |" P>x Akn       * Musikinstrumente
+#4nm dkn ,"_; __" p"068 |" P>x Akn       * Funktionen
+
+#0cn dkn t p"068a|" ,"_ __" P>x Akn    * Teilbestand
+#0cn dkn c p"068c|" P>x Akn    * Codes
+#0cn dkn y p"068z|" ,"___" P>x Akn    * Entitaetstyp
+
+  !=% 070-075      * Anwenderspezifische Daten und Codes
+
+  !=
+  != 070             * bearbeitende Institution
+  != 070    <- Benutzer  * katalogisierende Institution
+#89. +#nr Z
+#uSG dkn p"070 |" P>x Akn  % nur Selbstkatalogisierung(?)
+
+  != 070a   <- Benutzer          * liefernde Institution (obligatorisch)
+#nr dcw p"070a|" =kn
+#uLS +#J0Z P>X Acw
+#uSG +#J0Z P>X Acw
+#nr p"DE-Bo413|" e"|" P>X Acw
+
+#J0Z
+  != 070b   <- nicht belegt      * korrigierende Institution
+
+  != 071    <- Benutzer      * besitzende Institution
+  != Indikatoren " " - Sigel, "a" - BIK, "b" - DBS-Nr., 
+  !=             "c" - reg. Kennzeichen, "d" - ISIL
+#uTY +#J0Z dkn e1 c"[pks]" Z  % keine Normsaetze
+#uSG +#J0Z c"-" p"071d|" P>x Akn
+#uSG p"071 |" P>x Akn
+
+#J0Z
+
+  != 072    <- ???           * Codes besitzende Institution
+#uTY +#J00 c"[ble]" Z  % nur fuer MAB-Lokal
+#nr +#J0Z Z
+
+#J00
+#nr dcw p"072 |" =kn
+  != 072 Pos 0-2 <- fest "WWW"    * Leihverkehrsregion
+#nr p"|||!" e"!" Acw   % n.a.
+  != 072 Pos 3   <- fest "n"      * Leihverkehrsrelevanz
+#nr p"u|" e"|" Acw  % n-nein u-unbekannt
+
+#ucw P>X Z
+
+#J0Z
+
+  != (folgende nur MAB-Lokal)
+  != 073    <- nicht belegt  * SSG-Nr
+  != 074    <- nicht belegt  * SSG-Notation
+  != 075    <- n.a.          * ZDB-Prioritaetszahl (Lokalsaetze)
+
+  !=% 076-088      * Anwenderspezifische Angaben
+
+  !=
+  != 076    <-               * Frei definiert 1
+  != 077    <-               * Frei definiert 2
+  != 078    <-               * Frei definiert 3
+  != 079    <-               * Frei definiert 4
+
+#4nj dkn p"079i|" P>w Akn            * weitere Daten 079i
+
+#0cn dkn n p"079n|" P>x Akn    * Katalogisierungslevel
+
+#6nz dkn a p"079q|Saa" P>x Akn    * 
+#6nz dkn b p"079q|Sba" P>x Akn    * 
+#6nz dkn c p"079q|Sca" P>x Akn    * 
+#6nz dkn d p"079q|Sda" P>x Akn    * 
+#6nz dkn e p"079q|Sea" P>x Akn    * 
+
+#nr dcw p"079r|" =kn
+#0cn dcw e p"e" P>X Acw            * urh.
+#0cn dcw r p"r" P>X Acw            * red.
+
+#6nc dkn p"079w|" P>x Akn
+
+  != 080    <-               * Zugriffs- und Updateanweisungen
+
+  != 081    <-               * Frei definiert 5
+  != 082    <-               * Frei definiert 6
+  != 083    <-               * Frei definiert 7
+  != 084    <-               * Frei definiert 8
+  != 085    <-               * Frei definiert 9
+  != 086    <-               * Frei definiert 10
+  != 087    <-               * Frei definiert 11
+  != 088    <-               * Frei definiert 12
+
+
+
+ % Ende
+
+#)3
+
+
+#(8
+#ub3 db3 p39 Z  % Satzende
+#)8
+
+#(R
+#nr dry Z
+#-R
+#urx y0 e"_" b0 Ary  % Text *vor+
+#urx +#J0l y0 b"_" e"[ /.,-;:_!%&/(){}=?+*~#'<>|˙]" e"]" b0 P"=" |:2
+#urx +#J00 y0 b"_" e"[ /.,-;:_!%&/(){}=?+*~#'<>|˙]" e"]" b0 p"_" Ary
+#nr +#J00 Z
+
+#J0l
+#4n +#J01 p"!" B"!n" B"!p" f"! " Ary  % Ansetzung PER
+#3n +#J01 b" " Ary  % Ansetzung SW
+#6n +#J01 Ary  % Ansetzung KOR
+#20 +#J01 e" :" ,"_  _ / _" Ary  % Ansetzung Tit
+   # todo: #(T
+#35 +#J01 p"[Rezension]" E"]" Ary
+#nr p"[???]" E"]" Ary
+#J01
+#<
+
+#J00
+#urx +R drx y0 b"_" f"0123456789abcdefghijklmnopqrstuvwxyz" b0 Arx  % Weiter
+#)R
+
+
+#(w
+#ukn dcw b"|" Acw
+#(W
+#-W
+#ukn >v
+#ucw dcx y0 f" " e"" F32 b0 P>t Acx
+#t29
+#ucw +W y0 dcw b"" f" " b0 Acw
+#)W
+#)w
+
+#(x
+#ukn dcw b"|" Acw
+#(X
+#ukn >v
+#ucw y0 dcx e"" b0 dcy P>t Acx  % Text vor dem ersten Unterfeld?
+#ucw +#ucw y0 dcw b"" b0 Acw
+#t29
+#)X
+#)x
+
+#-X
+#ucw dcx y0 e1 Acx
+#ucw y0 b1 e"" b0 Acx
+#>u
+#ucw +X y0 dcw dcy b1 b"" b0 Acw
+#t{t28 t29}
+#)X
+#)x
+
+#(v
+#t20
+#ukn e"|" e3 p21 P22
+#t25
+#uki +#J00 e"|"  % expliziter Indikator
+#ukn +#J00 e"|" b3 b0   % sonst impliziter aus #ukn
+#nr p" |" e"|"  % sonst "blank"
+#J00
+#t{t26 t99}
+#)v
+
+
+#(u
+#t10
+#ucx e1 p12 P{t13 t99}
+#ucx dcx y0 b1 F32 b0 P>t acx
+#t19
+#)u
+
+
+#(t
+#-t
+#ucx e"™" b0
+#ucx +#J00 b"™" e"™" b0 p88
+#ucx +t y0 dcx b"™" b"™" b0 acx  % merkwuerdig...
+#)t
+
+#J00
+#ucx dcx b"™" Acx
+   % Apostrophbehandlung
+#ucx +#ucx e"'™" e"™'" c"™" p89 Z  % Apostroph-NSZ-Situation oder NSZ-Apostroph?
+#nr +#J00 Z
+#ucx +t y0 dcx b"™" b0 acx
+#)t
+
+#J00
+#ucx +#J00 e"'™" c"™" p"'" E"'" P89    % Sprung bei "™'"
+#t89  
+#ucx +t y0 dcx b"'™" f32 b0 p" " acx
+#)t
+
+#J00
+#ucx +t y0 dcx b"™'" f32 b0 p" " acx
+#)t
+
+
+
+#- Ende
+#hi +-  % ohne Effekt bei acon
+#ub1 db1 p39 Z  % Unterfeldende
+#ub2 db2 p29 Z  % Feldende
+#ub3 db3 p39 Z  % Satzende
+#ub4 db4 p49 Z  % Dateiende
+#ub5 db5 p"-" E"-" Ab5  % Weiteren Export verhindern
+#+#
+
+#(i  % Identifier-Aufbereitung (lokale)
+ % #uid -> #uid
+#uid y0 did f32 F32 e"-" b0 Aid  % Pruefziffern entfernen
+#)i
+
+
+     tu-prim
+     Identnummernbehandlung
+#(Q
+#nr ddi did Z #zz 0
+
+!00 e"[=-]" F32 b0 Adi #zz 0           SWD: e"-" wg. Pruefziff
+
+#89 y0 e"" F32 p"" Adi #zz 0          verbunduebergreifende ID #89
+!09 e"=" e"" F32 p"" Adi #zz 0        wenn #09, dann diesen auch
+
+!89Z y0 e"[=-]" f"zZ0" F32 p"zdb" Adi #zz 0
+
+#udi f"" e"" Aid #zz 0
+#)Q
+
+
+  %*% #(9: Register-9 faehige (Sortier-) Aufbereitung einer Identnummer in #uyy nach #uyz
+#(9       % NOOP: Die Identnummern sind mit fuehrenden Nullen aufgefuellt
+#uyy y0 dyy dyz e"-" b0 Ayz #zz 0
+#)9
+
+  Ende u-prim
+
+
+ Code-Umwandlungen: p-Befehle bei Bedarf hier anfÅgen
+                    oder mit Befehl t hinzuladen
+
+
+p .29 1
+
+
+p .21 .167
+p .36 .164
+p .145 .241
+p .146 .225
+p .156 .163
+p .176 .245
+p .177 .236
+p .178 .252
+p .181 .194
+p .182 .193
+p .183 .195
+p .184 .199
+p .189 .200
+p .190 .198
+p .198 .205
+p .199 .207
+p .207 .202
+p .208 .197
+p .209 .213
+p .210 .211
+p .211 .208
+p .212 .214
+p .214 .173
+p .215 .233
+p .223 .216
+p .225 .251
+p .232 .196
+p .237 .249
+p .242 .232
+p .243 .248
+p .250 .183
+
+
+p .18 .205 111
+p .19 .205 117
+p .22 .211 117
+p .23 .198 103
+p .127 .207 101
+p .128 .208 67
+p .129 .201 117
+p .130 .194 101
+p .131 .195 97
+p .132 .201 97
+p .133 .193 97
+p .134 .202 97
+p .135 .208 99
+p .136 .195 101
+p .137 .200 101
+p .138 .193 101
+p .139 .200 105
+p .140 .195 105
+p .141 .193 105
+p .142 .201 65
+p .143 .202 65
+p .144 .194 69
+p .147 .195 111
+p .148 .201 111
+p .149 .193 111
+p .150 .195 117
+p .151 .193 117
+p .152 .200 121
+p .153 .201 79
+p .154 .201 85
+p .155 .207 116
+p .157 .208 115
+p .158 .202 117
+p .159 .202 85
+p .160 .194 97
+p .161 .194 105
+p .162 .194 111
+p .163 .194 117
+p .164 .196 110
+p .165 .196 78
+p .166 .207 67
+p .167 .207 99
+p .168 .207 114
+p .169 .207 82
+p .171 .207 83
+p .172 .207 115
+p .173 .194 121
+p .174 .207 90
+p .175 .207 122
+p .228 .198 97
+p .233 .199 73
+p .234 .208 116
+p .238 .211 97
+p .239 .211 101
+p .240 .194 67
+p .241 .194 99
+p .244 .194 78
+p .245 .194 110
+p .246 .194 79
+p .247 .194 83
+p .249 .194 115
+p .251 .194 90
+p .252 .194 122
+p .253 .199 90
+p .254 .199 122
+
+
+_\222\68_\179_
+p .179 .226
+_\222\100_\180_
+p .180 .242
+_\219\76_\242_
+_\219\79_\215_
+_\219\108_\243_
+_\219\111_\237_
+
+p .213 .176
+p .11 1
+p .12 1
+p .14 1
+p .15 1
+p .16 1
+p .17 1
+p .20 1
+p .24 1
+p .25 1
+p .28 1
+p .30 1
+ p .180 1
+p .185 1
+p .186 1
+p .187 1
+p .188 1
+p .191 1
+p .192 1
+p .193 1
+p .194 1
+p .195 1
+p .196 1
+p .197 1
+p .200 1
+p .201 1
+p .202 1
+p .203 1
+p .204 1
+p .205 1
+p .206 1
+p .216 1
+p .217 1
+p .218 1
+p .219 1
+p .220 1
+p .221 1
+p .222 1
+p .224 1
+p .226 1
+p .227 1
+p .229 1
+p .230 1
+p .231 1
+p .235 1
+p .236 1
+p .248 1
+
+
+
+
+p .1 1
+p .2 1
+p .3 1
+p .4 1
+p .5 1
+p .6 1
+p .7 1
+p .8 1
+p .9 1
+p .26 1
+p .27 1
+p .255 1
+
+
+p .186 .124 124
+p .197 .166
+p .220 .45 62
+
+p .14 .182
+

@@ -1,0 +1,205 @@
+
+Verlautbarung 275 der Entw.Abt.                              2015-12-03
+-------------------------------
+
+V35.F ist da : Festschreibung und Freigabe der Referenzversion
+------------
+
+Der Begriff "Festschreibung" bezieht sich nur auf den Funktionsumfang.
+Erwiesene Fehlfunktionen werden korrigiert werden. Neue oder geaenderte
+oder verbesserte Funktionen (d.h. Aenderungen in .exe-Programmen) wird 
+es erst mit einer V36 geben. Dafuer ist noch kein Termin gesetzt.
+NICHT festgeschrieben werden alle FLEX- und Parameterdateien sowie
+Hilfetexte. Solche Dateien koennen nach Bekanntgabe von Korrekturen 
+mit dem Befehl  X getfile name  sofort automatisch bezogen werden. 
+
+Das "frei" im Begriff "Freigabe" ist in diesem Fall erstmals auch im
+Sinne von "kostenfrei" zu verstehen, und zwar nicht nur fuer die
+Abonnenten des Jahres. Beim Download ist als Nutzername "ac15"
+anzugeben, dann aber kein Passwort.
+Diese Massnahme soll alle diejenigen Anwender zum Upgraden ermuntern,
+die noch mit aelteren Versionen arbeiten. Die Umfrage hat ergeben, dass
+es recht viele sind. Gerade im Hinblick auf die neueren 64bit-Windows-
+Versionen ist nun *wirklich* davon *abzuraten*, mit einer allegro-
+Altversion weiterzumachen, und jedenfalls sind die Kosten kein Argument
+mehr, wenn sie es denn je waren. Das gern kolportierte Geruecht, 
+allegro werde wohl bald nicht mehr laufen koennen, verliert damit 
+vollends jeden Boden unter den Fuessen, der aber ohnehin gar nicht
+vorhanden war. Auch die aeltesten Datenbanken koennen mit a99 und
+a35 ohne Aenderung benutzt werden! Wer gegenteilige Erfahrungen macht,
+kann sich an mich persoenlich wenden oder an einen der bekannten
+Supporter. (B.E.)
+ 
+
+Datenbank neu erzeugen - jetzt auch mit al.job
+----------------------------------------------
+Gebraucht wird eine Grunddatei und passende Parameter. Wenn man z.B. 
+mit dem Standard arbeiten will, also mit cat.api, dann muss zuerst 
+einmal eine .alg-Datei her. Wie die strukturiert ist, steht im 
+Handbuch. Wie man sie erstellt, ist egal. [Siehe aber unten.]
+
+Sagen wir, man legt eine  datei.alg  auf k:\daten\bank  ab (oder unter
+Linux in  /var/daten/bank. 
+Als Indexparameter wird  cat.api  gewuenscht. Dann:
+
+Windows:
+  acon -jal -dk:\daten\bank -bcat -ka
+
+Linux:
+  ./acon -jal -d/var/daten/bank -bcat -ka
+
+Nach dem Start: Funktion  a : Admin  waehlen, dann  1 : Index rebuild.
+Es entsteht ein Skript  org.bat, das man nur noch starten muss, damit
+der Index und die .tbl, .stl sowie .res entstehen.
+Auch unter Linux heisst das Skript  org.bat, man startet es aber
+mit dem Befehl   ./org.bat
+
+
+.ADT-Datei in .ALG wandeln oder umgekehrt  [s.a. Trick 80]
+--------------------------
+[Siehe Handbuch 0.2.2 zur Struktur der .adt-Daten:  h ac0-0#487 ]
+Mit Fremdsoftware, z.B. Perl oder Python oder auch mit einem guten
+Texteditor, kann man viel leichter eine sog. "Externdatei" (Typ .adt)
+erzeugen als eine "Grunddatei" (Typ .alg). So wird oft vorgegangen,
+wenn man eine allegro-Datenbank aus Fremddaten neu erstellen will.
+Um dann aber mit dem Programm index.exe den Index zu erstellen und
+die Datenbankdateien (Typ .ald), dazu braucht man die Grunddatei.
+Und die Grunddatei muss den richtigen Zeichencode haben, das ist im
+Standard ASCII (DOS-Code) und nicht ANSI (Windows) oder UTF-8.
+
+Ein neuer FLEX namens  dawa.flx  kann mit a99 und mit acon [!]
+dazu benutzt werden, eine Externdatei in eine Grunddatei zu wandeln
+oder umgekehrt, und dabei auch von einem Zeichencode in einen anderen,
+wobei ASCII, ANSI und UTF-8 zur Wahl stehen.
+
+Aufruf:  Wenn man eine Datei  daten.typ  hat, dann
+
+a99:   X dawa [-ci] daten.typ
+
+acon:  acon -jdawa.flx [-ci] daten.typ
+
+Dabei kann typ=Xlg sein oder typ=Xdt, und X der CFG-Buchstabe.
+Wenn es z.B. .blg ist, entsteht eine .bdt-Datei, aus .cdt wird .clg.
+Und aus .Xld wird .Xdt.
+
+Im Beispiel entsteht  daten.alg. Damit kann man verfahren wie oben 
+beschrieben, um mit dem  al.job  eine Datenbank draus zu machen.
+Die optionale Option -c ist dazu da, eine Umcodierung auszuloesen:
+i=1 : ANSI -> ASCI
+i=2 : ASCI -> ANSI
+i=3 : ANSI -> UTF8  
+i=4 : ASCI -> UTF8
+i=5 : UTF8 -> ANSI
+i=6 : UTF8 -> ASCI
+
+Dateityp und Umcodierung sind also frei kombinierbar.
+
+
+.ADT-Datei mit update einspeisen
+--------------------------------
+Nicht jeder weiss es, deshalb sei's nochmal gesagt:
+Mit
+  update -fm.. -d... -b... -k... -u daten.adt
+kann man auch eine Externdatei  daten.adt  ohne vorherige Umwandlung
+in .alg in eine vorhandene Datenbank einspeisen. Dann natuerlich muss
+der Zeichencode uebereinstimmen mit dem der Datenbank! Wenn nicht,
+vorher mit dawa in .alg wandeln mit der geeigneten Option -ci.
+Auch in dem Fall, dass die Datenbank erst ganz neu aufzubauen ist
+(mit  index -f7 ...) braucht man das dawa-Verfahren, die .adt zuerst
+in eine .alg zu verwandeln.
+
+
+HFM-Doku aktualisiert
+---------------------
+Eine vollstaendige Doku befindet sich nur in Vb260, die nun 
+aktualisiert wurde.
+
+ ----------------------------------------------------------------------
+
+Kleinere Verbesserungen
+=======================
+
+Neben etlichen Korrekturen und Aktualisierungen in Hilfetexten und
+FLEXen wurden noch folgende Verbesserungen gemacht:
+
+a99-Formulare: TAB-Zeichen
+--------------------------
+In Formulardateien (.frm) koennen Kommentare stehen: Zeilen, die
+mit Leerzeichenen beginnen, werden ignoriert. Leider sieht ein
+TAB-Zeichen so aus wie mehrere Leerzeichen, und das verursachte
+Verdruss.
+Behoben, TAB-Zeichen wirken jetzt wie Leerzeichen.
+
+
+Exportparameter: Aerger mit e$ am Befehlsende
+---------------------------------------------
+Siehe Punkt 1. in Vb.257.
+Befehlszeilen, die mit e$ oder b$ enden, verursachten Fehler.
+Behoben.
+
+
+Unerwuenschte Meldung bei  set tbl free
+---------------------------------------
+Dieser FLEX-Befehl loeste die Meldung
+ TBL freigegeben
+aus, die man mit Esc oder Klick beseitigen musste.
+Behoben.
+
+
+a99 : Unerwuenschtes Ende
+-------------------------
+Die Meldung (Nr. 374 in der uifeger)
+     Wollen Sie die Sitzung spaeter fortsetzen?
+     (Ergebnismengen bleiben dann erhalten)
+fuehrte mit Klick auf "Abbrechen" zum kommenterlosen Ende, was
+dann zumeist unerwuenscht ist.
+Behoben.
+
+
+FLEX: Feldtext incl. Indikatoren
+--------------------------------
+Bei Formaten wie MARC hat man einen oder zwei Indikatoren zwischen 
+Feldnummer und -inhalt:
+
+#123 ijText$aUnterfeldinhalt$bUnterfeldinhalt$...
+
+(Hier soll $ fuer das Unterfeld-Dreieck stehen!)
+Was, wenn man die Zeichenfolge  ijText  haben will, also die
+Indikatoren plus den Text vor dem ersten $?
+Das geht am leichtesten so:
+
+var #123(i0,0 e"^_") 
+
+denn  i0,0  liefert den gesamten Feldinhalt mitsamt Indikatoren davor,
+e"^_" schneidet dies dann vor dem ersten $ ab.
+
+
+Nummernvergabe
+--------------
+Es gab Probleme mit einem schon etwas aelteren Unterprogramm 
+nextnum.flx  fuer die Vergabe der naechsten laufenden Nummer.
+Diese wurden ausgebuegelt und der Hilfetext verbessert
+(h nummer).
+
+
+.ina statt .ini
+---------------
+Was uns lange schon aergerte:
+Ein Aufruf  a99 xyz  liest  xyz.ini, aber nicht  xyz.ina.
+Wenn sie so heisst, muss man bislang ausdruecklich sagen: a99 xyz.ina
+Weil die Endung .ina einen wichtigen Vorteil hat gegenueber .ini,
+war das inakzeptabel.
+Jetzt ist es so:
+a99 xyz
+versucht es zuerst mit xyz.ina, bei Misserfolg mit a99.ini.
+Analog gilt fuer den al.job, der bequeme Admin-Funktionen bes.
+fuer Linux bietet:
+
+acon -jal xyz    bzw.   acon -jal xyz.ini
+
+liest die Angaben zur Datenbank aus  xyz.ina  bzw. aus  xyz.ini
+Unter Linux:  ./acon ...
+
+Unter Windows gibt es einen bequemen  al.bat. Damit genuegt nun z.B.
+  al demo2\orda, um den  al.job  auf die DemoBank anzusetzen.
+Mit  al help  kriegt man Hilfe zum Start des al.job.

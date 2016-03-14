@@ -1,0 +1,376 @@
+  a-stat.flx : Auswertung von Statistikdateien (Typ .stk)
+  2006-10-22   Aufruf:  a-stat w  mit w=1,2,3,4
+               Kumulationen (Monat, Jahr) macht a-statk.flx
+  2015-05-08 Verbesserungen
+
+  h alf
+    Klick auf "Statistik":
+    Startet a-stat.flx  
+    Zeigt Liste der Dateien *.stk
+    + vor jede Datei setzen, die auszuwerten ist
+
+  Alt+9   startet erneut  a-stat.flx  mit #ulW 1
+        liest die Dateien und
+        erzeugt  stat.alg  auf dem Arbeitsverz. von a99
+          und rechnet die Geb¸hrensumme #ulG aus
+        Erstellt  a-stat.lst und schreibt Ueberschrift rein,  
+        und erzeugt a-stat.bat  und startet diesen mit "dos ..."
+
+  a-start.bat startet:
+      asort stat.alg stats.alg   und:
+      srch -f6 -dstats.alg -ea-stat+a-stat.lst -m0 -Umd1
+
+  a-stat.apr  z‰hlt die gleichlautenden Zeilen
+              und gibt die Zeilen mit den Zahlen in a-stat.lst aus
+
+  a-stat.flx  macht dann weiter und h‰ngt die Geb¸hrensumme noch an
+
+
+  a-stat.lst ist fertig.
+
+  Wenn "Tagesstatistik" f¸r jjjjmmtt, dann Kopie
+   a-stat.lst ==> jjjjmmtt.stt
+
+
+
+  Statistkdatei d. aktuellen Sitzung anschauen (Aufruf  X a-stat 0)
+if "0" jump anschau
+  Wenn #ulW gesetzt, dann 1:auswert  2:this (= aktuelle Sitzung)
+var #ulW
+  die mit + markierten Dateien aus stk.lst
+if "1" jump auswert
+  diese Sitzung
+if "2" jump this
+  heute
+if "3" jump day
+  gestern
+if "4" jump gestern
+  alle .stk-Dateien
+if "5" jump alle
+
+
+  Ohne #ulW: Liste der stk-Dateien in stk.lst schreiben
+
+var "stk.lst"
+open x
+wri "  Liste der Statistikdateien.  " n "  Setzen Sie ein + vor die Namen der auszuwertenden Dateien, dann Alt+9" n n
+
+  Jetzt der dir-Befehl ($Astd in alf.inc)
+var $Astd "*.stk"
+dir
+ins _^T_^M^J_
+sort d0
+ins $dir
+wri $dir
+close x
+
+  dir-Liste zeigen, Nutzer soll auswaehlen (+ davorsetzen)
+:vi
+help stk.lst
+  #ulW setzen, Befehl fuer Auswertung in #uX9 setzen, fuer Alt+9
+#uX9x #ulW 1\\exec a-stat
+act 4
+  Jetzt warten, bis der Nutzer Alt+9 macht,
+   damit wird wieder  a-stat.flx  mit Argum. 1 gestartet, und -> :auswert
+end
+
+  aktuelle Sitzung
+:this
+#ulW
+var $Astk
+fsize
+if no mes Noch nichts angefallen;end
+
+var $Astk
+var (T"\\")
+ins $ulS 
+ins $uLS 
+#ulG 0
+jump eval
+
+  alle .stk
+:alle
+#ulT
+jump dir
+
+  Die mit + markierten Dateien
+:auswert
+  Var. loeschen:
+#ulW
+#uX9
+  Liste der .stk steht noch im Anzeigefeld
+  Anzeige-Inhalt in %TEMP%\sts.lst speichern, einige Zeilen nun mit + markiert!
+var M "sts.lst"
+file
+if no var "Datei sts.lst kann auf " M " nicht geschrieben werden";mes;end
+
+var ""
+ins $ulS 
+  und diese Datei zum Lesen oeffnen
+var M "sts.lst"
+open
+if no var "sts.lst  kann nicht geoeffnet werden auf " M;mes;end
+:lp
+  Zeile lesen
+get
+  Ende?
+if not yes jump le
+  beginnt mit + ?
+if not "+" jump lp
+  ja, aber keine stk-Zeile?
+if not %~.stk% jump lp
+
+  Zeile beginnt mit + und es kommt .stk vor
+ins #ulT
+  Diese Namen in  $ulS   aufreihen, mit " + " getrennt
+var $ulS  " + " #ulT(f"+ ")
+ins $ulS 
+jump lp
+
+  Ende der Liste erreicht
+:le
+close
+var M "sts.lst"
+delete
+var $ulS (f" +")
+ins $uLS 
+#ulT
+
+:eval
+  in $ulS  jetzt die Liste der gewaehlten Dateien
+if not $ulS  jump nix
+
+  Ausgabedatei fuer die Transaktionszeilen
+open x stat.alg
+if no jump sfehl
+
+  Schleife: Liste der STK-Dateien abarbeiten
+:lx
+  gibts noch eine? sonst schluss
+if not $ulS  jump schluss
+var $ulS
+var $ulS (f" +" e"+")
+ins #usK
+
+var $ulS (f" +" b"+")
+ins $ulS 
+
+  naechste Datei oeffnen:
+var $Astd #usK
+open
+if no jump dfehl
+
+  Innere Schleife: Zeile aus STK-Datei lesen
+:loop
+get
+
+if not yes close;jump lx
+if "g" perf gebhr;jump loop
+if not "a" if not "v" jump loop
+  Oder, wenn die Verlaengerungen nicht mitzaehlen sollen, dann nur:
+  if not "a" jump loop
+ins #usZ
+if "" jump loop
+
+  Hier folgt das Formatieren der Protokollzeilen. Es werden geeignete
+  Praefixe (L:, M:) vor die zu zaehlenden Elemente gesetzt, die aus der
+  Statistikzeile entnommen werden.
+  Hat man Erweiterungen gemacht: Hier die Typbuchstaben am Zeilenanfang
+  abpruefen und entsprechende Ausgabezeilen erzeugen lassen.
+
+  Es ist eine a-Zeile [oder v-Zeile]
+  Dann werden 2 Zeilen ausgegeben 
+  (ACHTUNG:  B"/" statt e"/", wenn Signatur statt Medientyp gew¸nscht!
+  1. Leserklasse;Medientyp isolieren und als #u1 in stat.alg schreiben
+wri 1 "u1 L:" #usZ(b":" e"/") 0 n
+
+  2. und noch  Medientyp  allein
+wri 1 "u1 M:" #usZ(b";" e"/") 0 n
+
+jump loop
+
+   STK-Dateien sind abgearbeitet: Dateien schliessen
+:schluss
+clo x
+clo
+
+  stat.alg enthaelt die aufbereiteten Daten,
+   diese muessen sortiert und dann gezaehlt werden
+   Das macht  a-stat.bat, diese wird jetzt erstellt:
+   aber zuerst die Ueberschrift in die Ergebnisdatei
+open x a-stat.lst
+if not no jump ueb
+var "Sorry, a-stat.lst ist auf " W " nicht schreibbar"
+mes
+end
+
+:ueb
+wri "  aLF Ausleihstatistik" n
+:asi
+  $uLS  = Liste der Dateien
+var $uLS (e"+")
+ins $u
+wri "  " $u n
+var $uLS (b" + ")
+ins $uLS 
+if $uLS  jump asi
+  a-stat.lst schliessen
+clo x
+var ""
+ins $uLS 
+wri n
+
+  Nun die Batchdatei
+open x a-stat.bat
+if no mes Sorry, a-stat.bat nicht schreibbar;end
+wri "set -P=" P n
+wri P "asort stat.alg stats.alg" n
+// wri "del stat.alg" n
+  acon  statt  srch:  (2010-07-09)
+  Das erfolgt mit A.CFG und a-stat.apr! (kein Zugriff auf Datenbank)
+wri "srch -f6 -dstats.alg -ea-stat+a-stat.lst -m0 -Umd1 -k" K n
+// wri "del stats.alg" n
+clo x
+  Ausfuehren
+dos a-stat.bat
+  fertig, und noch die Gebuehrensumme anhaengen (#ulG in :gebhr  errechnet)
+open x +a-stat.lst
+  Summe ist in Cent!
+var #ulG
+Z=
+Z/100
+
+wri n " ________________________________________" n n "GebÅhrensumme:  EUR " Z2 " ›" n
+clo x
+
+Z=0
+#ulG
+  Ergebnisdatei zeigen
+help a-stat.lst
+
+if not #ulT jump beenden
+  Tagesdatei anlegen (Typ .stt)
+var "a-stat.lst " $Astd #ulT(0,8) ".stt"
+fcopy
+var "Tagesdatei " $Astd #ulT(0,8) ".stt" n "wurde produziert"
+mes
+
+:beenden
+// del a-stat.bat
+#ulW
+end
+
+:dfehl
+var "Datei " $Astd #usK " konnte nicht geˆffnet werden"
+mes
+var #usK
+mes
+end
+:sfehl
+var "Datei " W "\\stat.alg konnte nicht geˆffnet werden"
+mes
+end
+
+  Gebuehrenzahlung aufaddieren, Typ noch nicht beruecksichtigt
+   Struktur der Zeile: gDatum:GebTyp/Betrag
+
+:gebhr
+ins #ulg
+var #ulG
+Z=
+var #ulg(b"/")
+Z+
+var Z
+ins #ulG
+return
+
+:gestern
+Day -1
+var (0,8)
+ins #ulW
+var "Tag:=" #ulW
+jump tag
+
+  Tagesstatistik
+:day
+
+var "Tag:=" #dts(0,8)
+:tag
+ask
+if "" end
+ins #ulT
+
+:dir
+var #Astd #ulT
+
+  Dir-Befehl
+open x stk.lst
+var $Astd #ulT "*.stk"
+dir
+ins _^T_^M^J_
+
+sort d0
+
+ins $Dir
+
+wri $Dir
+close x
+  und Datei zum Lesen oeffnen
+open stk.lst
+
+:lpd
+  Zeile lesen
+get
+
+if not yes jump led
+if not %~.stk% jump lpd
+  es kommt .stk vor
+ins #ulT
+  Diese Namen in  $ulS   aufreihen
+var $ulS  " + " #ulT(f"+ ")
+ins $ulS 
+jump lpd
+
+:led
+close
+del sts.lst
+var $ulS (f" +")
+ins $uLS 
+if not $uLS  jump nid
+
+jump eval
+
+:nix
+#ulW1
+#uX9x #ulW1\\exec a-stat
+mes Keine Dateinamen markiert! + davorsetzen, dann Alt+9
+end
+
+:nid
+var "Am " #ulT " ist nichts angefallen"
+mes
+#ulW
+#ulT
+end
+
+  Aktuelle STK-Datei anschauen (editieren moeglich)
+:anschau
+var $Astk
+help
+end
+
+
+ u-VARIABLEN in a-stat.flx
+ $uLS  (9)   Hilfsvariable f. Schleifen
+ #uX9 (3)   fuer Alt+9
+ #ulG (5)   Gebuehrensumme
+ $ulS  (13)  Liste der mit + markierten Dateinamen
+ #ulT (10)  Zeile mit einem Dateinamen
+ #ulW (9)   Ziffer aus dem Aufruf des FLEX
+ #ulg (2)   Zeile mit einem Gebuehrenwert hinter /
+ #usK (3)   Name einer zu verarb. Datei
+ #usZ (3)   gelesene Zeile aus STK-Datei
+
+ $Astd      Statistikdateien-Pfadname mit \ am Ende
+ $Astk      Name der aktuellen Statistikdatei (bei  X a-stat 2 )
+

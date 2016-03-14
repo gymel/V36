@@ -1,0 +1,153 @@
+
+Mahnungen fr berf„llige Zeitschriftenhefte
+============================================
+
+Vorbereitungen
+--------------
+1. Lieferantencode
+Wer die magere Version ZABA anwendet, die nur Bands„tze, aber keine
+Abos„tze hat, muá in die Titels„tze den Lieferantencode schreiben
+oder aber in jeden Bandsatz. (D.h. auch: Lieferantens„tze sind
+notwendig - das Programm kann ja sonst keine Adressen auf die Mahn-
+schreiben setzen.) Kurz: Im Titelsatz muá so etwas stehen wie
+#9DBjKIEP   falls KIEP der Code des Lieferanten ist, oder in
+jedem Bandsatz entsprechend etwas wie
+#9DBBljKIEP
+
+2. Heftanzahl
+Mahnen geht nur, wenn im Bandsatz die Anzahl der Hefte pro Jahrgang
+steht, also das Unterfeld $9DC$w belegt ist.
+
+3. Mahntexte
+Die Dateien zmahndeu.rtf und zmahneng.rtf editieren und auf Wunsch
+frei gestalten.
+Wenn die Word-Serienbrieffunktion zum Einsatz kommen soll, auch
+die Dateien  zmahndeu.doc  und  zmahneng.doc.
+Darin eingebettet sind Felder fr die Angaben zur Zeitschrift, die
+jeweils vom FLEX z-mahn.flx vorbereitet werden.
+
+4. Indexparameter
+Zur Indexierung des Mahndatums muá eine neue Zeile in cat.api.
+Sie ist in der DEMO2-Version enthalten und sieht so aus:
+#9DB O y2 "|:ZM" P{ 8 }  Mahndatum nchst. Heft
+
+5. Anzeigeparameter
+Fr ZAboM wird d-krtf.apr mit d-k.apt empfohlen, andere Parameter
+sind wenig brauchbar. Spezifische nderungen fr das Mahnwesen
+gibt es in diesem Bereich aber nicht.
+
+Danach arbeitet man zun„chst weiter wie gewohnt!
+
+
+Konzept
+-------
+ZAboM kommt frs Mahnen ansonsten mit einer einzigen Angabe aus:
+   O in der #9DB im Bandsatz.  (Groábuchstabe O, nicht Ziffer Null)
+Man hat darin etwa dieses:  #9DB...O20081012/5
+Und das bedeutet: Heft 5 dieses Bandes ist ab 12.10.2008 zu mahnen
+(wohlgemerkt: nicht zu erwarten, sondern zu mahnen!).
+Gesetzt wird diese Angabe bei Registrierung von Heft 4 (in z-heft.flx),
+also automatisch im Arbeitsgang des Heftzugangs.
+Kommt Heft 5 innerhalb des Zeitraums bis zu dem Datum, wird $O
+berschrieben durch das Datum frs n„chste Heft! Kommt es nicht, wird
+man am oder ab 12.10. mahnen (das macht z-mahn.flx).
+Indexiert wird das Mahndatum in Reg. 10 unter ZM. (Wird es im Bandsatz
+durch ein neues ersetzt, „ndert sich der Eintrag im Reg. automatisch!)
+
+Aber wie errechnet sich das Mahndatum? Ganz einfach: In #9DC$w steht
+(im Abo- wie auch im Bandsatz), aus wievielen Heften der Band
+(= Jahrgang) bestehen soll. Das sind meistens 12, manchmal 6 oder 4
+oder 24. Daraus ergibt sich dann, wieviele Tage Abstand ungef„hr
+zwischen dem Erscheinen von zwei Heften liegen. Kommt heute ein Heft
+und werden 12 im Jahr erwartet, kommt das n„chste vermutlich in
+ca. 365/12 = 30 Tagen. Mit dem Befehl "Day" kann man 30 auf das
+aktuelle Datum addieren, dann noch eine konstante Karenzzeit von
+z.B. 8 Tagen drauf und man hat das Mahndatum!
+(Die Karenzzeit wird als Variable $Mahnk in zabom.inc vorbesetzt.)
+$w im Bandsatz ist deshalb Vorbedingung, damit es klappt.
+
+
+Der FLEX  z-mahn.flx  liest dann, wird er am 12.10. oder sp„ter
+gestartet, alle Eintr„ge unter ZM bis zum 12.10. einschlieálich
+und zeigt die Liste der Bands„tze, d.h. die Titel dazu. Jeden dieser
+Bands„tze kann man ausw„hlen und mit Alt+7 die Funktion "Mahnung"
+aktivieren, dann wird der Mahnbrief dafr ausdruckfertig angezeigt.
+Will man auf schriftliche Mahnungen verzichten, kann man sich immerhin
+mal die Liste der berf„lligen Hefte zeigen lassen und berlegen, bei
+welchen Zeitschriften man in welcher Weise t„tig werden sollte.
+
+
+Weitere Vorbereitung:
+---------------------
+In der Datei  zabom.inc  mit den lokalen Einstellungen mssen zwei neue
+Werte gesetzt werden, bevor man mit dem Mahnen beginnt:
+
+$Mahnk 8    // 8 Tage Karenzzeit
+$Mahnt k    // Nur Kaufzeitschriften, d.h. k in #9DC$k
+               (A setzen, wenn alle gemahnt werden sollen)
+
+
+Vorg„nge im Detail
+******************
+
+Setzen des n„chsten Mahndatums   (in  z-heft.flx ("Heftzugang"))
+------------------------------
+Nach dem Eintragen des Zugangs von Heft 9 kommt eine Angabe zum
+   Best„tigen:
+
+   Heft 10 wird gemahnt am 20080827 - OK?
+        (Nein: Datum „ndern, Abbruch: nicht mahnen)
+
+Wenn Nein gesagt wird, kann man hintereinander die Heftnummer und
+   das Datum noch „ndern.
+Bei "Abbruch" wird kein Mahndatum gesetzt, also entsteht auch kein
+   ZM-Eintrag im Index.
+Danach geht es weiter mit dem Umlauf, wie gehabt.
+
+Im Einzelfall kann man also stets leicht das Datum hinausschieben oder
+knapper setzen, statt vom Programm ganz stur immer nach Schema F das
+Datum vollautomatisch setzen zu lassen. Dadurch ist man bei dieser doch
+sensiblen Sache hinreichend FLEXibel.
+
+Natrlich gibt es viele Arten von Sonderf„llen! Diese auch nur einiger-
+maáen weitgehend automatisieren zu wollen wrde aber eine viel h”here
+Komplexit„t bei der Voreinstellung und Behandlung der Frequenz und der
+Fristen erfordern, und da ist es schon sehr die Frage, ob sich das
+lohnen wrde.
+
+
+Das eigentliche Mahnen
+----------------------
+Zwei Dinge sind dazu n”tig
+
+1. Bildung der Ergebnismenge (zu mahnende Hefte)
+2. Produktion der Mahnbriefe, Vorlagen zmahndeu.rtf und zmahneng.rtf
+   fr Einzelmahnung, zmahnxxx.doc f. Word-Serienbrief
+   a) ad-hoc Einzelmahnung mit Alt+7 (Brief erscheint im Anzeigefeld)
+   b) alle Mahndaten als Datei ausgeben: "Mahnungen" im ZAboM-Men
+
+Zu 1.: Das ist ziemlich einfach. Mit dem Suchbefehl
+       find |: ZM2000---ZM20080828z
+       findet man alle Bands„tze, deren Mahndatum bis einschlieálich
+       28.8.2008 gesetzt ist (statt dessen das aktuelle Datum nehmen).
+       Automatisch passiert das, wenn man auf dem ZAboM-Men den
+       Punkt "Mahnungen" w„hlt: alle F„lle bis einschl. des aktuellen
+       Datums werden dann gesucht.
+
+Zu 2.: In einem Bandsatz stehen folgende Angaben, die gebraucht werden:
+       #9DA$J : IdNummer des Abo-Satzes (wo der Lieferant drinsteht)
+                ODER Lieferantencode im Titelsatz als #9DB$j (ZABA)
+                ODER #9DB$j Lieferantencode direkt im Bandsatz
+       #9A    : Lieferantensatz: $n Name, $k Person, $a Adresse
+       #9DA$T : IdNummer des Titelsatzes (um den Titel zu besorgen)
+       #9DG$Y : Bandangabe (Jahrgang/Bandnummer)
+       #9DB$O : N„chstes Mahndatum / zu mahnende Heftnummer
+
+       Im FLEX z-mahn.flx werden diese Angaben zusammengesetzt und dann
+       a) der jeweilige RTF-Text angezeigt mit eingebetteten Variablen
+       b) mit den Parametern zmahn.apr eine .TAB-Datei fr Word
+          erstellt, die man fr den Serienbrief nutzen kann. Das Muster
+          dafr ist zmahndeu.doc  bzw.  zmahneng.doc.
+
+
+

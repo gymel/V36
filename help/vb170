@@ -1,0 +1,124 @@
+	
+Verlautbarung 170 der Entw.Abt.                             2003-08-12
+-------------------------------
+                             Es liegen bereit: a99.lzh / a99a.lzh
+                                               alcarta.lzh
+                                               inst-all.exe
+
+
+V23.6 so gut wie fest
+---------------------
+
+Nachdem sich erneuter Nachbesserungsbedarf manifestiert hatte,
+wurde die Versionskennzahl nochmals heraufgesetzt, aber V23.6
+soll's nun wirklich sein, was auf der CD hinaus in die Welt
+gehen wird. Alle relevanten Aenderungen in den Doku-Dateien und
+ViewListen wurden durchgefuehrt (vor allem FLEX.VW).
+
+Hier die Verbesserungen:
+
+Bearbeitungszustand
+-------------------
+Bisher wurde bei der Direktanzeige eines Satzes dessen Berabeitungszustand
+(Farbe!) nicht sichtbar, nur bei Verlassen der Kurzanzeige. Besonders
+irritierend war das bei der Globalen Ersetzung. Das ist jetzt vorbei,
+aber: wenn sich eine Ersetzung in der Kurzanzeige auswirken muesste,
+wird diese Auswirkung erst nach dem Speichern der geaenderten Saetze
+wirksam, denn erst dann wird auch die Kurzeintragung in der STL-Datei
+wirklich geaendert, und von dort kommen die Zeilen der Kurzanzeige.
+Eine Aenderung wird auch dann farbwirksam, wenn sie per PV-Befehl
+bewirkt wird, bisher war das nicht der Fall. Einschraenkung:
+nur dann gilt dies, wenn die Laenge des gesamten Satzes sich bei
+der Aenderung veraendert. Das Programm hat sonst keine Moeglichkeit,
+festzustellen, ob der Satz sich wirklich veraendert hat.
+
+Programm INDEX.EXE
+bringt jetzt keine Meldung mehr ueber den vermutlich zu geringen
+Platz auf der Platte. Bei den heutigen Platten ist das einfach zu
+problematisch. Der Anwender muss also im Falle von Grossbanken vor
+einer Neuindexierung schauen, ob noch etwa doppelt soviel Platz da
+ist wie seine ALD-, STL- und ADX-Dateien zu dem Zeitpunkt umfassen.
+
+
+FLEX-Befehle
+============
+
+Gezielt per FLEX eine bestimmte Erg.Menge loeschen
+--------------------------------------------------
+Bisher konnte man nur mit "close res" die letzte Erg.Menge
+loeschen. Jetzt auch mit "close r3" die aelteste.
+Allgemeiner gilt:
+
+close r<num> 
+	Ergebnismenge Nummer  num  wird geloescht. 
+        Die Nummern 1 und 2 kann man nicht loeschen 
+        (Bookmark-Liste bzw. "vorher angezeigte Daten"). 
+        num=0 steht fuer die letzte Erg.Menge, c fuer die aktuelle.
+        Wenn <num> fehlt, wird der Inhalt der iV genommen.
+
+
+find-Befehl erweitert
+---------------------
+
+f1nd	mit Ziffer 1 statt Buchstabe i! 
+        Dadurch wird keine Ergebnismenge gebildet, sondern nur deren 
+        erster (oder einziger) Datensatz geladen, ohne dass also die 
+        aktuelle Erg.Menge veraendert wird. In FLEXen kann man so 
+        vermeiden, dass eine bestehende Erg.Menge unbeabsichtigt 
+        verschwindet, wenn man einen einzigen anderen Satz 
+        zwischendurch braucht.
+        Einsatz erfolgt z.B. in D-WRTF.APR ("Titelsatz zeigen")
+
+
+find r<num>
+        Aus der aktuellen Erg.Menge wird der Satz mit der Nummer  num 
+        geladen. Der erste hat die Nummer 1. 
+        Angezeigt wird er nicht! Dafuer kann man mit disp\sho rec sorgen. 
+        Mit "if no ..." checkt man, ob es keinen Satz num gibt. 
+        Tip: Will man nach einigen Aktionen mit Sicherheit zum 
+        momentanen Satz in der Erg.Menge zurueckkehren, empfiehlt sich 
+        diese Sequenz: 
+   var "r" r 
+       in #urr steht jetzt  r<num>, (siehe xcstring.rtf)
+   ins #urr
+   ...   Aktionen (aber keine neue Erg.Menge bilden!  f1nd ist erlaubt)
+   var #urr 
+   find
+
+
+find s<num>
+        Die Erg.Menge Nummer num wird aktiviert. Die erste hat die 
+        Nummer 1 und ist die Boomark-Liste, 2 ist die Liste der vorher 
+        angezeigten Saetze. Nummer 0 ist die letzte Erg.Menge. 
+        Deren tatsaechliche Nummer erhaelt man mit var q. 
+        Angezeigt wird die Erg.Menge nicht! Dafuer kann man mit
+          sho list  sorgen. 
+        Mit if no ... checkt man, ob es keine Erg.Menge num gibt. 
+        Die Erg.Menge wird nicht neu gebildet, sie wird nur re-aktiviert!
+        Tip: Will man nach einigen Aktionen mit Sicherheit zum momentanen 
+        Satz in der momentanen Erg.Menge zurueckkehren, empfiehlt sich 
+        die folgende Sequenz: 
+   var "r" r 
+   ins #urr 
+   var q 
+   ins #urq
+    ... Aktionen (einschl. Bildung neuer Erg.Mengen)
+   var "s" #urq(e"/") 
+   find 
+   var #urr 
+   find
+Tip: Wenn man ganz sicher gehen will, dass nicht inzwischen die Grenze 
+von 50 Erg.Mengen erreicht und die aelteste geloescht wird (wodurch sich 
+die anderen alle verschieben): vorher ein- oder mehrmals den Befehl 
+close r3
+geben, dann wird jeweils die aelteste geloescht, oder
+close res
+dann wird die letzte geloescht.
+
+activate
+--------
+Das Aktivieren eines a99-Fensters aus einem FLEX heraus gelang nicht
+mehr in jeder Situation: war es vorher nicht minimiert, erschien es
+u.U. zwar, hatte aber nicht den Fokus oder schob sich nicht in den
+Vordergrund. Dem konnte abgeholfen werden. Wichtig ist das z.B.
+bei der Memo-Technik der DemoDatenbank.

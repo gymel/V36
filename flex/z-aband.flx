@@ -1,0 +1,28 @@
+  Z-ABAND.FLX : Alten Zs-Bandsatz erfassen
+  2007-06-18    Keine Verknuepfung mit einem Abo!
+
+var i
+ins $Inn
+
+  Ist es ein Titelsatz? Vorher fragen (evtl. diese 6 Zeilen rausnehmen)
+if not #20 if not #8n jump nerr
+
+var #00
+ins $tid
+
+  Neusatz anlegen f.d. Band
+new 0
+#00 zbnd?6
+  TitelId
+var $tid
+ins $T-#9DA
+sho rec
+form Bandsatz Zs
+if cancel end
+
+Put
+
+end
+:nerr
+mes Funktion nur möglich, wenn ein Zeitschr. Titelsatz geladen ist
+end

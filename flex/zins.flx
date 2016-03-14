@@ -1,0 +1,54 @@
+  ZINS.FLX : Kapitalverzinsung mit Zinseszins
+  20070129   Beispiel fuer ein Rechenprogramm
+
+  Zuerst 3 Fragen, dabei jeweils die vorigen Werte wieder vorlegen
+
+ask Startkapital=#usk
+if "" end
+ins #usk
+
+ask Zinssatz=#uzs
+if "" end
+ins #uzs
+
+ask Zeitraum (Jahre)=#uzr
+if "" end
+z=
+ins #uzr
+
+  Anfangswerte setzen, Z = Zaehler f. Anzahl Jahre
+Z=1
+#ujj Jahr
+
+var "Startkap. " #usk ", Zinssatz " #uzs n n
+sho IV
+
+  Erster Zwischenwert = Startkapital
+var #usk
+ins #uzw
+
+  Zinsfaktor = (Zinssatz + 100) /100
+eval #uzs +100 /100
+ins #uzf
+
+:loop
+  naechster Zwischenwert = Zinsfaktor *voriger Zw.
+eval #uzf *#uzw
+ins #uzw
+  Meldung fabrizieren
+var "nach " Z " " #ujj ": " #uzw(e".") n
+  und als neue Zeile an die Anzeige anhaengen
+sho +IV
+  Zaehler
+Z+1
+  Plural in #ujj setzen
+#ujj Jahren
+  ein Jahr weniger abzuarbeiten
+z-1
+  wenn noch >0, dann weiter
+if z>0 jump loop
+
+  Schlussmeldung
+var "Endwert: " #uzw(e".")
+mes
+

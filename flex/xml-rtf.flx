@@ -1,0 +1,97 @@
+  XML-RTF.FLX : XML-Datei anzeigen, Feldinhalte fett, Tags rot, Attr. grau
+  2008-12-09  : Es wird eine RTF-Datei draus gemacht, UTF aber nicht veraendert
+       Dieser FLEX ist nur als Hilfsmittel gedacht fuer ein schnelles
+       Betrachten einer XML-Datei! Fuer weitergehende Zwecke gibt es andere,
+       maechtigere und frei erhaeltliche Werkzeuge.
+
+  Aufruf:   X xml-rtf dateiname
+  Ergebnis:   Datei   xmldata.rtf (immer derselbe Name!)
+
+ins $fil
+  uebergebener Dateiname steht in iV, oeffnen
+open
+if no var "Die Datei " $fil " gibt's nicht";mes;end
+
+  Ausgabedatei zum Schreiben oeffnen
+open x xmldata.rtf
+  geeigneter Dateikopf, damit rtf-Anzeige dann klappt
+wri Flisthead.rtf
+wri "Datei: " $fil "\\par \\par " n
+  Schleife verarbeitet die Datei zeichenweise (!)
+:LP
+  naechstes Zeichen holen
+fetch 1
+  Dateiende? -> :dende
+if can jump dende
+  Ist es < oder > oder Quote ? Dann Sonderbehandlung
+if "<" perf k;jump LP
+if ">" perf g;jump LP
+   Wenn $q gesetzt, dann sind wir innerhalb <...>
+      sonst Quotes normal ausgeben!
+if '"' if $q perf a;jump LP
+if "'" if $q perf b;jump LP
+  normal: das Zeichen einfach wieder rausschreiben
+wri ^
+jump LP
+
+:dende
+close
+  Abschluss der rtf-Datei
+wri "}}}"
+close x
+  und anzeigen
+help xmldata
+end
+
+  Unterprogramme
+
+:k   // UPro fuer Zeichen <
+  welches Zeichen kommt hinter < ?
+fetch c
+  Falls </, dann nur Fett abschalten
+if ="47" wri "\\b0 <";return
+  sonst auch neue Zeile und Farbe rot einschalten
+wri "\\b0 \\par " n "<{\\cf6 ";
+   flag setzen
+$q 1
+:loopk
+fet 1
+if ">" wri "}";jump g
+if " " wri "} "; return
+wri ^
+jump loopk
+return
+
+
+:g   // UPro fuer Zeichen >
+  Fett einschalten, es kommt (vielleicht) ein Inhalt
+  flag loeschen
+var ""
+ins $q 
+  wenn das naechste schon wieder < ist, kein Fett einschalten
+fetch c
+if "60" wri ">";return
+  Fett ein hinter >
+wri ">\\b "
+return
+
+
+:a  // UPro fuer die Attribute innerhalb von Tags, double quote
+  $r ist besetzt innerhalb "..."
+  zweites " gefunden, dann schwarz einschalten, $r loeschen
+if $r $r ;wri '\\cf0 "';return
+  Wenn erstes " kommt, dann Farbe auf grau wechseln
+$r 1
+wri '\\cf15 "'
+return
+
+
+:b  // UPro fuer die Attribute innerhalb von Tags, single quote
+  $s ist besetzt innerhalb '...'
+  zweites ' gefunden, dann schwarz einschalten, $s loeschen
+if $s $s ;wri "\\cf0 '";return
+  Wenn erstes ' kommt, dann Farbe auf grau wechseln
+$s 1
+wri "\\cf15 '"
+return
+

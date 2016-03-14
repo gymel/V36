@@ -1,0 +1,98 @@
+  V-STAND1.APR : Standard-View-Struktur : Person: Titel, Jahr
+  2000-08-07
+
+  Diese Datei kann als Muster fuer andere Views verwendet werden
+  Aenderungen: nur im "Variablen Teil" noetig, 
+  s.u. Kommentare mit *******
+
+  ---- Allgemeiner Teil -----------
+
+zl=0     kein Zeilenumbruch
+i4=1     V14-Ersetzungen gewuenscht
+
+9=9     Tabellen-Trennzeichen (aendern, wenn gewuenscht, z.B.  9=";" )
+
+#hi +- e0     hierarch. Untersaetze nicht beruecksicht.
+#uvx +A e0    wenn #uvx besetzt, --> #-A
+#uvQ +Q e0    wenn #uvQ besetzt, --> #-A (Tab.Export gewuenscht)
+#nr =vx       nur beim ersten Satz: #uvx besetzen (als Flag), dann #-Y
+#+Y
+
+
+#-A
+  ****** Variabler Teil ********
+  Nur hier muss man eingreifen, und zwar
+  diejenigen Kategorien einsetzen, aus denen der View bestehen soll
+  jeweils mit geeigneten Manipulationsbefehlen fuer die Interpunktion etc.
+
+   Abschnitt fuer die ViewListen-Zeile
+
+#52 +#20 U e" =" e"; " P": " Avv
+#40 U u[] e" =" e"; " P": " Avv
+
+#20 U u[] e" :" E40 Avv
+
+#76 B"=" x"*1" e"." e4 p" (" P")" Avv
+
+#90 e"" p" = " Avv
+#+D      Sprung zur Verarbeitung von #uvv
+
+         Abschnitt fuer den Tabellenexport (Felder mit Trennzeichen)
+#-Q
+#52 +E U e" =" e"; "
+#40 U e" =" e"; "
+#-E
+#t9
+#20 U u[] e" :" 
+#t9
+#76 B"=" 
+#t9
+#90 e""  
+
+  *********** Ende variabler Teil, Rest kann so bleiben *************
+
+  #uvv ist jetzt zusammengesetzt und kann ausgegeben werden
+  Der Rest muss so bleiben, nur statt 80 kann eine andere Zahl
+  fuer die Gesamtlaenge der View-Zeile eingesetzt werden.
+
+#t{ C }
+#+#
+
+#-D    Verarbeitung von #uvv (immer gleich)
+
+#uvv +B e0    #uvv besetzt? dann --> #-B     ****************
+
+  sonst: es war keine der Kategorien vorhanden
+  entweder:
+ #nr p" Satztyp ungeeignet fuer diesen View:" Avv
+  oder nichts ausgeben
+#+-
+
+#-B
+#t{ 1 "u1   " }        Code 1 = Satzbeginn, u1 = Sonderkategorie
+  Ausgabe von #uvv als sortierbarer String: 
+  (wird am Ende des Sortierens wieder beseitigt)
+!uvv e80
+  Code 0 als Endezeichen
+#t{ 0 }  Feldende #u1
+  Satznummer 8stellig (aenderbar) mit fuehrenden Nullen, "|" dahinter
+#nr r8,0 p"u2   " P"|"
+  #uvv wird mit exakt 80 Zeichen Laenge ausgegeben
+#uvv e80 s80
+  Code 13 10 als Endezeichen (Zeilenvorschub) 
+#t{ C }
+  #uvv wieder loeschen
+#uvv dvv e0
+#+#
+
+#-Y   Ueberschrift des View (#uvo/#uvU extern gesetzt)
+#t{ 1 "u1      00000" 0 "u2   0000000a|" }
+#dts p"  " ,"_:_-_" =vz
+#uvo F" " p", " Avz
+#uvU p"/" ,"_:_-_" Avz
+#uvz p"  " e80 s80
+#t{ 0 C }
+#+A
+
+ts    s.apt = Sortierwertetabelle
+

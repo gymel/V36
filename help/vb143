@@ -1,0 +1,77 @@
+
+Verlautbarung 143 der Entw.Abt.                          2001-01-10
+-------------------------------
+Die erste des Jahres!
+
+Weitere FLEXibilisierung
+------------------------
+
+Wie gewuenscht, wurden die bisher ueblichen Batchdateien RS.BAT
+(bzw. bei ALCARTA AS.BAT) und DOOR.BAT durch FLEXe ersetzt.
+ABER: Wenn diese neuen FLEXe fehlen, bleiben die Batche weiter
+gueltig und werden dann wie gewohnt gestartet. Man MUSS also
+nicht unbedingt aktiv werden!
+ABER: RS.BAT und DOOR.BAT muessen jetzt auf dem ProgDir liegen!
+
+Zusaetzlich wurden die Namen mehrerer systembedingter FLEXe 
+durch Voranstellen eines '_' geaendert. Auch hier gilt: 
+Fehlen diese Namen, werden die alten benutzt.
+Hier nun die Liste der neuen/umbenannten FLEXe:
+(alle enthalten in FLEX.LZH)
+
+_DOOR.FLX
+   startet das unveraenderte DOOR.BAT und setzt die dazu noetigen
+   Optionen
+
+_RS.FLX
+   Wird in A99 vom Menue  "Datei | DOS-Programm" aktiviert
+   Ruft PRESTO auf, und zwar mit denselben Randbedingungen wie das
+   gerade aktive A99.
+
+_AS.FLX
+   Wird in ALCARTA vom Menue  "Datei | DOS-Programm" aktiviert
+   Ruft APAC auf, und zwar mit denselben Randbedingungen wie das
+   gerade laufende ALCARTA
+
+_OTHERDB.FLX
+   Wird in A99 vom Menue  "Datei | Weitere Datenbank" aktiviert
+   
+_NEW.FLX
+   Wird automatisch gestartet, wenn die angewaehlte Datenbank
+   noch nichts enthaelt
+
+_NEWDB.FLX
+   Wird gestartet aus NEWDB.RTF heraus, nachdem man eine neue
+   Datenbank anlegen will und eine Struktur gewaehlt hat
+   (Menuepunkt NEWDB auf dem Menue SUPER.RTF)
+
+_START.FLX
+   Wird unmittelbar vor dem ersten Zugriff ausgeloest
+
+_ENDFLX.FLX
+   Wird unmittelbar vor dem Schliessen der Datenbank ausgeloest.
+
+Neue Sondervariablen
+--------------------
+Notwendig waren fuer die FLEXe vier neue Sondervariablen fuer den 
+var-Befehl: (Leider sind die Namen nicht besonders mnemonisch,
+aber man braucht sie selten)
+
+ g	Zeile im Index, die zuletzt benutzt wurde
+        bzw. Name der letzten Ergebnismenge
+
+ G	Pfad der LogDatei (LogName-Befehl in INI, DOS-Option -L)
+        sonst leer (wenn normaler Name)
+
+ y 	abweichender Name der Indexparameter (InxParam in INI, falls von
+        B abweichend) sonst leer (wenn normaler Name)
+        (DOS-Option -I)
+
+ Y	Pfad der Indexdatei (InxName-Befehl in INI, DOS-Option -y)
+        sonst leer (wenn normaler Name)
+
+TIP: Wenn man solche Variablen pruefen will, im Schreibfeld 
+     z.B. eingeben:
+     x var g\sho IV
+     schon sieht man den Inhalt im Anzeigefenster
+

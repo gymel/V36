@@ -1,0 +1,92 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fmodern allegro Lucida Console;}{\f1\fswiss\fprq2\fcharset0 Verdana;}{\f2\fmodern\fprq1\fcharset0 Courier New;}{\f3\fswiss\fcharset0 Arial;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;\red0\green0\blue0;}
+\viewkind4\uc1\pard\li48\ri144\f0\fs18 
+\par 
+\par \pard\li48\ri144\qc\cf1\b\fs32 Updaten\cf0\b0\fs18 
+\par \pard\li48\ri144 
+\par \f1 Das \b Einspeisen\b0  von Daten, wenn sie im korrekten Format vorliegen, geschieht per FLEX mit dem Befehl "update". Diese Beschreibung soll z.T. auch denen helfen, die sich bisher nur mit den DOS-Programmen auskannten. \f0 
+\par \i\f1 Hinweis:\i0  Wie fr\'fcher unter DOS kann man auch offline updaten, und zwar mit dem Konsolprogramm \f2 `\cf2\ul\b acon\cf0\ulnone\b0 `\f1  und dem Job \f2 update.job\f1 .\f0 
+\par 
+\par \pard\ri144\f1 Mit dem FLEX-Befehl  \f2 update\f1  \i dateiname\i0 
+\par 
+\par \pard\fi-426\li426\ri144\tx426 0.\tab kann a99 neben dem Grundformat .cLG auch das `\cf2\ul Externformat\cf0\ulnone ` .cDT verarbeiten, welches mit Hilfe anderer Software oder auch mit der Hand (z.B. sogar im X-Editor oder mit Notepad) leichter zu erstellen ist. 
+\par \pard\li48\ri144 
+\par \pard\fi-426\li426\ri144\tx426 1.\tab kann man den gesamten Vorgang jetzt besser beobachten: jeder Datensatz  erscheint in der Anzeige 
+\par \pard\li48\ri144 
+\par \pard\fi-426\li426\ri144\tx426 2. \tab kann man unterbrechen (Esc dr\'fccken) und dann wahlweise abbrechen oder  weiterlaufen lassen. (Das geht mit dem DOS-Programm UPD.EXE auch: Strg+s; dann mit Leertaste fortsetzen und mit Strg+c abbrechen. Nach einem solchen Abbruch kann es sein, da\'df die Datenbank gesperrt ist. Sperre aufheben im org-Men\'fc. 
+\par \pard\li48\ri144 
+\par \pard\fi-426\li426\ri144\tx426 3. \tab kann man einen abgebrochenen Update-Vorgang an der Abbruchstelle weiter fortsetzen lassen, und zwar auch nach Neustart von a99. 
+\par \pard\li48\ri144 
+\par \pard\fi-426\li426\ri144\tx426 4. \tab kann man nach dem Ablauf oder Abbruch die neuen und ver\'e4nderten S\'e4tze    durchsehen: sie stehen im Offline-Speicher (Alt+Q), als w\'e4ren sie alle mit der Hand bearbeitet worden. 
+\par \pard\li48\ri144 
+\par \pard\fi-426\li426\ri144\tx426 5. \tab kann man erstmal "zur Probe" updaten: Dann werden zwar die S\'e4tze identifiziert und zusammengemischt, aber noch nicht echt gespeichert, sondern im Offline-Speicher (Alt+q) angesammelt. Das geht SEHR schnell. Wenn man einen der S\'e4tze dann betrachtet, kann man mit Alt+w auch den noch unver\'e4nderten Originalsatz in der Datenbank betrachten! 
+\par \pard\li426\ri144\tx426 Wenn man die Daten durchgesehen und dann den Eindruck hat: Alles OK, dann mit "Datei | Alle bearb. Daten speichern" alles echt speichern lassen. Nicht OK? Offline-Speicher mit  \f2 x erase off\f1   leeren oder Programm ohne Speicherung verlassen. 
+\par Wie wird's gemacht? Beim FLEX-Befehl  \f2 set uxyz\f1   die Ziffer z auf 0 setzen. (Die Registereintr\'e4ge werden nat\'fcrlich erst beim echten Speichern ver\'e4ndert! Das ist ein Vorgang, der deutlich mehr Zeit braucht.) 
+\par \i Aber:\i0  Beim Probe-Update werden noch keine IdNummern vergeben, auch das passiert erst beim echten Speichern eines Satzes. 
+\par \pard\li48\ri144 
+\par \pard\fi-426\li426\ri144\tx426 6.\tab ist es sogar m\'f6glich, den Prim\'e4rschl\'fcssel flexibel zu handhaben. Man mu\'df noch nicht einmal, wie bei PRESTO, in die Indexparameter eingreifen. Im Normalfall wird der Prim\'e4rschl\'fcssel so gebildet wie bei PRESTO: der erste \'fcberhaupt entstehende, aufgrund der Reihenfolge der ak-Zeilen, ist der Prim\'e4rschl\'fcssel. 
+\par \pard\li426\ri144\tx426 Mit dem Befehl  
+\par \f2 set px\f1   
+\par kann man eine Sprungmarke \f2 #-x\f1  f\'fcr die Bildung des Prim\'e4rschl\'fcssels einstellen. (Dort darf dann nicht #u1 oder #ch verwendet werden!) 
+\par \pard\li48\ri144 
+\par \pard\fi-426\li426\ri144\tx426 7. \tab kann man sich auf das Programm hinsichtlich Sicherheit und Geschwindigkeit verlassen: es ist etwas schneller und genauso sicher wie das alte Konsolprogamm UPDATE.EXE. Ab V32 wird dieses abgel\'f6st durch die Kombination  \f2 acon -jupdate\f1  ... 
+\par \pard\li426\ri144\tx426 Trotzdem sollte man etwas seltener die Meldung "bitte warten, .TBL gesperrt" bekommen, wenn man parallel mit PRESTO an der Datenbank arbeitet. 
+\par \pard\li48\ri144 
+\par \pard\fi-426\li426\ri144\tx426 8. \tab Ab V25.5 kann man auch ANSI-Daten (Windows-Code) einlesen. Default ist und war der intern verwendete DOS-Code (ASCII). 
+\par \pard\li48\ri144 
+\par 
+\par \b\fs22 Und so wird's gemacht: \b0 
+\par 
+\par \pard\fi-426\li426\ri144\tx426\fs18 1.\tab FLEX vorbereiten. 
+\par \pard\li426\ri144\tx426 Wenn die einzumischende Datei NEUDAT.ADT auf D:\\DATEN liegt, gibt man in das Schreibfeld ein: 
+\par \pard\fi-426\li426\ri144\tx426 
+\par \pard\li48\ri144\f0         \cf3\f2 #uX0x set u11\\update d:\\\\daten\\\\neudat.adt\cf0\f0 
+\par 
+\par \pard\fi-426\li426\ri144\tx426\f1\tab Es entsteht dann die Kategorie #uX0. 
+\par \pard\li426\ri144\tx426 (Achtung: '\\' ist FLEX-Befehlstrenner! Wenn ein echtes '\\' vorkommen soll, wie im Pfadnamen, mu\'df man  '\\\\'  schreiben.) 
+\par \pard\li48\ri144\f0 
+\par \pard\fi-426\li426\ri144\tx426\f1 1a.\tab Wenn die Daten im Windows-Code sind (ANSI), dann vor dem  \f2 update\f1   noch den Befehl  \f2 set c1\f1   einsetzen (ab V25.5) 
+\par \pard\li48\ri144 
+\par \pard\fi-426\li426\ri144\tx426 2. \tab Starten:  Alt+0  dr\'fccken, dann geht's los (d.h. #uX0 wird ausgel\'f6st). 
+\par \pard\li48\ri144 
+\par \pard\fi-426\li426\ri144\tx426 3. \tab Beobachten 
+\par \pard\li48\ri144 
+\par \pard\fi-426\li426\ri144\tx426 4. \tab Anhalten:  [Esc] oder 'x' druecken. Es kommt die Frage: 
+\par \pard\li48\ri144 
+\par           \f2 Abbruch? ja / nein\f1 
+\par 
+\par \pard\fi-426\li426\ri144\tx426\tab Bei Antwort ja merkt sich das Programm in einer Datei NEUDAT.AUT, wie weit es gekommen ist. 
+\par \pard\li48\ri144 
+\par \pard\fi-426\li426\ri144\tx426 5. \tab Weiterlaufen lassen:  (evtl. bei spaeterer Sitzung) 
+\par \pard\li426\ri144\tx426 Nochmals  Alt+0  , dann stellt a99 fest, dass es NEUDAT.AUT gibt, und fragt: 
+\par \pard\li48\ri144\f2          Continue Update neudat ? 
+\par          No = Restart 
+\par          Ja / Nein / Abbrechen 
+\par \pard\fi-426\li426\ri144\tx426\f1\tab Ja : An der Abbruchstelle weitermachen 
+\par  \tab Nein : Nochmal von vorne 
+\par \tab Abbrechen: Nichts tun 
+\par 
+\par \pard\ri144 (Hat man inzwischen NEUDAT.AUT gel\'f6scht, f\'e4ngt das Programm ohne Frage von vorne an. Ist es fertig, l\'f6scht es NEUDAT.AUT selber.) 
+\par \pard\li48\ri144 
+\par \pard\ri144 Das "Zur-Probe-Updaten" macht man so: man haengt an den "set"-Befehl noch eine Ziffer 0. Das sieht bei Eingabe im Schreibfeld z.B. so aus: 
+\par \pard\li48\ri144 
+\par    \f2 #uX0x set u410\\...\f1 
+\par 
+\par \pard\ri144 Die Ziffern hinter u sind ansonsten so zu interpretieren wie bei der UPDATE Option \f2 -fm\f1 .  Fehlt die dritte Ziffer, wird 1 angenommen, d.h. echtes Update mit sofortigem Schreiben in die Datenbank. 
+\par 
+\par \i Tip:\i0  Statt den FLEX neu einzugeben, kann man mit Alt+r auf den Reservespeicher schalten, dort #uX0 anwaehlen und korrigieren, oder z.B. ein #uX9 draus machen als Alternative. (Das geht mit allen #u-Kategorien, ganz im Gegensatz zu PRESTO, wo man sie per Hand nicht \'e4ndern konnte.) 
+\par \pard\li48\ri144 
+\par \cf1\i Beispiel:\cf0\i0 
+\par Mit dem DOS-Befehl 
+\par \f2   upd -fm\i xy\i0  ... -u\i abc\i0 .alg -nj\f1 
+\par (fr\'fcher  \f2 update -fmxy ...\f1 ) kann man seit alters eine Grunddatei \i abc\i0\f2 .alg\f1  in eine Datenbank einspeisen lassen, wobei die Option \f2 -fmxy\f1   den Modus bestimmt, neue S\'e4tze kommen in die Datei j. Dasselbe Ergebnis erh\'e4lt man mit diesem FLEX: 
+\par \f2 input j 
+\par set u\i xy\i0  
+\par update \i abc\i0 .alg 
+\par \f1 Statt des Dateiformats .alg  kann der FLEX-Befehl im Gegensatz zum DOS-Verfahren auch den Typ \f2 .adt\f1  verarbeiten, das sog. `\cf2\ul\b Externformat\cf0\ulnone\b0 `. 
+\par \f3 
+\par ?Externformat=h ac0-0#328 
+\par ?acon=h acon 
+\par 
+\par }
+ 

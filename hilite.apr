@@ -1,0 +1,183 @@
+  HILITE.APR : Einen Feldinhalt nach RTF wandeln
+  2004-01-04  insbes. wirkt sich dies auf den FLEX-Befehl "write" aus
+
+zl=0
+dx=1
+
+#+-
+
+  Wenn im FLEX "write" gegeben wird, steht der Inhalt in #u1
+  Ausgeben wird dieser Inhalt, codiert nach RTF mit Hilfe der p-Befehle
+  Sprungmarke #-X wird in hilite.flx gesetzt mit  "dow wX"
+#-X
+#u1 
+#+#
+
+  ASCII -> RTF   Tabelle laden
+
+p .001 "grz"
+p .002 "grz"
+p .003 "grz"
+p .004 "grz"
+p .005 "grz"
+p .006 "grz"
+p .007 "grz"
+p .008 "grz"
+p .011 "grz"
+p .012 "grz"
+p .026 "grz"
+
+p .014 130    Notenzeichen
+p .015 131    Sonne
+p .016 187    Dreieck nach rechts
+p .017 132    Dreieck nach links
+p .018 137    o mit Doppelakut
+p .019 134    u mit Doppelakut
+p .020 182    Absatzzeichen
+p .021 167    Paragraph
+p .022 135    u mit ogonek
+p .023 133    g mit breve
+p .024 189    Pfeil hoch
+p .025 139    Pfeil runter
+p .028 159    Verweisungsstrich (obsolet)
+p .030 165    Dreieck Spitze oben
+p .031 178    Subfield Code = AltGr+2 (Dreieck Spitze unten)
+p .037 "\'25"    Prozentzeichen problematisch, wenn Zahlen folgen!
+p .096 "``"     gravis muss verdoppelt sein!
+
+  fuer RTF sehr wichtig:
+p { "\{" 
+p } "\}"
+p \ "\\"
+
+  ASCI ANSI  Bedeutung
+p .127 202   e mit hacek
+p .128 199   C mit cedille
+p .129 252   ue
+p .130 233  'e
+p .131 226  ^a
+p .132 228   ae
+p .133 224  `a
+p .134 229   a mit Ringel
+p .135 231   c mit cedille
+p .136 234  ^e
+p .137 235   e mit Trema
+p .138 232  `e
+p .139 239   i mit Trema
+p .140 238  ^i
+p .141 236  `i
+p .142 196   Ae
+p .143 197   A mit Ringel
+p .144 201  'E
+p .145 230   ae Ligatur
+p .146 198   AE Ligatur
+p .147 244   ^o
+p .148 246   oe
+p .149 242  `o
+p .150 251  ^u
+p .151 249  `u
+p .152 "\'ff"   y mit trema
+p .153 214   Oe
+p .154 220   Ue
+p .155 162  't
+p .156 163   Brit. Pfund
+p .157 204   s mit Cedille!!
+p .158 195   u mit Ringel
+p .159 221   U mit Ringel
+p .160 225  'a
+p .161 237  'i
+p .162 243  'o
+p .163 250  'u
+p .164 241  ~n
+p .165 209  ~N
+p .166 208   C mit hacek 
+p .167 240   c mit hacek
+p .168 194   r mit hacek
+p .169 174   R mit hacek
+p .170 172   Nichtsortierzeichen
+p .171 138   S mit hacek
+p .172 154   s mit hacek
+p .173 253  'y
+p .174 219   Z mit hacek
+p .175 190   z mit hacek
+p .176 185   tuerk. i
+p .177 222   grosses Thorn
+p .178 254   kleines Thorn
+p .179 "grz"   grafik
+p .180 "grz"   ...
+p .181 180     ' akut
+p .182 145   ` gravis
+p .183 136   ^ circumflex 
+p .184 149   Punkt uebergesetzt
+p .185 "grz"   grafik
+p .186 "grz"   ...
+p .187 "grz"   ...
+p .188 "grz"   ...
+p .189 168   Trema/diaresis
+p .190 166   Halbkr.ueberg/breve
+p .191 "grz"   grafik
+p .192 "grz"   ...
+p .193 "grz"   ...
+p .194 "grz"   ...
+p .195 "grz"   ...
+p .196 "grz"   ...
+p .197 "grz"   ...
+p .198 227   Doppelakut
+p .199 179   Hacek/Caron
+p .200 "grz"   grafik
+p .201 "grz"   ...
+p .202 "grz"   ...
+p .203 "grz"   ...
+p .204 "grz"   ...
+p .205 "grz"   ...
+p .206 "grz"   ...
+p .207 186   Ringel
+p .208 175   Ueberstrich/Macron
+p .209 215   Halbkr.unter (breve)
+p .210 171   Ogonek
+p .211 184   Cedille
+p .212 191   untergesetzter Punkt
+p .213 146   Ain
+p .214 169   Copyright
+p .215 216  /O daenisch  (97 neu)
+p .216 164   Waehr.Symb.
+p .218 "grz"   grafik
+p .217 "grz"   grafik
+p .219 161   diakrit /
+p .220 129   Pfeil nach rechts
+p .221 128   Euro-Symbol (neu 97
+p .222 173   diakr. Mittelstrich
+p .223 247   diakr. Unterstrich 
+p .224 151   "[alpha]"
+p .225 223   scharfes s
+p .226 "\'98"   152   "[Gamma]"
+p .227 153   "pi"
+p .228 188   a mit breve
+p .229 155   "[sigma]"
+p .230 181   "[mue]" (mikro-Zeichen)
+p .231 177   "[gamma]"
+p .232 150   diakr. Tilde
+p .233 157   I mit Punkt
+p .234 144   t mit cedille
+p .235 147   "[delta]"
+p .236 148   "[unendlich]"
+p .237 248  /o daenisch
+p .238 170   a mit ogonek
+p .239 200   e mit ogonek
+p .240 206  'C
+p .241 205  'c
+p .242 217  /L
+p .243 218  /l
+p .244 213  'N
+p .245 245  'n
+p .246 211  'O
+p .247 192  'S
+p .248 176   Gradzeichen
+p .249 193  's
+p .250 183   Punkt in der Mitte
+p .251 212  'Z
+p .252 210  'z
+p .253 203   Z mit Punkt oben
+p .254 207   z mit Punkt oben
+
+

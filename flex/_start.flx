@@ -1,0 +1,143 @@
+  _START.FLX : wird direkt nach Start ausgefuehrt
+  2001-02-07
+
+
+  *** 1. ***
+
+  Letzten Satz laden und zeigen
+  (nur um die Speicherbereiche zu initialisieren)
+
+last #
+:lox
+if del prev #;jump lox
+if cancel jump nix
+disp
+sho rec
+:nix
+
+  *** 2. ***
+
+  Belegung der Flip-Tasten
+  Und zwar getrennt fuer a99 und alcarta
+var m
+if "alc" jump alc
+flip 1&1: Daten=x sho rec|Interne Form des Datensatzes links anzeigen
+flip 2&2: GetData=X getdata|Datensatz von DNB, GBV oder LoC direkt abrufen
+flip 3&3: ErgName=X rset|Der aktuellen Ergebnismenge einen Namen geben
+flip 4&4: Hilfe A-Z=x set i9Hilfe A-Z\\View quick\\set i9|Alphabetische Liste der Hilfethemen
+flip 5&5: Kalender=X kalender|Kalender des laufenden Monats anzeigen
+flip 6&6: Termine=h memo|Termine verwalten
+flip 7&7: Super=h super|Supervisor-Men
+flip 8&8: DbInf=X _dbinfo|Info zu dieser Datenbank
+jump drei
+:alc
+flip 1&1: Hilfe=h cat|Hilfe zu dieser Datenbank
+flip 2&2: Daten=x sho rec|Interne Form des Datensatzes links anzeigen
+flip 3&3: ErgName=X rset|Der aktuellen Ergebnismenge einen Namen geben
+flip 4&4: Hilfe A-Z=x set i9Hilfe A-Z\\View quick\\set i9|Alphabetische Liste der Hilfethemen
+flip 5&5: Kalender=X kalender|Kalender des laufenden Monats anzeigen
+flip 6&6: Elemente=h elem|Bestandteile dieses Programms
+flip 7&7: Suchtechnik=h commd|Hilfe zur Suche
+flip 8&8: ALL-Reg.=x ind all a|Universelles Register aller W”rter
+
+  *** 3. ***
+:drei
+  Wenn alcarta, dann Variable #uaV setzen (d-wrtf.apr)
+var m
+if "alc" #uaV1
+
+  *** 4. ***
+
+  Pruefen, ob Schriften vorhanden
+get env windir
+var +"\\fonts\\a-letter.ttf"
+ftime
+if not no jump fertig
+get env windir
+var +"\\fonts\\a-lucida.ttf"
+ftime
+if not no jump fertig
+var "Auf Ihrem PC sind die allegro-Schriften nicht installiert"
+var + n n "Empfehlung: Damit Index und Kurzliste brauchbar aussehen,"
+var + n "stellen Sie ber 'Optionen / Datenfont' die Schrift 'Courier New' ein"
+var + n n "Oder lassen Sie sich die allegro-Schriften installieren"
+var + n "(Die TTF-Dateien liegen auf " P ")"
+ansi
+mes
+
+:fertig
+
+
+  *** 5. Optionale Einstellungen ***
+  Jetzt noch einige Einstellungen, die man wahlweise aktivieren kann.
+     Aktivieren heisst: eine Zeile ganz nach links setzen
+     (denn sonst wird sie nicht ausgefuehrt!)
+
+  naechste Zeile aktivieren, wenn ALFA sofort aktiviert sein soll:
+ #uAL1
+  naechste Zeile aktivieren, wenn ALFA-Ausleiher angezeigt werden soll
+ #uAU2
+
+  bzw. diese zwei Zeilen, wenn er in alcarta nicht gezeigt werden soll
+ var m
+ if not "alc" #uAU2
+
+  Aktivieren Sie diesen Befehl, wenn beim Start breite Anzeige aktiv sein soll
+ set db
+
+  Aktivieren Sie diesen Abschnitt, wenn %TEMP% das Arb.Verz. sein soll,
+    falls sonst das ProgDir benutzt wuerde
+ var "~" P
+ ins #uPD
+ var W 92
+ if =#uPD var M;var (F"\\");set W
+ #uPD
+
+
+
+  *** 6. ***
+
+  Und noch die Berechtigungen pruefen:
+  1./2. Schreibrecht auf Temp- und Start-Verz. pruefen
+
+var M "testdat"
+open x
+if no perform nom
+close x
+
+var W "\\testdat"
+open x
+if no jump now
+close x
+
+  *** 7. ***
+
+  Prüfen, ob access-Zahl und tatsaechliche Berechtigung gleich sind
+  Tatsächl. Berechtigung:
+var A
+ins #uzB
+  Trick 17, um die INI-Einstellung  access=...  zu ermitteln:
+var "F" V
+var
+var (b"~^Jaccess=" e"^M" e"^J" f" " e" ")
+  Beides vergleichen:
+if not =#uzB mes Berechtigung auf dem Datenverzeichnis reicht nicht zum Schreiben!
+
+  
+  *** 6. ***
+  >>> Empfehlung: <<<
+  Eigene, weitere Prozeduren, die beim Start auszufuehren sind, in einen
+  eigenen FLEX schreiben und diesen in die Zeile  StartFLEX=...  in der
+  eigenen INI-Datei einbauen. (siehe Kommentar in a99.ini)
+
+end
+  ***  Fehlermeldungen  ***
+:nom
+var "Kein Schreibrecht auf dem temp. Verzeichnis " M
+mes
+return
+:now
+var "Kein Schreibrecht auf dem Arbeitsverzeichnis " W
+mes
+end
+

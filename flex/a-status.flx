@@ -1,0 +1,64 @@
+ A-STATUS.FLX : Status des Exemplars aendern
+  2007-05-22
+
+if not #9DG jump error
+#uoT
+var #9DG
+if "0" var "verfgbar";jump sta
+if "l" var "verliehen";jump sta
+if "b" var "Buchbinder"
+if "g" var "Gesch„ftsgang"
+if "v" var "Verlust"
+if "W" var "Warteregal"
+if "A" var "ausgesondert"
+:sta
+ins #uoT
+
+var "Momentaner Status dieses Satzes: " #uoT
+ansi
+mes
+set a Neuer Status?
+var "0 : verfgbar" n "l : verliehen" n "b : Buchbinder" n "g : Gesch„ftsgang" n "v : Verlust" n "W : Warteregal" n "A : ausgesondert"
+ansi
+Aresqa
+set a
+if "" end
+var (0,1)
+  in iV jetzt Statusziffer,  -> #9DG
+ins $$-#9DG
+
+if not "W" jump speich
+ask |:Reservierung: Nutzerkennung? (Mit Alt+i im Register suchen!)=#uaU
+if "" jump speich
+ins #uaU
+   z.B.   erwachsen, anton  _ae001  -> _ae001
+if %_% var #uaU(B"_");ins #uaU
+   z.B.   ae001=|:Hr. Anton Erwachsen
+if %=% var #uaU(f"_" e"=");ins #uaU
+
+ins $u-#9DH
+  Datum der Reservierung
+var #dts(0,8)
+ins $w-#9DH
+  Reservierung gueltig bis
+Wday +5
+var (e"/")
+ins $W-#9DH
+
+:speich
+sho rec
+disp
+  Wenn sich Aenderung ergeben hat, speichern
+if diff Put
+end
+
+
+:error
+mes Das geht nur bei einem Exemplarsatz. Dieser Satz ist kein solcher.
+
+
+
+ u-VARIABLEN in a-status.flx
+ #uoT (3)  momentaner Status
+
+ 

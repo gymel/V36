@@ -1,0 +1,60 @@
+  O-TITEL.FLX : Erg.Menge besteht aus Bestell- oder Exemplarsaetzen, 
+  2005-08-23    finde dazu die Titelsaetze und praesentiere als Erg.Menge
+                Es kann zu einem Titel mehrere Bestell. oder Expl. geben,
+                das wird abgefangen, jeder Titelsatz kommt nur einmal!
+
+if empty mes Keine Erg.Menge;end
+first
+  Sind das ueberhaupt Bestellsaetze?
+if not #9DA if not #9DF jump sorry
+
+  Hilfsdatei mit den internen Nummern der Titelsaetze zusammenstellen
+open x titel.num
+  Es muss zuerst eine Ueberschrift rein
+wri "bestell" n
+
+  Schleife zur Abarb. d. Bestellsaetze
+:bloop
+  Bestellsatz enthaelt TitelIdNr in #9DA$T
+  Findbefehl fuer den Titelsatz zu der betr. Bestellung anlegen
+var "|9 " #9DA$T #9DF$$
+  und Titelsatz laden
+  (f1nd laedt den Satz, bildet aber keine neue Erg.Menge)
+f1nd
+  interne Nummer dieses Titelsatzes in die Datei schreiben
+write i n
+  naechsten Bestellsatz aus der Erg.Menge holen
+next
+if yes jump bloop
+  es gab keinen mehr
+close x
+
+  Jetzt Hilfsdatei (Nummernliste!) titel.num als Erg.Menge laden
+    Da sind evtl. noch doppelte drin!
+read set titel.num
+  deshalb erst nach internen Nummern ordnen
+order n
+  Neue Hilfsdatei aufmachen
+open x titel.set
+  Ueberschrift rein
+wri "Bestellungen" n
+  und die Titeldaten-Erg.Menge wieder als Nummernliste speichern.
+wri in
+close x
+  Liste neu einlesen, dabei fliegen Doppelte raus, weil sie direkt
+    hintereinander stehen wegen der Ordnung mit "ord n"
+read set titel.set
+var "Die Erg.Menge besteht jetzt aus den Titeldaten" n "und wird gleich gezeigt!"
+mes
+  Erg.Menge im Kurzlistenfenster zeigen
+show list
+  Hilfsdateien loeschen
+delete titel.num
+delete titel.set
+end
+
+:sorry
+var "Sorry, die aktuelle Ergebnismenge besteht nicht aus Bestelldaten"
+mes
+end
+

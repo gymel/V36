@@ -1,0 +1,235 @@
+  D-K.OPT : Hauptteil fuer Komplexes Anzeigemodell
+  2002-02-18 / 2004-03-30
+  eingebunden in  d-kdos.opr, d-krtf.opr, d-khtm.opr
+  d-kdos.opr : fuer PRESTO
+  d-krtf.opr : fuer a99/alcarta
+  d-khtm.opr : fuer avanti/RuckZuck
+
+  ***** eigentliche Ausgabebefehle ******************
+        Fuer andere Konfigurationen muss man hier 
+        die Feldnummern aendern! 
+        Die individuellen Teile stehen zwischen >>>> und <<<<
+         und sind kommentiert
+  Achtung hierarchische Saetze:
+  Folgende Zeile Wirksam nur wenn man hierarchische Saetze hat:
+  (denn fuer jeden Untersatz wird die nachfolgende Liste abgearbeitet)
+  Ausfuehrlicheres Modell fuer hierarch. Strukturen:  D-K.APT
+
+
+#uvE +E e0
+
+   Tabulatorsetzungen fuer die Tabelle:
+
+#t19
+
+#uaF daF e0
+#+@
+
+#-0
+    Ist alternat. Flag gesetzt? dann #-(
+#uaF +( e0
+
+   Wenn der aktuelle Satz ein Untersatz alter Art ist,
+
+#-@
+
+   Tab-Einstellung: 1500, Schriftgroesse: 22 = 11pt
+#t19
+
+  ******** Nachladeprozedur: bergeordnete S„tze laden  *******
+
+  nimm #00 und prfe, ob '+' darin vorkommt:
+#-a
+#000 +a c"+" e" " t"+" |90   das wird "rekursiv" ausgefhrt:
+                       wenn in #000 ein '+' vorkommt, wird das letzte hinten
+                       abgeschnitten (t"+" macht das) und der verbleibende Teil
+                       wird im Index 9 gesucht, der gefundene Satz wird geladen
+                       und wird zugleich zum aktuellen Satz. Dieser Vorgang
+                       wird wiederholt (deshalb +a), bis kein '+' mehr in #000
+                       zu finden ist.
+        Nun gibt es evtl. einen Stapel mit mehreren S„tzen, der Hauptsatz
+        an der Spitze ist dann der aktuelle Satz.
+
+#<+b    Wurde tats„chlich etwas nachgeladen? Dann weiter bei  #-b
+        (#< kann nicht ausgefhrt werden, wenn der Stapel leer ist, und
+        dann wird auch +b nicht ausgefhrt.)
+#+e     Wenn nichts geladen wurde, dann #-e
+        (d.h. der Prim„rsatz ist ein Einzelsatz oder Hauptsatz)
+
+   ***** Ladeoperation beendet ******
+
+        Jetzt wird der Stapel abgearbeitet:
+#-b
+#<^     zuerst  wieder hinaufschalten, denn #<+b hat hinuntergeschaltet;
+        dann ist der Hauptsatz wieder der aktuelle Satz
+  Was jetzt kommt, bezieht sich auf den Hauptsatz:
+  <<<<<<<<<  hier einsetzen, was mit dem Hauptsatz geschehen soll <<<<<<<
+#320 p{ t20 "Haupttitel: " t21 } P22
+#-H
+
+#nr =za    #uza besetzten, dient fuer den gezielten Ruecksprung zu #-A
+#+Z     Unterprog. #-Z ausfuehren
+#-A
+
+  >>>>>>>>>  Ende der Hauptsatz-Verarbeitung   >>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+  *********  Mittelebene   **********
+
+#<     einen Schritt runterschalten, d.h. der unter dem Hauptsatz stehende
+       Satz wird nun zum aktuellen Satz
+
+
+#-c   ist es ein Mittelsatz? Wenn ja, ist der folgende Befehl ausfhrbar:
+#t{ C }    (Zeilenvorschub, bevor es weitergeht)
+#<+d       noch einen Schritt runterschalten, weiter bei  #-d
+#t{ C }    wenn das nicht geht, Zeilenvorschub
+#+e        d.h. der Prim„rsatz ist jetzt wieder erreicht, dann weiter bei #-e
+
+#-d      ja, es war ein Mittelsatz
+#<^      dann wieder raufschalten, weil  #<+d  runtergeschaltet hat
+
+
+
+#000 b"+" e" " B"=" { t13 t20 "Abteilung:" t21 } P22
+
+#t60   Einrckung auf aktueller Position (hinter Bandnummer) festsetzen
+
+  <<<<<<<<<  hier einsetzen, was mit Mittels„tzen geschehen soll  <<<<<<<
+#nr =zb
+ #>H     Unterprog. #(H ausfuehren
+#+Z
+#-B
+
+  >>>>>>>>> Ende der Mittelsatz-Behandlung  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#t61   Einrckung wieder auf 0 setzen
+
+#<+c        Mittelsatz-Verarbeitung fortsetzen,
+            bis der Prim„rsatz wieder erreicht ist
+
+  ********** Mittelebenen alle abgearbeitet    ******
+
+  ********** jetzt kommt der PRIMRSATZ selbst an die Reihe **************
+
+  (hier beginnt es, wenn der  Prim„rsatz bereits ein Hauptsatz war, also
+   keine bergeordneten existieren)
+
+#-e
+#000 +f b"+" f"0" e" " B"=" { t13 t20 "Band: " t21 t99 } P{ t98 t22 }
+
+#</     Stapel jetzt beseitigen
+       (wird nicht gemacht, wenn Unters„tze alter Art vorliegen)
+
+#-f
+    <<<<<<< hier einsetzen, was mit dem Prim„rsatz geschehen soll  <<<<<<<
+
+#nr =zc
+#+Z     Unterprog. #(H ausfuehren
+#-C
+
+    >>>>>>> Prim„rsatz abgearbeitet >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+   **** wenn der Prim„rsatz noch Untereinheiten hat  *******
+
+  Das findet man so heraus:
+
+  man h„ngt ein '+' an #00 um zu sehen, ob der Index Eintr„ge enth„lt, die
+  so beginnen
+  (wenn man #00 123456+005 hat, wird nach  "123456+005+"  gesucht
+   und man findet m”glicherweise etwas wie  "123456+005+1" )
+
+#000 +g e" " e"=" F" " P"+" |92    erste Untereinheit finden
+                             und zum aktuellen Satz machen
+
+#+#   wenn es keine gibt, STOP
+
+   **** Untereinheiten abarbeiten (zyklisch!)  ***
+
+#-g
+#000 +#90X e" " b"+" f"0" B"=" { t13 t20 "Band: " t21 t99 } P{ t98 t22 }
+
+   <<<<<<< hier einsetzen, was mit den Untereinheiten passieren soll <<<<<<<
+#90X
+#nr =zd
+#+Z     Unterprog. #(H ausfuehren
+#-D
+
+   >>>>>>> Ende der Untersatz-Verarbeitung   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#<\   Untersatz aus dem Arbeitsspeicher entfernen
+#000 +g e"+" e" " P"+" |93     n„chsten Untersatz aufsuchen
+                         nach #-g zurck, wenn es einen gibt
+    das wird unbegrenzt oft gemacht, solange |93 ausfhrbar ist
+
+
+#+#   ENDE
+   ****** Ende der Abarbeitung aller Unters„tze ****************
+
+
+   **** ENDE  ****
+
+   <<<<<<<<< Hauptabschnitt fuer die Ausgabe der Felder <<<<<<<
+             wird fuer jeden Satztyp abgearbeitet!
+
+    Fuer Kenner: dies ist NICHT als Unterprog. angelegt, damit man
+       hier noch Unterprogramme anlegen kann, siehe #8e fuer die URL
+#-Z
+#060 e"" e" = " { t20 "Signatur: " t21 t99 t71 } P{ t76 t98 t22 }
+
+   Grundmuster einer Tabellenzeile:
+
+#200. ++ e" = " p{ t20 "Verfasser:  " t21 } m{ t20 t21 }
+#200. P22 e0
+
+#320 e" : " { t20 "Titel:      " t21 t99 } P98
+#335 b" : " p" : "
+#320 p22 e0
+
+#380 { t20 "Nebentit.:" t21 } P22
+
+#403 { t20 "Ausgabe: " t21 } P22
+
+#425 { t20 "JAHR:    " t21 t99 } P{ t22 t98 }
+
+#412 { t20 "Verlag:  " t21 } P22
+
+#410 { t20 "Ort:        " t21 } P22
+
+#433 { t20 "Umfang:  " t21 } P22
+
+#100 0 >s e0
+
+#46. ++ p{ t20 "Serie:      " t21 } m{ t23 } 
+#46. P22 e0
+#540 { t20 "ISBN:      " t21 } P22
+
+   Muster fuer wiederholbare Felder:
+
+#501 p{ t20 "Anm.:       " t21 } m{ t23 }
+#574 p{ t20 "Medientyp:  " t21 } m{ t23 }
+#193 p{ t20 "Interess.:  " t21 } m{ t23 }
+#190 p{ t20 "Annotation: " t21 } m{ t23 }
+#195 p{ t20 "ekz-Begutach." t21 } m{ t23 }
+
+  gezielte Rueckspruenge, je nachdem, welches #uzi besetzt ist!
+#uza +A dza e0
+#uzb +B dzb e0
+#uzc +C dzc e0
+#uzd +D dzd e0
+#+#
+   
+#-E    Endabschnitt
+#t16
+#+#
+
+#(s
+#t{ t20 "Schlagw.:   " t21 }
+#cc =sw e0
+#-s
+#usw b"" e"" b1
+#usw b"" c"" p" -- " e4
+#usw +s b"" y0 b1 =sw e0
+#t22
+#)s

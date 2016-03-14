@@ -1,0 +1,398 @@
+  NMN-Indexstruktur  :  Kreuzregister, alles in einem Index
+  950706  NMN.API
+
+pn="NMN-Index"
+
+  die folgenden Zeilen gelten fr jede Index-Parameterdatei, nicht „ndern!
+--------------------------------------------------------------------------
+
+zl=0           kein Zeilenumbruch
+zm=0           keine Seiteneinteilung
+ad=0           Wenn keiner der "K”pfe" (ak) vorkommt, dann keine Eintragung
+ag=0           Hierarchische Untereinheiten ebenfalls fr Index behandeln
+il=72          L„nge der Eintr„ge
+i0=72          Kurzanzeige gleichfalls
+
+--------------------------------------------------------------------------------
+
+i2="<>"      Indexeintragungen sollen nicht mit einem dieser Zeichen anfangen
+i3=".,:] "   diese Zeichen sollen nicht am Ende eines Schlssels vorkommen
+
+   Kopfzeilen: (= die fr Index-Eintragungen heranzuziehenden Kategorien)
+   (innerhalb der ak-Zeilen drfen keine Kommentare stehen!)
+
+  Das Programm nimmt hintereinander die folgenden Angaben (z.B. ak=4.""+a ),
+  sucht die zugeh”rigen Kategorien (z.B. alle #4er Kategorien), nimmt sie
+  (wenn gewnscht) auseinander (z.B. bei dem Zeichen '') und arbeitet den
+  zugeh”rigen Abschnitt der Kategorieliste durch (z.B. den bei #-a
+  beginnenden Abschnitt)
+  Wenn Sie einen neuen Schlssel definieren wollen: Fgen Sie eine neue 
+  ak-Zeile hinzu und w„hlen Sie den geeigneten Bearbeitungsabschnitt oder
+  definieren Sie einen neuen (==> Kap.10.2)
+
+ak=00+@    Prim„rschlssel IdNr
+
+  ISBN:  Sprungmarke #-i
+ak=87+i
+  Personennamen: separieren bei "[;]" : Sprungmarke #-a
+ak=4."[;]"+a 5."[;]"+a
+  Verweisungen auf Doppelnamen:
+ak=4."[;]"+n 5."[;]"+n
+  K”rperschaftsnamen: genauso separieren
+ak=6."[;]"+b 27."[;]"+b
+  Sachtitel: W”rter auseinandernehmen bei den Zeichen " '-":
+ak=20"[ ']"+c 22"[ ']"+c 23."[ ']"+c 24."[ ']"+c 28."[ ']"+c
+  und dann nochmal am Bindestrich
+ak=20"\-"+h 22"\-"+h 23."\-"+h 24."\-"+h
+  Sammlungsvermerke:
+ak=21+s
+  Serientitel und Tagungstitel:
+ak=85.+d
+ak=83.+d
+  FremdSystematik-Notationen (z.B. LC (#32l) und Dewey (#32d)):
+ak=32d"[;]"+g
+ak=32l+l
+
+  Schlagwort
+ak=31."[;]"+S
+ FremdSchlagw”rter:
+ak=33."[;]"+S
+
+
+  Sachgebiet (Grobklassifikation), Trennung mit "; "    nur bei CIS
+ak=30a"[; ]"+G
+
+
+   z.B. alle Namenskategorien werden bei   "[;]"  getrennt.
+   Titel werden bei Leerzeichen, Apostroph und Bindestrich zerlegt!
+
+   Eintragungen fr die Klassifikation:
+
+ak=3n+V
+ak=3n+W
+ak=3na"[;]"+X
+ak=3ql"[;]"+Y
+ak=3qd"[;]"+Q
+ak=3nr"[;]"+Z
+
+   Thesaurus-Eintragungen
+
+ak=3t+„
+ak=3ta"[;]"+” 3ue"[;]"+” 3tp"[;]"+”
+ak=3tr"[;]"+
+ak=3tb"[;]"+ 3tt"[;]"+
+ak=3tn"[;]"+™
+
+  Personennamens-Eintragungen
+
+ak=4n+q
+ak=4na"[;]"+v
+ak=4nr"[;]"+r
+ak=4nt"[;]"+r
+ak=4np"[;]"+p
+
+  K”rperschafts-Namenseintragungen
+
+ak=6n+t
+ak=6na"[;]"+š
+ak=6nr"[;]"+u
+ak=6ns"[;]"+u
+ak=6ue"[;]"+u
+
+   Serien-Haupteintragungen
+  
+ak=8n+w
+ak=8nr"[;]"+x
+
+ak=2n+y
+ak=2nr"[;]"+z
+ak=2nu"[;]"+z
+
+ak=9a+1 9a+2 9a+3
+
+   Zwischenteile:
+2=" "
+3=" ;"
+4=""
+5="  "
+6=" : "
+7="*"
+9=" -> "
+10="zz"
+11=" -> zz"
+
+15="DY,"
+16="LC,"
+
+19="00"
+
+  Hauptteil: Kategorieliste
+  ----------
+  in den folgenden Befehlen wird fr #u1 jeweils die oben in den ak-Zeilen
+  stehende Kategorie eingesetzt, z.B. #40 etc. bei Sprungmarke #-a.
+  (siehe oben: #4."[;]"+a )
+
+  Die Sprungmarke #-# existiert nicht, daher wirkt #+# als Endezeichen.
+  (#+# muss am Ende jedes Abschnitts stehen, sonst wird der n„chste auch
+  noch ausgefhrt und es wrden unsinnige, unerwnschte Schlssel entstehen!)
+
+#-@
+#u1 p"!"    Einordnung unter !
+#+#
+
+#-a   hier beginnt die Bearbeitung fr die #4. und #5.-Kategorien
+!u1 B" = " f" "    Kopfform beginnt hinter " = " , 60 Zeichen,
+#+#                      d.h. z.B. #40 Vorlageform = Ansetzungsform !
+
+#-b   K”rperschaften (#6.) werden so behandelt:
+!u1 u B" = " f" "     (auch hier evtl. Ansetzungsform hinter " = ")
+#+#
+
+#-c   Sachtitelw”rter:Sachgruppe
+!u1 u e"," f" "          ein Komma am Ende soll weg
+
+ die n„chsten drei Zeilen werden nur bei CIS gebraucht:
+ #t4               schreibe "" hinter das Stichwort  
+ #30a +# e"; " 10   Hauptsachgruppe mit 10="zz" davor 
+ #t19              schreibt "00", wenn keine Sachgruppe!
+
+#+#
+
+#-h   Sachtitelw”rter:Sachgruppe
+!u1 u e"," e"-" e" " f" "
+
+ die n„chsten drei Zeilen werden nur bei CIS gebraucht:
+ #t4               schreibe "" hinter das Stichwort  
+ #30a +# e"; " 10   Hauptsachgruppe mit 10="zz" davor 
+ #t19              schreibt "00", wenn keine Sachgruppe!
+
+#+#
+
+#-d                            Serie: zuerst der Titel, dann die Z„hlung
+!u1 u e" ; " e52
+#u1 b" ; " e"-" e" : " B" " r5 3     mit 5 Zeichen rechtsbndig wegen der Sortierung
+#+#                            Beginn hinter " ; " und ". "
+
+#-D                            Kongresstitel
+!u1 u e" ; " e60
+#+#                            Beginn hinter " ; " und ". "
+
+#-f              Schlagw”rter: gem„ss Alternativtabelle q umwandeln (s.u.)
+!u1 f" " #zz 7
+#+#
+
+
+#-g              Dewey: unver„ndert einordnen mit DY: davor
+#u1 f" " 15
+#+#
+
+#-G   Sachgruppen-Klassifikation      nur bei CIS
+#u1 10
+#t6            schreibe " : " dahinter
+!31 +#         und dann das erste Schlagwort
+!31p +#
+!31g +#
+!31s +#
+!31k +#
+!31c +#
+!31t +#
+#+#
+
+#-i
+!u1 e13
+#+#
+
+#-l              LC-Notationen: unver„ndert einordnen mit LC: davor
+#u1 f" " 16
+#+#
+
+#-n     Verweisung auf Doppelnamen
+!u1 +] e", " b"-"      nur wenn "-" vorkommt, geht's weiter!
+#+-
+#-]
+!u1 b", " p", " 
+!u1 e"-" p" " P"-"
+!u1 e30 p" -> "
+#+#
+
+#-Q     korrespondierende Notation Dewey
+#u1 15
+#t11
+#3n e" "
+#+#
+
+#-s
+!40 e40      Verf.Name :
+#u1 e20 6    Sammlungsvermerk
+#+#
+
+#-S    Schlagwort-Eintragung
+!u1 f" " e58
+#t{" *" }
+#+#
+
+#-V              Haupttext -> zzNotation
+!u1 b" " f" "
+#t11
+#3n i4,s e" " e"ú" f" " b2      SW-Satz
+#3n I4,s e" " e"ú" f" " b2      SW-Satz
+#+#
+
+#-W       zzNotation + Haupttext
+#u1 i4,s e" " e"ú" f" " b2 10     SW-Satz
+#u1 I4,s e" " e"ú" f" " b2 10     SW-Satz
+#u1 f" " b" " 5
+#+#
+
+#-X       Stichw”rter zur Notation
+!u1 f" "
+#t11
+#3n e" "
+#+#
+
+#-Y     korrespondierende Notation LC
+#u1 16
+#t11
+#3n e" "
+#+#
+
+#-Z     Referenzen
+!u1 e30
+#t{ "  SIEHE AUCH -> " }
+!3n b" "
+#+#
+
+#-0      Kurzeintragung fr .STL-Datei zusammensetzen
+#hi +-           fr B„nde nichts machen
+#t{ "|0" }
+#20 +#40 e" : " U f'"' y0 e55
+#19 +#40 e" : " U f'"' y0 e55
+#18 +#40 e" : " U f'"' y0 e55
+#21 +#40 e" : " U f'"' y0 e55
+
+#40 +#76 { &47 } u y0 "/" e11
+#41 +#76 { &47 } u y0 "/" e11   wenn kein Verf., dann Hrsg. oder Mitarb.
+#42 { &47 } u y0 "/" e11
+#76 { &60 } x"*1" e"." s4 
+#00 i4,z { &60 } "ZTS" e3
+#90 I4, { &66 } y0
+#+#
+
+#-„              Thesaurus-Hauptbegriff
+!u1 e59
+#t{ " **" }
+#+#
+
+#-”            Synonyme
+!u1 f" " e35
+#t{"  USE> " }
+!3t e20
+#+#
+
+#-            verwandte Begr.
+!u1 f" " e35
+#t{ "  RT> " }
+!3t e20
+#+#
+
+#-            broader term
+!u1 f" " e35
+#t{ "  NT> " }
+!3t e20
+#+#
+
+#-™            narrower term
+!u1 f" " e35
+#t{ "  BT> " }
+!3t e20
+#+#
+
+
+#-q      Namens-Hauptform Person
+!u1 
+#t{" **" }
+#+#
+
+#-p             Pseudonym
+!u1 f" " e30
+#t{ " [Pseud.] -> " }
+!4n 0
+#+#
+
+#-r    Verw.Form Person
+!u1 f" " e35
+#t{ " -> " }
+!4n
+#+#
+
+#-v    siehe auch Verw Person
+!u1 f" " e35
+#t{ " s.a.-> " }
+!4n
+#+#
+
+#-t      Namens-Hauptform K”rp.
+!u1 f" " u e57
+#t{" **" }
+#+#
+
+#-u    Verw.Form K”rp.
+!u1 f" " u e35 e">"
+#t{ " -> " }
+!6n u
+#+#
+
+#-u    s.a. Verw.Form K”rp.
+!u1 f" " u e35 e">"
+#t{ " s.a.-> " }
+!6n u
+#+#
+
+#-w      Serien-Haupttitel
+!u1 u e57
+#t{" ;" }
+#+#
+
+#-x    Verw.Form Serie
+!u1 f" " u e40
+#t{ " -> " }
+!8n u
+#+#
+
+
+#-y    EST
+!u1 u
+#t{ " *" }
+#+#
+
+#-z    Verw. auf EST; bei šbersetzung : <Sprache>
+!u1 f" " e" <" u
+#t{ " -> " }
+!2n u
+!u1 b" <" e">" p" <"
+#+#
+
+#-1    Ausleiher/Datum
+!u1 b8 p"zz"
+#u1 p":" e8
+#+#
+
+#-2     Datum/Signatur
+#u1 e8 p"zz"
+#90 p":"
+#+#
+
+#-3     Signatur/Datum
+!90 p"zz"
+#u1 e8 p":"
+#+#
+
+
+
+   Zeichenumwandlungen:
+ti      Tabelle I.APT laden
+
+         Dann wird noch die Stopwortliste SWL1.APT nachgeladen
+         (sie k”nnte anders heissen, aber .APT muss sein!)
+         Sie k”nnte auch hier direkt folgen!
+tswl1

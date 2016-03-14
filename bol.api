@@ -1,0 +1,2692 @@
+  BOL-Index Musikalien-Katalogisierung
+  BOL.API    960921  (gekÅrzt)
+
+  VerÑnderungen im Zusammenahng mit der flip-Funktion fÅr bolero sind zu
+     finden unter "flip"
+
+ >> IdNr Behandlung evtl. lokal anpassen   #-@ <<
+ >> Signaturbehandlung lokal anpassen!     #-O <<
+
+pn="BOL-Index, 11 Register"
+
+  die folgenden Zeilen gelten fÅr jede Index-Parameterdatei, nicht Ñndern!
+ --------------------------------------------------------------------------
+
+zl=0           kein Zeilenumbruch
+zm=0           keine Seiteneinteilung
+ad=0           Wenn keiner der "Kîpfe" (ak) vorkommt, dann keine Eintragung
+ag=0           Hierarchische Untereinheiten ebenfalls fÅr Index behandeln
+     V14:
+i4=1
+i5=_    _ ist Referenzsymbol
+i6=10   Index 10 fÅr referenzen
+pa=181 182 183 184 189 190 198 199 207 208 209 210 211 212 219 222 223 232 
+
+ --------------------------------------------------------------------------
+
+il=160         SchlÅssellÑnge (72 ist Standard)
+ic=1           nur wenn Umcodierung der Eingabe gewÅnscht
+                 dann werden die Sprungmarken #-1 ... #-9 benutzt
+i0=72          LÑnge der Kurzanzeige
+ir=5           Restriktion: 4 byte
+  öberschriften der Register:
+
+|1="1 : Namen von Personen (Komp, Interpr, Dirig ...) und Kîrperschaften (Orch ...)"
+|2="2 : Komponist: Normtitel"
+|3="3 : Titelwîrter/Schlagwîrter /S Satzbez. / Opus-Nr (_GROSS) / _T Tonart"
+|4="4 : Titel der Werke"
+|5="5 : Titel der Medieneinheit (CD etc.) / Reihen (Serientitel ; Bandnummer)"
+|6="6 : Jahre / Orte (A:Aufn.; C:Entstg; E:Erstauffg; G:Geb-; S:Sterbe-; L:Auffg-stÑtte)"
+|7="7 : Sachgruppen  /  Å öbersicht Åber alle Sachgruppen"
+|8="8 : Signaturen   /  Å öbersicht Åber die Aufstellungssystematik"
+|9="9 : StammsÑtze / Dn(Erf-Dat) / De(Korr-Dat) / M Label-Nr / Multimed (E V G S)"
+|:="10 : StammsatzkÅrzel"
+|;="11 : Geheim"
+
+  öberschrift der Kurzanzeige:
+|<="      Titel                                        Komp.       Jahr  Signatur"
+
+   Ihr Bibliotheksname in der folgenden Zeile:
+|a="    Catalogus Musica Classica B.E."
+
+  Kurznamen der Register (fuer f-Befehle von "avanti")
+I ALL 3 "Alle Wîrter"
+I PER 1 "Personen"
+I ORC 1 "Klangkîrper"
+I TAF 4 "TitelanfÑnge"
+I TIT 3 "Titelwîrter"
+I OPS 8OP "Opuszahl"
+I KET 2 "Komponist: Normtitel"
+I STZ 3 "Satzbezeichnungen"
+I SIG 8 "Signatur"
+I ALL 3 "Alle Wîrter"
+
+
+  Restriktionen
+R TTR r1 "TontrÑger?u = Kass., c = CD"
+R SAG r2 "Sachgruppe?z.B. pi=Piano, sy=Symphonie"
+R TON r4 "Tonart?z.B. d=Dur, da=A-dur, m=Moll, mc=c-moll"
+
+  Spezialzeichen:
+i1=":>"    Wenn der Anfang eines SchlÅssels, bis zu einem dieser Zeichen,
+               ein Stopwort ist, wird der SchlÅssel ignoriert
+
+i2="=: ->"    IndexeintrÑge, die mit einem dieser Zeichen anfangen,
+               werden ignoriert
+i3=".,-] "   diese Zeichen sollen am Ende eines SchlÅssels beseitigt werden
+
+i8=">"      UmblÑttern bei Enter
+i9=">="           bei <Cursor rechts>
+
+  *********************************************************************
+
+
+  Kopfzeilen: (= die fÅr Index-Eintragungen heranzuziehenden Kategorien)
+
+  Das Programm nimmt hintereinander die folgenden Angaben (z.B. ak=9..";"+Q ),
+  sucht die zugehîrigen Kategorien (z.B. alle der Gruppe #9), nimmt sie
+  (wenn gewÅnscht) auseinander (z.B. bei ';') und arbeitet den
+  zugehîrigen Abschnitt der Kategorieliste durch (z.B. den bei #-Q
+  beginnenden Abschnitt)
+  z.B. alle Schlagwortkategorien werden bei   ";"  getrennt.
+  Titel werden bei Leerzeichen, Apostroph und Bindestrich zerlegt.
+  Wenn Sie einen neuen SchlÅssel definieren wollen: FÅgen Sie eine neue
+  ak-Zeile hinzu und wÑhlen Sie den geeigneten Bearbeitungsabschnitt oder
+  definieren Sie einen neuen mit neuer Sprungmarke (==> Kap.10.2)
+
+  Sprungmarken: (mit x sind die belegten gekennzeichnet)
+  -------------
+
+    1-50:           !"#$%&'()*+,-./012
+                                           xx    x  x x  xxx
+
+  51-100: 3456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcd
+          xxxxxxx     xxxxxxxxxxxxxxxxxxxxxxxxxxxx  x    xx
+
+ 101-150: efghijklmnopqrstuvwxyz{|}~ÄÅÇÉÑÖÜáàâäãåçéèêëíìîïñ
+                             x       xx       x    x
+
+ 151-200: óòôöõúùûü†°¢£§•¶ß®©™´¨≠ÆØ∞±≤≥¥µ∂∑∏π∫ªºΩæø¿¡¬√ƒ≈∆«»
+             x    x
+
+ 201-250: … ÀÃÕŒœ–—“”‘’÷◊ÿŸ⁄€‹›ﬁﬂ‡·‚„‰ÂÊÁËÈÍÎÏÌÓÔÒÚÛÙıˆ˜¯˘˙
+                        x   xx xx
+
+ 251-255: ˚¸˝˛ˇ
+
+  -------------
+
+ PrimaerschlÅssel ist: #00 (Zeile evtl. austauschen)
+ak=zz+@
+ak=89o+i
+  ak=89D+L
+ak=9D.+‹       10  TitelId,Stueck:ExplNr Status (l,a,b,f,g,W,V) (220)
+ak=9..";"+Y       Zugangsnummer, Erfass.Datum
+ak=3n+R
+ak=09+?     Verkn. nach oben
+ak=zz+0     zz bewirkt, da· IN JEDEM FALL Abschnitt #-0 bearbeitet wird
+ak=zz+/     zz bewirkt, da· IN JEDEM FALL Abschnitt #-/ bearbeitet wird
+ak=zz+J     (hiermit wird in Wirklichkeit das Ersch.Jahr behandelt, manchmal
+             kommt nÑmlich keins vor, aber ak=zz wird immer ausgefÅhrt)
+
+ak=4n+Ä     V14   Pseudoschluessel
+ak=2n+Ä     V14   Pseudoschluessel
+ak=6n+Ä     V14   Pseudoschluessel
+  Signatur (die nÑchsten 2 mÅssen evtl. geÑndert werden!
+ak=90." = "+O     EintrÑge unter Signatur
+ak=90.+Q          Standort
+
+ak=90.+X      fÅr aLFA
+
+  ISBN: nach oben bringen, wenn sie PrimÑrschlÅssel sein soll
+ak=87" = "+A
+
+   Verteiler fÅr Gruppe #8..
+ak=8.."; "+L
+ak=85.+S
+  ak=89."\;"+L
+   Eintrag fÅr #83. in Sonderabteilung K, Reg.4
+ak=83.+K
+
+  Personennamen: NormaleintrÑge
+ak=4..";"+B 5..";"+B
+ak=4.." "+E 5.." "+E
+  Verweisungen: (Hinter " = ")
+ak=4."\ = "+C 5."\ = "+C
+  Doppelnamen-Verweisungen: (Wenn '-' im Namen vorkommt)
+ak=4.+c 5.+c
+  Komponist: EST oder Titel
+ak=52."; "+Z
+  gefeierte Person: (zusÑtzl. Eintr. in Sonderabschnitt F, Reg.1 )
+ak=59.+b
+  Kîrperschaftsnamen:
+ak=6.."; "+D
+ak=6.." = "+ö      Verw. vom untergeordn. Teil
+ak=6.."[ '/]"+ü    Kîrp. Stichwîrter
+  Sachtitel: Wîrter auseinandernehmen bei Leerzeichen, Apostroph, SchrÑgstrich:
+ ak=2.."[ '/]"+E
+ak=uti"[ '/]"+E
+ak=uk1"[ '/]"+E    Kongresstitel zerlegen, sind unter #uk1 siehe #-0
+  und dann nochmal am Bindestrich (der erste Teil bleibt dabei unbeachtet)
+ ak=2.."\-"+F
+ak=uti"-"+F
+  Titelanfang:
+ak=2.."; "+G
+  Sammlungsvermerke: (Sonderabt. W, Reg.1; E = EST)
+ak=21+H
+ak=22+H
+ak=2n+·
+
+ak=30a" "+P   Sachgruppe, Sondereintrag unter '?'
+
+ak=30." "+M   Verteiler fÅr alle Notationen und SchlÅssel
+
+ak=31t"[;]"+T        Titelschlagwort nochmal zusÑtzlich in Reg. 1
+
+  Verlag, Ort, Jahr, Quelle
+ak=7..+V
+ak=74+Y         fÅr E-Land
+   Eintragungen fÅr die Klassifikations-StammsÑtze
+ak=3..";"+N    Verteiler fÅr gesamte Gruppe #3
+               zugleich Verteiler fÅr #3n., #3q. und #3t
+               (geht schneller, als sie mit einzelnen ak-Zeilen abzuhandeln)
+
+ak=3n"\˙"+U     die StammsÑtze der Sach-SW kommen zusÑtzlich noch in Reg.7
+
+ ak=3n"\ "+W          zusatz fÅr SWD, aktivieren
+ ak=3na"\[ ;]"+W      zusatz fÅr SWD
+ak=3n+x        fÅr Sachgr. öbersicht unter |7Å
+
+
+
+
+
+  **** bolero *******
+
+ak=89o"\;"+I      Opusnummer, wenn mehrfach
+ak=81m"[ -]"+é    Satzbezeichnungen
+ak=2n."; "+ô      EST-Verw.
+ak=8e."; "+f                                        flip / grafik / sound
+
+ak=89o+q
+
+   Zwischenteile:
+
+10=" "
+11=" -> "
+
+30="|7G "   fÅr 3 Abteilungen im Reg.7
+31="|7S "
+33="|7H "
+
+38=&11
+
+80="/"
+81="/ho"   Diss.
+82="/af"   Aufsatzsammlung
+
+84="/sg"   Sammlung
+
+
+  Hauptteil: Kategorieliste
+  ----------
+  in den folgenden Befehlen wird fÅr #u1 jeweils die oben in den ak-Zeilen
+  stehende Kategorie eingesetzt, z.B. #40 etc. bei Sprungmarke #-B.
+  (siehe oben: #4.";"+B )
+
+  Die Sprungmarke #-# darf es nicht geben, denn #+# gilt als Endebefehl.
+  (#+# muss am Ende jedes Abschnitts stehen, sonst wird der nÑchste auch
+  noch ausgefÅhrt und es wÅrden unsinnige, unerwÅnschte SchlÅssel entstehen!)
+
+  Wenn Sie CIS einsetzen wollen, nehmen Sie in den folgenden 2 Abschnitten
+  das Leerzeichen vor #30a weg!
+
+
+#-3  Reg.3
+#u1 +# y0 i5,  i4,S 
+#u1 +#89O y0 v4,[ V4,@ x">0" e0     OpusNr
+
+!u1
+#+#
+
+#89O
+#u1 +#89O I4,O e0                  Nur Nummer, z.B. o63
+!u1 +#89Z i5,z e0
+!u1 e"[.,;]" x"*1" e"." r4 "Op"
+!u1 b"[0123456789 ]" f" 0123456879" e";"
+#+#
+#89Z
+!u1 +# x"*1" e"."
+
+#89O
+#u1 f" " e"[0123456789]" F" " y0                  z.B. KV 525, BWV432
+!u1 e"[.,;]" x"*1" x">0" e"." r5
+!u1 e";" b"[0123456789]" f"0123456879"       z.B. KV123a
+#+#
+#-5
+!u1 u e";" F" "
+!u1 b";" f" " r5 p" ;"
+#+#
+
+#-E   Sachtitelwîrter
+ #ch +#20x I2,1 I2,5 I2,7 e0   
+ #ch +#20x I2,1 I2,2 I2,5 I2,7 e0
+ #+-        nicht fÅr #21, #25, #27
+
+ #20x
+#uty
+#u1 +- i4,_ e0     MUSIK: #22 enth. IdNr
+!u1 e"" f"+- /(<)" F">?"      beseitige "- (" am Anfang, ">?" am Ende
+ #30a e"[ ]" p":"            Sachgruppe dahinter setzen  (CIS-Konzept)
+#utz p"'Z" e2
+#+#
+
+
+#-Ä
+#t{ "_1" }    PseudoschlÅssel
+!4n +#4nx y2 p"|2" P":"   Bei #4n SÑtzen braucht man 2 Pseudoschl.
+#+!
+#4nx e0
+#t{ 8 "_1" }
+#--      Lîschkontrollschl.
+#-!
+!4n +# u f" " e" =" p"|1"
+!2n e": " p"|2" P": "
+!2n +# e" =" b": " >E e0
+ !2n +# u f" " e" =" p"|2"
+!6n +# u f" " e" =" p"|1"    ???
+
+#00 p"|9" P"*"
+#t{ C }
+#00 p"|9" P"+"
+#+#
+
+
+#-1   Umcodierung der Benutzereingabe fÅr Reg.1 wird auch hier gemacht
+#u1 +# y0 i4,D 
+#u1 +# y0 i4,F 
+#u1 +# y0 i4,W
+!u1 
+#+#
+
+ #-2    Reg.2
+#u1 +#uxa c"+" e0
+
+!u1 e"[0123456789]"
+!u1 x"*1" x">0" e"." r3
+#+#
+
+!uxa e": " P": "
+!u1 F"+"
+#+#
+
+#-6    Reg.6
+#u1 +#396 y0 i4,G e1
+#u1 +#396 y0 i4,S e1
+#u1 +#396 y0 i4,A e1
+#u1 +#396 y0 i4,E e1
+!u1
+#+#
+
+#396
+#u1 y0 b1 f" " p" "
+#+#
+
+#-w      EST-EintrÑge im Reg.2
+!u1 e": " P": "
+!u1 b": " >E e0
+#+#
+
+
+#-G                    Titelanfang
+#ch +#210 i2,1 e0        nicht fÅr #21, #25, #27, #28
+#ch +- i2,5
+#ch +- i2,8
+#ch +- i2,7
+#ch +#2n0 i2,n e0        #2n..
+#ch +- i3,p           #20p kriegt auch keinen Eintrag (UB BS)
+#u1 +- i5,  i6,- i7,     Titel wie z.B.  "A - E" ausblenden
+#8n +#8n0 e0
+#00 +#39u i4,z "|5" e2   Zeitschrift kommt in Reg.5
+#t{ "|4" }               Monogr. in Reg.4
+#39u
+#u1 +- i4,_ e0
+#u1 >E e0
+ !u1 u u[] e" : " B": " e"[0123456789]" f" (<." F" " 
+ #u1 e"" x"*1" x">0" e"." r4,  #zz 0
+ !u1 u u[] e" : " B": " e"" b"[0123456789]" f" 0123456789(." F" " p" "
+#+#
+
+
+#-J           #76 bzw. #30y
+!30y +#0c e4 p"|6"     wenn #30y existiert: dieses nehmen (mehrbd.Werke)
+!76 +#76A x"<1450" e0    z.B. #76 18.. Jahr kleiner 1450, dann #76A
+!76 +#0c x"*1" e4 p"|6"
+#76A     Sprungmarke
+#76 +#0c x"*1" e4 p"|6"    #76 aus Bandaufnahme nehmen, wenn keins in HA
+#81f +#81f e0 
+#+-   es kommt kein Jahr vor
+!0c +#81f 80 e2      Literaturart dranhÑngen; wenn #0c nicht existiert:
+!^0c +#81f 80 e2
+#819 +#81f p81 e0    "/d" wenn Diss., dann noch 'd' dranhÑngen
+#83 +#81f p82 e0     "/f" Kongress
+#59 +#81f p82 e0     "/f"  und Festschrift kriegen "f" fÅr "Sammelwerk"
+#21 +#81f p84 e0     "/m" fÅr "gesammelte Werke"
+#+#
+!81f u y2 p{ 8 "|4F " }
+#+#
+
+#-ü   Kîrperschaftswîrter
+#ch +- i2,8      nicht fÅr #68
+ #ch +- i2,n      nicht fÅr #6n..
+#uty
+!u1 u f"+- /(<)" e"_" F">,)?"    P""      beseitige "- (" am Anfang, ">" am Ende
+#+#
+
+
+#-M              Notation
+#ch +#39l i3,l e0   #30l
+#ch +#39g i3,g e0   #30g
+#ch +#39z i3,h e0   #30h
+#ch +#39k i3,k e0   #30k
+
+!u1 +- i5,0               wenn 2. Zeichen = 0, dann schluss  (#30a?00 )
+#ch +- i3,y          kein Eintrag fÅr #30y
+
+!u1 +#30t i3,t y2 e"[; ]" p"|3"    Tonarten mit Praefix K
+!u1 +#30m i3,m f"?<" F" >;" p"|7@"   damit Stopw. nicht ausgebl. werden
+!u1 +#39k I3,m e0
+
+!30t e0
+!u1 +# b"-" p{ 8 "|3" }
+
+  Zusatzeintraege unter Standardwoertern
+#30m e0
+#u1 +# c"ar" p{ 8 "|3arie" } e0
+#u1 +# c"ba" p{ 8 "|3ballett" } e0
+#u1 +# c"ca" p{ 8 "|3kantate" } e0
+#u1 +# c"gu" p{ 8 "|3gitarre" } e0
+#u1 +# c"ha" p{ 8 "|3harfe" } e0
+#u1 +# c"li" p{ 8 "|3lieder" } e0
+#u1 +# c"pi" p{ 8 "|3klavier" } e0
+#u1 +# c"or" p{ 8 "|3orchester" } e0
+#u1 +# c"ou" p{ 8 "|3ouvertuere" } e0
+#u1 +# c"op" p{ 8 "|3oper" } e0
+#u1 +# c"st" p{ 8 "|3streicher" } e0
+#u1 +# c"fl" p{ 8 "|3holz" } e0
+#u1 +# c"tr" p{ 8 "|3blech" } e0
+#u1 +# c"sy" p{ 8 "|3symphonie" } e0
+#u1 +# c"so" p{ 8 "|3sonate" } e0
+#u1 +# c"og" p{ 8 "|3orgel" } e0
+#u1 +# c"vc" p{ 8 "|3cello" 8 "|3violoncello" } e0
+#u1 +# c"qt" p{ 8 "|3quartett" } e0
+#u1 +# c"qu" p{ 8 "|3quintett" } e0
+#u1 +# c"to" p{ 8 "|3trio" } e0
+#u1 +# c"me" p{ 8 "|3messe" } e0
+#u1 +# c"wa" p{ 8 "|3walzer" } e0
+#u1 +# c"cm" p{ 8 "|3kirchenmusik" } e0
+#+#
+#39k
+!u1 f"?" F"; " y0 p"|7"       BKN ohne Umcodierung
+ #8n +# p"/serie" e6
+#30m +# e0   fuer musik sonst nichts
+!30y +#0c e4 p","
+!76 +#0c x"*1" e4 p","
+!76 +#0c x"*1" e4 p","   wenn #76 in HA nicht vorkommt
+#20 p" " e1   wenn Åberhaupt kein Jahr
+ #mv +-         wenn mehrbd und kein Jahr in HA, dann hier Abbruch
+#0c e0
+ !u1 b"-" p"-" e" "
+!0c +# p80 e2      Literaturart dranhÑngen; wenn #0c nicht existiert:
+!819 +# p81 e0    wenn Diss., dann noch 'd' dranhÑngen
+!83 +# p82 e0     Kongress
+!59 +# p82 e0     und Festschrift kriegen "f" fÅr "Sammelwerk"
+!21 +# p84 e0     "Werke"
+#+#
+
+#-P             nur die "?"-SchlÅssel
+!u1 +- I4,?      wenn 1. zeichen kein "?", dann hier schluss
+!u1 e"-" e" " p"|7"
+ #8n +# p"/serie" e6
+!30y +#0c x"*1" e4 p","
+!76 +#0c x"*1" e4 p","
+#mv +-         wenn mehrbd und kein Jahr in HA, dann hier Abbruch
+!0c e0
+!u1 b"-" p"-" e" "   Aspekt anhÑngen
+!0c +# p80 e2      Literaturart dranhÑngen; wenn #0c nicht existiert:
+!819 +# p81 e0     wenn Diss., dann noch 'd' dranhÑngen
+!83 +# p82 e0     Kongress
+!59 +# p82 e0     und Festschrift kriegen "f" fÅr "Sammelwerk"
+!21 +# p84 e0     "Werke"
+#+#
+
+
+   Die EintrÑge fÅr die Signatur mÅssen lokal angepasst werden:
+   aktivieren Sie diesen Abschnitt, um zu sehen, was passiert,
+   fÅr "normale" Signaturen dÅrfte das reichen
+   (Form: #90 Gruppe&Nummer%AnhÑngsel
+                    & = ".- /"  mîgliche Trennzeichen
+                           % = "( ,"
+#-O
+#t{ "|8" }
+#-8    Umcodierung der Benutzereingabe fÅr Reg.8
+#u1 y0 e"[ .-/]"
+!u1 e"" b"[ .-/]" e"[(,-/ ]" r5
+!u1 e"" b"[ .-/]" b"[(,-/ ]" e"[(,-/ ]" r3 p","
+!u1 e"" b"[ .-/]" b"[(,-/ ]" f"0123456789"
+#+#
+
+
+#39A
+!u1 b" " e"(" r4,0 p"|8a "
+#+#
+
+
+#-Q     Signatur  (#90 [Standort']Sign[ = MagSign]
+           Ergebnis:  "|8zzStandort Sign" )
+#ch +#399 c"'" e0
+#ch +# b"s" p"|8"
+#+-
+#399
+#ch e"" e"'" e" = " p"|8zz"         Standort
+!u1 e"" b"'" e"[ .-/]" p"|8"
+!u1 e"" b"'" b"[ .-/]" e"[(, ]" r5
+!u1 e"" b"'" b"[ .-/]" b"[(, ]" r3 p" "
+#+#
+
+
+#-q   OpNr
+#t{ "|8OP" }
+#u1 x"*1" e"." 
+#u1 e" " F"0123456789" p" "
+#+#
+
+       PrimÑrschlÅssel : IdNummern (evtl. lokal anpassen)
+#-@
+#9DF+‹ e0
+#hi +-
+#9DG +- s =s1
+#9DG +- l =s2
+#9DG +-
+!09 +# e"=" F" " p"|9"    wenn #09, dann diese als PrimÑrschl.
+
+!00 +# e"=" e"" i4,z i5,z b1 p"|9" e"=" e""
+#4n +#4nA e0
+#2n +#4nA e0
+#6n +#4nA e0
+!00 +# p"|9" e"=" e""
+  #90 +# y0 p"|9S"    Signatur als Ersatz, wenn keine #00         deaktiviert 96-08-21; flip
+!3n +# I4,s e" " y2 "|9C"    #3n Notation in Reg.9 eintragen
+#+-
+#4nA
+!00 p"|:"
+#4n +# y0 p"=|2"    ErsetzungsschlÅssel
+#6n +# y0 p"=|2"    ErsetzungsschlÅssel
+#2n +#2n1 e0
+#+#   $$950510 vorher #+-
+
+#2n1
+#t{ "=|w" }
+ #2n +# y0 u c": "
+#2n +# y0 c": "
+#52 +#2n y0 P": "
+#40 y0 P": "
+ #2n u y0           fÅr EST  V14
+#2n y0           fÅr EST  V14
+#+#
+
+#-X    aLFA-Eintragung
+#90 u p"|;"    Reg.11: user,datum
+#90 D p","
+#+#
+
+
+#-?      #09 Verkn nach oben , #00 als PrimÑrschl.
+!00 p"|9" e"=" e""
+#+#
+
+ Logik umgedreht, #09 als PrimÑrschl.:
+ #-?      #09 Verkn nach oben
+ !u1 e"=" F" " p"|9"
+ #+#
+
+    Restriktionen:
+    1    u,c  aus #90
+    23   xx   Sachgr. aus #30m
+    45   tt   Tonart dx oder mx
+#-/
+#hi +-           fÅr BÑnde nichts machen
+#t{ "|/" }
+!90 +#30m e1 
+!52 +#30m p"s" e1   stammsatz
+#t{ "0" }  
+!30m +#30t e2
+#t{ "00" }
+!30t b"-" e1
+!30t +# e"-" e1
+#t{ "00" }
+#+#
+
+
+#-0      Kurzeintragung fÅr .STL-Datei zusammensetzen
+#hi +-           fÅr BÑnde nichts machen
+
+   Vorbereitungen fuer andere Sachen
+#nr dk1 ds1 ds2 dti e0    Hilfsvar. lîschen
+#83 e" ; " ak1 e0      nur nebenbei:
+#832 e" ; " p" " Ak1 e0          Vorbereitung der #83er: bei " ; " abschneiden
+#83a e" ; " p" " Ak1 e0
+#nr dty dtz p"|3" e2 aty atz e0    Vorbesetzung
+   wenn Zss.Stichwîrter in ein anderes Reg. sollen: Ñndern!
+#00 i4,z p"|3" e2 dty dtz aty atz   Zeitschrift: #uty="|3"
+#00 i4,z p"|3" e2 dtz atz   Zeitschrift: #uty="|3"
+#00 I4,z p"|3" e2 dty aty        sonst:       "|3"
+       #utz nur bei Zeitschr. besetzt
+#t{ "|0" }    hier gehts erst los
+!52 e15 P": "
+#20 u =ti              Alle Titel in #uti zusammenbinden
+#22 u B": " p" " Ati
+#22r p" " Ati
+#23 ++ u p" " m" " Ati
+#24 ++ u p" " m" " Ati
+#26 ++ u p" " m" " Ati
+#28 u p" " Ati
+#81f u p" " Ati
+
+#2n y0 "     "
+#52 +#22 e0     MUSIK
+
+#20 +#40 e" : " U f'"' y0 e55
+#19 +#40 e" : " U f'"' y0 e55
+#18 +#40 e" : " U f'"' y0 e55
+#21 +#40 e" : " U f'"' y0 e55
+#84 e" : " e" / " y0 e55
+#84 +#76a b" / " { &47 } u y0 "/" e11
+#84 +#76a e0
+#3n +# y0 i4,b b" " e55 P"   [BK-Stammsatz"
+#3n +#40 b" " U y0
+#4n +# y0 "     "
+#6n +# y0 "     "
+#8n +# U y0 "     "
+#3t +# y0 "     "
+
+  ***************** aLF : .STL EintrÑge *******
+#udd ddd e0       #udd lîschen, wenn vorh.
+   Es ist ein Benutzersatz:
+#9B n y0
+#9B +# s y0 ", "
+   ein Expl.satz
+#9DG L P"'"                   Sigel'
+#9DG +#9DX l y0 P", "         Standort
+#9DG s x">10000" e4 P"-"
+#9DG +#9DX s x">10000" b4 e4 P", "
+#9DG s y0 P", "               Signatur
+#9DX
+#9DG +# H p" : "               : Bestand
+#9DG +#9DG B y0 P"  "           Bandnummer
+#9DF +#9DG b"+" B"=" y0 P"  "    desgl., aber von #9DF
+#00 b"+" B"=" y0 P"  "           desgl., aber von #00
+#9DG e y0 P".Ex."             ExplNr.Ex.
+#9DG E y0 p" (" P")"            Aufl.
+#9DH V y0 p{ "...vorgemerkt bis " } =dd
+#9DH W y0 p{ "...abholbereit bis " } =dd
+#9DH R y0 p{ "...ausgeliehen bis " } =dd
+#udd b4 e2 f"0" P"."     Datum umdrehen
+#udd b2 e2 f"0" P"."
+#udd e2
+#9DG v c"~p" p{ " PrÑsenz!" } e0
+  3stell. Schema:  i5 statt i4
+#9DG +# i4,f y0 p"..Fernleihe!" e"!"
+#9DG +# i4,b y0 p"..Buchbinder!" e"!"
+#9DG +# i4,a y0 p"..Ausstellung!" e"!"
+#9DG +# i4,x y0 p"..Fahndung!" e"!"
+#9DG +# i4,v y0 p"..Verlust!" e"!"
+#9DG +# e0
+#9A +# N    Systemsatz
+  ************ Ende aLF ***********************
+  fuer Musik: besondere Aufbereitung wg Nummern
+#22 e0
+#nr dtu e0
+#22 U y0 e" : " e" <" B": " e"[0123456789]" f" (<." F" " Atu 
+#22 e"" ,"_-__" x"*1" x">0" e"." r4,  Atu
+#22 u u[] e" : " B": " e"" y0 b"[0123456789]" f" 0123456789(." F" " p" " Atu 
+#utu +#52 U y0 f'"' F'"' e55
+ #22 +#52 e" : " B": " e"" U f'"' y0 e55   MUSIK: EST+Komponist
+
+#20 U y0 e" : " e" <" B": " e"[0123456789]" f" (<." F" " Atu
+#20 e"" e" : " B": " x"*1" x">0" e"." r4,  Atu
+#20 u u[] e" : " e"" y0 b"[0123456789]" f" 0123456789(." F" " p" " Atu
+#utu +#52 U y0 f'"' F'"' e55
+
+#52 +#76a e0
+
+  Åbriggebliebene SÑtze kriegen "xx"
+#t{ "xx" }
+#40 +#76a { &47 } u y0 "/" e11
+#41 +#76a { &47 } u y0 "/" e11   wenn kein Verf., dann Hrsg. oder Mitarb.
+#42 { &47 } u y0 "/" e11
+#76a +#00 { &60 } x"*1" e4
+#76 { &60 } x"*1" e4
+#00 i4,z { &60 } "ZTS" e3
+#90 I4, { &66 } y0
+#t{ "                            " }
+#+#
+
+#-A    ISBN  
+!u1 e11 p"|9i"
+#+#
+
+#-Y      Zugangsnummer und Erfass.Datum
+#9A +# e0
+#ch +- i2,0         #90 wird anderswo gemacht
+#ch +#39A i2,A e0      #9A
+#ch +#39D i2,D i3,G e0      #9DG auch
+!ch +#30y i1,7 g y2 p"|6E "    #74
+#ch +#39S i2,s e0   #9s : allg. Verweisungen
+#ch +#99n i2,9 i3,n e0    Erfass.Datum #99n
+#ch +#99e i2,9 i3,e e0    Korrektur-Datum #99e
+#ch +- I2,1         nur #91 bleibt Åbrig
+#u1 f" " e"[ /.-']" p"|9Z"    erster Teil
+#u1 f" " b"[ /.-']" e"[/ (-.]" r6,0 p"."      zweiter Teil, 6stellig mit fÅhrenden Nullen
+#u1 f" " b"[ /.-']" b"[/ (-.]" r3,0 p"."      dritter Teil, 3stellig mit fÅhrenden Nullen
+#+#
+
+#39D    Signatur aus #9DG
+!ch s e"-" x">10000" e4 p"|8"         BS-Signaturen
+!ch +# s e"-" x">10000" b4 e3 p"-"
+!ch s e"(" e"[ -]" p"|8"
+!ch s b"[- ]" e"(" r4,0 p"-"
+#+#
+
+#39A
+!9A N e54 "|;"
+#9A L e" " " -> SYSA"
+#+#
+
+#39S      #9s wird hier verarbeitet
+#ch +#39s i3,a e0         #9sa siehe auch
+#u1 y0 f" "     unverÑndert eintragen
+#+#
+#39s
+#u1 y0 e"->" f" " F" "
+#u1 y0 b"->" f" " p" s.a. -> "
+#+#
+
+         Erfass.Datum in |9Dn
+#99n +- i4,            nichts, wenn nur operator  drin steht
+#99n e"" e8 p"|9Dn "     e14, wenn Uhrzeit auch gewÅnscht
+#+#
+
+         Korrektur-Datum in |9De
+#99e +- i4,            nichts, wenn nur operator  drin steht
+#99e e"" e8 p"|9De "     e14, wenn Uhrzeit auch gewÅnscht
+#+#
+
+
+#-B   hier beginnt die Bearbeitung fÅr die #4. und #5.-Kategorien
+#ch +#4n1 i2,n e0          #4n.
+#2n +-   nichts bei #2n
+#t{ "|1" }
+!u1 u u[] u<> f" " e" =" e66     Kopfform endet bei " = " , 60 Zeichen,
+!ch +#59f i1,5 i2,9 e0      wenn #59: Person als zusÑtzl. Eintr.
+#2n y0 p" EST" e4      EST-Stammsatz
+
+!u1 f" " e" " p{ 8 "|3" }
+
+#+#                      d.h. z.B. #40 Vorlageform = Ansetzungsform !
+
+#-F   Sachtitelwîrter hinter Bindestrich
+#uty
+!u1 e"" f"+- /(<)" F">?" e" "    nur bis zum nÑchsten Leerzeichen
+ #30a e"[ ]" p":"            Sachgruppe dahinter setzen  (CIS-Konzept)
+#+#
+
+#-V   Verteiler fÅr die #7-Kategorien
+#u1 +#39N i2,5 e0
+#u1 +#39N i2,4 e0          Ersch.Ort
+#u1 +#39J i2,6 I3,  e0     Ersch.Jahr
+#u1 +#39· i2,0 e0
+#+-
+
+#39N        Verlag:Jahr   (bzw. auch Ort:Jahr, falls gewÅnscht)
+#t{ "|6" }
+#u1 i3,a p"A " e2    bolero: Aufnahme-Ort
+#u1 i3,c p"C " e2            Entstehungsort
+#u1 i3,e p"E " e2            ErstauffÅhrungsort
+#u1 i3,l p"L " e2            AuffÅhrungstÑtte (lokal)
+
+!u1 u B"Der " B"The " e"" f"([" e"[,;[/<(]" e"u." e" a" F" "
+
+!30y +# e4 p","
+!76 +# x"*1" e4 p","
+!76 +# x"*1" e4 p","
+#mv +-         wenn mehrbd und kein Jahr in HA, dann hier Abbruch
+#+#            (denn es entstehen Eintragungen aus den BandauffÅhrungen!)
+
+
+#39J             bolero:
+#t{ "|6" }
+#u1 i3,a "A " e2     Aufnahmejahr
+#u1 i3,c "C " e2     Entstehungsjahr
+#u1 i3,e "E " e2     ErstauffÅhungsjahr
+!u1 x"*1" e"."       Erscheinungsjahr (Normalfall)
+#+#
+
+#39·
+    Quellenangaben nur wenn Stammsatz-Referenz  (#70 _, #70c, #70i, #70s, #70z)
+!ch +#39‚ i4,_ e" " y2 p"|5_"
+#ch +#39‚ i3,i e" " y2 e8 p"|5_"    issn
+!ch +#39‚ i3,c e" " y2 e5 p"|5_"    coden
+!ch +#39‚ i3,s y2 p"|5S "   signatur
+!ch +#39‚ i3,z e";" y2 p"|5Z "   zdb-nummer
+!ch +#39‚ i3,  e60 p"|5"   sonst der titel
+#+-    sonst nichts  (#702, #704 ...)
+
+#39‚
+#ch +#704 b"(1" p"(" e")" P")"      #70 Title ; Vol(Year)Nr,Page
+                             alternative format:
+#76 p" (" P")"                #76 Year  #70 Title  #704 Vol  #706 Nr  #708 Pg
+#704 r3 p" "    Band
+#706 +# r4 p","    Heft
+
+#ch b";" f" " e"(" r3 p" "   Band
+#ch b"(1???)" e"," r3 p","   Heft
+#+#
+
+#-L   Verteiler fÅr die #8-Kategorien (ausser #87) und #10
+#ch +#89x i2,9 e0        #89       pica  $$
+#ch +- i2,5 e0        #85 wird bei #-I gemacht
+
+#ch +#39K i2,3 e0        #83
+#ch +#39q i2,4 e0        #84
+#ch +#39H i2,1 i3,9 e0   #819
+#ch +#398 i2,n e0        #8n
+#ch +#39ü i2,8 e0        #88.
+#ch +#89x i2,7 i3,m "|9M " e4
+  #ch +#89x i2,9 i3,m "|9M " e4   $$
+#+-
+
+#89x   pica
+#u1 +# i3,D "|9DB"   DB-Nr
+#u1 +# i3,B "|9B"    BNB-NR
+#u1 +# i3,L "|9L"    LC-Nr
+#u1 +# i3,Z "|9Z"    ZDB-Nr
+#u1 +# i3,G "|9G"    GKD-Nr
+#ch +I i3,o e0       #89o Opusnummer
+  #u1 +# i3,m          #87m ISMN   $$
+#u1 +# i2,9 i3,m "|9M "    #87m Label-Nr
+!u1 e"[=]" "|9_"     Sonstige IdNummern, z.B. ISMN
+#+#
+
+    Serien: (#85)
+#-S
+!u1 +#98t e" ; " c".." e0      Pruefe: kommt "..." vor? dann gehe nach -t
+  !ch +#98u i4,_ e" ;" y2 p"|5_"      Kuerzel statt Serientitel
+!u1 +#98u u e" ;" e" =p " e61 p"|5"    sonst nimm den Titel (bis " ; " )
+
+#98t         wenn "...", dann #85 aus Hauptaufnahme nehmen  (!^85 )
+
+  !^85 +#98u i4,_ e" ;" p"|5_"   pre-V14
+!^85 u e" ; " e" =p " e61 p"|5"
+
+#98u
+#u1 +- b" ; " c".." e0         wenn "..." statt Zaehlung, dann hier schluss
+#u1 +#98v b" ; " B" = " e" " e"/" e"(" e" : " e"," B"." r5 p" ;"
+
+#76 x"*1" e4 p" ; "       Jahr, falls keine Zaehlung
+#98v
+#u1 +# b" ; " B" = " b"/" e" : " r3 p"/"    mehrteilige Zaehlungen (nn/mm)
+#u1 +# b" ; " B" = " b"," e" : " r3 p"/"    mehrteilige Zaehlungen (nn,mm)
+#u1 b" ; " B" = " b" " e" : " r3 p"/"    mehrteilige Zaehlungen (nn mm)
+#+#
+#-I       Opusnummer
+#t{ "|3" }
+#u1 x"*1" e"." P{ 8 }
+#-i
+#t{ "|3" }
+#u1 +#89O f" " b" " x"*1" e"."            Nur Nummer, z.B. o63
+!u1 e"[.,; ]" 
+!u1 f" 0123456879" e";"
+#+#
+#89O
+#t{ 8 "|3" }
+!u1 +# e" " i4,K P"v"
+!u1 e" "
+#+#
+
+#39g             geogr. Code + geogr. Schlagwort
+!u1 F"; " p30
+!31g e";" e48 p" "
+!31g +# e";" e58 p" ->|3"    wenn zugl. #31g, dann kein Eintrag
+!31s +# e";" e58 p" "
+!30h +# e" " y0 p" geschichte "
+!31u +# e";" e58 p" "
+     bestimmte Unterschlagw entstehen automatisch:
+#30a +# c"~rt-ge" y0 p" kirchengeschichte" e18
+#30a +# c"~ge" y0 p" geschichte" e11
+#30a +# c"~ggg" y0 p" landeskunde" e12
+#30a +# c"~ggx" y0 p" heimatkunde" e12
+#30a +# c"~gg" y0 p" geographie" e11
+#30a +# c"~plf" y0 p" aussenpolitik" e14
+#30a +# c"~plc" y0 p" innenpolitik" e13
+#30a +# c"~pl" y0 p" politik" e8
+#30a +# c"~gk" y0 p" kultur" e7
+#30a +# c"~nw" y0 p" wirtschaft" e11
+#30a +# c"~rt" y0 p" religion" e9
+!33b +# e";" p" "
+#t{ " <ALLG.>" }     wenn sonst nichts ist
+#+#
+
+#39l           Sprachcode : fÅge SW hinzu
+!u1 e"; " p31
+!31p +#39} e" " F"," p" "
+!31s +#39} e";" p" "
+!31h +#39} e";" p" "
+!31u +# e";" p" "
+!33l +# e";" e" -- " e", " p" "
+!33b +# e";" p" "
+!59 +# e", " p" "
+#0c +# i4,w y0 p" <WîRTERBUCH>" e13
+!30a +# c"~sl-ge" y0 p" literatur / geschichte" e23
+!30a +# c"~-ge" y0 p" geschichte" e11
+!30a +# c"~-pb" y0 p" unterricht" e11
+#t{ " <ALLG.>" }
+#+#
+
+#39}
+!31u e";" p" / "
+#+#
+
+#39z        Zeitcode + Hist Schlagwort
+#u1 F"; " p33
+!31h +# e";" p" "
+!31g +# e";" p" "           Geo-Schlagw., wenn es exist.
+!31s +# e";" p" "           sonst Sachschlagw.
+!31u +# e"; " p" "            sonst USW
+!33l +# e";" e" -- " p" "
+!33b +# e";" p" "
+#30g +# y0 e" " p" <" P">"          sonst Geogr. Code dahinter
+#t{ " <ALLG.>" }     wenn nichts anderes geht
+#+#
+
+#-C    #4. und #5.-Verweisungen
+#ch +- i2,n i3,z
+#ch +- i2,n i3,d     #4nd und #4nz ausschliessen
+!u1 +#39Ê e" =" u u[] u<> F" " e38 p"|1"     Kopfform endet beim nÑchsten " = "
+#+-
+#39Ê
+!ch u u[] u<> e" = " e68 p" -> "
+#+#                      d.h. z.B. #40 Vorlageform = Ansetzungsform !
+
+#-c     Verweisung auf Doppelnamen
+#ch +- i2,n i3,z     #4nz ausschliessen
+#ch +#4nT i2,n i3,d e0
+#ch +#4nT i2,n i3,o e0
+!u1 +#39] e";" u u[] u<> e", " e" =" b"-" f" " F" " p"|1"       nur wenn "-" vorkommt, geht's weiter!
+#+-
+#39]
+!u1 b", " p", " u u[] u<> e";" e" =" F" "
+!u1 e"-" p" " P"-"
+!u1 u u[] u<> e";" e30 e" =" p" -> "
+#+#
+
+#4nT    Sterbeort/-jahr
+!u1 +#4n b" - " y2 p"|6S "
+#u1 +- b"-" x"==0" e0
+#u1 b"-" e4 p"|6S "
+#4n y0 "  "
+#+#
+
+#39I
+!u1 +#39t e" ; " c".." e0      PrÅfe: kommt "..." vor? dann gehe nach -t
+!ch +#39u i4,_ e" ;" y2 p"|5_"      KÅrzel statt Serientitel
+!u1 +#39u u e" ; " e" =p " e61 p"|5"    sonst nimm den Titel (bis " ; " )
+
+#39t         wenn "...", dann #85 aus Hauptaufnahme nehmen  (!^85 )
+
+!^85 +#39u i4,_ e" ;" p"|5_"
+!^85 u e" ; " e" =p " e61 p"|5"
+
+#39u
+#u1 +- b" ; " c".." e0         wenn "..." statt ZÑhlung, dann hier schluss
+#u1 +#39v b" ; " B" = " e" " e"/" e"(" e" : " e"," B"." r5 p" ;"
+
+#76 x"*1" e4 p" ; "       Jahr, falls keine ZÑhlung
+#39v
+#u1 +# b" ; " B" = " b"/" e" : " r3 p"/"    mehrteilige ZÑhlungen (nn/mm)
+#u1 +# b" ; " B" = " b"," e" : " r3 p"/"    mehrteilige ZÑhlungen (nn,mm)
+#u1 b" ; " B" = " b" " e" : " r3 p"/"    mehrteilige ZÑhlungen (nn mm)
+#+#
+
+#39H    Hochschulschrift
+!u1 e":" P"," y2 p"D "
+!u1 b":"
+!40 u e25 e" =" p" -> "
+#+#
+
+
+#39K                Kongresstitel -> Titelregister
+#u1 +- i4,. i5,.                wenn #83 ... ; xxx, dann nichts ausgeben
+#u1 +- i4,;                     wenn #83 ; xxx, dann nichts ausgeben
+#t{ "|4" }
+!u1 e" ; " u u[] f" (<" e62
+#u1 x"*1" p", " e6
+#+#                            Beginn hinter " ; " und ". "
+
+#-K
+#t{ "|4K " }
+!u1 b" (" e")"
+!u1 +#20 b" : " e4 p", "     Jahr, wenn in #83 genannt
+#76 x"*1" p", " e6
+!20 u e" : " e58 p" -> "
+#+#
+
+
+#39q
+!ch i4,_ b"_" e";" y2 p"|9" P"*"
+#+#
+
+
+#-T         Person: Titel
+!u1 +#39ñ c": " e0      Person kommt vor
+#+-     Eintrag in Index 4 ist schon unter #-£ gemacht
+
+
+#39ñ
+!u1 e": " y2 f" " P" / "         kommt in Index 1
+!u1 b": "
+#+#
+
+
+
+#-N     Gesamt-Verteiler fÅr #3..
+        Sprungmarken +#xyz gehen schneller als #+M
+#ch +#391 i2,1 e0         #31.
+#ch +#39m i2,2 e0         #32.
+#ch +#393 i2,3 I3,0 I3,1 I3,2 I3,4 I3,5 e0         #33.
+                         aber SW-Ketten auslassen (#330, #331..)
+#ch +#39A i2,n i3,a e0    #3na
+#ch +#39A i2,n i3,c e0    #3nc
+#ch +#39W i2,n i3,r e0    #3nr
+#ch +#39G i2,n i3,g e0    #3ng
+#ch +#39& i2,n i3,  e0    #3n
+#ch +#39U i2,q i3,l e0    #3ql
+#ch +#39V i2,q i3,d e0    #3qd
+#ch +#39B i2,q i3,b e0    #3qb
+#ch +#39T i2,t e0         #3t
+#ch +#39T i2,u e0         #3u
+#+-   andere kriegen hier nichts, #30. wurde anderswo gemacht
+
+#391 e0      Schlagwort-Eintragung
+#ch +#39/ i3,p e0
+#ch +#39Ç i3,h e0
+#ch +#39† i3,g e0
+#ch +#39£ i3,t e0
+#ch +#39= i3,k e0
+#i3,u +-      kein Eintrag fÅr Unterschlw!!
+   und jetzt das Sachschlagwort:  (mit "!" kînnte IdNr dranhÑngen)
+#uty
+!u1 u e"[:_]" f" /(<)+-" F"* " e69       die Zeichen " /()<+-" am Anfang wegnehmen
+!31u +# e";" e60 p" / "         Unterschlagwort dranhÑngen
+#30h +# y0 p" / geschichte" e13
+#30a +# c"~-cs" y0 p" / edv-anwendung" e16
+#30a +# c"~-pb" y0 p" / unterricht" e13
+#30a +# c"~-ge" y0 p" / geschichte" e13
+#30a +# c"~-pl" y0 p" / politik" e10
+#30a +# c"~-ph" y0 p" / theorie" e10
+#30a +# c"~-wh" y0 p" / studium" e10
+#30a +# c"~-re" y0 p" / recht" e8
+#30a +# c"~-ps" y0 p" / psychologie" e14
+#t{ " *" }                * anhÑngen, wenn kein USchlW und kein Aspekt
+#+#
+
+#393 e0
+
+#uty
+!u1 u f" /(<)+-" F"* " e69        die Zeichen " /()<+-" am Anfang wegnehmen
+#t{ " *" }                * anhÑngen, wenn kein USchlW
+#+#
+
+#39/         Personenschlagw. -> Index 1
+!u1 f"+- /(<)" F"* " p"|1"
+!31s +# e";" p" / "             sonst Sachschlw.
+!31u +# e";" p" / "           sonst Unterschlagwort dranhÑngen
+ #0c p" / "    Formschl.
+#0c +# c"bm" y0 p" / biographie" e13
+#0c +# c"bl" y0 p" / bibliographie" e16
+#0c +# c"??" y0 p" / briefe" e9
+#0c +# c"b6" y0 p" / bildband" e11
+#t{ " *" }                * anhÑngen, wenn kein USchlW
+#+#
+
+#39†         Geogr. Schlw. -> Index 3
+#uty
+!u1 u f"+- /(<)" F"* " e69
+!31s +# e";" e58 p" / "            SachSW dranhÑngen
+!31u +# e";" e58 p" / "            Unterschlagwort dranhÑngen
+!30h +# e" " y0 p" / geschichte "
+#30a +# c"~ge" y0 p" / geschichte" e13
+#30a +# c"~ggg" y0 p" / landeskunde" e14
+#30a +# c"~ggx" y0 p" / heimatkunde" e14
+#30a +# c"~gg" y0 p" / geographie" e13
+#t{ " <ALLG.>" }     wenn sonst nichts ist
+#t{ " *" }                * anhÑngen, wenn kein USchlW
+#+#
+
+#39£         Werktitel als SW
+!u1 B": " u f" " =wt,0 e0
+!u1 B": " u f" " p"|4"
+#t{ " *" }
+#+#
+
+#39Ç         Histor. Schlw. -> Index 3
+#uty
+!u1 u f"+- /(<)" F"* " e69
+#30h +# e";" e" " p" -> |7H "     Zeitcode dranhÑngen fÅr Referenz
+#t{ " *" }                * anhÑngen, wenn kein Zeitcode
+#+#
+
+#39=        Kîrp.Schlw -> Index 2
+!u1 f"+- /(<)" F"* " e58 p"|1"    ???
+!31u +# e";" e58 p" / "            Unterschlagwort dranhÑngen
+#t{ " *" }                * anhÑngen, wenn kein USchlW
+#+#
+
+#39m             LC-Klass
+#ch +#39n i3,B e0
+#ch +- i3,Z e0   Zeitschr.Kl. nicht berÅcks.
+!u1 y0 e20 f" " e" " p"|7î "
+#+#
+
+#39n               BNB-Dewey
+#u1 y0 e20 f" " p"|7Ñ "
+#+#
+
+
+#-D   Kîrperschaften (#6.) werden so behandelt:
+#u1 +- i2,8 e0     #68 nicht!
+#ch +#6n5 i2,n e0    #6n
+#ch +#6nu i2,u e0    #6u
+!u1 +# u I4,_ e"_" p"|1"    (auch hier evtl. Ansetzungsform hinter " = ") ???
+!u1 u p"|1"     wenn der Name mit '_' anfÑngt  ???
+#+#
+
+#-ö   Verweisung vom untergeordneten Teil der Kîrp
+#ch +- i2,8 e0    nicht fÅr #68
+#u1 +#39ö c" / " e0
+#+-    nur wenn " / " vorkommt, sonst nicht
+#39ö
+!u1 b" / " u e"_" e45 p"|1"    ???
+!u1 e" / " u e"_" e25 p" -> "
+#+#
+
+#210                 #21
+!40 e" =" e48           Verf.Name : Sammlungsvermerk
+#u1 e20 p" - "
+#+#
+
+#-H                #21 : zusÑtzl. Eintr. unter "sammlung -> name"
+#52 +#22 e0    nur bei MUSIK
+#u1 +#40 i2,1 e0
+#+-
+!40 +# e" =" y2 p"W-> "        Sammlungen mit #21
+
+!22 +# i4,_ p"|2"   nur fÅr INDEX
+
+!22 +#u1 c": " "|2" e": " P": "   nur wenn ein Name vorkommt
+!52 +#u1 u e" =" e"; " "|2" P": "
+!40 u e" =" "|2" P": "
+#u1 >E e0
+ !u1 u u[] e" : " B": " e"[0123456789]" f" (<." F" " 
+ #u1 e"" ,"_-__" x"*1" x">0" e"." r4,  #zz 0
+ !u1 u u[] e" : " B": " e"" b"[0123456789]" f" 0123456789(." F" " p" "
+#+#
+
+#-b   Festschrift
+!u1 u e" =" e58 p"|1F-> " 
+#+#
+
+#59f
+ #0c p" / "    Formschl. anhÑngen
+#0c +# c"bm" y0 p" / biographie" e13
+#0c +# c"ww" y0 p" / werkverzeichnis" e18
+#0c +# c"bl" y0 p" / bibliographie" e16
+#0c +# c"bb" y0 p" / briefe" e9
+#0c +# c"b6" y0 p" / bildband" e11
+#0c +# c"ka" y0 p" / katalog" e11
+#t{ " / festschrift" }
+#+#
+
+#-R       |7X Notation + Haupttext
+            X = G   Geogr.
+                S   Sprache
+ !3n e" " e"˙" y2 dsw asw
+!3n b" " y2 dsw asw
+!3n +#3nD e" " i4,g b1 y2 "|7G "
+!3n +#3nD e" " i4,l b1 y2 "|7S "
+!3n +#3nD e" " i4,h b1 y2 "|7H "
+!3n +#3nD e" " i4,c b1 y2 "|7"
+!3n +#3nB e" " y0 i4,b b2 "|7"
+!3n +#3nD e" " i4,a y0 b2 "|8" F"0" #zz 38
+!3n +- i4,s i5,g   geogr SW: keine Sachgr.
+#3n +â i4,s i5,t e0   Personen-Titel-satz
+!3n +- i4,s i6,  e0   SW-Satz ohne Sachgr.
+!3n i4,s b2 e" " e"˙" p"|7"   SW-Satz!
+!3n +# u i4,s b" " p"  "    SW-Satz!
+#3n +Å y0 i4,d e" " e":" b1 u^^ ubs p"|7DK" #zz 0
+
+#3nB   nur fÅr BK
+#3n +#3nC y0 i5,0 b" " p"  *" e3
+#3n +#3nC y0 i5,1 b" " p"    *" e5
+#3n +#3nC y0 i5,2 b" " p"      *" e7
+#3n +#3nC y0 i5,3 b" " p"        *" e9 
+#+-
+#3nC
+#3nt +# y0
+#3n +# b" " y0
+#+#
+
+#3nD
+#3nt +# u y0 B": " p"  *"
+#u1 u b" " y0 p" *"
+#+#
+
+#-â
+#3n +#3n c": " e0     nur, wenn auch eine Person genannt ist
+#+-
+!3n b" " e":" u
+!3n b": " u y2 p" / " P" #"
+#+#
+
+#-U   weitere Notationen bei SW-StammsÑtzen
+#3n +- i4,a         nicht fÅr Typ a = Aufstellung
+#3n +#99 c"˙" e0    nur weitermachen, wenn in #3n wirklich mehr als 1 Sachgr.
+#+-
+#99 e0
+#usw +- i4,s i5,g   geogr stammsatz: keine Sachgr.
+#usw +â i4,s i5,t e0
+!u1 e" " p"|7"   SW-Satz!
+!3n +# u b" " p"  "    SW-Satz!
+#+#
+
+#-Å
+#3n y0 b":" e" " p" :"
+#3nt +# y0 { &28 }
+#3n y0 b" " { &28 }
+#+#
+
+#-x         Hilfseintrag fÅr SachgruppenÅbersicht, nur Typ a und c
+!3n i4,c b1 e" " y0 p"|7Å "
+#3n i4,c y0 b" " { &13 }
+!3n +# i4,c b1 e" " y0 { &72 "->" }
+!3n i4,a y0 b2 e" " y0 p"|8Å "
+#3n i4,a y0 b" " { &13 }
+!3n +# i4,a y0 b2 e" " { &72 "->" }
+#+#
+
+
+#39&             Eintrag unter Hauptbegriff im Index 3, Referenz nach 7
+#u1 +#39y b" " e0
+#+-      es gibt keinen Haupttext! (bei Aufstell.Syst.: Formalgruppe)
+#39y              |3Haupttext ->|7 Notation
+#3n +#39Â I4,s e0   KEIN SW-Satz
+   SW-Satz
+ #+-   fÅr OPAC aktivieren: Eintrag fÅr Stammform wird nicht benîtigt
+!3n +# u i5,p b" " y2 P" #"
+!3n +# u i5,k b" " y2 p"|1" P" #"       ???
+!3n +# u i5,c b" " y2 p"|1" P" #"       ???
+!3n +# u i5,t b" " B": " y2 p"|4" P" #"
+!3n +# u i5,s b" " y2 p"|3" P" #"
+!3n +# u i5,g b" " y2 p"|3" P" #"
+#+-
+    Kein SW, sonstiger Stammsatz, Verweise Reg.3 -> |7 oder |8
+#39Â
+!u1 b" " e60 p"|3"
+#3n +# i4,d y0 p" !" e2   DK-Satz
+#t{ " -> |" }
+#3n i4,g p"7G " e3
+#3n i4,l p"7S " e3
+#3n i4,h p"7H " e3
+#3n +# y0 i4,b b2 e" " "7" 
+!3n i4,c p"7" e1
+!3n +# i4,a e" " b2 "8" F"0"         Lesesaal-Syst
+!3n b1 e" "
+#+#
+
+
+#39A
+#3n +#39ö i4,s e0   wenn SW-Satz
+!u1 f" " p"|3"
+#3n +# i4,d y0 p" !" e2
+
+#t{ " -> |" }
+#3n +#39î e" " i4,a e0
+!3n +# y0 e" " i4,g b1 p"7G "
+!3n +# y0 e" " i4,l b1 p"7S "
+!3n +# y0 e" " i4,h b1 p"7H "
+#3n +# y0 e" " i4,b b2 p"7"     BK
+!3n b1 p"7" e" "
+#+#
+
+#39G
+ #3n +- i5,p
+ #3n +- i5,c   Personen, Kîrp. u. Titel nicht unter Geocode sortieren
+#3n +- i5,t
+ #3n +- i5,k
+!u1 y2 p"|6G "
+!3n b" " p"  "
+#+#
+
+#39ö       SW-Synon-Verw.
+#3n i5,k p"|1" e2    ???
+#3n i5,c p"|1" e2    ???
+#3n i5,s p"|3" e2
+#3n i5,g p"|3" e2
+#3n i5,t =wt+- p"|4" e2    verhindere Verweisungen auf sich selbst
+!u1 f" " B": " u e45
+#3n +#3n& i5,k " -> K " e6
+#3n +#3n& i5,c " -> K " e6
+#t{ " -> " }
+#3n&
+!3n +# b" " b": " u p"|4"
+!3n b" " u
+#+#
+
+#39î
+!3n e" " b2 p"8" F"0"
+#+#
+
+#-W          fÅr SWD
+#3n +- I4,s       nur ausfÅhren fÅr Sach-SW-StammsÑtze
+#3n +- i5,p
+#3n +- i5,k
+#3n +- i5,c
+#3n +- i5,g
+#3n +- i5,t
+!u1 y2 =sw+- e0    wenn vorher schon eingetragen, ignorieren
+
+#39W e0        Referenzen
+#3n +#39Ë i4,s e0     wenn SW-Satz
+#3n +#39) i4,b e0     BK-Stammsatz-Verweisung
+!u1 u f" " e40 p"|3"    anderer Stammsatz 
+#t{ " SIEHE AUCH -> " }
+!3n b" " u B": "
+#+#
+
+
+#39)
+#u1 +#39( b"siehe: " =vw    #3nr bei BK enth. "siehe:"
+!u1 +# c")" e0
+!u1 f" " p"|3"
+#+#
+
+#39(
+!u1 f" " e"siehe: " e55 p"|3"
+#uvw y0 p" SIEHE -> |7" e17 dvw
+#+#
+
+#39Ë     erzeuge s.a.-Verw. #3nr -> #3n
+#3n u i5,k p"|?" e2   ???
+#3n u i5,c p"|?" e2   ???
+#3n u i5,s p"|3" e2
+#3n u i5,g p"|3" e2
+#3n u i5,t p"|4" e2
+!u1 B": " u f" <" e40
+#t{ " SIEHE AUCH -> " }
+!3n b" " B": " u
+#+#
+
+
+#8n0    |4Serientitel -> |5 Serientitel
+!u1 u u[] e" : " e48 f" (<." p"|5"
+!8na +# y2 p" -> |_"     KÅrzel
+!8n p" -> "             Titel, wenn kein KÅrzel
+#+#
+
+
+
+#39U e0     korrespondierende Notation LC in |7î
+#u1 e58 f" " e" " p"|7î "
+#u1 y0 f" " b" " p"  "
+#t11
+!3n b1 e" "
+#+#
+
+#39V e0
+#u1 y0 e58 f" " e" " p"|7Ñ "
+#u1 y0 f" " b" " p"  "
+#t11
+!3n b1 e" "
+#+#
+
+#39B e0
+        korrespondierende Notation BK
+!u1 y0 e58 f" " e" " p"|7Å "
+#u1 y0 f" " b" " p"  "
+#t11
+!3n b1 e" "
+#+#
+
+
+#39T            Thesaurus-Hauptbegriff
+#ch +#39Y i3,p e0
+#ch +#39Y i2,u e0
+#ch +#39Z i3,r e0
+#ch +#39é i3,b e0
+#ch +#39é i3,t e0
+#ch +#39ô i3,n e0
+#ch +- i4,y e0       #3ty/#3tz
+#ch +- i4,z e0
+!u1 e59 p"|3"
+#t{ " **" }
+#+#
+
+#39Y           Synonyme
+!u1 e35 f" " p"|3"
+#t{"  USE> " }
+!3t e20
+#+#
+
+
+#39Z            verwandte Begr.
+!u1 e35 f" " p"|3"
+#t{ "  RT> " }
+!3t e20
+#+#
+
+#39é            broader term
+!u1 e35 f" " p"|3"
+#t{ "  NT> " }
+!3t e20
+#+#
+
+#39ô            narrower term
+!u1 e35 f" " p"|3"
+#t{ "  BT> " }
+!3t e20
+#+#
+
+
+#4n1     Namens-Hauptform Person
+#ch +#4n2 i3,a e0
+#ch +#4n3 i3,r e0
+#ch +#4n3 i3,t e0
+#ch +#4n4 i3,p e0
+#ch +#4nD i3,d e"-" p"|6G "    Person: Geburtsjahr
+!ch +#4nD i3,o e" - " y2 p"|6G "                 ort
+#ch +- i3,z e0
+!u1 u u[] "|9"    $$
+#00 +# p" _" y0    relate
+#t{" #" }
+#+#
+
+#4nD
+#4n y0 "  "
+#+#
+
+#4n2    siehe auch Verw Person
+!u1 f" " e35 "|1"
+#t{ " s.a. -> " }
+!4n
+#+#
+
+#4n3    Verw.Form Person
+!u1 f" " e35 "|1"
+#t{ " -> " }
+!4n
+#+#
+
+#4n4             Pseudonym
+!u1 f" " e30 "|1" 
+#t{ " [Pseud.] -> " }
+!4n
+#+#
+
+
+#6n5      Namens-Hauptform Kîrp.
+#ch +#6n6 i3,a e0
+#ch +#6n6 i3,r e0
+#ch +#6n7 i3,p e0
+#ch +#6n7 i3,l e0
+#ch +- i3,d e0    #6nd und #6nz ausschliessen
+#ch +- i3,z e0
+!u1 u e57 p"|9"   $$
+#00 +# p" _" y0
+#t{ " **" }
+#+#
+
+#6n6    Verw.Form Kîrp.
+!u1 u f" " e35 e">" p"|1"   ???
+#t{ " -> " }
+!6n u
+#+#
+
+#6n7    s.a. Verw.Form Kîrp.
+!u1 u f" " e35 e">" p"|1"   ???
+#t{ " s.a. -> " }
+!6n u
+#+#
+
+#398      Serien-Haupttitel
+#u1 +#8nA i3,a e0    #8na  KÅrzel
+#u1 +#8n9 I3,  e0    #8nr
+!u1 e" : " u f"( <" e61 p"|5"
+!8na +# y2 p" _"
+!88 +# e8 y2 p" _"
+!88c +# e5 y2 p" _"
+#+#
+
+#8n9    Verw.Form Serie
+!u1 e" : " u f" " e48 "|5"
+#t{ " -> " }
+!8n u
+#+#
+
+#8nA   KÅrzel   #8na
+!u1 y2 p"|:"
+#8n u y0 p"=|5"
+#+#
+
+#2n0    EST
+#ch +#2nR i3,r e0
+#ch +#2nR i3,u e0
+#ch +- i3,d
+#ch +- i3,z    #2nz und #2nd ausschliessen
+!40 p"|9" e2     $$
+!52 p"|9" e2     $$
+!u1 c": " e": " P": "
+!u1 +#00 c": " >E e0 
+!52 +#2n u p"|9" P": "   $$
+!40 +#2n u p"|9" P": "   $$
+!u1 u f" " p"|9"         $$
+#00 y0 p" _"
+#+#
+
+#2n >E e0
+#00 y0 p" _"
+#+#
+
+#2nR   Verw. auf EST; bei öbersetzung : <Sprache>
+  #2n +#2nR c": " p"|2" e2 
+
+#-·
+#t{ "|4" }
+  #2nR
+!u1 e" : " B": " e" <" u >E e0  $$$
+#t{ " -> " }
+!2n +#2n c": " "|2" e2
+!52 +#2na "|2" P": "
+!2n +#2n c": " e": " u P": "
+!40 "|2" P": "
+#2na
+!2n >E e0
+!u1 b" <" p" <"
+#+#
+
+
+  **** bolero *****      Programme aus ac starten            flip
+                         (Editoren, Grafik-Viewer, Sound...)
+
+#-f   Flips
+#ch i3,1 "|9V " e4   text
+#ch i3,3 "|9T " e4   text
+#ch i3,5 "|9G " e4   grafik
+#ch i3,7 "|9S " e4   sound
+#ch i3,9 "|9E " e4   exe
+!u1 y0
+#+#
+
+
+#-Z    "Komponist: Titel" in Reg.2
+#22 +-    nicht wenn #22 besetzt
+#2n +- c": " e0   oder Name in #2n vorkommt
+!u1 u e" =" y2 "|2" P": "    $$950612
+#20 +# >E e0
+#2n >E e0
+#+#
+
+
+#-é    Satzbezeichnungen
+#u1 +- c":" e0     Zeitangaben nicht!
+ !u1 b": " e"(" t":" F"0123456789 " u y2 p"|3S "   $$
+ !u1 +- v4,: V4,/ e0   keine Zahlen
+!u1 y2 e"" F": " f" " "|3"
+#+#
+
+#-ô    EST-Verweise : name -> verw.titel -> name: est
+!u1 +- i3,  e0     #2n nicht
+#t{ "|2" }
+!2n +#u1 u c": " e": " P": "
+!52 +#u1 u P": "
+!40 u P": "
+!u1 >E e0
+#t{ " -> " }
+!2n +#2n u c": " e": " P": "
+!52 +#2n u P": "
+!40 u p": "
+#2n >E e0 
+#+#
+
+     UP fuer Titelaufbereitung
+#(E
+!cc u u[] e" : " B": " e"[0123456789]" f" (<." F" " 
+#cc e"" e" : " ,"_-__" x"*1" x">0" e"." r4,  #zz 0
+!cc u u[] e" : " B": " e"" b"[0123456789]" f" 0123456789(." F" " p" "
+#)E
+
+
+#39ü        CODEN aus #88c..., fÅr ZITAT.APR nîtig
+           beides wird ohne PrÅfbuchstabe bzw. Ziffer indexiert!
+!ch i3,  e8 y2 p"|5_"      ISSN  #88
+!ch i3,c e5 y2 p"|5_"      CODEN #88c Index 9, in Kleinbuchstaben!
+#8n p"  " u y0    Titel dranhÑngen
+#+#
+
+ **** Abschnitte fÅr die Wandlung der Benutzereingabe ****
+
+#-4    Reg.4  keine Umcodierung
+#u1 +# i4,F i5,  e0
+!u1 u
+#+#
+
+#-7
+#u1 y0
+#+#
+
+#-9
+#u1 y0
+#+#
+
+#9A L e" " "|;SYSA"
+#9A N " " y0
+#+#
+
+#-ﬂ                   223  (wird noch nicht  benutzt)
+#u1 D y0 p"|:N"       Datum, an dem die nÑchste Mahnung fÑllig ist.
+#+#
+
+  **** UPs ***
+
+  Lîschkontrolle:
+#--
+#00 p"|9" P"+"
+#t{ C }
+#00 p"|9" P"*"
+#t{ C }
+#00 p"|:"
+#+#
+
+H   Hilfsabschnitt fÅr Kontrollen
+#u1 =ac e0
+#u1 +1 i4,# =hH e0
+
+#t{ s0 }
+#u1 =hH e0
+#t{ s4 }
+
+#-1
+#u2 +S c"N" e0             Datumsvergleich
+#uhH +A i5,0 i6,0 e0        #00
+#uhH +C i5,9 i6,0 e0        #90
+#uhH +E i5,8 i6,1 i7,m e0   #81m
+#uhH +G i8,_ e0
+#+-
+
+#-A    KÅrzel schon vergeben?
+!uhH +B b4 P"=" |:8 e0
+#+#
+#-B
+#t{ "Diese Kennung existiert schon! " 7 }
+#+#
+
+#-C
+#uhH y0 b4 e"[ .-/]" dsg Asg
+!uhH e"" b4 b"[ .-/]" e"[(,-/ ]" r5 Asg
+!uhH e"" b4 b"[ .-/]" b"[(,-/ ]" e"[(,-/ ]" r3 p"," Asg
+!uhH e"" b4 b"[ .-/]" b"[(,-/ ]" f"0123456789" y2 Asg
+#usg +D |88 
+#+#
+#-D
+#t{ "Diese Signatur wurde schon vergeben" 7 }
+#+#
+
+#-E
+#uhH dsb dzt dts y0 b4 asb
+#-F
+#usb e"" T" " c":" e":" x"*60" x"+zt" =zt
+#usb e"" T" " c":" e":" x"*60" x"+ts" =ts   
+#usb e"" T":" x"+zt" =zt
+#usb +F b"" =sb
+  #uzt    test
+#uzt x"/60" e"." dgt agt
+#uzt x"%60" e"." r2,0 p":" Agt
+#ugt B"ugt" p"#77z" M
+#+#
+
+#-G
+#uhH +# y0 b"_" e"[ ,;:]" P"=" |:8
+#t{ "KÅrzel kommt noch nicht vor" }
+#+#
+
+#-S
+#99e =aa
+#99n +T e"/" e"" x"==#99e" e0
+#+#
+#-T
+#99e =ab
+!nr p"#99e" e4 M    #99e wieder loeschen, wenn Tag derselbe
+#+#
+
+  *************************** Ende aLF *************************
+
+   Zeichenumwandlungen:
+   p = Normaltabelle
+   q = Alternativtabelle  (anzuwenden, wo oben ! statt # steht)
+
+p  2
+q  2
+
+p ™ 1    Nichtsortierzeichen weglassen
+q ™ 1    Nichtsortierzeichen weglassen
+         Zeichenumsetzungen:
+p .63 70  Fragezeichen
+p a/z A          alles in Grossbuchstaben
+p _ 1
+
+p [ 1
+p ] 1
+p Ä C
+p Å "UE"
+p Ç E
+p É A
+p Ñ "AE"
+p Ö A
+p Ü A
+p á C
+p à E
+p â E
+p ä E
+p ã I
+p å I
+p ç I
+p é "AE"
+p è A
+p ê E
+p ë "AE"
+p í "AE"
+p ì O
+p î "OE"
+p ï O
+p ñ U
+p ó U
+p ò Y
+p ô "OE"
+p ö "UE"
+p † A
+p ° I
+p ¢ O
+p £ U
+p § N
+p • N
+p ¶ C
+p ß C
+p ® r
+p © r
+p ™ 1
+p ´ S
+p ¨ S
+p ≠ 1
+p Æ Z
+p Ø Z
+p ∞ I
+p ± "TH"
+p ≤ "TH"
+p ≥ Z
+p ¥ Z
+p µ 1
+p ∂ 1
+p ∑ 1
+p ∏ 1
+p π C
+p ∫ C
+p ª S
+p º S
+p Ω 1
+p æ 1
+p ø U
+p ¿ O
+p ¡ 1
+p ¬ 1
+p √ 1
+p ƒ 1
+p ≈ 1
+p ∆ 1
+p « 1
+p » 1
+p … 1
+p   1
+p À 1
+p Ã 1
+p Õ 1
+p Œ 1
+p œ 1
+p – 1
+p — 1
+p “ 1
+p ” 1
+p ‘ 1
+p ’ 1
+p ÷ 1
+p ◊ 1
+p ÿ 1
+p Ÿ 1
+p ⁄ 1
+p € 1
+p ‹ 1
+p › 1
+p ﬁ 1
+p ﬂ 1
+
+p ‡ "ALPHA"
+p · "SS"
+p Á "GAMMA"
+p Ì "OE"
+p Ú L
+p Û L
+p ¯ 1
+
+q A/Z 97  alles in Kleinbuchstaben (!) umsetzen zum Sortieren (A->a, B->b...)
+
+q ` 1
+q  e
+q Ä c
+q Å "ue"
+q Ç e
+q É a
+q Ñ "ae"
+q Ö a
+q Ü a
+q á c
+q à e
+q â e
+q ä e
+q ã i
+q å i
+q ç i
+q é "ae"
+q è a
+q ê e
+q ë "ae"
+q í "ae"
+q ì o
+q î "oe"
+q ï o
+q ñ u
+q ó u
+q ò y
+q ô "oe"
+q ö "ue"
+q † a
+q ° i
+q ¢ o
+q £ u
+q § n
+q • n
+q ¶ c
+q ß c
+q ® r
+q © r
+q ™ 1
+q ´ s
+q ¨ s
+q ≠ y
+q Æ z
+q Ø z
+q ˛ z
+q ˝ z
+q ˚ z
+q ¸ z
+q Ù n
+q ı n
+q Ó a
+q Ô e
+q  c
+q Ò c
+q ˜ s
+q ∞ i
+q ± "th"
+q ≤ "th"
+q ≥ z
+q ¥ z
+q µ 1
+q ∂ 1
+q ∑ 1
+q ∏ 1
+q π c
+q ∫ c
+q ª s
+q º s
+q Ω 1
+q æ 1
+q ø u
+q ¿ o
+q ¡ 1
+q ¬ 1
+q √ 1
+q ƒ 1
+q ≈ 1
+q ∆ 1
+q « 1
+q » 1
+q … 1
+q   1
+q À 1
+q Ã 1
+q Õ 1
+q Œ 1
+q œ 1
+q – 1
+q — 1
+q “ 1
+q ” 1
+q ‘ 1
+q ’ 1
+q ÷ 1
+q ◊ 1
+q ÿ 1
+q Ÿ 1
+q ⁄ 1
+q € 1
+q ‹ 1
+q › 1
+q ﬁ 1
+q ﬂ 1
+
+q ‡ "alpha"
+q · "ss"
+q Á "gamma"
+q Ì "oe"
+q  c
+q Ò c
+q Ú l
+q Û l
+q Ù n
+q ı n
+q ˆ o
+q ˜ s
+q ¯ 1
+q ˘ s
+q ˚ z
+q ¸ z
+q ˝ z
+q ˛ z
+
+q ˙ 32
+p ˙ 32
+
+
+q [ 1
+q ] 1
+q !// =1    die Zeichen ! bis / werden auf 1 gesetzt, d.h. ausgefiltert
+ q : 1    diese auch
+q / 47
+q ; 1
+q ? 63
+  q _ 1   V14 nicht mehr
+q ^ 1
+q ~ 1
+p ~ 1
+q  1
+p  1
+             DIN 31628-2 Diakritika: alle ausblenden
+
+q  1
+q  1
+q + 43
+
+
+q & "und"
+
+q - -        diese Zeichen sollen bleiben:
+q # #   wg. relate
+q , ,
+         Dann wird noch die Stopwortliste SWL1.APT nachgeladen
+         (sie kînnte anders heissen, aber .APT muss sein!)
+         Sie kînnte auch hier direkt folgen!
+
+  Standard-Stopwortliste
+  SWL1.APT   940613
+
+  Kann fÅr jede Konfiguration benutzt werden: wenn man z.B. fÅr die
+  Konfiguration P.CFG eine braucht, kopiert man sie einfach:
+     copy swl1.apt swl1.ppt
+  und macht dann evtl. einige énderungen und ErgÑnzungen
+
+  Achtung: bei EinfÅgung neuer Wîrter auf richtige alphabetische
+           Reihenfolge (ASCII-Folge) achten und alles klein schreiben!
+
+N         Nichtwort-Liste
++
+-
+/
+:
+ad
+ab
+al
+alle
+als
+am
+an
+and
+as
+at
+auch
+auf
+aus
+az
+bei
+beim
+bis
+by
+ce
+da
+das
+de
+del
+dell
+della
+delle
+dem
+den
+der
+des
+det
+di
+die
+dies
+diese
+diesen
+dieser
+dt
+du
+durch
+ed
+ein
+en
+engl
+es
+est
+et
+etc
+for
+from
+fuer
+how
+i
+if
+ihre
+ihrer
+ii
+iii
+il
+im
+in
+ins
+into
+is
+ist
+it
+its
+la
+las
+le
+les
+lo
+los
+m
+man
+mit
+n
+nach
+nel
+nr
+nur
+o
+och
+oder
+of
+ohne
+on
+or
+ou
+p
+par
+q
+que
+qui
+r
+s
+so
+t
+the
+to
+u
+um
+un
+una
+und
+une
+uno
+usw
+v
+van
+vom
+von
+vor
+w
+was
+wer
+what
+who
+wie
+with
+wo
+you
+z
+zu
+zum
+zur
+N
+
+  ASCII -> ANSI   ein-eindeutige Tabelle (OSTWEST.FON beruecksicht.)
+  Tabelle fuer UNIX und Windows wird per "to" eingebunden!
+  O.APT           951201/971124/980112
+
+       Wenn ALLEGRO.TTF fehlt: !! provis. Ersatz
+
+  Noch frei: 140, 141, 142, 143
+  (144 wird pauschal fuer alle Rahmensymbole verwendet, die in allegro-
+  Daten normalerweise nicht vorkommen. Wer bis zu vier solche Symbole
+  verwendet hat, sollte diese auf 140-143 abbilden!)
+
+  wichtige Steuerzeichen:
+o .014 130
+o .015 160
+o .016 187    Pfeil nach rechts   >>
+o .017 132
+o .018 133
+o .019 134
+o .020 182    Absatzzeichen
+o .021 167    Paragraph
+o .022 135
+o .023 137
+o .024 189
+o .025 139
+o .028 157    Verweisungsstrich !! 
+o .030 165    Dreieck           !! Yen
+o .031 178    Subfield Code = AltGr+2
+  o .036 166    Dollar  kann bleiben
+
+  ASCI ANSI  Bedeutung          Ersatz     Unicode   hex
+o .127 202   e mit hacek        !! ^E      1  27     011B
+o .128 199   C mit cedille                 0 199       C7
+o .129 252   ue                            0 252       FC
+o .130 233  'e                             0 233       E9
+o .131 226  ^a                             0 226       E2
+o .132 228   ae                            0 228       E4
+o .133 224  `a                             0 225       E1
+o .134 229   a mit Ringel                  0 229       E5
+o .135 231   c mit cedille                 0 231       E7
+o .136 234  ^e                             0 234       EA
+o .137 235   e mit Trema                   0 235       EB
+o .138 232  `e                             0 232       E8
+o .139 239   i mit Trema                   0 239       EF
+o .140 238  ^i                             0 238       EE
+o .141 236  `i                             0 236       EC
+o .142 196   Ae                            0 196       C4
+o .143 197   A mit Ringel                  0 197       C5
+o .144 201  'E                             0 201       C9
+o .145 230   ae Ligatur                    0 230       E6
+o .146 198   AE Ligatur                    0 198       C6
+o .147 244   ^o                            0 244       F4
+o .148 246   oe                            0 246       F6
+o .149 242  `o                             0 242       F2
+o .150 251  ^u                             0 251       FB
+o .151 249  `u                             0 249       F9
+o .152 255   y mit trema                   0 255       FF
+o .153 214   Oe                            0 214       D6
+o .154 220   Ue                            0 220       DC
+o .155 162  't                  !!  cent   1 101     0165
+o .156 163   Brit. Pfund                   0 163       A3
+o .157 204   s mit Cedille!!    !! `I      1  95     015F
+o .158 195   u mit Ringel       !!  ~A     1 111     016F
+o .159 221   U mit Ringel       !!  'Y     1 110     016E
+o .160 225  'a                             0 225       E1
+o .161 237  'i                             0 237       ED
+o .162 243  'o                             0 243       F3
+o .163 250  'u                             0 250       FA
+o .164 241  ~n                             0 241       F1
+o .165 209  ~N                             0 209       D1
+o .166 208   C mit hacek        !! -D      1  12     010C
+o .167 240   c mit hacek        !! -d      1  13     010D
+o .168 194   r mit hacek        !! ^A      1  89     0159
+o .169 174   R mit hacek        !! (R)     1  88     0158
+o .170 172   Nichtsortierzeichen             172       AC
+o .171 138   S mit hacek        !!  1/2    1  96     0160
+o .172 154   s mit hacek        !!  1/4    1  97     0161
+o .173 253  'y                               253       FD
+o .174 219   Z mit hacek        !! ^U      1 125     017D
+o .175 190   z mit hacek        !!  3/4    1 126     017E
+o .176 185   tuerk. i           !! Exp1    1  49     0131
+o .177 222   grosses Thorn                   222       DE
+o .178 254   kleines Thorn                   254       FE
+o .179 144   grafik  
+o .180 144   ...
+o .181 180   ' akut ???         !!           180       B4
+o .182 145   ` gravis ???       !!         3   0     0300
+o .183 136   ^ circumflex ???   !!            94       5E
+o .184 149   Punkt uebergesetzt            3   7     0307
+o .185 144   grafik
+o .186 144   ...
+o .187 144   ...
+o .188 144   ...
+o .189 168   Trema/diaresis  ???             168       A8   -> 0308 !
+o .190 166   Halbkr.ueberg/breve!! Exp2    3   6     0306
+o .191 144   grafik
+o .192 144   ...
+o .193 144   ...
+o .194 144   ...  
+o .195 144   ...  
+o .196 144   ...  
+o .197 144   ...  
+o .198 227   Doppelakut         !! ~a      3  11     030B
+o .199 179   Hacek/Caron        !! Exp3    3  12     030C
+o .200 144   grafik
+o .201 144   ...
+o .202 144   ...
+o .203 144   ...
+o .204 144   ...
+o .205 144   ...
+o .206 144   ...
+o .207 186   Ringel             !! o hochg 3  10     030A
+o .208 175   Ueberstrich/Macron              175     00AF  ->   0304 !
+o .209 215   Halbkr.unter (breve) !! x     3  46     032E
+o .210 171   Ogonek             !!  <<     3  40     0328
+o .211 184   Cedille                       3  39     0327
+o .212 191   untergesetzter Punkt  !!?umg  3  35     0323
+o .213 146   Ain                !! '??     6  57     0639
+o .214 169   Copyright                     0 169       A9
+o .215 216  /O daenisch  (97 neu)          0 216       D8
+o .216 164   Waehr.Symb.                   0 164       A4
+o .217 144   grafik
+o .218 144   grafik  
+o .219 161   diakrit /          !! ! umg.  3  56     0338
+o .220 129   Pfeil nach rechts  !! gr.    33 146     2192
+o .221 128   Euro-Symbol (neu 97)         32 160     20A0
+o .222 173   diakr. Mittelstrich           3  54     0336
+o .223 247   diakr. Unterstrich            3  49     0331
+o .224 151   "[alpha]"                     3 177     03B1
+o .225 223   scharfes s                    0 223       DF
+o .226 152   "[Gamma]"                     3 147     0393
+o .227 153   "pi"                          3 192     03C0
+o .228 188   "[Sigma]"                     3 163     03A3
+o .229 155   "[sigma]"                     3 195     03C3
+o .230 181   "[mue]" (mikro-Zeichen)       0 181       B5
+o .231 177   "[gamma]"                     3 179     03B3
+o .232 150   "Phi"                         3 166     03A6
+o .233 159   "[Theta]"                     3 152     0398
+o .234 160   "[Omega]"                     3 169     03A9
+o .235 147   "[delta]"                     3 180     03B4
+o .236 148   "[unendlich]"                34  30     221E
+o .237 248  /o daenisch                   0 248       F8
+o .238 170   a mit ogonek       !! a hoch  1   5     0105
+o .239 200   e mit ogonek       !!  `E     1  25     0119
+o .240 206  'C                  !! ^I      1   6     0106
+o .241 205  'c                  !! 'I      1   7     0107
+o .242 217  /L                  !! `U      1  65     0141
+o .243 218  /l                  !! 'U      1  66     0142
+o .244 213  'N                  !! ~O      1  67     0143
+o .245 245  'n                  !! ~o      1  68     0144
+o .246 211  'O                             0 211       D3
+o .247 192  'S                  !! `A      1  90     015A
+o .248 176   Gradzeichen                   1 176     00B0
+o .249 193  's                  !! 'A      1  91     015B
+o .250 183   Punkt in der Mitte            0 183       B7
+o .251 212  'Z                  !! ^O      1 121     0179
+o .252 210  'z                  !! `O      1 122     017A
+o .253 203   Z mit Punkt oben   !! E trema 1 123     017B
+o .254 207   z mit Punkt oben   !! I trema 1 124     017C
+  o .255 255  [unbenutzbar]
+
+  UCODES.APT : UTF-8 -> OstWest-DOS-Zeichencodes
+  2003-01-29
+  Empfehlung: in die Index-Parameter einbauen, wenn man OstWest-
+  Zeichensatz verwendet.
+
+
+u 000          vorherige Setzungen ungueltig machen
+u 194 163 156        POUND SIGN
+u 194 164 216        CURRENCY SIGN
+u 194 167 021        SECTION SIGN
+u 194 169 214        COPYRIGHT SIGN
+u 194 172 170        NOT SIGN
+u 194 176 248        DEGREE SIGN
+u 194 181 230        MICRO SIGN
+ u 194 182 020        PILCROW SIGN
+u 194 183 250        MIDDLE DOT
+u 226 150 188 031    BLACK DOWN-POINTING TRIANGLE
+u 226 150 190 031    BLACK DOWN-POINTING SMALL TRIANGLE
+
+u 195 132 142        LATIN CAPITAL LETTER A WITH DIAERESIS
+u 195 133 143        LATIN CAPITAL LETTER A WITH RING ABOVE
+u 195 134 146        LATIN CAPITAL LETTER AE
+u 195 135 128        LATIN CAPITAL LETTER C WITH CEDILLA
+u 195 137 144        LATIN CAPITAL LETTER E WITH ACUTE
+u 195 145 165        LATIN CAPITAL LETTER N WITH TILDE
+u 195 147 246        LATIN CAPITAL LETTER O WITH ACUTE
+u 195 150 153        LATIN CAPITAL LETTER O WITH DIAERESIS
+u 195 152 215        LATIN CAPITAL LETTER O WITH STROKE
+u 195 156 154        LATIN CAPITAL LETTER U WITH DIAERESIS
+u 195 158 177        LATIN CAPITAL LETTER THORN
+u 195 159 225        LATIN SMALL LETTER SHARP S
+u 195 160 133        LATIN SMALL LETTER A WITH GRAVE
+u 195 161 160        LATIN SMALL LETTER A WITH ACUTE
+u 195 162 131        LATIN SMALL LETTER A WITH CIRCUMFLEX
+u 195 164 132        LATIN SMALL LETTER A WITH DIAERESIS
+u 195 165 134        LATIN SMALL LETTER A WITH RING ABOVE
+u 195 166 145        LATIN SMALL LETTER AE
+u 195 167 135        LATIN SMALL LETTER C WITH CEDILLA
+u 195 168 138        LATIN SMALL LETTER E WITH GRAVE
+u 195 169 130        LATIN SMALL LETTER E WITH ACUTE
+u 195 170 136        LATIN SMALL LETTER E WITH CIRCUMFLEX
+u 195 171 137        LATIN SMALL LETTER E WITH DIAERESIS
+u 195 172 141        LATIN SMALL LETTER I WITH GRAVE
+u 195 173 161        LATIN SMALL LETTER I WITH ACUTE
+u 195 174 140        LATIN SMALL LETTER I WITH CIRCUMFLEX
+u 195 175 139        LATIN SMALL LETTER I WITH DIAERESIS
+u 195 177 164        LATIN SMALL LETTER N WITH TILDE
+u 195 178 149        LATIN SMALL LETTER O WITH GRAVE
+u 195 179 162        LATIN SMALL LETTER O WITH ACUTE
+u 195 180 147        LATIN SMALL LETTER O WITH CIRCUMFLEX
+u 195 182 148        LATIN SMALL LETTER O WITH DIAERESIS
+u 195 184 237        LATIN SMALL LETTER O WITH STROKE
+u 195 185 151        LATIN SMALL LETTER U WITH GRAVE
+u 195 186 163        LATIN SMALL LETTER U WITH ACUTE
+u 195 187 150        LATIN SMALL LETTER U WITH CIRCUMFLEX
+u 195 188 129        LATIN SMALL LETTER U WITH DIAERESIS
+u 195 189 173        LATIN SMALL LETTER Y WITH ACUTE
+u 195 190 178        LATIN SMALL LETTER THORN
+u 195 191 152        LATIN SMALL LETTER Y WITH DIAERESIS
+u 196 131 228        LATIN SMALL LETTER A WITH BREVE
+u 196 133 238        LATIN SMALL LETTER A WITH OGONEK
+u 196 134 240        LATIN CAPITAL LETTER C WITH ACUTE
+u 196 135 241        LATIN SMALL LETTER C WITH ACUTE
+u 196 140 166        LATIN CAPITAL LETTER C WITH CARON
+u 196 141 167        LATIN SMALL LETTER C WITH CARON
+u 196 153 239        LATIN SMALL LETTER E WITH OGONEK
+u 196 155 127        LATIN SMALL LETTER E WITH CARON
+u 196 159 023        LATIN SMALL LETTER G WITH BREVE
+u 196 176 233        LATIN CAPITAL LETTER I WITH DOT ABOVE
+u 196 177 176        LATIN SMALL LETTER DOTLESS I
+u 197 129 242        LATIN CAPITAL LETTER L WITH STROKE
+u 197 130 243        LATIN SMALL LETTER L WITH STROKE
+u 197 131 244        LATIN CAPITAL LETTER N WITH ACUTE
+u 197 132 245        LATIN SMALL LETTER N WITH ACUTE
+u 197 145 018        LATIN SMALL LETTER O WITH DOUBLE ACUTE
+u 197 152 169        LATIN CAPITAL LETTER R WITH CARON
+u 197 153 168        LATIN SMALL LETTER R WITH CARON
+u 197 154 247        LATIN CAPITAL LETTER S WITH ACUTE
+u 197 155 249        LATIN SMALL LETTER S WITH ACUTE
+u 197 159 157        LATIN SMALL LETTER S WITH CEDILLA
+u 197 160 171        LATIN CAPITAL LETTER S WITH CARON
+u 197 161 172        LATIN SMALL LETTER S WITH CARON
+u 197 163 234        LATIN SMALL LETTER T WITH CEDILLA
+u 197 165 155        LATIN SMALL LETTER T WITH CARON
+u 197 174 159        LATIN CAPITAL LETTER U WITH RING ABOVE
+u 197 175 158        LATIN SMALL LETTER U WITH RING ABOVE
+u 197 177 019        LATIN SMALL LETTER U WITH DOUBLE ACUTE
+u 197 179 022        LATIN SMALL LETTER U WITH OGONEK
+u 197 185 251        LATIN CAPITAL LETTER Z WITH ACUTE
+u 197 186 252        LATIN SMALL LETTER Z WITH ACUTE
+u 197 187 253        LATIN CAPITAL LETTER Z WITH DOT ABOVE
+u 197 188 254        LATIN SMALL LETTER Z WITH DOT ABOVE
+u 197 189 174        LATIN CAPITAL LETTER Z WITH CARON
+u 197 190 175        LATIN SMALL LETTER Z WITH CARON
+u 197 191 115        LATIN SMALL LETTER LONG s
+u 202 191 213        MODIFIER LETTER LEFT HALF RING
+u 204 128 182        COMBINING GRAVE ACCENT
+u 204 129 181        COMBINING ACUTE ACCENT
+u 204 130 183        COMBINING CIRCUMFLEX ACCENT
+u 204 131 232        COMBINING TILDE
+u 204 132 208        COMBINING MACRON
+u 204 134 190        COMBINING BREVE
+u 204 135 184        COMBINING DOT ABOVE
+u 204 136 189        COMBINING DIAERESIS
+u 204 138 207        COMBINING RING ABOVE
+u 204 139 198        COMBINING DOUBLE ACUTE ACCENT
+u 204 140 199        COMBINING CARON  (Hacek 
+u 204 163 212        COMBINING DOT BELOW
+u 204 167 211        COMBINING CEDILLA
+u 204 168 210        COMBINING OGONEK
+u 204 174 209        COMBINING BREVE BELOW
+u 204 178 223        COMBINING LOW LINE
+u 204 182 222        COMBINING LONG STROKE OVERLAY
+u 204 184 219        COMBINING LONG SOLIDUS OVERLAY
+u 206 147 226        GREEK CAPITAL LETTER GAMMA
+u 206 177 224        GREEK SMALL LETTER ALPHA
+u 206 179 231        GREEK SMALL LETTER GAMMA
+u 206 180 235        GREEK SMALL LETTER DELTA
+u 207 128 227        GREEK SMALL LETTER PI
+u 207 131 229        GREEK SMALL LETTER SIGMA
+u 226 130 172 221    EURO SIGN
+u 226 134 146 220    RIGHTWARDS ARROW
+u 226 136 158 236    INFINITY
+
+
+  Und dann kommen noch viele exotische Diakritika-Zeichen
+
+u 195 128 065 182       LATIN CAPITAL LETTER A WITH GRAVE
+u 195 129 065 181       LATIN CAPITAL LETTER A WITH ACUTE
+u 195 130 065 183       LATIN CAPITAL LETTER A WITH CIRCUMFLEX
+u 195 131 065 232       LATIN CAPITAL LETTER A WITH TILDE
+u 195 136 069 182       LATIN CAPITAL LETTER E WITH GRAVE
+u 195 138 069 183       LATIN CAPITAL LETTER E WITH CIRCUMFLEX
+u 195 139 069 189       LATIN CAPITAL LETTER E WITH DIAERESIS
+u 195 140 073 182       LATIN CAPITAL LETTER I WITH GRAVE
+u 195 141 073 181       LATIN CAPITAL LETTER I WITH ACUTE
+u 195 142 073 183       LATIN CAPITAL LETTER I WITH CIRCUMFLEX
+u 195 143 073 189       LATIN CAPITAL LETTER I WITH DIAERESIS
+u 195 144 068 222       LATIN CAPITAL LETTER ETH
+u 195 176 100 222       LATIN SMALL LETTER ETH
+u 196 144 068 222       LATIN CAPITAL LETTER D WITH STROKE
+u 196 145 100 222       LATIN SMALL LETTER D WITH STROKE
+u 195 146 079 182       LATIN CAPITAL LETTER O WITH GRAVE
+u 195 148 079 183       LATIN CAPITAL LETTER O WITH CIRCUMFLEX
+u 195 149 079 232       LATIN CAPITAL LETTER O WITH TILDE
+u 195 153 085 182       LATIN CAPITAL LETTER U WITH GRAVE
+u 195 154 085 181       LATIN CAPITAL LETTER U WITH ACUTE
+u 195 155 085 183       LATIN CAPITAL LETTER U WITH CIRCUMFLEX
+u 195 157 089 181       LATIN CAPITAL LETTER Y WITH ACUTE
+u 195 163 097 232       LATIN SMALL LETTER A WITH TILDE
+u 195 181 111 232       LATIN SMALL LETTER O WITH TILDE
+u 196 128 065 208       LATIN CAPITAL LETTER A WITH MACRON
+u 196 129 097 208       LATIN SMALL LETTER A WITH MACRON
+u 196 130 065 190       LATIN CAPITAL LETTER A WITH BREVE
+u 196 132 065 210       LATIN CAPITAL LETTER A WITH OGONEK
+u 196 136 067 183       LATIN CAPITAL LETTER C WITH CIRCUMFLEX
+u 196 137 099 183       LATIN SMALL LETTER C WITH CIRCUMFLEX
+u 196 138 067 184       LATIN CAPITAL LETTER C WITH DOT ABOVE
+u 196 139 099 184       LATIN SMALL LETTER C WITH DOT ABOVE
+u 196 142 068 199       LATIN CAPITAL LETTER D WITH CARON
+u 196 143 100 199       LATIN SMALL LETTER D WITH CARON
+u 196 146 069 208       LATIN CAPITAL LETTER E WITH MACRON
+u 196 147 101 208       LATIN SMALL LETTER E WITH MACRON
+u 196 148 069 190       LATIN CAPITAL LETTER E WITH BREVE
+u 196 149 101 190       LATIN SMALL LETTER E WITH BREVE
+u 196 150 069 184       LATIN CAPITAL LETTER E WITH DOT ABOVE
+u 196 151 101 184       LATIN SMALL LETTER E WITH DOT ABOVE
+u 196 152 069 210       LATIN CAPITAL LETTER E WITH OGONEK
+u 196 154 069 199       LATIN CAPITAL LETTER E WITH CARON
+u 196 156 071 183       LATIN CAPITAL LETTER G WITH CIRCUMFLEX
+u 196 157 103 183       LATIN SMALL LETTER G WITH CIRCUMFLEX
+u 196 158 071 190       LATIN CAPITAL LETTER G WITH BREVE
+u 196 160 071 184       LATIN CAPITAL LETTER G WITH DOT ABOVE
+u 196 161 103 184       LATIN SMALL LETTER G WITH DOT ABOVE
+u 196 162 071 211       LATIN CAPITAL LETTER G WITH CEDILLA
+u 196 163 103 211       LATIN SMALL LETTER G WITH CEDILLA
+u 196 164 072 183       LATIN CAPITAL LETTER H WITH CIRCUMFLEX
+u 196 165 104 183       LATIN SMALL LETTER H WITH CIRCUMFLEX
+u 196 168 073 232       LATIN CAPITAL LETTER I WITH TILDE
+u 196 169 105 232       LATIN SMALL LETTER I WITH TILDE
+u 196 170 073 208       LATIN CAPITAL LETTER I WITH MACRON
+u 196 171 105 208       LATIN SMALL LETTER I WITH MACRON
+u 196 172 073 190       LATIN CAPITAL LETTER I WITH BREVE
+u 196 173 105 190       LATIN SMALL LETTER I WITH BREVE
+u 196 174 073 210       LATIN CAPITAL LETTER I WITH OGONEK
+u 196 175 105 210       LATIN SMALL LETTER I WITH OGONEK
+u 196 180 074 183       LATIN CAPITAL LETTER J WITH CIRCUMFLEX
+u 196 181 106 183       LATIN SMALL LETTER J WITH CIRCUMFLEX
+u 196 182 075 211       LATIN CAPITAL LETTER K WITH CEDILLA
+u 196 183 107 211       LATIN SMALL LETTER K WITH CEDILLA
+u 196 185 076 181       LATIN CAPITAL LETTER L WITH ACUTE
+u 196 186 108 181       LATIN SMALL LETTER L WITH ACUTE
+u 196 187 076 211       LATIN CAPITAL LETTER L WITH CEDILLA
+u 196 188 108 211       LATIN SMALL LETTER L WITH CEDILLA
+u 196 189 076 199       LATIN CAPITAL LETTER L WITH CARON
+u 196 190 108 199       LATIN SMALL LETTER L WITH CARON
+u 197 133 078 211       LATIN CAPITAL LETTER N WITH CEDILLA
+u 197 134 110 211       LATIN SMALL LETTER N WITH CEDILLA
+u 197 135 078 199       LATIN CAPITAL LETTER N WITH CARON
+u 197 136 110 199       LATIN SMALL LETTER N WITH CARON
+u 197 140 079 208       LATIN CAPITAL LETTER O WITH MACRON
+u 197 141 111 208       LATIN SMALL LETTER O WITH MACRON
+u 197 142 079 190       LATIN CAPITAL LETTER O WITH BREVE
+u 197 143 111 190       LATIN SMALL LETTER O WITH BREVE
+u 197 144 079 198       LATIN CAPITAL LETTER O WITH DOUBLE ACUTE
+u 197 148 082 181       LATIN CAPITAL LETTER R WITH ACUTE
+u 197 149 114 181       LATIN SMALL LETTER R WITH ACUTE
+u 197 150 082 211       LATIN CAPITAL LETTER R WITH CEDILLA
+u 197 151 114 211       LATIN SMALL LETTER R WITH CEDILLA
+u 197 156 083 183       LATIN CAPITAL LETTER S WITH CIRCUMFLEX
+u 197 157 115 183       LATIN SMALL LETTER S WITH CIRCUMFLEX
+u 197 158 083 211       LATIN CAPITAL LETTER S WITH CEDILLA
+u 197 162 084 211       LATIN CAPITAL LETTER T WITH CEDILLA
+u 197 164 084 199       LATIN CAPITAL LETTER T WITH CARON
+u 197 168 085 232       LATIN CAPITAL LETTER U WITH TILDE
+u 197 169 117 232       LATIN SMALL LETTER U WITH TILDE
+u 197 170 085 208       LATIN CAPITAL LETTER U WITH MACRON
+u 197 171 117 208       LATIN SMALL LETTER U WITH MACRON
+u 197 172 085 190       LATIN CAPITAL LETTER U WITH BREVE
+u 197 173 117 190       LATIN SMALL LETTER U WITH BREVE
+u 197 176 085 198       LATIN CAPITAL LETTER U WITH DOUBLE ACUTE
+u 197 178 085 210       LATIN CAPITAL LETTER U WITH OGONEK
+u 197 180 087 183       LATIN CAPITAL LETTER W WITH CIRCUMFLEX
+u 197 181 119 183       LATIN SMALL LETTER W WITH CIRCUMFLEX
+u 197 182 089 183       LATIN CAPITAL LETTER Y WITH CIRCUMFLEX
+u 197 183 121 183       LATIN SMALL LETTER Y WITH CIRCUMFLEX
+u 197 184 089 189       LATIN CAPITAL LETTER Y WITH DIAERESIS
+u 199 141 065 199       LATIN CAPITAL LETTER A WITH CARON
+u 199 142 097 199       LATIN SMALL LETTER A WITH CARON
+u 199 143 073 199       LATIN CAPITAL LETTER I WITH CARON
+u 199 144 105 199       LATIN SMALL LETTER I WITH CARON
+u 199 145 079 199       LATIN CAPITAL LETTER O WITH CARON
+u 199 146 111 199       LATIN SMALL LETTER O WITH CARON
+u 199 147 085 199       LATIN CAPITAL LETTER U WITH CARON
+u 199 148 117 199       LATIN SMALL LETTER U WITH CARON
+u 199 149 154 208       LATIN CAPITAL LETTER U WITH DIAERESIS AND MACRON
+u 199 149 129 208       LATIN SMALL LETTER U WITH DIAERESIS AND MACRON
+u 199 150 154 181       LATIN CAPITAL LETTER U WITH DIAERESIS AND ACUTE
+u 199 151 129 181       LATIN SMALL LETTER U WITH DIAERESIS AND ACUTE
+u 199 152 154 199       LATIN CAPITAL LETTER U WITH DIAERESIS AND CARON
+u 199 153 129 199       LATIN SMALL LETTER U WITH DIAERESIS AND CARON
+u 199 154 154 182       LATIN CAPITAL LETTER U WITH DIAERESIS AND GRAVE
+u 199 155 129 182       LATIN SMALL LETTER U WITH DIAERESIS AND GRAVE
+u 199 156 142 208       LATIN CAPITAL LETTER A WITH DIAERESIS AND MACRON
+u 199 158 132 208       LATIN SMALL LETTER A WITH DIAERESIS AND MACRON
+u 199 162 146 208       LATIN CAPITAL LETTER AE WITH MACRON
+u 199 163 145 208       LATIN SMALL LETTER AE WITH MACRON
+u 199 166 071 199       LATIN CAPITAL LETTER G WITH CARON
+u 199 167 103 199       LATIN SMALL LETTER G WITH CARON
+u 199 168 075 199       LATIN CAPITAL LETTER K WITH CARON
+u 199 169 107 199       LATIN SMALL LETTER K WITH CARON
+u 199 170 079 210       LATIN CAPITAL LETTER O WITH OGONEK
+u 199 171 111 210       LATIN SMALL LETTER O WITH OGONEK
+u 199 176 106 199       LATIN SMALL LETTER J WITH CARON
+u 199 180 071 181       LATIN CAPITAL LETTER G WITH ACUTE
+u 199 181 103 181       LATIN SMALL LETTER G WITH ACUTE
+u 199 184 078 182       LATIN CAPITAL LETTER N WITH GRAVE
+u 199 185 110 182       LATIN SMALL LETTER N WITH GRAVE
+u 199 186 143 181       LATIN CAPITAL LETTER A WITH RING ABOVE AND ACUTE
+u 199 186 134 181       LATIN SMALL LETTER A WITH RING ABOVE AND ACUTE
+u 199 187 146 181       LATIN CAPITAL LETTER AE WITH ACUTE
+u 199 189 145 181       LATIN SMALL LETTER AE WITH ACUTE
+u 199 190 215 181       LATIN CAPITAL LETTER O WITH STROKE AND ACUTE
+u 199 191 237 181       LATIN SMALL LETTER O WITH STROKE AND ACUTE
+u 200 158 072 199       LATIN CAPITAL LETTER H WITH CARON
+u 200 159 104 199       LATIN SMALL LETTER H WITH CARON
+u 200 166 065 184       LATIN CAPITAL LETTER A WITH DOT ABOVE
+u 200 167 097 184       LATIN SMALL LETTER A WITH DOT ABOVE
+u 200 168 069 211       LATIN CAPITAL LETTER E WITH CEDILLA
+u 200 169 101 211       LATIN SMALL LETTER E WITH CEDILLA
+u 200 170 153 208       LATIN CAPITAL LETTER O WITH DIAERESIS AND MACRON
+u 200 170 148 208       LATIN SMALL LETTER O WITH DIAERESIS AND MACRON
+u 200 174 079 184       LATIN CAPITAL LETTER O WITH DOT ABOVE
+u 200 175 111 184       LATIN SMALL LETTER O WITH DOT ABOVE
+u 200 178 089 208       LATIN CAPITAL LETTER Y WITH MACRON
+u 200 179 121 208       LATIN SMALL LETTER Y WITH MACRON
+u 205 132 189 181       COMBINING GREEK DIALYTIKA TONOS
+u 206 172 224 181       GREEK SMALL LETTER ALPHA WITH TONOS
+u 225 184 130 066 184   LATIN CAPITAL LETTER B WITH DOT ABOVE
+u 225 184 131 098 184   LATIN SMALL LETTER B WITH DOT ABOVE
+u 225 184 132 066 212   LATIN CAPITAL LETTER B WITH DOT BELOW
+u 225 184 133 098 212   LATIN SMALL LETTER B WITH DOT BELOW
+u 225 184 136 128 181   LATIN CAPITAL LETTER C WITH CEDILLA AND ACUTE
+u 225 184 136 135 181   LATIN SMALL LETTER C WITH CEDILLA AND ACUTE
+u 225 184 137 068 184   LATIN CAPITAL LETTER D WITH DOT ABOVE
+u 225 184 139 100 184   LATIN SMALL LETTER D WITH DOT ABOVE
+u 225 184 140 068 212   LATIN CAPITAL LETTER D WITH DOT BELOW
+u 225 184 141 100 212   LATIN SMALL LETTER D WITH DOT BELOW
+u 225 184 144 068 211   LATIN CAPITAL LETTER D WITH CEDILLA
+u 225 184 145 100 211   LATIN SMALL LETTER D WITH CEDILLA
+u 225 184 158 070 184   LATIN CAPITAL LETTER F WITH DOT ABOVE
+u 225 184 159 102 184   LATIN SMALL LETTER F WITH DOT ABOVE
+u 225 184 160 071 208   LATIN CAPITAL LETTER G WITH MACRON
+u 225 184 161 103 208   LATIN SMALL LETTER G WITH MACRON
+u 225 184 162 072 184   LATIN CAPITAL LETTER H WITH DOT ABOVE
+u 225 184 163 104 184   LATIN SMALL LETTER H WITH DOT ABOVE
+u 225 184 164 072 212   LATIN CAPITAL LETTER H WITH DOT BELOW
+u 225 184 165 104 212   LATIN SMALL LETTER H WITH DOT BELOW
+u 225 184 166 072 189   LATIN CAPITAL LETTER H WITH DIAERESIS
+u 225 184 167 104 189   LATIN SMALL LETTER H WITH DIAERESIS
+u 225 184 168 072 211   LATIN CAPITAL LETTER H WITH CEDILLA
+u 225 184 169 104 211   LATIN SMALL LETTER H WITH CEDILLA
+u 225 184 170 072 209   LATIN CAPITAL LETTER H WITH BREVE BELOW
+u 225 184 171 104 209   LATIN SMALL LETTER H WITH BREVE BELOW
+u 225 184 175 139 181   LATIN SMALL LETTER I WITH DIAERESIS AND ACUTE
+u 225 184 175 075 181   LATIN CAPITAL LETTER K WITH ACUTE
+u 225 184 177 107 181   LATIN SMALL LETTER K WITH ACUTE
+u 225 184 178 075 212   LATIN CAPITAL LETTER K WITH DOT BELOW
+u 225 184 179 107 212   LATIN SMALL LETTER K WITH DOT BELOW
+u 225 184 182 076 212   LATIN CAPITAL LETTER L WITH DOT BELOW
+u 225 184 183 108 212   LATIN SMALL LETTER L WITH DOT BELOW
+u 225 184 190 077 181   LATIN CAPITAL LETTER M WITH ACUTE
+u 225 184 191 109 181   LATIN SMALL LETTER M WITH ACUTE
+u 225 185 128 077 184   LATIN CAPITAL LETTER M WITH DOT ABOVE
+u 225 185 129 109 184   LATIN SMALL LETTER M WITH DOT ABOVE
+u 225 185 130 077 212   LATIN CAPITAL LETTER M WITH DOT BELOW
+u 225 185 131 109 212   LATIN SMALL LETTER M WITH DOT BELOW
+u 225 185 132 078 184   LATIN CAPITAL LETTER N WITH DOT ABOVE
+u 225 185 133 110 184   LATIN SMALL LETTER N WITH DOT ABOVE
+u 225 185 134 078 212   LATIN CAPITAL LETTER N WITH DOT BELOW
+u 225 185 135 110 212   LATIN SMALL LETTER N WITH DOT BELOW
+u 225 185 148 080 181   LATIN CAPITAL LETTER P WITH ACUTE
+u 225 185 149 112 181   LATIN SMALL LETTER P WITH ACUTE
+u 225 185 150 080 184   LATIN CAPITAL LETTER P WITH DOT ABOVE
+u 225 185 151 112 184   LATIN SMALL LETTER P WITH DOT ABOVE
+u 225 185 152 082 184   LATIN CAPITAL LETTER R WITH DOT ABOVE
+u 225 185 153 114 184   LATIN SMALL LETTER R WITH DOT ABOVE
+u 225 185 154 082 212   LATIN CAPITAL LETTER R WITH DOT BELOW
+u 225 185 155 114 212   LATIN SMALL LETTER R WITH DOT BELOW
+u 225 185 160 083 184   LATIN CAPITAL LETTER S WITH DOT ABOVE
+u 225 185 161 115 184   LATIN SMALL LETTER S WITH DOT ABOVE
+u 225 185 162 083 212   LATIN CAPITAL LETTER S WITH DOT BELOW
+u 225 185 163 115 212   LATIN SMALL LETTER S WITH DOT BELOW
+u 225 185 164 247 184   LATIN CAPITAL LETTER S WITH ACUTE AND DOT ABOVE
+u 225 185 164 249 184   LATIN SMALL LETTER S WITH ACUTE AND DOT ABOVE
+u 225 185 165 171 184   LATIN CAPITAL LETTER S WITH CARON AND DOT ABOVE
+u 225 185 166 172 184   LATIN SMALL LETTER S WITH CARON AND DOT ABOVE
+u 225 185 170 084 184   LATIN CAPITAL LETTER T WITH DOT ABOVE
+u 225 185 171 116 184   LATIN SMALL LETTER T WITH DOT ABOVE
+u 225 185 172 084 212   LATIN CAPITAL LETTER T WITH DOT BELOW
+u 225 185 173 116 212   LATIN SMALL LETTER T WITH DOT BELOW
+u 225 185 188 086 232   LATIN CAPITAL LETTER V WITH TILDE
+u 225 185 189 118 232   LATIN SMALL LETTER V WITH TILDE
+u 225 185 190 086 212   LATIN CAPITAL LETTER V WITH DOT BELOW
+u 225 185 191 118 212   LATIN SMALL LETTER V WITH DOT BELOW
+u 225 186 128 087 182   LATIN CAPITAL LETTER W WITH GRAVE
+u 225 186 129 119 182   LATIN SMALL LETTER W WITH GRAVE
+u 225 186 130 087 181   LATIN CAPITAL LETTER W WITH ACUTE
+u 225 186 131 119 181   LATIN SMALL LETTER W WITH ACUTE
+u 225 186 132 087 189   LATIN CAPITAL LETTER W WITH DIAERESIS
+u 225 186 133 119 189   LATIN SMALL LETTER W WITH DIAERESIS
+u 225 186 134 087 184   LATIN CAPITAL LETTER W WITH DOT ABOVE
+u 225 186 135 119 184   LATIN SMALL LETTER W WITH DOT ABOVE
+u 225 186 136 087 212   LATIN CAPITAL LETTER W WITH DOT BELOW
+u 225 186 137 119 212   LATIN SMALL LETTER W WITH DOT BELOW
+u 225 186 138 088 184   LATIN CAPITAL LETTER X WITH DOT ABOVE
+u 225 186 139 120 184   LATIN SMALL LETTER X WITH DOT ABOVE
+u 225 186 140 088 189   LATIN CAPITAL LETTER X WITH DIAERESIS
+u 225 186 141 120 189   LATIN SMALL LETTER X WITH DIAERESIS
+u 225 186 142 089 184   LATIN CAPITAL LETTER Y WITH DOT ABOVE
+u 225 186 143 121 184   LATIN SMALL LETTER Y WITH DOT ABOVE
+u 225 186 144 090 183   LATIN CAPITAL LETTER Z WITH CIRCUMFLEX
+u 225 186 145 122 183   LATIN SMALL LETTER Z WITH CIRCUMFLEX
+u 225 186 146 090 212   LATIN CAPITAL LETTER Z WITH DOT BELOW
+u 225 186 147 122 212   LATIN SMALL LETTER Z WITH DOT BELOW
+u 225 186 151 116 189   LATIN SMALL LETTER T WITH DIAERESIS
+u 225 186 152 119 207   LATIN SMALL LETTER W WITH RING ABOVE
+u 225 186 153 121 207   LATIN SMALL LETTER Y WITH RING ABOVE
+u 225 186 160 065 212   LATIN CAPITAL LETTER A WITH DOT BELOW
+u 225 186 161 097 212   LATIN SMALL LETTER A WITH DOT BELOW
+u 225 186 165 131 181   LATIN SMALL LETTER A WITH CIRCUMFLEX AND ACUTE
+u 225 186 167 131 182   LATIN SMALL LETTER A WITH CIRCUMFLEX AND GRAVE
+u 225 186 171 131 232   LATIN SMALL LETTER A WITH CIRCUMFLEX AND TILDE
+u 225 186 175 228 181   LATIN SMALL LETTER A WITH BREVE AND ACUTE
+u 225 186 177 228 182   LATIN SMALL LETTER A WITH BREVE AND GRAVE
+u 225 186 181 228 232   LATIN SMALL LETTER A WITH BREVE AND TILDE
+u 225 186 184 069 212   LATIN CAPITAL LETTER E WITH DOT BELOW
+u 225 186 185 101 212   LATIN SMALL LETTER E WITH DOT BELOW
+u 225 186 188 069 232   LATIN CAPITAL LETTER E WITH TILDE
+u 225 186 189 101 232   LATIN SMALL LETTER E WITH TILDE
+u 225 186 191 136 181   LATIN SMALL LETTER E WITH CIRCUMFLEX AND ACUTE
+u 225 187 129 136 182   LATIN SMALL LETTER E WITH CIRCUMFLEX AND GRAVE
+u 225 187 133 136 232   LATIN SMALL LETTER E WITH CIRCUMFLEX AND TILDE
+u 225 187 138 073 212   LATIN CAPITAL LETTER I WITH DOT BELOW
+u 225 187 139 105 212   LATIN SMALL LETTER I WITH DOT BELOW
+u 225 187 140 079 212   LATIN CAPITAL LETTER O WITH DOT BELOW
+u 225 187 141 111 212   LATIN SMALL LETTER O WITH DOT BELOW
+u 225 187 145 147 181   LATIN SMALL LETTER O WITH CIRCUMFLEX AND ACUTE
+u 225 187 147 147 182   LATIN SMALL LETTER O WITH CIRCUMFLEX AND GRAVE
+u 225 187 151 147 232   LATIN SMALL LETTER O WITH CIRCUMFLEX AND TILDE
+u 225 187 164 085 212   LATIN CAPITAL LETTER U WITH DOT BELOW
+u 225 187 165 117 212   LATIN SMALL LETTER U WITH DOT BELOW
+u 225 187 178 089 182   LATIN CAPITAL LETTER Y WITH GRAVE
+u 225 187 179 121 182   LATIN SMALL LETTER Y WITH GRAVE
+u 225 187 180 089 212   LATIN CAPITAL LETTER Y WITH DOT BELOW
+u 225 187 181 121 212   LATIN SMALL LETTER Y WITH DOT BELOW
+u 225 187 184 089 232   LATIN CAPITAL LETTER Y WITH TILDE
+u 225 187 185 121 232   LATIN SMALL LETTER Y WITH TILDE
+u 225 189 176 224 182   GREEK SMALL LETTER ALPHA WITH VARIA
+u 225 189 177 224 181   GREEK SMALL LETTER ALPHA WITH OXIA
+u 225 190 176 224 190   GREEK SMALL LETTER ALPHA WITH VRACHY
+u 225 190 177 224 208   GREEK SMALL LETTER ALPHA WITH MACRON
+u 226 134 155 220 219   RIGHTWARDS ARROW WITH STROKE
+u 226 137 160 061 219   NOT EQUAL TO
+u 226 137 174 060 219   NOT LESS-THAN
+u 226 137 175 062 219   NOT GREATER-THAN
+
+
+
+  Diese werden nicht gebraucht:
+  226 148 128 196    BOX DRAWINGS LIGHT HORIZONTAL
+  226 148 130 179    BOX DRAWINGS LIGHT VERTICAL
+  226 148 140 218    BOX DRAWINGS LIGHT DOWN AND RIGHT
+  226 148 144 191    BOX DRAWINGS LIGHT DOWN AND LEFT
+  226 148 148 192    BOX DRAWINGS LIGHT UP AND RIGHT
+  226 148 152 217    BOX DRAWINGS LIGHT UP AND LEFT
+  226 148 156 195    BOX DRAWINGS LIGHT VERTICAL AND RIGHT
+  226 148 164 180    BOX DRAWINGS LIGHT VERTICAL AND LEFT
+  226 148 172 194    BOX DRAWINGS LIGHT DOWN AND HORIZONTAL
+  226 148 180 193    BOX DRAWINGS LIGHT UP AND HORIZONTAL
+  226 148 188 197    BOX DRAWINGS LIGHT VERTICAL AND HORIZONTAL
+  226 149 144 205    BOX DRAWINGS DOUBLE HORIZONTAL
+  226 149 145 186    BOX DRAWINGS DOUBLE VERTICAL
+  226 149 148 201    BOX DRAWINGS DOUBLE DOWN AND RIGHT
+  226 149 151 187    BOX DRAWINGS DOUBLE DOWN AND LEFT
+  226 149 154 200    BOX DRAWINGS DOUBLE UP AND RIGHT
+  226 149 157 188    BOX DRAWINGS DOUBLE UP AND LEFT
+  226 149 160 204    BOX DRAWINGS DOUBLE VERTICAL AND RIGHT
+  226 149 163 185    BOX DRAWINGS DOUBLE VERTICAL AND LEFT
+  226 149 166 203    BOX DRAWINGS DOUBLE DOWN AND HORIZONTAL
+  226 149 169 202    BOX DRAWINGS DOUBLE UP AND HORIZONTAL
+  226 149 172 206    BOX DRAWINGS DOUBLE VERTICAL AND HORIZONTAL

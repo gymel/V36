@@ -1,0 +1,368 @@
+  ORG.FLX : CockPit-Menu "Organisieren"  (org.rtf)
+  2000-10-03/2010-10-13   Aufruf aus ORG.RTF heraus
+  In  #uxO  steht der Funktionsbuchstabe (aus org.rtf)
+
+var m
+if ="alc" end
+
+var #uxO
+if "c" jump kompakt
+
+if "u" jump begin
+  Ist die Datenbank in Benutzung? Dann geht's nicht
+if usr jump exit
+  Welche Funktion wurde in ORG.RTF gewaehlt?
+var #uxO
+if "7" jump check
+if "n" jump check
+if "r" jump check
+if "R" jump check
+  if "t" jump check
+jump begin
+:check
+  Pruefen, ob es alte Dateien gibt (Typ .?8d)
+  Pfad+Name der aktuellen Datei, aber mit 8d statt LD:
+  (Wenn es solche "alten" Dateien gibt, werden sie von INDEX
+  geloescht, aber evtl. wird das nicht gewollt!)
+var D B "_" j "." K1 "8d"
+ins #uxF
+  wie gross ist die Datei?
+fsize
+  Die Datei gibt es nicht, man kann beginnen
+if no jump begin
+ins #uvF
+var #uxF
+ftime
+ins #uvG
+  Name ist in #uxF hinterlegt: Meldung zusammensetzen
+var "Es gibt noch alte Dateien: " #uxF n "(" #uvF " Bytes, Datum: " #uvG ")" n "K”nnen diese gel”scht werden?"
+var +n "(Wenn die Datenbank bis hierher korrekt funktioniert hat, ist das kein Problem.)"
+
+ansi
+  Entscheidungsfrage
+yes
+  Nutzer sagt: loeschen!
+if yes jump wirk
+var "Dann prfen Sie zuerst die Situation," n "Wenn Datenbank in Ordnung, k”nnen die Dateien gel”scht werden!"
+ansi
+mes
+end
+
+:begin
+  Bestaetigung einholen
+var #uxO(1,0) " - OK?"
+yesno
+if yes jump wirk
+end
+
+:wirk
+del wh
+  SGF-Datei anlegen zur Verhinderung des Neueinstiegs whrd Indexierung
+var D B ".sgf"
+open x
+wri "1Totalsperre - wegen Wartung. (Wenn dies nicht zutrifft, Datei " B ".sgf in " D " löschen)"
+
+close x
+
+  Stapeldatei ORG.BAT vorbereiten
+open x org.bat
+wri "@echo off" n "cls" n "set -k=" K n "set -K1=" K1 n
+wri "set -l=" L n
+
+var P
+ins #uxP
+  ProgDir: \ hinten wegnehmen
+var #uxP(F"\\")
+ins #uxP
+wri "set -P=" #uxP n
+var D
+ins #uxD
+var #uxD(F"\\")
+ins #uxD
+  Aufruf von INDEX.EXE zusammensetzen
+var #uxO
+if "7" jump f7
+if "n" jump fn
+if "c" jump fc
+if "u" jump fu
+if "i" jump fi
+if "r" jump fr
+if "R" jump fR
+  TBL-Erneuerung
+if "t" wri "del " D B ".tbl" n
+if "t" wri P "index -ft -0 -d" #uxD "\\" B "_*." K1 "ld -e" B "/" #uxD " -X" t n
+if "t" #uV9 Erneuerung der Satztabelle
+  STL-Erneuerung
+if "s" wri "del " D B ".stl" n
+if "s" wri P "index -fs -0 -d" #uxD "\\" B "_*." K1 "ld -e" B "/" #uxD " -I" y n
+if "s" #uV9 Erneuerung der Kurzanzeigedatei
+  RES-Erneuerung
+if "x" wri "del " D B ".res" n
+if "x" wri P "index -fx -0 -d" #uxD "\\" B "_*." K1 "ld -e" B "/" #uxD " -I" y n
+if "x" #uV9 Erneuerung der Restriktionendatei
+jump as2
+
+  Index kompaktieren
+:fc
+if not #uwX jump ges
+wri P "qrix -fc -x9999 -d" #uxD " -e" B "/" #uxD " -Z" #uwX n
+jump as2
+
+:ges
+wri P "qrix -fc -x9999 -d" #uxD " -e" B "/" #uxD n
+jump as2
+
+  Ungenutzten Platz ermitteln
+:fu
+wri P "qrix -fd -d" #uxD " -s/ -S0 -w1 -e" B "/" #uxD n
+wri "del " D B ".sgf" n "exit" n
+close x
+call org.bat
+   qrix schreibt sein Protokoll auf StartDir!
+help protoq
+:as4
+var "Geschafft!"
+sho iv
+activate
+act 1
+end
+
+  Index erneuern
+:fi
+#uV9 Index-Erneuerung
+  Sind 2 Durchlaeufe noetig?
+if v14 jump 2runi
+if res jump 2runi
+wri P "index -fi0 -n0 -m0 -k" K " -d" D B "_*." K1 "ld -e" B "/" #uxD " -I" y n
+jump as
+
+:2runi
+wri P "index -fi0 -@1 -n0 -m0 -k" K " -d" D B "_*." K1 "ld -e" B "/" #uxD " -I" y n
+wri P "qrix -fq0 -k" K " -d" #uxD " -e" B "/" #uxD " -x9999 -P" P n
+wri P "index -fi1 -@2 -n0 -m0 -k" K " -d" D B "_*." K1 "ld -e" B "/" #uxD " -I" y n
+jump as
+
+  Ganze Datenbank erneuern
+:f7
+perf checkedit
+#uV9 Gesamt-Erneuerung der Datenbank
+if v14 jump 2run7
+if res jump 2run7
+wri P "index -f70 -n0 -m0 -k" K " -d" D B "_*." K1 "ld -e" B "/" #uxD " -I" y n
+jump as
+
+:2run7
+wri P "index -f70 -@1 -n0 -m0 -k" K " -d" D B "_*." K1 "ld -e" B "/" #uxD " -I" y n
+wri P "qrix -fq0 -k" K " -d" #uxD " -e" B "/" #uxD " -x9999 -P" P n
+wri P "index -fi1 -@2 -n0 -m0 -k" K " -d" D B "_*." K1 "ld -e" B "/" #uxD " -I" y n
+jump as
+
+  desgl., aber interne Nummern bleiben erhalten
+:fn
+perf checkedit
+#uV9 'nummerntreue' Erneuerung der Datenbank
+if v14 jump 2runs
+if res jump 2runs
+wri P "index -fn0 -n0 -m0 -k" K " -d" D B "_*." K1 "ld -e" B "/" #uxD " -I" y n
+jump as
+
+:2runs
+wri P "index -fn0 -@1 -n0 -m0 -k" K " -d" D B "_*." K1 "ld -e" B "/" #uxD " -I" y n
+wri P "qrix -fq0 -k" K " -d" #uxD " -e" B "/" #uxD " -x9999 -P" P n
+wri P "index -fi1 -@2 -n0 -m0 -k" K " -d" D B "_*." K1 "ld -e" B "/" #uxD " -I" y n
+jump as
+
+  einzelne Datei entlueften
+:fr
+#uV9 Datei-Bereinigung
+var "Datendatei|" D "*." K1 "ld"
+fnam
+if "" end
+var (T"_" e".")
+ins $DNR
+wri P "index -fr -n0 -m0 -k" K " -d" D B "_" $DNR "." K1 "ld -e" B "/" #uxD n
+jump neustart
+
+  Gesamte Datenbank entlueften
+:fR
+#uV9 Datenbank-Bereinigung
+wri P "index -fr -n0 -m0 -k" K " -d" D B "_*." K1 "ld -e" B "/" #uxD n
+
+jump neustart
+
+:as
+var t
+ins #uV2
+help orga
+  wenn noch ii-Dateien da sind, qrix -fq nochmals starten
+ wri "if exist " D "ii1 goto qs" n
+ wri "goto ende" n
+ wri ":qs" n
+wri P "qrix -fq1 -k" K " -d" #uxD " -e" B "/" #uxD " -x9999 -P" P n
+  letzter Durchgang von index, falls v14
+if v14 wri P "index -fa1 -d" D B "_*." K1 "ld -e" B "/" #uxD " -k" K " -P" P n
+
+ wri ":ende" n
+:as2
+   Manchmal bleiben gewisse temporaere Dateien uebrig. Loeschen:
+wri "if not exist " D "v*d.tmp goto eende" n
+wri "del " D "vd*.tmp" n
+wri ":eende" n
+
+  Befehl zum Neustart von a99:
+:neustart
+
+wri "del " D B ".sgf" n
+wri "if not exist " D "newinx goto ast" n
+wri "echo Taste drcken!" n
+  wri "pause" n
+
+  Name des Programms steckt in m: (z.B. a99a V22.06)
+var m
+ins #uwM
+wri ":ast" n
+
+ wri "start " P #uwM(e" " F"b") " " V n "exit" n
+  Datei ORG.BAT abschliessen
+close x
+
+close d
+
+var "Bitte warten..." n "(bis das schwarze Fenster wieder verschwindet)
+sho iv
+
+  a99 abbrechen und org.bat starten
+ STOP org.bat
+set wi
+call org.bat
+open d
+  a99 wieder in den Vordergrund bringen
+  und Focus auf Auswahlliste
+ set wm
+set wn
+
+var D "newinx"
+ins $f
+fsize
+if not no jump nerl
+var D "ii1"
+ins $f
+fsize
+if not no jump nii
+jump erl
+
+:nerl
+var "Datei " $f " noch vorhanden, wird umbenannt in " B "." K1 "dx"
+mes
+
+var D "B "." K1 "dx"
+delete
+if no mes "Alte Indexdatei kann nicht geloescht werden";end 
+var D "newinx " D "B "." K1 "dx"
+rename
+
+if not no jump erl
+ins $u
+var "Umbenennung " $u " hat nicht geklappt"
+med
+
+end
+
+:nii
+var "Datei " $f " noch vorhanden, irgendwas hat nicht geklappt"
+var +n "Vermutlich ist noch ein qrix-Durchlauf notwendig"
+var +n "(s. Handbuch Kap. 7)"
+mes
+end
+
+
+
+:erl
+mes Auftrag erledigt
+var #uxO
+if "c" var "";sho IV;jump as4
+help protok
+var #uxO
+if "t" jump as4
+if "s" jump as4
+if "x" jump as4
+if "c" jump as4
+if "r" jump as4
+if "R" jump as4
+
+:as3
+activate
+sho iv
+help +protoq
+act 1
+
+  Und zum Schluss:
+  ixb.flx starten (Einmischen der zusaetzl. Reg.Eintraege)
+  Das ist die Datei  ixa.ixa
+exec X ixb
+end
+
+  nur fuer  -fc
+:kompakt
+var ""
+ins #uwX
+  gibt es mehrere .a?x ?
+var "|" D B "." K1 "?x"
+fnam
+if not %|% jump gesamt
+op x wh
+wri "Gesamt-Kompaktierung (alle Register)" n n
+var ">" D B "." K1 "?x"
+fnam
+clo x
+Aresqa wh
+
+if "" del wh;end
+if "Ges" jump wirk
+ins #uwX
+del wh
+
+var #uwX(b"." 1,1)
+ins #uwX
+var "Indexdatei " B "." K1 #uwX "x kompaktieren?"
+yes
+if not yes end
+
+jump wirk
+
+:gesamt
+yes Indexdatei(en) kompaktieren?
+if yes jump wirk
+jump exit2
+
+:exit
+mess Geht nicht, Datenbank ist in Benutzung
+
+:exit2
+var D B ".sgf"
+open x
+wri "0"
+
+end
+
+  Pruefen, ob im Moment Saetze in Bearbeitung sind.
+  Wenn ja, dann Funktionen  -f7 und -fn  nicht ausfuehren!
+:checkedit
+find edit
+var l
+if ="0" return
+var "Es sind bearbeitete Daten vorhanden, die noch nicht gespeichert wurden." n
+var +"Zuerst speichern oder verwerfen, dann diese Funktion nochmals aufrufen." 
+mes
+jump exit2
+
+
+ u-VARIABLEN in org.flx
+ #uvF (2)
+ #uvG (2)
+ #uwC (2)
+ #uwM (2)
+ #uxD (25)
+ #uxF (3)
+ #uxO (4)
+ #uxP (4)

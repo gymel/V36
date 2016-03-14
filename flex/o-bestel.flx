@@ -1,0 +1,247 @@
+  O-BESTEL.FLX : Neue Bestellung eingeben (ORDA)
+  2000-01-10/2001-03-21
+
+
+if not #uOR mes Zuerst initialisieren!;h order;end
+
+if "m" jump modify
+
+  Aktivieren, falls vorher noch Rueckfrage gewuenscht:
+  var "Bestellung zum Titel " #20(e" : ") "?"
+  yesno
+  if no end
+  if c end
+
+  Datum 8stellig in die interne Var.
+date 8
+  Nach #udt kopieren
+ins #udt
+  Entw. Titelsatz oder anderer Bestellsatz zum selben Titel liegt vor!
+    Text fuer #9DA vorbereiten (steht dann in der int.Var.)
+if #9DA$T jump abc
+if not #00 jump fehler
+if not #uV1 jump def
+if #20 jump 00
+
+  Weder #20 noch #9DA$T:
+jump error
+:00
+  interne Nr -> #uoI (sichern zum Rueckladen des aktuellen Satzes)
+var "#" i
+ins #uoI
+var "B" #udt "T" #00(e"=")
+ins #uoN
+
+jump neu
+:abc
+var "B" #udt "T" #9DA$T
+ins #uoN
+
+:neu
+
+  Kont. schon gesetzt? Dann :go
+if #uoK jump lf
+
+:kw
+  Kontingent auswaehlen
+View 0 kont.vw
+if "  " jump kw
+if no jump nokont
+if can end
+clo v
+if "" end
+if can end
+ins #uoK
+
+:lf
+if #uoL jump ag
+  Lieferant auswaehlen
+View 0 lief.vw
+if "  " jump lf
+if no jump nolief
+clo v
+if "" end
+if can end
+ins #uoL
+
+:ag
+if #uoA jump wh
+  Auftraggeber auswaehlen
+View 0 auft.vw
+if "  " jump ag
+if no jump noauft
+if can jump exit
+clo v
+if "" end
+if can end
+ins #uoA
+
+:wh
+if #uoW jump go
+View 0 whrg.vw
+if "  " jump wh
+if no jump nowhrg
+if can end
+clo v
+if "" var "DEM"
+ins #uoW
+
+:go
+ Leeren Satz bereitstellen
+new 0
+  TitelId
+var #uoN
+  nach #9DA kopieren
+ins #9DA
+var ""
+ins #uoN
+  #9DB mit Inhalt 3 einrichten
+#9DB3
+
+var #uoK(e"|")
+  und in Teilfeld $a von #9DB speichern
+insert $a-#9DB
+
+var #uoW(e"|")
+ins $c-#9DB
+ins #uoW
+
+
+show rec
+disp
+  Formular "Bestell" aufrufen
+:form
+var #uoA(e"|")
+if #uoA ins $A-#9DB
+  Lieferant von der letzten Bestellung
+var #uoL(e"|")
+if #uoL ins $j-#9DB
+var #uoW
+if #uoW ins $c-#9DB
+var #uoK(e"|")
+if #uoK ins $a-#9DB
+$n-#9DB1
+
+var #dts(0,8)
+ins $d-#9DB
+Day +180
+var (0,8)
+ins $D-#9DB
+if not #9DB$p $p-#9DB 0,00
+form Bestell
+if cancel jump cancel
+if no jump fnof 
+
+jump bestell
+
+:cancel
+noyes Abbruch?
+if not yes jump bestell
+jump exit
+
+:bestell
+   Preis: soll mit Punkt sein
+var #9DB$p
+Z=
+var Z2
+ins $p-#9DB
+
+
+var #9DB$j
+  eingegebenen Lieferanten wieder sichern fuer naechste
+ins #uoL
+var #9DB$A
+ins #uoA
+   Abschnitt #-D in den Anzeigepar. ausfuehren (Preis-Umrechnung)
+ depos D
+ var #ubs
+ ins #9DB
+
+yesno Bestellung speichern? (Nein: zurueck zum Formular, Abbruch: loeschen)
+if no jump form
+if cancel jump exit
+if yes put        //;exec o-bzett
+show rec
+var ""
+ins #uoI
+end
+:fehler
+message Der Datensatz hat keine IdNummer (#00). Erst Titelsatz aufsuchen oder eingeben.
+:neusatz
+yesno Wollen Sie jetzt einen Titelsatz neu erfassen?
+if yes help input
+if yes end
+var "Dann bl„ttern Sie den Titel auf, zu dem eine Bestellung zu machen ist"
+ansi
+mes
+end
+
+  Aufruf mit m = modifizieren
+:modify
+form Bestell
+if can end
+depos D
+var #ubs
+if not '' ins #9DB
+yesno Speichern? (Nein: Noch bearb.)
+if yes put
+if cancel undo
+end
+
+:exit
+
+  Titelsatz zurueckholen:
+var #uoI
+find
+display
+show rec
+var ""
+ins #uoI
+end
+
+:nokont
+mes Keine Kontingentliste, diese wird zuerst eingerichtet
+exec X o-mkview
+
+:noauft
+mes Keine Auftraggeberliste, diese wird zuerst eingerichtet
+exec X o-mkview
+
+:nolief
+mes Keine Lieferantenliste, diese wird zuerst eingerichtet
+exec X o-mkview
+
+:nowhrg
+mes Keine Waehrungsliste, diese wird zuerst eingerichtet
+exec X o-mkview
+
+:def
+disp
+if not #20 jump error
+var "Bestellung zum Titel " #20 "?"
+yes
+if no jump neusatz
+if can end
+jump 00
+
+:error
+var "Zuerst den Titelsatz aufbl„ttern oder neu eingeben"
+ansi
+mes
+jump neusatz
+
+:fnof
+mes Kein Formular vorhanden! Ist ORDER korrekt installiert?
+end
+
+
+ u-VARIABLEN in o-bestel.flx
+ #uV1 (1)
+ #udt (3)  aktuelles Datum JJJJMMTT
+ #uoA (4)  Auftraggeber
+ #uoI (4)  gesicherte Titel-IdNr
+ #uoK (5)  Kontingent
+ #uoL (4)  LieferantenCode vorige Bestellung
+ #uoN (4)  Inhalt von #9DA mit Titel-IdNr
+ #uoW (5)  Whrungscode
+

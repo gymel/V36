@@ -1,0 +1,91 @@
+ Dateiname:        PICA\PICA.PIM
+ Inhalt:           Import-Parameterdatei fÅr Pica3-Download-Daten nach
+                   allegro-Pica3
+ Verfasser:        21.08.94   B. Eversberg
+ ergÑnzt bis:      20.06.95 (S. Busemann)
+ énderungen am:    05.02.97 Der Import-Befehl $$, der Dollar-Verweisungen
+                            auflîst, verursacht bei fehlerhaften (!) Verwei-
+                            sungen (z. B. '4212 Nebent.: $4212') einen Ab-
+                            sturz des Import-Programms. Da (korrekte) Dollar-
+                            Verweisungen in Daten des Pica-Zentralsystems
+                            nicht mehr vorkommen, wurde der $$-Befehl de-
+                            aktiviert.
+
+
+
+   ----- Basis-Parameter: -------------------------------------------------
+
+rs="SET: S"        Record Start
+
+re="SET: S"        Recort End
+                   Mit re=13 10 "SET: " werden Mehrfach-Kategorien am Satz-
+                   ende nicht korrekt importiert!
+
+
+   ----- Globale Konvertierungsbefehle: -----------------------------------
+
+_ 13 10 " "        Zeilenumbruch innerhalb der Kategorien beseitigen
+_ " "
+
+_ 13 10 "0100"     damit diese beim Pauschalimport keine Probleme macht
+_ 13 10 "oooo"     (sie steht nÑmlich nicht am Anfang, sondern die 0200!)
+
+_ 13 10 "0200:"
+_ 13 10 "0200 "
+
+_ "  0210:"
+_ 13 10 "0210 "
+
+_ "  0230:"
+_ 13 10 "0230 "
+
+_ 13 10 "["        um aus den lokalen Daten (ohne Exemplardaten) einer
+_ 0 "0100 LOK ["   Bibliothek eigenstÑndige SÑtze zu bilden, die beim Export
+                   separat behandelt werden kînnen
+_ 13 10 "70"       um aus den Daten eines Exemplars eigenstÑndige SÑtze zu
+_ 0 "0100 EXE "    bilden, die beim Export separat behandelt werden kînnen
+
+_ 13 10            sonstige Zeilenenden in allegro-Endezeichen 0 umwandeln
+_ 0
+
+ $$                 Dollarverweisungen in Download-Dateien sollen aufgelîst
+                   werden
+
+
+   ----- Kategorieliste: --------------------------------------------------
+
+#0100              diese zuerst importieren,
+s "PPN: "          (StammsÑtze haben in der Download-Datei keine Kat. 0100)
+l 9
+
+#0200              dann die 0200, danach alle anderen:
+s "SEITE???" 13 10 13 10
+                   (StammsÑtze haben in der Download-Datei keine Kat. 0200)
+
+
+##                 Pauschalimport der eingelesenen Daten
+                   Jede Kategorie wird wie folgt bearbeitet:
+ R 5 "!"            Ist ein "!" auf der 5. Position,
+ l 16               dann Text hinter !.........! abschneiden
+ R 7 "| !"          Falls z. B. #5100 |s| !123456789!Sachschlagwort,
+ b6b
+ b6c
+ b6b
+ l 20               dann hinter Pos. 20 abschneiden
+R 3 " "            Ist die Kategorienr. 3stellig (Leerzeichen auf Pos. 4),
+(
+Krr                dann zunÑchst in #urr zwischenspeichern
+l 0
+kurr               #urr als Arbeitstext nehmen,
+e " "              aber zuerst nur die Nummer
+kurr               #urr nochmals nehmen,
+b " "              jetzt Teil hinter " "
+w "*£"             und "*£" davor setzen,
+)                  d. h. nÑchste Wiederholungskennung benutzen
+
+
+   Zeichen-Umwandlungen werden nicht durchgefÅhrt, weil davon ausgegangen
+   wird, da· vor dem Aufruf der allegro-Datenbank der Pica-Zeichensatz mit
+   dem Programm VGAFONT bzw. FONTLOAD aktiviert wird.
+
+

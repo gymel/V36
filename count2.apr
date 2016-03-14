@@ -1,0 +1,238 @@
+  count2.apr : Zahlenmaessige Auswertung, 2. Durchlauf: Liste erzeugen  
+  960318  
+
+  count2 ist unabhaengig von der benutzten Konfiguration, d.h. 
+         es arbeitet mit jeder .CFG !
+         Sinnvoll anwendbar nur durch srch  mit geeignetem .ALG file als input
+
+  Startbefehl: (besser: COUNT.BAT oder QUANT.BAT  vom CockPit aus starten)
+
+     srch -f6 -dcount -ecount2/count -v0 -m0 -Umd2     (oder ..-Umd1 )
+        ( ergaenze z.B.  -Umi10  wenn nur Eintraege ab 10 gewuenscht)
+        ( ergaenze z.B.  -Umx100 wenn nur Eintraege bis 100 gewuenscht)
+        ( ergaenze -Uc58  wenn zaehlenmaessige Auswertung gewuenscht)
+
+  Zweck  :  Haeufigkeit der sortierten Eintraege zaehlen,
+            und eine Liste der unterschiedlichen Eintraege mit Zahlen ausgeben
+            (optional: nur Eintraege ober- oder unterhalb einer Schwelle)
+
+  Stapel :  COUNT.BAT, QUANT.BAT
+
+  Anwendbar nur auf eine sortierte .ALG-Daei,
+  jeder Satz muss 2 Felder enthalten:
+    (produziert durch Export mittels C-VARIA.APR o.ae.)
+
+  #u1 sortierbarer StringNNN        (NNN = interne Satznummer)
+  #u2 zu druckender String           (Originaltext aus dem Datensatz)
+
+  Die Liste kann in zwei verschiedenen Formen erstellt werden:
+
+  1:  <Druckstring>  <Anzahl>
+    or
+  2:  <Anzahl>  <Druckstring>   (default, wenn -Umd nicht gesetzt ist)
+      Vorteil:
+        diese Form kann anschliessend nach den Zahlen sortiert werden!
+
+  (#umd wird per Option -Umd auf 1 oder 2 gesetzt beim SRCH-Aufruf)
+
+  Das Programm soll die identischen Eintraege in #u1 zaehlen, aber
+  den zugehoerigen Text aus #u2 ausgeben
+
+  --------- Konstanten (nicht aendern, ausser zl) -----------------
+pn="COUNT 2. Durchlauf"
+
+zl=130      Zeilenbreite beim Druck 
+  
+ae=""       kein automatischer Satzende-Code
+
+zm=0        Kein Seitenumbruch (Ergebnisliste sonst nicht sortierbar)
+
+4=C         neue Zeile (schreibt 13 10 bei DOS, 10 bei UNIX)
+
+  -----------------------------------------------------------------
+
+  *****************************************************************
+
+  Modus :     #umd wird von aussen per Option -U gesetzt:
+
+              srch ... -Umd1  oder  -Umd2
+
+  Variablen:
+  #uc5        Wert 8 bedeutet: zahlenmaessige Auswertung
+  #unr        Zaehler, wird auf 1 gesetzt, wenn #u1 sich aendert
+  #umd        Modus: 1 oder 2, beim Aufruf gesetzt
+  #umi        Minimum:  z.B.  -Umi10  wenn 10 das Min. ist (Default: 0)
+  #umx        Maximum:  z.B.  -Umx10  wenn 10 das Max. ist (Default: 1000000)
+  #uv1        Wert von #u1 beim vorigen Datensatz, zum Vergleichen
+  #uv2        Wert von #u2 beim vorigen Datensatz, zum Drucken
+  #ust        Gesamtsumme (sum total) der Eintraege
+  #usd        Summe der unterschiedlichen Eintraege
+  #usu        Summe der Zahlenwerte
+
+  ***********************************
+  ====== Kopfbefehle   (ak=...) =====
+         werden keine gebraucht
+
+  Das eigentliche Programm faengt hier an:
+
+#uv2 +a e0           Wenn  #uv2  besetzt ist, gehe nach #-a
+  (Ab dem 2. Satz ist #uv2 besetzt, also wird dann immer nach #-a gegangen)
+  Die folgenden Zeilen werden daher nur fuer den ersten Satz ausgefuehrt: 
+  Initialisierung der Variablen (diese Zeilen produzieren keine Ausgabe!)
+#dt x"=1" =nr        Setze Zaehler #unr auf 1
+#dt x"=1" =st        Gesamtsumme auf 1
+#dt x"=1" =rc        record count: Ges.Zahl veraerbeiteter Saetze
+#dt x"=1" =sd        Summe #usd  auf 1
+#dt x"=0" =su        Summe auf 0 setzen
+#umi +M e0           Minimum vorgegeben per -Umi? dann #-M
+#dt x"=0" =mi        nein, Minimum auf 0 setzen
+#-M
+#umx +m e0           Minimum vorgegeben per -Umi? dann #-m
+#dt x"=1000000" =mx  nein, maximum auf 1000000 setzen
+
+#-m
+#u1 e"" x"+su" =su e0   Summieren
+#u1 e"" =v1,0 e0    ersten sortierstring in  #uv1  kopieren
+#u1 =in e0           gleichfalls in #uin
+#u2 =v2,0 e0         ersten Druckstring in    #uv2  kopieren
+#+#                  Das war fuer den ersten Satz alles
+
+  Jetzt kommt, was ab dem 2. Satz passiert:
+
+#-a
+#u1 +@ c"" e0       Wenn  vorkommt -> #-@
+#+G                  sonst #-G
+#-@
+#u1 +G =in           Eintrag incl. interne Nummer gleich?
+#+-                  wenn nicht, dann #-G
+                     sonst ignorieren (Dublette)
+#-G
+#uc5 +H c"8" e0      Zahlenauswertung?
+#+h
+
+#-H
+#u1 e"" x"+su" =su e0   Summieren
+
+#-h
+#ust x"+1" =st       Gesamtsumme der ausgew. Saetze erhoehen
+#urc x"+1" =rc       Gesamtsumme der verarb. Saetze erhoehen
+
+#umd +A x"==1" e0    Modus 1? ( #umd = 1 ) : dann #-A 
+
+#u1 +2 e"" =v1,0 e0   Ist #u1 NICHT = #uv1, dann -> #-2 (und #u1 in #uv1 speichern)
+#+b                  wenn aber gleich, dann -> #-b
+
+#-A                  Modus 1
+#u1 +1 e"" =v1      Ist #u1 NICHT = #uv1, dann -> #-1 (und #u1 in #uv1 speichern)
+
+#-b                  Es war #u1 = #uv1
+#unr x"+1" =nr       Dann erhoehe #unr um 1 
+#+-                  Ende fuer diesen Satz, kein output, naechster Satz
+
+  Modus 1
+
+#-1                  Modus 1, wenn #u1 gewechselt hat
+
+#umi +#unr e0
+#+e
+
+#unr +d x"<mi" e0    Ist der Zaehler < #umi, dann -> #-d
+                     (Wenn #umi nicht gesetzt war, passiert hier nichts)
+#-e
+#umx +g e0           Wenn #umx gesetzt ist, gehe nach #-g
+#+f
+
+#-g
+#unr +d x">mx" e0    #umx ist gesetzt: Zahl #unr darf nicht > #umx sein
+
+#-f
+#uv2                 voriger Drucktext war in  #uv2  gesichert, wird ausgegeben
+
+#unr p"   " e"."     #unr ausgeben, praefix "    "  (e"." schneidet .000 ab,
+                       denn  #unr  enthaelt eine Dezimalzahl!)
+
+#-c
+ #unr +j x">1" e0           Interne Nummer, wenn Zaehler 1
+ #uin b"" p" =Nr."
+ #-j
+#dt x"=1" =nr        Zaehler #unr wieder auf 1
+#usd x"+1" =sd       1 aur #usd addieren
+#u2 =v2,0 e0         Druckstring in #uv2 sichern fuer naechste Druckzeile
+#+#
+
+ Modus 2 (Default)
+
+#-2                   Bei Wechsel von #u1 geht es hier weiter
+
+#unr +d x"<mi" e0     #unr darf nicht < #umi sein, sonst #-d
+
+#unr +d x">mx" e0     #unr darf nicht > #umx sein, sonst #-d
+
+  Jetzt wird eine Zeile gedruckt:
+
+#unr e"." r7 P"   "   zuerst #unr, 7stellig rechtsbuendig
+
+#uv2 p"   "           Drucktext steht noch in #uv2
+
+#+c
+
+  Wenn Minimum unterschritten oder Max. ueberschritten war:
+
+#-d                   Gesmtzahlen korrigieren, wenn Schwelle ueberschritten:
+#ust x"-nr" =st           #ust = #ust - #unr
+#usd x"-1" =sd            #usd = #usd - 1
+#+c
+
+  Prozedur zu Ende, automatisch wird mit dem naechsten Satz begonnen
+
+  *********************************************
+
+#- ENDE               Am Ende der Datei wird automatisch 
+                        dieser Abschnitt ausgefuehrt:
+
+#unr +z x"<mi" e0     #unr darf nicht < #umi sein, sonst #-z
+
+#unr +z x">mx" e0     #unr darf nicht > #umx sein, sonst #-z
+#+Z
+
+#-z                   Gesamtzahlen korrigieren, wenn Schwelle ueberschritten:
+#ust x"-nr" =st           #ust = #ust - #unr
+#usd x"-1" =sd            #usd = #usd - 1
+#+y
+
+#-Z
+#umd +Y x"==1" e0     Modus 1: --> #-Y  (#umd = 1)
+
+  Modus 2:
+ 
+#unr e"." r7 P"   "   zuerst #unr, 7stellig rechtsbuendig 
+#uv2 p"   "           Drucktext steht noch in #uv2
+
+#-y                   Jetzt nur noch die Summen
+#t4
+#t{ " " "_"*40 }      " ___________" damit die Liste sortierbar wird!
+#t4
+#t4
+#ust e"." r7,_ P"  Gesamtzahl der ausgewerteten Eintraege"
+#t4
+#t4
+#usd e"." r7,_ P"  Unterschiedliche Eintraege"
+#t4
+#uc5 +S c"8" e0    Zahlenauswertung?
+#+#   nein, dann hier schluss
+#-S
+#usu e"." r7,_ P"  = Summe"
+#urc e"." p"  (verarbeitete Eintraege: " P")"
+#t4
+#usu x"/rc" F"0" F"." p"__" P"  = Durchschnittswert"
+#t4
+#+#
+
+
+#-Y    Modus 1
+
+#uv2                  Drucktext steht noch in #uv2
+
+#unr "   " e"."       Zaehlung dieses Eintrags 
+
+#+y

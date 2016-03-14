@@ -1,0 +1,187 @@
+
+                      ExFLEX : FLEX von aussen starten
+              a99/alcarta statt "avanti" - Neues Serverkonzept
+
+         Automatisierung von Routineaufgaben, insbes. Auswertungen
+
+Ab der Version 1.2 von a99 und alcarta (ab 7.6.99) gibt es ein neues
+Werkzeug der gehobenen Maechtigkeitsklasse: den Externen FLEX, kurz ExFLEX.
+Ein ExFLEX ist ein FLEX wie jeder andere, aber gespeichert in einer Datei
+des Typs .FLX. Das ging auch schon bisher: wenn man einen FLEX in eine
+Datei ABC schrieb, konnte man "X ABC" in die FLEX-Variable schreiben und
+diese dann ausfuehren lassen, per Alt+i oder per Flip.
+
+Das Neue ist: Ein FLEX kann jetzt von aussen gestartet werden, d.h. von einem
+DOS-Fenster aus. Wenn a99 gestartet wurde, kann man ihm von  DOS aus
+Botschaften zuschicken, welche FLEXe es ausfuehren soll.
+Hierdurch werden "a99" und "alcarta" zu neuartigen Serverprogrammen. Sie
+k”nnen (noch) nicht alles, was "avanti" kann, aber schon eine Menge, die
+Nutzung ist jedoch viel einfacher. Die FLEX-Sprache wurde weiter verbessert
+und erweitert und mit der "avanti"-Sprache harmonisiert.
+(Siehe erweiterte Beschreibung: h flex )
+
+Die FLEX-Dateien muessen einen Namen mit bis zu 8 Zeichen und den
+Dateityp .FLX haben, um sie von anderen zu unterscheiden. Fuer diese Art
+der FLEXibilisierung muss man nichts in den Anzeigeparametern einrichten!
+Es wurde ein ganz kleines Hilfsprogramm geschaffen, mit dem man die
+Befehlsbotschaft an "a99" oder "alcarta" sendet. Dieses Programm FLEX.EXE
+(im Gesamtpaket enthalten) wird so gestartet, um abc.flx ausfuehren zu lassen:
+(nur der reine Dateiname abc, ohne Pfadname und ohne .flx!)
+
+      flex abc
+
+Das kann von Hand geschehen, es kann auch in einem Batch stehen. "flex"
+kehrt erst dann zurueck (d.h. der Batch geht erst dann weiter), wenn
+abc.flx komplett abgearbeitet ist. Auf diese Weise kann man sich Befehle
+und Prozeduren von grosser Maechtigkeit schaffen. (Klar, das setzt einen
+verantwortungsbewussten Datenbankverwalter voraus, der weiss, was er tut.)
+Die Flexdateien werden in dieser Reihenfolge gesucht:
+   DbDir  /  ProgDir\FLEX  /  ProgDir  /  Lokal
+Man hat also hier, wie bei den Hilfedateien, die Moeglichkeit, dafuer
+ein separates Verzeichnis (ProgDir\FLEX, meistens also C:\ALLEGRO\FLEX)
+zu verwenden. (Einen anderen Namen kann man dafuer nicht waehlen)
+
+Wenn abc.flx nicht existiert, passiert einfach nichts!
+
+Wenn gerade kein a99 oder alcarta laeuft, passiert auch nichts.
+
+Wenn mehr als ein a99 oder alcarta laeuft, verarbeitet jedes davon die
+Botschaft, daher sollte dann die FLEX-Datei auf dem Verzeichnis desjenigen
+Programms liegen, fuer das sie bestimmt ist.
+Es ist ansonsten nicht moeglich, die Nachricht gezielt nur an ein
+bestimmtes von evtl.mehreren a99/alcarta-Programmen zu senden.
+Jedoch kann man in einer INI-Datei
+exflex=0
+setzen, dann nimmt das damit gestartete a99 gar keine ExFLEX-Nachricht an.
+
+Moeglich ist auch, statt von Hand oder per Batchdatei, einen FLEX von a99
+aus an ein anderes a99 zu senden. Dazu gibt es den FLEX-Befehl "flex":
+...
+flex abc
+...
+kann innerhalb eines FLEXes stehen und sendet dann die Botschaft "abc"
+an das System, so dass ein anderes a99 sie dann zwangslaeufig erhaelt.
+Findet dieses andere a99 die Datei abc.flx auf seinen Verzeichnissen
+vor, fuehrt es sie aus.
+
+ExFLEX eignet sich wahrscheinlich am meisten fuer die folgende Situation:
+Man braucht regelmaessig eine bestimmte Auswertung, die sich durch
+Export einer bestimmten Ergebnismenge darstellen laesst. Das kann eine
+Berechnung sein, es kann auch eine Liste sein. Die Prozedur packt man in
+eine Datei abc.flx, dann startet man nur bei Bedarf  flex abc, evtl. einge-
+bettet in ein Batch, das die Ergebnisse noch weiterverarbeitet.
+NEU: im FLEX duerfen Kommentare vorkommen: Zeilen, die mit blank beginnen.
+
+Beispiel 1 : Summierung einer Erg.menge
+----------
+SUMME.FLX fuer eine Summenbildung sieht so aus, und
+man startet es mit dem Befehl  flex summe :
+
+  Erg.Menge bilden:
+find sig cs?
+  SUMME.APR laden
+xport p summe
+  Ergebnisse sollen in ERGEBNIS
+xport f ergebnis
+  Gesamte Erg.Menge durcharbeiten
+down set
+  Interne Variable mit "xxx" besetzen
+var xxx
+  und dieses in #uSU speichern
+ins #uSU
+  aktuellen Satz nochmals verarbeiten (Endabschnitt!)
+down
+
+Hier ist angenommen, es gibt ein Register SIG und darin Eintraege, die mit
+"cs" anfangen. Daraus soll die Ergebnismenge gebildet werden. Als Export-
+parameter wird SUMME.APR genommen, geschrieben wird in die Datei ERGEBNIS.
+Zuletzt wird die Hilfsvariable #uSU mit "xxx" belegt, dann noch der aktuelle
+Satz exportiert. Das ist ein Trick: wenn #uSU belegt ist, erfolgt in
+SUMME.APR ein Sprung zu einem Abschnitt, wo die Ergebnisvariablen ausge-
+geben werden. (Damit ist auch das Problem des Endabschnitts zu loesen, der
+von "a99" und "alcarta" bekanntlich nicht ausgegeben wird.)
+Da nach jedem Export die Datei abgeschlossen wird, kann man nach Beendigung
+von flex sofort, ohne "a99" beenden zu muessen, auf ERGEBNIS zugreifen.
+
+Beispiel 2 : Einzelne Saetze einspeisen
+----------
+Situation:
+Es fallen ausserhalb des Programms in unregelmaessigen Abstaenden Daten-
+saetze an, die jeweils sofort in die Datenbank eingemischt werden sollen.
+Jedesmal UPDATE aufzurufen ist moeglich, aber unelegant.
+Jetzt kann man ad hoc jeden Datensatz in einen kleinen FLEX einpacken:
+(den man mit einem geeigneten Prograemmchen extern erzeugt)
+
+new
+#00 ...
+#20 ...
+...
+#90 ...
+put
+
+Die einzelnen Kategorien muessen hier ohne Zeilenbruch fortlaufend
+geschrieben werden! Wenn man diese Datei "neusatz.flx" nennt, kann man sie
+jeweils mit dem Befehl  flex neusatz  an "a99" schicken zum sofortigen
+Einmischen.
+Es koennen mehrere Datensaetze hintereinander mit einem FLEX eingemischt
+werden, jeweils getrennt durch  put / new.
+Wenn "put" fehlt, werden die Saetze zunaechst im Offline-Speicher gehalten!
+
+
+Beispiel 3 : Neue Kategorien in vorh. Saetze einschleusen
+----------
+Hat man die Primaerschluessel oder andere eindeutige Schluessel von Daten-
+saetzen vorliegen, und sollen in bestimmte Saetze bestimmte neue Kategorien
+eingebracht werden, kann das nach diesem Muster geschehen:
+
+find xxx <schluessel>
+    z.B.  find isb 3-519-12343-5
+#nnn text
+put
+
+In solchen Faellen kann also a99 statt UPDATE zum Einsatz kommen, denn
+der FLEX kann aus einer langen Folge solcher Dreizeiler bestehen.
+(Max. FLEX-Laenge: 30.000 Byte)
+
+
+Beispiel 4 : Kurzliste der Erg.Menge geordnet ausgeben
+----------
+Dafuer wurde KURZLIST.FLX mit KURZ.APR vorbereitet. Diese sollten fuer alle
+Kategoriesysteme funktionieren:
+
+  kurz.apr laden
+xport p kurz
+  Ausgabe soll in KLIST:
+xport f klist
+  nach titel ordnen
+order a 0
+  aktuelle Erg.Menge Ausgeben
+download set
+
+Hiermit kann man jederzeit, wenn man eine beliebige Ergebnismenge hat,
+schnell in ein DOS-Fenster gehen,  flex kurzlist  sagen, und schon hat
+man eine Datei KLIST mit der sortierten Kurzliste. Dieses Modell kann
+natuerlich beliebig abgewandelt werden.
+
+------------------------------------------------------------------------
+
+Fuer Programmierer:
+Die Aktivierung von "a99" und "alcarta" wird auf sehr einfache Weise
+erreicht:
+Das Programm FLEX.EXE macht nichts weiter, als eine Windows-Nachricht
+abzusetzen, und zwar die Nachricht  WM_USERCHANGED .
+In C++ ist das der Befehl
+
+   ::SendMessage(HWND_BROADCAST,WM_USERCHANGED,i,j);
+
+Dabei sind i und j zwei 32bit-Zahlen, in denen der Name des FLEX codiert ist
+(je 4 Buchstaben), denn einen String kann man hierbei nicht uebergeben.
+Sind i und j beide 0, wird als Name "ex.flx" angenommen.
+Diese Botschaft geht eigentlich an alle Hauptfenster (also alle laufenden
+Programme), aber da der USER nicht wirklich veraendert wurde, hat
+sie keine Auswirkung, nur "a99" und "alcarta" reagieren darauf.
+Wer also will, kann dieses Verhalten auch aus anderen Programmen heraus
+steuern.
+
+------------------------------
+1999-12-23

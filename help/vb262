@@ -1,0 +1,100 @@
+
+
+
+Verlautbarung 262 der Entw.Abt.                              2014-08-21
+-------------------------------
+
+V34.5 ist da
+------------
+
+Erneuert sind fuer Windows:  inst-all.exe
+sowie fuer Linux:  acon, index, al.job
+
+
+Wer sich fuer die Neuentwicklung  al.job  und ganz allgemein fuer
+FLEX nicht interessiert, kann sich das Updaten diesmal sparen.
+
+
+FLEX: Neue Variable  cs
+-----------------------
+
+Mit  var cs  holt man sich den Wert aus der CS-Zeile der CFG in die iV.
+Also kann man schreiben:
+
+var cs
+if "W" var "Windows-Code (ANSI"#
+if "U" var "Unicode (UTF-8)"
+if "D" var "DOS-Code (ASCII)"
+ins $cs
+
+write "Die Datenbank ist intern in " $cs " codiert." n
+Gebrauch wird davon gemacht in dem Job al.job:
+
+
+al.job
+------
+
+Dieser inzwischen weiter ausgebaute Job wird auch schon in Linux-
+Umgebungen mit UTF-8 eingesetzt. Daran wird, obwohl das Alpha-Stadium
+verlassen ist, noch weiterzuarbeiten sein.
+
+Starten Sie einfach mal nach Installation der V34.5 so:
+(in c:\allegro, oder wo immer Ihr Programmordner ist)
+
+al      [al.bat wird dann ausgefuehrt und startet acon mit al.job]
+
+Alternativ koennen Sie auch in a99 eingeben:
+
+x Dos al
+
+oder im Quick-Menue diese Zeile aktivieren:
+
+Admin-Tool "al" (ab V34.4)
+
+Dann startet acon und fuehrt den al.job aus. Es beginnt so:
+
+FUNCTIONS (Enter '-' to step back at any point, or 'x' back to main menu)
+1 : Index   2 : Record   3 : Find   4 : Review
+a : Admin   p : Properties
+h : Help    m : Make a note      x : Exit
+Your choice:>
+
+Alles in Englisch? Ja, weil in erster Linie sinnvoll fuer Unix/Linux-
+Anwender, und die verstehen das besser.
+Mit Eingabe von  a  fuer "Admin" kommt z.B. dieses Menue:
+
+ADMIN
+1 : Index rebuild  2 : Address table rebuild (.tbl file)
+c : CFG editing    i : Index param   o : Other files
+n : New database   a : Another instance of this job
+p : Properties     s : Settings (extended list)
+l : List of data elements (as defined in CFG)
+- : Back
+
+Und immer kommt man aus einem Menue mit '-' wieder in das
+vorherige Menue zurueck und mit 'x' ins Hauptmenue.
+
+Der Job ist nicht nur zur konkreten Anwendung gedacht, sondern
+auch als Ergaenzung fuer den angehenden FLEXperten. Denn es stecken
+viele Beispiele drin fuer konkrete Aufgaben, die auch in anderen 
+Anwendungen mal brauchbar sein k”nnen, und die sich deshalb zum 
+Lernen sinnvoll eignen. Damit alles verstaendlich wird, sind 
+allerhand Kommentare eingestreut.
+Deshalb auch nochmals der Hinweis auf die neu entstandene, noch
+weiterentwicklungsbeduerftige englischsprachige Doku:
+
+  http://www.allegro-c.de/doku/aconflex.htm
+
+Mit im Paket ist jetzt auch eine engl. Variante  uifseng  der
+uif-Datei fuer acon.
+
+
+Kleinere Programmverbesserungen
+-------------------------------
+Im Zuge der Entwicklung des al.job kamen kleinere Unschaerfen der
+Funktionsweise an verschiedenen Stellen zum Vorschein, z.B. beim
+Befehl "qrix" in acon und a99 und ferner im Programm  index.exe
+bei der Abarbeitung der Optionen -d und -e.
+Wir verzichten auf die detaillierte Darlegung.
+
+

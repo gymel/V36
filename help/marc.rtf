@@ -1,0 +1,720 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss\fprq2\fcharset0 Verdana;}{\f1\froman\fprq2\fcharset0 Rockwell Extra Bold;}{\f2\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;}
+\viewkind4\uc1\pard\f0\fs20 
+\par \pard\qc\cf1\b\i\f1\fs48 almarc\cf0\b0\i0\f0\fs20 
+\par \pard 
+\par \b\i allegro\b0\i0  ist kein MARC-basiertes System. Es war immer schon etwas riskant, ein solches sein zu wollen! Dasselbe gilt f\'fcr MAB, nur bei MAB sieht es inzwischen jeder - MAB wird abgeschafft. Zwar zugunsten von MARC21, aber die Stimmen werden lauter, in Metadaten-Kreisen, da\'df auch MARCs Tage gez\'e4hlt sein sollten. Es stammt aus der Magnetband- und Zettelkatalog-\'c4ra, und das ist deutlich zu sehen und zu f\'fchlen. Diese Themen, so spannend sie sind, sollen hier nicht vertieft werden. Es geht nur darum, sich besser mit MARC-Umgebungen austauschen zu k\'f6nnen, denn Austausch zwischen Systemwelten war und ist von hoher Bedeutung, und eine gr\'f6\'dfere Systemwelt als die MARC-Welt gibt es nicht. 
+\par 
+\par Dieses Dokument stellt in ganz knapper Form die Essenz des Formats MARC21 vor. Felder, die hier nicht erw\'e4hnt sind, haben keine gro\'dfe Bedeutung, es sei denn f\'fcr spezielle Materialien oder Sonderzwecke, nicht f\'fcr Anwendungen im Mainstream. 
+\par Der Text wurde vor einiger Zeit von der LC bereitgestellt und wird hier leicht erweitert, aber weitgehend unver\'e4ndert auf Englisch pr\'e4sentiert. Dies d\'fcrfte sinnvoll sein, weil niemand, der sich mit MARC besch\'e4ftigt, auf Kenntnisse der englischen Terminologie verzichten kann. 
+\par Mit dem allegro-Standardpaket ab V28.3 bereitgestellt und schon ins Export-Komfortmen\'fc eingebunden sind die Parameterdateien \f2 `\cf2\ul\b marcxml.apr\cf0\ulnone\b0 `\f0  und \f2 `\cf2\ul\b marctxt.apr\cf0\ulnone\b0 `\f0 , mit denen man \i allegro\i0 -Daten in heute gebr\'e4uchlichen Formen exportieren kann, insbes. auch hierarchische und verkn\'fcpfte Unters\'e4tze in der f\'fcr deutsche MARC-Daten von der DNB projektierten Weise: es entsteht je ein eigener Satz mit  \f2 700 $a$t$n$p\f0 . 
+\par Au\'dferdem gibt es schon lange \f2 `\cf2\ul\b e-usmarc.apr\cf0\ulnone\b0 `\f0 , die vor l\'e4ngerer Zeit f\'fcr die Verwendung mit dem Z39-Server geschaffen wurde (aus hierarchischen Unters\'e4tzen wird hierbei aber eine 505 gebildet). Alle diese Parameter benutzen die Umwandlungstabelle \f2 `\cf2\ul\b ad-ansel.apt\cf0\ulnone\b0 `\f0 , die OstWest-Codes in die MARC-\'fcblichen ANSEL-Codes verwandelt. 
+\par 
+\par 
+\par \pard\qc\b\fs24 A Summary of Commonly Used MARC 21 Fields 
+\par \pard\fs28 
+\par \b0\fs20 This is a summary of the MARC 21 tags used most frequently by libraries. For full listings of all MARC 21 tags, indicators, and subfield codes, see "MARC 21 Format for Bibliographic Data" at  \b\f2 http://www.loc.gov/marc/\b0\f0 . 
+\par 
+\par \b Terms used in the explanations on these pages: 
+\par 
+\par Tags\b0  : The tags (3-digit numbers) are followed by the names of the fields they represent. In this summary, and in the MARC 21 Format for Bibliographic Data, if a tag can appear more than once in one bibliographic record, it is labeled repeatable (R). If it can only be used once, it is labeled non-repeatable (NR). For example, a catalog record can have several subjects, so the tags for subject added entries (6XX) are labeled repeatable (R). 
+\par 
+\par \b Indicators\b0  : The use of indicators is explained in fields where they are used. Indicators are one-digit numbers. Beginning with the 010 field, in every field -- following the tag -- are two character positions, one for Indicator 1 and one for Indicator 2. The indicators are not actually defined in all fields, however. And it is possible that a 2nd indicator will be used, while the 1st indicator remains undefined (or vice versa). When an indicator is undefined, the character position will be represented by the character \b #\b0  (for blank space). 
+\par 
+\par \b Subfield codes\b0  : All the data in each field (beginning with the 010 field) is divided into subfields, each of which is preceded by a delimiter-subfield code combination. The most common subfield codes used with each tag are shown. Each subfield code is preceded by the character \b $\b0 , signifying a delimiter. The name of the subfield follows the code, the subfield content follows immediately thereafter, with no intervening blank. 
+\par 
+\par In general, every field MUST have a subfield 'a' (\b $a\b0 ). One exception that is often seen is in Field 020 (ISBN), when the ISBN information (subfield $a) is unavailable but the price (subfield $c) is known. Some subfields are repeatable. In this summary, repeatability is noted for only the more common repeatable subfields. 
+\par 
+\par \i Examples\i0  follow the explanation for each field. 
+\par \tab\i For clarity only\i0 , one space has been placed between the tag and the first indicator, one space has been placed between the second indicator and the first subfield code, and one space has been inserted between the subfield code and the subfield data. In real data, there spaces are not correct and may cause trouble! 
+\par 
+\par \b `\cf2\ul Leader\cf0\ulnone `    ... \b0 see further down\b 
+\par \b0\f2\tab 24 Bytes at the head of every MARC record 
+\par \b\f0 
+\par 008 `\cf2\ul Fixed fields\cf0\ulnone ` 
+\par 
+\par 
+\par 010 Library of Congress Control Number -- (LCCN) 
+\par \b0\f2\tab (NR = Not Repeatable) 
+\par \tab Indicators undefined. 
+\par $a -- Library of Congress control number 
+\par 
+\par      Example:    010 ## $a ###86000988# 
+\par 
+\par \b\f0 020 International Standard Book Number -- (ISBN) 
+\par \b0\f2\tab (R = Repeatable) 
+\par \tab\i Indicators undefined.\i0  
+\par $a -- International Standard Book Number 
+\par $c -- Terms of availability (often a price) 
+\par $z -- Cancelled/invalid ISBN (R) 
+\par 
+\par      Example:    020 ## $a 0877547637 
+\par \f0  
+\par 
+\par \b 040 Cataloging source -- (NR) 
+\par \b0\f2\tab\i Indicators undefined.\i0  
+\par $a -- Original cataloging agency 
+\par $c -- Transcribing agency 
+\par $d -- Modifying agency (R) 
+\par 
+\par      Example:    040 ## $a DLC 
+\par                         $c DLC 
+\par                         $d gwhs  
+\par \f0 
+\par \b 100 Main entry -- Personal name -- (primary author)\f2 
+\par \b0\tab (NR; there can be only one main entry) 
+\par \tab Indicator 1: Type of personal name entry element 
+\par 0 -- Forename 
+\par 1 -- Surname (this is the most common form) 
+\par 3 -- Family name 
+\par \i\tab Indicator 2 undefined. 
+\par \pard\li710\tab Indicator 2 obsoleted in 1990. Older records may have 0 or 1 \i0 
+\par \pard $a -- Personal name 
+\par $b -- Numeration 
+\par $c -- Titles and other words associated with a name (R) 
+\par $q -- Fuller form of name 
+\par $d -- Dates associated with a name (generally, year of birth-) 
+\par 
+\par      Example:    100 1# $a Gregory, Ruth W. 
+\par                         $q (Ruth Wilhelme), 
+\par                         $d 1910- 
+\par 
+\par \b\f0 130 Main entry -- Uniform title -- (NR) 
+\par \b0\f2\tab Indicator 1: Nonfiling characters 
+\par \pard\li710\tab 0-9 -- Number of nonfiling characters present (for initial articles, including spaces) 
+\par \pard\tab Indicator 2 \i undefined.\i0  
+\par \tab Indicator 2 \i became obsolete in 1990. (See 100 above.)\i0  
+\par $a -- Uniform title 
+\par $p -- Name of part/section of a work (R) 
+\par $l -- Language of a work 
+\par $s -- Version 
+\par $f -- Date of a work 
+\par 
+\par      Example:    130 0# $a Bible. 
+\par                         $p O.T. 
+\par                         $p Psalms. 
+\par 
+\par \b\f0 240 Uniform title (NR)  
+\par \b0\f2\tab Indicator 1: Uniform title printed or displayed 
+\par 0 -- Not printed or displayed 
+\par 1 -- Printed or displayed (most common) 
+\par \tab Indicator 2: Nonfiling characters 
+\par \pard\li710\tab 0-9 -- Number of nonfiling characters present (for initial articles, including spaces) 
+\par \pard $a -- Uniform title 
+\par $l -- Language of a work 
+\par $f -- Date of a work 
+\par 
+\par      Example:    240 10 $a Ile myst\'e9rieuse. 
+\par                         $l English. 
+\par                         $f 1978 
+\par 
+\par \pard\fi-568\li568\b\f0 245 Title Statement (NR)  \f2 
+\par \b0   \tab Indicator 1: Title added entry 
+\par    \tab (Should the title be indexed as a title added entry?) 
+\par     0 -- No title added entry 
+\par \pard\fi-568\li852       (indicates a title main entry; i.e. no author is given) 
+\par \pard\fi-568\li568     1 -- Title added entry 
+\par \pard\fi-994\li1278       (the proper indicator when an author given in 1XX; the most common situation) 
+\par \pard\fi-568\li568\tab Indicator 2: Nonfiling characters 
+\par \pard\fi-1420\li1420     \tab\tab 0-9 -- Number of nonfiling characters present, including spaces; usually set at zero, except when the title begins with an article; e.g., for The robe, the second indicator would be set to 4. The letters T, h, e, and the space following them are then ignored in alphabetizing titles. The record will be automatically filed under "r" -- for Robe. 
+\par \pard\fi-568\li568     $a -- Title proper 
+\par     $h -- Medium (often used for non-book media) 
+\par     $n -- Number of part/section of a work (R) 
+\par     $p -- Name of part/section of a work (R) 
+\par     $b -- Reminder of title (subtitles, etc.) 
+\par \pard\fi-1278\li1278     $c -- Remainder of title page transcription/Statement of responsibility 
+\par \pard         
+\par      Example:    245 14 $a The DNA story : 
+\par                         $b a documentary history of gene 
+\par                            cloning / 
+\par                         $c James D. Watson, John Tooze. 
+\par 
+\par \b\f0 246 Varying form of title (R)  \f2 
+\par \b0\tab Indicator 1: Note/title added entry controller 
+\par 1 -- Note, title added entry 
+\par 3 -- No note, title added entry 
+\par \tab Indicator 2: Type of title 
+\par # -- No information provided 
+\par 0 -- Portion of title 
+\par 1 -- Parallel title 
+\par 4 -- Cover title 
+\par 8 -- Spine title 
+\par 
+\par $a -- Title proper 
+\par 
+\par      Example:    246 3# $a Four corners power review 
+\par 
+\par 
+\par \b\f0 250 Edition statement (NR)  \f2 
+\par \b0\tab\i Indicators undefined.\i0  
+\par $a -- Edition statement 
+\par 
+\par      Example:    250 ## $a 6th ed. 
+\par 
+\par 
+\par \b\f0 260 Publication, distribution, etc. (Imprint) (R)  \f2 
+\par \b0\tab Indicator 1: Sequence of publishing statements 
+\par # -- No information provided 
+\par \tab Indicator 2: Undefined 
+\par $a -- Place of publication, distribution, etc. (R) 
+\par $b -- Name of publisher, distributor, etc. (R) 
+\par $c -- Date of publication, distribution, etc. (R) 
+\par 
+\par      Example:    260 ## $a New York : 
+\par                         $b Chelsea House, 
+\par                         $c 1986. 
+\par 
+\par \b\f0 300 Physical description (R)  \f2 
+\par \b0\tab\i Indicators undefined.\i0  
+\par $a -- Extent (number of pages) (R) 
+\par $b -- Other physical details (usually illustration information) 
+\par $c -- Dimensions (cm.) (R) 
+\par \pard\fi-710\li710 $e -- Accompanying material (for example, "teacher's guide" or "manual") 
+\par \pard 
+\par      Example:    300 ## $a 139 p. : 
+\par                         $b ill. ;      
+\par                         $c 24 cm. 
+\par 
+\par \b\f0 440 Series statement / Added entry--Title (R)  \f2 
+\par \b0\tab Indicator 1 undefined 
+\par \tab Indicator 2: Nonfiling characters 
+\par \pard\fi-710\li710\tab 0-9 -- Number of nonfiling characters present (for initial articles, including spaces) 
+\par \pard $a -- Title 
+\par $v -- Volume number 
+\par 
+\par      Example:    440 #0 $a Modern critical views ; 
+\par                         $v 26 
+\par 
+\par \b\f0 490 Series statement (No added entry is traced from field) (R)  \f2 
+\par \pard\fi-710\li710\tx284\b0\tab Indicator 1: Specifies whether series is traced (whether an 8XX tag is also present, tracing the series differently) 
+\par \pard 0 -- Series not traced 
+\par 1 -- Series traced differently (8XX is in record) 
+\par \tab Indicator 2 undefined. 
+\par $a -- Series statement (R) 
+\par $v -- Volume number (R) 
+\par 
+\par      Example:    490 1# $a Colonial American craftsmen 
+\par 
+\par \b\f0 500 General note (R)  \f2 
+\par \b0\i\tab Indicators undefined. \i0 
+\par \pard\fi-710\li710 $a -- General note (Used when no specialized note field has been defined for the information. Examples: Notes regarding the index; the source of the title; variations in title; descriptions of the nature, form, or scope of the item.) 
+\par \pard 
+\par      Example:    500 ##  $a Includes index. 
+\par 
+\par \b\f0 504 Bibliography, etc. note (R)  \f2 
+\par \b0\i\tab Indicators undefined. 
+\par \i0 $a -- Bibliography, etc. note 
+\par 
+\par 
+\par      Example:    504 ## $a Includes bibliographical 
+\par                            references. 
+\par 
+\par \b\f0 505 Formatted contents note (R)  \f2 
+\par \b0\tab Indicator 1: Type of contents note 
+\par 0 -- Complete contents 
+\par \pard\fi-710\li710 1 -- Incomplete contents (used with multivolume set when some volumes are not yet published) 
+\par \pard 2 -- Partial contents 
+\par \tab Indicator 2: Level of content designation 
+\par # -- Basic 
+\par 
+\par $a -- Formatted contents note 
+\par 
+\par      Example:    505 0# $a Pride and prejudice -- Emma 
+\par                            -- Northanger Abbey. 
+\par 
+\par \b\f0 520 Summary, etc. note (R)  \f2 
+\par \b0\tab Indicator 1: Display constant controller 
+\par # -- Summary 
+\par 1 -- Review 
+\par 2 -- Scope and content 
+\par 3 -- Abstract 
+\par \tab Indicator 2 undefined 
+\par $a -- Summary, abstract, or annotation 
+\par $b -- Expansion of summary note 
+\par 
+\par      Example:    520 ## $a This basic guide to parliamentary 
+\par                            procedure tells how to conduct 
+\par                            and participate in a meeting 
+\par                            properly. 
+\par 
+\par \b\f0 600 Subject added entry -- Personal name (R)  \f2 
+\par \b0\tab Indicator 1: Type of personal name entry element 
+\par 0 -- Forename 
+\par 1 -- Surname (this is the most common form) 
+\par 3 -- Family name 
+\par \pard\li710\tab Indicator 2: Subject heading system/thesaurus (identifies the specific list or file which was used) 
+\par \pard 0 -- Library of Congress Subject Headings 
+\par 1 -- LC subject headings for children's literature 
+\par 2 -- Medical Subject Headings 
+\par 3 -- National Agricultural Library subject authority file 
+\par 4 -- Source not specified 
+\par 5 -- Canadian Subject Headings 
+\par 6 -- R\'e9pertoire de vedettes-mati\'e8re 
+\par 7 -- Source specified in subfield $2 
+\par 
+\par $a -- Personal name (surname and forename) 
+\par $b -- Numeration 
+\par $c -- Titles and other words associated with a name (R) 
+\par $q -- Fuller form of name 
+\par $d -- Dates associated with a name (generally, year of birth) 
+\par $t -- Title of a work 
+\par $v -- Form subdivision (R) 
+\par $x -- General subdivision (R) 
+\par $y -- Chronological subdivision (R) 
+\par $z -- Geographic subdivision (R) 
+\par \pard\fi-710\li710 $2 -- Source of heading or term (used with 2nd indicator of 7, for ex. "sears") 
+\par \pard 
+\par      Example:    600 10 $a Shakespeare, William, 
+\par                         $d 1564-1616 
+\par                         $x Comedies    
+\par                         $x Stage history. 
+\par 
+\par      Example:    600 10 $a Shakespeare, William, 
+\par                         $d 1564-1616 
+\par                         $x Knowledge 
+\par                         $z Rome 
+\par                         $v Congresses. 
+\par 
+\par Notice that subfields $v, $x, and $z in the 600 field are repeatable. Subfields $v, $x, $y, and $z do not have to be in alphabetical order. They will be in the order prescribed by the instructions given by the subject heading system. 
+\par 
+\par \b\f0 610 Subject added entry -- Corporate name (R)  \f2 
+\par \b0\tab Indicator 1: Type of corporate name entry element 
+\par 0 -- Inverted name (not used with AACR2) 
+\par 1 -- Jurisdiction name 
+\par 2 -- Name in direct order 
+\par \tab Indicator 2: Subject heading system/thesaurus. 
+\par \tab See indicator 2 under 600 
+\par $a -- Corporate name or jurisdiction name as entry element 
+\par $b -- Subordinate unit (R) 
+\par $v -- Form subdivision (R) 
+\par $x -- General subdivision (R) 
+\par $y -- Chronological subdivision (R) 
+\par $z -- Geographic subdivision (R) 
+\par $2 -- Source of heading or term (used with 2nd indicator of 7) 
+\par 
+\par      Example:    610 10 $a United States. 
+\par                         $b Army Air Forces 
+\par                         $v Biography. 
+\par 
+\par \b\f0 650 Subject added entry -- Topical term (Most subject headings fit here.) (R)  \f2 
+\par \b0\tab Indicator 1: Level of subject 
+\par # -- No information provided 
+\par \tab Indicator 2: Subject heading system/thesaurus 
+\par \tab (identifies the specific list or file which was used) 
+\par 0 -- Library of Congress Subject Headings 
+\par 1 -- LC subject headings for children's literature 
+\par 2 -- Medical Subject Headings 
+\par 3 -- National Agricultural Library subject authority file 
+\par 4 -- Source not specified 
+\par 5 -- Canadian Subject Headings 
+\par 6 -- R\'e9pertoire de vedettes-mati\'e8re 
+\par 7 -- Source specified in subfield $2 
+\par 
+\par $a -- Topical term 
+\par $v -- Form subdivision (R) 
+\par $x -- General subdivision (R) 
+\par $y -- Chronological subdivision (R) 
+\par $z -- Geographic subdivision (R) 
+\par $2 -- Source of heading or term used with 2nd indicator of 7) 
+\par 
+\par      Example:    650 #0 $a Theater 
+\par                         $z United States 
+\par                         $v Biography 
+\par                         $v Dictionaries. 
+\par 
+\par Notice that subfields $v, $x, and $z in the 650 field are repeatable. Subfields $v, $x, $y, and $z do not have to be in alphabetical order. They will be in the order prescribed by the instructions given by the subject heading system. 
+\par 
+\par \b\f0 651 Subject added entry -- Geographic name (R)  \f2 
+\par \b0\tab Indicator 1: undefined. 
+\par \tab Indicator 2: Subject heading system/thesaurus. 
+\par \tab See indicator 2 under 600 
+\par $a -- Geographic name 
+\par $v -- Form subdivision (R) 
+\par $x -- General subdivision (R) 
+\par $y -- Chronological subdivision (R) 
+\par $z -- Geographic subdivision (R) 
+\par $2 -- Source of heading or term (used with 2nd indicator of 7) 
+\par 
+\par      Example:    651 #0 $a United States 
+\par                         $x History 
+\par                         $v Chronology. 
+\par 
+\par Notice that subfields $v, $x, and $z in the 651 field are repeatable. Subfields $v, $x, $y, and $z do not have to be in alphabetical order. They will be in the order prescribed by the instructions given by the subject heading system. 
+\par 
+\par \b\f0 700 Added entry -- Personal name (R)  \f2 
+\par \b0\tab Indicator 1: Type of personal name entry element 
+\par 0 -- Forename 
+\par 1 -- Surname (this is the most common form) 
+\par 3 -- Family name 
+\par \tab Indicator 2: Type of added entry 
+\par # -- No information provided (most common; co-authors, editors, etc.) 
+\par \pard\fi-710\li710 2 -- Analytical entry (The values for Indicator 2 changed in 1994 with Format Integration, and older records may display additional values. An analytical entry involves an author/title of an item contained in a work.) 
+\par \pard $a -- Personal name 
+\par $b -- Numeration 
+\par $c -- Titles and other words associated with a name (R) 
+\par $q -- Fuller form of name 
+\par $d -- Dates associated with a name (generally, year of birth) 
+\par $t -- Title of a work 
+\par $n -- Number of part/section of a work 
+\par $p -- Name of part/section of a work 
+\par $e -- Relator term (such as ill.) (R) 
+\par $4 -- Relator code (R) 
+\par      Example:    700 1# $a Baldridge, Letitia.  
+\par 
+\par \b\f0 710 Added entry -- Corporate name (R)  \f2 
+\par \b0\tab Indicator 1: Type of corporate name entry element 
+\par 0 -- Inverted name (not used with AACR2) 
+\par 1 -- Jurisdiction name 
+\par 2 -- Name in direct order 
+\par \tab Indicator 2: Type of added entry. 
+\par \tab See Indicator 2 under 700 
+\par # -- No information provided 
+\par 2 -- Analytical entry 
+\par $a -- Corporate name or jurisdiction name as entry element 
+\par $b -- Subordinate unit (R) 
+\par      Example:    710 2# $a Sunburst Communications (Firm) 
+\par 
+\par \b\f0 740 Added entry -- Uncontrolled related/analytical title (R)  \f2 
+\par \b0\tab Indicator 1: Nonfiling characters 
+\par \pard\fi-852\li852\tab 0-9 -- Number of nonfiling characters present (for initial articles, including spaces) 
+\par \pard\tab Indicator 2:Type of added entry. See Indicator 2 under 700 
+\par # -- No information provided 
+\par 2 -- Analytical entry 
+\par (This field was redefined in 1994 with Format Integration. Prior to 1994, the field was also used for variant titles, such as a different wording on a spine title. In records created since Format Integration, those variant tiles appear in a 246 field.) 
+\par $a -- Title 
+\par      Example:    740 02 $a Uncle Vanya. 
+\par 
+\par \b\f0 800 Series added entry -- Personal name (R)  \f2 
+\par \b0\tab Indicator 1: Type of personal name entry element 
+\par 0 -- Forename 
+\par 1 -- Surname 
+\par 3 -- Family name 
+\par \tab Indicator 2 undefined. 
+\par $a -- Personal name 
+\par $b -- Numeration 
+\par $c -- Titles and other words associated with a name (R) 
+\par $q -- Fuller form of name 
+\par $d -- Dates associated with a name (generally, year of birth) 
+\par $t -- Title of a work (the series) 
+\par $v -- Volume number 
+\par      Example:    800 1# $a Fisher, Leonard Everett. 
+\par                         $t Colonial American craftsmen. 
+\par 
+\par \b\f0 830 Series added entry -- Uniform title (R)  \f2 
+\par \b0\tab Indicator 1 undefined. 
+\par \tab Indicator 2: Nonfiling characters 
+\par \pard\fi-710\li710\tab 0-9 -- Number of nonfiling characters present (for initial articles, including spaces) 
+\par \pard $a -- Uniform title 
+\par $v -- Volume number 
+\par 
+\par      Example:    830 #0 $a Railroads of America (Macmillan) 
+\par 
+\par \f0 
+\par -------------------------------------------------------------------------------- 
+\par 
+\par \b Other Fields Often Seen in MARC Records\b0  
+\par \pard\fi-710\li710\f2 001  Control number 
+\par 003  Control number identifier 
+\par 005  Date and time of latest transaction 
+\par 006  Fixed-length data elements -- additional material characteristics 
+\par 007  Physical description fixed field 
+\par 008  Fixed length data elements (See Part X) 
+\par 022  International Standard Serial Number (ISSN) 
+\par 037  Source of acquisition 
+\par 041  Language code 
+\par 043  Geographic area code 
+\par 050  Library of Congress call number 
+\par 060  National Library of Medicine call number 
+\par 082  Dewey Decimal classification number (the one recommended by the Library of Congress; locally-assigned call numbers may appear elsewhere) 
+\par 110  Main entry -- Corporate name (less frequent under AACR2 rules) 
+\par 256  Computer file characteristics 
+\par 263  Projected publication date 
+\par \tab (indicates a CIP (Cataloging in Publication) record) 
+\par 306  Playing time 
+\par 508  Creation/production credits note 
+\par 510  Citation/references note (review sources) 
+\par 511  Participant or performer note 
+\par 521  Target audience note (first indicator: 0 = reading grade level, 1 = interest age level, 2 = interest grade level, 3 = special audience characteristics, 4 = motivation interest level) 
+\par 530  Additional physical form available note 
+\par 538  System details note 
+\par 586  Awards note 
+\par 656  Index term -- Occupation 
+\par 730  Added entry -- Uniform title 
+\par 852  Location 
+\par 856  Electronic location and access 
+\par 9XX  Reserved for local use. (They are used by vendors, systems, or individual libraries to exchange additional data) 
+\par 
+\par \pard\f0 
+\par -------------------------------------------------------------------------------- 
+\par 
+\par \b The Leader\b0  
+\par There are 24 positions in the Leader, numbered from 00 to 23. For fuller explanation, see the MARC 21 Format for Bibliographic Data. 
+\par 
+\par \b\f2 00-04 Record length (calculated by the computer for each record) 
+\par \b0  
+\par \b 05 Record status 
+\par \b0  a = increase in encoding level 
+\par  c = corrected or revised 
+\par  d = deleted 
+\par  n = new 
+\par  p = increase in encoding from prepublication (previous CIP) 
+\par \b 
+\par 06 Type of record 
+\par \b0  a = language material 
+\par  c = printed music 
+\par  d = manuscript music 
+\par  e = cartographic material 
+\par  f = manuscript cartographic material 
+\par  g = projected medium 
+\par  i = nonmusical sound recording 
+\par  j = musical sound recording 
+\par  k = 2-dimensional nonprojectable graphic 
+\par  m = computer file 
+\par  o = kit 
+\par  p = mixed materials 
+\par  r = 3-dimensional artifact or naturally occurring object 
+\par  t = manuscript language material 
+\par  
+\par \b 07 Bibliographic level 
+\par \b0  a = monographic component part 
+\par  b = serial component part 
+\par  c = collection 
+\par  d = subunit 
+\par  i = integrating resource 
+\par  m = monograph/item 
+\par  s = serial 
+\par  
+\par \b 08 Type of control 
+\par \b0  # = no specified type 
+\par  a = archival 
+\par  
+\par \b 09 Character coding scheme 
+\par \b0  # = MARC-8 
+\par  a = UCS/Unicode 
+\par \b 
+\par 10 Indicator count (always "2") 
+\par 11 Subfield code count (always "2") 
+\par \pard\fi-710\li710 12-16 Base address of data (calculated by the computer for each record) 
+\par \pard 
+\par 17 Encoding level 
+\par \b0  # = full level 
+\par  1 = full level, material not examined 
+\par  2 = less-than-full level, material not examined 
+\par  3 = abbreviated level 
+\par  4 = core level 
+\par  5 = partial (preliminary) level 
+\par  7 = minimal level 
+\par  8 = prepublication level (CIP) 
+\par  u = unknown 
+\par  z = not applicable 
+\par  
+\par \b 18 Descriptive cataloging form 
+\par \b0  # = non-ISBD 
+\par  a = AACR2 
+\par  i = ISBD 
+\par  u = unknown 
+\par  
+\par \b 19 Multipart resource record level 
+\par \b0   # = not specified or not applicable 
+\par   a = Set  [main record for the multipart work as a whole] 
+\par   b = Part with independent title 
+\par   c = Part with dependent title 
+\par 
+\par \b 20 Length of the length-of-field portion \b0 (always "4")\b  
+\par 21 Length of the starting-character-position portion \b0 (always "5")\b  
+\par 22 Length of the implementation-defined portion \b0 (always "0")\b  
+\par 23 Undefined (always "0") 
+\par \b0  
+\par \f0 -------------------------------------------------------------------------------- 
+\par 
+\par \b Field 008 for Books \f2 
+\par \b0 Field 008 is used for Fixed Length Data Elements ("Fixed Field Codes"). 
+\par There are 40 character positions in field 008, numbered from 00-39. 
+\par Undefined positions must contain either a blank (#) or a fill character ( | ). 
+\par Positions 00-17 and 35-39 are defined the same way for all media. 
+\par 
+\par The information shown here for positions 18-34 applies only to books. For explanation of all the positions below and for positions 18-34 for other media, see the MARC 21 Format for Bibliographic Data. 
+\par 
+\par Note that field 008 has no indicators or subfield codes. 
+\par 
+\par \b\f0 00-05 Date entered on file\f2  (YYMMDD), 
+\par \b0\tab where Y=year, M=month, and D=day 
+\par  
+\par \b\f0 06 Type of date/publication status\b0\f2 : 
+\par  b = no dates given; B.C. date involved 
+\par  e = detailed date 
+\par  s = single known date/probable date 
+\par  m = multiple dates 
+\par  r = reprint/reissue date (Date 1) and original date (Date 2) 
+\par  n = dates unknown 
+\par  q = questionable date 
+\par  t = publication date and copyright date 
+\par  | = no attempt to code 
+\par  
+\par \b\f0 07-10 Date 1/beginning date of publication  \f2 
+\par 11-14 Date 2/ending date of publication 
+\par 
+\par \b0 Date fields contain the year(s) of publication. The type of date(s) in these elements are specified in fixed field element 06: Type of date/publication status. (For further details, see the field 008 description in the MARC 21 Format for Bibliographic Data.) 
+\par 
+\par \b\f0 15-17 Place of publication, production, or execution \f2 
+\par \b0 For example: 
+\par  pk# = Pakistan 
+\par  cau = California (US) 
+\par (For a full list of codes used in these positions, see the MARC Code List for Countries.) 
+\par 
+\par \b\f0 18-21 Illustrations (up to 4 codes):  \f2 
+\par \b0  # = no illustrations 
+\par  a = illustrations 
+\par  b = maps 
+\par  c = portraits 
+\par  d = charts 
+\par  e = plans 
+\par  f = plates 
+\par  g = music 
+\par  h = facsimiles 
+\par  i = coats of arms 
+\par  j = genealogical tables 
+\par  k = forms 
+\par  l = samples 
+\par  m = phonodisc, phonowire, etc. 
+\par  o = photographs 
+\par  p = illuminations 
+\par  | = no attempt to code 
+\par  
+\par \b\f0 22 Target audience:  \f2 
+\par \b0  # = unknown or not specified 
+\par  a = preschool 
+\par  b = primary 
+\par  c = pre-adolescent 
+\par  d = adolescent 
+\par  e = adult 
+\par  f = specialized 
+\par  g = general 
+\par  j = juvenile 
+\par  | = no attempt to code 
+\par  
+\par \b\f0 23 Form of item:  \f2 
+\par \b0  # = none of the following 
+\par  a = microfilm 
+\par  b = microfiche 
+\par  c = microopaque 
+\par  d = large print 
+\par  f = braille 
+\par  r = regular print reproduction 
+\par  s = electronic 
+\par  | = no attempt to code 
+\par  
+\par \b\f0 24-27 Nature of contents (up to 4):  \f2 
+\par \b0  # = no specified nature of contents 
+\par  a = abstracts/summaries 
+\par  b = bibliographies (is one or contains one) 
+\par  c = catalogs 
+\par  d = dictionaries 
+\par  e = encyclopedias 
+\par  f = handbooks 
+\par  g = legal articles 
+\par  i = indexes 
+\par  j = patent document 
+\par  k = discographies 
+\par  l = legislation 
+\par  m = theses 
+\par  n = surveys of literature 
+\par  o = reviews 
+\par  p = programmed texts 
+\par  q = filmographies 
+\par  r = directories 
+\par  s = statistics 
+\par  t = technical reports 
+\par  u = standards/specifications 
+\par  v = legal cases and notes 
+\par  w = law reports and digests 
+\par  z = treaties 
+\par  | = no attempt to code 
+\par  
+\par \b\f0 28 Government publication:  \f2 
+\par \b0  # = not a government publication 
+\par  i = international intergovernmental 
+\par  f = federal/national 
+\par  a = autonomous or semi-autonomous component 
+\par  s = state, provincial, territorial, dependent, etc. 
+\par  m = multistate 
+\par  c = multilocal 
+\par  l = local 
+\par  z = other type of government publication 
+\par  o = government publication -- level undetermined 
+\par  u = unknown if item is government publication 
+\par  | = no attempt to code 
+\par  
+\par \b\f0 29 Conference publication:  \f2 
+\par \b0  0 = not a conference publication 
+\par  1 = conference publication 
+\par  | = no attempt to code 
+\par  
+\par \b\f0 30 Festschrift:  \f2 
+\par \b0  0 = not a festschrift 
+\par  1 = festschrift 
+\par  | = no attempt to code 
+\par  
+\par \b\f0 31 Index:  \f2 
+\par \b0  0 = no index 
+\par  1 = index present 
+\par  | = no attempt to code 
+\par  
+\par \b\f0 32 Undefined (since 1990) 
+\par \tab (Earlier records may contain the values 0 or 1) \f2 
+\par \b0  # = Undefined 
+\par  | = no attempt to code 
+\par  
+\par \b\f0 33 Literary form:  \f2 
+\par \b0  0 = not fiction (not further specified) 
+\par  1 = fiction (not further specified) 
+\par  c = comic strips 
+\par  d = dramas 
+\par  e = essays 
+\par  f = novels 
+\par  h = humor, satires, etc. 
+\par  i = letters 
+\par  j = short stories 
+\par  m = mixed forms 
+\par  p = poetry 
+\par  s = speeches 
+\par  u = unknown 
+\par  | = no attempt to code 
+\par  
+\par \b\f0 34 Biography:  \f2 
+\par \b0  # = no biographical material 
+\par  a = autobiography 
+\par  b = individual biography 
+\par  c = collective biography 
+\par  d = contains biographical information 
+\par  | = no attempt to code 
+\par  
+\par \b\f0 35-37 Language: \f2 
+\par \b0 A three-letter code. For example: eng fre ger spa rus ita 
+\par (For a full list of codes used in these positions, see the MARC Code List for Languages.) 
+\par 
+\par \b\f0 38 Modified record:  \f2 
+\par \b0  # = not modified 
+\par \pard\fi-568\li568  x = missing characters (because of characters unavailable in MARC character set) 
+\par \pard  s = shortened 
+\par  d = "dashed-on" information omitted 
+\par  r = completely romanized/printed cards in script 
+\par  o = completely romanized/printed cards romanized 
+\par  | = no attempt to code 
+\par  
+\par \b\f0 39 Cataloging source:  \f2 
+\par \b0  # = national bibliographic agency 
+\par  c = cooperative cataloging program 
+\par  d = other sources 
+\par  u = unknown 
+\par  | = no attempt to code 
+\par \f0  
+\par ?marcxml.apr=h marcxml.apr 
+\par ?marctxt.apr=h marctxt.apr 
+\par ?e-usmarc.apr=h e-usmarc.apr 
+\par ?ad-ansel.apt=h ad-ansel.apt 
+\par ?Leader=h =The Leader
+\par ?Fixed fields=h =Field 008 for books
+\par 
+\par }
+ 

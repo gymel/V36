@@ -1,0 +1,96 @@
+  VIEWGRUP.APR : Gruppierte ViewListe mit Zwischensummen
+  2000-07-30  Einsetzbar fuer jedes Kategoriesystem
+  
+  Wird mit SRCH eingesetzt, um ViewListe vorzubearbeiten
+  Aufruf aus VIEWFORM.FLX, VIEWPARA.FLX, VIEW2.FLX.
+  Benutzt wird nur #u2 (Resultat einer View-Produktion nach der Sortierung)
+  #u2 hat die Struktur  satznr|gruppe:text_zahl
+      wenn satznr=0, ist es eine Zwischenzeile, kein Datensatz (s.u.)
+
+  Ausgegeben wird generell mit Zeilenlaenge 72
+  andere Laenge gewuenscht? Unten ueberall 62 und 72 aendern.
+  Es muss hier mit festen Laengen gearbeitet werden, TAB-Zeichen gehen nicht!
+
+zl=120     max. Zeilenlaenge (wird nicht ausgenutzt)
+zm=0       kein Seitenumbruch
+
+4=C        Zwischenteil fuer Zeilenvorschub
+
+#ua1 +A e0    flag schon gesetzt? dann -> #-A
+   Initialisierung der Summen (nur beim ersten Satz)
+#nr p"0" e1 =gr     gruppensumme
+#nr p"0" e1 =to     totalsumme
+#urf drf    Rundungsflag beseitigen
+#nr =a1    flag setzen
+
+#ugg +A e0
+#nr =gg       #ugg noch unbesetzt
+#+B       passiert nur bei der ersten Zeile (Ueberschrift)
+
+#-A
+
+#u2 +C B"|" e":" e"_" =gg     selbe Gruppe? Nein -> #-C
+
+#-B    Datenzeile ausgeben
+#u2 e"|" P"|"    Satznummer unveraend. ausg., '|' dahinter
+  Zahl (mit '_' davor) -> #-D
+#u2 +D c"_" e0
+   keine Zahl am Ende (kein '_'): 62 Zeichen
+#u2 +E B"|" B":" p"    " e62 s72 P4
+
+#-D    es kommt eine Zahl vor: nach rechts ruecken
+   zuerst den Text, 62 Zeichen
+#u2 B"|" B":" e"_" p"    " e62 s62
+   dann die Zahl, 2+8 Zeichen
+#u2 T"_" f" _0" e8 r8 p"  " P4
+#urf +E e0
+#u2 b"_" c"." =rf    Rundungsflag setzen, wenn . vorkommt
+
+#-E
+  Summen aktualisieren, hinten 0 und . wegnehmen
+#u2 b"_" x"*1" x"+gr" F"0" F"." =gr
+#u2 b"_" x"*1" x"+to" F"0" F"." =to
+#+#
+        Kennbuchstaben der Zwischenzeilen
+        t = Trennstrich
+        a = Gruppenueberschrift
+       gs = Gruppensumme
+       ts = Gesamtsumme
+
+#-C   neue Gruppe
+   Gruppensumme >0 ? dann ausgeben als eigene Zeile
+#ugr +#urf x">0" p"--------" e8 r72 p"0000000t|" P4     Trennstrich
+#uto x">0" p"--------" e8 r72 p"0000000t|" P4
+#urf +U e0
+#ugr x">0" =gr    Keine Rundung
+#+V
+#-U
+#ugr x">0" x"r2" =gr    Rundung auf 2 Stellen
+#-V
+#ugr +#ugr x">0" r72 p"000000gs|" P4              GruppenSumme
+#uto +#u2 x">0" p"0" e1 r72 p"000000gs|" P4 
+#ugr x"*0" =gr      Gr.Summe wieder auf 0 setzen
+#u2 B"|" e":" e"_" s72 p"0000000a|" P4    neue Gruppen-Ueberschr.
+#+B
+
+
+#- Fussabschnitt (nach dem letzten Satz)
+#ugr x">0" p"--------" e8 r72 p"0000000t|" P4     Trennstrich
+#urf +W e0
+#ugr x">0" =gr    Keine Rundung
+#+X
+#-W
+#ugr x">0" x"r2" =gr    Rundung auf 2 Stellen
+#-X
+#ugr x">0" r72 p"000000gs|" P4
+
+#uto x">0" p"========" e8 r72 p"0000000t|" P4     Trennstrich
+#urf +Y e0
+#uto x">0" =to
+#+Z
+#-Y
+#uto x">0" x"r2" =to
+#-Z
+#uto x">0" r72 p"000000ts|" P4       Gesamtsumme
+
+#ua1 da1 e0

@@ -1,0 +1,33 @@
+  RSET.FLX : Erg.Menge: Name aendern
+  2002-08-12
+
+  Momentane Erg.Mengenliste zeigen
+sho erg
+  Momentaner Name
+var U
+  Keiner - also liegt keine Erg.Menge vor
+if "" jump exit
+  Name in #uwU speichern
+ins #uwU
+  Abfrage des neuen Namens mit Vorgabe des alten:
+var "Neuer Name fr die Erg.Menge= " #uwU(b":")
+ansi
+ask
+if cancel end
+  Nichts eingegeben
+if "" end
+ins #uwU
+  Neuen Namen uebergeben
+var "R" #uwU
+  und setzen  (set R ...,  denn R ...  steht jetzt in iV)
+set
+  Erg.Mengenliste neu zeigen
+sho erg
+var ""
+ins #uwU
+end
+
+:exit
+var "Momentan keine Erg.Menge ausgew„hlt"
+ansi
+mes

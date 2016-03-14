@@ -1,0 +1,39 @@
+  NEUSATZ.FLX :  Extern neuen Satz mit Notepad in UTF-8 erstellen
+  2003-07-07     Nur unter XP/Win'7! Nur, wenn man intern UTF-8 hat!
+
+
+open x e.adt
+   Steuerzeichen fuer Notepad, damit es UTF-8 anzeigt:
+wri 239 187 191 n
+var "F" D "neusatz"
+var
+wri 
+close x
+
+  Zeitstempel der Datei festhalten in #uev
+ftime e.adt
+ins #uev
+
+  Notepad aufrufen (*)
+call notepad e.adt
+
+  Zeitstempel der Datei vergleichen mit vorher
+ftime e.adt
+  unveraendert? dann -> :unv
+if =#uev jump unv
+
+  sonst Satz wieder einlesen, falls veraendert
+  dabei die UTF-Codes wandeln, undefinierte so belassen
+new 0
+set U2
+  Datei e.adt einlesen
+read
+set U0
+
+  und Datensatz anzeigen
+:unv
+disp
+sho rec
+#uev
+mes Satz kann jetzt noch bearbeitet werden, dann Speichern
+

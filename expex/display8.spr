@@ -1,0 +1,102 @@
+ Subroutines.
+ ~~~~~~~~~~~~
+
+ When an indefinite number of different fields are all to be processed in the
+ same way, this is done with a subroutine.  The export line reads the field,
+ then refers the content to a subsidiary program, which is usually placed just
+ below the main body of the parameter.
+
+ We need to use a subroutine to process the added entries which are usually
+ listed below the unit entry of a record which is exported in card format, as
+ in this parameter. These consist of added authors in the #700 fields, plus the
+ word "Title" at the end of the list. Needless to say, it is entirely
+ unpredictable how many of these will appear in a given record, or even if any
+ will appear at all. Furthermore, they must be numbered sequentially in roman
+ numerals.
+
+ In this parameter we will deal with the basic structure of subroutines,
+ showing how this is applied to the #700 fields, and then address the more
+ complicated matter of the numbering in the final experimental parameter.
+
+ Go to the end of what we have studied so far.
+
+zl=76
+dx=1
+
+4=C       
+60=%12
+65=%76 $ #13 &14
+74=27 91 48 59 51 52 59 52 55 109
+76=27 91 48 59 51 48 59 52 55 109
+
+#050 60 a
+#050 C b
+#t65
+#t74
+#100 a F", " P":"
+#t76
+#t4
+#240 a p"["
+#240 l p" "
+#240 p"]" e1 P4
+#245 a F" :/"
+#245 h p" " F" :/"
+#245 b " : " F"./ "
+#245 c " / " F". "
+#t{"."}
+#260 C b"a" ,"_a_ ; _" ,"_; ;_;_" ,"_b_ : _" ,"_ : :_ :_" ,"_c_, _" ,"_,, _, _" p"    " F". " P"."
+                xx yyy      xxx y      xx yyy      xxxx yy      xx yy      xxx yy 
+
+ Added entries, which start on a new line:
+#t4
+ The next line presents a two new commands: the "++" which immediately follows
+ the field tag and the ">" command:
+#700 ++ >A m>A
+ First, the "++" tells the program to process not only #700 itself, but also
+ any repetitions of that field that might be present (#700a, #700b, &c.).
+ Then, ">A" tells the programme to put the content of the field through
+ subroutine A below. But we also want the repetitions of the field to be put
+ through the subroutine: the "m>A" does that. Subroutines can be labelled
+ with any alpha-numeric character.
+#+Z
+ Then, jump to #-Z below. The jumpmark consists of "+" followed by any
+ alpha-numeric character or special character, and its destination is "-"
+ followed by the same character.
+
+ Subroutine.
+ Note:
+ 1. This one is labelled "A", and is therefore reached by the command ">A" in
+    the export line.
+ 2. The subroutine is placed below the main body of the parameter file, and
+    starts with #(A and ends with #)A.
+ 3. After it has been executed, the programme continues with the other export
+    lines, if there are any. 
+ 4. Within the subroutine, whatever has been specified by export line (#700,
+    #700a, #700b, &c.) is held in the variable #cc.
+
+#(A    added entries persons
+#t{"I. "}
+#cc b"a" e"d" ,"_e_ [_" ,"_?_ -- _"
+#cc d p" (" P")"
+#cc b"d" b"?" p" -- " ,"_e_ [_" ,"_?_ -- _"
+#t{". "}
+#)A
+ the commands in these export lines are already familiar, except for the
+ wildcard in the string ,"_?_ -- _" which simply tells the programme to replace 
+ any other subfield with the combination " -- " .
+
+#-Z
+ the destination of the jumpmark #+Z
+
+ 컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴
+ What follows is explanatory, and not part of the experiment. Do not change.
+#t{27 91 49 59 51 48 59 52 55 109 &0 #0 %56}
+#t{C C C "�"*56 C "The author added entries have now been listed below the "}
+#t{"unit entry, but we still need to number them properly."}
+#t{C "This is a tricky operation, whose explanation in DISPLAY9 will "}
+#t{"complete the basic MARC record output in card format in this series of "}
+#t{"parameters."}
+#t{C "Edit DISPLAY8.SPR to see how a subroutine produces the list of author "}
+#t{"added entries."}
+
+pn="DISPLAY8.SPR"  19960225

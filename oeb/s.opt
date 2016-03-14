@@ -1,0 +1,89 @@
+      ***********************************************************
+                                 S.OPT
+                       Zeichenumsetzung fÅr Index
+      ***********************************************************
+      Rev.: 2.2.2001
+      ***********************************************************
+p _ 1               ; Nichtsortierzeichen!
+
+q Ñ "ae"            ; Umlaute
+q î "oe"
+q Å "ue"
+q · "ss"
+q é "ae"
+q ô "oe"
+q ö "ue"
+q A/Z 97            ; Gross -> klein
+q Ç 101             e
+q Ö 97              a
+q ä 101             e
+q Ä 99              c
+q É 97              a
+q Ö 97              a
+q Ü 97              a
+q á 99              c
+q à 101             e
+q â 101             e
+q ã 105             i
+q å 105             i
+q ç 105             i
+q è 97              a
+q ê 101             e
+q ë "ae"
+q í "ae"
+q ì 111             o
+q ï 111             o
+q ñ 117             u
+q ó 117             u
+q ò 121             y
+q õ 99              c
+q ú 108             l
+q ù 121             y
+q û "qt"
+q ü 102             f
+q † 97              a
+q ° 105             i
+q ¢ 111             o
+q £ 117             u
+q § 110             n
+q • 110             n
+q , 44              ; Komma soll bleiben
+q - 45              ; Bindestrich auch
+q . 46              ; Punkt soll bleiben
+q / 47              ; etc.
+q ; 59
+q !/) =1            ; Satz- und Sonderzeichen nicht berÅcks.
+p @ 1
+q [/_ =1
+q { 1
+q }/ =1
+q ¶/ﬂ =1            ; diese Zeichen nicht berÅcksichtigen
+q ‡ 97              a
+q Î 100             d
+q È "th"
+q „ "qi"
+q ‚ 103             g
+q ‰ 115             s
+q Â 115             s
+q Ó 101             e
+q \ 92              ; Backslash nicht unterdrÅcken!
+q ™ 1               ; Nichtsortierzeichen weglassen?
+q Ÿ 1
+q ' 1
+q ^ 1
+q ` 1
+q  32
+q ~ 1
+p ~ 1
+                    ; DIN 31628-2 Diakritika: alle ausblenden
+q ®/ﬂ =1
+p ®/ﬂ =1
+
+p ∞ 73   I          ; tÅrk I ohne Punkt
+q ∞ 105  i
+
+q  1
+q  1
+q + 43
+q * " (falsch)"           ; fÅr ISBN
+p * "*"                   ; fÅr SW-Ketten

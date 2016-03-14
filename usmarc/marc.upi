@@ -1,0 +1,493 @@
+  USMARC indexing parameters
+  specifying the structure of the indexes
+  MARC.UPI        960129
+  the following commands are mandatory for all index parameters, don't change
+  ---------------------------------------------------------------------------
+
+zl=0           no line breaking
+zm=0           no page breaking
+ad=0           if none of the ak commands is executable, no action
+ag=0           include hierarchic subrecords in indexing
+  -------------------------------------------------------------------------
+
+il=220         max key length (72 is the optimum)
+ic=1           activate to enable coding of user input
+                 (labels #-1 ... #-9 will then be used)
+i0=72          width of short title lines
+ir=7        Qualifiers: 6 characters
+ i4=0
+ i5=_
+
+  headlines for the indices:
+
+|1="1 : PER  Names of Persons (Authors, Editors, Composers, etc.)"
+|2="2 : CUT  Composer: Uniform Titles"
+|3="3 : TWD  Title Words, Subject Terms"
+|4="4 : TIT  Titles "
+|5="5 : SER  Series & Serials ([Name: ]Title ; volume#)"
+|6="6 : ANY  Any keyword (also: places, publishers, dates)"
+|7="7 : CLA  Classification + Opus numbers (e.g.,  565 bwv  or  299 k)"
+|8="8 : CNR  Call Numbers (Shelflist)"
+|9="9 : CTN  Control numbers (ISBNs preceded by i)"
+  headline for the short title display:                              60
+          1234567890123456789012345678901234567890123456789012345678901234567890
+|<="      Name: Title                                                Date  Call#"
+|a="         'allegro' Music Catalog (based on USMARC data)"
+
+  Special characters:
+i1=":>"
+
+i2="=,:->^"     all index entries starting with one of these characters
+                  will be ignored
+i3=".,-:]^ "    remove these characters from the end of all keys
+
+  *************************
+  *   headings commands : *
+  *************************
+  these commands select the fields from which index entries are to be produced
+ 
+  Primary key is #010 :
+ak=zz+@
+
+ak=zz+0           zz means: unconditional execution
+                  (short title entry is defined at #-0)
+ak=zz+/           qualifiers
+
+ak=100+A          author entry
+ak=11..+F          corp body or conference
+ ak=245+B
+ak=utt" = "+B
+ak=130+B
+ak=153+K         Classification
+ak=153+H          Caption of Class
+ak=153"\j"+L          Caption of Class
+  ak=153"\.  "+L          Caption of Class
+ak=240+B         Title string index
+ak=upl"; "+P      all publ names and places
+ ak=260"a"+P      and places
+ak=260+Y      and dates
+ak=008+Y
+ak=4...+S
+ak=8...+S
+ak=6...+T         all subjects
+ak=650.+i
+ak=700.+A         added entries persons
+ak=700.+W         person: unif title
+ak=71..+F         corp bodies and conferences
+ak=700.+V         title from t
+ak=740.+B         uniform title <language>
+ak=753.+U
+ak=240+u          person: Unif.title
+ak=020+I
+ak=043"a"+G
+ak=050."a"+C
+ak=040+O
+ak=082."a"+D
+ak=uti" "+E           #uti holds the string of all title words
+ak=uti"\-"+E          to index 2nd parts of hyphenated words
+
+ak=787.+Z       Relationships
+
+  Extra index for tags:
+  (the following line says that all fields are to be processed
+   at label #-„)
+  ak=0..+„ 1..+„ 2..+„ 3..+„ 4..+„ 5..+„ 6..+„ 7..+„ 8..+„ 9..+„ 
+  ak=1..+„ 2..+„ 3..+„ 4..+„ 5..+„ 6..+„ 7..+„ 8..+„ 9..+„ 
+ak=1..." "+X 2..." "+X 4..." "+X 5..." "+X 6..." "+X 7..." "+X 8..." "+X
+
+  this paragraph will then be done for every field:
+#-„               field documentation
+#t{ s1 "|:" }
+!u1 e3 dmm         tag
+  #u1 b4 e"" p" "   indicators
+#u1 b"" amm       copy text of field to #umm
+#-                loop for subfields, 5 characters each
+#umm y0 b6 e"" e5 s5 p"$"
+#umm + b"" =mm   proceed to next subfield (making #umm shorter)
+#+#    finished
+
+#-X
+#u1 dww aww
+#uww y0 i7, b2 =ww
+#uww e"[-]" f"/" "|6"
+#-x
+#uww b"" b1 e"[$-]" p{ 8 "|6" }
+#uww B"" e"" b"-" f"-" e"-" p{ 8 "|6" }
+#uww +x b"[-]" f"-" c"[-]" =ww e0
+#+#
+   *************** Field list *******************************************
+
+#-0           Shortlist: Author: Title (Date)
+#t{ "|0" }
+#nr dst e0       just delete #ust
+#100 a y0 F",: " P": " ast
+#240 +#711A b"a" U e"h" e"?UNAU" ,"_?_ _" y0 F",:. /" Ast
+#245 a U y0 F" :/" Ast
+#711A
+#ust y0 e56 s57
+#t{ s6 }
+#00L e1 
+#t{ s7 }
+#008 +#050 b5 e4 p"(" P")"
+#t{ "      " }
+     #260 c e"*" x"*1" e"." y2 p" (" P")" { &58 }
+#050 a e"." { &67 } p"  "
+
+   in this section, we also prepare the titles for word indexing:
+   all titles are concatenated in user variable #uti
+#dt dti dtt dpl e0       just delete #uti, #utt, #upl
+
+#245 a u =ti    save both parts of title for indexing
+#245 b p" " Ati
+#240 a u p" " Ati    uniform title as well
+#740 ++ a p" " m" " Ati   added titles
+#700 ++ t p" " m" " Ati   name/title added entries
+
+#245 a u ,"_ ; _ = _" att      prepare #utt for index 4
+
+#260 f"a" ,"_a_; _" ,"_b_; _" e"" apl    places&publishers->#upl
+#+#
+
+
+  Qualifiers
+#-/
+#t{ "|/" }
+#008 b5 e4       Date
+#t{ s6 }
+#00L e1   Type of publ (c=score, j=sound rec, a=book)
+#t{ s7 }
+#008 b16 e2   type of compos
+#+#
+
+#+#
+
+  Section for primary key:
+
+#-@   a should not be there, but if it is, ignore it
+
+#001 +# y0 e" " p"|9"     sonst #001
+!010 B"a" y0 e" " f" " e" /" p"|9" 
+  #010 B"a" f" " e2 p"|9"   alternative
+  #010 B"a" f" " b2 e" /" f"-" r7 p"-"
+
+#+#
+
+#-A
+#u1 a F", "
+   !u1 d F".," p", (" P")"    if date wanted in index
+#u1 4 p" <" P">"
+#+#
+
+#-B      Title (Skipping a few articles)
+#u1 B"a" e"" F"./ =" y1 dt7 at7
+#ut7 p"+" B"+a " B"+an " B"+the " B"+der " B"+die " B"+das " f"+" p"|4"
+!ch l p" <" P">"
+#+#
+
+#-P     Publishers
+#t{ "|6" }
+#u1 I7, e"" e", " F" ,:;]"          name
+!008 +# b5 e4 p","
+#260 c x"*1" e"." p","      date  (just the number)
+
+#+#
+
+#-C   LC Class + CallNo
+#u1 e"" e"." e"[0123456789]" p"|8"                  the letters
+#u1 e"" x"*1" e"." r4                               the digits
+#u1 e"" b"." y1 p"."                                part behind "."
+ #u1 e"" b"." e"." y1 p"."                           part behind "."
+ #u1 e"" b"." b"." r3 p"."                           another such part?
+#u1 b f"." e1 p" "                                  the Cutter letter
+#u1 b f"." b1 e" " r4                               the Cutter number
+#u1 b f"." b1 b" " p" "                             the Cutter year
+#+# 
+
+#-8   LC Class + CallNo  as input by OPAC user
+#u1 e" " e"." e"[0123456789]"                        the letters
+#u1 e" " x"*1" e"." r4                               the digits
+#u1 e"" b"." y1 p"."                                part behind "."
+
+#u1 b" " f"." e1 p" "                                  the Cutter letter
+#u1 b" " f"." b1 e" " r4                               the Cutter number
+#u1 b" " f"." b1 b" " p" "                             the Cutter year
+#+# 
+
+#-L
+#u1 e".  " e"" B"The " "|3"
+#t{ " [shelfmark] -> " }
+#t{ "|7" }
+#>K
+#+#
+
+#-H   Caption
+#t{ "|7" }
+#u1 b"h" e"" 
+#u1 b"h" b"h" e"" y1 p"; "
+#u1 b"h" b"h" b"h" e"" y1 p" / "
+#u1 b"h" b"h" b"h" b"h" e"" y1 p" * "
+#u1 b"h" b"h" b"h" b"h" b"h" e"" y1 p" + "
+#u1 b"h" b"h" b"h" b"h" b"h" b"h" e"" y1 p" _ "
+
+#u1 b"h" b"j" y1 p" : " e3
+#u1 j 
+#t{ " -> " }
+#>K
+#+#
+
+#-K   Classification Authority rec
+#t{ "|7" }
+!153 y                   XXnnn.nnnA
+#>K
+!153 +#153c c e0   it is a span 
+!153 +#153a b"h" b"h" b"h" b"h" b"h" b"h" b"h" { &38 } e0
+!153 +#153a b"h" b"h" b"h" b"h" b"h" b"h" { &35 } e0
+!153 +#153a b"h" b"h" b"h" b"h" b"h" { &32 } e0
+!153 +#153a b"h" b"h" b"h" b"h" { &29 } e0
+!153 +#153a b"h" b"h" b"h" { &26 } e0
+!153 +#153a b"h" b"h" { &23 } e0
+!153 +#153a b"h" { &20 } e0
+!153 +#153a e0
+
+#153c
+!153 h "  " y0 e22
+!153 b"h" h y0 e10 " / "
+!153 b"h" b"h" h y0 e10 " / "
+!153 b"h" b"h" b"h" h y0 e10 " / "
+#t{ " /" }
+#153a
+#153 j "  " y0
+#+#
+
+#-D   Dewey
+#u1 e"" y0 p"|7D "
+#+#
+
+#-F     Corp+Conf
+#u1 b"a" e"4" e"?UNAU" ,"_?_ / _" e67 "|6" 
+!260 c x"*1" e"." p","       add the year
+#+#
+
+#-G     Geogr. Code
+#u1 y1 "|7G "
+#+#
+
+#-E
+#u1 e" " "|3"
+#+#
+
+#-I
+#u1 a e10 "|9i"
+#+#
+
+#-i   Instrumentation  (650 (...))
+#u1 +j a b" (" din ain
+#+-
+#-j
+#uin e", " e")" p"|6"
+#uin +j b", " p{ 8 } =in
+
+#+#
+
+#-O
+#u1 a p"|9zz"    Orig.Cat.Agency
+#+#
+
+#-T   Subject Terms
+#153 +- e0
+#ch +#650x i2,5 e0      examine 2nd tag digit: if 5, goto #650x
+#ch +#610x i2,1 e0      if 1, goto #610x
+#u1 +w c"t" e0         #600 with subf t
+    Person as subject   #600 remains
+#u1 a "|1"
+!u1 d p" (" F"." P")"
+#u1 +#600x c"x" e0
+#u1 +# t p" : " y0
+#t{ " *" }
+#+#
+
+#600x
+#u1 b"x" e"=" e"?UNAU" ,"_?_ -- _" y0 p" / "
+#+#
+
+#-U   Index terms of classification
+#u1 a "|3"
+#u1 b " -- "
+#154 a "|3"
+#u1 +# u y1 " USE -> "
+#u1 +# s y1 " SEE ALSO -> "
+#t{ " [shelfmark] -> |7" }
+#>K
+#+#
+
+#-V   person/title
+#u1 t y1 p"+" B"+a " B"+an " B"+the " B"+der " B"+die " B"+das " f"+" p"|4"
+
+#+#
+
+#-W    person: Uniform title
+#u1 +w c"t" e0    only if subf t is present
+#+-
+#-w
+#u1 i5, p{ s5 } e0
+#u1 i6, p{ s6 } e0
+#nr dut e0
+#u1 B"a" e"" F",. " y1 P": " Aut   a sometimes missing!
+#u1 t F",. " Aut
+#u1 m F",. " p", " Aut
+#u1 n F",. " ,"_. _._" ,"_._ _" ,"_, no_ no_" p", " Aut
+#uut e"[0123456789]" f" " p"|2"
+#uut x"*1" x">0" e"." r3
+#uut b"[0123456789]" f"0123456789"
+#u1 p p" <" P">"
+#t{ " *" }    indicates that it is a subj entry
+
+#u1 n p{ 8 "|7" } e0   Opus #
+
+#u1 n x"*1" e"." r4 
+#u1 n e"[0123456789]" F" " B"~op." B"~no." p" "
+#t{ s7 }
+#+#
+
+#-u   person: 240a, m, n, s, k <p>;medium, l
+#nr dut e0
+#100 a F",. " y1 P": " Aut     (if 240, then there's always 100)
+#u1 B"a" e"" u F",. " Aut
+#u1 m F",. " e"," p", " Aut
+#u1 n F",. " ,"_. _._" ,"_._ _" ,"_, no_ no_" p", " Aut
+#uut e"[0123456789]" p"|2"
+#uut x"*1" x">0" e"." r3
+#uut b"[0123456789]" f"0123456789"
+#u1 s f" " e4 ", "     Libretto and such
+#u1 k f" " e6 ", "     Form (selections ...)
+#u1 p f" " p" <" P">"   part
+#t{ s6 }
+#00L e1 c"c" p";score" e6   Type of publ (c=score, j=sound rec, a=book)
+#00L e1 c"j" p";rec" e4
+#00L e1 c"a" p";book" e5
+#t{ s7 }
+#u1 l e3 " (" P")"     language
+#u1 o "; "
+
+#u1 n p{ 8 "|7" } e0      Opus # (additional key, index 7)
+#u1 n B"op." x"*1" e"." r4 
+#u1 n e"[0123456789]" F" " B"op." B"no." p" "
+#+#
+
+#-Y   Year of publ
+!u1 +# i3,8 b5 e4 "|6"
+!u1 c x"*1" e"." "|6"
+#+#
+
+   Corp. body or Conf as subject
+#610x
+#u1 a "|6"
+#t{ " *" }
+#+#
+   topical term
+#650x
+#u1 a "|3"
+#u1 >T e0
+#t{ " *" }
+#+#
+
+
+#-S    Series (4XX, 8XX)
+#u1 +- i1,4 i2,9 e0       not 490
+#nr dse e0
+#u1 +s i1,4 i2,0 i5,0 e0   His...
+#+t
+#-s
+#100 +v a F",. " Ase
+
+
+#-t
+#u1 a u e";" F"., " Ase
+#-v
+#u1 t F",; " p": " Ase
+#use e65 p"|5"
+#u1 v x"*1" e"." f"-" r5 p" ;"
+#u1 v y0 " (" P")"
+#+#    (all of these letters to be removed from the VolNr)
+
+
+
+#-Z    Relationships
+#u1 w B")" f" " y0 p"|9"
+#t{ s6 }
+#u1 e1 p"_"
+#t{ s7 }
+#u1 n p","    numbering
+#u1 v p","    numbering
+#u1 g p";"    relat inform (e.g., vol#)
+
+#+#
+
+     Adjust the classmark to sortable format
+#(K
+!153 a e"." F"0123456789"          XX
+!153 z r2 p" T"                     table
+!153 a e"." x"*1" e"." r4                 nnnn
+!153 a b"." e"[ABCDEFGHIJKLMNOPQRSTUVWXYZ]" y0 p"."           .nnnn
+!153 a b"." f"0123456789"                     A
+
+!153 +k c"c" p" " e1    it is a span
+!153 +l b"h" p',  ' e2
+#-k
+!153 c e"." p"-" F"0123456789"
+!153 c e"." x"*1" e"." r4,ú
+!153 c b"." y2 p"."
+
+#-l
+#)K
+
+
+
+#(T   Term treatment for index
+#cc +ž b"a" e"=" e"?UNAUTH" b"?" dtm atm
+#)T
+#-ž  loop
+#utm e"" p" -- "
+#utm +ž b"?" dtm atm
+#)T
+
+#-1
+#-3
+#-6
+#u1
+#+#
+
+#-7
+#u1 +# x">0" x"*1" e"." r4
+#u1 y0
+#+#
+
+
+   Character coding:
+   p = normal table      (applied to lines beginning with # )
+   q = alternative table (applied to ...                  ! )
+
+ti          load I.UPT
+
+tstoplist   load STOPLIST.UPT 
+
+I PER 1 "Personal names"
+I ANY 6 "ANYWORD: All keywords"
+I TWD 3 "Title words"
+I COR 2 "Corporate names, Orchestras"
+I TIT 4 "Titles"
+I SER 5 "Series titles"
+I CLA 7 "Classification"
+I CNR 8 "Call numbers"
+I CTN 9 "Control numbers"
+
+R DAT r1 "Date of publ"
+R TYP r5 "Type of publ?c=score, j=sound rec, a=book"
+R COM r6 "Type of compos"
+
+p < [
+p > ]
+q < [
+q > ]
+
+to

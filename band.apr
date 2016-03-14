@@ -1,0 +1,85 @@
+  a-0.apr :  Anzeige der Bestandsdaten
+  19940602
+  (wenn Bestandsdaten in derselben Datenbank stehen!)
+pn="Bestandsdaten-Anzeige"
+
+   Start muss erfolgen mit
+   PRESTO -dDATENBANK -qband ...
+   z.B.
+   PRESTO -dkatalog\kat -dbestand\bst -qbandx ...
+   d.h. der Name der Datenbank muss in den -d Optionen mit angegeben sein
+
+zl=72
+
+fl=14
+
+  #<2    umschalten zur 2. Datenbank  
+         wenn die Best„nde nicht in derselben Datenbank stehen!
+
+
+#00 +Z i4,z i5,z dxq e0    Zeitschrift  #00 zz...
+#00 +Y i4,z dxq e0         Zeitschrift  #00 z..
+#00 +B dxq dsg =sg         Monographie #00 -> #uxq
+
+  #<0    aktivieren, wenn 2. Datenbank (s.o.)
+#+#
+
+#-Y
+#q{ "Welches Jahr? (n=nichts  1=alle  b=Beilagen)" }
+#uxq +- c"n" e0
+#uxq +D c"b" e0
+
+#00 +C P'"' =sg e0
+
+#-D
+#00 +C P"+" =sg e0
+
+#-Z
+#q{ "Welches Jahr? (n = nichts  Enter = alles  b = Beilagen)" }
+#uxq +- c"n" e0
+#uxq +E c"b" e0
+
+#00 +C b1 P'"' =sg e0    ein " an die IdentNr h„ngen
+
+#-E
+#00 +C b1 P"+" =sg e0
+
+#-C
+#uxq Asg e0
+
+#-B
+
+#19 +#40 0
+
+#20
+#40 " / "
+#t{ C }
+
+#usg +S |102   get a line from index 10
+#00 P'"' =sg e0
+#usg +S |102   get a line from index 10
+#t{ C "keine Bestandsdaten gefunden. Sehen Sie zur Sicherheit im Zettelkatalog nach" }
+#+#
+
+#-S   Schleife fr Ausgabe des Bestandssatzes
+#t{ C }
+#9DG B P"."
+#9DG Y
+#9DG H P" "
+#9DG e p"  " P". Ex. "
+#9DG E " (" P")"
+#9DG +K l c"LB" b"'" " LEHRBUCHSAMMLUNG "
+#9DG +K l c"LS" b"'" "         Lesesaal "
+#9DG +K l "         Lesesaal "
+#9DG +K s c"-" " = "
+#9DG s e4 " = "
+#9DG s b4 "-"
+#9DG n p" (" P")"
+#-K
+
+#</
+#usg +S |103    n„chsten Bestandssatz nachladen
+#t{ C "Ende der Liste" }
+
+
+#<0     zurckschalten zur ersten Datenbank

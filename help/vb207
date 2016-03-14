@@ -1,0 +1,222 @@
+
+Verlautbarung 207 der Entw.Abt.                              2008-06-25
+-------------------------------
+
+V28.5 mit neuem Vielzweck-Konsolprogramm
+========================================
+
+acon.exe heisst das neue Programm. Es kann
+
+  o  avanti-cl  abloesen
+  o  UPDATE.EXE  abloesen
+  o  SRCH.EXE  abloesen
+
+Was ist schlecht an diesen Programmen, dass Abloesung vonnoeten waere?
+Sie tun es alle drei noch, auch unter Vista, das ist nicht das
+Problem. UPDATE und SRCH machen ausserdem Dinge, die jetzt auch a99
+tun kann, sie werden somit doch wohl eh schon kaum noch genutzt - wozu
+also abloesen?
+Nun, a99 ist ein interaktives Programm, das man schlecht in automati-
+sierten Prozessen einsetzen kann, etwa um zu geplanten Zeiten nachts
+bestimmte Kraftakte durchzufuehren, fuer die am Tage die Musse fehlt.
+UPDATE und SRCH haben genau da noch ihren Sinn, weil man sie
+eben in Skripte (Batchdateien) einbinden und als offline-Werkzeuge
+verwenden kann. Aber sie sind alte 16bit-Programme, und so etwas ist
+nicht mehr gern gesehen - staendig fuerchtet man, solchen Programmen
+koennte der Fortschritt ploetzlich das Wasser abgraben. Auch wuenscht
+man sich schon laenger etwas mehr FLEXibilitaet als diese Programme
+von Hause aus mitbringen, sprich, am besten sollten sie FLEX verstehen
+anstatt nur die sproeden Exportparameter! Dann koennte man ihnen noch
+x-beliebige andere Aufgaben nebenbei aufbrummen.
+
+In dieser Situation stellte sich heraus, dass man avanti-cl, das
+Job-Ausfuehrungsprogramm des avanti-Servers, nur ein wenig auszubauen
+brauchte, um es zu einem "Konsolprogramm" zu machen, das dann die
+Aufgaben von SRCH und UPDATE in neuer Weise erledigen kann. Seine
+Funktion als avanti-"Backend" kann es beibehalten, daran aendert
+sich nichts, so gesehen loest es also nur sich selber ab, wie immer
+bei einem Versionswechsel.
+avanti-cl kann FLEXe ausfuehren, das ist der Punkt: FLEX ist die
+Grundlage, auf der a99 die Aufgaben von UPDATE und SRCH erledigen
+kann, und avanti-cl IST ein Konsolprogramm! Das ist so einfach, dass
+man diesen Weg laengst haette sehen und gehen koennen...
+
+Einzubauen waren in avanti-cl (jetzt also "acon") nur zwei Dinge:
+
+1. Einen Datensatz in einen anderen einfuegen, und zwar so, dass
+   diejenigen Felder des "alten" Satzes erhalten bleiben, die im
+   neu einzufuegenden Satz _nicht_ vorkommen. Das leistet der
+   neue Befehl "copy obj":
+
+   copy obj 1>2
+
+   kopiert aus Satz 1 alle Felder in Satz 2 und ersetzt die darin
+   vorliegenden Felder, d.h. wenn ein Feld #123 in Objekt 2
+   vorliegt, in Objekt 1 aber nicht, dann bleibt es erhalten.
+   Sagt man dagegen
+
+   copy obj 1 2    (mit Spatium statt > )
+
+   dann wird der Inhalt von Objekt 2 rueckstandsfrei durch den von
+   Objekt 1 ersetzt.
+   Die Reihenfolge  1 2  kann man auch umkehren, die zweite Ziffer
+   auch jeweils weglassen - sie ergibt sich dann automatisch.
+   Im Prinzip konnten das auch avanti-cl und a99 schon, und zwar als
+   Teilfunktion des "update"-Befehls, aber nun kann man mit dem
+   neuen Befehl eine externe Datei satzweise verarbeiten und
+   bei jedem einzelnen Satz noch beliebige Aktionen vornehmen,
+   statt sie stur alle in derselben Weise einzumischen.
+
+2. Die Kommandozeile auswerten. Denn UPDATE und SRCH werden ueber
+   den Aufruf mit sog. "Optionen" versorgt, z.B. -ka, die den
+   Programmen wesentliche Fakten mitteilen. So etwas braucht man
+   bei einem Konsolprogramm, aber dieses Problem ist ein sehr
+   kleines. Dafuer gibt es jetzt diesen Befehl:
+
+var cl
+  Aufrufzeile in die interne Variable kopieren
+  Wenn man die Aufrufoption -k im FLEX haben will, braucht man nur
+  zu schreiben:
+  var cl
+  var (b" -k" e" ")
+  ins $optk
+  oder so aehnlich.
+
+Noch schoener: Nicht nur acon, auch a99 versteht jetzt diese Befehle.
+Man kann also a99 mit einer Liste von Optionen starten, die man z.B.
+im _start.flx auswertet oder auch spaeter.
+
+FLEX-Dateien heissen bei avanti "Jobs". Weil es in den Einzelheiten
+ein paar Unterschiede zwischen a99 und avanti gibt - nicht alle
+waeren noetig, zugegeben - ist die Unterscheidung ganz sinnvoll. Job-
+Dateien müssen keinen bestimmten Dateityp haben, wir schlagen aber
+.job vor, damit keine Verwechslung droht.
+Man uebergibt einen Job an acon einfach mit der "Eingabeumleitung",
+wie es bei Konsolprogrammen ueblich ist. D.h. mit
+
+acon <dothis.job
+
+uebergibt man die Jobdatei  dothis.job  zur Ausfuehrung. Desgleichen
+kann man mit  >output.dat  die Ausgabe in eine Datei umleiten, sonst
+kommt sie im Konsolfenster heraus.
+Das war schon so bei avanti-cl, jetzt kommt aber hinzu, dass man
+Optionen uebergeben kann, denn im Job kann man die interne Sonder-
+variable  cl  auswerten, wie oben gezeigt, und mit den uebergebenen
+Werten alles machen, was man will. Dadurch kann man Jobs schreiben,
+die sich mit optionen von aussen beim Aufruf steuern lassen, und diese
+Optionen koennen genauso (oder ganz anders) aussehen wie die altbekann-
+ten DOS-Optionen. Man kann also einige der alten DOS-
+Optionen nachbilden, man kann aber auch seine eigenen definieren,
+auch fuer a99. Damit geht diese Funktionsweise weit ueber das alte
+DOS-Optionenschema hinaus. Auch dies ist ein so einfacher Weg zur
+Flexibilisierung, dass man sich wundern muss, wieso er erst jetzt
+entdeckt wurde.
+
+Aber Achtung: Statt avanti-cl.exe jetzt acon.exe,
+              statt avanti.conf   jetzt avanti.con
+und avanti.con muss auf einem Verzeichnis  ..\etc liegen, d.h.
+parallel zu dem Verzeichnis, wo acon.exe liegt, also z.B. waere das
+c:\programs\etc, wenn allegro auf  c:\programs\allegro  laege.
+
+DAS IST NOCH PROVISORISCH, d.h. kann sich noch aendern. Deshalb macht
+die Installation das noch nicht, sondern avanti.con liegt dann auf
+dem ProgDir, wo es nichts nuetzt!
+
+
+NEUE DATEIEN:
+   acon.exe          das neue Programm
+   avanti.con        die Konfig.Datei dafuer
+   srch.job          zwei Beispiel-Jobs zu beliebiger Verwendung
+   update.job
+   uifsger           UIF-Datei fuer acon.exe
+
+Fuer den avanti-Server aendert sich damit folgendes:
+Der Server selbst heisst weiterhin avanti.exe bzw. UNIX: avanti.
+Er sucht aber nach avanti.con auf ../etc und startet acon.exe
+bzw. unter UNIX: acon.
+Die avanti.con kann man schlicht als Kopie der avanti.conf
+bereitstellen. Wenn man den neuen avanti umbenennt, kann man auch
+wahlweise schnell wieder den alten starten und sonst alles unveraendert
+belassen.
+
+
+Beispiel fuer acon  als Konsolprogramm:
+---------------------------------------
+Eine Datei  xyz.alg  soll gelesen und exportiert werden. Das ist eine
+der haeufigsten Aufgaben, fuer die SRCH immer noch verwendet wird.
+So sieht der Job  srch.job  aus, und gestartet wird er mit
+
+acon <srch.job -ddateiname -eparam/ausgabedatei
+
+  ****************************************************************
+& c:\allegro
+   // SRCH.JOB
+   // Grundgeruest fuer SRCH-Prozesse mit acon
+
+// command line  auswerten, zuerst in #ucl kopieren
+var cl
+ins #ucl
+
+// Exp.Param, Option -e
+var #ucl(b" -e" e"/" e" ")
+ins #uoe
+if not #uoe #uoe i-1
+
+// Exportdatei
+var #ucl(b" -e" e" " b"/")
+ins #uoE
+if not #uoE #uoE OUTDAT.TXT
+
+// Eingabedatei, Option -d
+var #ucl(b" -d" e" ")
+ins #uod
+
+// Keine Umcodierung  DOS<->Windows
+switch coding 0
+
+// Exp.param laden
+var #uoe
+export p
+
+// Hinw.: output kann auch per Umlenkung mit  >dateiname  erfolgen!
+var #uoE
+if #uoE export f
+if not #uoE export f outf
+
+//   Datei  #oud  oeffnen UND ersten Satz lesen
+
+var #uod
+read
+
+//   Schleife: Satz evtl. veraendern, exportieren, naechsten Satz lesen
+:loop
+   //   Satz exportieren
+   // Vorher kann damit alles gemacht werden, was erwuenscht ist
+   // z.B. mit  srx  eine Volltextsuche
+//  var kr
+//  srx suchwort
+//  if yes export
+export
+   // naechsten Satz!
+var ""
+read
+if ok jump loop
+
+// Welche Datenbank, user, password? (muss in avanti.con stehen)
+@ DB=demo ID=master/AVANTI
+
+  ****************************************************************
+
+Die Dateien  srch.job  und  update.job  werden mitgeliefert, sie liegen
+auf c:\allegro. Das ist als vorlaeufig zu betrachten!
+
+-----------------------------------------------------------------------
+
+Doku aktualisiert
+-----------------
+Es wurden zahlreiche Hilfetexte durchgesehen, aktualisiert und weiter
+verbessert, z.B. viele FLEX-Dokutexte um Beispiele erweitert, die dann
+durch Anklicken von "TEST" jeweils sofort gestartet werden können,
+damit man sieht, was dabei rauskommt.
+
+

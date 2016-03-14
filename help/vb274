@@ -1,0 +1,106 @@
+
+Verlautbarung 274 der Entw.Abt.                              2015-10-22
+-------------------------------
+
+V35.10 ist da : Letztes Test-Release vor Festschreibung
+-------------
+
+Dieses Release ist NUR von Wichtigkeit fuer jene, die noch letzte Tests
+machen wollen vor der grossen Festschreibung der V35 als "Referenz-
+Version" unter der Bezeichnung V35.F. Wer also sicher gehen will, dass
+dies oder jenes aufgefallene Problem weg ist, sollte lieber noch einen
+Test machen. Von uns aus aendern wir nichts mehr, nur auf Hinweise von
+Anwendern hin werden wir taetig. Also andersrum gesagt, wer jetzt nicht
+testet, muss dann erst mal einige Zeit mit dem leben, was wir als V35.F
+verabschieden.
+
+
+a99: Editor-Fehlermeldung z.B. bei dnx.flx
+------------------------------------------
+Wenn z.B. im Fremdsatz eine Serienangabe ohne Semikolon stand, warf der
+dnx.flx eine Fehlermeldung aus (Semikolon fehlt?). Das wird wohl nicht
+erwuenscht sein und wurde ausgeblendet.
+Falls es aber erwuenscht ist: Im dnx.flx ganz oben den Befehl
+set e0
+rauswerfen.
+
+
+dnx.flx : Kleinere Verbesserungen
+---------------------------------
+Eine irgendwie oder wenigstens beinahe perfekt zu nennende Umwandlung
+der XML-Daten aus Frankfurt ist wohl nicht hinzukriegen, jedenfalls
+mit allegro schwerlich. Was da geliefert wird, ist aber auch sehr
+wahrscheinlich noch nicht stabilisiert.
+Jedenfalls besteht ein recht unuebersichtliches Gemenge im Bereich
+der Sacherschliessungsdaten, genauer der 6XX-Felder. Insbes. die
+653 enthaelt buchhaendlerischen Mischmasch. Einiges kann man per
+FLEX eliminieren, nicht alles. dnx.flx stopft das jetzt nicht mehr in
+die #31s, sondern die #33. Wer will, kann daraus dann #31s machen oder
+sonstwas genehmes.
+Es wurden noch kleinere Ergaenzungen vorgenommen, die sicher den auf
+Konformanz bedachten Anwender noch laengst nicht zufriedenstellen
+werden, sondern nur grobe Unzulaenglichkeiten hier und da ein
+wenig abmildern. XML-Fachleute sind eingeladen, sich an weiteren
+Verbesserungen zu beteiligen oder ganz neue Loesungen zu machen.
+
+
+index.exe : Default "C:" beseitigt
+----------------------------------
+Die laengst obsolete Setzung von C: als Default fuer das aktuelle
+Verzeichnis in den "Quadriga"-Programmen wurde beseitigt.
+
+
+srch.exe : Option -d*
+---------------------
+Noch ein Archaismus wurde eliminiert:
+Historisch ist die Moeglichkeit, einen * vor den Dateinamen hinter die
+Option -d zu setzen, um alle Dateinamen zu verarbeiten. Das ist heute
+nicht mehr noetig, aber um alte Skripte funktionabel zu halten, ist
+es immer noch so. Schief ging das nur, wenn man einen Aufruf direkt
+im Datenordner absetzte, also etwa in demo2 den Befehl
+   srch -d*.ald -s...
+denn hier ist der * ja dann anders - in ueblicher Weise - gemeint.
+Das wurde bereinigt und macht keinen Aerger mehr.
+
+
+FLEX: Fehler mit "check"
+------------------------
+Der Befehl check, den es noch nicht arg lange gibt, warf eine
+unerwuenschte message-Meldung aus. Behoben.
+
+
+ald-chk.flx korrigiert (h check: Adressen checken)
+----------------------
+Im zusammenhang mit dem Vorgenannten, aber auch noch aus anderen
+Gruenden, warf der FLEX  ald-chk.flx  falsche Fehlermeldungen aus.
+Behoben.
+Zur Erinnerung: Er steckt hinter dem Menuepunkt "Adressen checken"
+des Menues  h check.
+
+
+Unerwuenschte Konsolmeldungen verhindern :  ... 2>nul
+----------------------------------------
+Die Quadriga-Programme geben einige Meldungen aus, die man im Falle von
+erprobten, problemlos laufenden Skripten in der Konsolausgabe nicht
+mehr mit dabei haben will. Man kann's verhindern, indem man an den
+Aufruf hinten dran dies haengt:   2>nul  oder   2>dateiname
+Denn diese Meldungen, die in der Testphase ihren Sinn haben, gehen
+ueber den Fehlerkanal, und ohne die Option 2> ist dies derselbe wie
+der Konsol-Ausgabekanal. Mit  2>...  wird der Fehlerkanal entweder
+entsorgt (im ersten Fall) oder in eine Datei umgelenkt. Das klappt
+nicht nur unter UX, sondern auch Windows.
+
+
+a35-Paket aktualisiert + Neue Beschreibung
+------------------------------------------
+Unter
+
+   ftp://demo@svn.allegro-c.de/a35/a35.zip   [ohne Pw.]
+
+liegt jetzt das endlich mal wieder aktualisierte a35-Paket.
+Dazu gibt's auch eine neue Beschreibung: "So funktioniert a35":
+
+   http://www.allegro-c.de/doku/a35/a35arbeitsweise.htm
+
+
+

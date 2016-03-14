@@ -1,0 +1,461 @@
+//  BL.FLX : BritishLibrary XML-Daten in Format $A.CFG wandeln
+//  2011-07-28   als Beispiel fuer den Umgang mit XML-Daten in FLEX
+
+//  Die British Library hat ihre Daten, etwas abgespeckt, freigegeben zum
+//  Herunterladen, in 17 XML-Dateien:
+//  (Genauer gesagt sind es die Daten der British National Bibliography 1950-2010, Stand 18.10.2010)
+
+//  http://www.archive.org/details/BritishLibraryRdf  
+//    Mehr dazu:
+//  http://www.bl.uk/bibliographic/datafree.html
+//  http://consulting.talis.com/2011/07/significant-bibliographic-linked-data-release-from-the-british-library/
+
+//  Dieser FLEX wandelt eine solche XML-Datei um in das "Konsolidierte Format" ($A.CFG)
+//    Man startet ihn z.B. mit a99 auf der DemoBank und Eingabe von X bl
+
+// Achtung: Hier die gewuenschten Dateinamen einsetzen
+// open ... Name der XML-Datei ..., z.B.
+
+open bl\\BNBrdfdc01.xml
+if no jump nodata
+
+// open x bl\\...Ergebnisdateiname.ALG ..., z.B.
+
+open x +bl\\daten.alg
+if no jump nooutput
+
+z=0
+
+//  Import Protyp-Ersetzungen f. einige Zeichenkombinationen
+//   Ausloesung durch  xcode y
+
+p Ω aeiouAOU ÑâãîÅéôö
+//  d.h. ersetze  Ωa durch Ñ usw. 
+p ∑ aeiou Éàåìñ
+p ∂ aeiou Öäçïó
+p µ aeiou †Ç°¢£
+p ” Cc Äá
+p Ë nN §•
+
+
+//  Dateikopf lesen bis zum Beginn des ersten Datensatzes
+//  (hinter 10 "  <rdf:Description>")
+var 10 "  <rdf:Description>"
+fetch e
+
+//  Schleife liest je einen Datensatz und verarbeitet ihn
+:loop
+z+1
+//  Zuerst lesen bis zum Beginn des naechsten Satzes
+//  er beginnt immer nach einen Zeilenwechsel (Code 10) und dann "  <rdf:...>"
+var 10 "  <rdf:Description>"
+fetch e
+//  Nun ist der Satz in der iV, es sei denn, Datei war zu Ende:
+if "" jump dateiende
+//  Vorbehandlung mit 3 kryptischen Befehlen
+//  u-Befehle ausfuehren: UTF-8 -> Interncode
+xcode u
+
+//  Akzentvertauschung (im iV-Text) Verschiebung nach links
+export Ai
+
+//  y und p-Befehle ausfuehren, siehe oben (y kommt nicht vor)
+//   Zusammenfassung von Akzent und Grundbuchstabe
+xcode y
+
+ins $A
+
+//  Nun die Umwandlung der einzelnen Felder
+//  Feld wird jeweils aus $A extrahiert und in $a kopiert
+//  entweder mit Befehlen b"..." e"..." oder x"..."
+
+// *** #00 ***
+var $A (b"fier>(Uk)" e"<")
+ins $a
+//  Vor das erste Feld muss der Code 1 sein
+//  An das Feldende muss immer Code 0
+wri 1 "00 " $a 0
+
+// *** #20 ***
+
+var $A (x"dcterms:title")
+
+ins _&amp;_&_
+
+//  Punkt am Ende soll weg, Trick
+var +"(("
+ins $a
+var $a (e".((" F"(")
+ins $a
+
+//  Nichtsortierzeichen erkennen und markieren
+:nsort
+var $a (e" ")
+if Artikel var "™" $a (e" ") "™"
+ins $b
+var $a (b" ")
+ins $a
+return
+
+wri "20 " $b " " $a 0
+
+// *** #22 ***
+
+var $A (x"dcterms:alternative")
+if "" jump 32B
+ins $a
+perf nsort
+
+var $a
+if %. Engl% wri "22 " $b " " $a 0 
+var $a
+if not %.% jump xxx
+jump 32B
+
+:xxx
+wri "23 " $b " " $a 0
+
+:32B
+// *** #25 ***  meistens Uebersetzungsnotiz
+
+var $A (x"isbd:P1074") ".(("
+ins _&amp;_&_
+ins _^T^T_ ; _
+var (e".((" F"(")
+ins $a
+
+if $a wri "25 " $a 0
+// *** #32B  Dewey ***
+
+var $A (x"skos:notation")
+// Mehrfachtrennung ersetzen durch '; '
+ins _^T^T_; _
+ins $a
+if $a wri "32B" $a 0
+
+// *** #33L  LCSH ***
+
+var $A (x"dcterms:subject" x"skos:prefLabel" F".")
+ins _^T^T_; _
+ins _.; _; _
+ins _&amp;_&_
+ins _--_ - _
+ins $a
+
+if $a wri "33L" $a 0
+
+// *** #37 ***
+
+var $A (x"dcterms:language" x"rdf:value")
+ins _^T^T_ _
+ins $a
+
+if $a wri "37 " $a 0
+
+// *** #40 ***  oder #61, falls kein Komma
+
+var $A (x"dcterms:creator" x"rdfs:label") "(("
+ins _^T^T_ ; _
+var (e".((" F"(")
+ins $a
+
+if not $a jump contrib
+var $a
+if %, % wri "40 " $a 0;jump contrib
+wri "61 " $a 0
+
+
+// *** #42 oder #61a ***
+
+:contrib
+var $A (x"dcterms:contributor" x"rdfs:label") "(("
+ins _&amp;_&_
+ins _^T^T_ ; _
+var (e".((" F"(")
+ins $a
+
+if not $a jump publ
+var $a
+if %, % wri "42 " $a 0;jump publ
+
+// *** #61a ***
+
+wri "61a" $a 0
+
+:publ
+
+// *** #71 ***
+
+var $A (x"isbd:P1008")
+ins _&amp;_&_
+ins _^T^T_ ; _
+ins $a
+
+if $a wri "71 " $a 0
+
+// *** #74 ***
+
+var $A (x"isbd:P1016" x"rdfs:label")
+ins _&amp;_&_
+ins _^T^T_ ; _
+ins $a
+
+if $a wri "74 " $a 0
+
+// *** #75 ***
+
+var $A (x"dcterms:publisher" x"rdfs:label")
+ins _&amp;_&_
+ins _^T^T_ ; _
+ins $a
+
+if $a wri "75 " $a 0
+
+// *** #76 ***
+
+var $A (x"dcterms:issued")
+ins $a
+
+if $a wri "76 " $a 0
+
+// *** #77 ***
+
+var $A (x"dcterms:extent" x"rdfs:label")
+ins _^T^T_ -- _
+ins $a
+
+if $a wri "77 " $a 0
+
+// *** #85 ***
+
+var $A (x"dcterms:isPartOf" x"rdfs:label")
+ins _&amp;_&_
+//  wenn mehrfach, dann Trennung ^T^T durch ;; ersetzen
+ins _^T^T_ ;; _
+ins $s
+
+if not $s jump isbn
+
+//  den ersten nehmen
+var $s (e" ;;")
+ins $a
+perf nsort
+// Bandnr behandeln
+perf vol
+wri "85 " $b " " $a 0
+
+// *** #85a ***  der zweite, wenn vorhanden
+
+var $s (b";;" e";;" f" ")
+if "" jump isbn
+ins $a
+perf nsort
+perf vol
+wri "852" $b " " $a 0
+
+
+// *** #87 ***
+
+:isbn
+var $A (x"bibo:isbn" e"<")
+ins _^T^T_ ;; _
+hyphen
+ins $a
+
+if $a wri "87 " $a 0
+
+// *** #87a ***
+
+// var $A (b"fier>URN:ISBN:" e"<")
+// ins $a
+// hyphen
+// if $a wri "87a" $a 0
+
+
+// *** #8e ***
+var $A (b"dcterms:identifier>http:" e"<")
+ins _&amp;_&_
+ins $a
+
+if $a wri "8e http:" $a 0
+
+// *** #81 ***
+
+var $A (x"dcterms:description")
+ins _^T^T_^T_
+ins _&amp;_&_
+ins $a
+
+if $a wri "81 " $a 0
+
+
+// *** #89B ***
+
+var $A (b"fier>GB" e"<")
+ins $a
+if $a wri "89B" $a 0
+
+// *** #93 ***  
+
+var $A (x"dcterms:tableOfContents")
+
+ins _^T^T_^T_
+ins _&amp;_&_
+ins $a
+
+if $a wri "93 " $a 0
+
+//  Abschluss des Satzes:  13 10
+wri n
+
+//  Keyboard check: Taste Esc gedrueckt?
+kcheck
+if yes jump abbruch
+
+// wenn nicht, dann weiter
+jump loop
+
+// Bandnummer: manchmal mit ", " statt " ; " angehaengt
+:vol
+var $a (T", ")
+if <1 return
+var $a
+ins #usa
+var #usa(T", ") " ; " #usa(t", ")
+ins $a
+return
+
+
+:abbruch
+:dateiende
+close x
+close
+var "Erledigt! " z " records"
+mes
+end
+
+:nodata
+mes Datei existiert nicht
+end
+:nooutput
+mes Kein brauchbarer Name f. Ausgabedatei angegeben
+
+end
+
+ Beispiel Resultat:
+
+ 00 001132059
+ 20 ™The™ place-names of Cumberland
+ 32B929.4
+ 33LNames, Geographical - England - Cumberland; English language - Etymology - Names
+ 37 eng
+ 74 Cambridge
+ 75 University Press
+ 76 1950-1952
+ 77 3 v
+ 85 English Place-Name Society (Series) ; v. 20-22
+ 81 "Note by the general editor" in v. 1 signed: B. D. [i.e. Bruce Dickins].
+    "Bibliography and abbreviations": v. 3, p. [xlv]-lvii.
+ 89B5007770
+ 93 Pt. 1. Eskdale, Cumberland and Leath Wards. -- Pt. 2. Allerdale below Derwent and Allerdale above Derwent Wards. -- Pt. 3. Introduction, etc.
+
+ ***************
+
+  Originaldatensatz: (Den Beginn erkennt man an der Zeichenfolge <rdf:Description>
+                      mit Zeilenvorschub und zwei Spatien davor. Denn das Tag ist
+                      nicht eindeutig, sonst aber stehen mehr Spatien davor.)
+    <rdf:Description>
+    <dcterms:title>The place-names of Cumberland</dcterms:title>
+    <dcterms:contributor>
+      <rdf:Description>
+        <rdfs:label>Armstrong, A. M.</rdfs:label>
+      </rdf:Description>
+    </dcterms:contributor>
+    <dcterms:contributor>
+      <rdf:Description>
+        <rdfs:label>Dickins, Bruce, b. 1889.</rdfs:label>
+      </rdf:Description>
+    </dcterms:contributor>
+    <dcterms:contributor>
+      <rdf:Description>
+        <rdfs:label>English Place-Name Society.</rdfs:label>
+      </rdf:Description>
+    </dcterms:contributor>
+    <dcterms:type>
+      <rdf:Description>
+        <rdfs:label>text</rdfs:label>
+      </rdf:Description>
+    </dcterms:type>
+    <dcterms:type>
+      <rdf:Description>
+        <rdfs:label>monographic</rdfs:label>
+      </rdf:Description>
+    </dcterms:type>
+    <isbd:P1016>
+      <rdf:Description>
+        <rdfs:label>Cambridge</rdfs:label>
+      </rdf:Description>
+    </isbd:P1016>
+    <dcterms:publisher>
+      <rdf:Description>
+        <rdfs:label>University Press</rdfs:label>
+      </rdf:Description>
+    </dcterms:publisher>
+    <dcterms:issued>1950-1952</dcterms:issued>
+    <dc:date>
+      <owlt:Interval>
+        <owlt:hasBeginning>
+          <owlt:Instant>
+            <owlt:inXSDDateTime>1950</owlt:inXSDDateTime>
+          </owlt:Instant>
+        </owlt:hasBeginning>
+        <owlt:hasEnd>
+          <owlt:Instant>
+            <owlt:inXSDDateTime>1952</owlt:inXSDDateTime>
+          </owlt:Instant>
+        </owlt:hasEnd>
+      </owlt:Interval>
+    </dc:date>
+    <dcterms:language>
+      <rdf:Description>
+        <rdf:value rdf:datatype="http://purl.org/dc/terms/ISO639-2">eng</rdf:value>
+      </rdf:Description>
+    </dcterms:language>
+    <dcterms:extent>
+      <rdf:Description>
+        <rdfs:label>3 v</rdfs:label>
+      </rdf:Description>
+    </dcterms:extent>
+    <dcterms:tableOfContents>Pt. 1. Eskdale, Cumberland and Leath Wards. -- Pt. 2. Allerdale below Derwent and Allerdale above Derwent Wards. -- Pt. 3. Introduction, etc.</dcterms:tableOfContents>
+    <dcterms:description>"Note by the general editor" in v. 1 signed: B. D. [i.e. Bruce Dickins].</dcterms:description>
+    <dcterms:description>"Bibliography and abbreviations": v. 3, p. [xlv]-lvii.</dcterms:description>
+    <dcterms:subject>
+      <skos:Concept>
+        <skos:prefLabel>Names, Geographical--England--Cumberland.</skos:prefLabel>
+        <skos:inScheme rdf:resource="http://id.loc.gov/authorities#conceptScheme" />
+      </skos:Concept>
+    </dcterms:subject>
+    <dcterms:subject>
+      <skos:Concept>
+        <skos:prefLabel>English language--Etymology--Names.</skos:prefLabel>
+        <skos:inScheme rdf:resource="http://id.loc.gov/authorities#conceptScheme" />
+      </skos:Concept>
+    </dcterms:subject>
+    <dcterms:subject>
+      <skos:Concept>
+        <skos:notation rdf:datatype="ddc:Notation">929.4</skos:notation>
+        <skos:inScheme rdf:resource="http://dewey.info/scheme/e18" />
+      </skos:Concept>
+    </dcterms:subject>
+    <dcterms:isPartOf>
+      <rdf:Description>
+        <rdfs:label>English Place-Name Society (Series) ; v. 20-22</rdfs:label>
+      </rdf:Description>
+    </dcterms:isPartOf>
+    <dcterms:identifier>(Uk)001132059</dcterms:identifier>
+    <dcterms:identifier>GB5007770</dcterms:identifier>
+  </rdf:Description>
+
+
+
+

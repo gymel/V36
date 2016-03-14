@@ -1,0 +1,465 @@
+  MARC21.AIM : z.B. OCLC data (with directory) --> allegro A format
+  940615 / 2009-09-09
+    z.B.:
+    LC-Daten:  http://ia600508.us.archive.org/13/items/marc_records_scriblio_net/    part??.dat
+
+  PRELIMINARIES:
+  --------------
+
+al=5          1st 5 bytes hold the rec length
+am=1          in decimal digits
+
+  do the following replacement while reading input:
+
+y .30 0      replace 1E = MARC field terminator by zero (allegro field end)
+             it's also the last byte of directory!
+
+fs=4         field start = 4 bytes after position given in directory
+             (all fields start with 2 indicators + a)
+fc=5         field length correction: subtract fc from directory length
+
+  do the following replacements during transfer:
+
+    replace θa by „ etc.:
+
+p θ nN ¤¥
+p ¶ aeiou …•—
+p µ aeiouEnN  ‚΅Ά£υτ
+p · aeiou ƒ“–
+p Ύ ag δ
+p ½ aiouAOUy „‹”™
+p Η ecszZSCrR §¬―®«¦¨©  
+p Σ cC ‡€
+p  b α
+p Ο uU 
+
+    replace all remaining subfield codes by spaces:
+ p  abcdefghijklmnopqrstuvwxyz1234567890                                     .
+
+y .27 25    Esc!
+            Esc p = Superscript, Esc s = normal 
+
+_ ""
+_ " "
+
+ Neu in USMARC daten ab Januar 2001
+
+y .94 183    circumflex
+y .95 223    underscore
+y .225 182   gravis
+  y .96 182    gravis
+y .226 181   akut
+y .227 183   circumflex
+y .228 232   tilde
+y .229 208   macron
+y .230 190   breve
+y .231 184   ueberpunkt
+y .232 189   trema
+y .233 199   hacek
+y .234 207   ringel
+y .235 025   Ligaturzeichen, weg damit 
+y .236 025   ...
+
+y .240 211
+y .123 123    {
+y .125 125    }
+y .126 126   Tilde
+
+y .136 170   Nichtsortier-Anfang / -Ende
+y .137 170    (wohl kaum irgendwo verwendet)
+
+y .161 242   poln /L
+y .164 177
+y .165 146   AE
+y .174 39    Alif (korrekt???)
+y .177 243   poln /l
+y .178 215   /o
+y .180 178   kl. thorn
+y .181 145   ae
+y .185 156   Brit.Pound
+y .192 248   Gradzeichen
+y .193 108   l
+y .194 214   Copyright (phono)
+y .195 214   Copyright
+y .196 35    # (sharp)
+y .197 63    umgek. ?
+y .198 33    umgek. !
+y .199 225   ss
+y .200 221   Euro
+y .237 39    '
+
+  MAIN PART:
+  ----------
+   consists of the appropriate number of
+   field descriptions: (each # begins a paragraph that describes the
+                        generation of one allegro field)
+
+   #yyy
+   D "xxx"  means:  find tag xxx and transfer into field #yyy
+   D0 "xxx"      :  same, but invalidate the tag, if it's not to be used again
+                    (any 'x' can, by the way, be a wildcard '?')
+
+#00          take the ID# (allegro field #00)
+D0 "001"      from MARC tag 001  (command D searches for 001 using the
+{ 4          no subf. code!      MARC directory)
+e "/"
+e 47
+
+w""          sonst u.U. falscher Anfang der #00
+
+#819
+D0 "502"   Diss
+_d_:_
+
+
+   
+ #814       cataloging source
+ D0 "040"
+
+#30g
+D0 "043"
+       country codes (go 4 bytes left, there are no indic nor subf)
+_ "a"
+_ " "
+
+
+#92        Location codes
+D0 "049"
+
+#39          author statement (subfield c in MARC 245 goes to allegro field #39)
+D "245"
+b 31 "c"    subfield c
+i 32
+i 47         / weg
+
+#20          title proper
+D0 "245"
+n                mark the leading article
+e " /" 31 "c"    end at subfield c (which may be marked either /c
+e 31 "c"                            or just c
+_ ":b"
+_ " : "
+_ "b"
+_ " : "
+
+
+#22          uniform title
+D0 "240"
+n                mark the leading article
+e " /" 31 "c"    end at subfield c (which may be marked either /c
+e 31 "c"                            or just c
+
+#22          uniform title
+D0 "130"
+n                mark the leading article
+e " /" 31 "c"    end at subfield c (which may be marked either /c
+e 31 "c"                            or just c
+
+#23
+D0 "740"
+m
+
+#78        336,337,338
+D0 "336"
+e ""
+W " / "
+
+D0 "337"
+e ""
+W" / "
+
+D0 "338"
+e ""
+
+#23£
+D0 "246"
+m
+
+#76p
+D0 "362"
+
+
+#31g
+D0 "651"
+_ "x"
+_ " -- "
+m"; "
+
+
+#33
+D0 "653"
+m"; "
+
+#33L         topical LC subject headings
+D0 "650"
+B"a"          2 bytes left: subf mark
+_ "?"
+_ " -- "
+i 32
+i 45
+m"; "        multiple occurrence possible
+
+
+#31k         Corporate name subj heading
+D0 "610"
+_ "x"
+_ " / "
+
+#31t         Corporate name subj heading
+D0 "630"
+_ "x"
+_ " / "
+
+              precede the text with this
+_ "?"
+_ " -- "
+m"; "         multiple occurrence possible
+
+#31p         Personal name subject heading
+D0 "600"
+ { 2
+ w"LC :"      precede the text with this
+ u8           change x into x)
+_ ",d"
+_ " ("
+m"; "         multiple occurrence possible
+
+
+#32L       call #
+D0 "050"
+e "b"    remove Cutter
+_ "a"    multiple
+_ "; "
+
+
+#32M       call #
+D0 "060"
+
+#32A       call #
+D0 "070"
+
+#32B
+D0 "082"   Dewey
+
+#40          1st author
+D0 "100"
+e 31
+ +402
+
+#42
+D0 "700"
+B"a"
+_ ","
+_ ""
+m
+
+-402
+#402
+D0 "700"
+ e31
+
+#403
+D0 "700"
+ e31
+
+#60          Corp name main entry
+D0 "110"
+
+#61          Corp name added entry
+D0 "710"
+m
+
+#83
+D0 "111"
+
+#83£
+D0 "711"
+
+#85
+D0 "400"
+_ "v#"
+_ "v"
+_ 31 "v"
+_ " ; "
+_ " ; ;"
+_ " ;"
+N
+
+#85~
+D0 "490"
+_ "v#"
+_ "v"
+_ 31 "v"
+_ " ; "
+_ " ; ;"
+_ " ;"
+N
+
+#85~
+D0 "800"
+_ "v#"
+_ "v"
+_ 31 "v"
+_ " ; "
+_ " ; ;"
+_ " ;"
+N
+
+#8e
+D0 "856"
+B"u"
+m
+
+#71
+D0 "250"
+
+#74          place of publ
+D "260"      (don't yet invalidate, we need this same field 2 more times below)
+e 31 "b"
+_ "a"
+_ "; "
+
+
+#75          publisher's name
+D "260"
+b 31 "b"
+e 31
+
+#76          date
+D0 "260"     (now we can invalidate 260)
+b 31 "c"
+e 31
+
+#77          physical descr.
+D0 "300"
+e 31         take first subf only
+u 2                 subroutine 2: change roman numeral to caps
+_ "p."              replace p. by S.
+_ "S."
+.                   leave `.' at end (it's removed by default)
+
+#77k
+D0 "255"
+
+#85         Series
+D0 "440"
+_ "v#"
+_ "v"
+_ 31 "v"
+_ " ; "
+_ " ; ;"
+_ " ;"
+N
+
+#85~
+D0 "830"    series uniform title
+_ "v#"
+_ "v"
+_ 31 "v"
+_ " ; "
+_ " ; ;"
+_ " ;"
+N
+#85~       Corporate series
+D0 "410"
+
+#85~       ungez. Serie
+D0 "490"
+_ "v#"
+_ "v"
+_ 31 "v"
+_ " ; "
+_ " ; ;"
+_ " ;"
+N
+
+#85~
+D0 "470"
+_ "v#"
+_ "v"
+_ 31 "v"
+_ " ; "
+_ " ; ;"
+_ " ;"
+N
+
+#87        ISBN
+D0 "020"
+u6
+m" = "
+
+#87
+k87
+  Sonst kann = verdoppelt sein!
+_ "= ="
+_ "="
+
+#88        ISSN          NEU 2014/6
+D0 "022"
+m" = "
+
+#89L       LC control#
+D0 "010"
+i 32      ignore leading spaces
+
+#99e    last date and time
+D0 "005"
+{ 4       go 4 byte left: field has no indic nor subf
+l 8       take 8 bytes: format of date is YYYYMMDD
+
+#99n      date and time of first entry
+D "008"
+{ 4
+l6
+
+#37
+D0 "008"
+} 31
+l3
+
+
+#91
+D0 "090"    local call#
+
+#97
+D0 "910"
+
+#979
+D0 "949"
+
+#81b
+D0 "504"
+
+#81a       contents note
+D0 "505"
+_ "--"
+_ ""
+_ ".-"
+_ ""
+
+#81
+D0 "500"
+m"; "
+
+#99
+D0 "520"
+
+#99e       last date and time
+D0 "005"
+{ 4       go 4 byte left: field has no indic nor subf
+l 8       take 8 bytes: format of date is YYYYMMDD
+
+#99n      date and time of first entry
+D0 "008"
+{ 4
+l6
+
+          and finally, here we have a very powerful paragraph:
+
+ #99a
+ D "???"   collect all fields that haven't been invalidated under #99a...
+ m         the result is:
+          #99a(tag1) text
+          #99b(tag2) text...
+          this also serves to detect erroneous or undocumented field numbers!
+

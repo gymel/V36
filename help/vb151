@@ -1,0 +1,107 @@
+
+Verlautbarung 151 der Entw.Abt.                          2001-08-14
+------------------------------
+
+Pandoras Fuellhorn
+------------------
+
+ACHTUNG: Kein Handlungsbedarf! Es wurden keine Fehler korrigiert
+(da keine bekannt) und keine neuen Funktionen eingebaut, die
+Neuerungen sind rein oberflaechlicher Art. In funktionaler Hinsicht
+bleibt die Festschreibung folglich bestehen.
+
+Hauptzielrichtungen entlang gesicherter Erkenntnisse der Usability-
+forschung (frueher Software-Ergonomie) sind diese:
+
+A. FLEXibilisierung (Nutzer wollen etwas anderes als der Entwickler
+     und keine 2 Nutzer wollen dasselbe)
+
+B. Intuitionierung (Nutzer wollen, dass die Software weiss, was
+     sie wollen, und zwar genauer als sie selber. Anders gesagt,
+     Nutzer wollen, dass die Software nicht das tut, was sie
+     sagen, sondern was sie meinen, moeglichst noch bevor sie
+     es sagen, und besonders, wenn sie nicht genau wissen, wie
+     man es sagen muesste.)
+
+1. Hilfefunktion
+----------------
+Noch eine Erkenntnis der Ergonomen: ein Menuepunkt "Hilfe" oder "?"
+faellt auf den blinden Fleck der Netzhaut, wird also nicht bemerkt.
+Ein drastischer Eingriff ist also hier unumgaenglich, um die Aufmerk-
+samkeit zu erregen, die dem Menue DOKU.RTF gebuehrt.
+Der Menuepunkt  "?"  wurde daher in  "Fuellhorn" geaendert und mit
+dem Hotkey H ausgestattet (aenderbar in UIF-Zeile 244, neu!, Sie koennen
+da z.B. HILFE..HILFE..HILFE hinschreiben oder schlicht "Hilfe", aber
+siehe oben - da kommt ja viel viel mehr als nur Hilfe!)
+(Die engl. Version hat an der Stelle "Pandora's Box" mit B als Hotkey)
+Mit Alt+h wird der neue On-FLEX  onhlpa99.flx  bzw.  onhlpalc.flx
+ausgefuehrt. Fehlen diese FLEXe, erscheint die Datei
+   doku.rtf   bzw.   alcm.rtf
+Nun hat man alle Freiheiten, hier einzugreifen und dem Nutzer die
+optimale Hilfe angedeihen zu lassen.
+
+DOKU.RTF wurde verbessert:
+Rechts oben erscheinen die vier neuen Punkte
+
+   Version                   neuer FLEX-Befehl  "Show about"
+   Info zur Datenbank        Aufruf von  DBINFO.FLX
+   Letzte Neuerungen         statt bisher "Verlautbarungen"
+   FAQ                       H„ufige Fragen
+
+So werden die bisherigen Punkte unter "?" nun zu Bestandteilen
+der DOKU.RTF, die jetzt noch direkter aufrufbar ist und noch mehr
+bietet - eben ein richtiges Fuellhorn.
+
+Alt+h genuegt statt Eingabe von h im Schreibfeld.
+Noch ein neuer Punkt auf DOKU.RTF: MS-DOS. Schauen Sie selbst, was
+dann kommt.
+
+N.B.: die selten gebrauchte Funktion  Alt+h  fuer das Vorwaertsblaettern
+in der Ergebnismenge ist auf  Alt+l  uebergegangen. Das Gegenteil war
+und ist  Alt+u. (Zeilen 402/403 in der UIFEGER)
+
+2. Find-Funktion
+----------------
+Wenn man in der Suchbefehlszeile intuitiv ein Wort eintippt, kam bisher
+der momentane Index an der betreffenden Stelle. Das ist nicht intuitiv,
+da muss man ja schauen und denken. Es sollen gleich Ergebnisse kommen!
+Es ist doch ueberall so: da ist ein Eingabefeld, moeglichst klein, man
+wirft da was ein, und es kommt genau das, was man braucht.
+Nun denn: jetzt wird, wenn die Befehlszeile keinen korrekten Befehl
+enthaelt oder sich kein Ergebnis ergibt), der neue On-FLEX
+onfnda99.flx bzw. onfndalc.flx  aktiviert. Was da drin steht, ist
+Sache der Implementierung. Steht da z.B. drin:
+
+var "|3 " #ux0 "? or |1 " #ux0 "?"
+Find
+
+so wird das eingegebene Wort im Reg. 3 und 1 gesucht und per ODER zu
+einer Erg.Menge vereinigt. Leicht kann man das zu einer Suche ueber
+alle Register ausbauen - oder was immer man fuer sinnvoll haelt.
+In der Variable  #ux0  steht die Eingabe, die zu keinem Ergebnis
+fhrte. Und zwar im ASCII-Code (sonst muesste vor Find noch ansi
+gegeben werden).
+
+
+3. Neue var-Variablen:
+----------------------
+(xcstring.rtf wurde ergaenzt)
+m   ProgName Version (a99 v21.3  bzw.  alc v21.3)
+    (damit kann man nun feststellen, ob man in a99 oder alcarta ist)
+O   Name der Offline-Datei (Offline-Befehl in INI)
+o   Anzahl der Saetze darin
+u   enthaelt Datum und Uhrzeit (war schon vorhanden!)
+
+4. Suchbefehlszeile
+--------------------
+Hier konnte man bislang eine Zahl eingeben, dann kam der zugehoerige
+Offline-Satz - wenn es Offline-Daten gibt. Da dies die grosse Ausnahme
+ist, und um die neue FLEX-Aktion (siehe 2) nicht zu stoeren, wurde jetzt
+eingefuehrt, dass man ein % vorweg setzen muss.
+Mit # und Zahl kommt ja der Online-Satz mit der betr. internen Nummer.
+
+Bereitgestellt:  a99.lzh, alcarta.lzh    --> ProgDir
+                 help.lzh, flexhelp.lzh  --> ProgDir\HELP
+                           handbuch.lzh  --> ProgDir\HELP
+                 flex,lzh                --> ProgDir\FLEX
+

@@ -1,0 +1,100 @@
+
+Verlautbarung 167 der Entw.Abt.                             2003-06-11
+-------------------------------
+
+Himmelfahrtskommando 2003 : MemoFLEX
+------------------------------------
+Schluss mit Zettelwirtschaft - Wozu haben wir eine Datenbank?
+
+Was man nicht im Kopf behalten kann, muss man sich irgendwo aufschreiben.
+Das nimmt zuweilen durchaus unaesthetische Formen an: Klebezettel rings um den
+Bildschirm wie am Kuehlschrank, vergilbende Blaetter in speckigen 
+Klarsichthuellen, bauchig aufgequollenes Handbuch - jeder kennt das.
+Aber wozu haben wir eine Datenbank? Das IST doch ein Instrument zum
+Memorieren von Dingen, die das Gedaechtnis ueberfordern. Da kann und da soll
+sie sich auch noch die paar Sachen merken, die auf den diversen Zetteln stehen.
+Und das muss nicht beschraenkt bleiben auf Katalog und allegro, denn die
+Datenbank kann alles schlucken, was sich aufschreiben laesst.
+Dazu gehoeren:
+-- Simple Notizen beliebigen Inhalts
+-- Hinweise, wie man dies und das macht, dabei
+   -- Anbindung eines Hilfetextes bzw.
+   -- eines FLEXes oder auch
+   -- Aufruf eines anderen Programms/Dokuments
+-- Flip zu einer Registerstelle
+-- Bilden einer Ergebnismenge (find-Befehl)
+-- Termine
+wobei aber jede Notiz mit einem Termin versehen werden kann.
+Ist ein Termin erreicht oder verstrichen, wird man darauf
+aufmerksam gemacht. Daraufhin kann man ihn aendern oder loeschen.
+
+Wer allerdings schon auf "Outlook" oder "Lotus Notes" eingeschworen ist, 
+braucht nicht weiterzulesen, weil er/sie ja bereits damit "alles" macht.
+Solche Systeme koennen selbstverstaendlich sehr viel mehr, allein
+schon durch die E-Mail-Integration.
+Es sei denn, man betrachtet MemoFLEX als Anschauungsmaterial fuer
+die FLEX-Technik. Dazu ist es durchaus auch gedacht und geeignet.
+Empfehlung:
+Eingebaut ist MemoFLEX ab sofort in die DemoBank. Wer es nutzen will,
+wird am besten so verfahren, immer nebenbei ein Fenster mit der
+DemoBank zu oeffnen und dort seine Memos und Termine einzulagern.
+Wenn naemlich ein Termin ereicht ist, aktiviert sich das betr. Fenster
+und zeigt den Termin an. Macht man das in der eigenen Datenbank, kann 
+es auch stoerende Nebeneffekte geben, das muss man bedenken.
+
+Starten Sie die neue Version der DemoBank, dann geht's schon los
+und Sie koennen alles ausprobieren.
+
+Was braucht man?
+0. Einen griffigen Namen fuer die ganze Sache: MemoFLEX
+1. Einen neuen Satztyp, den wir mal "Notiz" oder "Memo" nennen wollen
+   Dazu wird nur eine Kategorienummer gebraucht, fuer die DemoBank #9a.
+2. Jede Notiz braucht:
+   a) eine Bezeichnung - so etwas wie einen Titel (mehrere moeglich!)
+   b) einen Text - also das, was zu merken ist
+Und wenn es etwas ist, was mit der Datenbank oder allegro zu tun hat:
+   c) einen Flip zum Ausloesen einer Funktion oder Aufrufen eines Hilfetexts
+Und damit die Sache nicht allzu simpel ist:
+   d) eine Terminangabe: Erinnerungs- oder Verfallsdatum
+      EIne Notiz ohne Termin wird im engeren Sinne "Memo" genannt.
+3. Ein Formular dazu fuer die Eingabe neuer Notizen
+4. Registereintraege:  einen fuer jeden Titel
+5. FLEX  memo.flx  fuer den Termincheck, 
+         memodate.flx zum Anzeigen aller Termine
+6. Menuetext  memo.rtf  mit geeigneten Flips zum Ausloesen der Funktionen
+7. Einen Abschnitt in den Anzeigeparametern, der die Notiz anzeigt,
+    einschl. Flip, wenn einer angegeben ist
+8. Abschnitte in den Index-Parametern, um geeignete Eintraege zu
+    erzeugen. Gewaehlt wurde Stelle M im Register 10
+9. Belegung eines Flip-Buttons zum schnellen Einstieg in die Memo-Sammlung
+    In der DemoBank ist das jetzt Alt+5
+    Sonst: starten mit  h memo
+
+Ein Satztyp zeichnet sich in allegro nicht durch einen bestimmten Indikator
+aus, sondern durch das Vorhandensein eines bestimmten Datenfeldes.
+Um nicht in die Standard-CFG eingreifen zu muessen, waehlen wir die
+bislang ungenutzte Kategorie #9a und definieren:
+  #9a   Titel des Memos. Es koennen mehrere eingegeben werden, getrennt
+          durch Semikolon - sie werden dann alle indexiert
+  #9at  Text
+  #9af  Flip (x ..., X ..., h ..., oder ein Programmname)
+  #9ad  Datum (Termin) in der Form  JJJJMMDD/HH:MM
+  #9av  Verfallsdatum (wann die Notiz zu loeschen ist)
+
+Die Formulardatei cat.frm wurde entsprechend erweitert.
+
+cat.api wurde erweitert: Die Inhalte von #9a werden im Register 10
+mit dem Praefix  "M " abgelegt. Dieses symbolische Register erhaelt
+die Bezeichnung MEM. Unter "Md" stehen die Datumsangaben.
+
+Notizen erhalten eine IdNummer in #00 mit m und vier Ziffern.
+
+Und wenn man nicht A.CFG hat?
+Dann muss man die entsprechenden Abschnitte aus cat.api bzw. d-wrtf.apr
+in die eigenen Index- bzw. Anzeigeparameter uebernehmen. Die Abschnitte
+sind alle mit "Memo" markiert. Wenn man nicht die Kategorie #9a verwenden
+kann (z.B. bei dreistelligem Schema) muss man es durch eine andere
+Nummer ersetzen (bei MAB z.B. #998), die aber in der CFG auch
+definiert sein muss. Anzupassen ist auch die Formulardatei (Abschnitt
+[Memo] aus cat.frm uebernehmen).
+

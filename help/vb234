@@ -1,0 +1,109 @@
+
+
+Verlautbarung 234 der Entw.Abt.                              2011-01-06
+-------------------------------
+
+
+                          V31.0 liegt bereit
+
+V30.10 nochmals aufgewertet
+---------------------------
+
+
+Index kompaktieren  (Menue "Org")
+     Jetzt kommt auch hier zuerst die Auswahl der Indexdatei, wenn man
+     mehr als eine hat (MultiX).
+
+Auf dem "Reorganisieren"-Menue gibt es das Untermenue "Checking",
+     und darin: die Funktion
+        "Laengste/kuerzeste Saetze finden". 
+     Diese ermittelt jetzt auch die Saetze mit nur wenigen Feldern.
+     Man erhaelt zwei Ergebnismengen: "Laengste/kuerzeste Saetze"
+     (und zwar je 3) und  "Saetze mit nur N Feldern". Die Zahl N 
+     wird zuerst abgefragt.
+     Die Funktion startet den FLEX  lk.flx.
+     Tips:
+        1. Anschliessend Volltextsuche, um diejenigen zu finden,
+             die aus einem ganz bestimmten Feld bestehen,
+                z.B. nur aus #00
+        2. Denken Sie daran, daﬂ die Datumsfelder mitzaehlen!
+           Insbes. haben Saetze mit nur einem Feld dann 2 oder 3.
+
+NEU: alldata.inc
+     Ein universelles FLEX-include zum Durcharbeiten der Gesamtbank
+     mit hoher Geschwindigkeit innerhalb eigener FLEXe. 
+     Angelehnt an  ftr.inc  fuer die Volltextsuche.
+     Es enthaelt ***Kommentare*** zur korrekten Anwendung.
+     Die Datei, mit jeweils eigenen Modifikationen, kann natuerlich in
+     eigene FLEXe direkt eingefuegt statt mit "include" eingebunden
+     werden.
+     Prinzip: Die ALD-Dateien werden direkt gelesen, nicht indirekt
+     einzeln per Befehl  first # / next #. Die Reihenfolge ist deshalb
+     nicht die der internen Nummern, das ist aber i.d.R. egal.
+
+
+Neuer FLEX  addfield.flx:
+     Erweitert die Funktion von cfga.flx
+     Anwendung: Schreibmarke in Zeile setzen, dann X addfield
+                erzeugt eine neue Eingabezeile fuer ein Mehrfachfeld.
+
+     cfga wurde verbessert:  X cfga  klappt jetzt bei jedem Schema
+     (s.a. Vb.215) ohne dass man zuerst was tun muss.
+     Ratsam ist gleichwohl das Anlegen einer .cfl-Datei, wenn Unter-
+     felder mit treffenden Labels erscheinen sollen.
+
+
+a99/alcarta/acon: Jetzt 100 statt 50 symbolische Register
+
+
+aLF: Leserstammsatz aendern
+     Sperre wird nicht automatisch zurueckgesetzt!
+
+     Neuer Leserstammsatz
+     Gueltigkeit der Klasse wird geprueft,
+     Datum Ende der Mitgliedschaft wird auf Wochentag gesetzt, falls
+     es ein Samstag oder Sonntag waere.
+
+In einigen Hilfetexten und FLEXen wird jetzt ausdruecklich
+darauf hingewiesen, wenn etwas unter Win'7/64 nicht klappt.
+
+
+acon: Maximale Jobzeilenlaenge
+     Jetzt 64000 statt nur 4000 Byte.
+     Relevant wohl nur, wenn man mit find #... sehr groesse
+     Erg.Mengen erzeugen will.
+
+     Problematik beim Abarbeiten von ak-Befehlen (beim Speichern
+     eines Satzes). Wenn ein Inhalt mit mehr als 218 Byte dabei
+     rauskommt, konnte es zu einem internen Problem, im Extremfall
+     Endlosschleife kommen. Das wurde behoben.
+
+update
+     Konsequent sind die Batchdateien, in denen bisher das Programm
+     update.exe vorkam, auf upd.exe umgestellt. Im naechsten Schritt
+     werden wir die Aufrufe durch  acon  ersetzen, weil upd.exe 
+     nicht unter Windows'7 laeuft.
+
+alcarta
+     In alcarta wurden die MultiX-Register, so z.B. ALL, nicht
+     in der Indexauswahl angeboten. Das wurde geaendert.
+
+     Der mitgelieferte  _start.flx  unterscheidet jetzt zwischen
+     a99 und alcarta und belegt die Flip-Buttons dann unterschiedlich.
+
+PDF-Handbuch
+     Das Systemhandbuch V30 bleibt gueltig, die PDF-Version ist aber
+     formal verbessert worden: Inhaltsverzeichnis vervollstaendigt,
+     auch das interne Inh.Verz. ist verlinkt zum direkten Anklicken.
+
+      http://www.allegro-c.de/doku/handb30.pdf
+
+
+PHPAC ueberarbeitet
+     In einem ersten Durchgang wurde die leicht uebergewichtige
+     Datei  av_ini.php  in zwei geteilt: Die CSS-Attribute sind
+     nun ausgelagert in  css.php, welches man in die PHP-Skripte
+     nach Bedarf einfuegt - oder eben nicht. Bisher hatte man nicht
+     diese Wahl. Besonders bei PHP-Skripten fuer Web-Dienste ohne
+     Oberflaeche werden die CSS-Sachen ja gar nicht gebraucht! 
+

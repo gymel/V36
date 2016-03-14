@@ -1,0 +1,103 @@
+
+Verlautbarung 127 der Entwicklungsabteilung
+-------------------------------------------                        2000-01-18
+
+Das Erstellen der "news" 56 zog sich in die Laenge. Zwar gab es genug Stoff,
+aber es sollte eine vollstaendige und aktuelle Dokumentation der FLEX-
+Sprache hinein, denn die Beschreibung in Nr. 54 war schon vollkommen veraltet
+und es handelt sich nun einmal mittlerweile um das Kernstueck,
+wenn es um a99 und alcarta geht. Bis in die letzten Tage hinein gab es aber
+noch Vorschlaege und Ideen, die nach einer umgehenden Umsetzung ver-
+langten. Haette man der Versuchung nachgegeben, die Nummer mit dem
+Datum 31.12.1999 oder 1.1.2000 herauszubringen, schon waere der Inhalt
+wieder veraltet. Da erschien denn der Effekt mit dem Datum doch hoechst
+sekundaer.
+Nun denn, die Nr. 56 ist so gut wie fertig und wird wohl morgen freigegeben.
+Hier vorab die Mitteilung ueber die letzten Verbesserungen, die noch
+ihren Weg hinein gefunden haben:
+
+file <name>
+file +<name>
+       Der Inhalt des Anzeigefeldes wird in die Datei  <name> geschrieben.
+       Wenn + davor steht, wird an die Datei angehaengt, sonst wird sie
+       ueberschrieben.
+       Fehlt <name>, wird der Inhalt der iV genommen.
+       Das entspricht der Funktion "Anzeige speichern als ..." auf dem
+
+Die letztere Bemerkung gilt jetzt fuer so gut wie alle Befehle! Das heisst, 
+der Dateiname oder was immer es ist, kann aus dem Datensatz mit Hilfe von 
+"variable" zusammengebastelt werden, wenn's sein muss. 
+Auch beim folgenden Befehl geht das:
+
+open <name>
+       die Datei <name> wird zum Lesen geoeffnet. Mit dem Befehl "read"
+       kann man zeilenweise daraus lesen. Das muss innerhalb desselben
+       FLEXes geschehen, denn bei dessen Beendigung wird sie automatisch
+       geschlossen. (Man wuerde sich viele Probleme einhandeln, wuerde
+       man sie offen lassen...)
+       Mit "if no ..." kann man abchecken, ob das Oeffnen geklappt hat.
+
+read #nnn
+read iv
+       Damit kann eine Zeile aus der vorher geoeffneten Datei in die 
+       Kategorie oder Variable #nnn gelesen werden bzw. in die interne 
+       Variable.
+       Mit "if cancel .." stellt man fest, ob die Datei zu Ende war, mit
+       "if no ..." wird abgefragt, ob das Lesen nicht geklappt hat.
+
+So ist es jetzt moeglich, ASCII-Dateien zeilenweise einzulesen und irgendwas
+damit zu machen. Zusammen mit "write" ergibt sich die Moeglichkeit, Dateien
+in welcher Weise auch immer zu verarbeiten und wieder auszugeben.
+D.h. man kann a99 als eine Art Filter benutzen - wobei die Daten mit der
+Datenbank nicht das Geringste zu tun haben muessen...
+
+Die Funktion "Anzeige speichern als ..." auf dem Menue "Datei" wurde 
+verbessert:
+Wenn es sich nicht um den Typ .RTF handelt, wird nur der Text als ASCII-Datei
+geschrieben. Das hat eine ganz wichtige Konsequenz: man kann nun das Anzeige-
+fenster dazu benutzen, ASCII-Dateien zu editieren, etwa Stapeldateien oder
+auch Parameterdateien. Einfach im Schreibfeld  h name   eingeben, schon hat 
+man die Datei in der Anzeige. Beim Einlesen und Schreiben von ASCII-Dateien 
+wird nun auch der \ richtig behandelt. (Wenn es aber .RTF ist, besteht 
+immer noch das Problem mit den FLEX-Zeilen am Ende. Damit muss man noch 
+leben. 
+Tip: Die FLEX-Zeilen getrennt als ASCII-Datei bearbeiten und dann mit 
+X-Editor hinten an die RTF-Datei anhaengen. Konkret: die Umlaute muessen 
+in den FLEX-Zeilen ASCII-zeichen sein.)
+
+Und noch was:
+
+Rahmenfarbe
+-----------
+Die Farbbefehle (redB, bluB, greB) in der INI wirken sich NUR dann aus,
+wenn man hinter dem Befehl "a99" oder "alcarta" den namen der INI-Datei
+vollstaendig angibt, also mit ".INI" hintendran. Das hat komplizierte
+Gruende und konnte nicht so schnell geaendert werden. Aber wenn man das
+so macht, dann geht's. So kann man die Datenbanken optisch am besten
+unterscheiden - sieht man die Farbe, braucht man keinen einzigen 
+Buchstaben zu lesen aber weiss Bescheid.
+
+
+Und noch was:
+
+Gleichnamige Datenbanken
+------------------------
+konnte man nicht vom selben Verzeichnis aus starten, weil die Hilfsdateien, 
+wie *.TAB, *.$$$, *._1 usw. dann keine eindeutigen Namen haben. 
+Jetzt geht das, aber man muss dafuer sorgen, dass die Namen eindeutig 
+werden. Dafuer gibt es einen neuen INI-Befehl:
+DbAux=xxx
+Fuer xxx genuegt ein einziger Buchstabe, es darf aber auch ein Pfadname 
+sein (mit abschlieáendem \ ). xxx wird als Praefix vor die Namen der 
+Hilfsdateien gesetzt. Daher braucht dieser Befehl nur in einer der 
+INI-Dateien zu stehen.
+
+Zur Klaerung der Terminologie:
+"HilfEdateien" sind Texte, die als Hilfe fuer den Nutzer bestimmt sind
+   (engl. "help files" oder "help pages" oder "help screens")
+"HilfSdateien" haben Hilfsfunktionen fuer's Programm, sie werden meistens
+   dem Nutzer nicht sichtbar oder bewusst. Dazu gehoeren die *.TAB, *.$$$, 
+   *._nn usw., die waehrend der Laufzeit entstehen und vergehen.
+   (engl. "auxiliary files")
+
+

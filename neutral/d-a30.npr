@@ -1,0 +1,187 @@
+  Plus Nachladungen von ueber- und untergeordneten Saetzen
+  2002-02-15 / 2010-07-22
+  Abgeleitet von D-KDOS.APR
+
+pn="Hierarchie-Export a30"
+
+  Hauptarbeit ist in d-k.npt! 
+  Fuellen Sie darin die Bereiche zwischen den mit <<<<<<<<<  und >>>>>>>>>
+  markierten Zeilen mit Ihren Exportbefehlen aus!
+  Meistens reicht es, den Abschnitt unter Sprungmarke #-Z anzupassen!
+  (siehe ganz unten)
+
+  Der aktuelle (anzuzeigende oder auszugebende) Satz wird PRIMaeRSATZ genannt.
+  Dabei handelt es sich um entweder
+
+  A.  einen Hauptsatz
+      wenn er unabhaengig gespeicherte Untersaetze hat, muss die
+      Kategorie #00 mit  einer eindeutigen IdNr X besetzt sein.
+      In der Anzeige sollen unter dem auptsatz alle untergeordneten
+      Saetze erscheinen.
+      Die untergeordneten Saetze haben dann in #00 IdNummern der Form  X+n
+      mit einer Bandnummer n :
+
+  B.  einen Untersatz
+      dann enthaelt #00 die IdNr des Hauptsatzes PLUS eine Bandnummer
+      z.B.  #00 123456+005=Vol.5
+      (hinter '='  kann eine Bandnummer in Textform folgen, sonst wird
+      die auf '+' folgende Nummer genommen, fuehrende Nullen werden beseitigt)
+      In der Anzeige sollen stufenfoermig die unmittelbar uebergeordneten, 
+      aber nicht die nebengeordneten Saetze erscheinen.
+
+  C.  beides, auch "Mittelsatz" genannt: der Primaersatz ist einerseits
+      einem anderen untergeordnet, besitzt aber auch selbst Untersaetze.
+      In der Anzeige soll fuer die untergeordneten Saetze nach A, fuer die
+      uebergeordneten nach B verfahren werden.
+
+
+  Es kann bis zu 5 untergeordnete Stufen geben (theoretisch noch mehr).
+  Jede weitere Stufe enthaelt in der #00 oder #09 ein weiteres '+' . 
+  Dieses wird fuer den Nachladevorgang ausgewertet.
+
+  *********** Grundparameter, nicht ohne Grund aendern: ***************
+taw-utf  Tabelle aw-utf.npt: Windows-Code in UTF8 wandeln
+
+p | "<br>	" 
+
+p < "&lt;"
+p > "&gt;"
+p & "&amp;"
+p ` 1          Nichtsort
+
+zl=0  Zeilenlaenge
+
+
+zm=0      keine Seitenschaltung
+dx=1      Umcodierung einschalten
+
+i4=1    V14-Ersetzungen ausfuehren
+
+
+  <<<<<<<<<<<<    Raum fuer Ihre Zwischenteile (Textkonstanten)
+  Empfehlung: Nummern 30 bis 59
+  >>>>>>>>>>>>    Ende der anwendungsspezifischen Textkonstanten
+4=C      
+
+  Tabellen-Parameter                  erste Spalte:
+18=""
+19=""
+  Beginn einer Zeile. Setze haengenden Einzug auf 200px, erste Spalte kursiv
+20='<textformat blockindent="200" indent="-200" tabstops="150,200"><i>'
+21="</i>" 9       zwischen zwei Tab.Spalten
+22="</textformat>" 13 10        Ende der Tab.Zeile (bei RTF und DOS nichts)
+23=13 10
+    nur bei HTML:
+  29="<pre>"
+  28="</pre>"
+
+
+
+p ª 1     Nichtsortierzeichen ausblenden
+      Absatzende
+p  "<br>"    
+
+#uFL +W c"A" e0
+
+td-k      d-k.npt laden (Hauptprogramm!)
+
+
+  einige Texel
+79='<font color="#FF0000">'
+71='<font color="#FF0000">'
+76="</font>"
+111="</font>"
+66="<b>"
+99="<b>"
+98="</b>"
+88="<i>"
+87="</i>"
+
+#+#
+
+#(c
+#cc I3,  P{ "<br>" } e0
+#cc ,"_s_: _" ,"_L__" e"" p{ "<br>" t20 "Signatur:    " t21 t71 t66 } P{ t98 t76 t22 }
+
+#)c
+
+
+#u1 +X e0
+
+  interne Ausgabe
+#-W
+#da
+
+#bks=0
+##        saemtliche Kategorien ausgeben in interner Reihenfolge
+
+#+#
+
+        falls nicht alle gebraucht oder gewuenscht werden:
+        Weglassungen: Kategorienummern mit / hier anfuegen, z.B.
+  /89   dann wird #89 weggelassen
+  /9..  dann wird die ganze Gruppe #9 weggelassen
+        oder: hier eine Liste der auszugebenden Kategorien eintragen (statt ##)
+        z.B.
+
+  Abschnitt f. "write" in FLEX/Job (set wX macht ihn wirksam)
+#-X
+#hi +- e0      sonst Aerger mit hierarch. Saetzen!
+#u1 
+#+#
+
+   Unterprogramme
+   ==============
+
+  Siehe-Hinweise
+#(C
+#200 +#200 e0
+#21e +#200 e0
+#+-
+
+#200 e0
+
+#t{ t20 "see also:" t21 t22 }
+#200 { t20 t21 '<a href="event:X a30ind--Vuf1=PER--Vut1= ' }
+
+#200 e"" e" [" P{ '">' }
+#200 e"" P{ "</a>" t22 }
+#21e { t20 t21 '<a href="event:X a30ind--Vuf1=PER--Vut1= ' }
+
+#21e e"" e" [" P{ '">' }
+#21e e"" P{ "</a>" t22 }
+
+#)C
+
+   Unterprogramm fuer URL
+#(U
+#t{ t20 "URL: " t21 '<font color="#0000FF"><b><u><a href="' }
+#cc e""
+#t{ '" target="_blank">' }
+#cc B"?" 
+#t{ "</a></u></b></font>" t22 }
+#)U
+
+#+#
+
+       GBV:  http://gso.gbv.de/xslt/DB=2.1/CMD?ACT=SRCHA&IKT=1007&TRM=
+#(G    GBS:  http://books.google.de/books?as_isbn=
+
+  Diese Satztypen ausschliessen
+#020 +- e0
+#9DG +- e0
+
+#t{ '<a href="http://gso.gbv.de/xslt/DB=2.1/CMD?ACT=SRCHA&IKT=1007&TRM=' }
+#08i B"ISBN " e" = "
+#t{'" target="_blank"><img src="gbv.jpg"></a><p/>' C C C C  }
+
+#08i +#uGB y0 B"ISBN " e" = " { '<a href="http://www.google.de/search?tbs=bks:1&tbo=p&q=isbn:' }
+#100 +#uGB $$ E50 e" : " p{ '<a href="http://www.google.de/search?tbs=bks:1&tbo=1&q=intitle:%22' } P"%22"
+#)G
+#uGB
+#t{'" target="_blank"><img src="gbs.png"></a>' C '<br>' C }
+#t{ "<p/> <br> <p/> <br> <p/> <br> <p/>"C }
+#)G
+
+   >>>>>>>>> Ende der Unterprogramme >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+

@@ -1,0 +1,87 @@
+  UIFEDIT.FLX : Bearbeiten der User-Interface-Texte
+  2002.01.28
+
+var m
+if ="alc" end
+
+del aresqa.lst
+
+  Reihenfolge:  DbDir, ProgDir, Arbeitsverz.
+  Zuerst wird nach UIFEGER gesucht
+  Name wird zusammengesetzt (Pfad DbDir)
+var D "uife" L
+ins #upI
+  Groesse wird geprueft (um Existenz festzustellen!)
+fsize
+  Kein Ergebnis, d.h. Datei nicht auf DbDir -> :d2
+if no jump d2
+var #upI
+ftime
+ins #upT
+  Befehl zum Bearbeiten
+var "*" #upI
+  ausfuehren
+aresq
+jump frage
+
+:d2
+var P "uife" L
+ins #upI
+fsize
+  nicht auf ProgDir? -> :d3
+if no jump d3
+var #upI
+ftime
+ins #upT
+var "*" #upI
+
+aresq
+fsize aresqa.lst
+if no end
+var #upI " " D "uife" L
+fcopy
+var D "uife" L
+ins #upI
+jump frage
+
+:d3
+var "uife" L
+ins #upI
+fsize
+  nicht auf Arb.Verz? -> :d4
+if no jump d7
+var #upI
+ftime
+ins #upT
+var "*" #upI
+aresq
+jump frage
+
+
+:frage
+fsize aresqa.lst
+if no jump ende
+
+var "aresqa.lst " #upI
+fcopy
+  Informieren:
+mes Veraenderungen werden erst bei der naechsten Sitzung wirksam!
+  Fragen:
+yes Neue Sitzung sofort starten?
+if yes jump neu
+end
+
+  Nutzer will neu starten:
+:neu
+  Befehl
+var m
+ins #uwM
+var P V
+var P #uwM(e" " F"b") " " V
+  und aktuelles Programm stoppen
+STOP
+
+:d7
+var "Datei " "uife" L " nicht gefunden!"
+:ende
+

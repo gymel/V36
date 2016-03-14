@@ -1,0 +1,323 @@
+  XGREP.FLX : Textdateien durchsuchen und Trefferzeilen anzeigen
+  20070115    mit Flip zum Anzeigen der Datei
+            Aufruf mit Dateityp moeglich:  X xgrep ap?
+
+if "?" jump help
+if not "" jump wahl
+:begin
+  DeAktivieren, wenn auch in alcarta gewuenscht:
+var m
+if "alc" mes Sorry, das geht in diesem Programm nicht;end
+
+jump prepare
+  Auswahl des Dateityps
+:ausw
+Aresqa       // Auswahlliste der Dateitypen zeigen
+if "" end
+if " " end
+:wahl
+  Sonderfaelle: Verlautbarungen und Handbuchtexte
+if "vb*" perform vb;jump verarb
+if "ac*" perform ac;jump verarb
+if "xdc" perf flexdok;jump verarb
+if "rtf" del treff.rtf; var "rtf"
+     // sonst Schleife!
+if ".  " var ""
+  Typ isolieren (endet mit : )
+var (e" : ")
+ins #u!t
+  Dateityp jetzt in #u!t z.B. apr, aim, cfg, ?p?
+yes Nur auf dem Datenverz.? (Nein = Auch auf dem ProgDir)
+if yes #u!vd
+if not yes #u!vp
+
+  Dateiliste in #u!D erzeugen
+perf dateien
+:verarb
+  Ist eine Liste entstanden?
+if not #u!D jump nofiles
+  Jetzt den Suchbegriff abfragen und in #u!! tun
+var "\\par \\par \\cf6 ACHTUNG: Der Suchbegriff ist in Kleinbuchstaben und mit aufgelîsten Umlauten einzugeben!"
+ansi
+sho IV
+var "Suchbegriff? (" Z " Dateien Typ " #u!t " zu durchsuchen)=#u!!"
+ask
+if "" disp;end
+asci
+  Umcodierung des Suchwortes - falls Einbabe von Umlauten zulaessig sein soll
+  xco iq
+ins #u!!
+
+  Dateianzahl aufbewahren
+var Z
+ins #u!F
+  vorne ';' beseitigen in #u!D
+var #u!D(f"!")
+ins #u!D
+
+  Suchbegriff checken (Syntax)
+var "abcxyz"
+srx
+if cancel jump fehler
+  GesamtTrefferzaehler
+Z=0
+
+  Ergebnisdatei oeffnen, RTF-Kopf reinschreiben
+open x treff.rtf
+wri "{\\rtf1\\ansi\\deff0\\deflang1031{\\fonttbl " n
+wri "{\\f0\\fmodern allegro Lucida Console;}" n
+wri "{\\f1\\fmodern Verdana;}}" n
+wri "{\\colortbl ;\\red0\\green0\\blue255;\\red255\\green0\\blue0;}" n
+wri "\\pard\\f1\\fs18 " n n
+
+  aeussere Schleife: Dateien abarbeiten
+:floop
+  naechsten Dateinamen
+var #u!D(e";")
+  Datei oeffnen
+:op
+sho iV
+open
+  ging nicht, naechste Datei
+if no jump nxtnam
+  Zeilenzaehler innerhalb Datei
+z=0
+  innere Schleife: einzelne Datei
+:loop
+z+1
+get
+if cancel jump ende
+  RTF-Codierungen f. Umlaute
+ins _\\'dc_Ue_
+ins _\\'c4_Ae_
+ins _\\'f6_oe_
+ins _\\'e4_ae_
+ins _\\'fc_ue_
+ins _\\'df_ss_
+var (u\\ )
+  Zeile durchsuchen
+srX
+if yes jump fund
+jump loop
+
+:fund  // was gefunden, Zeile in Erg.Datei
+  RTF-Steuerzeichen entschaerfen:
+ins _\\_\\\\_
+ins _{_\\{_
+ins _}_\\}_
+  Zeile zwischenspeichern in #u!l
+   aber Laenge begrenzen
+var +":::"
+var (0,170)
+if not %:::% var +"..."
+var (F": ")
+ansi
+ins #u!l
+  Trefferzaehler erhoehen
+Z+1
+
+  Flag nicht gesetzt: Zwischenzeile schreiben
+var #u!D(e";")
+ins _\\_\\\\_
+ins #u!d
+  Flag #u!f nicht gesetzt? Dann Zwischenueberschrift
+if not #u!f wri n "\\par \\par DATEI: \\b " #u!d(T"\\") "\\b0 " n
+  Flag setzen
+#u!f 1
+  Zeile in die Erg.Datei schreiben, mit Flip
+wri n "\\par  `\\cf1\\ul\\b\\f1 show\\cf0\\ulnone\\b0\\f1 ` -- " #u!d "@\\cf2 " z "\\cf0  - " #u!l n
+jump loop
+
+:ende
+close
+
+:nxtnam
+  Vorderen Namen wegnehmen
+var #u!D(b";")
+#u!D
+ins #u!D
+  flag loeschen
+#u!f
+  Noch ein Name da? -> :floop
+if #u!D jump floop
+
+  Alles abgearbeitet, Ergebnisse praesentieren
+
+var n "\\par \\par ***** " Z " Vorkommnisse von " #u!! " gefunden (" #u!F " Dateien Typ " #u!t " durchsucht)" n
+ansi
+ins #u!r
+wri #u!r
+#u!r
+
+  FlipZeile ans Ende
+wri n "?show=x var zc\\ins #u!e\\var #u!e(b' -- ' e'@')\\help\\var #u!e(b'@' e' ')\\dis z" n
+
+close x
+  Ergebnisdatei anzeigen, dazu Anzeige auf breit schalten
+set db
+help .\\treff
+var n " ***** " Z " Vorkommnisse von " #u!! " gefunden (" #u!F " Dateien Typ " #u!t " durchsucht)" n
+ansi
+mes
+var "Auf 'show' klicken, dann erscheint die betr. Datei bei der rot angegebenen Zeile" n "Mit dem 'Back'-Button kann man zu dieser Liste zurÅck" n
+var +"Mit  h treff  kann man sie auch spÑter wieder aufrufen"
+ansi
+sho iV
+  unnoetige Var. loeschen
+#u!F
+#u!l
+#u!d
+end
+
+:nofile
+var "Datei " #u!d " konnte nicht geoeffnet werden"
+mes
+end
+
+:fehler
+var "Fehler im Suchausdruck: " #u!!
+mes
+end
+
+:vb
+var "dir /b /s " P "help\\vb*. >dlist"
+jump dos
+
+:ac
+var "dir /b /s " P "help\\ac*.rtf >dlist"
+jump rtf
+
+  Unterprogramm: Dateiliste erstellen in #u!D
+  Namensmuster steht in #u!n
+:dateien
+var #u!v
+if "d" var "dir /b /s " D "*." #u!t " >dlist";jump dos
+var "dir /b /s " P "*." #u!t " >dlist"
+
+:dos
+  dir-Befehl ausfuehren
+dos
+
+  in Datei dlist stehen nun die Dateinamen als kompl. Pfadnamen
+#u!D
+Z=0     // Dateizaehler
+open dlist
+if no jump nofiles
+  Schleife
+:dirl
+  Zeile lesen
+get
+if can jump de
+if " " jump dirl
+ins #u!d
+var #u!D ";" #u!d
+
+ins #u!D
+Z+1
+jump dirl
+
+:de
+close
+  Dateinamensliste loeschen
+ del dlist
+var #u!D(f";")
+ins #u!D
+  Jetzt ist #u!D = Liste der zu verarbeitenden Dateien
+  Hilfsvariable weg
+#u!d
+  UP beenden
+return
+
+:rtf
+  dir-Befehl ausfuehren
+dos
+
+  in Datei dlist stehen nun die Dateinamen als kompl. Pfadnamen
+#u!D
+Z=0     // Dateizaehler
+open dlist
+if no jump nofiles
+  Schleife
+:dirl
+  Zeile lesen
+get
+if can jump de
+if " " jump dirl
+ins #u!d
+var #u!D ";" #u!d
+
+ins #u!D
+Z+1
+jump dirl
+
+:de
+close
+  Dateinamensliste loeschen
+ del dlist
+var #u!D(f";")
+ins #u!D
+  Jetzt ist #u!D = Liste der zu verarbeitenden Dateien
+  Hilfsvariable weg
+#u!d
+  UP beenden
+return
+
+:flexdok
+var "dir /b /s " P "help\\x*.rtf >dlist"
+jump dos
+
+
+:nofiles
+var "Dateien mit passenden Namen (" #u!n ") nicht gefunden"
+mes
+
+:nix
+var "Starten Sie diesen FLEX so: " n "grep suchbegriff dateinamensmuster" n
+var +"z.B., wenn Sie in den Verlautbarungen nach 'umcodierung' suchen wollen:" n
+var +"X grep umcodierung " P "help\\vb*."
+mes
+ins _\\_\\\\_
+sho IV
+end
+
+:help
+var "Diese Funktion bietet eine Suche in ausgewÑhlten Gruppen von Textdateien," n
+var +"die zum System gehîren, z.B. Exportparameter, Konfigurationsdateien usw." n
+var +"Als Ergebnis werden alle gefundenen Zeilen angezeigt, und zwar mit einer" n
+var +"Mîglichkeit, dann sofort eine Datei ins Anzeigefeld zu laden und an der" n
+var +"Fundstelle anzeigen zu lassen." n
+var +"Mîchten Sie eine solche Suche ausfÅhren?"
+ansi
+yes
+if yes jump begin
+end
+
+:prepare
+var "      Welche Dateien sollen durchsucht werden? " n n
+var +"vb* : Verlautbarungen " n n
+var +"    Parameter zum eigenen Schema (" K ".cfg)" n
+var +K1 "pr : Exportparameter " n
+var +K1 "pt : Exp.Tabellen" n
+var +K1 "pi : Indexparameter  " n
+var +K1 "p? : Alle Exportparameter" n
+var +K1 "im : Importparameter " n n
+var +"    Alle Parameter (beliebiges Schema)" n
+var +"?pr : Exportparameter " n
+var +"?pt : Exp.Tabellen" n
+var +"?pi : Indexparameter  " n
+var +"?p? : Alle Exportparameter" n
+var +"?im : Importparameter " n n
+var +"    Andere Textdateien" n
+var +"cfg : Konfigurationen " n
+var +"txt : Textdateien TXT " n
+var +"vw  : ViewListen  " n
+var +"htm : HTML-Dateien" n
+var +"rtf : Hilfetexte  " n
+var +"bat : Batchdateien" n
+var +"ini : INI-Dateien " n
+var +".   : Textdateien ohne Typ" n
+var +"flx : FLEXe   " n
+var +"job : Job-Dateien f¸r acon   " n
+var +"xdc : FLEX-Dokumentation   "
+
+jump ausw

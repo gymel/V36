@@ -1,0 +1,69 @@
+  VIEW2.APT : View-Parameter Fertigteil 2 = Ausgabe der Daten
+  2000-07-28
+  Die Daten stehen jetzt in der Stringvariablen #uvv (Variabler Teil)
+  Anpassung: maximale Laenge (80) kann geaendert werden,
+  siehe unten (mehrfach!) Ausserdem: NichtSort.Zeichen, s. ganz unten
+
+#-Z        hierher geht's nur bei der Tabellenausgabe
+#t{ C }
+#+#
+
+  Es werden 2 Kategorien ausgegeben: 
+  #u1  sortierbarer String
+  #u2  Datenstring fuer die Anzeige des View
+  Danach kann das Sortieren stattfinden, danach kann #u1 wieder weg
+
+#-D        hierher geht's bei der View-Ausgabe
+
+#uvv +V e0    #uvv besetzt? dann --> #-V
+  sonst besetzen mit interner Satznummer
+  #nr p" Satztyp ungeeignet fuer diesen View:" Avv
+ Keine der Kategorien kam vor: nichts ausgeben
+#+- 
+
+#-V
+#t{ 1 "u1   " }        Code 1 = Satzbeginn, u1 = Sonderkategorie
+  Ausgabe von #uvv als sortierbarer String: 
+  (wird am Ende des Sortierens wieder beseitigt)
+!uvv f"/" F".-/;: " e80
+  ! bedeutet: Umcodierung mit den q-Befehlen (in s.apt)
+  Code 0 als Endezeichen
+#t{ 0 }    Feldende #u1
+  Satznummer 8stellig (aenderbar) mit fuehrenden Nullen, "|" dahinter
+#nr r8,0 p"u2   " P"|"
+#uvv f"/" e"///" =v@
+  Wenn Gruppierung gewuenscht: 'j' in #uvY
+#uvY +C c"j" p":" e1 Av@
+  sonst #uvZ anhaengen (" wegnehmen)
+#uvZ f34 F34 Av@
+
+#-C
+#uvv f"/" b"///" f" -,./;:" ,"_///__" Av@
+
+  #uv@ wird mit exakt 80 Zeichen Laenge ausgegeben (Auffuellung mit blanks)
+#uv@ F".-/;: " e80 s80
+  Wenn es eine #uvu gibt: mit _ anhaengen
+#uvu p"_"
+  Codes 0 13 10 als Endezeichen (Zeilenvorschub) 
+#t{ 0 C }
+  #uvv wieder loeschen
+#uvv dvv e0
+#uv@ dv@ e0
+#uvw dvu e0
+#+#
+
+#-Y   Ueberschrift des View (#uvo/#uvU extern gesetzt)
+#t{ 1 "u1      00000" 0 "u2   0000000a|" }
+   Datum, Name der ViP/Name der Erg.Menge
+#dts p"  " ,"_:_-_" =vz
+#uvo F" " p", " Avz
+#uvU p"/" ,"_:_-_" Avz
+#uvz p"  " e80 s80
+#t{ 0 C }
+#+x
+
+ts    s.apt = Sortierwertetabelle
+
+  Achtung: wenn nicht A.CFG, dann evtl. anderes Nichtsortierzeichen!
+
+p ª 1   Nichtsort.Zeichen weglassen

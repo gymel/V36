@@ -1,0 +1,114 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman Times New Roman;}{\f1\fswiss\fprq2 Arial;}{\f2\fswiss\fprq2\fcharset0 Arial;}{\f3\froman\fprq2 Times New Roman;}{\f4\froman\fprq2\fcharset0 Times New Roman;}{\f5\fmodern\fprq1 Courier New;}{\f6\fmodern\fprq1 allegro Lucida Console;}{\f7\fmodern\fprq1\fcharset0 Courier New;}{\f8\fswiss\fprq2 Verdana;}{\f9\froman\fcharset0 Times New Roman;}{\f10\fmodern\fprq1\fcharset0 allegro Lucida Console;}{\f11\fmodern Courier New;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red255\green0\blue0;\red0\green176\blue0;}
+\viewkind4\uc1\pard\qr\f0\fs18            `\cf1\ul\b Register\cf2\ulnone\b0 ` 
+\par \pard\li709\b\f1\fs20 Registerzeilen \f2 kopieren und \f1 ausgeben\b0\f3 
+\par 
+\par \f4 F\'fcr \cf3\b\i\f3 acon\cf2\b0\i0  gibt es ein paar \b\f5 `\cf1\ul Sonderbefehle\cf2\ulnone `\b0\f3 , siehe unten. 
+\par \pard\cf4\b\f5 
+\par qrix\cf2  \b0\i N ixn abc\cf4\b\i0    \cf3\i\f3 acon\f4   \cf2\b0\i0 (ohne N, daf\'fcr s.u. \cf4\b\f5\fs18 qrix n\cf2\b0\f4\fs20 )\i\f5 
+\par \cf4\b\i0 Qrix\cf2  \b0\i N ixn abc\cf4\b\i0    \cf2\b0\i  
+\par \pard\li709\i0\f3 Wie \b\f5 `\cf1\ul index\cf2\ulnone `,\b0\f3  aber Kopie des Registerabschnitts ab \i\f5 abc \i0\f3  in die \b `\cf1\ul iV\cf2\ulnone ` \b0 bzw. bei  \b\f5 Qrix\b0\f3   direkt in die aktuelle Exportdatei. \f4 Bei \cf3\i acon\cf2\b  \b0\i0 leider umgekehrt.\f3 
+\par Das Ergebnis beginnt mit der ersten Zeile des Registers, die mit \i\f5 abc \i0\f3  beginnt\f4 ;\f3  wenn es keine solche Zeile gibt, die erste, die alphanumerisch hinter  \i\f5 abc \i0\f3  kommt. 
+\par Mit  \f6 if "" ...\f3   kann man checken, ob nichts gefunden wurde (\i\f5 abc\i0\f3  hinter dem Ende des Registers!) 
+\par \cf4\b N\cf2\b0\f4  gibt die Zahl der gew\'fcnschten Zeilen an; wenn N fehlt, wird 20 angenommen. \f3 
+\par Ist \f4  \cf4\b\f5 N negativ\cf2\b0\f3 , wird \b\f4 r\'fcckw\'e4rts\b0  vorgegangen, so da\'df die letzte ausgegebene Zeile die erste ist, die mit \i\f3 abc\i0\f4  beginnt. In der iV sind die Zeilen durch \'b6 (Code 20) getrennt. Folglich mu\'df man z.B.  schreiben: 
+\par \f5 qrix -2 |1 b\f7\\var (e"\'b6")\f3 ,\f4  \f3  um die letzte Zeile im Register 1 zu erhalten, die mit a beginnt. 
+\par \i\f4 Tip:\i0  Um das Zeichen \'b6 z.B. in *** zu wandeln: \f7  ins _^T_***_ \f4 in die n\'e4chste Zeile nach dem qrix-Befehl. 
+\par \cf4\b\f5 ixn\cf2\b0\f3  kann ein symbolischer Registername sein oder eine Angabe wie  \b\f5 |3\b0\f4   f\'fcr Register 3. F\'fcr die Register 10 und 11 gelten \b\f5 |:\b0\f3  bzw. \b\f5 |; \f7 . \b0\f4 F\'fcr `\cf1\ul\b MultiX-Register\cf2\ulnone\b0 `:\b\f7   ~zi\i abc\b0\i0\f4  , mit dem Kennbuchstaben z und der Registernummer i, z.B.  \b\f7 ~u5\i abc\b0\i0\f4   f\'fcr Register 5 der Indexdatei \f7 cat.udx\f4 .\f3 
+\par \f4 Trunkierung ist m\'f6glich (wie bei manueller Nutzung des Registers): dazu ein ? an das Ende von  \i\f5 abc\f7  \i0\f4  setzen.\f3 
+\par Mit \b\f5 `\cf1\ul show IV\cf2\ulnone `\b0\f3  kann der Abschnitt sofort in die Anzeige gebracht werden, mit \b `\cf1\ul ins\cf2\ulnone ` ... \b0  in ein\f4  Datenfeld\f3 . 
+\par \b\f5 
+\par \b0\i\f4 Achtung:\i0  F\'fcr \i acon\i0  mu\'df man die Zahl N vorher in einem eigenen Befehl \f5 qrix nN\f3  angeben, siehe unten.\f4  
+\par 
+\par \i Hinweis:\i0  Der Suchbegriff  \i\f5 abc\i0\f4   wird vor der Ausf\'fchrung umcodiert (z.B. Indexparameter, Abschnitt \f7 #-3\f4 ). Um das zu verhindern, setzt man einen _ davor.\b\f5 
+\par \b0\f3 
+\par \pard\cf4\b\f5 qrix\cf2  d\b0\i\f3 begrenzer\cf4\b\i0\f5    \cf3\i\f3 acon\cf2\b0\i0\f4     (Default: \cf4\b\f5 qrix\cf2  d\f7 @\b0\f4  )\b\f5 
+\par \pard\li709\tx9514\b0\f4 Mit dem Begrenzer wird eine \b Von-Bis\b0 -Angabe m\'f6glich. 
+\par Der Wert  \i\f5 abc\cf4\b\i0\f7  \cf2\b0\f3  kann \f4 dann \f3 aus 2 Teilen bestehen, getrennt durch  \i begrenzer\i0\f4  \f3 . Dann endet die Auflistung mit dem letzten Eintrag, der kleiner ist als das, was hinter  \i begrenzer\i0  steht.  \f4 [Bis\f3  V24.3 galt auch\f4  das Zeichen\f3  '<' als Begrenzer\f4 .]\f3  
+\par \f4 Wenn ein anderes Zeichen als @, oder eine Zeichenkombination, als Begrenzer fungieren soll, mu\'df man das vorher mit diesem Befehl angeben, und diese Einstellung gilt dann bis zum Sitzungsende. \f3 
+\par \i Beispiel:\i0   \f5 qrix d---\f3    und danach  \f5 qrix 2000 per a---b\f7   \f4  (d.h. maximal 2000 Zeilen) 
+\par Wenn b fehlt, kommt nichts heraus. 
+\par Wenn von a beginnend alles bis zum Ende des Registers herauskommen soll, muss f\'fcr b z.B. ~ gesetzt werden, ein Zeichen, das hinter allen anderen ASCII-Zeichen ordnert (Code 126).\f3 
+\par \f4 Ist zus\'e4tzlich Trunkierung gew\'fcnscht, mu\'df man das ? an das Ende des ersten Teils (direkt vor dem Begrenzer) setzen. Dann kommen 
+\par trunkierte Zeilen heraus, wie wenn man bei der Direktsuche das Suchwort mit ? beendet. 
+\par \b Sonderfall \b0 der Von/Bis-Suche 
+\par \pard\li852\tx426\tx851\tx1134 Wenn  ein symbolisches \b Register mit Pr\'e4fix\b0  benutzt wird, wie z.B.  \b\f7 dis \b0\f4  f\'fcr "\b\f7 D \b0\f4 " im Reg. 1, dann mu\'df bei der Zeichenfolge B das Pr\'e4fix mit angegeben werden:  \b\f7 dis a---D g\b0\f4   w\'fcrde alle Eintr\'e4ge unter \b\f7 D a\b0\f4  bis direkt vor \b\f7 D g\b0\f4  sammeln. Mit   \b\f7 qrix dis a---g\b0\f4    k\'e4me viel mehr heraus!\f8 
+\par \pard\li709\tx9514\f4  \f3 
+\par \pard\cf4\b\f5 qrix\cf2  f \b0\i\f3 function\cf4\b\i0\f5  \cf2 
+\par \pard\li709\b0\f3 Der Wert \i function\i0\f4  (0,1,2,3,4) steht f\'fcr die Funktionsweise: \f3 
+\par    (Die Einstellung gilt nur bis zum Ende des FLEXes!)\b\f5 
+\par \b0\f3 0 : Registerzeilen genauso, wie \f4 man sie in Indexfenster sieht\f3   (default)\f4   (auch\f3  \cf3\b\i acon\cf2\b0\i0\f4 )\f3 
+\par \f4 1 : Satznummern hinzugef\'fcgt, getrennt durch ':'  \b\f7 anzahl\cf1\b0 TAB\cf2\b text\cf1\b0 TAB\cf2\b :\f5 nn:nn:nn\b0\f4   (auch\f3  \cf3\b\i acon\cf2\b0\i0\f4 )\f3 
+\par \f4 2 : wie 0, aber die Anzahl am Ende der Zeile, mit TAB getrennt \b\f7 text\cf1\b0 TAB\cf2\b anzahl\b0\f4   (\b nur \cf3\i\f3 acon\cf2\b0\i0\f4 )\f3 
+\par \f4 3 : wie 1, aber f\'fcr jede Satznummer eine eigene Zeile: \b\f5 nn|RegZeile\f7  \f5  \b0\f4 (nicht in\f3  \f4 acon)\b\f5 
+\par    \b0\f3 (Damit hat man sofort eine ViewListe) 
+\par 4 : \i\f4 Sonderfall:\i0\f3  Schreibt in die Exportdatei nur die Satznummern. Diese kann dann wie eine PRESTO-Ergebnismenge eingelesen werden (\cf4\b\f5 read set\cf2  \b0\i\f3 name \i0 ) \b\f5  \f7\tab\tab\b0\f4 (nicht in\f3  \f4 acon)\f3 
+\par \f4 5 : wie 1, aber nur die Nummer des ersten Satzes :  \b\f7 anzahl\cf1\b0 TAB\cf2\b text\cf1\b0 TAB\cf2\b :\f5 nn\b0\f4   (ab 2006.07 auch\f3  \cf3\b\i acon\cf2\b0\i0\f4 )\f3 
+\par \f4 6\f3  : Sonderfall: \f4 wie 4, aber Nummern kommen in die iV, durch : getrennt\f3  \b\f5  \b0\f4 (nicht in\f3  \f4 acon)\f3 
+\par \pard\b\f5 
+\par \cf4 qrix\cf2  t \b0\i\f3 i\cf4\b\i0\f5    \cf3\i\f3 acon\cf2\i0\f5 
+\par \pard\li709\b0\f3  Der Wert\cf4\b  \i i\cf2\b0\i0\f4   ( >=0) wird als Schwelle f\'fcr die Indexanzeige genommen. Nur Zeilen mit mehr als \i\f3 i\i0\f4  Eintr\'e4gen werden dann gezeigt. N\'fctzlich z.B. f\'fcr visuelle Dublettenkontrollen. Der Wert bleibt beim anschlie\'dfenden Aufbl\'e4ttern des Index erhalten, kann aber durch \f3 
+\par \b\f5 qrix t 0 \b0\f3  abgeschaltet werden.\b\f5 
+\par \pard\b0\f0\fs18 
+\par \cf3 Beispiel:\cf2 
+\par \f9 Man m\'f6chte aus dem Register 4 = TAF die erste bzw. letzte Zeile, die mit "handbuch" beginnt \f0 
+\par 
+\par \f6 qrix 1 taf handbuch   ODER   qrix 1 |4 handbuch 
+\par \f0 bzw. 
+\par \f10 qrix -2 taf handbuchzzz\\var (e"\'b6")   ODER   qrix -2 |4 handbuchzzz\\var (e"\'b6") \f6 
+\par \f0 
+\par Nun steht die Zeile in  der iV. 
+\par Weitere Beispiele sieht man in der FLEX-Datei `\cf1\ul\b qrix.flx\cf2\ulnone\b0 `. 
+\par 
+\par \f5 ----------------------------------------------------------------\f0 
+\par 
+\par NUR  \cf3\b\i\f3\fs20 acon\cf2\b0\i0\f0\fs18 
+\par \cf4\b\f7 Q\f5 rix\cf2\b0\f9   statt  \cf4\b\f5 qrix\cf2\b0\f9   schreibt in die iV - bei a99 umgekehrt!\f0 
+\par \f9 F\'fcr alle folgenden Varianten gilt: Was hinter  \cf4\b\f5 qri\f7 x\cf2\b0\f9   steht, kann fehlen, dann mu\'df es aber in der iV stehen, also vorher mit  \cf4\b\f7 var\cf2\b0\f9   hineingeschrieben worden sein. 
+\par \f0 
+\par \cf4\b\f5 qrix m\cf2\b0\f0   \i N 
+\par \pard\li710\i0\tab\f9 Einstellung der maximalen Z\'e4hlung (Satznummern je Registerzeile), die angezeigt werden soll (Default: 1000).  D.h. bei Indexeintr\'e4gen mit mehr als \i\f0 N  \i0 Treffern erscheint ">\i N\i0 " vor der Registerzeile.  Ein kleiner Wert von \i N\i0   bewirkt Beschleunigung. 
+\par \i\f9 Hinweis: \i0 Falls der Wert N gr\'f6\'dfer sein soll als der aktuell eingestellte Maximalwert f\'fcr Ergebnismengen, mu\'df man jenen zuerst ebenfalls hochsetzen; dazu dient der Befehl  \cf4\b\f7 set\f5  m\f7 axr \cf2\b0\i\f9 i\i0\f0 
+\par \pard\i\f5\tab Sonderfall:\i0\f0  \b\f7 qrix m 0\b0\f5  \f0  \f9 kombiniert mit \b\f7 qrix f 2\b0\f9   \f0 bringt den Registerauszug ohne Trefferzahlen. 
+\par 
+\par \cf4\b\f5 qrix n\cf2\b0\f0   \i N\i0 
+\par \pard\li710\tab Einstellung der Anzahl \i N\i0   auszugebender Zeilen, 
+\par z.B.   \f5 qrix n 20\f0       (Default: 10) 
+\par wirkt sich auf alle nachfolgenden qrix-Befehle aus, bis eine neue Einstellung kommt 
+\par \f9 Ein negativer Wert ist nicht m\'f6glich. Dazu gibt es einen zus\'e4tzlichen Befehl: 
+\par \f0 
+\par \pard\cf4\b\f5 qrix \f7 -\cf2\b0\f0 
+\par \pard\li710\tab\f9 Damit stellt man ein, da\'df der nachfolgende echte Befehl dann r\'fcckw\'e4rts geht.\f0  
+\par \pard 
+\par \cf4\b\f5 qrix stepsize\cf2\b0\f0  \i N\i0 
+\par \tab Die Schrittweite des Registerauszugs auf den Wert N setzen. Default N=1. 
+\par 
+\par \cf4\b\f5 qrix title\cf2\b0\f0  [+] [\i N \i0 ] 
+\par \pard\li710\tab\f9 Zu jedem Indexeintrag zus\'e4tzlich die Kurztitel ausgeben. Die optionale Angabe \i\f0 N \i0  legt die Maximalzahl der Kurztitelzeilen pro Indexeintrag fest (default: N=10). 
+\par Der Wert N=0 schaltet die Ausgabe der Kurztitel wieder ab. 
+\par Ein +-Zeichen direkt hinter title weist das Programm an, jeder Titelzeile die Satznummer voranzustellen: 
+\par Formatvorschrift:  \i\f5 Satznummer\i0 :TAB\i Kurztitelzeile\i0\f0 
+\par \pard 
+\par \cf3\f9 Besonderheit bei \i acon\cf2\i0 
+\par Wenn vorher eine Restriktion gesetzt wurde, werden die Registerzeilen damit kombiniert: es werden nur diejenigen Registerzeilen ausgegeben, deren Datens\'e4tze der Restriktion entsprechen. 
+\par Vorher jedoch ist \cf4\b\f5\fs20 find\cf2  \cf4\b0\f7 *new\cf2\f9\fs18   zu geben, sonst kann es zu Fehlfunktionen kommen. 
+\par \f0 
+\par 
+\par 
+\par \i\f3\fs22 Achtung:\i0 
+\par Wenn mit einem Befehl  `\cf1\ul\b\f7 exp\f5  wX\cf2\ulnone\b0\f4 `  eine Umcodierung \'fcber Exportparameter verlangt wurde, dann wird diese auch hier angewendet.\f11 
+\par \f0\fs18 
+\par 
+\par ?qrix.flx=h qrix.flx 
+\par ?iV=h xiv 
+\par ?show IV=h xshow 
+\par ?index=h xindex 
+\par ?ins=h xinsert 
+\par ?iv=h xsonder 
+\par ?Register=h xa 
+\par ?exp wX=h xexport=export wx 
+\par ?Sonderbefehle=h xqrix#66 
+\par ?MultiX-Register=h multix 
+\par 
+\par }
+ 

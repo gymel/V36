@@ -1,0 +1,130 @@
+
+Verlautbarung 150 der Entw.Abt.                          2001-04-05
+------------------------------
+
+                **************************************
+                * Unmittelbar vor FESTSCHREIBUNG V21 *
+                **************************************
+
+Wieder hat eine turbulente Entwicklungsphase ihren Abschluss gefunden.
+Diese Vb markiert den Schlusspunkt, nach welchem allerhoechstens noch
+ganz marginale Korrekturen passieren werden.
+Der gegenwaertige Stand wird dann in Kuerze auf CD fixiert.
+
+Festzuhalten gibt es, ueber die Vb.149,a,b,c hinaus noch diese Punkte:
+
+Links-Trunkierung u.ae.
+-----------------------
+Neben die simple Parameterloesung, die ohne programmtechnischen
+Eingriff in jeder Datenbank realisiert werden kann und auch
+mit PRESTO funktioniert, tritt eine zusaetzliche, neue Moeglichkeit.
+Diese aber kommt ohne irgendwelche Parametrierung aus s.u. Punkt 2. 
+Im Indexfenster gibt es drei zusaetzliche Eingabefelder:
+
+1. "Trunkierung bei:"
+   Da gibt man eine Zahl oder ein Zeichen ein: Komma, Semikolon,
+   Doppelpunkt o.a. Die Registereintraege werden bei der betr.
+   Laenge bzw. bei dem betr. Zeichen trunkiert. Schon in PRESTO und
+   in den bisherigen Versionen gab es diese Funktion, nur musste man 
+   wissen, wie man sie ausloest. Es funktioniert auch weiterhin, dass
+   man das Sonderzeichen einfach so eingibt oder ein Fragezeichen
+   hinter das eingegebene Suchwort setzt, um die Trunkierung auszu-
+   loesen. Nur sieht man dann im Eingabefeld dieses Zeichen.
+
+2. "Nur Zeilen mit:"    [voellig neu in a99/alcarta]
+   Hier kann jede sinnvolle Zeichenkombination eingegeben werden.
+   Es werden dann nur Zeilen gezeigt, die diese Kombination
+   enthalten. Das ist im Prinzip dasselbe wie Linkstrunkierung!
+   Es spielt dabei keine Rolle, an welcher Position innerhalb der Zeile
+   die Zeichen vorkommen.
+
+3. "Zeilen mit mehr als:"
+   Wenn man hier z.B. 5 eintraegt, werden nur Zeilen gezeigt,
+   die mindestens eine Trefferzahl von 6 aufweisen.
+
+Alle 3 Funktionen lassen sich kombinieren!
+Mit F9 oder [Retour] hebt man alle diese Einstellungen wieder auf.
+
+Wegen des zweiten Punktes werden wir parametrierte Linkstrunkierung
+nicht in die Standardparameter einbauen. Wenn jemand aber dennoch
+will, steht dem nichts im Wege. Vorgeschlagen wurde, dafuer einen
+Sonderabschnitt in Register 3 einzurichten, der mit * oder mit ...
+beginnen sollte. Das stellen wir anheim.
+
+
+OPUS3 : Erweitertes Paket zur Dateienverwaltung mit a99
+-------------------------------------------------------
+Bisher war OPUS1/2 nur gedacht, das Dateien-Sammelsurium auf einer oder
+mehreren Platten zu katalogisieren und uebersichtlich zu machen.
+Man konnte und kann auch mit OPUS3
+1. Jede Datei in einem alphabetischen Gesamtregister sofort finden
+2. Sehen, ob es mehrere Kopien oder Versionen (!) auf diversen
+   Verzeichnissen gibt
+3. Groesste und kleinste, neueste und aelteste Dateien sofort finden.
+4. Dateien eines Typs als Ergebnismenge zusammenfassen und als
+   alphabetische Gesamtliste durchsehen
+
+Eine gewisse Kontrolle des Dateiengestruepps ist damit schon gegeben,
+zumindest eine passive Uebersicht und ein leichtes Auffinden nach
+sinnvollen Kriterien. Fuer eine "Versionenkontrolle", immer wieder
+gefordert, braucht man als Grundlage eine Datenbank der zu 
+kontrollierenden Dateien, und OPUS3 ist eine solche Datenbank.
+
+Was fuer Funktionen braucht man ausserdem? FLEXe wurden fuer die
+folgenden geschrieben:
+(sie sind alle eingebaut in D-WRTF.RPR, die Anzeigeparameter)
+
+1. Eine Datei sofort bearbeiten. Die Originalversion muss weiter
+   verfuegbar bleiben, jederzeit sofort auffindbar! (WORK.FLX)
+   Nach Bearbeitung kann man entscheiden, ob die alte Version
+   aufbewahrt werden soll. Sie behaelt den Namen, es wird aber
+   Datum und Zeit angehaengt. (NUR hier treten lange Dateinamen
+   auf, die jedoch nicht in eine Auslieferung gelangen und von
+   den "allegro"-Programmen nicht gebraucht werden.)
+
+2. Alte Versionen loeschen, oder eine alte Version wieder
+   aktivieren und die neue loeschen oder auch nicht. (OLD.FLX)
+
+3. Dateien umbenennen, loeschen, kopieren, und dabei die
+   zugehoerigen Datensaetze veraendern bzw. anlegen
+   (RENAME.FLX, DELETE.FLX, COPY.FLX)
+
+Einiges davon ging auch schon mit dem OPUS1 der DOS-Version, nicht
+aber die Sache mit den aelteren Versionen.
+Hinzu kommen, ganz neu, Funktionen zur Verwaltung von "Packlisten"
+von bearbeiteten Dateien. 
+Die Packlisten ermoeglichen es, Dateien autmoatisch einzusammeln
+und einzupacken, die man z.B. waehrend eines Tages unter der
+Kontrolle von OPUS3 bearbeitet hat. Auf einem anderen System mit
+gleicher Verzeichnisstruktur koennen die Dateien dann wieder
+ausgepackt und auf die richtigen Standorte verteilt werden.
+Die Installation und Inbetriebnahme ist denkbar einfach:
+Es gibt 3 Dateien:
+
+  OPUS3.LZH  --> ProgDir     (nicht auspacken, passiert automatisch!)
+  OPUS3.BAT      ProgDir
+  OPUS3.FLX      ProgDir\FLEX
+
+Im Schreibfeld der DemoBank gibt man   X opus3
+Dann wird ein Verzeichnis OPUS3 angelegt, der Inhalt von OPUS3.LZH
+dorthin kopiert und das ProgDir automatisch katalogisiert und als
+Datenbank aufbereitet. Das ist der Grundstock des eigenen OPUS-
+Katalogs, den man beliebig erweitern kann. Mit  X opus3  kann man
+jederzeit diese Datenbank aus der eigenen heraus oder aus der 
+DemoBank oeffnen. Dann das Pragezeichen druecken ...
+
+De-Installation von OPUS3: Das Verzeichnis und die drei Dateien
+beseitigen.
+Die Entw.Abt. wird OPUS3 benutzen, um diejenigen Dateien, die zum
+Gesamtpaket und zum DEMO-Paket gehoeren, unter Kontrolle zu bringen.
+Wenn diese nur noch ueber OPUS3 bearbeitet werden, koennen keine
+falschen Versionen einzelner Parameter o.a. sich mehr einschleichen.
+Ausserdem kann OPUS3 dann die Listen dieser Dateien an das Install-
+Shield-Programm abgeben. Innerhalb dessen ist die Verwaltung der
+Dateilisten umstaendlicher und erlaubt keine direkte Bearbeitung
+der Dateien von den Listen aus. OPUS3 kann die Namenslisten mit
+klein geschriebenen Namen ausgeben und InstallShield uebernimmt
+sie dann auch so, waehrend es sonst leicht passieren kann, dass
+Namen mit grossen Anfangsbuchstaben auftreten und dann auch so
+auf der Platte des Anwenders landen. Ein potentielles Problem.
+

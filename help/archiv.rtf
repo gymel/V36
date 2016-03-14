@@ -1,0 +1,85 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss\fcharset0 Verdana;}{\f1\fswiss\fcharset0 Arial;}{\f2\fmodern\fprq1\fcharset0 Courier New;}{\f3\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;\red2\green194\blue204;\red0\green0\blue0;}
+\viewkind4\uc1\pard\f0\fs24 
+\par \pard\qc\cf1\b\fs28 Archivdatenbank 
+\par \cf0\fs24 
+\par `\cf2\ul Anlegen bzw. \'d6ffnen\cf0\ulnone  `\b0   /  `\cf2\ul\b Abschalten\cf0\ulnone\b0 ` 
+\par 
+\par \b F8\b0  : Satz bzw. Erg.Menge archivieren\cf1\b 
+\par \pard 
+\par \cf0\b0 
+\par Zu jeder Datenbank (\i Grundbank\i0 ) kann man eine zugeh\'f6rige \i Archivdatenbank\i0  betreiben, kurz \i Archivbank\i0  oder einfach \i das Archiv\i0  genannt. \f1\fs20 (Ab V28.8)\f0\fs24 
+\par 
+\par \b\fs20 Was ist das und wo befindet sich die Archivbank? 
+\par \b0 Eine getrennte, vollwertige Datenbank; Konfiguration und Indexierung (CFG und Parameter) sind dieselben. 
+\par Die Archivbank wird angelegt in einem Unterordner \b\f2 arc-cat\b0\f0  des Ordners der Grundbank, wenn \f2 cat\f0  deren Name ist. 
+\par Als Arbeitsverzeichnis wird ein ebenfalls \b\f2 arc-cat\b0\f0  genannter Ordner an den TEMP-Ordner des Anwenders geh\'e4ngt. 
+\par 
+\par \b Was kann man damit machen? \b0 
+\par Man kann jederzeit jeden Satz und jede Ergebnismenge hineinkopieren. 
+\par Man kann jederzeit darin suchen und S\'e4tze zur\'fcckkopieren. 
+\par 
+\par \b Wann setzt man es ein? \b0 
+\par Das ist dem Anwender freigestellt. Denkbare F\'e4lle sind z.B. 
+\par -- Vor dem L\'f6schen noch eine Kopie des Satzes machen - man wei\'df ja nie! 
+\par     (z.B. auch Bestell- und andere Gesch\'e4ftsgangsdaten) 
+\par -- Daten ausgesonderter und vermi\'dfter B\'fccher im Archiv aufheben 
+\par -- Daten fr\'fcherer Mitarbeiter und Nutzer archivieren 
+\par 
+\par \b\fs24 
+\par \cf3 Alles geht extrem schnell und ohne Lernaufwand 
+\par \cf0\b0\fs20 Insbesondere sind keine Eingriffe und \'c4nderungen n\'f6tig an den Parametern etc. der Grundbank! 
+\par Die Ordner und Dateien werden automatisch angelegt.\fs24 
+\par 
+\par \b A. \cf4 Anlegen bzw. \'d6ffnen\cf0\b0   /  \cf4\b Abschalten\cf0\b0  
+\par \fs20 Daf\'fcr gibt es den neuen Men\'fcpunkt \cf2 Archivdatenbank\cf0  im `\cf2\ul\b F\'fcllhorn\cf0\ulnone\b0 ` und im `\cf2\ul\b Supervisor-Men\'fc\cf0\ulnone\b0 `. Damit wird  \f2 ara.flx\f0  gestartet, der die Verzeichnisse und alle n\'f6tigen Dateien automatisch erzeugt, wenn sie noch nicht da sind. Jederzeit w\'e4hrend einer Sitzung kann man das machen, es gilt f\'fcr den Rest der Sitzung. 
+\par Also ein einziger Klick, und man hat die Archivbank - nichts eingeben, nichts ausw\'e4hlen, nicht durch einen Dialog durchklicken. 
+\par Nachdem das erledigt ist, oder wenn das Archiv schon existiert, wird ein a99-Fenster daf\'fcr ge\'f6ffnet, und zwar wird ein eigenes Start- und Arbeitsverzeichnis unterhalb \f2 %TEMP%\f0  angelegt, gleichfalls mit dem Namen  \f2 arc-cat\f0 , wenn \f2 cat\f0  der DbName ist. 
+\par \i Tip:\i0  Wo sich \f2 %TEMP%\f0  wirklich befindet, stellt man so fest: 
+\par \f2 x var M\\mes\f0 
+\par Mit der INI-Datei ist es so: sie wird jedesmal beim Start der ArchivBank per \f2 ara.flx\f0  neu angelegt und dann sofort zum Start eines neuen a99-Fensters gelesen. Danach kann sie ruhig verschwinden oder \'fcberschrieben werden durch eine andere Datenbank, zu der man ebenfalls eine ArchivBank anlegt... 
+\par \i Tip:\i0  Soll das Archiv automatisch beim Start von a99 mit ge\'f6ffnet werden, dann einfach in der INI die Zeile \f2 StartFlex=\f0  erweitern: 
+\par \b\f2 StartFLEX=...;ara\b0\f0 
+\par \cf1\i Achtung:\cf0\i0  Man kann nicht gleichzeitig zwei gleichnamige Archive \'f6ffnen, d.h. Archive zu zwei Datenbanken mit demselben Namen (=Name der Indexparameter, z.B. \f2 cat\f0  oder \f2 bank\f0 ). Finden die Sitzungen nicht gleichzeitig statt, gibt es aber kein Problem.\fs24 
+\par 
+\par 
+\par \b B. Nutzung\b0  
+\par \fs20 Im \b F8\b0 -Men\'fc gibt es die neuen Punkte  \cf2 s : Satz archivieren\cf0  und  \cf2 e : Erg.Menge archivieren\cf0 . Sie starten den FLEX  \f2 ark.flx\f0 , der den Satz bzw. die Erg.Menge im aktuellen Zustand in die Archivbank kopiert. Wenn es ein gel\'f6schter Satz ist (Hintergrund rosa, Status DEL), kommt er als normaler Satz dort an, d.h. man kann einen Satz auch gleich \b nach\b0  dem L\'f6schen schnell noch archivieren. 
+\par Also:  \b F8 s Enter\b0  - fertig, unten im Statusfeld sieht man "Archiviert". 
+\par Wenn man sich  \f2 X ark \f0  auf einen Flip-Button legt, ist es immer mit einem Klick getan. 
+\par \f2 ark.flx \f0 kopiert den Satz bzw. die Erg.Menge in eine Datei \f2 arc.alg\f0  auf dem WorkDir, dort wird sie von dem FLEX \f2 catcp.flx\f0  \'fcbernommen, der als ExFLEX aus \f2 ark.flx\f0  heraus angesto\'dfen wird (genauer: mit \f2 flex catcp\f0  wird ein Signal an das andere a99 gesendet, in dem die ArchivBank ge\'f6ffnet ist). 
+\par (\f2 catcp.flx\f0  ist eine Kopie vom mitgelieferten \f2 arccop.flx\f0 , angefertigt von \f2 ara.flx\f0 .) 
+\par \fs24 
+\par 
+\par \b C. Geplante Hilfsfunktionen\b0  \fs20  (in V28.1 noch nicht enthalten)\fs24 
+\par \fs20 1. Datensatz aus Archiv zur\'fcckholen (ersatzweise mit Copy&Paste) 
+\par 2. ArchivBank l\'f6schen 
+\par Das L\'f6schen ist kein Problem! Einfach die zwei Verzeichnisse beseitigen - fertig. 
+\par  \fs24 
+\par \i Weitere Hinweise  \i0\fs20 (Zur reinen Nutzung braucht man diese Dinge nicht zu wissen)\i\fs24 
+\par \pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\'B7}}\fi-360\li360\i0\fs20 Soll das Archiv beim Schlie\'dfen der Grundbank automatisch auch geschlossen werden, baut man in den eigenen \f2 _endflx.flx\f0  (so man einen hat) diese Zeile ein:  \f2 flex stop\f0 
+\par {\pntext\f3\'B7\tab}Die Archivbank kann ansonsten benutzt werden wie jede andere. Sie ist nicht irgendwie unaufl\'f6slich verbandelt mit der Grundbank, zu der sie angelegt wurde, und das hei\'dft auch, \'c4nderungen an der Archivbank bis hin zu ihrer kompletten L\'f6schung haben \i keine R\'fcckwirkung\i0  auf die Grundbank, diese enth\'e4lt keine Markierungen oder dergl., welche S\'e4tze archiviert wurden - so etwas k\'f6nnte und m\'fc\'dfte man sich in \f2 ark.flx\f0  zus\'e4tzlich einbauen. 
+\par {\pntext\f3\'B7\tab}Sie ist ein Hilfsmittel, kein essentieller Bestandteil der Grundbank, d.h. f\'fcr deren normales Funktionieren nicht notwendig. 
+\par {\pntext\f3\'B7\tab}Beide k\'f6nnen insbes. unabh\'e4ngig voneinander reorganisiert werden, die Satznummern haben keine funktionale Bedeutung. 
+\par {\pntext\f3\'B7\tab}Auch die Index- und Anzeigeparameter sowie die .CFG und .FRM der Archivbank darf man in weiten Grenzen ver\'e4ndern. Die Grenze ist da, wo die Struktur der Daten betroffen w\'e4re, vor allem also in der .CFG. 
+\par {\pntext\f3\'B7\tab}Datumskategorien: Dazu wird beim Anlegen die CFG \i der Archivbank\i0  ver\'e4ndert! Die Archivbank speichert dann separate Datumskategorien, z.B. bei $A.CFG: (d.h. #99e/#99n der Grundbank bleiben erhalten) 
+\par \pard\tab\f2 #99E\f0  : letztes \'c4nderungsdatum 
+\par \tab\f2 #99N\f0  : Eingangsdatum des Satzes ins Archiv 
+\par \pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\'B7}}\fi-360\li360 In der INI-Datei \f2 ar.ini\f0 , die automatisch erstellt wird, ist 
+\par \pard\tab\f2 LogFile=nul\f0  
+\par \pard\li426 gesetzt. D.h. f\'fcr das Archiv wird \i keine\i0  Logdatei geschrieben! Wenn man eine will, nimmt man diesen Befehl raus. 
+\par \pard{\pntext\f3\'B7\tab}{\*\pn\pnlvlblt\pnf3\pnindent0{\pntxtb\'B7}}\fi-360\li360 Das Logging der Grundbank ist in jedem Fall v\'f6llig unber\'fchrt. 
+\par {\pntext\f3\'B7\tab}Ein Satz wird aus dem Arbeitsspeicher herauskopiert, so wie er gerade vorliegt, auch wenn er so noch nicht abgespeichert ist. Man kann also vor dem Kopieren schnell man eben was \'e4ndern, dann kopieren, dann mit Alt+w den ge\'e4nderten Zustand zur\'fccksetzen, d.h. in der Grundbank den Satz unge\'e4ndert lassen. 
+\par {\pntext\f3\'B7\tab}Wenn man einen Satz ins Archiv kopiert und es ist dort schon einer mit demselben Prim\'e4rschl\'fcssel, dann wird der ersetzt (mit Update-Modus 4). Ist dies nicht erw\'fcnscht, dann zuerst die IdNummer (oder was immer der Prim\'e4rschl\'fcssel ist) des zu kopierenden Satzes \'e4ndern, dann wird er als \i neuer\i0  Satz eingespeist. 
+\par {\pntext\f3\'B7\tab}Im Netz kann nichts durcheinandergehen: Die zu kopierenden Daten werden jeweils auf das Arbeitsverzeichnis des einzelnen Nutzers kopiert und von dessen PC aus eingespeist - f\'fcr's System ist das nicht anders als w\'fcrde jeder selber per a99 seine Daten in die gemeinsame Archivbank eingeben. 
+\par {\pntext\f3\'B7\tab}Etwas durcheinandergehen k\'f6nnte NUR dann, wenn jemand zwei gleichnamige Datenbanken (die auf verschiedenen Verzeichnissen liegen) zugleich ge\'f6ffnet und f\'fcr jede davon auch die Archivbank aktiviert hat. Dann w\'e4re nur die jeweils zuletzt ge\'f6ffnete wirklich ge\'f6ffnet und w\'fcrde auch die Kopien der anderen empfangen.  
+\par {\pntext\f3\'B7\tab}Es wird kein Registry-Eintrag angelegt - so etwas macht \i allegro\i0  ja sowieso nicht, bis auf eine einzige Eintragung beim Installieren. 
+\par \pard 
+\par 
+\par ?F\'fcllhorn=h fillhorn 
+\par ?Abschalten=x if not $@a end`yes Wirklich?`if not yes end`var B "stop"`flex`var ""`ins $@a 
+\par ?Supervisor-Men\'fc=h super 
+\par ?Anlegen bzw. \'d6ffnen =X ara 
+\par 
+\par }
+ 

@@ -1,0 +1,1502 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" />
+<html xml:lang="de" xmlns="http://www.w3.org/1999/xhtml" lang="de" /><head />
+<style type="text/css">
+.Stil11 {color: #000000}
+</style>
+         
+<title>allegro Export-Parameter</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="author" content="Erik Neumann" />
+        <meta name="publisher" content="Erik Neumann" />
+        <meta name="copyright" content="UB Braunschweig" />
+        <meta name="keywords" content="Bibliothekssoftware, allegro, allegro-c, UB, Universit&auml;tsbibliothek, Technische Universit&auml;t, BS, Braunschweig,  " lang="de" />
+        <meta name="description" content="Universit&auml;tsbibliothek @ TU Braunschweig" />
+
+        <meta name="page-topic" content="Bibliothekssoftware" />
+        <meta name="page-type" content="Bibliothekssoftware" />
+        <meta name="audience" content="Alle" />
+        <meta name="robots" content="INDEX,FOLLOW" />
+        <meta http-equiv="pragma" content="no-cache" />
+        <link rel="SHORTCUT ICON" href="/allegroicon.ico" title="allegroicon" />
+        <link rel="" rev="made" href="mailto:ub@tu-braunschweig.de" title="Content Manager" />
+        <link rel="copyright" href="http://www.allegro-c.de/impress.htm" title="Copyright-Angaben" />
+        <link rel="contents" href="http://www.allegro-c.de/az.htm" title="Inhaltsverzeichnis" />
+        <link rel="index" href="http://www.allegro-c.de/az.htm" title="Stichwortverzeichnis" />
+        <link rel="glossary" href="http://www.allegro-c.de/doku/glossar/register.htm" title="Begriffs-Glossar" />
+        <link rel="stylesheet" type="text/css" href="/popup.css" />
+		<link rel="stylesheet" type="text/css" href="/menupopup.css" />
+        <link rel="stylesheet" href="/allegro.css" type="text/css" media="screen, projection" title="Standard Layout" />
+        
+        <script type="text/javascript" src="/menupopup.js"></script>
+        <script type="text/javascript" src="/formloeschen.js"></script>
+        <script type="text/javascript" src="/windowopen.js"></script>
+        <script type="text/javascript" />
+                <!--
+                function closepopup() {
+                        if(document.getElementById) {
+                                document.getElementById("popup").style.visibility="hidden";
+                                document.getElementById("popup").style.display="none";
+                        }
+                }
+
+                function showpopup() {
+                        if(document.getElementById) {
+                                document.getElementById("popup").style.visibility="visible";
+                                document.getElementById("popup").style.display="block";
+                        }
+                }
+                -->
+        </script>
+        <link rel="stylesheet" href="/print.css" type="text/css" media="print" title="print" />
+
+</head>
+<body id="pagetop">
+<!--#include virtual="/inc/kopf-allegro-neu.inc" -->
+
+<!--#include virtual="/inc/navigation-allegro-doku.inc" -->
+<!--start-->
+<div class="mittlere_spalte_ors" />
+<div class="titel" />
+<!-- ******************************************* AB HIER ********************************************************** -->
+
+
+
+
+<body dir="ltr" lang="de-DE" link="#0000ee" vlink="#551a8b">
+
+<p style="margin-bottom: 0cm;"><br>
+
+</p>
+
+<left>
+  <span style="font-family: Arial;"><span style="font-weight: bold;"><span style="font-style: italic;">allegro</span> Export-Parameter</span></span><span class="Stil11"> / Grundlagen und Grundregeln<br />
+  <hr size="1" noshade="noshade" />
+  </span></left>
+
+<div align="left">
+<table border="0" cellpadding="1" cellspacing="1">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><i><font face="Arial">Hinweis:</font></i> <font face="Arial">Die Hyperlinks in diesem Dokument funktionieren nur,
+wenn man die Datei im JanaS-Browser &ouml;ffnet. Falls Sie gerade einen anderen Browser benutzen, geben Sie</font><font face="Arial"> in a99 diesen Befehl: </font><font face="Arial"></font><br>
+
+      </p>
+
+      
+      <div style="text-align: center; font-weight: bold;"><font face="Courier New">janas expar.htm<br>
+
+      </font></div>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</div>
+
+<p style="margin-bottom: 0cm;" align="left"><font face="Arial, sans-serif">Wenn das nicht klappt, kopiert man sie zuerst (über Men&uuml; "Datei / Speichern als...") auf <span style="text-align: left; font-family: Arial, Helvetica, sans-serif;"><font face="Courier New">c:&#92allegro&#92html&#92expar.htm </font><font face="Arial">.</font></span><br />
+  <br />
+  Hier
+wird versucht, eine Einfachst-Einf&uuml;hrung der wichtigsten
+Grundgedanken zu geben. Um welche </font><a href="#dateien"><font face="Arial, sans-serif">Dateien</font></a>
+<font face="Arial, sans-serif">es geht, steht ganz unten.</font></p>
+
+<p style="margin-bottom: 0cm;" align="left"><font face="Arial, sans-serif">Das
+Ausgeben von Daten, auch <b>Exportieren</b> genannt, geh&ouml;rt bei
+jedem Datenbanksystem zu den wichtigsten Aufgaben. Denn keine
+Datenbank ist eine in sich abgeschlossene Welt, jede mu&szlig; immer
+mal Daten herausr&uuml;cken k&ouml;nnen. <b><i>allegro</i></b> hat
+daf&uuml;r eine eigene Sprache, die <i>Exportsprache</i>, mit der man
+das Ausgeben von Daten in allen Einzelheiten so programmieren kann,
+wie es in einer konkreten Situation gebraucht wird. Wenn man Daten &uuml;ber
+das Exportmen&uuml; des Windows-Programms ausgeben l&auml;&szlig;t (oder mit F4 beim
+DOS-Programm), wird daf&uuml;r in Wirklichkeit fast immer eine Parameterdatei
+gebraucht. Hier wollen wir zeigen, was das eigentlich ist. </font>
+</p>
+
+<p style="margin-bottom: 0cm;" align="left"><font face="Arial, sans-serif">Im
+Prinzip steht alles im <a href="http://www.allegro-c.de/doku/handb30.pdf#page=172">Handbuchkapitel
+10</a>, das mit einer
+ausf&uuml;hrlichen Erkl&auml;rung des Konzepts beginnt. (Tip: in a99 eingeben: h ac10)
+Mancher Leser
+findet es trotzdem unverdaulich - wir wissen das. Deshalb dieser
+Text, der das Kapitel zwar nicht ersetzt, aber hoffentlich besser lesbar macht.<br>
+
+<br>
+
+<i>Hinweis:</i>
+Seit es die <a href="flex:h%20flex">FLEX-Makrosprache</a></font>
+<font face="Arial, sans-serif">gibt, kann man in <i>a99/alcarta</i>
+und <i>avanti</i> auch mit dem FLEX-Befehl </font><a href="flex:h%20xwrite"><font face="Courier New, Courier New">write</font></font></a><font face="Arial, sans-serif">,
+also ohne Exportsprache, Daten ausgeben. Aber man kann nicht <i>alles</i>
+damit machen, z.B. die Titelanzeige kann man damit nicht gestalten:
+daf&uuml;r braucht man eine Parameterdatei, die sog.
+"Anzeigeparameter". Im Normalfall ist das die mitgelieferte
+Datei <span style="font-family: Courier New,Courier,Courier New;">D-WRTF.APR</span>.</font><br>
+
+</font><br>
+
+<font face="Arial">Zur
+Sache nun. Gespeicherte <i>allegro</i>-Daten sehen immer so aus:<br>
+
+(<span style="color: rgb(204, 0, 0);">Wichtig f&uuml;r
+Nicht-allegro-Kenner</span>: Datenfelder werden nicht mit Namen
+benannt, sondern mit Nummern)<br>
+
+</font></p>
+
+<p style="margin-bottom: 0cm;"><br>
+
+</p>
+
+<left>
+<table bgcolor="#dddddd" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><font face="Courier New">#<span class="links">00 875208<br>
+
+#20 All's well that ends well<br>
+
+#40 Shakespeare, William<br>
+
+#41 Fraser, Russell<br>
+
+#74 Cambridge<br>
+
+#75 Cambridge Univ. Pr.<br>
+
+#76 1985<br>
+
+#77 XIII, 154 S.<br>
+
+#85 &not;The&not; New Cambridge Shakespeare<br>
+
+#87 0-521-22150-1<br>
+
+#90 Sh-2692</span></font></p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</left>
+
+<p><br>
+
+<font face="Arial, sans-serif">Die
+gespeicherten <i>Datenelemente</i> oder <i>Felder</i> beginnen, wie
+man sieht,&nbsp; mit # und einer Nummer: Die erlaubten Nummern und
+ihre Bedeutung stehen in einer Konfigurationsdatei; beim Standardmodell
+ist das die Datei $<font color="#cc0000">A</font>.CFG, man spricht
+auch von der <font color="#cc0000">A</font>-Konfiguration oder vom
+<font color="#cc0000">A</font>-Schema (--&gt; <a href="http://www.allegro-c.de/doku/form2004/">Dokumentation</a>). Der
+Buchstabe <font color="#cc0000">A</font>
+tritt dann auch in den Namenserweiterungen aller Export- und
+Import-Parameterdateien auf - wenn man einen Namen wie&nbsp;
+D-WRTF.<font color="#cc0000">A</font>PR oder CAT.<font color="#cc0000">A</font>PI
+sieht, wei&szlig; man: das sind Parameterdateien f&uuml;r das
+<font color="#cc0000">A</font>-Schema. (Mehr dazu weiter unten.) Wenn
+Sie wollen, k&ouml;nnen Sie jetzt gleich mal </font></font><a href="flex:X%20cfgedit"><font face="Arial, sans-serif">reinschauen</font></font></a>
+<font face="Arial, sans-serif">in
+Ihre CFG. Die erlaubten Nummern k&ouml;nnen Sie aber auch mit <b><font color="#990000">Alt+y</font></b>
+sehen (im Programm a99), dann erscheinen sie links im Auswahlfeld.<br>
+
+(<i>Anm.:</i> Das
+$ im Namen $A.CFG geht zur&uuml;ck auf den Versionswechsel von V12 zu
+V13, siehe Handbuch Anh.A.5. Wenn es $A.CFG und A.CFG beide gibt,
+nehmen die Programme die $A.CFG, d.h. die A.CFG hat dann keine
+Wirkung. (Trotzdem: alte CFGs, also V12 oder fr&uuml;her,
+funktionieren auch noch mit V25.) <br>
+
+<br>
+
+Wenn man oft Daten eingibt,
+sind einem die Nummern ja schnell gel&auml;ufig. Wenn Daten aber f&uuml;r
+Endbenutzer angezeigt werden m&uuml;ssen oder wenn man irgendwelche
+Listen zu erstellen hat oder Ausgabedateien, dann soll dabei keine numerierten Daten erscheinen, sondern z.B. eine Anzeige wie
+diese: (vergleichen Sie das mit dem, was oben steht)<br>
+
+</font></font></p>
+
+<center>
+<table bgcolor="#ddffcc" border="1" cellpadding="8" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p style="margin-bottom: 0cm;" align="right">Signatur: <b>2650-2692</b></p>
+
+      
+      <p><b>Shakespeare, William:</b> <br>
+
+All's well that ends well / William Shakespeare; Russell Fraser [Hrsg.].<br>
+
+&nbsp;&nbsp; Cambridge : Cambridge Univ. Pr., 1985. - XIII, 154 S.<br>
+
+      <i>(The New Cambridge Shakespeare)</i><br>
+
+ISBN 0-521-22150-1</p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+<p><br>
+
+<font face="Arial, sans-serif">Also
+etwas <span style="font-style: italic;">g&auml;nzlich</span> anderes! Wie
+kann man das erreichen? Mit einer
+<b>Export-Parameterdatei</b>. Das ist eine schlichte ASCII-Textdatei,
+und darin mu&szlig; die Vorschrift f&uuml;r das Programm stehen, was
+es mit den Datenfeldern machen soll - damit herauskommt, was man
+wirklich sehen will. <br>
+
+Damit das herauskommt, was
+man hier sieht, m&uuml;&szlig;te man eine recht komplizierte
+Parameterdatei schreiben. Zum Gl&uuml;ck gibt es die schon: sie hei&szlig;t
+<span style="font-family: Courier New,Courier,Courier New;">D-WRTF.APR</span> und wird von a99 und alcarta verwendet, um die Daten
+anzuzeigen. Die Datei <span style="font-family: Courier;">D-WRTF.APR </span>w&auml;re aber als Einstieg, als
+erstes Beispiel, viel zu lang und zu schwierig.<br>
+
+</font><br>
+
+Sie
+wollen jetzt sicher wissen: wie sieht die <b>einfachste m&ouml;gliche
+Parameterdatei</b> aus? Was mu&szlig; da drinstehen, damit etwas
+Sinnvolles passiert? <br>
+
+So sieht sie aus (nur drei Zeichen - noch kleiner geht's
+wirklich
+nicht!) :</font></font></p>
+
+<center>
+<table bgcolor="#ffffdd" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><b><font face="Courier New">#20</font></b> </p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+<p><br>
+
+<font face="Arial, sans-serif">Dadurch
+wird dem Programm gesagt</font></font>: <big><font face="Courier New"><font color="#cc0000">Gib
+den Inhalt von Feld #20 aus</font></font></big>. <br>
+
+<font face="Arial, sans-serif">Das
+Ergebnis w&auml;re (bei dem oben gezeigten Satz):</font></font></p>
+
+<center>
+<table bgcolor="#ddffcc" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><font face="Courier New">All's well that ends well</font> </p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+<p><br>
+
+<font face="Arial, sans-serif">Mehr
+nicht! Die <i>Grundidee</i> der Exportparameter ist also sehr
+einfach, wir nennen sie mal <i>Grundregel 0</i>:</font></font> </p>
+
+<table border="0" cellpadding="2" cellspacing="0" width="986">
+
+  <col width="132"> <col width="846"> <tbody>
+
+    <tr>
+
+      <td width="132">
+      
+      <p><font face="Arial"><i><b>Grundregel 0 :</b></i></font></p>
+
+      </td>
+
+      <td width="846"> 
+      
+      <p><font color="#990000"><b>Eine
+Parameterdatei enth&auml;lt die Liste der Felder, deren Inhalte exportiert
+werden sollen.</b></font></font></font></p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+<p style="margin-bottom: 0cm;"><font face="Arial, sans-serif">Minimum ist ein einziges Feld, siehe
+oben.
+Sollen
+nur Verfasser und Titel herauskommen, s&auml;he die Liste so aus:</font></font></p>
+<p style="margin-bottom: 0cm;"></font></p>
+
+<center>
+<table bgcolor="#ffffdd" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><font face="Courier New">#40</font><br>
+
+      <font face="Courier New">#20</font> </p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+<p style="margin-bottom: 0cm;"><font face="Arial, sans-serif">Und
+das hier k&auml;me heraus:</font></font></p>
+
+<center>
+<table bgcolor="#ddffcc" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><font face="Courier New">Shakespeare, WilliamAll's well that
+ends well</font> </p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+<p style="margin-bottom: 0cm;"><br>
+
+<font face="Arial, sans-serif">Denn
+man hat ja nicht gesagt, was <i>zwischen</i> den beiden Feldinhalten
+stehen soll - der Computer kann sich das nicht selber ausdenken, also
+schreibt er <i>nichts</i> dazwischen. Man mu&szlig; zwar die Feldnummern
+als Liste untereinander schreiben, das ist die Grundregel, aber
+dadurch
+werden nicht automatisch zwei Ausgabezeilen gemacht. Das k&ouml;nnte
+man so veranlassen:</font></font></p>
+<p style="margin-bottom: 0cm;"></font></p>
+
+<center>
+<table bgcolor="#ffffd0" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><font face="Courier New">#40<br>
+
+#20 C</font> </p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+<p><br>
+
+<font face="Arial, sans-serif">Das
+C wirkt hier als Steuerzeichen und l&ouml;st eine neue Zeile aus &ndash;
+und zwar vor der #20 und <span style="font-style: italic;">nur</span>,
+wenn diese auch belegt ist! Dann sieht
+das Ergebnis so aus:</font></font></p>
+
+<center>
+<table style="width: 221px; height: 44px;" bgcolor="#ddffcc" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><font face="Courier New">&nbsp;Shakespeare, William<br>
+
+&nbsp;All's well that ends well </font> </p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+<p><font face="Arial, sans-serif">Damit haben wir zwei
+einleuchtende Grundregeln: </font>
+</p>
+
+<ol>
+
+  <li>
+    
+    <p style="margin-bottom: 0cm;"><b><font face="Arial"><font color="#990000">Nummern der gew&uuml;nschten Felder
+untereinander schreiben</font></font></b> </font> </p>
+
+  </li>
+
+  <li>
+    
+    <p><b><font face="Arial"><font color="#990000">Ein
+C hinter die Feldnummer schreiben, wenn deren Inhalt auf eine neue
+Zeile soll</font></font></font></b> </p>
+
+  </li>
+
+</ol>
+
+<p><font face="Arial, sans-serif">und
+damit kann man schon ziemlich weit kommen: man kann alle gew&uuml;nschten
+Datenfelder in jeder gew&uuml;nschten Reihenfolge ausgeben
+lassen.<br>
+
+Nochmal der Hinweis: wenn das betreffende Feld (oben die
+#20) nicht belegt ist, wird keine neue Zeile gemacht, d.h. die Anweisung &nbsp;<span style="font-family: Courier New,Courier,Courier New; font-weight: bold;">#20 C</span> &nbsp;wird ganz ignoriert.<br>
+
+</font></font></p>
+
+<p><font face="Arial, sans-serif">Mit diesem
+Wissen kann man auch schon eine kompliziertere Parameterdatei
+einigerma&szlig;en verstehen: man findet darin n&auml;mlich immer
+eine Liste von Feldnummern, die jeweils auf eigener Zeile stehen und
+mit dem Zeichen # beginnen. So sieht immer der Hauptteil einer Parameterdatei
+aus.</font></font></p>
+
+<p><font face="Arial, sans-serif">Die
+n&auml;chste Grundregel, eine <i>sehr</i> wichtige und <i>sehr</i>
+einfache, ist diese:</font></font></p>
+
+<ol start="3">
+
+  <li>
+    
+    <p><font color="#990000"><b><font face="Arial">Zeilen,
+die mit Leerzeichen anfangen, werden nicht verarbeitet.</font></font> </b></font>
+    </p>
+
+  </li>
+
+</ol>
+
+<p style="margin-bottom: 0cm;"><font face="Arial, sans-serif">Es
+ist damit ganz leicht</font>, <b>Kommentare</b> in
+eine Parameterdatei zu schreiben: nur ein Leerzeichen an den Anfang
+der Zeile, oder zwei, und schon k&uuml;mmert das Programm sich nicht
+darum. Sehr leicht kann man also auch Zeilen unwirksam machen, die
+man gerade nicht braucht, aber sp&auml;ter vielleicht wieder. Schauen
+wir uns dieses Beispiel an:</font></font></p>
+
+<center>
+<table bgcolor="#ffffdd" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><font face="Courier New">#20<br>
+
+&nbsp;#40&nbsp;C<br>
+
+#76 C</font> </p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+<p style="margin-bottom: 0cm;"><font face="Arial, sans-serif">Man
+erh&auml;lt als Ausgabe: </font></font>
+</p>
+
+<center>
+<table bgcolor="#ddffcc" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><font face="Courier New">All's well that ends well<br>
+
+1985</font> </p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+<p><font face="Arial, sans-serif">denn die Zeile &nbsp;</font>
+<font face="Courier New">#40&nbsp;C&nbsp;</font> <font face="Arial, sans-serif">wird
+nicht verarbeitet, weil sie mit einem Leerzeichen beginnt.<br>
+
+Und
+noch eine wichtige, etwas &uuml;berraschende Regel:</font></p>
+
+<ol start="4">
+
+  <li>
+    
+    <p><font color="#990000"><font face="Arial"><b>Stehen
+in einer Zeile zwei oder mehr Leerzeichen hintereinander, wird der Rest
+der Zeile nicht verarbeitet.</font></b> </font></font> </p>
+
+  </li>
+
+</ol>
+
+<p><font face="Arial, sans-serif">Dadurch
+kann man ganz leicht Kommentare in eine Befehlszeile hineinschreiben,
+nicht nur zwischen die Befehlszeilen. Wenn man also schriebe:</font></font></p>
+
+<center>
+<table bgcolor="#ffffdd" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><font face="Courier New">#20&nbsp;&nbsp; Das ist der Titel<br>
+
+&nbsp;#40&nbsp;C&nbsp; Verfasser<br>
+
+#76&nbsp;C&nbsp;&nbsp;&nbsp;Erscheinungsjahr</font> </p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+<p><font face="Arial, sans-serif">dann
+k&auml;me dasselbe heraus wie oben, denn vor den Bezeichnungen "Das
+ist der Titel" usw. steht jeweils <i>mehr</i> als ein
+Leerzeichen. An diese Regel mu&szlig; man sich etwas gew&ouml;hnen,
+zugegeben: manchmal macht man aus Versehen zwei Leerzeichen und
+wundert sich, da&szlig; nicht das passiert, was man wollte.<br>
+
+Aber
+abschw&auml;chend kommt hinzu: <b>Zwischen Anf&uuml;hrungszeichen
+gilt diese Regel nicht</b>. Warum? Das sehen wir gleich:<br>
+
+<br>
+Nun weiter. Man will oft nicht nur die
+Feldinhalte exportieren, sondern noch gewisse Zus&auml;tze, z.B. so
+etwas:</font></font></p>
+
+<center>
+<table bgcolor="#ddffcc" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><font face="Courier New">Titel : All's well that ends well<br>
+
+Verf. : Shakespeare, William<br>
+
+Jahr&nbsp; : 1985</font> </p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+<p><font face="Arial, sans-serif">Dann
+m&uuml;&szlig;te man schreiben:</font></font></p>
+
+<center>
+<table bgcolor="#ffffdd" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><font face="Courier New">#20 p"Titel : "<br>
+
+#40&nbsp;C&nbsp;p"Verf. : "<br>
+
+#76&nbsp;C&nbsp;p"Jahr&nbsp; : "</font> </p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+<p><font face="Arial, sans-serif">Dabei
+bedeutet z.B. die zweite Zeile: Nimm den Inhalt von #40, beginne aber
+zuerst eine neue Zeile und setze&nbsp;</font></font> <font face="Courier New">Verf.
+:&nbsp;</font> <font face="Arial, sans-serif">an
+den Anfang.</font></font><br>
+
+<font face="Arial, sans-serif">Das
+kleine p ist ein </font></font><a href="flex:h%20ac10-6"><b><font face="Arial, sans-serif">Manipulationsbefehl</font></font></b></a><font face="Arial, sans-serif">,
+davon gibt es noch viele andere. Das p bedeutet "prefix" und
+bewirkt, da&szlig; eine Zeichenfolge VOR den Feldttext gesetzt wird,
+in diesem Fall eben "</font></font><font face="Courier New">Verf.
+: </font>"&nbsp; <font face="Arial, sans-serif">Die
+Zeichenfolge mu&szlig; hinter dem p innerhalb "..." stehen.
+Genauso gibt es ein "postfix", um etwas HINTER den
+Feldinhalt zu schreiben: dazu dient das gro&szlig;e P.<br>
+
+Wenn Feld
+#40 nicht belegt ist, kommt statt dessen keine Leerzeile und auch&nbsp;
+"</font></font><font face="Courier New">Verf. : </font>"
+<font face="Arial, sans-serif">erscheint
+nicht.&nbsp;<br>
+Also: <b>Manipulationsbefehle werden nur ausgef&uuml;hrt, wenn
+das betreffende Feld auch vorhanden ist.</b> Sonst wird die gesamte
+Zeile
+nicht ausgef&uuml;hrt. <br>
+
+<i>Nebenbei:</i>
+Hinter "Jahr" stehen zwei Leerzeichen! Das macht aber
+nichts, denn zwischen Anf&uuml;hrungszeichen hat das keine Wirkung,
+siehe oben.<br>
+
+Jetzt wird auch klar, warum in den Parametern jedes Feld auf eigener
+Zeile angegeben werden mu&szlig;. Das liegt an dieser Regel:</font></font></p>
+
+<ol start="5">
+
+  <li>
+    
+    <p><font color="#990000"><font face="Arial"><b>Auf jedes Feld
+k&ouml;nnen beliebig viele Manipulationsbefehle angewendet werden, die den
+Feldtext ver&auml;ndern, bevor er ausgegeben wird. <br>
+
+    </b>Die Befehle m&uuml;ssen neben der Feldnummer alle in derselben Zeile
+stehen und werden hintereinander von links nach rechts ausgef&uuml;hrt. <br>
+Wenn
+das Feld nicht belegt ist, werden die Befehle nicht ausgef&uuml;hrt, es kommt sofort die
+n&auml;chste Zeile dran.&nbsp;</font></font></p>
+
+  </li>
+
+</ol>
+
+<p><font face="Arial, sans-serif"><span style="font-style: italic;">Achtung: </span>Zwischen
+zwei Manipulationsbefehlen, das ergibt sich aus Regel 4, mu&szlig;
+<b>genau ein</b> Leerzeichen stehen! Sind es zwei oder mehr, entf&auml;llt
+der Rest! Daran mu&szlig; man sich gew&ouml;hnen, deshalb wird's hier
+nochmal gesagt.<br>
+
+<br>
+
+Jetzt erkennt man, da&szlig; komplizierter
+aussehende Befehle, wie z.B. dieser hier</font></font><br>
+
+<big><b><font face="Courier New">#85
+C b" ; " p"Bandnummer: " P"."</font></b></big>
+<br>
+
+<font face="Arial, sans-serif">so
+schlimm gar nicht sind - man mu&szlig; nur die Bedeutung der
+Manipulationsbefehle kennen. Und die kann man nachschlagen:
+Systemhandbuch, Kap. </font></font><a href="flex:x%20help%20ac10-6#13"><font face="Arial, sans-serif">10.2.6.3</font></font></a><font face="Arial, sans-serif">.
+(S. 194ff, Tabelle der M-Befehle)<br>
+
+<br>
+
+Jetzt
+eine kleine Aufgabe! Was kommt bei unserem Beispiel-Datensatz heraus,
+wenn in den Parametern steht:</font></font></p>
+
+<center>
+<table bgcolor="#ffffdd" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><font face="Courier New">#40 b", " <br>
+
+#40 e", " p" "<br>
+
+#20 p": " P"." </font> </p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+<p style="margin-bottom: 0cm;"><font face="Arial, sans-serif">Richtig,
+das Ergebnis sieht so aus (Vor- und Nachname umgedreht):</font></p>
+
+<center>
+<table bgcolor="#ddffcc" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><font face="Courier New">William Shakespeare: All's well that
+ends well.</font> </p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+<p style="margin-bottom: 0cm;"><font face="Arial, sans-serif">Mit
+Kommentaren wird die Sache klarer:</font></p>
+
+<center>
+<table bgcolor="#ffffdd" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><font face="Courier New">#40&nbsp;b",&nbsp;"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Inhalt von #40, aber nur den Teil hinter ",&nbsp;" ausgeben<br>
+
+#40&nbsp;e",&nbsp;"&nbsp;p</font>"&nbsp;"&nbsp;&nbsp;
+Nun den Teil vor ",&nbsp;" nehmen, mit einem Leerz. davor<br>
+
+#20&nbsp;p</font>":&nbsp;"&nbsp;P</font>"." &nbsp; Den Titel mit ":
+" davor anh&auml;ngen, Punkt dahinter</font></p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+<p><br>
+
+<font face="Arial, sans-serif">Die n&auml;chste Grundregel
+ist auch wieder &uuml;berraschend:</font> </p>
+
+<ol start="6">
+
+  <li>
+    
+    <p><font color="#990000"><font face="Arial"><b>Statt mit # kann
+eine Befehlszeile auch mit ! anfangen. </b>Der Unterschied zwischen
+beiden ist, da&szlig; zwei verschiedene Tabellen f&uuml;r die Umcodierung der
+Zeichen existieren k&ouml;nnen. Diese Tabellen werden definiert mit
+eigenen Befehlszeilen, die mit&nbsp; <b>p</b> &nbsp;anfangen&nbsp;f&uuml;r die <span style="font-weight: bold;">#</span>-Zeilen bzw. mit&nbsp; <b>q</b> &nbsp;f&uuml;r
+die <span style="font-weight: bold;">!</span>-Zeilen. </font></font> </p>
+
+  </li>
+
+</ol>
+
+<p><font face="Arial, sans-serif">Mit
+den p- und q-Befehlen kann man jedem einzelnen Zeichen einen anderen
+Code zuordnen oder sogar eine ganze Zeichenfolge, die dann bei der
+Ausgabe <b>automatisch</b> statt des Zeichens ausgegeben wird.&nbsp;
+Das sieht z.B. so aus:</font></font><br>
+
+<font face="Courier New">p &auml;
+"ae"</font><br>
+
+<font face="Arial, sans-serif">Jedes
+&auml; wird dann automatisch durch ae ersetzt, aber nur in den mit #
+beginnenden Zeilen. Wenn es in den mit ! beginnenden Zeilen auch so
+sein soll, aber AE statt ae, mu&szlig; man noch eine Zeile erg&auml;nzen:</font></font></p>
+
+<font face="Courier New">q &auml;
+"AE"</font><br>
+
+<font face="Arial, sans-serif">Beschrieben
+ist das im Kapitel&nbsp;
+</font></font><a href="flex:h%20ac10-4=10.2.4.1"><font face="Arial, sans-serif">10.2.4.1</font></font></a>.<br>
+
+<p><font face="Arial, sans-serif">Damit
+man nicht lange Listen solcher Befehle jedesmal in eine
+Parameterdatei mit hineinschreiben mu&szlig;, kann man solche Listen
+auch in externen Dateien unterbringen und diese Dateien mit
+hinzuladen lassen. Daf&uuml;r gibt es den Befehl </font></font><b><font face="Courier New">t</font></font></b>.
+<font face="Arial, sans-serif">Da
+w&auml;re z.B. die Datei <b><font face="Courier New">ad-utf.apt</font></b>,
+sie enth&auml;lt die Tabelle der Umcodierungen vom internen
+ASCII-Code in den </font></font><a href="flex:h%20unicode"><font face="Arial, sans-serif">Unicode-Standard</font></font></a>
+<font face="Arial, sans-serif">UTF8.
+Wenn man in seine Exportparameter hineinschreibt:</font></font><br>
+
+<b><font face="Courier New">tad-tf8</font></b><br>
+
+<font face="Arial, sans-serif">dann
+wird die Tabelle </font></font><span style="font-family: Courier New;">ad-utf.apt</span></font><font face="Arial, sans-serif">
+hinzugeladen und dadurch aktiviert.<br>
+
+Eine
+andere Standardtabelle ist&nbsp; <b><font face="Courier New">ad-aw.apt</font></b>:
+sie wandelt den internen ASCII-Code in den Windows-Code um. Minimales
+Beispiel:</font></font></p>
+
+<center>
+<table bgcolor="#ffffdd" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td>
+      
+      <p><font face="Courier New">#20<br>
+
+#40 C</font><br>
+
+      <font face="Courier New">tad-aw</font></p>
+
+      </td>
+
+    </tr>
+
+  
+  </tbody>
+</table>
+
+</center>
+
+<p><font face="Arial, sans-serif">Titel
+und Verfasser werden dann in Windows-Codierung ausgegeben.<br>
+
+Wo mu&szlig;
+so ein t-Befehl stehen? Das ist egal, denn er hat nichts mit einem
+bestimmten Feld zu tun &ndash; es sei denn, es stehen in der hinzuzunehmenden
+Datei nicht nur
+Codierungsbefehle, sondern auch Exportzeilen, die mit # oder !
+beginnen. Es gilt Grundregel 7:</font></font> 
+</p>
+
+<ol start="7">
+
+  <li>
+    
+    <p><font color="#990000"><b><font face="Arial">Eine
+Parameterdatei wird einmal geladen und beliebig oft ausgef&uuml;hrt.</font></b>
+    <br>
+
+    <font face="Arial">Nur die eigentlichen Exportbefehle, die mit #
+oder ! beginnenden Zeilen, m&uuml;ssen deshalb in der erw&uuml;nschten
+Reihenfolge stehen, alle anderen Befehle k&ouml;nnen an beliebigen
+Stellen stehen.&nbsp;</font> </font></font></font> </p>
+
+  </li>
+
+</ol>
+
+<p><font face="Arial, sans-serif"><i>
+F&uuml;r
+Programmierer:</i> Nur die Zeilen mit # und ! werden wie ein Programm
+abgearbeitet, von oben nach unten also (es k&ouml;nnen aber Spr&uuml;nge
+eingebaut werden), die anderen Zeilen werden nur beim Einlesen der
+Parameter verarbeitet (siehe Regel 7), um bestimmte interne
+Einstellungen vorzunehmen (d.h. Variablen zu belegen). Das Einlesen
+passiert nach Regel 7 nur einmal (und nicht immer wieder f&uuml;r jeden
+Datensatz), anschlie&szlig;end werden dann nur die Zeilen mit # und !
+f&uuml;r jeden zu exportierenden Satz abgearbeitet, die anderen
+Zeilen nicht. <i>Das hat zur Folge:</i> wenn ein Basisparameter
+zweimal oder &ouml;fter angegeben ist, z.B. der Wert</font></font>
+<font face="Courier New">zl=...</font>, <font face="Arial, sans-serif">dann
+wird nur der letzte wirksam. Im Handbuch finden Sie genaue
+Beschreibungen, wie ein Datensatz als Ganzes beim Export abgearbeitet
+wird (Kap. 10.2.6), und dann besonders, wie eine einzelne Befehlszeile
+ausgef&uuml;hrt wird (10.2.6.1). Wenn's mal komplizierter wird, k&ouml;nnen diese
+Beschreibungen sehr helfen...</font></font><br>
+
+<font face="Arial, sans-serif"><br>
+
+Jetzt
+kommt die vorletzte Grundregel. Es gibt eine Anzahl von
+</font></font><a href="flex:h%20ac10-2=Konventionen"><font face="Arial, sans-serif">Basisparametern</font></font></a><font face="Arial, sans-serif">.
+Diese sind daf&uuml;r da, bestimmte Werte zu setzen oder Schalter
+einzustellen, die das Verhalten des Exports beeinflussen. Da kommt
+einiges zusammen, aber meistens mu&szlig; man nur wenige dieser
+Befehle geben. Denn:</font></font></p>
+
+<ol start="8">
+
+  <li>
+    
+    <p><font color="#990000"><b>F&uuml;r
+jeden Basisparameter gibt es einen Standardwert, der automatisch
+genommen wird.</b> Diese Default-Werte sind immer in sinnvoller Weise
+gew&auml;hlt, damit man sie nicht jedesmal alle selber setzen mu&szlig;.&nbsp;[Handbuch Kap. 10.1-5: die Basisparametern bilden 5 Gruppen
+und haben 2-buchstabige Namen, wobei jede Gruppe einen bestimmten
+Anfangsbuchstaben hat.]</font> </font></font></font> </p>
+
+  </li>
+
+</ol>
+
+<p><font face="Arial, sans-serif"><i><font color="#000000">Beispiel:</font></i>
+Oft ist die Ausgabe eine Textdatei. Dabei macht das Programm dann
+einen automatischen Zeilenumbruch. Es mu&szlig; dazu wissen, wieviele
+Zeichen maximal in eine Zeile sollen. Als Standard nimmt es 56 an -
+das war fr&uuml;her mal bei Katalogkarten sinnvoll. Wenn das Programm
+keinen Zeilenumbruch selber machen soll, weil das die nachfolgende
+Software &uuml;bernimmt, etwa ein Textprogramm, dann setzt
+man<br>
+
+</font></font><b><font face="Courier New">zl=0<br>
+
+</font></b><font face="Arial, sans-serif">Es
+ist n&ouml;tig, an den Stellen, wo unbedingt eine neue Zeile beginnen
+soll, die daf&uuml;r n&ouml;tigen Codes selber einzubauen, z.B. die
+Codes 13 10 f&uuml;r eine TXT-Ausgabe, oder "&lt;br&gt;"
+f&uuml;r eine HTML-Ausgabe. Auch daf&uuml;r gibt es einen
+Basisparameter:<br>
+
+</font></font><font face="Courier New">ze="&lt;br&gt;"</font><br>
+
+<font face="Arial, sans-serif">Dieser
+Befehl w&uuml;rde immer dann die Zeichenfolge&nbsp;</font></font>
+<font face="Courier New">&lt;br&gt;</font>&nbsp; <font face="Arial, sans-serif">ausgeben,
+wenn der Manipulationsbefehl&nbsp; C&nbsp; vorkommt.
+</font></font></p>
+<p><font face="Arial, sans-serif">Grundregel 9 ist vielleicht auch unerwartet:<br>
+
+</font></font></p>
+
+<ol start="9">
+
+  <li><font color="#990000"><b>Indexierung
+ist auch Export!</b> Die Index-Eintr&auml;ge, die aus einem Datensatz
+hervorgehen, werden ebenfalls mithilfe der Exportsprache erzeugt.&nbsp;
+    </font></font></font>
+    
+  </li>
+
+</ol>
+
+<font face="Arial, sans-serif"><i><font color="#000000">Beispiel:</font></i> Die Parameterdatei&nbsp; <span style="font-family: Courier New,Courier,Courier New;">CAT.API</span>,
+die Sie wahrscheinlich verwenden, ist ein besonders gro&szlig;es und
+kompliziertes Exemplar einer Index-Parameterdatei. Ein viel einfacheres
+Beispiel ist die Prototyp-Datei&nbsp; <a href="flex:h%20indx.api">INDX.API</a>,
+in der alle Elemente kommentiert sind. Man kann sie als Muster
+verwenden, wenn man eine neue Datenbankstruktur entwickelt. Denn dazu
+geh&ouml;rt es, da&szlig; man neue Indexparameter machen mu&szlig;. Ebenso neue
+Anzeigeparameter! Leichter durchschau- und &auml;nderbar, weil moderner und
+besser strukturiert, ist auch BANK.NPI, die Parameterdatei f&uuml;r das
+Neutralformat N.CFG.<br>
+
+Typisch ist beim Indexieren, da&szlig; aus einem Datensatz eine Vielzahl von
+Indexeintr&auml;gen hervorgeht: Namen, Titelw&ouml;rter, Titelanf&auml;nge, ... Jeder
+davon wird als ein eigener Ausgabesatz betrachtet! Besonders wichtig
+sind
+daf&uuml;r die sog. <span style="font-weight: bold;">ak</span>-Befehle. Sie
+legen fest, aus welchen Datenfeldern Registereintr&auml;ge zu machen sind.
+So ein Befehl sieht so aus:<br>
+
+</font></font><span style="font-family: Courier New;">ak=20" "+E</span></font><font face="Arial, sans-serif"><br>
+
+und das bedeutet: Nimm das Feld #20, zerlege es an jedem Leerzeichen
+(d.h. Zerlegung in W&ouml;rter!) und gehe mit jedem so entstehenden Wort zu
+der Sprungmarke #-E. Erst dort entsteht dann der Indexeintrag! Bei
+dieser Sprungmarke kommt das Wort in der
+Variablen #u1 an (das ist grunds&auml;tzlich so bei einem ak-Befehl), und
+bei der Sprungmarke k&ouml;nnte dann z.B. stehen:<br>
+
+</font></font><span style="font-family: Courier New;">#-E</span><br style="font-family: Courier New;">
+
+<span style="font-family: Courier New;">!u1 p"|3"</span><br style="font-family: Courier New;">
+
+<span style="font-family: Courier New;">#+#</span></font><font face="Arial, sans-serif"><br>
+
+Das bedeutet: Codiere das Wort (welches in dem Moment in der Variablen
+#u1 steckt) mithilfe der q-Befehle um und ordne das Ergebnis dann ins
+Register 3 ein. Wenn z.B.&nbsp; in #u1 gerade das Wort "Gr&ouml;&szlig;e" steht,
+weil es im Titel vorkommt, wird durch die Umcodierung daraus "groesse",
+und dies kommt ins Register. F&uuml;r jedes einzelne Titelwort wird dieser
+Vorgang gemacht, genau das ist die Aufgabe des ak-Befehls.<br>
+
+<span style="font-style: italic;">Historische Anmerkung:</span>
+ak-Befehle wurden zuerst f&uuml;r den Kartendruck erfunden. Dabei sollten zu
+einem Datensatz mehrere Karten mit unterschiedlichen &Uuml;berschriften
+("K&ouml;pfen") herauskommen, zum Einordnen an verschiedenen Stellen des
+Alphabets. Man brauchte also ein Mittel, um diejenigen Felder zu
+bestimmen, aus denen Kartenk&ouml;pfe hervorgehen sollten: <span style="font-weight: bold;">ak</span> bedeutete
+dabei nichts anderes als "Aufnahme-Kopf". Stellt man sich die
+Indexparameter als Karten&uuml;berschriften ohne Karten vor, wird die
+&uuml;bertragene Bedeutung sofort klar.<br>
+
+</font></font>
+<p><b><font color="#cc0000"><font face="Arial, sans-serif">Elemente
+ohne Wenn und Aber</font></font> </font></b><br>
+
+<font face="Arial, sans-serif">"Hmm,"
+fragen Sie jetzt: "Wenn aber&nbsp; </font></font><font face="Courier New">Verf.
+:&nbsp;</font> <font face="Arial, sans-serif">herauskommen
+soll, und zwar auch dann, wenn #40 nicht belegt ist? Kann man keine
+Textelemente <i>zwischen</i> den Feldtexten ausgeben, und zwar <span style="font-style: italic;">immer</span>,
+auch wenn die Felder nicht belegt sind? Die Manipulationsbefehle, so
+wurde ja gesagt, wirken nur dann, wenn die damit manipulierten Felder
+auch <i>belegt</i> sind!"<br>
+
+Daf&uuml;r gibt es den
+</font></font><a href="flex:h%20ac10-8=Unbedi"><font face="Arial, sans-serif">Text-Ausgabebefehl</font></font></a>&nbsp;
+<b><font face="Courier New">#t{ ... }</font></b> <font face="Arial, sans-serif">,
+wobei zwischen { ... } eine </font></font><a href="flex:h%20ac10-2=Steuerzeichenketten"><font face="Arial, sans-serif">Steuerzeichenkette</font></font></a>
+<font face="Arial, sans-serif">stehen
+mu&szlig;: die kann aus beliebigem Text bestehen einschlie&szlig;lich
+Steuerzeichen, normaler Text immer zwischen "..." oder
+'...'.<br>
+
+Hier ein Beispiel</font></font><br>
+
+<b><font face="Courier New">#t{
+C "Schlagw&ouml;rter:" C 9 }</font></b><br>
+
+<font face="Arial, sans-serif">Damit
+wird erreicht, da&szlig; an der betreffenden Stelle zuerst eine neue
+Zeile begonnen wird, dann "<b><font face="Courier New, Courier New">Schlagw&ouml;rter:</font></font></b>"
+hingeschrieben und dann nochmals eine neue Zeile, dann der Code 9 (=
+TAB-Zeichen). Man mu&szlig; solche Befehle nat&uuml;rlich an den
+richtigen Stellen einf&uuml;gen zwischen die normalen Ausgabezeilen,
+also zwischen die Zeilen mit # und !, damit das Gew&uuml;nschte an
+der richtigen Stelle herauskommt. <i style="font-weight: bold;">Aber
+Vorsicht:</i> Was in solchen
+Zeilen steht, das wird nicht umcodiert (anders als die Datenfelder),
+sondern unver&auml;ndert so
+ausgegeben, wie es dasteht. Bei Umlauten und anderen Sonderzeichen
+mu&szlig; man darauf achten und ggfls. den richtigen Editor nehmen,
+um die Parameterdatei zu bearbeiten. </font></font>
+</p>
+
+<p style="margin-bottom: 0cm;" align="center"><font face="Courier New">-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-</font></p>
+
+<p><br>
+
+<font face="Arial, sans-serif">Jetzt
+haben Sie die Grundlagen schon verstanden! Damit wird es Ihnen nun
+nicht schwerfallen, den </font></font><a href="flex:h%20ac10-1"><font face="Arial, sans-serif">Anfangsteil</font></font></a>
+<font face="Arial, sans-serif">des
+Kapitels 10 zu lesen. Denn es gibt noch eine Menge andere Befehle,
+die alle ihren Sinn haben. Das Exportwesen ist ein weites Feld, daher
+kann es nicht simpel sein. Dazu geh&ouml;rt nicht zuletzt auch die
+Indexierung, wie wir nun gesehen haben. Denn auch die Registereintr&auml;ge
+sind ja Dinge, die
+aus den Datens&auml;tzen heraus durch irgendwelche Umformungen
+entstehen, und diese Umformungen sind es, die man mit der
+Exportsprache machen kann. <br>
+
+Exportparameter sind sehr kompakt und
+deshalb wenig intuitiv. Sie arbeiten daf&uuml;r aber extrem schnell,
+und das ist besonders f&uuml;r das Indexieren sehr wichtig. Mit XML und XSLT
+z.B.
+w&auml;ren solche Leistungen nicht ann&auml;hernd erreichbar.<br>
+
+</font></font></p>
+
+<p><font face="Arial, sans-serif"><span style="font-weight: bold;">Beispiele
+zum Ausprobieren</span><br>
+
+Als
+erstes etwas gr&ouml;&szlig;eres Beispiel empfehlen wir eine Datei&nbsp;
+</font></font><a href="http://ww.allegro-c.de/doku/d-simp.apr"><b><font face="Arial, sans-serif">d-simp.apr</font></font></b></a><font face="Arial, sans-serif">,
+die f&uuml;r eine einfache, katalogkarten&auml;hnliche Anzeige
+geeignet ist. Mit den Kenntnissen aus dieser Einf&uuml;hrung und den
+darinstehenden Kommentaren werden Sie das meiste oder alles verstehen
+und dann sogar weiter ausbauen k&ouml;nnen! Sie k&ouml;nnen diese
+Parameter auf Ihre Platte kopieren und dann sogar </font></font><a href="flex:x%20disp%20p%20d-simp%5Cdisp"><font face="Arial, sans-serif">sofort
+aktivieren</font></font></a><font face="Arial, sans-serif">,
+um zu sehen, was sie produzieren. (Um manuell zu aktivieren, im
+Schreibfeld eingeben: </font></font><span style="font-family: Courier New;">x disp p d-simp</span></font><font face="Arial, sans-serif"> )<br>
+
+Als zweites Beispiel kommt die
+Protoyp-Datei f&uuml;r Bildschirmanzeige </font></font><a href="flex:h%20d-0.apr"><font face="Arial, sans-serif">D-0.APR</font></font></a>
+<font face="Arial, sans-serif">in
+Frage. Auch diese kann man </font></font><a href="flex:x%20disp%20p%20d-0%5Cdisp"><font face="Arial, sans-serif">sofort
+ausprobieren</font></font></a><font face="Arial, sans-serif">.<br>
+
+<i><br>
+
+Rezept:</i>
+Wenn man <i>irgendeine</i> Par<span lang="de-DE">ameterdatei f&uuml;r
+die Anzeige ausprobieren will, dann im Men&uuml; &bdquo;Ansicht&ldquo;
+mit dem Punkt &bdquo;Anzeigeparameter wechseln&ldquo;. Man w&auml;hlt
+die gew&uuml;nschte Datei dann aus der erscheinenden Liste aus, wobei
+man zwischen den Verzeichnissen auch umschalten kann: die
+Parameterdatei k&ouml;nnte im eigenen Datenverzeichnis, aber auch im
+Programmverzeichnis liegen! <br>
+
+<i>Andere Methode:</i> um die Datei
+xyz.apr auszuprobieren, dieses eingeben: </span></font></font><span lang="de-DE"><span style="font-family: Courier New;">x disp p xyz</span></span></font><font face="Arial, sans-serif"><span lang="de-DE">. Und dann
+ausgew&auml;hlte S&auml;tze anzeigen lassen, damit man die Wirkung
+sieht. Aber nicht bei jeder .APR-Datei kommt in der Anzeige etwas
+Gescheites heraus! (Dieselbe Testmethode geht beim DOS-PRESTO mit F2 F2
+und dann Auswahl der Datei: + davorsetzen und Enter.)<br>
+
+</span></font></font></p>
+
+<p><font face="Arial, sans-serif"><span lang="de-DE"><span style="font-weight: bold;">Export ausprobieren</span><br>
+
+Um nun wirklich Daten in eine Datei zu exportieren, m&uuml;ssen die
+Exportparameter nicht f&uuml;r die Anzeige, sondern f&uuml;r den Export geladen
+werden. Das geschieht &uuml;ber das Men&uuml; "Export / Andere Exportparameter"
+oder per FLEX. Hier das Muster, wie man einen Export per FLEX
+vorbereitet und durchf&uuml;hrt: (die roten Namen ersetzt man durch die der
+eigenen Dateien)<br>
+
+</span></font></font></p>
+
+<p><span lang="de-DE"><span style="font-family: Courier New;">xport p <span style="color: rgb(204, 0, 0);">d-simp</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Exportparameter d-simp.apr laden</span><br style="font-family: Courier New;">
+
+<span style="font-family: Courier New;">open x <span style="color: rgb(204, 0, 0);">ausgabe.txt</span>&nbsp;&nbsp;&nbsp; //
+Ausgabe soll in die Datei&nbsp; ausgabe.txt</span><br style="font-family: Courier New;">
+
+<span style="font-family: Courier New;">dow
+set&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Ergebnismenge ausgeben</span><br style="font-family: Courier New;">
+
+<span style="font-family: Courier New;">close
+x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+// Datei wieder schlie&szlig;en</span></span></font><font face="Arial, sans-serif"><span lang="de-DE"><br>
+
+</span></font></font></p>
+
+<p><font face="Arial, sans-serif"><span style="font-weight: bold;"><br>
+
+F&uuml;r
+das vertiefende Studium</span><br>
+
+Im Handbuch, Kap. 10.4, werden 10
+Prototypen von Exportparameterdateien erw&auml;hnt, alle kommentiert, f&uuml;r
+unterschiedliche Aufgaben.</font></font></p>
+
+<p><font face="Arial, sans-serif"><i>Hinweis:</i>
+Viele Anwender arbeiten nur mit den <a href="flex:h%20exprt" name="Men&uuml; der Komfortmethoden zeigen">Komfortmethoden</a>
+des Exportmen&uuml;s. Fast alle diese Methoden benutzen irgendwelche
+Parameterdateien, ohne da&szlig; der Anwender es wissen mu&szlig;,
+denn FLEX k&uuml;mmert sich darum, sie im rechten Moment einzusetzen!</font></font></p>
+
+<p style="margin-bottom: 0cm;" align="center"><font face="Courier New">-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-</font></p>
+
+<p style="margin-bottom: 0cm;"><a name="dateien"></a><br>
+
+<font face="Arial, sans-serif">Noch
+drei dr&auml;ngende Fragen werden Ihnen jetzt auf der Zunge liegen:<br>
+
+</font></font><br>
+
+<b><font face="Arial, sans-serif">Wo
+m&uuml;ssen sich die Parameterdateien befinden?</font></font></b><br>
+
+</font><font face="Arial, sans-serif">Antwort: Auf
+dem Datenverzeichnis (wo die Datenbank liegt) oder auf dem
+Programmverzeichnis (wo a99.exe und die anderen Programme liegen).
+<br>
+
+Schlaumeier fragen sofort: Wenn es aber zwei verschiedene gibt
+mit demselben Namen, die eine hier und die andere dort? Dann wird
+immer die genommen, die auf dem <i>Daten</i>verzeichnis liegt.
+<i>Vorteil:</i> Parameter, die f&uuml;r mehrere Datenbanken gelten,
+brauchen nur einmal zu existieren, aber es kann immer noch f&uuml;r
+die eine oder andere Datenbank eine ge&auml;nderte Version geben, und
+die mu&szlig; dann auch bei der betr. Datenbank liegen - ist das
+nicht logisch?<br>
+
+<i>Empfehlung:</i> Wenn Sie eine der mitgelieferten
+Parameterdateien f&uuml;r Ihre Zwecke ver&auml;ndern (z.B. die
+D-WRTF.APR), dann kopieren Sie die ver&auml;nderte auf Ihr
+Datenverzeichnis. So kann es bei einem Update nicht passieren, da&szlig;
+Ihre Privatversion wieder durch eine neue Standardversion
+&uuml;berschrieben wird. &nbsp; <br>
+
+</font></font><br>
+
+<font face="Arial, sans-serif"><b>Wie
+kann man sie bearbeiten?</b><br>
+
+Da es sich um ASCII-Dateien handelt,
+eignet sich <span style="color: rgb(204, 0, 0);">Word </span><i style="color: rgb(204, 0, 0);">nicht</i> daf&uuml;r. Am besten ist der
+mitgelieferte Texteditor X.EXE. Der ist sehr leicht zu benutzen,
+keinen anderen kann man schneller lernen, die wichtigsten Handgriffe
+lernt man in </font></font><a href="flex:h%20acd"><font face="Arial, sans-serif">zwei
+Minuten</font></font></a><font face="Arial, sans-serif">!
+Er l&auml;uft unter allen Windows-Versionen, ist allerdings ein
+DOS-Programm, und wer gegen so etwas eine Aversion hat, kann </font></font><a href="http://www.winvi.de/de/"><font face="Arial, sans-serif">WinVi</font></font></a>
+<font face="Arial, sans-serif">nehmen,
+ein sehr gutes Freeware-Programm. Eine Alternative zu X ist auch der
+Microsoft-Editor </font></font><big><big><span style="font-family: Courier New;">edit</span></big></font></big><font face="Arial, sans-serif">. <br>
+
+Alternative im Windows-System: Man bearbeitet direkt im
+Anzeigefenster von <span style="font-style: italic;">a99</span>! Geben
+Sie z.B. ein:&nbsp; <big><font style="font-weight: bold;" face="Courier New, Courier New">h
+i-1.apr</font></big> . Dann sehen Sie die Datei <b><font face="Courier New, Courier New">i-1.apr</font></font></b>,
+k&ouml;nnen sie bearbeiten und mit Alt+s&nbsp; wieder speichern. Anderes
+Beispiel:&nbsp; </font></font><font style="font-size: 11pt; font-weight: bold;" size="2"><span style="font-family: Courier New;">h d-w0.apr</span></font><span style="font-family: Courier New;">
+, </span></font><font style="font-size: 11pt; font-family: Arial;" size="2">die oben erw&auml;hnte einfache Anzeigeparameterdatei. &Auml;ndern,
+speichern
+(am besten unter anderem Namen), ausprobieren &uuml;ber Men&uuml; "Ansicht /
+Anzeigeparameter wechseln".</font><br>
+
+<br>
+
+<font face="Arial, sans-serif"><b>...
+und wie m&uuml;ssen sie hei&szlig;en?<br>
+
+</b>Die Namen darf man sich
+aussuchen, die Namenserweiterung (Dateityp) jedoch nicht. <span style="color: rgb(204, 0, 0);">Sehr wichtig:</span><br>
+
+<b>Kurze Namen: h&ouml;chstens 8 Zeichen, nur
+Kleinbuchstaben, keine Leerzeichen, Umlaute oder andere
+Sonderzeichen</b><br>
+
+(L&auml;ngere Namen funktionieren nur mit den Windows-Programmen.) <br>
+
+Der (verpflichtende) Dateityp (Namenserweiterung) ergibt sich aus zwei
+Dingen: </font></font>
+</p>
+
+<ol>
+
+  <li>
+    
+    <p style="margin-bottom: 0cm;"><font face="Arial, sans-serif">Die verwendete <b>Konfigurationsdatei</b>.
+Normalerweise ist das</font></font> <b><font face="Courier New">$<font color="#cc0000">A</font>.CFG</font></b> oder <b><font face="Courier New"><font color="#cc0000">A</font>.CFG</font></b>. <font face="Arial, sans-serif">Der
+erste Buchstabe des Typs mu&szlig; dann</font></font> <b><font face="Courier New"><font color="#cc0000">A</font></font></b> <font face="Arial, sans-serif">sein.
+Wenn die Datenbank mit einer</font></font>&nbsp; <font face="Courier New"><b style="color: rgb(255, 0, 0);">N</b>.CFG</font>&nbsp; <font face="Arial, sans-serif">arbeitet,
+mu&szlig; es</font></font><font color="#009900"> <b style="color: rgb(255, 0, 0);"><font face="Courier New">N</font></b></font>&nbsp;
+    <font face="Arial, sans-serif">sein,
+usw.</font></font></p>
+
+  </li>
+
+  <li>
+    
+    <p style="margin-bottom: 0cm;"><font face="Arial, sans-serif">Der <b>Zweck</b> der Parameter. Da
+gibt es drei M&ouml;glichkeiten:</font></font></p>
+
+  </li>
+
+</ol>
+
+<p style="margin-left: 1.32cm; margin-bottom: 0cm;"><font face="Courier New, Courier New"><b><font color="#009900">PR</font></b>
+</font><font face="Arial, sans-serif"><b>Echter
+Export</b>. Der Typ ist dann also</font></font>&nbsp; <font face="Courier New">.<b><font color="#cc0000">A</font><font color="#009900">PR</font></b></font></p>
+
+<p style="margin-left: 2.12cm; margin-bottom: 0cm;" align="left"><i>Beispiele:</i>&nbsp;
+<b><font face="Courier New"><br>
+
+D-1.<font color="#cc0000">A</font><font color="#009900">PR&nbsp;&nbsp;&nbsp;&nbsp;</font>:
+</font></b><font face="Arial, sans-serif">Die
+Standard-Anzeigeparameter f&uuml;r das DOS-Programm
+PRESTO</font></font><b><font face="Courier New"><br>
+
+I-1.<font color="#cc0000">A</font><font color="#009900">PR&nbsp;&nbsp;&nbsp;&nbsp;</font>:
+</font></b><font face="Arial, sans-serif">Damit
+kann man Daten im internen Format ausgeben lassen. Es entsteht eine
+sog. Grunddatei mit den richtigen Steuerzeichen. Man kann sie
+anschlie&szlig;end in eine andere Datenbank einspeisen (mit</font></font>
+<font face="Courier New">update.exe</font> <font face="Arial, sans-serif">(s.
+Kap.9) oder</font></font> <font face="Courier New">index.exe</font> <font face="Arial, sans-serif">(s.
+Kap.7))</font></font><b><font face="Courier New"><br>
+
+D-WRTF.<font color="#cc0000">A</font><font color="#009900">PR&nbsp;</font>:
+</font></b><font face="Arial, sans-serif">Die
+Standard-Anzeigeparameter f&uuml;r das Windows-Programm <b><i>a99</i></b>
+</font></font></p>
+
+<p style="margin-left: 1.35cm; margin-bottom: 0cm;"><b><font face="Courier New, Courier New"><font color="#993300">PT
+</font></font><font face="Arial, sans-serif">Nachlade-Tabelle</font></font></b><font face="Arial, sans-serif">,
+d.h. eine Datei, die mit t-Befehl in andere Parameter eingebunden
+wird. Der Typ ist dann</font></font> <font face="Courier New">.APT</font></p>
+
+<p style="margin-left: 2.12cm; margin-bottom: 0cm;"><i>Beispiele:</i>&nbsp;
+<b><font face="Courier New"><br>
+
+I.<font color="#cc0000">A</font><font color="#996633">PT&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#009900">&nbsp;&nbsp;</font>:
+</font></b><font face="Arial, sans-serif">Tabelle
+f&uuml;r die Umcodierung von Zeichen f&uuml;r das Indexieren
+(Einbindung in CAT.API)</font></font><b><font face="Courier New"><br>
+
+SWL1.<font color="#cc0000">A</font><font color="#996633">PT&nbsp;</font><font color="#009900">&nbsp;&nbsp;</font>:
+</font></b><font face="Arial, sans-serif">Tabelle
+mit Stoppw&ouml;rtern f&uuml;r das Indexieren (Einbindung in
+CAT.API)</font></font><br>
+
+<b><font face="Courier New">D.<font color="#cc0000">A</font><font color="#996633">PT&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#009900">&nbsp;&nbsp;</font>:
+</font></b><font face="Arial, sans-serif">Tabelle
+f&uuml;r die Umcodierung DOS -&gt; Windows (Einbindung z.B. in
+D-WRTF.APR)</font></font></p>
+
+<p style="margin-left: 1.38cm; margin-bottom: 0cm;"><b><font face="Courier New, Courier New"><font color="#993399">PI
+</font></font><font face="Arial, sans-serif"><font face="Arial, sans-serif">I</font></font>ndex-Parameter</font></font></b><font face="Arial, sans-serif">,
+d.h. die Vorschriften zur Bildung der Registereintr&auml;ge. Der Typ
+daf&uuml;r ist </font></font><font face="Courier New">.API</font></p>
+
+<p style="margin-left: 2.12cm;"><i>Beispiel:</i> <b><font face="Courier New"><br>
+
+CAT.<font color="#cc0000">A</font><font color="#993399">PI&nbsp;&nbsp;</font><font color="#009900">&nbsp;&nbsp;</font>:
+</font></b><font face="Arial, sans-serif">Indexparameter
+f&uuml;r die Register des Standardsystems</font></font><br>
+
+<font face="Arial, sans-serif"><i>Tip:</i>
+Geben Sie F7 (in PRESTO oder a99), dann sehen Sie, was </font></font><font face="Courier New">cat.api</font>
+<font face="Arial, sans-serif">macht:
+Diese Parameter werden dann ausgef&uuml;hrt und man sieht als
+Ergebnis die Registereintr&auml;ge, die zum aktuellen Datensatz
+geh&ouml;ren.</font></font></p>
+
+<p><font face="Arial, sans-serif"><font color="#cc0000">Achtung:</font>
+Die Dateinamen sind hier mit Gro&szlig;buchstaben geschrieben. Bei
+DOS und Windows ist das egal!&nbsp; Bei Unix und Linux ist es nicht
+egal. Da ist es <span style="color: rgb(204, 0, 0);">zwingend notwendig</span>,
+s&auml;mtliche Namen, die mit
+allegro zu tun haben, immer und in jeder Situation vollst&auml;ndig
+<b>klein</b> zu schreiben. Nur so vermeidet man zeitraubenden &Auml;rger
+mit nicht gefundenen Dateien... <i>Vorsicht:</i> Wenn man Dateien mit
+FTP oder Samba zwischen Win, Linux, Novell oder UNIX kopiert oder in
+Archivdateien packt, kann es
+passieren, da&szlig; die Namen mit Gro&szlig;buchstaben ankommen oder
+abgeschnitten werden; dann mu&szlig; man sie erst wieder korrekt umbenennen. <br>
+
+Der eigentliche
+Name, der Teil vor dem Punkt also, ist frei. Es wird empfohlen, sich
+daf&uuml;r an ein paar Konventionen zu halten, die im Handbuch, <a href="flex:h%20ac10-1#15">Kap.
+10.0</a></font> <font face="Arial, sans-serif">beschrieben sind.
+Damit beh&auml;lt man leichter den &Uuml;berblick. Wir achten darauf, alle
+Standarddateien in Kleinbuchstaben auszuliefern sowie nur Namen mit
+maximal 8 Zeichen zu verwenden.</font></p>
+<p style="margin-bottom: 0cm;" align="right"><br >
+</p>
+<hr>
+        <div class="fusszeile">
+        <!--<div style="font-size:9pt; text-align:right; color:#666666;">-->[i] zuletzt aktualisiert:
+
+        <!--#config timefmt="%d.%m.%Y" --> <!--#echo var="LAST_MODIFIED"-->
+        <br >Email: <a href="mailto:ub@tu-bs.de">ub@tu-bs.de</a>
+</div>
+        <hr>
+        </div>
+
+
+
+
+</body>
+</html>

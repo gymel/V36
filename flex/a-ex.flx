@@ -1,0 +1,244 @@
+  A-EX.FLX : Aus jeder #90x einen Exemplarsatz machen
+  2005-02-08  Leihdaten $u und $D uebernehmen
+
+  Zuerst den Nutzer aufklaeren und fragen, ob diese Funktion gewuenscht ist.
+
+var "Diese Funktion erstellt zu jedem Exemplar einen Exemplarsatz." n
+var +"Ohne aLF braucht man keine Exemplars„tze, sondern man erfaát" n
+var +"normalerweise jedes Exemplar mit einer eigenen Kategorie #90" n
+var +"direkt im Titelsatz. Die Exemplars„tze werden dann daraus erstellt," n
+var +"d.h. aus jeder #90x ein eigener Exemplarsatz." n n
+var +"Soll dies nun ausgefhrt werden?"
+ansi
+yesno
+if not yes end
+
+
+  Editor-Fehlermeldungen ausschalten
+set e0
+  Datei fuer neue Saetze: Nummer retten
+var N
+ins #uxN
+open x exnum
+
+  Menue praeparieren
+  (je nachdem, was gerade moeglich ist!)
+var ""
+var "Nur den aktuellen Datensatz" n
+if not empty var +"Ergebnismenge durcharbeiten" n
+var +"Gesamte Datenbank abarbeiten"
+  Menue zeigen und warten
+Aresqa
+  Welche Zeile wurde gewaehlt?
+if "" jump ex2
+if "Nur" jump aktuell
+if "Erg" jump erg
+
+  Gesamtbank wurde gewaehlt: lieber nochmal fragen
+  Gesamtgroesse der DB notieren in #uaZ
+var t
+ins #uaZ
+  denn es entstehen neue Saetze, die brauchen aber
+   am Ende nicht verarbeitet zu werden!
+var "Es sind " #uaZ " Datensätze." n "Alle verarbeiten?"
+yesno
+if not yes end
+
+first #
+
+:gloop
+  Gesamtgroesse jetzt ueberschritten? dann ende
+
+
+perf trenn
+:gn
+keycheck
+if yes var "Abbruch bei Satz " i n "FLEX a-ex kann gefahrlos erneut gestartet werden";mes;var #uxN;input;end
+next #
+if can jump exo
+if del jump gn
+var i
+if >#uaZ jump exo
+wri i n
+close x
+open x +exnum
+jump gloop
+
+  Nur aktueller Satz
+:aktuell
+perf trenn
+sho rec
+disp
+jump exitend
+
+  Erg.Menge wurde gewaehlt
+:erg
+first
+:eloop
+perf trenn
+:en
+next
+if no jump exitend
+if del jump en
+jump eloop
+
+
+  *** Unterprogramm  trenn  ***
+  Zuerst alle #90er finden und in #uaS sammeln, durch /// getrennt
+:trenn
+  Nummer des aktuellen Satzes retten
+var i
+ins #uaI
+  Zaehler auf 1 setzen
+z=1
+  Variablen loeschen
+#uaS
+#uaB
+
+:start
+
+var #00
+ins #ua0
+  erstes Feld nehmen
+var k1
+:loop8
+  naechstes Feld
+var k2
+
+if "#" jump loop9
+  Ende des Datensatzes -> uend
+var z
+if >1 jump uend
+jump ret
+:loop9
+
+   Hierarchischer Untersatz? schalten
+if "#01" next sub;var #01;ins #uaB;jump loop8
+if "#02" next sub;var #02;ins #uaB;jump loop8
+if "#03" next sub;var #03;ins #uaB;jump loop8
+if "#04" next sub;var #04;ins #uaB;jump loop8
+if "#05" next sub;var #05;ins #uaB;jump loop8
+if "#06" next sub;var #06;ins #uaB;jump loop8
+  ist es eine #90? dann -> sloe
+if "#90" jump sloe
+  weil es noch nicht das letzte war -> loop8
+jump loop8
+
+:sloe
+  Feld #90x in #uaE kopieren
+ins #uaE
+  Kommt schon e vor? Dann ret, also nichts damit machen
+if %e% jump ret
+  Was soll mit der #90 passieren?
+  entweder: Nur die Leihdaten beseitigen und $e anhaengen:
+var (e"u") 31 "e" z
+  oder: Gesamte Signaturkategorie beseitigen
+ var (0,4)
+  ins ordnet die bereinigte #90 wieder ein:
+ins
+  Inhalt von #uaE an #uaS anhaengen
+var #uaS "///" #uaE(4,0)
+if #uaB var +"B" #uaB
+var (f"///")
+ins #uaS
+z+1
+  naechstes Feld nehmen
+var k2
+
+if "#" jump loop9
+var z
+if >1 jump uend
+jump ret
+
+  *** Schleifenende, Bereinigten Datensatz speichern
+:uend
+  Dateinummer ruecksetzen
+var #uxN
+input
+put
+
+  Signaturen + Leihdaten jetzt in #uaS
+z=1    // Expl.Zaehler wieder auf 1
+
+  *** Exemplarsaetze erstellen
+:xloop
+new 0
+
+  Exemp.Saetze kriegen eine IdNummer mit e und 6 Ziffern
+#00 e?5
+var #ua0
+ins #9DF
+var #uaS(e"///")
+ins #uaT
+  erstes Zeichen?
+if "" jump tsig
+
+  ExplDaten -> #9DG, Signaturfeld beginnt nicht mit 
+if #uaT$D var "l"
+if not #uaT$u var "0"
+var +"s" #uaS(e"///" e"u") "e" z
+if #uaT$a var +"a" #uaT$a
+ins #9DG
+jump uat
+
+:tsig
+  ExplDaten -> #9DG, Sign.Feld beginnt mit 
+if #uaT$D var "l"
+if not #uaT$u var "0"
+var +#uaS(e"///" e"u") "e" z
+if #uaT$a var +"a" #uaT$a
+ins #9DG
+
+:uat
+var #uaT
+if %u% jump 9dh
+input 230
+put
+z+1
+jump lex
+
+  Leihdaten -> #9DH
+:9dh
+var "u" #uaT$u "D" #uaT$D
+    falls gewuenscht, ein pauschales Rueckgabedatum anhaengen:
+  var +"R20050930"
+ins #9DH
+input 230
+put
+z+1
+  
+  naechstes Exemplar (steht hinter ///)
+:lex
+var #uaS
+if not %///% jump ret
+var (b"///")
+
+ins #uaS
+jump xloop
+
+:ret
+  aktuellen Satz zurueckholen (next #  geht sonst nicht!)
+var "#" #uaI
+find
+return
+   *** Unterprogramm  trenn  zu Ende
+
+
+:exo  // Gesamtbank
+mes Ende erreicht, Job erledigt
+jump exq
+
+:exitend  // Erg.Menge oder Einzelsatz
+mes Erledigt
+:exq
+set e1
+var #uxN
+input
+end
+
+:ex2
+close x
+set e1
+var #uxN
+input
+

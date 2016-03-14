@@ -1,0 +1,126 @@
+
+Verlautbarung 132 der Entwicklungsabteilung                     2000-06-13
+-------------------------------------------
+
+MultiKulti
+----------
+
+Die diesjaehrige Himmelfahrts-Sonderaufgabe war eine zwiefache:
+
+1) Den Menuepunkt "Datei | Oeffnen" benutzbar machen
+
+2) a99 dazu bringen, eine neue Datenbank anlegen zu koennen.
+
+Das war denn doch zu viel fuer EINEN Feiertag. Ob's nun die Herabkunft des
+Hl. Geistes letztendlich gebracht hat, sei dahin gestellt, doch nun ist
+beides erreicht.
+
+Zu 1)
+-----
+Hinter Punkt 1) steckte die gar nicht kleine Problematik, ob a99 nicht zu
+einer "Multi-Dokument-Anwendung" umgestaltet werden sollte. (Alle M$-
+Programme sind solche Anwendungen, waehrend a99/alcarta "nur" 
+Dialoganwendungen sind.)
+
+Nach gruendlicher Abwaegung konnte jedoch kein Grund gefunden werden, warum
+man soweit tatsaechlich gehen sollte. Fuer WinWord und Excel macht das Sinn, 
+doch das sind Mega-Programme, die tunlichst nur einmal geladen sein sollten. 
+a99 ist aber recht schlank, man kann es ruhig 6-8 mal laden. Mit WinWord 
+oder Excel hat man ferner nicht selten 10 oder mehr Dokumente offen, aber 
+hat man jemals soviele Datenbanken gleichzeitig zu benutzen? Na also.
+
+Die Loesung war deshalb dann doch viel einfacher: Der Punkt "Datei | Oeffnen"
+heisst jetzt "Weitere Datenbank oeffnen" und ruft schlicht einen FLEX
+auf:  otherdb.flx. Da steht drin:
+
+  otherdb.flx : Weitere Datenbank starten
+yes Datenbank suchen? (nein: INI-Datei suchen)
+if yes jump db
+if cancel end
+fnam Datenbank (INI-Datei waehlen)|*.ini
+if no end
+jump go
+:db
+fnam Datenbank (*.cDX-Datei waehlen)|*.?dx
+if no end
+:go
+  gewaehlten Namen nach #u{}
+ins #u{}
+  Befehl zusammenstellen 
+var P "\\a99 " #u{}
+  und ab geht's
+call
+
+Es laeuft also darauf hinaus, dass der User sich eine INI-Datei oder eine
+*.cDX-Datei aussucht, und die betr. Datenbank wird dann gestartet.
+Voraussetzung:  access=4  in der INI-Datei
+Vorteile:
+
+a) Der FLEX kann modifiziert werden, um z.B. die Auswahl einer .cDX nicht
+   anzubieten. Oder was GANZ anderes zu machen ...
+
+b) Das neu gestartete a99 ist anschliessend voellig unabhaengig vom ersten
+   und kann seinerseits weitere Datenbanken starten (!). Jede kann unab-
+   haengig von den anderen beendet werden.
+
+c) Wegen der flexiblen Anderbarkeit der Fenstergroesse kann man sich auch
+   zwei oder drei Datenbanken zurecht positionieren, um sie gleichzeitig
+   sehen zu koennen.
+
+Das Uebernehmen von Daten von der einen in die andere Datenbank war ja
+bereits moeglich. Nur zur Erinnerung: Cut-and-Paste macht man so, dass 
+zuerst mit F5 die Kategorieanzeige erzeugt wird, dann markiert man die
+gewuenschten Kategorien, dann Alt+c, und im anderen a99 geht man ins
+Schreibfeld (!) und macht dort Alt+v. Fertig. 
+Oder man legt sich den in news 57 beschriebenen Mechanismus an.
+
+Zu 2) : Neue Datenbank anlegen
+------------------------------
+a99 verhaelt sich jetzt folgendermassen:
+Es schaut, ob auf dem in der INI angegebenen Verzeichnis eine .cDX, .TBL
+und .?LD vorhanden ist. Wenn nicht, bringt es als Startseite die neue
+Datei  NEWGER.RTF. Von dieser aus kann man den neuen FLEX  new.flx
+ausloesen. Da steht drin:
+
+  new.flx : Neuanlage einer Datenbank
+  Vorhanden sein muss ein Verzeichnis fuer die Daten, eine INI-Datei (in der
+  das Verzeichnis eingetragen ist), eine CFG und alle noetigen Parameter
+  Formular 1 anzeigen
+form 1
+  Es gibt kein Formular -> :pro
+if no jump pro
+end
+
+:pro
+  Abfrageliste zeigen
+show prompt
+  Es gibt keine -> :cfg
+if no jump cfg
+end
+:cfg
+  CFG anzeigen
+show cfg
+
+Es wartet dann ab, bis man seinen ersten Datensatz eingegeben hat.
+Mit [Speichern] wird dieser abgespeichert, ganz normal, und es entstehen
+die noetigen Dateien. Fertig.
+Vorhanden sein muss also eine INI mit den korrekten Angaben sowie natuerlich
+die CFG und die noetigen Parameter.
+
+Letzteres wird vermutlich vorerst niemand dringend brauchen, aber es ist
+ein notwendiger Baustein zu einer CockPit-Nachfolgeloesung.
+
+
+Pfingst-Zugabe:
+---------------
+Der neue FLEX-Befehl  STOP   (gross geschrieben!)
+stoppt das Programm abrupt und verzichtet ohne Rueckfrage auf das
+Speichern der noch in Bearbeitung befindlichen Dateien.
+In welcher Form man diese Funktion als Flip oder wie immer anbietet, ist
+dem Anwender ueberlassen.
+Neuerungen gibt es ferner bei den Sondervariablen, die man in einen
+"cstring" einbauen kann (am Ende von FLEXGER.RTF beschrieben)
+
+Auf  ac20/update  liegen a99.lzh und alcarta.lzh. Im ersteren sind auch die
+neuen Dateien (new.flx etc.)
+

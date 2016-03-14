@@ -1,0 +1,78 @@
+  D-RTFF.APT : Textausgabe im RTF-Format
+  2007-02-03   geeignet fuer Nachbearbeitung mit Textsoftware
+               z.B. auch copy&paste nach WORD m”glich
+        Anders als in d-rtf.apt: Codierung der Schriftattribute (s.u.)
+        Einbindung in d-wrtf.apr, d-krtf.apr
+      
+   Basisparameter
+dx=1            Umcodierung einschalten
+zt=" "          zwecks Umbruch nur am Leerz. trennen
+zm=0            Zeilenmaximum ist Null (kein Seitenumbruch)
+z1=0		Minimale Zeilen vor Seitenumbruch entfaellt, siehe zm
+z2=0		maximaler Ueberlauf ueber zm entfaellt ebenfalls
+ze="\par "      Zeilenende. \par ist der eigentliche RTF-Befehl fuer
+		eine feste Zeilenschaltung. 13 10 bewirkt nur eine
+		Formatierung der RTF-Datei, bewirkt im Endprodukt aber
+		nichts, z.B. bei der Anzeige oder im Druck
+fl=0		Formularlaenge 0 (Endlosliste)
+ae=13 10 "\li0\fi0 "    Satzende: Einrückung rücksetzen
+
+p .031 178   Subfield Code = AltGr+2 (Dreieck Spitze unten)
+p ` 1        Nichtsort.Zeichen weglassen
+
+  Besondere Zwischenteile (Texel)
+  Schriftattribute (Bedeutung der Nummern wie in n.cfg)
+                                       Frueher bei a.cfg ueblich:
+66="\b "      #B Fettschrift            99
+98="\b0 "     #b Fettschrift aus        98
+73="\i "      #I Kursiv ein             88
+105="\i0 "    #i Kursiv aus             87
+85="\ul "     #U Unterstreichen ein     97 
+117="\ul0 "   #u Unterstreichen aus     96
+83="\up12 "   #S Hochstellen            95
+115="\up0 "   #s aus                    93
+74="\dn12 "   #J Tiefstellen            94
+106="\dn0 "   #j aus                    93
+75="\fs18 "   #K Klein ein (9pt)
+107="\fs20 "  #k aus (10 pt)
+76="\fs22 "   #L 11pt
+77="\fs24 "   #M 12pt
+78="\fs26 "   #N 13 pt
+110="\fs20 "  #n 10pt
+84="\par "    #T Tabelle beginnt (geht nicht in RTF)
+116="\par "   #t endet
+82="\par \tab "  #R Row  
+
+67="\tab "   #C Column
+69=9         #E Einrueckung zur naechsten TAB-Marke
+70="\f1 "    #F Feste Breite
+102="\f0 "   #f Proportionalschrift
+
+  Flip-Markierungen links und rechts
+  160 ist das unsichtbare Leerzeichen! Sinnvolle Alternative: 183
+72=160 123 t65 t85 t66   #H  Flip ein: 65=blau, 85=unterstrichen, 66=fett
+104=125 160              #h  und aus
+97=""        #a wird nur bei HTML gebraucht: </a>
+
+  Farben: Reihenfolge ergibt sich aus der color-Liste im RTF-Vorspann
+  (Datei disphead.rtf)                     Frueher: (z.B. d-1.apr)
+122="\cf0\b0 "    #z schwarz, normal       76, auch 80
+79="\cf6 "        #O rot                   71
+111="\cf0 "       #o schwarz               76, auch 80
+71="\cf4 \b "     #G gruen fett            72
+65="\cf2 "        #A blau                  74, auch 79
+89="\cf7 \b "     #Y gelb fett             73
+86="\cf5 "        #V magenta               75
+99="\cf3 \b "     #c cyan fett             77
+103="\cf15 "      #g grau                  78
+123="\cf16 "      #{ weiss (unsichtbar)
+  Von jeder Farbe schaltet man mit #z zurück auf schwarz!
+
+
+  RTF-spezifische Zeichen (sonst Probleme mit RTF):
+ p .092 "\\"
+p .123 "\{"
+p .125 "\}" 
+q .092 "\\"
+q .123 "\{"
+q .125 "\}"

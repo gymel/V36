@@ -1,0 +1,77 @@
+  C-0.APR : COUNT Prototype : to evaluate frequencies of field contents
+  960214          result file must be sorted, then exported with COUNT2.APR
+
+  Output : sortable records containing just the fields to be counted
+           These must then be sorted and, as a last step, exported
+           by SRCH with COUNT2.APR to produce the listing
+
+  Purpose: If you have subject entries or classification codes in certain
+           fields, for example, you might wish to find out which particular
+           entries have been used in these fields and how often.
+
+  Batch  : COUNT.BAT
+
+pn="C-0 : Prototype for COUNT"
+
+  No Configuration specific parts!
+  Application specifics are marked with ~~~
+  ~~~~~~~~~~~
+  This parameter set produces records in this format:
+
+  #u1 sort code (in small letters and without special characters)
+  #u2 Original form of the field represented by #u1
+      this will be used in the last stage to prepare the listing
+
+  2nd stage : ASORT sorts the resulting file
+  3rd stage : SRCH exports the sorted file using COUNT2.APR
+
+  COUNT2.APR is independent of the underlying format, i.e. you can use it
+  with any .CFG.
+
+  --------- Constants ---------------------------------------------
+
+zl=0        no line breaking
+
+  --------- this is all! ------------------------------------------
+
+   The heading command is very probably the only thing you need
+   to change if you want to evaluate other fields:
+
+   ======== heading command ======================================
+
+ak=31."[;]"+A    process all #31x fields, separate at '' and ';'
+   ~~~~~~~~~
+   another example:
+   ak=74+A        evaluate places of publication
+   ak=90+A        call number (may need some other kind of manipulation,
+                      see below)
+
+   ===============================================================
+
+   ******** field list *******************************************
+
+#+-         if there was no heading, do nothing
+
+#-A
+!u1 f" " F" " p{ 1 "u1 " }     #u1 contains the string to be evaluated.
+    ~~~~~~~~~                   it is prefixed by <01h> and "u1 " to make it
+                                exportable (after the sort) by SRCH
+   if only part of the field is to be evaluated, add appropriate
+   manipulation commands. For example:
+   !u1 e"-" p{ 1 "u1 " }     cut #u1 at '-' , use only the part preceding '-'
+                             may be useful to evaluate call number groups
+
+#t{ 0 }                      field end : Code 00h
+
+#u1 f" " F" " p"u2 "         same field in printable form as #u2
+    ~~~~~~~~~
+#t{ 0 C }                record end : codes 0 13 10
+
+   ****************************************************************
+
+   we load the code table:
+
+ts     load S.APT for the sort coding
+       (contains q commands which then act on !u1
+        remember:  #xx is coded by p commands
+                   !xx is coded by q commands

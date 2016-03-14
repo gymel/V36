@@ -1,0 +1,163 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\fscript\fprq2\fcharset0 Comic Sans MS;}{\f2\fswiss\fprq2 MS Sans Serif;}{\f3\fswiss\fprq2\fcharset0 MS Sans Serif;}{\f4\fmodern\fprq1\fcharset0 Courier New;}{\f5\fswiss\fprq2\fcharset0 Verdana;}{\f6\froman\fprq2\fcharset0 Times New Roman;}{\f7\fmodern\fcharset0 allegro Lucida Console;}{\f8\fmodern allegro Lucida Console;}{\f9\fmodern\fprq1 Courier New;}{\f10\froman\fcharset0 Times New Roman;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;}
+\viewkind4\uc1\pard\qc\f0\fs24 
+\par \cf1\b\f1\fs28 Sortieren\cf0\b0\f2\fs24 
+\par \f3 Mit Hinweisen zum Sortierprogramm  \f4 asort\f3   von V27.2 
+\par \f2 
+\par \pard\f5\fs20 Es gibt bei der Arbeit mit \i allegro\i0  Situationen, wo Daten sortiert werden m\'fcssen. F\'fcnf solche Situationen kann man unterscheiden: 
+\par %=x set db% 
+\par \tab 1.\tab `\cf2\ul\b Ergebnismenge\cf0\ulnone\b0 ` 
+\par \tab 2. \tab `\cf2\ul\b Grunddateien\cf0\ulnone\b0 `    (Typ \f4 .xLG\f5 ) 
+\par \tab 3. \tab `\cf2\ul\b Externdateien\cf0\ulnone\b0  `  (Typ \f4 .xDT\f5 , ab V27.2) 
+\par \tab 4. \tab `\cf2\ul\b Textdateien\cf0\ulnone\b0   ` 
+\par \tab 5. \tab `\cf2\ul\b Interne Daten\cf0\ulnone\b0    `  (FLEX-Befehl \b\f4 sort \f6 wirkt auf die "interne Variable",\b0  ab V27.6\f5 ) 
+\par 
+\par \tab Anh. \tab `\cf2\ul\b Hinweise f\'fcr FLEX\cf0\ulnone\b0 ` (Sortieren, Selektieren und/oder Exportieren von Grund- und Externdateien) 
+\par \pard\qj 
+\par Au\'dfer im Fall 1. geschieht das Sortieren stets auf dieselbe Weise: man startet das Programm \b\f4 asort.exe\b0\f5  und nennt ihm den Namen der Ausgangsdatei sowie den gew\'fcnschten Namen f\'fcr die sortierte Datei: 
+\par 
+\par \f4\tab\b\fs24 asort.exe\b0\f5   \i ausgangsdatei ergebnisdatei\i0  \i [optionen]\i0\fs20 
+\par 
+\par Optionen sind nur bei gewissen Sonderw\'fcnschen n\'f6tig. Folgende Optionen kann man hinten an den Befehl anh\'e4ngen (getrennt durch Leerzeichen): 
+\par \b\f4 -cp\b0  \f5 : an einer bestimmten Position p statt beim ersten Zeichen (das w\'e4re \f4 -p0\f5 ) mit dem Ordnen beginnen, 
+\par \b\f4 -r\b0   \f5 : umgekehrt sortieren (also absteigend von z nach a) 
+\par \b\f4 -u\b0   \f5 : die Kategorien #u1 und #u2 nach dem Sortieren beseitigen (nur im Fall 2.). 
+\par \b\f4 -x\b0   \f5 : mu\'df im Fall 3. gesetzt werden 
+\par 
+\par \b Zu den Voraussetzungen beim Sortieren 
+\par \pard\b0\i Grundvoraussetzung 1\i0  f\'fcr jedes Sortieren ist, da\'df das Sortierkriterium - sei es ein Name, eine Nummer, ein Titel oder was auch immer - in jedem Datensatz bzw. in jeder Zeile an derselben Zeichenposition beginnt. Datens\'e4tze k\'f6nnen deshalb nicht unmittelbar z.B. nach dem Schlagwort in #31 sortiert werden, weil die #31 je nach L\'e4nge der vorangehenden Datenfelder an ganz verschiedenen Positionen im Datensatz stehen kann. Deshalb mu\'df zuerst eine Grunddatei erstellt werden, die das Schlagwort im Sortierkopf enth\'e4lt. Oder eine Externdatei, in der \'fcber jedem Datensatz das Sortierkriterium als einger\'fcckte Kopfzeile steht. 
+\par 
+\par \i Grundvoraussetzung 2\i0  ist, da\'df das Sortierkriterium aus normierten Zeichen besteht. Damit ist gemeint, da\'df Buchstaben alle entweder gro\'df oder klein sind, Umlaute und \'df aufgel\'f6st, Akzente, Satz- und Sonderzeichen weggelassen. Denn geordnet wird stets Zeichen f\'fcr Zeichen, und es gilt der ASCII-Code jedes Zeichens, also z.B. 65 f\'fcr A, 97 f\'fcr a, 49 f\'fcr die Ziffer 1, 32 f\'fcr das Spatium. M.a.W.: Das Programm asort kann nicht selber gro\'df und klein gleichsetzen. Im Fall 1 ist das anders: da macht a99 die Arbeit und hat daf\'fcr eine eingebaute Funktion (die sich nicht in asort einbauen l\'e4\'dft). 
+\par 
+\par Aufruf und Arbeitsweise des Programms \f4 asort.exe\f5  sind auch im `\cf2\ul\b Kap. 8\cf0\ulnone\b0 ` des Systemhandbuchs beschrieben. 
+\par Ab V27.2 ist \f4 asort\f5  ein 32bit-Programm und existiert f\'fcr Windows und f\'fcr Linux. 
+\par \pard\qj 
+\par 
+\par \b 1. Ergebnismenge ordnen\b0 
+\par \tab Dies ist die einfachste, direkteste Situation, f\'fcr die kein Hilfsprogramm gebraucht wird: Im Kurzlistenfenster kann man jedes der Kriterien, die in der Kurzliste vorkommen, zum Sortieren verwenden. Wenn man im Kurzlistenfenster F1 dr\'fcckt oder den Button mit dem Fragezeichen, erscheint ein `\cf2\ul\b Hilfetext\cf0\ulnone\b0 `, der in seinem Punkt 1 erkl\'e4rt, wie es geht. 
+\par Auch per FLEX kann man eine Erg.Menge ordnen lassen, und zwar mit dem Befehl \f4 `\cf2\ul\b order\cf0\ulnone\b0 `\f5 . 
+\par F\'fcr diesen Fall wird kein eigenes Programm gebraucht, denn die Sortierfunktion f\'fcr Ergebnismengen unter Nutzung der Kurzliste ist ein Unterprogramm von a99/alcarta und auch avanti. 
+\par Entscheidend ist, da\'df die im Kurzlistenfenster hergestellte Ordnung dann auch beim Export der Ergebnismenge mit  \f4 export set\f5   beibehalten wird - ansonsten h\'e4tte man nicht viel davon! 
+\par \i Beispiel: \i0 vier Zeilen aus einer Ergebnismenge. 
+\par \pard\f7\fs18 Shakespeare und seine Zeit             \'b7Baumann, U\'b71998\'b7AN C 714\f8 
+\par \f7 Shakespeare in space                   \'b7Coursen, H\'b72002\'b72814-7385\f8 
+\par \f7 Shakespeare on the German stage        \'b7Hortmann, \'b71998\'b72783-6121\f8 
+\par \f7 Herrschergestalten bei Shakespeare     \'b7Schruff, R\'b71999\'b72782-9772\f8 
+\par \pard\qj\f5\fs20 Diese Liste ist nach dem Verfassernamen geordnet, der an der Position 42 steht. Will man die Liste per FLEX umordnen nach dem Titel, gibt man ein:  \f4 x ord a0\f5 
+\par 
+\par \b 2. Grunddateien sortieren\b0   \f4 
+\par \pard\f5\tab Wenn man sortierte Listen nach alter Art herstellen will, entstehen dabei sog. Grunddateien. Diese enthalten Datens\'e4tze im `\cf2\ul\b Internformat\cf0\ulnone\b0 `, aber mit einem Sortierkopf. Das ist ein ganz vorn stehendes Datenfeld mit der Feldbezeichnung #u1, die f\'fcr jedes Datenschema gilt. Genau beschrieben ist die Sache im `\cf2\ul\b Kap. 6\cf0\ulnone\b0 ` des Systemhandbuchs. 
+\par \i Tip:\i0  Zum Exportieren der Datens\'e4tze im Internformat dient die Parameterdatei \f4 i-1.apr\f5 . Zum Erstellen einer Grunddatei mit Sortierk\'f6pfen wird eine etwas erweiterte Fassung dieser Parameter gebraucht, die vor den Datensatz selbst eben den jeweils richtigen Sortierkopf setzt. Dies leisten f\'fcr das A-Format die Parameter des Typs \f4 s-*.apr\f5 , die man als Vorlage f\'fcr eigene, neue Sortiervorhaben verwenden kann. Im Internformat endet jeder Datensatz mit den Codes 13 und 10, die innerhalb eines Datensatzes nicht vorkommen k\'f6nnen 
+\par 
+\par \pard\qj\i Beispiel: \i0 vier S\'e4tze, verk\'fcrzt  (\cf1\b\f9 0\f4  \cf0\b0\f5 und\cf1\b\f4  1\cf0\b0\f5  sind die ASCII-Codes 00 und 01.) 
+\par \pard\cf1\b\f4 1\cf0\b0 u1 hortmann\cf1\b\f9 0\cf0\b0\f4 20 Shakespeare on the German stage\cf1\b\f9 0\cf0\b0\f4 40 Hortmann, Wilhelm\cf1\b\f9 0\cf0\b0\f4 75 Cambridge Univ. Pr.\cf1\b\f9 0\cf0\b0\f4 76 1998\cf1\b\f9 0\cf0\b0\f4 90 2783-6121\cf1\b\f9 0\cf0\b0\f4  
+\par \cf1\b 1\cf0\b0 u1 schruff\cf1\b\f9 0\cf0\b0\f4 20 Herrschergestalten bei Shakespeare\cf1\b\f9 0\cf0\b0\f4 40 Schruff, Renate\cf1\b\f9 0\cf0\b0\f4 75 Niemeyer\cf1\b\f9 0\cf0\b0\f4 76 1999\cf1\b\f9 0\cf0\b0\f4 90 2782-9772\cf1\b\f9 0\cf0\b0\f4 
+\par \cf1\b 1\cf0\b0 u1 baumann\cf1\b\f9 0\cf0\b0\f4 20 Shakespeare und seine Zeit\cf1\b\f9 0\cf0\b0\f4 40 Baumann, Uwe\cf1\b\f9 0\cf0\b0\f4 75 Klett\cf1\b\f9 0\cf0\b0\f4 76 1998\cf1\b\f9 0\cf0\b0\f4 90 AN C 714\cf1\b\f9 0\cf0\b0\f4  
+\par \cf1\b 1\cf0\b0 u1 coursen\cf1\b\f9 0\cf0\b0\f4 20 Shakespeare in space\cf1\b\f9 0\cf0\b0\f4 40 Coursen, Herbert R.\cf1\b\f9 0\cf0\b0\f4 75 Lang\cf1\b\f9 0\cf0\b0\f4 76 2002\cf1\b\f9 0\cf0\b0\f4 90 2814-7385\cf1\b\f9 0\cf0\b0\f4  
+\par \f5 
+\par Man h\'e4ngt an den Sortierbefehl die Option -u, dann wird das Feld #u1 nach dem Sortieren wieder beseitigt. Gelegentlich will man eine sortierte Grund- oder Externdatei anschlie\'dfend noch irgendwie umwandeln lassen. Klassisch leistet dies das Programm SRCH.EXE mit geeigneten Exportparametern. Ab V27.2 gibt es ein Unterprogramm, mit dem man die Aufgabe auch per FLEX l\'f6sen kann. Mehr dazu im `\cf2\ul\b Anhang\cf0\ulnone\b0 `. 
+\par 
+\par \pard\qj\b 3. Externdateien sortieren\b0   \f4 
+\par \f5\tab Die sog. `\cf2\ul\b Externdateien\cf0\ulnone\b0 ` sind erst mit dem Windows-System eingef\'fchrt worden. Es handelt sich um Textdateien, die keine nicht druckbaren Steuerzeichen enthalten. Die Datens\'e4tze sind durch eine Leerzeile getrennt, die Datenfelder folgen als Zeilen ohne Leerzeilen aufeinander, jedes Feld beginnt am Zeilenanfang mit der Feldnummer, der das # vorangestellt ist. 
+\par 
+\par \i Beispiel: \i0 dieselben vier S\'e4tze. 
+\par \pard   hortmann 
+\par #20 Shakespeare on the German stage 
+\par #40 Hortmann, Wilhelm \'ac<1929->\'ac 
+\par #75 Cambridge Univ. Pr. 
+\par #76 1998 
+\par #90 2783-6121 
+\par 
+\par   schruff 
+\par #20 Herrschergestalten bei Shakespeare 
+\par #40 Schruff, Renate 
+\par #75 Niemeyer 
+\par #76 1999 
+\par #90 2782-9772 
+\par 
+\par   baumann 
+\par #20 Shakespeare und seine Zeit 
+\par #40 Baumann, Uwe 
+\par #75 Klett 
+\par #76 1998 
+\par #90 AN C 714 
+\par 
+\par   coursen 
+\par #20 Shakespeare in space : recent Shakespeare productions on screen 
+\par #40 Coursen, Herbert R. 
+\par #75 Lang 
+\par #76 2002 
+\par #90 2814-7385 
+\par 
+\par \pard\qj\b 
+\par 4. Textdateien sortieren\b0  \f4 
+\par \pard\f5\tab Dateien mit Zeilenstruktur treten h\'e4ufig als tempor\'e4re Dateien auf, die vor einer Weiterverarbeitung sortiert werden m\'fcssen. Solche Sortiervorg\'e4nge stecken z.B . in den Methoden zur `\cf2\ul\b Tabellen-\cf0\ulnone\b0 ` oder `\cf2\ul\b Viewlisten-Produktion\cf0\ulnone\b0 `. 
+\par Die Zeilen einer solchen Datei sind durch die Codes 13 und 10 oder nur einen der beiden getrennt. Die Zeilen k\'f6nnen von unterschiedlicher L\'e4nge sein.
+\par 
+\par 
+\par \pard\qj\b Anh. Sortieren und Exportieren per FLEX\b0  \f4 
+\par \pard\f5 
+\par \b A. Sortieren\b0 
+\par \tab Es gibt ein ganz einfaches Rezept, eine Datei aus einem FLEX heraus sortieren zu lassen. 
+\par Sagen wir, der Dateiname steht in \f4 #udN\f5 , der gew\'fcnschte Name f\'fcr die sortierte Datei steht in \f4 #udS\f5 . Dann: 
+\par 
+\par \b\f4 var P "asort.exe " #udN " " #udS 
+\par cAll\f5 
+\par 
+\par \b0 Evtl. h\'e4ngt man noch Optionen an, wie z.B. so, um das r\'fcckl\'e4ufige Sortieren einzuleiten: 
+\par 
+\par \f4 var P "asort.exe " #udN " " #udS \b " -r"\b0  
+\par cAll\f5 
+\par 
+\par \i Hinweis:\i0  Beim alten \f4 asort\f5  (bis V27.1) mu\'dfte man den Start in einem DOS-Fenster noch mittels "comspec" veranlassen, damit sich das DOS-Fenster wieder schlo\'df. Das sah dann z.B. so aus: 
+\par 
+\par \f4 get env comspec 
+\par ins #uwC 
+\par \cf2 var\cf0  #uwC " /c " \cf2 P "asort.exe " #udN " " #udS -u1"\cf0  
+\par \cf2 cAll\cf0 
+\par \f5 Es ist also nur der blaue Teil noch n\'f6tig. 
+\par In neueren FLEXen sieht es manchmal so aus: 
+\par 
+\par \f4 var P "asort asta astas" 
+\par dos 
+\par \f5 Hier kann jetzt statt \f4 dos\f5  auch \f4 cAll\f5  geschrieben werden - ohne da\'df man freilich einen Unterschied bemerken w\'fcrde. 
+\par Solche FLEXe braucht man deshalb nicht zu ver\'e4ndern! 
+\par 
+\par \b B. Exportieren\b0 
+\par \tab Wenn eine Grunddatei sortiert wurde, wird man oft dieselbe Datei mit einem Exportvorgang nochmals in eine andere Form bringen wollen. Das ist in klassischen Batchdateien einer der h\'e4ufigsten Vorg\'e4nge und wird mit dem Programm SRCH.EXE erledigt. Dieselbe Aufgabe kann man auch mit FLEX l\'f6sen. Es folgt das Rezept. 
+\par \fs18 Verarbeitung einer \b Grunddatei\b0\f10   \f4 xyz.alg\f10   \f5 oder auch einer \b Externdatei\b0\f10   \f4 xyz.adt\f10   \f5 mit Selektion per RegEx und Export der zutreffenden S\'e4tze geht so:\f10  
+\par \f5 (Wenn Sie Batchdateien und SRCH.EXE  kennen, kommt Ihnen dies bekannt vor. \i Hinweis:\i0  Ab V28.5 gibt es das Konsolprogramm \f4 `\cf2\ul\b acon.exe\cf0\ulnone\b0 `\f5 , mit dem man das alte DOS-Programm SRCH.EXE ersetzen kann, es steht auch unter Linux und Solaris zur Verf\'fcgung.)\f10  
+\par 
+\par \b\f4 var "-d\b0  \i\f10 dateiname\i0\f4  \b -E\b0  \i\f10 exportdatei\i0\f4  \b -e\b0  \i\f10 exportparameter\i0\f4  \b -s\b0  \i\f10 suchbegriff\i0\f4 " 
+\par \f6    Aufruf des Unterprogramms \f4 :expi\f6 , R\'fcckkehr: in iV steht evtl. eine Fehlermeldung 
+\par              in iZ steht Zahl der verarb. Saetze 
+\par \b\f4 perf expi 
+\par if Z<1 mes;end 
+\par \b0\f6     In der Datei \i\f10 exportdatei\i0\f6  stehen nun die exportierten S\'e4tze - sonst passiert nichts! 
+\par     (wenn \i\f10 exportdatei\i0\f6  mit + beginnt, werden die S\'e4tze angeh\'e4ngt) 
+\par     weitere Befehle...  am Ende dann:\f4 
+\par \b include expi.inc\b0  
+\par \f5\fs20 
+\par \i Tip:\i0  In `\cf2\ul\b expi.inc\cf0\ulnone\b0 ` kann man eigene Befehle einbauen, um jeden Satz vor dem eigentlichen Export nochmals zu ver\'e4ndern. Dies ist kommentiert, die Stelle mit ******* markiert. F\'fcr Spezialzwecke macht man sich also eine Spezialversion dieser Datei und bindet diese ein, wenn man die Spezialfunktion braucht. 
+\par 
+\par ?Hilfetext=h he_br 
+\par ?order=h xorder 
+\par ?Tabellen-=h table 
+\par ?Viewlisten-Produktion=h view 
+\par ?Kap. 6=h ac6 
+\par ?Internformat=h ac0-0=0.2.2  a 
+\par ?Kap. 8=h ac8 
+\par ?Externdateien=h ac0-0#340 
+\par ?Ergebnismenge=h =1. Ergebnis 
+\par ?Grunddateien=h =2. Grunddateien 
+\par ?Externdateien =h =3. Externdateien 
+\par ?Textdateien  =h =4. Textdateien 
+\par ?Hinweise f\'fcr FLEX=h =Anh. Sortieren 
+\par ?expi.inc=h expi.inc 
+\par ?Anhang=h =B. Exportieren 
+\par ?Interne Daten   =h xsort 
+\par ?acon.exe=h acon 
+\par  
+\par \f0 
+\par }
+ 

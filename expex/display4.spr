@@ -1,0 +1,52 @@
+ Subfields, prefixes, postfixes, and some special treatments.
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ In some subfields, USMARC contains punctuation in addition to the subfield
+ codes. Since the proper punctuation is supplied here by adding prefixes or
+ postfixes, the redundant punctuation needs to be removed. We cannot simply
+ omit the prefixes and postfixes in the parameter file, because some MARC
+ records do not contain them in the data. Instead, we remove any punctuation
+ with the F command, which removes final, single characters from the end of a
+ data string.
+
+ Note the structure of the F command:
+ F";"
+  remove a final ";"
+ F";:"
+  remove a final ";" AND ":"  (if both should occur, in any order)
+ F";: "
+  remove a final ";", ":" or space
+  
+#100 a F", "
+ remove any final comma or space or both from the end of #100 subfield a
+#100 d p" (" P")"
+ if present, subfield d will be displayed enclosed in brackets
+#240 C a F", " p"[" P"]"
+#245 C a F" :/" 
+#245 b F"/ " p" : "
+#245 c p" / "
+#260 a F":,; " p". - "
+#260 b F", " p" : "
+#260 c p", " P"."
+#050 p"Shelfmark: " R
+
+ As an experiment, inactivate the above line and activate the following one,
+ and see what happens:
+ #050 b"a" ,"_b_ _" p"Shelfmark: " R   
+
+ Note:
+ If the field or subfield in any export line is not found in the record, the
+ program simply goes on to the next one.
+
+ 컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴
+ What follows is explanatory, and not part of the experiment. Do not change.
+#t76
+#t{C C C "�"*56 C "Here, we have added #240, the Uniform Title field. It "}
+#t{"will only appear if present, of course. If not, the export line will "}
+#t{"simply have no effect."}
+#t{C "To see some examples, try the records under 'beethoven'."}
+#t{C "Edit DISPLAY4.SPR again (F2 F2 F10) and make some changes."}
+
+pn="DISPLAY4.SPR"  19960202
+76=27 91 49 59 51 48 59 52 55 109
+dx=1

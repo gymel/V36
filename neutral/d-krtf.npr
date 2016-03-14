@@ -1,0 +1,175 @@
+  D-KRTF.NPR : a99-Anzeige incl. verkn. Satzstrukturen, tabellarisch
+  Plus Nachladungen von ber- und untergeordneten S„tzen
+  2002-02-15
+  Wenn keine hierarchischen oder verknuepften Saetze vorkommen,
+  dann genuegt einfaches Modell  D-SRTF.APR  
+
+pn="Hierarchie-Export RTF"
+
+  Eingriffe in dieser Datei nicht noetig.Die Befehle fr die einzelnen
+  Datenfelder stehen in  d-k.npt. Aenderungen und Erweiterungen dort machen!
+  (Die gilt fuer RTF und HTML zugleich!)
+
+  Der aktuelle (anzuzeigende oder auszugebende) Satz wird PRIMŽRSATZ genannt.
+  Dabei handelt es sich um entweder
+
+  A.  einen Hauptsatz
+      wenn er unabh„ngig gespeicherte Unters„tze hat, muss die
+      Kategorie #00 mit  einer eindeutigen IdNr X besetzt sein.
+      In der Anzeige sollen unter dem auptsatz alle untergeordneten
+      S„tze erscheinen.
+      Die untergeordneten S„tze haben dann in #00 IdNummern der Form  X+n
+      mit einer Bandnummer n :
+
+  B.  einen Untersatz
+      dann enth„lt #00 die IdNr des Hauptsatzes PLUS eine Bandnummer
+      z.B.  #00 123456+005=Vol.5
+      (hinter '='  kann eine Bandnummer in Textform folgen, sonst wird
+      die auf '+' folgende Nummer genommen, fhrende Nullen werden beseitigt)
+      In der Anzeige sollen stufenf”rmig die unmittelbar bergeordneten, 
+      aber nicht die nebengeordneten S„tze erscheinen.
+
+  C.  beides, auch "Mittelsatz" genannt: der Prim„rsatz ist einerseits
+      einem anderen untergeordnet, besitzt aber auch selbst Unters„tze.
+      In der Anzeige soll fr die untergeordneten S„tze nach A, fr die
+      bergeordneten nach B verfahren werden.
+
+
+  Es kann bis zu 5 untergeordnete Stufen geben (theoretisch noch mehr).
+  Jede weitere Stufe enth„lt in der #00 oder #09 ein weiteres '+' . 
+  Dieses wird fr den Nachladevorgang ausgewertet.
+
+  *********** Grundparameter, nicht ohne Grund aendern: ***************
+td-rtf   RTF-Steuerbefehle
+ tdurtf       ASCII->ANSI Codetabelle
+
+zl=0   Zeilenl„nge, nicht besonders wichtig!
+         denn es wird kein Zeilenvorschub gemacht:
+ze=" "  
+zb=" -"   Umbruch bei Leerz. und Bindestrich
+zm=0      keine Seitenschaltung
+dx=1      Umcodierung einschalten
+
+  ae="</table>"   fuer HTML aktivieren
+
+i4=1    V14-Ersetzungen ausfuehren
+
+  <<<<<<<<<<<<    Raum fr Ihre Zwischenteile (Textkonstanten)
+  Empfehlung: Nummern 30 bis 47
+  >>>>>>>>>>>>    Ende der anwendungsspezifischen Textkonstanten
+4="\par "
+
+  Tabellen-Parameter RTF              erste Spalte:
+18="\pard\li400\fi-400\f1\fs18 "         schmal
+19="\pard\li1500\fi-1500\f1\fs18 "       breit
+   \f6 = Schrift 6 = Verdana.  \f0 einstellen, wenn Sonderzeichen noetig
+
+  18=""   fuer HTML
+  19="<table>"   fuer HTML
+
+13="\par "
+20="\par \i "     Neue Tabellenzeile
+21="\i0 \tab "      zwischen zwei Tab.Spalten
+22=""            Ende der Tab.Zeile (bei RTF nichts)
+23=t20 t21
+    nur bei HTML:
+  29="<pre>"
+  28="</pre>"
+
+
+p ª 1     Nichtsortierzeichen ausblenden
+      RTF-Steuerzeichen maskieren:
+p { "\{"
+p } "\}"
+p \ "\\"
+      Absatzende
+p  "\par \tab "
+
+  Variablen #uYx und #uZx alle loeschen:
+#nr dY~ dZ~ e0
+
+td-k     d-k.apt laden
+
+   <<<<<<<<< Unterprogramme hier anfgen, wenn man welche hat <<<<<<<
+   Abschnitt fuer die Kategorie-Anzeige
+#-(
+
+#bp & &
+#bp # #
+#t18
+#nr =aF e0
+
+#t29
+#t4
+#t4
+#nr p"x" e2 =dm
+
+#t{ s0 }       oder 5 statt 4 wenn 3stelliges Schema!
+
+#u01
+#-)
+#u02 +) p4
+ ##                oder
+ #L            alternativ: Anzeige mit Labels aus der CFG
+#t{ t4 }
+#t28
+#bp .35 8
+#+#
+
+  Unterprogramme fr die URL-Anzeige
+
+#(u
+#cc +- i5,i i6,s i7,i e0    Sonderfall isi
+#cc +- i5,o i6,c i7,l e0    Sonderfall oclc
+#cc +- i4,w e0              Sonderfall #070w
+
+#t{ t20 "          " t21 }
+#nr +#ucc e0
+   Unterprogramm fuer URL
+#(U
+#t{ t20 "Internet: " t21 }    
+#ucc
+#cc +#dts i6,: e0
+ #cc e"" p"~start " =Z~
+#cc e"" ,"_\_/_" p'x var "' P'"\ins #ucc\exec winstart.flx' =Z~
+#cc B"y" e"" =Y~
+#cc B"y" e"" p62 P104
+#)U
+#)u
+  Es ist eine Datei!
+#dts e0
+#cc e"" p"X _access!" e"!" =Z~
+#cc B"y" e"" =Y~
+#cc B"y" e"" p62 P104
+#)U
+#)u
+
+#(G    GBV-Link
+#cc p"~start http://gso.gbv.de/DB=2.1/CLK?IKT=12&TRM=" =Z~
+#cc 0 =Y~
+#cc p62 P104
+  #t{ "</a>" }  nur bei HTML!
+#)G
+
+#(R    EZB-Regensburg-Link
+#cc p"~start http://rzblx1.uni-regensburg.de/ezeit/detail.phtml?bibid=TUBS&colors=7&lang=de&jour_id=" =Z~
+#cc 0 =Y~
+#cc p62 P104
+  #t{ "</a>" }  nur bei HTML!
+#)R
+
+#(Z    ZDB-Link
+#cc p"~start http://dispatch.opac.ddb.de/DB=1.1/CMD?ACT=SRCHA&IKT=8506&TRM=" =Z~
+#cc 0 =Y~
+#cc p62 P104
+  #t{ "</a>" }  nur bei HTML!
+#)Z
+
+
+
+   >>>>>>>>> Ende der Unterprogramme >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+p | "\par     "
+
+p .35 8
+

@@ -1,0 +1,67 @@
+  ARCCOP.FLX : Kopierten Satz aus arc.xlg lesen und speichern
+  2008-08-05   Wird kopiert auf das DbDir einer Archivbank
+               aber mit dem Namen  catcp.flx
+
+
+  Datei arc.xlg lesen (liegt auf dem WorkDir der ArchivBank)
+var "arc." K1 "lg"
+open
+
+
+:loop
+fet b
+fetch rec
+if cancel jump schluss
+new 0
+ins
+  Prim.Schl. ausrechnen
+var p
+ins #upr
+  Satz nach Obj. 2 kopieren
+copy obj 1 2
+
+  Nach dem PrimSchl. suchen
+var #upr(0,2) " " #upr(2,0)
+
+f1nd
+
+  Nicht gefunden?
+if no jump nix
+
+  Gefunden, dann Obj.2 drberkopieren
+copy obj 2>1
+  und den Satz wieder speichern
+put
+  Seine IdNr
+var i
+z=
+  Letzten Offline-Satz, wenn er New ist, loeschen
+    (denn da steht der eingelesene Satz von Obj.2 als New)
+last off
+
+if New erase
+  den gespeicherten Satz zurueckholen
+var "#" z
+find
+  und anzeigen
+disp
+sho rec
+
+jump loop
+
+  Der Prim.Schl. wurde nicht gefunden
+:nix
+  Obj.2 nach Obj.1 zurueck
+copy obj 2 1
+  und speichern (zur Sicherheit als "new")
+put new
+disp
+sho rec
+jump loop
+
+:schluss
+  die gelesene Datei loeschen
+close
+delete arc.alg
+
+

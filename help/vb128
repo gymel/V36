@@ -1,0 +1,124 @@
+
+Verlautbarung 128 der Entwicklungsabteilung                     2000-01-27
+-------------------------------------------
+
+Neue Moeglichkeiten, neue FLEX-Befehle
+--------------------------------------
+
+Aufruf von a99/alcarta aus Netscape oder IE
+-------------------------------------------
+Es ist mit der neuesten Version (27.1.00) moeglich, von einer HTML-Seite
+aus, unter Netscape oder IE, eine lokale Datenbank lokal zu starten.
+(Wohlgemerkt: NICHT eine entfernte Datenbank ueber das Internet zu benutzen!)
+
+Voraussetzungen:
+
+1. INI-Datei kopieren: xyz.ini -> xyz.ina
+   (um Konflikte mit anderen INI-Dateien zu vermeiden)
+
+2. Unter Netscape oder WindowsExploder den Typ INA verbinden mit a99
+   Startbefehl:  c:\allegro\a99.exe
+
+3. In eine HTML-Seite einen Link einbauen, der so aussehen muss:
+
+   <a href="file:///c|/allegro/demo2/orda.ina">Demo-Datenbank</a></li>
+
+NetScape und IE wissen dann: Diese Datei muss mit "a99.exe" geoeffnet werden.
+So kann man sich nun HTML-Menuedateien machen, von denen aus direkt eine
+Datenbank mit a99 gestartet werden kann.
+
+Ausserdem kann man, bei Abwesenheit jedweder .INI-Datei, a99 direkt auf
+eine .cDX loslassen:   a99 xyz.cdx
+(Dann wird default.ini gelesen, so vorhanden, aber die Datenbank xyz 
+benutzt.)
+
+Wird "a99" ohne Argument gestartet, hat man die Wahl unter den vorhandenen
+.INI, .INA und .cDX-Dateien. Daher fuehrt nun auch ein Startversuch mit
+Null Ahnung und Null Investment zu einem Ergebnis, wenn ueberhaupt eine 
+Datenbank vorhanden ist.
+(Wenn man mit Null Ahnung intuitiv "allegro.exe" startet, ist das nicht der 
+Fall, das ist bekannt. Auf "cp" kommt keiner mit Intuition.)
+
+
+Neue FLEX-Befehle
+-----------------
+Die Wuensche hoeren nicht auf. Jetzt wurden diese Befehle neu geschaffen:
+
+find #N
+   Satz Nummer N wird geladen. Mit "if no" pruefen, ob die Nummer nicht
+   besetzt ist, mit "if cancel", ob die Nummer zu gross ist.
+
+next #
+prev #
+   Naechste bzw. vorige interne Satznummer laden. Dieselben Pruefungen
+   wie bei "find #".
+   Die Pruefungen muss man zur Sicherheit immer beide machen!
+
+Mit diesen Befehlen kann man nun Schleifen machen, die ueber die gesamte
+Datenbank laufen. Hier ein Skript, das man ausgestalten kann:
+
+  Alle Signaturen und Titel herausschreiben, geloeschte markieren
+  Datei DUMP fuer Export oeffnen
+xport f dump
+  ersten Satz holen
+find #1
+  Schleife
+:rr
+  Satznummer unbesetzt? naechste holen
+if no jump next
+  Satz geloescht? "DEL " schreiben
+if del write "DEL "
+  Signatur und Titel schreiben
+write #90 " = " #20 13 10
+  Naechsten Satz holen
+:next
+next #
+  Ende erreicht?
+if cancel jump ende
+  sonst Schleife
+jump rr
+:ende
+write "ENDE"
+
+-------------------------------------------------------------------------
+
+
+Neue if-Befehle
+---------------
+
+if %xyz% <command>
+   wenn xyz in der iV vorkommt, wird command ausgefuehrt
+
+if _xyz_ <command>
+   wenn xyz im aktuellen Satz vorkommt, wird command ausgefuehrt
+
+if *#nnn_xyz_ <command>
+   wenn xyz in Kategorie #nnn des aktuellen Satzes vorkommt, wird command 
+   ausgefuehrt.
+
+Damit wird es z.B. moeglich, jede ASCII-Datei zu durchsuchen. Mit folgendem
+FLEX erhaelt man die gefundene Zeile angezeigt:
+
+    Datei oeffnen
+open <dateiname>
+if no jump fehler
+:loop
+     zeile lesen, in interne Var. kopieren
+read iv
+     Datei zu Ende?
+if cancel jump ende
+     Kommt abc in der Zeile vor?
+if %abc% jump found
+     Nein: Schleife fortsetzen
+jump loop
+     ja
+:found
+      gefundene Zeile anzeigen und Ende
+message
+end
+     Datei konnte nicht geoeffnet werden
+:fehler
+mess Dateifehler
+end
+:ende
+mess ENDE, nichts gefunden

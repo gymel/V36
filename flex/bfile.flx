@@ -1,0 +1,110 @@
+  BFILE.FLX : Binaere Datei lesen + schreiben, dabei Manipulationen moeglich
+  2001-02-08  (Muster zum Variieren!)
+  Der Inhalt bleibt exakt erhalten, wenn man nichts aendert
+  Siehe aber Hinweise in "Trick 58: Bin‰res Suchen in Dateien"
+
+var m
+if "alc" end
+  Zuerst eine Datei auswaehlen lassen
+mess Dateiverarbeitung. Die ausgew‰hlte Datei wird blockweise gelesen und geschrieben
+var "W‰hlen Sie eine Datei:|*.*"
+ansi
+fname
+    alternativ:  hier z.B. wuerden nur Dateien des Typs *.?pr gezeigt
+  fnam W‰hlen Sie eine Datei|*.?pr
+
+  den gewaehlten Namen in #uFN speichern
+ins #uFN
+  zum Lesen oeffnen (Name steht noch in iV)
+open
+:neuname
+  Fragen, wie die neue Datei heissen soll
+ 
+var "Neuer Name fÅr die Datei?"
+ansi
+ask
+if "" end
+  den eingegebenen neuen Namen in #uNN speichern
+ins #uNN
+fsize
+if no jump start
+noyes Datei existiert! Ueberschreiben?
+if no jump neuname
+del
+:start
+  und zum Schreiben (Exportieren) oeffnen (Name steht noch in iV)
+var #uNN
+xport f
+    wenn Exportparameter "name.cpr" zusaetzlich gebraucht werden:
+  xport p name
+
+var "BITTE WARTEN"
+sho IV
+sleep 500
+  "Zeilen"Zaehler (iz = interner Zaehler) auf 0 setzen (falls gewuenscht)
+z = 0  
+
+  erste Zeile lesen (X davor setzen)
+fetch 1024
+  ^^^^^^^^^^^^^^^^^ Beginn der Schleife
+:loop
+  gelesene Zeile (steht in iV) in #uZL speichern, mit X davor
+  (sonst wuerden fuehrende Leerzeichen bei "ins #uZK" verschwinden...)
+
+ins #uZL
+  ***************************************
+  Hier kann man Manipulationen einbauen!
+    z.B. auch einen Exportvorgang: (wo dann #uZL verarbeitet wuerde!)
+  download
+    oder z.B. Ausgabe mit Zeilennummer, dann diese Zeile:
+  wri Z0 ". " #uZL(1,0)
+    oder z.B. die Zeile von ASCII nach ANSI umcodieren:
+  ansi
+  ***************************************
+  Ausgabe (ohne Zeilennummer), mit Zeilenvorschub:
+  (falls nicht durch Export anders ausgegeben, s.o.)
+wri ^
+
+  Zaehler um 1 hochzaehlen
+
+z + 1
+  naechste Zeile lesen
+
+fetch 1024
+
+
+  war noch eine Zeile da? dann Schleife
+if cancel jump last
+jump loop
+  ^^^^^^^^^^ Ende der Schleife
+
+:last
+wri ^
+
+  Ende, Exportdatei schliessen (indem eine neue namens "nul" geoeffnet wird)
+xport f nul
+  internen Zaehler nach #uZZ kopieren:
+var z
+ins #uZZ
+  Meldung aufbereiten und in #uME speichern
+var #uFN " verarbeitet, Neue Datei " #uNN 13 10 #uZZ " Zeilen"
+ins #uME
+
+  Variablen loeschen
+var ""
+ins #uZL
+ins #uZZ
+ins #uFN
+
+  EndeMeldung ausgeben (ins Schreibfeld)
+var #uNN
+fsize
+ins #uNZ
+var #uME ", " #uNZ " Bytes"
+
+mess
+end
+:error
+ins #uFG
+mess FEHLER
+

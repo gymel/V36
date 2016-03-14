@@ -1,0 +1,292 @@
+
+             Checklist of "a99" and "alcarta" files
+             ======================================
+
+This list describes all files necessary to run "a99" and/or "alcarta",
+where to locate them, and what purposes they serve.
+(More Help: INSTENG.RTF for necessary adaptations)
+
+You CAN start "a99" or "alcarta" and see how far you get. But if you
+need to economize on your time, you better consult this list.
+(We'd like to make everything as simple as possible. Databases, however,
+happen to be a complex world. Some knowledge and some configuring will
+therefore always be necessary.)
+
+"a99" works if all files are on the directory from where it is started.
+In networks, one usually has a single ProgDir whose name has to
+be set in the INI file of a database. 
+Or : start a99.exe with its complete path name.
+
+Most files will first be looked for in the data directory (DbDir); 
+that's because there may be database specific versions of them.
+
+We use these names for the possible locations of files:
+
+PATH    : directories registered in the DOS PATH variable
+
+DbDir   : Name of the database directory
+          For the demobase:  C:\ALLEGRO\DEMO2
+
+Local   : User's work directory. Files sitting here are user-specific.
+          (Local is always a possible location, but not always the default)
+          Single-user: normally Local=C:\ALLEGRO
+          Multi-user: Local = TEMP directory of Windows
+
+ProgDir : Default = C:\ALLEGRO
+          Files not found on either DbDir or Local will be searched here.
+          (see list below)
+
+MULTI-USER ENVIRONMENT
+Every user has to have a home directory, Local, and start from there!
+No specific files have to be on Local but it will be used for temporary
+files. This means the user has to have write permission on Local.
+
+Which files have to be adapted or may be changed?
+
+An [X] marks those files that have to be adapted or created for every database.
+        (Only these HAVE TO be changed, all others can remain unchanged,
+        at least until changes become desirable)
+
+   [v] means this file may be changed but can remain as it is
+   [o] means "optional" - these files are dispensable
+
+
+Name               Location (in the order of searching)
+                   and meaning
+------------------------------------------------------------------------
+                   The order of searching is not the same for all files!
+                   This has reasons.
+
+1. General    (independent of CFG and Database, no changes needed)
+----------
+              ENG works if there is the command  Language=ENG  in *.INI
+
+
+A99.EXE            PATH
+ALCARTA.EXE        The programs
+FLEX.EXE           Starts FLEXes from outside the program. This way,
+                   a99 can work as a server program
+
+A9.BAT        [v]  PATH
+ALC.BAT            Batches for easy launching
+                   Tu use these, attach your DbDir XYZ to Local
+                   and have XYZ.INI on XYZ
+                   Then start with  a9 xyz  (for a99) or
+                                   alc xyz  (for alcarta)
+                   Else: make your own batch file after the same pattern!
+                   Or: start with  a99 0  and then select your INI file
+
+CGI.EXE            Auxiliary program for RuckZuck.
+                   Belongs on the CGI directory of the Webserver
+
+A99.INI            Commented list of all INI Commands
+                   (Use as a template for new  INI files)
+
+UIF0ENG            Local / ProgDir. (not dbDir!) Default = GER (not ENG)
+UIF0GER            User Interface Files. (Button and menu captions et al.)
+UIFEENG       [v]  (Hotkeys may be changed here!)
+UIFEGER       [v]
+
+         For users of the conventional "allegro" programs:
+RS.BAT        [v]  PATH  (Batch and parameters for PRESTO call)
+AS.BAT             RS for "a99" , AS for "alcarta" (APAC call)
+RS.cPR        [v]  Local / ProgDir
+                   If PRESTO/APAC are started from a99/alcarta, they
+                   produce RS.SET as their export file. a99 reads it
+
+D-W0.APR           DbDir / Local / ProgDir   Default, if D-W.APR missing
+E-W0.APR           Local / ProgDir   Default, if E-W.APR missing
+                                     wenn E-W.APR fehlt
+DOOR.BAT      [v]  PATH
+                   External program, called when the door button is pressed.
+                   If DOOR.FLX exists, it will supersede DOOR.BAT.
+                   You can install any program call here.
+                   If the external prog produces a file EXTERN.DAT in the
+                   "allegro" external format, this can be loaded as "external
+                   result set" after returning to "a99". ("File" menu)
+                   See comment in DOOR.BAT!
+
+NSC.BAT       [v]  To launch Netscape. Modify if Netscape is in a different
+                   directory or if you want to use other browsers
+                   (called from appropriate flips, see CoOL database: flips are
+                   defined in the display parameters  D-WRTF.APR)
+                   Alternative: if a flip contains a command like
+                     start <url>
+                   then NSC.BAT is not needed.
+
+
+PHRASE.A99    [v]  Local
+                   Contains codes for special character input. Some can be
+                   activated by Ctrl+x , others with \ und subsequent letter.
+                   Instead of \ a different character can be used as
+                   defined in your INI file  (e.g., ESC=43 for + )
+                   If \ (or +) itself is to be entered: \\ (bzw. ++)
+                   (No comments or empty lines in PHRASE.A99 ! )
+                   Per phrase  2  lines:
+                       Character or ASCII Number
+                       Phrase text or ASCII code of replacement
+                   Preferably edited from DOS and using OSTWEST.FON
+                   (and in full screen mode, to see the special characters.)
+              [v]  In .INI, a different name of phrase file can be set
+                   using the  Phrase=  key.
+
+PHRASEN	      Contains a basic set of phrases, mostly special characters.
+              Will be loaded when there is no PHRASE.A99.
+
+
+2. Database specific  DbName = Database name (4 characters or less)
+--------------------
+
+xyz.INI       [X]  Name and location arbitrary; call "a99" this way:
+                   A99 <full path name of INI file>
+
+                   for example:
+                   A99 c:\bolero\bol.ini    or
+                   A99 cat.ini        (if cat.ini is Local)
+                   A99 cat            (omission of .ini is OK)
+                   Use a copy of A99.INI to make a new .INI
+
+HE_??ENG      [v]  General Help files   (List ==> HELP.TXT)
+...                Local / DbDir / ProgDir\HELP / ProgDir (!)
+HE???ENG           (database specific versions possible)
+DbNameENG.RTF [o]  Database specific general help. Location: DbDir
+  alcarta:         DbName = Name of database. Template: CATENG.RTF or
+  HA  for  HE      one of the other databases.
+                   Is brought up by the big Question mark button
+                   This file can contain useful Flips as well, see EJOENG.RTF.
+                   Default (if missing): HEGENENG / HAGENENG
+
+   Help files are searched first with, then without language tag (ENG or GER)
+
+HE_InENG      [o]  DbDir
+ (for alcarta:)    n=1...9,:  Index related help files; brought up by
+HA_InENG           Button [?] of index window
+                   Default (if missing): HE_IXENG
+
+*.RTF         [o]  Local / DbDir / ProgDir     (==> HELP.TXT, FLIP.TXT)
+                   Specific, user-developed help files
+                   (Called via Flips)  Write as RTF using WinWord
+
+<DATABASE>         Location always  DbDir  (per definition)
+                   DbName_*.ALD, .ADX, .TBL, .STL, .RES
+DbName.cPI    [X]  DbDir.  Contains the symbolic index names! (see EJO.API)
+                   O.APT has to be included, see also D-WRTF.cPR
+
+$c.CFG             DbDir / ProgDir, (Local is also possible)
+  or c.CFG         Configuration file [same as for the DOS programs]
+
+DbName.FRM    [o]  DbDir / ProgDir / Local
+                   Data input forms. See FORM.TXT and INPUT.TXT
+
+*.FLX         [o]  DbDir / ProgDir\FLEX / ProgDir / Local
+                   FLEX Files (see FLEXENG.RTF)
+                   Started from a flip or from outside (EXFLEX.TXT, FLEX.EXE)
+
+*.VW          [o]  DbDir / ProgDir\VIEW / ProgDir / Local
+                   ViewLists (see "news" 58, Oct.2000)
+                   Display a FLEX list using command  View name
+
+DbName.SGF         DbDir
+                   Signal file. If beginning with '1', a99/alcarta will
+                   not start. Following the '1' there may be a message
+                   for the users telling them why they get no access.
+
+D-WRTF.cPR    [X]  DbDir / ProgDir (derived from D-1.cPR (DOS display))
+                   Record display parameters
+                   (To load other suitable parameters: menu View|Display par)
+                   Include:  O.cPT, D.cPT, D-RTF.cPT (There have to be these
+                 to
+                 td
+                 td-rtf
+                   lines in it. O.APT will always be loaded by default!
+                   (If that's not wanted (Chinese!) make O.APT empty)
+                   Further differences from DOS:
+                   There has to be a section  #-(  for the "internal display"
+                   See D-WRTF.APR for it: copy the section from there.
+                   If Flips are wanted, they have to be programmed in this
+                   file (see "news" 52 and examples in D-WRTF.APR)
+                   D-W0.APR  is default for D-WRTF.APR
+                   but it provides a very plain display only.
+
+E-W.cPR       [o]  DbDir / ProgDir. For export and external editing
+E-W0.APR           (command  ExportParameter in .INI)
+                      if missing, default = E-W0.APR
+
+P-W.cPR       [X]  DbDir / Local / ProgDir.
+P-W0.cPR           Print format. (Command  PrintParameter in .INI)
+                   (e.g., modification of D-WRTF.APR, no Flips etc.)
+                   P-W0.cPR is default, if P-W.cPR is missing,
+                   it can be a copy of P-W0.APR
+
+D-RTF.cPT     [v]  DbDir / Local / ProgDir
+                   RTF commands (Boldface etc., colors. Copy of D-RTF.APT)
+                   (to be included in display parameters and RTF-Exports!)
+
+DISPHEAD.RTF  [v]  DbDir / ProgDir / Local
+LISTHEAD.RTF       Header files for RTF displays. Used automatically.
+HELPHEAD.RTF       Database specific versions possible (Fonts!)
+LONGHEAD.RTF       Not editable by WinWord because no complete RTF files
+                   Changes normally not necessary, but generally for
+                   special effects or fonts in display or export.
+
+
+3. Defaults (Normally need no alterations)
+-----------
+
+O.APT         [v]  DbDir / Local / ProgDir
+D.APT         [v]  Tables for character codes  ASCII -:- ANSI
+                   Included automatically if commands  to  and  td  missing
+                   O.APT  for Index AND Display parameters
+                          contains only o commands, works both ways
+                          (i.e., has to be a 1:1 mapping)
+                          Needed for displays with correct column arrangement
+                          (Index, Brief browsing display)
+                          Also for data display in the listbox (left side)
+                          and for external editing.
+                   (If o.cPT is missing, o.APT will be used!)
+
+                   D.APT  ASCII->ANSI  only for display and export params,
+                          contains only p and q commands for display window
+                          (Umlauts, accented letters, special characters)
+                          This need not be an 1:1 mapping.
+
+E.ADT         [o]  Local
+                   Contains a skeletal record to be loaded into the current
+                   record (menu "Edit | Get"); default fields or such
+                   (for data input assistance)
+
+EBOX.ICO      [o]  Location anywhere. Use as desktop icon
+
+A-TIMES.TTF        These fonts have to be installed!
+A-LETTER.TTF       (Location mostly in C:\WINDOWS\FONTS)
+                   A-LETTER is for columnar displays (even spacing)
+
+A-ARIAL.TTF        Optional (Alternative to A-TIMES)
+
+
+Just FYI:
+4. Dynamic Files (exist at runtime only, do not manipulate)
+--------------------------------------------------------------------------
+
+OUTPUT.ADT         Default Export file (INI: OutputFile=...)
+
+EXX.XXX            For external editing of current record
+                   (INI: ExEdFile=... )
+
+RS.SET             For DOS users only
+
+The following are mostly temporary (persistent only if you choose to continue
+a session later). They are created on the user's Local directory, mostly
+on the Windows TEMP path:
+
+DbName._1          Bookmarks
+DbName._2          History list
+DbName._i          Result sets (Lists of internal rec numbers)
+DbName.$$$         Copies of records during editing sessions
+DbName.TAB         Auxiliary table (Adresses of records in .$$$)
+DbName.RSS         Auxiliary file (result set names)
+DbName.RXX         Auxiliary (a99 only)
+
+All of these files may be erased if you do not want to continue the session
+during which they were created.
+

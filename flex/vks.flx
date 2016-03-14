@@ -1,0 +1,33 @@
+  VKS.FLX : Start eines Mini-Zugriffssystems zu einem Fernkatalog
+  2008-04-29    Wahl des Registers
+
+  Hiervon Kopien machen unter anderem Namen, wenn man mehr als einen
+  Fernkatalog nutzen will. Zu aendern ist dann nur  $Url
+  Alle anderen vk-FLEXe bleiben unberuehrt
+
+$Url=http://www.biblio.tu-bs.de/db/vk/
+
+  Liste der symb. Registernamen vom Fernkatalog holen, vks.php macht das
+var $Url "vks.php"
+get I
+
+var (f"^M^J")
+ins _¶_^M^J_
+
+  Liste zur Auswahl zeigen
+Aresqa
+if "" end
+
+  gewaehlter Name -> $Reg (das ist z.B. PER)
+var (e" ")
+ins $Reg
+
+  Eingabe des Einstiegs
+ask Ihr Einstiegspunkt ins Register
+if "" end
+
+ins $ent
+
+  vkr.flx mit diesen Angaben starten
+var "vkr " $Reg " " $ent
+exec

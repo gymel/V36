@@ -1,0 +1,192 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\fscript\fprq2 Comic Sans MS;}{\f2\fscript\fprq2\fcharset0 Comic Sans MS;}{\f3\froman\fprq2 Garamond;}{\f4\froman\fprq2\fcharset0 Times New Roman;}{\f5\froman\fprq2\fcharset0 Garamond;}{\f6\fmodern\fprq1 Courier New;}{\f7\fnil\fprq2\fcharset2 Wingdings;}{\f8\fmodern\fprq1 Courier;}{\f9\froman\fprq2\fcharset2 Symbol;}{\f10\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue255;}
+\viewkind4\uc1\pard\qc\f0\fs24         \cf1\b\i\f1\fs28 allegro S\i0 ystemhandbuch V\f2 32\cf0\f0\fs48 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8654\tx8834\tx9554\tx10274\b0\fs20 
+\par \pard\fi-658\li658\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8654\tx8834\tx9554\tx10274\b\f3\fs48 5\tab\tab Import\b0\f4\fs24      [V32 umgestellt auf 32bit]\f3\fs20 
+\par \pard\fi-658\li658\qr\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8654\tx8834\tx9554\tx10274 `\cf2\ul\b\f5 Fertig-Prozeduren f\'fcr a99\cf0\ulnone\b0\f3 ` 
+\par \pard\fi-658\li658\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8654\tx8834\tx9554\tx10274 
+\par \b\fs36 5.0\tab\f5\tab\f3 Aufgabenstellung und Konzept\b0\fs20 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8654\tx8834\tx9554\tx10274\f0 
+\par \f4\fs24 Immer wieder stellt sich das Problem, vorhandene Daten so umzuwandeln, da\'df \b\i\f0 allegro\b0\i0\f4  etwas damit anfangen kann. Woher die Daten kommen, spielt keine Rolle. Sie k\'f6nnen vorher mit anderer Software auf demselben Rechner produziert worden sein. Oftmals werden sie aus anderen Systemen abgezapft, z.B. per "download" aus Verbunddatenbanken. Fr\'fcher fielen Daten aus CD-ROMs oder Diskettendiensten an, wie z.B. VLB, DNB, EKZ, etc. Heute ist es evtl. ein WWW-Browser mit der Funktion "File / Save as..." oder mit Copy&Paste u.a., mit dem man Daten gewinnt, oder ein Z39-Client. Die F\'e4higkeit zum Umwandeln wird ansonsten oft als "Schnittstell\f0 e" oder "Interface" bezeichnet. 
+\par 
+\par \f4 Woher die Daten auch stammen, sie haben alle eines, aber leider nur dieses gemeinsam: jede Datenquelle hat ihre eigene, unverwechselbare Struktur. Also kann es ungl\'fccklicherweise kein Programm geben, das von allein mit allen Daten fertig wird. Das \b\i\f0 allegro\b0\i0\f4 -DOS-Programm Nr. 5 (IMPORT) n\'e4hert sich diesem hohen Ziel folgenderma\'dfen: es stellt eine eigens entwickelte "Datenmanipulationssprache" bereit - ein Werkzeug, mit dem man fremde Datenstrukturen und ihre \'dcberf\'fchrung in \b\i\f0 allegro\b0\i0\f4 -Strukturen beschreiben kann. Vom Anwender wird dabei keine Kenntnis irgendeiner echten Programmiersprache verlangt, es handelt sich um eine sog. "h\'f6here Sprache". \f0 In Kap.11 wird diese \b `\cf2\ul Importsprache\cf0\ulnone `\b0  genau beschrieben. 
+\par 
+\par \cf1 Hinweis: \cf0 Das Programm IMPORT wandelt Daten nur um, es mischt sie nicht ein! Das macht das Programm `\cf2\ul\b UPDATE\cf0\ulnone\b0 `. Mehr dazu weiter unten. 
+\par \f4 In das Importprogramm ist zugleich auch die Exportfunktion eingebaut, wie in die anderen Programme auch. Au\'dferdem kann man, weil auch der Editor eingebaut ist, in den Programmablauf eingreifen und Korrekturen anbringen, bevor die umgewandelten Daten abgespeichert werden. (Dies gilt nicht mehr ab V32.) \f0 
+\par Folgendes Diagramm veranschaulicht den Importvorgang: 
+\par \fs20 
+\par \pard\tx2840\tx4707\b\tab Konfiguration  c.CFG\b0 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8654\tx8834\tx9554\tx10274 
+\par \pard\tx2840\tx4707\tx8094\tx9413\b Quelldatei\tab Programm IMPORT\tab Zieldatei\b0 
+\par  (Platte)\tab (Arbeitsspeicher)\tab (Platte) 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8654\tx8834\tx9554\tx10274 
+\par \pard\fi-8653\li8653\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8654\tx8834\tx9554\tx10274   Satz 1\tab\tab\f6 -----\f7\'d8\f0\tab  Satz 1   \tab\f6 ----\f7\'d8\f0\tab\tab\tab\tab Satz 1 
+\par   Satz 2\tab\tab Import-\tab\tab  Satz 2\tab\tab Export-\tab\tab\tab Satz 2 
+\par   ....\tab\tab\tab Parameter\tab  ....\tab\tab Parameter\tab\tab .... 
+\par   Satz i\i\tab\tab iname\i0 .cIM\tab  Satz i\i\tab\tab ename\i0 .cPR\tab\tab Satz i 
+\par   ....\tab\tab\tab\tab\tab  ....\tab\tab   (meistens I-1.cPR)\tab .... 
+\par   Satz N\tab\tab\f6 -----\f7\'d8\f0\tab  Satz N\tab\tab\tab\tab\tab Satz N 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8654\tx8834\tx9554\tx10274 
+\par 
+\par \f4 Grundlage f\'fcr einen Importvorgang ist, wie bei den anderen Programmen auch, eine Konfigurationsdatei c.CFG, die neben anderen Dingen das Ziel-Kategoriesystem enth\'e4lt (\f6 -\f7\'d8\f4  Anh. A). Wenn also der Import in das Format U.CFG hinein erfolgen soll, mu\'df der Start mit\b\f6   \lang1033 import\lang1031  -ku\b0\f0\fs24   erfolgen. 
+\par \fs20 Die Beschreibung der Quelldaten steht in einer Import-Parameterdatei \i iname\i0 .cIM (\f6 -\f7\'d8\f0  0.3 und 11). Diese kann nur in Verbindung mit c.CFG arbeiten, daher ist auch hier der Konfigurations-Kennbuchstabe Bestandteil des Dateityps (.cIM). Wer z.B. mit U.CFG arbeitet, braucht eine darauf abgestimmte Datei des Typs .UIM . 
+\par 
+\par \f4 Das Importprogramm liest mit Hilfe dieser Beschreibung die Quelldaten Satz f\'fcr Satz ein. Die Importparameter sagen dem Programm unter anderem, wie das Satzende aussieht oder wie die Satzl\'e4nge zu bestimmen ist. Auf Wunsch sieht man die gelesenen und umgewandelten S\'e4tze auch am Bildschirm, was eine wichtige Testhilfe ist. \f0 
+\par 
+\par \f4 Der eingelesene Fremdsatz wird zuerst in einen internen Satz umgewandelt. Wie das zu machen ist, beschreiben eben gerade die Import-Parameter. Der interne Satz kommt zun\'e4chst in den Aufnahmespeicher, als h\'e4tte man ihn mittels Editor von Hand eingegeben. Wenn noch gen\'fcgend Platz frei ist, liest das Programm den n\'e4chsten Fremdsatz und wandelt ihn um. \f0 
+\par \pard\f4 Der Arbeitsspeicher fa\'dft etwa 40K Daten. Bevor er \'fcberl\'e4uft, beginnt das Programm mit dem Satz 1, die Daten in die Zieldatei zu schreiben. Beim weiteren Einlesen der Fremddaten wird immer dann wieder ein Satz abgespeichert, wenn der Arbeitsspeicher voll zu werden droht. So ist st\'e4ndig eine Datenmenge von bis zu 35K im Arbeitsspeicher. Wenn sehr lange S\'e4tze vorkommen k\'f6nnen: besser mit Option \lang1033\b\f6 -m0 \lang1031\b0\f0 starten. Dann wird immer nur ein Satz eingelesen und sofort wieder herausgeschrieben. 
+\par \lang1033\b\f6 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8654\tx8834\tx9554\tx10274\lang1031\f0 Sehr wichtig zum Testen:\b0 
+\par \f4 Die DOS-Version erm\'f6glicht den \b Eingriff w\'e4hrend des Programmlaufs\b0\f0 . 
+\par \f4 W\'e4hrend ein Import l\'e4uft, kann man diese Tasten dr\'fccken: (nicht mehr ab V32)\f0 
+\par \pard\fi-1633\li1633\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8654\tx8834\tx9554\tx10274\b\f8\fs24 
+\par a\f0\tab\tab\tab Anzeige\b0\f4  wird umgeschaltet: die durchlaufenden S\'e4tze werden angezeigt bzw. diese Anzeige wieder abgeschaltet. \f0 
+\par \b\f6\fs20 
+\par Leertaste\b0\f0\fs24\tab Durchlauf wird \b angehalten / fortgesetzt\b0\f4 . Mit geschickten Fingern kann man so die S\'e4tze einzeln durchlaufen lassen und jeden ausf\'fchrlich betrachten. \f0 
+\par \b\f8 
+\par x\b0\f0\tab\tab\tab Sprung in den \b Editor\b0 . Der im Arbeitsspeicher vorhandene, gerade umgewandelte Satz kann genauso bearbeitet werden, wie man es von den anderen Programmen, insbesondere "offline-Erfassung" und "Redigieren", gewohnt ist (\f6 -\f7\'d8\f4  Kap.2/3). Man kann sogar neue Aufnahmen hinzuf\'fcgen oder vorhandene l\'f6schen. Mit [Bild\f9\'ad\f0 ] und [Bild\f9\'af\f4 ] kann man die bereits umgewandelten S\'e4tze durchbl\'e4ttern! \f0 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8654\tx8834\tx9554\tx10274\fs20 Zwei Befehle haben dann (nach 'x') im Editor eine besondere Wirkung: 
+\par 
+\par \pard\fi-432\li432\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8654\tx8834\tx9554\tx10274  \bullet\tab\f4 #r (f\'fcr "resume") oder \b\f0 F10\b0\f4  l\'e4\'dft den unterbrochenen Importvorgang weiterlaufen \f0 
+\par  \bullet\tab #e oder \b F8\b0\f4  beendet ihn vorzeitig oder am Ende des Durchlaufs endg\'fcltig. \f0 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8654\tx8834\tx9554\tx10274\f4 Sobald der letzte Satz eingelesen ist, werden schlie\'dflich alle noch im Aufnahmespeicher stehenden S\'e4tze ausgegeben. \f0 
+\par \f4 Die Ausgabe erfolgt \'fcber eine Parameterdatei \i\f0 ename\i0\f4 .cPR. Auch diese mu\'df auf das Kategoriesystem c.CFG abgestimmt sein. Jedoch kann \i\f0 ename\i0\f4 .cPR jede beliebige, f\'fcr c.CFG geschriebene Export-Parameterdatei sein. Die Zieldatei kann daher eine v\'f6llig andere Struktur haben als die Interndaten im Arbeitsspeicher! Z.B. k\'f6nnte man aus OCLC-Daten in einem Durchlauf Katalogkarten gem\'e4\'df ISBD machen, wobei als Zwischenstruktur sowohl das Standardformat A.CFG als auch das USMARC-Format U.CFG dienen kann. Dabei h\'e4tte man als Import-Parameterdatei OCLC.AIM bzw. OCLC.UIM zu w\'e4hlen, als Export-Parameterdatei P-KARTE.APR bzw. D-1.UPR. \f0 
+\par Ein wichtiger \b Sonderfall\b0 , in der Praxis aber eher der Normalfall, ist die Export-Parameterdatei\f6  I-1.\i\f0\fs24 c\i0\f6\fs20 PR\f4\fs24  (fr\'fcher hie\'df sie\f6\fs20  PA.cPR\f0\fs24 ). Sie schreibt das jeweilige Internformat \i c\i0\f6\fs20 .CFG\f4\fs24  unver\'e4ndert in die Zieldatei, stellt also eine Original-\b\i\f0 allegro\b0\i0\f4 -Datei im Grundformat her. Dabei mu\'df die Zieldatei die Typkennung .cLG erhalten, um von den Programmen anerkannt zu werden.  Also .ALG, wenn man mit der Konfiguration A.CFG oder $A.CFG arbeitet. \f0 
+\par \fs20 Zur internen Struktur von \b\i allegro\b0\i0 -Grunddateien: Kap. 0.2.2. Das ist die Struktur, die mit den Parametern\f6  I-1.APR\f0  erzeugt wird. 
+\par 
+\par \f4 Das Importprogramm kann, wie erw\'e4hnt, unter anderem und vor allem Grunddateien (.ALG) herstellen, indem es I-1.cPR als Exportparameter benutzt. Mit dem Indexprogramm (\f6 -\f7\'d8\f0  `\cf2\ul\b Kap.7\cf0\ulnone\b0 `) oder mit UPDATE (\f6 -\f7\'d8\f0  `\cf2\ul\b Kap.9\cf0\ulnone\b0 `) lassen sich solche Grunddateien in vorhandene Datenbanken einspeisen. Das Importieren von Fremddaten in eine Datenbank hinein ist deshalb ein zweistufiger Vorgang: 
+\par 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par \pard\fi-5953\li5953\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274\tab\tab\tab IMPORT\tab\tab\tab\tab\tab INDEX oder UPDATE 
+\par \pard\fi-7919\li7919\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274\b Fremddaten\b0\tab\f6 -----\f7\'d8\b\f0\tab\tab Grunddatei\b0\tab\tab\f6 -----\f7\'d8\b\f0\tab\tab Datenbank 
+\par \b0\i\tab\tab iname\i0 .AIM \tab I-1.APR\tab\tab Typ .ALG\tab\tab .API-Param.\tab\tab .ALD/.ADX 
+\par \pard\fi-7393\li7393\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274\tab\tab Importparam\tab Exportparam.\tab\tab\tab\tab\tab\tab    .TBL/.STL/.RES 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par 
+\par \cf1 HINWEIS: \cf0\f4 Um korrekt zu sein, m\'fc\'dfte man IMPORT.EXE als "Transferprogramm" oder "Konvertierprogramm" bezeichnen und es CONVERT.EXE nennen, da es nur die erste Phase durchf\'fchrt und nicht das Einmischen. Da jedoch die \'dcberf\'fchrung in eine \b\i\f0 allegro\b0\i0\f4 -Umgebung hinein der h\'e4ufigste Einsatzzweck ist, wurde der Name "Import-Programm" beibehalten. \f0 
+\par \f4 Wie entscheidet man, ob UPDATE oder INDEX das Einmischen \'fcbernehmen soll? Dazu mu\'df man eines wissen: UPDATE kann vorhandene S\'e4tze durch neue ersetzen (\f6 -\f7\'d8\f0  Kap.9), es braucht dazu aber einen eindeutigen \b\f4 Prim\'e4rschl\'fcssel\b0 , \'fcber den die Identifikation l\'e4uft. INDEX kann das nicht, es f\'fcgt jeden Datensatz als neuen Satz in die Datenbank ein. Daraus ergibt sich: \f0 
+\par Man verwendet \b vorzugsweise\b0\f4  UPDATE zum Einmischen, wenn kleine Datenmengen (wenige hundert S\'e4tze) in gro\'dfe Datenbanken (mehrere -zigtausend S\'e4tze) einzuf\'fcgen sind und ein Prim\'e4rschl\'fcssel existiert. \f0 
+\par \f4 Aber: man verwendet INDEX, wenn es keinen zuverl\'e4ssigen Prim\'e4rschl\'fcssel gibt (\f6 -\f7\'d8\f0  Kap.9), oder UPDATE mit Option\f6  -fm01\f4  , um unerw\'fcnschte Ersetzungen zu vermeiden. \f0 
+\par Man verwendet \b unbedingt \b0\f4 UPDATE, wenn sich unter den neu importierten S\'e4tzen solche befinden, die vorhandene S\'e4tze ersetzen sollen. (Wie gesagt, es mu\'df dazu einen zuverl\'e4ssigen Prim\'e4rschl\'fcssel geben.) \f0 
+\par Man verwendet \b nie\b0\f4  INDEX im Mehrplatzbetrieb, wenn die Datenbank zugleich von anderen benutzt wird! INDEX ist nicht mehrplatzf\'e4hig, nur UPDATE. \f0 
+\par 
+\par \f4 Die Arbeit mit dem Importprogramm setzt immer voraus, da\'df man f\'fcr einen konkreten Einsatzfall zun\'e4chst die Import-Parameterdatei konstruiert. Die vorhandenen Beispiele geben dabei Hilfestellung. Eine systematische Einf\'fchrung in die "Importsprache" finden Sie in Kap.11. \f0 
+\par 
+\par \f4 Einige wichtige Eigenschaften des Importprogramms sollen hier noch einmal knapp zusammengefa\'dft sein: \f0 
+\par 
+\par \pard\fi-432\li432\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274  \bullet\tab\f4 Es k\'f6nnen beliebig viele gleichartige Dateien in einem Durchlauf importiert und in eine Zieldatei \'fcberf\'fchrt werden. \f0 
+\par  \bullet\tab\f4 Das Importprogramm kann in einem Durchlauf bis zu 3 verschiedene Zieldateien erzeugen, d.h. es k\'f6nnen 3 Export-Parameterdateien gleichzeitig geladen werden. \f0 
+\par  \bullet\tab\f4 Beliebige Import- und Exportparameter k\'f6nnen gekoppelt werden, wodurch letztlich zwischen zwei Externformaten in einem Durchlauf konvertiert werden kann. \f0 
+\par  \bullet\tab Der Importvorgang ist am Bildschirm beobachtbar, wobei man hintereinander den Originaldatensatz (incl. Steuerzeichen!) und den umgewandelten Satz zu sehen bekommt. 
+\par  \bullet\tab Ein laufender Importvorgang kann jederzeit zum manuellen Redigieren der bereits umgewandelten Daten unterbrochen oder auch abgebrochen werden. 
+\par  \bullet\tab Wenn die Zieldatei eine \b\i allegro\b0\i0\f4 -Grunddatei ist, kann sie sofort anschlie\'dfend oder sp\'e4ter mit UPDATE oder INDEX in eine \b\i\f0 allegro\b0\i0 -Datenbank umgewandelt oder in eine solche eingemischt werden. 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par \pard\fi-658\li658\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274\b\fs36 5.1\tab Programmablauf\b0\fs20 
+\par \f4 Diese Beschreibung gilt nur f\'fcr das DOS-Programm IMPORT.EXE. Ab V32 hei\'dft dieses  IMPORT16.EXE und l\'e4uft nicht unter Win'7/64. Das Konsolprogramm import.exe ersetzt das DOS-Programm und wird im Abschnitt  5.2  beschrieben.\f0 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274\f4 
+\par Nachdem die Grundlagen und Konzepte erkl\'e4rt sind, kann der eigentliche Programmablauf nun relativ knapp dargestellt werden. Zuerst in der Weise, da\'df man IMPORT \b\f0 von Hand\b0\f4  startet und alle Angaben dann vom Programm abfragen l\'e4\'dft. Danach wird gezeigt, wie dasselbe per \b\i\f0 CockPit\b0\i0  gemacht wird, am Ende noch als \b Batchaufruf\b0 .\f4  Ab V32 geht es NUR noch als Batchprogramm!\f0  
+\par 
+\par \pard\fi-432\li432\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 0.\tab\f4 Nehmen wir als Beispiel an, wir wollen 3 Dateien gleicher Struktur importieren, die auf dem Verzeichnis C:\\TEMP liegen. Die Struktur sei das MAB2-Format. Die Import-Parameterdatei dazu ist MAB2.AIM, die Export-Parameterdatei I-1.APR. Die Zieldatei soll NEUDAT.ALG hei\'dfen und auf K:\\OPAC liegen. Wenn sie schon existiert, soll sie \'fcberschrieben werden. \f0 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 1.\tab\f4 Start durch Wahl von '5' auf dem Men\'fc "Funktionen" des \b\i\f0 CockPit\b0\i0  (\f6 -\f7\'d8\f4  0.11.1, dort sehen Sie das Funktions-Untermen\'fc mit der Darstellung genau dieses Vorgangs) \f0 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274\b\tab oder\b0  mit dem Befehl\b\f6    import -f5\b0\f0   vom Programmverzeichnis \\ALLEGRO aus. 
+\par \tab Im zweiten Fall geht es so weiter: 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 2.\f6\tab\f10 Bitte Dateien zur Import-Bearbeitung ausw\'e4hlen\f0 
+\par \f6\tab Laufwerk(:Pfad\\)\f0  \b\f10 c\f6 :\\\f10 temp\f6\\\b0\f0 
+\par \tab Man gibt i.a. den Namen des Datenpfades an, auf dem sich die zu importierenden Daten befinden. Wenn es sich um ein Unterverzeichnis des \b\i allegro\b0\i0 -Programmverzeichnisses handelt, z.B. ALLEGRO\\DATA, braucht man nur den Namen dieses Verzeichnisses anzugeben, also in diesem Fall\f6  data\\\f4 . Es empfiehlt sich, den Namen mit einem "backslash" (umgekehrten Schr\'e4gstrich) abzuschlie\'dfen, da sonst u.U. nicht das Verzeichnis, sondern Dateien mit zuf\'e4lligerweise gleichem Namensanfang auf dem Programmverzeichnis angew\'e4hlt werden. \f0 
+\par \tab\f4 Man kann auch beliebige Unterverzeichnisse auf anderen Laufwerken anw\'e4hlen. Dann ist die komplette Pfadbezeichnung samt Laufwerk anzugeben, z.B.\f6  a:\\\f0   oder\f6   e:\\fremd\\\f0 . 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 3.\tab\f4 Das Programm zeigt die auf dem betreffenden Pfad liegenden Dateinamen, und zwar alle, auch z.B. Programmdateien. Man setzt jeweils ein '+' vor die Namen der umzuwandelnden Dateien und dr\'fcckt dann <Enter> (\f6 -\f7\'d8\f0  0.5 "Auswahlliste") 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 4.\tab\f4 Man erh\'e4lt nun die Auswahlliste der \b Import\b0 -Parameterdateien (Typ .cIM). Daraus mu\'df die passende ausgew\'e4hlt werden. Man f\'e4hrt mit dem Cursor zu dem Namen, setzt '+' davor und dr\'fcckt Enter. \f0 
+\par \tab Das Programm meldet z.B.\f6   MAB2.AIM wird geladen\f0 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 5.\tab\f4 In derselben Form erscheint die Liste der \b Export\b0 -Parameterdateien, aus der man gleichfalls die richtige ausw\'e4hlt. Das Programm meldet z.B. \f0 
+\par \pard\fi-913\li913\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274\f6\tab\tab I-1.APR wird geladen...\f0  
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274\b\tab Anmerkung\b0 
+\par \tab\f4 Die Auswahllisten zeigen immer zuerst diejenigen Parameterdateien, die auf dem in 2. gew\'e4hlten Datenverzeichnis stehen, wenn es dort welche findet. Wenn die gew\'fcnschte nicht dort steht, schaltet man mit \b\f0 F2\b0\f4  um auf das Startverzeichnis, und man bekommt die dort vorhandenen Dateien. Der Sinn ist, da\'df man datenspezifische Parameterdateien im selben Verzeichnis unterbringen kann, wo die Daten stehen. \f0 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par \pard\fi-5233\li5233\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 6.\f6\tab Ausgabe auf (Laufwerk:)(Pfad\\)Datei:\tab\f10 (x = keine Ausgabe gew\'fcnscht)\f0  
+\par \pard\fi-432\li432\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274\tab Antwort:\b\f6  k\f10 :\\opac\\neudat\f6 .alg\b0\f0 
+\par \tab Laufwerk und/oder Pfad sind nur anzugeben, wenn die Zieldatei nicht im Programmverzeichnis liegen soll. 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274\tab\f4 Handelt es sich um ein Unterverzeichnis des aktuellen Verzeichnisses, so gen\'fcgt dessen Name zusammen mit einem Dateinamen. \f0 
+\par \tab\f4 Wenn die Zieldatei existiert, kann das Programm diese entweder \'fcberschreiben oder die neuen Daten hinten dranh\'e4ngen. Es fragt Sie, was es tun soll. \f0 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 7.\f6\tab\f10 noch zus\'e4tzliche Ausgabedatei? j/n\f0  
+\par \tab\f4 Wenn im selben Durchlauf eine zweite (und evtl. dritte) Zieldatei entstehen soll, mu\'df man hier 'j' antworten, dann wiederholen sich 5-7. \f0 
+\par 8.\f6\tab\f10 Originaldaten-Anzeige gew\'fcnscht? j/n\f0  
+\par \tab\f4 Wenn man 'j' antwortet, werden beim Durchlauf jeweils zuerst die Originaldaten, dann die umgewandelten Daten gezeigt. Sinnvoll ist das zum Testen neu erstellter Parameterdateien, weil man dann das Ergebnis sofort sieht. Das Programm l\'e4uft schneller, wenn man hier 'n' antwortet. Dann gibt es jeweils nur die Satznummer und -l\'e4nge aus. \i\f0 Wichtiger Hinweis: \i0\f4 Jederzeit kann man w\'e4hrend des Programmlaufs 'a' dr\'fccken, um die Anzeige einzuschalten. Nochmals 'a' schaltet sie wieder ab. \f0 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274  9.\f6\tab\f10 Selektion gew\'fcnscht?  j/n\f0  
+\par \tab\f4 Wenn man mit 'j' antwortet, kann man einen Suchbegriff angeben, nach dem  dann jeder eingelesene Satz durchsucht wird. Die Umwandlung erfolgt dann  nur, wenn der Suchbegriff vorkommt. Die Suchlogik ist dieselbe wie beim  Suchprogramm (siehe Kap. 4). Einziger Unterschied: es k\'f6nnen nur exakte  Zeichenketten in exakt vorgegebener Schreibweise gefunden werden. Umlautaufl\'f6sung und Egalisierung der Gro\'df-/Kleinschreibung finden nicht statt, auch keine Ersetzung von Identnummern durch Stammsatzdaten wie beim P\f0 rogramm SRCH. 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 10.\f6\tab\f10 manueller Eingriff gew\'fcnscht? j/n  \b\f6 j\b0\f0 
+\par \tab\f4 Es bringt einen geringen Geschwindigkeitsvorteil, hier mit 'n' zu antworten. Sinnvoll ist dies au\'dferdem in fertigen Anwendungsumgebungen, wenn man IMPORT in Prozeduren ("batch files") einbaut, wo mehrere Dinge hintereinander ohne Eingriff ablaufen sollen. \f0 
+\par \tab\f4 Man sollte immer mit 'n' antworten, wenn man sehr lange Datens\'e4tze (ab etwa 15K Gr\'f6\'dfe) erwartet. \f0 
+\par \tab\f4 Man sollte beim Testen immer mit 'j' antworten, dann ist es m\'f6glich, mit Druck auf 'x' den Programmlauf jederzeit zu unterbrechen; man gelangt in den Editor und kann mit [Bild\f9\'ad\f0 ] und [Bild\f9\'af\f4 ] die bereits umgewandelten S\'e4tze durchbl\'e4ttern, um die Ergebnisse sofort zu begutachten. \f0 
+\par \tab Nun verrichtet das Programm sein Werk. Wenn man nicht vorher mit 'x' unterbricht (und dann vom Editor aus mit Befehl #e abbricht), arbeitet es die Quelldatei bis zum Ende durch. Wenn man unterbrochen hat, wird der Programmlauf mit F10 wieder aufgenommen (mit Befehl #r desgleichen). 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 11.\tab\f4 Wenn man bei 10. 'j' gesagt hatte, zeigt das Programm am Ende den Speicherzustand an, so da\'df man sieht, wieviele Aufnahmen noch im Arbeitsspeicher sind. Diese sind nun bearbeitbar wie im Redigiermodus (\f6 -\f7\'d8\f4 `Kap. 3). Der Befehl #e bewirkt dann, da\'df die restlichen Aufnahmen noch in die Zieldatei geschrieben werden. Die Abschlu\'dfmeldung teilt mit, wieviele Aufnahmen eingelesen bzw. umgewandelt wurden. \f0 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274 
+\par Nach gelungener Umwandlung von Fremddaten in eine .ALG-Datei kann diese sofort mit dem Programm INDEX (\f6 -\f7\'d8\f0  Kap.7) oder UPDATE (\f6 -\f7\'d8\f0  Kap.9) in eine existierende Datenbank eingespeist werden, oder man macht, gleichfalls mit INDEX, eine neue daraus (\f6 -\f7\'d8\f4  Kap.7). Einen Gesamt\'fcberblick \'fcber alle Vorg\'e4nge gibt das Diagramm in Anhang C. \f0 
+\par 
+\par \b Beachten Sie\b0\f4 : Das Programm kann nicht pr\'fcfen, ob Fremddatei und Parameterdatei korrekt zusammenpassen. Wenn das nicht der Fall ist, wenn Sie z.B. eine .EXE-Datei importieren wollen oder wenn Sie dBase-Daten mit MARC-Parametern importieren wollen, kann es zum Absturz kommen. Irgendwelche Sch\'e4den sind dabei jedoch nicht zu bef\'fcrchten. \f0 
+\par 
+\par Derselbe Vorgang wird \f4 bis V31 \f0 vom \b\i CockPit\b0\i0  aus so gestartet: (siehe auch \f6 -\f7\'d8\f0  0.11.1) 
+\par \pard\f6\fs18 
+\par  \ul  \b F\b0 unktionen \ulnone     \b R\b0 outinen     \b M\b0 akros     \b D\b0 ateien     \b O\b0 ptionen     \b H\b0 ELP     E\b X\b0 IT 
+\par  +--------------+                                                               
+\par \f10  \'a6              \'a6   +----------------------- Optionen -----------------------+  \f6 
+\par \f10  \'a6  HELP        \'a6   \'a6 k : Konfiguration:         A                           \'a6  \f6 
+\par \f10  \'a6              \'a6   \'a6 c : Laufwerke:             C                           \'a6  \f6 
+\par \f10  \'a6 1 : PRESTO   \'a6   \'a6 d : Datenverzeichnis:      C:\\TEMP                    \'a6  \f6 
+\par \f10  \'a6 2 : OFFLINE  \'a6   \'a6 s : Selektierbegriff:      0                           \'a6  \f6 
+\par \f10  \'a6 4 : SRCH+EX  \'a6   \'a6 manuelle Unterbrechung     1                           \'a6  \f6 
+\par \f10  \'a6\cf1\b\f6  5 : IMPORT   \cf0\b0\f10\'a6   \'a6 visuelle \'dcberwachung       1                           \'a6  \f6 
+\par \f10  \'a6 7 : INDEX    \'a6   \'a6 i : Import Parameter:      MAB2                      \'a6  \f6 
+\par \f10  \'a6 q : QRIX     \'a6   \'a6 e : Export Parameter:      I-1    +--------------------+  \f6 
+\par \f10  \'a6 8 : SORT     \'a6   \'a6\cf1\b\f6      Export Datei    :\cf2\b0   \cf0\f10            \'a6\cf1 k:\\opac\\neudat\f6 .alg\cf0\f10   \'a6  \f6 
+\par \f10  \'a6 9 : UPDATE   \'a6   \'a6 e : Export Parameter:             +-----Dateiname------#  \f6 
+\par \f10  +--------------+   \'a6     Export Datei    :                                  \'a6  \f6 
+\par \f10                     \'a6 e : Export Parameter:                                  \'a6  \f6 
+\par \f10                     \'a6     Export Datei    :                                  \'a6  \f6 
+\par \f10                     \'a6                                                        \'a6  \f6 
+\par \f10                     \'a6 GO (START)                                             \'a6  \f6 
+\par \f10                     \'a6                                                        \'a6  \f6 
+\par                     +--------------------------------------------------------#  
+\par                                                                                 
+\par  in welche Datei soll exportiert werden?                                        
+\par  \b C:\\ALLEGRO\\DEMO\b0 
+\par  Datenbank = \b CAT\b0        Konfiguration = \b A\b0    Progr.Verz. =    \b C:\\ALLEGRO\b0 
+\par  \f10 Mehr\f6 platzbetrieb  \f10   \f6                       Sprache = \b GER\b0     Laufwerk = \b C\b0   V\f10 22.2\f6  
+\par 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274\f0\fs20 
+\par \f4 Sie sehen hier die Momentaufnahme zu dem Zeitpunkt, wo der Name f\'fcr die Ausgabedatei eingegeben wird. Wenn Sie diese Abbildung mit der entsprechenden im vorigen Kapitel vergleichen, bemerken Sie eine gro\'dfe \'c4hnlichkeit. Der wichtigste Unterschied ist, da\'df das Importprogramm nat\'fcrlich eine Import-Parameterdatei braucht und nur bis zu drei statt vier Exporte zugleich machen kann - was man aber kaum jemals ausnutzen wird. \f0 
+\par \f4 Die Auswahl der tats\'e4chlich zu importierenden Dateien findet erst nach dem Start des Programms (\'fcber Men\'fcpunkt "GO (START)" statt. Dann erscheint die Auswahlliste aller auf A:\\FREMD stehenden Dateien, und man setzt ein '+' vor jede gew\'fcnschte Datei. Wie schon erw\'e4hnt, m\'fcssen diese Dateien in ihrer Struktur zur der gew\'e4hlten Import-Parameterdatei passen, sonst geht mit Sicherheit etwas schief. \f0 
+\par 
+\par \pard\fi-658\li658\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274\b\fs36 5.2\tab Aufruf des Programms aus Batchdateien\b0\f4\fs24   [ab V32 nur noch so]\f0\fs20 
+\par \pard\tx432\tx914\tx1634\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx7920\tx8654\tx8834\tx9554\tx10274\f4 Das Programm IMPORT kann, wie die anderen, auch als Modul benutzt werden. S\'e4mtliche oben beschriebenen Angaben, die das Programm abfragt, kann man ihm als Optionen "von au\'dfen" mitgeben, dann l\'e4uft es automatisch ab. Diejenigen Angaben, die es nicht \'fcber Optionen erh\'e4lt, fragt es aber noch ab. Man kann es daher so einrichten, da\'df immer nur die wirklich ver\'e4nderlichen Angaben im Dialog einzugeben sind. Makros werden ausf\'fchrlich in Kap.12 behandelt. \f0 
+\par \f4 Der in 5.1 als Beispiel beschriebene Vorgang w\'e4re mit folgendem Befehl zu starten: \f0 
+\par \b\f6 
+\par       import -f5 -d \f10 C\f6 :\f10 TEMP\f6\\\b0\i\f4 dateiname\b\i0\f6  -i\f10 MAB2\f6  -eI-1/k\f10 :\\opac\\neudat\f6 .alg -v1 -s0 -m1\b0\f0 
+\par 
+\par \f4 Genau diesen Befehl w\'fcrde auch das \b\i\f0 CockPit\b0\i0  produzieren, wenn man es auf diese Aufgabe ansetzt. Hinter\b\f6  -i\b0\f4  kann ein Dateiname mit vollst\'e4ndigem Pfad stehen, wenn die Importparameterdatei weder auf dem Daten- noch auf dem Programmpfad steht (nur auf diesen zwei Verzeichnissen sucht das Programm danach). \f0 
+\par \cf1\i Achtung:\cf0\i0  I\f4 MPORT\f0  erfordert in der Option  \b\f10 -d\b0\f0   eine der folgenden Bedingungen: 
+\par - Angabe eines absoluten Pfad\f4 -Datei\f0 namens mit Laufwerk\f4  und allem\f0  
+\par - Angabe einer Datei im aktuellen Verzeichnis (Angabe jedoch *ohne* \f10 .\\\f4  \f0 ) 
+\par \f4 - Angabe einer Datei in Verzeichnissen relativ zum \'fcbergeordneten Verz. (Angaben \f0 beginnen mit "\b\f10 ..\\\b0\f0 " 
+\par \f4 - Mit + direkt hinter \f10 -d\f4  erreicht man, da\'df automatisch und ohne Nachfrage \b alle Dateien\b0  genommen werden, deren Name auf das hinter \f10 -d+\f4  angegebene Namensmuster pa\'dft.\f0 
+\par 
+\par \f4 F\'fcr Routineaufgaben, die sich regelm\'e4\'dfig wiederholen, wird man ein solches Makro anlegen, wom\'f6glich sofort kombiniert mit einem nachfolgenden Aufruf von INDEX oder UPDATE, um die frisch umgewandelten Daten sofort in eine Datenbank einzuspeisen. Beispiele daf\'fcr sind die mitgelieferten Makros DBDISK.BAT, OCLC.BAT, PICA.BAT und VLB.BAT. Diese sind in der Datei CP.OPT verankert (in R- oder S-Zeilen, \f6 -\f7\'d8\f4  0.11.6), so da\'df sie vom \b\i\f0 CockPit\b0\i0\f4  aus gestartet werden k\'f6nnen. Sie beziehen sich dann jeweils auf die gerade eingestellte Datenbank und erwarten die Fremddaten auf dem Startverzeichnis unter den Namen MAB2.DAT, MARC.DAT, PICA.DAT bzw. VLB.DAT. Verwenden Sie diese Beispiele als Strickmuster f\'fcr eigene derartige Prozeduren. Letztlich braucht der Anwender dann diese Kapitel nicht zu lesen - ein einziger Tastendruck im \b\i\f0 CockPit\b0\i0\f4  veranla\'dft den automatischen Ablauf aller Vorg\'e4nge. \f0 
+\par 
+\par ?Importsprache=h ac11 
+\par ?Fertig-Prozeduren f\'fcr a99=h fremd
+\par ?UPDATE=h ac5#95 
+\par ?Kap.7=h ac7-1 
+\par ?Kap.9=h ac9 
+\par }
+ 

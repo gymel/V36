@@ -1,0 +1,146 @@
+  iban.flx : IBAN aus Kontonummer und BLZ errechnen (f.deutsche Banken)
+  2014-01-31  ohne Gewaehr  [Prototyp f. eigenstaendiges Unterprogramm]
+
+  Dies ist nur vordergruendig ein IBAN-Errechnungs-FLEX! Wichtiger ist,
+  dass man ihn als Prototyp nehmen kann fuer ein Unterprogramm, das
+  auch eigenstaendig laufen kann. Der Einsprung fuer den UP-Aufruf ist
+  die Sprungmarke :iban. Man haengt diese Datei an einen eigenen FLEX
+  unten an mit  include iban.flx. Im eigenen FLEX belegt man dann die
+  Variablen, die das UP braucht, #ukN=KtoNr und  #ubL=BLZ.
+  Dann Aufruf mit  perform iban
+  In der naechsten Zeile kann man auf das Ergebnis zugreifen, und zwar
+  steht es sowohl in der iV also auch in der Zwischenablage - damit ist
+  es sofort auch ausserhalb a99 verwendbar.
+  Ruft man diesen FLEX direkt auf, als eigenständige Aktion also, dann
+  fragt er selber die Variablen vom Nutzer ab, also KontoNr und BLZ.
+  Damit beginnt es (waehrend der perform-Aufruf weiter unten bei :iban 
+  zu arbeiten anfaengt).
+  Die logischen Abschnitte sind numeriert, um die Struktur und den
+  Ablauf klarer erkennbar zu machen.
+  Hinweis:
+  Es gibt ein anderes, aber erheblich groesseres und deshalb schwerer
+  ueberschaubares Beispiel fuer ein eigenstaedig aufrufbares UPro:
+  Die Datei  ftr.inc  kann eingebunden werden und leistet dann
+  mit einem einzigen Befehl, perform ftr, eine Volltext-Duchsuchung
+  der Gesamtbank!
+
+
+// 1. Vorbereitung der Variablen, falls eigenstaendig aufgerufen
+ask Die Kontonummer?=#ukN
+if "" end
+  in #ukN ablegen
+ins #ukN
+
+:blz
+ask und die BLZ?=#ubL
+if "" end
+ins #ubL
+
+var #ubL Jl
+if =8 jump iban 
+mes eine BLZ hat 8 Ziffern!
+jump blz
+
+
+// 2. Unterprogramm, falls von aussen aufgerufen.
+      Auf Wunsch hier anderer Name moeglich!
+:iban
+
+// 2a. Variablen checken
+var #ukN
+  Spatien und Bindestriche rausnehmen
+ins _ __
+ins _-__
+if "" return
+  auf 10 Stellen rechtsbuendig machen
+var (0,r10)
+  fuehrende Spatien durch Nullen ersetzen
+ins _ _0_
+ins #ukN
+
+  #ubL nochmal checken
+var #ubL Jl
+if =8 jump bban 
+mes eine BLZ hat 8 Ziffern!
+var ""
+return
+
+// 2b. Eigentliche Abarbeitung
+:bban
+  BBAN zusammensetzen (1314 == DE)
+var #ubL #ukN "131400"
+
+ins #ubB
+
+  Pruefz. berechnen
+  Die BBAN hat 24 Stellen, man braucht den Divisionsrest mod 97
+  Das geht nicht mit Operator %, die Zahl ist zu lang und es waere auch zu langsam.
+  Es geht anders und schneller, ohne Division:
+  
+:rech
+var #ubB(f"0")
+ins #ubB
+var #ubB(0,2)
+if >96 jump n2
+var #ubB(0,3)
+if >96 jump n3
+:n2
+ins #ufO
+var #ubB(2,0)
+ins #ubB
+jump rech
+:n3
+ins #ufO
+var #ubB(3,0)
+ins #ubB
+:lop
+eval #ufO -97
+ins #ufO
+if >96 jump lop
+var #ufO #ubB
+ins #ubB
+if >96 jump rech
+
+var #ubB(0,r2)
+ins _ _0_
+
+ins #ubB
+ 
+  Ergebnis von 98 subtrahieren, 2stellig und bei Bedarf fuehrende 0
+eval 98 -#ubB
+ins _ _0_
+ins #ubB
+  das ist nun die Pruefzahl
+ 
+  Jetzt die Teile zusammenfuegen:
+var "DE" #ubB #ubL #ukN
+
+
+// 2c. Ergebnis steht in iV, noch in die Zw.Abl. kopieren
+ccopy
+  Meldung erstellen und in $meldung lagern
+var "Die IBAN steht nun in der Zwischenablage, und zwar: " n "DE" #ubB #ubL #ukN 
+ins $meldung
+
+  Variablen loesch
+#ubB
+#ukN
+#ubL
+#ufO
+  IBAN wieder aus Zw.Abl. in iV kopieren
+cpaste
+// 3. UPro Ende, d.h. falls als UPro aufgerufen, dann hier Ruecksprung
+return
+
+// 4. Ende bei Direktaufruf ("return" wird dann uebersprungen!)
+   Meldung anzeigen im Schreibfeld ("message" auch moeglich)
+var $meldung
+sho iV
+  IBAN ist noch in Zw.Abl., wieder in iV kopieren
+cpaste
+  falls gewuenscht, Absicherung in $IBAN:
+ ins $IBAN
+
+end
+
+

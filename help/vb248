@@ -1,0 +1,186 @@
+
+Verlautbarung 248 der Entw.Abt.                              2012-07-18
+-------------------------------
+
+
+V32.6 ist da
+============
+
+
+ACHTUNG: Damit alles klappt, was hier beschrieben ist, muss man 
+         folgende Komponenten aus V32.6 unbedingt haben:
+         a99.exe/a99a.exe, acon.exe, srch.exe, update.job, ftr.flx
+
+
+srch32 : Dateiauswahl verbessert
+--------------------------------
+Zwar geht es nicht wie beim alten srch, dass man die zu durchsuchenden
+Dateien bequem mit + markieren und dadurch eine beliebige Auswahl 
+treffen kann. So etwas ist in einem echten Konsolprogamm, und ein
+solches ist srch32, nicht am Platze: Ein Konsolprogramm soll, nachdem
+gestartet, ohne weitere Interaktion durchlaufen und entweder mit
+Fehler- oder sonstiger Meldung abbrechen oder Ergebnisse liefern und
+sich selbsttaetig beenden.
+Man muss also dem Progamm die zu durchsuchenden Dateien mittels der
+Option  -d<namensmuster>  mitteilen, z.B.  -ddemo2\cat_*.alg  oder
+-dc:\allegro\demo2\cat_*  oder noch anders.
+Nicht alle denkbaren Namensmuster klappten aber, auch war es nicht 
+moeglich, mit -d...\cat*.al?  sowohl die .ald als auch etwaige .alg
+gemeinsam zu durchsuchen. Nun geht das alles.
+Wer jedoch Datei _1 und Datei _5 durchsuchen will, aber nicht Dateien
+_2 und _3, muss das in zwei Durchlaeufen hintereinander machen, in 
+einem geht's nicht.
+Erinnert sei daran, dass srch32 im Gegensatz zum alten DOS-SRCH eine
+Option -r hat, mit der man regulaere Ausdruecke suchen kann wie in
+a99 und acon mit dem FLEX-Befehl srx (eingebaut in ftr.flx). Die
+alte Option  -s  ist unveraendert, und das muss auch so sein, damit
+alte (zahlreich vorhandene) Batch-Skripte unveraendert arbeiten!
+In V32.6 ist nun srch.exe das bisherige srch32.exe, und das alte 16bit-
+srch.exe kommt nun als srch16.exe daher. So wird nun das Gesamtpaket
+vollstaendig lauffaehig unter Win'7/64.
+
+
+a99 : Globale Ersetzung verbessert
+----------------------------------
+Was bislang nicht ging: Im selben Such- und/oder Ersetzungsbegriff
+sowohl ein Komma wie einen _ zu haben. Denn eins von beiden musste als
+Begrenzerzeichen herhalten, obwohl von aussen nicht erkennbar.
+Dem wurde jetzt abgeholfen. Die meisten hatten das eh nicht gewusst,
+weil das Problem sehr selten auftritt. Nun braucht's gleich gar keiner
+mehr zu wissen, weil's nicht mehr so ist. (Natuerlich geht eine solche
+Verkleinerung der externen Komplexitaet einher mit einer Vergroesserung
+der internen, aber das interessiert kaum jemanden, weshalb's hier
+lediglich in Parenthese vermerkt sei.)
+
+Kleinere, behobene Probleme in a99:
+1. next #  klappte nicht mehr bei unbesetzten Satznummern
+2. index p name  : anschliessend Absturz, wenn name.api nicht gefunden
+
+
+a99 : Volltextsuche nach # innerhalb von Feldern
+------------------------------------------------
+Das Zeichen # darf innerhalb von Feldern vorkommen, obwohl es als
+Kategorie-Anfangszeichen eine Sonderbedeutung hat. In den gespeicherten
+Datensaetzen ist es jedoch am Feldbeginn nicht mit gespeichert, als
+Datenzeichen innerhalb von Feldern aber schon. Aeusserst selten zwar,
+aber gelegentlich eben doch, hat jemand das Zeichen nicht nur als
+Datenzeichen benutzt, sonden will auch mal in der Volltextsuche nach
+diesem Zeichen gezielt suchen. Das ist dann nicht so einfach. Eine
+richtig gute Loesung hat sich dafuer noch nicht gefunden, weil die
+Volltextsuche mit regulaeren Ausdruecken eine doch recht komplexe 
+Angelegenheit ist, die noch mit allegro-Besonderheiten zusaetzlich
+"angereichert" wurde...
+Eins muss man aber sehen und beruecksichtigen: Die Funktion "Volltext-
+suche" im Menue "Finden" ist keine interne, "fest verdrahtete" Sache,
+sondern es wird ein FLEX namens  ftr.flx gestartet. Dieser arbeitet so,
+dass jeder Satz zuerst mit "fetch rec" komplett in die iV eingelesen 
+wird. Jedes Feld beginnt dann, anders als in der Datei, mit einem #,
+auch wenn die CFG (Wert K) was anderes sagt! Und am Feldende, vor dem
+naechsten #, steht ein Code 10. Dies kann man nutzen, wenn gezielt
+NUR Feldnummern gefunden werden sollen, und nicht Vorkommnisse der
+Zeichenfolge z.B. #40 innerhalb von Feldern. Die noetigen Vorkehrungen,
+damit das klappt, wurden jetzt im  ftr.flx  getroffen, ferner wurden
+ein paar kleinere Verbesserungen in a99 angebracht, die z.B. dafuer
+sorgen, dass ein Datensatz, der zum Zeitpunkt des Starts der
+Volltextsuche gerade in Bearbeitung ist, zuerst in den Reservespeicher
+kommt, damit die Bearbeitung nicht verlorengeht. Ferner, damit auch
+das erste Feld des Satzes als solches gefunden wird, was nicht ganz 
+trivial ist, weil ihm beim Einlesen kein Code 0 vorangeht, wie bei
+allen anderen.
+Nun muss man nur noch wissen, wie man den Code 10 bei der Suche
+beruecksichtigen kann: Das geht mit \n (= UNIX-Maskierung fuer
+"new line" = Code 10).
+
+Damit werden folgende Dinge moeglich:
+
+-- Saetze finden, in denen ein Feld #81 vorkommt, wobei aber die
+   Zeichenfolge #81, falls sie nur *innerhalb* irgendeines Felds
+   auftritt, nicht gilt:
+     \n#81
+
+-- Saetze finden, in denen in irgendeinem Feld #61x ein # vorkommt
+     \n#61.*#
+
+-- Saetze finden, in denen *genau* im Feld #61 ein # vorkommt (wobei
+   Vorkommnisse in z.B. #61a unbeachtet bleiben)
+     \n#61\s.*#   (mit \s wird das Spatium codiert)
+
+-- ... in denen in gar keinem Feld intern das Zeichen # auftritt:
+     -\n#.*#
+   bzw. ohne das -, um genau die Saetze zu finden, in denen ein #
+   innerhalb eines Feldes irgendwo auftritt und nicht nur am Beginn.
+
+-- ... in denen ZWEI oder mehr Felder #81x vorkommen
+   Das geht nicht ohne Eingriff in  ftr.flx! Bei etwa Zeile 147
+   fuegt man vor der Befehlszeile  srX  diese Zeile ein:
+   ins _^J_@_
+   und gibt dann den Suchbefehl so ein:
+   @#81.*@#81
+   Denn sonst steht ja ein Code 10 (^J) vor der Feldnummer, und
+   der Code 10 gilt als Feldende, und die Maskierung .* gilt
+   nur bis zum Feldende, so aber bis zum Satzende.
+
+Auch hiermit sind gewiss nicht alle Wuensche und Erwartungen
+abgedeckt, aber doch Fingerzeige gegeben, wie man neu auftauchende
+Spezialfaelle u.U. ohne Eingriffe in a99 durch Modifikation im
+ftr.flx loesen koennte.
+Nicht wirklich alles elegant, und nicht allen durch andere Suchsysteme
+gepraegten Erwartungen entsprechend (z.B. Perl), aber mehr hat sich 
+unter den gegebenen Umstaenden und in vertretbarer Zeit nicht
+realisieren lassen - ein allegro-Datensatz ist eben kein ganz normaler
+Prosatext.
+Es wurde auch erwogen, aber nicht geschafft, jedes beliebige Zeichen
+mittels einer Maskierung wie z.B. %xnn suchen zu koennen (mit hex-
+Ziffern nn). Das bleibt auf dem Zettel der Desiderate.
+Der Hilfetext  ftr.rtf  wurde um einen Anhang erweitert.
+
+
+acon: update.job verbessert
+---------------------------
+Es gab noch funktionale Maengel beim Updating mit update.job, vor
+allem bei der Funktion -fc. Diese wurden behoben.
+Unterschiede zwischen  --asif  und  -fc:
+
+o  Die Funktion  -fc  prueft nur auf Vorhandensein (anhand Prim.Schl.)
+   UND gibt neuen + alten Satz mittels Export aus, daher muss dann
+   auch eine Option  -eparam/dateiname  angegeben sein.
+
+o  --asif geht mit jeder Funktion -fmxy und gibt die Protokollmeldungen
+   auf dem Monitor aus und in die Datei upro, macht aber wie -fc keine
+   Speicherung, d.h. in upro sieht man, was geschaehe, wenn --asif
+   nicht angegeben waere. Option -e ist dabei optional und bewirkt dann
+   dasselbe wie bei -fc.
+
+Wenn man beides kombiniert, was wenig Sinn macht, ist Option -e 
+gleichfalls nicht optional, sondern muss sein.
+ 
+
+OpenSource-Projekt: Dokumentation
+---------------------------------
+Die Freigabe der allegro-Quellcodes kann nur Fruechte tragen, wenn sie
+von umfassender Dokumentation begleitet wird. Das seit 2.5 Jahren
+laufende OS-Projekt naehert sich zum Jahresende seinem Abschluss.
+Mit der Freigabe der a99-Codes, erstmals auf dem Expertentreff
+am 28./29.6. vorgestellt, ist schon jetzt alles "draussen", was fuer
+ein vollstaendiges "Gesamtpaket" gebraucht wird. 
+Gearbeitet wird noch an den zum Kompilieren notwendigen Skripten
+und Hilfsdateien und ihrer uebersichtlichen, funktional sinnvollen
+Bereitstellung im SVN. 
+Die OS-Dokumentation wird nun zusammengefuehrt und der Zugang zu
+ihr erleichtert durch eine schlichte Startseite:
+
+  http://www.allegro-c.de/os/
+
+Neu und auch auf dem Expertentreff noch nicht gezeigt ist der
+"Erste Einstieg", der das Kompilieren der "Quadriga"-Programme
+mit allen Schritten demonstriert, zunaechst fuer Windows und den
+aktuellen Compiler VisualC++ 2010 von Microsoft, wobei fuer die
+Quadriga die kostenlose Express-Version ausreicht. Nur fuer a99
+braucht man die kostenpflichtige Professional-Version. Auch die
+fuer 2011 tut es, und wir verifizieren sobald als moeglich die
+Eignung der Vorab-Version fuer 2012. Damit ist dann sicher, dass
+man auch mit Windows '8 nicht auf verlorenem Posten stehen wird.
+Mindestens bis 2022, so schaetzen fuehrende Analysten, wird heutige
+32bit-Software auf den jeweils Windows-Plattformen lauffaehig bleiben.
+Fuer allegro-Anwender ist mit V32.6 Aufatmen angesagt.
+

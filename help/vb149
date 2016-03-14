@@ -1,0 +1,186 @@
+
+Verlautbarung 149 der Entw.Abt.                          2001-03-13
+-------------------------------
+
+Bereitgestellt auf AC21:
+
+   a99.lzh
+   alcarta.lzh    -->  ProgDir
+   NHELP.LZH      -->  ProgDir\HELP
+   NFLEX.LZH      -->  ProgDir\FLEX
+
+
+1. Passwortverfahren
+2. Noch 2 On-FLEXe:  onexprec.flx und onexpset.flx
+3. Berechtigungsstufen
+
+1. Passwortverfahren
+--------------------
+Bisher kann man den Zugang zu einer "allegro"-Bank nur per
+Betriebssystem absichern: Wer in das Novell- oder NT-System
+nicht reinkommt, hat ja eh keine Chance, und wer auf dem
+Datenbankverzeichnis kein Schreibrecht hat, kann kein Unheil
+an den Daten anrichten. Insofern war schon immer eine gewisse
+Sicherheit gegeben, und zwar mit wenig Aufwand.
+Mancher Systemverwalter moechte aber evtl. etwas weiter gehen
+und auch den EINSTIEG per a99 oder alcarta noch absichern,
+besonders dann, wenn der User eine hohe Berechtigungsstufe hat
+Denn denkbar ist, dass jemand am PC des gerade zur Mittagspause
+gegangenen Users vorbeikommt und auf ein a99-Icon klickt. Schon ist
+er "drin". Jetzt kann man das verhindern. Bei einem Programm der
+Maechtigkeitsklasse von a99 kann das nicht verkehrt sein ...
+AUSSERDEM: der Nutzer sollte daran gehindert werden, sich
+selber eine INI mit einer hoeheren Berechtigung zu machen oder
+eine vorhandene mit hoeherer Berechtigung zu benutzen. Seine
+tatsaechliche Berechtigung muss daher mit der Passwortpruefung
+gleichfalls gecheckt werden.
+"alcarta" funktioniert weiter ohne Passwortsicherung!
+
+Wenn Sie die Methode standardmaessig anwenden wollen, gibt's nicht
+viel zu tun: (Das Einrichten der INIs ist viel mehr Arbeit)
+
+0. Gebraucht werden:
+      auf  ProgDir\FLEX:  NPW.FLX und PASSWORD.FLX 
+      auf  ProgDir\HELP:  NPW.RTF
+
+1. Liste der Nutzernamen machen, d.h. je Nutzer eine moeglichst
+      kurze Bezeichnung (am besten dieselbe wie beim Netzzugang)
+      Zu jedem notieren, welche Berechtigungsstufe er/sie
+      maximal haben soll  (siehe unten)
+      (mehrere Nutzer koennen dieselbe INI nutzen!)
+
+2. Datenbank mit Berechtigung 9 starten (gilt speziell nur hierfuer)
+      (also die eigene INI vorher aendern)
+
+3. h npw  im Schreibfeld eingeben, Passwortmenue erscheint.
+
+4. Jedem Nutzer sein Passwort geben. Dabei wird die Berechtigung
+      abgefragt, die er haben soll! Sie geht in das verschluesselte
+      Passwort mit ein. Anschliessend kann er jede INI mit dieser
+      oder kleinerer Berechtigung nutzen.
+      Sich selber muss er auch einen Nutzernamen geben! Und dazu
+      die Berechtigung 9.
+
+Nachdem man das gemacht hat, liegt auf DbDir die Datei _PSW.FLX und
+ein Unterverzeichnis PSW, wo die verschluesselten Passwoerter stehen.
+_PSW.FLX auf "Read Only" setzen! Der Nutzer kann dann nicht
+verhindern, dass es ausgefuehrt wird, und kommt somit ohne Passwort
+nicht hinein. _PSW.FLX ist eine Kopie von PASSWORD.FLX und darf
+datenbankspezifisch modifiziert werden.
+
+Wenn Sie mehr wissen wollen, lesen Sie weiter.
+Weiter unten ist auch eine Liste der Berechtigungsstufen und was sie
+jeweils an Rechten umfassen.
+
+Die neue Methodik kommt mit 2 neuen FLEXen aus:
+
+NPW.FLX
+           erlaubt dem Supervisor das Vergeben von Passwoertern.
+           Kann nur mit Berechtigung 9 benutzt werden.
+           EMPFEHLUNG an den Systemverwalter:
+           NPW.FLX nur auf das eigene Arbeitsverzeichnis legen.
+
+PASSWORD.FLX
+           ist die Prozedur, die den User nach seinem Passwort fragt
+           und ihn abweist, wenn's nicht stimmt (a99 stoppt abrupt).
+           Um wirksam zu werden, muss sie umkopiert werden auf
+           den Namen _PSW.FLX.
+           Wenn _PSW.FLX nicht auf einem der vorgesehenen Verzeich-
+           nisse liegt, wird kein Passwort abgefragt. Aber:
+           Wenn sie auf ProgDir oder ProgDir\FLEX liegt, wird sie bei
+           JEDER Datenbank ausgefuehrt! Als Standort ist deshalb
+           DbDir stark zu empfehlen, und nur bei denjenigen Banken,
+           die wirklich passwortgesichert sein sollen.
+
+           _PSW.FLX wird vor dem START.FLX ausgefuehrt. Das ist
+           "fest verdrahtet" (daher das '_' vor dem Namen).
+           Alternative: an den START.FLX hinten anhaengen
+           exec X password
+
+Unterstuetzt wird die Anwendung durch die Hilfeseite NPW.RTF.
+Geben Sie also ein:  h npw  (Berechtigung 9 noetig).
+
+Es gibt Moeglichkeiten zur individuellen Anpassung. Die Kommentare
+in den FLEXen NPW und _PSW weisen darauf hin. Evtl. wird man daten-
+bankspezifische Veraenderungen anbringen wollen.
+
+Hinterlegt werden die verschluesselten Passwoerter auf einem
+Verzeichnis  _PSW, das ans DbDir gehaengt wird.
+
+Was, wenn das Verzeichnis aus Versehen geloescht wurde?
+Dann Passwoerter neu vergeben. Um wieder rein zu kommen, muss der
+Supervisor vorher die Datei _psw.flx wegnehmen oder umbenennen!
+(Geheimtip, falls er mal selber sein Passwort vergessen hat)
+Jemand anders darf das nicht machen duerfen! Deshalb die
+Empfehlung: Die Datei  _PSW.FLX  gegen Veraendern schuetzen.
+Wenn das auf DbDir nicht geht: auf ProgDir oder ProgDir\FLEX legen.
+
+NICHT vorgesehen ist, dass Nutzer selber ihr Passwort aendern! Diese
+zusaetzliche Komplikation waere nur dann noetig, wenn personen-
+bezogene Daten in irgendeiner Weise beruehrt wuerden. Das ist aber
+nicht der Fall.
+Ein vertrauenswuerdiger Systemverwalter muss sowieso da sein, und
+der muss ohnehin alle Rechte haben und muss jeden Nutzer eintragen.
+
+Die Frage wird kommen: Kann nicht die Berechtigung mit dem Passwort
+zusammen so gespeichert werden, so dass sie die Eintragung in der INI
+ueberfluessig macht? Nein, so soll's nicht sein. Die Berechtigung,
+die fuer bestimmte Arbeiten gelten soll, muss in der fuer solche
+Arbeiten vorgesehenen INI stehen, und die gilt dann, auch wenn der
+Nutzer in Wahrheit eine hoehere hat.
+
+Da die Passwoerter nicht entschluesselt werden koennen, muss der
+Systemverwalter ein neues vergeben, wenn eines vergessen wurde.
+(Wenn er sein eigenes vergessen hat, siehe oben.)
+
+Protokoll
+---------
+Es wird, wenn man will, ein Protokoll ueber die Fehlversuche gefuehrt.
+Einstellbar in _PSW.FLX.
+Der Name ist "FALSCH.LOG" auf dem DbDir (wo der normale User Schreib-
+recht hat). Wenn der User dort kein Schreibrecht hat, ist es sowieso
+nicht wichtig, ob er einen Fehlversuch macht!
+
+
+2. Noch 2 On-FLEXe
+------------------
+Wenn die FLEXe  ONEXPREC.FLX bzw. ONEXPSET.FLX existieren, wird beim
+Menuepunkt "Export | Aktueller Satz" bzw. "... | Aktuelle Erg.Menge"
+dieser FLEX ausgefuehrt. Darin muss dann, wenn wirklich exportiert
+werden soll, der Befehl "dow" bzw. "dow set" stehen.
+Existieren diese FLEXe nicht, laeuft alles wie bisher.
+
+
+3. Berechtigungsstufen
+----------------------
+Jede Stufe umfasst auch alle Rechte der jeweils kleineren Stufen.
+
+0: Kein Schreibrecht. Phrasen werden nicht gespeichert.
+
+1: Schreibrecht nur in 1 Datei (INI-Befehl InputFile=n, n=1...255)
+   Phrasen werden gespeichert
+
+2: Schreibrecht in allen Dateien (1...255)
+
+3: Globale Aenderungen/Manipulationen/Loeschungen
+   Gesperrten Satz freigeben (Menue "Bearbeiten").
+   FLEXe starten mit "x ..." und "X ..."
+   FLEX-Befehle "update" und "upload" ausfuehren
+
+4: Sonderrechte:
+   Weitere Datenbank oeffnen
+   FLEX eingeben mit Ziffer im Schreibfeld (#uXi)
+   Loeschkontrolle uebergehen
+   Fenstergroesse wird gespeichert (alcarta)
+   MenÅpunkt "Gesperrte Saetze" unter "Extras"
+
+5: Supervisor-Rechte:
+   Speicherung auch wenn Zeitstempel falsch
+   Signalfile ignorieren
+   Hilfedateien speichern
+   ADM und ORG-Menues (in den Help-Dateien codiert!)
+
+9: Passwort-Zuweisung
+
+31: Sonderfall: Sinnvoll nur
+    bei Neuanlage einer Datenbank, also in der 1. Sitzung.

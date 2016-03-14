@@ -1,0 +1,331 @@
+
+QUEX : QUick and Easy eXport   Erweiterte Version              19.4.96
+----------------------------
+
+Mit QUEX wurde eine simplifizierte Exportmethodik entwickelt, die ohne 
+Eingriff in Parameterdateien auskommt. 
+Fuer schnelle ad-hoc Listen ohne grossen Anspruch oder Finessen wird man 
+nicht  mehr parametrieren muessen, besonders wenn ohnehin eine 
+Nachbearbeitung mittels WORD, dBase o.a. vorgesehen ist.
+
+Was soll QUEX leisten?
+
+ o  Erstellung einfacher sortierter Exportdateien ohne jede Parametrierung,
+    wobei besonders die Eignung der Datei fuer die Uebernahme durch
+    andere Software im Vordergrund steht. (Wenn man etwa Daten an eine
+    moderne Textsoftware uebergibt, hat man enorme Moeglichkeiten der
+    Umstrukturierung mittels Makros, daher muss nicht immer schon
+    eine diffizile Struktur durch "allegro" geliefert werden.)
+
+ o  Vorgabe einer beliebigen Kategorie fuer die Sortierung, auch mehrere
+    Alternativen, falls die Kategorie nicht besetzt ist.
+
+ o  Fuer den Export vorgebbar sollen sein:
+    - Zeilenlaenge (oder 0 fuer fortlaufend)
+    - Zeichen(kombinationen) fuer Satzanfang, Feldtrennung, Satzende
+    - Zeichenumcodierung fuer die Ausgabe
+
+ o  Hohe Geschwindigkeit, geringer Platzbedarf, damit das Verfahren auch
+    fuer grosse Eportmengen attraktiv ist.
+
+ o  Ausserdem soll die Methode weitestgehend unabhaengig vom Kategoriesystem
+    sein, d.h. die Parameterdateien sollen fuer jede CFG funktionieren.
+
+Zum Einsatz kommen, wie bei der QUANT-Auswertungsmethodik: 
+
+ -- die Option -U : damit kann man beim Programmaufruf (presto oder srch)
+    Inhalte fr Nutzervariablen vorgeben. Ein solcher Inhalt kann z.B.
+    eine Liste von Kategorienummern sein! 
+
+ -- der Manipulationsbefehl w : damit kann man einen Arbeitstext als
+    Kategorienummer interpretieren lassen, und die betreffende Kategorie
+    wird automatisch zum Arbeitstext gemacht, den man wiederum in eine
+    #u-Variable kopieren kann,
+
+ -- ak-Befehle mit #u-Variablen statt echten Kategorien.
+
+
+****  Fuer den eiligen Leser  *****************************************
+
+Wer sich mit der Theorie nicht lange aufhalten will, braucht nur dieses
+zu wissen: (und kann sofort mit Versuchen anfangen)
+
+Es gibt diese Dateien:
+
+QUEX.BAT      steuert den gesamten Ablauf, zu starten vom CockPit
+QUEX2.BAT     Es stellt eine Reihe von Fragen, richtet einige
+QUEX3.BAT     Environment-Variablen ein und startet die Programme.
+              (QUEX2 und QUEX3 werden aus QUEX heraus aufgerufen)
+
+S-QUEX.APR    macht im ersten Durchlauf (per presto oder srch) die
+              Aufbereitung einer sortierfaehigen Datei qx.clg
+              S-QUEX.APR muss man kopieren, z.B. auf S-QUEX.PPR, wenn man
+              mit P.CFG arbeitet.
+
+P-QUEX.APR    Nach dem Sortieren mit ASORT wird hiermit die Liste
+              erstellt. Auch hiervon muss man eine Kopie machen,
+              z.B. P-QUEX.PPR, wenn man mit P.CFG arbeitet.
+
+Q-EXPORT.APT  Hilfstabelle mit Zwischenteilen, wird von QUEX.BAT interaktiv 
+              ergaenzt und im zweiten Durchlauf von SRCH in P-QUEX.APR
+              eingebunden.
+              (Diese Zwischenteile stehen als Hilfszeilen auch in
+              QUEX2.APT und QUEX3.APT !)
+
+Diese Dateien sind alle ausfuehrlich kommentiert.
+
+Zwecks Anwendung baut man sich folgende Zeile bei den "Eigenen Routinen"
+in die .OPT-Datei ein:
+
+R QUick & Easy eXport, QUEX.BAT, Einfache- Listen und Dateiausgabe
+
+QUEX.BAT kann man auch von Hand starten, dann teilt es mit, welche
+Environment-Variablen man vorher setzen soll.
+
+Heraus kommt eine Datei LISTE, in der die ausgewaehlten Saetze alpha-
+betisch stehen, in der gewuenschten Anordnung.
+
+****  Ende fuer eilige Leser  *****************************************
+
+Wer es genauer wissen will, kann hier weiterlesen:
+
+Der Ablauf, gesteuert von QUEX.BAT, sieht so aus:
+Zuerst sind verschiedene Fragen zu beantworten:
+
+0. "Wollen Sie"
+    1 : Alles mit der Hand eingeben?
+    2 : Fruehere Einstellungen uebernehmen?
+    Wenn man 2 waehlt, kann man ein frueher erstellte QUEX-Einstellung erneut
+    auswaehlen (es erscheint eine Uebersicht) und ablaufen lassen, 
+    sonst muss man die nachfolgenden Fragen beantworten:
+
+1. "Nach welcher Kategorie soll sortiert werden?"
+   (Geben Sie eine oder mehrere Kategorien an, getrennt durch Kommas:  
+   z.B.    40,60,20
+   (genommen wird dann zum Sortieren die erste, die vorkommt!)
+   Zur Frage von Teilfeldern siehe unten.
+   
+2. Wenn keine Sortierkategorie vorkommt, was dann?
+     0 : Satz nicht ausgeben
+     a : Satz am Anfang der Liste plazieren
+     e : Satz an das Ende der Liste setzen
+
+    Die Antwort wird in eine Variable C2 umgesetzt.
+    Zur Sortieraufbereitung wird auf S.APT zurueckgegriffen, d.h.
+    fuer P.CFG sollte z.B. S.PPT existieren.
+
+3.  Sortiermodus:
+     1 = Normal (Umlaute aufloesen, Nichtsortierwoerter beseitigen)
+     2 = Pica-Namensmodus (Vorname@Nachname)
+     8 = Numerisch sortieren
+     9 = Keine Umcodierung - unveraendert sortieren
+    Hier koennen unterschiedliche Sortiermethoden eingestellt werden.
+    Je nach Wahl wird die Sortierkategorie dann entsprechend manipuliert.
+    Fr das numerische Sortieren werden auch Negativzahlen korrekt behandelt!
+
+
+
+4.   Welches Zeichen ist das Trenn- oder Endezeichen des Sortierfeldes?    
+     ( ;    - / . , ( * ' : =  oder  b=Leerzeichen )
+     (Wenn es nicht klappt, Eingabe mit t davor, z.B. t; )
+     Mit Hilfe des Trennzeichens wird die Sortierkategorie zerteilt.
+
+
+5.   Auswertungsmodus:
+     Waehlen Sie: 1 = nur den Anfangsteil auswerten (Ende beim Trennzeichen)
+                  2 = jeden Teil auswerten (auch Teile zwischen den Trennzeichen)
+     Wenn man 2 waehlt, koennen mehrere Ausgabesaetze je Datensatz entstehen
+
+6.   Wieviele Ausgabes„tze maximal je Datensatz?
+     (Geben Sie eine positive Zahl ein, oder 0 fuer unbegrenzt)
+     (wenn Sie [Enter] druecken, wird 1 angenommen)
+     Hiermit kann man ein Maximum setzen, wenn durch die Mehrfacheintraege
+     zu viele Ausgabesaetze entstehen koennten.
+
+Die Datei Q-EXPORT.APT muss vorhanden sein. Sie wird kopiert auf 
+EXPORT.APT, die dann ergaenzt wird.
+
+7.   Welche Art der Ausgabe-Aufbereitung ?
+     1 = nach Art von dBase (comma-delimited)          --> 8a
+     9 = nach eigenen Vorgaben                         --> 8b
+     Wenn man mit 1 antwortet, wird die Datei quexdb.apt auf export.apt
+     kopiert und es geht bei 8a weiter.
+     Wenn man hier 9 eingibt, muss man noch einige Fragen beantworten -> 8b:
+     (An dieser Stelle kann man Erweiterungen mit eigenen quexXY.apt-Dateien
+     anbringen, um bestimmte Aufbereitungen vorzuprogrammieren und diese hier
+     zur Auswahl anzubieten)
+
+8a.  Welche Kategorien sollen exportiert werden, auáer der Sortierkategorie?
+     (Geben Sie eine oder mehrere Kategorien an, getrennt durch Kommas:
+       z.B.    20,74,75,76,77,90
+     Es kann leider nicht eine Gruppe von Kategorien hier mit einer
+     einzigen Angabe wie #40. oder so zusammengefasst werden.
+     Teilfelder koennen aber vorgegeben werden:  100$a,260$c  usw.
+     Daraus wird zunaechst  %C9%  gemacht und spaeter verwendet (s.11.)
+     Zur Frage von Teilfeldern siehe unten.
+     ---> Weiter bei 10.
+
+8b.  "Wiederholungszeichen:"
+     Geben Sie hier die Zeichen ein, z.B. **** oder ---, die gesetzt werden
+     sollen, wenn der Sortierbegriff sich wiederholt
+                        (statt Leerzeichen den Unterstrich _ benutzen)
+     [Enter] wenn Sortierbegriff jedesmal vollstaendig auszugeben ist
+     0 geben, wenn der Sortierbegriff gar nicht auszugeben ist
+
+     Dann sind fuer jedes auszugebende Feld diese Fragen zu beantworten:
+
+  -- Geben Sie jede Kategorie einzeln ein, mindestens eine!
+     (Die 1. Kat. ist eigentlich die 2., denn zuerst kommt die 
+     Sortierkategorie, intern #u2. Es sei denn, man hat 8b mit 0 beantwortet)
+
+  -- Die 1. Kategorie bitte: 
+       Man gibt die Nummer ein, z.B.  20
+  -- Welches Textelement soll VOR diese Kategorie? (C = Neue Zeile)
+       0=keins       1='. '        2=', '        3='; '       4=C 
+       5=' : '       6=C C         7=' = '       8='. - '     9=' / '
+      10=' ('       11=')'        12=' ['       13=']'       14='   '
+     Geben Sie nur die Nummer ein!
+         Man gibt z.B. 1, wenn Nummer 1 gewuenscht ist
+     (Diese Liste von Zwischenteilen kann man veraendern: sie steht in
+     QUEX2.BAT, QUEX3.BAT und Q-EXPORT.APT. An allen drei Stellen muss
+     man dieselben Werte eintragen.)
+
+  -- 1 = In jedem Fall     2 = Nur wenn die Kategorie belegt ist
+         Wenn Nachverarbeitung durch Text- oder Datenbanksoftware
+         vorgesehen ist, wird hier meistens 1 die richtige Antwort sein.
+         Durch Makros muss dann geregelt werden, wie mit leeren Feldern
+         umgegangen wird.
+
+  -- .. und welches soll dahinter?
+         Wenn die Kategorie belegt ist, wird sie mit diesem Element beendet.
+         Wenn man [Enter] drueckt, kommt nichts dahinter.
+
+ 9.  Die 2. Kategorie bitte: (Ende: x)
+     ...
+     Es wiederholen sich die Fragen von 8b. bis zu 19 mal, d.h. man kann
+     bis zu 20 Kategorien vorgeben, jeweils mit eigenen Prae- und Postfixen.
+     (Die erste Kategorie ist die Sortierkategorie!)
+
+10.  "Zeilenlaenge? (0 = ohne Umbruch)"
+     Eine Zahl bis 130 bewirkt, dass ein Zeilenumbruch gemacht wird.
+     (Hierdurch wird letztlich der Parameter zl gesetzt)  
+
+11.  "Satz-Anfangszeichen? (in "..." , oder C = Neue Zeile)"
+     Am Anfang eines Satzes braucht man in der Regel kein Steuerzeichen,
+     jedoch kann man hier etwas einsetzen.
+
+12.  "Satz-Endzeichen? (in "..." , oder C = Neue Zeile)"
+     Und am Ende des Satzes koennte ebenfalls eine beliebige Kombination
+     verlangt werden.
+     Das Normale ist, hier C einzugeben (nicht "C"), um eine neue
+     Zeile Am Ende des Satzes zu erzeugen, oder C C, wenn es zwei
+     sein sollen. Jedoch ist auch jede andere Kombination moeglich,
+     etwa  " ENDE" C , um das Wort " ENDE" an den Schluss jedes
+     Ausgabesatzes zu setzen, und dann einen Zeilenvorschub.
+ 
+
+Die Antworten auf 8. bis 12. werden in eine Datei EXPORT.cPT geschrieben,
+diese wird per  "tEXPORT"  in P-QUEX.cPR eingebunden. Die Antwort auf Frage
+8. wird dagegen als -Uc9%C9% an das Programm srch uebergeben. So kommt
+man auch bei der Dateiausgabe ohne Eingriff in die Parameterdatei aus.
+
+Jetzt kommt eine Kontroll-Anzeige, wo man nochmal sieht, was jetzt als
+Vorgabe benutzt wird. Wenn irgendwas nicht stimmt, antwortet man mit n,
+und es geht nochmal bei 1. los.
+Wenn man aber 'j' sagt, kommt die Frage:
+
+"Sollen diese Einstellungen aufbewahrt werden?" j/n
+Bei Antwort 'j' muss man noch einen Namen xyz (bis zu 6 Zeichen) eingeben,
+dann werden Q-xyz.BAT und Q-xyz.XPT erstellt, worin die Einstellungen fuer
+spaetere erneute Benutzung aufbewahrt werden.
+
+13. "Wie soll die Auswertung erfolgen?"
+        1 : mit Volltextsuche  
+        2 : als Ergebnismenge (Export mit F4)
+     Bei 1 wird SRCH aufgerufen, dann muss man einen Volltext-Suchbegeiff
+     eingeben, bei 2 wird PRESTO aufgerufen, dann muss man eine Ergebnismenge
+     bilden und sie per F4 exportieren.
+     Beim Aufruf wird   -Uc1%C1% -Uc2%C2%  mitgegeben, 
+     d.h. es entstehen die Uservariablen #uc1 und #uc2, diese werden 
+     in S-QUEX.APR verwertet.
+
+14.  Es entsteht die Datei QX.cLG, mit  ASORT  wird sie sortiert. 
+     Das Ergebnis ist dann QUEX.cLG; QX.cLG wird geloescht.
+
+15.  SRCH verarbeitet QUEX.cLG zu der Ergebnisdatei  LISTE.
+     Dabei wird mit  -Uc9%C9%  die Liste der auszugebenden Kategorien dem
+     Programm uebergeben.
+     Zur Aufbereitung wird EXPORT.cPT herangezogen, das oben unter
+     Punkt 4 bis 8 erzeugt wurde. (Wenn man bei 4. mit 1 geantwortet
+     hat, ist EXPORT.cPT eine Kopie von QUEXDB.APT).
+     SRCH muss in diesem Durchlauf nachladen koennen, daher darf Option -b
+     nicht fehlen.
+     Zur Umcodierung der Ausgabe wird PRINTER.cPT herangezogen, d.h.
+     man sollte vorher per CockPit oder von Hand die geeignete Drucker-
+     treiberdatei auf printer.apt kopieren, bzw. printer.ppt etc.
+     QUEX.cLG wird am Ende geloescht.
+
+Das Verfahren ist bei groesseren Datenmengen besonders effizient, weil
+die Sortierdatei relativ klein ist, denn die Datensaetze selbst werden
+erst im letzten Schritt nachgeladen.
+
+
+Schematischer Ablauf von QUEX.BAT: (fuer Konfiguration A)
+
+   Abfragen    Export mit             asort             Export mit
+   vom        --------------> QX.ALG -----> QUEX.ALG --------------> LISTE
+   Benutzer    S-QUEX.APR                               P-QUEX.APR  
+               (srch/presto)                            (srch)
+
+Anstelle von P-QUEX.APR kann man selbstverstaendlich eigene Parameter einsetzen,
+die eine komplexere Ausgabe leisten. Es muss nur vor den Beginn der Ausgabe
+(der Kategorieliste) dieses eingebaut werden:
+
+#u2 e";" |01        Arbeitstext als Satznummer nehmen, Satz einlesen
+
+Hiermit wird die in #u2 stehende Satznummer (produziert von S-QUEX.APR) 
+genommen und der zugehoerige Satz geladen und zum aktuellen Satz gemacht.
+Der Rest laeuft wie sonst auch.
+
+
+Mehr Komfort fuer Teilfelder
+----------------------------
+
+Damit man auch Teilfelder bequem extrahieren kann, wurde der Manipulations-
+befehl w etwas erweitert:
+
+Wenn man z.B. dieses hat:
+
+#dt p"260$c" e5 w 
+
+wird der Arbeitstext als Kategorienummer interpretiert, also #260, und
+das Teilfeld c wird automatisch neuer Arbeitstext. (Das '$' ist hier
+wirklich das Zeichen '$', nicht als Stellvertreter fuer Code 31).
+
+Bisher war nur
+
+#dt p"260" e3 w
+
+moeglich, damit wurde aber die gesamte Kategorie zum Arbeitstext.
+Man konnte zwar dann
+
+#dt p"260" e3 w *c     (wobei * fuer das Dreieck steht)
+
+machen, aber genau das geht nicht mit der neuen Exportmethode: dabei kann
+man die Kategorienummer per -U uebergeben und auswerten, aber nicht die 
+Teilfeldkennung. Mit der neuen Erweiterung geht dieses jetzt.
+
+Nochmal ganz knapp: Man kann diesen Aufruf machen:
+
+srch .... -Uca260$c                      ... dann entsteht #uca260$c
+
+und dann in der Parameterdatei schreiben:
+
+#uca w
+
+und hat als Arbeitstext das Teilfeld c der Kategorie #260. (Auch dann,
+wenn man per CFG ein anderes Zeichen als Teilfeldzeichen deklariert hat.)
+
+ 
+MfG  B.E.
+

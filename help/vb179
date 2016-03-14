@@ -1,0 +1,225 @@
+
+Verlautbarung 179 der Entw.Abt.                       2004-09-01/16
+-------------------------------
+
+Kleinere Verbesserungen vor CD-Festschreibung
+=============================================
+Die V24.42 wurde noch in einigen wenigen Punkten, nur 12 an der Zahl,
+leicht verbessert, die jedoch fast alle nur fuer Spezialisten von 
+Bedeutung sind. Das Ergebnis heisst V24.6 und soll auf der in
+Vorbereitung befindlichen CD erscheinen. Die betroffenen Hilfetexte
+sind entsprechend aktualisiert worden.
+
+1. #u1 und #u2
+--------------
+Diesen Sonderkategorien, die es in jeder CFG gibt, haftet
+die Besonderheit an, leer sein zu koennen. Wozu das wohl gut
+sei, fragte man sich vergebens - es war schlicht eine 
+ungenaue Funktionsweise, die wir fuer a99 jetzt abgestellt
+haben. In PRESTO kann man sie noch leer eingeben, aber
+mit Befehl v beseitigen. Das bleibt so. In a99 konnte man sie
+aus dem FLEX heraus nicht loeschen, das war ungut. Jetzt
+kann man es, wie bei jeder anderen Kategorie.
+Aber aufgepasst: Wenn man die #u1 oder #u2 mit insert belegen
+will, dann unbedingt ein Leerzeichen hinter #u1 bzw. #u2
+setzen, es wird dort leider nicht automatisch eines eingefuegt.
+Das ist misslich, konnte aber nicht geloest werden - es hat
+mit der internen Sonderrolle dieser Felder zu tun.
+
+2. FLEX: write und var
+----------------------
+Die Manipulationsbefehle fuer die Ausgabe von Datenfeldern 
+wurden geringfuegig erweitert:
+
+2.1. Jetzt kann man schreiben    var #nnn(b"#uxy")  oder wri ...
+und dann wird aus dem Feld #nnn der Inhalt entnommen, der hinter
+der Zeichenkette steht, die sich in #uxy befindet. Das Ent-
+sprechende ging beim Export schon lange, bei FLEX aber nicht.
+
+2.2. Jetzt kann man schreiben   var (<manip.befehle>)
+     also ohne eine #nnn vor der Klammer.
+Die Manipulationsbefehle werden dann auf den Inhalt der iV 
+angewendet! Es entsteht ein neuer Inhalt, den man danach
+mit  ins #xyz  beliebig speichern kann.
+
+2.3. Steuerzeichen finden
+Wenn sich in der internen Variablen Steuerzeichen befinden,
+kann man diese mit den Manipulationsbefehlen b"..." und e"..."
+jetzt finden:  e"^M^J" heisst:  Ende bei 13 10
+(Siehe dazu auch Punkt 3. unten)
+Wenn man dies alles kombiniert mit einem vorangehenden 
+var F<dateiname>
+kann man sich beliebige Inhalte aus einer praeparierten Datei
+herausholen, die bis zu 256.000 Byte gross sein darf und die
+man deshalb ja nicht in einer #uxy zwischenlagern koennte. Z.B.
+
+var Fgcodes.txt
+var (b"e-gx " e"^M")
+ins #74c
+Wenn dann in der Datei  gcodes.txt  irgendwo steht 
+e-gx Deutschland  (und dahinter 13 10 als Zeilenende!)
+dann ergibt sich   #74cDeutschland
+
+3. Behandlung von Zeilenwechsel in Datenfeldern
+-----------------------------------------------
+Bisher konnte man, z.B. per  FLEX mit var und ins, durchaus
+die Codes 13 und 10 in Kategorien einschmuggeln. Da haben sie
+nichts zu suchen, genausowenig wie TAB-Zeichen.
+Jetzt geht das nicht mehr! 13 faellt weg, 10 wird in 20 umge-
+wandelt, also den normalerweise als Absatzendezeichen benutzten
+Code, aus 9 wird ein Spatium. Fuer #u-Variablen gilt das aber
+alles nicht! Denn die werden auch genutzt, um eingelesene Datei-
+inhalte aufzubewahren, und da soll nichts verfaelscht werden.
+Trick, um das zu umgehen:
+ins #u2
+var #u2
+ins #uxy
+#u2
+Denn #u2 gibt es immer und sie ist KEINE #u-Variable.
+
+4. FLEX: sho hist
+-----------------
+Damit kann man die History List ("Vorher angezeigte Daten")
+anzeigen lassen.
+
+5. FLEX: set hist
+-----------------
+Damit kann man den aktuellen Satz der History List anfuegen lassen.
+Wenn man also z.B. per Flip dem User einen anderen Satz zeigen
+laesst, kann man ihm die Moeglichkeit geben, danach mit dem
+Back-Button auf jeden Fall den vorherigen Satz wieder vorzuholen.
+
+6. FLEX: find
+-------------
+Jetzt kann man endlich einzelne Saetze einer Ergebnismenge anfuegen
+bzw. aus ihr herausnehmen:
+find /    haengt den aktuellen Satz an die Erg.Menge an, wenn er 
+          darin noch nicht vorkommt. Es gilt dann "if yes" bzw. "if no"
+find -    nimmt den aktuellen Satz aus der Erg.Menge heraus, wenn er 
+          darin vorkommt. Es gilt dann "if yes" bzw. "if no"
+Es entsteht jeweils eine neue Erg.Menge, die einen Satz groesser bzw.
+kleiner ist. Will man das verhindern: siehe 8.
+
+7. FLEX: find mit vorhandener Erg.Menge kombinieren
+---------------------------------------------------
+Mit find si und find :name kann man Erg.Mengen neu aktivieren, die
+vorher gebildet wurden (siehe  h xfind)
+Jetzt kann man auch die aktuelle Erg.Menge logisch kombinieren mit
+Erg.Mengen, die vorher gebildet wurden. Entweder weiss man deren Nummer
+oder deren Namen (= das, was in der Liste hinter dem Doppelpunkt steht).
+
+find /si   bzw.   find -si   bzw.   find *si
+kombiniert die aktuelle Erg.Menge (deren Bezeichnung unten auf dem
+langen Buttons steht) mit der Erg.Menge mit der Nummer i. Die Zaehlung
+der Erg.Mengen beginnt mit 1 = Lesezeichen.
+
+find /:name   bzw.   find -:name   bzw.   find *:name
+kombiniert die aktuelle Erg.Menge (deren Bezeichnung unten auf dem
+langen Button steht) mit der Erg.Menge mit dem Namen name.
+
+Hinweis: Befehle wie "find s1 and s2" gibt es nicht! Es kann immer nur
+eine der Erg.Mengen mit der aktuellen Erg.Menge verrechnet werden. Das
+ist eine Nachbildung der Mechanik, die man manuell mit den drei
+Boole-Buttons nutzen kann.
+
+8. FLEX close r-
+----------------
+Mit "close res" wird die letzte Erg.Menge geloescht, mit "close rc"
+die gerade aktuell geoeffnete, mit "close r<num>" die mit der Nummer <num>.
+Jetzt mit "close r-" gezielt die vorletzte - man muss also deren
+Nummer nicht wissen. Gut ist das in Kombination mit find - und find /:
+
+find /
+clo r-
+find s0
+In Schleifen vermeidet man so, dass sich zahlreiche Erg.Mengen mit
+jeweils 1 Satz mehr (oder weniger) ansammeln.
+
+Tip: Man belegt sich die zwei Flip-Buttons 9 und 10 folgendermassen:
+#uX9x find /\close r-\find s0
+#uX0x find -\close r-\find s0
+Dann wird mit Alt+9 bzw. Alt+0 dasselbe passieren wie bei PRESTO mit
+Druck auf / bzw. -: der aktuelle Satz wird der Erg.Menge hinzugefuegt
+bzw. aus ihr entfernt!
+
+
+9. Ergebnisfenster: Sortierpositionsmarkierung
+----------------------------------------------
+Die Position des Sortier-Dreiecks stimmte nicht mehr genau, das
+wurde korrigiert. Jetzt wird es durch einen Befehl ord ax 
+endlich richtig positioniert. Ausserdem: wenn keine allegro-
+Schrift benutzt wird, kommt statt des Dreiecks, das dann ja
+nicht existiert, ein dicker Punkt statt der hochgestellten 2.
+
+
+10. Phrasenspeicher zu knapp
+----------------------------
+Intern wird der sog. Phrasenspeicher stark in Anspruch genommen.
+Ist er voll, kann keine neue Phrase eingelagert werden. Es konnte
+immer noch vorkommen, dass dann ohne Fehlermeldung weitergemacht
+wurde, dann aber natuerlich irgendwas nicht korrekt klappte. Die
+Fehlersuche gestaltet sich dann schwierig. Es wurden an mehreren
+Punkten zusaetzliche Pruefungen eingebaut, und es kommt dann die
+erweiterte Meldung (uif-Zeile 48):
+  Phrasenspeicher zu klein!
+  Wert mP in der CFG hochsetzen.
+Damit man auch gleich weiss, was zu tun ist.
+Der Wert mP wird allerdings in a99/alcarta, anders als in PRESTO
+und APAC, intern sowieso noch um 10.000 erhoeht.
+
+11. Fortbildung
+---------------
+Mit im Paket ist auch die Fortbildung: fb.htm auf ProgDir\HTML.
+Aufruf: per Quick oder Eingabe  jan fb.htm
+
+12. Demo-Datenbank
+------------------
+Es wurden einige Daten neuerer Erscheinungsjahre hinzugefuegt und
+die Jahreszahlen der Erwerbungs- und Ausleihbeispiele hochgesetzt,
+weil das alles schon etwas alt aussah...
+
+13. Indexfenster verlaengert
+----------------------------
+Es zeigt jetzt 25 Zeilen und das Blaettern klappt exakt.
+
+14. Suchbefehlsfeld
+-------------------
+Dieses klappte nicht heraus. Jetzt tut es das und ermoeglicht die
+gezielte Auswahl eines vorher gegebenen Suchbefehls, um diesen zu
+modifizieren oder einfach neu auszufuehren.
+
+15. Neue FLEX-Sondervariable J
+------------------------------
+   J    Feldname des Feldes, dessen Nummer in der iV steht
+
+        Beispiel:  var "#39" J
+                   liefert in der iV den Text  "VerfAngabe"  aus der CFG
+
+Zu dem letzten Punkt werden 2 neue FLEXe mitgeliefert und eine Hilfsdatei:
+(enthalten in a99.lzh!)
+
+a.cfl     Liste der Felder mit definierten Unterfelder-Bezeichnungen
+
+cfga.flx  zeigt den aktuellen Datensatz mit Feld- und Unterfeldnamen (!)
+          Feldinhalte in rot
+
+cfgb.flx  kopiert den so angezeigten Datensatz aus der Anzeige wieder in den
+          Arbeitsspeicher, d.h. man kann im Anzeigefeld editieren.
+
+Um diese bequemen Funktionen auf Flip-Tasten zu legen, z.B. in die
+START.FLX einbauen:
+
+flip 2&2: Bearb.=X cfga
+flip 3&3: Speich.=X cfgb
+ 
+ Dann wird  Alt+2  den Satz mit Feldbezeichnungen anzeigen, Alt+3 wird den
+ so angezeigten Satz wieder einlesen und in den Arbeitsspeicher kopieren, wobei
+ die Unterfelder auch wieder alle korrekt zugeordnet werden.
+ Die Hilfsdatei wird automatisch eingelesen. Wenn's nicht klappt, muman
+ den Wert  mB  in der CFG h”hersetzen, z.B.  15000
+ Die Hilfsdatei kommt n„mlich komplett in  #uyF
+ Alle Variablennamen beginnen mit dem bisher nicht genutzten  #uy, darauf folgt 
+ ein Grossbuchstabe.
+
+Wenn man dasselbe fuer B.CFG machen wollte, muss man sich eine b.cfl entsprechend 
+selber anfertigen. Sonst hat man keine korrekte Anzeige der Teilfelder.

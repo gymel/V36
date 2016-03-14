@@ -1,0 +1,352 @@
+  ALD-CHK.FLX : ALD-Datei (Datendatei) auf Konsistenz pruefen
+  2003-06-26/2012-08-09  Adressen mit TBL vergl.
+
+
+yesno Alle Dateien? (Nein = eine auswählen)
+if cancel end
+if yes jump chk:dir
+
+:wahl
+
+  Auswaehlen
+  Liste der ALD-Dateien in ald.lst schreiben (per DOS-Befehl  dir ...*.?ld)
+var M "ald.lst"
+open x
+wri "Liste der Datenbankdateien: " n
+clo x
+var "cmd /c dir /b " D B "_*." K1 "ld >>" M "ald.lst"
+dos
+
+  Ueberschriften fuer ViewListe setzen
+set i7
+set i8 Balken auf die Datei setzen, die zu checken ist
+set i9
+
+  dir-Liste als ViewListe zeigen, Nutzer soll auswaehlen
+var M "ald.lst"
+View
+clo v
+  keine Auswahl? -> Ende
+if "" jump exit
+   Kommt _ vor? wenn nicht, dann ist nichts ausgewaehlt
+if not %_% jump exit
+   Ja, dann ausgewaehlte Zeile -> #uvD
+ins #u!D
+
+  Ruecksprung aus  :chk:dir  nach hier
+:chk:dat
+  es wurde keine Datei gewaehlt?
+if not #u!D end
+  In #u!D steht die Liste der Dateien, mit ; getrennt
+var "Bearbeitung beginnt. Esc = Unterbrechung" n
+sho IV
+
+  Hilfsdatei fuer die Ergebnisse anlegen
+var "file.chk"
+open x
+wri "Ergebnisse der Prfung " #dt n
+wri "DEL = Nummern gel”schter S„tze, LOC = Gesperrte S„tze"
+var "Ergebnisse der Prüfung " #dt n
+var +"DEL = Nummern gelöschter Sätze, LOC = Gesperrte Sätze"
+sho +IV
+
+:abarbeit
+   erster Name -> #uvD
+var #u!D(e";")
+ins #uvD
+
+  Dateinummer aus  cat_N.ald  herausnehmen, in #uvN tun
+var #uvD(b"_" e"." e" ")
+ins #uvN
+var "Datei " #uvD " wird verarbeitet"
+sho iV
+
+  Den Pfadnamen der Datei zusammensetzen
+var D #uvD
+fsize
+if =0 jump empty
+var (0,r8)
+ins _ _0_
+ins $fsz
+
+var D #uvD
+  und DatenDatei zum Lesen oeffnen
+open
+if not no jump name
+var "Datei " D #uvD "problematisch. Existiert sie?" 
+mes
+jump exit
+
+:name
+  Name dieser Datei
+wri n n "Datei " #uvD n n
+var n n "Datei " #uvD n n
+sho +IV
+
+fetch c
+
+if =1 jump chk:l
+if =8 jump chk:l
+if =9 jump chk:l
+ins $err
+var "Diese Datei ist anscheinend keine Datenbankdatei!" n "  Beginnt mit Code " $err " statt 1, 2 oder 9" n
+sho +IV
+wri "Diese Datei ist anscheinend keine Datenbankdatei!" n "  Beginnt mit Code " $err " statt 1, 2 oder 9" n
+jump dateiende
+
+z=100
+  Hauptschleife
+:chk:l
+  Esc gedrueckt?
+keychk
+if yes jump break
+  Position des Lesezeigers ermitteln (steht auf dem ersten Byte des Satzes,
+    und dieses Byte muss  1, 8 oder 9 sein.
+fet p
+  offset-Position des Datensatzes
+var (0,r8)
+ins _ _0_
+ins $opos
+
+z-1
+if z=0 var $opos "/" $fsz;sho iv;z=1000
+
+  erstes Byte des Satzes holen
+fet b
+  nichts mehr: ende
+if can jump dateiende
+ins #uvB
+var #uvB "x"
+  Hinter dem Satzende evtl. noch 13/10, uebergehen!
+if ="10x" jump chk:l
+if ="13x" jump chk:l
+   9 heisst "geloescht"
+if ="9x" wri "DEL ";jump numm
+   8 heisst "gesperrt"
+if ="8x" wri "LOC ";jump numm
+if ="1x" jump ok
+
+  Dieser Satz ist nicht ok! Nummer lesen (evtl. auch falsch!)
+fet b4
+ins #unZ
+  Meldung
+wri "Erstes Byte " #uvB " falsch, Satz " #unZ " auf Pos. " $opos " in file " #uvD n
+var +"Erstes Byte " #uvB " falsch, Satz " #unZ " auf Pos. " $opos " in file " #uvD n
+sho +IV
+  Zaehler
+eval $nok +1
+ins $nok
+  zum Satzende vorruecken und Schleife
+var 13
+fet e1
+ 
+jump chk:l
+
+:numm
+  jetzt die Satznummer einlesen
+fet b4
+ins #unZ
+  Satznummer in die Ausgabedatei schreiben (hinter DEL bzw. LOC)
+wri #unZ n
+
+:check
+  Adresse des aktuellen Satzes aus TBL ermitteln
+var #unZ
+get adr
+if "too large" jump toolarge
+if "no recnr" jump norecnr
+  in iV steht dann: dateinummer / position
+ins #unC
+  Stimmt Dateinummer ueberein mit der ausgewerteten Datei?
+var #uvN " /"
+  wenn nicht, dann -> :wrfil
+if not =#unC jump wrfil
+
+:pos
+var #unC(b"/ ") "x"
+ins #unP
+var $opos "x"
+var (f"0")
+if "x" var "0x"
+  Stimmt die Position auch ueberein? Nein -> wrpos
+if not =#unP jump wrpos
+
+
+:nchst
+
+  dann Lesen bis zum Code 13 (= Satzende!)
+  Dabei die Datenfelder checken
+jump fchk
+:rfchk 
+  -> Schleife
+jump chk:l
+
+  Wrong file
+:wrfil
+wri n "rec #" #unZ " Falsche Dateinr. " #uvN " (in TBL steht: " #unC(e" ") ") TEXT:"
+var "rec #" #unZ " Falsche Dateinr. " #uvN " (in TBL steht: " #unC(e" ") ") TEXT:"
+sho +IV
+  Zaehler
+eval $nok +1
+ins $nok
+
+  fet 4
+var 13
+fet e1
+ 
+ins #uvS
+wri #uvS(0,80) n
+jump nchst
+
+  Wrong position
+:wrpos
+wri n "rec #" #unZ " Falsche Position " $opos " (in TBL steht: " #unC(b" / ") ") TEXT: "
+var "rec #" #unZ " Falsche Position " $opos " (in TBL steht: " #unC(b" / ") ") TEXT: " n
+sho +IV
+  Zaehler
+eval $nok +1
+ins $nok
+
+fet 4
+var 13
+fet e1
+ 
+ins #uvS
+wri #uvS(0,80) n
+
+jump nchst
+
+  Satznummer zu gross
+:toolarge
+wri n "rec #" #unZ "(Pos. " $opos ") SatzNr zu hoch, es gibt nur " t " Sätze" n "   TEXT: "
+var "rec #" #unZ " (Pos. " $opos ") SatzNr zu hoch, es gibt nur " t " Sätze" n "   TEXT: "
+sho +IV
+  Zaehler
+eval $nok +1
+ins $nok
+
+var 13
+fet e1
+ 
+ins #uvS
+wri #uvS(0,80) n
+
+jump nchst
+
+  Satznummer ungueltig (z.B. <1)
+:norecnr
+wri n "#" #unZ " ist keine gültige SatzNr (Pos. " $opos ")" n
+var "#" #unZ " ist keine gültige SatzNr (Pos. " $opos ")" n
+sho +IV
+  Zaehler
+eval $nok +1
+ins $nok
+
+var 13
+fet e1
+ 
+ins #uvS
+wri #uvS(0,80) n
+
+jump nchst
+
+
+  Ende erreicht
+:dateiende
+var #u!D(b";")
+ins #u!D
+if #u!D jump abarbeit
+
+:listende
+  Dateien schliessen
+if $nok wri n $nok " Fehler" n
+if not $nok wri n "Keine Fehler"n
+if $nok var n $nok " Fehler" n
+if not $nok var n "Keine Fehler" n
+sho +IV
+
+wri n "ENDE" n
+
+close x
+close
+
+var "file.chk"
+help
+jump exit
+
+  Dieser Satz hat korrekt vorn die 1
+:ok
+  Die Satznummer einlesen (4 Byte)
+fet b4
+ins #unZ
+  zur Pruefung, ob sie gueltig ist
+jump check
+
+:exit
+  Ueberschriften fuer ViewListe zuruecksetzen
+set i7
+set i8
+set i9
+var M "ald.lst"
+del
+end
+
+:break
+close
+close x
+var "file.chk"
+help
+end
+  --------------------------------------------------------
+  Unterprog zum Sammeln der auszuwertenden Dateien in #u!D
+:chk:dir
+var D "*." K1 "ld"
+dir
+ins __;_
+ins #u!D
+  Jetzt ist #u!D = Liste der zu verarbeitenden Dateien
+  Hilfsvariable weg
+#u!d
+  UP beenden
+jump chk:dat
+
+  Felder des Satzes (nr. #unZ) einlesen und checken
+:fchk
+fet c
+   FeldEnde?
+if =0 fet b;jump fchk
+   Satzende?
+if =1 jump rfchk
+if =13 jump rfchk
+if =10 jump rfchk
+
+  Feld einlesen (bis zum Code 0)
+var 0
+fet e1
+
+  Fuellzeichen am Satzende?
+if "Û" jump rfchk
+  Hierarchiecode wegnehmen
+var (f"^B^C^D^E^F^G")
+if "" jump fchk
+ins $f
+  Feld pruefen
+var "#" $f
+check
+  Kein Fehler? dann naechstes
+if not "  " jump fchk
+
+  Sonst Fehlermeldung
+var (f" >")
+ins $e
+wri "Fehler in rec #" #unZ ": >#" $e n
+var "err in rec #" #unZ ": >#" $e n
+sho +IV
+
+jump fchk
+
+:empty
+var "Die Datei " #uvD " ist leer!" 
+mes
+jump wahl
+

@@ -1,0 +1,37 @@
+  RUECK.FLX : Rueckbuchung eines ausgel. Exemplars (ALFA)
+  2002-07-09
+
+var ""
+ins #usN
+  In #usn steht die Satznummer, wenn es ein verkn. Untersatz ist
+  sonst ist #usn leer, dann -> :normal
+if not #usn jump normal
+  aktuelle Satznummer in #usN lagern
+var #nr
+ins #usN
+  Untersatz laden
+var "#" #usn
+find
+
+  In #usc steht die Nummer der Signaturkategorie
+  Teilfelder $u und $D daraus loeschen:
+:normal
+var "$u-" #usc
+ins
+var "$D-" #usc
+ins
+
+put
+
+if not #usn jump haupt
+  
+  Wenn es ein verkn. Untersatz ist, Hauptsatz wieder laden
+var '#' #usN
+find
+  und wieder anzeigen
+:haupt
+disp
+  Anzeige zur betr. Zeile scrollen
+disp f
+
+sho rec

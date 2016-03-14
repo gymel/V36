@@ -1,0 +1,201 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\froman\fprq2 Garamond;}{\f2\froman\fprq2\fcharset0 Garamond;}{\f3\froman\fprq2\fcharset0 Times New Roman;}{\f4\fmodern\fprq1 Courier New;}{\f5\fnil\fprq2\fcharset2 Wingdings;}{\f6\fmodern\fprq1\fcharset0 Courier New;}{\f7\fswiss\fprq2 Univers;}{\f8\fswiss\fprq2\fcharset0 Univers;}{\f9\froman\fcharset0 Times New Roman;}}
+{\colortbl ;\red0\green0\blue255;}
+\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs20 
+\par  `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` 
+\par \pard\fi-1092\li1092\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f1\fs36 
+\par 10.2.6.6\tab\tab\f2 Export: \f1 Rechenbefehle\b0 
+\par \pard\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs20 
+\par \f3 Gerechnet werden soll mit den Inhalten von Kategorien - mit was sonst? Dabei kann es n\'f6tig sein, den in der Kategorie stehenden Text (der dann als Zahl anzusehen ist) noch auf andere Art vor- oder nachzubehandeln. Deshalb lag es nahe, auch die Rechenfunktionen als \b\f0 Manipulationsbefehle\b0  zu entwickeln (\f4 -\f5\'d8\f3  Kap.10.2.6.3), damit man alle n\'f6tigen Bearbeitungen miteinander kombinieren kann. Aus Gr\'fcnden der Effizienz wurde f\'fcr das Rechnen nur ein einziger Befehl geschaffen: der Buchstabe\b\f4   x\b0\f3   wird benutzt, um alle Rechenoperationen einzuleiten. Mehrere x-Befehle k\'f6nnen hintereinander ausgef\'fchrt werden. Gleich ein Beispiel: eine Kategorie #95 soll "\i\f0 Lieferant`/`Preis\i0 " enthalten, und wir wollen den Preis ausgeben, aber vorher sollen 20%% abgezogen und das Ergebnis mit 1.14 multipliziert und dann auf 2 Stellen gerundet werden. Das geht so: 
+\par \lang1033\f4 #95 x"*0.8" x"*1.14" x"r2" p"Endpreis: DM " 
+\par \lang1031\f0 Wenn in #95 z.B. "Meyer /\lang1033\f4  DM 531,90" steht, wird  "Endpreis: DM 485.09" ausgegeben. 
+\par \lang1031\f3 Die eigentlichen Rechenbefehle m\'fcssen also einzeln jeweils hinter einem  x  in Anf\'fchrungszeichen stehen. \f0 
+\par Die allgemeine Form eines Rechenbefehls ist 
+\par \b\f4\fs24 x"\b0\i\f0 OpWert\b\i0\f4 "\b0\f0\fs20 
+\par mit einem \b Operatorzeichen\b0  \i Op\i0  und dem zu verrechnenden \i Wert\i0 . Die Operation wird dann jeweils auf den aktuellen Arbeitstext angewendet, das Ergebnis ist ein neuer Arbeitstext - wie bei den anderen Manipulationsbefehlen. Es hat immer 9 Nachkommastellen (auch bei ganzen Zahlen), aber stets mit Punkt, nicht Komma. 
+\par \f3 Es macht nichts, wenn der Arbeitstext vor oder hinter der Zahl noch andere Angaben enth\'e4lt: das Programm sch\'e4lt sich die Zahl heraus (Punkt und Komma sind dabei gleichwertig) und beachtet alles andere nicht. Die Zahl kann negativ sein, dann mu\'df aber hinter dem Minuszeichen (Bindestrich) sofort die erste Ziffer folgen. \f0 
+\par Diese Operatorzeichen gibt es: 
+\par 
+\par \pard\fi-1092\li1092\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f4 + - * /\b0\f0\tab Grundrechenarten 
+\par \b\f4 %\b0\f0\tab\tab Divisionsrest  (z.B.  25%7 ergibt 4) 
+\par \b\f4 r\b0\f0\tab\tab Rundung (Dahinter als \i Wert\i0\f3  eine Ziffer f\'fcr die Anzahl der Stellen, 0 f\'fcr Rundung auf ganze Zahl) \f0 
+\par \b\f4 =\b0\f0\tab\tab Wertzuweisung: der aktuelle Arbeitstext (nicht die Kategorie!) wird durch \i Wert\i0  ersetzt 
+\par \tab\tab (Nicht verwechseln mit dem Manipulationsbefehl\b\f4  =xy\b0\f0 , \f4 -\f5\'d8\f0  10.2.6.3, der den Inhalt des Arbeitstextes in eine Anwendervariable kopiert) 
+\par \b\f4 >  >=\f0\tab\tab Vergleiche\b0\f3 : Diese Befehle ver\'e4ndern den Arbeitstext nicht. Er wird nur mit dem \i\f0 Wert\i0  verglichen. 
+\par \b\f4 <  <=\b0\f0\tab\tab Wenn die Bedingung zutrifft, wird mit demselben Arbeitstext die Zeile fortgesetzt, wenn nicht, 
+\par \b\f4 ==\b0\f0\tab\tab\f3 wird sie ergebnislos abgebrochen und zur n\'e4chsten \'fcbergegangen. (Vergleichen Sie dies mit den Manipulationsbefehlen\lang1033\f4  bX und cX.) \f3 Insbesondere kann man so auch bedingte Spr\'fcnge ausl\'f6sen. \f0 
+\par \lang1031\tab\tab Die Zeile 
+\par \lang1033\f4\tab\tab #77 +M x">=500" e0 
+\par \lang1031\f0\tab\tab\f3 bewirkt, da\'df zur Sprungmarke\lang1033\f4  #-M \f3 gegangen wird, wenn die Seitenzahl gr\'f6\'dfer oder gleich 500 ist. Dies funktioniert auch, wenn in der Aufnahme so etwas wie \f4  
+\par \tab\tab #77 ca. 600 S.   \f3 steht. R\'f6mische Zahlen werden nicht erkannt und deshalb \'fcbergangen. \f0 
+\par \lang1031\tab\tab Die Operation\b\f4   ==\b0\f3   pr\'fcft die Gleichheit als Gleitkommazahl, nicht als Zeichenkette. \f0 
+\par \pard\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par Als \i Wert\i0  kann man drei verschiedene Dinge einsetzen: 
+\par \pard\fi-1092\li1092\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b Zahl\b0\tab\tab eine sog. "Gleitkommazahl" mit Dezimalpunkt \b oder -komma\b0\f3 . Auch negative Zahlen sind m\'f6glich. \f0 
+\par \b Anw.var.\b0\tab eine Anwendervariable, dann wird deren Inhalt genommen und mit dem Arbeitstext verrechnet, z.B.\b\f4  x"+vb"\b0\f3   (f\'fcr\b\f4  #uvb\b0\f0  ; wenn diese nicht belegt ist, wird der Wert Null verwendet.) 
+\par \b Kat\b0\tab\tab eine normale Kategorie mit '#', also z.B.\b\f4   x"+#76\f6  \f4 "\b0\f0 
+\par \pard\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f3 Einige Hinweise auf n\'fctzliche Manipulationen: \f0 
+\par \lang1033\b\f4 e"."\b0  \f0 beseitigt den Dezimalteil,\f4  \b E".??"\b0  \f0 schneidet hinter der zweiten Nachkommastelle ab (beides ohne Rundung), 
+\par \b\f4 x"r0"\b0  \f0 rundet auf eine ganze Zahl,\f4  \b x"r2"\b0  \f0 rundet auf zwei Nachkommastellen, und 
+\par \b\f4 x"r2" r7,$\b0   \f3 tut dasselbe, macht aus dem Ergebnis aber dann eine siebenstellige, rechtsb\'fcndige Zeichenkette und f\'fcllt diese links mit '$' auf. \f0 
+\par \lang1031 
+\par \f3 Ein Beispiel mit Ablaufbeschreibung ("Seitensumme") finden Sie in 10.4.5, dazu geh\'f6rt die Parameterdatei\lang1033\f4  R-0.APR, \f3 die Sie als Prototyp f\'fcr rechnerische Auswertungen von Ergebnismengen ausnutzen k\'f6nnen. \f0 
+\par \lang1031 
+\par \pard\fi-1092\li1092\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs24 10.2.6.7\tab\tab\f3 Satzverkn\'fcpfungen  ("Nachladen" anderer S\'e4tze beim Export)\b0\f0\fs20 
+\par \pard\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f3 Nach heutiger Vorstellung sollen Datens\'e4tze in einer bibliothekarischen Datenbank keine isolierten Einheiten sein, die beziehungslos nebeneinander stehen. Aus der Sicht der strengen Theorie, die mit den Konstrukten "Normdatei" und "Mehrdateisystem" operiert, gab es bis zur Version 11.1 noch mehrere M\'e4ngel und daher offene W\'fcnsche: \f0 
+\par 
+\par \pard\fi-720\li720\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b 1.\b0\tab\f3 Mehrb\'e4ndige Werke konnte \lang1033\b\i\f0 allegro\b0\i0\f3  zwar schon gut speichern und drucken, aber man mu\'dfte das gesamte Werk als u.U. riesengro\'dfen und dann unhandlichen Datensatz erfassen. Besser w\'e4re, man k\'f6nnte wahlweise auch so verfahren, da\'df man die B\'e4nde als eigene Datens\'e4tze erfa\'dft, jedoch mit einer irgendwie gearteten Verbindung zum Datensatz der Hauptaufnahme. F\'fcr Druck und Anzeige m\'fc\'dfte dann alles wieder zusammenf\'fchrbar sein. Die Recherchierbarkeit der einzelnen B\'e4nde w\'fcrde sich gegen\'fcber der \'e4lteren L\'f6sung in dem Sinne verbessern, da\'df nur der rel\f0 evante Teil angezeigt wird. 
+\par \pard\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031 
+\par \pard\fi-720\li720\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b 2.\b0\tab\f3 Bestimmte Funktionen lie\'dfen sich bis V11.1 mit dem \lang1033\b\i\f0 allegro\b0\i0\f3 -Konzept gar nicht realisieren, wie z.B. diese: Anlegen einer Stammdatei f\'fcr Lieferanten - Eingabe eines Lieferantencodes in einen Bestellsatz - Einf\'fcgen der Lieferantenadresse in das Bestellformular, d.h. automatisches Zuf\'fchren der Angaben aus dem Stammsatz; oder: Anlegen einer Zeitschriften-Stammdatei mit unterschiedlichen Voll- und Kurztitelfassungen je Zeitschrift - Eingabe einer Kurzbezeichnung (wie z.B. CODEN oder ISSN) statt eines vollst\'e4ndigen Zeitschriftentitels bei der Erfassung von  Aufs\'e4tzen - Einf\'fcgen der jeweils gew\'fcnschten Titelfassung in die Dokumentaufnahme zum Zeitpunkt der Druckausgabe oder auch Bildschirmanzeige. \f0 
+\par \pard\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031 
+\par \pard\fi-720\li720\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b 3.\b0\tab\f3 Ansetzungsformen von Namen, Schlagw\'f6rtern u.a. mu\'dften konsistent in allen Aufnahmen gespeichert sein, um eine korrekte Zusammenf\'fchrung im Index zu gew\'e4hrleisten. Besonders bei K\'f6rperschaftsnamen bedeutet das nicht nur betr\'e4chtliche zus\'e4tzliche Eingabearbeit (die sich zwar durch die Kopierfunktionen des Editors mindern l\'e4\'dft), sondern auch mehr Speicherbedarf durch die redundante Speicherung. Unangenehme Klimmz\'fcge oder Kompromisse sind dann vonn\'f6ten, wenn es um Verweisungsformen geht. Verf\'e4hrt man so, wie\f0  es im \f4 -\f5\'d8\f3  Kap.1.6 angedeutet wird, speichert also in der Aufnahme nur eine Identifikationsnummer statt z.B. des K\'f6rperschaftsnamens, so konnte man noch bis Version 13 f\'fcr einen Ausdruck den Namen selbst nicht automatisch heranholen und einsetzen lassen - man mu\'dfte dann schon die richtige Namensform mit in der Aufnahme speichern. \f0 
+\par \pard\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-720\li720\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b 4.\b0\tab\f3\'c4nderungen an Ansetzungsformen mu\'dften in allen betroffenen Datens\'e4tzen durchgef\'fchrt werden statt an nur einer Stelle, n\'e4mlich im Normdatensatz. Zwar kann man mit der "globalen \'c4nderung" recht schnell solche \'c4nderungsaktionen bew\'e4ltigen, aber integrierte Normdaten sind halt doch noch eleganter! \f0 
+\par \pard\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f3 Ab Version 11.2 sind die M\'e4ngel 1. und 2., ab V14 auch 3. und 4. behoben, und zwar durch neue Befehle in der Exportsprache: \f0 
+\par \pard\fi-720\li720\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3\'b7\f0\tab der \b Nachladebefehl\b0  (ein Manipulationsbefehl) zum Heranholen eines anderen Satzes, und 
+\par \f3\'b7\f0\tab der \b Schaltbefehl\b0\f3  (ein Steuerbefehl), der zum Ausgangssatz zur\'fcckschaltet. \f0 
+\par \f3\'b7\f0\tab\f3 besondere Schl\'fcssel, \b\f0 Ersetzungs-\b0  und \b Pseudo\b0\f3 schl\'fcssel, erm\'f6glichen es, da\'df Nummern automatisch durch Ansetzungsformen ersetzt werden. Dieses geht erst ab V14  (\f4 -\f5\'d8\f0  10.2.6.8). 
+\par \pard\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f3 Warum \'fcberhaupt ist die Exportsprache der logische Ort f\'fcr die Satzverkn\'fcpfungen? Nun, die oben aufgez\'e4hlten Probleme haben eins gemeinsam: die Zusammenf\'fchrung des jeweils Zusammengeh\'f6rigen mu\'df immer nur zum Zeitpunkt einer Anzeige, Ausgabe oder Indexierung erfolgen, und genau daf\'fcr ist ja die Exportsprache zust\'e4ndig. Ansonsten k\'f6nnen alle Daten in der Datenbank stehen, wo sie wollen. Das Zusammenf\'fchren geschieht \'fcber den Index mit Hilfe von daf\'fcr pr\'e4parierten Schl\'fcsseln und geeigneten Exportbefehlen. Aber: Die Verkn\'fcpfungen sind deshalb indirekter Natur, ohne den darauf eingerichteten Index sind sie nicht nutzbar, da es sich nicht um direkte Querverweise zwischen Datens\'e4tzen handelt. Der Umgang mit Verkn\'fcpfungen ist f\'fcr den Parametrierer alles andere als trivial, und es bleibt das schwierige Problem der "satz\'fcbergreifenden Suche" zu beachten: \f0 
+\par 
+\par \pard\fi-720\li720\tx720\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b 5.\b0\tab\f3 Bei verkn\'fcpfter Speicherung von Haupt- und Unteraufnahme hat man das "Schiller-R\'e4uber-Problem": man findet Schillers "R\'e4uber" nicht durch UND-Verkn\'fcpfung, wenn "Schiller" nur in der Hauptaufnahme, die "R\'e4uber" aber nur in einem separat gespeicherten Untersatz stehen. Bei hierarchischer Speicherung ist das kein Problem, denn beides steht im selben Datensatz. Mit V15 wurde auch dieses Problem gel\'f6st (\f4 -\f5\'d8\f0 `10.2.9). 
+\par \pard\tx480\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f3 Die grundlegenden Mechanismen, den man braucht, um die Probleme 1-4 zu l\'f6sen, sind plausibel: \f0 
+\par 
+\par \pard\fi-480\li480\tx480\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b 1.\b0\tab\f3 im Prinzip mu\'df man in jeder Kategorie, wo es logisch sinnvoll ist, statt eines Textes auch einen eindeutigen Schl\'fcsselbegriff unterbringen k\'f6nnen, der sich auf einen anderen Datensatz (Normsatz bzw. \'fcbergeordneten Titelsatz) bezieht. Dieser Schl\'fcsselbegriff mu\'df einem Indexeintrag entsprechen, der zu dem anderen Satz geh\'f6rt. Meist ist das eine Identnummer, es kann auch so etwas wie ein "K\'fcrzel" sein (s.u.). \f0 
+\par \b 2.\b0\tab\f3 Beim Export (wozu auch die Bildschirmanzeige und die Indexierung geh\'f6ren) mu\'df das Programm mit Hilfe dieses Schl\'fcsselbegriffs entweder \f0 
+\par \pard\fi-1092\li1092\tx480\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab a)\tab\f3 den betreffenden Datensatz \'fcber den Index suchen und zus\'e4tzlich in den Arbeitsspeicher holen. Anschaulich: der nachgeladene Satz wird oben auf den/die schon vorhandene(n) \b\f0 gestapelt\b0 . Oder: 
+\par \tab b)\tab\f3 den Schl\'fcssel automatisch durch einen Klartext ersetzen (dazu \f4 -\f5\'d8\f0  10.2.6.8). 
+\par \pard\fi-480\li480\tx480\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b 3.\b0\tab\f3 Anschlie\'dfend steht im Fall a) der nachgeladene Satz bereit, und jeder seiner Bestandteile kann nun exportiert werden, mit allen M\'f6glichkeiten, die die Exportsprache bietet. Es k\'f6nnen auch noch weitere Nachladebefehle kommen, die den Stapel noch vergr\'f6\'dfern. Im Fall b) kann man so tun, als g\'e4be es die Identnummern gar nicht, sondern nur Klartexte. \f0 
+\par \b 4.\b0\tab\f3 Danach mu\'df man im Fall a) mit einem eigenen Befehl vom nachgeladenen Satz wieder zum Ausgangssatz zur\'fcckkehren k\'f6nnen, damit man mit dessen Export fortfahren kann. Anschaulich: der Stapel mu\'df, evtl. St\'fcck f\'fcr St\'fcck, wenn mehr als einmal nachgeladen wurde, wieder abgebaut werden. \f0 
+\par \b 5.\b0\tab\f3 Diese Vorg\'e4nge m\'fcssen w\'e4hrend des Exports eines Satzes selbstverst\'e4ndlich mehrfach und auch ineinander verschachtelt durchf\'fchrbar sein, um alle Eventualit\'e4ten damit in den Griff zu bekommen. \f0 
+\par \pard\tx480\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b Anwendungsbeispiel "Zitat"\b0 
+\par Nehmen wir als Beispiel die Erfassung von Aufsatzdaten. Die wesentlichen Kategorien sind 
+\par \lang1033\f4 #20  Aufsatztitel 
+\par #40  Verfasser 
+\par \f6 #70  Quelle (Zeitschriftentitel)    oder   #70 _K\'fcrzel \f4 
+\par \pard\fi-1440\li1440\tx480\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #704 Band \tab\f6 (das Programm erkennt am '_', da\'df in #70 ein K\'fcrzel steht und kein Titel) \f4 
+\par \pard\tx480\tx1092\tx1440\tx2016\tx2664\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 #706 Heft 
+\par #708 Seitenzahlen 
+\par #70i ISSN 
+\par \lang1031\f3 Nun w\'fcrden wir gern auf die Eingabe des vollst\'e4ndigen Zeitschriftentitels unter #70 verzichten, m\'fcssen dann aber auf einen "Stammsatz" f\'fcr die Zeitschrift zur\'fcckgreifen k\'f6nnen. Dieser Stammsatz h\'e4tte die Kategorien (\f4 -\f5\'d8\f0  Anhang B) 
+\par \lang1033\f4 #20  RAK-Ansetzungstitel der Zeitschrift 
+\par \f6 #8n  Zeitschriftentitel (normierte Ansetzung f\'fcr die Zitierung) \f4 
+\par \f6 #8na K\'fcrzel \f4 
+\par \f6 #8n1 Titel f\'fcr alternatives Zitierformat 1 \f4 
+\par \f6 #8n2 Titel f\'fcr Zitierformat 2  usw. \f4 
+\par #8nr andere Verweisungsformen des Titels (getrennt durch "; ") 
+\par #74  Erscheinungsort 
+\par #88  ISSN 
+\par \lang1031\f3 Die ISSN und das K\'fcrzel sollen im Index 5 registriert sein. In CAT.API ist das z.B. so geregelt. \f0 
+\par \f3 Unter #8n1, #8n2... kann man mehrere verschiedene Zitiertitel unterbringen. Nehmen wir an, es sollen nun die Aufsatzdaten mit dem Zitiertitel 2 gedruckt werden. Innerhalb der Druckparameterdatei h\'e4tten wir zu schreiben: \f0 
+\par \pard\tx480\tx1092\tx1440\tx2016\tx2664\tx2938\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-2937\li2937\tx480\tx1092\tx1440\tx2016\tx2664\tx2938\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f4 #70 +#8n2 i4,_ e";" |52\lang1033\b0\f7\tab\f8 Nimm Inhalt von #70; wenn es ein K\'fcrzel ist, lade den\f0  
+\par \lang1031\b\f4 #70i |52\lang1033\b0\f7\tab\tab\tab\tab\tab\f8 zugeh\'f6rigen Stammsatz. Wenn es keinen gibt: versuche es mit #70i,\f0 
+\par \lang1031\b\f4 #8n2 C p"In: "\lang1033\b0\f7\tab\tab\tab entnimm aus #8n2 Zitiertitel 2, neue Zeile, "In: " davorsetzen\f0 
+\par \lang1031\b\f4 #74 p" (" P")"\lang1033\b0\f7\tab\tab\tab Erscheinungsort in Klammern dahinter setzen\f0 
+\par \lang1031\b\f4 #<\lang1033\b0\f7\tab\tab\tab\tab\tab\tab\f8 zur\'fcckschalten, d.h. vom Stammsatz wieder zum Titelsatz\f0 
+\par \lang1031\b\f4 #704 p", "\lang1033\b0\f7\tab\tab\tab\tab\f8 restliche Aufsatzdaten ausgeben, so da\'df die Form\f0 
+\par \lang1031\b\f4 #76 p"(" P")"\lang1033\b0\f7\tab\tab\tab Titel, Band(Jahr)Heft, S.nnn-nnn    entsteht\lang1031\f0 
+\par \pard\tx480\tx1092\tx1440\tx2016\tx2664\tx2938\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f4 #706 
+\par #708 p", S."\b0\f0 
+\par Die zwei wichtigen Befehle sind hier der Manipulationsbefehl\b\f4   |52\b0\f0  , der das Nachladen des Stammsatzes bewirkt, und der Steuerbefehl\b\f4   #<\b0\f3  , der ihn wieder beseitigt, so da\'df die Arbeit am Ausgangssatz weitergehen kann. \f0 
+\par 
+\par \f3 Nun zur allgemeinen Form der Befehle f\'fcr das Nachladen von Datens\'e4tzen. \f0 
+\par Das Laden eines anderen Datensatzes wird durch den Manipulationsbefehl '\b\f4 |\b0\f3 ' veranla\'dft. Man mu\'df also zuerst die Kategorie angeben, in der der zu suchende Schl\'fcssel steht. Man sorgt daf\'fcr, da\'df der Arbeitstext genau dem zu suchenden Schl\'fcssel entspricht (auch bzgl. Gro\'df-/Kleinschreibung!). Wenn also z.B. in #70i hinter der ISSN noch etwas anderes stehen k\'f6nnte, w\'e4re\b\f4   #70i e9 |52\b0\f0   richtig gewesen (die ISSN hat immer 9 Stellen). Der \b Nachladebefehl\f4  |52\b0\f3  nimmt dann den Arbeitstext und sucht im Index 5 danach. Bei Erfolg wird der zugeh\'f6rige Satz gelesen, \'fcber den aktuellen Satz gestapelt und selbst zum aktuellen Datensatz gemacht. Nachfolgende Exportbefehle beziehen sich also auf diesen! \f0 
+\par 
+\par Die allgemeine Form des Nachladebefehls sieht so aus: 
+\par \pard\fi-1092\li1092\tx480\tx1092\tx1440\tx2016\tx2664\tx2938\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f4 
+\par |im\b0\f0\tab\tab\f3 Bedeutung: nimm den Arbeitstext als Schl\'fcssel, suche danach im Register i und lade den gefundenen Satz in den Arbeitsspeicher, mache ihn zum aktuellen Satz. Dabei ist \f0 
+\par \pard\fi-2016\li2016\tx480\tx1092\tx1440\tx2016\tx2664\tx2938\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f4\tab\tab i\b0\f0   = \tab\f3 Indexnummer (1,..,9, ':' f\'fcr 10, ';' f\'fcr 11): in diesem Index soll gesucht werden \f0 
+\par \tab\tab\b\f4  m\b0\f0  = \tab\f3 Modusziffer (0,..,9), und zwar: gesucht wird immer nach dem aktuellen Arbeitstext, jedoch mit unterschiedlichen Modalit\'e4ten: \f0 
+\par \tab\tab\tab 0 :\tab\f3 der erste Satz mit einem genau dem Arbeitstext gleichen Schl\'fcssel \f0 
+\par \tab\tab\tab 1 :\tab\f3 der n\'e4chste mit genau gleichem Schl\'fcssel (ein Befehl mit 0 mu\'df vorangehen) \f0 
+\par \tab\tab\tab 2 :\tab\f3 wie 0, aber der Schl\'fcssel kann l\'e4nger sein als der Arbeitstext, er mu\'df nur am Anfang mit ihm \'fcbereinstimmen \f0 
+\par \tab\tab\tab 3 :\tab\f3 wie 1, aber wieder auf den Anfangsteil beschr\'e4nkt \f0 
+\par \pard\fi-1440\li1440\tx480\tx1092\tx1440\tx2016\tx2664\tx2938\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab\f3 Falls mehrere Ladebefehle aufeinander folgen, werden die nachgeladenen S\'e4tze jeweils im Arbeitsspeicher aufgestapelt, falls man nicht\b\f4  #<\b0\f3   gibt. Dies kann zwar erw\'fcnscht sein, manchmal jedoch nicht - dann addiert man besser gleich eine 4 auf die Modusziffer, also \f0 
+\par \pard\fi-2016\li2016\tx480\tx1092\tx1440\tx2016\tx2664\tx2938\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\tab 4 :\tab wie 0, aber ein vorher geladener Satz wird beseitigt 
+\par \tab\tab\tab 5 :\tab wie 1, usw. 
+\par \tab aber:\tab\tab 8 :\tab\f3 Der Satz wird nicht geladen, nur der erste (8) bzw. n\'e4chste (9) gefundene \f0 
+\par \tab\tab\tab 9 :\tab\f3 Schl\'fcssel wird nach \b\f0 #uxi\b0  kopiert und kann als Anwendervariable benutzt werden. 
+\par \pard\tx480\tx1092\tx1440\tx2016\tx2664\tx2938\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i Sonderfall:\i0\f3  Wenn es ungewi\'df ist, ob der gesuchte Schl\'fcssel vorkommt, kann man '>' oder '<' vor den Arbeitstext setzen. Dann wird der erste Schl\'fcssel ermittelt, der gr\'f6\'dfer bzw. der letzte, der alphanumerisch kleiner ist als der Arbeitstext. \f0 
+\par \f3 Im Beispielfall geht es nur um einen einzigen Nachladesatz pro Ausgabesatz, dann w\'e4re der Effekt bei\b\f4  |56\b0\f0  derselbe wie bei\b\f4  |52\b0\f0 . 
+\par \f3 Wenn es ungewi\'df ist, ob ein Stammsatz existiert, kann man durch einen bedingten Sprung auch Fehlerbehandlungen programmieren: \f0 
+\par \b\f4 #70c +M |52\b0\f0         \lang1033\f7\fs16 suche den Inhalt von #70c im Index 5, wenn gefunden, gehe zu #-M\lang1031\f0\fs20 
+\par \f3 w\'fcrde bewirken, da\'df im Erfolgsfall zur Sprungmarke #-M gegangen wird, bei Mi\'dferfolg aber mit der n\'e4chsten Zeile weitergemacht wird. Eine Anweisung mit Nachladebefehl bewirkt in keinem Fall eine Ausgabe, sie dient nur zum Ausl\'f6sen des Nachladens. 
+\par \i 
+\par ACHTUNG:\i0  Vor dem Befehl  \b\f4 |im\b0\f3   mu\'df man mit\b\f6  y1 \b0\f3 oder\b\f6  y2 \b0\f3 eine Umcodierung erzwingen (per p- bzw. q-Tabelle, meistens zur Wandlung von gro\'df in klein), denn automatisch passiert sie in  diesem Fall nicht, d.h. das # oder ! am Zeilenanfang hat nicht die gew\'fcnschte Wirkung. 
+\par \f0 
+\par \pard\fi-2016\li2016\tx480\tx1092\tx1440\tx2016\tx2664\tx2938\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i\f3 Sonderf\'e4lle:\b\i0\f4\tab |00\b0\f0\tab Kurztitelzeile des aktuellen Satzes in die Variable\b\f4  #ux0\b0\f0  kopieren 
+\par \b\f4\tab\tab |01\b0\f0\tab\f3 Arbeitstext als Satznummer interpretieren und den zugeh\'f6rigen Satz nachladen \f0 
+\par \pard\tx480\tx1092\tx1440\tx2016\tx2664\tx2938\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1033\i\f9 Einschr\'e4nkung:\i0  Das Nachladen ist auch in einer Index-Parameterdatei anwendbar, ABER: die Prozedur des Nachladens setzt ja voraus, da\'df schon ein Index vorhanden ist. Nur im 2. Durchlauf (siehe Kap. 7) kann deshalb ein Nachladen stattfinden, und auch nur dann, wenn beim ersten Durchlauf die erforderlichen Schl\'fcssel, \'fcber die zuzugreifen ist, auch schon erzeugt wurden. Ab Version 14 gibt es f\'fcr diesen Zweck die wesentlich bequemere Methode, Identnummern direkt und automatisch durch Klartexte ersetzen zu lassen (-\f5\'d8\f4  10.2.6.8). 
+\par \lang1031\f0 Der nachgeladene Satz bleibt solange aktuell, bis 
+\par \pard\fi-480\li480\tx480\tx1092\tx1440\tx2016\tx2664\tx2938\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\bullet\tab\f3 ein neuer Ladebefehl kommt (es h\'e4ngt von dessen Modusziffer ab, was dann passiert) \f0 
+\par \bullet\tab der Exportsatz beendet wird (durch\lang1033\f4  #+#\lang1031\f0  oder\lang1033\f4  #+-\lang1031\f0  oder Erreichen des Endes der Kategorieliste) 
+\par \bullet\tab ein "Schaltbefehl" kommt: 
+\par \pard\tx480\tx1092\tx1440\tx2016\tx2664\tx2938\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3 In der Regel wird man aus dem nachgeladenen Satz eine oder mehrere Kategorien entnehmen, anschlie\'dfend aber mit dem Ausgangssatz weitermachen wollen (wie im obigen Beispiel). Dann kommt der zweite neue Befehl zum Einsatz, der sog. \b\f0 Schaltbefehl:\b0 
+\par 
+\par \b Schaltbefehl\b0 :  Es gibt 8 Formen, jede beginnt mit\b\f4  #<\b0\f0   : 
+\par 
+\par \pard\fi-1092\li1092\tx480\tx1092\tx1440\tx2016\tx2664\tx2938\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\f4 #<+M\b0\f0\tab\f3 "zur\'fcckschalten" (oder anschaulich: vom Stapel 1 Satz herunternehmen) d.h. weitermachen mit dem aufrufenden Satz. Dieser kann seinerseits ein vorher nachgeladener Satz sein! Wenn die R\'fcckschaltung ausgef\'fchrt werden konnte, geht es bei der Sprungmarke\b\f4  #-M\b0\f0  weiter.\b\f4  +M\b0\f3  darf fehlen, dann geht es mit der n\'e4chsten Zeile weiter. \f0 
+\par \b\f4 #<^M\b0\f0\tab Wirkung von\b\f4  #<\b0\f3  r\'fcckg\'e4ngig machen, d.h. wieder "hinaufschalten" zum vorher nachgeladenen Satz. Wenn man abwechselnd\b\f4  #<\b0\f0  und\b\f4  #<^\b0\f3  gibt, kann man beliebig oft zwischen den momentan geladenen S\'e4tzen hin- und zur\'fcckschalten, ohne da\'df immer neu von der Platte nachgeladen werden mu\'df. \f0 
+\par \lang1033\f4  \tab\tab\i Empfehlung: \i0\f0 Immer\f4  \b #</\b0\f3 , wenn R\'fcckschaltung nicht gebraucht wird.\lang1031\f0 
+\par \b\f4 #<<M\b0\f0\tab\f3 zur\'fcckschalten zum Ausgangssatz, also zum untersten Satz des Stapels, damit man mit diesem weitermachen kann. Danach ist mit\b\f4  #<^\b0\f3  jedoch (evtl. mehrfach) ein R\'fcckschalten mit\b\f4   #<^\b0\f3   zu den vorher nachgeladenen S\'e4tzen noch m\'f6glich, denn der Stapel bleibt vorhanden. \f0 
+\par \b\f4 #</M\b0\f0\tab\f3 dasselbe, aber die aufgestapelten Nachlades\'e4tze werden nun weggenommen, d.h. anschlie\'dfend kann man nicht mehr wieder mit\b\f4   #<^\b0\f0   hinaufschalten. 
+\par \b\f4 #<iM\b0\f0\tab Umschalten auf die parallele Datenbank (i=1,2,3), wenn man beim PRESTO-Aufruf 2 oder 3 Datenbanken aktiviert hat (\f4 -\f5\'d8\f0  Kap.12.1, Option -d). Mit\b\f4  #<0\b0\f3  wird zur ersten Datenbank geschaltet und zugleich der Zeiger im Index zur\'fcckgesetzt, damit man weiterbl\'e4ttern kann. Sprung zu #-M, wenn das Umschalten funktioniert hat. \f0 
+\par \b\f4 #<d\b0\f0  \tab\f3 Bei hierarchischen S\'e4tzen: schalte zum n\'e4chsten Untersatz (#<d) / zum vorigen Untersatz (#<u) / \f0 
+\par \b\f4 #<u\b0\f0\tab\tab zum Hauptsatz (#<U) des hierarchischen Satzes. Dahinter kann jeweils noch ein Zeichen stehen, 
+\par \b\f4 #<U\b0\f0\tab\tab z.B.\b\f4  #<dM\b0\f3  hei\'dft: springe nach\b\f4  #-M\b0\f3 , wenn der Schaltbefehl ausf\'fchrbar ist. \f0 
+\par \pard\tx480\tx1092\tx1440\tx2016\tx2664\tx2938\tx3312\tx3960\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 Das\b\f4  M\b0\f3  darf jeweils auch fehlen. Dann f\'e4hrt das Programm nach Ausf\'fchrung mit der nachfolgenden Zeile fort. Wenn aber ein\b\f4  M\b0\f0  gesetzt ist (erlaubt sind alle druckbaren Zeichen), wird nach \b erfolgreicher\b0\f3  Ausf\'fchrung des Schaltbefehls zur Sprungmarke\b\f4  #-M\b0\f0  gegangen, und nur bei \b\f3 Mi\'dferfolg\b0\f0  (wenn kein nachgeladener bzw. Untersatz vorhanden war) geht es mit der nachfolgenden Zeile weiter. Folglich kann man auf jede Situation angemessen reagieren. 
+\par 
+\par \b\f3 Anwendungsbeispiel "Mehrb\'e4ndiges Werk"\b0\f0 
+\par \f3 Vorab: Die hierarchische Darstellungsweise mehrb\'e4ndiger Werke kann beibehalten werden. Man kann sogar innerhalb derselben Datenbank wahlweise diese oder die im folgenden beschriebene neue Technik anwenden. \f0 
+\par \f3 Mit den Lade- und Schaltbefehlen ist eine neuartige Speicherungstechnik f\'fcr mehrb\'e4ndige Werke realisierbar. Hauptaufnahme und B\'e4nde k\'f6nnen getrennte, unabh\'e4ngig voneinander gespeicherte Datens\'e4tze sein. St\'f6\'dft man beim Zugriff auf einen Band, so soll er zusammen mit der Hauptaufnahme angezeigt werden, findet man letztere, soll das Programm sie mit allen zugeh\'f6rigen B\'e4nden pr\'e4sentieren k\'f6nnen. Es sind auch mehrere Hierarchiestufen m\'f6glich. \f0 
+\par \b Vorbemerkung:\b0\f3  Bisher brauchte man nicht unbedingt eine eigenst\'e4ndige, eindeutige Indentifikationsnummer f\'fcr jede Aufnahme, jetzt aber geht es nicht ohne, denn die besagte Methode ist auf einen zuverl\'e4ssigen Schl\'fcssel angewiesen. In der Kategorie #00 der Hauptaufnahme mu\'df also, zumindest bei den mehrb\'e4ndigen Werken, etwas stehen, was eindeutig ist, und man mu\'df es indexieren. (CAT.API macht dies im Index 9.) Es kann sich um eine Zugangsnummer oder Signatur handeln, oder die ID.-Nummer eines Verbundes, oder aber so etwas wie die Library of Congress Card Number. (Statt #00 d\'fcrfte es auch jede andere Kategorie sein, denn die  Realisierung ist ja vollst\'e4ndig parametriert.) \f0 
+\par \f3    Statt eine unselbst\'e4ndige Unteraufnahme an die Hauptaufnahme anzuh\'e4ngen (mit einer Kategorie #01) tut man jetzt so, als erfasse man eine neue Hauptaufnahme. Mit zwei Unterschieden: \f0 
+\par \pard\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-637\li637\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\bullet\tab\f3 In #00 der Bandaufnahme erfa\'dft man die Id.-Nr. der Hauptaufnahme \b\f0 plus\b0  der Angabe, die man sonst in die #01 schriebe, und zwar 
+\par \pard\fi-1933\li1933\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab so:\b\f4\tab #00\b0\i\f0\tab idnr\i0 +\i ordnr\i0 [\i =bandnr\i0 ] 
+\par \pard\fi-4513\li4513\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\i\tab\tab\tab idnr\i0\tab\tab\tab Id.Nr. der Hauptaufnahme 
+\par \tab  \tab\tab\tab   \i ordnr\i0\tab\tab\tab\f3 Ordnungsnummer, sortierf\'e4hig (f\'fchrende Nullen) \f0 
+\par \tab\tab\tab\tab\tab   \i bandnr\i0\tab Bandnummer in Vorlageform, falls abweichend 
+\par \pard\fi-1273\li1273\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab z.B.:\b\f4\tab #00 89-12345+015=Vol. XV\b0\f0 
+\par \pard\fi-637\li637\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\bullet\tab\f3 man erfa\'dft in der Bandaufnahme nur diejenigen Kategorien, die zur Bandstufe geh\'f6ren, denn alle anderen wird man bei Bedarf aus der Hauptaufnahme entnehmen k\'f6nnen, wenn man diese nachl\'e4dt. \f0 
+\par \pard\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b Ob\b0\f3  eine Aufnahme unselbst\'e4ndig ist, kann am '+' innerhalb der #00 erkannt werden. Die Ordnungsnummer \i\f0 ordnr\i0\f3   kann mehrteilig sein, wenn es sich um hierarchische Unterteilungen von B\'e4nden handelt. Wenn man bisher z.B.   #01 2 und #02 A gehabt hat, kann man nun z.B. #00 \i\f0 idnr\i0\f3 +02+A  geben, man trennt also die Stufen durch '+' . Die Gestaltung der sortierf\'e4higen Bandnummern ist freigestellt und mu\'df sich nach den Eigenheiten der vorliegenden Z\'e4hlung richten. Die maximal m\'f6gliche hierarchische Gliederungstiefe ist dabei 12 (nach der alten Methode 6). \f0 
+\par \f3 Wichtig ist ferner: die Kategorie #00 mu\'df einschlie\'dflich der sortierf\'e4higen Bandnummern indexiert sein. Dadurch entsteht im Index eine aufsteigende Folge der Identifikationsnummern: zuerst die der Hauptaufnahme (ohne '+'), dann die der B\'e4nde. \f0 
+\par \f3 In der Hauptaufnahme braucht man au\'dfer der Speicherung einer Id.Nr. in #00 keine weiteren Vorkehrungen f\'fcr die Verkn\'fcpfungstechnik zu treffen! Die Feststellung, ob zugeh\'f6rige Bandaufnahmen existieren, wird mit den oben beschriebenen Befehlen \'fcber den Index durchgef\'fchrt. Es werden also, um es ganz deutlich zu sagen, keine Satznummern, -adressen oder -schl\'fcssel irgendwelcher Art von untergeordneten Aufnahmen innerhalb der \'fcbergeordneten gespeichert. Die Zusammenf\'fchrung und die Herstellung der Reihenfolge regeln sich ausschlie\'dflich \'fcber den Index. Damit ist die Verkn\'fcpfungstechnik unempfindlich gegen\'fcber Reorganisationen. \f0 
+\par \f3 Eine Parameterdatei f\'fcr Anzeige oder Druck solcher Datens\'e4tze sollte nach folgender Vorschrift arbeiten: \f0 
+\par 
+\par \pard\fi-637\li637\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 1.\tab\f3 Pr\'fcfe, ob die aktuelle Aufnahme eine unselbst\'e4ndige ist. \f0 
+\par \pard\fi-1273\li1273\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\tab ja\b0  : \tab\f3 lade die \'fcbergeordnete Aufnahme und mache sie zur aktuellen Aufnahme, fahre mit 1. fort  (dies w\'fcrde bis zu 12 mal funktionieren, das w\'e4re allerdings sehr extrem) \f0 
+\par \b\tab nein\b0  :\tab fahre mit 2. fort 
+\par \pard\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-637\li637\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 2.\tab Gib die aktuelle Aufnahme aus. Ist noch eine darunter auf dem Stapel? 
+\par \pard\fi-1273\li1273\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\tab ja\b0  :\tab nimm den obersten Satz vom Stapel und fahre mit 2. fort 
+\par \b\tab nein\b0  :\tab fahre mit 3. fort (die Ausgangsaufnahme wird nun wieder zur aktuellen Aufnahme!) 
+\par \pard\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-637\li637\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 3.\tab\f3 Pr\'fcfe, ob mit der aktuellen Aufnahme noch ein untergeordneter Satz verkn\'fcpft ist. Mit anderen Worten, ob sie selbst die Hauptaufnahme eines verkn\'fcpft gespeicheerten mehrb\'e4ndigen Werkes darstellt. \f0 
+\par \pard\fi-1273\li1273\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\tab ja\b0  :\tab\f3 alle untergeordneten S\'e4tze nacheinander laden und ausgeben. (Dieser Vorgang ist potentiell unbegrenzt, denn die Anzahl der m\'f6glichen Unters\'e4tze unterliegt keiner Beschr\'e4nkung.) \f0 
+\par \b\tab nein\b0  :\tab Ende 
+\par \pard\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f3 Bei normalen einb\'e4ndigen Werken wird zwangsl\'e4ufig nur einmal Vorgang 2. ausgef\'fchrt. \f0 
+\par 
+\par \f3 Die mitgelieferten Parameterdateien D-1.APR f\'fcr Bildschirmanzeige, P-KARTE f\'fcr Kartendruck, sowie P-NORMAL und P-EINZEL enthalten diese Vorg\'e4nge und auch die unter dem Beispiel "Zitat" beschriebene Methodik. Sie sind ausreichend kommentiert und werden sehr zum Ausprobieren empfohlen. In der Datei  \f6 D-KAPT \f3 verwendet in\f6  D-KRTF.APR \f3 und\f6  D-KHTM.APR)\f3  findet man die Grundstruktur der Verkn\'fcpfungslogik als allgemeines Schema. In der Beispieldatenbank finden Sie im Index 9 eine mehrstufige Aufnahme unter dem Schl\'fcssel  123456 .  Die Parameterdatei CAT.API und die genannten Exportparameter stellen also schon eine vollst\'e4ndige Implementierung der hier beschriebenen Verkn\'fcpfungen dar. Sie enthalten ab V14 auch M\'f6glichkeiten f\'fcr Personen-, K\'f6rperschafts- oder Schlagwortverkn\'fcpfungen (10.2.6.8). \f0 
+\par 
+\par \f3 Was geschieht beim Retrieval im Falle einer mehrstufigen Hierarchie? Es k\'f6nnen drei F\'e4lle vorkommen: \f0 
+\par \pard\fi-637\li637\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 a)\tab\f3 man st\'f6\'dft auf eine Aufnahme der obersten Stufe (Hauptaufnahme): der gesamte hierarchische Komplex wird angezeigt - wie nach der alten Methode \f0 
+\par b)\tab\f3 ... auf eine Satz einer mittleren Stufe der Hierarchie: es werden hintereinander angezeigt: 1. alle direkt \'fcbergeordneten (keine parallel liegenden) Einheiten bis hinauf zur Hauptaufnahme werden angezeigt, 2. die Bandaufnahme selbst, 3. alle darunter h\'e4ngenden Einheiten. \f0 
+\par c)\tab\f3 ... auf einen Satz der untersten Stufe: wie bei b), aber der Teil 3. entf\'e4llt. \f0 
+\par \pard\tx638\tx1274\tx1934\tx2234\tx3074\tx3794\tx4514\tx5634\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f3 Der wichtigste Fall ist dieser: der -zigste Band eines vielb\'e4ndigen Werkes wird zusammen mit der Hauptaufnahme angezeigt - nur diese zwei. Das ist wesentlich \'fcbersichtlicher als bei der hierarchischen Satzstruktur. \f0 
+\par \pard 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` 
+\par \pard 
+\par ?Vorangehender Teil=h ac10-8 
+\par ?Fortsetzung=h ac10-10 
+\par 
+\par }
+ 

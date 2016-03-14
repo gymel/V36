@@ -1,0 +1,222 @@
+ i-pica.apr :  Nachbearbeitung von Pica-Daten, Hauptteil
+ 2015-08-18   im Anschluss an PICA.AIM
+
+pn="Pica-Nachbearb., Hauptteil"
+
+ ------ Grundwerte --------------------------------------------------------
+                                          dieser Teil muss bleiben
+zl=0        Zeilenlaenge unbegrenzt (kein Umbruch)
+
+ks=1        Beginn des Ausgabetextes beim ersten Zeichen hinter #
+
+ke=0        Kategorie-Ende = Code 0
+
+as=""       Aufnahme-Start
+ae=""       Aufnahme-Ende
+dx=1
+ am=1
+
+ ---------------------------------------------------------------------------
+
+_#90 s_#90 _
+
+_#3nb__
+
+_shttp_http_
+
+*#4_ , _, _
+*#5_ , _, _
+
+
+ak=zz+A
+
+  **** Diese 3 Zeilen deaktivieren, wenn keine Exp.Saetze gewuenscht:
+ak=90+B
+ak=900+B 901+B 902+B 903+B 904+B 905+B 906+B 907+B 908+B 909+B 90:+B 90;+B 90<+B 90=+B
+ak=90>+B 90A+B 90B+B 90C+B 90D+B 90E+B 90F+B
+  WENN man diese Zeilen aktiviert, dann
+  ACHTUNG: Kommentar **** unter #-B beachten, wenn Expl.Saetze nur fuer Zss gewuenscht
+
+
+  Abschnitt f.d. Titelsaetze (#-B f. Explare)
+#-A
+  PrimÑrsÑtze rauswerfen, wenn "Nur als SekundÑr..." drinsteht
+    folgende Zeile deaktivieren, wenn die PrimÑrsÑtze ebenfalls gewÅnscht sind
+  
+
+#81v +- c"ur als Sek" e0 #zz 0
+
+#t{ 1 }
+#20 +#00 e0 #zz 0
+#85 b3 "20 " M e0 #zz 0
+
+#09 F"=" M e0 #zz 0
+
+!00 +W c"ZZZ" e0 #zz 0
+!00 +V I4,z dsi Asi #zz 0       keine 
+!00 +V i4,s i5,s b1 e"-" Asi #zz 0      SWD-Nummer
+
+!00 e"!" dsi Asi #zz 0
+!00 b"!" c"[+/,]" E"[+/,]" r5,0 Asi #zz 0
+!00 +V b"!" b"[+/,]" Asi #zz 0
+!00 b"!" r4,0 Asi #zz 0
+#+V
+
+#-W
+#89P b3 p"00 z" dsi Asi #zz 0
+
+#-V
+#t{ s4 }
+#uaf daf e0 #zz 0
+#40 e" = " =af #zz 0
+#40 b" = " c"#uaf" e" = " p"#40 " M #zz 0
+#uaf daf e0 #zz 0
+#402 e" = " =af #zz 0
+#402 b" = " c"#uaf" e" = " p"#402" M #zz 0
+#uaf daf e0 #zz 0
+#403 e" = " =af #zz 0
+#403 b" = " c"#uaf" e" = " p"#403" M #zz 0
+#uaf daf e0 #zz 0
+#41 e" = " =af #zz 0
+#41 b" = " c"#uaf" e" = " p"#41 " M #zz 0
+
+#8e e"∂" M #zz 0
+
+#t{ s1 }
+
+!usi b3 B"zzz" B"ZZZ"
+##    Pauschalexport : alle Kategorien hintereinander ausgeben
+
+  Signaturenbehandlung jetzt per UP:
+
+#90. ++ p>S m>S e0 #zz 0
+
+#+Z
+
+
+#-Z
+#90X b3 p"90X"
+#90Y b3 p"90Y"
+#90Z b3 p"90Z"
+#99n e""
+#t{ C }
+#+#
+
+
+
+#-B
+
+  **** Diese 3 Zeilen aktivieren, wenn Expl.saetze nur fuer Zss.
+#00 +C i4,z e0 #zz 0   nur wenn #00 z
+#u1 +C H e0 #zz 0   oder wenn Teilfeld H vorkommt!
+#+-
+
+#-C
+
+#-D
+#t{ 1 }
+
+#u1 P "00 e"        #00 EPN    NEU
+
+!usi b6 "9DF"
+#nr e0 #zz 0
+ 
+#t{ "9DG" }
+
+#u1 +E $L e0 #zz 0
+
+#t{ "s" }
+
+#-E   Die Sache mit dem Nichtsortierzeichen!
+  ausserdem leeres Sign.Unterfeld raus (s )
+#u1 b3 ,"_s __" ,"_ss_s_" ~n #zz 0
+ #u1 e"™" b3 ~n ,"_s __" ,"_ss_s_" #zz 0
+ #u1 b"™" e"`" p"™" ~n ,"_s __" ,"_ss_s_" #zz 0
+ #u1 b"™" b"`" p"™" ~n ,"_s __" ,"_ss_s_" #zz 0
+#-F
+
+
+
+#nr e0 #zz 0
+
+#t{ 0 C }
+
+#+#
+
+
+  Sign.Felder #90. Falls am Anfang $s, dann dies wegnehmen
+#(S
+
+ #cc +#uoo ~n i4, i5,s ,"_s__" ,"_s __" ,"_ss_s_" #zz 0
+#cc 0 ~n ,"_s `__" ,"_`s`s_`s_" #zz 0
+#uoo e0 #zz 0
+#t{ 0 }
+
+#)S
+
+
+_>>_>_
+
+/00
+/39a
+/39b
+/32a
+/32d
+/32b
+/32l
+/32k
+/32x
+/30x
+/30y
+/330
+/331
+/332
+/333
+/334
+/335
+/336
+/337
+/338
+/339
+/99.
+/95.
+/27.
+/96   ??
+/90.
+
+
+  Zeichenersetzungen
+  (z.T. mÅssen hier Zwischenzeichen durch die endgÅltigen ersetzt werden
+   siehe Tabelle in PICA.AIM)
+   muss evtl. noch ergÑnzt werden
+
+p @ 32     @ durch Space ersetzen
+
+ p ± "€l"
+
+p | $      $ musste vorher geÑndert werden (8700) wg. Sonderfunktion
+
+p ¸ ?    in #30a 
+
+p π .219 76    /L
+p ∫ .219 79    /O
+p ª .222 68    -D
+p … .219 108   /l
+p ≥ .222 100   -d
+
+
+p º "OE"       Ligatur OE
+p ∂ "oe"               oe
+p ¿ "IJ"
+p » "ij"        niederld ij
+p   "*d"
+
+q A/Z a
+
+p ` 1
+
+tucodes
+
+p .28 ·
+
+

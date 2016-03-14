@@ -1,0 +1,203 @@
+
+
+Verlautbarung 204 der Entw.Abt.                              2008-02-29
+-------------------------------
+
+V28.2 bereitgestellt
+====================
+
+Die V28.2 ist in einigen kleineren Punkten aufgewertet, groessere
+Neuerungen gibt es im Erwerbungssystem ORDER+ZAboM.
+
+
+Hilfetexte: Eingebettete Variablen
+----------------------------------
+Bisher schon konnte man in eine RTF-Datei Kategorie-Inhalte und
+#u-Variablen einbetten, indem man schrieb:  %#nnn oder sogar
+%#nnn$x  um das Unterfeld x des Feldes #nnn in den Text einzufuegen.
+Jetzt geht das auch mit den freien Variablen:  %$xyz  im RTF-Text
+bewirkt, dass an der Stelle der Inhalt der Variablen  $xyz  erscheint. 
+Auch Unterfelder gehen dabei: z.B. %$xyz$a
+Ausgenutzt wird das schon in der Funktion "Bestellzettel drucken"
+der Pakete ORDER und ZAboM:
+
+
+Bestellzettel drucken - ohne Export
+-----------------------------------
+Hierfuer musste eine neue Loesung her, die alte war, zurueckgehend
+auf die erste ORDER-Version unter DOS, zu umstaendlich und erforderte
+Kenntnisse der Exportparametrierung.
+Wenn man Monographien-Bestellungen oder Zeitschriften-Abonnements auf
+den Weg bringen will, muss man klassisch einen Bestellzettel
+produzieren oder einen Text fuer eine E-Mail an den Buchhaendler.
+Dies kann man nun jederzeit tun: Entweder direkt im Anschluss an das
+Eingeben der Bestell- bzw. der Abo-Daten oder auch irgendwann spaeter,
+wenn man den Bestell- oder Abo-Satz hervorholt: Auf dem Menue Alt+7
+(dahinter steckt o-func.flx) gibt es den neuen Punkt 
+"Bestellzettel drucken"
+Aktiviert wird dann der FLEX o-bzett.flx. Dieser entnimmt aus dem
+Bestell- bzw. Abo-Satz und Titelsatz die notwendigen Daten und kopiert
+sie in einige $-Variablen. Diese sind eingebettet in die RTF-Dateien
+best-deu.rtf und das englische Gegenstueck best-eng.rtf. Welche von
+beiden dann genommen wird, haengt von der Sprache, $p im Lieferanten-
+satz, ab.
+Diese beiden RTF-Dateien kann man beliebig modifizieren, vor allem
+muss man die Adresse etc. der eigenen Bibliothek einbauen.
+Im alten ORDER-System waren die Textelemente fuer Bestellbriefe
+u.a. in sog. "Textbaustein-Datensaetzen" angelegt, Typ  #9A X.
+Diese werden nun im Windows-System abgeloest durch RTF-Dateien. 
+Der fertig aufbereitete Bestellzettel erscheint im Anzeigefeld und
+kann entweder direkt dem Drucker uebergeben werden oder aber mit
+Copy&Paste in Word uebernommen.
+Was ist also zu tun?
+1. Bearbeiten der RTF-Datei, deutsch und englisch:
+   h best-deu.rtf   und   h best-eng.rtf
+   ...Bearbeiten...
+      dabei kann man die %-Elemente beliebig verschieben, z.B. %$BTyp
+   Alt+s  Datei wieder speichern.
+   (Bearb. auch mit WordPad oder WinWord moeglich.)
+2. Wenn man eine Bestellung oder ein Abo angelegt hat, Alt+7 und dann
+   die Funktion  "Bestellzettel drucken". Dieser FLEX bereitet die
+   Variablen vor und gibt dann den Befehl  help best-...
+
+Diese Funktionsweise ist selbstverstaendlich allgemein anwendbar:
+Man erstellt sich einen RTF-Text mit eingebetteten Variablen sowie 
+einen FLEX, der diese Variablen belegt und am Ende den Text mit
+dem help-Befehl aufruft.
+
+
+Rechnungen in ORDER und ZAboM
+-----------------------------
+Wenn eine Rechnung eintrifft, kann man sie nun in die Datenbank 
+einspeisen und mit der Bestellung, oder den Bestellungen, verknuepfen,
+auf die sich die Rechnung bezieht.
+Die Arbeit macht der FLEX o-rech.flx. Er legt einen Satz an, der ein
+oder mehrere Felder #9R enthaelt. Deren genaue Struktur ist in
+  http://www.allegro-c.de/doku/order/zabom.htm
+dokumentiert.
+VORAUSSETZUNG: In der CFG muss ein Eintrag fuer Feld #9R sein.
+Aufruf:  Erst den Titel- oder Bestell- bzw. Abosatz anzeigen lassen
+   dann  Alt+7, dann "Neue Rechnung"
+Im Alt+7-Menue gibt es auch "Letzte Rechnung" und "Alle Rechnungen"
+
+
+ZAboM: Indexierung und Anzeige verbessert
+-----------------------------------------
+In cat.api (der groesseren Variante) wurde die Indexiervorschrift fuer
+Abos und Bandsaetze verbessert, incl. der Kurzzeilen, um die kompli-
+zierteren Faelle besser in den Griff zu kriegen: mehrere Abos zu einer
+Zeitschrift, mehrere Baende zu jedem Abo. Bisher funktionierte dies
+in der Anzeige nicht - man bekam nur EIN Abo mit seinen Baenden zu
+sehen, die anderen gar nicht.
+Unter dem Titelsatz werden jetzt ALLE zugehoerigen Abos gezeigt, und
+unter jedem davon alle dazu registrierten Baende.
+Abos und Baende werden in umgekehrter Reihenfolge angezeigt, denn
+meistens wird man ja auf die letzten zugreifen wollen, da sollten die
+denn auch am schnellsten greifbar sein.
+Auch die "Umlaufenden Hefte" werden in absteigender Reihenfolge
+gezeigt, das neueste also oben, und unabhaengig vom Abo, falls es mehr
+als eines gibt.
+Neu ist die Indexierung der Rechnungen.
+Zu jedem Mitarbeiter kann man sich ueber Alt+7 die Liste der momentan
+bei ihm befindlichen Hefte zeigen lassen, sowie welche der umlaufenden
+er noch erhalten wird und die Liste der Verteiler, auf denen sein
+Name auftaucht.
+Das Anlegen und Oeffnen externer Dateien zu den Datensaetzen der
+Zeitschriften wurde eingebaut in das Alt+7-Menue (z-exdat.flx),
+Einstellungen dazu sind moeglich in zabom.inc.
+
+
+Start der Zusatzmodule vereinfacht
+----------------------------------
+Ueber das Fuellhorn startet man jetzt alle drei Zusatzmodule in
+gleicher Weise: man klickt auf aLF, ORDER oder ZAboM und es wird
+a-init.flx, o-init.flx bzw. z-init.flx gestartet, dann das
+jeweilige Hauptmenü geladen, auf dem dann kein "Initialisieren"
+steht, weil das ja schon erledigt ist.
+Zwei- oder mehrmaliges Initialisieren ist unschaedlich.
+Noch bequemer macht es sich der Versierte, in dem er in seinen
+_start.flx (bzw. offcheck.flx, wenn dieser genutzt wird) an das 
+Ende den Befehl haengt
+exec a-init
+usw.
+
+
+a99/alcarta : Blitzverschluss
+-----------------------------
+Die veraltete, als betulich empfundene Ausstiegs-Nachfrage "Wirklich?"
+wurde ersatzlos abgeschafft. Alt+F4 bzw. der Druck auf den Rotkreuz-
+Button schliesst blitzartig das Fenster - falls es nicht noch 
+ungespeicherte Daten gibt, denn die sollen doch wohl weiterhin 
+weder kommentarlos geloescht noch unbesehen eingespeist werden.
+
+
+alcarta : Reg. 10 und 11 ausgeblendet
+-------------------------------------
+Logische Register, die in den physischen Registern 10 (Dienstlich) und
+11 (Datenschutz) liegen, werden in alcarta nicht mehr angeboten. 
+Das war schon beim Indexfenster so, jetzt auch im Find-Fenster.
+In a99 braucht es mindestens die Berechtigung 4, um die beiden Register
+im find-Menue sehen zu koennen, Reg. 10 geht auch mit 3.
+FLEX-find-Befehle klappen in jedem Fall!
+
+
+Weitere Umwandlungstabellen
+---------------------------
+Die Dateien sind jeweils kommentiert.
+
+ad-lt1 : Umwandlung DOS OstWest -> ISO8859-1 (UNIX)
+ad-utf : Umwandlung DOS OstWest -> UTF-8 (Unicode)
+ad-htm : Umwandlung DOS OstWest -> HTML4, Entitaetencodes 
+ad-rtu : DOS-OstWest -> RTF mit \u-Notierung
+         (einsetzbar statt ad-aw.apt, dann auch z.B. Verdana moeglich!)
+
+asc-ad : DOS IBM-PC CP437 -> allegro-OstWest DOS
+aw-ad  : Win-OstWest -> allegro-OstWest (Umkehrung von o.apt)
+
+
+Kleiner Fehler bei Datumsrechnung
+---------------------------------
+Mit  Day JJJJMMTT-jjjjmmtt  kann man die Differenz zwischen zwei
+Datumsangaben in Tagen ausrechnen. Leider kam dabei ein Tag zuwenig
+heraus! Das wurde behoben. (Bei negativer Differenz klappte es!)
+Aus wirkte sich das bei der Kalenderfunktion: Die angegebene Anzahl
+der Tage bis Ostern bzw. Weihnachten war um 1 zu klein.
+
+
+CLASSICO
+========
+
+PRESTO: Feldverlust bei F6
+--------------------------
+Wenn man beim Bearbeiten nach Einfuegen eines Felds F6 macht, um im
+Index schnell mal was nachzuschauen, ist anschliessend das letzte
+Feld des Satzes weg. Aber nur, wenn in den Indexparametern irgendwo
+eine Nachladung stattfindet. Behoben.
+Anwender des Standardsystems waren nicht betroffen. a99 ist frei
+von diesem Problem.
+
+
+UPDATE und FLEX-Befehl update
+-----------------------------
+In der einzulesenden Datei (.ALG oder bei FLEX auch .ADT) kann jetzt
+#u1 ####?num
+am Anfang eines Satzes stehen. Dies wirkt so wie #u1 #####num,
+speichert den Satz also als neuen Satz in die Datei cat_num.ald
+aber NUR, wenn der Primaerschluessel nicht gefunden wird. 
+Datenfehler des Typs "falsche Mehrfachkennung" und "unerlaubtes
+Teilfeld" fuehren nun nicht mehr zur Zurueckweisung des Felds.
+Auch sonst nicht, wenn ein Feld innerhalb eines FLEXes belegt
+wird! Dem FLEXer wird also ein wenig mehr verantwortliches
+Umgehen mit den Daten zugetraut.
+
+
+QRIX: Registerabschnitt bei CockPit
+-----------------------------------
+Unter "Funktion / QRIX" konnte man im CockPit Registerauszuege
+erstellen lassen. In der Folge der Umstellung von QRIX auf
+Konsolprogramm klappte das nicht mehr. Es lag daran, dass in der
+erzeugten Batchdatei ccc.bat die Option -e fehlte.
+Korrigiert.
+
+
+

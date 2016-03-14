@@ -1,0 +1,83 @@
+
+Sonder-Verlautbarung 2 der Entw.Abt.                      2001-03-24
+
+Und es geht doch: Linkstrunkierung
+----------------------------------
+
+Jahrelang denkt man und verkuendet: Linkstrunkierung geht nicht.
+Und dann stellt sich heraus, es gibt eine extrem einfache Loesung,
+die eine vollkommen echte Linkstrunkierung liefert.
+Man aergert UND wundert sich zugleich in hoechstem Masse...
+UND freut sich, weil das "allegro"-Konzept sich unerwartet nochmals
+als maechtiger erweist als man dachte.
+
+Keine Programmaenderung ist noetig, es geht allein durch 
+Parametrierung, und zwar ganze 3 neue Zeilen. Siehe unten.
+
+Und die Kosten? Nicht total billig, aber weniger teuer als
+jemals befuerchtet.
+An der DemoBank getestet:
+Indexdatei vergroessert sich um ca.      70%
+Erstellungszeit verlaengert sich um ca.  30%
+Anzahl der Indexeintraege waechst um    130%
+Wie sich das Zeitverhalten beim Speichern entwickelt, das muss
+sich erst erweisen! Immerhin im Schnitt mehr als doppelt soviel
+Schluessel pro Satz.
+Der Satz mit der groessten Schluesselzahl (Heisenbergs Werke
+als hierarchischer Satz) kriegt allerdings 622 statt 117 
+Eintraege! Da ist wohl doch noch eine Aufbohrung faellig,
+denn das Maximum ist bisher 500.
+Wenn die Sache Anklang findet, werden wir's angehen.
+Dass die Indexdatei nur um 70% waechst, liegt an der internen
+Komprimierungstechnik.
+ETWAS billiger wird's, wenn man im Zusatzregister das Wort selbst
+nicht nochmals indexiert, sondern nur die Reststuecke. Dann wird
+aber die Abfrage komplizierter.
+
+Das Konzept: jedes Wort wird, links beginnend, immer um ein
+Zeichen verkuerzt und das Restwort indexiert. Damit hat man
+alle noetigen Eintraege. Und weil der so erweiterte Index ja
+auch ganz normal rechts trunkiert werden kann, hat man sogar eine
+beidseitige Trunkierung. Es stehen jede Menge voellig unsinnige
+Eintraege im Index, aber jedes irgendwie sinnvolle Teilwort auf
+jeden Fall auch.
+
+Hier der bisherige Abschnitt in CAT.API:
+
+#20x
+#uty
+!u1 f"+- +/(<)" F">.?"       beseitige "- (" am Anfang, ">?" am Ende
+#+#
+
+Und so sieht der erweiterte Abschnitt aus:
+
+#20x
+   vorbereitetes, umcodiertes Wort nach #utw
+!u1 f"+- +/(<)" F">.?" y2 =tw      beseitige "- (" am Anfang, ">?" am 
+Ende
+
+#uty     das ist "|3"
+#utw y0
+
+  Zeitschr.Titelwoerter mit `Z am Ende
+#utz p"`Z" e2
+   Und hier die neuen Zeilen, die die neuen Eintraege machen:
+   Jetzt zerlegen: 
+#-OE
+#utw y0 p{ 8 "|2" }
+#utw +OE y0 b1 =tw
+#+#
+
+Das ist alles. Ob man Index 2 nimmt oder sonstwas, muss man sich
+noch ueberlegen, das ist ja die leichteste Uebung. So wurde es
+erst mal nur zum Testen gemacht.
+
+----------------------------------------------------------------------
+
+Aus persoenlicher Sicht des Entwicklers, wenn das mal gesagt werden 
+darf, wuerde es mich noch mehr aergern, wenn jemand anders drauf 
+gekommen waere. Jeder halbwegs bewanderte Allegrologe haette das
+laengst rauskriegen koennen.
+(Gut, dass Herr Stephan nochmal nachgebohrt hatte...)
+
+

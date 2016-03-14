@@ -1,0 +1,123 @@
+   // FIND.JOB : Grundgeruest fuer Registersuche-Prozesse mit acon
+   // 16.10.14 14:00 Thomas Fischer, SUB Goettingen
+   // Hinweis:  acon wertet selber -k, -b, -L und -P aus
+
+// Limit fuer bearbeitete Jobzeilen auf unendlich setzen: (sonst bei gr. Datenmengen Schluss bei 1 Mio Jobzeilen)
+
+set Z 0
+
+// command line  auswerten, zuerst in #ucl kopieren
+
+var cl
+ins #ucl
+
+// Mit  -h  oder --help  kommt Hilfe
+var #ucl
+if % -h% jump HELP
+if % --h% jump HELP
+
+// Exp.Param, Option -e, Default i-1
+var #ucl(b" -e" f" " e"[ /+=]")
+ins #uoe
+if not #uoe #uoe i-1
+
+// Exportdatei, Default outdat.txt
+// (mit "stdout" kriegt man den output auf die Konsole)
+
+var "outdat.txt"
+ins #uoE
+var #ucl(b" -e" f" " e" " b"[/+=]")
+if not "" ins #uoE
+// Bei "+" Zeichen davorsetzen
+var #ucl(b" -e" f" " e" " b"[+]")
+if not "" var "+" #uoE;ins #uoE
+
+// Restriction
+var #ucl(b" -r" f" ")
+//  Falls "..." angegeben ist (bei Spatien im Suchbegr. nötig)
+if ='"' var (1,0 e'"');jump ure
+if ="'" var (1,0 e"'");jump ure
+var (e" -")
+:ure
+ins #ure
+
+// Suchbegriff
+var #ucl(b" -s" f" ")
+if "" jump noterm
+//  Falls "..." angegeben ist (bei Spatien im Suchbegr. nötig)
+if ='"' var (1,0 e'"');jump usu
+if ="'" var (1,0 e"'");jump usu
+var (e" -")
+:usu
+ins #usu
+
+// -U auswerten   z.B. -Uab xyz  ergibt  #uab xyz
+// es kann mehrere solche Optionen geben
+var #ucl(b" -U") 
+if "" jump begin
+ins #ucL
+
+:sbl
+var "#u" #ucL(e" -U")
+ins
+var #ucL(b" -U")
+ins #ucL
+if #ucL jump sbl
+
+:begin
+// Exp.param laden
+var #uoe
+exp p
+if no jump expParamErr
+
+// Exp.datei laden
+var #uoE
+exp f
+if no jump expDateiErr
+
+
+Wri n "Export der Ergebnismenge mit Parameter " #uoe " in die Datei " #uoE n
+if #ure Write "Restriction: " #ure n
+Wri n "Suche: " #usu n
+
+// Wenn Restr., dann diese zuerst
+if #ure var #ure;find
+
+// Jetzt den Suchbefehl
+var #usu
+find
+
+// Erg.Menge exportieren - Hier evtl. andere Aktionen!
+Wri n "Es wurden " l " Datensaetze gefunden, jetzt werden sie exportiert." n n
+xexexport set
+export Foot
+close x
+
+Write "Datei " #uoE " ist fertig." n
+end
+
+// Errors
+
+:expDateiErr
+Write "Datei " #uoE " konnte nicht beschrieben werden!" n
+end
+
+:expParamErr
+Write "Exportparameterdatei " #uoe " nicht gefunden!" n
+end
+
+:noterm
+Write "No search term (-s is missing)" n
+end
+
+:HELP
+Wri "Aufruf:" n
+Wri "acon -jfind -sSuchbefehl -rRestriktion -eParam[=/+]Outputfile -kKonfig -bDbDir\DbName" n
+Wri "  Defaults:" n
+Wri "  -ka " n
+Wri "  -b : Angaben aus [avdemo] in avanti.con; Standard  -bdemo2\cat" n n
+Wri "  -ei-1=outdat.txt
+Wri "Beispiel:" n
+Wri "acon -jfind -sper shakesp? -rpyr =2000 -ee-1=shakesp2000.txt -bdemo2\cat" n
+
+

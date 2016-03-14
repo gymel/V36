@@ -1,0 +1,85 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fswiss\fprq2 Verdana;}{\f1\froman Times New Roman;}{\f2\fswiss Verdana;}{\f3\fswiss\fprq2\fcharset0 Verdana;}{\f4\fmodern\fprq1\fcharset0 Courier New;}{\f5\froman\fcharset0 Times New Roman;}}
+{\colortbl ;\red168\green23\blue23;\red0\green0\blue0;\red255\green0\blue0;\red0\green176\blue0;\red0\green128\blue0;\red0\green0\blue255;\red255\green0\blue128;}
+\viewkind4\uc1\pard\qc\cf1\f0\fs32 Export\cf2\f1\fs20 
+\par \cf3\b\f0\fs36 Tabellen erstellen\cf2\b0\fs24 
+\par \pard\qr\fs20 `\cf4\ul\b Kurzfassung\cf2\ulnone\b0 `\f2 
+\par \pard\qc\cf5\b\f3\fs24 Was hei\'dft das?\cf2\b0\f0 
+\par \pard 
+\par \fs20 Eine Tabelle besteht aus Zeilen und Spalten. Jede Zeile stellt einen Datensatz dar, die Spalten sind bestimmte Datenfelder. Relationale Datenbanken bestehen intern aus Tabellen\f3 , das ist ihr Bauprinzip\f0 . \i allegro\i0\f3 -Daten sind dagegen nicht in Tabellen organisiert, denn dieses Konzept ist f\'fcr eine bibliothekarische Datenbank zu unflexibel. Gelegentlich will man aber trotzdem eine Tabelle haben, die nur aus bestimmten, ausgew\'e4hlten Feldern der S\'e4tze einer Ergebnismenge oder der gesamten Datenbank besteht. Das ist leicht zu machen. \f0 
+\par \f3 Mit "Tabellen" sind hier Dateien gemeint, wie man sie mit Office-Programmen, relationalen Datenbanken und anderer Software einlesen kann: F\'fcr jeden Datensatz eine lange Zeile, bestehend aus einer Anzahl Datenfelder, die durch ein Tabulatorzeichen getrennt sind. Ein bekannter Name daf\'fcr ist "CSV-Datei". Wenn man eine solche Datei z.B. in WinWord einf\'fcgt, kann man danach sofort den Text markieren und \'fcber das Men\'fc "Tabelle" in eine richtige Tabelle umwandeln lassen. Selbstverst\'e4ndlich bleiben bei diesen Funktionen die Daten innerhalb der Datenbank v\'f6llig unver\'e4ndert, wie bei jedem Export! Die Tabelle, die herauskommt, besteht nur aus \i\f0 Kopien\i0  der Daten. 
+\par \f3 Die Tabelle ist eine Datei und hei\'dft TAB.TXT. Ist sie fertig, gehen Sie in das Dokument, wo die Tabelle eingef\'fcgt werden soll, und holen sich diese Datei herein (meistens mit einer Men\'fcfunktion "Einf\'fcgen / Datei").\f0 
+\par \i Tip: \i0\f3 Es gibt noch andersartige Tabellen, sog. "Views" oder "Sichten". Diese k\'f6nnen auch innerhalb von \i\f0 a99\i0  sofort betrachtet werden. Rufen Sie dazu das `\cf6\ul\b View-System\cf2\ulnone\b0 ` auf. 
+\par \f3 F\'fcr den Austausch mit relationalen Datenbanken gibt es ab V25 das neue Konzept `\cf6\ul\b\f0 aresqa\cf2\ulnone\b0 `. 
+\par \fs24 %=x if not #uq5 #uq4Office`if not #uq5 #uq5SQL% 
+\par \pard\qc\cf5\b Und w\f3 as ist zu tun?\cf2\b0\f0 
+\par \pard 
+\par `\cf6\ul\b Neue Tabellenstruktur einrichten\cf2\ulnone\b0 ` 
+\par \cf5\fs18   Welche Felder, welche Ordnung und Reihenfolge?\cf2 
+\par \pard\li568\f3 Sie haben eine Vorstellung, wie Ihre Tabelle aussehen soll, d.h. welche Felder in welcher Reihenfolge darin stehen sollen - mit anderen Worten, was die Spalten der Tabelle sein sollen? Das k\'f6nnen Sie in Form einer kleinen Liste eingeben. Auch die Ordnung kann dabei festgelegt werden, und zwar kann  alphanumerisch oder numerisch (d.h. nach Zahlenwert) geordnet werden. [Dies geht nicht bei der nachfolgend beschriebenen Schnellmethode.]\f0 
+\par \i\f3 M\'f6glicher Sonderfall:\i0\f0  nur ein einzelnes Feld, d.h. eine einspaltige Tabelle. Dann geben Sie eben nur diese eine Feldnummer an. 
+\par \f3 Das Programm macht die Erstellung der Feldliste sehr einfach und \'fcbersichtlich. Aber auch wenn beim ersten Versuch nicht das richtige herauskommt, hilft das System weiter! Daf\'fcr gibt es den Punkt "Tabellenstukturen sichten", s.u.
+\par Es entsteht eine Strukturdatei  \f4 t-\i\f3 abc\i0\f4 .str \f3  und eine Parameterdatei   \f4 t-\i\f3 abc\i0\f4 .apr\f3 . mit dem von Ihnen gegebenen Namen \i abc\i0 . Auf die str-Datei wird zur\'fcckgegriffen, wenn man die Struktur ver\'e4ndern will. Wer sich auskennt, kann auch die  .apr  selber modifizieren und verfeinern!
+\par 
+\par Eine neue Struktur einrichten kann man auch noch schneller mit der sog. \f0 
+\par \pard\qc\fs24 
+\par \pard `\cf7\ul\b\f3 Schnellmethode\cf2\ulnone\b0\f0 ` 
+\par \cf5\f3\fs18 (Nur die Nummern der Felder eingeben)\cf2\f0  
+\par \pard\li568\f3\fs20 Hier kommt nur eine Eingabezeile mit der Aufforderung, die gew\'fcnschten Feldnummern einzugeben. Man gibt die Nummern ein, getrennt jeweils durch ein Leerzeichen. Soll es nur der Inhalt eines Unterfelds sein, setzt man ein \b $\b0  und den Unterfeld-Code direkt hinter die Feldnummer.  Dann wird die t-Parameterdatei daraus vollautomatisch gebildet, zus\'e4tzlich auch die \f4 q-*.str\f3  f\'fcr die aresqa-Methode (s.u.). Wird nur der Anfangsteil des Feldes gew\'fcnscht, also der Text vor dem ersten Unterfeld, setzt man $$ hinter die Feldnummer. 
+\par Die Feldnamen werden, anders als bei der ersten Methode, aus der CFG und aus der Datei X.CFL entnommen 
+\par \i Wichtig:\i0  Die erste der eingegebenen Feldnummer dient zugleich als Sortierfeld, d.h. die Tabelle wird danach geordnet (falls man Ordnen verlangt). Au\'dferdem: Wenn ein Datensatz dieses Feld nicht enth\'e4lt, wird daf\'fcr nur dann ein Tabelleneintrag gemacht, wenn man ohne "Sortierung" tabellieren l\'e4\'dft.  
+\par Automatisch entstehen Strukturdateien namens \f4 t-nnn-s.apr\f3  und \f4 q-nnn-s.str\f3 , wenn #nnn$s das erste eingegebene Datenfeld ist. Diese Dateien d\'fcrfen nat\'fcrlich auch frei modifiziert werden, wenn man sich auskennt.\f0 
+\par \pard 
+\par `\cf6\ul\b\fs24 Tabellenstrukturen sichten\cf2\ulnone\b0 ` 
+\par \cf5\f3\fs18   Eine vorhandene Struktur ausw\'e4hlen\cf2\f0 . \fs24 %=x #uqU`#uqV`var #uqT`if "" #uqV [keine]`var 'Momentane Einstellung: '`ins #uqU`var #uqT(e"." e" " B"~q-" B"~t-")`ins #uq0%\fs18 %#uqU \cf3\b %#uq0\cf2\b0 %#uqV\fs24  \fs18 
+\par \pard\li568\f3 Strukturen, die man irgendwann einmal mit einer der beiden Methoden festgelegt hat, sind immer wieder f\'fcr neue Ergebnismengen verwendbar. Mit dieser Funktion sieht man die vorhandenen Strukturen und kann eine davon ausw\'e4hlen. Diese kann entweder sofort auf die aktuelle Ergebnismenge "losgelassen" werden, oder aber man schaut sich die Struktur nochmals an und macht evtl. Ver\'e4nderungen, bevor man sie anwendet. \f0 
+\par Die Strukturdateien fangen alle mit T- an und haben den Typ .xPR, also z.B. \b T-xyz.APR\b0 . Wenn Sie z.B. mit D.CFG arbeiten, ist es T-xyz.DPR. xyz ist der von Ihnen gegebene Name der Struktur.) 
+\par \f3 Strukturen f\'fcr aresqa sind einfacher, sie bestehen praktisch nur aus einer Liste der gew\'fcnschten Feldnummern. Diese Strukturdateien haben den Typ .STR und der name beginnt mit \b\f4 q-\b0\f3  .\f0 
+\par Wenn man eine neue Struktur einrichtet, entsteht \f3 zus\'e4tzlich\f0  automatisch eine .S\f3 TR-D\f0 atei! 
+\par \fs24 
+\par \pard `\cf6\ul\b Ergebnismenge tabellieren\cf2\ulnone\b0 ` 
+\par \cf5\fs18   Aus der Erg.Menge eine Tabelle machen\cf2 
+\par \pard\li568\f3 Wenn eine Struktur neu erstellt oder ausgew\'e4hlt wurde, kann sie mit diesem Men\'fcpunkt auf die aktuelle Ergebnismenge angewendet werden. Dieser Vorgang l\'e4uft dann vollautomatisch und sehr schnell ab. Heraus kommt eine Datei namens TAB.TXT. 
+\par Vorher wird gefragt, ob Sortierung gew\'fcnscht ist. Wenn ja, wird nach dem Inhalt des ersten Datenfelds geordnet, welches in der Tabellenstruktur eingestellt wurde. 
+\par Die Datei TAB.TXT k\'f6nnen Sie gleich nach der Fertigmeldung mit anderen Programmen einlesen! (Das Delimiter-Zeichen ist \'fcbrigens das Tabulatorzeichen, falls Sie das wissen m\'fcssen. In Ihrer Strukturdatei T-xyz.APR k\'f6nnten Sie das sogar \'e4ndern.) \f0 
+\par \f3 Vorher kann man aber einstellen, ob die Tabelle dann f\'fcr Office-Programme gebraucht wird oder f\'fcr eine Behandlung mit SQL:\f1\fs20 
+\par \pard\qc\f3\fs18 Tabelle soll geeignet sein f\'fcr\cf3\b\f0\fs24 
+\par ` %#uq4`\cf6\ul\b0 %#uq5\cf2\ulnone `\cf3\b %#uq6  ` 
+\par \cf2\b0\fs18 (Jetzt wirksam: %#uq4%#uq6. Umschalten: auf %#uq5 klicken) \f1\fs20 
+\par \pard\li568\f3\fs18 Die f\'fcr SQL geeigneten Tabellen haben als erste Spalte die interne Satznummer oder einen eindeutigen Schl\'fcssel, das ist der wichtigste Unterschied! Denn nur so k\'f6nnen bearbeitete Tabellen dann wieder eingelesen und den richtigen S\'e4tzen in der allegro-Datenbank zugeordnet werden. Zudem gibt es ein passendes SQL-Skript, mit dem man die erstellte Tabelle dann in eine RDB laden kann. Dieses Skript enth\'e4lt die Feldbezeichnungen, w\'e4hrend diese bei einer Office-Tabelle die erste Spalte der Datei TAB.TXT bilden.\f0 
+\par 
+\par \pard\f1\fs20 
+\par \f0\fs24 `\cf6\ul\b Ganze Datenbank tabellieren\cf2\ulnone\b0 ` 
+\par \fs18   \cf5\f3 A\f0 us der\f3  gesamten\f0  Datenbank eine Tabelle machen\cf2\fs24 
+\par \pard\li568\f3\fs20 Auch dieses kommt in der Praxis vor: Der gesamte Inhalt einer Datenbank soll in Form einer Tabelle einem anderen Programm \'fcbergeben werden. Hiermit geht das ohne Umschweife und mit jeder Tabellenstruktur, die man sich ausgedacht hat. Hinsichtlich Sortieren gilt dasselbe wie bei "Ergebnismenge tabellieren".\f1 
+\par \pard 
+\par \f0\fs24 `\cf6\ul\b\f3 Ausgabedatei\cf2\ulnone\b0\f0 `\f3 : %#uqN\f0  
+\par \cf5\f3\fs18   Dateiname \'e4ndern\cf2\f0  
+\par \f3\fs20\tab Falls der Name \cf3\b %#uqN\cf2\b0  nicht g\'fcnstig ist. 
+\par 
+\par \f0\fs24 `\cf6\ul\b Tabellendatei einlesen\cf2\ulnone\b0   ` 
+\par \cf5\f3\fs18   Daten nach externer Bearbeitung wieder einspeisen\cf2\f0  
+\par \pard\li568\f3\fs20 Eine mit aresqa oder einem RDBS produzierte Tabelle der Struktur \cf3\b %#uq0\cf2\b0  kann mit dieser Funktion in die allegro-Datenbank eingelesen werden. Die Tabellenzeilen werden dann den richtigen S\'e4tzen zugeordnet und die Spalten den richtigen Feldern.\f1 
+\par \pard 
+\par \f5 
+\par ?Neue Tabellenstruktur einrichten=h tabinit 
+\par ?Tabellenstrukturen sichten=X tabpick 
+\par ?Ergebnismenge tabellieren=x var ""\\ins #uq\f1 F\\exec X tabprod 
+\par ?Ganze Datenbank tabellieren=x var "G"\\ins #u\f5 q\f1 F\\exec X tabprod 
+\par ?HILFE..HILFE..HILFE=h tablh 
+\par ?View-System=h view 
+\par ?Kurzfassung=h table 
+\par ?aresqa=h aresqa 
+\par ? Office=x #uq4`#uq5Office`#uq6SQL`h tablh#50 
+\par ?Office=x #uq4Office`#uq5SQL`#uq6`h tablh#50 
+\par ?SQL  =x #uq4Office`#uq5SQL`#uq6`h tablh#50 
+\par ?SQL=x #uq4`#uq5Office`#uq6SQL`h tablh#50 
+\par ?Tabellendatei einlesen  =X aresqa2 
+\par ?Schnellmethode=X tabconf 
+\par ?Ausgabedatei=x ask Dateiname?=#uqN`if not "" ins #uqN`help tablh#82 
+\par  
+\par  
+\par 
+\par 
+\par 
+\par }
+ 

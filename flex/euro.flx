@@ -1,0 +1,52 @@
+  EURO.FLX  Umrechnung DM <-> EURO
+  00-11-27   Hierzu gehoert  EURO.RTF
+  Start ist moeglich mit  "X euro"  oder auch  "h euro"
+  (am Ende: Liste der Variablen)
+
+if #uxB perf rech
+if #uxB jump start
+var "1"
+ins #uxB
+perf rech
+help euro
+end
+
+:start
+   Nutzer soll einen Betrag eingeben
+ask Betrag (Komma oder Punkt möglich)=#uxB
+if no end
+if canc end
+  eingegebene Zahl -> #uxB  zwischenspeichern
+ins #uxB
+perf rech
+  Schleife
+jump start
+
+:rech
+var #uxB
+  und in die interne Zahl (iZ) kopieren
+Z =
+  und dividieren: iZ / iV  DM->Euro
+Z / 1.95583
+  Ergebnis steht wieder in iZ, kopiere nach iV, Rundung 2 Stellen
+var Z2
+  und dann nach #uxE (zur Anzeige in euro.rtf)
+ins #uxE
+
+  Jetzt umgekehrt: zwischengespeicherten Betrag zurueckholen und wieder nach iZ
+var #uxB
+Z =
+  malnehmen mit dem Faktor
+Z * 1.95583
+  iZ -> iV, dabei runden
+var Z2
+  und in #uxD speichern
+ins #uxD
+  EURO.RTF wieder anzeigen (Werte #uxD, #uxE sind da eingebettet)
+help euro
+return
+
+  verwendete Variablen:
+  #uxB  eingegebener Betrag
+  #uxD  Gegenwert in DM, wenn es Euro waere
+  #uxE  Gegenwert in Euro, wenn es DM waere

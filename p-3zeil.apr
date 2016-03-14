@@ -1,0 +1,108 @@
+  P-3ZEIL.APR : 3- oder mehrzeilige Ausgabe einer Kurzbersicht 
+  941122  Erweiterungsf„hig  (siehe #-E )
+pn="3zeiliger Listendruck"
+
+   Voraussetzung: #u1 enth„lt den Sortierkopf
+                  #u2 den Druckkopf
+                  beide k”nnen mehrteilig sein; Trennung der Teile durch ''
+                  Sonst werden andere Kategorien als Ersatz genommen
+  -----------------------------------------------
+zl=86
+
+zm=60    0 wenn fortlaufende Ausgabe gewnscht
+z1=0     keine Unterbrechung am Seitenende
+ff=2
+
+dx=1
+i4=0     V14 Ersetzungen
+
+  ------------------------------------------------
+
+#hi +I e0 #zz 0
+
+#dt dhp e0
+#40 +0 e"; " ahp       #uhp vorbereiten (Hauptperson)
+#52 +0 e"; " ahp
+#60 e40 ahp
+
+#-0
+
+#u1 +A e"" =sw,0
+#uhp +A =sw,0
+#t{ "---" }
+#+B
+
+#-A
+#00 +a i4,z e0    zeitschr.
+#u2 e"" U e16
+#u2 +B e"" U e16 dkk akk    fr Kopfzeile
+#uhp e16
+#uhp e16 dkk akk    fr Kopfzeile
+#+B
+#-a
+#t{ #20 %63 }
+#20 U E140 
+#20 b120 p"..." e3
+#20 +C e0
+
+#-B
+#t{ &19 #250 %63 }    Position 19, Einrckung festsetzen, Zeilenl„nge 64
+#-b
+#19 U E120         dadurch wird der Titel maximal 3zeilig
+#19 b120 "..." e3     wenn er l„nger ist: "..." anh„ngen
+#19 +C e0          wenn es #19 gibt, dann bei #-C weiter
+#20 U E120         dadurch wird der Titel maximal 3zeilig
+#20 b120 "..." e3     wenn er l„nger ist: "..." anh„ngen
+#20 +C e0
+#8n U E120         wenn #20 nicht da ist, vielleicht #8n?
+
+#-C
+#t{ %86 }    Zeilenl„nge rcksetzen, Zeile 0, Pos.66
+
+
+#t{ C }    neue Zeile
+
+   Weitere Elemente fr die 3. und folgende Zeilen:
+   nur als Beispiele; hier sind Erweiterungen m”glich
+ ------------------------------------------------------
+#74 e15     Ort auf 15 Zeichen krzen
+
+#75 E15 p{ &37 }     Verl. auch, auf Position 37 schreiben
+
+#t{ C }    neue Zeile am Ende
+
+ ------------------------------------------------------
+
+    Jetzt wieder nach oben gehen, Position 64
+#t{ $ &64 #250 }     Position 64
+#76p +S         zeitschr.: E.Verl.
+#76 x"*1" e4    E.Jahr
+
+#-S
+#t{ C }
+ #t{ &72 }     Position 69
+
+#90 e"" e" = " p"  " e14    Signatur, 14 Zeichen
+
+
+#+#
+
+#-I           Bandauffhrungen
+#t{ &19 }
+#hi1 e16 F"." P"."
+#20 +C e30 "  "
+#19 +C e30 "  "
+#77 +C e30 "  "
+#+C
+
+
+K    Kopfabschnitt
+#p2 p"- " P" -" R    Seitenzahl rechtsb.
+#ukk R
+#t{ C }
+
+p ª 1     Nichtsortierzeichen weglassen
+
+tPRINTER
+
+p .31 " / " 

@@ -1,0 +1,107 @@
+  CSTRING.FLX : Zeigt die aktuellen Werte der FLEX-Sondervariablen
+  2002-08-13    Beschreibung siehe  xcstring.rtf
+
+open x test.txt
+wri "Werte der besonderen FLEX-Variablen:" n n
+wri "A : Access-Modus der aktuellen Sitzung (Berechtigungsstufe aus INI-Datei) : " A n
+wri "B : Name der Datenbank : " B n
+wri "C : Copy-Verzeichnis (fÅr Sicherungskopie, siehe _BACKUP.FLX /_RESTORE.FLX) : " C n
+wri "D : Datenbank-Pfadname (mit \\ am Ende) : " D n
+wri "E : Name der aktuellen Exportdatei : " E n
+wri "G : Name der LOG-Datei (falls nicht Default = " D B ".log) : " G n
+var H
+asci
+ins #uvR
+wri "H : Liste der Register-öberschriften (Headlines, |-Zeilen in Indexparametern) : " n "    " #uvR(0,50) "..." n
+var I
+asci
+ins #uvR
+wri "I : Indexliste : die Liste der symbolischen Registernamen (I-Befehle der Indexparameter) : " n "    " #uvR(0,50) "..." n
+wri "K : Name der Konfigurationsdatei : " K n
+wri "K1: nur der erste Buchstabe davon : " K1 n
+wri "Kk: Werte k und t aus der CFG : " Kk n
+wri "L : Sprachbezeichnung (INI-Befehl  Language=...) : " L n
+wri "M : Inhalt der Environment-Variable TEMP (dort besteht Schreibrecht!) : " M n
+wri "    bzw. der Inhalt des INI-Befehls DbAux, wenn dieser gesetzt wurde." n
+wri "N : Nummer der Datei fÅr neue SÑtze : " N n
+
+wri "O : Name der Offline-Datei : " O n
+wri "P : Name des Programmverzeichnisses (mit \\ am Ende) : " P n
+wri "Q : Fokusziffer (wo der Cursor gerade ist) : " Q n
+var R
+asci
+ins #uvR
+wri "R : Restriktionen : Liste der Namen der Restriktionen (R-Befehle)  : " n "    " #uvR(0,50) "..." n
+wri "    (Trennzeichen bei I und R ist der Code 20 (  ))" n
+wri "S : Short-title öberschrift (aus Zeile |<=... der Indexparameter) : " n "    " S n
+wri "T : Titel der Datenbank (aus Zeile |a=... der Indexparameter; auch Titel des Fensters) : " n "    " T n
+wri "U : Name der aktuellen Erg.Menge : " U n
+wri "V : Name der INI-Datei (Vorgaben), mit der gestartet wurde : " V n
+wri "W : Arbeitsverzeichnis (Working directory) : " W n
+wri "X : Name der letzten Hilfedatei : " X n
+wri "Y : Pfad der IndexDatei (InxName in INI, falls anders als D, sonst leer) (DOS-Option -y) : " Y n
+var '1'
+=
+wri "Z : Wert der internen Zahlenvariablen iZ : " Z n
+wri "Z2: dasselbe, gerundet auf 2 Stellen nach dem Komma (k=0...9) : " Z2 n n
+
+wri "a : Name der aktuellen Anzeigeparameter (DOS: Option -p) : " a n
+wri "b : Breite der Kategorienummern, Textanfang. Bei A.CFG:  2,4 : " b n
+wri 'cn : Datum der Erfassung : #' cn n
+wri 'ce : Datum der letzten Aenderung : #' ce n
+wri 'cg : Feld f. die automatische IdNummer : #' cg n
+wri 'ci : Struktur der autom. Nummernvergabe : ' ci n
+wri 'cf : Anzahl Fuellzeichen je Satz : ' cf n
+
+wri 'cN : Zeile N der UIF-Datei, z.B. c339 : "' c339 '"' n
+wri 'cl : Optionen aus Befehlszeile dieser Sitzung : ' cl n
+wri "ca : Arbeitsspeicher Belegung/Max.Grî·e//Anz.Felder,MaxZahl : " ca n
+wri "cr : Reservespeicher Belegung/Max.Grî·e//Anz.Felder,MaxZahl : " cr n
+wri "cp : Phrasenspeicher Belegung/Max.Grî·e//Anz.Felder,MaxZahl : " cp n
+wri "d : Name der aktuellen Druckparam (DOS: Option -q) : " d n
+wri "e : Name der aktuellen Exportparam (DOS: Option -e) : " e n
+wri "f : find Befehl (Name) der letzten ErgMenge : " f n
+wri "g : Zeile im Index, die zuletzt benutzt wurde : " g n
+Z = 1
+wri "h : Headline des Registers, dessen Nummer in der iZ steht (vorher setzen, z.B. mit  Z=5) : " n "    " h n
+wri "i : interne Nr. des Datensatzes : " i n
+wri "j : Nummer der .cLD-Datei des Satzes : " j n
+wri "k0: Anzahl der Kategorien (Felder) des aktuellen Satzes : " k0 n
+var k0
+if "0" jump nof
+wri "k_1: Erstes Feld des aktuellen Satzes : " k_1 n
+wri "k_2: NÑchstes Feld : " k_2 n
+wri "k_2: NÑchstes Feld : " k_2 n
+wri "k_3: Letztes Feld : " k_3 n
+:nof
+wri "l : Grî·e ('length') der aktuellen ErgMenge : " l n
+wri "m : Name des Programms und Nummer der Version (z.B. a99 v21.3) : " m n
+wri "n : neue Zeile, gleichwertig: 13 10 : " n n
+wri "o : Anzahl der Offline-SÑtze : " o n
+wri "p : PrimÑrschlÅssel des aktuellen Satzes : " p n
+wri "pid : PID des laufenden Programms : " pid n
+wri "q : Nummer der aktuellen ErgMenge : " q n
+wri "r : relative Nummer des Satzes in der ErgMenge : " r n
+wri "s : Kurzzeile des Satzes (aus der .STL-Datei) : " n "    " s n
+wri "st : Statusfeld Satznummer : " st n
+wri "t : Gesamtzahl SÑtze (total number of records) : " t n
+wri "u : Datum und Uhrzeit : " u n
+wri "v : Phrasendatei : " v n
+wri "v7 : Phrase ^g : " v7 n
+wri "w : Inhalt des Schreibfeldes : " w n
+wri "x : Name des externen Editors : " x n
+wri "y : Name der Indexparameter (InxParam in INI, falls anders als B) sonst wie B (Option -I) : " y n
+z = 1
+wri "z : Wert des internen ZÑhlers : " z n
+wri "z0: Anzahl Zeilen in der Anzeige (incl. aller Leerzeilen) : " z0 n
+wri "z1: Erste Zeile des Anzeigefeldes : " z1 n
+wri "z2: NÑchste Zeile : " z2 n
+wri "z2: NÑchste Zeile : " z2 n
+wri "z3: Letzte Zeile  : " z3 n
+wri "zc : Inhalt der aktuellen Zeile (wo Cursor zuletzt stand) : " zc n
+wri "zn : Nummer der aktuellen Zeile : " zn n
+wri "zv : Nummer der oben sichtbaren Zeile : " zv n
+close x
+#uvR
+#uzC
+help test.txt

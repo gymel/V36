@@ -1,0 +1,43 @@
+ How to pick out subfields.
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ (To type '' with the X editor, press F2)
+
+ To print out subfield a rather than the whole field, you just add a after
+ the tag. (One and only one blank between tag and  !)
+
+#100 a P":"
+ display the content of subfield a of #100, the postfix it with ":"
+#245 C a
+ start a new line (C), then display the content of subfield a of #245
+#245 b p" : "
+ then the contents of subfield b, prefixed with " : " 
+#245 c p" / "
+ then subfield c, prefixed with " / "
+ Now the imprint is contructed in a similar way:
+#260 a p". - "
+#260 b p" : "
+#260 c p", " P"."
+ Finally, the shelfmark is displayed, right justified:
+#050 p"Shelfmark: " R
+
+ Note how:
+ 1. There can be more than one subcommand in each line.
+ 2. Within each line, the commands are processed in the order in which they
+    appear, i.e. from left to right.
+ 3. The commands are separated by a single space: two or more spaces will
+    inactivate the rest of the line (this technique can be used for comment).
+
+ 컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴
+ What follows is explanatory, and not part of the experiment. Do not change.
+#t76
+#t{C C C "�"*56 C "This parameter set displays the contents of #100, #245, "}
+#t{"#260, and #050 . Now some of the subfields are picked out and prefixed "}
+#t{"adequately." }
+#t{C "Edit DISPLAY3.SPR again (F2 F2 F10) and make some changes of your own."}
+#t{C "Problem: there's redundant punctuation in some cases. To discover the "}
+#t{"reason for this, the cure, and further improvements, go to DISPLAY4.SPR."}
+
+pn="DISPLAY3.SPR"  19960202
+76=27 91 49 59 51 48 59 52 55 109
+dx=1

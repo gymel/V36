@@ -1,0 +1,173 @@
+
+Verlautbarung 223 der Entw.Abt.                              2009-11-30
+-------------------------------
+
+Bereitgelegt: (zunaechst fuer Windows)
+   http://ftp.allegro-c.de/aktuelle-version/avanti/acon.zip
+
+Neuer- und Verbesserungen bei acon
+==================================
+Das Neue ist des Guten Feind, und sei's auch gar nicht so gemeint.
+
+get I"<url>"
+------------
+Die aiaqs-Technik von a99 ermoeglicht es mit dem Befehl  get I<url>,
+sich aus dem Internet eine Datei in die iV zu holen, wobei die <url>
+durchaus auch eine dynamische sein kann, also ein Skriptaufruf, und
+damit auch ein Datenbankzugriff. Und das bedeutet: man kann auf diese
+Weise mancherlei Web Services nutzen. 
+Dieser Befehl wurde in der avanti-Version von FLEX schon schmerzlich
+vermisst. Jetzt gibt es ihn, aber man muss die URL in Anfuehrungs-
+zeichen setzen, weil am // sonst die URL schon zu Ende waere.
+Beispiel:
+get I"http://www.biblio.tu-bs.de/db/demo/grec.php?urN=708"
+
+Mit  if no  testet man, ob die Verbindung nicht geklappt hat, 
+mit  if overflow  testet man, ob der Text zu lang war; dann sind in 
+                  der iV aber immerhin die ersten 2 Mio Byte.
+
+(Web Services liefern typischerweise recht kurze Antworten.) 
+Der Befehl bewirkt also, dass der gesamte Text, der beim Aufruf der
+<url> vom Server geliefert wird, in der iV landet. Was aber dann tun
+damit? Ihn in eine #u-Variable zu speichern wird oftmals an der
+Laenge scheitern. Deshalb wurde eine zweite iV geschaffen!
+Da hinein wird der gesamte Text ebenfalls kopiert, und beide iVs
+koennen bis zu 2 MB lang sein.
+Diese zweite iV, nennen wir sie iV2, kann man jederzeit in die
+normale iV kopieren, und zwar mit dem Befehl
+var $
+Und mit  write $  wird der iV2-Inhalt exportiert.
+Umgekehrt kann man, ganz unabhaengig vom Befehl  get I..., auch 
+jederzeit den iV-Inhalt in die neue iV2 kopieren, und zwar mit
+ins $
+
+Mit dem Befehl  var (...)  kann man beliebige Manipulationen am 
+iV-Inhalt ausfuehren.
+Man wird deshalb typischerweise so vorgehen:
+get I<url>
+var (b"..." e"...")
+ins #uxy
+
+var $ (b"..." e"...")
+ins #uyz
+  usw.
+Im obigen Beispiel etwa so:
+var (b"Titel: " b"<td>" e"<")
+um den Titel zu extrahieren (Quelltext anschauen!).
+
+D.h.man braucht den Internet-Abruf nicht mehrfach zu machen, wenn man
+mehrere Teile aus den Ergebnisdaten braucht. Nebenbei:
+Ein Problem der #u-Variablen ist, dass Zeilenvorschubzeichen darin
+verschwinden (durch Leerzeichen ersetzt werden). Die iV2 ist dagegen
+stets ein exaktes Abbild. Der Hintergrundspeicher ist zudem (momentan)
+auf 4MB begrenzt, da ist es guenstig, ihn nicht mit laenglichen 
+Inhalten aus Internet-Abrufen zu befrachten, die man i.d.R. nur sehr
+temporaer braucht.
+
+Mit dem neuen Befehl (besser: der neuen Sondervariablen iV)
+
+write iV    [nur bei write anwendbar, nicht bei var]
+
+laesst man den Inhalt der iV ohne Umcodierung hinausschreiben. Das 
+bedeutet insbesondere, dass stets mit einer Sequenz
+var ...
+write iV
+ein Schreiben von Inhalten garantiert ohne Umcodierung moeglich ist.
+
+
+Doch haben Neues wir empfangen, nach Neu'rem noch wir bald verlangen:
+
+$-Variablen
+-----------
+Vielleicht noch mehr als  get I  werden bei acon die $-Variablen 
+vermisst, die man im a99-FLEX zunehmend gerne nutzt. Die gibt es aber
+leider immer noch nicht. Riesengross ist der Bedarf freilich im Grunde
+nicht, denn eine acon-"Sitzung" ist fast immer in Zeit und Umfang
+viel begrenzter als eine a99-Sitzung, in der zahllose Aktionen unter-
+schiedlichster Art in bunter, voellig regelloser Folge stattfinden.
+Immerhin sind die neuen Befehle so angelegt, dass eine Erweiterung
+in Richtung $-Variablen sich als zwanglose Erweiterung in die Syntax
+einfuegen kann.
+
+
+Setzt Schranken nicht und nicht Barrieren, den Zahlen, welche wir begehren!
+
+Unbegrenzte Umdrehungen
+-----------------------
+Bis jetzt ist das Abarbeiten von Jobs auf 1000000 Befehlszeilen
+hart begrenzt, dann bleibt acon stehen. Das ist unelegant, klar.
+Einerseits hat die Limitierung ihren Sinn, denn es kann sich ja um
+eine nicht intendierte Schleife handeln, und ein Job soll nicht
+unbegrenzt rotieren und nutzlos Leistung verbraten duerfen! 
+Andererseits kann es aber sehr wohl sein, und zwar z.B. bei update- 
+und srch-Jobs, dass es grosse Datenmengen zu verwursten gibt und
+dabei im Endeffekt Milliarden Zeilen abzuarbeiten sind. 
+Daher haben wir folgendes eingefuehrt: Zu Beginn des Jobs setzt
+man das neue Statement
+
+set Zanzahl
+
+ein, und "anzahl" waere die Maximalzahl abzuarbeitender Jobzeilen.
+Internes default war und ist 1000000. Jetzt kann man aber nicht nur
+1000000000000000  oder sowas setzen, sondern
+set Z0
+und dann laeuft der Job bis zum Ende aller Zeiten weiter oder bis zu
+einem logischen Ende, je nachden, was zuerst eintritt.
+In srch.job und update.job ist das jetzt drin.
+Eine unendlich grosse Testmenge hatten wir nicht zur Hand, aber mit
+1.5 Mio Daten lief ein srch.job anstandslos durch.
+Ist eine endliche Zahl groesser 0 eingestellt, bleibt jetzt acon
+nicht mehr stoerrisch stehen, sondern meldet sich ab mit
+
+LIMIT is <anzahl> job lines
+
+"Dann weiss'e Bescheid!", wie H. Schlaemmer es gern formuliert.
+
+--------------------- 23-11-2009 ----------------------------------
+
+IMPORT 32bit
+
+Zum Ausprobieren liegt eine neue Version des Import-Programms unter
+dem Namen  nimport.exe  bereit - eine 32bit-Version.
+Unsere Tests mit diversen komplizierten Parametern und komplexen
+Daten endeten in einer Bit-für-Bit-Übereinstimmung mit den Resultaten
+des alten 16bit-Programms.
+
+    http://ftp.allegro-c.de/aktuelle-version/nimport.zip
+
+Der Aufruf erfolgt auf dieselbe Weise, bis auf:
+
+-- Option -f5 ist überflüssig
+
+-- Nur 1 Datei verarbeitbar, daher mit -d den exakten Namen angeben
+    [Dies wird evtl. noch zu ändern sein]
+
+-- Optionen -i und -e in jedem Fall vorzugeben, sonst Abbruch
+
+D.h. es gibt nicht die Dateiauswahl-Funktionen des alten IMPORT,
+wobei man mit + die Datei(en) markierte, was dem arrivierten System-
+verwalter immer das Heben einer skeptischen Augenbraue abnoetigte.
+
+Ferner entfallen die Fragen hinsichtlich der Optionen
+
+-- manueller Eingriff: Nein ist default, sonst -m1 vorgeben
+
+-- Anzeige der Originaldaten: Nein ist default, sonst -v1 setzen
+
+-- Suchbegriff: -s0 ist default, sonst -s<suchbegr> geben
+
+Kurzum: nimport.exe ist ein knochentrockenes Konsolprogrammm,
+und sonst nichts. Gleichwohl verwendet es die alte, unveränderte
+UIF-Datei  uif5ger.
+
+Wer mit eigenen Daten und/oder Parametern keine restlose
+Übereinstimmung erzielt, sendet uns bitte ein Beispielpaket zum
+Nachvollziehen.
+
+Geplant ist, nach einer Bewaehrungsfrist das alte import.exe
+nicht mehr auszuliefern, sondern vielmehr unter dem Namen
+import.exe nur noch das neue. Dann wird, wie im Fall index,
+empfohlen, das alte, so man es bewahren will, in import16.exe
+umzutaufen.
+
+

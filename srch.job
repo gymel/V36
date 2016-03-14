@@ -1,0 +1,264 @@
+   // SRCH.JOB : Grundgeruest fuer SRCH-Prozesse mit acon
+   // 2008-06-24 / 2010-02-09
+   // Hinweis:  acon wertet selber -k, -P, -d und -b aus
+
+// JobZeilenlimit auf unendlich setzen: (sonst bei gr. Datenmengen Schluss bei 1 Mio Zeilen)
+set Z 0
+
+// command line  auswerten, zuerst in #ucl kopieren
+
+var cl
+ins #ucl
+
+
+// Exp.Param, Option -e, Default i-1
+var #ucl(b" -e" f" " e"[/+=]" e" ")
+ins #uoe
+if not #uoe #uoe i-1
+
+// Exportdatei, Default outdat.txt
+var #ucl(b" -e" f" " e" " b"[/+=]")
+ins #uoE
+var #ucl(b" -e" f" " e" " b"[+]")
+if not "" var "+" #uoE;ins #uoE
+if not #uoE #uoE outdat.adt
+
+// 2. Exp.Param, Option -e  (kein Default)
+var #ucl(b" -e" b" -e" f" " e"[/+=]" e" ")
+ins #uof
+
+// Exportdatei
+var #ucl(b" -e" b" -e" f" " e" " b"[/+=]")
+ins #uoF
+
+// Suchbegriff fuer Befehl srx
+var #ucl(b" -s" f" ")
+//  Falls "..." angegeben ist (bei Spatien im Suchbegr. noetig)
+if not ='"' var (e" ")
+if ='"' var (1,0 e'"')
+// srx braucht den Suchbegr. in #u!!
+ins #u!!
+
+// Wenn nur -s0, dann nicht suchen, d.h. #u!! loeschen! (wie bei SRCH.EXE)
+var #u!! "X"
+if not "0X" jump sb
+
+var ""
+ins #u!!
+
+:sb
+// -U auswerten   z.B. -Uab xyz  ergibt  #uab xyz
+// es kann mehrere solche Optionen geben
+var #ucl(b" -U") 
+ins #ucL
+if not #ucL jump sc
+:sbl
+var "#u" #ucL(e" -U")
+ins
+var #ucL(b" -U")
+ins #ucL
+if #ucL jump sbl
+
+:sc
+
+// Eingabedatei(en), Option -d<namensmuster> oder -d"<namensmuster>"
+var #ucl(b" -d" f" *")
+if not ='"' var (e" ")
+if ='"' var (f'"' e'"')
+ins #uod
+
+Wri "DATEIEN: " #uod n
+
+if #uod jump uod
+// Envir. nehmen, wenn -d fehlt
+get env -d
+ins #uod
+// Option -b desgl.
+get env -b
+ins #uob
+// Konfig.Buchstabe
+get env -k1
+ins #uok
+
+var #uod "\\" #uob "*." #uok "ld"
+ins #uod
+
+Wri "Dateien: " #uod
+
+if not #uod jump no-d
+
+:uod
+var ""
+ins #uoD
+
+// falls ein Pfadname, dann diesen nach #uoD
+var #uod
+if not %\% jump unix
+var #uod(t"\" F"\") "\"
+ins #uoD
+jump begin
+
+// Trennzeichen / vorhanden?
+:unix
+var #uod
+if not %/% jump begin
+var #uod(t"/" F"/") "/"
+ins #uoD
+
+:begin
+
+var #uod
+dir
+// Liste steht in iV, in #uod speichern
+ins #uod
+
+// wri "uoD=" #uoD ", uod=" #uod n
+if not #uod jump nofiles
+
+
+// Keine Umcodierung  DOS<->Windows
+switch coding 2
+
+// Exp.param laden
+var #uoe
+exp p
+
+Wri "Export der Datei(en) " #uoD #uod n " mit Parameter " #uoe " in die Datei " #uoE n
+// Hinw.: output kann auch per Umlenkung mit  >dateiname  erfolgen!
+var #uoE
+export f
+if #uof jump 2exp
+jump floop
+
+:2exp
+// Exp.param laden
+switch dow 2
+var #uof
+exp p
+
+var #uoF
+exp f
+
+switch dow 1
+
+//   Datei  #oud  oeffnen UND ersten Satz lesen
+
+// file loop: erste Datei abarbeiten, Name steht in #uod, Ende bei "  "
+:floop
+// Aber Typ prüfen, z.B. Flag #ulD setzen, wenn es eine .ALD-Datei ist
+// Es koennte z.B. eine .a8d dabei sein
+#ulD
+var #uod(e" " b".") "x"
+if %~ldx% #ulD   yes
+// #uoG wenn .LOG
+#uoG
+var #uod(e" " b".") "x"
+if %~ogx% #uoG   yes
+#ulG
+var #uod(e" " b".") "x"
+if %~lgx% #ulG   yes
+#udT
+var #uod(e" " b".") "x"
+if %~dtx% #udT   yes
+
+// keiner der 4 Typen .ald, .log, .alg, .adt 
+
+var #ulD #uoG #ulG #udT
+if "" jump fend 
+
+Wri "Datei " #uoD #uod(e" ") " kommt jetzt dran" n
+
+var #uoD #uod(e"  ")
+open
+if no jump ferr
+// wenn / vorkommt, dann ist es unix, dann besteht die Liste aus vollst. Namen!
+if %/% var #uod(e"  ")
+
+:lesen
+// Satz incl. Satznr einlesen
+fetch rec
+//   Schleife: Satz evtl. durchsuchen, veraendern, exportieren, naechsten Satz lesen
+:loop
+ins
+
+// seine interne Nummer in #uiR merken, z.B. in e-solr.apr gebraucht
+var iR
+ins #uiR
+var k1
+// Wenn .ALD, dann geloeschte uebergehen
+if #ulD if %@@@@@% jump weiter
+
+copy obj 1 2
+// Suchen?
+if not #u!! jump ausgabe
+
+set a5
+var kr
+srx
+if cancel Wri "SUCHBEFEHLSFEHLER in " #u!!;jump weiter
+if not ok jump weiter
+
+   //   Satz exportieren, unveraendt. Version ist in obj 2
+:ausgabe
+switch obj 2
+// **** hier evtl. den aktuellen Satz noch vor der Ausgabe veraendern
+export
+if not #uof jump weiter
+
+// Wenn zwei Exporte, dann jetzt noch den zweiten
+switch dow 2
+export
+switch dow 1
+
+// naechsten Satz! aber Satz zuerst leeren mit "new"
+:weiter
+switch obj 1
+new
+fetch rec
+// Ende?
+// if "-1" jump fend
+if cancel jump fend
+// sonst verarbeiten
+jump loop
+
+// Datei zu Ende
+
+:fend
+// naechste Datei,Name steht in #uod hinter "  "
+var #uod(b"  ")
+ins #uod
+// wenn noch eine, dann ->:floop
+if #uod jump floop
+// Sonst Ende: Endabschnitt und Fertigmeldung
+
+swi dow 1
+exp - E    // Endabschnitt #- ENDE  abarb.
+ins $uee
+wri $uee
+close x
+
+if not #uof jump nur1
+swi dow 2
+exp - E
+ins $uee
+wri $uee
+close x
+
+:nur1
+Write "Das war's, Datei " #uoE " ist fertig"
+if #uoF Write " und " #uoF " auch"
+Wri n
+end
+
+:no-d
+Wri "ES IST KEINE OPTION -d ANGEGEBEN" n
+end
+
+:nofiles
+Wri "Es gibt keine Dateien dieser Art: " #ucl(b" -d" f" " e" ") n
+end
+
+:ferr
+Wri "Datei " #uod(e" ") " konnte nicht gelesen werden n
+end
+

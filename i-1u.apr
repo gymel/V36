@@ -1,0 +1,51 @@
+  I-1U.APR : Ausgabe im Original-"allegro"-Format  umcodiert nach UTF-8
+  2003-04-29 / 2013-05-22
+  d.h. Ergebnis ist eine neue sog. "Grunddatei", Typ .ALG,
+
+pn="allegro-Grunddatei -> UTF-8"
+
+  !!! diese Datei funktioniert im Prinzip fuer alle Konfigurationen !!!
+      wenn Sie sie fuer P.CFG benoetigen:
+      mit  COPY I-1U.APR I-1U.PPR       eine Kopie machen
+      und: COPY ad-utf.apt ad-utf.ppt   Tabelle Ostwest-Code -> UTF-8
+      Nur aufpassen, wenn intern nicht ASCII, sondern ANSI (s.u. an 2 Stellen)
+
+   -------- Konstanten ----------------------------------------------------
+                                          dieser Teil muss bleiben
+zl=0        Zeilenlaenge unbegrenzt (kein Umbruch)
+
+ks=1        Beginn des Ausgabetextes beim ersten Zeichen hinter #
+
+ke=0        Kategorie-Ende = Code 0
+
+as=h0       Aufnahme-Start: Hierarchiekennung + 0
+                    Hauptaufnahme        : Code 01  als Startzeichen
+                    Unteraufnahme Stufe 1:      02  ...
+ae=13 10    Aufnahme-Ende: Carriage Return / Line Feed
+              bei hierarchischer Aufnahme: nur am Ende
+
+            Akzentcodes:
+pa=182 181 184 183 189 190 198 199 207 208 209 210 211 212 219 222 223 232 
+
+  Wenn man intern ANSI hat (Windows-Code), dann statt dessen:
+  pa=180 145 136 149 168 166 227 179 186 175 215 171 184 191 161 173 247 150
+
+   -------- Anweisungsteil --------------------------------------------------
+
+#da   Akzente vertauschen (s. pa=...)
+##          Pauschalexport : alle Kategorien hintereinander ausgeben
+                             jeweils mit  ke  abschlieáen
+
+  Tabelle zur Zeichenumwandlung  OstWest -> UTF-8
+tad-utf
+
+  ABER falls intern Windows-Code (ANSI), dann statt dessen diese Zeile:
+ taw-utf.apt
+
+p .170 .96     Nichtsortierzeichen wird 96 = `
+
+  Diese Codes sollen bleiben:
+p .20 20       Absatz-Endezeichen
+p .31 31       Subfield code
+
+

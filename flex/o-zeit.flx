@@ -1,0 +1,76 @@
+  O-ZEIT.FLX : Bestellungen eines Zeitraums heraussuchen (ORDA)
+  2000-01-10/2001-03-21
+
+  Frage nach dem Datum, kann auch verkuerzt eingegeben werden (Monat oder Jahr)
+:datum-ein
+ask Datum? (in der Form 20.4.2011 oder 9.11.2011 oder 5.2011 oder 2011)=#ux1
+if cancel end
+ins #ux1
+  in #uzr speichern:
+var ""\#ux2   // Signalvariable, ob UP Fehler in Eingabesyntax feststellt
+perf up-uzr    // Datumseingabe in Belegung von #uzr ueberfuehren
+var #ux2\if "falsch" jump datum-ein
+  Find-Befehl zusammenstellen  |; s 3 ? and bdt =datum
+var "|; s 3 ? and bdt =" #uzr
+  Falls Zeitraum AB dem gewaehlten Datum:
+  var "|; s 3 ? and bdt >=" #uzr
+
+  Suche ausfuehren
+find
+  was gefunden?
+if empty jump nix
+var U
+ins #uo!
+var "RBestellungen " #uo!(b": ")
+set
+#uo!
+
+if l2 jump nureine
+  ja, dann ordnen
+order a0
+  und zeigen
+show list
+jump ende
+:nix
+message Keine Bestellung in dem Zeitraum
+end
+:nureine
+sho rec
+disp
+mes Da gibt's nur diese eine
+
+:up-uzr   // UP zur Berechnung von #uzr aus der Datumseingabe
+var #ux1 "X"\ins #ux1
+var #ux1(b"." b"." b".")
+if "" jump up-uzr-1
+var #ux1(F"X")\ins #ux1
+var "falsch"\ins #ux2
+var "Die Eingabe des Datums erfolgte nicht in der richtigen Form!" n
+var +"Bitte korrigieren Sie die Eingabe!"
+mes\return
+:up-uzr-1
+var #ux1(F"X")\ins #ux1
+var #ux1(b"." b".")
+if "" jump up-uzr-2
+   // Tag.Monat.Jahr wurde eingegeben:
+var #ux1(e".")\var (r2,0)\ins #utt
+var #ux1(b"." e".")\var (r2,0)\ins #umm
+var #ux1(b"." b".")\var (r4,0)\ins #ujj
+jump up-uzr-4
+:up-uzr-2
+var #ux1(b".")
+if "" jump up-uzr-3
+   // Monat.Jahr wurde eingegeben
+var ""\#utt
+var #ux1(e".")\var (r2,0)\ins #umm
+var #ux1(b".")\var (r4,0)\ins #ujj
+jump up-uzr-4
+:up-uzr-3
+   // Jahr wurde eingegeben
+var""\ins #utt\ins #umm
+var #ux1\ins #ujj
+:up-uzr-4
+var #ujj #umm #utt\ins #uzr
+return   // Ende des UP up-uzr
+
+:ende

@@ -1,0 +1,181 @@
+  TABPROD.FLX : Tabelle produzieren
+  2001-02-06  (Name der Parameter steht in #uqT)
+  2013-07-17  NEU: Gesamtbank mit srch exportieren statt Schleife mit  next #
+                   (erheblich schnellere Tabellierung der Gesamtbank)
+
+  Wenn #uqF mit "G" besetzt, soll Gesamtbank tabelliert werden:
+var #uqF
+if ="G" jump check
+
+if not empty jump check
+mes Momentan ist keine Ergebnismenge aktiviert!
+end
+
+:check
+  Wenn Struktur schon gewaehlt, steht der Name in #uqT
+if #uqT jump begin
+var "Keine Struktur ausgew„hlt! M”chten Sie das jetzt tun?"
+ansi
+yes
+if yes exec tabpick
+  Es wurde Nein gesagt, Ende
+end
+
+:begin
+  Exp.Parameter-name sichern in #uwe
+var e
+ins #uwe
+
+  gewaehlte Param. laden
+var #uqT(t".")
+xport p
+if no jump perror
+
+#uSo ja
+var "!Soll die Tabelle sortiert werden?" n "Nein: Daten in der momentan vorliegenden Ordnung ausgeben" n "Bei Nein wird auch für Sätze ohne das erste Feld eine Tabellenzeile erstellt, bei Ja nicht"
+yes
+if can end
+if yes jump ja
+#uSo nein
+
+:ja
+  Flag #uwh loeschen (wird in exportparam ausgewertet)
+var ""
+ins #uwh
+
+  Ausgabe erfolgt zuerst in Datei tab.tx
+open x tab.tx
+if #uqF jump gesamt
+
+exp set
+jump sorted
+
+:gesamt
+  Gesamtbank tabellieren?
+noyes Gesamte Datenbank tabellieren - Sind Sie sicher?
+if no end
+if can end
+
+  -------- NEU: srch  benutzen. Fuer Gesamtbank viel schneller ---------
+
+var P "srch -d" D B "_*." K1 "ld -e" #uqT(t'.') "/tab.tx"
+cAll
+
+jump sorted
+
+ --------- NEU ENDE
+
+ --------- ALT: mit  next # (unnoetig langsam) -------------
+   Abarbeitung der Gesamtbank
+ var "1"
+ z=
+   ersten Satz holen
+ first #
+ if del jump naechst
+ :loop
+   Satz exportieren
+ dow
+   naechsten Satz
+ :naechst
+ next #    geht nicht bei unbesetzten Nummern!
+ var "1"
+ z+
+   kein Satz mehr, Ende erreicht
+ if cancel jump sort
+   der Satz ist geloescht
+ if del jump naechst
+   Die Satznummer ist nicht besetzt
+ jump loop  
+
+ :non
+ var "#" z
+ find
+ jump naechst
+
+ :sort
+ close x
+  --------- ALT ENDE -----------------
+
+:sorted
+  vorherige Exp.Parameter wieder laden
+var #uwe
+xport p
+
+  #uqN = Ausgabedatei (aus table.rtf) Default: tab.txt
+if not #uqN #uqN tab.csv
+
+  War Sortieren gewuenscht?
+var #uSo
+if %ja% jump ord
+
+  Alte Ausg.Datei loeschen
+var #uqN
+delete
+
+var "tab.tx " #uqN
+
+rename 
+if no jump rerr
+jump showt
+
+:ord
+var "Export ist fertig. Jetzt wird sortiert - bitte warten ..."
+sho IV
+
+  Alte Form: mit comspec (= cmd.exe)
+  get env comspec
+  ins #uwC
+  var #uwC " /c " P "asort tab.tx " #uqN " -u1"
+
+  Neue Form: asort direkt aufgerufen
+var P "asort tab.tx " #uqN " -u1"
+cAll
+
+:showt
+var #uqN
+fsi 
+if no jump error
+activate
+h table
+var #uqN
+if not ="\\\\" if not %:% var W "\\" #uqN 
+ins #uqW
+open 
+var "Fertig." n "Die Tabelle heiát " #uqW " und beginnt so:" n n
+ansi
+get +iV
+var +n
+get +iV
+var +n
+close
+sho rec
+var +n "ACHTUNG:"
+var +n "Die Datei " #uqW " kann man z.B. mit WinWord einlesen,"
+var +n "dann markieren und in eine Tabelle umwandeln! (Menue 'Tabelle')"
+var +n n "Datei anzeigen?"
+yesno
+if not yes end
+  aq.flx zeigt Datei im aresqa-Fenster, dort auch Bearb. moeglich
+var "aq " #uqW
+exec 
+  unsortierte Datei loeschen (aktivieren, wenn gewuenscht)
+  del tab.tx
+end
+
+:error
+var "Datei " #uqN " konnte nicht geschrieben werden"
+mes
+end
+
+  Param.Datei wurde nicht gefunden
+:perror
+mes
+var #uqT " existiert nicht oder fehlerhaft!"
+mes
+end
+
+:rerr
+ins $r
+var "Umbenennung " $r " hat nicht geklappt"
+mes
+

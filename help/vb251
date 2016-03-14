@@ -1,0 +1,166 @@
+
+Verlautbarung 251 der Entw.Abt.                              2013-06-03
+-------------------------------
+
+
+V33.2 ist da
+============
+
+
+Option UTF-8 intern - verbessert
+--------------------------------
+
+1. CFG
+   Neuer Code C:
+
+CU   :  UTF-8,  D=Dos, W=Win
+
+Auswirkung vorerst nur in a99 hinsichtlich Anwendung von o.apt
+UTF-Codes, die mit >191 beginnen (2 Byte) bzw. >224 (3 Byte), 
+werden nicht umgewandelt.
+Zumeist wichtig sind nur
+  20 = Absatzende, 31 = Unterfeldcode, 170 = Nichtsortier
+Anwendung in diesen Quellcodes:
+    konfig.hpp (Wert CS), konfig.cpp und exet3.cpp (Fktn. E3Coding())
+4bytige UTF-Codes sind weiterhin unberücksichtigt.
+(Anm.: Als Nichtsortiercode unter UTF-8 wird dennoch nicht 170
+       vorgesehen, sondern voraussichtl. 96
+       Fuer das interne Fuellzeichen wird 127 genommen statt 219.)
+       
+
+2. Erster Schritt: Mini-Datenbank
+Vollständiges Paket verfuegbar, Ordner "datuni" parallel zu "demo2"
+Alle Parameter etc. kommentiert mit UTF-8 an den relevanten Stellen
+
+
+3. Zweiter Schritt (steht noch aus!): Standardparameter
+
+Procedere fuer eine Umstellung;
+(Es wird spaeter einen FLEX geben, der dies automatisch durchfuehrt)
+
+1. Exportieren mit i-1u.apr
+Dabei bleiben Codes 20, 31 und 170 erhalten!
+
+2. Entstandene .alg-Datei neu indexieren mit neuer dat.api
+   (mitgeliefert im Ordner datuni).
+
+
+Was ist dann erreicht?
+
+A: Intern UTF-8
+
+B: Bearbeitung mit a99 zwar möglich, aber die UTF-Codes werden als 
+   2-Byte- bzw. 3-Byte-Codes sichtbar, nicht als Einzelzeichen,
+   Nur in der Anzeige erscheinen sie richtig, nicht anderswo.
+   Korrekte Bearbeitung daher nur mit  utf8edit.flx (mit Alt+3
+   bei der datuni-Datenbank eingestellt).  Oder mit a35 (per Browser).
+   In beiden Fällen geht nur das Kopieren aus den Registern nicht,
+   vor allem fuer die Stammsatznummern.
+
+Die wichtigen Funktionen  zc.flx (Z39-Datenuebernahme) und
+dnb.flx (Daten aus DNB per ISBN bzw. Stichwort)
+werden angepasst und sind dann nutzbar.
+
+
+a35 : Letzte Tests vor Freigabe
+-------------------------------
+Im Moment haben mehrere testwillige Anwender dankenswerterweise die
+Muehe des Testens auf sich genommen. Sobald die Rueckmeldungen ueber
+Probleme und Stolpersteine und Verstaendnisschwierigkeiten abgearbeitet
+sind, wird das Paket fuer die erste Distribution finalisiert und
+freigegeben, und zwar von vornherein im SVN als Repo "a35". (Momentan
+noch nur den Testern zugaenglich.)
+Es wird bereits eine UTF-8-Testdatenbank mit allen noetigen Parametern
+enthalten. (Siehe unten)
+
+
+
+Die V33.2 enthaelt auch die fuer a35 leicht aktualisierten Programme
+acon und a99, s.o. Punkt 1.
+
+Hier nochmals die Zusammenfassung der wichtigsten Aussagen zu a35:
+
+a35 Executive Summary  [vorab schon als Mail am 28.5.2013]	
+=====================
+Pflichtenheft für a35 in Kurzfassung
+
+"a35" war der Arbeitstitel und bleibt die Kurzbezeichnung für die
+Neuentwicklung "allegro-B", und das bedeutet "allegro für Browser".
+
+Die 10 wichtigsten Entwicklungsziele sind diese:
+
+ 1. Eine für jede allegro-Datenbank schnell und leicht einzurichtende
+      Web-Anbindung
+
+ 2. An der Clientseite nur zeitgemäße, offene Standards:
+      HTML5, CSS3, JavaScript, jQuery
+      d.h. im CLient nur ein nicht zu alter Browser erforderlich
+
+ 3. Programmierung auf Serverseite weitestgehend mittels FLEX, der
+      unentbehrlichen Skriptsprache für den Datenbankzugriff.
+      Standardskripte in PHP erübrigen eigene Skriptprogrammierung,
+      ansonsten aber im Prinzip freie Wahl der Werkzeuge, falls PHP
+      nicht anwendbar oder unerwünscht ist.
+
+ 4. Oberfläche komplett Unicode, intern aber beliebiger Zeichencode
+
+ 5. Großes, flexibles, erweiterbares Funktionsspektrum
+
+ 6. Möglichst komfortable Dateneingabe und -bearbeitung per Web,
+      doch in jedem Fall zugleich mit a99, kein entweder-oder
+
+ 7. Administratorfunktionen, soweit irgend möglich, ebenfalls per Web
+
+ 8. Nutzung auch auf Mobilgeräten (Tablet und Smartphone incl. iPhone)
+
+ 9. Möglichkeiten zur Integration einer Volltextsuche mittels "srch",
+      desgl. zur Nutzung von Solr
+
+10. Umfassende Dokumentation (Voraussetzung für Punkt 1)
+    Der gegenwärtige Stand (5.6.2013):
+      http://www.allegro-c.de/doku/a35/a35.pdf
+
+Damit wird u.a. der nicht mehr zu verdrängenden Einsicht Rechnung
+getragen, daß das Web zum wichtigsten Aktionsfeld und der Browser zur
+wichtigsten Endnutzer-Plattform geworden sind. Nutzung einer
+Datenbank überall, jederzeit und mit jedem Endgerät ist zu
+einer Erwartung geworden, die ein System entweder erfüllt - oder
+aber nicht mehr bestehen kann.
+
+
+Noch etwas zum Punkt 4:
+Es soll keinen Zwang geben, eine Datenbank als solche irgendwie
+umzuformatieren, um a35 nutzen zu können, also insbes. soll der
+Zeichencode ASCII, den die große Mehrheit der Anwender einsetzt,
+nutzbar bleiben, wobei dann die Web-Schnittstelle für eine
+transparente Umwandlung in beiden Richtungen zu sorgen hat.
+Andererseits wird dennoch angestrebt, daß man UTF-8 auch als
+datenbankinterne Codierung einsetzen kann. Man wird dann ältere
+Datenbanken auch in eine solche Form umwandeln können, aber eben
+nicht müssen.
+
+Drei Entwicklungsstadien zeichnen sich ab:
+
+Für die interne Nutzung von UTF-8 wurde als erste Stufe, Ende
+Mai 2013 schon weitgehend realisiert, eine strukturell recht
+einfache Datenbankkonfigurierung erarbeitet. Mit dieser können
+alle Web-Funktionen, insbes. die Schreibvorgänge, umfassend erprobt
+und verfeinert werden. In diesem Moment kann das Paket a35 für
+testwillige Anwender zugänglich gemacht werden.
+Aktueller Stand:
+   http://www.allegro-c.de/db/demo/a35start.php
+Smartphone-Variante fuer Chinesisch (Oxford)
+   http://www.allegro-c.de/db/oxford/a35app.php
+
+Als zweite Stufe werden die so gewonnenen Einsichten, Skripte,
+Tabellen und Hilfsdateien dann in die Standard-Konfigurierung
+übertragen, die bei den meisten Anwendern im Einsatz
+ist. Nun kann das Paket allgemein zugänglich gemacht werden,
+womit noch in 2013 zu rechnen ist.
+
+In einer dritten Stufe können dann die Geschäftsgangsfunktionen
+(Erwerbung, Zeitschriftenverwaltung, Ausleihe) ebenfalls für a35
+umgestaltet werden. Einsatzreife kann wohl erst 2014 erreicht werden.
+Die OPAC-Funktionen Verlängerung, Kontoeinsicht, Vormerkung sind
+schon vorab realisiert worden.
+

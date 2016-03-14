@@ -1,0 +1,70 @@
+
+Verlautbarung 158 der Entw.Abt.                          2002-07-15
+-------------------------------
+                                       Bereitgelegt:
+1. Korrekturen                         a99a.lzh, a99.lzh
+2. FLEX-Einbettung in RTF               
+
+1. Korrekturen
+--------------
+Kollege Berger hatte, unermuedlich testend, weitere Stellen ausfindig
+gemacht, die verbesserungswuerdig waren:
+
+a) Bei einer Eingabe wie "vnnn" im Schreibfeld gab's die rote Karte.
+   Nicht nur behoben, sondern:
+   -- Eingabe von "v" (und sonst nichts) oeffnet  quick.vw
+   -- "v name" oeffnet  name.vw
+   -- "v ?" oeffnet die letzte ViewListe
+   D.h. "v" kann jetzt genauso fuer ViewListen eingesetzt werden
+   wie "h" fuer Hilfedateien und "X" fuer FLEX-Dateien.
+   Gesucht werden ViewListen in
+      DbDir / ProgDir\VIEW / ProgDir\HELP / ProgDir / Lokal
+
+b) Wenn in einer PV-Routine im Falle "#u2 s" das Speichern verhindert
+   wird, wird "put" nicht ausgefuehrt, aber die Farbe wechselt auf gruen.
+
+c) In der "ask"-Prozedur funktionierte das Index-Aufblaettern bei
+   Pseudo-Registern nicht. 
+   Neben der Korrektur wurde die Syntax geaendert:  
+      ask +|1D |Hochschulort=#819
+   vorher:
+      ask +|1D "Hochschulort=#819
+
+d) Formularproblem: Ist eine Kategorie schon belegt, werden in einem
+   Formular deren noch unbelegte Teilfelder leer angezeigt, auch wenn
+   im Formular eine Vorgabe steht. Z.B. #9A im ORDA-Kontingentsatz.
+   Dies muss leider so bleiben, ist aber ein sehr marginales Problem.
+
+Damit sich's aber lohnt, kommt noch was Neues hinzu:
+
+2. FLEX-Einbettung in RTF
+-------------------------
+Hauptsaechlich um die Belegung von #u-Variablen zu erleichtern, wurde
+folgendes eingerichtet:
+Mit der Syntax  %#xyz 
+kann man Kategorie- und Variableninhalte in
+den Text einbetten. Das Belegen der Variablen muss jedoch bisher
+ausserhalb der Datei geschehen, normalerweise in einem FLEX, der dann
+die RTF-Datei mittels h-Befehl aufruft.
+Eingeschlossen in %=...% kann man nun FLEXe einbauen, die dann genau 
+beim Einlesen der Datei ausgefuehrt werden. Wenn so ein FLEX dann
+irgendwelche Variablen belegt, die anschliessend in der Datei auftreten,
+werden deren Inhalte dann korrekt angezeigt. Anschliessend, also nach
+dem Auftreten der Variablen im RTF-Text, kann ein weiterer FLEX kommen,
+der die Variablen dann wieder loescht! Die Ausfuehrung, um es genau
+zu sagen, erfolgt exakt in dem Moment, wo diese Stelle der Datei
+eingelesen wird, bevor es mit dem Einlesen weitergeht.
+ABER: Es klappt nur, wenn die Hilfedatei direkt mit h-Befehl oder aus
+einem Flip mit "h xxx" aufgerufen wird, aber NICHT, wenn sie mit 
+"help xxx" aus einem FLEX heraus geladen wird. Denn es muesste dann 
+ein FLEX innerhalb eines anderen FLEXes ablaufen und der erste danach
+weiterlaufen - das geht nicht. Wenn allerdings der help-Befehl der 
+letzte des FLEXes ist oder ein "end" folgt, DANN klappt es trotzdem.
+
+Der FLEX zwischen %=...% kann aus beliebig vielen Befehlen bestehen,
+die Trennung MUSS aber das Zeichen ` sein, nicht \. 
+Es kann auch eine FLEX-Datei aufgerufen sein, das Muster ist dann
+natuerlich %=X ...%
+Als Beispiele kann man sich  exprt.rtf und files.rtf anschauen.
+Achtung: in solchen FLEXen keine Variablennamen mit Sonderzeichen
+erlaubt, auch nicht mit Umlauten.

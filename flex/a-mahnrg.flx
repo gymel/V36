@@ -1,0 +1,225 @@
+  A-MAHNRG.FLX : Mahnungen registrieren und Geb.Saetze anlegen
+  20060208
+     evtl. noch verbessern: Kommentar xxx
+
+  Aufgaben:
+  1. Eintraege der folgenden Form sichten und mit #dts vergleichen :
+       |;MDjjjjmmtt
+     d.h. Mahndatum <= aktuelles Datum  ($M in #9DH oder #9GG)
+     >>> #9GG : Gebührenmahnungen werden zunaechst nicht beruecks. <<<
+
+  2. Fuer jeden dieser Saetze einen Gebuehrensatz erzeugen
+     #9GF0$G0$Busernr$DDatum$oOperator$n3
+     #9GG$Ebarcod$Ttitelnr$Sgebsum$mMedtyp$nmahnstufe$dverzugstage
+     Im Reg. 11 entsteht GD-Eintrag aus #9GF$D (Registrierdatum)
+     Diese Eintr. werden fuer den anschl. Mahnexport gebraucht.
+
+  3. Im Exemplarsatz das Datum $M aktualisieren, d.h. das Datum der
+     naechsten Mahnung reinschreiben. MD-Eintrag Reg. 11 aendert sich!
+     und Mahnstufe $n erhoehen
+
+
+  Voraussetzung: a-init.flx laedt die Medientypsaetze in $Amtyp und die
+  Leserklassen in $Aclas. Sonst muessten diese bei jedem einzelnen
+  Ausleihsatz jeweils nachgeladen werden...
+
+if not #ua? jump nini   // #ua? nicht besetzt - aLF nicht initialisiert
+
+  Mahndatum ist Reg.11 MDjjjjmmtt indexiert
+var "|; MD00000000---MD" #dts(0,8) "zz"
+   Von/Bis-Suche (alles bis zum heutigen Datum)
+find
+if empty jump nix
+
+  Zaehler auf 0 (Anzahl Mahnungen)
+#uaZ 0
+
+  Erg.Menge besteht aus Expl-Saetzen und evtl. Geb.Saetzen
+  Ersten Satz laden
+first
+:loop
+  Ist es ein Gebuehrensatz? Dann nichts machen!
+  (d.h. Gebuehrenmahnung noch nicht beruecks.)
+if #9GF jump nxt
+
+  Sonst #uGF und #uGG vorbereiten: f. #9GF und #9GG
+  Kein passender Medientypsatz, dann Leserklassensatz nehmen
+            (Klassensätze stehen alle in $Aclas)
+  z.B.  Satz  C1 (aus #9A C1 ...)
+var "C" #9DH$C
+ins #uAC
+var $Aclas
+ins #uAY
+  zugehoerigen Abschnitt in #uAY suchen, z.B. ist #uAC = C1
+var #uAY(b"#uAC" e"///")  // Abschnitt mit den Bedingungen der Klasse
+if "" jump med
+  Klassensatz in #uaY
+ins #uaY
+  max Mahnstufe
+var #uaY$S
+ins #uMS
+  Mahngeb. 1
+var #uaY$m
+ins _.__
+ins #uAG
+
+:med
+  Medientypsatz suchen, sie stehen schon alle in $Amtyp:
+var $Amtyp
+  kopieren in #uAY
+ins #uAY
+var #9DG$m "B" #9DH$C   // medTypsatzcodeBLeserklasse
+ins #uAS
+  zugehoerigen Abschnitt in #uAY suchen
+var #uAY(b"#uAS" e"///")  // Abschnitt mit den Bedingungen des Typs
+if not "" ins #uAY
+  wurde der Typ gefunden?
+if #uAY jump gmt
+
+:deflt
+  wenn #uAG schon aus Kl.Satz entnommen war, dann
+if #uAG jump mahn
+var "m300"   // xxx DefaultGebuehr, wenn die Stammsaetze nichts hergeben
+ins #uAG
+jump mahn
+
+:gmt
+    xxx hier evtl. Mahngeb. noch differenzieren: 1./2. Mahnung
+var #uAY$n
+ins _.__     // . entfernen, Betrag soll in Cent sein
+
+ins #uAG
+
+:mahn
+  ACHTUNG:  #9GF$m und $n erst nach MahnExport belegen!
+var "0G7B" #9DH$u "D" #dts(0,8) "o" #op
+ins #uGF    // fuer #9GF
+
+  Verzugstage errechnen:
+z=1
+:vlo
+var z
+if >365 jump long
+var "-" z
+WDay
+ins #uaV
+var #uaV "-" #9DH$R
+Day
+if >0 z+1;jump vlo
+jump tage
+
+:long
+
+
+z=366
+
+:tage
+  var #dts(0,8) "-" #9DH$R
+  Day
+
+var z
+if >365 var "mehr als 365"
+ins #uvZ
+
+var "S" #uAG "K" #9DH$C "E" #9DG$a "T" #9DF "R" #9DH$R "D" #9DH$D "d" #uvZ
+ins #uGG   // Fuer #9GG
+
+
+  Jetzt Expl.Satz aktualisieren
+  naechstes Mahndatum ergibt sich aus $Mahnz (s. alf.inc)
+
+var $Mahnz
+if "" var "1"
+Wday 
+
+var (e"/")
+ins $M-#9DH
+
+   der aktuelle Tag ist das tatsaechliche Mahndatum
+var #dts(0,8)
+ins $m-#9DH
+
+#uMs
+  Mahnstufe erhoehen
+var #9DH$n
+z=
+z+1
+var z
+ins $n-#9DH
+  // Vergl. mit max Stufe, wenn erreicht oder ueberschr., dann #9DH$n, $m, $U setzen
+if <#uMS jump rausdamit
+$n-#9DH 9
+var #9DH$m
+ins $U-#9DH
+$M-#9DH 20990230
+
+:rausdamit
+  Expl.Satz wieder speichern
+put
+
+// Mahndat. u. Stufe in Gebhr.Satz uebernehmen
+var #9DH$m
+if #9DH$U var #9DH$U
+ins $m-#uGF
+var #9DH$n
+ins $n-#uGF
+
+  Gebhr.Satz anlegen: #uGF und #uGG -> #9GF und #9GH
+new 0
+#00 -
+var #uGF
+ins #9GF
+var #uGG
+ins #9GG
+   TEST:
+ disp
+ sho rec
+ mes Fertiger Geb.Satz
+ erase
+  speichern
+put
+
+var #uaZ   // Zaehler erhoehen
+z=
+z+1
+var z
+ins #uaZ
+
+  naechsten Exemplarsatz
+:nxt
+next
+if yes jump loop
+
+var "Anzahl: " #uaZ " Mahnfälle" n "Die Mahnungen werden jetzt gezeigt"
+mes
+var "|; GD" #dts(0,8) "?"
+Find
+
+end
+
+:nix
+mes Keine Mahnfaelle vorhanden
+end
+
+:nini
+mes aLF ist noch nicht initialisiert
+end
+
+
+ u-VARIABLEN in a-mahnrg.flx
+ #uAC (1)  =#9DH$C
+ #uAG (2)  Mahngeb. in Cent
+ #uAM (2)  $m ist Mahngeb. aus Klassensatz
+ #uAS (1)  medTypsatzcodeBLeserklasse
+ #uAY (6)  Med.Typsatz f.d. betr. Typ
+ #uGF (2)  =#9GF 
+ #uGG (2)  =#9GG
+ #ua? (2)  Flag. Wenn leer, aLF nicht initialisiert
+ #uaV (2)  zur Berechnung d. Verzugstage
+ #uaY (1)  =$Aclas 
+ #uaZ (4)  Zaehler Anzahl Mahnungen
+ #uvZ (2)  Anzahl Verzugstage
+ $Aclas (1)  Leserklassen
+ $Amtyp (1)  MedTypsaetze
+
+

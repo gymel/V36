@@ -1,0 +1,18 @@
+var M B ".$$$"
+open
+open x offlist
+  erstes Byte überspringen, dann satzweise einlesen
+fetch b
+:loop
+fetch b
+if ="-1" jump ende
+fetch rec
+if cancel jump ende
+  Satz rausschreiben
+write
+write 13 10 "................" 13 10
+jump loop
+  Das war's, Daten anzeigen
+:ende
+close x
+h offlist

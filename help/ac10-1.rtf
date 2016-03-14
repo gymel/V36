@@ -1,0 +1,211 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\froman\fprq2\fcharset0 Times New Roman;}{\f2\froman\fprq2 Garamond;}{\f3\fmodern\fprq1 Courier;}{\f4\fmodern\fprq1 Courier New;}{\f5\fnil\fprq2\fcharset2 Wingdings;}{\f6\fswiss\fprq2 Univers Condensed;}{\f7\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red0\green0\blue255;\red255\green0\blue0;}
+\viewkind4\uc1\pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0\fs20 
+\par \f1  \f0 `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 `--> \b 10.2\b0 
+\par \pard\fi-658\li658\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \b\f2\fs48 10\tab Export-Parameter\b0\fs20 
+\par 
+\par 
+\par \b\fs36 10.0\tab Zum Konzept\b0\fs20 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f0 
+\par Mit  \b\fs24 Export\b0\f3  \f0 wird im \lang1033\b\i\fs20 allegro\b0\i0 -System jeder Vorgang bezeichnet, bei dem aus den Anwenderdaten, also den Datenbank- oder Grunddateien (Typen .ALD bzw. .ALG) irgendeine Ausgabe produziert wird. Ganz gleich, ob diese Ausgabe auf den Bildschirm, den Drucker oder in eine andere Datei geht. Das Ergebnis eines Exportvorgangs wird "Exportprodukt" genannt. 
+\par \lang1031 Was bei einem konkreten Ausgabevorgang im einzelnen mit welchen Kategorien geschehen soll, das entnehmen die Programme aus sogenannten \b Export-Parameterdateien\b0  (Typen .\i c\i0 PR und .\i c\i0 PI, \f4 -\f5\'d8\f1  0.3). Eine solche mu\'df also existieren und geladen werden, bevor ein Programm eine Ausgabe produzieren kann (\f4 -\f5\'d8\f0  Kap.3.5.3).  \f1 Viele\f0  Parameterdateien werden \f1 im Installationspaket mitgeliefert, geeignet zumeist f\'fcr das Standardsystem mit der A-Konfiguration\f0 .\f1  F\'fcr einige Zwecke gibt es auch allgemeing\'fcltige, mit jeder Konfiguration verwendbare Parameter.\f0  
+\par \b Exportprodukte\b0\f1  und die dazu n\'f6tigen Parameterdateien lassen sich in folgende 10 Typen einteilen: (Der \cf2\f0 Anfangsbuchstabe\cf0  identifiziert den Typ) 
+\par \f1 Die angegebenen Beispieldateien sind kommentiert, d.h. geeignet als Muster, wenn man eine Aufgabe vom betreffenden Typ zu l\'f6sen hat.\f0 
+\par \pard\fi-1136\li1136\tx1136\b 
+\par Typ\tab Produkt / Beispiele 
+\par 
+\par 
+\par \cf2\f6 D\cf0 isplay\f0\tab\b0\f1 Bildschirmanzeigen, Katalogkarten. D-1.APR wird von PRESTO standardm\'e4\'dfig f\'fcr die Anzeige geladen  /  \f0 
+\par \tab\cf2\f4 D\cf0 -1.APR, \cf2 D\cf0\f7 -WRTF.APR (f\'fcr a99), \cf2\f4 D\cf0 -HTML.APR\f0   (`\cf1\ul\b Beispiel D-0.APR\cf0\ulnone\b0 `) 
+\par 
+\par \cf2\b\f6 P\cf0 rint\f0\tab\b0 Ausdrucke mit Seitenumbruch, Literaturlisten, gedruckte Kataloge\tab /  \cf2\f4 P\cf0 -*.APR \f0 (`\cf1\ul\b Beispiel P-0.APR\cf0\ulnone\b0 `)\f4 
+\par \f0 
+\par \cf2\b\f6 I\cf0 ntern\f0\tab\b0 Selektierte Teilmengen (downloads) zum Aufbau neuer Datenbanken oder Einmischen in andere. Ausgabedatei vom Typ .cLG (Grunddatei)  /  \cf2\f4 I\cf0 -1.APR \f0 (`\cf1\ul\b Beispiel I-0.APR\cf0\ulnone\b0 `) 
+\par 
+\par \cf2\b\f6 F\cf0 orm\f0\tab\b0\f1 Formular\'e4hnliche Ausdrucke, z.B. Bestellzettel  /  \cf2\f4 F\cf0 -0.APR \f0 (`\cf1\ul\b Beispiel F-0.APR\cf0\ulnone\b0 `) 
+\par 
+\par \cf2\b\f6 S\cf0 ort\f0\tab\b0\f1 Sortierf\'e4hig aufbereitete Dateien, die anschlie\'dfend mit ASORT sortiert und dann mit SRCH nochmals z.B. als gedruckte Liste exportiert werden k\'f6nnen. Ausgabe ebenfalls im  \lang1033\f0 allegro-Internformat (Typ .ALG), aber jede Aufnahme beginnt mit einem Sortierbegriff in Sonderkategorie #u1  /  \cf2\lang1031\f4 S\cf0 -*.APR \f0 (`\cf1\ul\b Beispiel S-0.APR\cf0\ulnone\b0 `)\f4 
+\par \f0 
+\par \cf2\b\f6 E\cf0 xtern\f0\tab\b0\f1 Dateien in anderen Formaten f\'fcr Anwendungen au\'dferhalb der \lang1033 allegro-Umgebung (z.B. Weiterbearbeitung mit Textsystemen oder sonstiger Software oder \'dcbermittlung an andere Katalogsysteme)  /  \cf2\lang1031\f4 E\cf0 -1.APR \f0 (`\cf1\ul\b Beispiel E-0.APR\cf0\ulnone\b0 `)\f4 
+\par \f0 
+\par \cf2\b\f6 R\cf0 esult\f0\tab\b0 Rechenergebnisse, Auswertungen von Dateien oder Ergebnismengen  /  \cf2\f4 R\cf0 -0.APR \f0 (`\cf1\ul\b Beispiel R-0.APR\cf0\ulnone\b0 `)\f4 
+\par \f0 
+\par \cf2\b\f6 A\cf0 lpha\f0\tab\b0\f1 Alphabetisches Register ausgew\'e4hlter Kategorien, meist in Verbindung mit einer Listenproduktion (mit Typ Print)  /  \cf2\f4 A\cf0 -0.APR \f0 (`\cf1\ul\b Beispiel A-0.APR\cf0\ulnone\b0 `)\f4 
+\par \f0 
+\par \cf2\b\f6 C\cf0 ount\f0\tab\b0\f1 Ermittlung der H\'e4ufigkeit von Kategorieinhalten, z.B. Liste der vergebenen Schlagw\'f6rter mit Anzahl der Aufnahmen  /  \cf2\f4 C\cf0 -0.APR \f0 (`\cf1\ul\b Beispiel C-0.APR\cf0\ulnone\b0 `)\f4 
+\par \f0 
+\par \cf2\b\f6 INDEX\tab\cf0\b0\f1 Sonderfall : Registereintr\'e4ge, die in den Index einer Datenbank einzuordnen sind. \f0 
+\par \tab\f1 Auch daf\'fcr ist die Exportsprache zust\'e4ndig!  / Kommentierte Beispiele:  \f4 INDX.API\f0   und  \f4 CAT.AP\cf2 I 
+\par \tab\cf0\f0 (`\cf1\ul\b Beispiel INDX.APR\cf0\ulnone\b0 `) 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \i\f1 Empfehlung zur Verbesserung der \'dcbersicht:\i0\f0  geben Sie Ihren Parameterdateien Namen, die mit dem Typbuchstaben und Bindestrich anfangen: eine Datei vom Typ Extern sollte z.B. einen Namen erhalten, der mit "\b\f4 E-\b0\f0 " beginnt.\b\f4  E-0.APR\b0\f0  ist der \b Prototyp\b0\f1  daf\'fcr.\f0 
+\par \lang1033\b\i CockPit\b0\i0\f1  unterst\'fctzt bereits die Typen Sort, Print und Count. (Diese spielen auch eine Rolle in den Paketen QUEX und QUANT, \f4 -\f5\'d8\f1  6.3/4.) Im Men\'fc "Optionen" kann man je eine der vorhandenen Dateien\lang1031\b\f4  S-*.APR\b0\f0  und\b\f4  P-*.APR\b0\f1  ausw\'e4hlen. Diese wird dann kopiert auf den Namen\b\f4  SORT.APR\b0\f0  bzw.\b\f4  PRINT.APR\b0\f1  und bei einer nachfolgenden Listenproduktion \'fcber Men\'fc "Routinen/exportieren" benutzt.\f0 
+\par \f1 Die Windows-Programme k\'f6nnen dieselben Parameterdateien verarbeiten, d.h. man mu\'df keine neuen entwickeln, mit Ausnahme des Typs DISPLAY.\f0 
+\par Wenn Sie darangehen, eine neue Export-Parameterdatei vom Typ\b\f4  x\b0\f1  zu erstellen, k\'f6nnen Sie sich an den Prototypen\b\f4  x-0.APR\b0\f1  anlehnen. Stellen Sie also zun\'e4chst fest, zu welchem Typ Ihr Vorhaben geh\'f6rt, nehmen Sie dann die zugeh\'f6rige Prototyp-Parameterdatei als Muster (\f4 -\f5\'d8\f1  10.1, 10.4) und w\'e4hlen einen geeigneten Namen.\f0 
+\par \f1 Hinweis: Im Windows-Programm kann oft auf die Verwendung von Exportparametern verzichtet werden, weil der FLEX-Befehl \f7 `\cf1\ul\b write\cf0\ulnone\b0 `\f1  viele M\'f6glichkeiten bietet.\f0 
+\par 
+\par 
+\par \pard\fi-658\li658\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs36 10.0.1  Teilbereiche des Exportproblems\b0\fs20 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  
+\par \f1 Mit einem Export k\'f6nnen zahlreiche Einzelaufgaben verbunden sein. Man gewinnt besser den \'dcberblick, wenn man das Problem zun\'e4chst in vier oder f\'fcnf Teilbereiche oder \b\f0 Ebenen\b0  aufgliedert. 
+\par Die Datenfelder (Kategorien) der \lang1033\b\i allegro\b0\i0\f1 -Daten k\'f6nnen in beliebiger Auswahl und Reihenfolge, mit individueller Vorbearbeitung und bei Bedarf auch mit variablem Zeilen- und Seitenumbruch exportiert werden.\f0 
+\par \lang1031 
+\par \f1 Das Programm mu\'df wissen und ber\'fccksichtigen:  (vgl. das Ebenen-Modell in Kap.0.3)\f0 
+\par 
+\par auf der \b Satzebene\b0   (die man auch "Aufnahme-Ebene" nennen kann) 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab ob \b\f1 aus einem Datensatz mehrere Ausgabes\'e4tze\b0  entstehen sollen oder ob in bestimmten F\'e4llen keine Ausgabe gew\'fcnscht ist, z.B. Karten mit verschiedenen K\'f6pfen, mehrere unterschiedliche Zugriffsschl\'fcssel je nach Vorhandensein von Datenfeldern (jeder Schl\'fcssel gilt als "Ausgabesatz"), etc.\f0 
+\par  \bullet\tab wie die \b Trennung\b0\f1  zwischen zwei Ausgabes\'e4tzen auszusehen hat (was f\'fcr Steuer- oder Textzeichen),\f0 
+\par  \bullet\tab wie \b\f1 hierarchische S\'e4tze\b0\f0  ("Stufenaufnahmen") zu behandeln sind 
+\par  \bullet\tab\f1 in welchen F\'e4llen und an welchen Stellen andere S\'e4tze (z.B. \b Stamms\'e4tze\b0  oder hierarchisch \'fcber- oder untergeordnete Datens\'e4tze) mit heranzuziehen ("nachzuladen") sind\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par auf der \b Feldebene\b0   (auch: Kategorie-Ebene) 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\b\tab welche Felder\b0\f1  \'fcberhaupt auszugeben sind, unter \b\f0 welchen Bedingungen\b0  und in welcher \b Reihenfolge\b0 , 
+\par  \bullet\tab\f1 da\'df viele Felder \b\f0 nicht in jedem Datensatz vorkommen\b0 , 
+\par  \bullet\tab\f1 da\'df manche \b\f0 mehrfach vorkommen\b0\f1  k\'f6nnen,\f0 
+\par  \bullet\tab\f1 ob ein Feld vor seiner Ausgabe irgendwie ver\'e4ndert werden mu\'df (\b\f0 Manipulationen\b0  vorzunehmen sind), 
+\par  \bullet\tab\f1 was f\'fcr \b\f0 Zeichen zwischen den Feldern\b0  stehen sollen (Interpunktion, Steuerzeichen), 
+\par  \bullet\tab\f1 und da\'df die \b L\'e4nge und interne Struktur\b0  der einzelnen Datenfelder v\'f6llig variabel ist. Dies erfordert evtl. Bedingungspr\'fcfungen, Zerlegungen und flexible Umbruchf\'e4higkeiten.\f0 
+\par  \bullet\tab\f1 ob es Identnummern in einzelnen Feldern gibt, die vor der Ausgabe durch Klartexte ersetzt werden m\'fcssen (\b\f0 Normdaten\b0\f1 -Verkn\'fcpfung). Das ist erst ab Version 14 m\'f6glich (\f4 -\f5\'d8\f0  10.2.6.8) 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par auf der \b Formularebene\b0  (unterteilbar in \b Seiten-\b0  und \b Zeilenebene)\b0 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab ob \b Seitenumbruch\b0  oder ein \b formular\b0\f1\'e4hnlicher Aufbau stattfinden soll \f0 
+\par  \bullet\tab wie bei Listen und Karten \b Kopf\b0  und \b\f1 Fu\'df\b0\f0  der Seite bzw. Karte aussehen sollen. 
+\par  \bullet\tab wie der \b Zeilenumbruch\b0\f1  durchzuf\'fchren ist (Breite, Einr\'fcckung, Zeilenende-Steuerzeichen etc.)\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par auf der \b Zeichenebene\b0 
+\par \pard\fi-792\li792\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274  \bullet\tab ob \b Zeichencodes\b0\f1  zu \'e4ndern sind, d.h. ob einzelne Zeichen umcodiert, weggelassen oder durch mehrere Zeichen ersetzt werden sollen. Diese Dinge k\'f6nnen auch feldabh\'e4ngig sein, d.h. nur bei bestimmten Kategorien n\'f6tig. Bei Druckausgaben sind oft einzelne Zeichen durch sog. "Escape-Sequenzen" zu ersetzen, abh\'e4ngig vom benutzten Drucker.\f0 
+\par  \bullet\tab ob bestimmte \b Textersetzungen\b0  im gesamten Datensatz  (global) oder in einzelnen Feldern (lokal) vorzunehmen sind. 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par 
+\par \f1 Zur Veranschaulichung soll hier ein Beispiel dienen, das Sie selbst am Bildschirm nachvollziehen k\'f6nnen (und sollten: geben Sie diesen Satz in die Demodatenbank ein):\f0 
+\par 
+\par Interne Gestalt des Datensatzes (wie man die Daten bei der Eingabe und Bearbeitung sieht): 
+\par \f4 
+\par \f7 #20 Einsicht ins Ich : Fantasien und Reflexionen \'fcber Selbst und Seele\f4 
+\par \f7 #22 \'acThe\'ac mind's I <dt.>\f4 
+\par #30aCS PH 
+\par \f7 #31 K\'fcnstliche Intelligenz; Selbstreferenz; Individualit\'e4t\f4 
+\par \f7 #39 Ausgew\'e4hlt und in Szene gesetzt von Douglas R. Hofstadter und Daniel C. De\f4 
+\par \f7 nnett. [Aus d. Amerik. \'fcbers. von Ulrich Enderwitz]\f4 
+\par #40 Hofstadter, Douglas R. 
+\par #402Dennett, Daniel C. 
+\par #74 Stuttgart 
+\par #75 Klett-Cotta 
+\par #76 1986 
+\par #77 485 S. 
+\par #81 Orig. Ausg. bei Basic Books, 1982 
+\par #82 2.Verf.; EST 
+\par #87 3-608-93038-8 
+\par \f0 
+\par \f1 Mit den standardm\'e4\'dfig f\'fcr die Bildschirmanzeige verwendeten Parametern D-1.APR (Windows: D-WRTF.APR) entsteht das folgende Bild:\f0 
+\par \f4 
+\par \b Hofstadter, Douglas R.: 
+\par \b0\f7 Einsicht ins Ich : Fantasien und Reflexionen \'fcber Selbst und Seele /\f4 
+\par \f7 Ausgew\'e4hlt und in Szene gesetzt von Douglas R. Hofstadter und Daniel C.\f4 
+\par \f7 Dennett. [Aus d. Amerik. \'fcbers. von Ulrich Enderwitz]. -\f4 
+\par    Stuttgart : Klett-Cotta, 1986. -  485 S. 
+\par Anm.: Orig. Ausg. bei Basic Books, 1982 
+\par ISBN 3-608-93038-8 
+\par Originaltitel: The mind's I <dt.> 
+\par \f7 Schlagw\'f6rter: K\'fcnstliche Intelligenz; Selbstreferenz; Individualit\'e4t\f4 
+\par Sachgruppen: CS PH 
+\par NE: 2.Verf.; EST 
+\par \f0 
+\par \f1 Ist man damit nicht zufrieden: mit Eingriffen in die genannten Parameter kann man es beliebig \'e4ndern.\f0 
+\par \f1 Will man es zu Papier bringen, \'fcbergibt man es mit F2 'a' an den Drucker oder schaut sich zuerst mit F3 das Ergebnis an. Dabei entstehen zus\'e4tzlich noch Karten mit anderen K\'f6pfen (Nebeneintragungen), z.B f\'fcr den Einheitssachtitel, weil in der P-KARTE.APR mit sog. "Kopfbefehlen" (\f4 -\f5\'d8\f1  10.2.1.2) daf\'fcr Vorsorge getroffen ist.\f0 
+\par 
+\par Versuchen Sie, einmal bis in die Einzelheiten gedanklich nachzuvollziehen, was alles zu tun ist, um aus der kategorisierten Form, die Sie oben sehen, die Anzeige- oder Druckform zu machen. Alles das macht das Programm jedesmal, wenn es eine Aufnahme in dieser Gestalt auf den Bildschirm bringt oder ausdruckt. 
+\par 
+\par \i Anmerkung:\i0\f1  Ob dieses oder andere Beispiele in diesem Handbuch oder in der Demodatenbank in allen Details RAK-gerecht sind, darum geht es nicht. Was gezeigt werden soll, sind die M\'f6glichkeiten des Umgangs mit Daten. Dies Buch ist nicht f\'fcr KatalogisiererInnen geschrieben, sondern es soll denen eine Hilfe sein, die kreativ mit dem Datenbanksystem umgehen wollen. Wer dies vorhat, mu\'df in der Lage sein, \'fcber den Zaun einer Norm hinauszublicken. Und wer dies gelernt hat, wird die Norm dann mit den Mitteln des Systems schon realisieren k\'f6nnen. Und wird erkennen, da\'df man \b\f0 auch\b0 , aber nicht \b nur\b0 , RAK-Produkte damit herstellen kann. 
+\par 
+\par Hatte man die Parameterdatei P-NORMAL.APR geladen (mit Option\f4   \b -p p-normal\b0\f0   schon beim Start oder mit \b F2`F2\b0 `+ Auswahl), so entsteht dieses Anzeigebild: 
+\par \fs16 
+\par \pard\fi-567\li567\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs20 Hofstadter, Douglas R.:     
+\par \b0\f1 Einsicht ins Ich : Fantasien und Reflexionen \'fcber Selbst und Seele / Ausgew\'e4hlt und in Szene gesetzt von Douglas R. Hofstadter und Daniel C. Dennett. [Aus d. Amerik. \'fcbers. von Ulrich Enderwitz].  - Stuttgart: Klett-Cotta, 1986. - 485 S. Orig. Ausg. bei Basic Books, 1982. - \f0 
+\par \b ISBN \b0 3-608-93038-8\b 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b0 
+\par \f1 Versuchen Sie, alle Unterschiede zwischen dieser und der vorher gezeigten Anzeigeform festzustellen. Die interne, kategorisierte Form ist in beiden F\'e4llen exakt dieselbe - die Unterschiede werden allein durch die Exportparameter bewirkt.\f0 
+\par 
+\par \f1 Zu den mitgelieferten Parameterdateien geh\'f6ren, wie gesagt, diese:\f0 
+\par \pard\fi-1224\li1224\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 `\cf1\ul\b D-1.APR\cf0\ulnone\b0 `:\tab\tab\f1 Damit wird eine Ausgabe in Katalogkartenform nach internationalen bibliothekarischen Gepflogenheiten erstellt (sog. ISBD = International Standard Bibliographic Description). Die K\'f6pfe f\'fcr die Nebeneintragungen werden (weitgehend) nach den Vorschriften der RAK angelegt.\f0 
+\par `\cf1\ul\b P-NORMAL\cf0\ulnone\b0 `:\tab\f1 liefert einen Abdruck in Listenform mit Seitenumbruch in Anlehnung an DIN 1505 "Titelangaben von Schrifttum" welches die deutsche Norm f\'fcr die Gestaltung von wissenschaftlichen Literaturangaben ist. (Listenform, siehe oben)\f0 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1 Diese Beispiele machen zwar noch nicht die gesamte Flexibilit\'e4t des Exportkonzepts deutlich, vermitteln aber eine Vorstellung einiger M\'f6glichkeiten.\f0 
+\par 
+\par 
+\par \pard\fi-658\li658\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs36 10.0.2  Inhalt einer Parameterdatei\b0\fs20 
+\par \pard\tx792\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f1 Die Anforderungen sind formuliert, die Problembereiche in eine Schichtenstruktur logisch gegliedert und durch Beispiele veranschaulicht. Nun l\'e4\'dft sich pr\'e4zisieren, was eine \lang1033\b\i\f0 allegro\b0\i0\f1 -Parameterdatei alles enthalten mu\'df:\f0 
+\par \pard\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031 
+\par \pard\fi-431\li431\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 a)\tab eine Anzahl \b Konstanten\b0\f1  f\'fcr die verschiedenen Ebenen: Zeilenl\'e4nge, Einr\'fcckung am Zeilenanfang, Zeilenzahl je Karte, Anzahl Kopf- bzw. Fu\'dfzeilen je Karte, Befehl f\'fcr die Druckerinitialisierung etc., und f\'fcr Indexparameter kommen noch andere Werte hinzu. \f0 
+\par \f1 Au\'dferdem:\f0 
+\par   \b\tab Steuerzeichen\b0\f1 , die zwischen den Zeilen, Datens\'e4tzen und Seiten oder Karten anzuwenden sind.\f0 
+\par b)\b\tab Kopfbefehle\b0\f1  legen fest, ob und unter welchen Bedingungen aus einem Datensatz mehrere Ausgabes\'e4tze zu machen sind. So z.B. mehrere Katalogkarten mit unterschiedlichen "K\'f6pfen" (daher der Name) f\'fcr alle vorhandenen Personen, K\'f6rperschaften, Schlagw\'f6rter etc.\f0 
+\par \tab\f1 Allgemeiner lautet das Problem: aus einem Datensatz sollen mehrere unterschiedlich gestaltete Ausgabes\'e4tze erzeugt werden; nicht nur bei Katalogkarten tritt diese Forderung auf, auch z.B. bei Eintragungen f\'fcr gedruckte Register oder Zugriffsschl\'fcsseln f\'fcr einen Index. Die "K\'f6pfe" sind dann die daf\'fcr heranzuziehenden Kategorien, mit denen jeweils etwas Spezifisches zu geschehen hat, wenn sie existieren. Im Falle einer Indexparameterdatei sind es die Kategorien, aus denen Indexeintr\'e4ge zu bilden sind.  (\f4 -\f5\'d8\f0  10.2.1.2) 
+\par c)\tab Eine \b Liste der Kategorien\b0  (\f4 -\f5\'d8\f1  10.2.6), die \'fcberhaupt ausgegeben werden sollen, und in welcher Reihenfolge sie kommen sollen. Z.B. erscheint in obigen Beispielen nicht die #31. Sie k\'f6nnte auf Wunsch an beliebiger Stelle eingef\'fcgt werden oder z.B. auch als Kopfzeile verwendet werden, indem man f\'fcr sie einen Kopfbefehle angibt. (\f4 -\f5\'d8\f0  10.2.1.2) 
+\par \tab\f1 Innerhalb der Liste k\'f6nnen Sprungbefehle und Unterprogramme vorkommen, die den Ablauf situationsabh\'e4ngig steuern. Die Kopfbefehle k\'f6nnen auf Abschnitte dieser Liste verweisen.\f0 
+\par \pard\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 d)\tab\f1 Zu jeder einzelnen Kategorie in der Liste k\'f6nnen etliche Angaben notwendig sein:\f0 
+\par \pard\fi-950\li950\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab d1.\tab ob die Kategorie durch Ihre \b Anwesenheit\b0  oder ihr \b Fehlen\b0  innerhalb einer Aufnahme den Ablauf der Ausgabe beeinflussen soll. In der Parameterdatei kann bei einer Kategorie #xx ein \b bedingter Sprungbefehl\b0\f1  zu einer Sprungmarke oder einer Kategorie #yy angegeben sein. Der Befehl sagt dann dem Programm: wenn Kategorie #xx vorkommt, dann gib diese aus und mache weiter bei der Sprungmarke bzw. der n\'e4chsten Zeile mit der Kategorie #yy.\f0 
+\par \tab d.2.\tab\f1 Angaben \'fcber \b\f0 Zeichen, die vor dem Kategorietext erscheinen sollen\b0\f1 : z.B. ist in D-1.APR  festgelegt, da\'df bei #87 zuerst ein Zeilenvorschub ausgef\'fchrt und dann "ISBN " gedruckt wird, bevor der Inhalt von #87 ausgegeben wird. Beispiel: Die Zeichenkette "<Zeilenvorschub> ISBN " geh\'f6rt zu den sog. \b\f0 Zwischenteilen\b0  oder \b Textkonstanten\b0  (\f4 -\f5\'d8\f0  10.2.0) und wird hier als \b\f1 Pr\'e4fix\b0 , man k\'f6nnte auch "Vorspann" sagen, f\'fcr #87 benutzt.\f0 
+\par \tab d.3.\tab sogenannte \b Manipulationsbefehle\b0\f1  zur Vorbearbeitung des Kategorieinhaltes vor der Ausgabe: Herausnahme von Bestandteilen, Hinzuf\'fcgen anderer Teile vorne oder hinten, L\'e4ngenver\'e4nderungen, rechtsb\'fcndige Ausgabe etc. (\f4 -\f5\'d8\f0  10.2.6.3) 
+\par \tab\tab\f1 Die M\'f6glichkeiten sind sehr umfangreich; es gibt mehr als 30 verschiedene Befehle, darunter auch Rechenoperationen sowie Funktionen zur Verkn\'fcpfung mit anderen Datens\'e4tzen (Mehrdateistruktur). Das bedeutet: andere Datens\'e4tze k\'f6nnen w\'e4hrend der Bearbeitung ad hoc herangezogen und Teile davon in die Ausgabe eingebaut werden.\f0 
+\par \tab d.4.\tab\f1 Angaben \'fcber \b\f0 Zeichen, die hinter der Kategorie erscheinen sollen\b0\f1 . Hier kann man, im Gegensatz zu d.2., dem Programm sogar mehrere Zwischenteile zur Auswahl vorgeben. Z.B. kann hinter #20 (Sachtitel) eine #40 (Verfasser) folgen, jedoch kann es auch sein, da\'df die Aufnahme keinerlei Personen enth\'e4lt (anonymes Werk) und sofort #74 (Ort) folgt, oder es gibt die #40, aber zus\'e4tzlich #42 (Mitarbeiter). Die Regeln verlangen im ersten Fall ein "`/`" als Trennung, im zweiten jedoch ".`- ", im dritten mu\'df "; " zwischen #40 und #42 und ". - " hinter die #42. Man mag das f\'fcr Spi\f0 tzfindigkeiten halten (was Katalogisierer selten tun), aber \lang1033\b\i allegro\b0\i0\f1  ist f\'e4hig, auch solches zu leisten. Hinter eine Kategorie k\'f6nnen also als \b\f0 Postfix\b0\f1  ("Nachspann") unterschiedliche Zeichenkombinationen eingesetzt werden, abh\'e4ngig davon, welche der anschlie\'dfend auszugebenden Kategorien wirklich vorhanden sind.\f0 
+\par \pard\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031 
+\par \pard\fi-432\li432\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 e)\tab\f1 Au\'dferdem geh\'f6rt zu den Druckparametern noch die Liste der in d.2. und d.3. erw\'e4hnten Zwischenteile. Dies sind maximal 100 Zeichenketten, die, wie oben erl\'e4utert, vor und hinter jede Kategorie eingesetzt werden k\'f6nnen (dann als \b Pr\'e4fix\b0\f0  bzw. \b Postfix\b0\f1  bezeichnet). Auch diese Textelemente k\'f6nnen vom Anwender frei definiert werden (\f4 -\f5\'d8\f1  10.2.0). In einem Zwischenteil k\'f6nnen auch \b\f0 Druckersteuerzeichen\b0\f1  zur \'c4nderung der Schriftart enthalten sein sowie \b\f0 Strukturbefehle\b0\f1  zur Ver\'e4nderung von Zeilenl\'e4nge, Einr\'fcckung etc.\f0 
+\par \pard\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \pard\fi-432\li432\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 f)\tab Zuletzt sind die \b Codiertabellen\b0  zu nennen (\f4 -\f5\'d8\f1  10.2.4). Man kann sich zu jeder Parameterdatei zwei alternativ zu benutzende Tabellen anlegen, mit denen das Umcodieren der Zeichen f\'fcr den Druck besorgt wird, aber auch z.B. f\'fcr die Anzeige von PC-ASCII-Daten unter Windows oder UNIX. Diese Tabellen steuern die Ersetzung bestimmter Zeichen durch andere Zeichen oder durch ganze Zeichenketten, oder auch die Unterdr\'fcckung von Zeichen, die nicht in der Ausgabe erscheinen sollen. Die Alternativtabelle kann dazu dienen, in bestimmten Kategorien z.B. die Umlaute aufzul\'f6sen und Klein- in Gro\'dfbuchstaben zu wandeln.\f0 
+\par \pard\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par \f1 Bei den unter d.4, e) und f) genannten Elementen kann es sich auch um HTML-, XML- oder RTF-Tags handeln. Das hat dazu gef\'fchrt, da\'df vorhandene Parameter schnell f\'fcr WWW- oder Windows-Formatierungen genutzt werden k\'f6nnen.\f0 
+\par 
+\par \b Sprungbefehle\b0  und \b Unterprogramme\b0  (\f4 -\f5\'d8\f1  10.2.6.5), die den Ablauf des Geschehens strukturieren k\'f6nnen, machen das Parametersystem von \lang1033\b\i\f0 allegro\b0\i0\f1  zu einer Art h\'f6heren Programmiersprache, eben einer "Datenmanipulationssprache" speziell f\'fcr Daten mit der Variationsbreite, die f\'fcr bibliographische Daten charakteristisch ist.\f0 
+\par \lang1031 
+\par \pard\fi-658\li658\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b\fs36 10.1\tab Wie macht man eine Parameterdatei?\b0\fs20 
+\par \pard\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274 
+\par Eine Parameterdatei ist eine Textdatei (auch "ASCII-Datei" genannt). Man erstellt und bearbeitet solche Dateien mit einem beliebigen \b Texteditor\b0 . Ab DOS Version 5.0 gibt es den halbwegs komfortablen EDIT, den man empfehlen kann. Ansonsten ist der mitgelieferte Editor X sehr praktisch (Beschreibung \f4 -\f5\'d8\f0  Anh.D, das Wesentliche lernt man in zwei Minuten). \lang1033\b\i CockPit\b0\i0\f1  ruft standardm\'e4\'dfig diesen Editor auf, wenn eine Parameterdatei zu bearbeiten ist. Sie k\'f6nnen \b\i\f0 CockPit\b0\i0  aber anweisen, einen anderen Editor zu benutzen (\f4 -\f5\'d8\f0  0.11.6). Und unter Windows? Vorsicht, Notpad u.a. arbeiten mit ANSI-Codes, es wird aber ASCII gebraucht. \lang1031\f1 Eine gute\lang1033\f0  Wahl ist immer noch der X-Editor im DOS-Fenster\lang1031\f1 , wahlweise auch das Microsoft-Programm \f7 edit\lang1033\f0 . 
+\par \lang1031\i\f1 Tip:\i0  Im Windows-Programm a99 kann man eine Textdatei auch mit dem h-Befehl laden und dann direkt im Anzeigefeld bearbeiten, dann mit Alt+s wieder speichern. \lang1033\f0 
+\par \lang1031\f1 Der Name einer Export-Parameterdatei mu\'df vom Typ .cPR sein, wobei das 'c' der Kennbuchstabe Ihrer Konfigurationsdatei ist (z.B. 'A', wenn Sie A.CFG verwenden, \f4 -\f5\'d8\f0  0.3). An dem Dateityp ".cPR" erkennen alle \lang1033\b\i allegro\b0\i0 -Programme, um was es sich handelt. 
+\par \lang1031\tab\f1 Zur Einarbeitung nimmt man sich am besten keine zu komplizierten Aufgaben vor. Der Abschnitt 10.4 enth\'e4lt einfache Beispiele ("Prototypen") zu einigen der in 10.0 vorgestellten Typen, die Sie ausprobieren und beliebig ausbauen k\'f6nnen, denn die Beispiel-Parameterdateien werden auch alle mitgeliefert. 
+\par Die umfangreichsten und kompliziertesten Dateien sind D-1.APR und CAT.API zur Erzeugung der Standard-Bildschirmanzeige und des Index der DEMO-Datenbank.\f0 
+\par 
+\par \b Gehen Sie so vor\b0 , wenn Sie einen neuen Export oder eine neue Indexierung programmieren wollen: 
+\par \f1 (Vorausgesetzt sei, da\'df mit A.CFG gearbeitet wird)\f0 
+\par 
+\par \pard\fi-432\li432\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\b 1.\b0\tab Stellen Sie fest, zu welchem \b Typ\b0\f1  t Ihr Vorhaben geh\'f6rt (\f4 -\f5\'d8\f0  10.0) 
+\par \b 2.\b0\tab Geben Sie Ihrem Vorhaben einen bis 8 Zeichen langen \b Namen\b0  t-\i xyz\i0\f1  , d.h. der Name sollte mit dem Typbuchstaben und Bindestrich beginnen, f\'fcr \i\f0 xyz\i0  bleiben dann 6 Zeichen. \i Sonderfall:\i0  Eine Indexparameterdatei hat den Dateityp .API statt .APR, der Name ist beliebig, aber nur bis zu 4 Buchstaben lang. 
+\par \b 3.\tab Kopieren\b0\f1  Sie die zugeh\'f6rige \b\f0 Prototyp-Parameterdatei\b0\f1  auf den gew\'e4hlten Namen, z.B. \f0 
+\par \pard\fi-1799\li1799\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f4\tab\tab\tab\tab copy p-0.apr p-xyz.apr\f0 
+\par \tab\tab oder\f4\tab copy indx.api xyz.api\f0 
+\par \pard\fi-432\li432\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab oder \b besser\b0\f1 : Sie w\'e4hlen im \lang1033\b\i\f0 CockPit\b0\i0\f1   \'fcber das Men\'fc "Dateien" die Prototyp-Datei an und aktivieren die Unterfunktion "Neue Datei vom selben Typ erstellen". Hier m\'fcssen Sie dann einen neuen Namen eingeben, dann bekommen Sie eine Kopie des Prototyps unter dem Namen \i\f0 xyz\i0 .APR zum Bearbeiten bereitgestellt. Die wesentlichen Dinge sind dann bereits vorhanden. 
+\par \lang1031\b 4.\tab Bearbeiten\b0  Sie diese neue Parameterdatei mit dem Texteditor: 
+\par \pard\fi-950\li950\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\bullet\tab\f1 Entfernen Sie alles, was f\'fcr Ihre Zwecke unn\'f6tig ist\f0 
+\par \tab\bullet\tab\f1\'c4ndern Sie die Basisparameter (z.B. Zeilenl\'e4nge), soweit n\'f6tig\f0 
+\par \tab\bullet\tab Bearbeiten oder erstellen Sie die Kategorieliste in Verbindung mit den Zwischenteilen. 
+\par \tab\tab Falls Sie eine ganz neue Parameterdatei erstellen wollen: 
+\par \pard\fi-1223\li1223\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\bullet\tab\f1 schreiben Sie zun\'e4chst alle auszugebenden Kategorien in der gew\'fcnschten Reihenfolge als Liste untereinander (siehe Beispiel 1 \f4 -\f5\'d8\f0  10.4) 
+\par \pard\fi-1799\li1799\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\tab\bullet  \tab\f1 erg\'e4nzen Sie zuerst Pr\'e4fixe, wo n\'f6tig auch Postfixe, und schlie\'dflich zur Verfeinerung und Differenzierung Manipulations- und Sprungbefehle (\f4 -\f5\'d8\f0  10.2.6.1). 
+\par \pard\fi-950\li950\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\tab\bullet\b\tab Kommentieren\b0\f1  Sie alles ausf\'fchrlich  (Zeilen mit Leerzeichen am Anfang!)\f0 
+\par \tab\bullet\b\tab Testen\b0\f1  Sie Ihre Parameterdatei direkt vom Anzeigemen\'fc aus (\f4 -\f5\'d8\f0  10.3). 
+\par \pard\tx432\tx951\tx1224\tx1800\tx2232\tx2664\tx3096\tx3600\tx4104\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\f1 Nummer 4 ist der umfangreichste Teil der Aufgabe. Der Rest des Kapitels beschreibt die Ausdrucksmittel, die Sie daf\'fcr nutzen k\'f6nnen.\f0 
+\par Wenn Sie mit \lang1033\b\i allegro\b0\i0\f1  nichtbibliographische Daten bearbeiten oder f\'fcr bestimmte Zwecke ganz neue Dateien mit eigener Struktur erstellen wollen, dann werden Sie etwas mehr zu tun haben, bis hin zu einem kompletten Neuentwurf, der allerdings ein gr\'fcndliches Studium dieses Kapitels erfordert.\f0 
+\par \pard\tx740\tx1386\tx1848\tx2354\tx3074\tx3794\tx4514\tx5234\tx5954\tx6674\tx7394\tx8114\tx8834\tx9554\tx10274\lang1031 
+\par `\cf1\ul\b Vorangehender Teil\cf0\ulnone\b0 `   /   `\cf1\ul\b Fortsetzung\cf0\ulnone\b0 ` 
+\par \pard 
+\par ?Vorangehender Teil=h ac10 
+\par ?Fortsetzung=h ac10-2 
+\par ?Beispiel D-0.APR=h d-0.apr 
+\par ?Beispiel P-0.APR=h p-0.apr 
+\par ?Beispiel I-0.APR=h i-0.apr 
+\par ?Beispiel F-0.APR=h f-0.apr 
+\par ?Beispiel S-0.APR=h s-0.apr 
+\par ?Beispiel E-0.APR=h e-0.apr 
+\par ?Beispiel R-0.APR=h r-0.apr 
+\par ?Beispiel A-0.APR=h a-0.apr 
+\par ?Beispiel C-0.APR=h c-0.apr 
+\par ?Beispiel INDX.APR=h indx.apr 
+\par ?D-1.APR=h d-1.apr 
+\par ?P-NORMAL=h p-normal.apr 
+\par ?write=h xwrite 
+\par 
+\par }
+ 

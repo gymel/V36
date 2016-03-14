@@ -1,0 +1,240 @@
+                 Kurzanleitung   >>SNIFFER v2.03 <<
+                 ----------------------------------
+
+Neu von v2.02 nach v2.03
+- Prfung des 2. Bytes der Satztabelle rausgenommen, da dieses mittlerweile
+  von Allegro benutzt wird.
+- Neue Pascal Delay Routine eingebaut, die nun auch auf Rechnern mit
+  ber 600 Mhz Taktfrequenz l„uft.
+
+--------------------------------------------------------------------------
+                   A U F R U F P A R A M E T E R
+
+-x   schaltet das Ein/Ausblenden am Programanfang und Programmende ab.
+     Dies wird unter  Windows und bei Hercules- und CGA-Grafikkarten
+     ben”tigt. Das Ein-/Ausblenden ist unter Windows NT z.B. v”llig
+     abgeschaltet - der Schalter entf„llt also in dieser Umgebung!
+-a3  in Anlehnung an  Allegro wird damit der volle Funktionsumfang
+     freigeschaltet. Nur mit dieser Option wird beim Programmstart das
+     Untermen "WERKZEUGE" angezeigt.
+-s   Betrieb auf einem Einzelplatz. Fehlt dieser Parameter, so wird der
+     Netzwerkmodus vorgegeben.
+-bw  Schaltet in eine Farbtabelle, die auf S/W Monitoren besser lesbar
+     ist.
+-d.. Datenbankpfad und optional auch Datendatei (z.B. -dc:\allegro\ oder
+     mit Datendatei -dc:\allegro\katalog\kat_1.ald)
+     ACHTUNG - der abschlieáende '\' ist wichtig und darf nicht vergessen
+     werden, sonst funktioniert die Pfaderkennung nicht korrekt.
+-t.. Satztabellenpfad plus Datei (Beispiel siehe Datenbankpfad).
+-c.. Konfigurationspfad und Datei wie oben beschrieben.
+--------------------------------------------------------------------------
+
+Reihenfolge der Parameterauswertung:
+------------------------------------
+Der Sniffer nimmt zun„chst Voreinstellungen im Programm vor. Dann wird
+nach einer SNIFFER.INI im Startverzeichnis gesucht. Fehlt diese, so wird
+im Programmverzeichnis (wo auch SNIFFER.EXE gefunden wurde) nach der
+SNIFFER.INI gesucht. Werte in der INI-Datei berschreiben die
+Voreinstellungen. Abschlieáend werden die Aufrufparameter ausgewertet.
+Diese berschreiben dann alle bislang getroffenen Voreinstellungen.
+
+
+Die Programmsteuerung:
+----------------------
+Der SNIFFER  arbeitet mit sogenannten  "PULL-DOWN" Mens und  kann auch
+mit der Maus  gesteuert werden. Eine angeschlossene  Maus wird 
+automatisch erkannt. Sie bemerken  dies an dem  Mauscursor (dunkles Feld),
+der  beim Programmstart in der  Bildschirmmitte erscheint.  Haben Sie 
+keine Maus angeschlossen, so k”nnen Sie auch alle Funktionen ber die
+Tastatur steuern.
+
+Mit den Cursortasten:
+Mit  den Pfeiltasten wird die gewnschte Funktion  angew„hlt und durch
+"Return" best„tigt. Auáerdem kann  man im Pull-Down  Men das gewnschte 
+Men direkt durch Eingabe des farblich abgesetzen  Buchstabens zusammen
+mit der "ALT"-Taste ”ffnen.  Innerhalb des Mens  gengt der Druck  auf
+den  farbig markierten Buchstaben zur Anwahl. Um innerhalb  einer
+Auswahlbox  ein anderes  Feld anzuw„hlen, kann  man mit der "TAB"-Taste 
+(ein Feld vor) oder mit "Shift-TAB" (ein Feld zurck), die gewnschten 
+Auswahlfelder ansteuern. Ein einzelnes  Feld in einer Auswahlgruppe wird 
+mit  der "Leertaste"  aktiviert  und wieder  deaktiviert. Die "ESC"-Taste
+bricht jederzeit  s„mtliche Vorg„nge ab.  Hat das  anzuw„hlende Feld einen
+hervorgehobenen Buchstaben, so kann  das Feld mit <ALT>-Buchstabe auch
+direkt angew„hlt werden.
+
+Mit der Maus:
+Bei  Mausbedienung wird der Mauscursor direkt auf den anzuw„hlenden oder
+zu „ndernden Menpunkt gestellt  und dann einmal mit  der linken Maustaste
+geklickt. Zus„tzlich haben  viele Fenster (wie auch  dieses) oben links
+einen Schlieáknopf,  auf den  man ebenfalls  zum Abbrechen  der Funktion 
+klicken kann. L„uft der Sniffer in einer DOS-Box unter Windows, so wird
+eine Maus nur dann erkannt, wenn beim ™ffnen der DOS-Box der Mauszeiger
+ber dem Fenster steht. Wird der Sniffer in einer DOS-Box unter OS/2 v2.x
+oder OS/2 Warp oder Windows NT gestartet, so ist der Mauszeiger im Sniffer
+problemlos nutzbar, egal wo die Maus steht, wenn die Box ge”ffnet wird.
+
+
+Der Startbildschirm:
+--------------------
+Der  Startbildschirm mit dem Logo in der Bildschirmmitte bildet die
+Steuerzentrale. Sie k”nnen  aus der obersten Zeile  vier Mens anw„hlen.
+"Datei", "Kontrolle", "Werkzeuge" (nur bei Option -a3) und
+"Einstellungen".
+
+
+DATEI:
+------
+Datendatei ausw„hlen:
+Wollen Sie eine Datendatei (Typ  *.?LD) untersuchen, so w„hlen Sie
+zun„chst das  Untermen  "Datendatei ”ffnen"  an.  Das Eingabefenster, 
+daá  nun erscheint, ist  fr alle Dateioperationen identisch.  Sie k”nnen
+direkt einen Dateinamen eingeben  (auch mit  Laufwerks- und Pfadangaben), 
+oder grafisch Laufwerk  und Pfad wechseln. Die Wahl eines  neuen Pfades
+und/oder Laufwer- kes wird im Fenster rechts unten  durchgefhrt. Wenn Sie
+keine Maus  haben, wechseln Sie bitte mit der  TAB-Taste die
+Auswahlfelder! Im linken, unteren Fenster  werden jeweils die gefundenen
+Dateien angezeigt. Markieren Sie die gewnschte Datei  durch Mausklick 
+oder mittels  "Return"-Taste. Nun  sehen Sie in  dem Statusfenster in der
+obersten Zeile Ihre  Datei als  eingestellte Datendatei (incl.
+Gr”áenangabe).
+
+TBL-Datei ausw„hlen:
+Um die Struktur einer  bestehenden Datenbank analysieren zu k”nnen, 
+bietet sich die Untersuchung  der TBL-Datei (der Satztabelle) an. Der
+Sniffer kann Unstimmigkeiten in der  Datenbank aufdecken, wie z.B. 
+falsche Satznummern. W„hlen Sie die zu Ihrer Datenbank geh”rende 
+TBL-Datei an. In der mittleren Zeile zeigt das  Programm nun die gew„hlte 
+TBL-Datei an, sowie sofort die  Anzahl der in der Datenbank enthaltenen
+Datens„tze.
+
+CFG-Datei ausw„hlen:
+Um eine Datendatei auf Satzebene zu analysieren, muá der Sniffer wissen,
+welche Kategorien in Ihrer Datenbank erlaubt sind. Diese Angaben stehen in
+der Konfigurationsdatei. Haben Sie hier die richtige Konfigurationsdatei
+angew„hlt, so bietet die Untersuchung einer Datendatei zus„tzliche
+Untersuchungsmerkmale an. Der wichtigste ist hierbei der
+"Kategoriencheck"!
+
+Programm beenden:
+W„hlen Sie  diesen Punkt  an, wenn Sie  die Arbeit mit  dem Sniffer
+beenden wollen.
+
+
+KONTROLLE:
+----------
+Datendatei checken:
+Haben  Sie eine Datendatei  ausgew„hlt, ist  die Anwahl  dieses
+Menpunktes m”glich.  Es ”ffnet sich ein  Fenster, in dem noch einige
+Untersuchungsvorgaben  individuell angepaát werden k”nnen.  Sie k”nnen die
+Standardeinstellung jedoch auch bernehmen und den Datencheck durch
+"Return"  bzw. klicken auf "Start" sofort beginnen. Den Vorgang der
+šberprfung k”nnen  Sie direkt im  Fenster verfolgen. Analysierte
+Datens„tze sind weiá, wenn sie in Ordnung sind, grn, wenn der Datensatz
+gel”scht ist und gelb, wenn er defekt ist. Im Fenster sehen Sie die
+letzten Datens„tze. Neu untersuchte Datens„tze werden jeweils von unten
+nachgeschoben. Haben Sie das Feld "Fehler sofort anzeigen" markiert, so
+wird bei einem Fehler der defekte Datensatz in einem extra Fenster
+angezeigt. Dieses k”nnen Sie mit F5 verg”áern und wieder verkleinern, oder
+mit ESC die Untersuchng fortsetzen. Nach der Untersuchung kehrt der
+Sniffer wieder in's Hauptmen zurck, von wo aus Sie als n„chstes den
+folgenden Menpunkt anw„hlen sollten.
+Haben Sie neben der Datendatei auch noch eine CFG-Datei angegeben, so
+haben Sie die M”glichkeit "Kategorienstrukur prfen" ebenfalls anzuw„hlen.
+Anhand der CFG-Datei kann der Sniffer n„mlich ersehen, in welcher
+Reihenfolge die Satzkategorien aufeinander folgen mssen. Mit dieser
+Prfroutine haben Sie endlich ein Werkzeug in der Hand, mit dem Sie
+Datens„tze aufspren k”nnen, die durch Satzverl„ngerung zu einem Datensatz
+zusammengefallen sind.
+
+Ergebnis anschauen:
+Der Sniffer  erstellt  ein Protokoll  seiner  Kontrolle. Hier  vermerkt 
+er nicht nur Datum und Uhrzeit,  sondern auch die Einstellungen, die zu
+diesem Ergebnis gefhrt haben.  Wurden Unstimmigkeiten im  Datenmaterial
+gefunden, so wird die  Position des Fehlers  protokolliert, sowie bei
+gesperrten  und vermurxten Datens„tzen  auch noch  der Datensatz  selbst
+ausgegeben,  damit man den Datensatz  in der Datenbank  wieder aufffinden
+kann. Bei  Problemen mit  Ihren Datendateien kann dieses Prfprotokoll
+hilfreich sein. Falls es nicht beim n„chsten Prflauf berschrieben werden
+soll, kann man vor dem Programmstart "Protokoll anh„ngen" w„hlen. Das neue
+Prfprotokoll wird dann einfach an das bestehende drangeh„ngt.Bei Bedarf
+k”nnen Sie das Prfprotokoll aber auch gleich ausdrucken, und zwar mit dem
+n„chsten Menpunkt.
+
+Ergebnis ausdrucken:
+Der  dritte Menpunkt, der zur  Gruppe der Datendateiuntersuchungen
+geh”rt, dient  dem Ausdruck des Prfprotokolls.  Standardm„áig geht dieses
+auf LPT1 (also den "normalen"  Drucker). Sie k”nnen aber  auch andere
+Schnittstellen definieren  oder  sogar  C:\MIST.OUT, also  ein  anderes 
+Ausgabefile unter "Verschiedenes  -  Voreinstellungen"  eintragen.  Dieser
+Ausgabekanal  wird dann benutzt,  und zwar  OHNE(!) šberprfung. Geben
+Sie also LPT2  ein und haben keine  LPT2, so wird auch nie irgendwo etwas
+ausgedruckt werden - ist doch wohl klar?
+
+
+Satztabelle prfen:
+-------------------
+Dieser  Menpunkt ”ffnet  das  Statusfenster fr  die 
+Satztabellenprfung. Eine  Satztabellenprfung bietet sich an, wenn man
+eine vollst„ndige Datenbank hat, in der aber Schlssel zu nicht
+existierenden  Eintr„gen vorhanden sind, oder  ab und  an "Kein  Eintrag
+unter  dieser Satznummer"  erscheint. Hier  wird die Konsistenz  der
+gesamten Datenbank getestet  - und nicht nur ein Datenfile. šber
+Einstellungen haben Sie die M”glichkeit sowohl vorw„rts als auch rckw„rts
+die Satztabelle zu analysieren, als auch an einem bestimmten Datensatz die
+Untersuchung zu beginnen.
+
+Ergebnis anschauen und Ergebnis drucken:
+...funktionieren wie gerade fr die Datendatei erkl„rt.
+
+
+Werkzeuge: (nur bei Aufrufoption -a3 verfgbar)
+----------
+Diese Funktionen sind  mit Vorsicht  zu genieáen,  da im  Gegensatz zu 
+den bisherigen Funktionen  ein Eingriff  in die Datendateien  m”glich ist.
+Dies gilt umso mehr, wenn Sie eine Datenbank im Netz "behandeln".
+
+Datendatei zerlegen:
+Haben  Sie einen fehlerhaften Datensatz der verhindert, daá eine
+Datendatei indexiert werden kann, so kann die betreffende Datei in  10
+kleinere Dateien zerlegt werden. Nun sollten sich 9 davon indexieren
+lassen. Die  defekte Datei  kann  man anschlieáend  wiederum  in 10 
+kleinere  Dateien zerlegen, usw....bis letztendlich der  einzelne defekte
+Datensatz brig bleibt. Diese Funktion ist  zur Zeit  g„hnend langsam  -
+aber  in F„llen  wie gerade  beschrieben kann sie aber trotzdem ntzlich
+sein!
+
+Satztabelle sperren:
+Das kann  auch vom Cockpit aus ohne  Probleme durchgefhrt werden, ist
+also nur der Vollst„ndigkeit halber mit aufgenommen worden.
+
+Satztabelle freigeben:
+Was man sperren kann (s.o.), muá man auch wieder freigeben k”nnen!
+
+
+Verschiedenes:
+--------------
+Informationen zum  Sniffer und  dessen Voreinstellungen sind  hier
+untergebracht.
+
+Einstellungen:
+W„hlen Sie diesen Menpunkt an, um Ihre ganz pers”nlichen 
+Voreinstellungen zu  machen. Diese  werden dann  in  dem Startverzeichnis 
+als "SNIFFER.INI" abgespeichert  und  bei jedem  neuen  Programmstart
+wieder  eingelesen. Ist diese Datei  nicht vorhanden, so  werden
+Standardwerte vom Sniffer  automatisch vorgegeben. 
+
+Online Handbuch:
+..ist der  Text, den Sie gerade lesen. Diese  Datei k”nnen Sie beliebig
+gegen einen eigenen  Text austauschen,  wenn Ihnen  etwas besseres 
+einfallen sollte. Speichern Sie den  Text als ASCII-Text ab, und zwar
+unter dem Namen "SNIFFER.DOC" im Verzeichnis,  in dem auch "SNIFFER.EXE" 
+steht. Dann  wird Ihr Text  jedesmal geladen,  wenn ein  Anwender das 
+Online Handbuch  lesen m”chte.
+
+šber das Programm:
+Neben  einem Autorenhinweis (ja irgendwo muá doch  stehen, daá das
+Programm von mir ist), finden Sie dort  die wesentlich wichtigeren
+Hinweise auf  genaue Versionsnummer und Erstellungsdatum des Programms.
+
+
+Braunschweig, 13.4.2000 (M.Evers)

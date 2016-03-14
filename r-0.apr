@@ -1,0 +1,88 @@
+  R-0.APR : Summierung und Durchschnittsbildung von Kategorieinhalten
+  940602    Prototyp fr den Exporttyp RESULT
+
+pn="Seitensumme, Prototyp RESULT"
+
+  Gibt nichts aus, sondern addiert nur. Erst der Fuáabschnitt
+  fhrt eine Ausgabe durch, siehe unten
+
+  --------- Konstanten --------------------------------------------
+ff=2     um Kopf- und Fuáabschnitt zu aktivieren
+zm=0     damit am Ende der Fuáabschnitt auch ausgefhrt wird
+  ----------------------------------------------------------
+
+  Es sollen die Seitenzahlen addiert werden, wobei F„lle mit weniger
+  als 10 Seiten nicht mitgerechnet, sondern getrennt gez„hlt werden.
+  (z.B. kann dabei sowas wie #77 Vol.1-5  vorkommen, was also keine
+  Seitenzahl ist! Unteraufnahmen werden mit verarbeitet!)
+  Ferner soll die kleinste und die gr”sste Seitenzahl ermittelt
+  und der Durchschnitt berechnet werden.
+  Die Erscheinungsjahre sollen ebenfalls addiert und ihr Durchschnitt
+  ausgegeben werden.
+
+  !!!!!!!!!!!!!!!!!!!!!   Anpassungen fr andere Zwecke : !!!!!!!!!!!!!!!!!!!
+  !  Setzen Sie fr #76 und #77 die Kategorien ein, die Sie addieren wollen.!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+   ak-Befehle: keine
+
+  ************* Kategorieliste ************************************
+
+#76 x">1449" x"+ej" =ej
+#76 x">1449" x"=1" x"+nj" =nj
+     wenn >1449, dann Ersch.Jahr addieren,   #uej = #uej + #76
+                      und #unj um 1 erh”hen  #unj = #unj + 1
+                      (nur dann, wenn #76 existiert!)
+
+     Der Befehl  Z  bewirkt, daá die Zeilen jeweils nur ausgefhrt
+     werden, aber keine Ausgabe bewirken. D.h. es werden nur die
+     Anwendervariablen bedient, die Zwischenergebnisse aber nicht ausgedruckt.
+     (Z macht dasselbe wie e0)
+#77 +M x"<10" Z        keine Aktion, wenn #77 < 10
+#77 x"+su" =su         Seitenzahl addieren   #usu = #usu + #76 ,
+#unr x"+1" =nr         #unr um 1 erh”hen
+#77 x">gw" =gw         wenn gr”áer als bisheriger gr”áter Wert:    #ugw=#77
+#77 x"<kw" =kw         wenn kleiner als bisheriger kleinster Wert: #ukw=#77
+#+#
+
+#-M
+#uk1 x"+1" =k1         #uk1 um 1 erh”hen
+#+#
+
+  *********** Kopf- und Fuáabschnitte *********************************
+
+   Kopfteil:  Initialisierung der Variablen
+   ---------  #dt wird als nur Hilfskategorie benutzt, weil sie immer existiert
+K
+#dt x"=0" =su          #usu fr Summe der Seitenzahlen
+    das bedeutet: nimm den Inhalt vom #dt als Variable,
+                  weise ihr den Wert 0 zu
+                  und speichere diesen in #usu
+                  (etwas indirekt, aber nur so geht es)
+                       Variablen:
+#dt x"=0" =nr          #unr fr Z„hler der tats„chlich addierten F„lle
+#dt x"=0" =ej          #uej fr Summe der Ersch.jahre
+#dt x"=0" =nj          #unj fr Anzahl der addierten Erscheinungsjahre
+#dt x"=0" =gw          #ugw fr gr”áten Wert
+#dt x"=99999" =kw      #ukw fr kleinsten Wert
+#dt x"=0" =k1          #uk1 fr Anzahl der F„lle kleiner als 10
+
+#t{ "Werte auf Null gesetzt" C }     Kontrollmeldung
+
+  *************************************************************************
+
+   Fuáteil:     Ausgabe der Ergebnisse
+   --------     (Kontrolle mit Befehl #a im Editor m”glich!)
+F
+#t{ "Ergebnisse: " }
+#usu C e"." r7 p"Summe:  "              e"." schneidet den Dezimalteil ab
+#unr C e"." r7 p"Anzahl: "              r7 fllt links mit Blanks auf 7 Stellen
+
+#ugw C C x"*1" e"." r6 p"gr”áte:  "     x"*1" wird gemacht, weil die Werte
+#ukw C x"*1" e"." r6 p"kleinste:"       noch Buchstaben enthalten k”nnten,
+                                        die werden dadurch beseitigt
+#uk1 C e"." r6 p"unter 10:"
+#usu C C x"/nr" x"r2" r9 p"Durchschnitt: "
+     nimm Inhalt von #usu, teile durch #unr, runde auf 2 Stellen
+
+#uej C C x"/nj" e"." r6 "durchschn. Ersch.Jahr: "

@@ -1,0 +1,97 @@
+  P-EINZEL.APR : Druckformat EINZEL: ISBD, jeder Titel vollst„ndig
+  950703  Name fett, Einrckung der 2. Zeile
+pn="Listendruck mit Nachladung, Einzeltitel"
+
+  1. B„nde von mehrbd. Werken (hierarchisch)
+  2. Stamms„tze von Zeitschriften fr Aufsatzdaten (#70)
+         ber Krzel, ISSN, oder CODEN (Index 5, Abschnitt _ )
+  3. Aufs„tze aus Sammelb„nden (#84) ber  Id.Nr.
+  4. Serientitel (#85) ebenfalls ber Krzel per Index 5
+
+
+zl=75       Zeilenl„nge (nach Bedarf zu krzen)
+zi=5        Einrckung der Folgezeilen : 5 Zeichen
+zm=55       58 Zeilen je Seite
+ff=2        damit Kopf-/Fuáabschnitt bearbeitet wird
+ae=""       Zeilenvorschub am Aufnahmeende
+z1=8 
+z2=2
+
+il=72       Schlssell„nge des Index, wichtig fr das Nachladen
+
+  diese Angaben werden durch den Druckertreiber PRINTER.APT ge„ndert,
+  wenn er andere Werte enth„lt.
+
+
+   Kopfbefehle werden keine gebraucht, es f„ngt immer bei #-@ an
+
+
+
+  ********* ZWISCHENTEILE  1 - 78  *************
+1=". "      Interpunktion
+2=", "
+3="; "
+4=C
+5=" : "
+
+7=" = "
+8=". - "
+9=" / "
+
+10=C "("   gedacht fr Serientitel (neue Zeile, Klammer auf)
+  
+ 10=". - ("    dieses nehmen, wenn er nicht auf neuer Zeile stehen soll
+
+11=")"
+
+13=C "   "   fr #74 (Ersch.Ort) gedacht, 
+ 13=". - "   dieses nehmen, wenn er keine neue Zeile haben soll
+
+     Funktionsbezeichnungen
+16=" [Hrsg.]"
+17=" [Mitarb.]"
+18=" [Bearb.]"
+19=" [Begr.]"
+20=" [Samml.]"
+21=" [Texter]"
+22=" [šbers.]"
+23=" [Illustr.]"
+24=" [Komment.]"
+25=" [Kompon.]"
+26=" [Pr„ses]"
+27=" [Resp.]"
+28=" [Vorw.]"
+
+30=C "Kongr.: "
+
+
+
+60=#250     Einrckung auf momentaner Position festsetzen
+
+
+
+
+    ******  Hauptteil : Konstr. der "Einheitskarte" ****
+    ** Durchlauf ab hier fr Hauptsatz und Unters„tze **
+       flag #utt ist "1", w„hrend eine Nachladung bearb wird, sonst "2"
+
+#-@
+#hi +g e0      denn fr B„nde eines normalen mehrb„ndigen Werkes
+               soll das Folgende nicht gemacht werden
+#00 =id+- e0    wenn gleich, keine Wiederholung (Doppeleintr„ge eliminieren)
+                    Benutzung von #uid als Zwischenspeicher
+         Bei hierarchischen S„tzen beginnt die Bearbeitung der
+         Unters„tze jeweils automatisch hier, bei der ersten #-Zeile,
+         deshalb gibt es hier einen Sprungbefehl:
+#t99     FETT ein
+#u2 e""                max. dreiteilige Ordnungsbl”cke
+ aktivieren, wenn 2. und 3.Kopfteil ausgegeben werden sollen:
+
+ #u2 b"" e"" p" / "
+ #u2 b"" b"" e"" p" / "
+#t98     fett aus
+
+
+tTEXT          Hauptteil (derselbe wie P-NORMAL!)
+
+tPRINTER       Druckertreiber

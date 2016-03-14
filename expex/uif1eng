@@ -1,0 +1,135 @@
+  UIF1ENG
+  941213
+
+   this headline can be filled with database specific information
+   for the OPAC user:  (instead of 156/157)
+
+   (Insert your library's name into the next line)
+186 "  THIS IS  your library's  ONLINE PUBLIC ACCESS CATALOG                  "
+
+
+101 13 10 27 "[K             enter new term: " 27 "[K" 13 10
+102 13 10 27 "[K new index term: (ESC ESC = Irrtum)" 13 10
+103 27 "[K delete key?"
+
+  ***  new with 12.2 : lines 104-130 ********************************
+  with Option -a0 :
+
+  foot line 1 in DISPLAY screen
+  Option -a0 / AKAT
+104 "   next/previous title  Alt+F5 = internal format"
+  Option -a1 or -a2
+105 "input file # %d              F2 F2 = Change display parameters"
+  Option -a3
+106 "input file # %d                   F10 : execute global exchange"
+
+  foot line 2 in DISPLAY screen
+110 "ÄÄ = Index    F1 = Help       F5 = MARC display on/off"
+
+
+120 " %s"
+
+  foot line 1 on INDEX screen
+  normal with -a0 or in AKAT
+122 "looking for something else? Choose index (F-Keys) and type search term"
+   .STL exists
+123 "New search term? Just type it!        <Shift+F8> = Short title display"
+   .STL and result set exist
+124 "New search term? Just type it!        <Shift+F9> = Short result display"
+  on DISPLAY screen
+
+126 "New search term? Just type i1!        <Esc> = normal index"
+  if short result list on display
+127 "  <PgDn> <PgDn> : browse            <Esc> = normal index"
+
+  Foot line 2
+121 "ÄÙ = Title display           F1 = HELP"
+
+128 "Results:%5d"
+
+129 "  Truncator: %c   "
+
+130 "Truncation: %d "
+  ****************** End of new part ***************
+
+135 " nothing to replace "
+136 " export? "
+137 "press 1 = single record   or   0 = total result set "
+138 " output file name? (Enter = same as before) "
+139 " no index - access by record number only (by ENTER #recn)"
+
+
+140 " want to save this record?"
+141 "Enter  :  search term   ?browse-term  #record number  x=error"
+142 "no result, record number not in use"
+143 "got no record for editing - press PgUp or Enter"
+144 "record is locked, try again"
+145 "we have reached the very first key"
+146 "we have reached the very last key"
+
+148 "this is record #1"
+149 "this is the very last record"
+150 "  this is just a COPY of the current record!" 13 10 "  You may now do whatever editing you want" 13 10 "  then use F10 to save it as a new record (F8=EXIT)" 13 10 "  THE CURRENT RECORD WILL NOT BE AFFECTED!  (F1=HELP)" 13 10
+151 "file number?  " 8
+152 "this record has already been deleted"
+153 " delete this record?   "
+154 " done"
+155 " exit program?  "
+    these two for -a1,-a2,-a3 :  (-a0 see 186)
+156 " database: %s  file#: %d   record#: %ld"
+157 "length: %d, bytes free: %d"
+
+158 " editor ready" 13 10 " F10 = exit with/without save" 13 10 " F1  = HELP" 13 10
+159 "record length: %d" 13 10
+160 " f = change number of filler characters" 13 10
+161 " x = cancel editing, no save" 13 10
+162 " current value: %u   new value? "
+163 " new value: %u" 13 10
+164 "  Enter = save to work buffer, then enter volume records" 13 10
+165 "      # = write to file            x = error" 13 10
+166 13 10 " no database on directory %s" 13 10 " to create a new one use CockPit or option -i" 13 10
+167 " error %d" 13 10 "not enough memory OR index file already exists"
+168 13 10 13 10 "file number for new records?" 13 10
+169 "illegal record #"
+170 " number %ld "
+171 "file %s inaccessible"
+    "rec locked" = 144
+172 "this record has been deleted"
+173 "end of file %s "
+174 " %d key values changed" 13 10
+175 "wait a moment"
+176 "  saving record to file %d,  "
+177 " %d bytes free" 13 10
+178 " not enough space on drive %c" 13 10
+
+180 "D-1.cPR missing, you will get a tagged display only (==> 1.1.2.4)"
+181 "no entry under this record number  OR  wrong record number"
+
+182 "file error!!!"
+183 " %d keys deleted, %d bytes free  "
+184 "data and index are on "
+185 "which database do you want to access?"
+
+  186 see at top
+
+187 "file %d cannot be opened"
+
+
+188 " background store reset"
+189 " record copied to background "
+190 "   truncation at position: "
+
+199 " parameters %s not found" 13 10
+
+
+200 " ENTER FUNCTION CODE: "
+201 13 10 "                a = general menu" 13 10 13 10
+202 "                1 = database access (main program)" 13 10 13 10
+203 "               (2 = offline data entry)" 13 10
+204 "               (3 = offline file editing)" 13 10
+205 "                4 = full text search" 13 10
+206 "                5 = data import" 13 10
+207 "                6 = export production" 13 10
+208 "                7 = index production" 13 10
+209 "                8 = sort" 13 10
+210 "                x = exit" 13 10 

@@ -1,0 +1,40 @@
+  VKISBN.FLX : Hole einen Datensatz aus dem Fernkatalog (z.B. VK) per ISBN
+  2008-04-24   Demo des Befehls  get I url  mit dynam. url
+
+  (Auf der PHPAC-Installation fuer den VK ist ein Skript get.php dafuer
+   vorbereitet, das den Datensatz in A.CFG und ASCII-Text wandelt.)
+  Start mit  X vkisbn <isbn>, um die Datensaetze mit dieser ISBN zu holen
+  Wenn ohne <isbn>, dann aus dem aktuellen Datensatz entnehmen.
+
+
+
+if not "" ins $isb;jump begin
+
+  Aus dem aktuellen Satz die ISBN entnehmen
+var #87(e"=")
+ins $isb
+if "" ask ISBN?;ins $isb
+var $isb
+if "" end
+
+:begin
+if not $Url $Url=http://www.biblio.tu-bs.de/db/vk/
+  dynamische URL damit zusammenbasteln
+var $Url "vkf.php?cmd=isb+" $isb "&exp=e-alleg"
+  und die Daten abrufen
+get I
+  Wenn nicht gefunden, dann kommt die Zeichenfolge "E130>" vor
+if %E130>% mes ISBN im VK nicht gefunden;end
+  Am Ende ist eine leere Zeile, die mit # beginnt, wegnehmen
+var (t"#")
+  Es ist ASCII! Zum Anzeigen braucht man ANSI
+ansi
+  Text schnell noch eben in die Zwischenablage kopieren
+ccopy
+  und zeigen
+sho IV
+  Meldung ins Schreibfeld geben
+var "Das ist der Datensatz aus dem VK" n "(Der Text ist jetzt auch in der Zwischenablage)"
+sho iv
+
+

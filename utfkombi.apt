@@ -1,0 +1,347 @@
+  utfkombi.apt : UTF8 Kombi-Kontraktionen innerhalb allegro-Ostwest
+  2004-02-17  (Berger)
+ % Orig. $Id: ow-protyp.cpt 13798 2004-02-17 11:18:58Z thomas berger $
+ # Version  Buchstabe+Diakr
+
+ Globale Ersetzungsbefehle. Werden ausgefuehrt BEVOR die Parameterdatei
+ als solche anlaeuft. Daher ist die Reihenfolge  _Buchstabe+Akzent_Diakritikum_
+
+ # manuell gewonnen aus Zeichenumsetzungstabelle
+ # von allegro Ostwest (DOS)
+ #     Mapping: ./unic4.0/biblio/ostwest.txt
+ # nach allegro Ostwest (DOS)
+ #     Mapping: ./unic4.0/biblio/ostwest.txt
+ #
+ # Generiert am Sun Feb 15 11:11:35 2004
+ # Erweitert 2012-04-04 ev
+
+ ######### allegro Ostwest (DOS) Bemerkungen
+ : * Kleine i mit Diakritika mit U0065 (0xd5) oder U0131 (0xb0) komponiert
+ : * "stroked" Buchstaben U00D0 (grosses Eth) 
+ :             sowie U0110 und U0111 (Dj)
+ :    vermutlich kompositionell mit U0336 (0xde) und "Grundbuchstabe" d und D
+ : * U00F0 (eth) nicht vorhanden
+ : * "stroked" L, l = U0141 (0xf2) und U0142 (0xf3) sowie "stroked" O, o
+ :    = U00D8 (0xd7) und U00F8 (0xed) vermutlich auch als Komposition von
+ :    U0338 (0xdb) und Grundbuchstabe erlaubt.
+ : * Teilfeldzeichen ist U25BE (0x1f)
+ : * folgende Abweichungen von CP437 sind Absicht:  
+ :   - U0015 (0x15) ist durch das gleich aussehende Paragraphenzeichen
+ :     U00A7 ersetzt,
+ :   - U0014 (0x14) durch Pilcrow U00B6 ersetzt
+ :   - Das griechische kleine tau U03C4 (0xe7) von CP437 wird als
+ :     kleines Gamma U03B3 behandelt
+ : * Daten von vor Version 21: 
+ :   Spacing Tilde U007E vermutl. als U0303 (0x7e) codiert.
+ :   Daten seit Version 21:
+ :   Spacing Tilde U007E (0x7e) und diakritische Tilde U0303 (0xe8) werden
+ :   unterschieden. Phi U04A6 (0xe8) ist ersatzlos entfallen.
+
+
+ ######
+ # 3. Informational: canonical protypes within allegro Ostwest
+ ######
+
+ ### using 0xb6 (182) = U<0300> &#768; COMBINING GRAVE ACCENT [UTF-8: "?«" = 0xcc 0x80 (204 128)]
+ #  U<0061> U<0300> [UTF-8: "a?«" = 0x61 0xcc 0x80 (97 204 128)]
+ # -> U<00E0> &#224; LATIN SMALL LETTER A WITH GRAVE [UTF-8: "?·" = 0xc3 0xa0 (195 160)]
+ ! 0xb6 0x61 (182 97) -> 0x85 (133)
+ #  U<0065> U<0300> [UTF-8: "e?«" = 0x65 0xcc 0x80 (101 204 128)]
+ # -> U<00E8> &#232; LATIN SMALL LETTER E WITH GRAVE [UTF-8: "?ø" = 0xc3 0xa8 (195 168)]
+ ! 0xb6 0x65 (182 101) -> 0x8a (138)
+ #  U<0069> U<0300> [UTF-8: "i?«" = 0x69 0xcc 0x80 (105 204 128)]
+ # -> U<00EC> &#236; LATIN SMALL LETTER I WITH GRAVE [UTF-8: "?º" = 0xc3 0xac (195 172)]
+ ! 0xb6 0x69 (182 105) -> 0x8d (141)
+ #  U<006F> U<0300> [UTF-8: "o?«" = 0x6f 0xcc 0x80 (111 204 128)]
+ # -> U<00F2> &#242; LATIN SMALL LETTER O WITH GRAVE [UTF-8: "??" = 0xc3 0xb2 (195 178)]
+ ! 0xb6 0x6f (182 111) -> 0x95 (149)
+ #  U<0075> U<0300> [UTF-8: "u?«" = 0x75 0xcc 0x80 (117 204 128)]
+ # -> U<00F9> &#249; LATIN SMALL LETTER U WITH GRAVE [UTF-8: "??" = 0xc3 0xb9 (195 185)]
+ ! 0xb6 0x75 (182 117) -> 0x97 (151)
+_\97\182_\133_
+_\101\182_\138_
+_\105\182_\141_
+_\176\182_\141_
+_\111\182_\149_
+_\117\182_\151_
+
+ ### using 0xb5 (181) = U<0301> &#769; COMBINING ACUTE ACCENT [UTF-8: "?¸" = 0xcc 0x81 (204 129)]
+ #  U<0043> U<0301> [UTF-8: "C?¸" = 0x43 0xcc 0x81 (67 204 129)]
+ # -> U<0106> &#262; LATIN CAPITAL LETTER C WITH ACUTE [UTF-8: "?Â" = 0xc4 0x86 (196 134)]
+ ! 0xb5 0x43 (181 67) -> 0xf0 (240)
+ #  U<0045> U<0301> [UTF-8: "E?¸" = 0x45 0xcc 0x81 (69 204 129)]
+ # -> U<00C9> &#201; LATIN CAPITAL LETTER E WITH ACUTE [UTF-8: "?Î" = 0xc3 0x89 (195 137)]
+ ! 0xb5 0x45 (181 69) -> 0x90 (144)
+ #  U<004E> U<0301> [UTF-8: "N?¸" = 0x4e 0xcc 0x81 (78 204 129)]
+ # -> U<0143> &#323; LATIN CAPITAL LETTER N WITH ACUTE [UTF-8: "?‚" = 0xc5 0x83 (197 131)]
+ ! 0xb5 0x4e (181 78) -> 0xf4 (244)
+ #  U<004F> U<0301> [UTF-8: "O?¸" = 0x4f 0xcc 0x81 (79 204 129)]
+ # -> U<00D3> &#211; LATIN CAPITAL LETTER O WITH ACUTE [UTF-8: "?Ù" = 0xc3 0x93 (195 147)]
+ ! 0xb5 0x4f (181 79) -> 0xf6 (246)
+ #  U<0053> U<0301> [UTF-8: "S?¸" = 0x53 0xcc 0x81 (83 204 129)]
+ # -> U<015A> &#346; LATIN CAPITAL LETTER S WITH ACUTE [UTF-8: "?‹" = 0xc5 0x9a (197 154)]
+ ! 0xb5 0x53 (181 83) -> 0xf7 (247)
+ #  U<005A> U<0301> [UTF-8: "Z?¸" = 0x5a 0xcc 0x81 (90 204 129)]
+ # -> U<0179> &#377; LATIN CAPITAL LETTER Z WITH ACUTE [UTF-8: "??" = 0xc5 0xb9 (197 185)]
+ ! 0xb5 0x5a (181 90) -> 0xfb (251)
+ #  U<0061> U<0301> [UTF-8: "a?¸" = 0x61 0xcc 0x81 (97 204 129)]
+ # -> U<00E1> &#225; LATIN SMALL LETTER A WITH ACUTE [UTF-8: "?Ì" = 0xc3 0xa1 (195 161)]
+ ! 0xb5 0x61 (181 97) -> 0xa0 (160)
+ #  U<0063> U<0301> [UTF-8: "c?¸" = 0x63 0xcc 0x81 (99 204 129)]
+ # -> U<0107> &#263; LATIN SMALL LETTER C WITH ACUTE [UTF-8: "?Á" = 0xc4 0x87 (196 135)]
+ ! 0xb5 0x63 (181 99) -> 0xf1 (241)
+ #  U<0065> U<0301> [UTF-8: "e?¸" = 0x65 0xcc 0x81 (101 204 129)]
+ # -> U<00E9> &#233; LATIN SMALL LETTER E WITH ACUTE [UTF-8: "?Æ" = 0xc3 0xa9 (195 169)]
+ ! 0xb5 0x65 (181 101) -> 0x82 (130)
+ #  U<0069> U<0301> [UTF-8: "i?¸" = 0x69 0xcc 0x81 (105 204 129)]
+ # -> U<00ED> &#237; LATIN SMALL LETTER I WITH ACUTE [UTF-8: "?°" = 0xc3 0xad (195 173)]
+ ! 0xb5 0x69 (181 105) -> 0xa1 (161)
+ #  U<006E> U<0301> [UTF-8: "n?¸" = 0x6e 0xcc 0x81 (110 204 129)]
+ # -> U<0144> &#324; LATIN SMALL LETTER N WITH ACUTE [UTF-8: "?‰" = 0xc5 0x84 (197 132)]
+ ! 0xb5 0x6e (181 110) -> 0xf5 (245)
+ #  U<006F> U<0301> [UTF-8: "o?¸" = 0x6f 0xcc 0x81 (111 204 129)]
+ # -> U<00F3> &#243; LATIN SMALL LETTER O WITH ACUTE [UTF-8: "??" = 0xc3 0xb3 (195 179)]
+ ! 0xb5 0x6f (181 111) -> 0xa2 (162)
+ #  U<0073> U<0301> [UTF-8: "s?¸" = 0x73 0xcc 0x81 (115 204 129)]
+ # -> U<015B> &#347; LATIN SMALL LETTER S WITH ACUTE [UTF-8: "?¯" = 0xc5 0x9b (197 155)]
+ ! 0xb5 0x73 (181 115) -> 0xf9 (249)
+ #  U<0075> U<0301> [UTF-8: "u?¸" = 0x75 0xcc 0x81 (117 204 129)]
+ # -> U<00FA> &#250; LATIN SMALL LETTER U WITH ACUTE [UTF-8: "??" = 0xc3 0xba (195 186)]
+ ! 0xb5 0x75 (181 117) -> 0xa3 (163)
+ #  U<0079> U<0301> [UTF-8: "y?¸" = 0x79 0xcc 0x81 (121 204 129)]
+ # -> U<00FD> &#253; LATIN SMALL LETTER Y WITH ACUTE [UTF-8: "?¢" = 0xc3 0xbd (195 189)]
+ ! 0xb5 0x79 (181 121) -> 0xad (173)
+ #  U<007A> U<0301> [UTF-8: "z?¸" = 0x7a 0xcc 0x81 (122 204 129)]
+ # -> U<017A> &#378; LATIN SMALL LETTER Z WITH ACUTE [UTF-8: "??" = 0xc5 0xba (197 186)]
+ ! 0xb5 0x7a (181 122) -> 0xfc (252)
+_\67\181_\240_
+_\69\181_\144_
+_\78\181_\244_
+_\79\181_\246_
+_\83\181_\247_
+_\90\181_\251_
+_\97\181_\160_
+_\99\181_\241_
+_\101\181_\130_
+_\105\181_\161_
+_\176\181_\161_
+_\110\181_\245_
+_\111\181_\162_
+_\115\181_\249_
+_\117\181_\163_
+_\121\181_\173_
+_\122\181_\252_
+
+ ### using 0xb7 (183) = U<0302> &#770; COMBINING CIRCUMFLEX ACCENT [UTF-8: "?È" = 0xcc 0x82 (204 130)]
+ #  U<0061> U<0302> [UTF-8: "a?È" = 0x61 0xcc 0x82 (97 204 130)]
+ # -> U<00E2> &#226; LATIN SMALL LETTER A WITH CIRCUMFLEX [UTF-8: "?Û" = 0xc3 0xa2 (195 162)]
+ ! 0xb7 0x61 (183 97) -> 0x83 (131)
+ #  U<0065> U<0302> [UTF-8: "e?È" = 0x65 0xcc 0x82 (101 204 130)]
+ # -> U<00EA> &#234; LATIN SMALL LETTER E WITH CIRCUMFLEX [UTF-8: "?¨" = 0xc3 0xaa (195 170)]
+ ! 0xb7 0x65 (183 101) -> 0x88 (136)
+ #  U<0069> U<0302> [UTF-8: "i?È" = 0x69 0xcc 0x82 (105 204 130)]
+ # -> U<00EE> &#238; LATIN SMALL LETTER I WITH CIRCUMFLEX [UTF-8: "?´" = 0xc3 0xae (195 174)]
+ ! 0xb7 0x69 (183 105) -> 0x8c (140)
+ #  U<006F> U<0302> [UTF-8: "o?È" = 0x6f 0xcc 0x82 (111 204 130)]
+ # -> U<00F4> &#244; LATIN SMALL LETTER O WITH CIRCUMFLEX [UTF-8: "??" = 0xc3 0xb4 (195 180)]
+ ! 0xb7 0x6f (183 111) -> 0x93 (147)
+ #  U<0075> U<0302> [UTF-8: "u?È" = 0x75 0xcc 0x82 (117 204 130)]
+ # -> U<00FB> &#251; LATIN SMALL LETTER U WITH CIRCUMFLEX [UTF-8: "??" = 0xc3 0xbb (195 187)]
+ ! 0xb7 0x75 (183 117) -> 0x96 (150)
+_\97\183_\131_
+_\101\183_\136_
+_\105\183_\140_
+_\176\183_\140_
+_\111\183_\147_
+_\117\183_\150_
+
+ ### using 0xe8 (232) = U<0303> &#771; COMBINING TILDE [UTF-8: "?‚" = 0xcc 0x83 (204 131)]
+ #  U<004E> U<0303> [UTF-8: "N?‚" = 0x4e 0xcc 0x83 (78 204 131)]
+ # -> U<00D1> &#209; LATIN CAPITAL LETTER N WITH TILDE [UTF-8: "?Ê" = 0xc3 0x91 (195 145)]
+ ! 0xe8 0x4e (232 78) -> 0xa5 (165)
+ #  U<006E> U<0303> [UTF-8: "n?‚" = 0x6e 0xcc 0x83 (110 204 131)]
+ # -> U<00F1> &#241; LATIN SMALL LETTER N WITH TILDE [UTF-8: "??" = 0xc3 0xb1 (195 177)]
+ ! 0xe8 0x6e (232 110) -> 0xa4 (164)
+_\78\232_\165_
+_\110\232_\164_
+
+ ### using 0xbe (190) = U<0306> &#774; COMBINING BREVE [UTF-8: "?Â" = 0xcc 0x86 (204 134)]
+ #  U<0061> U<0306> [UTF-8: "a?Â" = 0x61 0xcc 0x86 (97 204 134)]
+ # -> U<0103> &#259; LATIN SMALL LETTER A WITH BREVE [UTF-8: "?‚" = 0xc4 0x83 (196 131)]
+ ! 0xbe 0x61 (190 97) -> 0xe4 (228)
+ #  U<0067> U<0306> [UTF-8: "g?Â" = 0x67 0xcc 0x86 (103 204 134)]
+ # -> U<011F> &#287; LATIN SMALL LETTER G WITH BREVE [UTF-8: "?É" = 0xc4 0x9f (196 159)]
+ ! 0xbe 0x67 (190 103) -> 0x17 (23)
+_\97\190_\228_
+_\103\190_\23_
+
+ ### using 0xb8 (184) = U<0307> &#775; COMBINING DOT ABOVE [UTF-8: "?Á" = 0xcc 0x87 (204 135)]
+ #  U<0049> U<0307> [UTF-8: "I?Á" = 0x49 0xcc 0x87 (73 204 135)]
+ # -> U<0130> &#304; LATIN CAPITAL LETTER I WITH DOT ABOVE [UTF-8: "??" = 0xc4 0xb0 (196 176)]
+ ! 0xb8 0x49 (184 73) -> 0xe9 (233)
+ #  U<005A> U<0307> [UTF-8: "Z?Á" = 0x5a 0xcc 0x87 (90 204 135)]
+ # -> U<017B> &#379; LATIN CAPITAL LETTER Z WITH DOT ABOVE [UTF-8: "??" = 0xc5 0xbb (197 187)]
+ ! 0xb8 0x5a (184 90) -> 0xfd (253)
+ #  U<007A> U<0307> [UTF-8: "z?Á" = 0x7a 0xcc 0x87 (122 204 135)]
+ # -> U<017C> &#380; LATIN SMALL LETTER Z WITH DOT ABOVE [UTF-8: "??" = 0xc5 0xbc (197 188)]
+ ! 0xb8 0x7a (184 122) -> 0xfe (254)
+_\73\184_\233_
+_\90\184_\253_
+_\122\184_\254_
+
+ ### using 0xbd (189) = U<0308> &#776; COMBINING DIAERESIS [UTF-8: "?Í" = 0xcc 0x88 (204 136)]
+ #  U<0041> U<0308> [UTF-8: "A?Í" = 0x41 0xcc 0x88 (65 204 136)]
+ # -> U<00C4> &#196; LATIN CAPITAL LETTER A WITH DIAERESIS [UTF-8: "?‰" = 0xc3 0x84 (195 132)]
+ ! 0xbd 0x41 (189 65) -> 0x8e (142)
+ #  U<004F> U<0308> [UTF-8: "O?Í" = 0x4f 0xcc 0x88 (79 204 136)]
+ # -> U<00D6> &#214; LATIN CAPITAL LETTER O WITH DIAERESIS [UTF-8: "?˚" = 0xc3 0x96 (195 150)]
+ ! 0xbd 0x4f (189 79) -> 0x99 (153)
+ #  U<0055> U<0308> [UTF-8: "U?Í" = 0x55 0xcc 0x88 (85 204 136)]
+ # -> U<00DC> &#220; LATIN CAPITAL LETTER U WITH DIAERESIS [UTF-8: "?£" = 0xc3 0x9c (195 156)]
+ ! 0xbd 0x55 (189 85) -> 0x9a (154)
+ #  U<0061> U<0308> [UTF-8: "a?Í" = 0x61 0xcc 0x88 (97 204 136)]
+ # -> U<00E4> &#228; LATIN SMALL LETTER A WITH DIAERESIS [UTF-8: "?Ò" = 0xc3 0xa4 (195 164)]
+ ! 0xbd 0x61 (189 97) -> 0x84 (132)
+ #  U<0065> U<0308> [UTF-8: "e?Í" = 0x65 0xcc 0x88 (101 204 136)]
+ # -> U<00EB> &#235; LATIN SMALL LETTER E WITH DIAERESIS [UTF-8: "?Ω" = 0xc3 0xab (195 171)]
+ ! 0xbd 0x65 (189 101) -> 0x89 (137)
+ #  U<0069> U<0308> [UTF-8: "i?Í" = 0x69 0xcc 0x88 (105 204 136)]
+ # -> U<00EF> &#239; LATIN SMALL LETTER I WITH DIAERESIS [UTF-8: "?ª" = 0xc3 0xaf (195 175)]
+ ! 0xbd 0x69 (189 105) -> 0x8b (139)
+ #  U<006F> U<0308> [UTF-8: "o?Í" = 0x6f 0xcc 0x88 (111 204 136)]
+ # -> U<00F6> &#246; LATIN SMALL LETTER O WITH DIAERESIS [UTF-8: "?¬" = 0xc3 0xb6 (195 182)]
+ ! 0xbd 0x6f (189 111) -> 0x94 (148)
+ #  U<0075> U<0308> [UTF-8: "u?Í" = 0x75 0xcc 0x88 (117 204 136)]
+ # -> U<00FC> &#252; LATIN SMALL LETTER U WITH DIAERESIS [UTF-8: "??" = 0xc3 0xbc (195 188)]
+ ! 0xbd 0x75 (189 117) -> 0x81 (129)
+ #  U<0079> U<0308> [UTF-8: "y?Í" = 0x79 0xcc 0x88 (121 204 136)]
+ # -> U<00FF> &#255; LATIN SMALL LETTER Y WITH DIAERESIS [UTF-8: "??" = 0xc3 0xbf (195 191)]
+ ! 0xbd 0x79 (189 121) -> 0x98 (152)
+  ### Umlaute, als Grundbuchstabe Trema codiert; 189 = Trema
+
+_A\189_é_
+_O\189_ô_
+_U\189_ö_
+_a\189_Ñ_
+_e\189_â_
+_i\189_ã_
+_o\189_î_
+_u\189_Å_
+_y\189_ò_
+
+ ### using 0xcf (207) = U<030A> &#778; COMBINING RING ABOVE [UTF-8: "?Ë" = 0xcc 0x8a (204 138)]
+ #  U<0041> U<030A> [UTF-8: "A?Ë" = 0x41 0xcc 0x8a (65 204 138)]
+ # -> U<00C5> &#197; LATIN CAPITAL LETTER A WITH RING ABOVE [UTF-8: "?‡" = 0xc3 0x85 (195 133)]
+ ! 0xcf 0x41 (207 65) -> 0x8f (143)
+ #  U<0055> U<030A> [UTF-8: "U?Ë" = 0x55 0xcc 0x8a (85 204 138)]
+ # -> U<016E> &#366; LATIN CAPITAL LETTER U WITH RING ABOVE [UTF-8: "?´" = 0xc5 0xae (197 174)]
+ ! 0xcf 0x55 (207 85) -> 0x9f (159)
+ #  U<0061> U<030A> [UTF-8: "a?Ë" = 0x61 0xcc 0x8a (97 204 138)]
+ # -> U<00E5> &#229; LATIN SMALL LETTER A WITH RING ABOVE [UTF-8: "?—" = 0xc3 0xa5 (195 165)]
+ ! 0xcf 0x61 (207 97) -> 0x86 (134)
+ #  U<0075> U<030A> [UTF-8: "u?Ë" = 0x75 0xcc 0x8a (117 204 138)]
+ # -> U<016F> &#367; LATIN SMALL LETTER U WITH RING ABOVE [UTF-8: "?ª" = 0xc5 0xaf (197 175)]
+ ! 0xcf 0x75 (207 117) -> 0x9e (158)
+_\65\207_\143_
+_\85\207_\159_
+_\97\207_\134_
+_\117\207_\158_
+
+ ### using 0xc6 (198) = U<030B> &#779; COMBINING DOUBLE ACUTE ACCENT [UTF-8: "?Ô" = 0xcc 0x8b (204 139)]
+ #  U<006F> U<030B> [UTF-8: "o?Ô" = 0x6f 0xcc 0x8b (111 204 139)]
+ # -> U<0151> &#337; LATIN SMALL LETTER O WITH DOUBLE ACUTE [UTF-8: "?Ê" = 0xc5 0x91 (197 145)]
+ ! 0xc6 0x6f (198 111) -> 0x12 (18)
+ #  U<0075> U<030B> [UTF-8: "u?Ô" = 0x75 0xcc 0x8b (117 204 139)]
+ # -> U<0171> &#369; LATIN SMALL LETTER U WITH DOUBLE ACUTE [UTF-8: "??" = 0xc5 0xb1 (197 177)]
+ ! 0xc6 0x75 (198 117) -> 0x13 (19)
+_\111\198_\18_
+_\117\198_\19_
+
+ ### using 0xc7 (199) = U<030C> &#780; COMBINING CARON [UTF-8: "?Ó" = 0xcc 0x8c (204 140)]
+ #  U<0043> U<030C> [UTF-8: "C?Ó" = 0x43 0xcc 0x8c (67 204 140)]
+ # -> U<010C> &#268; LATIN CAPITAL LETTER C WITH CARON [UTF-8: "?Ó" = 0xc4 0x8c (196 140)]
+ ! 0xc7 0x43 (199 67) -> 0xa6 (166)
+ #  U<0052> U<030C> [UTF-8: "R?Ó" = 0x52 0xcc 0x8c (82 204 140)]
+ # -> U<0158> &#344; LATIN CAPITAL LETTER R WITH CARON [UTF-8: "?ˇ" = 0xc5 0x98 (197 152)]
+ ! 0xc7 0x52 (199 82) -> 0xa9 (169)
+ #  U<0053> U<030C> [UTF-8: "S?Ó" = 0x53 0xcc 0x8c (83 204 140)]
+ # -> U<0160> &#352; LATIN CAPITAL LETTER S WITH CARON [UTF-8: "?·" = 0xc5 0xa0 (197 160)]
+ ! 0xc7 0x53 (199 83) -> 0xab (171)
+ #  U<005A> U<030C> [UTF-8: "Z?Ó" = 0x5a 0xcc 0x8c (90 204 140)]
+ # -> U<017D> &#381; LATIN CAPITAL LETTER Z WITH CARON [UTF-8: "?¢" = 0xc5 0xbd (197 189)]
+ ! 0xc7 0x5a (199 90) -> 0xae (174)
+ #  U<0063> U<030C> [UTF-8: "c?Ó" = 0x63 0xcc 0x8c (99 204 140)]
+ # -> U<010D> &#269; LATIN SMALL LETTER C WITH CARON [UTF-8: "?Ï" = 0xc4 0x8d (196 141)]
+ ! 0xc7 0x63 (199 99) -> 0xa7 (167)
+ #  U<0065> U<030C> [UTF-8: "e?Ó" = 0x65 0xcc 0x8c (101 204 140)]
+ # -> U<011B> &#283; LATIN SMALL LETTER E WITH CARON [UTF-8: "?¯" = 0xc4 0x9b (196 155)]
+ ! 0xc7 0x65 (199 101) -> 0x7f (127)
+ #  U<0072> U<030C> [UTF-8: "r?Ó" = 0x72 0xcc 0x8c (114 204 140)]
+ # -> U<0159> &#345; LATIN SMALL LETTER R WITH CARON [UTF-8: "?÷" = 0xc5 0x99 (197 153)]
+ ! 0xc7 0x72 (199 114) -> 0xa8 (168)
+ #  U<0073> U<030C> [UTF-8: "s?Ó" = 0x73 0xcc 0x8c (115 204 140)]
+ # -> U<0161> &#353; LATIN SMALL LETTER S WITH CARON [UTF-8: "?Ì" = 0xc5 0xa1 (197 161)]
+ ! 0xc7 0x73 (199 115) -> 0xac (172)
+ #  U<0074> U<030C> [UTF-8: "t?Ó" = 0x74 0xcc 0x8c (116 204 140)]
+ # -> U<0165> &#357; LATIN SMALL LETTER T WITH CARON [UTF-8: "?—" = 0xc5 0xa5 (197 165)]
+ ! 0xc7 0x74 (199 116) -> 0x9b (155)
+ #  U<007A> U<030C> [UTF-8: "z?Ó" = 0x7a 0xcc 0x8c (122 204 140)]
+ # -> U<017E> &#382; LATIN SMALL LETTER Z WITH CARON [UTF-8: "?•" = 0xc5 0xbe (197 190)]
+ ! 0xc7 0x7a (199 122) -> 0xaf (175)
+_\67\199_\166_
+_\82\199_\169_
+_\83\199_\171_
+_\90\199_\174_
+_\99\199_\167_
+_\101\199_\127_
+_\114\199_\168_
+_\115\199_\172_
+_\116\199_\155_
+_\122\199_\175_
+
+ ### using 0xd3 (211) = U<0327> &#807; COMBINING CEDILLA [UTF-8: "?∫" = 0xcc 0xa7 (204 167)]
+ #  U<0043> U<0327> [UTF-8: "C?∫" = 0x43 0xcc 0xa7 (67 204 167)]
+ # -> U<00C7> &#199; LATIN CAPITAL LETTER C WITH CEDILLA [UTF-8: "?Á" = 0xc3 0x87 (195 135)]
+ ! 0xd3 0x43 (211 67) -> 0x80 (128)
+ #  U<0063> U<0327> [UTF-8: "c?∫" = 0x63 0xcc 0xa7 (99 204 167)]
+ # -> U<00E7> &#231; LATIN SMALL LETTER C WITH CEDILLA [UTF-8: "?∫" = 0xc3 0xa7 (195 167)]
+ ! 0xd3 0x63 (211 99) -> 0x87 (135)
+ #  U<0073> U<0327> [UTF-8: "s?∫" = 0x73 0xcc 0xa7 (115 204 167)]
+ # -> U<015F> &#351; LATIN SMALL LETTER S WITH CEDILLA [UTF-8: "?É" = 0xc5 0x9f (197 159)]
+ ! 0xd3 0x73 (211 115) -> 0x9d (157)
+ #  U<0074> U<0327> [UTF-8: "t?∫" = 0x74 0xcc 0xa7 (116 204 167)]
+ # -> U<0163> &#355; LATIN SMALL LETTER T WITH CEDILLA [UTF-8: "?˙" = 0xc5 0xa3 (197 163)]
+ ! 0xd3 0x74 (211 116) -> 0xea (234)
+_\67\211_\128_
+_\99\211_\135_
+_\115\211_\157_
+_\116\211_\234_
+
+ ### using 0xd2 (210) = U<0328> &#808; COMBINING OGONEK [UTF-8: "?ø" = 0xcc 0xa8 (204 168)]
+ #  U<0061> U<0328> [UTF-8: "a?ø" = 0x61 0xcc 0xa8 (97 204 168)]
+ # -> U<0105> &#261; LATIN SMALL LETTER A WITH OGONEK [UTF-8: "?‡" = 0xc4 0x85 (196 133)]
+ ! 0xd2 0x61 (210 97) -> 0xee (238)
+ #  U<0065> U<0328> [UTF-8: "e?ø" = 0x65 0xcc 0xa8 (101 204 168)]
+ # -> U<0119> &#281; LATIN SMALL LETTER E WITH OGONEK [UTF-8: "?÷" = 0xc4 0x99 (196 153)]
+ ! 0xd2 0x65 (210 101) -> 0xef (239)
+ #  U<0075> U<0328> [UTF-8: "u?ø" = 0x75 0xcc 0xa8 (117 204 168)]
+ # -> U<0173> &#371; LATIN SMALL LETTER U WITH OGONEK [UTF-8: "??" = 0xc5 0xb3 (197 179)]
+ ! 0xd2 0x75 (210 117) -> 0x16 (22)
+_\97\210_\238_
+_\101\210_\239_
+_\117\210_\22_
+
+ ### Extras: Strokes
+ # U<0338> &#824; COMBINING LONG SOLIDUS OVERLAY [UTF-8: "?©" = 0xcc 0xb8 (204 184)]
+ #     = long slash overlay
+ ; 0xdb (219)-> xx (1)
+ # 0xf2 (242) = U<0141> &#321; LATIN CAPITAL LETTER L WITH STROKE [UTF-8: "?¸" = 0xc5 0x81 (197 129)]
+ # 0xd7 (215) = U<00D8> &#216; LATIN CAPITAL LETTER O WITH STROKE [UTF-8: "?ˇ" = 0xc3 0x98 (195 152)]
+ # 0xf3 (243) = U<0142> &#322; LATIN SMALL LETTER L WITH STROKE [UTF-8: "?È" = 0xc5 0x82 (197 130)]
+ # 0xed (237) = U<00F8> &#248; LATIN SMALL LETTER O WITH STROKE [UTF-8: "?©" = 0xc3 0xb8 (195 184)]
+_\76\219_\242_
+_\79\219_\215_
+_\108\219_\243_
+_\111\219_\237_
+
+

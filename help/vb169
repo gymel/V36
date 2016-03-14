@@ -1,0 +1,154 @@
+	
+
+Verlautbarung 169 der Entw.Abt.                             2003-07-28
+-------------------------------
+
+Es naehert sich der Zeitpunkt der naechsten groesseren Festschreibung,
+denn es muss eine neue CD produziert werden. V23.5 soll etwa Mitte
+September erscheinen und dann die definitive V23 sein.
+Grosse Neuerungen oder Aenderungen soll es nicht mehr geben, schon
+um die Stabilitaet nicht zu gefaehrden.
+
+Neuer Menuepunkt
+----------------
+
+"Fuellhorn" war geschaffen worden, weil ein Menuepunkt "Hilfe" oder
+"?" allzu leicht unbeachtet bleibt (sog. "Hilfsblindheit").
+Doch es ist leider auch so, dass viele Zeitgenossen nur solche
+Dinge anklicken, bei denen sie sich schon was denken koennen. Und
+wer kann sich bei "Fuellhorn" was denken? Also wird es nicht
+genutzt, oder viel zu wenig. (Es kommen tatsaechlich Anrufe "Was,
+Fuellhorn? Was ist das, wo ist das?") Die unbewusste und also auch 
+unreflektierte Haltung ist wohl: "Das sagt mir nichts, es kann also 
+nicht das sein, was ich brauche!" 
+Die Jungs von Onkel Bill hatten sich deshalb das ? als Menuepunkt 
+ausgedacht, was aber wiederum wegen der Hilfsblindheit auch 
+meist unbeachtet bleibt. Dabei ist vermutlich die unbewusste
+Haltung: "Wenn man erst einen Hilfetext lesen muss, ist es zu um-
+staendlich! Was ich brauche, muss direkt auf einem Knopf stehen.
+Wenn es den nicht gibt, ist das Programm schlecht."
+Wirklich loesbar ist das Dilemma nicht: Den Leuten muss und soll
+geholfen werden, klar, aber sie lassen Hilfe nicht an sich heran.
+Als kleine ABhilfe wurde ein Menuepunkt '?' nun zusaetzlich
+geschaffen. Er macht nichts anderes, als ebenfalls doku.rtf
+hervorzurufen bzw. alcm.rtf bei alcarta, also das Fuellhorn. 
+Jedoch sei darauf hingewiesen: Hinter "Fuellhorn" verbirgt sich 
+der Aufruf eines FLEXes namens "onhlpa99.flx" bzw. "onhlpalc.flx".
+Wenn dieser nicht existiert, wird eben doku.rtf/alcm.rtf geladen.
+Das ? bringt in jedem Fall doku.rtf bzw. alcm.rtf hervor, da steckt 
+kein FLEX hinter.
+Ergo hat man nun einen weiteren Punkt auf dem Hauptmenue, 
+den man voellig umnutzen kann, denn die Beschriftung "Fuellhorn" 
+steht als Zeile 244 in der UIFEGER.
+
+Anzeige
+-------
+Oft schon waren Rufe erklungen nach einer Anzeigeparameterdatei,
+die mit zl=0 arbeitet.
+Was das bedeutet?
+Der bisherige Standard, die Datei D-WRTF.APR, arbeitet mit zl=72,
+und das heisst, dass ein Zeilenumbruch mit einer maximalen Laenge
+von 72 Zeichen gemacht wird. Maximiert man das Fenster, bleibt dennoch 
+jede Zeile maximal 72 Zeichen lang, der Textumbruch wird also nicht
+der Fenstergroesse angepasst. Macht man das Fenster sehr schmal,
+sieht's noch weniger gut aus...
+zl=0 dagegen bewirkt, dass a99 selber keinen Zeilenumbruch macht,
+sondern eine fortlaufende Zeichenfolge produziert, die dann a99
+selber umbrechen darf - und das macht's dann so, wie's der
+Fenstergroesse entspricht. 
+Warum wir das noch nicht laengst so gemacht haben?
+Weil es mit der schlichten Setzung von zl=0 nicht getan ist.
+Die Datei D-WRTF.APR muss enorm vieles koennen und beruecksichtigen,
+daher ist sie gross und kompliziert. Schwierigkeiten macht weniger
+die normale Titeldatenanzeige, sondern machen die Dinge,
+die mit bestimmter Spaltenbreite tabellenfoermig angezeigt
+werden muessen. Denn wenn man zl=0 sagt, kann man nicht mehr
+mit den Befehlen #k und &k Einrueckpositionen setzen, also auf
+bestimmte Positionen in der Ausgabezeile springen - es gibt ja
+dann keine Ausgabezeilen.
+Irgendeiner musste die Sache jetzt endlich mal anpacken und hat
+es auch gemacht: die Datei liegt abholbereit vor auf ac21.
+
+Kaum jemand wird die neue D-WRTF.APR nun durcharbeiten wollen,
+um alles zu verstehen. Wir weisen deshalb auf zwei Sachen 
+besonders hin, die auch anderswo angewandt werden koennen:
+
+1. Einrueckung nachfolgender Zeilen (sog. "haengender Einzug")
+   Die erste Zeile eines Absatzes soll ganz links beginnen,
+   nachfolgende Zeilen aber eingerueckt.
+   Wenn z.B. zl=72 ist, wendet man $0 und #k an. 
+   Fuer eine RTF-Ausgabe (und darum geht's ja) muss man nur
+   wissen, dass ein haengender Einzug erreicht wird durch
+   einen Befehl  \linnn\fi-nnn
+   wobei nnn eine Zahl ist. \li heisst "line indent", d.h. jede
+   Zeile des Abschnitts (der mit \par beginnt und endet) soll
+   um nnn pixel einrueckt werden. \fi heisst "first line indent",
+   und wenn eine negative Zahl folgt, wird die erste Zeile des
+   Abschnitts um nnn pixel nach links gerueckt - sie beginnt
+   daher am Zeilenanfang.
+
+2. Positionierung
+   Funktioniert nur, wenn eine nichtproportionale Schrift eingeschaltet
+   ist! Das erreicht man durch Setzung von \f1, denn die Schrift 1
+   (in disphead.rtf gesetzt) ist "allegro Letter Gothic", und die
+   ist nichtproportional UND kennt die OstWest-Zeichen.
+   Jetzt nehmen wir als Beispiel mal an, wir haetten vier Felder
+   #nn1, #nn2, #nn3 und #nn4, deren Inhalte auf die Positionen 0, 10,
+   22 und 35 gesetzt werden sollen.
+   Das geht so:
+   #t{ "\par " }     eine neue Zeile beginnen
+   #nn1 e10 s10
+   #nn2 e12 s12
+   #nn3 e13 s13
+   #nn4
+   Mit e13 wird der Inhalt auf 13 Zeichen begrenzt, mit s13 rechts
+   mit Blanks aufgefuellt. Mit r13 wuerde der Inhalt rechtsbuendig in
+   ein Feld von 13 Zeichen Laenge gestellt.
+   Jedes Feld wird also auf seine jeweils maximale Laenge aufgefuellt!
+   Dadurch kommt das nachfolgende an die richtige Stelle, ohne dass
+   man es positionieren muss.
+   Halt, werden Sie aber rufen, was ist, wenn #nn2 nicht besetzt ist?
+   Stimmt, dann klappt das nicht!
+   Dagegen kann man sich aber mit einer #u-Variablen absichern.
+   Hier das Rezept: (genutzt wird die Variable #utp)
+
+   #nr p"X" e1 =tp        #utp enthaelt dann IMMER was, aber
+   #nn2 Atp               wenn #nn2 leer ist, dann nur "X"
+   #utp e13 s13 f"X"      #utp erst genau 13 Zeichen lang machen,
+                          dann das X vorn wegnehmen! Wenn also #nn2
+                          leer ist, bleiben 12 Blanks uebrig.
+
+   Man muss sich also eine kleine Liste der Feldlaengen machen: z.B.
+      #nn1 10     #nn1 soll 10 Zeichen lang sein usw.
+      #nn2 12
+      #nn3 13
+      #nn4 25
+   und dann fuer jedes der Elemente einen Dreizeiler, wie oben zu sehen.
+   Damit zwischen den Tabellenspalten etwas Abstand ist, kann man
+   z.B. immer 2 Zeichen zugeben (mit dem s-Befehl):
+
+   #nr p"X" e1 =tp       Wenn #nn1 immer besetzt ist,
+   #nn1 Atp              dann reicht   
+   #utp e11 s13 f"X"     #nn1 e10 s12   statt dieser 3 Zeilen
+   #nr p"X" e1 =tp 
+   #nn2 Atp        
+   #utp e13 s15 f"X"
+   #nr p"X" e1 =tp 
+   #nn3 Atp        
+   #utp e14 s16 f"X"
+   #nr p"X" e1 =tp 
+   #nn4 Atp        
+   #utp e26 f"X"
+ 
+   wobei das Auffuellen bei der letzten Spalte nicht noetig ist.
+   Und jetzt soll aber #nn3 rot erscheinen? Dann muss man nur die
+   Farben so ergaenzen:
+   #utp e14 s16 f"X" p71 P76    (71=rot, 76=schwarz)
+   Das stoert die Positionierung nicht, denn die RTF-Befehle, die
+   hinter 71 und 76 stecken, schalten nur die Farbe um, sonst nichts.
+
+   Wenn man unbedingt Proportionalschrift will, KANN man sich auch
+   die RTF-Tabulatorbefehle anschauen und versuchen, damit eine
+   Tabelle zu konstruieren. Wenn jemand dafuer ein schoenes
+   Kochrezept hat - bitte bekanntgeben.
+

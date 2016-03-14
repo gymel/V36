@@ -1,0 +1,202 @@
+  VIEW0.FLX : Sichten der vorhandenen ViPs (View-Parameter)
+  2000-08-08/2001-01-13  Auswahl, Anwendung, Bearbeitung, Gesamte Datenbank
+
+var m
+if ="alc" end
+
+get env comspec
+ins #uwC
+#uvU
+if empty jump nix
+  Name der aktuellen Erg.Menge -> #uvU
+var U
+ins #uvU
+:nix
+sho rec
+  Exp.Parameter retten
+var e
+ins #uve
+
+  Auswahl der ViP-Datei (Typ  V-*.?PR )
+:auswahl
+if not #uvo jump wahl
+var #uvo " beibehalten? Nein: andere w„hlen"
+ansi
+yes
+if yes jump oeff
+:wahl
+var ""
+ins #uvM
+ins #uvY
+                   W = Arbeitsverzeichnis! (D = Datenverz., P = ProgDir)
+var "ViP-Auswahl|" W "\\v-*." K1 "PR" 
+    Alternativen:
+  var "ViP-Auswahl|" P "v-*." K1 "PR" 
+  var "ViP-Auswahl|" D "v-*." K1 "PR" 
+
+  Dateiauswahl; Name ist dann in iV, falls einer ausgewaehlt
+fnam
+  Keine gewaehlt? Ende
+if not yes jump ende
+  Kopie des Namens in #uvs und #uvo
+ins #uvs
+ins #uvo
+:oeff
+  Datei oeffnen
+var #uvs
+open
+  1. Zeile lesen
+get
+  in #uvt speichern
+ins #uvt
+
+  Datei schliessen
+close
+#uVG
+  Zeile anzeigen und fragen
+if not empty var "ViP : " #uvo " (" #uvt ")=Ergebnismenge verarbeiten|Gesamte Datenbank|ViP Bearbeiten|Andere ViP w„hlen"
+if empty var "ViP : " #uvo " (" #uvt ")=Gesamte Datenbank|ViP Bearbeiten|Andere ViP w„hlen"
+  ansi
+select
+if cancel jump ende
+if "Ergebnis" jump anwenden
+if "ViP" jump bearb
+if "Gesamte" jump gesamte
+if "Andere" jump auswahl
+  nichts gewaehlt oder Abbruch: Ende
+jump ende
+
+:gesamte
+var "G"
+ins #uVG
+var "Gesamte Datenbank " D B
+ins #uvU
+
+:anwenden
+  gewaehlte Par.Datei fuer Export laden
+var #uvo
+xport p 
+  den eigentlichen Namen herausschaelen und in #uvo kopieren
+  (wird in v-*.cPR fuer Ueberschrift des View gebraucht)
+var " \\" #uvo(e".")
+ins #uvo
+var #uvo(T"\\")
+ins #uvo
+
+  Name der AusgabeDatei: vvv
+var "vvv"
+ins #uvw
+  Diesen Namen als Outputdatei verwenden
+open x 
+   aktuelle Erg.Menge bzw. Datenbank exportieren
+if #uVG jump db
+:erg
+if empty mes Keine Ergebnismenge
+if empty jump ende
+down set
+jump zu
+:db
+yesno Wirklich die gesamte Datenbank?? (Nein = Nur die Ergebnismenge)
+if no jump erg
+if can jump ende
+down database
+:zu
+close x
+  .vw-Datei schliessen, wenn noch offen
+close view
+
+  Sortierbefehl zusammenstellen (dabei Sortierkopf #u1 beseitigen)
+var #uvY
+  Gruppierung gewuenscht? (j in #uvw)
+if "j" jump grp
+if #uvM jump grp
+var #uwC " /c " P "asort " #uvw " " #uvw ".vw -u3"
+  (Option -u3 beseitigt #u1 etc.)
+jump sort
+:grp
+var #uwC " /c " P "asort " #uvw " " #uvw "." K1 "lg -u1"
+:sort
+  Sortieren ausfuehren
+cAll
+
+var #uvY
+if "j" jump grupp
+if #uvM jump grupp
+jump anzeigen
+:grupp
+  vw.bat = Prozedur zum Erstellen der ViewListe
+open x vw.bat
+wri "set -P=" P n
+wri "set -K=" K n
+wri "set -K1=" K1 n
+wri P "srch -f6 -d" #uvw " -eviewgrup/" #uvw ".vw -v0 -m0 -b" D B n
+close x
+var #uwC " /c vw.bat"
+
+cAll
+var #uvw "." K1 "lg"
+delete
+
+:anzeigen
+  unsortierte Datei  name  wieder loeschen
+var #uvw 
+delete 
+if no mes ViewListe existiert nicht
+
+  Sortierte Datei = name.vw  als View anzeigen
+set v1
+var #uvw ".vw"
+View
+
+ask Erg.Menge als View aufbewahren? Dann einen Namen eingeben:
+if "" var "vvv"
+ins #uvn
+ins #uv9
+if "vvv" jump ende
+close view
+   loeschen, wenn schon vorhanden
+var #uvn(e".") ".vw"
+delete
+   vvv.vw umbenennen
+var "vvv.vw " #uvn(e".") ".vw"
+rename 
+if no jump rerr
+var #uvn(e".") ".vw"
+
+  wieder oeffnen
+set v1
+view
+:ende
+  Vorherige Exportparam. wiederherstellen
+var #uve
+xport p
+  Variablen loeschen
+#uvU
+#uvz
+#uvx
+#uvw
+#uvt
+#uve
+#uvf
+#uvM
+#uvG
+var "Mit  Strg+o  erscheint ViewListe wieder, Menue mit Strg+w!"
+sho iv
+
+h view
+end
+
+:bearb
+var #uwC   " /c "   x   " "   #uvs
+call
+var "ViP : " #uvo "      Anwenden? (n = andere)"
+yesno
+if yes jump anwenden
+if cancel jump ende
+jump auswahl
+
+:rerr
+ins $u
+var "Umbenennung " $u " gescheitert"
+mes
+

@@ -1,0 +1,85 @@
+  APAREDIT.FLX : Bearbeiten der Anzeigeparameter
+  "Merseburger Testschleife" fuer a99, d.h.
+  anschliessend sofort laden und ausfuehren (wie PRESTO F2 F2 ...)
+  Zuerst auf dem DbDir nachsehen:
+    a (FLEX-Variable) enthaelt den Namen der Datei (s. FLEXGER.RTF)
+
+var m
+if ="alc" end
+
+var x
+if "x" jump xed
+var "Sie k”nnen jetzt die Anzeigeparameter  " a "  bearbeiten." n "Das geschieht in einem Fenster mit dem Editor " x
+jump edit
+:xed
+var "Sie k”nnen jetzt die Anzeigeparameter  " a "  bearbeiten." n "Das geschieht in einem Fenster mit dem X-Editor"
+var +n "Wenn Ihnen das nichts sagt, schauen Sie sich zuerst die Beschreibung dieses Editors an!" n
+var +"Wollen Sie jetzt bearbeiten? (Nein: Editor-Beschreibung sehen)"
+:edit
+ansi
+yes
+if yes jump start
+if no jump acd
+end
+:acd
+var x
+if "x" help acd
+end
+
+:start
+get env comspec
+ins #uwC
+
+var a
+  Kommt darin ein \ vor? Dann ist es ein Pfadname
+if %\\% jump d0
+  Nein, dann -> :d1
+jump d1
+:d0
+  Editorbefehl zusammensetzen 
+  (x ist die FLEX-Variable mit dem Namen des externen Editors)
+var #uwC " /c " x " " a
+call
+jump displ
+
+:d1
+  auf DbDir nachsehen
+var D a "." K1 "pr"
+fsize
+if no jump d2
+  gefunden, Befehl zum Bearbeiten zusammensetzen
+var #uwC " /c " x " " D a "." K1 "pr"
+call
+jump displ
+
+  Dann auf dem ProgDir nachsehen
+:d2
+var P a "." K1 "pr"
+fsize
+if no jump d3
+var #uwC " /c " x " " P a "." K1 "pr"
+call
+  Sondermassnahme:
+  Wenn die Datei auf dem ProgDir war: kopieren auf's Datenverz
+  (denn dort war sie nicht, gehoert sie aber jetzt hin)
+var P a "." K1 "pr " D a "." K1 "pr"
+fcopy
+jump displ
+
+  zuletzt auf dem Arbeitsverz.
+:d3
+var a "." K1 "pr"
+fsize
+  auch hier nicht? Ende
+if no end
+var #uwC " /c " x " " a "." K1 "pr"
+call
+
+:displ
+  Jetzt die Datei neu laden
+  zuerst den Namen in die iV
+var a
+  dann als Anzeigeparameter laden
+display p
+  und die Anzeige damit neu aufbauen
+display

@@ -1,0 +1,125 @@
+
+Verlautbarung 180 der Entw.Abt.                          2004-12-02
+-------------------------------
+
+Kleinere Verbesserungen zum Zweiten Advent 2004
+===============================================
+Besonders die Fortbildungen brachten nach Festschreibung der CD-
+Version V24.6 noch einigen Verbesserungsbedarf an den Tag. 
+Deshalb wird ausser der Reihe eine V24.7 vorgelegt. Neben den im
+folgenden genannten Punkten wurden etliche Hilfetexte weiter
+verbessert sowie die ViewListen quick.vw und flex.vw nochmals
+betraechtlich angereichert.
+Insgesamt wurde eine weitere Verminderung von Irritations-
+potentialen angestrebt, daher sind recht viele Hilfetexte in
+Kleinigkeiten verbessert worden.
+
+0. Das Desktop-Icon hat jetzt die Unterschrift "allegro-C V24.7"
+   damit sofort erkennbar wird, dass man diese Version hat.
+   Aeltere Icons kann man uebrigens mit Taste [Entf] loeschen!
+   (Falls man nicht vorher eine Deinstallation macht.)
+
+1. Die Datei filelist.txt wird abgeloest durch filelist.rtf.
+   filelist.rtf ist jetzt an allen Stellen in den Flips usw.
+   eingestellt, wo bisher filelist.txt eingestellt war. Letztere
+   kann somit geloescht werden, sie ist nicht mehr im GP.
+
+2. Neuer Hilfetext: neufeld.rtf
+   Er beschreibt genauestens, was alles zu tun ist, wenn man
+   ein neues Datenfeld einfuehren will. Am konkreten Beispiel
+   #34 = Sonderschlagwort
+   werden diejenigen Zeilen gezeigt, die man in die jeweiligen
+   Dateien einzubauen hat: Konfig, Anzeige, Index, Druck,
+   Formular, Hilfetext.
+   Flips zu diesem neuen Text wurden in adm.rtf, admi.rtf und
+   admin.rtf eingebaut. In quick.vw selbstredend auch.
+
+3. Anzeige speichern als... (bzw.  Alt+s)
+   Nicht immer stimmte das dabei vorgegebene Verzeichnis! Beim Typ .flx
+   vor allem, aber auch wenn man eine beliebige Anzeige speichern
+   wollte: es kam dann der Name und Ort der letzten Hilfedatei. Diese
+   soll keineswegs durch Unachtsamkeit ueberschrieben werden ...
+   Problem behoben. Wenn momentan kein sinnvoller Dateiname dem
+   Programm bekannt ist, wird xyz.rtf auf dem Arbeitsverzeichnis als
+   Name angeboten.
+
+4. Als ASCII-Editor kann nach neuesten Erkenntnissen jetzt auch Onkel
+   Bill's edit empfohlen werden. Die Eingabe des Dreiecks ist hierin
+   moeglich mit  Strg+Bindestrich, was beim X-Editor nicht geht.
+   Also: in der INI-Datei  Editor=edit  einstellen, wenn man statt
+   X lieber edit will. (s.a. Punkt 14)
+
+5. Die Dateibearbeitungsfunktionen (h adm) zeigen deshalb jetzt,
+   wenn NICHT der X-Editor eingestellt ist, eine andere Meldung.
+   Die Bearbeitung der UIFE erfolgt in jedem Fall mit notepad,
+   weil sie in ANSI codiert ist.
+
+6. Beim XML-Export wird jetzt im <record>-Tag als Attribut die
+   interne Satznummer angegeben (xmlexp.flx):
+     <record inr="687">...</record>
+
+7. Neuer FLEX-Befehl  show phr
+   zeigt die aktuelle Phrasenliste (wie Eingabe von p im
+   Suchbefehlsfeld). Also mal eingeben:  x sho phr
+
+8. Menue "Ansicht / Index2" ging nicht. Behoben.
+
+9. Das "Fernglas"-Menue hat bei Nutzung von Restriktionen eine
+   zusaetzliche, unnoetige schliessende Klammer eingesetzt.
+   Dann klappte es nicht. Das wurde behoben.
+
+10. Volltextsuche per FLEX
+   Dabei wurden die V14-Verknuepfungen bisher nicht aufgeloest,
+   d.h. Tucholsky nicht gefunden, wenn nur seine Stammsatznummer
+   oder -kuerzel im Titelsatz stand. Behoben durch Einbau von
+  if v14 dow Ref
+   in die Datei ftf.flx. Nur bei Vorhandensein von V14-Verknuepfungen
+   wird dieser Befehl also aktiv - und verlangsamt die Sache etwas.
+
+11. Sortierte Listen
+   Bei der Nachfrage "Umbenennen in .RTF?" wurde, wenn Antwort "ja",
+   nur dann umbenannt, wenn die Zieldatei noch nicht existierte.
+   Denn sonst geht's ja nicht! Jetzt wird die alte Datei 
+   ueberkopiert.
+
+12. Globales Loeschen von Erg.Mengen
+   Es gab dabei gelegentlich Ausfaelle, d.h. bestimmte Saetze wurden
+   ohne erkennbaren Grund nicht geloescht. Ausserdem wurde am Ende
+   der Aktion die Anzeige nicht aktualisiert. Beides behoben. Ferner
+   sind die geloeschten Saetze dann alle in der "in Bearb."-Liste.
+
+13. Menue "Global"
+   Hier waren leider die Punkte (Re-)Organisiseren und Datenbank-
+   Information weggefallen. Jetzt sind sie wieder da.
+
+14. Hilfetext fuer Reg. 11
+   Es ist jetzt eine Datei ha_i; im Paket. Diese kommt, wenn man
+   im Reg. 11 den ?-Button drueckt. Mit dem X-Editor kann man die
+   Datei nicht bearbeiten, der Name wird nicht akzeptiert. Onkel
+   Bill's edit tut's aber! 
+
+15. uvar.flx
+   Dieser FLEX, wenn von Hand gestartet, fordert erst zur Auswahl
+   einer flx-Datei auf und produziert dann eine Liste der darin
+   verwendeten #u-Variablen. Wahlweise haengt er diese Liste an
+   die FLEX-Datei an, die alte kann wahlweise gel”scht werden.
+   Enthaelt sie schon eine solche Liste, wird diese durch die
+   neue ueberschrieben.
+   Dieser FLEX kann zugleich als Muster fuer das Durcharbeiten
+   einer Datei dienen.
+
+16. Check
+   Die Check-Routinen wurden verbessert. h check eingeben!
+   Bisher funktionierte nicht alles korrekt. Auch die Erklaerungen
+   wurden erweitert.
+
+17. Wenn man im Anzeigefeld editiert hat, kommt bei Alt+F4 zuerst
+   die Frage, ob man den Text erst noch speichern wolle. Aber nicht,
+   wenn es ein Datensatz ist, nur bei Textdateien.
+
+18. PRESTO: Letzter Satz
+   Mit der [Ende]-Taste erhaelt man den Satz mit der hoechsten
+   internen Nummer. Aber nur, wenn es weniger als 10.000.000
+   Saetze sind! Sonst kommt Satz 999.999. Das war nicht einzusehen,
+   jetzt klappt's korrekt.
+

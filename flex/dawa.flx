@@ -1,0 +1,227 @@
+// dawa.flx : Dateityp .?dt in Interndatei .?lg wandeln oder umgekehrt
+// 20150830   incl. Codeumwandlung zwischen  ASCII, ANSI und UTF-8
+//   s. Handbuch Kap. 0.2.2
+
+// Aufruf:        acon -jflex\dawa.flx [-ci] [dateiname]
+// oder aus a99:  X dawa [-ci] [dateiname]
+// Falls nicht a.cfg oder keine DemoBank vorhanden,
+//   dann Optionen  -d  -b  -k  bei acon sinnvoll ergaenzen
+// i-Werte: (damit werden jeweils passende .apt-Tabellen geladen)
+//   Umwandlungsmodus:              .@pt-Tabellendatei:
+//   1=ANSI->ASCI / 2=ASCI->ANSI    aw-ad  / ad-aw
+//   3=ANSI->UTF8 / 4=ASCI->UTF8    aw-utf / ad-utf
+//   5=UTF8->ANSI / 6=UTF8->ASCI    utf-aw / utf-ad
+//   0=Keine Umwandlung (default)
+
+// Den Typ der umzuwandelnden Datei erkennt der Job selbst:
+//   aus  abc.?dt  wird  abc.?lg
+//   aus  abc.?lg bzw. abc_1.?ld  wird  abc.?dt bzw. abc_1.?dt 
+
+// Wenn a99, dann ist in iV evtl. der dateiname, sonst nichts
+ins #uin
+// mit ... -h oder --help  fordert man Hilfe an
+if "-h" jump a99help
+if "--h" jump a99help
+
+// Damit beim Einlesen nicht umcodiert wird:
+// (richtige Kodierung der Daten vorausgesetzt)
+set c0
+
+// Start mit acon? (var m = ac-w oder ac-x)
+var m
+if "ac" jump ac
+
+// Codierungsvariable setzen
+var #uin
+if "-c1" $c1="1"
+if "-c2" $c2="2"
+if "-c3" $c3="3"
+if "-c4" $c4="4"
+if "-c5" $c5="5"
+if "-c6" $c6="6"
+
+var #uin(T" ")
+ins #uin
+
+// Nein, a99. Steht was im Offline?
+var o
+if >0 jump off
+
+if #uin jump out
+
+// Aufruf a99 ohne dateiname
+ask Dateiname?
+if "" end
+ins #uin
+
+jump out
+
+// acon
+:ac
+// -c pruefen
+var cl (b" -c")
+if "1" ins $c1
+if "2" ins $c2
+if "3" ins $c3
+if "4" ins $c4
+if "5" ins $c5
+if "6" ins $c6
+
+var cl
+// Hilfeoption gesetzt?
+if % -h% jump aconhelp
+if % --h% jump aconhelp
+
+// Dateiname beginnt hinter dem letzten ' ' des Aufrufs
+var cl (T" ")
+
+// Default, wenn kein Dateiname angegeben
+if "" jump aconhelp
+if "-" jump aconhelp
+ins #uin
+
+// In jedem Fall in  #uin  jetzt der  dateiname, z.B. e.adt
+:out
+var #uin "XXX"
+if %~lgX% var "dt"
+if %~ldX% var "dt"
+if %~dtX% var "lg"
+ins $typ
+if %XXX% jump wrongtyp
+
+var #uin
+fsize
+if no jump noxi
+
+// Ausgabedatei kriegt Typ .?lg, z.B. e.alg
+var #uin(e".") "." K1 $typ
+ins $out
+
+var $out
+open x
+if no jump nout
+
+// Ausgabeparameter: i-1.?pr
+var $typ
+if ="dt" exp p e-1
+if ="lg" exp p i-1
+
+
+// Umcodierung gewuenscht? Dann richtige Tabelle hinzuladen
+if $c1 exp t aw-ad
+if $c2 exp t ad-aw
+if $c3 exp t aw-utf
+if $c4 exp t ad-utf
+if $c5 exp t utf-aw
+if $c6 exp t utf-ad
+
+
+var m
+if "ac" jump acon
+
+// Abschnitt f. a99
+erase off
+
+var #uin
+// Datei einlesen in den offline-Bereich
+read file
+// falls falsche Struktur, dann keine offline-Daten
+var o
+if =0 jump noxi
+
+// und sofort raus in die Exportdatei = .alg
+exp off
+erase off
+var $out
+read file
+
+var "Datei " $out " ist fertig und mit Alt+q zu sehen"
+mes 
+end
+
+// Abschnitt f. acon
+:acon
+// Dateiname
+var #uin
+
+// Schleife, jeweils ein Satz
+:aloop
+// Aus Datei #uin lesen
+read
+if not ok jump ende
+// und sofort in die Ausgabedatei schreiben
+exp
+jump aloop
+
+:ende
+exp f stdout
+var "Das war's, Datei " $out " ist fertig" 
+ins $msg
+
+var m
+if not "ac" jump win
+wri $msg n
+end
+
+:win
+var $msg
+mes
+end
+
+:off
+var "Es gibt Datensaetze im Offline-Bereich; Anzahl: " o n "Diese Aktion braucht einen leeren Offline-Bereich." n
+var +"Die Offline-Daten werden gleich angezeigt." n "Zuerst speichern, dann a99 beenden und neu starten" n "oder diesen Befehl geben:  x erase off"
+mes
+sho off
+end
+
+:noxi
+var m
+if not "ac" jump noxw
+wri "Datei " #uin " existiert wohl nicht?" n
+end
+
+:noxw
+var "Datei " #uin " existiert wohl nicht?" n "Oder es ist keine Externdatei."
+mes
+end
+
+:nout
+var "Ausgabedatei " $out " kann nicht geoeffnet werden."
+mes
+end
+
+
+:a99help
+var "Aufruf: X dawa [-ci] dateiname" n
+perf ah
+sho IV
+mes
+end
+
+:aconhelp
+var m
+if "a9" jump a99help
+
+var "Aufruf: acon -jdawa.flx [-ci] dateiname" n
+
+:ah
+var +"i=1: ANSI->ASCII, i=2: ASCII -> ANSI" n
+var +"i=3: ANSI->UTF-8, i=4: ASCII -> UTF-8" n
+var +"i=5: UTF-8->ANSI, i=6: UTF-8 -> ASCII" n
+var +"i=0: Keine Umcodierung (Default)" n 
+var +"dateiname: z.B.  daten.adt. Daraus wird dann  daten.alg" n
+var +"           und umgekehrt. Aus .ald wird .adt
+return
+wri iV
+wri n
+end
+
+:wrongtyp
+var "Falscher Dateityp"
+ins $m
+
+var m
+if "ac" wri "Falscher Dateityp: " #uin n
+if "a9" var "Falscher Dateityp: " #uin;mes
+end

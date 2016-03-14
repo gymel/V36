@@ -1,0 +1,594 @@
+  GND.AIM :   DNB-MARC-GND-Daten --> allegro A format
+  2012-04-01  Achtung: Zu kombinieren mit  i-gnd.apr  fuer den Export
+            Dort wird die Hauptarbeit gemacht!
+
+  ALLGEMEINES:
+  ------------
+
+al=5          Die ersten 5 Bytes geben die Satzlaenge an
+am=1          und zwar in Dezimalziffern
+
+
+fs=4         field start = 4 Bytes hinter der im Directory gegebenen Position
+             (Feld beginnt mit 2 Indicatorbytes + a)
+fc=5         Feldlaengenkorrektur: fc von der im Dir. gegebenen Laenge subtrahieren
+
+ 
+  Waehrend des Einlesens zu ersetzende Zeichen:
+
+y .30 0      1E = MARC field terminator =0 setzen (allegro Feldende)
+                  Ist auch letztes Byte des directory!
+y .10 257    Code 10 kommt faelschlich am Satzende vor, ignorieren u. nicht mitzaehlen!
+              (Sonst Datensalat, weil Satzlaenge dann nicht stimmt)
+
+  Hauptteil:
+  ----------
+   Feldbeschreibungen: Jede mit # beginnende Zeile erzeugt ein allegro-Feld 
+   Format:
+   #yyy
+   D "xxx"    heisst:  Finde das tag xxx und kopiere Inhalt nach #yyy
+   D0 "xxx"         :  Dasselbe, aber Tag ungueltig machen,
+                       (wenn es nicht nochmals gebraucht wird)
+              (jedes 'x' kann ein wildcard '?' sein)
+
+
+
+#00          Nimm die ID# (allegro field #00)
+D0 "001"      aus MARC tag 001
+{ 4           001 hat keine Indik. und kein Subfield code   
+w"gnd"
+
+
+#30g
+D0 "043"
+ b"c"       country codes
+_ "XA-"       die allegro-Codes haben andere Anfangszeichen f.d. Kontinente
+_ "e-"         Europa
+_ "XB-"
+_ "a-"         Asien
+_ "Xc-"
+_ "f-"         Afrika
+_ "XD-"
+_ "o-"
+_ "XE-"
+_ "u-"
+
+_ "c"
+_ ";"
+u12          Wandle in Kleinbuchstaben
+
+
+
+#0c         Entitaetencode steht in 079 $v
+D0 "079"
+b"v"
+e""
+
+#37         Sprache
+D0 "548"
+b"a"
+e""
+
+#82         Umlenkziel (Nummer und Ansetzung)
+D0 "682"
+
+
+#2n        Wenn in 100 ein $t vorkommt: Werksatz
+D "100"
+c"t"
+/
+q4n         wenn es nicht vorkommt: Abbruch und weiter bei -4n
+e"d"
+D0 "100"
+b"t"
+w": "
+_ "n"
+_ " "
+_ "p"
+_ ". "
+_ "9g:"
+_ " / " 
+
+
+-4n         Personensatz
+#4n
+D "100"
+_ "b"
+_ " "
+_ "c"
+_ " <"
+e"d"      Lebensdaten von #4n abschneiden
+
+
+
+#4nd
+D0 "548"
+e"9"
+
+#4nd      Lebensdaten aus #4n nach #4nd kopieren
+D0 "100"
+b"d"
+e""
+e">"
+
+
+#6n        110: Entit. ist eine Koerp.
+D0 "110"
+_ "n"
+_ ". "
+_ "d"
+_ ", "
+Kko           Inhalt in #uko kopieren
+l0             und #6n hier nicht belegen, s.u.
+
+#6n
+D0 "111"    111: Kongress; Name kommt auch nach #6n
+_ "n"          110 kann nicht zugleich vorkommen
+_ ". "
+_ "d"
+_ ", "
+_ "c"
+_ ", "
+
+Kko           Inhalt in #uko kopieren
+l0             und #6n hier nicht belegen
+
+  Das mit #uko ist ein Trick!
+  Wuerde man mit k6n den Inhalt nochmals einlesen, käme eine zweite
+   UTF-Umwandlung, und dabei ginge z.B. das scharfe s kaputt, weil es den ASCII-Code 225 hat
+  (bei Kxy wird keine UTF-Umwandlung gemacht!)
+  Einige lokale Ersetzungen
+#6n
+kuko
+_"9g:"
+_" / "
+_"b"
+_". "
+_"t"
+_": "
+
+  Dann muss man aber #uko wieder loeschen, sonst hat man es im naechsten
+   Satz wieder mit drin, wenn "111" oder "110" darin nicht besetzt ist
+#99
+j0
+l0
+Kko
+
+
+#2n        130 gibt's nur in Werksaetzen ohne Verf. (sonst $t in 100)
+D0 "130"
+_ "n"
+_ " "
+
+_ "p"
+_ ". "
+_ "9g:"
+_ " / " 
+
+#2na          "Verweisung"stitel
+D0 "430"
+_"9g:"
+_" / "
+_"b"
+_". "
+_"x"
+_". "
+_"t"
+_": "
+
+e""
+m""
+
+#99
+j0
+l0
+KkS
+KkG
+
+  Sachgruppen (output in i-gnd.apr dann bei Bedarf aktivieren)
+  nur die ersten 3
+#30
+D0 "065"
+e""
+i32
+@H
+D0 "065"
+e""
+@H
+w"·"
+D0 "065"
+e""
+@H
+w"·"
+
+  geogr. Verweisung, weitere werden in i-gnd.apt angehaengt
+-3na
+#3na
+D0 "451"
+_ "x"
+_ " / "
+_ "9g:"
+_ " / "
+e ""
+m""
+
+#89g         GND-IdNr aus 024 (URI) nehmen
+D0 "024"     z.B.  =024  7\$ahttp://d-nb.info/gnd/9043-8/about$2uri
+b"gnd/"
+e"/"
+
+#3n
+k3n
+q35XX
+q
+
+#6n
+k6n
+q65XX
+q
+
+
+
+
+#99
+j0
+qENDE
+
+
+   4XX und 5XX werden in i-gnd.apr behandelt!
+    Dort, statt hier, werden auch 550 und 551 ermittelt 
+  
+-35XX
+ #3nr
+ D0 "550"
+ b"a"
+ _"9g:"
+ _" / "
+ e""
+ Kkr
+ v a=j
+ l0
+
+ #3nr
+ D0 "551"
+ b"a"
+ _"9g:"
+ _" / "
+ e""
+ Kkg
+ l0
+
+ #3nr
+ j0
+ V a=j
+ q3nra
+ q
+
+  #ukr (550) nicht belegt, dann -3nrb 
+#3nr
+j0
+q3nrb
+
+-3nra
+#3nr
+kukr
+_"9g:"
+_" / "
+W""
+kukg
+_"9g:"
+_" / "
++3end
+
+-3nrb
+ #3nr
+ _"9g:"
+ _" / "
+ kukg
+
+-3end
+#99
+j0
+l0
+Kkr
+Kkg
+v a=0
+qENDE
+
+-65XX
+
+
+-ENDE
+    Pauschalbefehl fuer den Rest
+     diese 3 Zeilen aktivieren, falls gewuenscht:
+#990 
+D "???" 
+m 
+    Daraus entstehen dann automatisch Felder #99X
+    Struktur:  #99X(tag)MARC-Feldinhalt ohne Indik, z.B. #992(005) 0330120102.0
+    beginnend mit  #990
+    ACHTUNG: in i-gnd.apr werden etliche Felder daraus entnommen, die oben nicht
+             umgewandelt werden! Wenn man die #99x mit im Ergebnissatz haben
+             will, dann in  i-gnd.apr   eine Zeile aktivieren, die mit ACHTUNG gezeichnet ist
+
+  ----------------------------------------------------------
+
+#999
+j0
+qSCHLUSS
+
+     Konkordanzliste (Nutzung oben in #30)
+@@H  SWD-Sachgruppen -> allegro-Sachgruppen (s.a. pica.aim)
+
+"00"
+"al" 0
+
+"2.3"
+"pk" 0
+
+"4.2"
+"ph-ge" 0
+
+"5.1b"
+"ps-ge" 0
+
+"5"
+"ps" 0
+
+"6.2b"
+"pb-ge" 0
+
+"6.2"
+"pb" 0
+
+"6.5"
+"wh" 0
+
+"6.7"
+"sb" 0
+
+"6.8"
+"sb" 0
+
+"6.1"
+"gk" 0
+
+"6.4"
+"pb" 0
+
+"6.3"
+"xx" 0
+
+"6.6"
+"wh" 0
+
+"6.5"
+"wh" 0
+
+"6.7"
+"sb" 0
+
+"6.8"
+"sb" 0
+
+
+
+"7.2"
+"re-ge" 0
+
+"7"
+"re" 0
+
+"8.4"
+"gen" 0
+
+"8"
+"pl" 0
+
+"9.4"
+"?bw" 0
+
+"9.1"
+"gek" 0
+
+"9"
+"sw" 0
+
+"10.2"
+"nw" 0
+
+"10.3"
+"plk" 0
+
+"10.5"
+"plk" 0
+
+"10.6"
+"bwp" 0
+
+"10.7"
+"ark" 0
+
+"10.8"
+"ba" 0
+
+"10.9"
+"bwp" 0
+
+"10.11"
+"bw" 0
+
+"10.10"
+"bw" 0
+
+"10.12"
+"bw" 0
+
+"10.13"
+"bwp" 0
+
+"10.14"
+"bwp" 0
+
+"10.1"
+"gek" 0
+
+"10"
+"nw" 0
+
+"11"
+"sll" 0
+
+"12"
+"sl" 0
+
+"13"
+"bk" 0
+
+"14"
+"mk" 0
+
+"15"
+"slg" 0
+
+"16"
+"ge" 0
+
+"17" 
+"ggt" 0
+
+"18"
+"na" 0
+
+"19.1"
+"gg" 0
+
+"19.2"
+"gg" 0
+
+"19.4"
+"gw" 0
+
+"19.3"
+"gw" 0
+
+"19.5"
+"agg" 0
+
+"1"
+"al" 0
+
+"20"
+"ag" 0
+
+"21"
+"py" 0
+
+"22"
+"ch" 0
+
+"23.2"
+"btc" 0
+
+"23.3"
+"bef" 0
+
+"23"
+"bl" 0
+
+"24"
+"blk" 0
+
+"25"
+"blm" 0
+
+"26"
+"mec" 0
+
+"27.8"
+"pm" 0
+
+"27"
+"me" 0
+
+"28"
+"ma" 0
+
+"29"
+"nwp" 0
+
+"30"
+"cs" 0
+
+"31.1c"
+"teg" 0
+
+"31.10"
+"ct" 0
+
+"31.11"
+"ctl" 0
+
+
+"31.1d"
+"mt" 0
+
+"31.1e"
+"te-ge" 0
+
+"3.5a" 
+"bk" 
+
+"31.4"
+"gwg" 0
+
+"31.3"
+"ar" 0 
+
+"31.5"
+"en" 0
+
+"31.6" 
+"ms" 0
+
+"31.7"
+"fa" 0
+
+"31.8" 
+"ms" 0
+
+"31.9b"
+"elk" 0
+
+"31.9"
+"el" 0
+
+"31"
+"te" 0
+
+"32"
+"aw" 0
+
+"33"
+"hg" 0
+
+"34"
+"st" 0
+
+"35"
+"st" 0
+
+"36"
+"bkl" 0
+
+"2"
+"sb" 0
+
+"3"
+"rt" 0
+
+"4"
+"ph" 0
+
+@
+

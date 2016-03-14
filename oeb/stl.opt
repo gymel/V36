@@ -1,0 +1,129 @@
+    ; -----------------------------------------------------
+    ; STL.OPT : Kurztitelanzeige
+    ; Ver.: WIN 1.0 (13.9.2001)
+    ; -----------------------------------------------------
+#-0
+#t{ "|0" }
+
+    #hi +-                          ; gef„hrlich ---*2003.09.05*---
+#9AF +#L9s e0                       ; Statistiksatz
+#9B0 +#L9b e0                       ; Lesersatz
+#9A0 +#L9y e0                       ; Systemdatensatz
+#9DF +#L9e e0                       ; Exemplardaten
+#9GF +#L9g e0                       ; Gebhrendaten
+#700 +#L9S e0                       ; Stamms„tze...
+#800 +#L9S e0
+#900 +#L9S e0
+        ; Titels„tze
+#200 +#20a e0
+#320 +#425 11 U y0 e52 #zz 0
+#315 +#425 11 U y0 e52 #zz 0
+#089 +#425 11 U y0 e52 #zz 0
+#nr "Kurztitel konnte nicht erzeugt werden!$" e"$"
+#+#
+
+#20a
+#320 11 U y0 e35 #zz 0
+#315 11 U y0 e35 #zz 0
+#200 10 y0 e", " #zz 0 
+#200 y0 b", " e1 p", " P"." #zz 0  
+#425 12 y0 f"c " f"ca. " p"  " #zz 0
+#060 13 y0 #zz 0
+#+#
+    ; -----------------------------------------------------
+    ; Leser
+#L9b
+#udd ddd e0
+#9B0 n y0
+#9B0 p y0 " "
+#9B0 o y0 " "
+#9B0 s y0 " "
+#9B0 +# i5,0 e0
+#9B0 +# i5,1 y0 p{" -gesperrt-"} e0
+#9B0 +# i5,2 y0 p{" -abgemeldet-"} e0
+#+#
+    ; -----------------------------------------------------
+    ; Exemplar oder Vormerkung
+#L9e
+#9DG +# i5,V y0 p"Vormerkung$" e"$"
+#9DG +#L23 c"T" T y0 P"  "
+
+#L23
+#9DG +#9Da c"a" a y0 p"[" P"]"
+#9DG p{"[Barcode fehlt]"} e0
+#9Da
+#9DG e y0 p" " P". Ex."
+#9DG l y0 p" S.-Ort : "
+
+#9DH W y0 p{ " : reserviert bis " } aad
+#9DH R y0 p{ " : entliehen bis " } aad
+#>d                                 ; Datum umdrehen
+#9DG +# i5,A y0 p{" -ausgesondert-" } e0
+#9DG +# i5,v y0 p{" -Verlust-"} e0
+#+#
+    ; -----------------------------------------------------
+    ; Gebhren
+#L9g
+#9GF y0 p{"Gebhr : "} e0
+#9GF i5,S p{" - storniert - "} e0
+#9GF i5,T p{" - bezahlt - "} e0
+#9GG S t2                          ; Summe
+#9GG S T2 p"."
+#9GG +#9Ga c"x" e0                  ; W„hrung
+#t{ " DM " }                         ; Default : hier DM
+#9Ga
+#9GG x " " P" "
+#9Gb
+#9GF D dad aad                     ; Datum Registrierung
+#9GF D e1 t1 p"vom "
+#>d                                 ; Datum umdrehen
+#9GF +#L71 y0 G c"0" p{" f. Verzug"} e0
+#9GF +# y0 G c"1" p{" f. Anmeldung"} e0
+#9GF +# y0 G c"2" p{" f. Ausweisverl„ngerung"} e0
+#9GF +# y0 G c"3" p{" f. Ausweisersatz"} e0
+#9GF +#L72 y0 G c"4" p{" f. Verl„ngerung"} e0
+#9GF +#L72 y0 G c"5" p{" f. Entleihung"} e0
+#9GF +#L72 y0 G c"6" p{" f. Reservierung"} e0
+#9GF +# y0 G c"7" p{" f. Mahnung"} e0
+#9GF +#L73 y0 G c"8" e0                        ; per Hand erfaát
+#9GF +#L73 y0 G c"9" e0                        ; u.a. Stundung
+#9GF +# y0 G c"S" p{" Zwischensumme"} e0
+#+#
+
+#L71        ; Verzugsgebhren
+#9GG m y0 p" "                         ; Medientyp
+#9GG E y0 p" " P" "                    ; Exemplarbarcode
+#9GG r dad aad                         ; eigentliches Rckgabedatum
+
+#>d                                     ; Datum umdrehen
+#9GG d y0 p" " P" Tage Verz."          ; Zahl ™ffnungstage Verzug
+#+#
+
+#L72        ; Entleihung/Verl„ngerung/Reservierung
+#9GG m y0 " : "                        ; Medientyp
+#9GG E y0 p" " P" "                    ; Exemplarbarcode
+#+#
+
+#L73
+#9GG +# y0 c"GSTUNDUNG" p{" šbertrag"} e0
+#9GG G y0 " Grund : "
+#+#
+
+#L9S
+#nr y0 "Stammsatz." e"."
+#+#
+
+#L9s
+#9AF y0 "Statistiksatz." e"."
+#+#
+    ; Systemdatensatz :
+#L9y
+#9A0 y0 "Systemdatensatz." e"."
+#+#
+    ; -----------------------------------------------------
+    ; Unterprogramm : 8-stelliges Datum umdrehen
+#(d
+#uad b6 e2 f"0" P"."
+#uad b4 e2 f"0" P"."
+#uad e4 dad           ; Und l”schen...
+#)d

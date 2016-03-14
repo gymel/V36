@@ -1,0 +1,64 @@
+[general]
+port = 4949
+prefork = 1
+AnonymousAccess = yes
+max_cputime = 120
+# logfile = c:\temp\ava.log
+# loglevel = all
+# loglevel is a list of comma-separated keywords. Each keyword enables
+# a specific logging feature. When a keyword is preceded by a '!' character
+# that specific feature is turned off. 
+#
+# Datei wird von avanti und acon gelesen, aber nur von avanti wirklich gebraucht,
+# weil mal alle noetigen Angaben fuer acon auch als Optionen uebergeben kann
+# bzw. per Environment.
+
+# Valid keywords include:
+# crit, error, warn, note, slave, io, data, serv, 
+# time, level, location, all, none, default
+#
+# See the HTML docs for the meaning of these keywords.
+# 
+# Examples:
+#
+# loglevel = slave		# log everything but "slave" events
+# loglevel = default,io,data 	# log standard events, plus "io" and "data
+
+# aus der nachfolgenden Liste entnehmen avanti und acon, auf welche
+# Datenbank ein Job anzuwenden ist. Der logische Datenbankname, z.B. [avdemo],
+# steht dann in der letzten Zeile des Jobs, die z.B. so aussieht:
+
+# @ DB=avdemo ID=master/AVANTI
+
+# Mit der Berechtigungsziffer 3 weiss dann acon, dass Schreibberechtigung
+# gegeben ist, aber acon kann nur dann schreiben, wenn auch access=3 gesetzt ist,
+# unabhaengig von der Nutzerkennung. So kann man das Schreiben ganz schnell mal
+# global blockieren. 
+
+# avanti liest diese Datei nur beim Start, acon bei jedem Job.
+
+[avdemo]
+directory = c:\allegro\demo2
+access = 3
+konfiguration = a
+indexparameter = cat
+opac = OPAC:2
+master = AVANTI:3
+
+[demo]
+directory = c:\allegro\demo2
+access = 3
+konfiguration = a
+indexparameter = cat
+opac = OPAC:2
+master = AVANTI:3
+
+[opac]
+directory = c:\allegro\katalog
+access = 3
+konfiguration = a
+indexparameter = cat
+opac = OPAC:2
+meister = A1B9C7:3
+
+

@@ -1,0 +1,1382 @@
+  SWDDISK.AIM : SWD-Diskette -> A.CFG
+  941128
+ 
+  Nachbehandlung mit SWDOUT.APR, um Hilfskategorien #99x rauszunehmen
+
+re=13 10 13 10 "### "
+rs="### "
+
+_ 13 10
+_ 0
+
+ _ "™ "
+ _ " "
+
+ _ "™" 0
+ _ 0
+
+y ™ ^
+
+_ "sss"    DB hat kein ·  !! (wenigstens diese Kombination kann man Ñndern)
+_ "·s"
+
+ _ 26
+ _ "ü"
+
+
+y ’ ∞   tÅrk i
+
+ y Å «       Hacek wird nicht auf diskette geliefert!
+
+ y é ö
+
+ y ⁄ Ω   Trema gleichfalls, nur mit eiy
+
+
+ y Ô ·
+ y · ö
+
+ y Ò æ   halbkreis Åbergesetzt
+
+ y [ «   hacek
+
+ y ˘ ∆   doppelakut
+ y æ ∆
+
+ y á ’   Ain
+ y Ÿ 39   Apostroph am Ende
+ y £ ‘   Punkt untergesetzt
+ y ˛ ∏   Punkt Åbergesetzt
+ y ˙ 256   ??? (kommt vor H vor, arabisch?)
+
+
+ y ∞ Ï
+
+ y Æ µ
+
+
+#00
+ s "    "
+ } 29
+ e"-"
+s 0 "001?"
+e"-"
+
+#u1    gelîschter Satz
+j5
+= "d"
+/
+q98s
+w"@@@@@"
+l0
+
+
+-98s
+#98s
+s 0 "810?" 
+@A
+s 0 "810?"
+b" "
+i32
+@A
+w"˙"
+s 0 "810?"
+b" "
+b" "
+i32
+@A
+w"˙"
+s 0 "810?"
+b" "
+b" "
+b" "
+i32
+@A
+w"˙"
+s 0 "810?"
+b" "
+b" "
+b" "
+b" "
+i32
+@A
+w"˙"
+
+
+#3n
+s 0 "800"
+C 0 "801t"    (800 Person  801 Titel)
+qtsw
+
+l1
+w"s"
+s 0 "800?"
+u9
+N
+w" "
+s 0
+="001d"
+w""
+l 0
+s 0 "801?"
+u9
+w" / "
+g 0 "802?"
+u9
+w" / "
+g 0 "803?"
+u9
+w" / "
+
+#99
+j0
+q3ng
+
+-tsw    titelschlagwort
+#3n
+s 0 "800?"
+u9
+w"st "
+g 0 "801?"
+u9
+  N
+w": "          hier ist der Unterschied
+s 0
+="001d"      loeschkennung
+w""
+l 0
+g 0 "802?"
+u9
+w" / "
+g 0 "803?"
+u9
+w" / "
+
+
+-3ng
+#3ng         LÑnderschlÅssel
+s0 "811?"
+e" "
+@B           Konkordanz B
+
+#3nl        Sprache
+s 0 "812 "
+
+
+-3nA          Alternativ-SW
+#99A
+s 0 "820?"
+C 0 "t821"    (820 Person  821 Titel)
+qatsw
+u9
+   N
+w" "
+g 0 "821?"
+u9
+w" / "
+g 0 "822?"
+u9
+w" / "
+g 0 "823?"
+u9
+w" / "
+
+#99
+j0
+q3na
+
+-atsw    titelschlagwort
+#99A
+s 0 "820?"
+w" "
+g 0 "821?"
+u9
+ N
+w": "          hier ist der Unterschied
+g 0 "822?"
+u9
+w" / "
+g 0 "823?"
+u9
+w" / "
+
+
+-3na
+#3na
+s 0 "830"
+} 1
+u9
+  N
+m"; "
+
+#3na     wenn es #3nAA gibt: zusammensetzen mit #3na
+k99A
+k3na
+w"; "
+
+#99A
+k99A
+w" "
+l0     lîschen
+
+
+#3nr
+j0
+w"!!"
+l0       #3nr vorbesetzen, damit was drin steht
+
+-3nr
+#3nr
+k3nr
+s0 "860"
+x
+} 2         860 fÑngt mit einem (unnîtigen) Steuerzeichen an
+u9
+  N
+w"; "
++3nr
+
+-99b     broader terms
+#3nr
+k3nr
+s0 "850"
+x
+} 2
+u9
+  N
+w";b"
++99b
+
+
+-99s     spÑtere begr.
+#3nr
+k3nr
+s0 "870"
+x
+} 2
+u9
+  N
+w";s"
++99s
+
+-99f     frÅhere begr.
+#3nr
+k3nr
+s0 "880"
+x
+} 2
+u9
+  N
+w";f"
++99f
+
+-99n      neuer begr.
+#3nr
+k3nr
+s0 "890"
+x
+} 2
+u9
+  N
+w";n"
++99n
+
+-99a     alter begr.
+#3nr
+k3nr
+s0 "891"
+x
+} 2
+u9
+  N
+w";a"
++99a
+
+
+-3nO
+#3nr
+k3nr
+s 0 "845"
+x
+} 2
+u9
+w"O"
++3nO
+
+
+#3nr
+k3nr
+_ "!!; "
+_ ""
+w" "
+
+#3nr
+k3nr
+i32
+_ "!!"
+_ ""
+w" "
+
+#3nr
+k3nr
+i32
+
+#3nr
+
+
+#3nz
+s0 "808"    a:Quelle, b:Definition, c:Anmerkung
+
+l1
+w""
+s0 "808"
+} 1
+W""
+m""
+      jetzt ist hinten an #3nz ein  dran.
+      mit  einem Trick schneiden wir es ab:
+#3nz
+k3nz
+W"666"
+
+#3nz
+k3nz
+e"66"
+
+#3nz
+k3nz
+s0 "810?"     an #3nz noch die Original-Sachgr. anhÑngen
+_ "- "
+_ " "
+w"S"
+
+#3nz     geht nur, wenn Dateikopf vorhanden!
+k3nz
+s "sh"
+e"--"  (Provenienz)
+w"P"
+
+#89b   GKD-Nr
+s 0 "028b"
+
+#89a   PND-Nr
+s 0 "028a"
+
+#98s
+k98s
++3n98
+qENDE
+
+-3n98    #3n zusammensetzen
+#3n
+k3n
+e" "
+k98s
+k3n
+b" "
+w" "
+
+#98s
+k98s    lîschen!
+w" "
+l0
+
+
+
+       Konkordanzen:
+
+
+@@A        Sachgruppen
+
+"00"
+"al" 0
+
+"2.3"
+"pk" 0
+
+"4.2"
+"ph-ge" 0
+
+"5.1b"
+"ps-ge" 0
+
+"5"
+"ps" 0
+
+"6.2b"
+"pb-ge" 0
+
+"6.2"
+"pb" 0
+
+"6.5"
+"wh" 0
+
+"6.7"
+"sb" 0
+
+"6.8"
+"sb" 0
+
+"6.1"
+"gk" 0
+
+"6.4"
+"pb" 0
+
+"6.3"
+"xx" 0
+
+"6.6"
+"wh" 0
+
+"6.5"
+"wh" 0
+
+"6.7"
+"sb" 0
+
+"6.8"
+"sb" 0
+
+
+
+"7.2"
+"re-ge" 0
+
+"7"
+"re" 0
+
+"8.4"
+"gen" 0
+
+"8"
+"pl" 0
+
+"9.4"
+"ab" 0
+
+"9.1"
+"gek" 0
+
+"9"
+"sw" 0
+
+"10.2"
+"nw" 0
+
+"10.3"
+"plk" 0
+
+"10.5"
+"plk" 0
+
+"10.6"
+"bwp" 0
+
+"10.7"
+"ark" 0
+
+"10.8"
+"ba" 0
+
+"10.9"
+"bwp" 0
+
+"10.11"
+"bw" 0
+
+"10.10"
+"bw" 0
+
+"10.12"
+"bw" 0
+
+"10.13"
+"bwp" 0
+
+"10.14"
+"bwp" 0
+
+"10.1"
+"gek" 0
+
+"10"
+"nw" 0
+
+"11"
+"sll" 0
+
+"12"
+"sl" 0
+
+"13"
+"bk" 0
+
+"14"
+"mk" 0
+
+"15"
+"slg" 0
+
+"16"
+"ge" 0
+
+"17" 
+"ggt" 0
+
+"18"
+"na" 0
+
+"19.1"
+"gg" 0
+
+"19.2"
+"gg" 0
+
+"19.4"
+"gw" 0
+
+"19.3"
+"gw" 0
+
+"19.5"
+"agg" 0
+
+"1"
+"al" 0
+
+"20"
+"ag" 0
+
+"21"
+"py" 0
+
+"22"
+"ch" 0
+
+"23.2"
+"btc" 0
+
+"23.3"
+"be" 0
+
+"23"
+"bl" 0
+
+"24"
+"blk" 0
+
+"25"
+"blm" 0
+
+"26"
+"mec" 0
+
+"27.8"
+"pm" 0
+
+"27"
+"me" 0
+
+"28"
+"ma" 0
+
+"29"
+"nwp" 0
+
+"30"
+"cs" 0
+
+"31.1c"
+"teg" 0
+
+"31.10"
+"ct" 0
+
+"31.11"
+"ctl" 0
+
+
+
+"31.1d"
+"mt" 0
+
+"31.1e"
+"te-ge" 0
+
+"31.3"
+"ar˙ba" 0
+
+"31.4"
+"gwg" 0
+
+"31.5"
+"en" 0
+
+"31.6" 
+"ms" 0
+
+"31.7"
+"fa" 0
+
+"31.8"        nachtrÑglich korrigiert
+"ms" 0
+
+"31.9b"
+"elk" 0
+
+"31.9"
+"el" 0
+
+"31"
+"te" 0
+
+"32"
+"aw" 0
+
+"33"
+"hg" 0
+
+"34"
+"st" 0
+
+"35"
+"st" 0
+
+"36"
+"bkl" 0
+
+"2"
+"sb" 0
+
+"3"
+"rt" 0
+
+"4"
+"ph" 0
+
+
+
+
+@
+
+@@B          LÑndercodes
+"aa"
+"e-gx" 0
+
+"ba"
+"e-gw" 0
+
+"bb"
+"e-gx-bw" 0
+
+"bc"
+"e-gx-by" 0
+
+"be" 
+"e-gx-be" 0
+
+"bf" 
+"e-gx-hb" 0
+
+"bg"
+"e-gx-hh" 0
+
+"bh"
+"e-gx-he" 0
+
+"bn"
+"e-gx-nd" 0
+
+"bo"
+"e-gx-nw" 0
+
+"br"
+"e-gx-rp" 0
+
+"bs"
+"e-gx-sl" 0
+
+"bw"
+"e-gx-sh" 0
+
+"ca"
+"e-ge" 0
+
+"cb"
+"e-gx-br" 0
+
+"cm"
+"e-gx-mv" 0
+
+"cs"
+"e-gx-sc" 0
+
+"ct"
+"e-gx-sa" 0
+
+"cy"
+"e-gx-th"
+
+"da"
+"e-gx-ed"
+
+"ea"
+"e" 0
+
+"ec"
+"e-aa" 0
+
+"ee"
+"e-an" 0
+
+"eg"
+"eb" 0
+
+"ei"
+"e-be" 0
+
+"el"
+"e-bu" 0
+
+"ep"
+"a-tu-zz" 0
+
+"er"
+"e-dk" 0
+
+"es"
+"e-er" 0    Estland
+
+"fo"
+"e-lv" 0     Lettland
+
+"et"
+"e-fi" 0
+
+"ev"
+"e-fr" 0
+
+"ex"
+"e-gx-zz" 0
+
+"ez"
+"e-gr" 0
+
+"fc"
+"e-uk" 0
+
+"fe"
+"e-ie" 0
+
+"fg"
+"e-ic" 0
+
+"fi"
+"e-it" 0
+
+"fl"
+"e-yu" 0
+
+"fn"
+"e-cr" 0
+
+"fo"
+"e-lv" 0
+
+"fp"
+"e-lh" 0
+
+"fq"
+"e-li" 0   Litauen
+
+"fr"
+"e-lu" 0
+
+"ft"
+"e-mm" 0
+
+"fv"
+"e-mc" 0
+
+"fw"
+"e-mo" 0
+
+"fx"
+"e-ne" 0
+
+"fz"
+"e-no" 0
+
+"gc"
+"e-au" 0
+
+"ge"
+"e-pl" 0
+
+"gg"
+"e-po" 0
+
+"gi"
+"e-it-zz" 0
+
+"gl"
+"e-rm" 0
+
+"gn"
+"e-sm" 0
+
+"gp"
+"e-sw" 0
+
+"gr"
+"e-sz" 0
+
+"gt"
+"e-se" 0
+
+"gv"         Sorben: Teilgebiet von Sachsen
+"e-gx-scs" 0
+
+"gx"
+"e-ur" 0
+
+"gz"
+"e-sp" 0
+
+"gu"
+"e-sl"    Slowakei
+
+"ha"
+"e-cz"    Tschechei
+
+"hc"
+"e-cs" 0
+
+"he" 
+"e-hu" 0
+
+"hg"
+"e-vc" 0
+
+"hi"
+"e-cy" 0
+
+"hk"
+"e-mv" 0   Moldawien
+
+"hm"
+"e-ru"     Russland
+
+"ho"
+"e-un" 0   Ukraine
+
+"hq"
+"e-bw" 0   Belorussland
+
+"ia"
+"a" 0
+
+"ic"
+"a-af" 0
+
+"ig"
+"aw-zz" 0
+
+"ii"
+"ar" 0
+
+"il"
+"a-ba" 0
+
+"in"
+"a-bg" 0
+
+"ip"
+"a-bt" 0
+
+"iq"
+"a-bx" 0
+
+"ir"
+"a-br" 0
+
+"mm"          Myanmar, frÅher Birma
+"a-br" 0
+
+"it"
+"a-ce" 0
+
+"iv"
+"a-cc" 0
+
+"ix"
+"a-hk" 0
+
+"iz"
+"a-ii" 0
+
+"kc"
+"a-io" 0
+
+"ke"
+"a-iq" 0
+
+"kg"
+"a-ir" 0
+
+"ki"
+"zm" 0
+
+"kl"
+"a-is" 0
+
+"kn"
+"a-ja" 0
+
+"kp"
+"a-ye" 0
+
+"kr"
+"a-jo" 0
+
+"kt"
+"a-cb" 0
+
+"kv"
+"a-ga" 0
+
+"kx"
+"a-kr" 0
+
+"kz"
+"a-ku" 0
+
+"lc"
+"a-ls" 0
+
+"le"
+"a-le" 0
+
+"lg"
+"a-my" 0
+
+"li"
+"i-xc" 0
+
+"ll"
+"a-mp" 0
+
+"ln"
+"a-np" 0
+
+"lp"
+"a-mk" 0
+
+"lr"
+"a-pk" 0
+
+"lt"
+"a-is-pa" 0
+
+"lv"
+"a-ph" 0
+
+"lx"
+"a-su" 0
+
+"mc"
+"a-si" 0
+
+"me"
+"a-sy" 0
+
+"mf"
+"a-ch" 0
+
+"mg"
+"a-th" 0
+
+"mi"
+"a-cc-ti" 0
+
+"ml"
+"a-tu" 0
+
+"mn"
+"a-ts" 0
+
+"mp"
+"a-vt" 0
+
+"mq"
+"a-ai" 0    Armenien
+
+"mr"
+"a-aj" 0    Aserbeidschan
+
+"ms"
+"a-ax" 0    abchasien
+
+"mt"
+"a-kz" 0    Kasach
+
+"mu"
+"a-kg" 0   Kirgis
+
+"mv"
+"a-ta" 0   Tadschiki
+
+"mw"
+"a-tk" 0   Turkmenistan
+
+"mx"
+"a-uz" 0   Usbekistan
+
+"na"
+"f" 0
+
+"nc"
+"f-ua" 0
+
+"nd"
+"f-eg" 0
+
+"ne"
+"f-et" 0
+
+"ng"
+"f-ae" 0
+
+"ni"
+"f-ao" 0
+
+"nn"
+"f-tg" 0
+
+"nr"
+"f-bs" 0
+
+"nt"
+"f-bd" 0
+
+"nx"
+"f-ft" 0
+
+"nz"
+"f-iv" 0
+
+"oc"
+"f-go" 0
+
+"oe"
+"f-gm" 0
+
+"og"
+"f-gh" 0
+
+"oi"
+"f-gv" 0
+
+"oj"
+"f-gvb" 0
+
+"ol"
+"f-cm" 0
+
+"on"
+"lncv" 0
+
+"op"           Karthago, heute Tunesien
+"f-ti-zz" 0
+
+"or"
+"f-ke" 0
+
+"ot"
+"i-cq" 0
+
+"ov"
+"f-cf" 0
+
+"ox"
+"f-lo" 0
+
+"oz"
+"f-lb" 0
+
+"pc"
+"f-ly" 0
+
+"pe"
+"f-mg" 0
+
+"pg"
+"f-mw" 0
+
+"pi"
+"f-ml" 0
+
+"pl"
+"f-mr" 0
+
+"pn"
+"f-mu" 0
+
+"pp"
+"f-mf" 0
+
+"pr"
+"f-mz" 0
+
+"pt"
+"f-sx" 0
+
+"pv"
+"f-ng" 0
+
+"px"
+"f-nr" 0
+
+"pz"
+"f-bf" 0
+
+"qe"
+"f-rw" 0
+
+"qg"
+"fd" 0
+
+"qi"
+"f-za" 0
+
+"ql"
+"f-sf" 0
+
+"qn"
+"f-sg" 0
+
+"qp"
+"f-se" 0
+
+"qr"
+"f-sl" 0
+
+"qs"
+"f-rh" 0
+
+"qt"
+"f-so" 0
+
+"qv"
+"f-sj" 0
+
+"qx"
+"f-sa" 0
+
+"qz"
+"f-sq" 0
+
+"rc"
+"f-tz" 0
+
+"re"
+"f-tg" 0
+
+"ri"
+"f-cd" 0
+
+"rl"
+"f-ti" 0
+
+"rn"
+"f-ug" 0
+
+"rp"
+"f-cg" 0
+
+"rr"
+"f-cx" 0
+
+"sa"
+"b" 0
+
+"sb"
+"nw" 0
+
+"sc"
+"s-ag" 0
+
+"se"
+"nwbf" 0
+
+"sg"
+"nwbb" 0
+
+"sh"
+"ncbh" 0
+
+"si"
+"lnbm" 0
+
+"sl"
+"s-bo" 0
+
+"sn"
+"s-bl" 0
+
+"sp"
+"s-cl" 0
+
+"sr"
+"nccr" 0
+
+"ss"
+"nw" 0
+
+"st"
+"nwdr" 0
+
+"sv"
+"s-ec" 0
+
+"sx"
+"nces" 0
+
+"sz"
+"nwgd" 0
+
+"tc"
+"ncgt" 0
+
+"te"
+"s-gv" 0
+
+"tg"
+"nwht" 0
+
+"ti"
+"ncho" 0
+
+"tl"
+"nwjum" 0
+
+"tn"
+"n-cn" 0
+
+"tp"
+"s-ck" 0
+
+"tr"
+"nwcu" 0
+
+"ts"
+"nwxk" 0
+
+"tt"
+"n-mx" 0
+
+"tv"
+"ncnq" 0
+
+"tx"
+"ncpn" 0
+
+"tz"
+"s-py" 0
+
+"uc"
+"s-pe" 0
+
+"ue"
+"nwpr" 0
+
+"uf"
+"nwsk" 0
+
+"ug"
+"s-sr" 0
+
+"ui"
+"nwtr" 0
+
+"ul"
+"s-uy" 0
+
+"un"
+"s-ve" 0
+
+"up"
+"n-us" 0
+
+"uv"
+"nwsv" 0
+
+"wa"
+"u" 0
+
+"wc"
+"u-at" 0
+
+"we"
+"pofj" 0
+
+"wf"
+"pogn" 0
+
+"wg"
+"ponu" 0
+
+"wi"
+"u-nz" 0
+
+"wl"
+"a-pp" 0
+
+"wn"
+"xsalomonen" 0
+
+"wp"
+"posh" 0
+
+"wr"
+"poto" 0
+
+"wt"
+"pogn" 0
+
+"wv"
+"xvanuatu" 0
+
+"wx"
+"i-xc" 0    Marschallinseln
+
+"wy"
+"pott" 0    Mikronesien
+
+"wz"
+"po" 0
+
+"xa"
+"r" 0
+
+"xc"
+"l" 0
+
+"xe"
+"i" 0
+
+"xg"
+"p" 0
+
+"xi"
+"t" 0
+
+"ya"
+"w" 0
+
+"yi"
+"a-is-zz" 0
+
+@

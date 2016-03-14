@@ -1,0 +1,239 @@
+  P-QUEX.APR : Export mit externer Vorgabe von Parametern : 2. Durchlauf
+  960416
+
+  Unabhaengig von der benutzten Konfiguration, d.h. 
+  es arbeitet mit jeder .CFG ! 
+  Man muss nur eine Kopie machen, z.B.  copy p-quex.apr p-quex.ppr
+  Aber:
+  Sinnvoll anwendbar nur durch srch  mit geeignetem .ALG file als input
+  Aufruf von srch mit   -Uc9xx,...,zz -b%-D%\%-B% -uc7%C7%xxx
+  (xx,..,zz sind die auszugebenden Kategorien)
+  Struktur: (wird z.B. durch s-x1.apr erstellt)
+
+           u1 sortierkopf(Sortierform)
+           u2 Satznummer;Sortierkopf(Druckform)
+
+  Mit der Satznummer wird der eigentliche Satz geladen! (Daher -b ...)
+
+  Stapel :  QUEX.BAT
+
+  --------- Konstanten --------------------------------------------
+
+zl=72     Zeilenlaenge 72
+zi=5      Einrueckung 5 Zeichen
+i4=1      V14 einschalten
+
+zm=0      kein Seitenumbruch
+
+8=&0      Pos. 0
+
+texport   export.apt laden (zl= ...)
+          darin kommen zl und 21...84 vor
+          (wird von QUEX.BAT erzeugt!)
+
+          (printer.apt steht ganz unten)
+  -----------------------------------------------------------------
+
+   Dublettenbereinigung:
+
+#ufo +@ e0
+
+ts-quex      S-QUEX.APT enthaelt #u-Setzungen
+#nr afo
+
+#-@
+#u2 +A =sn          Wenn #u2 identisch mit dem vorigen Satz (#usn),
+#+-                 dann Abbruch (Dublette), wenn nicht, -> #-A
+                    (Das aktuelle #u2 wird automatisch in #usn kopiert
+                     fuer den naechsten Vergleich)
+#-A
+#uc9 =a1            Inhalt #uc9 nach #ua1 kopieren
+
+#t80                SatzAnfang: ZwTeil 80 (z.B: C t8 )
+
+                    Hinter ; faengt der Sortierbegriff an (Druckform):
+                    zuerst wird er in #uko kopiert
+#u2 +D b";" c"0!!!" p"[kein Sortierbegriff]!" e"!" dko ako
+#u2 +D b";" c"z~z~" p"[kein Sortierbegriff]!" e"!" dko ako
+
+#u2 b";" =ko
+
+
+#-D
+#uc7 +C P"x" c"0x" e0
+                   wenn #uc7 0 ist, Sortierbegriff nicht ausgeben
+#uc7 +B e0         wenn #uc7 besetzt, dann #-B
+
+#uko +C            wenn nicht, Sortierbegr. immer vollstaendig ausgegeben
+
+#-B
+#uko +C =sb,20     Normaler Sortierbegriff, wird als erstes Feld ausgegeben
+#uc7 ,",_, ,"       Wiederhol.zeichen fuer den Sort.Begr. '_' durch ' ' ers.
+
+#-C
+
+                    Inhalt von #u2 hat die Form   SatzNr;Sortierbegriff
+#u2 e";" |01        Satznummer nehmen, Satz einlesen
+
+
+  Schleife: (Abarbeitung von #ua1)
+    Die Kategorien werden nacheinander gesucht und ausgegeben
+  -------- Hauptteil der Ausgabe ---------------------
+
+#t81       (nur bei dBase-Ausgabe belegt)
+
+                    Anfangsteil von #ua1 nehmen: das ist eine Kat.Nr.
+#t21       21 ist das unbedingte, 51 das bedingte Praefix
+           (nur 1 von beiden kommt vor)
+#ua1 e"," f"#" w p41 P61   (besondere Manipulationen evtl. hier ergaenzen) 
+                    Inhalt der Kategorie, falls existent, ausgeben
+                    (Befehl w holt die Kategorie aus dem nachgeladenen Satz)
+
+#ua1 +a b"," =a1    #ua1 vorne verkuerzen
+#+#
+
+#-a
+#t81
+#t22
+#ua1 e"," f"#" w p42 P62    2. Kategorie
+#ua1 +b b"," =a1
+#+#
+
+#-b
+#t81
+#t23
+#ua1 e"," f"#" w p43 P63
+#ua1 +c b"," =a1
+#+#
+
+#-c
+#t81
+#t24
+#ua1 e"," f"#" w p44 P64
+#ua1 +d b"," =a1
+#+#
+
+#-d
+
+#t81
+#t25
+#ua1 e"," f"#" w p45 P65 
+#ua1 +e b"," =a1
+#+#
+
+#-e
+
+#t81
+#t26
+#ua1 e"," f"#" w p46 P66
+#ua1 +e b"," =a1
+#+#
+
+#-e
+
+#t81
+#t27
+#ua1 e"," f"#" w p47 P67
+#ua1 +f b"," =a1
+#+#
+
+#-f
+
+#t81
+#t28
+#ua1 e"," f"#" w p48 P68
+#ua1 +g b"," =a1
+#+#
+
+#-g
+
+#t81
+#t29
+#ua1 e"," f"#" w p49 P69
+#ua1 +h b"," =a1
+#+#
+
+#-h
+
+#t81
+#t30
+#ua1 e"," f"#" w p50 P70
+#ua1 +i b"," =a1
+#+#
+
+#-i
+
+#t81
+#t31
+#ua1 e"," f"#" w p51 P71
+#ua1 +j b"," =a1
+#+#
+
+#-j
+
+#t81
+#t32
+#ua1 e"," f"#" w p52 P72
+#ua1 +k b"," =a1
+#+#
+
+#-k
+
+#t81
+#t33
+#ua1 e"," f"#" w p53 P73
+#ua1 +l b"," =a1
+#+#
+
+#-l
+
+#t81
+#t34
+#ua1 e"," f"#" w p54 P74
+#ua1 +m b"," =a1
+#+#
+
+#-m
+#t81
+#t35
+#ua1 e"," f"#" w p55 P75
+#ua1 +n b"," =a1
+#+#
+
+#-n
+#t81
+#t36
+#ua1 e"," f"#" w p56 P76
+#ua1 +o b"," =a1
+#+#
+
+#-o
+#t81
+#t37
+#ua1 e"," f"#" w p57 P77
+#ua1 +p b"," =a1
+#+#
+
+#-p
+#t81
+#t38
+#ua1 e"," f"#" w p58 P78
+#ua1 +q b"," =a1
+#+#
+
+#-q
+#t81
+#t39
+#ua1 e"," f"#" w p59 P79
+#ua1 +r b"," =a1
+#+#
+
+#-r
+
+  -------- Ende des Hauptteils -----------------------
+  Ende der Schleife
+
+#t82                SatzEnde: Zwischenteil 82
+
+tprinter            printer.apt laden (Zeichenumwandlungen!)
+

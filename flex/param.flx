@@ -1,0 +1,334 @@
+  PARAM.FLX : Liste der vorhandenen Parameterdateien als ViewListe zeigen
+  2000-10-15
+
+var m
+if "alc" end
+
+  Dateityp ist in #uwz, z.B. "*.apr" oder "*.api" oder "*.aim"
+
+if #uwz jump begin
+
+   manuelle Dateiauswahl gewuenscht, diesen Abschnitt aktivieren:
+ask Namensmuster (z.B. d-*.apr, *.aim oder p-*.?pt)?=#uwz
+if canc end
+if "" jump apr
+ins #uwz
+jump begin
+  Default ist *.APR, wenn nichts eingegeben:
+:apr
+var "*." K1 "pr"
+ins #uwz
+
+:begin
+  eine evtl. offene Viewdatei abschliessen: (bei wiederholter Anwendung!)
+close view
+   Editor name -> #uwX
+var x
+ins #uwX
+  Stapeldatei PARMBAT.BAT anlegen:
+open x parmbat.bat
+write "echo **Datenverzeichnis: " D " >parm " n
+
+write "dir /on /a-d " D #uwz " >> parm" n
+perf datprg
+if #uwV jump progdir
+jump stdir
+
+:progdir
+write "echo **Programmverzeichnis: " P " >>parm " n
+write "dir /on /a-d " P #uwz " >> parm" n
+
+:startdir
+perf stprg
+if #uwV jump stdir
+jump go
+:stdir
+write "echo **Startverzeichnis: " W " >>parm " n
+
+write "dir /on /a-d " #uwz " >> parm" n
+
+:go
+var #uwz
+if "h*" jump hlp
+if %.rtf% jump hlp
+if %.vw% jump vw
+if %.flx% jump flx
+if %.inc% jump flx
+jump fc
+
+:hlp
+write "echo **Help-Verzeichnis: " P "help\\ >>parm " n
+write "dir /on /a-d " P "help\\" #uwz " >> parm" n
+  Editor for rtf is wordpad - kein DOS-Programm, deshalb "start wordpad"
+var #uwz
+if %.vw% jump fc
+if %h*% jump fc
+var "start wordpad"
+ins #uwX
+jump fc
+
+:vw
+write "echo **Help-Verzeichnis: " P "help\\ >>parm " n
+write "dir /on /a-d " P "help\\" #uwz " >> parm" n
+write "echo **View-Verzeichnis: " P "view\\ >>parm " n
+write "dir /on /a-d " P "view\\" #uwz " >> parm" n
+write "echo **Temp-Verzeichnis: " M " >>parm " n
+write "dir /on /a-d " M #uwz " >> parm" n
+var #uwz
+if %.vw% jump fc
+if %h*% jump fc
+var x
+ins #uwX
+jump fc
+
+:flx
+write "echo **FLEX-Verzeichnis: " P "flex\\ >>parm " n
+write "dir /on /a-d " P "flex\\" #uwz " >> parm" n
+
+:fc
+close x
+get env comspec
+ins #uwC
+
+   Jetzt in Datei parm die Liste der Dateien aufbauen
+var #uwC " /c parmbat.bat"
+
+   Das DOS-Fenster wird nicht sichtbar! (cAll)
+cAll
+
+  Datei parm durcharbeiten, parmf draus machen
+open parm
+if no jump error
+open x parmf
+if no jump error
+
+
+get
+
+:line
+if " " jump next
+if "" jump next
+
+if "**" ins #uwP
+if "**" write "  " #uwP n
+if "**" jump next
+if %.% jump do
+  kein Punkt? keine datei
+jump next
+:do
+ins #uwL
+var #uwL(0,4)
+
+  Wenn ganz vorn ein . vorkommt, ist es NT
+if %.% jump NT
+  sonst Win95/98
+write #uwP(0,3) "|" #uwL n
+jump next
+
+:NT
+var #uwL(T" ")
+ins #uwM
+write #uwP(0,3) "|" #uwM(0,13)
+write "  " #uwL(t" ") n
+:next
+  naechste Zeile lesen
+get
+
+  es gab noch eine:
+if yes jump line
+  nein: Datei schliessen
+close
+  Exportdatei auch
+close x
+:view
+  Falls das Fenster nicht im Vordergrund ist:
+ activate
+  die erstellte Liste anzeigen als View:
+View parmf
+  ausgewaehlte Zeile steht in iV
+  Zeile in #uwD kopieren
+ins #uwD
+if " " jump dos
+if cancel jump ende
+if "" jump ende
+var #uwD(b"|")
+  #uwE ist jetzt die dir-Zeile
+ins #uwE
+  #uwD enthaelt vorn die Angabe **D, **P oder **W
+  Der Bearbeitungsbefehl wird zusammengebaut:
+  zuerst der Pfadname der ausgewaehlten Datei
+var #uwD
+if "**S" var ""
+if "**P" var P
+if "**D" var D
+if "**T" var M
+if "**H" var P "help\\"
+if "**F" var P "flex\\"
+if "**V" var P "view\\"
+
+  Pfadname -> #uwF
+ins #uwF
+
+  Jetzt der Dateiname
+var #uwE(0,12)
+  Kommt vorn ein . vor? Dann ist es NT
+if %.% jump DNT
+  sonst Win'95/98, Dateiname:
+var #uwF #uwE(e" ") "." #uwE(9,3)
+ins #uwN
+jump ccc
+
+:DNT
+  NT-Dateiname:
+var #uwF #uwE(e" ")
+ins #uwN
+
+:ccc
+var #uwN
+ins #uFN
+  Editorbefehl
+var #uwC " /c " #uwX " " #uwN
+ins #uwE
+
+  ViewDatei schliessen
+close view
+  Befehl zur Bearbeitung steht in #uwE, ausfuehren!
+ mes
+var #uwz
+if not "*.vw" if not "uif" if not "*.flx" var "Was wollen Sie mit " #uwN " tun?=HiLite-Anzeige|Bearbeiten|Normale Anzeige|Kopieren|L”schen"
+if "*.vw" var "Was wollen Sie mit " #uwN " tun?=Bearbeiten|Normale Anzeige|Kopieren|L”schen"
+if "uif" var "Was wollen Sie mit " #uwN " tun?=Bearbeiten|Normale Anzeige|Kopieren|L”schen"
+if "*.flx" var "Was wollen Sie mit " #uwN " tun?=Bearbeiten|Normale Anzeige|Variablen sichten|Kopieren|L”schen"
+select
+  jump ende, damit Variablen geloescht werden (wie analoge Stellen vorher)
+if cancel jump ende
+if no jump ende
+if "Hi" jump hi
+if "Bearb" jump bearb
+if "K" jump cop
+if "L" jump del
+if "V" exec uvar
+
+  Betrachten:
+var #uwN
+if %~.vw% jump seeview
+
+var #uwN(e".RTF")
+help
+if canc mes Datei zu gross!
+if no mes Datei nicht lesbar!
+var "Das ist die Datei " #uwN
+sho iv
+
+jump view
+
+:seeview
+var #uwN
+ins #uv9
+View
+help view
+end
+
+:del
+yesno Wirklich?
+if not yes jump view
+var #uwN
+delete
+jump begin
+
+:cop
+ask Neuer Name?
+ins #uwO
+var #uwN " " #uwO
+fcopy
+jump begin
+
+:bearb
+var #uwz
+if "uif" jump uiff
+if not %.vw% jump normal
+
+  ViewListe bzw. uif bearbeiten mit aresqa
+del aresqa.lst
+var "?0" #uwN
+aresqa
+:vww
+  wenn gespeichert wurde, gibt es aresqa.lst
+fsize aresqa.lst
+if no jump view
+yes Datei wurde bearbeitet. Bearbeitung sichern?
+if no jump view
+var "aresqa.lst " #uwN
+fcopy
+jump view
+
+:uiff
+del aresqa.lst
+var "?0" #uwN
+aresqa
+jump vww
+:normal
+var #uwE
+call
+  Liste wieder anzeigen:
+jump view
+
+:hi
+var #uwN
+ins #uFN
+perf ende
+var #uwz
+#uwz
+if "*.flx" exec uvar
+exec X hilite
+
+:ende
+  Variablen loeschen
+#uwC
+#uwD
+#uwE
+#uwF
+#uwL
+#uwM
+#uwP
+#uwV
+return
+end
+
+  zwei Unterprogramme
+  Wenn ungleich, ist #uwV besetzt, bei Gleichheit nicht
+
+:datprg
+  ist DbDir = ProgDir?
+var "~" D "x"
+ins #uwV
+var P "x"
+if =#uwV var "."
+ins #uwV
+return
+
+:stprg
+  ist Lokal = ProgDir?
+var "~" P "x"
+ins #uwV
+var W "x"
+if =#uwV var ""
+ins #uwV
+return
+
+:dos
+var #uwD(b": ")
+ins #uwD
+var #uwD(f" ")
+ins #uwD
+var "DOS-Fenster auf " #uwD "?"
+yesno
+if not yes jump view
+get env comspec
+ins #uwC
+var #uwC " /c " P "comm.bat " #uwD " " #uwD(0,2)
+Call
+jump view
+
+:error
+mes Geht nicht

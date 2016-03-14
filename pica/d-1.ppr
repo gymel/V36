@@ -1,0 +1,523 @@
+ Dateiname:        PICA\D-1.PPR
+ Inhalt:           Export-Parameter-Datei fÅr die Bildschirmanzeige von
+                   Pica3-Daten. Die Parameterdatei ist ausgelegt fÅr den
+                   Nachweis der BestÑnde mehrerer Bibliotheken: in einer
+                   Kopfzeile Åber den BestÑnden wird der Bibliotheksname
+                   ausgegeben. FÅr den OPAC nur einer Bibliothek ist das
+                   nicht notwendig. In dem Fall sollten die mit '>>>' mar-
+                   kierten Zeilen auskommentiert und die mit '<<<' markierte
+                   Zeile eingebunden werden.
+ Stand vom         25.08.95 (S. Busemann)
+ énderungen am:    29.08.95 Der nicht dokumentierte Befehl #<\ wurde in den
+                            syntaktisch korrekten RÅckschaltebefehl #<
+                            umgewandelt.
+                            Um einem 'stack overflow' bei sehr vielen BÑnden
+                            bzw. Lokal-/ExemplarsÑtzen vorzubeugen, wurde
+                            der Nachladebefehl |103 in |107 geÑndert.
+                   15.09.95 ExemplarsÑtze mit dem SelektionsschlÅssel d
+                            (1. Position) in #7000 werden nicht angezeigt.
+                            Schlagwortindikatoren in #65XX und #68XX werden
+                            nicht eingeblendet.
+                   10.11.95 Die zwei Zeilen #4004 b"*" e"*" ... fÅr die Aus-
+                            gabe der BandzÑhlung wurden um die Befehle F"."
+                            und P"." ergÑnzt, da der Punkt in den bedingten
+                            Postfixen (Zwischenteile 6 und 8) verschluckt
+                            wird, wenn die BandzÑhlung genau 3 Zeichen lang
+                            ist.
+                   17.11.95 Die b"*"-Befehle in den zwei Zeilen #4004 b"*"
+                            b"*" ... wurden durch B"*" ersetzt, da die Band-
+                            zÑhlung fehlen kann. Au·erdem sind in den #4004-
+                            Zeilen f- und F-Befehle ergÑnzt worden.
+                   20.11.95 Weil vom Lokal- oder Exemplarsatz der Hauptauf-
+                            nahme aus nicht alle BÑnde nachgeladen wurden,
+                            sind die beiden Zeilen #9D00F +g ... wieder akti-
+                            viert und der RÅckschaltebefehl #< unter #-D de-
+                            aktiviert worden
+                   21.11.95 In den Zeilen #4004 B"*" B"*" ... den lokalen
+                            Ersetzungsbefehl ,"_;;_;_" ergÑnzt
+                   15.01.97 Unter #-î die Umsetzung der Ausleihindikatoren
+                            in Volltext an die Katalogisierungsrichtlinie
+                            angepa·t (Kat. 710x/30.03.95)
+                   16.01.97 Da in Pica in der Kat. 4020 ein AbkÅrzungspunkt
+                            weggelassen wird, in der Zeile #4020 p0 durch P37
+                            ersetzt
+                   06.03.97 Der Endebefehl #+# im Unterprogramm #(U wurde
+                            durch die Unterprogramm-Endemarke #)U ersetzt,
+                            da der Datei-Export Åber D-1.PPR ein fehler-
+                            haftes Ergebnis lieferte
+                   02.04.97 Das Indexierfeld in #3220 hat in der ISBD-Anzeige
+                            nichts zu suchen und wird mit Hilfe der Anwender-
+                            variable #uas nicht mehr eingeblendet.
+                   11.07.97 Damit auch ohne Vorhandensein eines Lokalsatzes
+                            Exemplardaten durch eine Leerzeile von den Titel-
+                            daten getrennt sind, Anwendervariable #ulb ein-
+                            gefÅhrt.
+                   07.01.98 Anzeige des Normdatensatzes Drucker, Verleger,
+                            BuchhÑndler eingefÅgt.
+
+
+  Freie Sprungmarken:
+  !  "  $  %  &  '  (  )  *  +  ,  -  .  /  0  6  7  8  9
+  :  ;  <  =  >  ?  @  A  C  F  G  I  J  K  L  M  N  O  P
+  Q  R  S  T  U  V  W  Y  Z  [  \  ]  ^  _  `  o  p  q  r
+  s  t  u  x  y  z  {  |  }  ~    Ä  Ç  É  Ö  Ü  á  à  â
+  ä  ã  å  ç  è  ê  ë  í  ì  ï  ñ  ó  ò  õ  ú  ù  û  ü  †
+  °  ¢  £  §  •  ¶  ß  ®  ©  ™  ´  ¨  ≠  Æ  Ø  ∞  ±  ≤  ≥
+  ¥  µ  ∂  ∑  ∏  π  ∫  ª  º  Ω  æ  ø  ¿  ¡  ¬  √  ƒ  ≈  ∆
+  «  »  …     À  Ã  Õ  Œ  œ  –  —  “  ”  ‘  ’  ÷  ◊  ÿ  Ÿ
+  ⁄  €  ‹  ›  ﬁ  ﬂ  ‡  ‚  „  ‰  Â  Ê  Á  Ë  È  Í  Î  Ï  Ì
+  Ó  Ô    Ò  Ú  Û  Ù  ı  ˆ  ˜  ¯  ˘  ˙  ˚  ¸  ˝  ˛
+
+  Freie Bezeichner fÅr Unterprogramme:
+  0  1  2  3  4  5  6  7  8  9  A  C  D  F  G  I  J  L  M
+  N  O  P  Q  S  T  W  X  Y  Z  a  b  c  d  e  f  g  h  i
+  j  k  l  m  n  o  p  q  r  s  t  u  v  w  x  y  z
+
+
+   ----- Konstanten -------------------------------------------------------
+
+pn="Bildschirmanzeige von Pica3-Daten"
+
+zl=72              ZeilenlÑnge
+
+
+   ----- Kopfbefehle -----------------------------------------------------
+
+         fÅr die Bildschirmanzeige werden keine Kopfbefehle benîtigt!
+
+
+   ----- Zwischenteil-Definitionen ----------------------------------------
+
+1=C
+13=#0 C C t78 "  Bestand siehe bei den einzelnen B—nden (Taste 'groæ' B)" t76
+28=#0 C C t78 "  Bestand siehe Sekund—rausgabe (Taste 'groæ' B)" t76
+31=C "("
+60=#250            EinrÅckung auf aktueller Position festsetzen
+
+
+   ----- Kategorieliste ---------------------------------------------------
+
+                   Satztypenunterscheidung:
+#100* +· e0        Normdatensatz Person
+#150* +é e0        Normdatensatz Kîrperschaft
+#170* +ô e0        Normdatensatz Basisklassifikation
+#180* +ò e0        Normdatensatz Drucker, Verleger, BuchhÑndler
+#800* +ö e0        Normdatensatz Schlagwort
+#dt aab e0                   #uab initialisieren
+#9D00F +a |100     Lokal- oder Exemplarsatz: Titelsatz nachladen
+#0500 +a e0        Titelsatz
+#+#
+
+
+         ----- NormdatensÑtze -----
+
+         --------- Normdatensatz Person: -----
+
+#-·
+#t{ t71 "Normdatensatz Person" t76 C }
+#100* p{ C t78 "Hauptansetzung:  " t76 t60 } ,"_@_ _"
+#300* p{ C &0 t78 "Lebensjahre:     " t76 }
+#200* ++ p{ C C &0 t78 "Verweisungsform: " t76 } m{ C } f"#" f"@" ,"_@_ _" ,"_/_ _" ,'_"__'
+#900* ++ p{ C C &0 #0 } m{ C } u!!
+#+#
+
+         --------- Normdatensatz Kîrperschaft: -----
+
+#-é
+#t{ t71 "Normdatensatz K“rperschaft" t76 C }
+#150* p{ C t78 "Ansetzung:       " t76 t60 }
+#151* ++ p{ C C &0 t78 "Abk”rzung:       " t76 } m{ C }
+#250* ++ p{ C C &0 t78 "Verweisungsform: " t76 } m{ C }
+#450* ++ p{ C C } m{ C } u!!
+#440* ++ p{ C C &0 t78 "Abteilung von:   " t76 } m{ C } u!!
+#+#
+
+         --------- Normdatensatz Basisklassifikation: -----
+
+#-ô
+#t{ t71 "Normdatensatz Basisklassifikation" t76 C }
+#170* p{ C t78 "Notation:  " t76 t60 }
+#500* ++ p"   " m"; "
+#540* ++ p{ C C &0 t78 "Hier auch: " t76 } m"; "
+#+#
+
+         --------- Normdatensatz Drucker, Verleger, BuchhÑndler: -----
+
+#-ò
+#t{ t71 "Normdatensatz Drucker, Verleger, BuchhÑndler" t76 C }
+#180* p{ C t78 "Hauptansetzung:  " t76 t60 } ,"_@_ _"
+#300* p{ C &0 t78 "Lebensjahre:     " t76 }
+#280* ++ p{ C C &0 t78 "Verweisungsform: " t76 } m{ C } f"#" f"@" ,"_@_ _" ,"_/_ _" ,'_"__'
+#900* ++ p{ C C &0 #0 } m{ C } u!!
+#+#
+
+         --------- Normdatensatz Schlagwort: -----
+
+#-ö
+#t{ t71 "Normdatensatz Schlagwort (SWD)" t76 C }
+#800* B"| " p{ C t78 "Hauptschlagwort: " t76 t60 }
+#801* B"| " p" / "
+#802* B"| " p" / "
+#803* B"| " p" / "
+#804* B"| " p" / "
+#805* B"| " p" / "
+#808* B"| " p{ C &0 t78 "Erl—uterung:     " t76 t60 }
+#820* B"| " p{ C &0 t78 "Alternativform:  " t76 t60 }
+#821* B"| " p" / "
+#822* B"| " p" / "
+#823* B"| " p" / "
+#824* B"| " p" / "
+#825* B"| " p" / "
+#830* ++ B"| " p{ C &0 t78 "Synonym:         " t76 t60 } m"; "
+#850* ++ B"| " p{ C &0 t78 "√bergeordnet:    " t76 t60 } m"; "
+#860* ++ B"| " p{ C &0 t78 "Assoziativ:      " t76 t60 } m"; "
+#870* ++ B"| " p{ C &0 t78 "Fr”her:          " t76 t60 } m"; "
+#880* ++ B"| " p{ C &0 t78 "Sp—ter:          " t76 t60 } m"; "
+#890* ++ B"| " p{ C &0 t78 "Neuer Begriff:   " t76 t60 } m"; "
+#891* ++ B"| " p{ C &0 t78 "Alter Begriff:   " t76 t60 } m"; "
+#+#
+
+
+         ----- Unterprogramme -----
+
+#(K
+#>H
+#)K
+
+
+#(H           ----- bibliographische Angaben -----
+#>R                                    EinrÅckung
+#4004 +#4004 e0
+#+l                                    Stufenaufnahme: Bandnummer
+#4004 b"*" e"*" F":" F"." P"." #0000 0 #1100 6 #4004 8 #4236 6 #zz 8
+#3220 u{} =as                          Ansetzungssachtitel
+#uas das p"[" P"] " ,"_@__"
+                                       Stufenaufnahme: Sachtitel und ZusÑtze
+#4004 B"*" B"*" f" " ,"_@__" ,"_;;_;_" #0000 0 #1100 6 #4004 0 #4236 6 #zz 0
+#+j
+#-l
+#3220 u{} =as                          Ansetzungssachtitel
+#uas das p"[" P"] " ,"_@__"
+#4261 +j e0 #zz 6                      VerknÅpfung zur PrimÑrausgabe
+#4000 e" / " f"@" ,"_@__" ,"_;;_;_"    Haupsachtitel und ZusÑtze
+#4000 b" / " p2 ,"_@_ _" ,"_;;_;_"
+#4000 e0 #0000 0 #1100 6 #3161 37 #4028 6 #4063 6 #zz 37
+#+j
+#-k
+#)H
+
+
+#(U           ----- UntersÑtze ausgeben -----
+#0500 +#0000 i7,j p14 e0     enthaltenes/beigefÅgtes Werk hat keinen Bestand
+#>E                          Bestandsdaten ausgeben
+
+              --------- ersten Untersatz suchen: -----
+
+#0000 +#0500 e"=" F" " P"+" |102           (PrimÑrsatz ist Titelsatz)
+#0100 +#0500 P"+" |102                      falls keine #0000 vorhanden
+#9D00F +g P"+" |102          (PrimÑrsatz ist Lokal- oder Exemplarsatz)
+#)U                          wenn es keine UntersÑtze gibt, fertig
+#0500 +f i6,E p28 e0         Hinweis 'Bestand siehe SekundÑrausgabe'
+#0500 +f i7,j e0             kein Hinweis bei enthaltenem Werk
+#t13                         Hinweis 'Bestand siehe bei den einzelnen BÑnden'
+#-f
+#t{ C &0 #0 }
+
+              --------- Untersatz ausgeben: -----
+
+#-g
+#t4
+#>R
+                      Bandnummer ausgeben:
+#4004 b"*" e"*" F":" F"." P"." #0000 0 #1100 6 #4004 8 #4030 6 #zz 8
+#3220 u{} =as                          Ansetzungssachtitel
+#uas das p"[" P"] " ,"_@__"
+                                       Stufenaufnahme: Sachtitel und ZusÑtze
+#4004 B"*" B"*" f" " ,"_@__" ,"_;;_;_" #0000 0 #1100 6 #4004 0 #4030 6 #zz 0
+#4020 P37 #0000 0 #1100 6 #4004 0 #4030 6 #zz 0  Ausgabebezeichnung
+#4030 p0 #0000 0 #1100 6 #4004 0 #zz 0           Ort, Verlag
+#1100 B" $ " #zz 0                               Erscheinungsjahr
+
+              --------- nÑchsten Untersatz suchen: -----
+
+#<                           zur Åbergeordneten Stufe zurÅckschalten
+                             zuletzt geladenen Untersatz entfernen und
+                             nÑchsten suchen und nachladen:
+#0000 +g e"=" F" " P"+" |107           (PrimÑrsatz ist Titelsatz)
+#0100 +g P"+" |107                      falls keine #0000 vorhanden
+#9D00F +g P"+" |107          (PrimÑrsatz ist Lokal- oder Exemplarsatz)
+                             und nach #-g zurÅck, wenn es einen gibt
+#)U                          fertig, falls es keine weiteren UntersÑtze gibt
+
+
+#(E           ----- Bestandsdaten ausgeben -----
+#dt dlb e0
+#0100 +Ñ P"-" |112           ersten Exemplarsatz suchen und nachladen
+#9D00F +Ñ P"-" |112          falls PrimÑrsatz Lokal- oder Exemplarsatz ist
+#+E                          fertig, falls kein Lokal- oder Exemplarsatz
+#-Ñ                                                            vorhanden
+#dt dbn dbs deb dac e0
+#7000 +#7000 e0                        falls Exemplarsatz, weiter bei #7000
+                                       Lokaldaten:
+#9D00L alb
+#9D00L dbr abr                         ELN wird ersetzt durch
+#ubr >B                           >>>  Bibliotheksname
+                                       Wenn der Bibliotheksname herausge-
+                                       nommen wird, sollte die folgende
+                                       Zeile aktiviert werden, die eine
+                                       Leerzeile einfÅgt
+ #t4                               <<<
+#ubn e"$" =ab+m p60 p61 p3 p" " p70   P{" " t78} s71,-
+#-m
+#4715 p30                              allg. Hinweis SekundÑrausgaben
+#6500 ++ I6,< u!! u|| p17 m2           lokale Schlagwîrter (oder SW-Ketten)
+#6501 ++ I6,< u!! u|| p4 m2            (lokale Ebene)
+#6502 ++ I6,< u!! u|| p4 m2
+#6503 ++ I6,< u!! u|| p4 m2
+#6504 ++ I6,< u!! u|| p4 m2
+#6505 ++ I6,< u!! u|| p4 m2
+#6506 ++ I6,< u!! u|| p4 m2
+#6507 ++ I6,< u!! u|| p4 m2
+#6508 ++ I6,< u!! u|| p4 m2
+#6509 ++ I6,< u!! u|| p4 m2
+#6510 ++ I6,< u!! u|| p4 m2
+#6511 ++ I6,< u!! u|| p4 m2
+#6512 ++ I6,< u!! u|| p4 m2
+#6513 ++ I6,< u!! u|| p4 m2
+#6514 ++ I6,< u!! u|| p4 m2
+#6515 ++ I6,< u!! u|| p4 m2
+#6516 ++ I6,< u!! u|| p4 m2
+#6517 ++ I6,< u!! u|| p4 m2
+#6518 ++ I6,< u!! u|| p4 m2
+#6519 ++ I6,< u!! u|| p4 m2
+#6520 ++ I6,< u!! u|| p4 m2
+#6521 ++ I6,< u!! u|| p4 m2
+#6522 ++ I6,< u!! u|| p4 m2
+#6523 ++ I6,< u!! u|| p4 m2
+#6524 ++ I6,< u!! u|| p4 m2
+#6525 ++ I6,< u!! u|| p4 m2
+#6526 ++ I6,< u!! u|| p4 m2
+#6527 ++ I6,< u!! u|| p4 m2
+#6528 ++ I6,< u!! u|| p4 m2
+#6529 ++ I6,< u!! u|| p4 m2
+#6530 ++ I6,< u!! u|| p4 m2
+#6531 ++ I6,< u!! u|| p4 m2
+#6532 ++ I6,< u!! u|| p4 m2
+#6533 ++ I6,< u!! u|| p4 m2
+#6534 ++ I6,< u!! u|| p4 m2
+#6535 ++ I6,< u!! u|| p4 m2
+#6536 ++ I6,< u!! u|| p4 m2
+#6537 ++ I6,< u!! u|| p4 m2
+#6538 ++ I6,< u!! u|| p4 m2
+#6539 ++ I6,< u!! u|| p4 m2
+#6540 ++ I6,< u!! u|| p4 m2
+#6541 ++ I6,< u!! u|| p4 m2
+#6542 ++ I6,< u!! u|| p4 m2
+#6543 ++ I6,< u!! u|| p4 m2
+#6544 ++ I6,< u!! u|| p4 m2
+#6545 ++ I6,< u!! u|| p4 m2
+#6546 ++ I6,< u!! u|| p4 m2
+#6547 ++ I6,< u!! u|| p4 m2
+#6548 ++ I6,< u!! u|| p4 m2
+#6549 ++ I6,< u!! u|| p4 m2
+#6000 B"!" B"!" p29                    lokale Notationen
+#6001 B"!" B"!" p4
+#6002 B"!" B"!" p4
+#6003 B"!" B"!" p4
+#6004 B"!" B"!" p4
+#6005 B"!" B"!" p4
+#6006 B"!" B"!" p4
+#6007 B"!" B"!" p4
+#6008 B"!" B"!" p4
+#6009 B"!" B"!" p4
+#4710 p20                              NE-Vermerk
+#+D
+                                       Exemplardaten:
+#7000 +D i17,d e0                      falls Selektionscode d, keine Ausgabe!
+#ulb +#9D00G e0
+#t4
+#9D00G L alb
+#9D00G dbr L abr                      ELN wird ersetzt durch
+#ubr >B                           >>>  Bibliotheksname
+#ubn e"$" =ab+n p60 p61 p4 p" " p70   P{" " t78} s71,-
+#-n
+#9D00G l y0 u$$ e" @ " e" \ " f"!" p12 ,"_!_: _"     Aufstellungssignatur
+#9D00G l b" @ " =ac e0                               Ausleihcode
+#9D00G +î l e0
+#9D00G s y0 e" @ " e" \ " p12         Magazinsignatur
+#9D00G s b" @ " =ac e0                Ausleihcode ...
+#-î
+#uac +Å i6,u p21 e0                    ... in Volltext umsetzen
+#uac +Å i6,b p22 e0
+#uac +Å i6,c p21 e0
+#uac +Å i6,s p23 e0
+#uac +Å i6,d p23 e0
+#uac +Å i6,i p24 e0
+#uac +Å i6,f p24 e0
+#uac +Å i6,g p26 e0
+#uac +Å i6,a p25 e0
+#9D00G +Å l p27 e0                    Ausleihcode-Standardtext
+#9D00G s p27 e0                       Ausleihcode-Standardtext
+#-Å
+#6800 ++ I6,< u!! u|| p17 m2           lokale Schlagwîrter (oder SW-Ketten)
+#6801 ++ I6,< u!! u|| p4 m2            (Exemplarebene)
+#6802 ++ I6,< u!! u|| p4 m2
+#6803 ++ I6,< u!! u|| p4 m2
+#6804 ++ I6,< u!! u|| p4 m2
+#6805 ++ I6,< u!! u|| p4 m2
+#6806 ++ I6,< u!! u|| p4 m2
+#6807 ++ I6,< u!! u|| p4 m2
+#6808 ++ I6,< u!! u|| p4 m2
+#6809 ++ I6,< u!! u|| p4 m2
+#6810 ++ I6,< u!! u|| p4 m2
+#6811 ++ I6,< u!! u|| p4 m2
+#6812 ++ I6,< u!! u|| p4 m2
+#6813 ++ I6,< u!! u|| p4 m2
+#6814 ++ I6,< u!! u|| p4 m2
+#6815 ++ I6,< u!! u|| p4 m2
+#6816 ++ I6,< u!! u|| p4 m2
+#6817 ++ I6,< u!! u|| p4 m2
+#6818 ++ I6,< u!! u|| p4 m2
+#6819 ++ I6,< u!! u|| p4 m2
+#6820 ++ I6,< u!! u|| p4 m2
+#6821 ++ I6,< u!! u|| p4 m2
+#6822 ++ I6,< u!! u|| p4 m2
+#6823 ++ I6,< u!! u|| p4 m2
+#6824 ++ I6,< u!! u|| p4 m2
+#6825 ++ I6,< u!! u|| p4 m2
+#6826 ++ I6,< u!! u|| p4 m2
+#6827 ++ I6,< u!! u|| p4 m2
+#6828 ++ I6,< u!! u|| p4 m2
+#6829 ++ I6,< u!! u|| p4 m2
+#6830 ++ I6,< u!! u|| p4 m2
+#6831 ++ I6,< u!! u|| p4 m2
+#6832 ++ I6,< u!! u|| p4 m2
+#6833 ++ I6,< u!! u|| p4 m2
+#6834 ++ I6,< u!! u|| p4 m2
+#6835 ++ I6,< u!! u|| p4 m2
+#6836 ++ I6,< u!! u|| p4 m2
+#6837 ++ I6,< u!! u|| p4 m2
+#6838 ++ I6,< u!! u|| p4 m2
+#6839 ++ I6,< u!! u|| p4 m2
+#6840 ++ I6,< u!! u|| p4 m2
+#6841 ++ I6,< u!! u|| p4 m2
+#6842 ++ I6,< u!! u|| p4 m2
+#6843 ++ I6,< u!! u|| p4 m2
+#6844 ++ I6,< u!! u|| p4 m2
+#6845 ++ I6,< u!! u|| p4 m2
+#6846 ++ I6,< u!! u|| p4 m2
+#6847 ++ I6,< u!! u|| p4 m2
+#6848 ++ I6,< u!! u|| p4 m2
+#6849 ++ I6,< u!! u|| p4 m2
+                                       Bestand:
+#7121 +D p19                           Bestandsangaben im Anzeigeformat
+#9D00G H p19 e0                       zusammenfassende Bestandsangabe
+#9D00G y0 H ,"_ = /_; = /_" ,"_/s_s_" ,"_/v_v_" ,"_/a_a_" ,"_/d_d_" ,"_/m_m_" ,"_/b_b_" ,"_/j_j_" ,"_/k_k_" ,"_/V_V_" ,"_/A_A_" ,"_/D_D_" ,"_/M_M_" ,"_/E_E_" ,"_/J_J_" ,"_/K_K_" =bs e0
+#ubs y0 e"; " e" * " e" / " e" ! " e" @ " =eb e0
+#-X
+                                       Bestand: Beginngruppe:
+#ueb s p"Unterr.: " P" "
+#ueb v p"Bd. " P" "
+#ueb a p"Heft " P" "
+#ueb +#0500 d p"(" e1
+#ueb +#0500 m p"(" e1
+#ueb +#0500 b p"(" e1
+#0500 e0
+#ueb d P"."
+#ueb m P"."
+#ueb b y0 ,"_-__"
+#ueb j p"(" P")"
+#ueb +#0500 d p") " e2
+#ueb +#0500 m p") " e2
+#ueb +#0500 b p") " e2
+#0500 e0
+#ueb b y0 c"-" p"- ... " e6
+#ueb k P" " p"Kommentar: "
+                                       Bestand: Endegruppe:
+#ueb +#0500 V p"- " e2
+#ueb +#0500 A p"- " e2
+#ueb +#0500 D p"- " e2
+#ueb +#0500 M p"- " e2
+#ueb +#0500 E p"- " e2
+#ueb +#0500 K p"- " e2
+#0500 e0
+#ueb V p"Bd. " P" "
+#ueb A p"Heft " P" "
+#ueb +#0500 D p"(" e1
+#ueb +#0500 M p"(" e1
+#ueb +#0500 E p"(" e1
+#0500 e0
+#ueb D P"."
+#ueb M P"."
+#ueb E y0
+#ueb J p"(" P")"
+#ueb +#0500 D p") " e2
+#ueb +#0500 M p") " e2
+#ueb +#0500 E p") " e2
+#0500 e0
+#ueb K P" " p"Kommentar: "
+
+#ubs +#0500 y0 b"; " e"; " = p"="
+#ubs y0 c"; " p{ "; " C } e0
+#0500 e0
+#ubs y0 b"; " =bs e0
+#ubs +X y0 e"; " e" * " e" / " e" ! " e" @ " =eb e0
+                                       Bestand: Schlu·gruppe:
+#ubs B"; " " " ,"_ * _é_" ,"_ / _ô_" ,"_ ! _ö_" ,"_ @ _@_" deb aeb
+#ueb +#0500 é p{";" C} e0
+#ueb +#0500 ô p{";" C} e0
+#ueb +#0500 ö p{";" C} e0
+#ueb +#0500 @ p{";" C} e0
+#0500 e0
+#ueb é p"ab: " P" "
+#ueb ô ,"_M_ Monat(e)_" ,"_J_ Jahr(e)_" P" "
+#ueb ö P" Ausgaben "
+#ueb @ p"Kommentar: "                 Bestand Ende
+#9D00G n y0 p32
+#-D
+#7122 p4 p"L”cke(n): "
+#7123 p4 p"Kommentar: "
+ #<                           zum Titelsatz zurÅckschalten
+                             zuletzt geladenen Lokal- bzw. Exemplarsatz
+                             entfernen und nÑchsten Lokal-/Exemplarsatz
+                             suchen und nachladen:
+#0100 +Ñ P"-" |117
+#9D00F +Ñ P"-" |117          falls PrimÑrsatz Lokal- oder Exemplarsatz ist
+#-E
+#t76
+#)E
+
+
+tPICA3A
+ tPICA3B                      aktivieren, falls der Titel mit dem Verfasser-
+                             bzw. Urheberkopf versehen werden soll
+tBIBLIO
+
+
+              ----- EinrÅckung -----
+
+#(R
+#0000 +5 b"+" b"+" b"+" b"+" b"+" e0
+#0000 +4 b"+" b"+" b"+" b"+" e0
+#0000 +3 b"+" b"+" b"+" e0
+#0000 +2 b"+" b"+" e0
+#0000 +1 b"+" e0
+#t61
+#)R
+#-5
+#t{ &14 #17 }
+#)R
+#-4
+#t{ &11 #14 }
+#)R
+#-3
+#t{ &8 #11 }
+#)R
+#-2
+#t{ &5 #8 }
+#)R
+#-1
+#t{ &3 #5 }
+#)R
+
+

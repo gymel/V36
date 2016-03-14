@@ -1,0 +1,65 @@
+  BEDIT.FLX : Bequemes esternes Editieren eines Datenfeldes
+  2001-03-01 : Ausgeloest durch ONERROR.FLX
+               wenn im Schreibfeld  Bnnn eingebeben wurde (nnn=Feldnummer)
+
+  In #uxE steht  Bnnn
+
+var #uxE(1,0)
+ins #uxE
+var #uxE(f" ")
+ins #uxE
+if "" jump extern
+
+var "#" #uxE
+var
+if "" jump fehler
+ins #uxF
+  ExpParameter sichern
+var e
+ins #uwP
+  e-e.apr laden, darin werden #uxE und #uxF benutzt
+  darin Kommentar! Aenderung fuer Notepad
+xport p e-e
+open x bedit
+down
+close x
+
+  Entweder X-Editor:
+
+get env comspec
+ins #uwC
+var #uwC " /c x bedit"
+call 
+ 
+  oder Notepad:
+
+ call notepad bedit
+ set c1
+
+  ExpParam wieder aktivieren
+var #uwP
+xport p
+
+open bedit
+var ""
+:zeile
+get +
+if yes jump zeile
+
+  set c0
+
+  Einlesen beendet, einmischen
+ins
+sho rec
+disp
+end
+:extern
+extern
+end
+:fehler
+var "Das Feld ist unbesetzt" n "Geben Sie es direkt im Schreibfeld ein, " 
+var +"das geht viel schneller und direkter" n "Der Befehl B ist gedacht fÅr Felder," n
+var +"die sehr lang sind und im Schreibfeld deshalb unÅbersichtlich"
+ansi
+mes
+

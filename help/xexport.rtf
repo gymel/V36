@@ -1,0 +1,170 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman Times New Roman;}{\f1\fmodern\fprq1 Courier New;}{\f2\froman\fprq2 Times New Roman;}{\f3\fswiss\fcharset0 Arial;}{\f4\froman\fprq2\fcharset0 Times New Roman;}{\f5\fmodern\fprq1\fcharset0 Courier New;}{\f6\froman\fcharset0 Times New Roman;}{\f7\fswiss\fcharset0 MS Sans Serif;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red0\green176\blue0;\red255\green0\blue0;}
+\viewkind4\uc1\pard\qr\f0\fs24 
+\par \fs18 `\cf1\ul\b Register\cf2\ulnone\b0 `\cf3\b\f1\fs20     
+\par \pard\cf2\b0\f2     
+\par \b\f3 Exportieren\b0\f2  kann man entweder direkt mit dem Befehl  \cf1\f1 `\ul\b write\cf2\ulnone\b0\f4 ,` der unmittelbar in die momentane Exportdatei schreibt, oder aber mit Hilfe von Export-Parametern mit dem Befehl \cf3\b\f5 export\cf2\b0\f4 . Das zweite ist die m\'e4chtigere Methode, daf\'fcr aber mu\'df man sich mit der `\cf1\ul\b\f2 Exportsprache\cf2\ulnone\b0 ` auskennen. \f4 Der Vorteil ist, da\'df man mit einem einzigen Befehl, eben \f5 export\f4 , eine hochkomplexe strukturierte Ausgabe veranlassen kann, f\'fcr die man sonst eine seitenlange Sequenz von \f5 write\f4 -Befehlen br\'e4uchte.\f2 
+\par \i\f4 Hinweis: \i0 Bis V27.1 gab es \f5 xport\f4  und \f5 download\f4  als getrennte Befehle. Sie wurden zusammengefa\'dft: Wo bisher \f5 xport\f4  oder \f5 download\f4  stand, kann nun einheitlich \f5 export\f4  stehen, \f5 download\f4  und \f5 xport\f4  bleiben aber m\'f6glich - kein alter FLEX mu\'df ge\'e4ndert werden, alle drei sind nun synonym. Empfohlen wird, nur noch  \f5 export\f4   zu verwenden.\f2 
+\par     
+\par \cf3\b\f5 Export\cf2\b0\f2   \cf3\b\f1   \cf2\b0\i\f4 gleichwertig: \cf3\b\i0\f5  Download\cf2\b0\i\f4  \cf3\ul\b\i0\f1 
+\par \ulnone\f5 export\f1    \cf4\i\f2 acon\cf3\i0\f1     \cf2\b0\f2  \cf3\b\f1   \cf2\b0\i\f4 gleichwertig, aber nicht mehr empfohlen: \cf3\b\i0\f5  download \cf2\b0\f2 und\cf3\b\f5  xport\f1 
+\par \pard\li709\cf2\b0\f4 Aktuellen Satz exportieren (wie \'fcber Men\'fc Export) mit Hilfe der geladenen Parameter (siehe \f5 export param\f4 )   \f2 
+\par Mit \cf3\b\f4 E\cf2\b0  oder \cf3\b D\cf2\b0   (nicht bei \i acon\i0 ) erfolgt der Export \'fcber die `\cf1\ul\b\f2 PrintParameter\cf2\ulnone\b0 ` statt ExportParameter, aber in dieselbe Datei.    
+\par Die Parameter\f4 datei kann man mit dem Befehl\f2  \f4  \b\f1 `\cf1\ul\f5 ex\f1 port\cf2\ulnone ` p...\b0\f4  \'e4ndern und \f2 die Ausgabedatei \f4 mit\f2  \b\f5  \b0 export\b\f1  f...\b0\f4   oder  \f5 open x ...\f4  .   \f2 
+\par \f4 Soll nur ein bestimmter Abschnitt in den Exportparametern ausgef\'fchrt  werden: vorher eine Variable besetzen, z.B. #uFL (mit Befehl  \f1 var xxx\\ins #uFL)\f2 , und in den Parametern am Anfang einen Sprung einbauen:     
+\par \f1 #uFL +A e0\f2     
+\par \f4 Oder - einfacher - die nachfolgend beschriebene Form nutzen:\f2 
+\par \pard\b\f1     
+\par \cf3\f5 export\f1  \f5 -x\f1        \cf4\i\f4 a\f2 vanti\cf3\i0\f1 
+\par \pard\li709\cf2\b0\f4 F\'fchrt in den geladenen Exportparametern den Abschnitt unter dem Label  \b\f5 #-x\b0\f4   aus. Dabei wird nichts ausgegeben, sondern gedacht ist dies f\'fcr Manipulationen am Datensatz nach Art des beim alten Programm  UPDATE.EXE m\'f6glichen Verfahrens (sog. "parametrierte Vorbehandlung", Kap. 9.6). Dabei war nur das Label  \f5 #-#\f4   m\'f6glich, hier ist es ein beliebiges. Dieser Befehl wurde nur eingef\'fchrt, damit man alte Parameterdateien dieser Art weiterverwenden kann, wenn mit dem Programm  \f5 acon\f4   Updates zu machen sind. 
+\par \i Wenn\i0  bei \b\f5 #-x\b0\f4   eine Datenausgabe passiert, landet sie in der internen Variablen, und zwar wird sie hinten angeh\'e4ngt. Also vorher mit  \f5 var ""\f4   leeren, wenn das nicht erw\'fcnscht ist, und anschlie\'dfend  \f5 ins $xy\f4 , wenn das Ergebnis dann noch gebraucht wird. 
+\par \i Sonderfall:\i0  Der Abschnitt  \f5 #- E\f4 , sog. "Endabschnitt", kann ausgef\'fchrt werden, indem man 
+\par \f5 export - E\f4   gibt. (Jeweils ein Leerzeichen hinter dem - .) 
+\par 
+\par \pard\i Tip: \i0 Bei den nachfolgend beschriebenen Optionen (\f5 param, table, file\f4  ...) gen\'fcgt die Angabe des jeweils ersten Buchstabens, also z.B.  \f5 exp p \i\f4 name\i0   statt  \f5 export param \i\f4 name\i0 .\f2 
+\par 
+\par \cf3\b\f5 e\f1 xport\f5  param\cf0\f1  \b0\i\f2 name\cf3\b\i0\f1    \cf4\i\f2 acon\cf0\b0 
+\par \cf3\b\i0\f5 e\f1 xport\f5  table\cf0\f1  \b0\i\f2 name\cf3\b\i0\f1    \cf4\i\f2 acon\cf0\b0 
+\par \pard\li709\i0 Parameterdatei  \i name.\f5 x\i0 pr\f2  bzw. \i name.\f5 x\i0 pr\f4  f\'fcr den Export laden. 
+\par \f2 Wenn \i name\i0  fehlt, wird der Inhalt der `\cf1\ul\b iV\cf0\ulnone\b0 ` genommen. 
+\par \f4 Im zweiten Fall wird die Datei  \i\f2 name.\f5 x\i0 pt \f4 zur schon vorhandenen Export-Parameterdatei hinzugeladen. Das entspricht dem Befehl  \f5 t\i\f2 name\i0  in der Exportsprache\f4 , doch es d\'fcrfen keine mit # oder ! beginnenden Zeilen in der Datei stehen, sie w\'fcrden ignoriert\f2 . 
+\par \b Achtung:\b0  \i name\i0  ohne\f4  die Erweiterung \f2  \f5 .xpr\f2  bzw. \f4  \f5 .xpt\f4  angeben!  \f5 x\f4   ist dabei der Konfigurationsbuchstabe, im Standardfall also  \f5 a\f4   f\'fcr  \f5 $a.cfg\f4 . 
+\par Gesucht wird die Datei hintereinander auf DbDir, WorkDir und ProgDir. Liegt sie dort nirgends, wird ein zweiter Versuch gemacht mit  \i name\i0\f5 .@pr\f4  bzw. \f5 .@pt\f4  \f2 
+\par \i\f4 Tip: \i0\f2 Steht \b ?\b0  statt \i name\i0 , wird \f4 interaktiv \f2 eine Dateiauswahl angeboten. 
+\par Mit  \b\f1 `\cf1\ul if no\cf0\ulnone ` ...\b0\f2   kann man auf den Fehlerfall reagieren (Param. konnten nicht geladen werden). \f4 Die Fehlermeldung steht dann in der iV, d.h. man kann schreiben: 
+\par \f5 exp p abc 
+\par if no mes;jump perror\f2 
+\par \pard\i\f4 
+\par \cf3\b\i0\f5 e\f1 xport\f5  file\cf0\f1  \b0\i\f2 filename\cf3\b\i0\f1    \cf4\i\f2 acon\cf0\b0\i0 
+\par \cf3\b\f5 e\f1 xport\f5  file\cf0\f1  +\b0\i\f2 filename\cf3\b\i0\f1    \cf4\i\f2 acon\cf0\b0\i0 
+\par \pard\li709 Nachfolgende Exporte (per \cf2\f5 export\cf0\f2  oder \b\f1 `\cf1\ul write\cf0\ulnone `\b0\f2 ) sollen in die Datei  \i filename\i0   gehen. \f4 Der Befehl ist gleichwertig mit  \f5 open x [+]\i\f4 filename\i0\f2 
+\par \f4 Das '+' bewirkt, da\'df an die Datei angeh\'e4ngt wird, sonst wird sie, falls vorhanden, direkt gel\'f6scht. \f2 
+\par Fehlt der \i filename,\i0  wird der Inhalt der iV als Dateiname genommen. 
+\par \f4 Der  \i\f2 filename\i0\f4   kann ein Pfadname sein. Jeder Pfad ist m\'f6glich, wo Schreibberechtigung besteht. 
+\par \i Hinweis:\i0   Der \i\f2 name\i0\f4  kann keine URL sein, d.h. das Schreiben von Dateien auf Webservern ist nicht m\'f6glich.  Ein Dateiname darf keines der folgenden Zeichen enthalten:    \\ / : * ? " < > |.  Relative Pfade (wie z.B. \f5 ../myDir/filename.txt\f4 ) sind hihngegen m\'f6glich 
+\par \i Tip: \i0\f2 Steht \b ?\b0  statt \i filename\i0 , wird \f4 interaktiv \f2 eine Dateiauswahl angeboten. 
+\par Mit  \b\f1 `\cf1\ul if no\cf0\ulnone ` ...\b0\f4   kann man auf den Fehlerfall reagieren (Datei kann nicht zum Schreiben ge\'f6ffnet werden). \f2 
+\par \f4 Bei \cf4\b\i\f2 acon\cf0\b0\i0\f4   kann der \i filename\i0  auch \i stdout\i0  oder \i stderr\i0  sein. So kann man zwischendurch die Ausgabe des Befehls write auch mal auf die Konsole umlenken und mit \f5 exp f +...\f4  wieder zur\'fcckschalten. \f2 
+\par \f4 Gleichwertig mit  \f5 export file ...\f4   ist   \f5 open x ... (\cf4\b\i\f2 acon\cf2\b0\i0\f4   ab V35.9)\cf0\f2 
+\par 
+\par \f4 Schlie\'dfen kann man die Ausgabedatei mit \b\f1 `\cf1\ul close x\cf0\ulnone `\b0\f2  . Das geschieht \f4 zwar\f2  automatisch am Ende jedes Schreibvorgangs\f4 ,\f2  \f4 aber mit  \f5 close x\f4   wird wieder diejenige Datei zur Ausgabedatei, die in der INI-Datei mit \f5 OutputFile\f4  angegeben ist. \f2 
+\par \i\f4\'dcbrigens:\i0  Die Datei wird erst dann neu angelegt, wenn etwas hineingeschrieben wird. Es kann also nicht passieren, da\'df eine leere Datei zur\'fcckbleibt, wenn gar nichts geschrieben wurde. \f2 
+\par \pard 
+\par \pard\fi-710\li710\cf3\b\f5 export\f1  brief\cf2\b0\f2    
+\par \tab Die Kurzliste der Erg.Menge wird in die Exportdatei geschrieben. Wenn gerade eine ViewListe aktiv ist (d.h. zuletzt angezeigt wurde oder mit \b\f1 `\cf1\ul view\cf2\ulnone ` ...\b0\f4  ge\'f6ffnet wurde), dann wird diese Liste geschrieben. Sollen dagegen die Datens\'e4tze als solche exportiert werden, mu\'df \b\f5 exp\f1  view\b0\f2  benutzt werden\f4 . 
+\par \i\tab Achtung:\i0  in \cf4\b\i\f2 acon\cf2\b0\i0\f4  wird diese Funktion mit dem Befehl \b\f1 `\cf1\ul\f5 list\cf2\ulnone\f1 `\b0\f4  realisiert.\b\f1 
+\par \pard     
+\par \cf3\f5 export\f1  view\cf2\b0\f2   \b\f1   \b0\f2    [zur `\cf1\ul\b View-Technik\cf2\ulnone\b0 ` siehe "allegro news" 58]    
+\par \pard\li710\f4 Die momentan ge\'f6ffnete ViewListe wird zum Exportieren benutzt. Die Datens\'e4tze werden in der Reihenfolge der ViewListe ausgegeben. In den Exportparametern kann man die Variable \f1 #uzV\f4  nutzen, die jeweils die Zeile aus der ViewListe enth\'e4lt. Auch die Zwischenzeilen (\'dcberschriften, Summen) werden exportiert.\b\f1  
+\par \b0\f4 Aber: Es mu\'df sich um eine ViewListe handeln, die aus einer Erg.Menge hervorgegangen ist. Diese zeichnen sich dadurch aus, da\'df die Zeilen mit einer internen Satznummer und dahinter \b\f5 |\b0\f4  beginnen.\b\f1 
+\par \b0\i\f4 Anm.: acon  \i0 kennt keine ViewListen.\b\f1 
+\par \pard\b0\f0\fs18     
+\par \pard\fi-710\li710\cf3\b\f5\fs20 export\f1  database\cf2\b0\f4    Die gesamte Datenbank wird exportiert. Mit \'dcberlegung einsetzen, wenn sehr gro\'df!\b\f1     
+\par \pard     
+\par \pard\fi-710\li710\cf3\f5 export\f1  fam\cf2\b0\f2    \cf3\b\f1    \cf4\i\f2 acon\cf2\b0\i0     
+\par \tab\f4 Der aktuelle Satz wird zusammen mit allen per Verkn\'fcpfung dazugeh\'f6rigen S\'e4tzen (wenn es solche gibt) in die Exportdatei geschrieben. Die Reihenfolge ergibt sich durch die Ordnung der Prim\'e4rschl\'fcssel (s.a. Befehl  \f1 `\cf1\ul\b family\cf2\ulnone\b0 ` / Family\f2  )\b\f1     
+\par \pard     
+\par \cf3\f5 Export\f1  set    
+\par \f5 export\f1  set   \cf4\i\f2 acon\cf3\i0\f1  \cf2\b0\f4 (Zusatzfunktion siehe unten)\cf3\b\f1    
+\par \pard\li709\cf2\b0\f4 Aktuelle Erg.menge exportieren (wie \'fcber Men\'fc Export). Mit \cf3\b\f5 E\cf2\b0\f2  werden, wie oben, die PrintParameter benutzt.    
+\par \pard\b\f1     
+\par \cf3\f5 export\f1  offline    
+\par \pard\li709\cf2\b0\f2 Wenn eine `\cf1\ul\b Offline-Datei\cf2\ulnone\b0\f4 ` existiert, wird diese als Ganzes exportiert (wie auf dem Men\'fc "Export").    \f2 
+\par \pard\b\f5 
+\par \cf3 export\f1  Head   \cf4\i\f2 acon\cf3\i0\f1  
+\par \f5 export\f1  Foot   \cf4\i\f2 acon\cf3\i0\f1 
+\par \pard\li709\cf2\b0\f4 Hiermit kann man gezielt den Kopf- bzw. Fu\'dfabschnitt der Exportparameter ausf\'fchren lassen. Existiert der betr. Abschnitt nicht, geschieht nichts. 
+\par N\'fctzlich kann das sein, wenn die Exportdatei einen bestimmten Vorspann oder ein bestimmtes Endst\'fcck braucht. Eher zu empfehlen ist in beiden F\'e4llen  \f5 export -H\f4   bzw.  \f5 export -F\f4   mit zwei ganz normalen Abschnitten  \f5 #-H\f4   bzw.  \f5 #-F\f4   in den Parametern. 
+\par Wenn dieses unabh\'e4ngig von den Daten ist, kann man dazu aber auch  \b\f1 wri F\b0\i\f2 name\i0   einsetzen!    
+\par \pard\b\f1     
+\par \cf3\b0\f5 export Ref\b\f1     \cf2\f4 Veraltet!\b0  F\'fcr \cf4\b\i\f2 acon\f4  \cf2\b0\i0  und \cf4\b\i\f2 a\f4 99\cf2\b0\i0  wird nur noch der Befehl  \f5 `\cf1\ul\b set aN\cf2\ulnone\b0 `\f4  empfohlen.\cf3\b\f1 
+\par \pard\li709\cf2\b0\f4 Hiermit werden im aktuellen Satz die V14-Ersetzungen durchgef\'fchrt, d.h. K\'fcrzel und Stammsatz-IdNummern durch Klartexte ersetzt. Eine Ausgabe erfolgt nicht, dazu mu\'df noch ein normales  \b\f5 export\b0\f4   folgen.\f2 
+\par \b\i\f4 Achtung:\b0\i0  Den Datensatz nach diesem Befehl nicht anschlie\'dfend speichern, denn die K\'fcrzel und IdNummern sind dann als solche nicht mehr da. Diesen Befehl also \b nur\b0  einsetzen, wenn es lediglich um eine Verarbeitung von Daten geht, z.B. auch Durchsuchen. 
+\par \pard\b\f1   
+\par \cf3\f5 export\f1  VS   \cf4\i\f2 acon\cf3\i0\f1     
+\par \pard\li709\cf2\b0\f2 Hiermit kann man gezielt die `\cf1\ul\b\f4 Verschl\'fcsselungs-Sequenzen\cf2\ulnone\b0\f2 ` im gesamten Datensatz ersetzen lassen. Das sind Zeichenfolgen z.B. von der Form &#2345; , die durch Klartext ersetzt werden sollen. Voraussetzung ist, \f4 da\'df\f2  im Ersetzungsregister die Sequenzen korrekt indexiert sind und \f4 da\'df\f2  in den Indexparametern das Zeichen & auf den Wert 9 gesetzt ist.  Siehe Verlautbarung 154. 
+\par \b\i\f4 Achtung:\b0\i0  Den Datensatz in einem solchen FLEX nicht anschlie\'dfend speichern, denn die Sequenzen sind dann als solche nicht mehr da. Diesen Befehl also nur einsetzen, wenn es \b nur\b0  um Export von Daten geht. \f2 
+\par \pard\b\f1   
+\par \cf3\f5 export\f1  a    \cf2\b0\f2  \f5 aus  ^e  wird  e^   \i\f4 Akzentvertauschung m gesamten Datensatz\cf3\b\i0\f1 
+\par \f5 export\f1  A    \cf2\b0\f2  \f5 aus  e^  wird  ^e\cf3\b\f1 
+\par \pard\li709\cf2\b0\f4 Beides auch in  \cf4\b\i\f2 acon\cf2\b0\i0 
+\par Verschiebt\f4  im ganzen Datensatz\f2  die diakritischen Zeichen (Akzente) hinter bzw. vor die Buchstaben. Notwendig ist das nur dann, wenn man intern ASCII oder ANSI hat, aber `\cf1\ul\b Unicode\cf2\ulnone\b0\f4 ` erzeugen will. Denn Unicode verlangt es andersrum als allegro: Akzent folgt dem Buchstaben. 
+\par \i Hinweis:\i0  Dasselbe kann man in den Exportparametern machen mit den Befehlen  \f5 #da\f4   bzw.  \f5 #dA\f4 .\f2 
+\par \i\f4 Achtung:\i0  Wirkt auf den gesamten Datensatz UND den Hintergrundspeicher! 
+\par \i Nur\i0  auf den iV-Inhalt wirkt dagegen diese Variante:  (ab V31.7) 
+\par \pard\cf3\b\f5 export\f1  a\f5 i\f1    \cf2\b0\i\f4 ... nur im iV-Inhalt\cf3\b\i0\f1 
+\par \f5 export\f1  A\f5 i\f1  
+\par \pard\li709\cf2\b0\f4 Beides auch in  \cf4\b\i\f2 acon\cf2\b0\i0 
+\par \f4 Welche Zeichencodes f\'fcr Diakritika stehen, mu\'df in einer Variablen  \b\f5 pa\b0\f4   innerhalb der Export- oder Indexparameter angegeben sein. Standardm\'e4\'dfig (f\'fcr OstWest-DOS-Code) sieht diese so aus: \f2 
+\par \f5 pa=181 182 183 184 189 190 198 199 207 208 209 210 211 212 219 222 223 232\f2  
+\par \f4 F\'fcr den Windows-Code ist es folgende Liste:\f5 
+\par pa=180 145 136 149 168 166 227 179 186 175 215 171 184 191 161 173 247 150\i\f4 
+\par \i0\f2  
+\par \pard\cf3\b\f5 export\f1  w\cf2\b0\i\f5 X\cf3\b\i0\f1        \cf4\i\f2 acon\cf3\i0\f1 
+\par \pard\li709\cf2\b0\f4 Steuert die Art der Ausf\'fchrung der nachfolgenden \cf3\b\f1 `\cf1\ul write\cf3\ulnone `\cf2\b0\f2 -Befehle\f4 , bei acon auch \f5 `\cf1\ul\b qrix\cf2\ulnone\b0 `\f4  und \f5 `\cf1\ul\b list\cf2\ulnone\b0 `\f2 .    
+\par Dient \i nur\i0  zur Setzung einer Sprungmarke, ersetzt nicht den write-Befehl selbst, macht selber keinen Output!!   
+\par Wenn es in den aktuellen Exportparametern eine Sprungmarke \f1 #-X\f2  gibt, werden nachfolgende \f1 write\f4 -Befehle nicht direkt ausgef\'fchrt, sondern die Zeichenkette, die ein \f1 write\f4  erzeugt hat, wird an den Export \'fcbergeben, und zwar an die Sprungmarke \f1 #-X\f4  der Parameter. Dort ist die Zeichenkette unter dem Variablennamen #u1 verf\'fcgbar. Erst das Ergebnis dieses Exports wird in die Exportdatei geschrieben.    \f2 
+\par Gedacht ist dies vor allem, aber nicht nur, dazu, ohne Komplikationen korrekten Unicode-Export mit dem Befehl \f1 write\f4  erzeugen zu k\'f6nnen.    \f2 
+\par \i Achtung:\i0  wenn man \b\f4 Unicode\b0\f2 -Output macht, intern aber ASCII hat: 
+\par VOR den write-Befehlen sollte man noch  \b\f5 exp\f1  a\b0\f4   einf\'fcgen, dahinter   \b\f5 exp\f1  A\b0\f2 , um die \b\f4 Akzentvertauschung\b0\f2  mit einzubeziehen (s.o.).    
+\par In den Exportparametern \f4 mu\'df\f2  dann nur stehen (siehe mitgelieferte \f1 p-unicod.apr\f2 )    
+\par     
+\par \f1 dx=1         damit Umcodierung ausgefuehrt wird    
+\par t\f5 a\f1 d-utf      Tabelle \f5 a\f1 d-utf.apt laden. ODER:    
+\par \f5    tad-aw       aktivieren, wenn Windows-Output gew\'fcnscht    \f1 
+\par #-X          Sprungmarke    
+\par #u1          Die von write erzeugte Zeichenkette ausgeben    
+\par #+#          Ende    
+\par \f2    
+\par \f4 Mit \f5 export w0\f4  wird die Ausf\'fchrungsart wieder auf "normal" gesetzt. 
+\par Zu Anfang eines jeden FLEXes ist "normal" eingeschaltet, d.h. der Befehl gilt nicht f\'fcr die gesamte Sitzung, nur f\'fcr den einen FLEX. \f2 
+\par Arbeitet man mit `\cf1\ul\b Unicode-Verfahren 2\cf2\ulnone\b0 `, braucht man keinerlei Vorbereitungen dieser Art zu machen! Erzeugt man aber eine HTML-Datei, \f4 mu\'df\f2  diese am Anfang \f4 oder im Header \f2 die notwendige Angabe enthalten, \f4 da\'df\f2  die Datei \f4 i\f2 n UTF-8 codiert ist.    
+\par \pard\f0\fs18 
+\par Mit \b\f1\fs20  if cancel ...\b0\f6\fs18  kann man in allen F\'e4llen checken, ob der Exportvorgang mit [Esc] abgebrochen wurde.    \f0 
+\par 
+\par \cf3\b\f5\fs20 export P\cf2\b0\i\f4 x\cf3\b\i0\f5  \cf2\b0\i\f4 basisbefehl\cf3\b\i0\f5    \f1  \cf4\i\f2 acon\f4    \cf2\b0\i0\f6\fs18 [ab V35.7]\cf3\b\f5\fs20 
+\par \pard\li710\cf2\b0\f4  Hiermit kann in die momentan geladenen Exportparameter (x=x) oder in die Indexparameter (x=i) der  \i basisbefehl\i0   eingef\'fcgt werden. Das wirkt dann so, als st\'fcnde er tats\'e4chlich darin. Wirksam wird er beim n\'e4chsten  \f5 export\f4   bis zum Ende der a99-Sitzung bzw. des acon-Jobs. Die Parameterdatei wird nicht ver\'e4ndert. Sinnvoll ist dies wohl nur f\'fcr die p- und q- und o-Befehle, um die betr. Umcodierung bestimmter Zeichen f\'fcr den nachfolgenden Ablauf zu ver\'e4ndern. 
+\par \pard\f0\fs18 
+\par \b\f5\fs20 Nur\cf3\f1  \cf4\i\f2 acon\cf3\i0\f1  \cf2     
+\par \cf3\f5 export set prefix: "\cf2\b0\i\f4 Satztrenn-String\cf3\b\i0\f5 " 
+\par \pard\li710\cf2\b0\f4 Als Option kann vor jeden Datensatz eine Zeile mit dem Inhalt   \i Satztrenn-String\i0   eingef\'fcgt werden. 
+\par Eine solche Trennung erleichtert die Aufl\'f6sung der \'fcbertragenen S\'e4tze im Client-Programm und arbeitet effizienter als eine \'84get-next"-Schleife.\b\f1 
+\par \pard\b0\f0\fs18 
+\par   
+\par \cf4\i\f4\fs20 Beispiel 1\cf2\b\f2  \i0 : Export der aktuellen Ergebnismenge 
+\par \b0\i Aufgabe:\i0\f7  \f4 Es soll mit Hilfe von  \f5 P-W.APR \f4 (Ausgabe im RTF-Textformat) die Ergebnismenge in die Datei  \f5 LISTE.RTF\f4   geschrieben werden, wobei die Hilfsdatei  \f5 LONGHEAD.RTF \f4 vorangestellt und am Ende noch als Abschlu\'df die Zeichen "\f5\}\}\}\f4 " anzuf\'fcgen sind. \f2 
+\par  
+\par \f7   Dateinamen f\'fcr den Export setzen \f2 
+\par \b\f5 e\f1 xport f liste.rtf 
+\par \b0\f2   Dateikopf zuerst ausgeben 
+\par \b\f1 write Flonghead.rtf  
+\par \b0\f2   Parameter laden 
+\par \b\f5 e\f1 xp\f5 ort\f1  p p-w  
+\par \b0\f2   Ergebnismenge ausgeben 
+\par \b\f5 export\f1  set 
+\par \b0\f2   Abschlu\f4\'df\f2 zeichen: 
+\par \b\f1 wri\f5 te\f1  "\}\}\}" 
+\par \b0\f2  
+\par Jetzt kann die fertige Datei sofort \f4 in\f2  WinWord eingelesen werden.   
+\par \f6\fs18 
+\par   
+\par ?export=h xexport=export p   
+\par ?view=h xview   
+\par ?family=h xfamily   
+\par ?Register=h xa   
+\par ?View-Technik=h view   
+\par ?PrintParameter=h a99.ini   
+\par ?Exportsprache=h ac10   
+\par ?write,=h xwrite 
+\par ?list=h xlist 
+\par ?close x=h xclose 
+\par ?Offline-Datei=h off   
+\par ?Verschl\'fcsselungs-Sequenzen=h vb164.=5. "V14 
+\par ?Unicode-Verfahren 2=h unicode 
+\par ?Unicode=h unicode 
+\par ?set aN=h xset=set aN 
+\par ?qrix=h xqrix 
+\par ?list=h xlist 
+\par 
+\par }
+ 

@@ -1,0 +1,60 @@
+  getfile.flx : Datei vom Webserver holen und lokal speichern
+  2014-05-22    Typen .flx, .inc, .rtf, .txt, .vw, .htm, .ap?
+  
+
+
+if "" jump dnam
+ins $dn
+jump getit
+
+:dnam
+ask Dateiname?
+if "" end
+ins $dn
+
+:getit
+  Name des Ordners, je nach Dateityp
+var $dn "xx"
+if %~.flxxx% var P "flex\\"
+if %~.incxx% var P "flex\\"
+if %~.rtfxx% var P "help\\"
+if %~.txtxx% var P "help\\"
+if %~.vwxx% var P "help\\"
+if %~.htmxx% var P "html\\"
+
+  alle andern sollen ins ProgDir
+if not %\\% var P
+
+ins $fo
+
+  Datei holen
+var "http://www.allegro-c.de/aktuelle-version/getfile/" $dn
+get I
+if "" mes Kein Erfolg;end
+if %404 Not Found% jump notf
+
+  Ersetzung der Zeichenfolge 10 13 durch 13
+ins _^J^M_^M_
+ins $
+
+  Datei schreiben
+var $fo $dn
+open x
+wri $
+close x
+
+var "Datei " $dn " wurde im Ordner " $fo " abgelegt"
+mes
+
+yes Datei anzeigen?
+if not yes end
+
+var $dn
+help
+end
+
+:notf
+
+var "Die Datei " $dn " wurde auf dem Server nicht gefunden"
+mes
+

@@ -1,0 +1,318 @@
+
+
+Verlautbarung 267 der Entw.Abt.                              2015-02-24
+-------------------------------
+
+V35.2 ist da
+------------
+
+
+Exportparameter: \-Codierung
+----------------------------
+An 2 Stellen geht es (noch) nicht mit der \-Codierung von nicht-
+darstellbaren Sonderzeichen, und zwar bei diesen Manipulationsbefehlen:
+
+1. uxy
+
+2. p{ "..." } und desgl. mit m und P
+
+Im ersten Fall bleibt momentan nur, die Zeichen mit einem
+geeigneten Editor einzufuegen.
+Im zweiten ist es nicht so schlimm, denn innerhalb { ... }
+kann man die Zeichen als Dezimalzahlen schreiben:
+  p{ "abc" 31 "xdef" }
+produziert  abc$xdef  (Dreieck statt $)
+
+
+
+UTF8 Editierung mit Notepad
+---------------------------
+Der schon laenger existierende FLEX utf8edit.flx tat es nicht mehr so
+wie er sollte. Das lag an den Veraenderungen der Umcodiertabellen, die
+inzwischen eingetreten waren. Nun geht's wieder, geben Sie einfach mal
+X utf8edit
+wenn Sie Notepad schaetzen.
+Zum Hintergrund: Wenn die Textdatei mit den Zeichen 239 187 191
+(hex: ef bb bf) beginnt, geht Notepad davon aus, dass es sich um 
+UTF-8-Daten handelt.
+
+
+e-mab2.apr : Kleiner Fehler
+----------
+Die Aufbereitung der Kongresskategorie #83 war fehlerhaft, wenn darin
+die Angabe von Ort und Datum hinter " ; " fehlte. Korrigiert. 
+(Es entfiel der abschliessende Zeilenvorschub.)
+Aerger machten auch die Nichtsortierzeichen. Sie werden nun ersetzt
+durch _..._, wie es wohl seitens MAB2 gewuenscht wird.
+
+
+MAB2-Export: Variante von T. Berger
+-----------
+Dankenswerterweise hat Thomas Berger den MAB2-Export in gruendlichst-
+moeglicher Weise programmmiert. Die Dateien findet man hier:
+  http://svn.gymel.com/acxt/produkt/mabexpdir/
+Fuer die des Exportwesens weniger kundigen haben wir die Essenz
+fuer den Anwender des Standard-A-Systems in einer Datei
+  e-mab2b.apr
+zusammengefasst. Diese kann man als Alternative zu der viel weniger
+gruendlichen und weniger dem Standard genuegenden Parameterdatei
+e-mab2.apr  empfehlen.
+
+
+
+HFM Ergaenzungen  (siehe Vb.260)
+================
+
+1.
+FORMULARE
+HFM-Felder koennen auch in Formularen auftreten:
+
+[Test]
+#77.1 "Eins"
+#77.1000 "Tausend"
+#77.10 "Zehn"
+#77.100 "Hundert"
+#77.2 "Zwei"
+
+Im Datensatz erscheinen die eingegeben Felder in der Reihenfolge
+
+#77.1  #77.2  #77.10  #77.100  #77.1000
+
+wie man es gemaess der Doku erwarten sollte.
+
+Cui bono? wird der skeptische Anwender fragen.
+
+Als Denkanstoss ein Beispiel.
+In die $a.cfg tragen wir ein, irgendwo zwischen den #-Zeilen:
+
+#gn"GND"
+
+Und dann?
+Nach Neustart von a99 koennen wir z.B. diesen Datensatz eingeben:
+
+
+#gn.005 Tsv1
+#gn.006 http://d-nb.info/gnd/4304935-7
+#gn.008 siw
+#gn.011 s
+#gn.035 gnd/4304935-7
+#gn.065 30m;6.7
+#gn.083 025.30285574$d2$t2009-09-15
+#gn.150 Allegro$gDatenbanksystem
+#gn.550 Datenbanksystem_gnd/4113276-2$4obal
+#gn.550 Bibliotheksinformationssystem_gnd/4583297-3$4obal
+#gn.670 Vorlage
+
+(F9, "neuer leerer Satz", von hier kopieren und ins Schreibfeld damit)
+
+Das waere, bis auf das Praefix #gn, genau die Pica-Form des
+GND-Schlagwortsatzes fuer das Datenbanksystem allegro.
+
+Hiermit haette man eine Moeglichkeit, GND-Daten praktisch ohne
+Importumwandlung komplett in einer allegro-Datenbank zu speichern,
+ermoeglicht mit wenig Aufwand: nur einer einzigen Zeile in der CFG. 
+
+In Parametern und FLEXen kann man diese Felder ganz normal
+ansprechen z.B. mit  ... #gn.150 ... 
+
+Ganze Fremdsaetze, sofern diese ein numerisches Kategoriesystem haben,
+koennte man also in einen allegro-Satz 1:1 uebernehmen und damit dann
+allegro-technisch operieren. D.h. indexieren, anzeigen und exportieren 
+in jeder gewuenschten Weise.
+
+  Zum Indexieren etwa so:
+
+ak=gn.+G
+ ...
+#-G
+#u1 +# i4,1 i5,5 i6,0 ,"_$$g_ / _" p"|3" ...
+#u1 +# i4,5 i5,5 i6,0 e"_" p"|3" ...
+#+#
+   aus #gn.150 wird damit "allegro / datenbanksystem" im Reg. 3
+ 
+  Oder zum Anzeigen so:
+
+#gn.150 C "Sachschlagwort: " ,"_$$g_ / _"
+  Daraus wird auf neuer Zeile
+   Allegro / Datenbanksystem
+
+Was allerdings nicht geht, ist
+ak=gn.150+G
+Wir koennen nicht versprechen, dies zu realisieren. Ein Desiderat
+waere es wohl nur fuer Indexparameter, unverzichtbar aber nicht!
+
+Wie gesagt, ein Beispiel. Zu Demonstrationszwecken, mehr nicht.
+Damit ist nichts gesagt ueber etwaige Absichten, GND oder MARC oder
+was immer in solcher Form fuer a.cfg zu realisieren, denn der Aufwand
+waere insgesamt denn doch nicht unbetraechtlich.
+
+
+2. 
+Mehrfachfelder zusammenfassen mit FLEX
+--------------------------------------
+Mit
+    var #nn+
+kann man nun das Feld #nn und alle Mehrfachfelder #nnx zusammen in die
+iV holen, getrennt durch den Code 10 (newline), der innerhalb eines
+Datenfelds nicht vorkommen kann.
+Das Ergebnis sieht so aus:
+
+#nn  Inhalt von #nn
+#nna Inhalt von #nna
+#nnz Inhalt von #nnz
+#nn.1 Inhalt von #nn.1
+...
+#nn.10 Inhalt von #nn.10
+...
+#nn.100 Inhalt von #nn.100
+
+
+Was hat man davon? Nun, man kann gezielt diese Felder dann
+abarbeiten, nach diesem Muster:
+
+var #nn+
+ins $xy
+:loop
+var $xy (e"^J")
+... Aktionen mit dem Inhalt
+var $xy (b"^J")
+ins $xy
+if $xy jump loop
+
+Tip: Man schreibt  var $xy (e"^J" b" ")
+wenn man jeweils nur den Inhalt braucht und nicht die Kategorienummer
+mit dem Mehrfachcode.
+
+Was aufregend Neues ist das nicht, denn man konnte schon bisher so
+schreiben, um dieselben Felder abzuarbeiten:
+
+var k_1
+:loop
+if not "nn" jump nxt
+... Aktionen mit dem Inhalt des Felds
+:nxt
+var k2
+if not "" jump loop
+
+Vorteilhaft ist die neue Methode, wenn man die Kategorienummer
+in einer Variablen zu stehen hat. Sagen wir, es steht "#31+" in der
+Variablen $v, dann liefert
+
+var $v
+var
+
+genau die Liste der betr. Inhalte, als haette man geschrieben
+var #31+
+was aber eben nicht immer geht.
+
+
+EXTRA [vom 17.12.2014]
+=====
+
+Signaturverwaltung mit minimalem Aufwand
+----------------------------------------
+
+Zwei praxiserprobte Loesungen der Signaturverwaltung wurden bereits
+vorgestellt - Dank an Kollegen Eger und Schleifenbaum.
+
+Und es ist klar, dass man bei geeigneter Signaturenindexierung 
+jederzeit im Register nachschauen kann, was die naechste Nummer in
+einer Gruppe waere!
+
+Ein vierter Ansatz, auf den wir bei Durchmusterung unserer Werkzeug-
+kammer verfielen, hat zum Ziel, unverzueglich, und das heisst sofort,
+in jeder Umgebung einsetzbar zu sein. (Natuerlich nicht in den Faellen,
+wo die Sache voellig aussichtslos ist.)
+Im einzelnen umfasst dies folgende Unterziele:
+
+1. Keine eigenen Datenfelder und -saetze
+
+2. Keine zusaetzliche Parametrierung
+
+3. Keine eigenen FLEXe
+
+4. Kein entsprechend geordnetes Signaturenregister notwendig
+
+5. Minimaler Eingabeaufwand fuer den Einstieg
+
+6. Minimaler Aufwand fuer die Ermittlung der naechsten Nummer
+
+7. Einfache Moeglichkeit, freie Nummern zu registrieren und abzurufen
+
+8. Keine Notwendigkeit einer eigenen allegro-Datenbank - Demo reicht.
+   (auch wenn man mehr als 1500 Signaturgruppen hat, wegen 1.)
+
+9. Sofort anwendbar aber bei jeder allegro-Datenbank (wegen 1-4.)
+
+Das dafuer zuhandene Werkzeug: die Persistenten Variablen
+(Siehe  h vb258#292 ) 
+
+Gleich ausprobieren? 
+Sagen wir, Sie haben eine Signaturgruppe KLM3.
+Starten Sie die DemoBank
+
+a) Die naechste freie Nummer erstmals erfassen
+   Diese Nummer muss man natuerlich zunaechst feststellen!
+   Sagen wir, es ist 179 (also KLM3-179 oder KL M 3 179, egal)
+
+-- Eingeben:  &klm3
+   Es erscheint:  &klm3=
+
+-- Hinter dem '=' die 179 eingeben, Enter
+   Die Angabe  &klm3=179  bleibt stehen, ist aber nun gespeichert
+
+
+b) SPaeTER: Es faellt wieder ein Buch an, oder mehrere, fuer die 
+   Sign.Gruppe KLM3. Ermittlung der naechsten freien Nummer:
+
+-- Eingeben: &klm3
+   Es erscheint:  &klm3=179
+
+-- Die 179 notieren und aendern auf 180, Enter
+   (oder aendern auf z.B. 183, wenn es 4 neue Buecher sind)
+
+c) Registrierung freier Nummern
+   Angenommen, in Gruppe KLM3 sind die Nummern 17, 56 und 113 frei
+
+-- Eingeben: &KLM3         [hier also gross geschrieben]
+   Es erscheint  &KLM3=
+
+-- Hinter dem '=' eingeben: 17,56,113  Enter
+
+d) Feststellen und verwenden freier Nummern in Gruppe  KLM3
+
+-- Eingeben: &KLM3   (also mit Grossbuchstaben)
+   Es erscheint  &KLM3=17,56,113
+
+-- Die Nummer 113 soll nun verwendet werden:
+   Die 113 wegnehmen und Enter
+
+e) Wenn man eine komplette Liste der Signaturgruppen will, kann
+   man ins Register schauen:  x ind ~z1 
+   Oder sich einen Abschnitt ab z.B.  KL  bzw.  kl  zeigen lassen:
+   x qri 100 ~z1 _KL\sho IV  bzw.  x qri 100 ~z1 _kl\sho IV
+   und dann sofort ausdrucken.
+   Solche Zusatzfunktionen kann man sich leicht in eigene,
+   das Verfahren ergaenzende FLEXe packen. 
+
+Das ist alles. Der dahintersteckende FLEX ist schon da,
+enthalten in  onerror.flx  unter Sprungmarke :PS  (seit V34.1)
+Wer das & zu unbequem findet, kann den onerror.flx entsprechend
+aendern und ins DbDir legen, z.B. mit + oder - statt &.
+
+
+Der UnterFLEX wurde nicht speziell fuer diesen Zweck geschaffen,
+sondern allgemein fuer den Zweck, sich irgendwelche Fakten unter
+eigenen Schlagwoertern zu speichern, ohne Datensaetze damit zu
+befrachten. Beschrieben wurde das ebenfalls in Vb258.
+ 
+Gespeichert wird alles in dem Zusatzindex  cat.azx, der bei der
+DemoBank dabei ist. Will man die Funktion in der eigenen Datenbank
+nutzen, dann einfach die  cat.azx  kopieren ins eigene DbDir, z.B.
+als  pica.pzx - falls man p.cfg hat und pica.ppi.
+
+Wer selber kein allegro-Anwender ist, kann die Demo nehmen und
+damit unbegrenzt persistente Variablen speichern, denn die sind
+ja nicht an Datensaetze gebunden. 
+
+

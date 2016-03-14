@@ -1,0 +1,44 @@
+  OHO.FLX : Einen Datensatz per ISBN aus OHIO holen
+  20070212
+  Nach demselben Muster kann man andere Datenbankzugriffe ueber das
+  Web einrichten, wenn es eine allgemeingueltige URL gibt, in die nur
+  der Suchbegriff einzusetzen ist. Bei Systemen mit Sitzungskontrolle
+  und oder Einstiegsdialog geht das jedoch nicht. Man braucht einen
+  Zugang, der einen Datensatz mit einer einzigen URL zugaenglich macht.
+
+ask ISBN (zum Direktabruf aus Ohio)=#87
+var (e" ")
+ins _-__
+ins #uIS
+if not #uIS end
+
+  Hier der Aufruf, in den #uIS an drei Stellen eingebaut ist:
+
+var "http://olc1.ohiolink.edu/search/i" #uIS "/i" #uIS "/1%2C1%2C1%2CB/marc&FF=i" #uIS "&1%2C1%2C"
+janas
+var n "1. Markieren und Kopieren des MARC-Satzes im JanaS-Fenster" n n
+var + "2. Hier im Anzeigefeld Strg+a Strg+v Alt+0" n n
+var + "3. Vor dem Alt+0 kann man auch am MARC-Satz noch Ñndern"
+ansi
+sho IV
+#uX0X ohio
+end
+
+ Kommentar
+ ---------
+ Als Datenquelle fuer brauchbare MARC-Daten kann man den OHIOLINK-Katalog empfehlen:
+
+ Katalog:  http://olc1.ohiolink.edu/search/
+
+ Die Suche nach einer ISBN kann unmittelbar so erfolgen:
+ http://olc1.ohiolink.edu/search/i?SEARCH=0123456789
+ Man erh‰lt eine Titelanzeige, in der man einen MARC-Button klicken kann, um die
+ MARC-Darstellung zu sehen.
+ Die ISBN kann auch mit Bindestrichen angegeben werden.
+
+ Will man sofort die MARC-Anzeige, dann so:
+
+ http://olc1.ohiolink.edu/search/i0449223604/i0449223604/1%2C1%2C1%2CB/marc&FF=i0449223604&1%2C1%2C
+ Zu beachten ist hier, daﬂ die ISBN dreimal auftritt!
+
+

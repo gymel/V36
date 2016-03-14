@@ -1,0 +1,129 @@
+//  ISBN.FLX : ISBN oder ISSN checken und Pruefziffer korrigieren
+//  2015-06-24
+//  Aufruf :  X isbn nummer
+//              nummer=9, 10, 12 oder 13 Ziffern mit oder ohne -
+//               oder: 7 oder 8 Ziffern mit - hinter den ersten 4
+//  Ausgabe: Korrekte ISBN bzw. ISSN in $IS
+//           oder bei falscher Prfz: Korrektur der Eingabe
+//  Wenn Eingabe ohne Prfz, wird sie stillschweigend automatisch hinzugefuegt
+
+//  Kann includet werden mit  
+//  include isbn.flx
+//  Dann Aufruf mit:   perform IS_check, vorher Nummer in iV schreiben
+//  Zurueck: Meldung in iV, koerrekte Nummer in $IS
+
+if not "" jump beginn
+
+//#uie
+
+:ask
+ask Geben Sie eine ISBN ein
+ //=#uie
+if "" end
+// fuer naechsten Aufruf
+ins #uie
+
+
+:beginn
+// UP aufrufen, eingegebene Zahl ist in iV
+perf IS_check
+
+// Ergebnismeldung steht in iV, auswerten:
+if ="Falsch" mes;end
+if ="OK" jump IS_korrekt
+// Fehlermeldung aufheben und anzeigen, wenn gewünscht
+// sonst diese 2 Zeilen weg:
+ ins $IS_err
+ if %fehlerhaft% mes
+
+// Korrekte Nummer steht in $IS
+
+:IS_korrekt
+
+var "Korrekt: " $IS
+mes
+ 
+end
+
+//  UP zur Pruefung einer ISBN oder ISSN, die in iV uebergeben wird
+ 
+:IS_check
+// - - richtig setzen
+xcode cupper
+ins $IS_e
+ins $IS_s
+var $IS_s Jl
+
+if =8 var $IS_e "0";ins $IS_s;jump IS_issn
+if =9 jump IS_issn
+
+:isbn_rech
+$p=ISBN
+var $IS_s
+
+ins _-__
+hyphen
+
+ins $IS_i
+
+var $IS_i Jl
+
+
+// es muessen 13 oder 17 Stellen sein
+
+if "17" jump pruef
+if "13" jump pruef
+if "12" var $IS_i "0";ins _-__;hyphen;ins $IS_i;jump pruef
+if "16" var $IS_i "0";ins _-__;hyphen;ins $IS_i;jump pruef
+
+var "Falsche Zahl von Ziffern"
+return
+
+
+:pruef
+
+// pruefen
+var $IS_i
+
+if b var Err;ins $IS_e;jump IS_fehler
+
+// OK in iV schreiben
+var "OK: " $IS_i 
+var $IS_i 
+ins $IS
+
+return
+
+// Fehlermeldung in die iV schreiben
+
+:IS_fehler
+
+// Nun aus $IS_e und $IS_i die korrekte Nr. basteln
+// $IS_e beginnt mit der korrekten Prfz!
+
+var $IS_e (0,1) 
+ins $IS_j
+var $IS_i (0,r20 0,19 f" ") $IS_j
+ins $IS
+
+// Fehlermeldung zurueckliefern
+var $IS_e
+return
+
+:IS_issn
+$p=ISSN
+var $IS_s (4,1)
+// kein - auf Pos. 4: ISBN mit 9 Ziffern eingegeben?
+if not "-" var $IS_s "0";hyphen;ins $IS_i;jump pruef
+
+var $IS_s
+ins $IS_i
+if b var Err;ins $IS_e
+if %fehler% jump IS_fehler
+var "OK: " $IS_s
+var $IS_s
+ins $IS
+return
+
+
+

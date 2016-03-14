@@ -1,0 +1,416 @@
+  DISP-WEB.NPR : a99-Anzeige incl. verkn. Satzstrukturen, tabellarisch
+  Plus Nachladungen von ueber- und untergeordneten Saetzen
+  2002-02-15
+  Wenn keine hierarchischen oder verknuepften Saetze vorkommen,
+  dann genuegt einfaches Modell  D-SHTM.NPR  
+
+pn="Hierarchie-Export HTML"
+
+  Eingriffe in dieser Datei nicht noetig.Die Befehle für die einzelnen
+  Datenfelder stehen in  d-k.npt. Aenderungen und Erweiterungen dort machen!
+  (Die gilt fuer RTF und HTML zugleich!)
+
+  Der aktuelle (anzuzeigende oder auszugebende) Satz wird PRIMAERSATZ genannt.
+  Dabei handelt es sich um entweder
+
+  A.  einen Hauptsatz
+      wenn er unabhaengig gespeicherte Untersaetze hat, muss die
+      Kategorie #00 mit  einer eindeutigen IdNr X besetzt sein.
+      In der Anzeige sollen unter dem Hauptsatz alle untergeordneten
+      Saetze erscheinen.
+      Die untergeordneten Saetze haben dann in #00 IdNummern der Form  X+n
+      mit einer Bandnummer n :
+
+  B.  einen Untersatz
+      dann enthaelt #00 die IdNr des Hauptsatzes PLUS eine Bandnummer
+      z.B.  #00 123456+005=Vol.5
+      (hinter '='  kann eine Bandnummer in Textform folgen, sonst wird
+      die auf '+' folgende Nummer genommen, fuehrende Nullen werden beseitigt)
+      In der Anzeige sollen stufenfoermig die unmittelbar uebergeordneten, 
+      aber nicht die nebengeordneten Saetze erscheinen.
+
+  C.  beides, auch "Mittelsatz" genannt: der Primaersatz ist einerseits
+      einem anderen untergeordnet, besitzt aber auch selbst Untersaetze.
+      In der Anzeige soll fuer die untergeordneten Saetze nach A, fuer die
+      uebergeordneten nach B verfahren werden.
+
+
+  Es kann bis zu 5 untergeordnete Stufen geben (theoretisch noch mehr).
+  Jede weitere Stufe enthaelt in der #00 oder #09 ein weiteres '+' . 
+  Dieses wird fuer den Nachladevorgang ausgewertet.
+
+  *********** Grundparameter, nicht ohne Grund aendern: ***************
+td-htm      HTM-Steuerbefehle (schrift, farben, ...)
+         xxx Aktivieren, wenn intern ASCII, extern UTF-8
+p & "&amp;"
+p < "&lt;"
+
+td-utf8     ASCII->ANSI Codetabelle
+
+zl=0   Zeilenlaenge, nicht besonders wichtig!
+         denn es wird kein Zeilenvorschub gemacht:
+ze=" " 13 10
+zb=" -"   Umbruch bei Leerz. und Bindestrich
+zm=0      keine Seitenschaltung
+dx=1      Umcodierung einschalten
+ae=""    </table>
+i4=1    V14-Ersetzungen ausfuehren
+
+
+  <<<<<<<<<<<<    Raum fuer Ihre Zwischenteile (Textkonstanten)
+  Empfehlung: Nummern 30 bis 59
+  >>>>>>>>>>>>    Ende der anwendungsspezifischen Textkonstanten
+4="<br> "
+
+2="; "
+
+  Tabellen-Parameter                  erste Spalte:
+18='<table width="100%">'         schmal
+17='<table width="100%">'       breit
+19=""
+16="<tr><td>--- </td><td>--- </td></tr>"   Ende eines Satzes
+
+13="<tr><td>&nbsp;</td><td>&nbsp;</td></tr>"
+20=C "<tr><td valign=top><i>"     Neue Tabellenzeile
+21="</i></td><td>"                zwischen zwei Tab.Spalten
+22="</td></tr>" C                 Ende der Tab.Zeile
+23="<br>"                     Vorschub innerhalb Tab.Zelle
+24=t20 t21      Neue Tabellenzeile beginnen
+
+    nur bei HTML:
+29="<pre>"
+28="</pre>"
+
+
+
+p ` 1     Nichtsortierzeichen ausblenden
+      Absatzende
+p  "<br> "
+p | "<br> "
+p .35 8   Zeichen # ist Texel-Steuerzeichen
+
+  Achtung hierarchische Saetze:
+  Folgende Zeile wirksam nur wenn man hierarchische Saetze hat:
+  (denn fuer jeden Untersatz wird die nachfolgende Liste abgearbeitet)
+  Ausfuehrlicheres Modell fuer hierarch. Strukturen:  D-K.APT
+
+#bp .35 8     Code # als Texel-Steuerzeichen schalten
+
+#uvE +E e0
+#hi +0 e0
+
+#n30 >Y e0
+#t{ "<table border=1><tr><td>" }
+#t18        Tabellenbeginn
+
+   Tabulatorsetzungen fuer die Tabelle:
+
+#t19
+
+#uaF daF e0
+#+@
+
+#-0
+    Ist alternat. Flag gesetzt? dann #-(
+#uaF +( e0
+
+   Wenn der aktuelle Satz ein Untersatz alter Art ist,
+
+#-@
+#001 +e e0      dann nach #-e , d.h. die Nachladeprozedur ueberspringen
+   Tab-Einstellung: 1500, Schriftgroesse: 22 = 11pt
+#t19
+
+  ******** Nachladeprozedur: uebergeordnete Saetze laden  *******
+
+  nimm #00 und pruefe, ob '+' darin vorkommt:
+#-a
+#000 +a c"+" t"+" |90   das wird "rekursiv" ausgefuehrt:
+#020 +a c"+" t"+" |90   das wird "rekursiv" ausgefuehrt:
+                       wenn in #00 ein '+' vorkommt, wird das letzte hinten
+                       abgeschnitten (t"+" macht das) und der verbleibende Teil
+                       wird im Index 9 gesucht, der gefundene Satz wird geladen
+                       und wird zugleich zum aktuellen Satz. Dieser Vorgang
+                       wird wiederholt (deshalb +a), bis kein '+' mehr in #00
+                       zu finden ist.
+        Nun gibt es evtl. einen Stapel mit mehreren Saetzen, der Hauptsatz
+        an der Spitze ist dann der aktuelle Satz.
+
+#<+b    Wurde tatsaechlich etwas nachgeladen? Dann weiter bei  #-b
+        (#< kann nicht ausgefuehrt werden, wenn der Stapel leer ist, und
+        dann wird auch +b nicht ausgefuehrt.)
+#+e     Wenn nichts geladen wurde, dann #-e
+        (d.h. der Primaersatz ist ein Einzelsatz oder Hauptsatz)
+
+   ***** Ladeoperation beendet ******
+
+        Jetzt wird der Stapel abgearbeitet:
+#-b
+#<^     zuerst  wieder hinaufschalten, denn #<+b hat hinuntergeschaltet;
+        dann ist der Hauptsatz wieder der aktuelle Satz
+  Was jetzt kommt, bezieht sich auf den Hauptsatz:
+  <<<<<<<<<  hier einsetzen, was mit dem Hauptsatz geschehen soll <<<<<<<
+
+#-H
+
+#nr =za    #uza besetzten, dient fuer den gezielten Ruecksprung zu #-A
+#+Z     Unterprog. #-Z ausfuehren
+#-A
+
+  >>>>>>>>>  Ende der Hauptsatz-Verarbeitung   >>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+  *********  Mittelebene   **********
+
+#<     einen Schritt runterschalten, d.h. der unter dem Hauptsatz stehende
+       Satz wird nun zum aktuellen Satz
+
+
+#-c   ist es ein Mittelsatz? Wenn ja, ist der folgende Befehl ausfuehrbar:
+#t{ C }    (Zeilenvorschub, bevor es weitergeht)
+#<+d       noch einen Schritt runterschalten, weiter bei  #-d
+#t{ C }    wenn das nicht geht, Zeilenvorschub
+#+e        d.h. der Primaersatz ist jetzt wieder erreicht, dann weiter bei #-e
+
+#-d      ja, es war ein Mittelsatz
+#<^      dann wieder raufschalten, weil  #<+d  runtergeschaltet hat
+
+
+
+#000 b"+" B"=" { t13 t20 "Abteilung:" t21 } P22
+
+#t60   Einrueckung auf aktueller Position (hinter Bandnummer) festsetzen
+
+  <<<<<<<<<  hier einsetzen, was mit Mittelsaetzen geschehen soll  <<<<<<<
+#nr =zb
+ #>H     Unterprog. #(H ausfuehren
+#+Z
+#-B
+
+  >>>>>>>>> Ende der Mittelsatz-Behandlung  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#t61   Einrueckung wieder auf 0 setzen
+
+#<+c        Mittelsatz-Verarbeitung fortsetzen,
+            bis der Primaersatz wieder erreicht ist
+
+  ********** Mittelebenen alle abgearbeitet    ******
+
+  ********** jetzt kommt der PRIMAERSATZ selbst an die Reihe **************
+
+  (hier beginnt es, wenn der  Primaersatz bereits ein Hauptsatz war, also
+   keine uebergeordneten existieren)
+
+#-e
+#000 +f b"+" B"=" { t13 t20 "Teil: " t21 t66 } P{ t98 }
+#020 +f b"+" B"=" { t13 t20 "Teil: " t21 t66 } P{ t98 }
+#hi +f { t13 t20 "Teil: " t21 t66 } P{ t98 }
+
+#</     Stapel jetzt beseitigen
+       (wird nicht gemacht, wenn Untersaetze alter Art vorliegen)
+
+#-f
+    <<<<<<< hier einsetzen, was mit dem Primaersatz geschehen soll  <<<<<<<
+
+#nr =zc
+#+Z     Unterprog. #(H ausfuehren
+#-C
+
+    >>>>>>> Primaersatz abgearbeitet >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+   **** wenn der Primaersatz noch verkn. Untereinheiten hat  *******
+
+  Das findet man so heraus:
+
+  man haengt ein '+' an #00 um zu sehen, ob der Index Eintraege enthaelt, die
+  so beginnen
+  (wenn man #00 123456+005 hat, wird nach  "123456+005+"  gesucht
+   und man findet m”glicherweise etwas wie  "123456+005+1" )
+
+#000 +g e"=" F" " P"+" |92    erste Untereinheit finden
+                             und zum aktuellen Satz machen
+
+#+V   wenn es keine gibt, STOP
+
+   **** Untereinheiten abarbeiten (zyklisch!)  ***
+
+#-g
+#ubD dbD e0
+#000 +#uBD b"+" B"=" =bD
+#020 +#uBD b"+" B"=" =bD
+
+   <<<<<<< hier einsetzen, was mit den verkn. Untereinheiten passieren soll <<<<<<<
+
+#uBD e0
+#nra { t13 t20 "  + " t21 t66 '<a href="grec.php?urN=' } P{ '">' }
+#ubD P{ "</a>" }
+#nr =zd e0
+#100 $$ p" : "
+#20c $$ " / " 
+#100 $w " [" P"]"
+#t{ t98 }
+#+R
+  #+Z     Hauptteil abarbeiten
+#-D
+
+   >>>>>>> Ende der Untersatz-Verarbeitung   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#<\   Untersatz aus dem Arbeitsspeicher entfernen
+#000 +g e"+" P"+" |93     naechsten Untersatz aufsuchen
+                         nach #-g zurueck, wenn es einen gibt
+    das wird unbegrenzt oft gemacht, solange |93 ausfuehrbar ist
+
+
+#+V   ENDE
+   ****** Ende der Abarbeitung aller Untersaetze ****************
+
+
+   **** ENDE  ****
+
+   <<<<<<<<< Hauptabschnitt fuer die Ausgabe der Felder >>>>>>>>
+             wird fuer jeden Satztyp abgearbeitet!
+
+    Fuer Kenner: dies ist NICHT als Unterprog. angelegt, damit man
+       hier noch Unterprogramme anlegen kann, siehe #8e fuer die URL
+#-Z
+
+#hi1 { t13 t20 t66 "Bandb: " t21 t98 } P22
+
+  Hauptteil wird geladen: (Darin stehen die eigentlichen Ausgabebefehle)
+  Fuer DOS, Win und Web gleich!
+
+#bp # 8
+tdisplay          display.npt laden
+
+#9zv { t20 "Letzter Besuch" t21 } P22
+
+#t13
+#hi +R e0
+#t{ t20 "erfasst/bearb." t21 }
+#9zc e""
+#9ze e"" " / "
+#9zc p22 e0
+  gezielte Rueckspruenge, je nachdem, welches #uzi besetzt ist!
+#-R     Rest
+
+#uza +A dza e0
+#uzb +B dzb e0
+#uzc +C dzc e0
+#uzd +D dzd e0
+#+V
+
+#-E    Endabschnitt
+#hi +-
+#t{ "</td></tr></table>" }
+#t16
+#+#
+
+#-V
+
+#t{ "</table><p>" C }
+
+
+  Interne Daten als Zusatz: Alle Felder mit Nummer und Text:
+  Wenn nicht gewünscht: nächste Zeile aktivieren!
+#+#
+
+#bp & &
+#bp # #
+#bi4=0
+#000 0 |9 e0
+#t{ s0 "<hr><table>"}
+#t{ t24 "<br><font color=green>Datensatz intern:</font> " t21 "<br>[Sonderservice]" } 
+#u01 =kk
+#-k
+!ukk b5 e5 p24 P21
+!ukk b5 b5 p" " P22
+#u02 +k =kk 
+#t{ "</table><p>" }
+#bp .35 8
+#bi4=1
+#</
+#t{ "</table><br><font color=green>Hinweis: Diese Anzeige wird mit der Parameterdatei disp-web.npr erzeugt.</font>" } 
+#+#
+
+   <<<<<<<<< Unterprogramme hier anfuegen, wenn man welche hat <<<<<<<
+   Unterprogramm fuer URL
+#(u
+#cc +- i5,i i6,s i7,i e0    Sonderfall isi
+#cc +- i5,o i6,c i7,l e0    Sonderfall oclc
+#cc +- i4,w e0              Sonderfall #070w
+
+#t{ t20 " &nbsp; " t21 }
+#nr +#ucc e0
+
+#(U
+#t{ t20 "Internet: " t21 }    
+#t{ t20 "URL:     " t21 } 
+#ucc
+#cc e"" y0 p'<a href="' P'" target="_blank">'
+#cc B"y" e"" y1 P"</a><br>"
+#)U
+#t22
+#)u
+
+#(G    GBV-Link
+#cc y0 e"[|;]" p'<a href="http://gso.gbv.de/DB=2.1/CLK?IKT=12&TRM=' P'">'
+#cc y0
+#t97  nur bei HTML!
+#)G
+
+#(R    EZB-Regensburg-Link
+#cc y0 p'<a href="http://rzblx1.uni-regensburg.de/ezeit/detail.phtml?bibid=TUBS&colors=7&lang=de&jour_id=' P'">'
+#cc y0
+#t97
+#)R
+
+#(S    SWD
+#n30 y2 e" " p'<a href="http://gso.gbv.de/DB=2.1/CMD?ACT=SRCHA&IKT=5040&SRT=YOP&TRM='
+#n30 y2 b" " e" " p"+"
+#t{ '">' }
+#n30
+#t97
+#)S
+
+#(Z    ZDB-Link
+#cc y0 p'<a href="http://dispatch.opac.ddb.de/DB=1.1/CMD?ACT=SRCHA&IKT=8506&TRM=' P'">'
+#cc y0
+#t97
+#)Z
+
+#(Y
+#n10 i5,p p79 p"Personenstammsatz!" e"!" P111
+#n10 i5,b p79 p"Körperschaftsstammsatz!" e"!" P111
+#n10 i5,c p79 p"Sachgruppencode!" e"!" P111
+#n10 i5,a p79 p"GeoCode!" e"!" P111
+#n10 i5,A p79 p"Aufstell-Systematik!" e"!" P111
+#n10 i5,l p79 p"Sprachencode!" e"!" P111
+#n10 i5,s p79 p"Sachschlagwort!" e"!" P111
+#n10 i5,g p79 p"Geoschlagwort!" e"!" P111
+#n10 i5,f p79 p"Formcode/-schlagwort!" e"!" P111
+#n10 i5,h p79 p"Zeitschlagwort!" e"!" P111
+#n10 i5,t p79 p"Thesaurusbegriff!" e"!" P111
+#n10 i5,d p79 p"DDC-Zahl!" e"!" P111
+#n10 i5,k p79 p"Basisklassifikation!" e"!" P111
+#n10 i5,u p79 p"UDK-Zahl!" e"!" P111
+#n10 i5,w p79 p"Werk-Stammsatz!" e"!" P111
+#)Y
+
+
+   >>>>>>>>> Ende der Unterprogramme >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+q A/Z a
+q ä "ae"
+q ö "oe"
+q ü "ue"
+q Ä "ae"
+q Ö "oe"
+q Ü "ue"
+q ß "ss"
+q !// =1
+q : 1
+q ; 1
+q < 1
+q > 1
+

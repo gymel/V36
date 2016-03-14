@@ -1,0 +1,43 @@
+  DBDOPP.FLX : Verdopplung der Datenbank
+  20070209     (d.h. jeden Satz kopieren)  s. Trick 39
+yes Im Ernst?
+if not yes end
+set e0
+last #
+var i
+z=
+:loop
+var "#" z
+f1nd
+  geloescht?
+if del jump nxt
+  unbesetzte Nummer?
+if no jump nxt
+var #00
+  ist es ein verdoppelter Satz?
+if "dopp" jump nxt
+var kn
+new 0
+ins
+first sub
+  IdNr vorgeben setzen
+#00 dopp?5
+#99e
+#99n
+   put weglassen - Saetze kommen nur in den OfflineSpeicher
+ put
+:nxt
+z -1
+  Zaehler zeigen
+var z
+sho iv
+  Abbruch ermoeglichen
+keychk
+if yes end
+if z>0 jump loop
+:exit
+set e1
+var "Erledigt. Anzeigen der Duplikate mit Alt+q" n "Oder mit  x erase off  wieder beseitigen" n
+var +"Mit 'Datei / Offline-Datei->Datenbank' kann man die Duplikate abspeichern!"
+mes
+

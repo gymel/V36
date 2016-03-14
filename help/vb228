@@ -1,0 +1,58 @@
+
+Verlautbarung 228 der Entw.Abt.                              2010-04-28
+-------------------------------
+
+                          V30.4 liegt bereit
+
+a99/alcarta
+-----------
+Nur die Funktion 
+var ""
+ins #ux~
+wurde repariert, die saemtliche Variablen #uxy beseitigt.
+Die Kalenderfunktion tat es aufgrund dieses Fehlers nicht mehr.
+
+
+acon-Verbesserungen
+-------------------
+Das zuverlaessigere Klappen von Suchbefehlen war noch immer ein
+Desiderat. Insbes. das Auftreten von Mehrfachspatien innerhalb
+Suchbegriffen, sowie der Zeichen < und & standen oftmals einem
+Erfolg im Wege, auch andere Sonderzeichen (Umlaute etc.) sowie das
+Woertchen "and".
+Zumindest im PHPAC sind alle diese pathologischen Faelle nun ausge-
+merzt. Nicht klappen tun weiterhin runde Klammern, das liegt an deren
+Sonderfunktion als Metazeichen im Suchbefehl.
+
+Das PHPAC-Paket wurde erneuert, wirklich neu sind diese Dateien:
+(die erste davon radikal umgeschrieben)
+
+av_page.php : Produktion einer Registerseite
+              braucht jetzt nicht mehr die beruechtigten Parameter
+              namens  h-php.apr!
+              Sondern macht alles alleine, bis auf die Umcodierung,
+              fuer die nun die Parameter utf.apr zum Einsatz kommen
+
+av_func.js    Die Funktion  ixlist() wurde verbessert
+              (angekreuzte Zeilen einsammeln)
+              Fuer das neue  av_page.php  Bedingung!
+
+av_rset.php   Verbesserung des Sucherfolgs durch einen dritten
+              Versuch mit Einschluss in "..."
+
+utf.apr       Ins DbDir damit! Nur zur Umcodierung wichtig.
+              Bindet ad-utf.apr ein, also dieses auch ins DbDir,
+              falls es da noch nicht ist.
+
+Im Einsatz und getestet auch mit der Unicode-DemoBank:
+
+  http://www.biblio.tu-bs.de/db/demo
+
+Die alten Skripte werden mit dem neuen acon, das man sich fuer die 
+neuen besorgen muss (wegen der Mehrfachspatien), aber weiterhin laufen,
+d.h. man muss nicht zuerst eine Gewaltaktion machen und alle Skript-
+verzeichnisse auf einmal umstellen.
+
+Beim Testen Achtung: Im Cache des Browsers kann noch das alte 
+av_func.js  lauern und damit geht's nicht.
+

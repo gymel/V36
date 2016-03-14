@@ -1,0 +1,83 @@
+  S-PT.APR : Sortieren nach Verfasser / Titel  (#40 / #20)
+  941122  wenn kein Verfasser: nur Sachtitel   (#20)
+
+pn="Sortierformat #40 / #20 "
+
+  die folgenden Angaben mssen so bleiben
+  damit die fr die Weiterverarbeitung n”tige .ALG-Form entsteht
+  --------------------------------------------------------------
+zl=0        ... Zeilenl„nge unbegrenzt
+ks=1        ... Beginn beim ersten Zeichen hinter #
+ke=0        ... Kategorie-Ende = 0
+as=""       ... Aufnahme-Start: wird als Pr„fix gemacht
+ae=13 10    ... Aufn.Ende: CR LF
+
+ts          ... l„dt die Zeichenumwandlungstabelle S.APT fr das Sortieren
+
+am=1        ... nur 1 Ausgabesatz soll produziert werden
+
+ ---------------------------------------------------------------
+
+  ******************************************
+  Beginn der Verarbeitung von Unteraufnahmen
+  ******************************************
+
+#hi +b e0 #zz 0        wenn es eine Unteraufnahme ist: Sprung nach #-b
+
+  ******************************************
+  Beginn der Verarbeitung von Hauptaufnahmen
+  ******************************************
+ 
+
+#3n +- e0 #zz 0    Stamms„tze weglassen
+#4n +- e0 #zz 0    (sonst eigene Abschnitte hierfr einrichten!)
+#2n +- e0 #zz 0
+ 
+        hier beginnt es
+        Umwandlung der !-Felder ber Alternativtabelle:
+        der Sortierbegriff wird zusammengesetzt und als #u1 ausgegeben
+        (Verfasser  Jahr ...)
+#t{ 1 "u1 " }
+!40 +#21 u b3 e"; " e" = " F" " P"" #zz 0   #40 oder #20 als Sortierfeld
+!52 u b3 e"; " e" = " F" " P"" #zz 0        Komponist
+!22 +s e" : " u b3 #zz 0                     +EST
+!21 +s b3 p"   " #zz 0      Sammlung vor anderen Werken!
+!20 +s e" : " u b3 #zz 0
+!8n e" : " u b3 #zz 0
+      b3 heisst: Beginn beim 4. Zeichen (3+ks)
+      (weil ks=1 ist, muss man das so machen)
+
+#-s
+#t{ 0 }     als Abschluss des Sortierfeldes
+
+     Die Druckform des Sortierfeldes: Produktion als #u2
+     (in diesem Fall nur der Name, denn der Titel ist beim Druck ohnehin das
+      erste Datenfeld nach dem Kopf; nur wenn keine Name, dann ein 'ª')
+
+#t{ "u2 " }
+#40 +#21 b3 e"; " e" = " F" " P"" #zz 0
+#52 b3 e"; " e" = " F" " P"" #zz 0
+#22 +e e" : " b3 #zz 0
+  die n„chsten 2 Zeilen wegnehmen, wenn Kopf in der gedruckten Liste
+  nur aus dem Namen bestehen soll
+
+#21 +e b3 p"  " #zz 0      Sammlung vor anderen Werken!
+#20 +e e" : " b3 #zz 0
+#8n +e e" : " b3 #zz 0
+
+#+e
+
+#-b            Sprungmarke b: bei untergeordneten S„tzen
+#t{ h0 }
+#+f
+
+#-e
+#t{ 0 }     als Abschluss des Druckfeldes
+
+#-f
+
+tselect     Select.APT nachladen
+            diese Tabelle enth„lt die auszugebenden Kategorien
+            (S-KURZ, S-MITTEL, S-LANG, S-VOLL)
+
+   hier k”nnten noch Abschnitte fr die anderen Satztypen folgen

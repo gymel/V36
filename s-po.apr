@@ -1,0 +1,74 @@
+  S-PO.APR : Sortieren nach Verfasser / Zitierschluessel  (#40 / #89)
+  941122  wenn kein Verfasser: Sachtitel   (#20 / #89) [ueblich in der Mathematik]
+
+pn="Sortierformat #40 / #89"
+
+  die folgenden Angaben muessen so bleiben
+  damit die fuer die Weiterverarbeitung noetige .ALG-Form entsteht
+  --------------------------------------------------------------
+zl=0        ... Zeilenlaenge unbegrenzt
+ks=1        ... Beginn beim ersten Zeichen hinter #
+ke=0        ... Kategorie-Ende = 0
+as=""       ... Aufnahme-Start: Hierarchiekennung
+ae=13 10    ... Aufn.Ende: CR LF
+
+ts          ... laedt die Zeichenumwandlungstabelle S.APT fuer das Sortieren
+
+am=1        ... nur 1 Ausgabesatz soll produziert werden
+dx=1
+ ---------------------------------------------------------------
+
+  ******************************************
+  Beginn der Verarbeitung von Unteraufnahmen
+  ******************************************
+
+#hi +b e0 #zz 0        wenn es eine Unteraufnahme ist: Sprung nach #-b
+
+  ******************************************
+  Beginn der Verarbeitung von Hauptaufnahmen
+  ******************************************
+ 
+#00 +- c"+" e0 #zz 0    keine Ausgabe fuer selbstaendige Untersaetze
+
+#dt dsk e0 #zz 0       Sortierkopf #usk loeschen
+#40 +S e"; " b3 =sk #zz 0
+#52 +S e"; " b3 =sk #zz 0
+   hier evtl. noch weitere Personen beruecksichtigen!
+#60 +S e"; " b3 =sk #zz 0
+#20 +S e" : " b3 =Ask #zz 0
+
+#-S
+        hier beginnt es
+        Umwandlung der !-Felder ueber Alternativtabelle:
+        der Sortierbegriff wird zusammengesetzt und als #u1 ausgegeben
+        (VerfasserOrdnungscode)
+!usk +#89 u b3 p{ 1 "u1 " } #zz 0 
+ !40 +#89 u e"; " b3 p{ 1 "u1 " } #zz 0   #40 oder #20 als Sortierfeld, Ende bei "; "
+ !20 +#89 e" : " u b3 p{ 1 "u1 "} #zz 0
+#+-     Stop, wenn weder Verf. noch Titel, z.B. Stammsatz
+!89 b3 p""
+      b3 heisst: Beginn beim 4. Zeichen (3+ks)
+
+#-s
+#t{ 0 }     als Abschluss des Sortierfeldes
+
+     Die Druckform des Sortierfeldes: Produktion als #u2
+     (genauso wie #u1, nur ohne Umcodierung, dann fuer den Druck verwertbar!)
+
+#usk +#89 e"; " b3 p"u2 " #zz 0
+ #40 +#89 u e"; " b3 p"u2 " #zz 0   Kopfkategorie (#40 oder #60) als Sortierfeld, Ende bei "; "
+ #20 e" : " u b3 p"u2 " #zz 0
+#89 b3 p"[" P"]"              [Zitierschluessel]
+
+#-d
+#t{ 0 }     als Abschluss des Druckfeldes
+#+e
+
+#-b            Sprungmarke b: bei untergeordneten Saetzen
+#t{ h0 }
+
+#-e
+tselect     Select.APT nachladen
+            diese Tabelle enthaelt die auszugebenden Kategorien
+            (S-KURZ, S-MITTEL, S-LANG, S-VOLL)
+

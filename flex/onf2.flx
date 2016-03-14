@@ -1,0 +1,72 @@
+  ONF2.FLX : Ausfuehrung, wenn auf F2 gedrueckt wird
+  2002-04-22
+
+  Wo ist der Focus?
+var Q
+  Anzeigefeld? Dann -> :flip
+if "4" jump flip
+  sonst auf Anz.Feld setzen
+act 4
+end
+
+:flip
+
+var ""
+ins #uzF
+  CursorZeile nach iV holen, Flipbefehl geht automatisch nach #uzF!
+var zc
+  Wie sieht der Flipbefehl aus?
+var #uzF
+  leer?
+if "" end
+  Nicht leer, dann steht drin:  #uZiFlibfefehl
+  Erste 4 Zeichen abschneiden:
+var #uzF(4,0)
+  beginnt es mit "X " ? dann -> :exec, usw.
+if "X " jump exec
+if "x " jump flex
+if "f " jump find
+if "j " jump disp
+if "?" jump index
+if "h " jump help
+if "~" jump call
+
+  Nichts von allem. Es ist ein Find-Befehl
+var "x Find " #uzF(4,0)
+ins #uzF
+  ausfuehren
+exec
+
+  Aufbereitung der verschiedenen Typen von FLEX-Befehlen
+
+:flex
+var #uzF(4,0)
+exec
+end
+
+:find
+var "x find " #uzF(6,0) "\\disp\\sho rec"
+exec
+end
+
+:disp
+var "x dis " #uzF(6,0)
+exec
+end
+
+:index
+var "x " #uzF(4,0)
+exec
+end
+
+:exec
+exec
+
+:help
+var #uzF(6,0)
+help
+end
+
+:call
+var #uzF(5,0)
+Call

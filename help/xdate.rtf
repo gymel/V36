@@ -1,0 +1,127 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman Times New Roman;}{\f1\fmodern\fprq1 Courier New;}{\f2\fswiss\fcharset0 Arial;}{\f3\froman\fcharset0 Times New Roman;}{\f4\froman\fprq2 Times New Roman;}{\f5\froman\fprq2\fcharset0 Times New Roman;}{\f6\fswiss MS Sans Serif;}{\f7\fswiss\fcharset0 MS Sans Serif;}{\f8\fmodern\fprq1\fcharset0 Courier New;}}
+{\colortbl ;\red0\green0\blue255;\red0\green0\blue0;\red0\green176\blue0;\red255\green0\blue0;}
+\viewkind4\uc1\pard\qr\f0\fs18 
+\par `\cf1\ul\b Register\cf2\ulnone\b0 `\cf3\b\f1\fs20 
+\par \pard\cf4\f2 Datums-Arithmetik 
+\par \cf3\f1 
+\par \cf2\b0\f3\fs18 Der Umgang mit Datumsangaben ist ein Sonderfall des `\cf1\ul\b Rechnens.\cf2\ulnone\b0 ` Die FLEX-Sprache h\'e4lt hierf\'fcr einige sehr m\'e4chtige Befele bereit, mit denen ohne tiefere Kenntnis die Datumsarithmetik leicht beherrschbar ist. \cf3\b\f1\fs20 
+\par 
+\par date\cf2  \b0\i\f4 b\b\i0\f1 
+\par \pard\li709\b0\f5     \f4 Datum (und Uhrzeit) werden in die interne Variable kopiert. \f5 Default f\'fcr \i\f4 b\i0\f5  ist 17.\f4 
+\par \pard\li568\i b \i0\f5 = Breite des Datums, 8-17 Byte; 8 ist nur das Datum, 17 ist Datum/vollst\'e4ndige Uhrzeit 
+\par Das Ergebnis am 7.5.2007 um 20:25 w\'e4re (mit \i\f4 b\i0\f5 =17): \f4 
+\par \pard\li709\cf3\b\f6\fs28 2 0 0 \f7 7\f6  0 5 \f7 0\f6  \f7 7\f6  / 2 0 : 2 5 : 0 \f7 0\f6  \fs20 
+\par \b0 
+\par \cf2\f4 Diese\f5 s\f4  speichert man mit  \f8  \fs18 `\cf1\ul\b\f1\fs20 insert\cf2\ulnone\b0\f8\fs18 `\fs20 ...\f4    in eine Kategorie, ein Teilfeld oder eine #uxy 
+\par \pard 
+\par \f3\fs18 Die so erzeugte Art des Datums hat den gro\'dfen Vorteil, maschinell sortierbar zu sein.  Der Befehl ist aber eigentlich Luxus, denn genau dasselbe erh\'e4lt man mit der Sonderkategorie #dts: 
+\par \cf3\b\f1\fs20 var #dt\f8 s(0,\cf2\b0\i\f4 b\cf3\b\i0\f8 )\f1    \cf4\i acon\cf2\b0\i0\f0\fs18 
+\par 
+\par \i Tip:\i0  Das Tagesdatum in der (nicht maschinell sortierbaren) Form\f3 , z.B.\f0    \b\f8 M\f1 on, \f8 5\f1 . Dec 20\f8 11\b0\f0   kann man sich so besorgen: 
+\par 
+\par \cf3\b\f1\fs20 var #dt   \cf4\i acon\cf3\i0 
+\par \cf2\b0\f0\fs18 
+\par dann steht es in der iV. 
+\par 
+\par 
+\par \b\i\f3 Sonderbefehle\i0  f\'fcr Datumsrechnungen: 
+\par \b0\f0 
+\par \cf3\b\f1\fs20 day\cf2  +\i x\i0  / -\i x\b0\f4  \cf3\b\i0\f1    \cf4\i acon\cf2\i0 
+\par \pard\li709\b0\f4 Nummer des heutigen Tages\f5  \f4  \b\f8 +\i\f1 x\b0\i0\f4  \f5   \f4 bzw. \b\f1 -\i x\b0\i0\f4  \f5  \f4 Tage innerhalb des \f5 betref\f4 fenden Jahres. \f5 Wenn z.B. heute der 31.12. ist, ergibt  \f2 day +1\f5   den Wert 1.\f4 
+\par \pard\f0\fs18 
+\par \cf3\b\f1\fs20 Day\cf2  +\i x\i0  / -\i x\cf3\i0    \cf4\i acon\cf2\i0 
+\par \pard\li709\b0\f4 Datum des heutigen Tages \b\f8 +\i\f1 x\b0\i0\f4  \f5  \f4 bzw. \b\f1 -\i x\b0\i0\f4  Tage, und zwar in der Form 
+\par \f1    JJJJMMTT/hh:mm:ss = Tag, TT. Monat Jahr\f4 
+\par z.B. \f1 20010423/10:18:56 = Mo, 23. Apr 2001\f4 
+\par \pard\f0\fs18 
+\par \f3 Ist ein negativer Wert angegeben, also \b\f1\fs20 -\i x\b0\i0\f3\fs18  , dann wird zur\'fcckgerechnet. \f0 
+\par \f3 Der Wert \b\i\f1\fs20 x\b0\i0\f3\fs18   darf bis zu 12000 betragen (Zeitspanne 1970 bis 2099). 
+\par I\f0 st\f3  hinter  \f8 Day\f3   nichts angegeben\f0 , wird der Inhalt der iV genommen\f3  (d.h. diese mu\'df mit + bzw. - beginnen)\f0 . 
+\par 
+\par \cf3\b\f1\fs20 Day\cf2  \i\f8 datum\i0\f1 
+\par \pard\li709\b0\f5 Vom Datum \b\i\f8 datum\b0\i0\f5 , in der Form \f1 JJJJMMTT\f8  \f5 angegeben, wird umgerechnet auf die Form 
+\par \f1    JJJJMMTT/\f8 00\f1 :\f8 00\f1 :\f8 00\f1  = \f8 WT\f1 , TT. M\f8 N.\f1  J\f8 JJJ\f4 
+\par \f5 die dann in der iV steht. \f3\fs18 Dabei ist \f8\fs20 WT\f3\fs18  der Wochentag (Mo, Di, ...) und \f1\fs20 M\f8 N\f3\fs18  der Monatsname (Jan, Feb, ...)\f5\fs20 
+\par Das Wichtigste: hiermit kann man zu einem gegebenen Datum den Wochentag feststellen. 
+\par Dies funktioniert f\'fcr die Jahre 1901 bis 2099. \i Beispiel:\i0\f1 
+\par \pard\f3\fs18\tab\f8 Day 20051224\f3   ergibt  \f8 20051224/00:00:00 = Sa, 24. Dez. 2005 
+\par \f0 
+\par \cf3\b\f1\fs20 Day\cf2  \i\f8 datum+x\i0\f1 
+\par \cf3 Day\cf2  \i\f8 datum-x\i0\f1 
+\par \pard\li709\b0\f5 Vom Datum \b\i\f8 datum\b0\i0\f5 , in der Form \f1 JJJJMMTT\f8  \f5 angegeben, wird \b\i\f8 x\b0\i0\f5  Tage weiter- bzw. zur\'fcckgerechnet.\f1 
+\par \f4 D\f5 as sich ergebende Datum steht dann in der iV, und zwar ebenfalls in der Form\f4 
+\par \f1    JJJJMMTT/\f8 00\f1 :\f8 00\f1 :\f8 00\f1  = T\f8 N\f1 , TT. M\f8 N.\f1  Jahr\f4 
+\par \pard\cf3\b\f1 
+\par Day\cf2  \i\f8 datum1-datum2\i0\f1 
+\par \pard\li709\b0\f4 D\f5 ifferenz in Tagen zwischen \b\i\f8 datum1\b0\i0\f5  und \b\i\f8 datum2 \b0\i0\f5 , beide in der Form \f1 JJJJMMTT 
+\par \f4 D\f5 ie Zahl steht dann in der iV. Beide Daten m\'fcssen zwischen 1971 und 2037 liegen.\f4 
+\par \pard\f0\fs18 
+\par \cf4\f3 Beispiele:\cf2  Zur Demonstration der Datumsbefehle kann man sich die Datei  \f8 `\cf1\ul\b holidays.flx\cf2\ulnone\b0 `\f3  anschauen, mit der die Berechnung der `\cf1\ul\b kirchlichen Feiertage\cf2\ulnone\b0 ` durchgef\'fchrt wird. Gebraucht wird dabei die Berechnung des Osterdatums, die man sich als Unterprogramm auch aus dem FLEX  \f8 `\cf1\ul gauss.flx\cf2\ulnone `\f3   kopieren kann. 
+\par Einfachere Beispiele sind die FLEXe \f8 `\cf1\ul\b weekday.flx\cf2\ulnone\b0 ` und `\cf1\ul\b ostertag.flx\cf2\ulnone\b0 `, \f3 mit denen man die Wochentage eines gew\'fcnschten Datums von 1901 bis 2099 feststellen kann bzw. das Datum des Osterfestes von 1700 bis 2199.\f0 
+\par \f3 Ferner: \f8 `\cf1\ul\b leapyear.flx\cf2\ulnone\b0 `\f3  zur Feststellung, ob ein gegebenes Jahr ein Schaltjahrist. 
+\par Die umfangreichste Anwendung der Datumsbefehle ist die `\cf1\ul\b Kalenderfunktion\cf2\ulnone\b0 `, die mit V25.5 herausgebracht wurde. Sie liefert Kalenderbl\'e4tter f\'fcr die Jahre 1601 bis 2399. Das wurde m\'f6glich durch eine Weiterentwicklung:\f0 
+\par 
+\par \i\f3 Alternative\i0   (auch f\'fcr \cf4\i acon\cf2\i0  )\b\f8 
+\par Ab V29.2\b0\f3  gibt es ein FLEX-Unterprogramm \f8 :Day\f3  (verpackt in \f8 day.inc\f3 ), das einen gr\'f6\'dferen Aktionsradius hat, und zwar 1601 bis 2399. 
+\par Statt wie bisher 
+\par \f8 var ... 
+\par Day  
+\par 
+\par \f3 schreibt man damit gleichwertig (und das versteht auch acon): 
+\par 
+\par \f8 var ... 
+\par perform Day 
+\par ... 
+\par end 
+\par include day.inc \f3    // da steckt das UP  :Day  drin 
+\par \f0 
+\par 
+\par \i\f3 Sonderbefehl: 
+\par \i0\f0 
+\par \cf3\b\f1\fs20 Wday\cf2  +\i x\i0  / -\i x\f8   \cf3\i0\f1    \cf4\i acon\cf2\i0 
+\par \pard\li709\b0\f4 Datum des heutigen Tages +x bzw. -x Arbeitstage , und Form wie bei Day +x 
+\par \i\f5 Voraussetzung:\i0\f4  Es sind \f5 Kalenders\'e4tze f\'fcr das laufende und nachfolgende Jahr geladen. Das geschieht mit dem Befehl `\cf1\ul\b\f8 kalend\cf2\ulnone\b0\f5 `. Kalenders\'e4tze anlegen kann man mit dem FLEX  `\cf1\ul\b a-kalend.flx\cf2\ulnone\b0 `.\f4 
+\par \f5 Gebraucht wird dies zur Errechnung des R\'fcckgabedatums bei Ausleihen (aLF). \f4 
+\par \pard\f0\fs18 
+\par 
+\par \cf4 Beispiel 1:\f3    `\cf1\ul\b Ausprobieren\cf4\ulnone\b0 `\cf2\f0 
+\par \i Ziel:\i0  aktuelles Datum aus \f8 JJJJMMTT\f0  \f3  \f0 in\f3  \f0  \f8 TT-MM-JJJJ\f0  umwandeln 
+\par 
+\par \f1  aktuelles Datum in die iV holen \f8 (das sind immer 8 Ziffern)\f1 
+\par date 8 
+\par  in Nutzervariable #u\f8 ad\f1  ablegen 
+\par ins #u\f8 ad\f1  
+\par  einzelne Teile zusammenbauen \f8 zu der Form  Tag-Monat-Jahr\f1 
+\par var #u\f8 ad\f1 (6,2) "-" #u\f8 ad\f1 (4,2) "-" #u\f8 ad\f1 (0,4) 
+\par \f0 
+\par \cf4 Beispiel 2:\cf2 
+\par \i Ziel:\i0  aktuelles Datum in der Form \f3  \f8 17. Mar 2005\f3  \f0  in der iV bereitstellen 
+\par \f1 
+\par  Variable #dt benutzen (Handb.10.2.6.2), Wochentag abschneiden 
+\par var #dt(b",") 
+\par \f0    denn hinter dem Komma beginnt das Datum: #dt hat die Form   Thu, \f3 17\f0 . \f3 Mar\f0  200\f3 5\f0  
+\par \f3 
+\par \cf4\f0 Beispiel \f3 3\f0 :\cf2 
+\par \i Ziel:\i0  aktuelles Datum in \f3 deutscher\f0  Form\f3 :  "\f8 Do, 17. Mrz 2005"\f3  \f0  in der iV bereitstellen 
+\par \f1 var #dt\f8 s\f1  
+\par \f8 Day\f1 
+\par var (b"\f8 = \f1 ") 
+\par \f3 
+\par 
+\par ?insert=h xinsert 
+\par ?Register=h xa 
+\par ?Kalenders\'e4tze=h xkalend 
+\par ?holidays.flx=h holidays.flx 
+\par ?weekday.flx=h weekday.flx 
+\par ?ostertag.flx=h ostertag.flx 
+\par ?kirchlichen Feiertage=X holidays 0 
+\par ?leapyear.flx=h leapyear.flx 
+\par ?gauss.flx=h gauss.flx 
+\par ?Kalenderfunktion=h kalender 
+\par ?Rechnens.=h xiz 
+\par ?Ausprobieren=x date8`ins #uad`var #uad(6,2) "-" #uad(4,2) "-" #uad(0,4)`mes 
+\par ?kalend=h xkalend 
+\par ?a-kalend.flx=h a-kalend.flx 
+\par 
+\par }
+ 

@@ -1,0 +1,104 @@
+{\rtf1\ansi\deff0\deftab720{\fonttbl{\f0\fswiss MS Sans Serif;}{\f1\froman\fcharset2 Symbol;}{\f2\fswiss\fprq2 Arial;}{\f3\froman Times New Roman;}{\f4\froman\fprq2 Times New Roman;}{\f5\fscript\fprq2 Comic Sans MS;}{\f6\froman allegro New Roman;}{\f7\fmodern\fprq1 Courier New;}{\f8\fmodern allegro Lucida Console;}{\f9\fmodern\fprq1 allegro Lucida Console;}{\f10\froman\fprq2 allegro New Roman;}}
+{\colortbl\red0\green0\blue0;\red255\green0\blue0;\red0\green0\blue220;\red0\green0\blue255;\red0\green176\blue0;}
+\deflang1031\pard\qc\plain\f2\fs32\cf1\b\i allegro
+\par \plain\f2\fs32\cf1\b Background
+\par \plain\f5\fs26\cf1\b\i 
+\par \plain\f2\fs28\b Does anybody have to \plain\f2\fs28\b\i know\plain\f2\fs28\b  anything?\plain\f5\fs26\cf1\b\i 
+\par \pard\plain\f4\fs20 
+\par This text attempts to provide insight into \plain\f4\fs20\b\i allegro\plain\f4\fs20  in a new way. The intended \plain\f4\fs20\b audience \plain\f4\fs20 are those who have yet little if any idea what  "parametrization" might mean but who do not like to work with a Black Box.
+\par 
+\par \plain\f4\fs24\b Data are invisible, that's the problem.
+\par \plain\f4\fs20 Otherwise the talking about data would be lots easier.
+\par But one \plain\f4\fs20\i does\plain\f4\fs20  see data on the screen? Those are just traces left by a zig-zagging electron beam, nothing more, controlled by a complex program. Those traces \plain\f4\fs20\b\i are\plain\f4\fs20  not data, the screen image  \plain\f4\fs20\b\i is\plain\f4\fs20  not the database. The image is painted by a program that accesses the database in ways not directly visible. The Windows screen (in programs \plain\f4\fs20\b\i a99\plain\f4\fs20  or \plain\f4\fs20\b\i alcarta\plain\f4\fs20 ) looks much different from a DOS image (in the program PRESTO; use the "File | DOS Program" menu command if you never saw it).  Here's an example Windows image of a record:
+\par 
+\par \plain\f6\fs22\cf0\b\i     \plain\f6\fs22\cf0\b                                    Call number: 2580-1459\plain\f6\fs22\cf0 
+\par `\plain\f6\fs22\cf2\b\ul Shakespeare, William:\plain\f6\fs22\cf0 `
+\par \plain\f6\fs22\cf0\b A midsummer night's Dream\plain\f6\fs22\cf0  / William Shakespeare; Harold F. Brooks [ed.].
+\par    London : Methuen, 1979. - CXLIII, 164 S.\plain\f6\fs22\cf0\i 
+\par (The Arden Shakespeare)\plain\f6\fs22\cf0 
+\par ISBN 0-416-17930-4 
+\par                                               [Fig. 1]
+\par 
+\par \plain\f4\fs20 The DOS version and the Windows version - that's  \plain\f4\fs20\i by no means\plain\f4\fs20   two different databases! They are just two different programs, each producing a different \plain\f4\fs20\i image\plain\f4\fs20  of  \plain\f4\fs20\i the same\plain\f4\fs20  database.
+\par In yet other words: the data are \plain\f4\fs20\i not\plain\f4\fs20  stored somehow \plain\f4\fs20\i inside the program\plain\f4\fs20  or closely connected with it but data are stored in files which are totally unconnected with any program. That's why two different programs can access data simultaneously. And that's why a new software version does not mean that something has to be done with the data before the new version can be used. (The latter is not always true for any software, but it has been true for "allegro" for over 10 years.)
+\par 
+\par What, then,  \plain\f4\fs20\b\i is\plain\f4\fs20   actually stored in a database? In the case of our example, it looks a great deal different from the image seen above:
+\par \plain\f7\fs20 
+\par \plain\f8\fs22 #00 804076
+\par #20 \'acA\'ac midsummer night's Dream
+\par #40 Shakespeare, William
+\par #41 Brooks, Harold F.
+\par #74 London
+\par #75 Methuen
+\par #76 1979
+\par #77 CXLIII, 164 S.
+\par #85 \'acThe\'ac Arden Shakespeare
+\par #87 0-416-17930-4
+\par #90 2580-1459
+\par #99e19880518
+\par \plain\f6\fs22\cf0                                               [Fig. 2]
+\par \plain\f4\fs20 
+\par This is a  \plain\f4\fs20\b Record\plain\f4\fs20  in the demo database's internal "format". More was not entered and more's not there, not even under Windows. Look it up in the demo database.
+\par However, there's more than one way to tag a record internally! One has to decide, when setting up an \plain\f4\fs20\i allegro\plain\f4\fs20  database, what system of tagging to use. If one opted for the MARC system, the same record might look like this:
+\par \plain\f9\fs20 
+\par #001 804076
+\par #005 19880518
+\par #008 871119q19001987nyusynn          1  N/A d
+\par #100 10\'b2aShakespeare, William,\'b2d1564-1616
+\par #245 12\'b2aA midsummer night's dream /\'b2cWilliam Shakespeare
+\par #260 0 \'b2aLondon\'b2bMethuen\'b2c1979
+\par #300   \'b2acxliii, 164 p.\'b2c21 cm
+\par #440  4\'b2aThe Arden Shakespeare
+\par \plain\f6\fs22\cf0                                               [Fig. 2a]
+\par \plain\f4\fs20 
+\par All records in an \plain\f4\fs20\i allegro\plain\f4\fs20  database have to use the same tagging - there cannot be MARC records side by side with MAB records in one and the same database. But it is always possible to export records in any other format and to convert records from other formats into the one used for the database (more on this see further down).
+\par 
+\par A record is not a \plain\f4\fs20\b File\plain\f4\fs20 . In the \plain\f4\fs20\i allegro\plain\f4\fs20  context, every record \plain\f4\fs20\i resides\plain\f4\fs20  in a file, side by side with many other records - like a catalog card rests in a drawer with hundreds of other cards. The drawer, \plain\f4\fs20\i that's\plain\f4\fs20  the file. 
+\par Normally, this internal form of a record is not visible, as seen in the above example [Fig. 1].\plain\f10\fs22\cf0 
+\par \plain\f4\fs20 Or look at one of the index entries: (this is index 4 "Titles" in the demo database)
+\par (Please note what's happened to the article and the single quote in "A midsummer night's dream"! Those are small examples of the many details that have to be taken care of)
+\par \plain\f9\fs22    ...
+\par    1  merry wives of windsor
+\par    2  \plain\f9\fs22\b midsummer nights dream
+\par \plain\f9\fs22    1  mikroprozessortechnik
+\par    1  mister diamond
+\par    1  morality of shakespeares drama illustrated
+\par    1  mord braucht reklame
+\par    1  mr irelands vindication of his conduct
+\par    1  mr william shakespeares comedies histories + tragedies
+\par    2  much ado about nothing
+\par    ...
+\par \plain\f6\fs22\cf0                                               [Fig. 3]
+\par \plain\f4\fs20 
+\par All of this is done by software. Such images look much different from the internal record with the tag numbers, and a curious user may well ask where they come from. How does a program "know" that tag 85 means "series title"? How does it know where it belongs in the other images, and that it belongs in parentheses when displayed: \plain\f6\fs22\cf0\i (The Arden Shakespeare) \plain\f4\fs20  - for these parentheses are not there at all in the record? Are all such details somehow built into the software? In now way! The \plain\f4\fs20\i programs\plain\f4\fs20 , whether DOS or Windows, "know" nothing about such detail. The programs, however, can obey certain \plain\f4\fs20\i rules\plain\f4\fs20  which specify that tag 85 means "Series title" and has to follow the 77 tag in the display (meaning  "collation"), on a new line and in parentheses.
+\par 
+\par We therefore have to distinguish between three different entities:
+\par \pard\li360\fi-360\tx360\plain\f4\fs20 1.\tab The \plain\f4\fs20\b Data elements\plain\f4\fs20  as input (records being lists of tagged elements, see Fig. 2 and 2a)
+\par 2.\tab The \plain\f4\fs20\b Programs\plain\f4\fs20  accessing  these records and displaying them in different ways: sometimes with, mostly in diverse ways without the tags (Fig. 1). An index entry (Fig. 3) is also an image, showing parts of records and not the records themselves.
+\par 3.\plain\f4\fs20\b \tab Rules\plain\f4\fs20  telling the programs  \plain\f4\fs20\b how  \plain\f4\fs20 they are supposed to do all these things. 
+\par \pard\plain\f4\fs20 
+\par Thus, the programs are neutral. Left alone with the naked records (tagged lists of elements) the programs are helpless - they need the rules, \plain\f4\fs20\b but\plain\f4\fs20  every database can have its own rules. This is why the same \plain\f4\fs20\b\i allegro \plain\f4\fs20 programs can operate databases of very different contentand even with Chinese and Japanese characters, although the \plain\f4\fs20\i allegro \plain\f4\fs20 developers  understand nothing about these scripts and have made no special provisions for them. The rules are the real secret of the system : the rules make it flexible. 
+\par \plain\f4\fs20\i To systems people:\plain\f4\fs20  behind \plain\f4\fs20\b\i allegro\plain\f4\fs20  there's no hidden `\plain\f4\fs20\cf3\b\ul relational database management system\plain\f4\fs20 ` (RDBMS); \plain\f4\fs20\i allegro\plain\f4\fs20  has its own, specifically developed concept of record storage and management. Tables for relational systems can, however, be easily produced and imported. 
+\par \plain\f4\fs20\i Every\plain\f4\fs20  database system has some system of rules for the handling of data, they are just seldom called "rules" not even in \plain\f4\fs20\i allegro\plain\f4\fs20 . There are many names, like "syntax tables" or "scripts" or "templates" or "parameters". The latter is the term uset the most in \plain\f4\fs20\i allegro\plain\f4\fs20 . 
+\par 
+\par An \plain\f4\fs20\i allegro\plain\f4\fs20  database needs several kinds of parameters:
+\par 
+\par \pard\li360\fi-360\tx360\plain\f4\fs20\b 1.\plain\f4\fs20 \tab For the \plain\f4\fs20\cf1\b data structure\plain\f4\fs20  or "schema" : the \plain\f4\fs20\cf4\b Configuration\plain\f4\fs20 , extension .CFG; this contains the list of tags or field labels a record in this database can use. Most users utilize the standard (and default) `\plain\f4\fs20\cf3\ul A.CFG\plain\f4\fs20 ` (or $A.CFG) configuration. There is also a MARC configuration (the file is $U.CFG). The configuration, however, says nothing about the index or how a record is supposed to be displayed! There are different parameters for those jobs:
+\par \pard\plain\f4\fs20 
+\par The following three types of parameters depend heavily on the configuration (though for one and the same configuration, one can have very different display or index parameters!):
+\par \pard\li360\fi-360\tx360\plain\f4\fs20\b 
+\par 2.\tab \plain\f4\fs20\cf1\b Export\plain\f4\fs20 : (or "Output") such parameters are called \plain\f4\fs20\cf4\b Export parameters\plain\f4\fs20 . A special case of export is the screen display of records as seen in the example above (Fig. 1). Other parameters are needed for conversion into other formats and for print outputs. Export parameter files all have the extension .APR, if A.CFG is used for configuration, or  .UPR if one uses U.CFG, etc.
+\par \plain\f4\fs20\b 
+\par 3.\tab \plain\f4\fs20\cf1\b Indexes\plain\f4\fs20 : Rules for the construction of the indexes of a database are called \plain\f4\fs20\cf4\b Index parameters\plain\f4\fs20  and are in a file of type .API (or .UPI when U.CFG is used, etc.) These parameters tell the system what fields are to be indexed and in what way, and this can go into considerable detail. Indexing is the most complicated job in almost every \plain\f4\fs20\i  allegro\plain\f4\fs20  database. 
+\par \plain\f4\fs20\b 
+\par 4.\tab \plain\f4\fs20\cf1\b Conversion\plain\f4\fs20 : For every external (non-\plain\f4\fs20\i allegro\plain\f4\fs20 ) data format a set of rules for conversion is needed, also called \plain\f4\fs20\cf4\b Import parameters\plain\f4\fs20 . Those are files of type .AIM (or .UIM if U.CFG is being used, etc.)
+\par \pard\plain\f4\fs20 
+\par 
+\par ?Shakespeare, William:=x index |1shake\\help ?
+\par ?relational database management system=~start http://www.allegro-c.de/a-r.htm
+\par ?A.CFG=h acb-1
+\par 
+\par 
+\par 
+\par }
+ 

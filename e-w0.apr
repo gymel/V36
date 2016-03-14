@@ -1,0 +1,69 @@
+  e-w0.apr : Export fuer externe Editierung  (a99 Alt+t)
+  980112
+
+  Zwei Zwecke:
+  1.
+  Wird von a99 eingesetzt, um die Editierdatei zu erstellen
+  Das externe Format, das diese Parameter herstellen, laesst sich
+  mit KAT00.AIM wieder in eine Grunddatei umwandeln (fuer avanti nicht noetig)
+  Wenn nicht mit X.EXE gearbeitet werden soll: eine Datei X.BAT machen,
+  in der z.B. steht  q %1 , wenn der Q-Editor benutzt werden soll.
+  2.
+  Erstellen von Ergebnismengen als Externdateien, die mit a99 bearbeitet 
+  werden sollen. Dann: Export aus der Datenbank mit diesen Parametern,
+  Bearbeiten mit a99, Umwandeln in Grundformat, Wiedereinmischen mit UPDATE.
+
+  
+  Achtung: wenn Daten in ASCI vorliegen und zum Editieren ANSI gebraucht
+  wird, siehe am Ende
+  (Befehl  to  aktivieren!)
+
+zl=72       Zeilenlaenge 72
+zi=1        1 Leerzeichen am Zeilenanfang bei Fortsetzungszeilen
+            (d.h. wenn eine Kategorie laenger als 72 ist)
+
+zb=" "      fuer den Zeilenumbruch gilt nur " " als Trennung
+dx=1
+ 
+ze=13 10    Zeilenendecode (UNIX nur 10)
+
+zm=0        Kein Seitenumbruch!
+
+ae=13 10    Leerzeile am Satzende
+ ae=10       bei UNIX
+
+fl=0        Keine feste Anzahl Zeilen pro Satz
+
+ks=0        Kategorie-Startposition 0: gesamten Text incl. '#' ausgeben
+
+ke=C &0     Kategorie-Ende: Neue Zeile, dann auf Position 0 beginnen
+ff=0        Kein Kopf-/Fussbereich
+  ------------- Kategorieliste ---------------------------
+
+  Hier folgt, wenn gewuenscht, die Definition einer 
+  Kurzzeile, um die Datei in der Uebersicht lesbarer zu machen:
+  Beispiel-Struktur: Verfasser: Titel  (Jahr)
+  Abhaengig vom Kategoriesystem, funktioniert so nur fuer A.CFG:
+
+  #t{ " " }   Leerzeichen am Anfang der Kurzzeile
+  #40 b3 p" " P":"
+  #20 b3 e40 e" : " p" "
+  #76 p"  (" P")"
+
+   Aktivieren, wenn hierarch. Untersaetze mit Leerzeile abgetrennt sein sollen:
+ #hi e0
+
+#-A
+
+##          Pauschalausgabe aller Kategorien in interner Reihenfolge
+#+#
+
+ H  hier kann ein Hilfsabschnitt mit PV-Routinen folgen
+    (abhaengig vom Kategoriesystem!)
+    Beispiele siehe in E-W.APR
+
+   Achtung:
+   die naechste Zeile aktivieren, wenn benoetigt:
+  to   Tabelle o.apt laden:  temporaere Umcodierungen  ASCII <-> ANSI
+      d.h. wenn die Datenbank ASCII ist, der Editor aber ANSI erwartet
+      fuer X- oder Q-Editor NICHT aktivieren!!

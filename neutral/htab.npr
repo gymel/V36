@@ -1,0 +1,68 @@
+
+zl=0
+re=13 10
+zm=0
+
+
+#R00 +A b1 e3 =gr e0    // Gruppenwechsel?
+
+#-B
+#t{ '<tr><td id="c1">' }
+#R00 b1 { "#" }
+#t{ '</td><td id="c2">' }
+
+#R10 e" "
+#t{ '</td><td id="c3">' }
+
+#R10e
+#R90 c"Dublin Core" { "<font color=red>*</font>" } e0
+#t{ '</td><td id="c4">' }
+
+#R10 b" " P" -- "
+#R80 { "<b>" } P{ "</b>" }
+
+#R80s { "<br>" }
+#R80v { "<br>" }
+#R90 b"|" { "<br>" }
+#R85 +E f"#" { '<br>z.B. <font face="Courier" color=blue>#' } P{ " </font>" }
+ #R00 b1 { '<br>z.B. <font face="Courier">#' } P{ " </font>" }
+#-E
+#t{ "</td></tr>" }
+
+#+#
+
+
+#-A   neue Gruppe
+
+#ugr +C c"000" { '</table><a name="n0"></a><h2>Nummern und Codes</h2>' C } e0
+#ugr +C c"100" { '</table><a name="n1"></a><h2>Titeldaten</h2>' C } e0
+#ugr +C c"200" { '</table><a name="n2"></a><h2>Personen</h2>' C } e0
+#ugr +C c"300" { '</table><a name="n3"></a><h2>K&ouml;rperschaften</h2>' C } e0
+#ugr +C c"400" { '</table><a name="n4"></a><h2>Beziehungen</h2>' C } e0
+#ugr +C c"550" { '</table><a name="n55"></a><h2>Erstreckung (Coverage)</h2>' C } e0
+#ugr +C c"500" { '</table><a name="n5"></a><h2>Schlagw&ouml;rter</h2>' C } e0
+#ugr +C c"600" { '</table><a name="n6"></a><h2>Klassifikationen</h2>' C } e0
+#ugr +C c"650" { '</table><a name="n65"></a><h2>Ranking, Evaluation</h2>' C } e0
+#ugr +C c"700" { '</table><a name="n7"></a><h2>Quelle</h2>' C } e0
+#ugr +C c"850" { '</table><a name="n85"></a><h2>Inhaltsbeschreibung</h2>' C } e0
+#ugr +C c"800" { '</table><a name="n8"></a><h2>Physische Beschreibung</h2>' C } e0
+#ugr +C c"8r0" { '</table><a name="n8r"></a><h2>Rechte</h2>' C } e0
+#ugr +C c"900" { '</table><a name="n9"></a><h2>Lokal-, Exemplardaten</h2>' C } e0
+
+#ugr +C c"n00" { '</table><a name="n9"></a><h2>Normdaten</h2>' C } e0
+#ugr +C c"R00" { '</table><a name="nR"></a><h2>Regelwerk/Format</h2>' C } e0
+#ugr +C c"9A0" { '</table><a name="n9A"></a><h2>Gesch&auml;ftsgang / Workflow</h2>' C } e0
+
+#+B
+
+#-C
+#t{ '<table width="100%" style="border-collapse:collapse";>' C }
+#t{ '<colgroup><col width="5%"><col width="12%"><col width="12%"><col width="71%"></colgroup><tbody>' C }
+#+B
+
+
+ p | "<br>"
+p < "&lt;"
+
+td-utf8
+p  "<br>"

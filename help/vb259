@@ -1,0 +1,243 @@
+
+Verlautbarung 259 der Entw.Abt.                              2014-05-23
+-------------------------------
+
+
+Handbuch V34 : Bereitstellung in Kuerze. Bes. die revidierten Teile des
+Exportkapitels wurden auch in den RTF-Texten aktualisiert.
+
+
+FLEX-Dateien blitzgeschwind aktualisieren
+-----------------------------------------
+Beim  dnb.flx  fiel unangenehm auf, dass ausgerechnet der Titel und
+auch Serientitel nicht mehr rauskamen. Das lag daran, dass DNB sich ein
+paar Aenderungen erlaubt hatte. Voellig legitim, denn was  dnb.flx 
+nutzt, das ist keine Normschnittstelle. Dies wurde behoben.
+
+Wir merkten dann aber bei etlichen Anrufen, dass es wohl viele Anwender
+gibt, die mit dem Besorgen per FTP und Austauschen der Datei noch
+keine Erfahrung haben. Deshalb wurde ein neuer FLEX gemacht:
+  getfile.flx    (in V34.2 enthalten)
+der automatisch eine Datei vom Server holt und sie an die richtige
+Stelle kopiert. Zunaechst geht das nur fuer FLEX-Dateien, aber eine
+umfassende Ausweitung waere nicht schwer.
+Wie wird's gemacht? So:
+Wenn etwa aus Braunschweig verlautet: "dnb.flx  wurde verbessert!"
+dann gibt man in a99 ein:
+  X getfile dnb.flx
+und das war's. (Bei Interesse bejaht man die dann folgende Frage, ob
+man die Datei sehen will. Sie wird dann angezeigt.)
+
+Anmerkung dazu:
+Es gibt bei vieler Software die automatischen Update-Verfahren, von
+denen man nicht immer etwas bemerkt, um die man sich also gar nicht
+kuemmern muss. Soweit wollen wir es nicht treiben. Obwohl es nicht
+schwer waere, a99 bei jedem Start pruefen zu lassen, ob es irgendwelche
+verbesserten Dateien gibt, und diese dann flott zu besorgen. Das jedoch
+haette einen Beigeschmack von Entmuendigung, Verunselbstaendigung und 
+Klammheimlichkeit, der nicht jedem sympathisch sein duerfte. Nun ja, 
+vielleicht empfinden das nur diejenigen so, die frueher gerne selber 
+an Heizung, Fahrrad oder Auto alles moegliche gemacht haben, was heute
+die fortgeschrittene Technik nicht mehr zulaesst.
+
+
+V14-Ersetzungen klappten nicht
+------------------------------
+Wir bemerkten, dass in dem V14-Doppel-Ersetzungsmodus mit z.B.
+
+i5=!!
+
+also mit Steuerzeichen vor UND hinter der IdNummer, die Aufloesung
+nicht klappte.
+Das Problem wurde lokalisiert und eliminiert.
+Es fiel auf, weil zunaechst bei Versuchen ein falscher Ansatz gemacht
+worden war, der sowieso nicht gegangen waere. 
+Die Ersetzungsschluessel muessen beim Doppelmodus die Form
+  _idnr_=|iText  
+haben, waehrend es beim Einzelmodus so aussieht:
+  idnr=|iText 
+Im Prinzip ist beides unnoetig umstaendlich, man haette auch die Form
+  idnr |iText  
+programmieren koennen, also schlicht mit einem Leerzeichen. Dann
+waere nur das Leerzeichen selbst nicht als Zeichen innerhalb der  idnr
+zulaessig. Das bleibt nun aber Theorie, an den bisher festgelegten
+Formen gibt es keine Aenderung.  
+Leider waren alle Programme zu aendern, in denen V14-Ersetzungen
+ausgefuehrt werden.
+Normalanwender waren nicht betroffen, weil die Standardparameter nicht
+den Doppelmodus verwenden.
+Folgende Programme sind aktualisiert:
+
+a99.exe, a99a.exe, acon.exe
+index.exe, srch.exe, presto.exe, apac.exe
+index16.exe, srch16.exe, upd16.exe
+
+(Die UNIX/Linux-Programme muessen noch neu kompiliert werden.)
+
+
+Kosmetik an a99a. Sollen wir es zum Hauptprogramm machen?
+---------------------------------------------------------
+Viele kleine Einzelheiten, die vielleicht nicht jeden stoerten,
+wurden verbessert. Aber nur die Optik, keine Funktionen! Besonders
+der viel zu breite Rand unten und rechts wurde abgeschafft - ein
+Primaerziel von a99a war ja, moeglichst viel Platz fuer die Daten
+freizuhalten. [Dies galt und gilt, nebenbei, auch fuer a30 und a35.]
+Gelegentlich wird mokiert, dass a99 eigentlich eine fuer Windows-
+Programme untypische und aeltlich wirkende Anmutung ausstrahle. Ob
+man deshalb lieber a99a zum Hauptprogramm deklarieren sollte? Wir
+stellen die Frage mal in den Raum. Wer's noch nie ausprobiert hat,
+koennte das jetzt mit Gewinn tun. (Ein richtig modernes Windows-
+Programm ist freilich auch a99a nicht.)
+
+
+Fehlermeldung "Nicht geklappt" beim Loeschen
+--------------------------------------------
+Dies war eine zu informationsarme Meldung, die auf ein vorlaeufiges 
+Provisorium zurueckging. Wir haben das gerichtet. Jetzt kommt ein
+aussagekraeftigerer Hinweis, z.B.: .TBL gesperrt, Speichern nicht
+moeglich, Datenbank freigeben per Menue "Reorganisieren" ...
+
+
+
+ORDER
+=====
+
+Fehler in d-wrtf.apr  (nach der Bereinigung, s. Vb.257, 1.1)
+--------------------
+Wer seine eigene Variante der d-wrtf.apr im eigenen DbDir hat, ist 
+nicht betroffen.
+Die Standard-Anzeigeparameter  d-wrtf.apr  enthalten wichtige Teile
+fuer das ORDER-System. U.a. gibt es eine Sprungmarke #-D, die zur
+Umrechnung von Fremd- in Eigenwaehrung ausgefuehrt wird. Diese wurde
+im Eifer der Bereinigung leider beseitigt. Das hatte aber zur Folge,
+dass die Kategorie #9DB beim Modifizieren von Bestellsaetzen 
+verschwand! Anscheinend fiel das bisher noch nicht auf. Die Sache
+wurde richtiggestellt, -D ist wieder drin. 
+Der Aufruf  depos D  trat auch auf in o-func.flx und o-invent.flx,
+hier und in order.rtf wurde das Funktionieren nun abgesichert.
+(Sehr ungut, diese Loesung! Sie entstand im ganz alten DOS-ORDER,
+als es FLEX noch gar nicht gab. Zum Glueck ist dies der einzige solche
+Fall in den Standard-Parametern und -FLEXen.) 
+
+o-bestel.flx
+------------
+Der Bestell-FLEX  o-bestel.flx  wurde veraendert: Wenn eine der
+Auswahlen  Kontingent, Lieferant, Auftraggeber, Waehrung  mit Esc
+abgebrochen wird, kommt keine Bestellung zustande, d.h. es entsteht
+auch kein rudimentaerer Bestellsatz im Offline-Speicher. Das konnte
+bisher irritierend sein. Wer aber eine dieser Auswahlen nicht
+braucht, kann sie leicht deaktivieren oder im o-init.flx
+einen festen Wert dafuer vorgeben, dann kommt die betr. Abfrage nicht.
+Aktualisiert wurde die Waehrungstabelle  whrg.vw
+(Tip: Dollarkurs kommt aktuell mit  X doll, Kurs einer anderen
+Waehrung, z.B. GBP: In google eingeben  1 EUR in GBP)
+
+Waehrungsliste
+--------------
+Diese wird mit dem Menuepunkt "Waehrungskurse" angezeigt und zur 
+Bearbeitung angeboten. Das passiert dann in Notepad. Man speichert 
+die Liste ab und sie wird in den Systemsatz kopiert (Schluessel
+SYSWWHRG im Reg. 11). Jetzt wird danach auch gleich die Hilfsliste
+(ViewListe)  whrg.vw  neu erstellt, was man bisher noch selber
+veranlassen musste ueber den Punkt "Hilfslisten anlegen/erneuern".
+Tip: Will man den aktuellen Kurs z.B. des Britenpfundes wissen,
+gibt man in Google ein:   1 EUR in GBP
+
+
+Index war nach "Schnellsuche" anscheinend blockiert
+---------------------------------------------------
+D.h. direkt danach kam kein Ergebnis bzw. keine Satzanzeige, wenn
+man im Index was auswaehlte.
+Behoben. (In onfnda99.flx und onfndalc.flx)
+Siehe auch unten: ISBN/ISSN jetzt in Schnellsuche einbezogen.
+
+
+FLEX
+====
+
+"find"
+------
+Die letzte Erg.Menge der Liste aktivieren und anzeigen geht mit
+find s0
+  (nicht find s3, wie es faelschlich in xfind.rtf zu lesen stand.)
+
+sort
+----
+Jetzt kann auch acon diesen Befehl, der den Inhalt der iV sortiert.
+Bei der Gelegenheit wurde die Funktion ein klein wenig bereinigt,
+und zwar auch in a99:
+Die letzte Zeile des Eingangstextes wurde nicht mit 13 10, sondern nur
+mit 13 abgeschlossen. Das kann bei der Weiterverarbeitung des 
+sortierten Textes aergerlich werden, wenn man etwa dann eine
+Ersetzung vornimmt:   ins _^M^J_^I_  oder so.
+Denn die letzte Zeile des eingelesenen Textes steht ja meistens
+nach dem Sortieren woanders...
+
+nextnum.flx  verbessert
+-----------
+Es wurde mit  set obj 1  und  set obj 2  operiert.
+Das ist unguenstig und kann zu Fehlern fuehren, wenn man im eigenen
+FLEX, der diesen aufruft, schon selber mit den Satzobjekten hantiert.
+Daher wurde nextnum.flx etwas umgeschrieben und arbeitet jetzt anders,
+wobei nichts mehr schiefgehen kann. Auch in  o-init.flx  wurde was
+veraendert. 
+
+dnb.flx und srugbv.flx 
+----------------------
+Diese zwei FLEXe zur direkten Datenuebernahme aus DNB und GBV wurden
+in einzelnen Punkten verbessert. Sie fussen auf Abfragemoeglichkeiten
+und Datenpraesentationen, die nicht ausdruecklich zur Fremddaten-
+uebernahme gedacht sind und daher von DNB bzw. GBV jederzeit ohne 
+Ankuendigung geaendert werden koennen. Dafuer sind sie schnell und 
+umwegfrei, man braucht a99 dazu nicht zu verlassen. Notwendige 
+Verbesserungen werden zeitnah ueber die Liste bekanntgegeben und 
+zum Download bereitgestellt (siehe ganz oben).
+Beide Funktionen nun auch im F9-Menue.
+
+set obj
+-------
+Durch das Umschalten zwischen den zwei Satzobjekten mit  set obj 1
+und  set obj 2  konnte es zu Fehlern kommen, und zwar dann, wenn
+auch noch zwischendurch das eine oder andere Objekt mit "put"
+gespeichert wurde. Dies fiel innerhalb einer ORDER-Installation auf.
+Das Problem wurde behoben.
+
+
+Schnellsuche mit ISBN/ISSN
+--------------------------
+In cat.api (demo2) wurde eingebaut, dass auch ISBN und ISSN im
+ALL-Register indexiert werden. Damit ergibt sich, dass man nun
+statt Stichwoertern auch diese Nummern einwerfen kann, und zwar
+ist es egal, ob mit oder ohne 978-, mit oder ohne Pruefziffer
+und/oder mit oder ohne Bindestriche eingegeben, denn indexiert
+sind nur die 9 signifikanten Ziffern, sonst nichts, und der
+FLEX  onfnda99.flx  macht eine entsprechende Vorbereitung der
+eingegebenen ISBN.
+Und:
+Ein Personenname kann in der Schnellsuche jetzt auch in der Form
+Nachname, Vorname
+eingegeben werden, also mit Komma, das stoert dann nicht mehr.
+(Das ist eingebaut in  onfnda99.flx und onfndalc.flx)
+Geben Sie mal bei der DemoBank in die Schnellsuche ein:
+  Shakespeare, William
+bisher kam dann nichts.
+Der Mitdenkbedarf wurde somit weiter reduziert - was ein geteiltes
+Echo hervorrufen duerfte. Die weit ueberwiegende Meinung wird ja
+wohl sein, dass alle Denkenergie in die Sache und keine in die
+Suche gehoert; eine Minderheit wird dagegenhalten: Gute Sache braucht
+gute Suche, und letztere - nicht immer, aber immer mal wieder - 
+scharfsinniges Denken! Dieses wird allerdings ja nicht durch die
+Neuerungen in die Obsoleszenz entlassen, sondern es war immer und
+bleibt Sache des Nutzers, sich dazu aufzuraffen.
+
+
+Brueckentage im Kalender
+------------------------
+Die Kalenderfunktion zeigt jetzt zusaetzlich
+-- im Monatsblatt die Brueckentage des Monats
+-- im Feiertagsblatt die Brueckentage des Jahres
+Mehr dazu im Mail-Archiv:
+  http://sunny5.biblio.etc.tu-bs.de/pipermail/allegro/2014-May/038316.html
+
+
+

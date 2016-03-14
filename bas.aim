@@ -1,0 +1,190 @@
+  bas.aim : BAS-Format (DABIS-Wien) --> MAB-SW
+  2010-09-03 
+  
+   Alternativ kann man Satzende (re) oder SatzlÑnge (RL) angeben:
+
+ re=13 10        SÑtze sind mit CR/LF abgeschlossen, obwohl von fester LÑnge!
+                (Die LÑnge ist 2083 Zeichen + 13 10!)
+rl=2085
+
+fl=1            feste FeldlÑngen, per Befehl l gesetzt
+
+
+   So sieht ein BAS-Datensatz aus: (alles was zwischen den *** steht)
+    (ohne das Zeichen '[' am Zeilenanfang und ohne Zeilentrennzeichen,
+    Ende des Satzes, obwohl feste LÑnge, ist mit den Codes 13 10 markiert.)
+ ********************************************************************************
+ [5182         0      7511    Y19840416Min  922.64bfl-w  Lesesaal Alser5182-7511/
+ [0             p0.00                     1    1                                 
+ [      1                                                                        
+ [     STRECKER A. (Hrsg.),               REINS J.,                          RÅss
+ [ing J., Trapp W.,                                                              
+ [
+ [                                                                               
+ [
+ [
+ [                                                                               
+ [                                                                15.00          
+ [                                                                               
+ [                                                                               
+ [          Eichgesetz, Fertigpackungs-VO (Text/Kommentar), 15.Erg.Lfg.          
+ [                                                                                
+ [                                                                               
+ [                                                                               
+ [                                                                               
+ [                                                                               
+ [                                                                               
+ [                                  I-Dat 24.04.84 / I-Bl  964.03                
+ [               Behr's Verlag                                Hamburg            
+ [           1983      0                                                         
+ [                                                                               
+ [                                                                                              
+ [                                                                               
+ [                       01712713Lesesaal Alserstra·e                            
+ [B-Nr: 1.1983 / R-Nr: 50007334 / îS           Ergz.Lfg.: 15.00                  
+ [                                                                    1FEJ[13 10]
+ ********************************************************************************
+ [5183 NéCHSTER DATENSATZ ...
+
+    Man muss mit dem j-Befehl auf die Positionen der einzelnen Felder springen:
+
+
+#40    der Name des ersten Verfassers
+j242   beginnt im BAS-Satz auf Position 242
+l35    und ist maximal 35 Zeichen lang (Leerzeichen am Ende werden beseitigt)
+= "  "  wenn das Feld leer ist
+qkoerp  geht es bei Sprungmarke -koerp weiter
+        sonst wird es Åbernommen
+
+#402   Namen von Verf. 2 und 3 sind bei 277 bzw. 312
+j277
+l35
+#403
+j312
+l35
++koerp1
+-koerp
+
+#60 
+j347    bei 347 beginnt der Kîrperschaftsname
+l90
++koerp2
+-koerp1
+#61 
+j347
+l90
+-koerp2
+#612
+j437
+l90
+#613
+j527
+l90
+
+#78p    Preis
+j617
+l8
+
+#20z   Ansetzungssachtitel
+j670
+l130
+n
+
+
+#20     Sachtitel beginnt auf 800 und ist 130 lang
+j800
+l130
+n    Nichtsortierwort am Anfang markieren
+
+#19    Vorlageform des HST zum AST
+j625
+= "  "
+qb     wenn leer: nach -b springen
+l45
+j930   von 930 noch 72 Zeichen holen und mit ". " anhÑngen
+w ". "
+l72
+-b
+
+
+#25 
+j1132
+l100
+
+#23     1. PST
+j1002
+l130
+n
+
+#39 
+j1232
+l90
+
+#74 
+j1517
+l30
+
+#75 
+j1472
+l45
+
+#76 
+j1547
+l10
+
+#77 
+j1412
+l30
+j1557
+= "  "
+l5
+qc
+
+-c
+#85 
+j1562
+l100
+n
+
+#852
+j1662
+l100
+n
+
+#853
+j1762
+l100
+n
+
+#80 
+j1932
+l45
+
+#81 
+j1967
+l100
+
+#97 
+j0
+l69
+
+#87     ISBN
+j1862   auf Position 1862
+l10
+u 6      UP 6 : insert hyphens into ISBN
+
+#88 
+j1875
+l8
+="  "
+qd
+l4
+j1879
+w "-"
+l4
+
+-d
+
+#90
+j69
+l21

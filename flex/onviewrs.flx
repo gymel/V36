@@ -1,0 +1,28 @@
+  ONVIEWRS.FLX : Menuefunktion "Export / Aktuelle Erg.menge"
+  2008-09-25
+  Die eingebaute Standardfunktion versagt, wenn mehr als 256K
+
+var e
+ins $e
+  aktuelle Druckparameter nehmen
+var d
+exp p
+  Dateiname
+open x onviewrs.rtf
+  RTF-Kopf (wahlweise aenderbar), 20 = Schriftgroesse 10p
+wri Fdisphead.rtf "\\fs20 " n
+  Erg.Menge ausgeben
+if g 0 exp set
+if l1 exp
+  Fuss (sonst versagt WinWord beim Einlesen)
+wri n "}}}" n
+close x
+  Exp.Param wiederherstellen
+var $e
+exp p
+  Liste zeigen
+help .\\onviewrs
+  mitteilen
+var "Datei " W "\\onviewrs.rtf kann mit WinWord eingelesen werden"
+sho iv
+

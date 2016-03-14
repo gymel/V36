@@ -1,0 +1,255 @@
+  KONT.APR : Summierung von Bestelldaten, differenziert nach Status
+  2000-01-09/ 2008-03-14   speziell wenn es eine Kontingentsumme ist
+pn="Berechnung Bestelldaten"
+
+  Gibt nichts aus, sondern addiert nur. Erst der Abschnitt #-S
+  fuehrt eine Ausgabe durch, siehe unten
+
+  --------- Konstanten --------------------------------------------
+ff=2     um Kopfabschnitt zu aktivieren
+zm=0     kein Seitenumbruch
+  ----------------------------------------------------------
+
+  Es sollen die Teilfelder $P addiert werden.
+  ZAboM:  #9Rx statt #9DB
+  Kontingentkennung steht in #uoJ
+
+  ************* Kategorieliste ************************************
+
+#uoH +H e0   Kopfteil
+
+#uSU +S e0    Wenn #uSU besetzt:  bei #-S beginnen
+              (#uSU wird vom FLEX gesetzt!)
+
+#uEM +M e0   Ende, Ergebnisse ausgeben
+
+#-D   preisumrechnung Fremd->Eigenwaehrung
+  Wenn #uuK besetzt, dann #-E
+#uuK +E e0
+
+  Nur beim Start ist #uuK noch nicht besetzt
+#nr p"SYSWWHRG" e8 |110    WhrgsTabelle laden -> #uwt
+#9A W dwT =wt
+  Wenn $c besetzt: Leitwaehrung ist Euro!
+#uwc dwc e0
+#9A c =wc
+#</
+
+  Aufbereitung der Waehrungsdaten
+#-•
+#uwt e"%" e":" P"=" AwT   #uwT : Code=Name|Code=Name...
+#uwt e"%" b":" b":" AwT
+#uwt e"%" e":" P"=" AuK   #uuK : Umrechn.Kurs Code=Kurs\Code=Kurs...
+#uwt b":" e":" e"\" P"\" AuK
+#uwt c"%" p"|" e1 AwT
+#uwt +• b"%" =wt    noch ein Code? Ja -> #-•
+#uwt dwt e0
+
+#-E
+  Was fuer ein Satz ist zu verarb.?
+#9R +R e0     Rechnungssatz
+    Preis aktuell umrechnen
+  #9DB +A c c"~DEM" e0   nicht bei DEM
+#9DB ~P =bs      P eigentlich obsolet!
+#uwh dwh e0
+#uwH dwH e0
+
+#9DB c =wh      Whrg bei dieser Bestellung
+#uwh +#uuK e0
+#+B   kein Waehrungsfaktor!
+#uuK b"#uwh" b1 e"\" =wH     Faktor aus #uuK holen
+#uwc +#J0a e0    Euro ist Leitwaehrung? -> #J0a
+   multiplizieren
+#9DB p x"*wH" x"r2" p"P" Abs    mit #uwH malnehmen, in $P legen
+#+A
+
+#-B
+#J0a
+#uwH +#9DB x">0" e0
+#nr p"1" e1 =wH e0       kein Faktor - 1 setzen
+   dividieren
+#9DB p x"/wH" x"r2" p"P" Abs    $p durch #uwH dividieren, in #ubs$P legen
+#+A
+
+
+#-R   Rechnungen: mehrere #9Rx
+#9R. ++ p>A m>A e0
+#+#
+
+  Preise zu Zwischensummen addieren, abh. vom Status
+#(A
+  Rechnungsdaten nur verarb., wenn Kontingent stimmt!
+  (es kann Teilbeträge zu anderen Kontingenten geben!
+#uoJ +#cc e0
+#+a
+#cc +a k c"#uoJ" e0
+#)A
+
+  Rechnungsdaten, #cc ist eine #9R
+#-a
+#cc 0 p"r" =bs      Daten in #ubs kopieren, mit r vorne
+#uwh dwh e0
+#uwH dwH e0
+#cc c =wh      Whrg bei dieser Bestellung
+#uwh +#uuK e0
+#+e   kein Waehrungsfaktor!
+#uuK b"#uwh" b1 e"\" =wH     Faktor aus #uuK holen
+#uwc +#J0a e0    Euro ist Leitwaehrung? -> #J0a
+   multiplizieren
+#cc +t t x"*wH" x"r2" p"P" Abs    Teilbetrag!
+#cc p x"*wH" x"r2" p"P" Abs    Gesamtbetrag in #9R, keine Teilbetr.
+#+A
+
+#-t
+
+#+A
+
+#-e
+#J0a
+#uwH +#cc x">0" e0
+#nr p"1" =wH e0       kein Faktor - 1 setzen
+   dividieren
+#cc p x"/wH" x"r2" p"P" Abs    $p durch #uwH dividieren, in #ubs$P legen
+#+A
+
+  Betrag auf die jeweilige Summe addieren, Typbuchstabe steht vorn, Pos. 4
+#-A
+#ubs i4,1 P x"+s1" =s1
+#ubs i4,1 P x"+sv" =sv
+  laufendes Abo
+#ubs i4,A i5,l P x"+sA" =sA
+  Rechnung
+#ubs i4,r P x"+sr" =sr
+#ubs i4,2 P x"+s2" =s2
+#ubs i4,2 P x"+sv" =sv
+#ubs i4,3 P x"+s3" =s3
+#ubs i4,4 P x"+s3" =s3
+#ubs i4,4 P x"+s4" =s4
+#ubs i4,5 P x"+s5" =s5
+#ubs +g i4,6 q x"+s6" =s6    Nach Inventarisierung Preis in $q !
+#ubs i4,6 P x"+s6" =s6    Nach Inventarisierung Preis in $q !
+#-g
+#ubs +k i4,7 q x"+s6" =s6
+#ubs i4,7 P x"+s6" =s6
+#-k
+#ubs i4,7 q x"+s7" =s7
+
+  Summierung der Anzahl der Bestellungen
+
+#ubs i4,1 p"1x" x"+b1" =b1
+#ubs i4,A i5,l p"1x" x"+bA" =bA
+#ubs i4,r p"1x" x"+br" =br
+#ubs i4,2 p"1x" x"+b1" =b1
+#ubs i4,3 p"1x" x"+b3" =b3
+#ubs i4,4 p"1x" x"+b4" =b4
+        5   (stornierte nicht)
+#ubs i4,6 p"1x" x"+b6" =b6
+#ubs i4,7 p"1x" x"+b6" =b6
+#)A
+#+#
+
+  ----------------------------------------------------------
+   Summenabschnitt : Ausgabe der Ergebnisse am Ende
+#-M
+#t{ "\b Summe zur Erg.Menge " C }
+#uEM +#9A e0
+
+
+#-S
+#uoK +K e0
+#t{ "\b Summen zum Lieferanten " }
+#uoL +L b"|"
+
+
+#-K
+#t{ "\b Summen zum Kontingent " }
+#uoK
+#uoK p"SYSK" |110
+#-L
+#t{ ": \b0 " C }
+
+
+#9A V C r10 p"    vorgegeben:     "
+
+#uwc +#us3 e0
+  diese Zeile entfaellt nach Euro-Umstellung
+#9A V x"/1.95583" x"r2" r10 p"  EURO: "
+#us3 x"-s5" =s3    Stornierungen subtrahieren!
+
+#us1 x"r2" =s1     Rundung
+#us2 x"r2" =s2
+#us3 x"r2" =s3
+#us4 x"r2" =s4
+#us5 x"r2" =s5
+#us6 x"r2" =s6
+#us7 x"r2" =s7
+#usv x"r2" =sv
+#usA x"r2" =sA
+#usr x"r2" =sr
+
+#usv C C r10 p"   Vorbereitet:     "        Rundung auf 2 Dez.Stellen
+#uwc +#us3 e0
+#usv x"/1.95583" x"r2" r10 p"  EURO: "
+#ub1 e"." r4 p" (" P")"
+#us3 C C r10 p"      Bestellt:     "
+
+#uwc +#ub3 e0
+#us3 x"/1.95583" x"r2" r10 p"  EURO: "
+#ub3 e"." r4 p" (" P")"
+#us6 C r10 p"     Geliefert:     "
+
+#usA C r10 p"   Abonnements:     "
+#ubA e"." r4 p" (" P")"
+
+#usr C r10 p"    Rechnungen:     "
+#ubr e"." r4 p" (" P")"
+
+#us6 +W x"=0" e0
+#uwc +#ub6 e0
+#us6 x"/1.95583" x"r2" r10 p"  EURO: "
+#ub6 e"." r4 p" (" P")"
+#t{ C "------------------------------------" }
+#us3 C x"+s6" x"r2" r10 p"Bestellt+Geliefert: "
+
+#-W
+#us3 +U x"=0" e0
+#uwc +#ub3 e0
+#us3 x"+s6" x"/1.95583" x"r2" r10 p"  EURO: "
+#ub3 x"+b6" e"." r4 p" (" P")"
+#9A +#9A e0
+
+#+U   Dieses nur wenn es ein Kontingentsatz ist:
+#9A V C x"-s6" x"-s3" x"r2" r10 p"         Noch frei: "
+#9A +#uSU c"c" e0
+#9A V x"-s6" x"/1.95583" x"r2" r10 p"  EURO: "
+
+#-U
+#uSU dSU e0         #uSU wieder loeschen
+#+#
+
+   Initialisierung der Variablen: alle auf 0 setzen
+   #dt wird nur als Hilfskategorie benutzt, weil sie immer existiert
+#-H
+#dt x"=0" =s1    Summe Status 1
+#dt x"=0" =s2
+#dt x"=0" =s3
+#dt x"=0" =s4
+#dt x"=0" =s5
+#dt x"=0" =s6
+#dt x"=0" =s7
+#dt x"=0" =sv
+#dt x"=0" =sA    Summe Abos
+#dt x"=0" =sr    Summe Rechnungen
+
+#dt x"=0" =b1    Anzahl Bestellungen
+#dt x"=0" =b2
+#dt x"=0" =b3
+#dt x"=0" =b4
+#dt x"=0" =b5
+#dt x"=0" =b6
+#dt x"=0" =b7
+#dt x"=0" =bA    Anzahl Abos
+#dt x"=0" =br    Anzahl Rechnungen
+#+#
+
+

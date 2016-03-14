@@ -1,0 +1,332 @@
+
+Verlautbarung 272 der Entw.Abt.                              2015-09-01
+-------------------------------
+
+V35.8 ist da
+------------
+
+Inhalt:
+Formularprobleme mit Unterfeldern
+FLEX: var pvs (a99 und acon)
+acon FLEX : "include" geht jetzt
+Suchbefehle, die 'and' enthalten
+Fehlerabfragen in acon
+FLEX: var Err (acon)
+al.job erweitert : Neue Funktion 'INI-Datei erstellen'
+Von/Bis-Suche
+
+
+Wenig Neues!
+Diese Version ist schon ganz dicht am Ziel des Jahres: eine Referenz-
+Version zu schaffen, die Bestand haben kann, bis die Zeit ueber 
+allegro und vergleichbare Systeme hinweggeschritten ist. "Vergleichbar"
+meint hier Systeme, die auf einem "Kategorienschema" beruhen: einer
+gefelderten Datenstruktur mit kurzen Codes, zumeist Nummern, als
+Feldbezeichnungen. Kommende Systeme werden, wenn nicht alles taeuscht,
+erstens ausschließlich mit Unicode arbeiten, zweitens aber auf 
+gaenzlich anderen Konzepten und Strukturen basieren, die auch ganz
+neue Software erfordern. Die BIBFRAME-Initiative, begruendet von der 
+LC, hat dies zum erklaerten Ziel, d.h. "es waelzt sich heran, es wird
+kommen und treffen", um's mit Goethe zu sagen.
+"Bestand haben", je nun, das wird man relativieren muessen! Neue
+Anforderungen koennten kommen, unterhalb der BIBFRAME-Schwelle, die
+nicht mit den Techniken der Parametrierung und der FLEX-Skripte zu
+loesen waeren, sondern nur mit Eingriff in die C-Programme. Da wird
+fuer eine Weile immer noch was gehen. "On va voir ce qu'on va voir",
+um's mit den Franzosen zu sagen.
+
+Echte Neuerungen gibt es in V35.8 keine! Es handelt sich um einige
+Begradigungen von Funktionen, die an manchen Stellen nicht das taten,
+was man erwarten musste.
+
+
+Formularprobleme mit Unterfeldern
+---------------------------------
+Bezug: Letzter Absatz von Vb.271
+Z.B. bei Bestellungen trat es auf, dass eine Formularzeile fuer ein
+Unterfeld, z.B. $n-#9DB, eine falsche Kategorie #9D mit $n erzeugte
+statt #9DB. Aber nur, wenn in dem Moment das Feld #9DB noch gar nicht
+belegt war. Das lag an einer Reparatur, die wir fuer V35.7 gemacht
+hatten, dabei wurde aber eine Verschlimmbesserung erzielt.
+Ist behoben.
+
+
+FLEX: var pvs   (a99 und acon)
+-------------
+liefert den momentan eingestellten Wert fur die persistenten Variablen.
+Default ist z1: Register 1 in  der Indexdatei  *.?zx  der Datenbank,
+beim Standardsystem also  cat.azx.
+
+
+ISBN bei Formularerfassung
+--------------------------
+In die formularbasierte Erfassung wurde ein UP eingebaut, das die
+ISBN aus der eingegebenen Form in die korrekte Form wandelt. Dabei
+kann die ISBN auch ganz ohne Bindestriche eingegeben werden, ohne 
+Pruefziffer und ohne 978- vorne.
+Das UP ist in input.flx, dem FLEX, der das gewaehlte Formular aufruft.
+Zu finden ist es unter der Marke  :isbn
+
+
+acon FLEX : "include" geht jetzt
+--------------------------------
+Eine mit "include" in den Job einzubindende Datei wurde nicht gefunden,
+wenn sie auf dem ProgDir lag, der Start jedoch von anderswo erfolgte.
+M.a.W, sie musste auf dem Startverzeichnis liegen. Das war
+inakzeptabel, weil man so das Programm acon stets auf dem ProgDir
+zu starten hatte, z.B. fuer den update.job, aber auf dem ProgDir
+will der ordnungsbewusste Admin keine Hilfsdateien oder Ausgabe-
+dateien entstehen lassen, wie es bei einem Job oft geschieht. Die
+sollen im Arbeitsordner entstehen, wo acon gestartet wurde, und eben
+deshalb startet man's nicht im ProgDir. Die Abhilfe, include-Dateien
+eben auch auf dem Arbeitsverzeichnis abzulegen, ist ebenfalls nicht
+angenehm. Das Problem wurde behoben. acon sucht zuerst auf dem
+ProgDir nach der Datei, danach im Arbeitsordner. Auch das koennte
+noch Kritik hervorrufen, weil man evtl. gerne einen eigenen Ordner
+fuer include-Dateien haette. Zunaechst einmal gibt's den nicht,
+anders als bei a99 den FLEX-Ordner. Hier besteht noch Klaerungsbedarf.
+
+
+acon: Primaerschluessel in Extremfaellen
+----------------------------------------
+Fast niemand ist hiervon betroffen.
+Wenn der Primaerschluessel die Laenge von 246 Zeichen (!) ueberschritt,
+UND auf der letzten Position zufaellig eins der i3-Zeichen aus der
+Indexparameterdatei stand, wurde dieses nicht beseitigt, wenn der
+Pr.Schl. per FLEX mit "var p" gebildet wurde, waehrend es beim
+normalen Indexieren korrekt klappte. Dies wirkt sich nur dann aus,
+wenn der Job update.job Daten einmischen sollte UND ein Satz dabei
+war, auf den die genannten Extrembedingungen zutrafen.
+Das wurde behoben.
+
+
+Suchbefehle, die 'and' enthalten
+--------------------------------
+Es gibt natuerlich Titel, die ein "and" enthalten oder ein "or" 
+oder ein "not". Die sind problematisch bei der Suche im TAF-
+Register o.ae. Wenn da ein Titel drinsteht wie "alpha and omega",
+dann wird der mit   find taf alpha and omega   nicht gefunden.
+Das liegt daran, dass eben "and" ein Funktionswort ist und als
+solches den Suchvorgang stoert. Es klappt nur, wenn man den
+Suchbegriff in "..." setzt, falls er mehrteilig ist und ein 
+Funktionswort enthalten koennte:  find taf "alpha and omega".
+Unabhaengig davon gilt generell:
+Mit einem  if no ...  als unmittelbar naechstem Befehl kann man
+den Misserfolg eines  find ...  abfangen. Das klappte bislang
+nicht, jetzt aber. Bei a99 und acon.
+Aber es kommt noch besser, siehe den uebernaechsten Absatz:
+
+
+Fehlerabfragen in acon
+----------------------
+Die verschiedenen "Fehlerbedingunen", die vor langer Zeit mal 
+bei acon eingefuehrt worden waren ("if readerror"  etc.), wurden fuer
+a99 nie nachgebildet und gerieten auch fuer acon in Unordnung.
+Jetzt werden nur noch die Bedingungen  yes, no und cancel empfohlen,
+wie bei den verschiedenen Befehlen angegeben, einheitlich fuer
+a99 und acon. Das mag die Fehlersuche in seltenen Faellen etwas
+schwieriger machen, ist aber zunaechst nicht zu aendern - wir
+bedauern das, aber der Aufwand erwies sich als zu hoch. Immerhin kann
+man wenigstens, siehe oben, einen misslungenen find-Befehl nun auch mit
+"if no ..." abfangen, nur ob es an einem Syntaxfehler liegt oder daran,
+dass nichts zu finden ist, das bleibt an der Stelle unklar und damit,
+zugegeben, unbefriedigend. ABER:
+
+
+FLEX: var Err (acon)
+--------------------
+Diese Sondervariable soll die letzte FLEX-Fehlermeldung enthalten.
+Lange Zeit klappte das nur in wenigen Ausnahmefaellen. Nun steht da 
+immer die letzte vom FLEX-Interpreter erzeugte Fehlermeldung drin,
+auch wenn der direkt vorangehende Befehl keine erzeugte. Das ist auch
+der Fall bei find-Befehlen, deren Argument ein "and" enthaelt, s.o. 
+Auch in diesem Fall steht also der FLEXperte nicht mehr komplett im 
+Regen, sondern kann dem nicht klappenden find-Befehl dies nachschieben:
+if no wri "Fehlermeldung: " Err n
+und dann wird's einen brauchbaren Hinweis geben.
+Nach Zugriff auf Err mit "var" oder "wri" wird Err geloescht. Sonst
+erst dann, wenn ein weiterer Fehler kommt, der es ueberschreibt.
+
+Ein Rezept für die Anwendung nach einem Suchbefehl, dessen Erfolg
+zweifelhaft sein koennte:
+
+find ...
+if no var Err;mes;jump ...
+
+
+In Kurzform gilt fuer die Suchbefehle:
+Ergebnismenge ist leer, wenn der Suchbegriff Probleme machte
+   *oder* nichts gefunden wurde 
+
+bei "f1nd" entsteht nie eine Erg.Menge, ansonsten gilt wie bei "find":
+
+if no ...   gilt in beiden Faellen, aber
+
+der Cstring 'Err' ist im zweiten Falle leer
+
+
+Anders gesagt, gilt fuer "find" wie fuer "f1nd":
+
+Der Fall "if no" gliedert sich in a) Err belegt und b) Err nicht
+belegt. Damit und nicht anders kann man herausfinden, ob die Suche
+an einem Suchbegriffsfehler scheiterte oder "ganz normal" einfach
+keine Treffer lieferte. 
+acon: Wenn nicht "echo off" gesetzt wurde, kommt zusaetzlich in 
+jedem Negativfall auf dem Fehlerkanal die Meldung heraus: 
+ N:<E130> kein Ergebnis bei:...
+
+
+al.job erweitert : Neue Funktion 'INI-Datei erstellen'
+------------------------------------------------------
+Mit dem Befehl  al  startet man auf dem ProgDir das Programm acon,
+um das Skript  al.job  auszufuehren. 
+(Unter Unix gibt man:   ./acon -jal -ddemo2 -bcat)
+Es gibt fuer Windows eine neue Funktion im Admin-Menue:
+  b = Look for other databases
+Dann kommt eine numerierte Liste der gefundenen Datenbanken,
+unterhalb des Aufrufverzeichnisses. Man gibt die gewuenschte
+Nummer ein, dann kommt die Auswahl:
+1 : Look at the database -- 2 : Create INI file for it
+Funktion 1 startet den al.job, nun aber fuer die gewaehlte Datenbank.
+Funktion 2 erzeugt in dem betr. Ordner eine INI-Datei fuer den Start
+von a99.
+Damit hat man eine weitere Methodik, fuer eine vorhandene, alte und
+bisher nicht mit a99 benutzte Datenbank eine erste INI-Datei zu
+erstellen und damit einen Startversuch mit a99 zu machen.
+
+Der al.job hat neben seiner eigenen Funktionalitaet vor allem den
+Nutzen, als Beispielsammlung dienen zu koennen fuer die Anwendung
+der FLEX-Sprache mit acon. Man findet sich darin leicht zurecht, weil
+alles ausfuehrlich kommentiert ist. Waehrend man eines der Menues
+betrachtet und bevor man eine Funktion ausloest, kann man in
+einem anderen Fenster im Editor in der Datei al.job nachschauen, wo und
+wie das betr. Menue erzeugt wird und was bei Wahl einer der Funktionen
+dann gemacht wird. Das Hauptmenue steht unter der Marke  :Menu
+Alles ist in englischer Sprache geschrieben, nicht um eine Anmutung
+von Professionalitaet zu evozieren, sondern weil die ersten Anwender
+in England sitzen und komplett unter Linux arbeiten, mit a35 statt
+mit a99, was hierzulande wohl noch kaum irgendwo der Fall ist. Manches
+kann allerdings auf Englisch kompakter formuliert werden, was nicht 
+unwichtig ist fuer die Uebersichtlichkeit. Wir weisen nochmals hin auf
+das englischsprachige FLEX-Tutorial speziell fuer acon und a35:
+  http://www.allegro-c.de/doku/aconflex.htm
+und die kurzgefasste Befehlsliste:
+  http://www.allegro-c.de/doku/commtab.htm
+
+
+Von/Bis-Suche
+-------------
+Die Syntax fuer "qrix" bzs. "find" ist leider nicht identisch, was
+eigentlich sehr wuenschenswert waere. In einem Punkt wurde, bei
+"find", eine Verbesserung erreicht.
+Wir beschreiben in allen Einzelheiten den Stand der Sache:
+
+1. qrix N REG A@B
+    mit einer positiven Zahl N = Maximalzahl der gewuenschten Zeilen
+und mit einem Registernamen REG und beliebigen Zeichenfolgen A und B.
+REG kann jeder symbolische Registername sein (PER, TIT, NUM, ...), 
+aber auch ein direkter Name von der Form |i , mit i=1,...,9,:,;
+N kann negativ sein, dann wird von der Stelle A aus N Zeilen 
+rueckwaerts gegangen; Beispiel in  h xqrix.
+
+Hier wurde nichts geaendert! Das Verhalten ist folgendermassen:
+Es gibt einen einstellbaren Begrenzercode, Default ist @. 
+Es kann sich um mehr als ein Zeichen handeln, z.B. ---
+Die Setzung auf --- erfolgt mit  qrix d---
+Der gesetzte Code bleibt gueltig bis zur Aenderung bzw. Sitzungende,
+also ueber das Ende des FLEXes/Jobs hinaus.
+Wenn man nur den Begrenzer hinter die Zeichenfolge A setzt und
+sonst nichts, kommt nichts raus.
+Wenn man alles will vom ersten Auftreten der Zeichenfolge A bis zum
+Ende des Registers, setzt man N genuegend gross, aber hinter A einfach
+nichts, also auch nicht den Begrenzer. Den braucht's nur, und hinter 
+ihm eine zweite Zeichenfolge B, wenn's an einer bestimmten Stelle vor
+dem Ende des Registers enden soll, und zwar direkt VOR dem ersten 
+Auftreten von B. 
+Will man nur die erste Zeile, die mit A beginnt, setzt man 1 fuer N.
+Beipiel:
+qri 1000 PER meier
+sho IV
+liefert alle Eintraege von der ersten mit 'meier' beginnenden Zeile bis
+zum Ende des Registers PER, maximal aber 1000 Zeilen. 
+Die Zahl (hier 1000) muss hinreichend gross gewaehlt sein, dass es
+reichen wird, wenn's wirklich bis zum Ende gehen soll. Groesser als
+4 MB kann die Textmenge jedoch nicht werden, das ist das Limit fuer
+die Groesse des iV-Inhalts.
+
+Hinweis: Mit dem Hilfsprogramm  qrix  kann man sich vollstaendige 
+Register als Textdatei auswerfen lassen:
+  qrix -fd -ddemo2 -ecat=demo2 -w1
+liefert das gesamte Register 1 der DemoBank, wenn man diesen
+Befehl auf dem ProgDir gibt. Mehr dazu:  h ac7-2
+Man haengt noch  >liste.txt  an, wenn die Daten in der Datei
+liste.txt landen sollen. Ohne die Option -w1 kommt der gesamte
+Index als Textdatei raus.
+Handbuch Kap.7.5 listet alle Aufrufoptionen von qrix auf.
+
+2. find
+Hier gibt es nur --- als Begrenzer, fest eingebaut. D.h. eine
+Entsprechung zu "qrix d..." besteht nicht; die Setzung fuer qrix
+ist fuer find nicht relevant. (Aenderung wird noch erwogen.)
+Bisher war es so, dass --- am Ende des Suchterms, ohne einen
+zweiten Term dahinter, automatisch die Suche bis zum Ende des 
+Registers fortsetzte, anders als bei qrix also, wo man einfach
+nichts hinter den Suchterm setzt, siehe oben, um alles bis zum
+Ende zu kriegen. Genau dies musste geaendert werden, weil es
+eben sein kann, dass es einen Registereintrag gibt, der mit ---
+endet, und genau den koennte man dann als solchen nicht mit einem
+find-Befehl finden.
+Tatsaechlich trat so ein Fall sogar bei einem Primaerschluessel
+auf - wodurch die hier beschriebene Revision angestossen wurde.
+Die Wirkung der Syntax mit "---" am Ende ist unintuitiv und daher
+ohnehin fragwuerdig. (Manche wuerden sagen: "Magie", und sowas gilt
+als irgendwie unfein.)
+Die Aenderung sieht einfach so aus, dass man etwas hinter --- setzen
+muss, was garantiert hinter der letzten Zeile des Registers zu
+stehen haette. Es kann sich um das Zeichen ~ (Code 126) handeln,
+wenn in den Registern keine Zeichen vorkommen mit Codes >125, und
+das ist der Normalfall. Sonst muesste man, um GANZ sicher zu gehen,
+den Code 254 nehmen, der kann gar nicht im Register vorkommen:
+ var "PER shak---" 254
+ find
+Findet im Register PER alles von shak bis zum Ende.
+
+Das Verhalten von "find" bei der Von/Bis-Suche ist also nun in zwei
+Punkten anders als vorher:
+1. Will man im Register xyz einen Eintrag  "abc---" finden, der genau
+   so aussieht, also mit --- am Ende, dann findet man den ganz normal
+   wie jeden anderen Eintrag mit  find xyz abc---
+2. Will man im Register xyz alles ab "abc" bis zum Ende finden, dann
+   geht das mit  find xyz abc---~
+   oder einem besser geeigneten Code am Ende, etwa 255.
+Es scheint dennoch sinnvoll zu sein, eine nutzerseitige Setzung des
+Begrenzercodes, also Einstellung von etwas anderem als ---, auch fuer
+find zu ermoeglichen ODER den Code fuer qrix auch bei find anzuwenden.
+Darueber wird noch nachzudenken sein. 
+
+Nachzudenken wird auch sein ueber Verbesserungen der Von/Bis-Suche 
+hinsichtlich der symbolischen Register mit Praefix. Das Hauptproblem
+erkennt man an folgendem Beispiel:
+
+qri 1000 DIS B@D G
+
+selektiert die Registerzeilen, die im Register 1 mit "D b" beginnen,
+bis hin zu der letzten Zeile vor "D g". Das Aergernis ist, dass man
+beim zweiten Suchterm das Praefix "D " mit anzugeben hat. Dasselbe
+kommt uebrigens raus, wenn man sagt
+
+qri 1000 Per D B@D G    oder   qri 1000 Per D b@D g
+ 
+Mit find geht es leider nicht, da sind die symbolischen Register
+fuer eine Von/Bis-Suche nicht geeignet: 
+
+find DIS b---g    klappt nicht, nur
+
+find PER D b---D g
+ 
+Man kann also durchaus fuer jedes Von/Bis-Suchvorhaben zum richtigen
+Ergebnis kommen, die Syntax ist aber noch unbefriedigend.
+
+Die Doku-Texte  h xqrix  und  h commd  wurden aktualisiert.
+
+

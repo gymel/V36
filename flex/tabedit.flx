@@ -1,0 +1,146 @@
+  TABEDIT.FLX : T-xyz.APR einlesen und zum Bearbeiten vorlegen
+  2001-02-06/2004-12-06   Parameter fuer Tabellen erstellen
+  In #uqT steht der Parameterdateiname  t-xyz oder q-xyz
+  Es wird Strukturdatei T-xyz.STR draus gemacht und angezeigt
+  In tabstart.flx wird sie eingelesen und geloescht
+
+  FLEX fuer Alt+9 einrichten:
+var "X tabstart"
+ins #uX9
+
+  Was ist es? q- oder t-?
+var #uqT
+if "~t-" jump tgo
+if "~q-" jump qgo
+  Es ist kein korrekter Name: zuerst einen auswaehlen
+exec tabpick
+
+:tgo
+sho rec
+  Name  t-*.apr  incl. Pfad steht in #uwU
+if not #uwU jump UWT
+var #uwU
+
+  t-xyz.apr zum Lesen oeffnen
+open
+   evtl. stand er nicht in #uwU, sondern nur in #uqT (ohne Pfad)
+if no jump UWT
+
+:open
+  Datei  t-xyz.str  zum Schreiben oeffnen
+  Diese wird dann im Anzeigefeld zum Bearb. angeboten, nicht die Parameter selbst!
+  Anschliessend (nach Alt+9) wird das Anzeigefeld wieder in eine Parameterdatei gewandelt
+var #uqT(e" " t".") ".str"
+open x
+  Kopfzeilen schreiben
+wri "     Tabellenstruktur bearbeiten" n
+wri "     ---------------------------" n
+wri "     Hinweis:" n
+wri "     FÅr Kenner der Parametrierung: Bearbeiten Sie die Parameterdatei " #uwU" n
+wri "     direkt mit einem geeigneten Texteditor, wenn Sie bei einzelnen Feldern" n
+wri "     noch Manipulationen einbauen wollen!" n n
+wri "     Wenn Sie die Bearbeitung aber hier im Anzeigefeld machen:" n
+wri "     Dann drÅcken Sie am Ende  Alt+9 , um die Struktur wieder zu speichern." n
+wri "                               =====" n n
+wri #uqT(t".") n "    Name (Ñndern, wenn eine neue Datei daraus werden soll)" n n
+wri "     Befehl NUM aktivieren, wenn numerisch sortiert werden soll" n "  NUM" n n
+
+   Datei einlesen und verarb.:
+   Jede Zeile wird in #uwZ gelesen und dann untersucht
+
+get #uwZ
+
+:schleife
+var #uwZ
+
+
+if "#-" jump lesen
+if "#+" jump lesen
+if "#t" jump lesen
+if "#u" jump lesen
+if "#n" jump lesen
+if "#" jump kat
+if "!" jump sort
+
+if "tad-aw" wri "ANSI    Codierung soll ANSI (Windows) sein" n n
+if "tasciansi" wri "ANSI    Codierung soll ANSI (Windows) sein" n n
+if "td-utf8" wri "UNICODE    Codierung soll UTF-8 sein" n n
+
+:lesen
+get 
+ins #uwZ
+if cancel jump exit
+jump schleife
+
+:sort
+if $num jump lesen
+if %[012345% jump num
+var #uwZ
+
+if %$%  wri #uwZ(e" ") "$" #uwZ(b"$" 0,1) "     Dieses Feld wird zum Sortieren benutzt" n
+var #uwZ
+if not %$% wri #uwZ(e" ") "     Dieses Feld wird zum Sortieren benutzt" n
+wri "               (fÅr SQL ist das ohne Bedeutung!)" n n
+wri "    > Es folgt die Liste der Tabellenspalten nach dem Schema" n
+wri "    > #Feldnummer    Feldname" n
+wri "    > Angabe von Teilfeldern nach dem Schema  #nnn$x (ergibt Teilfeld x von #nnn)" n
+wri "    > Nach Wunsch umordnen und Ñndern!" n
+jump lesen
+
+
+:num
+$num=ja
+wri "NUM     wegnehmen, wenn alphabetische Sortierung gewÅnscht" n
+wri #uwZ(e" ") n n
+  naechste Zeile uebergehen!
+get
+jump lesen
+
+:kat
+var #uwZ
+
+wri n #uwZ(e"" e"$" e" " F" ")
+var #uwZ
+if %% wri "$" #uwZ(b"" e" ")
+if %$% wri "$" #uwZ(b"$" e" ")
+
+
+if not %% if not %$% wri "  "
+wri "     " #uwZ(b" " b" " f" ")
+wri n
+jump lesen
+
+:exit
+close x
+var #uqT(t".") ".str"
+help
+act 4
+var #uqT(e" ") "  wird hier zum Bearbeiten gezeigt" n "Man kann auch den Namen Ñndern und dadurch eine neue Version schaffen" n "Zum Speichern dann Alt+9"
+ansi
+sho iV
+end
+
+  zweiter Versuch: name ohne Pfad in #uqT
+:UWT
+var #uqT
+if not "q-" var "t-" #uqT(e" " B"~t-" e".") "." K1 "PR"
+ins #uwU
+open
+if no jump error
+jump open
+
+:error
+var "Datei " #uwU " kann nicht gelesen werden"
+mes
+end
+
+:qgo
+var #uqT
+help
+var "ACHTUNG: Datei kann jetzt bearbeitet werden. Speichern dann mit Alt+9!"
+sho iV
+end
+
+   #uqT   Name  T-xyz
+   #uwU   vollst. Pfadname der Datei
+   #uwZ   eingelesene Zeile

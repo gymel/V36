@@ -1,0 +1,149 @@
+  X-SUMME.FLX  Summierung einer Kategorie ueber die Ergebnismenge
+  2007-01-04   oder auch ueber die gesamte Datenbank!
+  Version zum automatischen Aufruf. Interaktive Version: summe.flx
+  Auch geeignet als Vorlage, wenn man eine andersartige Auswertung machen
+  will, wahlweise fuer die Erg.Menge oder die Gesamtbank.
+
+  Aufruf aus einem anderen FLEX mit  exec x-summe <nummer>
+  mit <nummer> = Katagorienummer, evtl. mit Subfield
+  z.B.  exec x-summe 77     : Feld #77 summieren
+        exec x-summe 95$b   : Subf. b von #95 summieren
+  Rueckgabe:
+        #uvS = Summe
+        #uvD = Durchschnittswert
+
+  Beim Aufruf kann auch der Name des aufrufenden FLEX und die Sprungmarke
+  fuer die Rueckkehr angegeben werden, z.B.
+        exec x-summe 77;verarb;weiter
+     dann wird am Ende  verarb.flx gestartet,
+     in verarb.flx muss am Anfang die uebergebene Sprungmarke ausgewertet 
+     werden, und zwar am einfachsten in die erste Zeile schreiben:
+     if not "" jump
+  Beispiel dafuer: siehe  summe.flx
+
+
+:anfang
+if "" end
+  Uebergebene Werte -> #usG  (z.B. 77;verarb;weiter )
+ins #usG
+var "#" #usG(e";" f"#")
+  ersten Wert -> #usF  (z.B. #77)
+ins #usF
+
+
+  iZ auf 0 setzen
+Z = 0
+
+  Es gibt keine Erg.Menge -> :gesamt
+if empty jump gesamt
+
+  Ergebnismenge verarbeiten. Umfang in #uvZ speichern
+  =========================
+var l
+ins #uvZ
+
+  ersten Satz holen
+first
+:loop
+
+var #usF
+  in iV steht jetzt die Kategorienummer!
+var
+  und nun deren Inhalt,
+  addiere ihn zur internen Zahl:
+Z +
+ins #usS
+  Esc?
+keycheck
+if yes jump erg
+
+next
+  es gibt noch einen Satz? dann -> :loop
+if yes jump loop
+
+:erg
+  Ergebnis in #uvS sichern (steht in der iZ)
+var Z
+ins #uvS
+  Anzahl Saetze
+var #uvZ
+  dividieren (Durchschnittswert)
+Z /
+var Z
+ins #uvD
+  interne Zahl auf 0 setzen (da wird die Summe gebildet)
+Z = 0
+jump exit
+
+
+  Gesamtbank verarbeiten
+  ======================
+:gesamt
+  Anzahl in #uvZ setzen
+var t
+ins #uvZ
+  interne Zahl auf 0 setzen:
+Z = 0
+  Gesamtbank verarbeiten
+  ersten Satz holen (interne Nummer 1), Zaehler auf 1
+var "1"
+z=
+first #
+  falls #1 geloescht oder Nummer nicht besetzt: naechste
+if del jump naechst
+  Jeder Satz wird in dieser Schleife verarbeitet:
+:schleife
+var #usF
+  in iV steht jetzt die Kategorienummer!
+var
+  und nun deren Inhalt,
+  addiere ihn zur internen Zahl:
+Z +
+  Esc-Taste? dann Abbruch -> :erg
+keycheck
+if yes jump erg
+
+  Naechsten Satz holen (interne Nummernfolge), Zaehler hoch
+:naechst
+next #
+var "1"
+z+
+
+  kein Satz mehr, Ende erreicht
+if cancel jump gerg
+  der Satz ist geloescht
+if del jump naechst
+  es gab noch einen Satz? dann -> :schleife
+if yes jump schleife
+
+:non
+var "#" z
+find
+jump naechst
+
+  GesamtErgebnis
+:gerg
+  Ergebnis in #uvS sichern (steht in der iZ)
+var Z
+ins #uvS
+  Anzahl Saetze
+var #uvZ
+  dividieren
+Z /
+var Z
+ins #uvD
+  interne Zahl auf 0 setzen (da wird die Summe gebildet)
+Z = 0
+
+  Am Ende: Steht was hinter ; in #usG? 
+  Das ist dann der Name des aufrufenden FLEX
+:exit
+var #usG(b";")
+ins #usG
+if not #usG end
+
+  Ruecksprung zum aufrufenden FLEX, mit der Sprungmarke als Argument
+var "X " #usG(e";") " " #usG(b";")
+exec
+
+

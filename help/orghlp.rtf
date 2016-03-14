@@ -1,0 +1,131 @@
+{\rtf1\ansi\ansicpg1250\deff0\deflang1031{\fonttbl{\f0\fswiss\fprq2 Arial;}{\f1\fswiss\fprq2\fcharset0 Arial;}{\f2\fswiss ARIAL;}{\f3\fswiss\fcharset0 ARIAL;}{\f4\fmodern\fprq1\fcharset0 Courier New;}{\f5\fmodern\fprq1\fcharset0 Courier;}}
+{\colortbl ;\red255\green0\blue0;\red0\green0\blue0;\red0\green0\blue255;\red0\green128\blue0;}
+\viewkind4\uc1\pard\qc\f0\fs24 
+\par \cf1\b\i\fs28 (Re-)Organisieren\cf2\i0 
+\par \b0\fs20 `\cf3\ul\b Angaben zur Datenbank\cf2\ulnone\b0 ` 
+\par \pard\qr `\cf4\ul\b Kurzfassung\cf2\ulnone\b0 ` 
+\par _5 Sorry, kein Zugriff 
+\par \pard Hier sind Funktionen versammelt, die bei jeder Datenbank gelegentlich \f1 wichtig sein k\'f6nnen\f0 . \f2 %=x var B`ins #uvB`var D`ins #uvD`var K1`ins #uvK`var "frei"`if tbl var "gesperrt"`ins #uvG`var "frei"`if Lock var "gesperrt"`ins #uvR%\f0 
+\par Eine `\cf3\ul Datenbank besteht aus mehreren Dateien\cf2\ulnone\f1 ` mit unterschiedlichen Funktionen und Inhalten. Alle diese Dateien k\'f6nnen reorganisiert, d.h. erneuert werden. Wann so etwas n\'f6tig ist, entnehmen Sie dem Kap. 0.11.2 des Handbuchs. Im Normalbetrieb braucht man diese Funktionen nur sehr selten. \f0 
+\par \f1 Vertiefte Aufkl\'e4rung bietet das `\cf3\ul\b\f0 Handbuchkapitel 7\cf2\ulnone\b0 ` (Indexierung). 
+\par \f1 Wenn eine dieser Funktionen gestartet wird, darf nicht zugleich jemand an der Datenbank arbeiten. Daher pr\'fcft dieses Programm zuerst, ob das der Fall ist, und nur dann wird die Funktion durchgef\'fchrt. \f0 
+\par \pard\qr `\cf3\ul\b\f1 Hinweis f\'fcr Systemverwalter\cf2\ulnone\b0\f0 ` (Novell-Server) 
+\par \pard\tx3969 `\cf3\ul\b Index erneuern\cf2\ulnone\b0 `\f1  (Datei\f0  \cf1\f2\fs18 %#uvB.%#uvK\f3 dx\cf2\f1 )\f0\fs20 
+\par \pard\li568\tx3969\fs18 Die Indexdatei (Standard \f4 cat.adx\f1 ) enth\'e4lt die alphabetischen Register. Ohne diese ist eine Datenbank nicht benutzbar. Erneuern ist n\'f6tig, wenn das Suchen nicht mehr korrekt funktioniert. Aber auch, wenn man \'c4nderungen an den Indexparametern vorgenommen hat. Denn solche \'c4nderungen wirken sich nicht automatisch auf alle \i schon vorhandenen\i0  Daten aus, sondern nur auf \i neue\i0  Datens\'e4tze, die \i anschlie\'dfend\i0  eingegeben werden. Erneuert man aber den Index, werden die \'c4nderungen auch f\'fcr alle schon vorhandenen Daten wirksam. Gleichzeitig werde\f0 n die Kurzanzeige und die Restriktionsdatei erneuert (s.u.) sowie die Satztabelle\f1  (Adressen der Datens\'e4tze):\f0  
+\par \pard\tx3969  
+\par \fs20 `\cf3\ul\b Satztabelle erneuern\cf2\ulnone\b0 `\f1  \f2\fs18 (Datei \cf1 %#uvB.\f3 tbl\cf2\f2 )\f0\fs20 
+\par \pard\li568\tx3969\lang1033\f1\fs18 (Die Satztabelle enth\'e4lt die tats\'e4chlichen Adressen der S\'e4tze, d.h. in welcher Datei und auf welcher Position ein Satz sich befindet. Aus dem Index erf\'e4hrt das Programm nur seine interne Nummer, das reicht nicht f\'fcr den Zugriff.)\lang1031\f0 
+\par \lang1033 Die .TBL-Datei (Standard \f4 cat.tbl\f1 )  wird mit dieser Funktion neu produziert. Das ist h\'f6chstens dann notwendig, wenn sie unbeabsichtigt gel\'f6scht wurde, oder wenn die Fehlermeldung "\f5 recn=...., wrong recn=..., \f1 " kommt, denn dann ist die .TBL-Datei m\'f6glicherweise nicht in Ordnung. Das Erneuern geht sehr schnell. \f0 
+\par \pard\tx3969\f1 
+\par \lang1031\f0\fs20 `\cf3\ul\b Kurzanzeige erneuern\cf2\ulnone\b0 ` \f3\fs18 (Datei \cf1 %#uvB.stl\cf2 )\f0\fs20 
+\par \pard\li568\tx3969 Nur die .STL-Datei (das Register 0, Standard \f4 cat.stl\f1 ) wird erneuert oder erstmals angelegt. Diese Datei enth\'e4lt die Zeilen, die man in einem Ergebnismengen-Fenster sieht, f\'fcr jeden Satz eine Zeile. Auch diese Erneuerung geht schnell. \f0 
+\par \pard\tx3969 
+\par `\cf3\ul\b Restriktionsdatei erneuern\cf2\ulnone\b0 ` \f2\fs18  (Datei \cf1 %#uvB.\f3 res\cf2\f2 )\f0\fs20 
+\par \pard\li568\tx3969\lang1033 Nur die .RES-Datei (Standard \f4 cat.res\f0 ) wird erneuert oder erstmals angelegt. \lang1031\f1 Diese Datei enth\'e4lt die Angaben f\'fcr die Einschr\'e4nkung von Suchergebnissen, z.B. mit dem Erscheinungsjahr\lang1033\f0  (falls solche Dinge in den Indexparametern definiert sind, `\cf3\ul\b Kap. 10.2.9\cf2\ulnone\b0 `). Geht genauso schnell wie die Erneuerung der Kurzanzeige.\lang1031  
+\par \fs18 
+\par \pard\tx3969\fs24 `\cf3\ul\b\fs20 Index kompaktieren\cf2\ulnone\b0\fs24 `\fs20 
+\par \pard\li568\tx3969\lang1033\f1 Im Prinzip braucht man diese Funktion nicht, und meistens wird darauf wohl ganz verzichtet.
+\par Wenn man den Index gerade erst erneuert oder die Datenbank neu aufgebaut hat, bringt das Kompaktieren nichts.
+\par Nach einiger Zeit kann der Index sich vergr\'f6\'dfert haben, da er durch viele L\'f6schungen oder andere Aktionen intern Leerr\'e4ume enth\'e4lt und dadurch unn\'f6tig viel Platz beansprucht; evtl. wird der Zugriff auch etwas langsamer. Das Kompaktieren geht wesentlich schneller als die Funktion "Index erneuern", bei der die Schl\'fcssel alle neu berechnet werden m\'fcssen! \lang1031\f0 
+\par \pard\tx3969  
+\par \pard\fs24 `\cf3\ul\b\fs20 Datenbank ganz neu aufbauen\cf2\ulnone\b0\fs24 `\b 
+\par \pard\tx3976\b0\fs20  \fs18 (\f1 d.h. \f0 alle Dateien erneuern)\fs20 
+\par \pard\li568\lang1033\f1 Index, .TBL- und .STL-Dateien werden gel\'f6scht und neu erstellt, die Datens\'e4tze aus den .ALD-Dateien hintereinander eingelesen und in neue Dateien geschrieben. Gel\'f6schte S\'e4tze verschwinden v\'f6llig, alle S\'e4tze werden neu durchnumeriert, nur die  Dateinummern bleiben erhalten, wenn man mehrere .ALD-Dateien hat. Anschlie\'dfend sind die alten .ALD-Dateien noch unter Dateityp .c8d vorhanden. Man sollte diese alten Dateien dann l\'f6schen, wenn alles korrekt gelaufen ist, also nachdem man sich vom korrekten Arbeiten des Index \'fcberzeugt hat. \f0 
+\par \lang1031\i Achtung Speicherplatz:\i0  es sollte vorher doppelt soviel Platz vorhanden sein, wie die Datenbank momentan einnimmt. 
+\par \i Achtung "Alte Dateien":\i0\f1  Wenn von einem vorher stattgefundenen Indexierungsvorgang noch \'e4ltere Dateiversionen vorhanden sind, kommt die Meldung: \f0 
+\par \tab\f4 Es gibt noch alte Dateien: <name> 
+\par \tab K\'f6nnen diese gel\'f6scht werden? 
+\par \f1 Wenn die Datenbank bis zu dem Zeitpunkt ohne Problem funktioniert hat, kann man hier bedenkenlos mit [Ja] antworten, dann geht es weiter. Hat es aber Fehler im Funktionieren gegeben, sollte man lieber zuerst den Ursachen nachgehen. Reicht Kapitel 7 etc. nicht aus, um den Fall zu kl\'e4ren, dann wenden Sie sich an einen Kenner oder an die E-Mail-Liste.  Siehe auch unten: \b\f0 Protokoll einsehen\b0 . 
+\par \pard\tx3976 
+\par \fs24 `\cf3\ul\b\fs20 Nummerntreue Erneuerung\cf2\ulnone\b0\fs24 `\fs20 
+\par \fs18  (interne Nummern bleiben erhalten)\fs20 
+\par \pard\li568\lang1033 Ebenfalls ganz neu aufbauen, aber die Satznummern bleiben erhalten. \lang1031\f1 Diese Funktion ist nicht grunds\'e4tzlich notwendig, aber ein Systemverwalter k\'f6nnte trotzdem daran interessiert sein.\lang1033\f0 
+\par \i Nur zur Information: \i0\f1 Zwangsl\'e4ufig gibt es dann unbesetzte Nummern (unter denen vorher gel\'f6schte S\'e4tze standen). Unter dem Sonderschl\'fcssel /[0] im Index 1 sind diese Nummern registriert und werden im weiteren Verlauf wiederverwendet, wobei die Sonderschl\'fcssel verschwinden.\f0 
+\par \lang1031\i Achtung "Alte Dateien":\i0  Hier gilt dasselbe wie unter "Datenbank ganz neu aufbauen" 
+\par 
+\par \pard\fs24 `\cf3\ul\b\fs20 Gesamte Datenbank bereinigen\cf2\ulnone\b0\fs24 `\f1   \lang1033\fs20 (auch "Entl\'fcften" genannt)\lang1031\f2\fs18 
+\par \f3  \f2 (Leerraum beseitigen in allen \cf1 .%#uvK\f3 ld\cf2\f2 -Dateien)\f0\fs20 
+\par \pard\li568\lang1033\f1 Dabei werden die .ALD-Dateien gelesen und neu geschrieben, jeder Satz erh\'e4lt die Anzahl F\'fcllzeichen, die in der .CFG-Datei festgelegt ist (siehe Handbuch Anh.A.1, evtl. vorher \'e4ndern!). Satznummern bleiben erhalten. F\'fcr gel\'f6schte S\'e4tze und die Ausgangsdateien gilt dasselbe wie bei der "Nummerntreuen Erneuerung". Das Entl\'fcften braucht nur einen Bruchteil der Zeit des Neu-Indexierens. Vorher sollte etwa genauso viel Platz frei sein, wie die zu bereinigenden Dateien beanspruchen. In der Regel werden die Da\f0 teien kleiner - das ist der eigentliche Sinn.\lang1031 
+\par \i Achtung "Alte Dateien":\i0  Hier gilt dasselbe wie unter "Datenbank ganz neu aufbauen" 
+\par \pard 
+\par \pard\tx3969\fs24 `\cf3\ul\b\fs20 Einzelne Datenbankdatei bereinigen\cf2\ulnone\b0\fs24 `\f1  \f2\fs20  \fs18 (Nur in \i einer\i0  \cf1 .%#uvK\f3 ld\cf2\f2 -Datei)\f0\fs20 
+\par \pard\li568\lang1033\f1 Hierbei kann man ausw\'e4hlen, wenn es mehrere Datenbankdateien gibt (Typ .xLD), welche davon "entl\'fcftet" werden sollen. Der Systemverwalter kann bei sehr gro\'dfen Datenbanken diese Funktion nutzen, wenn er wei\'df, welche der Dateien viele gel\'f6schte S\'e4tze enthalten. Dann spart diese Funktion Zeit gegen\'fcber einer Gesamtbereinigung.\lang1031\f0 
+\par \i Achtung "Alte Dateien":\i0  Hier gilt dasselbe wie unter "Datenbank ganz neu aufbauen" 
+\par \pard 
+\par `\cf3\ul\b\f1 Ungenutzten Platz pr\'fcfen\cf2\ulnone\b0\f0 ` 
+\par \pard\li568\f1 Hiermit kann man sich zeigen lassen, wieviele gel\'f6schte S\'e4tze es in den verschiedenen Dateien der Datenbank gibt, und wieviel Platz diese verbrauchen. Wenn man einige tausend gel\'f6schte S\'e4tze hat, sollte man mal eine Bereinigung vornehmen (siehe oben)! Das Speichern neuer S\'e4tze wird sonst allm\'e4hlich langsamer. 
+\par \i Damit Sie sich nicht wundern:\i0  Es gibt auch dann gel\'f6schte S\'e4tze, wenn man selber gar keine L\'f6schungen vorgenommen hat, denn bei dem Speichern eines Satzes wird, falls er verl\'e4ngert wurde, seine alte Fassung in der Datenbank als gel\'f6scht markiert und der verl\'e4ngerte Satz an eine andere Stelle geschrieben. \f0 
+\par \pard 
+\par `\cf3\ul\b Letztes Protokoll einsehen\cf2\ulnone\b0 ` 
+\par \pard\li568\lang1033\f1 Die Funktionen werden ausgef\'fchrt von den Hilfsprogrammen INDEX und QRIX. Diese schreiben je ein Protokoll, und zwar eine Datei mit Namen PROTOK bzw. PROTOQ (diese entsteht auch bei der Funktion "Ungenutzten Platz pr\'fcfen"). Bei Problemen mit dem Indexieren kann man sich diese Dateien zeigen lassen. \f0 
+\par \f1 Nehmen Sie sich aber unbedingt das Kapitel 7 vor, wenn Sie mit irgendeiner der Funktionen auf diesem Men\'fc Probleme haben!\lang1031\f0 
+\par \pard 
+\par `\cf3\ul\b Datenbank-Kopie\cf2\ulnone\b0 ` 
+\par \fs18  (auf anderes Verzeichnis, andere Platte) 
+\par \pard\li568\lang1033\f1\fs20 Alle wichtigen Dateien, die zur Datenbank geh\'f6ren, werden automatisch auf ein beliebiges anderes Verzeichnis kopiert. Auch Konfiguration, Hilfedateien etc. geh\'f6ren dazu. Die Kopie ist anschlie\'dfend als unabh\'e4ngige Datenbank benutzbar. Dieses Verfahren ist auch als Methode der Datensicherung anwendbar. Dazu sollte allerdings das Verzeichnis auf einer anderen Platte liegen, z.B. auf der lokalen Platte des PC, wenn die Datenbank auf einem Server liegt, oder umgekehrt.\lang1031\f0\fs18 
+\par \pard\fs20 
+\par `\cf3\ul\b Datenbank-Export\cf2\ulnone\b0 ` 
+\par \fs18  (Daten in einem anderen Format ausgeben) 
+\par \pard\li568\f1\fs20 Sie k\'f6nnen zwischen mehreren M\'f6glichkeiten w\'e4hlen, die Daten zu exportieren. \f0 
+\par \f1 Mit Hilfe die Exportsprache k\'f6nnen jedoch unbegrenzt weitere M\'f6glichkeiten geschaffen werden! Dazu ist allerdings ein Studium und Verst\'e4ndnis der Exportsprache notwendig. Das Systemhandbuch beschreibt das Konzept und die Sprache im `\f0 `\cf3\ul\b Kapitel 10\cf2\ulnone\b0 ``. 
+\par \pard 
+\par \pard\tx3969\fs24 `\cf3\ul\b\fs20 Satz sperren/freigeben\cf2\ulnone\b0\fs24  `\f1  \f2\fs20  (Nr. \cf1 %#nr%\cf2 ) 
+\par \f1\fs18  \f2\fs20  (\f3 f\'fcr Schreibzugriffe\f2 ) \f1\fs18  \f0 
+\par \pard\li568\f1\fs20 Wenn jemand mit dem konventionellen Programm PRESTO einen Datensatz bearbeitet, wird der w\'e4hrend dieser Bearbeitung gesperrt. Andere Teilnehmer k\'f6nnen ihn zwar lesen, aber nicht zugleich auch daran arbeiten. (Die Windows-Programme und avanti arbeiten aus guten Gr\'fcnden anders!) Mit diesem Men\'fcpunkt kann man einen Satz absichtsvoll sperren, wenn man f\'fcr eine Weile jede Ver\'e4nderung daran verhindern will. Der Lesezugriff bleibt auch in diesem Fall unbehindert. Erneut bet\'e4tigen, um den Satz wieder\f0  freizugeben! 
+\par \f1\'dcber den Men\'fcpunkt "Extras | Datenbank | Gesperrte S\'e4tze" kann man alle momentan gesperrten S\'e4tze auffinden und auch wieder freigeben lassen. Das ist n\'fctzlich, weil bei der Arbeit mit PRESTO S\'e4tze dauerhaft gesperrt zur\'fcckbleiben k\'f6nnen, z.B. wenn w\'e4hrend des Bearbeitens ein Stromausfall passiert.\b\f0 
+\par \pard\b0 
+\par \fs24 `\cf3\lang1033\ul\b\fs20 Datenbank sperren/freigeben\cf2\lang1031\ulnone\b0\fs24  `\fs20 
+\par \pard\tx3969  \f2\fs18 (Schreibzugriff insgesamt, zur Zeit \cf1 %#uvG\cf2 )\f0 
+\par \pard\li568\tx3969\f1\fs20 In manchen Situationen will man jede Ver\'e4nderung an der Datenbank verhindern. Dann sperrt man die sog. Satztabelle (Dateityp .TBL). \b Lesezugriff\b0  ist dann immer noch \b uneingeschr\'e4nkt\b0  m\'f6glich, aber niemand kann einen Satz abspeichern. Nochmals bet\'e4tigen, um die Schreibsperre wieder aufzuheben.\f0\fs18 
+\par \pard\tx3969 
+\par \pard\fs24 `\cf3\ul\b\fs20 Totalsperre\cf2\ulnone\b0\fs24 `\f3\fs20 %=x var "F" D B ".sgf"`var`if '1' var 'gesperrt'`if '0' var 'frei'`if '' var 'frei'`ins #uvT%\f0 
+\par \fs18  \f2 (setzen bzw. aufheben, \f3 zur Zeit\f2  \cf1 %#uvT \cf2 )\f0\fs20  \b 
+\par \pard\li568\b0\f1 Man k\'f6nnte hier auch von einer "Zentralverriegelung" reden. \f0 
+\par \f1 Wenn man Aktionen wie Entl\'fcftungen oder Datensicherung machen will, w\'e4re es nicht gut, wenn zugleich jemand an der Datenbank arbeitet, und zwar auch nicht mit Lesezugriff. Dazu kann ein sog. "Signalfile" eingerichet werden, Das ist eine ganz einfache, kleine Datei auf dem Datenverzeichnis, in der nur als erstes Zeichen eine "1" steht und dahinter ein Kommentar. Sobald das der Fall ist, kann niemand mehr mit alcarta oder a99 "einsteigen". (Mit den konventionellen Programmen bis V21 geht es allerdings imm\f0 er noch, ab V22 auch nicht mehr.) \f1 Dateiname:  \f4 cat.\b sgf\b0\f1   (wenn man die Standardparameter nutzt).\f0 
+\par \f1 Dieser Men\'fcpunkt stellt fest, ob die Totalsperre momentan besteht. Wenn ja, wird angeboten, sie aufzuheben, wenn nein, sie zu setzen. \f0 
+\par \pard 
+\par \fs24 `\cf3\ul\b\f1\fs20 Neue Daten von heute\cf2\ulnone\b0\f0\fs24 `\fs20 
+\par \pard\tx3969  \fs18 (\f1 Datens\'e4tze, die heute neu gespeichert wurden\f0 ) 
+\par \pard\li568\tx3969\f1\fs20 Alle neu ins System gekommen S\'e4tze mit dem heutigen Datum werden als Ergebnismenge zusammengefa\'dft. Das leistet ein FLEX namens newdat.flx. Das Original dieses FLEXes funktioniert nur mit dem A-Format! F\'fcr andere Formate mu\'df man sich eine eigene Version machen und in das eigene Datenverzeichnis legen. Der FLEX ist kommentiert, die \'c4nderung d\'fcrfte nicht schwierig sein.\f0\fs18 
+\par \pard\tx3969 
+\par \pard\tx3976\fs20 `\cf1\ul\b Check\f1 ing\cf2\ulnone\b0\f0 ` 
+\par \pard\f1\fs18  (Ein eigenes Men\'fc f\'fcr diverse \'dcberpr\'fcfungen)\b\f0\fs20 
+\par \b0\f1 Im Register 1 gibt es z.B. unter // die Schl\'fcssel f\'fcr ung\'fcltige S\'e4tze. Man kann pr\'fcfen lassen, ob die angegebene Zahl \'fcbereinstimmt mit der L\'e4nge des ung\'fcltigen Satzes. Ist das nicht der Fall, empfiehlt sich eine Index-Erneuerung! 
+\par Auch die \'dcbereinstimmung der Adressen der Datens\'e4tze mit den in der TBL-Datei angegebenen Adressen kann man pr\'fcfen lassen. \f0 
+\par \pard\tx3976 
+\par \pard\b 
+\par \f1 Novell-Flag-Befehl : Hinweis f\'fcr Systemverwalter [veraltet]\b0\f0 
+\par \f1 Auf einem Novell-Server ist nach dem Reorganisieren einer Datei diese wieder f\'fcr die Mehrplatz-Benutzung freizugeben, und zwar mit dem FLAG-Befehl. Dazu ist es in der Datei `\cf3\ul\b org\f0 .\f1 flx\cf2\ulnone\b0\f0 ` eine Zeile zu aktivieren, und zwar mit einem kleinen Unterschied zwischen Novell 3 und 4. Das ist in der Datei kommentiert. 
+\par \f1 
+\par  
+\par ?Index erneuern=X inxprod 
+\par ?Satztabelle erneuern=x var "tSatztabelle erneuern"\\ins #uxO\\exec X org.flx 
+\par ?Kurzanzeige erneuern=x var "sKurzanzeige erneuern"\\ins #uxO\\exec X org.flx 
+\par ?Restriktionsdatei erneuern=x var "xRestr.Datei erneuern"\\ins #uxO\\exec X org.flx 
+\par ?Index kompaktieren=x var "cIndex kompaktieren"\\ins #uxO\\exec X org.flx 
+\par ?Datenbank ganz neu aufbauen=x var "7Ganz neu aufbauen"\\ins #uxO\\exec X org.flx 
+\par ?Nummerntreue Erneuerung=x var "nNummerntreue Erneuerung"\\ins #uxO\\exec X org.flx 
+\par ?Einzelne Datenbankdatei bereinigen=x var "rEinzelne Datenbankdatei bereinigen"\\ins #uxO\\exec X org.flx 
+\par ?Gesamte Datenbank bereinigen=x var "RGesamtbank bereinigen"\\ins #uxO\\exec X org.flx 
+\par ?HILFE..HILFE..HILFE=h orghlp 
+\par ?Satz sperren/freigeben =X reclock.flx 
+\par ?Datenbank sperren/freigeben =X tbllock.flx 
+\par ?Totalsperre=X signfile.flx 
+\par ?Angaben zur Datenbank=X dbinfo.flx 
+\par ?Ungenutzten Platz pr\'fcfen=x var "uUngenutzten Platz ermitteln"\\ins #uxO\\exec X org.flx 
+\par ?Hinweis f\'fcr Systemverwalter=h =Novell-Flag 
+\par ?Datenbank besteht aus mehreren Dateien=h ac0-7=0.8 
+\par ?org.flx=x var P "flex\\\\org.flx"\\help 
+\par ?Kurzfassung=h org 
+\par ?Datenbank-Kopie=X _backup.flx 
+\par ?Datenbank-Export=X _dbxport.flx 
+\par ?Kapitel 10=h ac10 
+\par ?Letztes Protokoll einsehen=x var "INDEX-Protokoll?" n " (Nein = QRIX-Protokoll)"\\yes\\if yes help protok\\if no help protoq`var "protok"`ftime`sho iV 
+\par ?Kap. 10.2.9=h ac10-12 
+\par ?Checking=h check 
+\par ?Handbuchkapitel 7=h ac7-1 
+\par ?Neue Daten von heute=X newdat 
+\par  
+\par 
+\par }
+ 

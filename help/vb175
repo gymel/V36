@@ -1,0 +1,92 @@
+
+Verlautbarung 175 der Entw.Abt.                             2004-02-26
+-------------------------------
+
+1. Sicherheitsluecke in alcarta
+-------------------------------
+Die Menuepunkte "Export / Andere Exportparameter" und
+"Export / Andere Exportdatei" oeffnen eine Dateiauswahlbox. Darin
+kann man Dateien loeschen bzw. ueberschreiben.
+Das darf bei OPAC-Betrieb keinesfalls sein.
+Daher wurden zwei neue On-FLEXe eingefuehrt: onxportf.flx bzw.
+onxportp.flx. Ohne sie macht a99 dasselbe wie bisher, alcarta
+aber schlichtweg nichts.
+Soll auch alcarta dasselbe machen wie bisher, muss man nur
+reinschreiben:
+    onxportp.flx:                onxportf.flx:
+
+    xport p ?                    xport f ?
+Ansonsten kann man sich aussuchen, was alcarta an diesen Stellen
+machen soll - und es in den FLEX schreiben.
+Tip: Durch Aenderung der UIF-Zeilen 276 und 277 kann man diese 
+Menuepunkte nun v”llig umfunktionieren!
+Zusaetzlich wurden alle FLEXe ergaenzt, in denen Dateiauswahl-
+boxen vorkommen (Befehl fnam) oder Systemfunktionen ausgefuehrt
+werden. Mit den zwei Zeilen
+var m
+if ="alc" end
+wird erreicht, dass die Ausfuehrung in alcarta unterbleibt.
+Auch wenn also ein Menue wie org.rtf in alcarta irgendwie
+aufgerufen wird, koennen die Funktionen nicht aktiviert werden.
+Schlussendlich wurde auch dbinfo.apr so abgewandelt, dass es in
+alcarta nicht mehr alles anzeigt.
+
+
+2. Alt-Rechts und Alt-Links
+---------------------------
+Bisher war es schwierig, die Browser-Buttons (unten links im
+Hauptfenster) per Tastatur zu bedienen. Bei NetScape dagegen
+geht es mit Alt-Rechts und Alt-Links - warum nicht bei a99?
+Nun, jetzt geht's. Der Mechanismus wurde aufgedeckt, der dafuer
+zu aktivieren ist.
+NICHT funktionieren tut es, wenn sich der Fokus im Anzeige-
+Fenster oder in der Befehlszeile befindet! Das duerfte aber nichts
+ausmachen, im Falle des Anzeigefensters waere es sogar unerwuenscht!
+
+
+3. Alt+scharfes s
+-----------------
+Im DOS-Programm PRESTO schaltet man mit Alt+scharfes s das Register 11
+ein. Bislang ging das in a99 nicht. Jetzt geht es. Man muss aber
+mindestens Berechtigung 3 haben. Und in alcarta geht's nimmer.
+
+
+4. FLEX: Ersetzungen in der iV
+------------------------------
+Bisher gibt es nur die Ersetzungen im ganzen Datensatz oder gezielt in
+einzelnen Kategorien. Jetzt kommt die Ersetzung innerhalb der iV
+neu hinzu: Dazu wird der Befehl "insert" um eine neue Option ergaenzt.
+Der Befehl "insert" wurde gewaehlt, statt einen neuen zu schaffen,
+weil damit in die iV etwas eingefuegt wird:
+
+ins _abc_XYZ_        bzw.     ins ,abc,XYZ,
+
+nimmt abc aus der iV heraus und fuegt dafuer XYZ ein, 
+Mehrfachvorkommnisse von abc werden alle ersetzt.
+Man verwendet , statt _, wenn in abc oder XYZ ein _ vorkommt,
+bzw. umgekehrt - wie bei den schon bekannten Befehlen.
+Ein nachfolgendes "ins #nnn" kopiert dann den Inhalt in eine 
+Kategorie oder eine #u-Variable.
+
+Insbesondere gilt:
+o  abc darf an jeder Stelle der iV vorkommen.
+o  Es gilt exakte Schreibung: abc ersetzt nicht Abc etc.
+o  Maskierung und Trunkierung gibt es nicht.
+o  XYZ darf leer sein, dann wird abc aus- und nichts eingefuegt.
+o  XYZ darf laenger oder kuerzer sein als abc.
+o  Die iV darf mit Leerzeichen beginnen und enden, diese bleiben erhalten.
+o  abc muss aus mindestens einem Zeichen bestehen - sonst weiss das
+   Programm ja nicht, wo XYZ hin soll.
+o  Das abschliessende _ bzw. , darf man vergessen, das mittlere nicht,
+   denn dann passiert nichts (auch kein Absturz und keine Meldung).
+
+
+5. Schriftart der Hilfetexte
+----------------------------
+Die wichtigsten Hilfetexte, rund 50 an der Zahl, wurden umgestellt auf
+die Schriftart Verdana, die sich jetzt im Web immer mehr durchsetzt. 
+Das Erscheinungsbild wurde an vielen Stellen verbessert, die
+Inhalte aktualisiert (obige Neuerungen beruecksichtigt!)
+Nicht umgestellt: die Handbuchtexte (bis auf acd.rtf), denn das 
+Erscheinungsbild der Druckausgabe soll erhalten bleiben, und 
+die FLEX-Texte (die sollen sich ruhig etwas distinguieren).

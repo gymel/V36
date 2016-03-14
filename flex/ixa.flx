@@ -1,0 +1,49 @@
+  IXA.FLX : Registereintraege manuell einbringen
+  20071202
+
+:arg
+  Auswahl des Registers vorbereiten
+set aWelches Register?
+var I
+ins _^T_^M^J_
+  Liste der symb. Reg. anzeigen mit aresqa
+Aresqa
+  Keine Auswahl - Ende
+if "" end
+ins #uRS
+  ausgew. Zeile ist in iV, Praefix entnehmen
+var (b" " e"=")
+  hinten < anfuegen (sonst Leerz. weg)
+var +"<"
+  da steht jetzt z.B.  1D <
+ins #uRP
+ 
+  Schleife zur Eingabe in das gewaehlte Register
+:eintr
+  nach dem gewuenschten Eintrag fragen
+var 'Eintrag fr Reg. ' #uRS(e" ")
+ansi
+ask
+  Leere Eing. -> :arg (neue Registerwahl)
+if "" jump arg
+  zwischenspeichern (dabei verschwinden Spatien vorn und hinten)
+ins #uEE
+  Befehl zusammensetzen und ausfuehren (< hinter Praefix wieder wegnehmen)
+var "|" #uRP(F"<") #uEE
+  Variante:
+  var i " |" #uRP(F"<") #uEE
+  Wenn der neue Schluessel zum aktuellen Satz gehoeren soll
+
+ixadd
+  es klappte nicht - z.B. weil dieser Schl. schon drin
+if no mes Geht nicht;jump eintr
+
+  Jetzt noch zusaetzlich abspeichern in der Datei  ixa.ixa
+ins $ixa
+
+var "+" D "ixa.ixa"
+open x
+wri "ixadd " $ixa n
+close x
+jump eintr
+  Schleife Ende

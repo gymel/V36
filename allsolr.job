@@ -1,0 +1,204 @@
+   // ALLSOLR.JOB :  Gesamtbank fuer Solr exportieren
+   // 2010-06-02     Mehrere Dateien herstellen, Maximum Datensaetze einstellbar
+   //                siehe unten bei ****, default = 100000
+   //                Wird gestartet von a99 aus  allsolr.flx
+
+// JobZeilenlimit auf unendlich setzen:
+set Z 0
+
+// command line  auswerten, zuerst in #ucl kopieren
+var cl
+ins #ucl
+
+// Exp.Param, Option -e, Default e-1
+var #ucl(b" -e" f" " e"[/+=]" e" ")
+ins #uoe
+if not #uoe #uoe i-1
+
+// Exportdatei, Default outdat.adt
+var #ucl(b" -e" f" " e" " b"[/+=]")
+ins #uoE
+var #ucl(b" -e" f" " e" " b"[+]")
+if not "" var "+" #uoE;ins #uoE
+if not #uoE #uoE outdat.adt
+
+// Suchbegriff fuer Befehl srx
+var #ucl(b" -s" f" ")
+//  Falls "..." angegeben ist (bei Spatien im Suchbegr. noetig)
+if not ='"' var (e" ")
+if ='"' var (1,0 e'"')
+// srx braucht den Suchbegr. in #u!!
+ins #u!!
+
+// Wenn nur -s0, dann nicht suchen, d.h. #u!! loeschen! (wie bei SRCH.EXE)
+var #u!! "X"
+if not "0X" jump sb
+
+var ""
+ins #u!!
+
+:sb
+// Eingabedatei(en), Option -d<namensmuster>
+var #ucl(b" -d" f" " e" ")
+ins #uod
+if #uod jump uod
+get env -d
+ins #uod
+get env -b
+ins #uob
+get env -k1
+ins #uok
+
+var #uod "\\" #uob "*." #uok "ld"
+ins #uod
+
+Wri "Dateien: " #uod n
+
+if not #uod jump no-d
+
+:uod
+var ""
+ins #uoD
+
+// falls ein Pfadname, dann diesen nach #uoD
+var #uod
+if not %\% jump unix
+var #uod(t"\" F"\") "\"
+ins #uoD
+jump begin
+
+// Trennzeichen / vorhanden?
+:unix
+var #uod
+if not %/% jump begin
+var #uod(t"/" F"/") "/"
+ins #uoD
+
+:begin
+
+var #uod
+dir
+// Liste steht in iV, in #uod speichern
+ins #uod
+
+// wri "uoD=" #uoD ", uod=" #uod n
+if not #uod jump nofiles
+
+
+// Keine Umcodierung  DOS<->Windows
+switch coding 2
+
+// Exp.param laden
+var #uoe
+exp p
+
+Wri "Export der Datei(en) " #uoD #uod n " mit Parameter " #uoe " in die Datei " #uoE n
+// Hinw.: output kann auch per Umlenkung mit  >dateiname  erfolgen!
+
+// Zaehler
+Z=1
+z=1
+var #uoE(e".") "-" z "." #uoE(b".")
+ins #uoE
+
+var #uoE
+export f
+wri "<add>" n
+
+// file loop: erste Datei abarbeiten, Name steht in #uod, Ende bei "  "
+
+:floop
+Wri "Datei " #uoD #uod(e" ") " kommt jetzt dran" n
+// Flag #ulD setzen, wenn es eine .ALD-Datei ist
+#ulD
+var #uod(e" " b".") "x"
+if %~ldx% #ulD   yes
+
+var #uoD #uod(e"  ")
+open
+if no jump ferr
+// wenn / vorkommt, dann ist es unix, dann besteht die Liste aus vollst. Namen!
+if %/% var #uod(e"  ")
+
+:lesen
+// Satz incl. Satznr einlesen (Rec statt rec)
+fetch rec
+//   Schleife: Satz evtl. durchsuchen, veraendern, exportieren, naechsten Satz lesen
+:loop
+ins
+// seine interne Nummer in #uiR merken, z.B. in e-solr.apr gebraucht
+var iR
+ins #uiR
+var k1
+// Wenn .ALD, dann geloeschte uebergehen
+if #ulD if %@@@@@% jump weiter
+
+copy obj 1 2
+// Suchen?
+if not #u!! jump ausgabe
+
+set a5
+var kr
+srx
+if cancel Wri "SUCHBEFEHLSFEHLER in " #u!!;jump weiter
+if not ok jump weiter
+
+   //   Satz exportieren, unveraendt. Version ist in obj 2
+:ausgabe
+switch obj 2
+// **** hier evtl. den aktuellen Satz noch vor der Ausgabe veraendern
+export
+
+:weiter
+switch obj 1
+new
+
+Z+1
+//  Maximum Saetze je Datei erreicht? ****
+if Z<50000 jump ftch
+Z=1
+// naechste Datei aufmachen
+z+1
+var #uoE(e"-") "-" z "." #uoE(b".")
+ins #uoE
+
+wri "</add>"
+
+var #uoE
+export f
+wri "<add>" n
+
+:ftch
+// naechsten Satz lesen
+fetch rec
+// Ende?
+if cancel jump fend
+// sonst verarbeiten
+jump loop
+
+// Datei zu Ende
+
+:fend
+// naechste Datei,Name steht in #uod hinter "  "
+var #uod(b"  ")
+ins #uod
+// wenn noch eine, dann ->:floop
+if #uod jump floop
+// Sonst Endemeldung
+wri n "</add>"
+Write "Das war's, Datei " #uoE " ist fertig"
+Wri n
+end
+
+:no-d
+Wri "ES IST KEINE OPTION -d ANGEGEBEN" n
+end
+
+:nofiles
+Wri "Es gibt keine Dateien dieser Art: " #ucl(b" -d" f" " e" ") n
+end
+
+:ferr
+Wri "Datei " #uod(e" ") " konnte nicht gelesen werden n
+end
+

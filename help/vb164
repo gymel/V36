@@ -1,0 +1,448 @@
+
+Verlautbarung 164 der Entw.Abt.                             2003-02-05
+-------------------------------
+
+UNICODE   mehr dazu:
+-------   http://www.allegro-c.de/unicode/
+
+1.  UTF-8-Codes beim Einlesen umwandeln
+2.  Akzente vertauschen (wg. Unicode)
+3.  avanti/a99: Befehl 'write' wandelt automatisch um
+4.  Nutzereingaben von UTF-8 in DOS-Codes verwandeln
+5.  "V14" wird aufgebohrt : Sequenzen ohne Grenzen
+6.  Alternative zur V14-Methodik (die alte bleibt voll gueltig!)
+...............................................................
+
+1. UTF-8-Codes beim Einlesen umwandeln (a99, IMPORT)
+--------------------------------------
+Wenn es in den eingelesenen Daten UTF-8-Codes gibt, kann man
+diese in OstWest-Codierungen verwandeln lassen. Codes, die es in
+OstWest nicht gibt, werden als "Entitaet" der Gestalt &#N; dar-
+gestellt, N ist die dezimale Unicode-Nummer des Zeichens.
+Um dies zu veranlassen, muessen die umzuwandelnden UTF-8-Codes
+in u-Befehlen angegeben werden, und zwar genuegt es, dies in einer
+der zu benutzenden Exp.Parameterdateien zu tun. Die Tabelle ist
+naemlich global, d.h. gehoert intern nicht zu der Parameterdatei.
+
+Syntax (exakt einzuhalten!)
+u aaa bbb ccc owc dia
+Beispiel             (optionaler Kommentar)
+u 195 164 132    LATIN SMALL LETTER A WITH DIAERESIS
+      macht aus 195 164 den Umlautbuchstaben ae (OstWest 132)
+Hinter dem u stehen vier 3stellige Zahlen, getrennt durch
+genau ein Leerzeichen. owc ist der OstWest-Code,
+und zwar der fuer DOS, dia der Code des diakritischen Zeichens,
+wenn in OstWest der betr. akzentuierte Buchstabe als solcher
+nicht vorkommt.
+Ist der UTF-8-Code 2stellig (aaa<224), entfaellt ccc.
+Zum Ausrechnen der u-Zahlen gibt es ein JavaScript:
+  http://www.allegro-c.de/unicode/unicutf8.htm
+
+Anwendung in a99/FLEX:
+Wenn man im FLEX schreibt
+set U1
+wird die Umcodierung fuer nachfolgende ins- und read-Befehle
+eingeschaltet, mit
+set U0
+wieder abgeschaltet.
+
+Anwendung in IMPORT.EXE:
+Die u-Befehle in die Export-Parameter(!) einbauen, weiter ist nichts
+zu tun. Meistens ist das i-1.apr oder eine Variante. Es wird dann
+i.d.R. keine p/q-Befehle geben.
+
+Achtung:
+Zu empfehlen ist, die u-Liste mit dem Befehl
+u 000
+beginnen zu lassen. Eine evtl. schon von anderen Parametern vorher
+eingelesene Liste wird dann ueberschrieben, sonst werden die neuen
+u-Zeilen hinten angehaengt. Denn die u-Liste ist global, daran muss
+man u.a. sorgfaeltig denken, wenn man mehrere Parameter
+verwendet. Fuer PRESTO und a99/alcarta/update genuegt es, die
+u-Befehle in die Indexparameter einzubauen. Fuer import dagegen
+muss man sie in die dabei verwendeten Exportparameter setzen.
+
+
+2. Akzente vertauschen (wg. Unicode) (a99, PRESTO, SRCH)
+------------------------------------
+Bei einem Export fuer Unicode muss man die Akzente hinter dem
+zu akzentuierenden Buchstaben ausliefern! Um das so einfach wie
+moeglich zu machen wurde ein Unterprogramm geschrieben.
+Sein Aufruf sieht so aus:
+FLEX(a99)       Export (PRESTO, SRCH)
+dow accent      #da           Akzente hinter Buchstaben schieben
+dow Accent      #dA           rueckgaengig machen
+(wobei natuerlich "dow a" bzw. "dow A" genuegt)
+Klappt auch, wenn zwei oder mehr Akzente aufeinander folgen!
+Beispiel: aus <akut><trema>a wird a<trema><akut>
+
+Steht ein Diakritikum am Ende einer Kategorie, wo es nichts zu
+suchen hat!, verschwindet es bei "dow a" bzw. "#da", aber
+"dow A" bzw. "#dA" rutscht es vor das letzte Zeichen!!
+
+Die Auswirkung ist jeweils auf den gesamten Datensatz UND alle
+Hintergrundkategorien! Weil's so schnell geht, lohnt es nicht,
+den Befehl fuer einzelne Arbeitstexte zu spezifizieren.
+Ach so, welche Zeichen gelten als Akzente? Das kann man mit
+dem ebenfalls neuen Befehl pa in den Exportparametern definieren:
+
+pa=181 182 183 184 189 190 198 199 207 208 209 210 211 212 219 222 223 232
+
+Das ist die Setzung, die man fuer den OstWest-Zeichensatz machen
+sollte: die ASCII-Codes aller zum Kombinieren gedachten Akzentzeichen.
+Fuer jedes dieser Zeichen wird man bei einem Unicode-Export
+dann noch eine Umcodierung einrichten muessen! Diese jedoch kommt dann
+erst beim tatsaechlichen Export der einzelnen Kategorie zum Tragen.
+Der Befehl #da sollte also am Anfang, vor den einzelnen
+Ausgabebefehlen stehen, am Schluss dann #dA  (nicht #Da !)
+Das Rueckgaengigmachen ist allerdings i.A. nicht notwendig, weil
+der Satz nach einem Export ohnehin wieder neu aus der Datenbank
+geladen wird.
+Achtung: Die Liste der Akzente ist global, d.h. es ist egal, ob sie
+in den Exportparametern stehen oder in den Index- oder Azeigeparam.
+
+3. a99/avanti: Befehl 'write' wandelt automatisch um
+----------------------------------------------------
+Unbefriedigend war auch schon ohne Unicode das Verhalten des Befehls
+'write' in der avanti- und FLEX-Sprache. Er gab die gewuenschten
+Daten ohne jede Umwandlung aus. Man musste zu Tricks greifen, um
+eine konvertierte Ausgabe zu bekommen, direkt mit 'write' ging
+es nicht. Besonders bei avanti war das misslich, wo ja der Ausgabe-
+strom meistens direkt in einen HTML-Text fliesst.
+Jetzt geht es - ohne Vorbereitung aber auch nicht: irgendwie muss
+man dem Programm zu verstehen geben, WAS es denn machen soll.
+Vorbereitung:
+  a) Bereitstellen einer Parameterdatei p-unicode.xpr
+     mit einem Abschnitt #-X zum Erzeugen der Ausgabe.
+     In diesem Abschnitt muss die Variable #u1 verwendet werden.
+  b) Laden und Aktivieren dieser Parameter im FLEX mittels Befehl
+     dow p p-unicode     Lade p-unicode.apr
+     dow wX              Aktiviere darin Abschn. #-X
+  Alternativ: wenn ohnehin eine Export-Parameterdatei benutzt wird,
+  kann man auch den Abschnitt #-X darin einbetten.
+  Mit  dow wa  kann man JEDEN Abschnitt #-a zum write-Abschnitt
+  erklaeren, nicht nur #-X.
+  Mit  dow w0  schaltet man die Funktion wieder ab. Die Schaltung
+  gilt nur fuer die Dauer des FLEXes, bei jedem Start eines FLEXes
+  ist sie abgeschaltet.
+Mit diesen Vorbereitungen laeuft's dann so:
+Befehl 'write' produziert zuerst einen Arbeitstext. Erst wenn die
+'write'-Zeile zu Ende ist, wird der Arbeitstext als Variable #u1
+an die Parameterdatei uebergeben. Das Einfachste ist, den
+Abschnitt #-X so zu schreiben:
+
+#-X
+#u1
+#+#
+td-utf8     dieser Befehl kann auch woanders stehen
+   tasciansi    wenn statt dessen Output im Windows-Code entstehen soll
+
+Dadurch wird der Arbeitstext mit der Tabelle p-utf8.apt umgewandelt.
+Alternativ kann man d-html4 nehmen.
+Im Prinzip aber kann jede beliebige Umwandlung vorgenommen werden,
+die mit der Exportsprache moeglich ist.
+Ferner ist es moeglich, unterschiedliche Abschnitte vorzubereiten
+und dann mit dem Befehl "dow wa" mal diesen, mal jenen einzu-
+schalten, im Extremfall fuer jeden write-Befehl einen anderen.
+Im FLEX sollte man, wenn es wirklich um Unicode geht, ausserdem
+VOR den write-Befehlen  dow a  sagen und hinterher  dow A, um die
+Akzentvertauschung einzubeziehen.
+Wir haben eine Parameterdatei  p-unicod.apr  als Muster vorbereitet,
+ferner die PHP-Dateien  ask.htm und show.php. Letztere ist zugleich
+ein Muster fuer eine minimale PHP-Datei, in der man sehen kann, aus
+was so eine Datei bestehen muss. Man kann sie als Startbeispiel nehmen,
+wenn man mit PHP beginnen will!
+
+4. Nutzereingaben von UTF-8 in DOS-Codes verwandeln
+---------------------------------------------------
+Wenn man Formulareingaben hat, muessen diese meistens in DOS-
+Codes verwandelt werden - in den Interncode der Datenbank.
+Dazu muss man wissen: Wenn die HTML-Seite, die das Formular
+enthaelt, mit UTF-8 formatiert ist, dann ist die zurueckgelieferte
+Zeichenkette ebenfalls UTF-8.
+Man wendet folgendes Strickmuster an, hier fuer PHP gezeigt:
+In $urS steht der eingegebene Suchbegriff, dann:
+(Ausschnitt aus av_page.php)
+
+"set U1",
+"var '$urS'",
+"ins #urS",
+// Suchbefehl auch in #u2 speichern (das gibt's bei jeder Konfig!)
+"ins #u2",
+"set U0",
+
+Denn der Befehl "ins ..." wandelt, wenn vorher U1 gesetzt wurde, die
+Zeichenfolge gemaess den u-Befehlen um. Im weiteren Verlauf des
+Skriptes haben #urS und #u2 (in diesem Fall) die korrekten Zeichen.
+
+
+5. "V14" wird aufgebohrt  (alle Programme)
+------------------------
+NEU: Die VS-Methodik : Sequenzen ohne Grenzen
+---------------------------------------------
+Mit der Entscheidung, in einer Datenbank die sog. "Entitaetscodes"
+der Form &#nnn; fuer Unicode-Zeichen zu unterstuetzen, stellt sich
+die Frage, wie solche Codes beim Export, insbes. beim Indexieren
+zu handhaben sind. Ein Export nach XML/HTML ist unproblematisch,
+denn dafuer ist gar nichts zu tun.
+Das Ersetzen von Einzelzeichen durch andere oder durch beliebige
+Zeichenfolgen ist eine alte Funktion. Hier aber geht es darum,
+variabel lange Kombinationen von Zeichen zu ersetzen.
+Gebraucht wird zuerst ein neues Wort! "Entitaet" ist nicht
+gut, u.a. weil es haesslich und zu wenig intuitiv ist und in
+anderen Zusammenhaengen mit ganz anderer Bedeutung vorkommt.
+(Im Englischen ist das Wort "entity" nicht so philosophisch
+besetzt wie bei uns das Fremdwort "Entitaet", nur nebenbei.)
+
+Wir sprechen i.F. von "V-Sequenzen" und meinen damit ganz
+allgemein jede Art von Zeichenketten, die als Verschluesselung
+fuer andere Zeichen(ketten) verwendet werden und bei gewissen
+Gelegenheiten durch jene anderen Zeichen(ketten) ersetzt werden
+muessen. Wobei unterschiedliche Gelegenheiten auch unterschiedliche
+Ersetzungen erfordern moegen...
+Wo der Zusammenhang klar ist, wird nur "Sequenz" gesagt oder
+schlicht "VS".
+Handelt es sich um eine kleinere Anzahl solcher Faelle,
+konnte man schon lange mit den sog. "Globalen Ersetzungen"
+operieren. Sind es aber hundert oder noch mehr, wird
+dies zu langsam oder wegen Speicherplatzmangel unmoeglich.
+Gebraucht wird eine Methode, die der Anzahl solcher Sequenzen
+keine Grenzen setzt. Der Einbau neuer, extrem langer Listen in
+Parameterdateien ist keine Loesung: Hilfsdaten solchen Umfangs
+muessen beim Einstieg in eine Datenbank "schon da" sein, nicht
+erst geladen werden muessen. Wo sonst sollten diese Daten
+dann sein, wenn nicht direkt in der Datenbank? (Nebenbei
+gesagt: Eine Datenbank wird geoeffnet, nicht geladen!)
+
+Es hat in der Vergangenheit schon den Vorschlag gegeben, die
+V14-Ersetzungsmethodik auch fuer das Ersetzen von Codierungen
+wie z.B. der "Entitaeten" auszunutzen. Hier liegt in der Tat der
+erfolgversprechende Ansatz.
+Um ihn zu verfolgen, muss allerdings etwas tiefer eingegriffen
+werden, denn:
+-- V14-Schluessel muessen alphanumerisch sein, d.h. sie koennen
+   keine Satz-, Sonder- oder Leerzeichen enthalten,
+-- Es muss bedacht werden, dass z.B. ein Name, der fuer eine
+   V14-Identnummer eingesetzt werden soll, seinerseits auch noch
+   Sequenzen enthalten kann, die zu ersetzen sind.
+-- Es kann sein, dass bei einem Export die Sequenzen erhalten
+   bleiben sollen, die V14-Nummern aber zu ersetzen sind,
+   oder auch umgekehrt.
+-- Die V14-Ersetzungen finden statt, bevor der eigentliche
+   Export beginnt. Sinnvoll fuer Sequenzen waere aber,
+   auch feldweise auf die Ersetzungen verzichten
+   oder fallweise unterschiedlich ersetzen zu koennen.
+
+Damit ergibt sich:
+-- Die bisherige Begrenzung auf alphanumerische Zeichen muss
+   aufgehoben werden - wenn schon, dann gleich auch fuer die
+   "alten" Ersetzungen, wahlweise. Es muss dann ein definiertes
+   Endezeichen geben, weil die Schluessel erfahrungsgemaess
+   meist von variabler Laenge sind.
+-- Fuer die Abarbeitung der neuen Sequenzen ist ein zweiter
+   Arbeitsgang notwendig. Zuerst kommt "V14"!
+-- Das V14-Steuerzeichen, gesetzt durch i5, kann nicht zugleich
+   fuer die neuen Sequenzen verwendet werden.
+-- Es sind besondere "Stammsaetze" notwendig, in denen die zu
+   ersetzenden Sequenzen festgelegt werden. Diese sind, wie
+   V14-Stammsaetze, im ersten Durchgang des Indexierens zu
+   behandeln. Nennen wir sie SD-Saetze: Sequenz-
+   Definitionssaetze.
+
+Wie funktioniert die VS-Methodik?
+---------------------------------
+Ganz unabhaengig von und zusaetzlich zu V14 kann man jetzt
+ein anderes oder mehrere andere Steuerzeichen fuer die neue
+"Sequenzen-Ersetzung" einrichten.
+Soll z.B. das & dafuer genommen werden, dann setzt man
+p & 9
+q & 9
+oder nur einen dieser beiden Befehle! Dann wird die VS-Ersetzung
+im Zusammenhang mit der Zeichenersetzung, also feldweise,
+ausgefuehrt. Wenn das Zeichen & im Text auftritt, wird die ihm
+folgende Zeichenkette ersetzt. Das Programm muss aber dazu
+wissen, wo die Zeichenkette endet. Das muss man ihm mitteilen
+mit dem neuen Befehl ib:
+ib=59     (= Code fuer Semikolon, das ist auch Default)
+wuerde sagen: Die Sequenzen enden mit ;
+
+Wenn nun im Datensatz  &#2345; steht, und im V14-Register hat
+man &#2345;xyz , dann wird beim Export daraus eben xyz .
+Die Zeichenfolge xyz wird unveraendert eingesetzt, die normalen
+p/q-Befehle wirken sich darauf nicht mehr aus - anders als bei
+der V14-Ersetzung! Jedoch: siehe unten "Andere Moeglichkeit".
+xyz kann ein einzelnes Zeichen sein, aber auch eine beliebige
+Zeichenfolge.
+
+Damit das Verfahren funktioniert, muessen im Ersetzungsregister
+die Sequenzen stehen. Das Einfachste ist, man macht sich sog.
+SD-Datensaetze (egal wie viele), die nur ein Feld mit der folgenden
+Struktur enthalten:
+(Als Trennung kann statt " / " natuerlich etwas anderes benutzt
+werden. Dies ist in den Parametern zu beruecksichtigen, s.u.
+Wieviele Sequenzen in einem SD-Satz definiert werden, ist egal.
+Besser ist, nicht zu viele - vielleicht 50 oder weniger.
+
+#sss &#2345;xyz / &#15981;abc / &Uuml;ue / ...
+
+mit einer vorher nicht verwendeten Kategorie #sss, die man in der
+CFG neu einrichtet, beim A-Schema z.B.  #9S
+und in den Indexparametern setzt man an den Anfang des Abschnitts #-@
+(fuer den Primaerschluessel) dieses:
+
+#-@
+#9S +s =sq    Inhalt nach #usq kopieren, -> Marke #-s
+...
+
+Weiter unten dann, mit einer noch nicht verwendeten Sprungmarke #-s:
+
+#-s                     Schleife, solange #usq was enthaelt
+#bp & &
+#usq e" / " y0 p"|:"    erste Sequenz indexieren nach Reg. 10. Achtung:
+                           muss mit dem Wert von i6 uebereinstimmen!
+#usq +s b" / " P{ 8 } =sq    Rest nach #usq kopieren, Schleife
+                  8 als Trenncode zw. zwei Schluesseln!
+#usq dsq Z              Schleife ist am Ende, #usq wieder beseitigen
+#bp & 9
+#+#
+
+Wobei #usq nicht anderweitig verwendet sein sollte.
+
+Nachdem diese Datensaetze eingespeist sind, kann's losgehen.
+In alle Parameter, wo die Sequenzen zu ersetzen sind, muss man
+einbauen: (auch in die Indexparameter, falls gewuenscht):
+
+p & 9      wahlweise nur eins von beiden!
+q & 9
+ib=59      Endezeichen der Sequenzen (Semikolon ist default)
+i6=10     wenn die Ersetzungen im Reg, 10 stehen
+dx=1      muss in ANzeigeparametern stehen, damit Ersetzungen ausgefuehrt werden
+
+Dann werden die Sequenz-Ersetzungen bei jedem Feld ausgefuehrt,
+das nicht durch y0 als "unveraendert" markiert ist.
+Hierbei spielen i4 und i5 keine Rolle! Eine gefundene Sequenz wird
+vollstaendig ersetzt, eine nicht gefundene bleibt vollstaendig
+stehen.
+Wenn man die Sequenz- und Texel-Ersetzungen ausfuehren will,
+aber nicht die anderen Ersetzungen, gibt es dafuer den
+neuen Manipulationsbefehl y3.
+Das ist z.B. meistens wichtig fuer die Kurzzeile.
+
+Andere Moeglichkeit: VS-Ersetzungen global durchfuehren
+-------------------------------------------------------
+Dazu setzt man nur in den Export- oder Indexparametern den Befehl
+#dV
+an eine geeignete Stelle. Dann werden im gesamten Datensatz die
+Ersetzungen durchgefuehrt, alle nachfolgenden Befehle "sehen"
+dann die V-Sequenzen nicht mehr. Daraus folgt, dass dann die
+p/q-Befehle auch auf die eingesetzten Zeichen wirken! UND:
+Die Ersetzungen erfolgen fuer alle auf den Wert 9 gesetzten Zeichen.
+Zumal bei Indexparametern wird das meistens erwuenscht sein.
+Empfehlung daher: #dV an den Anfang des Abschnitts #-0 setzen.
+
+Zum Gesamtpaket gehoert jetzt eine Datei  vs.alg, in der sich
+Serquenzen fuer viele Akzentbuchstaben und fuer die kyrillischen
+Buchstaben befinden. Im Register 1 der Demo-Datenbank findet man
+Beispiele unter "zz unicode...".
+Die Parameterdateien d-1.apr, cat.api und d-wrtf.apr wurden
+fuer diese Zwecke erweitert, man findet die Stellen anhand des
+Kommentars "V23".
+
+In anderen Faellen als Unicode wird man evtl. Sequenzen mit fester
+Laenge haben, z.B. 2 oder 3 Zeichen. Setzt man
+ib=k
+mit k<14, dann wird automatisch angenommen, dass die Sequenzen alle
+k Zeichen lang sind. Ein Endecode wird dann nicht gebraucht!
+
+Was nun aber, wenn man mit EINER Ersetzungsdefinition nicht auskommt,
+sondern wenn es Exporte geben soll, bei denen die Ersetzung eine
+andere sein soll? Standardfall wird sein, dass eine Unicode-Entitaet
+bei Exporten nach TXT oder RTF durch ein sinnvolles Textzeichen ersetzt
+werden soll, beim Indexieren aber durch einen sinnvollen Buchstabenersatz.
+Einerseits kann man den Befehl #dV nutzen und aus den dann eingesetezten
+Zeichen mit den normalen p/q-Ersetzungen das Geeignete machen lassen!
+Aber es geht auch noch anders, wenn die Dinge komplizierter liegen:
+
+Dann muss man zwei Dinge tun:
+1. Beim Indexieren:
+   Jede Sequenz doppelt oder mehrfach indexieren, und zwar mit einem
+   jeweils zusaetzlichen Zeichen X noch davor (einzelnes Zeichen!)
+   Aus &#1234; soll also zusaetzlich der Eintrag X&#1234; gebildet werden.
+   (Das kann und sollte im Abschnitt #-s gleich mit geschehen, angehaengt
+   mit Code 8 als Trennzeichen dazwischen.)
+
+2. Beim Export (incl. evtl. Indexparameter)
+   Man setzt, wenn die Alternative X anzuwenden ist,
+   ia=X
+   in die Exportparameter. Dann wird X beim Suchen nach der
+   Sequenz einfach davorgesetzt. D.h. es wird z.B. X&#1234;
+   gesucht statt &#1234;
+Normalerweise ist ia=0, dann wird nach der exakten Sequenz gesucht.
+
+Moeglich ist auch, in EINEM Export zwei verschiedene Ersetzungen
+durchzufuehren! Man muss nur vor die betr. Kategorien oder
+Abschnitte setzen:
+#bia=Y
+...    und weiter unten dann wieder
+#bia=X     X=0 bedeutet: kein Praefix
+dann wird fuer die betroffenen Kategorien das Zeichen Y als
+Praefix beim Suchen nach den Sequenzen verwendet.
+Ist dabei Y ein nicht verwendetes Praefix, dann unterbleiben
+die Ersetzungen voellig, die Sequenzen bleiben als solche stehen.
+Die Werte ia und ib koennen als Dezimalzahl oder als Zeichen
+gesetzt werden. Ausnahmen; die Zeichen : ; < muessen als
+Zahlen gegeben werden (58, 59, 60), denn sie haben noch
+anderweitige Sonderfunktionen.
+
+Die VS-Methodik wurde in alle Programme eingebaut, fuer die es
+relevant ist, auch die DOS-Programme (sonst koennte man nicht
+korrekt indexieren und updaten!) einschl. SRCH.EXE.
+Nur IMPORT kann es nicht, klar - denn es kann ja nicht auf eine
+Datenbank zugreifen.
+
+----------------------------------------------------------------
+
+Behandeln wir nun noch die neue
+
+6. Alternative der V14-Methodik: (die alte bleibt voll gueltig!)
+----------------------------------------------------------------
+
+Das V14-Verfahren sieht bisher so aus:
+-- Im Datensatz an beliebiger Stelle steht z.B.  _12345
+-- Im Register (z.B. 10) steht  12345=Tucholsky,Kurt
+-- Beim Export wird _12345 ersetzt durch "Tucholsky, Kurt"
+
+Das bleibt als Default unveraendert erhalten.
+Neu hinzu kommt jetzt:
+Statt  i5=_  schreibt man  i5=__  (_ verdoppelt), bzw. z.B.
+i5=!!, wenn man das ! als V14-Zeichen verwendet.
+Das hat zur Folge:
+-- Im Datensatz muss stehen  _12345_
+-- Es wird nicht nach 12345= gesucht, sondern nach _12345_
+   (Achtung: VORNE und HINTEN muss im Index _ stehen, kein =!)
+   und genommen, was dahinter steht. Zwischen den beiden _..._
+   kann jedes beliebige Zeichen ausser _ vorkommen.
+   (Natuerlich gilt das nicht nur fuer _, sondern jeweils fuer
+   das durch Befehl i5 gesetzte Zeichen)
+-- Wie beim bisherigen Verfahren kann vor dem Ersetzungstext
+   auch noch eine Angabe |i stehen, um dem Programm INDEX beim
+   zweiten Durchlauf zu sagen, bei welcher Sprungmarke der
+   Ersetzungstext noch zu behandeln ist.
+
+Statt des o.a. Beispiels haette man also
+im Datensatz:  _tucho_
+und im Register den Ersetzungsschluessel:
+   _tucho_Tucholsky, Kurt   oder   _tucho_|1Tucholsky, Kurt
+sowie den Uebernahmeschluessel:
+   tucholsky, kurt _tucho_
+
+Fuer bisher laufende Datenbanken kann man beim bisherigen Verfahren
+bleiben! Fuer das neue muss man die Indexparameter entsprechend
+veraendern, damit die Ersetzungs- und Uebernahmeschluessel
+die neue Form haben.
+Nochmals: Wenn man nichts aendert, bleibt alles wie gehabt -
+wer zufrieden ist, muss nichts tun!
+Insbes. werden wir die Standardparameter nicht aendern.
+
+Die neue Alternative beherrschen auch die DOS-Programme.
+Andernfalls koennte man ja z.B. gar nicht korrekt indexieren.

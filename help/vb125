@@ -1,0 +1,115 @@
+
+Verlautbarung 125 der Entwicklungsabteilung                        2000-01-07
+-------------------------------------------
+
+Weitere a99/alcarta Verbesserungen
+----------------------------------
+
+Besonders die Versuche mit Erwerbungsfunktionen haben zu neuen Erg„nzungen
+der FLEX-Sprache und der INI-Befehle gefuehrt:
+(Dokumentation in  FLEXGER.RTF  bzw.  A99.INI)
+
+
+Eigene Funktion auf dem Hauptmenue
+----------------------------------
+Zwischen "Optionen" und "?" kann man einen eigenen Menuepunkt einfuegen.
+Dafuer gibt es zwei neue INI-Befehle und einen neuen FLEX-Befehl:
+In der INI-Datei kann man schreiben:
+
+MyMenu=abc
+MyFlex=x ...  /  X ...
+
+Man hat dann sofort nach dem Start "abc" als neuen Menuepunkt. Wird er
+angeklickt, kommt der FLEX zur Ausfuehrung, der in MyFlex=... definiert
+wird. Dieser FLEX wird gespeichert in #uXz, kann also auch dynamisch
+vom Programm aus veraendert werden (i.d.R. in den Anzeigeparametern).
+Der Menuepunkt selber kann dynamisch ueber den neuen FLEX-Befehl 
+
+menu abc
+
+veraendert werden.
+In "abc" kann ein Hotkey durch & markiert werden. Weil aber fast alle
+Zeichen schon anderweitig belegt sind, gibt es dafuer wenig Moeglichkeiten:
+Das Komma kann man nehmen, sonst eigentlich nichts - es sei denn,
+man aendert in der UIFEGER die Hotkeys anderer Menuepunkte oder
+Buttons.
+
+
+Botschaften versenden
+---------------------
+Schon mehrfach angeregt, jetzt realisiert: a99/alcarta kann eine Botschaft
+an's Windows-System senden, die von anderen Programmen, insbes. von einem
+anderen a99/alcarta, aufgefangen werden kann.
+Dazu gibt es den FLEX-Befehl
+
+flex xyz
+
+xyz muss dabei der Name einer Datei vom Typ .FLX sein (nur der Name, 
+ohne .FLX).
+Dann wird eine Botschaft ausgesandt, die ein laufendes a99/alcarta dazu
+veranlasst, die Datei xyz.flx zu lesen und auszufuehren.
+
+Anwendungsbeispiel: Uebernahme von Fremddaten - endlich nur 1 Knopfdruck!
+In einem zweiten a99/alcarta wird eine Fremddatenbank benutzt. 
+In der INI-Datei dieser Fremddatenbank steht
+ExportParameter=E-W
+OutputFile=E.ADT
+Mit dem FLEX
+
+x download\flex copy
+
+wird zuerst der aktuelle Satz in die Datei E.ADT herausgeschrieben, dann
+wird ein anderes, gerade laufendes a99 veranlasst, die Datei copy.flx
+zu lesen und auszufuehren. In dieser sollte stehen
+
+new
+read
+delete e.adt
+put
+
+So wird durch einen einzigen Mausklick ein gefundener Datensatz der Fremd-
+datenbank in die Datei e.adt exportiert, vom anderen a99 dann eingelesen
+und als neuer Datensatz behandelt. Durch "put" wird er sofort gespeichert,
+wenn "put" fehlt, kommt er nur in den Bearbeitungsspeicher.
+
+Der ebenfalls neue FLEX-Befehl  "delete"  loescht die Datei e.adt,
+so dass die naechste Aktion sofort stattfinden kann.
+
+
+Volltextsuche auch per FLEX
+---------------------------
+Setzt man '+' vor den Suchbegriff - wie bei der Online-Suche - wird die
+aktuelle Ergebnismenge im Volltext durchsucht. z.B.
+find +#20,xyz
+sucht alle Saetze der Erg.Menge, bei denen #20 die Zeichenkette xyz enthaelt.
+
+
+Suchfunktion fuer den Anzeigebereich
+------------------------------------
+In langen Hilfetexten, aber auch sonst, entsteht oft der Wunsch, im Anzeige-
+bereich nach einer Zeichenkette suchen zu koennen.
+Diese Moeglichkeit bietet der modifizierte Befehl "help":
+
+help =suchwort
+help >suchwort
+
+Gesucht wird dann vom Anfang (bei =) bzw. von der aktuellen Stelle (bei >)
+nach dem Suchwort.
+In FLEX.RTF ist beschrieben und demonstriert, wie man damit eine Such-
+funktion auf Strg+f legen kann. Geben Sie  "h flex"  im Schreibfeld ein,
+dann sehen Sie es.
+Ausserdem sehen Sie auch in HELP.RTF, wie man Spruenge innerhalb von
+Hilfedateien damit programmieren kann - wie man es von HTML kennt.
+(HELP.RTF hat ein klickbares Inhaltsverzeichnis am Anfang)
+
+
+AutoFLEX
+--------
+Eine Variante des AutoFLEX ist folgende:
+Wird in den Anzeigeparametern ein FLEX in die Variable  #uX;  geschrieben,
+(also nicht #uX: sondern #uX;)
+erfolgt dessen Ausfuehrung unmittelbar nach dem Aufbau der Anzeige, und zwar
+unabhaengig davon, ob gerade ein Index geoeffnet ist oder eine Kurzliste.
+In solchen AutoFLEXen kann man natuerlich nicht alle Befehle sinnvoll nutzen,
+aber gerade so etwas wie "menu" oder "phrase" eignet sich dafuer besonders.
+

@@ -1,0 +1,444 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\froman\fprq2 Times New Roman;}{\f1\fscript\fprq2 Comic Sans MS;}{\f2\froman\fprq2\fcharset0 Times New Roman;}{\f3\fmodern\fprq1\fcharset0 Courier New;}{\f4\fswiss MS Sans Serif;}{\f5\fmodern\fprq1 Courier New;}{\f6\froman\fprq2\fcharset0 allegro New Roman;}{\f7\froman allegro New Roman;}{\f8\fswiss\fcharset0 Arial;}{\f9\fmodern\fprq1\fcharset0 Courier;}{\f10\fswiss\fprq2 System;}}
+{\colortbl ;\red220\green0\blue0;\red0\green0\blue255;\red255\green0\blue0;\red0\green0\blue0;}
+\viewkind4\uc1\pard\f0\fs20 
+\par \pard\qc\cf1\b\i\f1\fs26 FLEX Commands\cf0\i0\f0\fs28 
+\par \pard\qr\b0\fs18 Strg+f = Find, Strg+g = Find more\fs20 
+\par \pard FLEX is \f2 the scripting\f0  language for the \i allegro\i0  system\f2 's main Windows program \f3 a99\f0  \f2 and its command line program \f3 acon\f2 .\f0 
+\par Almost everything one can do manually can also be done by a FLEX command, and quite a few other things\f2  as well\f0 . 
+\par \f2 For the command line program \f3 acon\f2 , there are some differences, as indicated in the documentation. 
+\par \f0 
+\par \pard\qc `\cf2\ul\b\i\fs24 Functions Overview\cf0\ulnone\b0\i0\f4 `\f0\fs20    `\cf2\ul\b\i\fs24 Alphabetic Index\cf0\ulnone\b0\i0\f4 `\fs28 
+\par \pard\i\f0\fs20 
+\par Important:\i0  There is an \b internal Variable\b0  (\b iV \b0 for short)\f2 , not referred to by a name but indirectly\f0 . It is a temporary string, living only as long as it is not overwritten by another command. The most relevant commands are \fs22  \fs20  `\cf2\ul\b\f5 ask\cf0\ulnone\b0\f0 ` \fs22 , \fs20  `\cf2\ul\b\f5 yesno\cf0\ulnone\b0\f0 ` \fs22  \fs20  `\cf2\ul\b\f5 message\cf0\ulnone\b0\f0 `  \fs22 and above all \fs20  `\cf2\ul\b\f5 variable\cf0\ulnone\b0\f0 ` \fs22 . L\fs20 earn these four \f2\'be\f0 , and with them the method of using the internal Variable. There are more commands that either write their output into the iV or take their input from there. 
+\par Most commands, when given without an argument, will take the contents of the iV instead. And in most of these cases, the iV is first prepared by a \f5 var\f0  command, using the contents of fields or variables. 
+\par The iV has no name\f2  and doesn't need one\f0 , which makes a few things easier. Normally, the iV is used right after having been created; For example, in a command like  \f5 insert`#u98\f0  ,  iV is copied into the field #98 of the current record. If the intention is to preserve iV for \f2 lat\f0 er use: \f2 write\f0   \f5 insert`#uxy\f0   to copy it to a user variable #uxy.\f2  \f0 (Reverse:  \f5 variable #uxy\f0   copies the string back into the iV.) 
+\par \fs22 Apart from this, there is an internal number variable (\b iN\b0  for short), to be used in calculations.\f2  See the  \f3 evaluate\f2   command.\f0  
+\par 
+\par \pard\qc\cf3\b\f1\fs26 How to construct FLEXes\cf0\f0\fs24 
+\par \pard Tip: \b0\fs20 Always open the Demo\f2  \f0 database in a separate window. There, you can keep this FLEX documentation open at all times. Enter  \b\f5 h xa\b0\f0   to bring up the overview.\b\fs24 
+\par \f2 Important examples:\b0\fs20   The script  \f3 al.job\f2  provides many examples for important FLEX procedures.
+\par \tab\tab\tab Another example is  \f3 update.job\f2   which can merge data into a database.\b\f0\fs24 
+\par 
+\par \cf3\f2 For a99\cf0\f0 
+\par \b0\fs20 The simplest way to enter and execute a FLEX \f2 in the a99 program \f0 is this: 
+\par 1. \i Enter\i0  a sequence of commands, separated by \\, in the \b write field\b0\f2  (underneath the display area in a99)\f0  preceding it with a digit 0, 1, ... 9 
+\par \tab example:  \f5  \b 1 message Index 1 will be shown\\index |1 shakesp\b0\f0 
+\par     (If a real \\ is needed, like in path names, enter \\\\ ) 
+\par     Press Enter. The sequence will be saved in the user variable #uX1 
+\par 2. \i Execute\i0  it: press Alt+digit  (Alt+1 for the example, to activate #uX1) 
+\par 3. \i Change\i0  it: Press Alt+r to see the reserve store (background store), select the line beginning #uX1 and press Enter; then change the command text in the write field, save back pressing Enter. 
+\par Direct execution: If you are fluent in FLEX and want a command (chain) executed right away, enter it directly into the write field, preceded with "\b\f5 x`\b0\f0 ". 
+\par To execute a FLEX file\f2  \f0  \f3 abc.flx\f2  \f0  (consisting of any number of commands), enter  \b\f5 X abc\b0\f0   in the write field. 
+\par 
+\par \cf3\b\f2\fs24 acon\fs20 
+\par \cf0\b0 For the command line program acon, you need to provide jobfiles containing the command sequence to be executed. 
+\par If  \f3 xyz.job\f2   is a jobfile and you want it to work with your database  \f3 cat\f2   in  \f3 /usr/data/catalog\f2  , the configuration being \f3 a.cfg\f2 ), then you start the job in this way: 
+\par    \f3 acon -jxyz -d/usr/data/catalog -bcat -ka\f2 
+\par Every command takes one line in the jobfile, but you may chain several commands on one line, separated by \b\\\b0  .\f0 
+\par \f2 The usual "Hello world!" job would require just one line of FLEX code: 
+\par \f3 write "Hello world!" 
+\par \f2 Just call the jobfile  \f3 hello.job\f2   and then enter  \f3 acon -jhello\f0 
+\par 
+\par \b\f2 First, some special commands: 
+\par 
+\par \f5 #xyz\f3  \b0\i\f0 Text\i0 
+\par \pard\li709\i Text\i0  is inserted into the field\f2  \f0  \f3 #xyz\f2   of the current record.\f0  If  \i Text\i0   is empty,  \f5 #xyz\f0  will be deleted. 
+\par #xyz can also be a user variable  #uxy  instead of a field in the current record. 
+\par If the iV string is to be composed in a complicated way, one has to use the  \f5 variable ... \f0 command to \f2 compos\f0 e it, then  \f5 insert #xyz\f0   to save it into a field or user variable. 
+\par \pard 
+\par \b\f3 $\f5 xyz\f3  \b0\i\f0 Text\i0 
+\par \pard\li709\i Text\i0  is inserted into the \f2 $-variable \f0  \f3 $\f5 xyz\f2   (xyz being a name of arbitrary length).\f0  \f2 To delete\f0   \f3 $\f5 xyz\f2 , use the sequence  \f3 var ""\\ins $xyz\f2 .\f0  
+\par \f2 If the first letter \b\f5 x\b0\f2  of a variable \b\f3 $\f5 xyz\b0\f2  name is a capital letter, the variable will be available throughout the session, otherwise only until the end of the FLEX.\f0 
+\par \pard 
+\par \f2 The following two, however, have nothing to do with $-variables but only with subfields of data fields:\f0 
+\par \b\f5 $a+#xyz\f3  \b0\i\f0 Text\i0 
+\par \pard\li709 The subfield \f6\'b2\f0 a with  \i Text\i0   as its content is appended to the field \f5 #xyz\f0  . If  #xyz  does not exist, it will be created. Instead of  '$' the subfield triangle symbol can be used as well, like in 
+\par \f6\'b2\f5 u+#90 Meyer\f0       \f6\'b2\f5 u+#90 Meyer\f6\'b2u\f0 Meyer is appended to #90 in the current record. 
+\par \pard 
+\par \b\f5 $a-#xyz\f3  \b0\i\f0 Text\i0 
+\par \pard\li709 If subfield \f6\'b2\f0 a exists, it gets replaced, otherwise \f6\'b2\f0 a\i Text\i0  will be appended to \f5 #xyz\f0  . 
+\par If  \i Text \i0  is empty, subfield \f6\'b2\f0 a is deleted from  \f5 #xyz\f0  . 
+\par \pard 
+\par \b\f5 *#nnn_ABC_XYZ_\b0\f0      \tab In field  #nnn , replace the string "ABC" by "XYZ" 
+\par 
+\par \b\f5 _ABC_XYZ_\b0\f0       \tab\tab Throughout the current record, replace "ABC" by "XYZ" 
+\par 
+\par 
+\par \b\f2 The regular commands.  \b0 (Presently, only the `\cf2\ul\b German list\cf0\ulnone\b0 ` is complete)\f0 
+\par 
+\par \b\f5 :\b0\i label\i0\f0 
+\par \pard\li709 Jump target. \f2 a command\b\f5  jump\b0\f0   \i label \i0  \f2  \f0 goes to this position\f2  and continues processing with the line that follows\f0  
+\par \pard 
+\par All command words described from here on may be truncated to 3 or more letters, for example "\f2 exp\f0 " or "\f2 expo\f0 " instead of "\f2 export\f0 ", "var" for "variable", "ins" for "insert". \f2 In other words: Only the first three letters of every command word are significant. (Exception:  \f3 erase\f2 ). \f0 
+\par 
+\par \b\f5 ask |i\b0\i prompt\b\i0 =\b0\i default\f3    \f5  \cf3\f3 acon\cf0\f5 
+\par \b\i0 ask +|i\b0\i prompt\b\i0 =\b0\i default\f0 
+\par \pard\li709\i0 Prompts for an input. The input is copied to the \b internal variable\b0  . 
+\par \f2 With the  +  set, the input will be appended to the end of the iV content. \f0 
+\par \f2 A small input window appears with a slot for the input. \f0 
+\par \b\f5 i\b0\f0    \tab\tab = Number of  Index to be shown when  [Index] button pressed\f2  in the input window\f0  
+\par \i\f5 prompt\i0\f0  \tab = Prompt string 
+\par (If \b\f5 |i\b0\f0  is omitted, a random section of the index will appear) 
+\par An empty input aborts the FLEX command chain. 
+\par The "=\i default\i0 " can be absent; otherwise, \i default\i0   initially appears in the input area. 
+\par \i default\i0  may also be a field or a #u variable: 
+\par \f5 ask |1Author?=#100\f0     initialises the input field with the content of  #100. 
+\par The input, however, is not copied back into the field but to the iV;   \f5 insert #100\f0   has to be used to copy this to the field, if wanted. 
+\par The whole of \b\f5 |i\b0\i prompt\b\i0 =\b0\i default \i0\f0 can be a field tag, the field text then has to consist of  the prompt plus default string. This way, prompt and default can be constructed individually and based on the record content. 
+\par \pard  
+\par \b\f5 call \b0\i\f0 program command\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par Call \b0\i\f0 program command\b\i0\f5 
+\par cAll \b0\i\f0 program command\b\i0\f5 
+\par CAll \b0\i\f0 program command\b\i0\f5 
+\par \pard\li709\b0\f0 The \i program command\i0  can be anything one might enter as a DOS command. 
+\par The \b\f5 C\b0\f0  makes the called program an independent process in its own window, whereas the \b\f5 c\b0\f0  means that a99 will be halted until the called program terminates. The \b\f5 A\b0\f0  means that the called program's window will be minimized. This is useful to run external DOS programs when it is not necessary to have a display of the DOS window. 
+\par For example     \f5 call x d-wrtf.apr\f0    
+\par or     \f5 call del e.adt\f0 
+\par a99/alcarta (and the FLEX) halts for as long as the external program is executing. If the external program produces a file E.ADT, this can subsequently be loaded using "\f5 read\f0 " (q.v.) : it will then be merged into the current record. This way, external data can be "smuggled" in. 
+\par \pard 
+\par \b\f5 choose \b0\i find command\b\i0 
+\par \pard\li709\b0\f0 Builds a result set  \i and\i0   displays it. (\b\f5 find\b0\f0  does not display it) 
+\par The short title entry of the chosen record is copied to the internal Variable. A subsequent \b\f5 load\b0\f0  command loads this record. 
+\par 
+\par \pard\b\f5 close \b0\i\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li710\b0\f0 If earlier in the same FLEX (!)  a file was opened for reading by an \b\f5  open \b0\f0  command, this will close it. This is done automatically at the end of the FLEX. 
+\par \pard 
+\par \b\f5 close \f3 res\f5  \b0\i\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li710\b0\f0\tab The currently open \f2 result list\f0  is closed\f2  AND deleted from the search history list\f0 . With \b\f5  if no ... \b0\f0  it can be checked whether it had been closed already. 
+\par \pard 
+\par \b\f5 close v\b0 iew\b  \b0\f0    (s\f2 ee\f0  \f2 also\f0  \b\f5 view\b0\f0 )\b\f5 
+\par \pard\li710\b0\f0\tab The currently open ViewList is closed. With \b\f5  if no ... \b0\f0  it can be checked whether it had been closed already. 
+\par \pard 
+\par \b\f5 close x\b0 port\b  \b0\f0    (see also \b\f5 xport\b0\f0 )\b\f5 
+\par \pard\li710\b0\f0\tab Closes the currently open output file. Use \b\f5  if no ... \b0\f0  to check if it had been closed already. 
+\par \pard 
+\par \b\f5 copy \b0\i\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f0 The current record in its current state is copied and thus becomes a new record. After this, use commands of the  \f5 #xyz \f0  type, replacements, or \f5 insert ...\f0 , to modify the new copy, then  \b\f5 put\b0\f0   for saving - or end the FLEX to resume manual editing. 
+\par 
+\par \pard\b\f5 date \b0\i\f0 b\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \tab\b0\f0 (\i b\i0 =width of the date string, 8-17 bytes; date 8 means just the date (YYYYMMDD), 
+\par \tab date 17  means date plus full time  (YYYYMMDD/HH:MM:SS) 
+\par \pard\li709 Date (and time) will be copied to the iV. 
+\par As usual, the iV can be copied to any field or subfield by  \f5 insert ...\f0   
+\par \pard 
+\par \b\f5 delete\b0\i\f0   ABC\i0 
+\par \pard\li709 Delete file  \i ABC \i0 . Use  \b\f5 if no \b0\i\f0 command\i0   to check if it didn't work. 
+\par \pard\b\f5 
+\par display \b0\i\f0 xABC\b\i0\f5 
+\par deposit \b0\i\f0 xABC\i0 
+\par \pard\li709 Execute section \f5 #-x\f0  in the display parameters. The string \i ABC\i0  will then be in the variable #u1 which can be used for whatever purposes.  This way, the power of the export language can be put to use within a FLEX. 
+\par \f5 deposit\f0   means the display will not change bacause the processing is only done internally. This makes sense for complex manipulations that go beyond  the capabilities of the FLEX language. #u1 can serve for decisions in the parameter section. Any output that results from the section will be deposited in the iV - hence the name "deposit". 
+\par The most frequent use of this feature will be to produce some #u variables or some particular string in the iV. 
+\par 
+\par \pard\b\f5 display p \b0\i\f0 name\b\i0\f5 
+\par \pard\li709\b0\f0 Load other display parameters and re-display current record 
+\par e.g., \b\f5 display p d-alfa\b0\f0    Load D-ALFA.APR 
+\par \pard\b\f5 
+\par download \f3   \b0\i\f2 see  \i0  \f3 export\b\f5 
+\par \pard\li709\b0\f0 
+\par \pard\b\f5 end \b0\f0  \i\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par \pard\li709 Ends the FLEX. Useful after \b\f5 yesno\b0\f0  und \b\f5 noyes\b0\f0  , for example: 
+\par \b\f5 if no end   \b0\f0 if the answer was no, \f2 then \f0 end the FLEX 
+\par 
+\par \pard\b\f5 erase \b0\i\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f0 Deletes the current record. \f2 (a99: \f0 This does not require  \f5 access=3\f0   in the .INI file.\f2 )\f0  Therefore, deletions can be done in a controlled way. Even in \f2 alcarta!\f0  There's no danger there because the user has no data input field to enter their own FLEXes - even if they knew how to do it. 
+\par 
+\par \pard\b\f5 e\f3 valuate\f5  \b0\i\f2 Expression\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f2 The \i Expression\i0  will be interpreted arithmetically. It can contain the usual operators +, -, *, / and ^, and the operands can be literal numbers, datafields, #u-Variables, and $-variables. Execution is strictly from left to right with no parentheses allowed. 
+\par Lack of an  \i Expression\i0   means the iV content will be used instead.\f0 
+\par 
+\par \pard\b\f3 e\f5 xport\b0\i\f0  \f3   \f5  \cf3\f3 acon\cf0\f0 
+\par \pard\li709\i0 Exports the current record (as via the Export menu). 
+\par If you want to have one specific section\f2  \f0  \f3 #-X\f2  \f0  executed only, you can set a variable first, using  \f5 var xxx\\ins #uFL\f0 , and include something like this at the beginning of the parameters:  \f5 #uFL +X e0\f0   
+\par \pard\b\f3 
+\par e\f5 xport p \b0\i\f0 name \f3   \f5  \cf3\f3 acon\cf0\f0 
+\par \pard\li709\i0 Load parameter file  \i name.c\i0 PR for exporting 
+\par \pard\b\f5 
+\par \f3 e\f5 xport f \b0\i\f0 filename\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par \b\f3 e\f5 xport f +\b0\i\f0 filename\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par \pard\li709 Subsequent exports go into the file  \i filename\i0   . 
+\par The '+' means "append to" (rather than "overwrite" which is the default) 
+\par \pard 
+\par \b\f3 export set\b0\i   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par \pard\li709\f2 Exports the entire result set, record by record, in the same way.\f0  \f2  The order of  the records can be set beforehand using the \f3 order\f2  command.\f0 
+\par \pard 
+\par \b\f5 extern \b0\f0   (Same as Alt+t) 
+\par \pard\li709 Writes the current record to E.ADT and brings up the external editor. 
+\par Upon return, the externally edited record can be re-read to replace the one in memory. 
+\par 
+\par \pard\b\f5 fcopy \b0\i name1 name2\i0\f0 
+\par \pard\li709 File \i\f5 name1\i0\f0  is copied to \i\f5 name2\i0\f0 . If \i\f5 name1 name2\i0\f0   are missing, the iV content is used, which means there have to be two names there, prepared by a var command. Both names may be full path names. Be sure to use \\\\ instead of a \\ within a FLEX, but not in the iV text. 
+\par 
+\par \pard\b\f5 fetch \b0\i number\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par \b\f5 fetch ^\b0\i code\i0\f0 
+\par \pard\li709 From the file previously opened by \b\f5 open\b0\f0  ,  \i\f5 number\i0\f0   bytes are read into the internal variable. 
+\par ASCII codes 0,1 ... 32  are replaced by ^@, ^A ... ^  , the code  ^ itself is replaced by  ^~. 
+\par The second command will read everything up to and including the next occurrence of the code  \i code\i0  (decimal, 0...255). 
+\par Use \b\f5 if no ...\b0\f0  to check if anything could be read at all, and  \b\f5 if cancel ...\b0\f0   to check if the end of file had been reached. 
+\par The max number of bytes to be read in one fetch is 8000.. 
+\par Use  \b\f5 write ^ \b0\f0 to write the iV text in the same way, exactly as read. 
+\par If one \b line\b0  is to be read (terminated by codes 13 10 or 10 alone): use \i --> \b\i0\f5 get \b0\f0 (this does not convert the codes 0,..,32!), write one line using  \b\f5 write\b0\f0  . 
+\par \pard\b\f5 
+\par file \b0\i filename / \b\i0 file +\b0\i filename\i0\f0 
+\par \pard\li709 The display content is copied to the file \i\f5 filename\i0\f0 . If the file type is .rtf, then RTF formatting will be used, in other cases plain ASCII formatting; if \b\f5 set c1\b0\f0  had been stated, ANSI (Windows) codes instead of ASCII will be written. 
+\par The  '+'  means to append data to the end of \i\f5 filename\i0\f0  instead of overwriting it. 
+\par \pard\b\f5 
+\par find \b0\i\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par find \b0\i find command 
+\par \b\i0 Find 
+\par Find \b0\i find command\b\i0 
+\par \pard\li709\b0\f0 to build a result set. Using the small  'f' it will not be displayed but become the current result set upon which to operate with commands  \f5 next, prev\f0 , or \f5 download set\f0   . If  \i find command\i0  is absent, the content of the iV will be used. Preceding action can thus construct a find command based on the current record The first record of the result set will be loaded before the FLEX continues, i.e. it becomes the current record. 
+\par F instead of  f means the set will be displayed and the FLEX ends. 
+\par If the find command has no result, the FLEX is aborted. 
+\par \pard\b\f5 Find offline\b0\f0 
+\par \pard\li709 Special case! The offline file will be displayed. 
+\par \pard\b\f5 
+\par first\b0\f0    [opposite: \b\f5 last\b0\f0  ]\i\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f0 The first record of the current result set, as arranged in the brief display window, will be loaded. 
+\par Use \b\f5 if no ...\b0\f0  to check for failure (because of the result set being empty).  
+\par Say  \b\f5 first r\b0\f0  \f2  \f0 to load the brief line into the iV in addition.  
+\par \b\f5 next \b0\f0 then loads the next record. 
+\par \pard\cf4\f7\fs22 
+\par \b\f5\fs20 first #\cf0\b0\f0    [opposite: \b\f5  last #\b0\f0  ]\i\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li710\b0\f0 Read the first record  (internal rec number 1)  of the database\b  \b0 display it. Use  \cf4\b\f5 find #1 \cf0\b0\f0 to load it with no display. 
+\par \pard\li709\b\f5 next #\b0\f0   then loads the next. 
+\par \pard\cf4\b\f5 
+\par first off\b0\f0  \cf0   [opposite: \b\f5  last off\b0\f0  ]\b\f5 
+\par \pard\li710\b0\f0 Load the first Offline file record and it. Use \b\f5  if no ...\b0\f0  to check for failure (i.e., empty offline file). 
+\par \pard\li709\b\f5 next off\b0\f0   then loads the next. 
+\par \pard\b\f5 
+\par fnam \b0\i\f0 designation|type 
+\par \pard\li710\i0 presents a file selection box. \i designation \i0  will appear as a headline, \i type\i0  is a specification like  \f5 P-*.?PR\f0  or \f5 c:\\\\allegro\\\\*.*\f0 . This is to control the names to be shown and the path on which to start. If this is missing, all files are shown. Use \b\f5 if no\b0\f0  to check if nothing was selected. The selected name will afterwards be in the  iV,  as ac omplete path name. Use a subsequent \b\f5  open \b0\f0  to open it for reading. 
+\par \pard\li709 
+\par \pard\b\f5 form \b0\i\f0 i\i0 
+\par \pard\li709 Activate form  i  (i = 1...)  (in the sequence of the .FRM file) \f2 . The FLEX stops at this point and resumes after the form is closed.\f0 
+\par Several  such commands can be executed in succession. 
+\par Instead of a number  i one can use the headline of a form as found in the .FRM file. 
+\par \pard\b\f5 
+\par \f3 get\f5  \b0\i\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par \i\f2\tab\i0 Read next line from the open file  (see  \f3 open\f2 )  into the iV, to use in subsequent command.\i\f0 
+\par \b\i0\f5 
+\par help \b0\i\f0 name\i0 
+\par \pard\li709\i name\i0  is the name of an RTF file (without the .rtf) which will then be displayed in the display window. Same as an h flip. Instead of an RTF it can be a simple ASCII file. The program then uses HELPHEAD.RTF as a standard header to enable the display - the appearance being rather plain because of the lack of RTF markup in the ASCII file. 
+\par If .RTF is appended to the name, any embedded flips will also become visible. these are lines beginning with a ? and following the schema: 
+\par ?\i FlipText\i0 =\i Flip command 
+\par \i0 Somewhere within the text one must then have a string that matches \i FlipText\i0  and is enclosed in square brackets or between two codes  160 (to be input by Alt+0160). 
+\par \pard\b\f5 
+\par if \b0\i #nnn command\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par \b\f5 if\f3  not\f5  \b0\i #nnn command\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par \pard\li709 If field  #nnn is present \f2 / not present \f0 in\f2  the\f0  current record, execute \i\f5 command\i0\f0  \f2 . 
+\par This will often be\f0  a\f2  \f0  \b\f5 jump\b0\f2   command, but it can also be a sequence of other commands, separated by a semicolon\f0 . \f2 Instead of #nnn, there can be a #uxy variable, a $ variable or a persistent variable. The test is always for their existence, that means if there is a value attached to the name of the variable. All variables contain text. There can be no empty variables.\f0 
+\par \f2 The  \f3 if\f2   command is among the most used ones, and it knows many more options for testing.\f0 
+\par \pard 
+\par \b\f3 index\f5  |i\f3  \b0\i\f0 abc\i0 
+\par \pard\li709 Show index i at position  \i abc, \i0  for example:   \f3 index\f5  |1\f3  \f5 shakesp 
+\par \f0 The FLEX will resume after the index is closed. Several such commands can therefore be executed in succession, with other commands interspersed. 
+\par \pard 
+\par \b\f5 input \b0\i\f0 n\i0 
+\par \pard\li709 This changes the number of the file to be used for saving new records. No visible reaction. 
+\par The \f5 access=\f0   level set in the INI file must be at least 2. 
+\par \pard 
+\par \b\f5 insert #xyz \b0\i\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f0 Copy the content of the iV to field #xyz .\f2  Instead of a datafield \f3 #nnn\f2 , it can be a user variable \f8 #uxy\f2  or a $-variable.\f0  
+\par \pard\b\f5 
+\par insert $a+#xyz \b0\i\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f0 Append the iV as subfield  $a to #xyz 
+\par \pard\b\f5 insert $a-#xyz \b0\i\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f0 Replace subfield $a, if it exists, otherwise add it to #xyz. If the iV is empty: subfield $a will be deleted 
+\par \pard 
+\par \b\f5 jump \b0\i label\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f0 Processing goes on at position marked by \i\f5 :label\i0\f0  
+\par 
+\par \pard\b\f5 Jump \b0\i xTEXT\b\i0 
+\par \pard\li709\b0\f0 like "display", but using the current export parameters (section #-x therein)  instead of the display parameters. \i TEXT\i0  will then be in variable #u1 
+\par Output via \f2  \f3 export\f0  \f2  \f0 commands (q.v.) is more reliable. 
+\par \pard\b\f5 
+\par load\b0  \f0 
+\par \pard\li709 to be used after  \b\f5  choose ...\b0\f0  (q.v.) 
+\par The selected record is fetched and made the current record. Another  \b\f5 load\b0\f0  reloads the previously active record. 
+\par \pard 
+\par \b\f5 message\b0  \i\f0 Text\i0 
+\par \pard\li709\i Text\i0  is displayed in a message box;  [OK] must be pressed. 
+\par If the user is to be asked for a decision: use   \f5 yesno\f0 
+\par If the user is to be prompted for an input: use    \f5 ask\f0 
+\par \pard\b\f5 new \b0\i\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f0 A new, empty record is\f2  \f0 created. The current record in its current state is copied to the offline file as well as to the reserve store (background store). Manual input may follow, or #- and \f5 insert \f0 commands, or \f5 transfer\f0 , to copy fields from the reserve! 
+\par \pard\b\f5 next \f3 / next #\b0\i   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f0 The next result set record (in the current sequence)\f2  / the next database record in the internal sequence \f0  is loaded. 
+\par FLEX ends if the current record is the last record. 
+\par 
+\par \pard\b\f5 o\f3 pen\f5  \b0\i\f2 name\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par \pard\li709 O\f2 pen file  \i name\i0   for reading (with commands  \f3 get\f2   and  \f3 fetch\f2  ) 
+\par iV content will be used for a  \i name\i0   if none given.\f0 
+\par 
+\par \pard\b\f5 order \b0\i\f0 M P\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par \pard\li709 Order (sort) the result set \f2 using the short title list entry \f0 
+\par \i M\i0  = Modus: a=ascending, d=descending, n=by internal record number 
+\par \i P\i0  = Position \f2 in the short title entry\f0 : the first position is 0 
+\par 
+\par \pard\b\f5 p\f3 ipe\f5  \i\f3 program\b0   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f2 Start the  \b\i\f3 program\b0\i0\f2   and then read from its output using  get.
+\par \b\i\f3 program \b0\i0\f2  may be any internet address, and the output is the HTML content it delivers\f0 
+\par \pard  
+\par \b\f5 prev \f3 / prev #\b0\i   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f0 The previous record is fetched from the result set, and displayed. 
+\par FLEX ends if the current record is the first record. 
+\par 
+\par \pard\b\f5 print 
+\par \pard\li709\b0\f0 Print the display window's content (as with the print button) 
+\par  
+\par \pard\b\f5 Put\b0\f0  \tab Save current record, but ask the user first \i\f3  \i0\f0 
+\par \b\f5 put\tab\b0\f0 Save without asking. \i\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par 
+\par \b\f5 Put new
+\par put new\b0\i\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par \pard\li709 Save current record as a new record.   \f5 copy\\put\f0  would do the same.) 
+\par If  it was an online record, the result \f2 will then be\f0  a duplicate. 
+\par 
+\par \pard\b\f5 read \b0\i\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f0 Read file E.ADT and merge into current record. E.ADT can contain any list of fields. This is an aid for data input) 
+\par \f2 In \i\f5  \cf3\f3 acon\cf0\i0\f2  , the command reads the next record from the file opened with the first  read  command:  \f3 read \i filename\i0\f0 
+\par \pard\b\f5 
+\par select \b0\i\f0 prompt=response1|resp2|resp3|...\b\i0\f5 
+\par \pard\li709\b0\f0 Present the list of responses for selection. The selection will be copied to the iV. If + precedes the \i prompt \i0 , the selection is appended to the iV. See also  \b\f5 load\b0\f0 
+\par \b\f5 
+\par \pard select \b0\i\f0 prompt=\b\i0\f5 #usp\b0\i\f0 .\b\i0\f5 
+\par \pard\li709\b0\f0  #usp must contain the list of responses\f2 , separated by | .\f0 
+\par \pard\b\f5 select #usp\b0\i\f0 .\b\i0\f5 
+\par \pard\li709\b0\f0 #usp must contain the prompt and the list of responses. 
+\par \b\f5 
+\par \pard\f3 set ... \f5  \b0\i\f3   \f5  \cf3\f3 acon
+\par \pard\li709\cf0\i0\f2 A command with many options! Two of them are these:\f0  
+\par \pard\b\f5 
+\par set pX  \b0\i\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f2 A subsequent \f0  \b\f5 update\b0\f0  \f2  command \f0 will use section \f3 #-X\f0  in the index parameters to determine the primary key. \b\f5 
+\par 
+\par \pard set u\b0\i\f0 xyz\b\i0\f5  \b0\i\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par \pard\li709 Set the \b update\b0  modes  x and y as in DOS-UPDATE, 
+\par z=0: No direct saving of updated and new records but copy them to the offline file.\b\f5 
+\par 
+\par \pard show \b0\i\f0 xxx\i0 
+\par \pard\li709 Control the listbox (left hand side).  For\i  xxx\i0  : 
+\par res   \tab\tab Reserve store 
+\par rec     \tab\f2\tab\f0 fields of current record 
+\par sets        \tab\tab result sets 
+\par cfg          \tab\tab Configuration 
+\par  \b\f5 
+\par \pard sleep \b0\i\f0 n\b\i0\f5  \b0\i\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par \pard\li709 Wait \i n \i0 milliseconds before going on. (For 3 seconds one would have to write: sleep 3000) 
+\par For example, use this when displaying a sequence of help pages and/or index sections. Add yesno commands to make it more flexible: 
+\par \f5 help name1\\sleep 4000\\yesno Go on?\\help name2\\sleep 4000... 
+\par 
+\par \pard\b transfer #nnn 
+\par \pard\li709\b0\f0 Copy field #nnn from background into current record. 
+\par If, however, a variable #uxy is to be copied into a field: \f5  var #uxy\\ins #nnn\f0 
+\par \pard\b\f5 
+\par undo 
+\par \pard\li709\b0\f0 Same as button  [\ul O\ulnone ld/New] : Toggle between edited and original form of current record. 
+\par \pard\b\f5 
+\par update  \b0\i\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f0 These functions work the same way as in  \b\i a\f2 con\b0\i0 , the console program for offline job execution.\f0  
+\par \pard\b\f5 upload  \b0\i\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f0 The DOS program UPDATE can be replaced by these functions. Different from UPDATE, the process can be monitored interactively. Unlike UPDATE, not just type .ALG files can be uploaded but also (as with \b\i a\f2 con\b0\i0\f0 ) the simpler externam format (type .ADT). 
+\par 
+\par \pard\b\f5 variable\b0  \i\f0 mixed string\b\i0\f5  \b0\i\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par \pard\li709 The  \i mixed string \i0  is copied into the iV. The \i string\i0  uses the same syntax as with the    \b\f5 write\b0\f0  command (see below) 
+\par \f2 This is the most-used command since with it, every string needed for operations must be put together. The string is in the iV after this command, and the next command will use it for its operations. 
+\par \f0 
+\par \pard\b\f5 variable +\b0\i\f0 mixed string\b\i0\f5  \b0\i\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par \pard\li709 The + option append the string to the iV rather than overwriting it. This way, one can construct any combination of field contents and constant elements, for example 
+\par \f5 var #40 ": " #20\f0           copy contents of #40 and #20 to iV , separated by ": " 
+\par \f5 var +" (" #76 ")"\f0         append (content of #76) to the end of  iV 
+\par \f5 ins #upt         \f0         store iV in #upt  (The iV as such remains intact!) 
+\par \pard 
+\par \b\f5 write\f3  iV\f5   \b0\i\f3   \f5  \cf3\f3 acon\cf0\b\i0\f5 
+\par \pard\li709\b0\f0 Write contents of iV \f2 (a \i mixed string\i0  composed by a preceding  \f3 var\f2   command) \f0 to the output file\f2 , without changes\f0 . 
+\par 
+\par \pard\b\f5 write\b0\f0   \i mixed string\i0      \b\f5  \b0\i\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par \pard\li709 This is the fastest way to write field contents and any other text\f2  directly\f0  into the output \f2 (export) \f0 file. 
+\par Additionally, the \i mixed string\i0  is copied to the iV. 
+\par \i Example: 
+\par \i0\f5 write "Title: " #20 n "Author: " #40 n "Place: " #74 " (" #76 ")" 
+\par \f0 this will produce output like this: 
+\par  \f5 
+\par    Title: Hamlet 
+\par    Author: Shakespeare, William 
+\par    Place: London (1982) \f0 
+\par 
+\par The \f2  \f3 n\f2  \f0  is \f2 shorth\f0 and for \f2  \f3 newline\f0 . 
+\par Simple exports can be done this way, like with \b\i a\f2 con\b0\i0\f0 , without using the export language. 
+\par \f2 Beside the \f3 n\f2 , there are many more shorthand variables for all sorts of internal values,  like \f3 t\f2  \f0  \f2 for the total number of records and \f9 i\f2  for the internal number of the current record. 
+\par \pard\f0 
+\par \b\f5 yesno \b0\i\f0 question\i0 
+\par \b\f5 noyes\b0  \i\f0 question\i0 
+\par \pard\li709 The \i\f2 question\i0\f0  appears in a Yes/No-Box. The user has to reply before the program continues. 
+\par "No" stops the FLEX, i.e. aborts its execution. 
+\par With "noyes" the [No] button instead of the [Yes] button is the default - [Enter] then means No. 
+\par 
+\par \pard\b\f5 zzz\b0\f0\tab No command\f2  - noeffect\f0   \b\f5  \b0\i\f3   \f5  \cf3\f3 acon\cf0\i0\f0 
+\par 
+\par 
+\par What is a \b\i mixed string\b0\i0 ?  (see commands \b\f5 variable\b0\f0  and \b\f5 write\b0\f0 ) 
+\par That's any chain of elements, of \f2 several\f0  types, separated by spaces: 
+\par 
+\par \f5 "xyz"\f0\tab Character string, enclosed in "..."  or '...' 
+\par d d d  \tab ASCII codes as decimal numbers (e.g.,  27 69  for  Esc  E) 
+\par #nnn \tab field tags   (#nnn may also be a #u variable or a special field like #dt (see handbook)) 
+\par #nnn$a\tab Subfield (only the subfield content will be written) 
+\par #nnn$a\tab Subfield (only the subfield content will be written) 
+\par \f2 #uxy \tab #u variables (as used in export parameters)
+\par #uxy$a\tab subfield $a of the #u variable
+\par $name\tab Named "free" variable (name of arbitrary length)
+\par &name\tab Persistent variable - outlives the job - available in subsequent jobs\f0 
+\par 
+\par \i\f2 Special internal variables:\i0\f0 
+\par  i \tab\ul i\ulnone nternal number of record 
+\par  l \tab\ul L\ulnone ength (size) of result set 
+\par  n  \tab\ul n\ulnone ew line 
+\par  p \tab\ul P\ulnone rimary key of current record 
+\par  r \tab\ul r\ulnone elative position number of record in result set 
+\par  s \tab Short title line of record (from .\ul S\ulnone TL file) 
+\par 
+\par 
+\par \b\fs24 FLEX Examples 
+\par \i\fs20 
+\par Example 1\i0  : Partially automatic editing of a record 
+\par \b0 This is the task: Records are to be retrieved by their inventory number, one particular field has to be added or edited, then save the record back - or sometimes not. 
+\par \i Assumption:\i0  there's an section INV within index 9 containing the inventory number. 
+\par This can be done by a FLEX like the following: 
+\par \b\f5 
+\par \b0\f0   Prompt the user for the next inventory number (Default: content of #uib) 
+\par    when user presses the index button\f2  of the ask input box\f0 , this should bring up index 9 
+\par \b\f5 ask  |9Inventory number=#uib 
+\par \b0\f0   The number entered goes into the iV, copy it to #uib : 
+\par \b\f5 ins #uib 
+\par \b0\f0   Now compose the internal variable from "inv " and #uib 
+\par \b\f5 var "inv " #uib 
+\par \b0\f0   and execute this as a find command (i.e., "find inv nnn") 
+\par \b\f5 find 
+\par \b0\f0   Insert field #xyz containing  \i\f5 Text \i0\f0 into current record\f5 
+\par \b #xyz \b0\i\f0 Text\b\i0\f5 
+\par \b0\f0   ask user if the record is to be saved 
+\par \b\f5 yesno Save? 
+\par \b0\f0   and do this if the  "OK" button was pressed 
+\par \b\f5 put 
+\par \b0\f0   \b Put\b0   can be used instead of the last two commands, for this also asks for confirmation 
+\par 
+\par \b\i Example 2\i0  : Input assistance 
+\par \b0 New records are to be provided with a number of predefined fields. Enter into the write field: 
+\par 
+\par \f5 #uX3x new\\#nn1 Text1\\#nn2 Text2\\#nn3 Text3\\trans #nn4\\form 2 
+\par \f0 
+\par First, a new (empty) record is created, then three predefined fields are inserted, field #nn4 is copied from the reserve store, then form 2 is activated for further input.  Alt+3 activates this FLEX. This example is easily extended. 
+\par Several such FLEXes can be created for different types of records. 
+\par 
+\par ?Functions Overview=x var P "help\\\\flexeng.vw"\\View 
+\par ?Alphabetic Index=h xa 
+\par ?ask=h xask 
+\par ?variable=h xvar 
+\par ?yesno=h xyes 
+\par ?message=h xmessage
+\par ?German list=h flexger
+\par \b\f10 
+\par }
+ 

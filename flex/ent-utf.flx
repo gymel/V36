@@ -1,0 +1,177 @@
+  ENT-UTF.FLX : Umcodierung einer Datei mit Entitaetscodes -> UTF-8
+  2013-04-30    Noch sehr verbesserungsbeduerftig!
+
+  Den Dateinamen in  #ufn  bereitstellen:
+
+#ufn c:/allegro/gna/gnd.ttl.rdf
+
+:anf
+#ux9
+
+var #ufn
+open
+if no jump ferr
+
+  Name der Ausgabedatei hier bereitstellen:
+open x gnd.utf
+
+
+:loop
+
+keycheck
+if yes jump fabr
+
+:weiter
+
+get
+if cancel jump fend
+
+ins _&lt;_<_
+ins _&gt;_>_
+ins _&apos;_'_
+ins _&quot;_"_
+
+
+ins #uzl
+
+:lp
+wri #uzl(e"&#")
+
+var #uzl(b"&#")
+if "" wri n;jump loop
+
+var #uzl(b"&#")
+ins #uze
+
+var #uze(b";")
+ins #uzl
+
+var #uze(e";")
+
+ins #uxe
+
+if <256 jump utf1
+if <2048 jump utf2\jump utf3
+
+:utf1
+var #uxe
+=
+var "319"
+-     // 319=256+64
+var "64"
+/ 
+var Z
+var (e".")
+=
+var "196"
++ 
+var Z
+var
+wri
+
+var #uxe
+z =
+var "64"
+z % 
+var z
+=
+var "128"
++
+var Z
+var
+wri
+jump lp
+
+
+:utf2
+var #uxe\=
+var "256"\-
+var "64"\/ 
+var Z\var (e".")\=
+var "196"\+ 
+var Z
+var
+wri
+
+var #uxe\=
+var "256"\-
+var Z
+z = 
+var "64" 
+z % 
+var z\=
+var "128"\+
+var Z
+var
+wri
+
+jump lp
+
+
+:utf3
+var #uxe\=
+var "4096"\/
+var Z\var (e".")\=
+var "224"\+ 
+var Z\ins #uxa
+
+var #uxa\=
+var "224"\-
+var "4096"\X
+var Z\ins #ux1
+
+var #uxe\=
+var #ux1\-
+var "64"\/
+var Z\var (e".")\=
+var "128"\+
+var Z\ins #uxb
+
+var #uxb\=
+var "128"\-
+var "64"\X
+var Z\ins #ux2
+
+var #uxe\=
+var #ux1\-
+var #ux2\-
+var "128"\+
+var Z\ins #uxc
+
+var #uxa
+var
+wri
+var #uxb
+var
+wri
+var #uxc
+var
+wri
+
+jump lp
+ 
+
+
+:fend
+close x
+var "ENDE " #ufn
+mes
+end
+
+:fabr
+fet p
+yes
+if not yes jump weiter
+
+
+
+close x
+mes ABBRUCH
+end
+
+:ferr
+var "Datei " #ufn " gibt's nicht" 
+mes
+end
+
+

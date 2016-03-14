@@ -1,0 +1,113 @@
+  Z-NABO.FLX : neues Abo anlegen
+  20070612
+
+if not #uOR mes Moment, ZAboM ist noch nicht initialisiert!;exec z-init
+  Aktueller Satz muss ein Zs-Titelsatz sein
+if #88 jump newabo
+if #8n jump newabo
+var #9C
+if %abo% jump newabo
+if not #20 if not #8n jump noz
+disp
+yes Ist das die zu abonnierende Zeitschrift?
+if not yes jump nop
+
+:newabo
+var i     // interne TitelNummer merken
+ins $Inn
+  tid merken
+var #00
+ins $Tid
+
+  Abo-Satz nun anlegen
+new 0
+#00 zabo?6
+var $Tid
+  TitelId
+ins $T-#9DA
+  Best.Datum
+var #dts(0,8)
+ins $B-#9DA
+  Bestelldaten
+  Status Al = laufendes Abo
+#9DBAl
+  vorigen Lieferanten wieder vorschlagen
+var $Lif
+ins $j-#9DB
+var #dts(0,8)
+ins $B-#9DA
+var "1"
+ins $n-#9DB
+disp
+sho rec
+  Formular zeigen
+form Abon
+  nicht vorhanden!
+if no jump noform
+  Lieferant speichern fuer naechstes Abo
+var #9DB$j
+ins $Lif
+
+  Whrg und Preis trennen
+var #9DB$p (f"0123456789., " e" ")
+ins $c-#9DB
+eval #9DB$p
+ins $p-#9DB
+
+  naechste Bestellnr ermitteln (Reg. 10 bei o)
+  (sonst muessten die Indexparameter das machen, #-N in PV-Bereich)
+  Letzte Zeile im o-Abschnitt suchen
+var "-2 |: o!"
+qri
+var (e"^T" b" o ")
+  noch keine Eintr. mit " o ", dann 0
+if "" var "0"
+z=
+z+1
+var z
+var (0,r6)
+ins _ _0_
+ins $$-#9DA
+sho rec
+disp
+
+yesno Abo speichern?
+if not yes erase;jump rueck
+  AboSatz speichern und anzeigen
+put
+last off
+var i
+ins $aid
+  Titelsatz zurueckholen
+:rueck
+var "#" $Inn
+f1nd
+  Es muss #9C geben und "abo" drin vorkommen (aktives Abo)
+var #9C
+if not %abo% var #9C " abo"
+ins #9C
+  Satz wurde dadurch veraendert? Dann speichern.
+if diff put
+  AboSatz zurueckholen
+var "#" $aid
+find
+sho rec
+disp
+yes Bestellzettel?
+if yes exec o-bzett
+end
+
+:noform
+erase
+mes Das Formular existiert nicht!
+end
+:noz
+mes Das ist kein Datensatz f. eine Zeitschrift. Suchen Sie zuerst den Titel!
+ind ser a
+end
+
+:nop
+yesno Zuerst die betr. Zeitschrift aufsuchen
+if yes ind ser a
+help zabom
+
